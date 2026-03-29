@@ -15,11 +15,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .container {
   width: 100%;
-  max-width: 640px;
+  max-width: 768px;
   padding: 16px;
   flex: 1;
   display: flex;
@@ -27,448 +29,787 @@ body {
 }
 
 /* ── 首頁 ── */
-.home { text-align: center; padding-top: 48px; }
-.home h1 { font-size: 1.6rem; margin-bottom: 8px; }
-.home p { color: #666; margin-bottom: 32px; font-size: 1rem; }
+.home { padding-top: 32px; }
+.home h1 { font-size: 1.6rem; text-align: center; margin-bottom: 24px; }
 
-.unit-btn {
-  display: block;
-  width: 100%;
-  padding: 20px;
-  margin-bottom: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 16px;
-  background: #fff;
-  font-size: 1.15rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: left;
+.unit-section { margin-bottom: 20px; }
+.unit-section .unit-title {
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 8px; padding-left: 4px;
 }
-.unit-btn:active { transform: scale(0.98); }
-.unit-btn:hover { border-color: #4361ee; background: #f0f4ff; }
-.unit-btn .count { font-size: 0.85rem; color: #888; font-weight: 400; margin-top: 4px; }
 
-/* ── 進度條 ── */
-.progress-bar {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.sub-btn {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; padding: 18px 20px; margin-bottom: 8px;
+  border: 2px solid #e0e0e0; border-radius: 14px;
+  background: #fff; font-size: 1.05rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; text-align: left;
+}
+.sub-btn:active:not(:disabled) { transform: scale(0.98); }
+.sub-btn:hover:not(:disabled) { border-color: #4361ee; background: #f0f4ff; }
+.sub-btn:disabled { opacity: 0.4; cursor: default; }
+.sub-btn .status { font-size: 0.85rem; color: #888; white-space: nowrap; margin-left: 12px; }
+.sub-btn .badge {
+  background: #e74c3c; color: #fff; border-radius: 10px;
+  padding: 2px 10px; font-size: 0.85rem; font-weight: 600;
+  min-width: 28px; text-align: center; margin-left: 12px;
+}
+
+.error-section { border-top: 2px solid #eee; padding-top: 20px; margin-top: 8px; }
+
+.no-errors {
+  background: #e8faf0; border-radius: 14px; padding: 20px;
+  text-align: center; color: #1a7a42; font-size: 1.1rem; font-weight: 600;
+}
+.no-errors::before { content: ""; display: block; font-size: 2rem; margin-bottom: 4px; }
+
+.reset-link {
+  display: inline-block; margin-top: 4px;
+  font-size: 0.8rem; color: #888; text-decoration: underline;
+  cursor: pointer; background: none; border: none;
+}
+
+/* ── Quiz Header ── */
+.quiz-header {
+  display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 12px;
-  flex-wrap: wrap;
+}
+.leave-btn {
+  background: none; border: 1px solid #ddd; border-radius: 8px;
+  padding: 8px 14px; font-size: 0.95rem; color: #666; cursor: pointer;
+}
+.leave-btn:active { background: #f0f0f0; }
+.mode-label { font-size: 0.85rem; color: #999; }
+
+/* ── 進度 ── */
+.progress-bar {
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 12px; flex-wrap: wrap;
 }
 .progress-bar .label { font-size: 0.9rem; color: #666; margin-right: 8px; white-space: nowrap; }
 .dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: #ddd;
-  flex-shrink: 0;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #ddd; flex-shrink: 0;
 }
 .dot.correct { background: #2ecc71; }
 .dot.wrong { background: #e74c3c; }
 .dot.current { box-shadow: 0 0 0 2px #4361ee; }
 
+.progress-text { margin-bottom: 12px; }
+.progress-text .text-line { font-size: 0.9rem; color: #666; margin-bottom: 6px; }
+.progress-bar-track {
+  height: 8px; background: #eee; border-radius: 4px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; background: #2ecc71; border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
 /* ── 題目 ── */
 .question-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  background: #fff; border-radius: 16px;
+  padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex: 1; display: flex; flex-direction: column;
 }
-
 .q-type {
-  font-size: 0.8rem;
-  color: #fff;
-  background: #4361ee;
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  font-size: 0.8rem; color: #fff; background: #4361ee;
+  display: inline-block; padding: 2px 10px; border-radius: 8px;
+  margin-bottom: 12px; align-self: flex-start;
 }
 .q-type.tf { background: #8b5cf6; }
-
-.q-text {
-  font-size: 1.25rem;
-  line-height: 1.7;
-  margin-bottom: 20px;
-}
-
+.q-text { font-size: 1.25rem; line-height: 1.7; margin-bottom: 20px; }
 .options { display: flex; flex-direction: column; gap: 12px; }
 
 .opt-btn {
-  display: flex;
-  align-items: center;
-  min-height: 56px;
-  padding: 12px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  background: #fff;
-  font-size: 1.125rem;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: left;
-  gap: 10px;
+  display: flex; align-items: center; min-height: 56px;
+  padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 12px;
+  background: #fff; font-size: 1.125rem; line-height: 1.5;
+  cursor: pointer; transition: all 0.15s; text-align: left; gap: 10px;
 }
-.opt-btn:active { transform: scale(0.98); }
+.opt-btn:active:not(.disabled) { transform: scale(0.98); }
 .opt-btn:hover:not(.disabled) { border-color: #4361ee; background: #f0f4ff; }
-
 .opt-btn .opt-label {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  flex-shrink: 0;
+  width: 28px; height: 28px; border-radius: 50%; background: #eee;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
 }
-
-.opt-btn.selected { border-color: #4361ee; background: #e8edff; }
 .opt-btn.correct-answer { border-color: #2ecc71; background: #e8faf0; }
 .opt-btn.correct-answer .opt-label { background: #2ecc71; color: #fff; }
 .opt-btn.wrong-answer { border-color: #e74c3c; background: #fdecea; }
 .opt-btn.wrong-answer .opt-label { background: #e74c3c; color: #fff; }
 .opt-btn.disabled { pointer-events: none; opacity: 0.85; }
 
-/* ── 結果提示 ── */
 .result-hint {
-  margin-top: 16px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-align: center;
+  margin-top: 16px; padding: 12px 16px; border-radius: 12px;
+  font-size: 1.1rem; font-weight: 600; text-align: center;
 }
 .result-hint.correct { background: #e8faf0; color: #1a7a42; }
 .result-hint.wrong { background: #fdecea; color: #b71c1c; }
 
 .next-btn {
-  display: block;
-  width: 100%;
-  margin-top: 16px;
-  padding: 16px;
-  border: none;
-  border-radius: 12px;
-  background: #4361ee;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
+  display: block; width: 100%; margin-top: 16px; padding: 16px;
+  border: none; border-radius: 12px; background: #4361ee; color: #fff;
+  font-size: 1.1rem; font-weight: 600; cursor: pointer;
 }
 .next-btn:active { background: #3451c7; }
 
 /* ── 摘要頁 ── */
 .summary { text-align: center; padding-top: 40px; }
-.summary .score {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #4361ee;
-  margin: 16px 0;
-}
+.summary .score { font-size: 3rem; font-weight: 800; color: #4361ee; margin: 16px 0; }
 .summary .score-label { font-size: 1.1rem; color: #666; }
-
 .summary-btn {
-  display: block;
-  width: 100%;
-  padding: 16px;
-  margin-top: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  background: #fff;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
+  display: block; width: 100%; padding: 16px; margin-top: 12px;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff;
+  font-size: 1.05rem; font-weight: 600; cursor: pointer;
 }
 .summary-btn.primary { background: #4361ee; color: #fff; border-color: #4361ee; }
 .summary-btn:active { transform: scale(0.98); }
 
 /* ── 錯誤頁 ── */
-.error-msg {
-  text-align: center;
-  padding-top: 60px;
-  color: #888;
-  font-size: 1.1rem;
-}
+.error-msg { text-align: center; padding-top: 60px; color: #888; font-size: 1.1rem; }
 
 .hidden { display: none !important; }
 </style>
 </head>
 <body>
 <div class="container" id="app">
-  <!-- Home -->
-  <div id="page-home" class="home">
-    <h1>三下自然練習</h1>
-    <p>選擇要練習的單元</p>
-    <div id="unit-buttons"></div>
-  </div>
-
-  <!-- Quiz -->
-  <div id="page-quiz" class="hidden">
-    <div class="progress-bar" id="progress-bar"></div>
-    <div class="question-card">
-      <span class="q-type" id="q-type"></span>
-      <div class="q-text" id="q-text"></div>
-      <div class="options" id="q-options"></div>
-      <div class="result-hint hidden" id="result-hint"></div>
-      <button class="next-btn hidden" id="next-btn">下一題</button>
-    </div>
-  </div>
-
-  <!-- Summary -->
-  <div id="page-summary" class="summary hidden">
-    <h2>練習結束</h2>
-    <div class="score" id="score-text"></div>
-    <div class="score-label" id="score-label"></div>
-    <div style="margin-top:24px">
-      <button class="summary-btn primary" id="btn-retry">再練一次</button>
-      <button class="summary-btn hidden" id="btn-wrong">練習錯題</button>
-      <button class="summary-btn" id="btn-home">回選單</button>
-    </div>
-  </div>
-
-  <!-- Error -->
-  <div id="page-error" class="error-msg hidden">
-    <p>題庫載入失敗，請重新整理頁面。</p>
-  </div>
+  <div id="page-home" class="home"></div>
+  <div id="page-quiz" class="hidden"></div>
+  <div id="page-summary" class="summary hidden"></div>
+  <div id="page-error" class="error-msg hidden"><p>題庫載入失敗，請重新整理頁面。</p></div>
 </div>
 
 <script>
 (function() {
-  "use strict";
+"use strict";
 
-  const STORAGE_KEY = "aiden_study_records";
-  let allQuestions = [];
-  let currentUnit = null;
-  let quizQuestions = [];
-  let currentIndex = 0;
-  let answered = []; // {correct: bool} per question
+// ════════════════════════════════════════════════════
+// Storage
+// ════════════════════════════════════════════════════
+const STORAGE_KEY = "aiden_study_v2";
+const OLD_KEY = "aiden_study_records";
 
-  // ── Storage ──
-  function loadRecords() {
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {} };
+
+const Storage = {
+  load() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw).records || [] : [];
-    } catch { return []; }
-  }
-
-  function saveRecord(questionId, unit, correct) {
-    const records = loadRecords();
-    records.push({ questionId, unit, correct, answeredAt: Date.now() });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ records }));
-  }
-
-  // ── Shuffle ──
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  // ── Pages ──
-  function showPage(id) {
-    document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-  }
-
-  // ── Home ──
-  function renderHome() {
-    showPage("page-home");
-    const container = document.getElementById("unit-buttons");
-    container.innerHTML = "";
-
-    const units = [
-      { id: 1, name: "第 1 單元：田園樂", desc: "蔬菜種植與生長" },
-      { id: 2, name: "第 2 單元：溫度變化對物質的影響", desc: "水的三態、物質變化" },
-    ];
-
-    units.forEach(u => {
-      const count = allQuestions.filter(q => q.unit === u.id).length;
-      const btn = document.createElement("button");
-      btn.className = "unit-btn";
-      btn.innerHTML = `${u.name}<div class="count">${u.desc} — ${count} 題</div>`;
-      btn.onclick = () => startQuiz(u.id);
-      container.appendChild(btn);
-    });
-  }
-
-  // ── Quiz ──
-  function startQuiz(unit, questionsOverride) {
-    currentUnit = unit;
-    if (questionsOverride) {
-      quizQuestions = shuffle(questionsOverride);
-    } else {
-      quizQuestions = shuffle(allQuestions.filter(q => q.unit === unit));
-    }
-    currentIndex = 0;
-    answered = [];
-    showPage("page-quiz");
-    renderQuestion();
-  }
-
-  function renderProgress() {
-    const bar = document.getElementById("progress-bar");
-    const total = quizQuestions.length;
-    bar.innerHTML = `<span class="label">第 ${currentIndex + 1} 題 / 共 ${total} 題</span>`;
-    for (let i = 0; i < total; i++) {
-      const dot = document.createElement("span");
-      dot.className = "dot";
-      if (i < answered.length) {
-        dot.classList.add(answered[i].correct ? "correct" : "wrong");
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch { return null; }
+  },
+  save(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  },
+  migrate() {
+    if (localStorage.getItem(STORAGE_KEY)) return; // already migrated
+    try {
+      const raw = localStorage.getItem(OLD_KEY);
+      if (!raw) return;
+      const old = JSON.parse(raw);
+      const records = old.records || [];
+      const stats = {};
+      for (const r of records) {
+        if (!r.questionId) continue;
+        if (!stats[r.questionId]) stats[r.questionId] = { practiced: 0, correct: 0 };
+        stats[r.questionId].practiced++;
+        if (r.correct) stats[r.questionId].correct++;
       }
-      if (i === currentIndex) dot.classList.add("current");
-      bar.appendChild(dot);
+      const v2 = { ...DEFAULT_DATA, stats };
+      Storage.save(v2);
+      localStorage.removeItem(OLD_KEY);
+    } catch { /* ignore corrupt old data */ }
+  }
+};
+
+// ════════════════════════════════════════════════════
+// State
+// ════════════════════════════════════════════════════
+let state = null;
+
+const State = {
+  init(saved) {
+    state = saved ? { ...DEFAULT_DATA, ...saved } : { ...structuredClone(DEFAULT_DATA) };
+    if (!state.challenge) state.challenge = { "1": null, "2": null };
+    if (!state.errorBank) state.errorBank = [];
+    if (!state.stats) state.stats = {};
+  },
+
+  // Stats
+  getStats(qId) {
+    return state.stats[qId] || { practiced: 0, correct: 0 };
+  },
+  recordAnswer(qId, isCorrect) {
+    if (!state.stats[qId]) state.stats[qId] = { practiced: 0, correct: 0 };
+    state.stats[qId].practiced++;
+    if (isCorrect) state.stats[qId].correct++;
+    Storage.save(state);
+  },
+
+  // ErrorBank
+  getErrorBank(unitFilter) {
+    if (!unitFilter) return [...state.errorBank];
+    return state.errorBank.filter(e => e.unit === unitFilter);
+  },
+  addToErrorBank(qId, unit) {
+    if (state.errorBank.find(e => e.questionId === qId)) return; // dedup
+    state.errorBank.push({ questionId: qId, unit });
+    Storage.save(state);
+  },
+  removeFromErrorBank(qId) {
+    state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+    Storage.save(state);
+  },
+
+  // Challenge Queue
+  getChallenge(unit) {
+    return state.challenge[String(unit)] || null;
+  },
+  saveChallenge(unit, queue) {
+    state.challenge[String(unit)] = { queue: [...queue] };
+    Storage.save(state);
+  },
+  clearChallenge(unit) {
+    state.challenge[String(unit)] = { queue: [] }; // [] = 已通關
+    Storage.save(state);
+  },
+  resetChallenge(unit) {
+    state.challenge[String(unit)] = null; // null = 未開始
+    Storage.save(state);
+  }
+};
+
+// ════════════════════════════════════════════════════
+// Runtime
+// ════════════════════════════════════════════════════
+let allQuestions = [];
+let questionMap = new Map();
+
+const quiz = {
+  mode: null,    // "full" | "quick" | "error"
+  unit: null,    // 1 | 2 | null
+  queue: [],     // question ids
+  index: 0,      // for quick mode sequential access
+  answered: [],  // [{ questionId, correct }]
+  totalForProgress: 0, // fixed denominator for progress
+  isAnswered: false
+};
+
+// ════════════════════════════════════════════════════
+// Utilities
+// ════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showPage(id) {
+  document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════════════════════════════
+// Picker
+// ════════════════════════════════════════════════════
+const Picker = {
+  forFullPractice(unit) {
+    const ch = State.getChallenge(unit);
+    if (ch && ch.queue && ch.queue.length > 0) {
+      // Resume: filter orphan ids
+      return ch.queue.filter(id => questionMap.has(id));
     }
+    // New: shuffle all unit questions
+    const ids = allQuestions.filter(q => q.unit === unit).map(q => q.id);
+    return shuffle(ids);
+  },
+
+  forQuickPractice(unit, count = 10) {
+    const unitQs = allQuestions.filter(q => q.unit === unit);
+    const scored = unitQs.map(q => {
+      const s = State.getStats(q.id);
+      const errorRate = s.practiced === 0 ? 0.5 : (s.practiced - s.correct) / s.practiced;
+      const priority = errorRate * 2 + 1 / (s.practiced + 1);
+      return { id: q.id, priority };
+    });
+    scored.sort((a, b) => b.priority - a.priority);
+    const pool = scored.slice(0, count * 2);
+    return shuffle(pool).slice(0, count).map(s => s.id);
+  },
+
+  forErrorPractice(unitFilter) {
+    const errors = State.getErrorBank(unitFilter || null);
+    const ids = errors.map(e => e.questionId).filter(id => questionMap.has(id));
+    return shuffle(ids);
+  }
+};
+
+// ════════════════════════════════════════════════════
+// Quiz Engine
+// ════════════════════════════════════════════════════
+function startQuiz(mode, unit) {
+  quiz.mode = mode;
+  quiz.unit = unit;
+  quiz.answered = [];
+  quiz.index = 0;
+  quiz.isAnswered = false;
+
+  if (mode === "full") {
+    quiz.queue = Picker.forFullPractice(unit);
+    const totalInUnit = allQuestions.filter(q => q.unit === unit).length;
+    quiz.totalForProgress = totalInUnit;
+    State.saveChallenge(unit, quiz.queue);
+  } else if (mode === "quick") {
+    quiz.queue = Picker.forQuickPractice(unit);
+    quiz.totalForProgress = quiz.queue.length;
+  } else if (mode === "error") {
+    quiz.queue = Picker.forErrorPractice(unit);
+    quiz.totalForProgress = quiz.queue.length;
   }
 
-  function renderQuestion() {
-    const q = quizQuestions[currentIndex];
-    renderProgress();
+  showPage("page-quiz");
+  renderQuiz();
+}
 
-    const typeEl = document.getElementById("q-type");
-    if (q.type === "true_false") {
-      typeEl.textContent = "是非題";
-      typeEl.className = "q-type tf";
-    } else {
-      typeEl.textContent = "選擇題";
-      typeEl.className = "q-type";
-    }
-
-    // Clean question text: remove option markers for MC
-    let displayText = q.text;
-    if (q.type === "multiple_choice" && q.options.length > 0) {
-      // Remove everything from first option marker onwards
-      const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
-      if (optStart > 0) {
-        displayText = displayText.substring(0, optStart).trim();
-      }
-    }
-    document.getElementById("q-text").textContent = displayText;
-
-    const optionsEl = document.getElementById("q-options");
-    optionsEl.innerHTML = "";
-
-    let options;
-    if (q.type === "true_false") {
-      options = [
-        { label: "O", value: "true", text: "正確" },
-        { label: "X", value: "false", text: "錯誤" },
-      ];
-    } else {
-      options = (q.options.length > 0 ? q.options : ["選項1","選項2","選項3","選項4"]).map((opt, i) => ({
-        label: String(i + 1),
-        value: String(i + 1),
-        text: opt,
-      }));
-    }
-
-    options.forEach(opt => {
-      const btn = document.createElement("button");
-      btn.className = "opt-btn";
-      btn.innerHTML = `<span class="opt-label">${opt.label}</span><span>${opt.text}</span>`;
-      btn.onclick = () => handleAnswer(opt.value, q);
-      optionsEl.appendChild(btn);
-    });
-
-    document.getElementById("result-hint").classList.add("hidden");
-    document.getElementById("next-btn").classList.add("hidden");
+function getCurrentQuestion() {
+  if (quiz.mode === "quick") {
+    return questionMap.get(quiz.queue[quiz.index]);
   }
+  // full & error: always queue[0]
+  return questionMap.get(quiz.queue[0]);
+}
 
-  function handleAnswer(selected, q) {
-    const correct = selected === q.answer;
-    answered.push({ correct });
-    saveRecord(q.id, q.unit, correct);
+function submitAnswer(selected) {
+  if (quiz.isAnswered) return;
+  quiz.isAnswered = true;
 
-    // Disable all buttons
-    const btns = document.querySelectorAll("#q-options .opt-btn");
-    btns.forEach(btn => {
-      btn.classList.add("disabled");
-      const label = btn.querySelector(".opt-label").textContent;
-      const value = q.type === "true_false"
-        ? (label === "O" ? "true" : "false")
-        : label;
+  const q = getCurrentQuestion();
+  const correct = selected === q.answer;
 
-      if (value === q.answer) btn.classList.add("correct-answer");
-      if (value === selected && !correct) btn.classList.add("wrong-answer");
-    });
+  // Update stats (all modes)
+  State.recordAnswer(q.id, correct);
 
-    const hint = document.getElementById("result-hint");
-    hint.classList.remove("hidden", "correct", "wrong");
+  // Mode-specific queue logic
+  if (quiz.mode === "full") {
+    quiz.queue.shift();
+    if (!correct) {
+      quiz.queue.push(q.id);
+      State.addToErrorBank(q.id, q.unit);
+    }
+    State.saveChallenge(quiz.unit, quiz.queue);
+  } else if (quiz.mode === "quick") {
+    if (!correct) {
+      State.addToErrorBank(q.id, q.unit);
+    }
+  } else if (quiz.mode === "error") {
+    quiz.queue.shift();
     if (correct) {
-      hint.classList.add("correct");
-      hint.textContent = "答對了！";
+      State.removeFromErrorBank(q.id);
     } else {
-      hint.classList.add("wrong");
-      const ansLabel = q.type === "true_false"
-        ? (q.answer === "true" ? "O (正確)" : "X (錯誤)")
-        : `第 ${q.answer} 個選項`;
-      hint.textContent = `答錯了，正確答案是 ${ansLabel}`;
+      quiz.queue.push(q.id);
     }
-
-    renderProgress();
-
-    const nextBtn = document.getElementById("next-btn");
-    nextBtn.classList.remove("hidden");
-    nextBtn.textContent = currentIndex < quizQuestions.length - 1 ? "下一題" : "查看結果";
-    nextBtn.onclick = () => {
-      currentIndex++;
-      if (currentIndex < quizQuestions.length) {
-        renderQuestion();
-      } else {
-        renderSummary();
-      }
-    };
   }
 
-  // ── Summary ──
-  function renderSummary() {
-    showPage("page-summary");
-    const correctCount = answered.filter(a => a.correct).length;
-    const total = answered.length;
+  quiz.answered.push({ questionId: q.id, correct });
+  renderFeedback(correct, q);
+}
 
-    document.getElementById("score-text").textContent = `${correctCount} / ${total}`;
-    document.getElementById("score-label").textContent =
+function advance() {
+  quiz.isAnswered = false;
+
+  // Check if finished
+  if (quiz.mode === "full" && quiz.queue.length === 0) {
+    State.clearChallenge(quiz.unit);
+    renderSummary();
+    return;
+  }
+  if (quiz.mode === "quick") {
+    quiz.index++;
+    if (quiz.index >= quiz.totalForProgress) {
+      renderSummary();
+      return;
+    }
+  }
+  if (quiz.mode === "error" && quiz.queue.length === 0) {
+    renderSummary();
+    return;
+  }
+
+  renderQuiz();
+}
+
+function leaveQuiz() {
+  // Full mode: queue already saved on each answer
+  showPage("page-home");
+  renderHome();
+}
+
+// ════════════════════════════════════════════════════
+// UI: Home
+// ════════════════════════════════════════════════════
+function renderHome() {
+  const home = document.getElementById("page-home");
+  const units = [
+    { id: 1, name: "第 1 單元：田園樂" },
+    { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
+  ];
+
+  let html = '<h1>三下自然練習</h1>';
+
+  // Unit sections
+  for (const u of units) {
+    const totalInUnit = allQuestions.filter(q => q.unit === u.id).length;
+    const ch = State.getChallenge(u.id);
+    let fullStatus, fullLabel;
+
+    if (ch && ch.queue && ch.queue.length === 0) {
+      // 已通關
+      fullLabel = "全部練習";
+      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (ch && ch.queue && ch.queue.length > 0) {
+      // 進行中
+      const done = totalInUnit - ch.queue.length;
+      fullLabel = "全部練習（接續）";
+      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
+    } else {
+      // 未開始
+      fullLabel = "全部練習";
+      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
+    }
+
+    const isCleared = ch && ch.queue && ch.queue.length === 0;
+
+    html += `
+      <div class="unit-section">
+        <div class="unit-title">${u.name}</div>
+        <button class="sub-btn" onclick="window._startFull(${u.id})">${fullLabel}${fullStatus}</button>
+        ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
+        <button class="sub-btn" onclick="window._startQuick(${u.id})">快速練習<span class="status">10 題</span></button>
+      </div>`;
+  }
+
+  // Error section
+  const allErrors = State.getErrorBank();
+  const err1 = State.getErrorBank(1);
+  const err2 = State.getErrorBank(2);
+  const totalErrors = allErrors.length;
+
+  html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
+
+  if (totalErrors === 0) {
+    html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
+  } else {
+    html += `
+      <button class="sub-btn" ${totalErrors === 0 ? 'disabled' : ''} onclick="window._startError(0)">全部錯題<span class="badge">${totalErrors}</span></button>
+      <button class="sub-btn" ${err1.length === 0 ? 'disabled' : ''} onclick="window._startError(1)">第 1 單元錯題<span class="badge">${err1.length}</span></button>
+      <button class="sub-btn" ${err2.length === 0 ? 'disabled' : ''} onclick="window._startError(2)">第 2 單元錯題<span class="badge">${err2.length}</span></button>`;
+  }
+
+  html += '</div>';
+  home.innerHTML = html;
+  showPage("page-home");
+}
+
+// Global handlers for onclick
+window._startFull = (unit) => {
+  const ch = State.getChallenge(unit);
+  if (ch && ch.queue && ch.queue.length === 0) {
+    // 已通關，重置再開始
+    State.resetChallenge(unit);
+  }
+  startQuiz("full", unit);
+};
+window._startQuick = (unit) => startQuiz("quick", unit);
+window._startError = (unit) => startQuiz("error", unit || null);
+window._resetChallenge = (unit) => {
+  State.resetChallenge(unit);
+  renderHome();
+};
+
+// ════════════════════════════════════════════════════
+// UI: Quiz
+// ════════════════════════════════════════════════════
+function renderQuiz() {
+  const q = getCurrentQuestion();
+  if (!q) { leaveQuiz(); return; }
+
+  // Mode label
+  let modeText = "";
+  if (quiz.mode === "full") modeText = `全部練習 — 第${quiz.unit}單元`;
+  else if (quiz.mode === "quick") modeText = `快速練習 — 第${quiz.unit}單元`;
+  else modeText = quiz.unit ? `錯題練習 — 第${quiz.unit}單元` : "錯題練習 — 全部";
+
+  // Progress
+  const progressHtml = renderProgress();
+
+  // Question type
+  const isTF = q.type === "true_false";
+  const typeClass = isTF ? "q-type tf" : "q-type";
+  const typeLabel = isTF ? "是非題" : "選擇題";
+
+  // Question text: remove option markers for MC
+  let displayText = q.text;
+  if (!isTF && q.options.length > 0) {
+    const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
+    if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
+  }
+
+  // Options
+  let options;
+  if (isTF) {
+    options = [
+      { label: "O", value: "true", text: "正確" },
+      { label: "X", value: "false", text: "錯誤" },
+    ];
+  } else {
+    options = (q.options.length > 0 ? q.options : []).map((opt, i) => ({
+      label: String(i + 1), value: String(i + 1), text: opt,
+    }));
+  }
+
+  const optionsHtml = options.map(opt =>
+    `<button class="opt-btn" data-value="${opt.value}">
+      <span class="opt-label">${opt.label}</span><span>${opt.text}</span>
+    </button>`
+  ).join("");
+
+  document.getElementById("page-quiz").innerHTML = `
+    <div class="quiz-header">
+      <button class="leave-btn" id="btn-leave">&larr; 離開</button>
+      <span class="mode-label">${modeText}</span>
+    </div>
+    ${progressHtml}
+    <div class="question-card">
+      <span class="${typeClass}">${typeLabel}</span>
+      <div class="q-text">${displayText}</div>
+      <div class="options" id="q-options">${optionsHtml}</div>
+      <div class="result-hint hidden" id="result-hint"></div>
+      <button class="next-btn hidden" id="next-btn">下一題</button>
+    </div>`;
+
+  // Bind events
+  document.getElementById("btn-leave").onclick = leaveQuiz;
+  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+    btn.onclick = () => submitAnswer(btn.dataset.value);
+  });
+}
+
+function renderProgress() {
+  if (quiz.mode === "quick") {
+    return renderDots(quiz.totalForProgress, quiz.index, quiz.answered);
+  }
+  if (quiz.mode === "full") {
+    return renderBarProgress();
+  }
+  // error mode
+  if (quiz.totalForProgress <= 30) {
+    // For error mode dots: show answered count
+    const answeredCorrect = quiz.answered.filter(a => a.correct).length;
+    return renderDots(quiz.totalForProgress, answeredCorrect, quiz.answered);
+  }
+  return renderBarProgress();
+}
+
+function renderDots(total, currentIdx, answered) {
+  const currentNum = Math.min(answered.length + 1, total);
+  let html = `<div class="progress-bar"><span class="label">第 ${currentNum} 題 / 共 ${total} 題</span>`;
+  for (let i = 0; i < total; i++) {
+    let cls = "dot";
+    if (i < answered.length) {
+      cls += answered[i].correct ? " correct" : " wrong";
+    }
+    if (i === answered.length) cls += " current";
+    html += `<span class="${cls}"></span>`;
+  }
+  html += "</div>";
+  return html;
+}
+
+function renderBarProgress() {
+  let done, total, label;
+  if (quiz.mode === "full") {
+    total = quiz.totalForProgress;
+    done = total - quiz.queue.length;
+    label = `已答對 ${done} / ${total} 題`;
+  } else {
+    // error mode with bar
+    total = quiz.totalForProgress;
+    done = quiz.answered.filter(a => a.correct).length;
+    label = `已答對 ${done} / ${total} 題（剩餘 ${quiz.queue.length} 題）`;
+  }
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  return `
+    <div class="progress-text">
+      <div class="text-line">${label}</div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════
+// UI: Feedback
+// ════════════════════════════════════════════════════
+function renderFeedback(correct, q) {
+  // Disable all option buttons & highlight
+  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+    btn.classList.add("disabled");
+    const val = btn.dataset.value;
+    if (val === q.answer) btn.classList.add("correct-answer");
+    if (val !== q.answer && !correct && val === quiz.answered[quiz.answered.length - 1]?.questionId) {
+      // This won't match; we need the selected value
+    }
+  });
+
+  // Find the clicked button and mark wrong
+  const lastAnswer = quiz.answered[quiz.answered.length - 1];
+  if (!correct) {
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      // We need to know what was selected — it's the value passed to submitAnswer
+      // Since we already called submitAnswer, let's mark based on the answer
+    });
+  }
+
+  // Re-approach: mark the selected answer
+  // The selected value was passed to submitAnswer. We store it.
+  // Actually, let's fix this by passing selected to renderFeedback
+  // For now, we highlight correct answer green, and if wrong, the quiz.answered has the info
+  // but we don't store which option was selected. Let me fix this.
+
+  // Simple fix: store selected in quiz
+  const selectedValue = quiz._lastSelected;
+  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+    btn.classList.add("disabled");
+    const val = btn.dataset.value;
+    if (val === q.answer) btn.classList.add("correct-answer");
+    if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
+  });
+
+  const hint = document.getElementById("result-hint");
+  hint.classList.remove("hidden", "correct", "wrong");
+  if (correct) {
+    hint.classList.add("correct");
+    hint.textContent = "答對了！";
+  } else {
+    hint.classList.add("wrong");
+    const isTF = q.type === "true_false";
+    const ansLabel = isTF
+      ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
+      : `第 ${q.answer} 個選項`;
+    hint.textContent = `答錯了，正確答案是 ${ansLabel}`;
+  }
+
+  // Update progress display
+  const progressContainer = document.querySelector(".progress-bar, .progress-text");
+  if (progressContainer) {
+    const newProgress = renderProgress();
+    const temp = document.createElement("div");
+    temp.innerHTML = newProgress;
+    progressContainer.replaceWith(temp.firstElementChild);
+  }
+
+  const nextBtn = document.getElementById("next-btn");
+  nextBtn.classList.remove("hidden");
+
+  // Check if this is last question
+  let isLast = false;
+  if (quiz.mode === "full") isLast = quiz.queue.length === 0;
+  else if (quiz.mode === "quick") isLast = quiz.index >= quiz.totalForProgress - 1;
+  else if (quiz.mode === "error") isLast = quiz.queue.length === 0;
+
+  nextBtn.textContent = isLast ? "查看結果" : "下一題";
+  nextBtn.onclick = advance;
+}
+
+// Patch submitAnswer to store selected value
+const _origSubmit = submitAnswer;
+submitAnswer = function(selected) {
+  quiz._lastSelected = selected;
+  _origSubmit(selected);
+};
+
+// ════════════════════════════════════════════════════
+// UI: Summary
+// ════════════════════════════════════════════════════
+function renderSummary() {
+  const correctCount = quiz.answered.filter(a => a.correct).length;
+  const total = quiz.answered.length;
+
+  let title, scoreLabel;
+  if (quiz.mode === "full") {
+    title = "通關！";
+    scoreLabel = "所有題目都答對了";
+  } else if (quiz.mode === "error") {
+    title = "錯題清除！";
+    scoreLabel = "所有錯題都答對了";
+  } else {
+    title = "練習結束";
+    scoreLabel =
       correctCount === total ? "全部答對，太厲害了！" :
       correctCount >= total * 0.8 ? "表現很好！" :
       correctCount >= total * 0.6 ? "繼續加油！" : "多練習幾次吧！";
-
-    document.getElementById("btn-retry").onclick = () => startQuiz(currentUnit);
-    document.getElementById("btn-home").onclick = renderHome;
-
-    // Wrong questions review
-    const wrongBtn = document.getElementById("btn-wrong");
-    const wrongQuestions = quizQuestions.filter((_, i) => !answered[i].correct);
-    if (wrongQuestions.length > 0) {
-      wrongBtn.classList.remove("hidden");
-      wrongBtn.textContent = `練習錯題（${wrongQuestions.length} 題）`;
-      wrongBtn.onclick = () => startQuiz(currentUnit, wrongQuestions);
-    } else {
-      wrongBtn.classList.add("hidden");
-    }
   }
 
-  // ── Init ──
-  async function init() {
-    try {
-      const resp = await fetch("./questions.json");
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      allQuestions = await resp.json();
-      renderHome();
-    } catch (e) {
-      console.error("Failed to load questions:", e);
-      showPage("page-error");
-    }
+  let buttonsHtml = "";
+  if (quiz.mode === "full") {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit})">重新挑戰</button>
+      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
+  } else if (quiz.mode === "quick") {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._startQuick(${quiz.unit})">再來 10 題</button>
+      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
+  } else {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._goHome()">回選單</button>`;
   }
 
-  init();
+  document.getElementById("page-summary").innerHTML = `
+    <h2>${title}</h2>
+    <div class="score">${correctCount} / ${total}</div>
+    <div class="score-label">${scoreLabel}</div>
+    <div style="margin-top:24px">${buttonsHtml}</div>`;
+
+  showPage("page-summary");
+}
+
+window._goHome = () => { showPage("page-home"); renderHome(); };
+window._resetAndStartFull = (unit) => {
+  State.resetChallenge(unit);
+  startQuiz("full", unit);
+};
+
+// ════════════════════════════════════════════════════
+// Init
+// ════════════════════════════════════════════════════
+async function init() {
+  try {
+    Storage.migrate();
+    const saved = Storage.load();
+    State.init(saved);
+
+    const resp = await fetch("./questions.json");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    allQuestions = await resp.json();
+
+    // Build question map
+    questionMap = new Map(allQuestions.map(q => [q.id, q]));
+
+    // Clean orphan errorBank entries
+    state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
+    Storage.save(state);
+
+    renderHome();
+  } catch (e) {
+    console.error("Failed to load:", e);
+    showPage("page-error");
+  }
+}
+
+init();
 })();
 </script>
 </body>
