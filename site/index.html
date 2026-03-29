@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>三下自然練習</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: #f5f7fa;
+  color: #1a1a2e;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 首頁 ── */
+.home { text-align: center; padding-top: 48px; }
+.home h1 { font-size: 1.6rem; margin-bottom: 8px; }
+.home p { color: #666; margin-bottom: 32px; font-size: 1rem; }
+
+.unit-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  background: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.unit-btn:active { transform: scale(0.98); }
+.unit-btn:hover { border-color: #4361ee; background: #f0f4ff; }
+.unit-btn .count { font-size: 0.85rem; color: #888; font-weight: 400; margin-top: 4px; }
+
+/* ── 進度條 ── */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.progress-bar .label { font-size: 0.9rem; color: #666; margin-right: 8px; white-space: nowrap; }
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  flex-shrink: 0;
+}
+.dot.correct { background: #2ecc71; }
+.dot.wrong { background: #e74c3c; }
+.dot.current { box-shadow: 0 0 0 2px #4361ee; }
+
+/* ── 題目 ── */
+.question-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.q-type {
+  font-size: 0.8rem;
+  color: #fff;
+  background: #4361ee;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.q-type.tf { background: #8b5cf6; }
+
+.q-text {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.options { display: flex; flex-direction: column; gap: 12px; }
+
+.opt-btn {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  gap: 10px;
+}
+.opt-btn:active { transform: scale(0.98); }
+.opt-btn:hover:not(.disabled) { border-color: #4361ee; background: #f0f4ff; }
+
+.opt-btn .opt-label {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.opt-btn.selected { border-color: #4361ee; background: #e8edff; }
+.opt-btn.correct-answer { border-color: #2ecc71; background: #e8faf0; }
+.opt-btn.correct-answer .opt-label { background: #2ecc71; color: #fff; }
+.opt-btn.wrong-answer { border-color: #e74c3c; background: #fdecea; }
+.opt-btn.wrong-answer .opt-label { background: #e74c3c; color: #fff; }
+.opt-btn.disabled { pointer-events: none; opacity: 0.85; }
+
+/* ── 結果提示 ── */
+.result-hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+.result-hint.correct { background: #e8faf0; color: #1a7a42; }
+.result-hint.wrong { background: #fdecea; color: #b71c1c; }
+
+.next-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #4361ee;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.next-btn:active { background: #3451c7; }
+
+/* ── 摘要頁 ── */
+.summary { text-align: center; padding-top: 40px; }
+.summary .score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #4361ee;
+  margin: 16px 0;
+}
+.summary .score-label { font-size: 1.1rem; color: #666; }
+
+.summary-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  margin-top: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.summary-btn.primary { background: #4361ee; color: #fff; border-color: #4361ee; }
+.summary-btn:active { transform: scale(0.98); }
+
+/* ── 錯誤頁 ── */
+.error-msg {
+  text-align: center;
+  padding-top: 60px;
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <!-- Home -->
+  <div id="page-home" class="home">
+    <h1>三下自然練習</h1>
+    <p>選擇要練習的單元</p>
+    <div id="unit-buttons"></div>
+  </div>
+
+  <!-- Quiz -->
+  <div id="page-quiz" class="hidden">
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="question-card">
+      <span class="q-type" id="q-type"></span>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+      <div class="result-hint hidden" id="result-hint"></div>
+      <button class="next-btn hidden" id="next-btn">下一題</button>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div id="page-summary" class="summary hidden">
+    <h2>練習結束</h2>
+    <div class="score" id="score-text"></div>
+    <div class="score-label" id="score-label"></div>
+    <div style="margin-top:24px">
+      <button class="summary-btn primary" id="btn-retry">再練一次</button>
+      <button class="summary-btn hidden" id="btn-wrong">練習錯題</button>
+      <button class="summary-btn" id="btn-home">回選單</button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div id="page-error" class="error-msg hidden">
+    <p>題庫載入失敗，請重新整理頁面。</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+
+  const STORAGE_KEY = "aiden_study_records";
+  let allQuestions = [];
+  let currentUnit = null;
+  let quizQuestions = [];
+  let currentIndex = 0;
+  let answered = []; // {correct: bool} per question
+
+  // ── Storage ──
+  function loadRecords() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw).records || [] : [];
+    } catch { return []; }
+  }
+
+  function saveRecord(questionId, unit, correct) {
+    const records = loadRecords();
+    records.push({ questionId, unit, correct, answeredAt: Date.now() });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ records }));
+  }
+
+  // ── Shuffle ──
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ── Pages ──
+  function showPage(id) {
+    document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+  }
+
+  // ── Home ──
+  function renderHome() {
+    showPage("page-home");
+    const container = document.getElementById("unit-buttons");
+    container.innerHTML = "";
+
+    const units = [
+      { id: 1, name: "第 1 單元：田園樂", desc: "蔬菜種植與生長" },
+      { id: 2, name: "第 2 單元：溫度變化對物質的影響", desc: "水的三態、物質變化" },
+    ];
+
+    units.forEach(u => {
+      const count = allQuestions.filter(q => q.unit === u.id).length;
+      const btn = document.createElement("button");
+      btn.className = "unit-btn";
+      btn.innerHTML = `${u.name}<div class="count">${u.desc} — ${count} 題</div>`;
+      btn.onclick = () => startQuiz(u.id);
+      container.appendChild(btn);
+    });
+  }
+
+  // ── Quiz ──
+  function startQuiz(unit, questionsOverride) {
+    currentUnit = unit;
+    if (questionsOverride) {
+      quizQuestions = shuffle(questionsOverride);
+    } else {
+      quizQuestions = shuffle(allQuestions.filter(q => q.unit === unit));
+    }
+    currentIndex = 0;
+    answered = [];
+    showPage("page-quiz");
+    renderQuestion();
+  }
+
+  function renderProgress() {
+    const bar = document.getElementById("progress-bar");
+    const total = quizQuestions.length;
+    bar.innerHTML = `<span class="label">第 ${currentIndex + 1} 題 / 共 ${total} 題</span>`;
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement("span");
+      dot.className = "dot";
+      if (i < answered.length) {
+        dot.classList.add(answered[i].correct ? "correct" : "wrong");
+      }
+      if (i === currentIndex) dot.classList.add("current");
+      bar.appendChild(dot);
+    }
+  }
+
+  function renderQuestion() {
+    const q = quizQuestions[currentIndex];
+    renderProgress();
+
+    const typeEl = document.getElementById("q-type");
+    if (q.type === "true_false") {
+      typeEl.textContent = "是非題";
+      typeEl.className = "q-type tf";
+    } else {
+      typeEl.textContent = "選擇題";
+      typeEl.className = "q-type";
+    }
+
+    // Clean question text: remove option markers for MC
+    let displayText = q.text;
+    if (q.type === "multiple_choice" && q.options.length > 0) {
+      // Remove everything from first option marker onwards
+      const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
+      if (optStart > 0) {
+        displayText = displayText.substring(0, optStart).trim();
+      }
+    }
+    document.getElementById("q-text").textContent = displayText;
+
+    const optionsEl = document.getElementById("q-options");
+    optionsEl.innerHTML = "";
+
+    let options;
+    if (q.type === "true_false") {
+      options = [
+        { label: "O", value: "true", text: "正確" },
+        { label: "X", value: "false", text: "錯誤" },
+      ];
+    } else {
+      options = (q.options.length > 0 ? q.options : ["選項1","選項2","選項3","選項4"]).map((opt, i) => ({
+        label: String(i + 1),
+        value: String(i + 1),
+        text: opt,
+      }));
+    }
+
+    options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.innerHTML = `<span class="opt-label">${opt.label}</span><span>${opt.text}</span>`;
+      btn.onclick = () => handleAnswer(opt.value, q);
+      optionsEl.appendChild(btn);
+    });
+
+    document.getElementById("result-hint").classList.add("hidden");
+    document.getElementById("next-btn").classList.add("hidden");
+  }
+
+  function handleAnswer(selected, q) {
+    const correct = selected === q.answer;
+    answered.push({ correct });
+    saveRecord(q.id, q.unit, correct);
+
+    // Disable all buttons
+    const btns = document.querySelectorAll("#q-options .opt-btn");
+    btns.forEach(btn => {
+      btn.classList.add("disabled");
+      const label = btn.querySelector(".opt-label").textContent;
+      const value = q.type === "true_false"
+        ? (label === "O" ? "true" : "false")
+        : label;
+
+      if (value === q.answer) btn.classList.add("correct-answer");
+      if (value === selected && !correct) btn.classList.add("wrong-answer");
+    });
+
+    const hint = document.getElementById("result-hint");
+    hint.classList.remove("hidden", "correct", "wrong");
+    if (correct) {
+      hint.classList.add("correct");
+      hint.textContent = "答對了！";
+    } else {
+      hint.classList.add("wrong");
+      const ansLabel = q.type === "true_false"
+        ? (q.answer === "true" ? "O (正確)" : "X (錯誤)")
+        : `第 ${q.answer} 個選項`;
+      hint.textContent = `答錯了，正確答案是 ${ansLabel}`;
+    }
+
+    renderProgress();
+
+    const nextBtn = document.getElementById("next-btn");
+    nextBtn.classList.remove("hidden");
+    nextBtn.textContent = currentIndex < quizQuestions.length - 1 ? "下一題" : "查看結果";
+    nextBtn.onclick = () => {
+      currentIndex++;
+      if (currentIndex < quizQuestions.length) {
+        renderQuestion();
+      } else {
+        renderSummary();
+      }
+    };
+  }
+
+  // ── Summary ──
+  function renderSummary() {
+    showPage("page-summary");
+    const correctCount = answered.filter(a => a.correct).length;
+    const total = answered.length;
+
+    document.getElementById("score-text").textContent = `${correctCount} / ${total}`;
+    document.getElementById("score-label").textContent =
+      correctCount === total ? "全部答對，太厲害了！" :
+      correctCount >= total * 0.8 ? "表現很好！" :
+      correctCount >= total * 0.6 ? "繼續加油！" : "多練習幾次吧！";
+
+    document.getElementById("btn-retry").onclick = () => startQuiz(currentUnit);
+    document.getElementById("btn-home").onclick = renderHome;
+
+    // Wrong questions review
+    const wrongBtn = document.getElementById("btn-wrong");
+    const wrongQuestions = quizQuestions.filter((_, i) => !answered[i].correct);
+    if (wrongQuestions.length > 0) {
+      wrongBtn.classList.remove("hidden");
+      wrongBtn.textContent = `練習錯題（${wrongQuestions.length} 題）`;
+      wrongBtn.onclick = () => startQuiz(currentUnit, wrongQuestions);
+    } else {
+      wrongBtn.classList.add("hidden");
+    }
+  }
+
+  // ── Init ──
+  async function init() {
+    try {
+      const resp = await fetch("./questions.json");
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      allQuestions = await resp.json();
+      renderHome();
+    } catch (e) {
+      console.error("Failed to load questions:", e);
+      showPage("page-error");
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

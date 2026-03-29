@@ -558,12 +558,12 @@
       "日照充足",
       "肥沃的土壤"
     ],
-    "answer": null,
+    "answer": "1",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "影響蔬菜生長的因素",
+    "confidence": 95,
+    "classify_reason": "題目直接詢問哪個因素「不是」讓蔬菜生長良好的條件，涉及水、空氣、日照、土壤等生長因素"
   },
   {
     "source": "北市內湖112三下期中自然.pdf",
@@ -576,12 +576,12 @@
       "5月20日",
       "6月19日"
     ],
-    "answer": null,
+    "answer": "1",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "影響蔬菜生長的因素",
+    "confidence": 90,
+    "classify_reason": "題目核心是種植番茄的適合時間，涉及季節氣候對蔬菜生長的影響"
   },
   {
     "source": "北市內湖112三下期中自然.pdf",
@@ -594,12 +594,12 @@
       "3月5日",
       "3月9日"
     ],
-    "answer": null,
+    "answer": "4",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜生長的變化過程",
+    "confidence": 95,
+    "classify_reason": "題目詢問播種後何時發芽，屬於蔬菜生命週期中發芽階段的時間認知"
   },
   {
     "source": "北市內湖112三下期中自然.pdf",
@@ -612,12 +612,12 @@
       "25℃",
       "35℃"
     ],
-    "answer": null,
+    "answer": "3",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "影響蔬菜生長的因素",
+    "confidence": 95,
+    "classify_reason": "題目直接詢問適合番茄生長的溫度，屬於溫度/氣候對蔬菜生長的影響"
   },
   {
     "source": "北市內湖112三下期中自然.pdf",
@@ -630,12 +630,12 @@
       "適合撒播",
       "覆土時要注意，越厚越好"
     ],
-    "answer": null,
+    "answer": "4",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜生長的變化過程",
+    "confidence": 85,
+    "classify_reason": "題目詢問種植番茄的注意事項，包含播種方式與覆土方法，屬於種植過程的操作步驟"
   },
   {
     "source": "北市內湖112三下期中自然.pdf",
@@ -648,12 +648,12 @@
       "阿福:裝土→撒種→覆土→澆水",
       "胖虎:裝土→澆水→撒種→覆土 2 臺北市內湖區內湖國民小學 班級 座號 家長簽章 112 學年度下學期期中評量 分數 姓名 三年級自然科學領域試卷"
     ],
-    "answer": null,
+    "answer": "3",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜生長的變化過程",
+    "confidence": 95,
+    "classify_reason": "題目直接詢問種植步驟的正確順序（裝土→撒種→覆土→澆水），屬於種植過程"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -666,12 +666,12 @@
       "必須是紅色的",
       "外觀是圓形的"
     ],
-    "answer": null,
+    "answer": "2",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "影響蔬菜生長的因素",
+    "confidence": 92,
+    "classify_reason": "題目問種植容器需注意排水孔，屬於種植條件與生長環境因素"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -684,12 +684,12 @@
       "保持種子溼潤",
       "防止種子發霉"
     ],
-    "answer": null,
+    "answer": "3",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜生長的變化過程",
+    "confidence": 88,
+    "classify_reason": "題目問播種後蓋土的原因（保持溼潤助發芽），屬於播種到發芽的生長過程"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -702,12 +702,12 @@
       "往背對紙箱開口的方向生長",
       "往紙箱開口的方向生長"
     ],
-    "answer": null,
+    "answer": "4",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "影響蔬菜生長的因素",
+    "confidence": 95,
+    "classify_reason": "題目核心是陽光對蔬菜生長方向的影響實驗，植物向光性"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -720,12 +720,12 @@
       "讓土壤密實",
       "清洗蔬菜幼苗"
     ],
-    "answer": null,
+    "answer": "3",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜生長的變化過程",
+    "confidence": 85,
+    "classify_reason": "題目問間拔幼苗後澆水的原因（讓土壤密實固定根部），屬於栽培管理與生長過程"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -738,12 +738,12 @@
       "辣椒",
       "空心菜"
     ],
-    "answer": null,
+    "answer": "4",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "1",
+    "subtopic": "蔬菜從哪裡來",
+    "confidence": 90,
+    "classify_reason": "題目問哪種蔬菜可只採收莖葉再次生長，涉及蔬菜種類辨識與可食用部位"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -756,12 +756,12 @@
       "冰變成水",
       "水變成冰"
     ],
-    "answer": null,
+    "answer": "1",
     "has_image": false,
-    "unit": "none",
-    "subtopic": "none",
-    "confidence": 0,
-    "classify_reason": "分類失敗"
+    "unit": "2",
+    "subtopic": "溫度對水的變化",
+    "confidence": 96,
+    "classify_reason": "笛音壺加熱後水變成水蒸氣推動壺蓋發出聲音，屬於水的三態變化（液態→氣態）"
   },
   {
     "source": "北市內湖113三下期中自然.pdf",
@@ -2170,7 +2170,7 @@
       "放 大鏡",
       "顯微鏡"
     ],
-    "answer": "1",
+    "answer": "2",
     "has_image": false,
     "unit": "2",
     "subtopic": "溫度對水的變化",
@@ -3073,10 +3073,10 @@
     "options": [],
     "answer": "false",
     "has_image": false,
-    "unit": "1",
-    "subtopic": "蔬菜生長的變化過程",
+    "unit": "none",
+    "subtopic": "none",
     "confidence": 62,
-    "classify_reason": "題目涉及使用放大鏡觀察種子的安全規範，屬於觀察記錄的工具使用，但核心偏向實驗安全而非生長過程本身"
+    "classify_reason": "科學工具安全規範，不屬於田園樂或溫度變化單元"
   },
   {
     "source": "北市民權111三下期中自然.pdf",
