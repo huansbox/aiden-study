@@ -2,138 +2,52 @@
 
 ## 專案目標
 
-從 `docs/` 底下 27 份國小三下期中自然考卷 PDF，萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。
+從 `pdfs/` 底下 27 份國小三下期中自然考卷 PDF，萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。
+
+## 目錄結構
+
+```
+pdfs/              27 份原始考卷 PDF（108-113 學年度，北市/新北/台中）
+scripts/           Python 資料處理 pipeline
+  extract.py       PDF → data/raw_questions.json
+  classify.py      claude -p 批次分類 + 答案補充
+  fix_classified.py 分類修正腳本
+data/              中間資料
+  raw_questions.json        萃取後的原始題目（660 題）
+  classified_questions.json 分類後的完整題目（645 題）
+docs/              GitHub Pages 部署目錄
+  index.html       練習網站（單一 HTML，內嵌 CSS/JS）
+  questions.json   最終題庫（602 題）
+skipped_questions.md  跳過題目清單（供手動確認）
+```
 
 ## 技術決策
 
 - 資料處理：Python（pdfplumber 萃取、claude -p 批次分類）
-- 網站：單一 `index.html`（內嵌 CSS/JS），零依賴，可本機開啟或部署 GitHub Pages
-- 資料格式：JSON（Python 產出 → 網站讀取），`questions.json` 放 `site/` 同目錄，fetch 用 `./questions.json`
-- 儲存：localStorage 記錄答題紀錄
-- 編碼：所有 Python 腳本開頭設定 `sys.stdout.reconfigure(encoding='utf-8')`，subprocess 呼叫加 `encoding='utf-8'`
+- 網站：單一 `index.html`，零依賴，部署於 GitHub Pages
+- 資料格式：JSON（scripts 產出 → 網站讀取）
+- 儲存：localStorage v2（challenge queue + errorBank + stats）
+- 編碼：所有 Python 腳本需設定 utf-8（Windows cp950 環境）
+
+## 練習網站功能
+
+### 三種模式
+- **全部練習**：queue 制，答對移出/答錯移到隊尾，可接續，通關後可重置
+- **快速練習**：智慧選 10 題（錯誤率高 + 練習次數少優先），不可接續
+- **錯題練習**：答對從錯題庫移除，答錯留在庫中排到隊尾
+
+### localStorage 結構（key: aiden_study_v2）
+- `challenge`: 每單元的 queue 狀態（null=未開始, []=已通關, [ids]=進行中）
+- `errorBank`: 錯題庫（去重，只在錯題模式答對時移除）
+- `stats`: 每題統計（practiced/correct，所有模式共用）
 
 ## 分類規則
 
-- **第 1 單元：田園樂**
-  - 蔬菜從哪裡來：題目核心是蔬菜的產地、種類辨識、哪些部位可食用
-  - 影響蔬菜生長的因素：題目核心是光、水、土壤、氣候對生長的影響
-  - 蔬菜生長的變化過程：題目核心是發芽、開花、結果等生命週期順序
-- **第 2 單元：溫度變化對物質的影響**
-  - 影響物質變化的因素：題目核心是「什麼條件造成物質狀態或外觀改變」（不限溫度）
-  - 溫度對水的變化：題目核心是冰、水、水蒸氣三態，含融化/結冰/蒸發/凝結
-  - 溫度對其他物質的影響：題目核心是非水物質（奶油、巧克力、鐵…）受溫度改變
-- **衝突規則**：若題目同時符合兩個單元，優先歸屬「題目直接詢問的核心概念」所屬單元
-- **不屬於以上** → 不納入題庫
+- **第 1 單元：田園樂** — 蔬菜種類/部位/生長因素/生長過程
+- **第 2 單元：溫度變化對物質的影響** — 物質變化因素/水三態/其他物質受溫度改變
+- 衝突規則：優先歸屬題目直接詢問的核心概念所屬單元
 
-## 題目篩選規則
+## 部署
 
-- 只收錄：無圖片的是非題 + 選擇題
-- `has_image` 雙重判斷：(a) 題目文字含「圖」相關關鍵詞 OR (b) 題目區域有非全頁面尺寸的圖片物件
-- 答案直接從 PDF 文字解析，正規化為 `true/false`（是非題）和 `1/2/3/4`（選擇題）
-- 解析不到答案的題目列入 skipped
-- 跳過的題目記錄在 `skipped_questions.md`（PDF 名 / 題型 / 題號 / 跳過原因 / 判斷依據）
-
-## 網站 UX 規格
-
-### 練習流程
-- 首頁選擇單元 → 進入練習
-- 一次一題，依序出現，不允許跳題
-- 題目上方顯示「第 N 題 / 共 M 題」+ 小圓點進度條（綠=答對、紅=答錯、灰=未答）
-- 點選答案後即時顯示對錯顏色，出現「下一題」按鈕（不自動跳轉）
-- 答題後 disable 所有選項按鈕，防連點
-
-### 摘要頁（全部答完後）
-- 答對幾題 / 共幾題（大字顯示）
-- 「再練一次」按鈕（重新洗牌同單元題目）
-- 「練習錯題」按鈕（有錯題時才顯示）
-- 「回選單」按鈕
-
-### 觸控標準
-- 題目文字 `font-size: 1.25rem`（20px），選項文字 `1.125rem`（18px）
-- 每個選項 `min-height: 56px`
-- 選項間距 `gap: 12px`
-- `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">`
-
-### localStorage 資料結構
-```json
-{
-  "records": [
-    {
-      "questionId": "source_section_number",
-      "unit": 1,
-      "correct": true,
-      "answeredAt": 1711234567890
-    }
-  ]
-}
-```
-key: `aiden_study_records`，只存原始記錄不做 aggregate，前端動態計算。
-
-## 任務清單與驗證條件
-
-每步完成驗證後自動推進下一步，不需人工確認。
-
-### 步驟 1：PDF 萃取 + 題目解析
-
-- **產出**：`scripts/extract.py` → `data/raw_questions.json`
-- **做法**：
-  - 每頁自動判斷是否為真雙欄（右欄有獨立題號序列才分欄，否則整頁萃取）
-  - 支援兩種題目格式：格式A `(answer)number.` 和格式B `number.( )`
-  - 維護 `SECTION_PATTERNS` 字典窮舉各校題型標記變體
-- **結果**：660 題（261 是非 + 399 選擇），26/27 PDF 成功（1 份純圖片）
-- **已知限制**：大多數 PDF 為空白考卷（無預填答案），答案率 16.2%，需在步驟 3 由 AI 補充答案
-- **狀態**：完成
-
-### 步驟 2：標記跳過題目
-
-- **產出**：`skipped_questions.md`
-- **結果**：跳過 15 題（含圖 6 題 + 無選項 9 題）+ 1 份純圖片 PDF，保留 645 題
-- **狀態**：完成
-
-### 步驟 3：AI 分類 + 答案補充 + 審定
-
-- **產出**：`data/classified_questions.json`（每題增加 `unit`、`subtopic`、`confidence`、`classify_reason` 欄位，無答案的題目同時由 AI 提供 `answer`）
-- **流程**：
-  1. 過濾掉 skipped 題目（has_image + 無選項），取 645 題
-  2. 分類前 dedup（相同題目文字只分類一次，結果複製到所有來源）
-  3. `scripts/classify.py` 批次呼叫 `claude -p`（每批 10-15 題），要求回傳 JSON array 含 `unit`、`subtopic`、`confidence`（0-100）、`classify_reason`，無答案的題目同時回傳 `answer`
-  4. `subtopic` 值做 enum 驗證（只能是六個指定值之一），非法值該題重試
-  5. 每批輸出驗證 item 數量 = 輸入數量，不符整批重試（最多 3 次）
-- **審定（分層抽樣）**：
-  - confidence < 70：全部審定
-  - confidence 70-89：抽 30%
-  - confidence >= 90：抽 5%
-  - 通過條件：高風險層（<70）錯誤率 < 20%，整體錯誤率 < 3%
-  - 未通過則調整 prompt 重跑
-- **結果**：14 題修正完成（12 題重新分類 + 1 分類修正 + 1 答案修正）
-- **修正後統計**：單元1: 325, 單元2: 281, none: 39, 有答案 645/645 (100%), confidence<70 僅 4 題
-- **狀態**：完成
-
-### 步驟 4：產出最終題庫
-
-- **產出**：`site/questions.json`
-- **結果**：602 題（單元1: 324, 單元2: 278），去重移除 1 題，排除 none + 低信心
-- **狀態**：完成
-
-### 步驟 5：建立練習網站
-
-- **產出**：`site/index.html`
-- **v2 重寫**：三種練習模式（全部練習/快速練習/錯題練習）
-  - 全部練習：queue 制 + 接續 + 通關 + 重置
-  - 快速練習：智慧選 10 題（錯誤率高 + 練習次數少優先）
-  - 錯題練習：答對從錯題庫移除
-  - localStorage v2 結構：challenge（null/[]/[ids]）+ errorBank（去重）+ stats
-  - 舊版自動遷移
-  - 錯題 0 題時顯示綠色鼓勵訊息
-- **驗證結果**（Playwright 測試通過）：
-  - 主選單正確顯示狀態/題數/錯題數
-  - 快速練習：10 題 → 摘要、stats 更新、答錯進 errorBank
-  - 全部練習：進度百分比條（只增不減）、離開 → 接續正常
-  - localStorage v2 schema 正確
-- **狀態**：完成
-
-## 開發流程
-
-- branch: `feat/quiz-site`
-- 每完成一個任務：commit + 驗證 + 更新此文件狀態 → 自動推進下一步
-- 驗證未通過則修正後重新驗證，不推進
+- URL: https://huansbox.github.io/aiden-study/
+- GitHub Pages source: master branch `/docs`
