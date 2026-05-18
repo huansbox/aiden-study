@@ -2,3 +2,5 @@
 bash.exe.stackdump
 site/
 pdfs/
+.venv/
+__pycache__/
