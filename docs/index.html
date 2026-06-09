@@ -69,6 +69,24 @@ body {
   min-width: 28px; text-align: center; margin-left: 12px;
 }
 
+/* subtopic 依概念練習 */
+.subtopic-list { margin: 6px 0 4px; padding: 4px 0 0; }
+.subtopic-head { font-size: 0.8rem; color: #999; margin: 6px 4px; }
+.subtopic-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; margin-bottom: 6px;
+  border: 1px solid #ececec; border-radius: 10px; background: #fafbfc;
+}
+.subtopic-name { font-size: 0.98rem; font-weight: 500; }
+.st-count { font-size: 0.78rem; color: #999; margin-left: 8px; font-weight: 400; }
+.st-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.st-btn {
+  padding: 7px 14px; border: 1px solid #cdd6ff; border-radius: 8px;
+  background: #fff; color: #4361ee; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer;
+}
+.st-btn:active { transform: scale(0.96); background: #f0f4ff; }
+
 .error-section { border-top: 2px solid #eee; padding-top: 20px; margin-top: 8px; }
 
 .no-errors {
@@ -284,23 +302,35 @@ const State = {
     Storage.save(state);
   },
 
-  // Challenge Queue
-  getChallenge(unit) {
-    return state.challenge[String(unit)] || null;
+  // Challenge Queue（key 為複合鍵：單元 "3" 或 單元+subtopic "3/動物分類"）
+  getChallenge(key) {
+    return state.challenge[key] || null;
   },
-  saveChallenge(unit, queue) {
-    state.challenge[String(unit)] = { queue: [...queue] };
+  saveChallenge(key, queue) {
+    state.challenge[key] = { queue: [...queue] };
     Storage.save(state);
   },
-  clearChallenge(unit) {
-    state.challenge[String(unit)] = { queue: [] }; // [] = 已通關
+  clearChallenge(key) {
+    state.challenge[key] = { queue: [] }; // [] = 已通關
     Storage.save(state);
   },
-  resetChallenge(unit) {
-    state.challenge[String(unit)] = null; // null = 未開始
+  resetChallenge(key) {
+    state.challenge[key] = null; // null = 未開始
     Storage.save(state);
   }
 };
+
+// challenge 複合鍵：subtopic 練習用 "unit/subtopic"，整單元用 "unit"
+function challengeKey(unit, subtopic) {
+  return subtopic ? `${unit}/${subtopic}` : String(unit);
+}
+
+// 取某單元（可選 subtopic）的題目 id
+function questionIdsFor(unit, subtopic) {
+  return allQuestions
+    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic))
+    .map(q => q.id);
+}
 
 // ════════════════════════════════════════════════════
 // Runtime
@@ -310,7 +340,8 @@ let questionMap = new Map();
 
 const quiz = {
   mode: null,    // "full" | "quick" | "error"
-  unit: null,    // 1 | 2 | null
+  unit: null,    // full/quick: 單元數字；error: 單元陣列
+  subtopic: null,// full/quick 限定的 subtopic（null=整單元）
   queue: [],     // question ids
   index: 0,      // for quick mode sequential access
   answered: [],  // [{ questionId, correct }]
@@ -340,19 +371,18 @@ function showPage(id) {
 // Picker
 // ════════════════════════════════════════════════════
 const Picker = {
-  forFullPractice(unit) {
-    const ch = State.getChallenge(unit);
+  forFullPractice(unit, subtopic) {
+    const ch = State.getChallenge(challengeKey(unit, subtopic));
     if (ch && ch.queue && ch.queue.length > 0) {
       // Resume: filter orphan ids
       return ch.queue.filter(id => questionMap.has(id));
     }
-    // New: shuffle all unit questions
-    const ids = allQuestions.filter(q => q.unit === unit).map(q => q.id);
-    return shuffle(ids);
+    // New: shuffle all unit (or subtopic) questions
+    return shuffle(questionIdsFor(unit, subtopic));
   },
 
-  forQuickPractice(unit, count = 10) {
-    const unitQs = allQuestions.filter(q => q.unit === unit);
+  forQuickPractice(unit, subtopic, count = 10) {
+    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic));
     const scored = unitQs.map(q => {
       const s = State.getStats(q.id);
       const errorRate = s.practiced === 0 ? 0.5 : (s.practiced - s.correct) / s.practiced;
@@ -374,20 +404,20 @@ const Picker = {
 // ════════════════════════════════════════════════════
 // Quiz Engine
 // ════════════════════════════════════════════════════
-function startQuiz(mode, unit) {
+function startQuiz(mode, unit, subtopic = null) {
   quiz.mode = mode;
   quiz.unit = unit;
+  quiz.subtopic = subtopic;
   quiz.answered = [];
   quiz.index = 0;
   quiz.isAnswered = false;
 
   if (mode === "full") {
-    quiz.queue = Picker.forFullPractice(unit);
-    const totalInUnit = allQuestions.filter(q => q.unit === unit).length;
-    quiz.totalForProgress = totalInUnit;
-    State.saveChallenge(unit, quiz.queue);
+    quiz.queue = Picker.forFullPractice(unit, subtopic);
+    quiz.totalForProgress = questionIdsFor(unit, subtopic).length;
+    State.saveChallenge(challengeKey(unit, subtopic), quiz.queue);
   } else if (mode === "quick") {
-    quiz.queue = Picker.forQuickPractice(unit);
+    quiz.queue = Picker.forQuickPractice(unit, subtopic);
     quiz.totalForProgress = quiz.queue.length;
   } else if (mode === "error") {
     quiz.queue = Picker.forErrorPractice(unit);
@@ -423,7 +453,7 @@ function submitAnswer(selected) {
       quiz.queue.push(q.id);
       State.addToErrorBank(q.id, q.unit);
     }
-    State.saveChallenge(quiz.unit, quiz.queue);
+    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
   } else if (quiz.mode === "quick") {
     if (!correct) {
       State.addToErrorBank(q.id, q.unit);
@@ -446,7 +476,7 @@ function advance() {
 
   // Check if finished
   if (quiz.mode === "full" && quiz.queue.length === 0) {
-    State.clearChallenge(quiz.unit);
+    State.clearChallenge(challengeKey(quiz.unit, quiz.subtopic));
     renderSummary();
     return;
   }
@@ -480,10 +510,36 @@ const SEMESTERS = {
     { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
   ] },
   final: { label: "期末", units: [
-    { id: 3, name: "第 3 單元：動物" },
-    { id: 4, name: "第 4 單元：天氣" },
+    { id: 3, name: "第 3 單元：動物", subtopics: ["動物分類", "身體構造", "生存與適應", "觀察方法"] },
+    { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
   ] },
 };
+
+// 期末單元卡片下的 subtopic 練習入口（全部可接續、快速智慧抽）
+function renderSubtopics(u) {
+  if (!u.subtopics) return "";
+  let rows = "";
+  for (const st of u.subtopics) {
+    const count = questionIdsFor(u.id, st).length;
+    if (count === 0) continue;  // 該 subtopic 無題則不顯示
+    const ch = State.getChallenge(challengeKey(u.id, st));
+    let statusHtml = `<span class="st-count">${count} 題</span>`;
+    if (ch && ch.queue && ch.queue.length === 0) {
+      statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (ch && ch.queue && ch.queue.length > 0) {
+      statusHtml = `<span class="st-count">接續 ${count - ch.queue.length}/${count}</span>`;
+    }
+    rows += `
+      <div class="subtopic-row">
+        <span class="subtopic-name">${st}${statusHtml}</span>
+        <span class="st-actions">
+          <button class="st-btn" onclick="window._startFull(${u.id}, '${st}')">全部</button>
+          <button class="st-btn" onclick="window._startQuick(${u.id}, '${st}')">快速</button>
+        </span>
+      </div>`;
+  }
+  return rows ? `<div class="subtopic-list"><div class="subtopic-head">依概念練習</div>${rows}</div>` : "";
+}
 
 function renderHome() {
   const home = document.getElementById("page-home");
@@ -502,7 +558,7 @@ function renderHome() {
   // Unit sections
   for (const u of units) {
     const totalInUnit = allQuestions.filter(q => q.unit === u.id).length;
-    const ch = State.getChallenge(u.id);
+    const ch = State.getChallenge(challengeKey(u.id));
     let fullStatus, fullLabel;
 
     if (ch && ch.queue && ch.queue.length === 0) {
@@ -528,6 +584,7 @@ function renderHome() {
         <button class="sub-btn" onclick="window._startFull(${u.id})">${fullLabel}${fullStatus}</button>
         ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
         <button class="sub-btn" onclick="window._startQuick(${u.id})">快速練習<span class="status">10 題</span></button>
+        ${renderSubtopics(u)}
       </div>`;
   }
 
@@ -553,16 +610,16 @@ function renderHome() {
   showPage("page-home");
 }
 
-// Global handlers for onclick
-window._startFull = (unit) => {
-  const ch = State.getChallenge(unit);
+// Global handlers for onclick（subtopic 可選；省略＝整單元）
+window._startFull = (unit, subtopic = null) => {
+  const ch = State.getChallenge(challengeKey(unit, subtopic));
   if (ch && ch.queue && ch.queue.length === 0) {
     // 已通關，重置再開始
-    State.resetChallenge(unit);
+    State.resetChallenge(challengeKey(unit, subtopic));
   }
-  startQuiz("full", unit);
+  startQuiz("full", unit, subtopic);
 };
-window._startQuick = (unit) => startQuiz("quick", unit);
+window._startQuick = (unit, subtopic = null) => startQuiz("quick", unit, subtopic);
 window._startError = (idsStr) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
   startQuiz("error", units);
@@ -571,8 +628,8 @@ window._setSemester = (s) => {
   State.setSemester(s);
   renderHome();
 };
-window._resetChallenge = (unit) => {
-  State.resetChallenge(unit);
+window._resetChallenge = (unit, subtopic = null) => {
+  State.resetChallenge(challengeKey(unit, subtopic));
   renderHome();
 };
 
@@ -585,8 +642,9 @@ function renderQuiz() {
 
   // Mode label
   let modeText = "";
-  if (quiz.mode === "full") modeText = `全部練習 — 第${quiz.unit}單元`;
-  else if (quiz.mode === "quick") modeText = `快速練習 — 第${quiz.unit}單元`;
+  const scopeText = `第${quiz.unit}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
+  if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
+  else if (quiz.mode === "quick") modeText = `快速練習 — ${scopeText}`;
   else {
     const eu = quiz.unit;  // error 模式：unit 為單元陣列
     if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${eu[0]}單元`;
@@ -803,14 +861,15 @@ function renderSummary() {
       correctCount >= total * 0.6 ? "繼續加油！" : "多練習幾次吧！";
   }
 
+  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
   let buttonsHtml = "";
   if (quiz.mode === "full") {
     buttonsHtml = `
-      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit})">重新挑戰</button>
+      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg})">重新挑戰</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else if (quiz.mode === "quick") {
     buttonsHtml = `
-      <button class="summary-btn primary" onclick="window._startQuick(${quiz.unit})">再來 10 題</button>
+      <button class="summary-btn primary" onclick="window._startQuick(${quiz.unit}, ${stArg})">再來 10 題</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else {
     buttonsHtml = `
@@ -827,9 +886,9 @@ function renderSummary() {
 }
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
-window._resetAndStartFull = (unit) => {
-  State.resetChallenge(unit);
-  startQuiz("full", unit);
+window._resetAndStartFull = (unit, subtopic = null) => {
+  State.resetChallenge(challengeKey(unit, subtopic));
+  startQuiz("full", unit, subtopic);
 };
 
 // ════════════════════════════════════════════════════

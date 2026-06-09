@@ -5,7 +5,8 @@
 
 ## 一句話現況
 
-需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001–006 已完成（6/7）**。下一步＝`issues/007`（網站 subtopic 練習：期末單元卡片下列出 subtopic 入口，全部/快速可作用於單一 subtopic，可接續）。
+**7 個 issue 全部完成（7/7）。** 期末題庫擴充已實作完畢：PDF 萃取（純函式＋pytest）→ 可切換學期分類器（subtopic）→ 民權/桃子腳 AI 補答案＋複查清單 → 網站期中/期末切換＋subtopic 練習。最終題庫 824 題（期中602＋期末222）。pytest 49 passed。
+待辦：家長核對 `review_期末_ai答案.md`（106 題 AI 答案）；branch `feat/期末-001-skeleton` 待 merge 到 master / 部署。
 
 - 001＝tracer（安和113下→網站可練）。
 - 002＝parser 抽純函式＋pytest，修第2頁雙欄污染。
@@ -45,7 +46,7 @@
 | 004 | AI 分類器可切換 taxonomy + subtopic | AFK | 003 | ☑ 完成 |
 | 005 | 民權 AI 補答案 + 複查標記 | AFK | 004 | ☑ 完成（含桃子腳112）|
 | 006 | 網站期中/期末切換 + 站名 + 三模式 | **HITL** | 001 | ☑ 完成（站名保留「三下自然練習」）|
-| 007 | 網站 subtopic 練習 | AFK | 004, 006 | ☐ |
+| 007 | 網站 subtopic 練習 | AFK | 004, 006 | ☑ 完成 |
 
 ```
 001 ─┬─ 002 ── 003 ── 004 ─┬─ 005
