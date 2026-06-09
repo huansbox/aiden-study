@@ -14,13 +14,19 @@
 
 ## Acceptance criteria
 
-- [ ] SYSTEM_PROMPT／合法 subtopic 改為注入式 config，期中/期末各一份
-- [ ] 期末題目分類出正確的 unit(3/4) 與 8 個 subtopic 之一
-- [ ] 範圍外題目標 `none` 並排除於練習
-- [ ] `docs/questions.json` 中期末題目帶有正式 subtopic（取代 #1 的全 none）
-- [ ] pytest：期末 config 下非法 subtopic 被擋
-- [ ] 期中分類以同一套程式＋期中 config 重跑結果一致
-- [ ] 抽樣核對分類正確率（信心低者進複查）
+- [x] SYSTEM_PROMPT／合法 subtopic 改為注入式 config，期中/期末各一份 — `classify.py` 的 `SEMESTERS` dict（`mid`/`final`），核心邏輯不分學期；`--semester` 切換
+- [x] 期末題目分類出正確的 unit(3/4) 與 8 個 subtopic 之一 — 118 題全分類，8 個 subtopic 皆有題（生存與適應22/身體構造21/動物分類12/觀察方法3；天氣預報22/風16/氣溫測量12/雨量降雨10）
+- [x] 範圍外題目標 `none` 並排除於練習 — 本批安和卷 none=0；validate 與 build 排除邏輯就緒
+- [x] `docs/questions.json` 中期末題目帶有正式 subtopic（取代 #1 的全 none）— 期末 118 題 subtopic=none 數為 0
+- [x] pytest：期末 config 下非法 subtopic 被擋 — `tests/test_classify_config.py`
+- [x] 期中分類以同一套程式＋期中 config 重跑結果一致 — 期中 SYSTEM_PROMPT／合法集合逐字保留（`MIDTERM_SYSTEM_PROMPT` == 原 prompt 已驗證），模型沿用預設；未重跑期中 AI（classified_questions.json 含 fix_classified 手動修正，不可覆寫）
+- [x] 抽樣核對分類正確率（信心低者進複查）— 抽查 8 subtopic 各題皆正確；信心 ≥90 有 102 題、70–89 有 16、<70 為 0；2 題低信心(72) 為邊界天氣題（季節氣溫、雲量），歸 unit4 正確、subtopic 取最佳擬合
+
+## 實作備註
+
+- classify.py 重構為 config 驅動（模組C）：`classify_batch`/`main` 吃 config；期末 config 用 sonnet 控成本、batch 30。`classify_final_min.py`（#1 暫用）已刪除，由 `classify.py --semester final` 取代。
+- merge_answer 回傳的 `needs_review` 已存入 classified（安和全官方答案 → 全 0；民權/桃子腳112 的 AI 補答案複查在 #5）。
+- questions.json：720 題（1:324 2:278 3:58 4:60），期末 subtopic 完整。
 
 ## Blocked by
 

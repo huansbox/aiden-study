@@ -18,16 +18,21 @@
 pdfs/              27 份原始期中考卷 PDF（108-113 學年度，北市/新北/台中）
 pdfs_期末/          期末考卷 PDF（tcool.cc 抓取，三下自然康軒，現行課綱 110下~113下）
 scripts/           Python 資料處理 pipeline
-  extract.py       PDF → data/raw_questions.json
-  classify.py      claude -p 批次分類 + 答案補充
-  fix_classified.py 分類修正腳本
+  extract.py       PDF → raw（純函式 parse_questions_from_text + --input/--output）
+  classify.py      claude -p 批次分類（可切換學期 taxonomy：--semester mid|final）
+  data_helpers.py  去重/答案合併/驗證純函式（深模組B）
+  build_questions.py classified → docs/questions.json 合併（冪等、id 去碰撞）
+  fix_classified.py 期中分類修正腳本
 data/              中間資料
-  raw_questions.json        萃取後的原始題目（660 題）
-  classified_questions.json 分類後的完整題目（645 題）
+  raw_questions.json        期中萃取（659 題）
+  classified_questions.json 期中分類（645 題）
+  raw_questions_期末.json    期末萃取（安和×4＝118 題）
+  classified_questions_期末.json 期末分類（unit 3/4 + subtopic）
   tcool_grade3_sci_kanghsuan.json  期末考卷清單（tcool.cc 爬取，26 筆）
 docs/              GitHub Pages 部署目錄
   index.html       練習網站（單一 HTML，內嵌 CSS/JS）
-  questions.json   最終題庫（602 題）
+  questions.json   最終題庫（期中＋期末合併，unit 1–4）
+tests/             pytest（parser / data_helpers / classify config / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）
 ```
@@ -54,9 +59,13 @@ skipped_questions.md  跳過題目清單（供手動確認）
 
 ## 分類規則
 
+期中（unit 1–2）／期末（unit 3–4）為 `classify.py` 的兩組可切換 config（`--semester`）。
+
 - **第 1 單元：田園樂** — 蔬菜種類/部位/生長因素/生長過程
 - **第 2 單元：溫度變化對物質的影響** — 物質變化因素/水三態/其他物質受溫度改變
-- 衝突規則：優先歸屬題目直接詢問的核心概念所屬單元
+- **第 3 單元：動物** — 動物分類/身體構造/生存與適應/觀察方法
+- **第 4 單元：天氣** — 風/氣溫測量/雨量降雨/天氣預報（以桃子腳國小範圍為基準）
+- 衝突規則：優先歸屬題目直接詢問的核心概念所屬單元；範圍外標 `none` 排除
 
 ## 部署
 

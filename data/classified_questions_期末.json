@@ -8,9 +8,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 90,
-    "classify_reason": "眼睛瞳孔對光線的適應屬於動物身體構造（感官）的功能。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目直接考瞳孔受光（進入暗環境）的變化，屬生存與適應中的瞳孔受光變化。",
     "needs_review": false
   },
   {
@@ -22,9 +22,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "棕熊的食性（雜食）屬於動物生存與適應的範疇。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目考動物食性（雜食），屬生存與適應中的食性分類。",
     "needs_review": false
   },
   {
@@ -36,9 +36,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "動物身體構造分為頭、軀幹、肢，直接對應第3單元身體構造概念。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "題目直接考動物身體構造分部（頭、軀幹、肢），屬身體構造子主題。",
     "needs_review": false
   },
   {
@@ -50,9 +50,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "翅膀與腳的數量關係屬於動物身體構造的觀察與比較。",
+    "subtopic": "身體構造",
+    "confidence": 90,
+    "classify_reason": "題目考有翅膀動物的腳數（昆蟲有翅但六腳），屬身體構造辨識。",
     "needs_review": false
   },
   {
@@ -64,9 +64,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "劇毒動物的鮮豔體色屬於動物警戒色（生存適應）的知識。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目考劇毒動物的警戒色特徵（顏色鮮豔），屬生存與適應中的警戒色。",
     "needs_review": false
   },
   {
@@ -78,9 +78,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "比較獅與蜥蜴的爪子功能屬於動物身體構造與適應的比較。",
+    "subtopic": "身體構造",
+    "confidence": 90,
+    "classify_reason": "題目考獅與蜥蜴爪子的構造功能比較，屬身體構造及其功能。",
     "needs_review": false
   },
   {
@@ -92,9 +92,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "整理動物蒐集資料的方法屬於第3單元觀察動物的方法。",
+    "subtopic": "觀察方法",
+    "confidence": 90,
+    "classify_reason": "題目考蒐集動物資料時需填寫資料來源，屬觀察方法與正確態度。",
     "needs_review": false
   },
   {
@@ -106,9 +106,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "烏龜的分類與蹼的有無屬於動物分類與身體構造的知識。",
+    "subtopic": "身體構造",
+    "confidence": 85,
+    "classify_reason": "題目考烏龜各類蹼的有無，屬身體構造（蹼）辨識。",
     "needs_review": false
   },
   {
@@ -120,9 +120,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "貓腳底肉墊的功能屬於動物身體構造與生存適應的內容。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "題目考貓肉墊的構造功能（緩衝衝擊），屬身體構造及其功能。",
     "needs_review": false
   },
   {
@@ -134,9 +134,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "風向的命名規則（從哪個方向來稱為哪個風）屬於第4單元天氣中的風向知識。",
+    "subtopic": "風",
+    "confidence": 90,
+    "classify_reason": "題目考風向命名規則（以風來的方向命名，非「正前方」），屬風向子主題。",
     "needs_review": false
   },
   {
@@ -148,9 +148,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "氣溫計的正確使用方法屬於第4單元氣溫測量的操作規範。",
+    "subtopic": "氣溫測量",
+    "confidence": 95,
+    "classify_reason": "題目考氣溫計正確使用方式（不可握液囊），屬氣溫測量子主題。",
     "needs_review": false
   },
   {
@@ -162,9 +162,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "無儀器時以觀察物品判斷風力大小，屬於第4單元風力觀測的方法。",
+    "subtopic": "風",
+    "confidence": 95,
+    "classify_reason": "題目考無儀器時以觀察物體被吹動情形判斷風力，屬風力觀測子主題。",
     "needs_review": false
   },
   {
@@ -176,9 +176,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "晴天的定義（太陽出現與雲的關係）屬於第4單元天氣判讀的概念。",
+    "subtopic": "天氣預報",
+    "confidence": 80,
+    "classify_reason": "題目考晴天的判定標準（有雲不算晴天），屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -190,9 +190,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "雨量測量時容器形狀與水高的關係屬於第4單元雨量降雨的測量知識。",
+    "subtopic": "雨量降雨",
+    "confidence": 95,
+    "classify_reason": "題目考容器形狀影響雨水高度測量結果，屬雨量測量子主題。",
     "needs_review": false
   },
   {
@@ -204,9 +204,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "漁業氣象中風力級數的意義屬於第4單元風力的應用知識。",
+    "subtopic": "天氣預報",
+    "confidence": 95,
+    "classify_reason": "題目考漁業氣象中風力級數的意義，屬天氣預報種類（漁業）子主題。",
     "needs_review": false
   },
   {
@@ -223,9 +223,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "比較四種動物外形特徵差異（雞有羽毛/翅膀）屬於動物分類與觀察。",
+    "subtopic": "動物分類",
+    "confidence": 95,
+    "classify_reason": "雞為鳥類，猴狗豬為哺乳類，雞與其他三種分類差異最大。",
     "needs_review": false
   },
   {
@@ -242,9 +242,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "動物體色與環境的差異大（警戒色）屬於動物生存與適應的概念。",
+    "subtopic": "生存與適應",
+    "confidence": 90,
+    "classify_reason": "樺斑蝶具有鮮豔警戒色，與環境差異大；其餘三種均具保護色。",
     "needs_review": false
   },
   {
@@ -261,9 +261,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "動物體色與環境相似（保護色/擬態）屬於動物生存與適應的概念。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "變色龍能改變體色融入環境，為保護色的典型例子。",
     "needs_review": false
   },
   {
@@ -280,9 +280,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "體色與環境差異大對生存的幫助（警戒效果）屬於動物生存與適應的核心概念。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "顏色與環境差異大的功能為警戒效果（警戒色），使天敵不敢靠近。",
     "needs_review": false
   },
   {
@@ -299,9 +299,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "獅爪的功能（捕食）屬於動物身體構造與生存適應的知識。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "題目考獅爪子的主要功能（捕食獵物），屬身體構造功能子主題。",
     "needs_review": false
   },
   {
@@ -318,9 +318,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "判斷十二生肖中草食性動物數量屬於動物食性分類的應用。",
+    "subtopic": "生存與適應",
+    "confidence": 85,
+    "classify_reason": "題目考動物食性（草食性）辨識，牛兔馬羊為草食，共4種。",
     "needs_review": false
   },
   {
@@ -337,9 +337,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "比較不同鳥類腳是否有蹼屬於動物身體構造（腳的特徵）的觀察與分類。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "題目考鳥類腳部蹼的有無，雞無蹼，屬身體構造辨識。",
     "needs_review": false
   },
   {
@@ -356,9 +356,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "大雨後蚯蚓鑽出土壤的原因屬於動物生存與適應（呼吸需求）的知識。",
+    "subtopic": "生存與適應",
+    "confidence": 90,
+    "classify_reason": "蚯蚓大雨後鑽出是因土壤積水無法皮膚呼吸，屬棲地與生存適應。",
     "needs_review": false
   },
   {
@@ -375,9 +375,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 96,
-    "classify_reason": "判斷石虎不適合當寵物屬於動物分類（野生保育動物）的知識應用。",
+    "subtopic": "觀察方法",
+    "confidence": 88,
+    "classify_reason": "石虎為保育類野生動物，不適合當寵物，考查觀察動物的正確態度。",
     "needs_review": false
   },
   {
@@ -394,9 +394,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "氣象預報資料的正確寫法（降雨機率格式）屬於第4單元天氣預報的知識。",
+    "subtopic": "天氣預報",
+    "confidence": 95,
+    "classify_reason": "降雨機率為單一數值，不寫成範圍（10~30%寫法不正確），屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -413,9 +413,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "選擇開闊場所測量風向風力屬於第4單元風的測量方法與環境條件。",
+    "subtopic": "風",
+    "confidence": 95,
+    "classify_reason": "操場開闊無遮蔽，觀測風向風力最準確，屬風的觀測方法。",
     "needs_review": false
   },
   {
@@ -432,9 +432,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "南部地區天氣預報圖涵蓋的都市範圍屬於第4單元天氣預報應用。",
+    "subtopic": "天氣預報",
+    "confidence": 85,
+    "classify_reason": "臺東縣屬東部地區，不在南部天氣預報範圍內，考查預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -451,9 +451,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "早上6時氣溫最低的判斷屬於第4單元氣溫日變化的知識。",
+    "subtopic": "氣溫測量",
+    "confidence": 90,
+    "classify_reason": "一日氣溫早上6時最低，最可能是24℃，屬氣溫變化規律的測量知識。",
     "needs_review": false
   },
   {
@@ -470,9 +470,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "簡易風向風力計的讀法（紙條方向與高度）屬於第4單元風的測量儀器操作。",
+    "subtopic": "風",
+    "confidence": 95,
+    "classify_reason": "紙條飄向西南代表風從東北來（東北風），高度高於標記表示強風。",
     "needs_review": false
   },
   {
@@ -489,9 +489,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "百葉箱的設置位置屬於第4單元氣象觀測設備的知識。",
+    "subtopic": "氣溫測量",
+    "confidence": 95,
+    "classify_reason": "百葉箱設置在開闊草地上以確保測量準確性，屬氣溫測量工具子主題。",
     "needs_review": false
   },
   {
@@ -508,9 +508,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考降雨機率的定義，屬天氣預報單元。",
+    "subtopic": "天氣預報",
+    "confidence": 99,
+    "classify_reason": "直接考降雨機率數值的定義與意義，屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -527,9 +527,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "風",
     "confidence": 95,
-    "classify_reason": "由觀日出方向判斷風向，屬天氣─風的單元。",
+    "classify_reason": "觀日出面朝東、風從背後（西方）吹來，考風向判斷，屬風向觀測。",
     "needs_review": false
   },
   {
@@ -546,9 +546,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考天氣現象（雲量、風向、季節風）的正誤判斷，屬天氣單元。",
+    "subtopic": "天氣預報",
+    "confidence": 90,
+    "classify_reason": "考辨別天氣敘述正誤，「陰天雲量比晴天多」為雲量判讀定義，屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -565,9 +565,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考雨量計容器開口大小與水位高度的關係，屬降雨測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 99,
+    "classify_reason": "直接考平底直筒容器形狀與收集雨水高度的關係，屬雨量測量知識。",
     "needs_review": false
   },
   {
@@ -584,9 +584,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考雲量與天氣狀況的關係，屬天氣單元。",
+    "subtopic": "天氣預報",
+    "confidence": 92,
+    "classify_reason": "考雲的變化與天氣關係的正確敘述，屬天氣資訊判讀。",
     "needs_review": false
   },
   {
@@ -603,9 +603,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "考氣象預報可取得的資訊種類，屬天氣預報單元。",
+    "subtopic": "天氣預報",
+    "confidence": 98,
+    "classify_reason": "直接考天氣預報能提供的資訊種類（降雨量不含在預報中），屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -617,9 +617,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考袋鼠後腳構造與跳躍能力，屬動物身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 97,
+    "classify_reason": "考袋鼠後腳與前腳構造差異及對應功能（跳躍），屬身體構造與功能。",
     "needs_review": false
   },
   {
@@ -631,9 +631,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考蛙腳蹼構造，屬動物身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 96,
+    "classify_reason": "考蛙的前腳是否有蹼（前腳無蹼，只有後腳有蹼），屬身體構造。",
     "needs_review": false
   },
   {
@@ -645,9 +645,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "考鱷魚鱗片與呼吸器官（題目說法有誤，但屬動物分類／構造單元）。",
+    "subtopic": "動物分類",
+    "confidence": 97,
+    "classify_reason": "考鱷魚呼吸方式（爬蟲類用肺呼吸，非鰓），屬爬蟲類特徵辨識。",
     "needs_review": false
   },
   {
@@ -659,9 +659,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考樹蛙腳蹼功能，屬動物身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 92,
+    "classify_reason": "考樹蛙吸附葉片靠的是腳趾吸盤而非蹼，屬身體構造與功能辨析。",
     "needs_review": false
   },
   {
@@ -673,9 +673,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考鳥類是否全都能飛行，屬動物分類單元。",
+    "subtopic": "動物分類",
+    "confidence": 97,
+    "classify_reason": "考鳥類皆有翅膀但非全能飛行（如企鵝、鴕鳥），屬鳥類特徵辨識。",
     "needs_review": false
   },
   {
@@ -687,9 +687,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "考腳有蹼的動物棲地，屬動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 90,
+    "classify_reason": "考有蹼動物的棲地，蹼與水邊生活的適應關係，屬生存適應（棲地）。",
     "needs_review": false
   },
   {
@@ -701,9 +701,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考氣溫計的正確測量方式，屬天氣─氣溫測量單元。",
+    "subtopic": "氣溫測量",
+    "confidence": 99,
+    "classify_reason": "直接考氣溫計不可在太陽直射下測量，屬氣溫計正確使用方法。",
     "needs_review": false
   },
   {
@@ -715,9 +715,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考天氣預報包含降雨機率和降雨量資訊，屬天氣預報單元。",
+    "subtopic": "天氣預報",
+    "confidence": 98,
+    "classify_reason": "考天氣預報提供降雨機率但不含降雨量，屬天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -729,9 +729,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "天氣預報",
     "confidence": 97,
-    "classify_reason": "考晴天定義與雲量的關係，屬天氣單元。",
+    "classify_reason": "考晴天定義是依雲量判斷而非有無太陽，屬天氣資訊判讀。",
     "needs_review": false
   },
   {
@@ -743,9 +743,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 96,
-    "classify_reason": "考旗子飄動方向與風向的關係，屬天氣─風的單元。",
+    "subtopic": "風",
+    "confidence": 98,
+    "classify_reason": "考風向定義：旗子飄動方向是風去的方向，非風吹來的方向，屬風向觀測。",
     "needs_review": false
   },
   {
@@ -757,9 +757,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考雲層厚度與顏色的關係及下雨可能性，屬天氣單元。",
+    "subtopic": "天氣預報",
+    "confidence": 93,
+    "classify_reason": "考雲色深淺（雲層厚薄）與降雨可能性的關係，屬天氣資訊判讀。",
     "needs_review": false
   },
   {
@@ -771,9 +771,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "氣溫測量",
     "confidence": 98,
-    "classify_reason": "考氣溫定義，屬天氣─氣溫測量單元。",
+    "classify_reason": "考氣溫定義（空氣溫度）及其可高於體溫，屬氣溫測量基本概念。",
     "needs_review": false
   },
   {
@@ -785,9 +785,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考風力級數大小與風力強弱的關係，屬天氣─風的單元。",
+    "subtopic": "風",
+    "confidence": 99,
+    "classify_reason": "直接考風力級數大小與風力強弱的正向關係，屬風力觀測概念。",
     "needs_review": false
   },
   {
@@ -799,9 +799,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考雨量計開口大小對水位高度的影響，屬降雨測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 99,
+    "classify_reason": "考平底直筒容器口大小不影響雨水收集高度，屬雨量測量容器原理。",
     "needs_review": false
   },
   {
@@ -813,9 +813,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考雨量的單位，屬降雨測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 98,
+    "classify_reason": "考雨量單位應為毫米（mm）而非公分，屬雨量測量基本知識。",
     "needs_review": false
   },
   {
@@ -832,9 +832,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考爬蟲類動物的分類，屬動物分類單元。",
+    "subtopic": "動物分類",
+    "confidence": 99,
+    "classify_reason": "考蚯蚓非爬蟲類（為環節動物），屬動物分類辨識。",
     "needs_review": false
   },
   {
@@ -851,9 +851,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考鳥類最大的特徵構造，屬動物分類／身體構造單元。",
+    "subtopic": "動物分類",
+    "confidence": 97,
+    "classify_reason": "考鳥類最獨特的構造特徵為羽毛，屬鳥類辨識特徵。",
     "needs_review": false
   },
   {
@@ -870,9 +870,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 72,
-    "classify_reason": "考人眼進入黑暗後的視覺適應，與動物感官適應環境相關，歸動物生存與適應；但若課綱未列入可能為 none。",
+    "subtopic": "生存與適應",
+    "confidence": 99,
+    "classify_reason": "直接考瞳孔在黑暗中的適應變化（放大以接收更多光），屬瞳孔受光變化。",
     "needs_review": false
   },
   {
@@ -889,9 +889,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "動物分類",
     "confidence": 98,
-    "classify_reason": "考兩生類與爬蟲類的差異，屬動物分類單元。",
+    "classify_reason": "直接考兩生類與爬蟲類的差異特性，屬兩生類辨識與分類。",
     "needs_review": false
   },
   {
@@ -908,9 +908,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考哪類動物腳上可能有蹼，屬動物分類／身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "考哪些動物類群的腳可能有蹼，屬蹼這一身體構造的分布範圍。",
     "needs_review": false
   },
   {
@@ -927,9 +927,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "動物分類",
     "confidence": 98,
-    "classify_reason": "考哺乳類動物共同構造特徵，屬動物分類單元。",
+    "classify_reason": "考哺乳類共同構造特徵，「都有四隻腳」有誤（如鯨魚），屬哺乳類特徵辨識。",
     "needs_review": false
   },
   {
@@ -946,9 +946,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考動物體色與環境的差異（警戒色），屬動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 99,
+    "classify_reason": "考警戒色（黃帶箭毒蛙顏色鮮豔與環境差異大），屬保護色/警戒色辨識。",
     "needs_review": false
   },
   {
@@ -965,9 +965,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "考動物體色與環境差異大對生存的意義（警戒色），屬動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 99,
+    "classify_reason": "考身體顏色與環境差異大（警戒色）的生存功能，屬警戒色生存意義。",
     "needs_review": false
   },
   {
@@ -984,9 +984,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "身體構造",
     "confidence": 98,
-    "classify_reason": "考獅子爪子的功能，屬動物身體構造與生存適應單元。",
+    "classify_reason": "考獅子爪子的主要功能（捕食），屬身體構造對應功能。",
     "needs_review": false
   },
   {
@@ -1003,9 +1003,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 88,
-    "classify_reason": "蚯蚓雨後鑽出土壤與其呼吸方式有關，屬動物生存適應。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目詢問蚯蚓大雨後鑽出土壤的原因，屬於蚯蚓棲地與生存適應行為。",
     "needs_review": false
   },
   {
@@ -1022,9 +1022,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 72,
-    "classify_reason": "眼睛瞳孔對光線的反應屬動物身體構造（感覺器官）。",
+    "subtopic": "生存與適應",
+    "confidence": 97,
+    "classify_reason": "題目詢問出隧道口（由暗到亮）時瞳孔的變化，屬於瞳孔受光適應。",
     "needs_review": false
   },
   {
@@ -1041,9 +1041,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "觀察雲量、降雨、風力來判斷天氣，屬天氣觀測。",
+    "subtopic": "天氣預報",
+    "confidence": 85,
+    "classify_reason": "題目詢問觀察今天天氣狀況的方法（雲量、降雨、風），屬於天氣資訊判讀。",
     "needs_review": false
   },
   {
@@ -1060,9 +1060,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "下雨前出現烏雲、颳風、打雷等天氣現象，屬天氣觀測。",
+    "subtopic": "天氣預報",
+    "confidence": 88,
+    "classify_reason": "題目詢問下雨前可能出現的徵兆，屬於天氣現象判讀與預報知識。",
     "needs_review": false
   },
   {
@@ -1079,9 +1079,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "雨量降雨",
     "confidence": 98,
-    "classify_reason": "雨量計放置地點選擇，屬雨量測量。",
+    "classify_reason": "題目詢問測量雨量的適當地點（空曠無遮蔽），直接對應雨量測量方法。",
     "needs_review": false
   },
   {
@@ -1098,9 +1098,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "天氣預報",
     "confidence": 97,
-    "classify_reason": "天氣預報種類及其包含的風向風力資訊，屬天氣預報。",
+    "classify_reason": "題目詢問哪種天氣預報會報風向和風力，屬於天氣預報種類辨識。",
     "needs_review": false
   },
   {
@@ -1112,9 +1112,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 88,
-    "classify_reason": "蛇與毛毛蟲的動物分類（爬蟲類判斷），屬動物分類。",
+    "subtopic": "動物分類",
+    "confidence": 98,
+    "classify_reason": "題目考蛇（爬蟲類）與毛毛蟲（昆蟲類）的分類辨識，毛毛蟲非爬蟲類，故為錯。",
     "needs_review": false
   },
   {
@@ -1126,9 +1126,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "青蛙腳有蹼的身體構造特徵，屬動物身體構造。",
+    "subtopic": "身體構造",
+    "confidence": 96,
+    "classify_reason": "題目考青蛙蹼的分布，青蛙僅後腳有蹼、前腳無蹼，故為錯。",
     "needs_review": false
   },
   {
@@ -1140,9 +1140,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "身體構造",
     "confidence": 90,
-    "classify_reason": "有腳動物的運動方式，屬動物身體構造與行為。",
+    "classify_reason": "題目考有腳動物的運動方式，鳥類有腳但主要以飛行移動，故不一定是行走，為錯。",
     "needs_review": false
   },
   {
@@ -1154,9 +1154,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "身體構造",
     "confidence": 95,
-    "classify_reason": "海龜游水與腳上有蹼的身體構造，屬動物身體構造。",
+    "classify_reason": "海龜的前肢為鰭狀肢（paddle flippers）而非蹼，題目說「腳上有蹼」描述有誤，故為錯。",
     "needs_review": false
   },
   {
@@ -1168,9 +1168,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 93,
-    "classify_reason": "利用風車轉動判斷風向，屬風的觀測方法。",
+    "subtopic": "風",
+    "confidence": 97,
+    "classify_reason": "題目考風車正對風向轉速最快，即可判斷風向，屬於風向觀測工具原理。",
     "needs_review": false
   },
   {
@@ -1182,9 +1182,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "相同開口容器收集雨水的比較，屬雨量測量。",
+    "subtopic": "雨量降雨",
+    "confidence": 98,
+    "classify_reason": "題目考開口相同的容器在同一地點收集雨量相同，屬於雨量測量原理。",
     "needs_review": false
   },
   {
@@ -1196,9 +1196,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "氣溫計應避開陽光直射，屬氣溫測量方法。",
+    "subtopic": "氣溫測量",
+    "confidence": 98,
+    "classify_reason": "題目考氣溫計不可放在太陽直射下（會使溫度偏高，無法正確測氣溫），故為錯。",
     "needs_review": false
   },
   {
@@ -1210,9 +1210,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "風",
     "confidence": 98,
-    "classify_reason": "風力級數大小與風力強弱的關係，屬風力測量。",
+    "classify_reason": "題目考風力級數意義，級數越大風力越強，1級比2級弱而非強，故為錯。",
     "needs_review": false
   },
   {
@@ -1224,9 +1224,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "氣溫測量",
     "confidence": 98,
-    "classify_reason": "百葉箱漆白色以減少吸熱影響測量，屬氣溫測量設備。",
+    "classify_reason": "題目考百葉箱漆白色的用途（降低箱壁吸熱影響），直接對應百葉箱設計原理。",
     "needs_review": false
   },
   {
@@ -1238,9 +1238,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "簡易風向風力計的使用與測量地點，屬風的測量。",
+    "subtopic": "風",
+    "confidence": 97,
+    "classify_reason": "題目考風向風力計須在戶外測量，教室內無法測得真正的風向，故為錯。",
     "needs_review": false
   },
   {
@@ -1252,9 +1252,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "氣溫即空氣溫度的定義，屬氣溫測量基本概念。",
+    "subtopic": "氣溫測量",
+    "confidence": 98,
+    "classify_reason": "題目考氣溫定義為空氣的溫度，定義正確，為真。",
     "needs_review": false
   },
   {
@@ -1266,9 +1266,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 96,
-    "classify_reason": "同時間不同地點氣溫是否相同，屬氣溫測量與比較。",
+    "subtopic": "氣溫測量",
+    "confidence": 97,
+    "classify_reason": "題目考同一時間不同地點氣溫是否相同，因日照、遮蔽等因素不同故不同，為錯。",
     "needs_review": false
   },
   {
@@ -1280,9 +1280,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "依雲量區分晴天、陰天、雨天，屬天氣觀測。",
+    "subtopic": "天氣預報",
+    "confidence": 90,
+    "classify_reason": "題目考天氣狀況僅能依雲量區分晴陰雨，但雨天需有降雨而非僅看雲量，故為錯。",
     "needs_review": false
   },
   {
@@ -1294,9 +1294,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "天氣預報",
     "confidence": 98,
-    "classify_reason": "降雨機率的正確解讀，屬天氣預報概念。",
+    "classify_reason": "題目考降雨機率50%的意義，代表該時段有50%機會降雨，非50%地方下雨，為錯。",
     "needs_review": false
   },
   {
@@ -1308,9 +1308,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "今日天氣預報所包含的資料內容，屬天氣預報。",
+    "subtopic": "天氣預報",
+    "confidence": 96,
+    "classify_reason": "今日天氣預報顯示降雨機率而非降雨量，題目說「降雨量」有誤，故為錯。",
     "needs_review": false
   },
   {
@@ -1322,9 +1322,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
+    "subtopic": "風",
     "confidence": 98,
-    "classify_reason": "風向標箭頭所指方向與風向的關係，屬風向測量。",
+    "classify_reason": "題目考風向標箭頭方向，箭頭所指即風吹來的方向（風向），為真。",
     "needs_review": false
   },
   {
@@ -1336,9 +1336,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 90,
-    "classify_reason": "八方位方向判斷（西北對東南），屬風向方位知識。",
+    "subtopic": "風",
+    "confidence": 97,
+    "classify_reason": "題目考八方位方向，西北的相反方向為東南，為真。",
     "needs_review": false
   },
   {
@@ -1355,9 +1355,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "比較陸龜、海龜、淡水龜的身體構造異同，屬動物身體構造。",
+    "subtopic": "身體構造",
+    "confidence": 97,
+    "classify_reason": "題目考陸龜、海龜、淡水龜的腳部構造差異，陸龜無蹼，故「腳上都有蹼」為錯誤敘述。",
     "needs_review": false
   },
   {
@@ -1374,9 +1374,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "身體構造",
     "confidence": 95,
-    "classify_reason": "腳上有蹼的動物屬於哪些類別，屬動物分類。",
+    "classify_reason": "題目考腳上有蹼的動物類別，爬蟲類（某些龜）、兩生類（蛙）、鳥類（鴨）均可能有蹼。",
     "needs_review": false
   },
   {
@@ -1393,9 +1393,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 93,
-    "classify_reason": "動物棲地偏好（樹蛙不在乾燥地方），屬動物生存與適應。",
+    "subtopic": "生存與適應",
+    "confidence": 97,
+    "classify_reason": "題目考樹蛙因需潮溼環境而不出現在乾燥地方，屬於動物棲地適應。",
     "needs_review": false
   },
   {
@@ -1412,9 +1412,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "鰻魚等動物的魚類歸屬判斷，屬動物分類。",
+    "subtopic": "動物分類",
+    "confidence": 98,
+    "classify_reason": "題目考魚類辨識，鰻魚是真正的魚類，鯨魚是哺乳類，鱷魚是爬蟲類，章魚是軟體動物。",
     "needs_review": false
   },
   {
@@ -1431,9 +1431,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 92,
-    "classify_reason": "十二生肖中哺乳類動物數量，屬動物分類應用。",
+    "subtopic": "動物分類",
+    "confidence": 95,
+    "classify_reason": "題目考十二生肖中哺乳類數量：鼠牛虎兔馬羊猴狗豬共9種，龍為神話、蛇為爬蟲、雞為鳥類。",
     "needs_review": false
   },
   {
@@ -1450,9 +1450,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 72,
-    "classify_reason": "同第2題，出隧道後瞳孔縮小屬眼睛感覺器官的身體構造反應。",
+    "subtopic": "生存與適應",
+    "confidence": 97,
+    "classify_reason": "題目與第2題相同，考出隧道由暗到亮時瞳孔受光縮小的適應反應。",
     "needs_review": false
   },
   {
@@ -1469,9 +1469,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "天色變暗、風變大、氣溫下降等下雨前兆，屬天氣觀測。",
+    "subtopic": "天氣預報",
+    "confidence": 88,
+    "classify_reason": "題目考下雨前兆（天色變暗、風大、氣溫下降），屬於天氣現象判讀，以上皆有可能。",
     "needs_review": false
   },
   {
@@ -1488,9 +1488,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "題目詢問天氣預報圖中的都市資料，屬於天氣預報單元。",
+    "subtopic": "天氣預報",
+    "confidence": 90,
+    "classify_reason": "題目詢問北部地區天氣預報圖所含都市，屬於天氣預報資訊判讀。",
     "needs_review": false
   },
   {
@@ -1507,9 +1507,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "題目考察一天氣溫變化規律，屬於氣溫測量單元。",
+    "subtopic": "氣溫測量",
+    "confidence": 90,
+    "classify_reason": "題目考一日氣溫變化規律，下午4時高於下午1時不符正常規律，屬氣溫測量判讀。",
     "needs_review": false
   },
   {
@@ -1526,9 +1526,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目考察哪種容器可測降雨量，屬於雨量測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 90,
+    "classify_reason": "題目考哪些容器形狀可用於測量降雨量，直接對應雨量測量子主題。",
     "needs_review": false
   },
   {
@@ -1540,9 +1540,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目說明動物因適應環境而有不同外形特徵，屬於動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 92,
+    "classify_reason": "題目說明動物為適應環境而演化出不同外形特徵，屬生存與適應。",
     "needs_review": false
   },
   {
@@ -1554,9 +1554,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 90,
-    "classify_reason": "題目考察動物身體構造（頭、軀幹、四肢），屬於動物身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 95,
+    "classify_reason": "題目考動物身體構造是否皆分頭、軀幹、四肢（魚類/蛇無典型四肢），屬身體構造。",
     "needs_review": false
   },
   {
@@ -1568,9 +1568,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目說明動物體色的警戒或保護功能，屬於動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 88,
+    "classify_reason": "題目敘述鮮豔顏色可保護動物不被發現，混淆保護色與警戒色定義，答案為false。",
     "needs_review": false
   },
   {
@@ -1582,9 +1582,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目描述蚯蚓的生存環境偏好，屬於動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目考蚯蚓的棲地偏好（陰暗潮濕的土中），屬生存與適應。",
     "needs_review": false
   },
   {
@@ -1596,9 +1596,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目說明蚯蚓大雨後出土的原因（呼吸適應），屬於動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 92,
+    "classify_reason": "題目考蚯蚓大雨後鑽出的原因（水中缺氧），屬生存與適應的棲地知識。",
     "needs_review": false
   },
   {
@@ -1610,9 +1610,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "身體構造",
     "confidence": 90,
-    "classify_reason": "題目考察人體四肢的名稱，屬於動物（人）身體構造單元。",
+    "classify_reason": "題目考人類四肢的名稱（上肢/下肢），直接對應身體構造子主題。",
     "needs_review": false
   },
   {
@@ -1624,9 +1624,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "題目定義「風力」概念，屬於天氣—風單元。",
+    "subtopic": "風",
+    "confidence": 98,
+    "classify_reason": "題目定義「風力」為風的強弱，直接對應風子主題的核心概念。",
     "needs_review": false
   },
   {
@@ -1638,9 +1638,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "題目提到166/167氣象語音專線，屬於天氣預報資訊單元。",
+    "subtopic": "天氣預報",
+    "confidence": 85,
+    "classify_reason": "題目考166/167氣象語音專線是否為免付費，屬天氣預報資訊取得的判斷。",
     "needs_review": false
   },
   {
@@ -1652,9 +1652,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 92,
-    "classify_reason": "題目說明四季氣溫變化影響生活習慣，核心概念屬於氣溫與天氣變化單元。",
+    "subtopic": "氣溫測量",
+    "confidence": 72,
+    "classify_reason": "題目考四季氣溫變化對飲食生活的影響，與氣溫變化最相關，歸入氣溫測量。",
     "needs_review": false
   },
   {
@@ -1666,9 +1666,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目考察雲量十分之六稱為「多雲」的定義，屬於天氣觀測單元。",
+    "subtopic": "天氣預報",
+    "confidence": 72,
+    "classify_reason": "題目考雲量十分之六的天氣描述（多雲），屬天氣觀測與預報判讀。",
     "needs_review": false
   },
   {
@@ -1680,9 +1680,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "題目說明臺灣夏天吹東北季風，屬於天氣—風單元。",
+    "subtopic": "風",
+    "confidence": 90,
+    "classify_reason": "題目考臺灣夏季季風方向（夏季為西南季風而非東北季風），屬風的知識。",
     "needs_review": false
   },
   {
@@ -1694,9 +1694,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 93,
-    "classify_reason": "題目考察蜥蜴腳部構造特徵（蹼），屬於動物身體構造與適應單元。",
+    "subtopic": "身體構造",
+    "confidence": 88,
+    "classify_reason": "題目考蜥蜴腳部構造（蜥蜴有爪非蹼，有蹼者如樹蛙），屬身體構造與功能。",
     "needs_review": false
   },
   {
@@ -1708,9 +1708,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目說明動物體色差異具有警戒效果，屬於動物生存與適應單元。",
+    "subtopic": "生存與適應",
+    "confidence": 95,
+    "classify_reason": "題目考警戒色的定義（顏色與環境差異大以警戒其他動物），屬生存與適應。",
     "needs_review": false
   },
   {
@@ -1722,9 +1722,9 @@
     "answer": "true",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 96,
-    "classify_reason": "題目考察陰天時雲量覆蓋天空的狀態，屬於天氣觀測單元。",
+    "subtopic": "天氣預報",
+    "confidence": 75,
+    "classify_reason": "題目考陰天的定義（整片雲覆蓋看不見太陽），屬天氣觀測與預報判讀。",
     "needs_review": false
   },
   {
@@ -1736,9 +1736,9 @@
     "answer": "false",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 88,
-    "classify_reason": "題目核心是「雨水」與降雨效益的判斷，屬於天氣—雨量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 85,
+    "classify_reason": "題目考降雨量與植物生長的關係（過多有害），屬雨量降雨子主題。",
     "needs_review": false
   },
   {
@@ -1755,9 +1755,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目考察一天中氣溫最高的時段，屬於氣溫測量單元。",
+    "subtopic": "氣溫測量",
+    "confidence": 95,
+    "classify_reason": "題目考一日氣溫最高時段（下午2時前後，即中午），屬氣溫測量的日變化規律。",
     "needs_review": false
   },
   {
@@ -1774,9 +1774,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目考察適合測量雨量的地點條件，屬於雨量測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 95,
+    "classify_reason": "題目考雨量測量的正確地點（空曠無遮蔽），直接對應雨量測量方法。",
     "needs_review": false
   },
   {
@@ -1793,9 +1793,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目考察爬蟲類體表特徵（硬皮、鱗片、外殼），屬於動物分類單元。",
+    "subtopic": "動物分類",
+    "confidence": 95,
+    "classify_reason": "題目考爬蟲類的體表特徵（乾燥硬皮/鱗片/外殼），屬動物分類特徵辨識。",
     "needs_review": false
   },
   {
@@ -1812,9 +1812,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "題目考察兩生類動物的辨別（蛙），屬於動物分類單元。",
+    "subtopic": "動物分類",
+    "confidence": 98,
+    "classify_reason": "題目直接考兩生類的代表動物（蛙），屬動物分類辨識。",
     "needs_review": false
   },
   {
@@ -1831,9 +1831,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
+    "subtopic": "生存與適應",
     "confidence": 92,
-    "classify_reason": "題目考察眼睛瞳孔對光線的適應反應，屬於動物身體構造與感官單元。",
+    "classify_reason": "題目考瞳孔在強光下縮小的反應（從暗到亮），屬生存與適應中瞳孔受光變化。",
     "needs_review": false
   },
   {
@@ -1850,9 +1850,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目考察不同口徑容器收集雨水高度，屬於雨量測量單元。",
+    "subtopic": "雨量降雨",
+    "confidence": 95,
+    "classify_reason": "題目考平底直筒容器不論口徑大小收集雨水高度相同，屬雨量測量容器形狀知識。",
     "needs_review": false
   },
   {
@@ -1869,9 +1869,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目考察鴕鳥（鳥類）的特徵與分類，屬於動物分類與身體構造單元。",
+    "subtopic": "身體構造",
+    "confidence": 90,
+    "classify_reason": "題目考鴕鳥是否有翅膀（有翅膀但不能飛），屬鳥類身體構造辨識。",
     "needs_review": false
   },
   {
@@ -1888,9 +1888,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "題目考察風向標指向與風向的對應關係，屬於天氣—風向單元。",
+    "subtopic": "風",
+    "confidence": 95,
+    "classify_reason": "題目考風向標箭頭指北即代表北風（風從哪來就叫哪風），屬風向判讀工具使用。",
     "needs_review": false
   },
   {
@@ -1907,9 +1907,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "4",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "題目考察自製風向計紙條飄向與風向的判讀，屬於天氣—風向單元。",
+    "subtopic": "風",
+    "confidence": 95,
+    "classify_reason": "題目考自製風向風力計紙條飄向東方代表風從西來（西風），屬風向觀測工具判讀。",
     "needs_review": false
   },
   {
@@ -1926,9 +1926,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "3",
-    "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "題目考察愛護動物的正確行為，屬於動物觀察與保育單元。",
+    "subtopic": "觀察方法",
+    "confidence": 88,
+    "classify_reason": "題目考愛護動物的正確態度與行為（隨意抓鳥為錯誤行為），屬觀察動物的正確態度。",
     "needs_review": false
   }
 ]
