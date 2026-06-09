@@ -112,7 +112,7 @@ SEMESTERS = {
         "system_prompt": FINAL_SYSTEM_PROMPT,
         "unit_labels": {"3": "動物", "4": "天氣"},
         "model": "claude-sonnet-4-6",   # 動物/天氣 分類單純，用 sonnet 控成本
-        "batch_size": 30,
+        "batch_size": 15,               # 較小批降低逾時風險（233 題曾在 30/批時偶發逾時）
     },
 }
 
@@ -152,7 +152,7 @@ def classify_batch(batch: list[dict], batch_idx: int, config: dict) -> list[dict
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
-                timeout=180,
+                timeout=300,
             )
 
             if result.returncode != 0:
@@ -218,9 +218,10 @@ def main():
     with open(os.path.abspath(config["input"]), encoding="utf-8") as f:
         all_questions = json.load(f)
 
-    # 跳過：含圖片題、選項不足的選擇題
+    # 跳過：含圖片題、有效選項不足的選擇題（含圖片型空選項）
     kept = [q for q in all_questions if not q["has_image"]
-            and not (q["section"] == "multiple_choice" and len(q["options"]) < 2)]
+            and not (q["section"] == "multiple_choice"
+                     and sum(1 for o in q["options"] if o.strip()) < 2)]
 
     # 去重（helper）並建立 正規化文字 → unique index 對照，供結果回填重複題
     unique_questions = dedupe_by_text(kept)

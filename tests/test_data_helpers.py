@@ -115,5 +115,6 @@ def test_midterm_dedupe_count_stable():
     with open(MIDTERM_RAW, encoding="utf-8") as f:
         raw = json.load(f)
     kept = [q for q in raw if not q["has_image"]
-            and not (q["section"] == "multiple_choice" and len(q["options"]) < 2)]
+            and not (q["section"] == "multiple_choice"
+                     and sum(1 for o in q["options"] if o.strip()) < 2)]
     assert len(dedupe_by_text(kept)) == 645

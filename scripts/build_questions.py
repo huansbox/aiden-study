@@ -83,8 +83,8 @@ def main():
         if q.get("has_image"):
             skipped["has_image"] += 1
             continue
-        if q["section"] == "multiple_choice" and len(q["options"]) < 2:
-            skipped["few_options"] += 1
+        if q["section"] == "multiple_choice" and sum(1 for o in q["options"] if o.strip()) < 2:
+            skipped["few_options"] += 1   # 含圖片型空選項（選項為圖示、文字空白）
             continue
         final_q.append(to_final_schema(q, used_ids))
 

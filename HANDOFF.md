@@ -5,12 +5,13 @@
 
 ## 一句話現況
 
-需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001–004 已完成（4/7）**。下一步＝`issues/005`（民權×4＋桃子腳112 的 AI 補答案＋複查清單）與 `issues/006`（網站期中/期末切換，**開工前需家長定站名**）。
+需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001–005 已完成（5/7）**。下一步＝`issues/006`（網站期中/期末切換；站名已定＝保留「三下自然練習」）→ `issues/007`（subtopic 練習）。
 
 - 001＝tracer（安和113下→網站可練）。
 - 002＝parser 抽純函式＋pytest，修第2頁雙欄污染。
 - 003＝安和×4 答案卷（118題）＋`data_helpers`（去重/答案合併/驗證）純函式＋pytest。
-- 004＝classify.py 重構為可切換學期 config（`SEMESTERS` mid/final，模組C）＋正式 subtopic；期末 118 題分到 8 個 subtopic（none=0）；`classify_final_min.py` 已刪除，改用 `classify.py --semester final`。questions.json＝720題，pytest 49 passed。
+- 004＝classify.py 重構為可切換學期 config（`SEMESTERS` mid/final，模組C）＋正式 subtopic；`classify_final_min.py` 已刪除，改用 `classify.py --semester final`。
+- 005＝民權×4＋桃子腳112 的 AI 補答案＋標 needs_review；產複查清單 `review_期末_ai答案.md`（106題）。最終題庫＝824題（1:324 2:278 3:111 4:111；期末222＝安和116官方＋民權92＋桃子腳14 AI）。穩健性：分類 batch 30→15、timeout 300s 解逾時；filter 改「有效選項<2」排除圖片型空選項。pytest 49 passed。
 - **桃子腳答案卷不可用**（與原計畫衝突）：112下 答案以紅字標選項、110下 純圖片 → 家長決策：112下走民權式 AI 補答案（併 #5）、110下放棄。詳見 issue 003 與記憶 `taozijiao-answer-keys-unusable`。
 
 ## 專案目標
@@ -42,8 +43,8 @@
 | 002 | Parser 抽純函式 + pytest | AFK | 001 | ☑ 完成 |
 | 003 | 6 份答案卷萃取 + helpers + pytest | AFK | 002 | ☑ 完成（桃子腳改走 #5/排除）|
 | 004 | AI 分類器可切換 taxonomy + subtopic | AFK | 003 | ☑ 完成 |
-| 005 | 民權 AI 補答案 + 複查標記 | AFK | 004 | ☐ |
-| 006 | 網站期中/期末切換 + 站名 + 三模式 | **HITL** | 001 | ☐ |
+| 005 | 民權 AI 補答案 + 複查標記 | AFK | 004 | ☑ 完成（含桃子腳112）|
+| 006 | 網站期中/期末切換 + 站名 + 三模式 | **HITL** | 001 | ☐（站名已定＝保留「三下自然練習」）|
 | 007 | 網站 subtopic 練習 | AFK | 004, 006 | ☐ |
 
 ```
