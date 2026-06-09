@@ -11,6 +11,7 @@ import sys
 import os
 import re
 import json
+import argparse
 import logging
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -45,10 +46,11 @@ SECTION_PATTERNS = {
 }
 
 # 非目標 section（用於截斷）
+# 期末新增：填一填、根據題意（桃子腳/安和答案卷用來界定單選題大題結尾，見 issues/001）
 NON_TARGET_SECTION = re.compile(
     r"[一二三四五六七八壹貳參肆伍][\s、.．]+"
-    r"(?:綜合[題練習]|配合題|連連看|填[填充]看|做一做|閱讀[題測驗]|"
-    r"去吧|根據題目|科學閱讀|科普閱讀|填填看|綜合應用題|連連看)"
+    r"(?:綜合[題練習]|配合題|連連看|填[填充]看|填一填|做一做|閱讀[題測驗]|"
+    r"去吧|根據題[目意]|科學閱讀|科普閱讀|填填看|綜合應用題|連連看)"
 )
 
 
@@ -356,13 +358,21 @@ def process_pdf(pdf_path: str) -> list[dict]:
 
 
 def main():
-    pdf_dir = os.path.abspath(DOCS_DIR)
-    pdfs = sorted([f for f in os.listdir(pdf_dir) if f.endswith(".pdf")])
+    parser = argparse.ArgumentParser(description="PDF 考卷題目萃取器")
+    parser.add_argument("--input", default=DOCS_DIR, help="PDF 檔或目錄（預設 docs/）")
+    parser.add_argument("--output", default=OUTPUT_PATH, help="輸出 JSON 路徑")
+    args = parser.parse_args()
+
+    inp = os.path.abspath(args.input)
+    if os.path.isdir(inp):
+        pdfs = sorted(os.path.join(inp, f) for f in os.listdir(inp) if f.endswith(".pdf"))
+    else:
+        pdfs = [inp]
     log.info(f"共找到 {len(pdfs)} 份 PDF")
 
     all_questions = []
     for f in pdfs:
-        qs = process_pdf(os.path.join(pdf_dir, f))
+        qs = process_pdf(f)
         all_questions.extend(qs)
 
     # 統計
@@ -382,11 +392,12 @@ def main():
     log.info(f"有圖片: {with_image}")
 
     # 輸出
-    os.makedirs(os.path.dirname(os.path.abspath(OUTPUT_PATH)), exist_ok=True)
-    with open(os.path.abspath(OUTPUT_PATH), "w", encoding="utf-8") as f:
+    output_path = os.path.abspath(args.output)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(all_questions, f, ensure_ascii=False, indent=2)
 
-    log.info(f"已輸出至 {OUTPUT_PATH}")
+    log.info(f"已輸出至 {output_path}")
 
 
 if __name__ == "__main__":

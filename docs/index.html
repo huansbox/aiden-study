@@ -457,6 +457,8 @@ function renderHome() {
   const units = [
     { id: 1, name: "第 1 單元：田園樂" },
     { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
+    { id: 3, name: "第 3 單元：動物" },
+    { id: 4, name: "第 4 單元：天氣" },
   ];
 
   let html = '<h1>三下自然練習</h1>';
@@ -495,8 +497,6 @@ function renderHome() {
 
   // Error section
   const allErrors = State.getErrorBank();
-  const err1 = State.getErrorBank(1);
-  const err2 = State.getErrorBank(2);
   const totalErrors = allErrors.length;
 
   html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
@@ -504,10 +504,11 @@ function renderHome() {
   if (totalErrors === 0) {
     html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
   } else {
-    html += `
-      <button class="sub-btn" ${totalErrors === 0 ? 'disabled' : ''} onclick="window._startError(0)">全部錯題<span class="badge">${totalErrors}</span></button>
-      <button class="sub-btn" ${err1.length === 0 ? 'disabled' : ''} onclick="window._startError(1)">第 1 單元錯題<span class="badge">${err1.length}</span></button>
-      <button class="sub-btn" ${err2.length === 0 ? 'disabled' : ''} onclick="window._startError(2)">第 2 單元錯題<span class="badge">${err2.length}</span></button>`;
+    html += `<button class="sub-btn" onclick="window._startError(0)">全部錯題<span class="badge">${totalErrors}</span></button>`;
+    for (const u of units) {
+      const errU = State.getErrorBank(u.id);
+      html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError(${u.id})">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
+    }
   }
 
   html += '</div>';

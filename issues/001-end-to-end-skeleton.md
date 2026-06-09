@@ -17,13 +17,20 @@ US30（排除舊課綱）不需程式邏輯，靠 `pdfs_期末/` 只放現行課
 
 ## Acceptance criteria
 
-- [ ] 對安和 113下答案卷萃取出是非＋選擇題，題目文字與官方答案正確（抽樣核對數題）
-- [ ] 「根據題意回答問題／填一填／配合題」大題內容未被當成是非/選擇題誤抽
-- [ ] 萃取結果寫入期末 raw 中間檔
-- [ ] 最小分類產出 `unit`∈{3,4,none}、`subtopic` 全為 `none` 的題目
-- [ ] 期末題目併入 `docs/questions.json`（unit 為整數 3/4，schema 與期中一致）
-- [ ] 開啟網站能練到 unit 3 與 unit 4 的題目（是非點 O/X、選擇點選項）
-- [ ] 期中既有題目與練習不受影響
+- [x] 對安和 113下答案卷萃取出是非＋選擇題，題目文字與官方答案正確（抽樣核對數題）— 25 題（15 是非＋10 選擇），答案 100% 正確
+- [x] 「根據題意回答問題／填一填／配合題」大題內容未被當成是非/選擇題誤抽 — 補 `填一填`/`根據題意` 到 `NON_TARGET_SECTION`，截斷生效
+- [x] 萃取結果寫入期末 raw 中間檔 — `data/raw_questions_期末.json`
+- [x] 最小分類產出 `unit`∈{3,4,none}、`subtopic` 全為 `none` 的題目 — `scripts/classify_final_min.py` → `data/classified_questions_期末.json`（3:13, 4:12, none:0）
+- [x] 期末題目併入 `docs/questions.json`（unit 為整數 3/4，schema 與期中一致）— `scripts/build_questions.py`，合併後 627 題
+- [x] 開啟網站能練到 unit 3 與 unit 4 的題目（是非點 O/X、選擇點選項）— Playwright 實測通過
+- [x] 期中既有題目與練習不受影響 — 期中 602 題逐筆比對 HEAD 完全相同；localStorage 進度保留
+
+## 實作產出 / 002 待硬化（已知殘留）
+
+- 新增 `scripts/classify_final_min.py`（001 tracer 專用，#4 會以可切換 taxonomy 正式版取代）、`scripts/build_questions.py`（classified→docs/questions.json 合併，冪等）。
+- `extract.py` 改動：補 NON_TARGET（`填一填`/`根據題意`）、`main()` 加 `--input`/`--output`（不動期中萃取邏輯）。
+- **殘留污染（#2 硬化目標）**：安和答案卷第 2 頁被判定為「非雙欄」（右欄＝配合題答案，題號 pattern 不足 3 個），改用整頁萃取→左右欄逐行交錯，導致 MC#8/9/10 尾端混入頁碼與配合題標籤（如 MC#9 選項顯示「1B.風力 東風」）。答案正確、不影響作答，但選項文字髒。#2 寫 pytest 時以此為案例修 `is_true_two_column` 對「配合題答案式右欄」的偵測。
+- **既有期中資料**：merge 時偵測到 6 個重複 id（北市內湖112、新北安和109），屬期中資料品質問題，PRD 明列期中內容調整 out of scope，未動。
 
 ## Blocked by
 

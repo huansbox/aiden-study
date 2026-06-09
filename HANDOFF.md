@@ -5,7 +5,7 @@
 
 ## 一句話現況
 
-需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue，**程式尚未開始（0/7）**。下一步＝實作 `issues/001`。
+需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001 已完成（1/7）**：端到端 tracer 跑通（安和 113下答案卷 25 題 → 分類 → 併入 docs/questions.json → 網站 unit 3/4 可練）。下一步＝`issues/002`（Parser 抽純函式 + pytest），務必處理 001 留下的第 2 頁雙欄殘留污染（見 issue 001「002 待硬化」）。
 
 ## 專案目標
 
@@ -32,7 +32,7 @@
 
 | Issue | 標題 | 類型 | Blocked by | 狀態 |
 |---|---|---|---|---|
-| 001 | 端到端骨架（tracer） | AFK | — | ☐ 未開始 |
+| 001 | 端到端骨架（tracer） | AFK | — | ☑ 完成 |
 | 002 | Parser 抽純函式 + pytest | AFK | 001 | ☐ |
 | 003 | 6 份答案卷萃取 + helpers + pytest | AFK | 002 | ☐ |
 | 004 | AI 分類器可切換 taxonomy + subtopic | AFK | 003 | ☐ |
@@ -69,4 +69,5 @@
 
 ## Git 狀態
 
-本 session 產出（`pdfs_期末/`、`data/`、`docs-dev/`、`issues/`、`HANDOFF.md`、`CLAUDE.md` 編輯、記憶檔）**尚未 commit**，在 `master`。實作 issue 時依慣例開 branch（`feat/期末-xxx`）。注意 `pdfs_期末/` 與 `data/*.json` 目前未在 `.gitignore`，與先前「PDF 不進 repo」決策不一致，commit 前先決定是否比照 `pdfs/` 排除。
+- gitignore 已釐清：`pdfs/`、`pdfs_期末/` 皆已 ignore（PDF 不進 repo）；`data/*.json`（期中 raw/classified）本就被追蹤 → 期末版同樣 commit，符合既有慣例。無需改 gitignore。
+- 001 在 branch `feat/期末-001-skeleton` 實作。實作後續 issue 依慣例開 branch（`feat/期末-xxx`）。
