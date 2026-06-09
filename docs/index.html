@@ -231,7 +231,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {}, semester: "mid" };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {}, semester: "final" };
 
 const Storage = {
   load() {
@@ -276,7 +276,7 @@ const State = {
     if (!state.challenge) state.challenge = { "1": null, "2": null };
     if (!state.errorBank) state.errorBank = [];
     if (!state.stats) state.stats = {};
-    if (!state.semester) state.semester = "mid";
+    if (!state.semester) state.semester = "final";
   },
 
   // Semester (期中/期末 切換，記住選擇)
