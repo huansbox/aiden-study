@@ -5,7 +5,12 @@
 
 ## 一句話現況
 
-需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001、002 已完成（2/7）**：tracer 跑通＋Parser 抽成純函式並補上 pytest（28 passed），順手修掉第 2 頁雙欄污染（安和 MC#9/#10 已乾淨、期中逐字未變）。下一步＝`issues/003`（擴展到全部 6 份答案卷 + 抽去重/答案合併/驗證 helpers + pytest）。
+需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001、002、003 已完成（3/7）**。下一步＝`issues/004`（分類器升級可切換 taxonomy + 正式 subtopic，重跑全部期末覆蓋暫時 none）。
+
+- 001＝tracer（安和113下→網站可練）。
+- 002＝parser 抽純函式＋pytest，修第2頁雙欄污染。
+- 003＝安和×4 答案卷（118題）＋`data_helpers`（去重/答案合併/驗證）純函式＋pytest（43 passed）；併入 `docs/questions.json`＝720題（3:58 4:60，subtopic 仍全 none 待 #4）。
+- **桃子腳答案卷不可用**（與原計畫衝突）：112下 答案以紅字標選項、110下 純圖片 → 家長決策：112下走民權式 AI 補答案（併 #5）、110下放棄。詳見 issue 003 與記憶 `taozijiao-answer-keys-unusable`。
 
 ## 專案目標
 
@@ -34,7 +39,7 @@
 |---|---|---|---|---|
 | 001 | 端到端骨架（tracer） | AFK | — | ☑ 完成 |
 | 002 | Parser 抽純函式 + pytest | AFK | 001 | ☑ 完成 |
-| 003 | 6 份答案卷萃取 + helpers + pytest | AFK | 002 | ☐ |
+| 003 | 6 份答案卷萃取 + helpers + pytest | AFK | 002 | ☑ 完成（桃子腳改走 #5/排除）|
 | 004 | AI 分類器可切換 taxonomy + subtopic | AFK | 003 | ☐ |
 | 005 | 民權 AI 補答案 + 複查標記 | AFK | 004 | ☐ |
 | 006 | 網站期中/期末切換 + 站名 + 三模式 | **HITL** | 001 | ☐ |

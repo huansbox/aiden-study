@@ -19,6 +19,9 @@ import re
 import time
 import logging
 
+sys.path.insert(0, os.path.dirname(__file__))
+from data_helpers import normalize_text, dedupe_by_text, merge_answer, validate_unit_subtopic
+
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
@@ -97,6 +100,7 @@ def classify_batch(batch: list[dict], batch_idx: int) -> list[dict] | None:
 
             valid = True
             for ci, c in enumerate(classifications):
+                # #1 暫不分 subtopic，故 valid_subtopics 傳空集、unit!=none 也只檢 unit
                 if str(c.get("unit", "")) not in ("3", "4", "none"):
                     log.warning(f"  批次 {batch_idx} 題 {ci+1}: 非法 unit '{c.get('unit')}'")
                     valid = False
@@ -123,15 +127,18 @@ def main():
     # 跳過：含圖片題、選項不足的選擇題（同期中）
     kept = [q for q in all_questions if not q["has_image"]
             and not (q["section"] == "multiple_choice" and len(q["options"]) < 2)]
-    log.info(f"保留題目: {len(kept)}（原 {len(all_questions)}）")
+    # 去重（多份安和答案卷跨年可能重複題）→ 只對 unique 跑 AI，再回填重複題
+    unique = dedupe_by_text(kept)
+    uniq_index = {normalize_text(q["text"]): i for i, q in enumerate(unique)}
+    log.info(f"保留題目: {len(kept)}（原 {len(all_questions)}）；去重後 {len(unique)}")
 
-    total_batches = (len(kept) + BATCH_SIZE - 1) // BATCH_SIZE
-    results: list[dict] = [None] * len(kept)
+    total_batches = (len(unique) + BATCH_SIZE - 1) // BATCH_SIZE
+    results: list[dict] = [None] * len(unique)
 
     for bi in range(total_batches):
         start = bi * BATCH_SIZE
-        end = min(start + BATCH_SIZE, len(kept))
-        batch = kept[start:end]
+        end = min(start + BATCH_SIZE, len(unique))
+        batch = unique[start:end]
         log.info(f"分類批次 {bi+1}/{total_batches}（{len(batch)} 題）")
         batch_results = classify_batch(batch, bi + 1)
 
@@ -145,14 +152,17 @@ def main():
         if bi < total_batches - 1:
             time.sleep(1)
 
+    # 回填分類結果到所有 kept（含重複題）
     classified = []
-    for q, cr in zip(kept, results):
+    for q in kept:
+        cr = results[uniq_index[normalize_text(q["text"])]]
         entry = {**q}
         entry["unit"] = str(cr.get("unit", "none"))
         entry["subtopic"] = "none"  # #1 一律 none，正式 subtopic 留給 #4
         entry["confidence"] = int(cr.get("confidence", 0))
         entry["classify_reason"] = cr.get("classify_reason", "")
-        # 答案沿用答案卷萃取結果（格式A 內嵌），不請 AI 補
+        # 答案合併：安和答案卷有官方答案 → 用官方；無則 AI 補並標記需複查（helper）
+        entry["answer"], entry["needs_review"] = merge_answer(q["answer"], cr.get("answer", ""))
         classified.append(entry)
 
     from collections import defaultdict

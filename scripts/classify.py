@@ -12,6 +12,9 @@ import time
 import logging
 from collections import defaultdict
 
+sys.path.insert(0, os.path.dirname(__file__))
+from data_helpers import normalize_text, dedupe_by_text, merge_answer, validate_unit_subtopic
+
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
@@ -121,14 +124,11 @@ def classify_batch(batch: list[dict], batch_idx: int) -> list[dict] | None:
             # Validate each result
             valid = True
             for ci, c in enumerate(classifications):
-                unit = str(c.get("unit", ""))
-                if unit not in ("1", "2", "none"):
-                    log.warning(f"  批次 {batch_idx} 題 {ci+1}: 非法 unit '{unit}'")
-                    valid = False
-
-                subtopic = c.get("subtopic", "")
-                if unit != "none" and subtopic not in VALID_SUBTOPICS:
-                    log.warning(f"  批次 {batch_idx} 題 {ci+1}: 非法 subtopic '{subtopic}'")
+                if not validate_unit_subtopic(
+                    c.get("unit", ""), c.get("subtopic", ""), {"1", "2", "none"}, VALID_SUBTOPICS
+                ):
+                    log.warning(f"  批次 {batch_idx} 題 {ci+1}: 非法 unit/subtopic "
+                                f"'{c.get('unit')}'/'{c.get('subtopic')}'")
                     valid = False
 
             if not valid and attempt < MAX_RETRIES - 1:
@@ -156,17 +156,9 @@ def main():
             and not (q["section"] == "multiple_choice" and len(q["options"]) < 2)]
     log.info(f"保留題目: {len(kept)}")
 
-    # Dedup by text
-    seen_texts = {}
-    unique_questions = []
-    dedup_map = defaultdict(list)  # text -> list of indices in kept
-
-    for i, q in enumerate(kept):
-        normalized = re.sub(r"\s+", "", q["text"])
-        if normalized not in seen_texts:
-            seen_texts[normalized] = len(unique_questions)
-            unique_questions.append(q)
-        dedup_map[normalized].append(i)
+    # Dedup by text（helper），並建立 正規化文字 → unique index 對照，供結果回填重複題
+    unique_questions = dedupe_by_text(kept)
+    seen_texts = {normalize_text(q["text"]): i for i, q in enumerate(unique_questions)}
 
     log.info(f"去重後: {len(unique_questions)} 題（原 {len(kept)}）")
 
@@ -202,9 +194,8 @@ def main():
 
     # Apply results back to all kept questions (including duplicates)
     classified = []
-    for i, q in enumerate(kept):
-        normalized = re.sub(r"\s+", "", q["text"])
-        unique_idx = seen_texts[normalized]
+    for q in kept:
+        unique_idx = seen_texts[normalize_text(q["text"])]
         cr = results[unique_idx]
 
         entry = {**q}
@@ -213,12 +204,8 @@ def main():
         entry["confidence"] = int(cr.get("confidence", 0))
         entry["classify_reason"] = cr.get("classify_reason", "")
 
-        # Answer: use existing if available, otherwise use AI-provided
-        if q["answer"]:
-            entry["answer"] = q["answer"]
-        else:
-            ai_answer = cr.get("answer", "")
-            entry["answer"] = str(ai_answer) if ai_answer else None
+        # Answer: 有官方用官方，無則用 AI 補（helper）
+        entry["answer"], _ = merge_answer(q["answer"], cr.get("answer", ""))
 
         classified.append(entry)
 

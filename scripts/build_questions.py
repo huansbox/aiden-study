@@ -31,11 +31,25 @@ QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "questions.json"))
 FINAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_期末.json"))
 
 
-def to_final_schema(q: dict) -> dict:
+def unique_id(base: str, used: set) -> str:
+    """確保 id 唯一：撞到既有 id 時依序加後綴 -2/-3…（考卷內偶有重複題號）。"""
+    if base not in used:
+        used.add(base)
+        return base
+    i = 2
+    while f"{base}-{i}" in used:
+        i += 1
+    new_id = f"{base}-{i}"
+    used.add(new_id)
+    return new_id
+
+
+def to_final_schema(q: dict, used_ids: set) -> dict:
     """classified 題目 → 網站最終 schema"""
     stem = q["source"].rsplit(".", 1)[0]
+    base = f"{stem}_{q['section']}_{q['number']}"
     return {
-        "id": f"{stem}_{q['section']}_{q['number']}",
+        "id": unique_id(base, used_ids),
         "unit": int(q["unit"]),
         "subtopic": q.get("subtopic", "none"),
         "type": q["section"],
@@ -57,6 +71,9 @@ def main():
     with open(FINAL_CLASSIFIED, encoding="utf-8") as f:
         classified = json.load(f)
 
+    # 期末 id 對既有期中 id 去碰撞（期中 id 不動，僅確保期末不撞期中/彼此）
+    used_ids = {q["id"] for q in midterm}
+
     final_q = []
     skipped = Counter()
     for q in classified:
@@ -69,17 +86,17 @@ def main():
         if q["section"] == "multiple_choice" and len(q["options"]) < 2:
             skipped["few_options"] += 1
             continue
-        final_q.append(to_final_schema(q))
+        final_q.append(to_final_schema(q, used_ids))
 
     log.info(f"期末題目: {len(final_q)}（排除 {dict(skipped)}）")
 
     merged = midterm + final_q
 
-    # 檢查 id 唯一
-    ids = [q["id"] for q in merged]
-    dup = [k for k, v in Counter(ids).items() if v > 1]
+    # 檢查期末 id 唯一（期中既有重複屬 out-of-scope，不在此處理）
+    final_ids = [q["id"] for q in final_q]
+    dup = [k for k, v in Counter(final_ids).items() if v > 1]
     if dup:
-        log.warning(f"重複 id: {dup}")
+        log.warning(f"期末重複 id（未解）: {dup}")
 
     unit_counts = Counter(q["unit"] for q in merged)
     log.info(f"合併後總題數: {len(merged)}，各單元: {dict(sorted(unit_counts.items()))}")

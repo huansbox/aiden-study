@@ -380,15 +380,18 @@ def process_pdf(pdf_path: str) -> list[dict]:
 
 def main():
     parser = argparse.ArgumentParser(description="PDF 考卷題目萃取器")
-    parser.add_argument("--input", default=DOCS_DIR, help="PDF 檔或目錄（預設 docs/）")
+    parser.add_argument("--input", nargs="+", default=[DOCS_DIR],
+                        help="PDF 檔或目錄（可多個；預設 docs/）")
     parser.add_argument("--output", default=OUTPUT_PATH, help="輸出 JSON 路徑")
     args = parser.parse_args()
 
-    inp = os.path.abspath(args.input)
-    if os.path.isdir(inp):
-        pdfs = sorted(os.path.join(inp, f) for f in os.listdir(inp) if f.endswith(".pdf"))
-    else:
-        pdfs = [inp]
+    pdfs = []
+    for item in args.input:
+        p = os.path.abspath(item)
+        if os.path.isdir(p):
+            pdfs.extend(sorted(os.path.join(p, f) for f in os.listdir(p) if f.endswith(".pdf")))
+        else:
+            pdfs.append(p)
     log.info(f"共找到 {len(pdfs)} 份 PDF")
 
     all_questions = []
