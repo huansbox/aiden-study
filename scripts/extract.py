@@ -110,8 +110,15 @@ def is_true_two_column(left_text: str, right_text: str) -> bool:
     fmt_a = re.findall(r"[（\(]\s*[" + TF_CHARS + r"\d１-５①-⑤]*\s*[）\)]\s*\d{1,2}\s*[.．、]", right_text)
     # 格式B: number.( )
     fmt_b = re.findall(r"(?:^|\n)\s*\d{1,2}\s*[.．、]\s*[（\(]", right_text)
+    if len(fmt_a) >= 3 or len(fmt_b) >= 3:
+        return True
 
-    return len(fmt_a) >= 3 or len(fmt_b) >= 3
+    # 答案卷右欄常是配合題/填一填的「答案＋子題號」欄（如 （D）(1) 25%、（戊）(1) 金魚），
+    # 不含一般題號序列。偵測此型，避免整頁讀取時左右欄逐行交錯污染左欄選擇題。
+    matching_ans = re.findall(
+        r"[（\(]\s*[A-Za-z一-鿿]\s*[）\)]\s*[（\(]\s*\d{1,2}\s*[）\)]", right_text
+    )
+    return len(matching_ans) >= 3
 
 
 def extract_text_from_pdf(pdf_path: str) -> str:
@@ -326,8 +333,31 @@ def extract_options(text: str) -> list[str]:
 
 # ── 主流程 ──────────────────────────────────────────
 
+def parse_questions_from_text(text: str, source: str) -> list[dict]:
+    """
+    純函式：考卷純文字 → 結構化題目清單。
+
+    封裝 section 切分、格式A/B 偵測、題目切分、答案正規化、選項抽取、
+    has_image 判斷與 NON_TARGET 截斷。不讀 PDF、不 logging，可獨立測試。
+    """
+    if not text.strip():
+        return []
+
+    questions = []
+    for sec in find_section_ranges(text):
+        sec_text = text[sec["start"]:sec["end"]]
+        fmt = detect_question_format(sec_text)
+        if fmt == "A":
+            qs = parse_questions_format_a(sec_text, source, sec["type"])
+        else:
+            qs = parse_questions_format_b(sec_text, source, sec["type"])
+        questions.extend(qs)
+
+    return questions
+
+
 def process_pdf(pdf_path: str) -> list[dict]:
-    """處理單一 PDF，回傳題目列表"""
+    """處理單一 PDF（不純：讀檔 + logging），委派解析給純函式。"""
     source = os.path.basename(pdf_path)
     log.info(f"處理: {source}")
 
@@ -339,21 +369,12 @@ def process_pdf(pdf_path: str) -> list[dict]:
     sections = find_section_ranges(text)
     if not sections:
         log.warning(f"  {source}: 未偵測到是非題/選擇題 section header")
-
-    questions = []
     for sec in sections:
         sec_text = text[sec["start"]:sec["end"]]
-        fmt = detect_question_format(sec_text)
-        log.info(f"  {sec['type']} (格式{fmt})")
+        log.info(f"  {sec['type']} (格式{detect_question_format(sec_text)})")
 
-        if fmt == "A":
-            qs = parse_questions_format_a(sec_text, source, sec["type"])
-        else:
-            qs = parse_questions_format_b(sec_text, source, sec["type"])
-
-        log.info(f"    → {len(qs)} 題")
-        questions.extend(qs)
-
+    questions = parse_questions_from_text(text, source)
+    log.info(f"    → {len(questions)} 題")
     return questions
 
 

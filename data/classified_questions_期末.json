@@ -9,8 +9,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "動物為適應環境而有不同外形特徵，屬第3單元動物適應主題"
+    "confidence": 99,
+    "classify_reason": "動物適應環境的外形特徵，屬第3單元動物分類與適應。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -22,8 +22,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 75,
-    "classify_reason": "描述動物身體構造（頭、軀幹、四肢），屬第3單元身體構造主題"
+    "confidence": 92,
+    "classify_reason": "動物身體構造（頭、軀幹、四肢），屬第3單元身體構造。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -36,7 +36,7 @@
     "unit": "3",
     "subtopic": "none",
     "confidence": 98,
-    "classify_reason": "動物體色鮮豔具警戒或保護作用，屬第3單元生存與適應主題"
+    "classify_reason": "動物體色的警戒與偽裝功能，屬第3單元生存與適應。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -48,8 +48,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "蚯蚓棲息習性，屬第3單元觀察動物與生存環境主題"
+    "confidence": 99,
+    "classify_reason": "蚯蚓的棲息環境，屬第3單元觀察動物／生存適應。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -61,8 +61,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "蚯蚓在雨後鑽出土壤的呼吸生存行為，屬第3單元動物生存適應主題"
+    "confidence": 98,
+    "classify_reason": "蚯蚓在水浸土壤後鑽出的行為原因，屬第3單元動物生存與適應。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -75,7 +75,7 @@
     "unit": "3",
     "subtopic": "none",
     "confidence": 90,
-    "classify_reason": "人體四肢（上肢下肢）屬身體構造，歸第3單元身體構造主題"
+    "classify_reason": "人體四肢構造名稱（上肢／下肢），屬第3單元身體構造。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -87,8 +87,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "風力定義，屬第4單元天氣—風的主題"
+    "confidence": 99,
+    "classify_reason": "「風力」定義，屬第4單元天氣—風。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -100,8 +100,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "166/167 氣象語音專線，屬第4單元天氣預報主題"
+    "confidence": 97,
+    "classify_reason": "166/167 氣象語音專線，屬第4單元天氣預報資訊取得。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -114,7 +114,7 @@
     "unit": "4",
     "subtopic": "none",
     "confidence": 95,
-    "classify_reason": "四季氣溫變化影響生活，屬第4單元氣溫測量與天氣主題"
+    "classify_reason": "四季氣溫變化影響生活習慣，屬第4單元氣溫測量與天氣影響。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -126,8 +126,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "雲量比例定義「多雲」，屬第4單元天氣觀測主題"
+    "confidence": 99,
+    "classify_reason": "雲量六成稱「多雲」，屬第4單元天氣觀測。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -139,8 +139,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 92,
-    "classify_reason": "東北季風屬臺灣季節性風向，歸第4單元天氣—風的主題"
+    "confidence": 97,
+    "classify_reason": "東北季風對生活的影響，屬第4單元天氣—風。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -153,7 +153,7 @@
     "unit": "3",
     "subtopic": "none",
     "confidence": 90,
-    "classify_reason": "蜥蜴（壁虎類）腳部構造，屬第3單元動物身體構造主題"
+    "classify_reason": "蜥蜴腳部構造，屬第3單元動物身體構造（敘述內容本身有誤，但分類仍屬動物）。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -166,7 +166,7 @@
     "unit": "3",
     "subtopic": "none",
     "confidence": 98,
-    "classify_reason": "動物體色警戒效果有助生存，屬第3單元生存與適應主題"
+    "classify_reason": "動物鮮豔體色的警戒效果，屬第3單元生存與適應。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -178,8 +178,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "陰天雲量描述，屬第4單元天氣觀測主題"
+    "confidence": 99,
+    "classify_reason": "陰天雲量描述，屬第4單元天氣觀測。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -191,8 +191,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 90,
-    "classify_reason": "雨水與植物水分關係，核心概念為降雨，歸第4單元降雨主題"
+    "confidence": 95,
+    "classify_reason": "雨水與植物生長關係，核心概念是降雨，屬第4單元雨量降雨。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -209,8 +209,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "氣溫最高時段，屬第4單元氣溫測量主題"
+    "confidence": 99,
+    "classify_reason": "一天中氣溫最高時段，屬第4單元氣溫測量。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -227,8 +227,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "雨量測量地點選擇，屬第4單元雨量降雨主題"
+    "confidence": 99,
+    "classify_reason": "雨量測量場地選擇，屬第4單元雨量降雨。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -245,8 +245,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "爬蟲類外表特徵（硬皮鱗片），屬第3單元動物分類主題"
+    "confidence": 99,
+    "classify_reason": "爬蟲類體表特徵（乾燥硬皮／鱗片），屬第3單元動物分類與身體構造。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -263,8 +263,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "兩生類動物辨識（蛙），屬第3單元動物分類主題"
+    "confidence": 99,
+    "classify_reason": "兩生類代表動物（蛙），屬第3單元動物分類。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -281,8 +281,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 85,
-    "classify_reason": "瞳孔對光線的反應為眼部構造，屬第3單元動物身體構造主題"
+    "confidence": 95,
+    "classify_reason": "眼睛瞳孔對光線的反應，屬第3單元動物身體構造與感官。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -299,8 +299,8 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 97,
-    "classify_reason": "不同口徑容器收集雨水高度比較，屬第4單元雨量測量主題"
+    "confidence": 99,
+    "classify_reason": "平底直筒容器收集雨水高度比較，屬第4單元雨量測量原理。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -317,8 +317,8 @@
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "鴕鳥特徵（鳥類、翅膀、腳），屬第3單元動物分類與身體構造主題"
+    "confidence": 99,
+    "classify_reason": "鴕鳥的身體特徵與分類，屬第3單元動物分類與身體構造。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
@@ -335,43 +335,43 @@
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "風向標指向判斷風向，屬第4單元天氣—風向主題"
+    "confidence": 99,
+    "classify_reason": "風向標箭頭指向判斷風向，屬第4單元天氣—風。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
     "section": "multiple_choice",
     "number": 9,
-    "text": "如果「自製風向風力計」的紙條飄 A.氣溫 向東方，請問現在吹的是什麼風? ① B.風力 東風 ②西風 ③南風 ④北風。 C.風向",
+    "text": "如果「自製風向風力計」的紙條飄 向東方，請問現在吹的是什麼風? ① 東風 ②西風 ③南風 ④北風。",
     "options": [
-      "B.風力 東風",
+      "東風",
       "西風",
       "南風",
-      "北風。 C.風向"
+      "北風"
     ],
     "answer": "2",
     "has_image": false,
     "unit": "4",
     "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "自製風向風力計紙條飄向判斷風向，屬第4單元天氣—風向主題"
+    "confidence": 99,
+    "classify_reason": "紙條飄動方向判斷風向，屬第4單元天氣—風。"
   },
   {
     "source": "新北市_安和國小_113下期末2_自然康軒_答案.pdf",
     "section": "multiple_choice",
     "number": 10,
-    "text": "何者不屬於愛護動物的行為? ①善 待動物，決不會棄養牠 ②隨意抓小 D.降雨機率 鳥回家飼養 ③認養寵物，取代購買 E.海浪 ④不破壞或污染動物居住的地方。 （D）(1) 25%。 （C）(2) 西南風。",
+    "text": "何者不屬於愛護動物的行為? ①善 待動物，決不會棄養牠 ②隨意抓小 鳥回家飼養 ③認養寵物，取代購買 ④不破壞或污染動物居住的地方。",
     "options": [
       "善 待動物，決不會棄養牠",
-      "隨意抓小 D.降雨機率 鳥回家飼養",
-      "認養寵物，取代購買 E.海浪",
-      "不破壞或污染動物居住的地方。 （D）(1) 25%。 （C）(2) 西南風"
+      "隨意抓小 鳥回家飼養",
+      "認養寵物，取代購買",
+      "不破壞或污染動物居住的地方"
     ],
     "answer": "2",
     "has_image": false,
     "unit": "3",
     "subtopic": "none",
-    "confidence": 95,
-    "classify_reason": "愛護動物的正確行為，屬第3單元觀察與對待動物主題"
+    "confidence": 99,
+    "classify_reason": "愛護動物的正確行為判斷，屬第3單元觀察與對待動物。"
   }
 ]

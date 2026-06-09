@@ -5,7 +5,7 @@
 
 ## 一句話現況
 
-需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001 已完成（1/7）**：端到端 tracer 跑通（安和 113下答案卷 25 題 → 分類 → 併入 docs/questions.json → 網站 unit 3/4 可練）。下一步＝`issues/002`（Parser 抽純函式 + pytest），務必處理 001 留下的第 2 頁雙欄殘留污染（見 issue 001「002 待硬化」）。
+需求已完整對齊（grill-me 六輪 + PRD + agent review），拆成 7 個 issue。**001、002 已完成（2/7）**：tracer 跑通＋Parser 抽成純函式並補上 pytest（28 passed），順手修掉第 2 頁雙欄污染（安和 MC#9/#10 已乾淨、期中逐字未變）。下一步＝`issues/003`（擴展到全部 6 份答案卷 + 抽去重/答案合併/驗證 helpers + pytest）。
 
 ## 專案目標
 
@@ -33,7 +33,7 @@
 | Issue | 標題 | 類型 | Blocked by | 狀態 |
 |---|---|---|---|---|
 | 001 | 端到端骨架（tracer） | AFK | — | ☑ 完成 |
-| 002 | Parser 抽純函式 + pytest | AFK | 001 | ☐ |
+| 002 | Parser 抽純函式 + pytest | AFK | 001 | ☑ 完成 |
 | 003 | 6 份答案卷萃取 + helpers + pytest | AFK | 002 | ☐ |
 | 004 | AI 分類器可切換 taxonomy + subtopic | AFK | 003 | ☐ |
 | 005 | 民權 AI 補答案 + 複查標記 | AFK | 004 | ☐ |
