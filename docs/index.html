@@ -231,7 +231,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {}, semester: "final" };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, semester: "final" };
 
 const Storage = {
   load() {
@@ -277,6 +277,9 @@ const State = {
     if (!state.errorBank) state.errorBank = [];
     if (!state.stats) state.stats = {};
     if (!state.semester) state.semester = "final";
+    if (!state.mastered) state.mastered = {};
+    // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
+    if (saved && !saved.mastered) state._needMasteredBackfill = true;
   },
 
   // Semester (期中/期末 切換，記住選擇)
@@ -326,6 +329,60 @@ const State = {
   },
   resetChallenge(key) {
     state.challenge[key] = null; // null = 未開始
+    Storage.save(state);
+  },
+
+  // ── Mastered（已答對題目，單一真相源；整單元與 subtopic 進度皆由此推導）
+  getMasteredSet(unit) {
+    return new Set(state.mastered[String(unit)] || []);
+  },
+  addMastered(unit, qId) {
+    const u = String(unit);
+    if (!state.mastered[u]) state.mastered[u] = [];
+    if (!state.mastered[u].includes(qId)) state.mastered[u].push(qId);
+    Storage.save(state);
+  },
+  resetMastered(unit, subtopic = null) {
+    const u = String(unit);
+    if (!state.mastered[u]) return;
+    if (subtopic) {
+      state.mastered[u] = state.mastered[u].filter(id => {
+        const q = questionMap.get(id);
+        return q && q.subtopic !== subtopic;
+      });
+    } else {
+      state.mastered[u] = [];
+    }
+    Storage.save(state);
+  },
+  doneCount(unit, subtopic = null) {
+    const set = State.getMasteredSet(unit);
+    return questionIdsFor(unit, subtopic).filter(id => set.has(id)).length;
+  },
+  isCleared(unit, subtopic = null) {
+    const ids = questionIdsFor(unit, subtopic);
+    if (ids.length === 0) return false;
+    const set = State.getMasteredSet(unit);
+    return ids.every(id => set.has(id));
+  },
+  // v2→v3 反推：每個 challenge queue 的「範圍題 \ queue」＝已答對（無損、與舊顯示等價）
+  backfillMastered() {
+    for (const [key, ch] of Object.entries(state.challenge || {})) {
+      if (!ch || !ch.queue) continue; // null = 未開始，無貢獻
+      const slash = key.indexOf("/");
+      const unit = Number(slash === -1 ? key : key.slice(0, slash));
+      const subtopic = slash === -1 ? null : key.slice(slash + 1);
+      if (!unit) continue;
+      const remaining = new Set(ch.queue);
+      const u = String(unit);
+      if (!state.mastered[u]) state.mastered[u] = [];
+      for (const id of questionIdsFor(unit, subtopic)) {
+        if (!remaining.has(id) && !state.mastered[u].includes(id)) {
+          state.mastered[u].push(id);
+        }
+      }
+    }
+    delete state._needMasteredBackfill;
     Storage.save(state);
   }
 };
@@ -382,13 +439,13 @@ function showPage(id) {
 // ════════════════════════════════════════════════════
 const Picker = {
   forFullPractice(unit, subtopic) {
+    const mastered = State.getMasteredSet(unit);
+    // 真相＝mastered；queue 只排序「尚未答對」的題（在別處答對的會被濾掉、不再出）
+    const target = questionIdsFor(unit, subtopic).filter(id => !mastered.has(id) && questionMap.has(id));
     const ch = State.getChallenge(challengeKey(unit, subtopic));
-    if (ch && ch.queue && ch.queue.length > 0) {
-      // Resume: filter orphan ids
-      return ch.queue.filter(id => questionMap.has(id));
-    }
-    // New: shuffle all unit (or subtopic) questions
-    return shuffle(questionIdsFor(unit, subtopic));
+    const cached = (ch && ch.queue ? ch.queue : []).filter(id => target.includes(id)); // 保留既有題序
+    const fresh = shuffle(target.filter(id => !cached.includes(id)));                    // 新題打散
+    return [...cached, ...fresh];
   },
 
   forQuickPractice(unit, subtopic, count = 10) {
@@ -459,7 +516,9 @@ function submitAnswer(selected) {
   // Mode-specific queue logic
   if (quiz.mode === "full") {
     quiz.queue.shift();
-    if (!correct) {
+    if (correct) {
+      State.addMastered(quiz.unit, q.id); // 雙向共享：整單元與 subtopic 進度同步計入
+    } else {
       quiz.queue.push(q.id);
       State.addToErrorBank(q.id, q.unit);
     }
@@ -486,7 +545,7 @@ function advance() {
 
   // Check if finished
   if (quiz.mode === "full" && quiz.queue.length === 0) {
-    State.clearChallenge(challengeKey(quiz.unit, quiz.subtopic));
+    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), []); // 清空順序快取；通關由 mastered 判定
     renderSummary();
     return;
   }
@@ -532,12 +591,12 @@ function renderSubtopics(u) {
   for (const st of u.subtopics) {
     const count = questionIdsFor(u.id, st).length;
     if (count === 0) continue;  // 該 subtopic 無題則不顯示
-    const ch = State.getChallenge(challengeKey(u.id, st));
+    const done = State.doneCount(u.id, st);
     let statusHtml = `<span class="st-count">${count} 題</span>`;
-    if (ch && ch.queue && ch.queue.length === 0) {
+    if (done >= count) {
       statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
-    } else if (ch && ch.queue && ch.queue.length > 0) {
-      statusHtml = `<span class="st-count">接續 ${count - ch.queue.length}/${count}</span>`;
+    } else if (done > 0) {
+      statusHtml = `<span class="st-count">接續 ${done}/${count}</span>`;
     }
     rows += `
       <div class="subtopic-row">
@@ -568,16 +627,16 @@ function renderHome() {
   // Unit sections
   for (const u of units) {
     const totalInUnit = allQuestions.filter(q => q.unit === u.id).length;
-    const ch = State.getChallenge(challengeKey(u.id));
+    const done = State.doneCount(u.id);
+    const isCleared = State.isCleared(u.id);
     let fullStatus, fullLabel;
 
-    if (ch && ch.queue && ch.queue.length === 0) {
+    if (isCleared) {
       // 已通關
       fullLabel = "全部練習";
       fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
-    } else if (ch && ch.queue && ch.queue.length > 0) {
+    } else if (done > 0) {
       // 進行中
-      const done = totalInUnit - ch.queue.length;
       fullLabel = "全部練習（接續）";
       fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
     } else {
@@ -585,8 +644,6 @@ function renderHome() {
       fullLabel = "全部練習";
       fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
-
-    const isCleared = ch && ch.queue && ch.queue.length === 0;
 
     html += `
       <div class="unit-section">
@@ -622,9 +679,9 @@ function renderHome() {
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
 window._startFull = (unit, subtopic = null) => {
-  const ch = State.getChallenge(challengeKey(unit, subtopic));
-  if (ch && ch.queue && ch.queue.length === 0) {
+  if (State.isCleared(unit, subtopic)) {
     // 已通關，重置再開始
+    State.resetMastered(unit, subtopic);
     State.resetChallenge(challengeKey(unit, subtopic));
   }
   startQuiz("full", unit, subtopic);
@@ -639,6 +696,7 @@ window._setSemester = (s) => {
   renderHome();
 };
 window._resetChallenge = (unit, subtopic = null) => {
+  State.resetMastered(unit, subtopic);
   State.resetChallenge(challengeKey(unit, subtopic));
   renderHome();
 };
@@ -897,6 +955,7 @@ function renderSummary() {
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
 window._resetAndStartFull = (unit, subtopic = null) => {
+  State.resetMastered(unit, subtopic);
   State.resetChallenge(challengeKey(unit, subtopic));
   startQuiz("full", unit, subtopic);
 };
@@ -920,6 +979,9 @@ async function init() {
     // Clean orphan errorBank entries
     state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
     Storage.save(state);
+
+    // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
+    if (state._needMasteredBackfill) State.backfillMastered();
 
     renderHome();
   } catch (e) {
