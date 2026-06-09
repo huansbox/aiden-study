@@ -3,6 +3,35 @@
 > 給下一個 session 的交接。**真相源＝`issues/prd.md`（PRD）＋ `issues/001`～`007`（工作項）**；本檔只負責定位「目標／現況／下一步」，細節一律看 PRD 與 issue。
 > 交接時間：2026-06-09。
 
+---
+
+## ⭐ 第二批：其他縣市擴充（2026-06-10）— Stage 1 完成，**Stage 2 待你接手**
+
+**背景**：在原 7 issues（期末題庫，臺北＋新北）完成後，繼續找「其他縣市同版本（康軒）同範圍（三下自然期末）現行課綱（110下+）」卷擴充。官方答案優先、否則 AI 判答＋複審；只做是非＋選擇。
+
+**做法與細節**：先讀 [`docs-dev/exam-paper-sourcing.md`](docs-dev/exam-paper-sourcing.md)「目前蒐集狀態」＋「圖片型官方答案卷的視覺判讀流程」，與 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)「七、第二批」（含**重跑指令**與踩過的坑）。
+
+**Stage 1（官方答案批）已完成**：全台掃描（`scripts/sweep_tcool.ps1` → `data/tcool_sweep_all.json`）找到 15 份新卷；併入 **100 題官方答案、0 複查負擔**（三民111、四維112、廣興111、廣興112）。題庫 841→941。已修 2 個 parser 坑（PUA 選項標記、`題組` 邊界）。
+
+### Stage 2（你的任務）：7 份無官方答案卷 → AI 判答＋複審
+
+清單（皆**文字可抽**，已下載在 `pdfs_期末/`）：臺中 大墩113/大墩112/文心112/文心111、彰化 路上111（期末3 三段考制）、高雄 永安113、基隆 東光113。
+
+步驟（沿用既有 pipeline，**不要重跑既有 classified 以免覆蓋 review A 修正**）：
+1. `extract.py --input <這7份題目卷> --output data/raw_questions_期末_新增.json`（會覆寫；本批是非/選擇）。
+2. `classify.py --semester final --input ... --output data/classified_questions_期末_新增.json`（AI 判答＋分類）。
+3. **不要** `apply_answer_key.py`（這批無官方答案）。**複審**：依使用者意願「讓 2 agent 回答取一致」或單票盲審（參考 review A 做法，見經驗筆記四）；分歧題人工定奪。
+4. `merge_classified.py`（去重併入，新題文字若已在題庫則丟棄）→ `build_review_list.py`（這批會進複查清單）→ `build_questions.py` → `uv run pytest`。
+5. 本機 `uv run python -m http.server --directory docs` + Playwright 煙霧測試。
+
+**注意**：merge 會 append；若 `classified_questions_期末.json` 已含本批，重跑前先 `git checkout` 還原。路上111 是三段考制（期末3），範圍可能偏 unit4，classify 會自動把範圍外標 none 排除。
+
+### 第二批的暫緩項（次要，可不做）
+- **海佃110**：答案卷選擇有官方、是非空白；但 header「對的畫○錯的打✕」被底線打散＋「選出正確的號碼」不在 SECTION_PATTERNS＋後段配合題無 NON_TARGET 邊界 → 需動通用 regex（影響期中 regression），產出低，已暫緩。
+- **三民111 是非**：答案卷雙欄打散，是非 12 題只抽到 6（#2,3,5,9,10,12），抽到的對齊正確；補齊需改善雙欄處理。
+
+---
+
 ## 一句話現況
 
 **7 個 issue 全部完成（7/7）。** 期末題庫擴充已實作完畢：PDF 萃取（純函式＋pytest）→ 可切換學期分類器（subtopic）→ 民權/桃子腳 AI 補答案＋複查清單 → 網站期中/期末切換＋subtopic 練習。最終題庫 824 題（期中602＋期末222）。pytest 49 passed。

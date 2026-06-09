@@ -50,7 +50,7 @@ SECTION_PATTERNS = {
 NON_TARGET_SECTION = re.compile(
     r"[一二三四五六七八壹貳參肆伍][\s、.．]+"
     r"(?:綜合[題練習]|配合題|連連看|填[填充]看|填一填|做一做|閱讀[題測驗]|"
-    r"去吧|根據題[目意]|科學閱讀|科普閱讀|填填看|綜合應用題|連連看)"
+    r"去吧|根據題[目意]|科學閱讀|科普閱讀|填填看|綜合應用題|連連看|題組)"
 )
 
 
@@ -121,6 +121,17 @@ def is_true_two_column(left_text: str, right_text: str) -> bool:
     return len(matching_ans) >= 3
 
 
+# 某些字體把選項標記 ①②③④⑤ 對映到私用區（PUA）碼位 U+F06A–F06E（如彰化廣興111
+# 題目卷）。pdfplumber 抽出的是 PUA 碼點，選項偵測與顯示都會壞掉，先正規化回 ①②③④⑤。
+PUA_OPTION_MAP = {chr(0xF06A + i): m for i, m in enumerate("①②③④⑤")}
+
+
+def normalize_pua(text: str) -> str:
+    for k, v in PUA_OPTION_MAP.items():
+        text = text.replace(k, v)
+    return text
+
+
 def extract_text_from_pdf(pdf_path: str) -> str:
     """
     萃取 PDF 全文，自動處理雙欄排版。
@@ -144,7 +155,7 @@ def extract_text_from_pdf(pdf_path: str) -> str:
             all_text.append(full_text)
 
     pdf.close()
-    return "\n".join(all_text)
+    return normalize_pua("\n".join(all_text))
 
 
 # ── 題目格式偵測 ──────────────────────────────────────────

@@ -209,8 +209,14 @@ def main():
     parser = argparse.ArgumentParser(description="AI 分類器（可切換學期 taxonomy）")
     parser.add_argument("--semester", choices=list(SEMESTERS), default="mid",
                         help="學期分類設定：mid（期中，預設）或 final（期末）")
+    parser.add_argument("--input", default=None, help="覆寫輸入 raw JSON 路徑（預設用該學期 config）")
+    parser.add_argument("--output", default=None, help="覆寫輸出 classified JSON 路徑（預設用該學期 config）")
     args = parser.parse_args()
-    config = SEMESTERS[args.semester]
+    config = dict(SEMESTERS[args.semester])
+    if args.input:
+        config["input"] = os.path.abspath(args.input)
+    if args.output:
+        config["output"] = os.path.abspath(args.output)
     batch_size = config["batch_size"]
 
     log.info(f"學期: {args.semester}；模型: {config['model'] or '預設'}")

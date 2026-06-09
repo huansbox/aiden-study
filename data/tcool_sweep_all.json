@@ -1,0 +1,974 @@
+[
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002189b3215202e495.pdf",
+    "a": "/d/a/20002189a3215202e495.pdf"
+  },
+  {
+    "city": "高雄市",
+    "school": "永安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001197b32414e072a3.pdf",
+    "a": ""
+  },
+  {
+    "city": "基隆市",
+    "school": "東光國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001103b22478fba4df.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000995b2243fb4c41b.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "大墩國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000631b3247bbd1bcb.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002188b3147fb25e77.pdf",
+    "a": "/d/a/20002188a3147fb25e77.pdf"
+  },
+  {
+    "city": "基隆市",
+    "school": "東光國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001075b22146400ff9.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000972b221048c3535.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "大墩國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000614b3210a052b26.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002678b3213d7ec7df.pdf",
+    "a": "/d/a/20002678a3213d7ec7df.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002104b32160505365.pdf",
+    "a": "/d/a/20002104a32160505365.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001862b3213db2b91b.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "大墩國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000547b32465fe0ac7.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048816695e97b26be8.pdf",
+    "a": "/d/a/10048816695e97b2712b.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100488066839f5e23be9.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029016682497b71af4.pdf",
+    "a": "/d/a/10029016682497b72461.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100295866753aeb44ed0.pdf",
+    "a": "/d/a/100295866752da0879e4.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1002998667245fca39b9.pdf",
+    "a": "/d/a/1002998667245fca3f1c.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/1003024664da4f8a88a0.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/1003024663c2a8fc9129.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002677b3147dafb437.pdf",
+    "a": "/d/a/20002677a3147dafb437.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002103b314572d2e66.pdf",
+    "a": "/d/a/20002103a314572d2e66.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001861b3115afbcdac.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "大墩國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000527b3216462c99b.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10048816694d7618d493.pdf",
+    "a": "/d/a/10048816694d7618d8cb.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488066839d4186be9.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029586621d5a4decda.pdf",
+    "a": "/d/a/10029586621d5a4e09e7.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002998661f1c1540048.pdf",
+    "a": "/d/a/1002998661f1c154057a.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100302465fd39b0db333.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002018b32157ae06e0.pdf",
+    "a": "/d/a/20002018a32157ae06e0.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001778b321226bfc37.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100488064fa76e0a9d15.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "三民國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100286564a6212f45c2e.pdf",
+    "a": "/d/a/100286564a6212f46019.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1002958649a83cb5d2bc.pdf",
+    "a": "/d/a/1002958649a83cb5f36f.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100299864990beaa00e5.pdf",
+    "a": "/d/a/100299864990beaa071f.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/1003024649155049b476.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/1003024648298c1d5195.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002017b31428494ff8.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001777b3115f65eae1.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488064fa745644db5.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸仁國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002894644f293171246.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "三民國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002865644b692a92948.pdf",
+    "a": "/d/a/1002865644b692a92c34.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029986446491d465bc.pdf",
+    "a": "/d/a/10029986446491d46914.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002958644241ec95e7c.pdf",
+    "a": "/d/a/1002958644241ec98a36.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100302464252187ef42a.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002488b3216e54adcd.pdf",
+    "a": "/d/a/20002488a3216e54adcd.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001939b32146a19d7d.pdf",
+    "a": "/d/a/20001939a32146a19d7d.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001688b32142530bdb.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100503062b511ba6b6d4.pdf",
+    "a": "/d/a/100503062b511ba6b925.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002487b3147b12a1ef.pdf",
+    "a": "/d/a/20002487a3147b12a1ef.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001938b31476f84404.pdf",
+    "a": "/d/a/20001938a31476f84404.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001687b314347667bd.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488063e1ad0411833.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺東縣",
+    "school": "新生國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100434962df70dadb5be.pdf",
+    "a": "/d/a/100434962df70dadb933.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100290162bb8f331d39d.pdf",
+    "a": "/d/a/100290162bb8f331e0c3.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100503062b50dec6ece4.pdf",
+    "a": "/d/a/100503062b50dec6ef74.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "中山國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100285862696a76af97e.pdf",
+    "a": "/d/a/100285862696a76afcf0.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100295862624b687bfe2.pdf",
+    "a": "/d/a/100295862624b687c3d7.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸仁國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002894625f580a1234a.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "大園國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/100292460a1ddb371505.pdf",
+    "a": "/d/a/100292460a1ddb371795.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1001785640942cdbe5c5.pdf",
+    "a": "/d/a/1001785640942cdbe844.pdf"
+  },
+  {
+    "city": "臺東縣",
+    "school": "新生國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100434962de5a603f48f.pdf",
+    "a": "/d/a/100434962de5a603fb59.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "延平國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100517060ee5151c0be1.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100503060d3d222bcc85.pdf",
+    "a": "/d/a/100503060d3d222bcee3.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100320360ab52c19a7b5.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸東國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100289360949206afd7f.pdf",
+    "a": "/d/a/100289360949206b0087.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "三潭國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029566087b3d6e9fc6.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "國聖國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028686076a60b7936a.pdf",
+    "a": "/d/a/10028686076a60b827da.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "大園國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100292460642b1ddad39.pdf",
+    "a": "/d/a/100292460642b1ddafca.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048815fb4803743089.pdf",
+    "a": "/d/a/10048815fb48037431dc.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10017855f3366a1d71a8.pdf",
+    "a": "/d/a/10017855f3366a1d7319.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "興南國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10016515f321a0226ae3.pdf",
+    "a": "/d/a/10016515f89538470070.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "二水國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029665f9798b05acc6.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "曉陽國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10028915f2a20c713696.pdf",
+    "a": "/d/a/10028915f2a20c7138e3.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "左鎮國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10037295f2a1195f0866.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "田中國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029555fa4c146eba52.pdf",
+    "a": "/d/a/10029555fa4c1470af94.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10050305f1946bf2d9b9.pdf",
+    "a": "/d/a/10050305f8d522804bf5.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10032035f150c98ef441.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048805f0ffbf855f54.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10031295f0c009d3a0f3.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸東國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10028935fd06ee35f5bc.pdf",
+    "a": "/d/a/10028935fd06ee35fc06.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸東國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10028935fd09a57a30c7.pdf",
+    "a": "/d/a/10028935fd09a57aa5f7.pdf"
+  },
+  {
+    "city": "桃園市",
+    "school": "草漯國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10021685f0543a2910d2.pdf",
+    "a": ""
+  },
+  {
+    "city": "桃園市",
+    "school": "壽山國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10020865f041309dde11.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "內安國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029585fd321f98a9c8.pdf",
+    "a": "/d/a/10029585f02bbb0c6eb2.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "東芳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10028635f0344afc812f.pdf",
+    "a": "/d/a/10028635f0344afca133.pdf"
+  },
+  {
+    "city": "基隆市",
+    "school": "八斗國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/10046675f1f8a88b0a0b.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/10030245f0d9b861b82a.pdf",
+    "a": "/d/a/10030245fc8497516d9c.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "大園國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/10029245f08028d90476.pdf",
+    "a": "/d/a/10029245f08028d90673.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/10030245fc9d9af75cde.pdf",
+    "a": "/d/a/10030245fc9d9af76791.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "寶山國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/10028745ee2e8bb08fff.pdf",
+    "a": "/d/a/10028745ee2e8bb0943e.pdf"
+  },
+  {
+    "city": "臺東縣",
+    "school": "新生國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1004349605995abbcaed.pdf",
+    "a": "/d/a/1004349605995abbd489.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "興南國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10016515f31039ae10c5.pdf",
+    "a": "/d/a/10016515f895ea4c5b6e.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "二水國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029665f2b58970da1b.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "左鎮國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10037295f2a0fa7bd998.pdf",
+    "a": ""
+  },
+  {
+    "city": "基隆市",
+    "school": "八斗國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10046675f1f88001a62b.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10048805fc6f8d17adf0.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "路上國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10030245fc9eaf2c6a65.pdf",
+    "a": "/d/a/10030245fc9eaf2c9582.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10017855ec22bdc31a39.pdf",
+    "a": "/d/a/10017855ec22bdc31bfd.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸東國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028935fc85a8a4cf9f.pdf",
+    "a": "/d/a/10028935fc85a8a4d844.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10032035ebba27f4f2d7.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "國姓國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10031795ebb97292653a.pdf",
+    "a": "/d/a/10031795ebb9729268c8.pdf"
+  },
+  {
+    "city": "桃園市",
+    "school": "壽山國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10020865ebb85276cc57.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "曉陽國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028915eb8c35ab34da.pdf",
+    "a": "/d/a/10028915eb8c35ab36f1.pdf"
+  },
+  {
+    "city": "桃園市",
+    "school": "草漯國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10021685eb4e06943669.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "寶山國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028745eb0dd2c07b5c.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "東芳國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028635ead42568f28b.pdf",
+    "a": "/d/a/10028635ead42568f512.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "大園國小",
+    "grade_subject": "3年級 自然",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029245e93db71c4d41.pdf",
+    "a": "/d/a/10029245e93db71c4f71.pdf"
+  }
+]
