@@ -1,0 +1,8 @@
+{
+  "name": "三下自然練習",
+  "short_name": "三下自然",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#f5f7fa"
+}

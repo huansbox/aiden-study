@@ -2,7 +2,14 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- 加到主畫面後以 app 形式（standalone）開啟，無瀏覽器網址列 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="三下自然">
+<meta name="theme-color" content="#f5f7fa">
+<link rel="manifest" href="manifest.json">
 <title>三下自然練習</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,6 +30,9 @@ body {
   width: 100%;
   max-width: 768px;
   padding: 16px;
+  /* 加到主畫面 standalone 開啟時，避開瀏海/狀態列與底部 home indicator */
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   flex: 1;
   display: flex;
   flex-direction: column;
