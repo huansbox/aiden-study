@@ -2,9 +2,9 @@
 
 `issues/prd.md`（Solution、Implementation Decisions：網站與狀態儲存）
 
-## DECISION（HITL，開工前需家長確認）
+## DECISION（HITL，家長已確認 2026-06-09）
 
-- **合併後站名**：＿＿＿＿＿（現為「三下自然期中題庫」，需改為涵蓋期中＋期末的名稱；期中區塊標籤保留）
+- **合併後站名**：**保留「三下自然練習」**（家長決定）。現有 h1/title 本就是通用名、已涵蓋期中＋期末，無需改名。
 
 ## What to build
 
@@ -19,13 +19,20 @@
 
 ## Acceptance criteria
 
-- [ ] 站名已依 DECISION 更新；期中區塊保留
-- [ ] 最上層可切換期中／期末，各自顯示對應單元
-- [ ] 期末 unit 3/4 可做「全部練習」（答對移出/答錯排隊尾/可接續/通關可重置）
-- [ ] 期末 unit 3/4 可做「快速練習」（智慧抽 10 題，常錯/練少優先）
-- [ ] 期末 unit 3/4 有「錯題練習」（答對移除/答錯留隊尾）
-- [ ] 加入期末後，期中既有 localStorage 進度未被清除或破壞
-- [ ] pad 上手動測試切換與三模式皆正常
+- [x] 站名已依 DECISION 更新；期中區塊保留 — 保留「三下自然練習」（家長定），期中標籤＝「期中」切換頁
+- [x] 最上層可切換期中／期末，各自顯示對應單元 — segmented toggle（`SEMESTERS` mid→units1,2 / final→units3,4），Playwright 驗證
+- [x] 期末 unit 3/4 可做「全部練習」（答對移出/答錯排隊尾/可接續/通關可重置）— 沿用現有 queue 機制，已測
+- [x] 期末 unit 3/4 可做「快速練習」（智慧抽 10 題，常錯/練少優先）— 沿用現有 Picker
+- [x] 期末 unit 3/4 有「錯題練習」（答對移除/答錯留隊尾）— 錯題區依學期 scope（第3/4單元錯題＋本學期全部錯題）
+- [x] 加入期末後，期中既有 localStorage 進度未被清除或破壞 — 模擬 legacy（無 semester 欄位）reload 驗證：semester 預設 mid、challenge/errorBank/stats 全保留
+- [x] pad 上手動測試切換與三模式皆正常 — Playwright 模擬驗證
+
+## 實作備註
+
+- `state.semester`（mid/final）持久化記住切換；`State.setSemester`。
+- 錯題模式 `quiz.unit` 改為單元陣列：`getErrorBank`/`Picker.forErrorPractice` 支援陣列（`[3]`＝單元、`[3,4]`＝本學期全部），錯題仍維持單元層級（US20）。
+- 站名無需改（h1/title 本就是「三下自然練習」）。
+- subtopic 練習入口留給 #7。
 
 ## Blocked by
 

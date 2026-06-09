@@ -30,7 +30,21 @@ body {
 
 /* ── 首頁 ── */
 .home { padding-top: 32px; }
-.home h1 { font-size: 1.6rem; text-align: center; margin-bottom: 24px; }
+.home h1 { font-size: 1.6rem; text-align: center; margin-bottom: 16px; }
+
+/* 期中/期末 切換 */
+.semester-toggle {
+  display: flex; gap: 6px; margin-bottom: 24px;
+  background: #eef1f6; padding: 6px; border-radius: 14px;
+}
+.semester-toggle button {
+  flex: 1; padding: 12px; border: none; border-radius: 10px;
+  background: transparent; font-size: 1.05rem; font-weight: 600;
+  color: #777; cursor: pointer; transition: all 0.15s;
+}
+.semester-toggle button.active {
+  background: #fff; color: #4361ee; box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
 
 .unit-section { margin-bottom: 20px; }
 .unit-section .unit-title {
@@ -189,7 +203,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {} };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, errorBank: [], stats: {}, semester: "mid" };
 
 const Storage = {
   load() {
@@ -234,6 +248,13 @@ const State = {
     if (!state.challenge) state.challenge = { "1": null, "2": null };
     if (!state.errorBank) state.errorBank = [];
     if (!state.stats) state.stats = {};
+    if (!state.semester) state.semester = "mid";
+  },
+
+  // Semester (期中/期末 切換，記住選擇)
+  setSemester(s) {
+    state.semester = s;
+    Storage.save(state);
   },
 
   // Stats
@@ -247,9 +268,10 @@ const State = {
     Storage.save(state);
   },
 
-  // ErrorBank
+  // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter) {
     if (!unitFilter) return [...state.errorBank];
+    if (Array.isArray(unitFilter)) return state.errorBank.filter(e => unitFilter.includes(e.unit));
     return state.errorBank.filter(e => e.unit === unitFilter);
   },
   addToErrorBank(qId, unit) {
@@ -452,16 +474,30 @@ function leaveQuiz() {
 // ════════════════════════════════════════════════════
 // UI: Home
 // ════════════════════════════════════════════════════
-function renderHome() {
-  const home = document.getElementById("page-home");
-  const units = [
+const SEMESTERS = {
+  mid: { label: "期中", units: [
     { id: 1, name: "第 1 單元：田園樂" },
     { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
+  ] },
+  final: { label: "期末", units: [
     { id: 3, name: "第 3 單元：動物" },
     { id: 4, name: "第 4 單元：天氣" },
-  ];
+  ] },
+};
+
+function renderHome() {
+  const home = document.getElementById("page-home");
+  const sem = SEMESTERS[state.semester] ? state.semester : "mid";
+  const units = SEMESTERS[sem].units;
 
   let html = '<h1>三下自然練習</h1>';
+
+  // 期中/期末 切換
+  html += '<div class="semester-toggle">';
+  for (const key of Object.keys(SEMESTERS)) {
+    html += `<button class="${key === sem ? 'active' : ''}" onclick="window._setSemester('${key}')">${SEMESTERS[key].label}</button>`;
+  }
+  html += '</div>';
 
   // Unit sections
   for (const u of units) {
@@ -495,19 +531,20 @@ function renderHome() {
       </div>`;
   }
 
-  // Error section
-  const allErrors = State.getErrorBank();
-  const totalErrors = allErrors.length;
+  // Error section（限本學期範圍：期中=1,2；期末=3,4）
+  const semUnitIds = units.map(u => u.id);
+  const semErrors = State.getErrorBank(semUnitIds);
 
   html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
 
-  if (totalErrors === 0) {
+  if (semErrors.length === 0) {
     html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
   } else {
-    html += `<button class="sub-btn" onclick="window._startError(0)">全部錯題<span class="badge">${totalErrors}</span></button>`;
+    const idsAttr = semUnitIds.join(",");
+    html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
     for (const u of units) {
       const errU = State.getErrorBank(u.id);
-      html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError(${u.id})">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
+      html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
     }
   }
 
@@ -526,7 +563,14 @@ window._startFull = (unit) => {
   startQuiz("full", unit);
 };
 window._startQuick = (unit) => startQuiz("quick", unit);
-window._startError = (unit) => startQuiz("error", unit || null);
+window._startError = (idsStr) => {
+  const units = String(idsStr).split(",").map(Number).filter(Boolean);
+  startQuiz("error", units);
+};
+window._setSemester = (s) => {
+  State.setSemester(s);
+  renderHome();
+};
 window._resetChallenge = (unit) => {
   State.resetChallenge(unit);
   renderHome();
@@ -543,7 +587,12 @@ function renderQuiz() {
   let modeText = "";
   if (quiz.mode === "full") modeText = `全部練習 — 第${quiz.unit}單元`;
   else if (quiz.mode === "quick") modeText = `快速練習 — 第${quiz.unit}單元`;
-  else modeText = quiz.unit ? `錯題練習 — 第${quiz.unit}單元` : "錯題練習 — 全部";
+  else {
+    const eu = quiz.unit;  // error 模式：unit 為單元陣列
+    if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${eu[0]}單元`;
+    else if (Array.isArray(eu) && eu.length > 1) modeText = "錯題練習 — 本學期全部";
+    else modeText = "錯題練習 — 全部";
+  }
 
   // Progress
   const progressHtml = renderProgress();
