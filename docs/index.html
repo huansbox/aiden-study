@@ -231,7 +231,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, semester: "final" };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final" };
 
 const Storage = {
   load() {
@@ -278,6 +278,7 @@ const State = {
     if (!state.stats) state.stats = {};
     if (!state.semester) state.semester = "final";
     if (!state.mastered) state.mastered = {};
+    if (!state.flagged) state.flagged = [];
     // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
     if (saved && !saved.mastered) state._needMasteredBackfill = true;
   },
@@ -312,6 +313,32 @@ const State = {
   },
   removeFromErrorBank(qId) {
     state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+    Storage.save(state);
+  },
+
+  // ── Flagged（回報有問題的題目：排除於所有題池與通關分母，可從首頁還原）
+  getFlagged() {
+    return [...state.flagged];
+  },
+  isFlagged(qId) {
+    return state.flagged.some(f => f.questionId === qId);
+  },
+  flagQuestion(qId, unit) {
+    if (State.isFlagged(qId)) return;
+    state.flagged.push({ questionId: qId, unit, flaggedAt: Date.now() });
+    // 題目本身有疑慮 → 該題的歷史作答記錄一律視為不可信，整筆清除
+    delete state.stats[qId];
+    state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+    const u = String(unit);
+    if (state.mastered[u]) state.mastered[u] = state.mastered[u].filter(id => id !== qId);
+    Storage.save(state);
+  },
+  unflagQuestion(qId) {
+    state.flagged = state.flagged.filter(f => f.questionId !== qId);
+    Storage.save(state);
+  },
+  unflagAll() {
+    state.flagged = [];
     Storage.save(state);
   },
 
@@ -392,10 +419,10 @@ function challengeKey(unit, subtopic) {
   return subtopic ? `${unit}/${subtopic}` : String(unit);
 }
 
-// 取某單元（可選 subtopic）的題目 id
+// 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
 function questionIdsFor(unit, subtopic) {
   return allQuestions
-    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic))
+    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id))
     .map(q => q.id);
 }
 
@@ -449,7 +476,7 @@ const Picker = {
   },
 
   forQuickPractice(unit, subtopic, count = 10) {
-    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic));
+    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id));
     const scored = unitQs.map(q => {
       const s = State.getStats(q.id);
       const errorRate = s.practiced === 0 ? 0.5 : (s.practiced - s.correct) / s.practiced;
@@ -976,8 +1003,9 @@ async function init() {
     // Build question map
     questionMap = new Map(allQuestions.map(q => [q.id, q]));
 
-    // Clean orphan errorBank entries
+    // Clean orphan errorBank / flagged entries
     state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
+    state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
     Storage.save(state);
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
