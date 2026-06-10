@@ -8,26 +8,21 @@
 
 ## 現況（2026-06-10）
 
-期末題庫已上線，做過兩批擴充：
+期末題庫已上線，做過三批擴充：
 - **第一批（issues 001–007，臺北＋新北）**：建立 `PDF→萃取→分類→網站` pipeline，期中/期末切換＋subtopic 練習。已完成並 merge 到 master。
-- **第二批（其他縣市，Stage 1）**：全台掃描找新卷，併入 100 題官方答案（三民111、四維112、廣興111、廣興112）。已 merge 到 master。
+- **第二批 Stage 1（其他縣市官方答案卷）**：全台掃描找新卷，併入 100 題官方答案（三民111、四維112、廣興111、廣興112）。已 merge 到 master。
+- **第二批 Stage 2（7 份無官方答案卷）**：大墩113/112、文心112/111、路上111、永安113、東光113 → 萃取 178 題、AI 判答、**單票盲審 review B**（148 題、95.3% 一致、7 分歧人工定奪）→ +160 題入庫。路上111 意外是格式A 內嵌答案（16 題官方答案）。在 branch `feat/final-stage2-ai-answers`。
 
-**題庫現況**：`docs/questions.json` 共 941 題（期中 602＝unit1 324＋unit2 278；期末 339＝unit3 175＋unit4 164）。`uv run pytest` 49 passed。部署＝push master → GitHub Pages 自動從 `/docs` 上線。
+**題庫現況**：`docs/questions.json` 共 1101 題（期中 602＝unit1 324＋unit2 278；期末 499＝unit3 250＋unit4 249）。`uv run pytest` 49 passed。部署＝push master → GitHub Pages 自動從 `/docs` 上線。
 
-## ⭐ 下一步：第二批 Stage 2（7 份無官方答案卷 → AI 判答＋複審）
+**複查清單**：`review_期末_ai答案.md` 共 266 題 AI 補答案待家長核對（review A＋B 已盲審過一輪，分歧已定奪；清單供最終人工抽查）。
 
-全台掃描（`data/tcool_sweep_all.json`）找到的其他縣市現行課綱期末卷中，這 7 份**無官方答案卷**、但題目卷**文字皆可抽**，已下載在 `pdfs_期末/`：
+## 單票盲審做法（review B 已工具化）
 
-臺中 大墩113 / 大墩112 / 文心112 / 文心111、彰化 路上111（期末3 三段考制）、高雄 永安113、基隆 東光113。
-
-步驟（沿用既有 pipeline，**勿重跑既有 classified 以免覆蓋 review A 的人工修正**）：
-1. `uv run python scripts/extract.py --input <這7份題目卷> --output data/raw_questions_期末_新增.json`
-2. `uv run python scripts/classify.py --semester final --input data/raw_questions_期末_新增.json --output data/classified_questions_期末_新增.json`
-3. **複審**（這批無官方答案）：依使用者意願「2 agent 取一致」或單票盲審（做法見經驗筆記「四」）；分歧題人工定奪後寫回 classified。**不要**跑 `apply_answer_key.py`（那是給有官方答案的卷）。
-4. `uv run python scripts/merge_classified.py`（去重併入）→ `build_review_list.py`（本批會進複查清單）→ `build_questions.py` → `uv run pytest`。
-5. 本機 `uv run python -m http.server --directory docs` + Playwright 煙霧測試。
-
-注意：`merge_classified.py` 會 append；若主檔已含本批，重跑前先 `git checkout data/classified_questions_期末.json` 還原。路上111 是三段考制，範圍可能偏 unit4，classify 會自動把範圍外標 none 排除。
+1. `uv run python scripts/build_review_blind.py`（從 `classified_questions_期末_新增.json` 產 `data/_review_blind.json` 盲版，只含會進題庫的 needs_review 題）
+2. 平行開 N 個 agent，各盲答一段 index 範圍（agent 自己 Read 盲版檔，args 只給範圍）
+3. 比對盲答 vs classified 記錄，只列分歧；**先查主題庫先例**（同概念題的既有答案）再定奪，課綱外爭議可 websearch（如百葉箱題）
+4. 定奪結果寫回 `_新增` 檔再 merge
 
 ## 暫緩項（次要，可不做）
 
