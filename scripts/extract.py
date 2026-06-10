@@ -31,17 +31,21 @@ IMAGE_KEYWORDS = re.compile(
 )
 
 # 題型 section header 模式
+# 行錨定替代式：路上111 用阿拉伯數字編大題（「1 是非題(每題 4 分…)」），且「選擇題(」的
+# 前綴數字被雙欄打散 → 補「行首＋可選單一數字＋題型名＋(」形式（要求左括號降低誤判）
 SECTION_PATTERNS = {
     "true_false": re.compile(
         r"[一二三四五六壹貳參][\s、.．]+"
         r"(?:是非題|判斷題|是非|對的寫[OoＯ○].*錯的寫?[XxＸ×✕]|對的打[OoＯ○].*錯的打[XxＸ×✕]|"
-        r"正確的寫[OoＯ○].*錯誤的打?[XxＸ×✕]|正確的寫○.*錯誤的打×|寫[OoＯ○]或[XxＸ×✕])",
-        re.IGNORECASE,
+        r"正確的寫[OoＯ○].*錯誤的打?[XxＸ×✕]|正確的寫○.*錯誤的打×|寫[OoＯ○]或[XxＸ×✕])"
+        r"|^[ \t]*\d?[ \t]*是非題[\(（]",
+        re.IGNORECASE | re.MULTILINE,
     ),
     "multiple_choice": re.compile(
         r"[一二三四五六壹貳參][\s、.．]+"
-        r"(?:選擇題|單選題|選出正確的答案|選出最適合的答案|選出最適當的答案)",
-        re.IGNORECASE,
+        r"(?:選擇題|單選題|選出正確的答案|選出最適合的答案|選出最適當的答案)"
+        r"|^[ \t]*\d?[ \t]*選擇題[\(（]",
+        re.IGNORECASE | re.MULTILINE,
     ),
 }
 
@@ -51,12 +55,13 @@ NON_TARGET_SECTION = re.compile(
     r"[一二三四五六七八壹貳參肆伍][\s、.．]+"
     r"(?:綜合[題練習]|配合題|連連看|填[填充]看|填一填|做一做|閱讀[題測驗]|"
     r"去吧|根據題[目意]|科學閱讀|科普閱讀|填填看|綜合應用題|連連看|題組)"
+    r"|請連連看|做一做"  # 路上111 非目標大題用阿拉伯數字編號，靠題幹內指示語切界
 )
 
 
 # ── 答案正規化 ──────────────────────────────────────────
 
-TF_CHARS = "OoＯ○✓ˇvV✔XxＸ×✕✗"
+TF_CHARS = "OoＯ○✓ˇvV✔XxＸ×✕✗╳"
 
 def normalize_tf_answer(raw: str) -> str | None:
     if not raw:
@@ -64,7 +69,7 @@ def normalize_tf_answer(raw: str) -> str | None:
     raw = raw.strip()
     if raw in ("O", "o", "Ｏ", "○", "✓", "ˇ", "v", "V", "✔"):
         return "true"
-    if raw in ("X", "x", "Ｘ", "×", "✕", "✗"):
+    if raw in ("X", "x", "Ｘ", "×", "✕", "✗", "╳"):
         return "false"
     return None
 
@@ -326,6 +331,7 @@ def extract_options(text: str) -> list[str]:
     patterns = [
         re.compile(r"○\s*([1-5１-５])"),  # ○1 ○2 ○3 ○4
         re.compile(r"([①②③④⑤])"),  # ①②③④
+        re.compile(r"[\(（]([1-5])[\)）]"),  # (1)(2)(3)(4)（大墩112 #9；僅前兩種都失敗才試）
     ]
 
     for pat in patterns:
