@@ -218,28 +218,38 @@ ANHE_CALC = """三、 計算題：每題 3 分，共 15 分
 
 def test_calc_backward_and_time_extracted():
     qs, skips = parse_math_calc(TAOZIJIAO_CALC, "桃.pdf")
-    assert [(q["number"], [b["answer"] for b in q["blanks"]]) for q in qs] == [
+    fills = [q for q in qs if q["section"] == "fill_in_blank"]
+    assert [(q["number"], [b["answer"] for b in q["blanks"]]) for q in fills] == [
         (3, ["24"]), (4, ["448"]), (5, ["1", "15"]),
     ]
-    q5 = qs[-1]
+    q5 = fills[-1]
     assert q5["text"] == "3 時 50 分－2 時 35 分＝（１）時 （２）分"
     assert all(q["origin"] == "calc" for q in qs)
 
 
-def test_calc_vertical_and_remainder_deferred():
+def test_calc_vertical_questions_extracted():
+    # 014：直式題不再延後，直接轉 vertical_calc schema
     qs, skips = parse_math_calc(TAOZIJIAO_CALC, "桃.pdf")
-    assert [(s["number"], s["category"]) for s in skips] == [
-        (1, "vertical_calc"), (2, "vertical_calc"), (6, "vertical_calc"),
-    ]
+    vcs = {q["number"]: q for q in qs if q["section"] == "vertical_calc"}
+    assert vcs[1]["op"] == "sub_decimal" and vcs[1]["operands"] == [25, 6.7] and vcs[1]["answer"] == "18.3"
+    assert vcs[2]["op"] == "add_decimal" and vcs[2]["operands"] == [53.2, 9.8] and vcs[2]["answer"] == "63"
+    assert vcs[6]["op"] == "long_division" and vcs[6]["operands"] == [340, 8]
+    assert vcs[6]["answer"] == {"quotient": 42, "remainder": 4}
+    assert skips == []
 
 
 def test_calc_anhe_numbered_lines_and_fullwidth_remainder():
     qs, skips = parse_math_calc(ANHE_CALC, "安.pdf")
-    assert [(q["number"], [b["answer"] for b in q["blanks"]]) for q in qs] == [
-        (3, ["24"]), (4, ["294"]),
-    ]
-    cats = {s["number"]: s["category"] for s in skips}
-    assert cats == {1: "vertical_calc", 2: "vertical_calc", 5: "vertical_calc"}
+    fills = [(q["number"], [b["answer"] for b in q["blanks"]])
+             for q in qs if q["section"] == "fill_in_blank"]
+    assert fills == [(3, ["24"]), (4, ["294"])]
+    vcs = {q["number"]: q for q in qs if q["section"] == "vertical_calc"}
+    assert vcs[1]["op"] == "add_decimal" and vcs[1]["answer"] == "30"
+    assert vcs[2]["op"] == "sub_decimal" and vcs[2]["answer"] == "24.5"
+    # 全形數字＋全形連續點的商餘式
+    assert vcs[5]["op"] == "long_division" and vcs[5]["operands"] == [702, 5]
+    assert vcs[5]["answer"] == {"quotient": 140, "remainder": 2}
+    assert skips == []
 
 
 # ── 應用題 parser（issues/012）──────────────────────────

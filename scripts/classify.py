@@ -184,6 +184,8 @@ def build_question_text(q: dict) -> str:
     """組合題目文字供 AI 閱讀"""
     if q["section"] == "true_false":
         return f"[是非題] {q['text']}"
+    if q["section"] == "vertical_calc":
+        return f"[計算題-直式] {q['text']}"
     if q["section"] == "fill_in_blank":
         answers = "、".join(b["answer"] for b in q["blanks"])
         return f"[填充題] {q['text']}（{len(q['blanks'])} 個空格，官方答案依序：{answers}）"

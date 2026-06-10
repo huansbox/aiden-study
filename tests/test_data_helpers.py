@@ -13,6 +13,7 @@ from data_helpers import (
     validate_unit_subtopic,
     validate_blanks,
     normalize_for_compare,
+    validate_vertical_calc,
 )
 
 
@@ -65,6 +66,24 @@ def test_normalize_for_compare():
     assert normalize_for_compare("ＡＢ ｃ") == "ABc"
     assert normalize_for_compare("") == ""
     assert normalize_for_compare(None) == ""
+
+
+# ── vertical_calc 驗證（op 實算 = answer）──────────────
+
+def test_validate_vertical_calc_addsub():
+    assert validate_vertical_calc("sub_decimal", [25, 6.7], "18.3")
+    assert validate_vertical_calc("add_decimal", [53.2, 9.8], "63")
+    assert not validate_vertical_calc("sub_decimal", [25, 6.7], "18.4")   # 答案錯
+    assert not validate_vertical_calc("add_decimal", [25], "25")          # operands 數量錯
+    assert not validate_vertical_calc("mul", [2, 3], "6")                 # 非法 op
+
+
+def test_validate_vertical_calc_long_division():
+    assert validate_vertical_calc("long_division", [340, 8], {"quotient": 42, "remainder": 4})
+    assert not validate_vertical_calc("long_division", [340, 8], {"quotient": 42, "remainder": 5})
+    assert not validate_vertical_calc("long_division", [340, 8], {"quotient": 41, "remainder": 12})  # 餘須<除數
+    assert not validate_vertical_calc("long_division", [340.5, 8], {"quotient": 42, "remainder": 4})  # 須整數
+    assert not validate_vertical_calc("long_division", [340, 8], "42...4")  # answer 須為 dict
 
 MIDTERM_VALID = {
     "蔬菜從哪裡來", "影響蔬菜生長的因素", "蔬菜生長的變化過程",

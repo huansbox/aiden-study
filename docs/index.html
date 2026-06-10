@@ -244,6 +244,25 @@ body {
   -webkit-user-select: text; user-select: text;
 }
 
+/* ── 直式計算（vertical_calc）── */
+.q-type.vc { background: #d97706; }
+.vc-grid { display: grid; gap: 4px; justify-content: center; margin: 4px 0; --vc-cell: 48px; }
+.vc-cell {
+  width: var(--vc-cell); height: var(--vc-cell);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700; border-radius: 8px;
+}
+.vc-fillable { border: 2px dashed #c4cbe0; background: #f8f9fc; }
+.vc-active { border: 2px solid #4361ee; background: #f0f4ff; }
+.vc-filled { border: 2px solid #2ecc71; background: #e8faf0; color: #1a7a42; }
+.vc-error { animation: vc-shake 0.3s; border: 2px solid #e74c3c !important; background: #fdecea !important; }
+@keyframes vc-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+/* 算式線：加減答案列上緣；除法商列下緣＋除號直線 */
+.vc-ansline { border-top: 3px solid #1a1a2e; border-radius: 0; }
+.vc-divline { border-top: 3px solid #1a1a2e; border-radius: 0; }
+.vc-divisor { border-right: 3px solid #1a1a2e; border-radius: 0; }
+.vc-sep { border-bottom: 2px solid #888; border-radius: 0; }
+
 .result-hint {
   margin-top: 16px; padding: 12px 16px; border-radius: 12px;
   font-size: 1.1rem; font-weight: 600; text-align: center;
@@ -637,6 +656,8 @@ function submitAnswer(selected) {
   if (q.type === "fill_in_blank") {
     quiz._fillResults = q.blanks.map((b, i) => isBlankCorrect(b, selected[i]));
     correct = quiz._fillResults.every(Boolean);   // 多空格全對才算對
+  } else if (q.type === "vertical_calc") {
+    correct = selected.vcErrors === 0;            // 逐格即時驗證：零失誤才算對
   } else {
     correct = selected === q.answer;
   }
@@ -935,6 +956,11 @@ function formatAnswer(q) {
   if (q.type === "fill_in_blank") {
     return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
+  if (q.type === "vertical_calc") {
+    return q.op === "long_division"
+      ? `商 ${q.answer.quotient}、餘數 ${q.answer.remainder}`
+      : String(q.answer);
+  }
   return `選項 ${q.answer}`;
 }
 
@@ -992,20 +1018,26 @@ function renderQuiz() {
   // Question type
   const isTF = q.type === "true_false";
   const isFill = q.type === "fill_in_blank";
+  const isVc = q.type === "vertical_calc";
   let typeClass = "q-type", typeLabel = "選擇題";
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
+  else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
-  if (!isTF && !isFill && q.options.length > 0) {
+  if (!isTF && !isFill && !isVc && q.options.length > 0) {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
 
   // Answer area（依題型）
   let answerHtml;
-  if (isFill) {
+  if (isVc) {
+    answerHtml = `
+      <div class="vc-grid" id="vc-grid"></div>
+      <div id="fill-input-panel"></div>`;
+  } else if (isFill) {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
     const FW = "１２３４５６７８９";
@@ -1062,13 +1094,162 @@ function renderQuiz() {
 
   // Bind events
   document.getElementById("btn-leave").onclick = leaveQuiz;
-  if (isFill) {
+  if (isVc) {
+    bindVcEvents(q);
+  } else if (isFill) {
     bindFillEvents(q);
   } else {
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.onclick = () => submitAnswer(btn.dataset.value);
     });
   }
+}
+
+// ════════════════════════════════════════════════════
+// 直式計算引擎（vertical_calc）
+// 長除法逐格邏輯移植自 aiden-math js/division.js（內聯改寫，行為一致：
+// 含前導零商位、每回合 商→乘積→落位 順序填）；小數加減直式為新寫。
+// ════════════════════════════════════════════════════
+function vcCalculateSteps(dividend, divisor) {
+  const digits = String(dividend).split("").map(Number);
+  const rounds = [];
+  let carry = 0;
+  for (let i = 0; i < digits.length; i++) {
+    const currentNumber = carry * 10 + digits[i];
+    const quotientDigit = Math.floor(currentNumber / divisor);
+    const product = quotientDigit * divisor;
+    const subtractResult = currentNumber - product;
+    rounds.push({ currentNumber, quotientDigit, product, subtractResult });
+    carry = subtractResult;
+  }
+  return { rounds };
+}
+
+function vcDivisionLayout(dividend, divisor) {
+  const steps = vcCalculateSteps(dividend, divisor);
+  const dDigits = String(dividend).split("");
+  const cells = [];
+  let order = 0;
+  cells.push({ row: 1, col: 0, value: String(divisor), type: "divisor", fillable: false });
+  dDigits.forEach((d, i) =>
+    cells.push({ row: 1, col: i + 1, value: d, type: "dividend", fillable: false }));
+  for (let r = 0; r < steps.rounds.length; r++) {
+    const round = steps.rounds[r];
+    const colStart = r + 1;
+    cells.push({ row: 0, col: colStart, value: String(round.quotientDigit),
+                 type: "quotient", fillable: true, order: order++ });
+    const refLen = String(round.currentNumber).length;
+    const pDigits = String(round.product).padStart(refLen, "0").split("");
+    pDigits.forEach((d, i) =>
+      cells.push({ row: 2 + r * 2, col: colStart + i - (pDigits.length - 1), value: d,
+                   type: "product", fillable: true, order: order++ }));
+    if (r < steps.rounds.length - 1) {
+      // 減的結果＋落下一位
+      const nextDigit = dDigits[r + 1];
+      const subDigits = round.subtractResult === 0
+        ? ["0", nextDigit]
+        : [...String(round.subtractResult).split(""), nextDigit];
+      subDigits.forEach((d, i) =>
+        cells.push({ row: 3 + r * 2, col: colStart + i - (subDigits.length - 1) + 1, value: d,
+                     type: "subtract", fillable: true, order: order++ }));
+    } else {
+      const rDigits = String(round.subtractResult).padStart(refLen, "0").split("");
+      rDigits.forEach((d, i) =>
+        cells.push({ row: 3 + r * 2, col: colStart + i - (rDigits.length - 1), value: d,
+                     type: "subtract", fillable: true, order: order++ }));
+    }
+  }
+  return { cells, totalCols: 1 + dDigits.length, kind: "division" };
+}
+
+function vcAddSubLayout(a, b, isAdd) {
+  const dec = (x) => (String(x).split(".")[1] || "").length;
+  const dw = Math.max(dec(a), dec(b));
+  const ansNum = isAdd ? a + b : a - b;
+  const ansStr = dw > 0 ? ansNum.toFixed(dw) : String(Math.round(ansNum));
+  const strs = [String(a), String(b), ansStr];
+  const intW = Math.max(...strs.map(s => s.split(".")[0].length));
+  const cells = [];
+  const placeNum = (s, row, fillable) => {
+    const [ip, fp = ""] = s.split(".");
+    for (let i = 0; i < ip.length; i++) {
+      cells.push({ row, col: 1 + intW - ip.length + i, value: ip[i], type: "digit", fillable });
+    }
+    if (fp.length > 0) {
+      cells.push({ row, col: 1 + intW, value: ".", type: "point", fillable: false });
+      for (let i = 0; i < fp.length; i++) {
+        cells.push({ row, col: 1 + intW + 1 + i, value: fp[i], type: "digit", fillable });
+      }
+    }
+  };
+  placeNum(strs[0], 0, false);
+  cells.push({ row: 1, col: 0, value: isAdd ? "＋" : "－", type: "op", fillable: false });
+  placeNum(strs[1], 1, false);
+  placeNum(strs[2], 2, true);
+  // 答案逐位由右到左填（直式運算順序）
+  cells.filter(c => c.fillable).sort((x, y) => y.col - x.col).forEach((c, i) => { c.order = i; });
+  return { cells, totalCols: 1 + intW + (dw > 0 ? 1 + dw : 0), kind: "addsub" };
+}
+
+function bindVcEvents(q) {
+  const layout = q.op === "long_division"
+    ? vcDivisionLayout(q.operands[0], q.operands[1])
+    : vcAddSubLayout(q.operands[0], q.operands[1], q.op === "add_decimal");
+  const grid = document.getElementById("vc-grid");
+  const panel = document.getElementById("fill-input-panel");
+  grid.style.gridTemplateColumns = `repeat(${layout.totalCols}, var(--vc-cell))`;
+
+  for (const cell of layout.cells) {
+    const el = document.createElement("div");
+    el.className = "vc-cell";
+    el.style.gridRow = String(cell.row + 1);
+    el.style.gridColumn = String(cell.col + 1);
+    if (cell.fillable) {
+      el.classList.add("vc-fillable");
+      el.dataset.order = cell.order;
+    } else {
+      el.textContent = cell.value;
+    }
+    if (layout.kind === "addsub" && cell.row === 2) el.classList.add("vc-ansline");
+    if (layout.kind === "division") {
+      if (cell.type === "dividend") el.classList.add("vc-divline");
+      if (cell.type === "divisor") el.classList.add("vc-divisor");
+      if (cell.type === "product") el.classList.add("vc-sep");
+    }
+    grid.appendChild(el);
+  }
+
+  const fillable = layout.cells.filter(c => c.fillable).sort((x, y) => x.order - y.order);
+  quiz._vc = { fillable, idx: 0, errors: 0 };
+  const cellEl = (order) => grid.querySelector(`[data-order="${order}"]`);
+  cellEl(fillable[0].order).classList.add("vc-active");
+
+  panel.innerHTML = `<div class="numpad" id="numpad">${
+    ["1","2","3","4","5","6","7","8","9","","0",""].map(k =>
+      k === "" ? "<span></span>" : `<button data-key="${k}">${k}</button>`).join("")}</div>`;
+  panel.querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => {
+      if (quiz.isAnswered) return;
+      const vc = quiz._vc;
+      const cell = vc.fillable[vc.idx];
+      const el = cellEl(cell.order);
+      if (btn.dataset.key === cell.value) {
+        el.classList.remove("vc-fillable", "vc-active", "vc-error");
+        el.classList.add("vc-filled");
+        el.textContent = cell.value;
+        vc.idx++;
+        if (vc.idx >= vc.fillable.length) {
+          submitAnswer({ vcErrors: vc.errors });   // 全格完成 → 自動結算
+        } else {
+          cellEl(vc.fillable[vc.idx].order).classList.add("vc-active");
+        }
+      } else {
+        vc.errors++;
+        el.classList.add("vc-error");
+        el.addEventListener("animationend", () => el.classList.remove("vc-error"), { once: true });
+      }
+    };
+  });
 }
 
 // 比較符號顯示用全形
@@ -1232,7 +1413,10 @@ function renderBarProgress() {
 // ════════════════════════════════════════════════════
 function renderFeedback(correct, q) {
   let wrongHint;
-  if (q.type === "fill_in_blank") {
+  if (q.type === "vertical_calc") {
+    document.querySelectorAll("#fill-input-panel button").forEach(b => { b.disabled = true; });
+    wrongHint = `完成了！但填錯過 ${quiz._vc.errors} 次，這題之後會再練一次`;
+  } else if (q.type === "fill_in_blank") {
     // 標出每格對錯；錯格旁顯示正解（家長定案：對小孩友善優先）
     document.querySelectorAll("#fill-input-panel button, #fill-input-panel input")
       .forEach(el => { el.disabled = true; });

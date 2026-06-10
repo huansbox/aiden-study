@@ -24,7 +24,7 @@ import logging
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(__file__))
-from data_helpers import validate_blanks
+from data_helpers import validate_blanks, validate_vertical_calc
 
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
@@ -75,6 +75,10 @@ def to_final_schema(q: dict, used_ids: set, subject: str) -> dict:
     }
     if q["section"] == "fill_in_blank":
         out["blanks"] = q["blanks"]
+    elif q["section"] == "vertical_calc":
+        out["op"] = q["op"]
+        out["operands"] = q["operands"]
+        out["answer"] = q["answer"]
     else:
         out["options"] = q["options"]
         out["answer"] = q["answer"]
@@ -126,6 +130,11 @@ def convert_block(classified: list, used_ids: set, subject: str, allowed_units: 
             if not validate_blanks(q.get("blanks")):
                 skipped["invalid_blanks"] += 1
                 log.warning(f"blanks 驗證失敗，跳過: {q['source']} #{q['number']}")
+                continue
+        if q["section"] == "vertical_calc":
+            if not validate_vertical_calc(q.get("op"), q.get("operands"), q.get("answer")):
+                skipped["invalid_vertical_calc"] += 1
+                log.warning(f"vertical_calc 驗證失敗，跳過: {q['source']} #{q['number']}")
                 continue
         final_q.append(to_final_schema(q, used_ids, subject))
     return final_q, skipped

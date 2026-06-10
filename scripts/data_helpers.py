@@ -88,6 +88,37 @@ def validate_blanks(blanks) -> bool:
     return True
 
 
+VALID_VC_OPS = {"add_decimal", "sub_decimal", "long_division"}
+
+
+def validate_vertical_calc(op, operands, answer) -> bool:
+    """
+    vertical_calc 的 op/operands/answer 一致性驗證：用 op 實算 operands 必須等於 answer。
+    long_division：整數、除數>0、answer={"quotient","remainder"} 且 被除數=除數×商+餘、0<=餘<除數。
+    add/sub_decimal：answer 為數字字串，數值等於實算結果。
+    """
+    if op not in VALID_VC_OPS:
+        return False
+    if (not isinstance(operands, list) or len(operands) != 2
+            or not all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in operands)):
+        return False
+    a, b = operands
+    if op == "long_division":
+        if not (isinstance(a, int) and isinstance(b, int) and b > 0):
+            return False
+        if not isinstance(answer, dict):
+            return False
+        q, r = answer.get("quotient"), answer.get("remainder")
+        if not (isinstance(q, int) and isinstance(r, int)):
+            return False
+        return a == b * q + r and 0 <= r < b
+    try:
+        expected = round(a + b, 6) if op == "add_decimal" else round(a - b, 6)
+        return expected == round(float(answer), 6)
+    except (TypeError, ValueError):
+        return False
+
+
 def normalize_for_compare(s: str) -> str:
     """
     text 空格比對的正規化：全形英數/符號轉半形、移除所有空白。

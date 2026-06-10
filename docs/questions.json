@@ -15320,7 +15320,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_2",
     "subject": "math",
     "unit": 6,
-    "subtopic": "圓的大小比較",
+    "subtopic": "圓規與畫圓",
     "type": "multiple_choice",
     "text": "有一個圓的直徑是 20 公分，和下列哪一 個圓不一樣大？",
     "options": [
@@ -15540,6 +15540,36 @@
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   },
   {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_vertical_calc_calc1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：25－6.7＝",
+    "op": "sub_decimal",
+    "operands": [
+      25,
+      6.7
+    ],
+    "answer": "18.3",
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_vertical_calc_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：53.2＋9.8＝",
+    "op": "add_decimal",
+    "operands": [
+      53.2,
+      9.8
+    ],
+    "answer": "63",
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_calc3",
     "subject": "math",
     "unit": 7,
@@ -15586,6 +15616,24 @@
         "input": "number"
       }
     ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_vertical_calc_calc6",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：340÷8＝（商）…（餘數）",
+    "op": "long_division",
+    "operands": [
+      340,
+      8
+    ],
+    "answer": {
+      "quotient": 42,
+      "remainder": 4
+    },
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   },
   {
@@ -15882,6 +15930,36 @@
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   },
   {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_vertical_calc_calc1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：0.2＋29.8＝",
+    "op": "add_decimal",
+    "operands": [
+      0.2,
+      29.8
+    ],
+    "answer": "30",
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_vertical_calc_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：27－2.5＝",
+    "op": "sub_decimal",
+    "operands": [
+      27,
+      2.5
+    ],
+    "answer": "24.5",
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_calc3",
     "subject": "math",
     "unit": 7,
@@ -15909,6 +15987,24 @@
         "input": "number"
       }
     ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_vertical_calc_calc5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：702÷5＝（商）…（餘數）",
+    "op": "long_division",
+    "operands": [
+      702,
+      5
+    ],
+    "answer": {
+      "quotient": 140,
+      "remainder": 2
+    },
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   },
   {

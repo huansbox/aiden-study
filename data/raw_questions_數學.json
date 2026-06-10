@@ -204,6 +204,36 @@
   },
   {
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 1,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：25－6.7＝",
+    "op": "sub_decimal",
+    "operands": [
+      25,
+      6.7
+    ],
+    "answer": "18.3"
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 2,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：53.2＋9.8＝",
+    "op": "add_decimal",
+    "operands": [
+      53.2,
+      9.8
+    ],
+    "answer": "63"
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
     "section": "fill_in_blank",
     "number": 3,
     "origin": "calc",
@@ -249,6 +279,24 @@
     "options": [],
     "answer": "",
     "has_image": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 6,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：340÷8＝（商）…（餘數）",
+    "op": "long_division",
+    "operands": [
+      340,
+      8
+    ],
+    "answer": {
+      "quotient": 42,
+      "remainder": 4
+    }
   },
   {
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
@@ -535,6 +583,36 @@
   },
   {
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 1,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：0.2＋29.8＝",
+    "op": "add_decimal",
+    "operands": [
+      0.2,
+      29.8
+    ],
+    "answer": "30"
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 2,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：27－2.5＝",
+    "op": "sub_decimal",
+    "operands": [
+      27,
+      2.5
+    ],
+    "answer": "24.5"
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
     "section": "fill_in_blank",
     "number": 3,
     "origin": "calc",
@@ -562,6 +640,24 @@
     "options": [],
     "answer": "",
     "has_image": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "vertical_calc",
+    "number": 5,
+    "origin": "calc",
+    "options": [],
+    "has_image": false,
+    "text": "用直式計算：702÷5＝（商）…（餘數）",
+    "op": "long_division",
+    "operands": [
+      702,
+      5
+    ],
+    "answer": {
+      "quotient": 140,
+      "remainder": 2
+    }
   },
   {
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",

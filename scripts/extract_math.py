@@ -317,13 +317,61 @@ def parse_math_fill(text: str, source: str) -> tuple[list[dict], list[dict]]:
     return questions, suspects
 
 
-# ── 計算題大題（issues/012）─────────────────────────────
+# ── 計算題大題（issues/012、014）────────────────────────
 # 子題標記 (1)…（緊貼無空白；有空白者是答案括號）
 CALC_MARKER = re.compile(r"[（(](\d{1,2})[）)]")
 # 計算題答案括號：內容為數字（任意留白；桃子腳有 "(18.3 )" 單側貼齊的案例）
 CALC_BRACKET = re.compile(r"[（(]\s*([0-9０-９.．]+)\s*[）)]")
 # 商餘記號（… 或 全形/半形連續點）
 REMAINDER_MARK = re.compile(r"…|[.．]{3}")
+# 直式算式（014）：加減「A±B＝(答)」與除法商餘「A÷B＝(商)…(餘)」
+VC_ADDSUB = re.compile(r"^([\d.]+)\s*([＋－+\-])\s*([\d.]+)\s*[＝=]")
+VC_DIVISION = re.compile(r"^([\d.]+)\s*÷\s*([\d.]+)\s*[＝=]")
+
+
+def _num(s: str):
+    """字串 → int 或 float（整數優先）"""
+    f = float(s)
+    return int(f) if f == int(f) else f
+
+
+def parse_vertical_calc(number: int, body: str, source: str) -> dict | None:
+    """
+    直式計算 chunk → vertical_calc raw 題目；解析失敗或答案驗算不符回傳 None。
+    op：add_decimal / sub_decimal / long_division（格子由前端依 op+operands 生成）。
+    """
+    norm = body.translate(FW_DIGITS)
+    answers = [a for a in CALC_BRACKET.findall(norm)]
+    base = {
+        "source": source, "section": "vertical_calc", "number": number,
+        "origin": "calc", "options": [], "has_image": False,
+    }
+    m = VC_DIVISION.match(norm)
+    if m and (REMAINDER_MARK.search(norm) or len(answers) >= 1):
+        dividend, divisor = int(float(m.group(1))), int(float(m.group(2)))
+        if len(answers) == 2:
+            q, r = int(float(answers[0])), int(float(answers[1]))
+        elif len(answers) == 1:
+            q, r = int(float(answers[0])), 0
+        else:
+            return None
+        if divisor <= 0 or dividend != divisor * q + r or not (0 <= r < divisor):
+            return None
+        return {**base, "text": f"用直式計算：{dividend}÷{divisor}＝（商）…（餘數）",
+                "op": "long_division", "operands": [dividend, divisor],
+                "answer": {"quotient": q, "remainder": r}}
+    m = VC_ADDSUB.match(norm)
+    if m and len(answers) == 1:
+        a, b = _num(m.group(1)), _num(m.group(3))
+        is_add = m.group(2) in "＋+"
+        expected = round(a + b, 6) if is_add else round(a - b, 6)
+        if expected != round(float(answers[0]), 6):
+            return None
+        op_char = "＋" if is_add else "－"
+        return {**base, "text": f"用直式計算：{a}{op_char}{b}＝",
+                "op": "add_decimal" if is_add else "sub_decimal",
+                "operands": [a, b], "answer": answers[0]}
+    return None
 
 
 def extract_calc_blanks(body: str) -> tuple[str, list[dict]]:
@@ -371,15 +419,17 @@ def parse_math_calc(text: str, source: str) -> tuple[list[dict], list[dict]]:
                 "origin": "calc", "category": category, "reason": reason, "raw_text": body,
             })
 
-        if REMAINDER_MARK.search(body) or "驗算" in body:
-            defer("vertical_calc", "除法商餘直式（待 014 vertical_calc）")
-            continue
         eq = body.find("＝")
         first_br = CALC_BRACKET.search(body)
         is_time = "時" in body and "分" in body
         is_backward = first_br and eq != -1 and first_br.start() < eq
-        if not (is_time or is_backward):
-            defer("vertical_calc", "加減直式（待 014 vertical_calc）")
+        if REMAINDER_MARK.search(body) or "驗算" in body or not (is_time or is_backward):
+            # 直式題（商餘／加減）→ vertical_calc（014）
+            vc = parse_vertical_calc(number, body, source)
+            if vc is None:
+                defer("parse_error", "直式算式解析失敗或答案驗算不符")
+            else:
+                questions.append(vc)
             continue
         stem, blanks = extract_calc_blanks(body)
         if not blanks:
