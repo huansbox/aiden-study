@@ -16289,5 +16289,146 @@
       }
     ],
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_table8",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "這是三年甲班學生眼科與牙科健康統計表，請完成表格：沒近視也沒蛀牙的有（１）人；全班合計共（２）人",
+    "image": "assets/math/anhe113_health.png",
+    "blanks": [
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "29",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_table9",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "這是花東公車的全票票價表（單位：元）。(1)從寧埔站到奚卜蘭站的票價是（１）元。(2)從石梯坪站搭到（２）站的票價是 167 元",
+    "image": "assets/math/anhe113_busfares.png",
+    "blanks": [
+      {
+        "answer": "85",
+        "input": "number"
+      },
+      {
+        "answer": "玉里",
+        "input": "code",
+        "choices": [
+          "玉里",
+          "安通",
+          "寧埔",
+          "長濱",
+          "奚卜蘭",
+          "石梯坪",
+          "金剛山"
+        ]
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_table10",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "奶奶買了一些優酪乳，圖中是每種優酪乳每 100 毫升的熱量和營養成分。請完成統計：草莓優酪乳的熱量是（１）大卡；原味優酪乳的脂肪是（２）公克；無加糖優酪乳的糖是（３）公克。如果想減少糖的攝取，可以買（４）優酪乳",
+    "image": "assets/math/anhe113_yogurt.png",
+    "blanks": [
+      {
+        "answer": "69.4",
+        "input": "number"
+      },
+      {
+        "answer": "0.4",
+        "input": "number"
+      },
+      {
+        "answer": "3.5",
+        "input": "number"
+      },
+      {
+        "answer": "無加糖",
+        "input": "code",
+        "choices": [
+          "原味",
+          "無加糖",
+          "草莓"
+        ]
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_table4",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "這是台灣高鐵南下部分車次時刻表。爸爸和爸比在下午 4 時到達板橋站，他們想在下午 6 時以前到達嘉義站參加喜宴。他們要搭乘（１）車次的列車才能最早到達；這班列車從板橋站到嘉義站，要花（２）小時（３）分鐘",
+    "image": "assets/math/anhe113_hsr.png",
+    "blanks": [
+      {
+        "answer": "661",
+        "input": "code",
+        "choices": [
+          "1321",
+          "841",
+          "661",
+          "145",
+          "1541"
+        ]
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "21",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_table5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "這是台灣國際兒童影展播出時刻表。姊姊在下午 3 時 32 分出門參加影展活動，她到影展會場需要先走路 3 分鐘，再騎乘公共自行車 5 分鐘。請問：她到達影展會場是（１）時（２）分（用 24 時制回答）；她（３）觀賞〈小南和小雞工廠〉這部影片",
+    "image": "assets/math/anhe113_films.png",
+    "blanks": [
+      {
+        "answer": "15",
+        "input": "number"
+      },
+      {
+        "answer": "40",
+        "input": "number"
+      },
+      {
+        "answer": "來得及",
+        "input": "code",
+        "choices": [
+          "來得及",
+          "來不及"
+        ]
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   }
 ]
