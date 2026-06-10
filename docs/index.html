@@ -195,6 +195,34 @@ body {
 }
 .next-btn:active { background: #3451c7; }
 
+/* ── 題目回報 ── */
+.flag-area { margin-top: 12px; text-align: center; }
+.flag-btn {
+  background: none; border: none; color: #aab; font-size: 0.85rem;
+  text-decoration: underline; cursor: pointer; padding: 6px 10px;
+}
+.flag-confirm {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; color: #b71c1c;
+}
+.flag-confirm button {
+  padding: 6px 12px; border: none; border-radius: 8px;
+  font-size: 0.9rem; cursor: pointer;
+}
+.flag-yes { border: 1px solid #e74c3c; background: #fdecea; color: #b71c1c; }
+.flag-no { border: 1px solid #ccc; background: #fff; color: #666; }
+
+/* 首頁已回報清單 */
+.flagged-section { border-top: 2px solid #eee; padding-top: 16px; margin-top: 8px; }
+.flagged-section summary { font-size: 0.9rem; color: #888; cursor: pointer; padding: 4px; }
+.flagged-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 14px; margin: 6px 0;
+  border: 1px solid #ececec; border-radius: 10px; background: #fafbfc;
+}
+.flagged-text { font-size: 0.9rem; color: #555; }
+.flagged-actions { display: flex; gap: 8px; margin-top: 8px; }
+
 /* ── 摘要頁 ── */
 .summary { text-align: center; padding-top: 40px; }
 .summary .score { font-size: 3rem; font-weight: 800; color: #4361ee; margin: 16px 0; }
@@ -231,7 +259,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, semester: "final" };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final" };
 
 const Storage = {
   load() {
@@ -278,6 +306,7 @@ const State = {
     if (!state.stats) state.stats = {};
     if (!state.semester) state.semester = "final";
     if (!state.mastered) state.mastered = {};
+    if (!state.flagged) state.flagged = [];
     // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
     if (saved && !saved.mastered) state._needMasteredBackfill = true;
   },
@@ -312,6 +341,32 @@ const State = {
   },
   removeFromErrorBank(qId) {
     state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+    Storage.save(state);
+  },
+
+  // ── Flagged（回報有問題的題目：排除於所有題池與通關分母，可從首頁還原）
+  getFlagged() {
+    return [...state.flagged];
+  },
+  isFlagged(qId) {
+    return state.flagged.some(f => f.questionId === qId);
+  },
+  flagQuestion(qId, unit) {
+    if (State.isFlagged(qId)) return;
+    state.flagged.push({ questionId: qId, unit, flaggedAt: Date.now() });
+    // 題目本身有疑慮 → 該題的歷史作答記錄一律視為不可信，整筆清除
+    delete state.stats[qId];
+    state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+    const u = String(unit);
+    if (state.mastered[u]) state.mastered[u] = state.mastered[u].filter(id => id !== qId);
+    Storage.save(state);
+  },
+  unflagQuestion(qId) {
+    state.flagged = state.flagged.filter(f => f.questionId !== qId);
+    Storage.save(state);
+  },
+  unflagAll() {
+    state.flagged = [];
     Storage.save(state);
   },
 
@@ -392,10 +447,10 @@ function challengeKey(unit, subtopic) {
   return subtopic ? `${unit}/${subtopic}` : String(unit);
 }
 
-// 取某單元（可選 subtopic）的題目 id
+// 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
 function questionIdsFor(unit, subtopic) {
   return allQuestions
-    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic))
+    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id))
     .map(q => q.id);
 }
 
@@ -449,7 +504,7 @@ const Picker = {
   },
 
   forQuickPractice(unit, subtopic, count = 10) {
-    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic));
+    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id));
     const scored = unitQs.map(q => {
       const s = State.getStats(q.id);
       const errorRate = s.practiced === 0 ? 0.5 : (s.practiced - s.correct) / s.practiced;
@@ -564,6 +619,36 @@ function advance() {
   renderQuiz();
 }
 
+// 確認回報：清除該題記錄、從本輪 queue 抽掉、直接進下一題
+function flagCurrentQuestion() {
+  // flag 對象是「剛作答的題」：full/error 模式 submitAnswer 已 shift queue，
+  // 此時 getCurrentQuestion() 指向下一題，必須改從作答記錄取
+  const last = quiz.answered[quiz.answered.length - 1];
+  const q = last && questionMap.get(last.questionId);
+  if (!q) return;
+  State.flagQuestion(q.id, q.unit);
+
+  // 撤銷本題剛剛的作答（進度點與總結不計入）
+  quiz.answered.pop();
+
+  quiz.isAnswered = false;
+  if (quiz.mode === "full") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.totalForProgress = questionIdsFor(quiz.unit, quiz.subtopic).length;
+    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    if (quiz.queue.length === 0) { renderSummary(); return; }
+  } else if (quiz.mode === "quick") {
+    quiz.queue.splice(quiz.index, 1);
+    quiz.totalForProgress--;
+    if (quiz.index >= quiz.totalForProgress) { renderSummary(); return; }
+  } else if (quiz.mode === "error") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.totalForProgress--;
+    if (quiz.queue.length === 0) { renderSummary(); return; }
+  }
+  renderQuiz();
+}
+
 function leaveQuiz() {
   // Full mode: queue already saved on each answer
   showPage("page-home");
@@ -583,6 +668,32 @@ const SEMESTERS = {
     { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
   ] },
 };
+
+// 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
+function renderFlaggedSection() {
+  const flagged = State.getFlagged();
+  if (flagged.length === 0) return "";
+  let rows = "";
+  for (const f of flagged) {
+    const q = questionMap.get(f.questionId);
+    if (!q) continue;
+    const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
+    rows += `
+      <div class="flagged-row">
+        <span class="flagged-text">[第 ${q.unit} 單元] ${snippet}</span>
+        <button class="st-btn" onclick="window._unflag('${q.id}')">還原</button>
+      </div>`;
+  }
+  return `
+    <details class="flagged-section">
+      <summary>已回報題目（${flagged.length}）</summary>
+      ${rows}
+      <div class="flagged-actions">
+        <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
+        <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
+      </div>
+    </details>`;
+}
 
 // 期末單元卡片下的 subtopic 練習入口（全部可接續、快速智慧抽）
 function renderSubtopics(u) {
@@ -626,7 +737,7 @@ function renderHome() {
 
   // Unit sections
   for (const u of units) {
-    const totalInUnit = allQuestions.filter(q => q.unit === u.id).length;
+    const totalInUnit = questionIdsFor(u.id).length;
     const done = State.doneCount(u.id);
     const isCleared = State.isCleared(u.id);
     let fullStatus, fullLabel;
@@ -673,6 +784,7 @@ function renderHome() {
   }
 
   html += '</div>';
+  html += renderFlaggedSection();
   home.innerHTML = html;
   showPage("page-home");
 }
@@ -700,6 +812,46 @@ window._resetChallenge = (unit, subtopic = null) => {
   State.resetChallenge(challengeKey(unit, subtopic));
   renderHome();
 };
+window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
+window._unflagAll = () => { State.unflagAll(); renderHome(); };
+
+// 回報到 GitHub：prefill issue URL（零後端；pad 瀏覽器需登入過 GitHub）
+const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
+const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
+
+function formatAnswer(q) {
+  if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
+  return `選項 ${q.answer}`;
+}
+
+function buildReportUrl() {
+  const qs = State.getFlagged().map(f => questionMap.get(f.questionId)).filter(Boolean);
+  const today = new Date().toISOString().slice(0, 10);
+  const title = `題目回報：${qs.length} 題（${today}）`;
+
+  const full = qs.map(q => {
+    let s = `### ${q.id}\n`;
+    s += `- 單元：第 ${q.unit} 單元／${q.subtopic}\n`;
+    s += `- 題目：${q.text}\n`;
+    if (q.options && q.options.length > 0) {
+      s += `- 選項：${q.options.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
+    }
+    s += `- 現存答案：${formatAnswer(q)}\n`;
+    s += `- 來源：${q.source}`;
+    return s;
+  }).join("\n\n");
+  const compact = qs.map(q => `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
+
+  // 題數多時逐級降格，避免超出 URL 長度上限
+  for (const body of [full, compact, idsOnly]) {
+    const url = `${ISSUE_URL}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    if (url.length <= ISSUE_URL_MAX) return url;
+  }
+  return `${ISSUE_URL}?title=${encodeURIComponent(title)}`;
+}
+
+window._reportToGitHub = () => { window.open(buildReportUrl(), "_blank"); };
 
 // ════════════════════════════════════════════════════
 // UI: Quiz
@@ -766,6 +918,14 @@ function renderQuiz() {
       <div class="options" id="q-options">${optionsHtml}</div>
       <div class="result-hint hidden" id="result-hint"></div>
       <button class="next-btn hidden" id="next-btn">下一題</button>
+      <div class="flag-area hidden" id="flag-area">
+        <button class="flag-btn" id="flag-btn">題目有問題</button>
+        <span class="flag-confirm hidden" id="flag-confirm">
+          此題將不再出現
+          <button class="flag-yes" id="flag-yes">確定回報</button>
+          <button class="flag-no" id="flag-no">取消</button>
+        </span>
+      </div>
     </div>`;
 
   // Bind events
@@ -898,6 +1058,14 @@ function renderFeedback(correct, q) {
 
   nextBtn.textContent = isLast ? "查看結果" : "下一題";
   nextBtn.onclick = advance;
+
+  // 題目回報：低調入口，按下原地變 inline 確認
+  const flagBtn = document.getElementById("flag-btn");
+  const flagConfirm = document.getElementById("flag-confirm");
+  document.getElementById("flag-area").classList.remove("hidden");
+  flagBtn.onclick = () => { flagBtn.classList.add("hidden"); flagConfirm.classList.remove("hidden"); };
+  document.getElementById("flag-no").onclick = () => { flagConfirm.classList.add("hidden"); flagBtn.classList.remove("hidden"); };
+  document.getElementById("flag-yes").onclick = flagCurrentQuestion;
 }
 
 // Patch submitAnswer to store selected value
@@ -976,8 +1144,9 @@ async function init() {
     // Build question map
     questionMap = new Map(allQuestions.map(q => [q.id, q]));
 
-    // Clean orphan errorBank entries
+    // Clean orphan errorBank / flagged entries
     state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
+    state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
     Storage.save(state);
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
