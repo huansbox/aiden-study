@@ -737,7 +737,7 @@ function renderHome() {
 
   // Unit sections
   for (const u of units) {
-    const totalInUnit = allQuestions.filter(q => q.unit === u.id).length;
+    const totalInUnit = questionIdsFor(u.id).length;
     const done = State.doneCount(u.id);
     const isCleared = State.isCleared(u.id);
     let fullStatus, fullLabel;
