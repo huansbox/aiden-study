@@ -307,6 +307,157 @@ def parse_math_fill(text: str, source: str) -> tuple[list[dict], list[dict]]:
     return questions, suspects
 
 
+# ── 計算題大題（issues/012）─────────────────────────────
+# 子題標記 (1)…（緊貼無空白；有空白者是答案括號）
+CALC_MARKER = re.compile(r"[（(](\d{1,2})[）)]")
+# 計算題答案括號：內容為數字（任意留白；桃子腳有 "(18.3 )" 單側貼齊的案例）
+CALC_BRACKET = re.compile(r"[（(]\s*([0-9０-９.．]+)\s*[）)]")
+# 商餘記號（… 或 全形/半形連續點）
+REMAINDER_MARK = re.compile(r"…|[.．]{3}")
+
+
+def extract_calc_blanks(body: str) -> tuple[str, list[dict]]:
+    """計算題算式 → (題幹（答案括號→佔位符）, blanks)。"""
+    blanks = []
+
+    def repl(m):
+        blanks.append({"answer": _normalize_blank_answer(m.group(1))})
+        return f"（{PLACEHOLDERS[len(blanks) - 1]}）"
+
+    stem = CALC_BRACKET.sub(repl, body).strip()
+    return stem, blanks
+
+
+def parse_math_calc(text: str, source: str) -> tuple[list[dict], list[dict]]:
+    """
+    計算題大題 → (反推/時間題, 延後題)。
+    反推（＝ 之前有答案括號）與時間計算 → fill_in_blank（origin=calc，id 不撞填填看）；
+    小數加減直式與商餘 → category "vertical_calc" 延後（issues/014）。
+    做法/驗算/圈選行（無子題標記且非題首行）一律丟棄（驗算框不檢核，家長定案）。
+    """
+    lines = _find_section(text, "計算")
+    chunks = []   # (number, body)
+    for raw_ln in lines:
+        ln = raw_ln.strip()
+        if not ln or "略" in ln:
+            continue
+        markers = list(CALC_MARKER.finditer(ln))
+        m_fill = FILL_Q_START.match(ln)
+        if markers:
+            # (1)… 標記式（桃子腳）：一行可含多題
+            for i, m in enumerate(markers):
+                end = markers[i + 1].start() if i + 1 < len(markers) else len(ln)
+                chunks.append((int(m.group(1)), ln[m.end():end].strip()))
+        elif m_fill:
+            # N. 標記式（安和）：一行一題
+            chunks.append((int(m_fill.group(1)), m_fill.group(2).strip()))
+        # 其餘行＝做法/驗算/雜訊 → 丟棄
+
+    questions, suspects = [], []
+    for number, body in chunks:
+        def defer(category, reason):
+            suspects.append({
+                "source": source, "section": "fill_in_blank", "number": number,
+                "origin": "calc", "category": category, "reason": reason, "raw_text": body,
+            })
+
+        if REMAINDER_MARK.search(body) or "驗算" in body:
+            defer("vertical_calc", "除法商餘直式（待 014 vertical_calc）")
+            continue
+        eq = body.find("＝")
+        first_br = CALC_BRACKET.search(body)
+        is_time = "時" in body and "分" in body
+        is_backward = first_br and eq != -1 and first_br.start() < eq
+        if not (is_time or is_backward):
+            defer("vertical_calc", "加減直式（待 014 vertical_calc）")
+            continue
+        stem, blanks = extract_calc_blanks(body)
+        if not blanks:
+            defer("no_blanks", "抽不到答案括號")
+            continue
+        questions.append({
+            "source": source, "section": "fill_in_blank", "number": number,
+            "origin": "calc", "text": stem, "blanks": blanks,
+            "options": [], "answer": "", "has_image": False,
+        })
+    return questions, suspects
+
+
+# ── 應用題大題（issues/012）─────────────────────────────
+ANSWER_LINE = re.compile(r"^答[：:]\s*(.*)$")
+TIME_ANSWER = re.compile(r"\d+\s*小?時\s*\d+\s*分")
+NUM = re.compile(r"\d+(?:\.\d+)?")
+
+
+def parse_math_word(text: str, source: str) -> tuple[list[dict], list[dict]]:
+    """
+    應用題大題 → (題目, 延後題)。只檢核最終答案（家長定案，列式不檢核）：
+    題幹＝題首行起到第一條算式行（含＝）為止；答案＝「答：」行內容。
+    答案中的數字改成佔位符接回題幹（保留單位字，如「答：（１）公尺」）。
+    時間答案兩格、單一數字單格；其餘（複合答案）延後 category "complex_answer"。
+    表格題（時刻表等）延後 category "table"（issues/015）。
+    「答：」之後到下一題之間的做法/跨欄雜訊全部忽略。
+    """
+    lines = _find_section(text, "應用") or _find_section(text, "做法和答案")
+    raw_questions = []
+    current = None    # {number, stem_lines, answer_text, in_working, closed}
+
+    for raw_ln in lines:
+        ln = raw_ln.strip()
+        if not ln:
+            continue
+        m = FILL_Q_START.match(ln)
+        if m and (current is None or int(m.group(1)) == current["number"] + 1):
+            current = {"number": int(m.group(1)), "stem_lines": [m.group(2)],
+                       "answer_text": None, "in_working": False, "closed": False}
+            raw_questions.append(current)
+            continue
+        if current is None or current["closed"]:
+            continue
+        ma = ANSWER_LINE.match(ln)
+        if ma:
+            current["answer_text"] = ma.group(1).strip()
+            current["closed"] = True
+            continue
+        if "＝" in ln:
+            current["in_working"] = True   # 進入做法區，題幹結束
+            continue
+        if not current["in_working"] and not STRAY_DIGIT.match(ln):
+            current["stem_lines"].append(ln)
+
+    questions, suspects = [], []
+    for rq in raw_questions:
+        stem_body = " ".join(rq["stem_lines"])
+
+        def defer(category, reason):
+            suspects.append({
+                "source": source, "section": "fill_in_blank", "number": rq["number"],
+                "origin": "word", "category": category, "reason": reason,
+                "raw_text": stem_body + (f"｜答：{rq['answer_text']}" if rq["answer_text"] else ""),
+            })
+
+        if TABLE_HINT.search(stem_body):
+            defer("table", "表格應用題（待 015 截圖流程）")
+            continue
+        if not rq["answer_text"]:
+            defer("no_answer", "找不到「答：」行")
+            continue
+        ans = rq["answer_text"].translate(FW_DIGITS)
+        nums = NUM.findall(ans)
+        if not (len(nums) == 1 or (len(nums) == 2 and TIME_ANSWER.search(ans))):
+            defer("complex_answer", f"複合答案無法化為單格/時間兩格: {ans}")
+            continue
+        blanks = [{"answer": n} for n in nums]
+        counter = iter(PLACEHOLDERS)
+        suffix = NUM.sub(lambda _: f"（{next(counter)}）", ans)
+        questions.append({
+            "source": source, "section": "fill_in_blank", "number": rq["number"],
+            "origin": "word", "text": f"{stem_body} 答：{suffix}", "blanks": blanks,
+            "options": [], "answer": "", "has_image": False,
+        })
+    return questions, suspects
+
+
 def main():
     parser = argparse.ArgumentParser(description="數學考卷萃取（選擇題＋填充題）")
     parser.add_argument("--input", action="append", required=True, help="答案卷 PDF（可重複）")
@@ -323,10 +474,14 @@ def main():
         if no_answer:
             log.warning(f"{source}: 選擇題 {no_answer} 無答案（括號空白且無逸出數字）")
         fill_qs, fill_skips = parse_math_fill(text, source)
+        calc_qs, calc_skips = parse_math_calc(text, source)
+        word_qs, word_skips = parse_math_word(text, source)
         log.info(f"{source}: 選擇題 {len(mc_qs)}（疑慮 {len(mc_skips)}）、"
-                 f"填充題 {len(fill_qs)}（延後 {len(fill_skips)}）")
-        all_q.extend(mc_qs + fill_qs)
-        all_skip.extend(mc_skips + fill_skips)
+                 f"填充題 {len(fill_qs)}（延後 {len(fill_skips)}）、"
+                 f"計算題 {len(calc_qs)}（延後 {len(calc_skips)}）、"
+                 f"應用題 {len(word_qs)}（延後 {len(word_skips)}）")
+        all_q.extend(mc_qs + fill_qs + calc_qs + word_qs)
+        all_skip.extend(mc_skips + fill_skips + calc_skips + word_skips)
 
     with open(args.output, "w", encoding="utf-8") as f:
         json.dump(all_q, f, ensure_ascii=False, indent=2)

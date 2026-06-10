@@ -14,8 +14,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的構造",
-    "confidence": 98,
-    "classify_reason": "題目詢問一個圓有幾條直徑，考查直徑的定義與性質（無限多條）。",
+    "confidence": 97,
+    "classify_reason": "直接詢問一個圓有幾條直徑，屬於圓的基本構造知識",
     "needs_review": false
   },
   {
@@ -33,8 +33,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的大小比較",
-    "confidence": 95,
-    "classify_reason": "以直徑 20 公分的圓為基準，判斷哪個圓不一樣大；選項 3 圓規開 20 公分代表半徑 20 公分，直徑 40 公分，故不同大。",
+    "confidence": 88,
+    "classify_reason": "題目要求判斷哪個圓與直徑20公分的圓不一樣大，核心是以半徑/直徑比較圓的大小；選項3圓規打開20公分代表半徑20公分，直徑40公分，與題目不同",
     "needs_review": false
   },
   {
@@ -53,7 +53,7 @@
     "unit": "7",
     "subtopic": "乘除應用",
     "confidence": 97,
-    "classify_reason": "文字應用題：80÷8＝10，考查在購物情境中以除法求份數。",
+    "classify_reason": "文字應用題，需以總價÷單價求數量（80÷8＝10），屬乘除應用",
     "needs_review": false
   },
   {
@@ -71,8 +71,8 @@
     "has_image": false,
     "unit": "8",
     "subtopic": "時刻與時間單位",
-    "confidence": 96,
-    "classify_reason": "題目要求判斷哪個事件的時間單位合理，直接考查時間單位選擇的合理性。",
+    "confidence": 97,
+    "classify_reason": "直接考各事件選擇合理時間單位（秒/分/時/日），屬時刻與時間單位判斷",
     "needs_review": false
   },
   {
@@ -96,7 +96,7 @@
     "unit": "7",
     "subtopic": "乘除互逆",
     "confidence": 97,
-    "classify_reason": "題目以 800÷5＝160 反推 160×5＝□ 及 800÷160＝□，直接考查乘除互逆關係。",
+    "classify_reason": "利用800÷5＝160，反推160×5與800÷160，屬乘除互逆驗算",
     "needs_review": false
   },
   {
@@ -120,7 +120,7 @@
     "unit": "5",
     "subtopic": "小數的認識",
     "confidence": 98,
-    "classify_reason": "題目考查 35.8 各位數字的辨認，直接測試十分位與十位的認識。",
+    "classify_reason": "詢問35.8各位數字（十分位、十位），屬小數位值認識",
     "needs_review": false
   },
   {
@@ -142,9 +142,9 @@
     "answer": "",
     "has_image": false,
     "unit": "8",
-    "subtopic": "時制互換",
-    "confidence": 83,
-    "classify_reason": "題目給出 24 時制 15:57 加 3 分鐘，要求以下午幾時幾分（12 時制）回答，核心在於 16:00 轉換為下午 4 時。",
+    "subtopic": "時間計算",
+    "confidence": 82,
+    "classify_reason": "需計算15:57加3分鐘得16:00，再轉為下午4時0分；主要技能是時間加法，12/24時制轉換為附帶要求",
     "needs_review": false
   },
   {
@@ -164,7 +164,7 @@
     "unit": "5",
     "subtopic": "小數的認識",
     "confidence": 97,
-    "classify_reason": "題目考查「9 個 1 和 12 個 0.1 合起來」的化聚（9＋1.2＝10.2），直接測試 N 個 0.1 的意義。",
+    "classify_reason": "9個1與12個0.1合起來＝9＋1.2＝10.2，考N個0.1的化聚與小數合成",
     "needs_review": false
   },
   {
@@ -188,7 +188,7 @@
     "unit": "6",
     "subtopic": "圓的大小比較",
     "confidence": 98,
-    "classify_reason": "題目要求將四個圓換算為直徑後比較大小（丁=20cm 最大，丙=5cm 最小），考查以半徑/直徑判斷圓的大小。",
+    "classify_reason": "將各圓統一換算直徑（甲10、乙15、丙5、丁20），比較大小找最大最小，屬圓的大小比較",
     "needs_review": false
   },
   {
@@ -207,8 +207,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓規與畫圓",
-    "confidence": 99,
-    "classify_reason": "題目詢問畫直徑 12 公分的圓時圓規要打開幾公分，直接考查圓規開度等於半徑（12÷2＝6）。",
+    "confidence": 98,
+    "classify_reason": "直徑12公分的圓，圓規需打開半徑6公分，直接考圓規開度與直徑/半徑的關係",
     "needs_review": false
   },
   {
@@ -227,8 +227,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的構造",
-    "confidence": 99,
-    "classify_reason": "題目考查上下左右各對摺一次後兩條摺線的交點，直接對應「對摺找圓心」的概念。",
+    "confidence": 98,
+    "classify_reason": "對摺找兩摺線交點即圓心，屬對摺找圓心的圓的構造概念",
     "needs_review": false
   },
   {
@@ -247,8 +247,188 @@
     "has_image": false,
     "unit": "7",
     "subtopic": "乘除應用",
-    "confidence": 88,
-    "classify_reason": "以換隊形為情境，核心是理解 12×9＝9×12＝108，換排列後總人數不變，屬乘法交換律的應用情境題。",
+    "confidence": 92,
+    "classify_reason": "12×9＝108後換隊形9×12仍108，考乘法交換律包裝成應用題，屬乘除應用",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 3,
+    "origin": "calc",
+    "text": "（１） ×5＝120",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除互逆",
+    "confidence": 98,
+    "classify_reason": "（）×5＝120，需以120÷5反推未知因數，直接考乘除互逆",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 4,
+    "origin": "calc",
+    "text": "（１）÷8＝56",
+    "blanks": [
+      {
+        "answer": "448",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除互逆",
+    "confidence": 98,
+    "classify_reason": "（）÷8＝56，需以56×8反推被除數，直接考乘除互逆",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 5,
+    "origin": "calc",
+    "text": "3 時 50 分－2 時 35 分＝（１）時 （２）分",
+    "blanks": [
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "15",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "時間計算",
+    "confidence": 98,
+    "classify_reason": "3時50分－2時35分＝1時15分，屬時間量減法計算",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 1,
+    "origin": "word",
+    "text": "一條綠緞帶長 18.8 公尺，一條綠緞帶比一條紅 緞帶短 3.4 公尺， 一條紅緞帶長幾公尺？ 答：（１） 公尺",
+    "blanks": [
+      {
+        "answer": "22.2",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "5",
+    "subtopic": "小數加減",
+    "confidence": 95,
+    "classify_reason": "需計算 18.8 + 3.4 = 22.2，屬小數加法應用題",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 2,
+    "origin": "word",
+    "text": "珊珊老師分配英語讀者劇場的劇本，除了第 1 句 是由小桃單獨負責，其他的句子平均給 4 組同 學，每組負責 9 個句子，請問整份劇本共有幾個 句子？ 答：（１） 個",
+    "blanks": [
+      {
+        "answer": "37",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除應用",
+    "confidence": 92,
+    "classify_reason": "需列式 4×9+1=37，屬兩步驟乘法應用題",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 3,
+    "origin": "word",
+    "text": "桃藝節時，三忠販賣的「正忠好菜」每包價錢都 相同。桃桃買 5 包，付了 200 元，請問一包「正 忠好菜」是多少元？ 答：（１） 元",
+    "blanks": [
+      {
+        "answer": "40",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除應用",
+    "confidence": 95,
+    "classify_reason": "需計算 200÷5=40，屬除法應用題",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 4,
+    "origin": "word",
+    "text": "太鼓隊在上午 8 時 30 分到達比賽會場，離比賽 開始還有 2 小時，比賽是上午幾時幾分開始？ 答：上午 （１） 時 （２） 分",
+    "blanks": [
+      {
+        "answer": "10",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "時間計算",
+    "confidence": 97,
+    "classify_reason": "需計算 8:30 + 2:00 = 10:30，屬時間加法",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 5,
+    "origin": "word",
+    "text": "小翔從下午 4 時 35 分開始寫功課，寫到下午 6 時 50 分，小翔寫功課花了多少時間？ 答：（１） 小時 （２） 分鐘",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "15",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "時間計算",
+    "confidence": 97,
+    "classify_reason": "需計算 6:50 - 4:35 = 2:15，屬時間減法",
     "needs_review": false
   },
   {
@@ -266,8 +446,8 @@
     "has_image": false,
     "unit": "5",
     "subtopic": "小數比大小",
-    "confidence": 98,
-    "classify_reason": "題目要求將各人喝水量（小數）與 1.5 公升比較，找出不足 1.5 的人（哥哥 0.7＜1.5），核心為小數比大小。",
+    "confidence": 95,
+    "classify_reason": "需判斷哪個小數比基準值 1.5 小，屬小數大小比較",
     "needs_review": false
   },
   {
@@ -285,8 +465,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的構造",
-    "confidence": 97,
-    "classify_reason": "題目考查把圓平分成兩半的摺線名稱，直接對應直徑的定義。",
+    "confidence": 98,
+    "classify_reason": "對摺圓形的摺線即直徑，屬圓的構造基本知識",
     "needs_review": false
   },
   {
@@ -304,8 +484,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的大小比較",
-    "confidence": 98,
-    "classify_reason": "題目列出四個圓的直徑數值（含整數與小數），要求找出最大的（32 公分），核心為以直徑比較圓的大小。",
+    "confidence": 95,
+    "classify_reason": "以直徑數值判斷哪個圓最大，屬圓的大小比較",
     "needs_review": false
   },
   {
@@ -322,9 +502,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "7",
-    "subtopic": "乘除應用",
-    "confidence": 95,
-    "classify_reason": "改變每排個數求排數，需先算總數12×18=216，再216÷18=12，屬乘除文字應用題",
+    "subtopic": "乘除互逆",
+    "confidence": 88,
+    "classify_reason": "核心在 12×18=18×12 的乘法交換性，即乘除互逆關係的應用",
     "needs_review": false
   },
   {
@@ -343,7 +523,7 @@
     "unit": "7",
     "subtopic": "乘除應用",
     "confidence": 90,
-    "classify_reason": "題目要求對「總數÷每盒=盒數」場景選出正確列式，屬乘除應用題列式判斷",
+    "classify_reason": "題目要求判斷除法情境的正確列式，屬乘除應用中的列式判斷",
     "needs_review": false
   },
   {
@@ -362,7 +542,7 @@
     "unit": "8",
     "subtopic": "時刻與時間單位",
     "confidence": 95,
-    "classify_reason": "比較各選項是否等於一分鐘，分針走1大格=5分鐘≠1分鐘，考時間單位換算（分與秒）",
+    "classify_reason": "辨別各描述是否等於一分鐘（分針走1大格=5分鐘，不等於1分鐘），屬時間單位認識",
     "needs_review": false
   },
   {
@@ -380,8 +560,8 @@
     "has_image": false,
     "unit": "8",
     "subtopic": "時制互換",
-    "confidence": 95,
-    "classify_reason": "17:25／5:25PM／下午5時25分均指同一時刻，5:25未標示代表早上，核心是12/24時制互換辨識",
+    "confidence": 97,
+    "classify_reason": "判斷哪個時刻與 17:25 不同，涉及 24 時制與 12 時制互換",
     "needs_review": false
   },
   {
@@ -401,7 +581,7 @@
     "unit": "6",
     "subtopic": "圓的構造",
     "confidence": 98,
-    "classify_reason": "直接問圓心到圓周距離的名稱，核心概念是半徑定義",
+    "classify_reason": "圓心到圓周的距離稱為半徑，屬圓的構造基本名稱填寫",
     "needs_review": false
   },
   {
@@ -420,8 +600,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓規與畫圓",
-    "confidence": 98,
-    "classify_reason": "已知直徑14公分求圓規開度，圓規開度等於半徑=直徑÷2=7公分",
+    "confidence": 97,
+    "classify_reason": "畫直徑14公分的圓需將圓規開半徑7公分，屬圓規開度與半徑關係",
     "needs_review": false
   },
   {
@@ -445,7 +625,7 @@
     "unit": "5",
     "subtopic": "小數的認識",
     "confidence": 90,
-    "classify_reason": "核心是1/10=0.1的化聚關係（1個鬆餅需0.1袋），第二空2.8×10=28亦由此推導",
+    "classify_reason": "核心概念為 1÷10=0.1，即小數與分數的關係，第二格 2.8×10=28 為延伸應用",
     "needs_review": false
   },
   {
@@ -465,7 +645,7 @@
     "unit": "8",
     "subtopic": "時間計算",
     "confidence": 98,
-    "classify_reason": "2小時+1小時20分=3小時20分，換算為分鐘共200分，屬時間量加法計算",
+    "classify_reason": "將2小時與1小時20分鐘合計後換算為分鐘（200分），屬時間量加法計算。",
     "needs_review": false
   },
   {
@@ -489,7 +669,7 @@
     "unit": "8",
     "subtopic": "時間計算",
     "confidence": 98,
-    "classify_reason": "上午6時35分加3小時15分，進位後得9時50分，屬時刻加時間量的加法計算",
+    "classify_reason": "在已知出發時刻6時35分上加3小時15分求到達時刻，屬時間量加法計算。",
     "needs_review": false
   },
   {
@@ -508,8 +688,92 @@
     "has_image": false,
     "unit": "7",
     "subtopic": "乘除互逆",
-    "confidence": 98,
-    "classify_reason": "由已知除法算式996÷166=6，反推乘法6×□=996求□，直接考乘除互逆關係",
+    "confidence": 97,
+    "classify_reason": "題目明確說明已知除法算式996÷166=6，反推乘法算式6×□=996的未知數，典型乘除互逆。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 3,
+    "origin": "calc",
+    "text": "（１） × 4 ＝ 96",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除互逆",
+    "confidence": 95,
+    "classify_reason": "( )×4=96 為求乘法算式中未知被乘數，與子主題範例「( )×5=120 式反推」完全吻合。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 4,
+    "origin": "calc",
+    "text": "（１） ÷ 7＝ 42",
+    "blanks": [
+      {
+        "answer": "294",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除互逆",
+    "confidence": 95,
+    "classify_reason": "( )÷7=42 為求除法算式中未知被除數，需以乘法（42×7=294）反推，屬乘除互逆。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 1,
+    "origin": "word",
+    "text": "班長為了參加英語拼字比賽，每天都背誦 3 個 英語單字，他背誦幾天時，剛好可以背誦好258 個三年級基本單字？用( )表示背誦的天數， 將問題列成算式，再算出答案。 答：（１） 天",
+    "blanks": [
+      {
+        "answer": "86",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "乘除應用",
+    "confidence": 97,
+    "classify_reason": "情境描述需列式258÷3=86求天數，屬除法文字應用題。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 2,
+    "origin": "word",
+    "text": "妹妹在小白菜上面發現了一隻 24 毫米長的淺綠 色毛毛蟲，哥哥在橘子樹葉上面找到了一隻 4 公分 5 毫米長的深綠色毛毛蟲，這二隻毛毛蟲 的體長相差幾公分？ 答：（１） 公分",
+    "blanks": [
+      {
+        "answer": "2.1",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "5",
+    "subtopic": "小數加減",
+    "confidence": 90,
+    "classify_reason": "需將毫米換算為公分後做小數減法（4.5－2.4＝2.1），核心考點為小數減法計算。",
     "needs_review": false
   },
   {
@@ -528,8 +792,8 @@
     "answer": "4",
     "unit": "5",
     "subtopic": "小數的認識",
-    "confidence": 95,
-    "classify_reason": "考N個0.1的化聚與小數/分數對應，選項(4)「8個0.1是1/8」錯誤（應為0.8）",
+    "confidence": 97,
+    "classify_reason": "選項考查N個0.1的化聚及小數與分數等值關係，錯誤選項(4)誤將8個0.1等同1/8。",
     "needs_review": false
   },
   {
@@ -549,8 +813,8 @@
     "answer": "",
     "unit": "5",
     "subtopic": "小數的認識",
-    "confidence": 92,
-    "classify_reason": "2個4/10=8/10=0.8，考分數與小數的對應關係，屬小數的認識",
+    "confidence": 97,
+    "classify_reason": "題目考查分數4/10化為小數0.4，再求2個0.4合起來的值，屬N個0.1化聚與小數分數關係。",
     "needs_review": false
   },
   {
@@ -569,8 +833,8 @@
     "answer": "4",
     "unit": "5",
     "subtopic": "小數的認識",
-    "confidence": 95,
-    "classify_reason": "各選項均考N個0.1與小數/分數對應，選項(4)「9個0.1和9/10一樣大」正確",
+    "confidence": 98,
+    "classify_reason": "題目考查N個0.1與對應分數的等值關係，正確選項(4)為9個0.1＝9/10。",
     "needs_review": false
   }
 ]

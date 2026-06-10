@@ -62,7 +62,9 @@ def unique_id(base: str, used: set) -> str:
 def to_final_schema(q: dict, used_ids: set, subject: str) -> dict:
     """classified 題目 → 網站最終 schema（fill_in_blank 帶 blanks，不帶 options/answer）"""
     stem = q["source"].rsplit(".", 1)[0]
-    base = f"{stem}_{q['section']}_{q['number']}"
+    # origin（calc/word 大題）入 id，避免與填填看大題同 section 同題號相撞
+    origin = q.get("origin", "")
+    base = f"{stem}_{q['section']}_{origin}{q['number']}"
     out = {
         "id": unique_id(base, used_ids),
         "subject": subject,

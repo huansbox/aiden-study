@@ -20,7 +20,7 @@
     "unit": "6",
     "subtopic": "圓的大小比較",
     "confidence": 98,
-    "classify_reason": "題目要求將四個圓換算為直徑後比較大小（丁=20cm 最大，丙=5cm 最小），考查以半徑/直徑判斷圓的大小。",
+    "classify_reason": "將各圓統一換算直徑（甲10、乙15、丙5、丁20），比較大小找最大最小，屬圓的大小比較",
     "needs_review": false,
     "filter_reason": "未支援輸入型態: code"
   },
@@ -40,8 +40,8 @@
     "has_image": false,
     "unit": "6",
     "subtopic": "圓的構造",
-    "confidence": 99,
-    "classify_reason": "題目考查上下左右各對摺一次後兩條摺線的交點，直接對應「對摺找圓心」的概念。",
+    "confidence": 98,
+    "classify_reason": "對摺找兩摺線交點即圓心，屬對摺找圓心的圓的構造概念",
     "needs_review": false,
     "filter_reason": "未支援輸入型態: text"
   },
@@ -62,7 +62,7 @@
     "unit": "6",
     "subtopic": "圓的構造",
     "confidence": 98,
-    "classify_reason": "直接問圓心到圓周距離的名稱，核心概念是半徑定義",
+    "classify_reason": "圓心到圓周的距離稱為半徑，屬圓的構造基本名稱填寫",
     "needs_review": false,
     "filter_reason": "未支援輸入型態: text"
   }

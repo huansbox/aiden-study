@@ -4,7 +4,8 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from extract_math import (parse_math_mc, parse_math_fill, extract_blanks,
+from extract_math import (parse_math_mc, parse_math_fill, parse_math_calc,
+                          parse_math_word, extract_blanks,
                           _split_options, _find_mc_section)
 
 # 桃子腳 112下 答案卷（左欄節錄）：乾淨題 + 分數亂序題（殘渣行 1 / 8）
@@ -184,3 +185,122 @@ def test_extract_blanks_marker_and_hint_not_answers():
     stem, blanks = extract_blanks("(1) 從寧埔站出發 ( 85 )元 (請填小數)")
     assert [b["answer"] for b in blanks] == ["85"]
     assert "(1)" in stem and "(請填小數)" in stem
+
+
+# ── 計算題 parser（issues/012）──────────────────────────
+
+TAOZIJIAO_CALC = """三、計算題：用直式計算
+1~5題每題3分，6題4分，共19分
+(1)25－6.7＝(18.3 ) (2)53.2＋9.8＝( 63 )
+(直式做法略) (直式做法略)
+(3)( 24 ) ×5＝120 (4)( 448 )÷8＝56
+120÷5＝24 56×8＝448
+(5)3 時 50 分－2 時 35 分＝( 1 )時 ( 15 )分
+(6) 340÷8＝( 42 )…( 4 ) 驗算:
+24×8＝336
+四、畫畫看，做做看：
+"""
+
+ANHE_CALC = """三、 計算題：每題 3 分，共 15 分
+1. 0.2 ＋ 29.8 ＝ ( 30 )
+2. 27 － 2.5 ＝ ( 24.5 )
+3. ( 24 ) × 4 ＝ 96
+4. ( 294 ) ÷ 7＝ 42
+5. ７０２ ÷ ５ ＝ ( １４０ )．．．( ２ )
+用乘法與加法驗算：
+140 × 5 ＝ 700
+請圈選：( 正確 ， 錯誤 )。
+四、 用圓規作圖，並回答問題。
+"""
+
+
+def test_calc_backward_and_time_extracted():
+    qs, skips = parse_math_calc(TAOZIJIAO_CALC, "桃.pdf")
+    assert [(q["number"], [b["answer"] for b in q["blanks"]]) for q in qs] == [
+        (3, ["24"]), (4, ["448"]), (5, ["1", "15"]),
+    ]
+    q5 = qs[-1]
+    assert q5["text"] == "3 時 50 分－2 時 35 分＝（１）時 （２）分"
+    assert all(q["origin"] == "calc" for q in qs)
+
+
+def test_calc_vertical_and_remainder_deferred():
+    qs, skips = parse_math_calc(TAOZIJIAO_CALC, "桃.pdf")
+    assert [(s["number"], s["category"]) for s in skips] == [
+        (1, "vertical_calc"), (2, "vertical_calc"), (6, "vertical_calc"),
+    ]
+
+
+def test_calc_anhe_numbered_lines_and_fullwidth_remainder():
+    qs, skips = parse_math_calc(ANHE_CALC, "安.pdf")
+    assert [(q["number"], [b["answer"] for b in q["blanks"]]) for q in qs] == [
+        (3, ["24"]), (4, ["294"]),
+    ]
+    cats = {s["number"]: s["category"] for s in skips}
+    assert cats == {1: "vertical_calc", 2: "vertical_calc", 5: "vertical_calc"}
+
+
+# ── 應用題 parser（issues/012）──────────────────────────
+
+TAOZIJIAO_WORD = """六、應用題：
+每題4分，共20分
+1. 一條綠緞帶長 18.8 公尺，一條綠緞帶比一條紅
+緞帶短 3.4 公尺， 一條紅緞帶長幾公尺？
+18.8＋3.4＝22.2
+答：22.2 公尺
+2. 珊珊老師分配英語讀者劇場的劇本，每組負責 9 個句子，
+請問整份劇本共有幾個句子？
+9×4＝36
+答：37 個
+起
+草
+3
+5
+元
+作答完畢，
+3. 桃藝節時，桃桃買 5 包，付了 200 元，請問一包是多少元？
+( ) ×5＝200
+答：40 元
+4. 太鼓隊在上午 8 時 30 分到達比賽會場，離比賽
+開始還有 2 小時，比賽是上午幾時幾分開始？
+8 時 30 分 ＋2 時 ＝ 10 時 30 分
+答：上午 10 時 30 分
+"""
+
+
+def test_word_single_number_answer():
+    qs, skips = parse_math_word(TAOZIJIAO_WORD, "桃.pdf")
+    q1 = next(q for q in qs if q["number"] == 1)
+    assert [b["answer"] for b in q1["blanks"]] == ["22.2"]
+    assert q1["text"].endswith("答：（１） 公尺")
+    assert q1["origin"] == "word"
+    # 做法行（18.8＋3.4＝22.2）不得進題幹
+    assert "18.8＋3.4" not in q1["text"]
+
+
+def test_word_cross_column_garbage_ignored():
+    qs, skips = parse_math_word(TAOZIJIAO_WORD, "桃.pdf")
+    q2 = next(q for q in qs if q["number"] == 2)
+    # 答：之後到下一題之間的跨欄垃圾（價目表直排字、純數字行）不得污染
+    assert "起" not in q2["text"] and "元 作答完畢" not in q2["text"]
+    q3 = next(q for q in qs if q["number"] == 3)
+    assert [b["answer"] for b in q3["blanks"]] == ["40"]
+
+
+def test_word_time_answer_two_blanks():
+    qs, _ = parse_math_word(TAOZIJIAO_WORD, "桃.pdf")
+    q4 = next(q for q in qs if q["number"] == 4)
+    assert [b["answer"] for b in q4["blanks"]] == ["10", "30"]
+    assert "答：上午 （１） 時 （２） 分" in q4["text"].replace("（１）時", "（１） 時")
+
+
+def test_word_complex_answer_deferred():
+    sample = """五、 把做法和答案記下來：每題 5 分
+1. 跑得比較快的是哪一班？快了幾秒鐘？
+308－288＝20
+答：丙班快
+20 秒鐘
+"""
+    qs, skips = parse_math_word(sample, "安.pdf")
+    assert qs == []
+    assert skips[0]["category"] == "complex_answer"
