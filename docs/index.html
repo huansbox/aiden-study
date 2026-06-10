@@ -201,6 +201,33 @@ body {
 .opt-btn.wrong-answer .opt-label { background: #e74c3c; color: #fff; }
 .opt-btn.disabled { pointer-events: none; opacity: 0.85; }
 
+/* ── 填充題（fill_in_blank）── */
+.q-type.fib { background: #0d9488; }
+.blank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.blank-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.blank-label { font-size: 1.05rem; color: #666; min-width: 48px; }
+.blank-box {
+  flex: 1; min-width: 110px; min-height: 52px;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; cursor: pointer;
+}
+.blank-box.active { border-color: #4361ee; background: #f0f4ff; }
+.blank-box.b-correct { border-color: #2ecc71; background: #e8faf0; }
+.blank-box.b-wrong { border-color: #e74c3c; background: #fdecea; }
+.blank-correct-val { font-size: 0.95rem; color: #1a7a42; font-weight: 600; white-space: nowrap; }
+.numpad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-top: 14px; max-width: 360px; align-self: center; width: 100%;
+}
+.numpad button {
+  padding: 14px; font-size: 1.5rem; font-weight: 600;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer;
+}
+.numpad button:active:not(:disabled) { background: #f0f4ff; transform: scale(0.97); }
+.numpad button:disabled { opacity: 0.4; cursor: default; }
+.next-btn:disabled { opacity: 0.4; cursor: default; }
+
 .result-hint {
   margin-top: 16px; padding: 12px 16px; border-radius: 12px;
   font-size: 1.1rem; font-weight: 600; text-align: center;
@@ -590,7 +617,13 @@ function submitAnswer(selected) {
   quiz.isAnswered = true;
 
   const q = getCurrentQuestion();
-  const correct = selected === q.answer;
+  let correct;
+  if (q.type === "fill_in_blank") {
+    quiz._fillResults = q.blanks.map((b, i) => isBlankCorrect(b, selected[i]));
+    correct = quiz._fillResults.every(Boolean);   // 多空格全對才算對
+  } else {
+    correct = selected === q.answer;
+  }
 
   // Update stats (all modes)
   State.recordAnswer(q.id, correct);
@@ -883,6 +916,9 @@ const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
 
 function formatAnswer(q) {
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
+  if (q.type === "fill_in_blank") {
+    return q.blanks.map((b, i) => `（${i + 1}）${b.answer}`).join("　");
+  }
   return `選項 ${q.answer}`;
 }
 
@@ -939,34 +975,55 @@ function renderQuiz() {
 
   // Question type
   const isTF = q.type === "true_false";
-  const typeClass = isTF ? "q-type tf" : "q-type";
-  const typeLabel = isTF ? "是非題" : "選擇題";
+  const isFill = q.type === "fill_in_blank";
+  let typeClass = "q-type", typeLabel = "選擇題";
+  if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
+  else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
-  if (!isTF && q.options.length > 0) {
+  if (!isTF && !isFill && q.options.length > 0) {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
 
-  // Options
-  let options;
-  if (isTF) {
-    options = [
-      { label: "O", value: "true", text: "正確" },
-      { label: "X", value: "false", text: "錯誤" },
-    ];
+  // Answer area（依題型）
+  let answerHtml;
+  if (isFill) {
+    quiz._fillValues = q.blanks.map(() => "");
+    quiz._fillActive = 0;
+    const FW = "１２３４５６７８９";
+    const blanksHtml = q.blanks.map((b, i) => `
+      <div class="blank-row">
+        <span class="blank-label">（${FW[i]}）</span>
+        <div class="blank-box${i === 0 ? " active" : ""}" data-idx="${i}"></div>
+      </div>`).join("");
+    const keys = ["1","2","3","4","5","6","7","8","9",".","0","del"];
+    const padHtml = keys.map(k =>
+      `<button data-key="${k}">${k === "del" ? "⌫" : k}</button>`).join("");
+    answerHtml = `
+      <div class="blank-list" id="blank-list">${blanksHtml}</div>
+      <div class="numpad" id="numpad">${padHtml}</div>
+      <button class="next-btn" id="fib-submit" disabled>確認答案</button>`;
   } else {
-    options = (q.options.length > 0 ? q.options : []).map((opt, i) => ({
-      label: String(i + 1), value: String(i + 1), text: opt,
-    }));
+    let options;
+    if (isTF) {
+      options = [
+        { label: "O", value: "true", text: "正確" },
+        { label: "X", value: "false", text: "錯誤" },
+      ];
+    } else {
+      options = (q.options.length > 0 ? q.options : []).map((opt, i) => ({
+        label: String(i + 1), value: String(i + 1), text: opt,
+      }));
+    }
+    const optionsHtml = options.map(opt =>
+      `<button class="opt-btn" data-value="${opt.value}">
+        <span class="opt-label">${opt.label}</span><span>${opt.text}</span>
+      </button>`
+    ).join("");
+    answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
   }
-
-  const optionsHtml = options.map(opt =>
-    `<button class="opt-btn" data-value="${opt.value}">
-      <span class="opt-label">${opt.label}</span><span>${opt.text}</span>
-    </button>`
-  ).join("");
 
   document.getElementById("page-quiz").innerHTML = `
     <div class="quiz-header">
@@ -977,7 +1034,7 @@ function renderQuiz() {
     <div class="question-card">
       <span class="${typeClass}">${typeLabel}</span>
       <div class="q-text">${displayText}</div>
-      <div class="options" id="q-options">${optionsHtml}</div>
+      ${answerHtml}
       <div class="result-hint hidden" id="result-hint"></div>
       <button class="next-btn hidden" id="next-btn">下一題</button>
       <div class="flag-area hidden" id="flag-area">
@@ -992,9 +1049,58 @@ function renderQuiz() {
 
   // Bind events
   document.getElementById("btn-leave").onclick = leaveQuiz;
-  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
-    btn.onclick = () => submitAnswer(btn.dataset.value);
+  if (isFill) {
+    bindFillEvents(q);
+  } else {
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.onclick = () => submitAnswer(btn.dataset.value);
+    });
+  }
+}
+
+// 填充題互動：點空格選取、numpad 輸入、全部填滿才能送出
+function bindFillEvents(q) {
+  const boxes = [...document.querySelectorAll(".blank-box")];
+  const submitBtn = document.getElementById("fib-submit");
+  const refresh = () => {
+    boxes.forEach((box, i) => {
+      box.textContent = quiz._fillValues[i];
+      box.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
+    });
+    submitBtn.disabled = quiz._fillValues.some(v => !v);
+  };
+  boxes.forEach(box => {
+    box.onclick = () => {
+      if (quiz.isAnswered) return;
+      quiz._fillActive = Number(box.dataset.idx);
+      refresh();
+    };
   });
+  document.querySelectorAll("#numpad button").forEach(btn => {
+    btn.onclick = () => {
+      if (quiz.isAnswered) return;
+      const k = btn.dataset.key;
+      let v = quiz._fillValues[quiz._fillActive];
+      if (k === "del") v = v.slice(0, -1);
+      else if (k === ".") { if (!v.includes(".") && v.length < 8) v += "."; }
+      else if (v.length < 8) v += k;
+      quiz._fillValues[quiz._fillActive] = v;
+      refresh();
+    };
+  });
+  submitBtn.onclick = () => {
+    if (!submitBtn.disabled) submitAnswer([...quiz._fillValues]);
+  };
+}
+
+// 單格比對：number 用數值相等（63 與 63.0 視為相同），其餘正規化字串比對
+function isBlankCorrect(blank, value) {
+  const v = String(value ?? "").trim();
+  if (blank.input === "number") {
+    const got = parseFloat(v), want = parseFloat(blank.answer);
+    return Number.isFinite(got) && got === want;
+  }
+  return v.replace(/\s+/g, "") === String(blank.answer).trim().replace(/\s+/g, "");
 }
 
 function renderProgress() {
@@ -1052,39 +1158,34 @@ function renderBarProgress() {
 // UI: Feedback
 // ════════════════════════════════════════════════════
 function renderFeedback(correct, q) {
-  // Disable all option buttons & highlight
-  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
-    btn.classList.add("disabled");
-    const val = btn.dataset.value;
-    if (val === q.answer) btn.classList.add("correct-answer");
-    if (val !== q.answer && !correct && val === quiz.answered[quiz.answered.length - 1]?.questionId) {
-      // This won't match; we need the selected value
-    }
-  });
-
-  // Find the clicked button and mark wrong
-  const lastAnswer = quiz.answered[quiz.answered.length - 1];
-  if (!correct) {
-    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
-      // We need to know what was selected — it's the value passed to submitAnswer
-      // Since we already called submitAnswer, let's mark based on the answer
+  let wrongHint;
+  if (q.type === "fill_in_blank") {
+    // 標出每格對錯；錯格旁顯示正解（家長定案：對小孩友善優先）
+    document.querySelectorAll("#numpad button").forEach(b => { b.disabled = true; });
+    document.getElementById("fib-submit").classList.add("hidden");
+    document.querySelectorAll(".blank-box").forEach((box, i) => {
+      box.classList.remove("active");
+      box.classList.add(quiz._fillResults[i] ? "b-correct" : "b-wrong");
+      if (!quiz._fillResults[i]) {
+        box.insertAdjacentHTML("afterend",
+          `<span class="blank-correct-val">正解：${q.blanks[i].answer}</span>`);
+      }
     });
+    wrongHint = "答錯了，紅色格子旁有正確答案";
+  } else {
+    const selectedValue = quiz._lastSelected;
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.classList.add("disabled");
+      const val = btn.dataset.value;
+      if (val === q.answer) btn.classList.add("correct-answer");
+      if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
+    });
+    const isTF = q.type === "true_false";
+    const ansLabel = isTF
+      ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
+      : `第 ${q.answer} 個選項`;
+    wrongHint = `答錯了，正確答案是 ${ansLabel}`;
   }
-
-  // Re-approach: mark the selected answer
-  // The selected value was passed to submitAnswer. We store it.
-  // Actually, let's fix this by passing selected to renderFeedback
-  // For now, we highlight correct answer green, and if wrong, the quiz.answered has the info
-  // but we don't store which option was selected. Let me fix this.
-
-  // Simple fix: store selected in quiz
-  const selectedValue = quiz._lastSelected;
-  document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
-    btn.classList.add("disabled");
-    const val = btn.dataset.value;
-    if (val === q.answer) btn.classList.add("correct-answer");
-    if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
-  });
 
   const hint = document.getElementById("result-hint");
   hint.classList.remove("hidden", "correct", "wrong");
@@ -1093,11 +1194,7 @@ function renderFeedback(correct, q) {
     hint.textContent = "答對了！";
   } else {
     hint.classList.add("wrong");
-    const isTF = q.type === "true_false";
-    const ansLabel = isTF
-      ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
-      : `第 ${q.answer} 個選項`;
-    hint.textContent = `答錯了，正確答案是 ${ansLabel}`;
+    hint.textContent = wrongHint;
   }
 
   // Update progress display
