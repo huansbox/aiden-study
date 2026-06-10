@@ -1,8 +1,8 @@
-# Aiden Study - 三下自然期中題庫練習網站
+# Aiden Study - 三下自然題庫練習網站
 
 ## 專案目標
 
-從 `pdfs/` 底下 27 份國小三下期中自然考卷 PDF，萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。
+從 `pdfs/`（27 份期中）與 `pdfs_期末/`（tcool.cc 抓取）的國小三下自然考卷 PDF，萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：期中＋期末共 1101 題已上線。
 
 ## 快速參考
 
@@ -26,9 +26,10 @@ scripts/           Python 資料處理 pipeline
 data/              中間資料
   raw_questions.json        期中萃取（659 題）
   classified_questions.json 期中分類（645 題）
-  raw_questions_期末.json    期末萃取（安和×4＝118 題）
+  raw_questions_期末.json    期末萃取（第一批）
   classified_questions_期末.json 期末分類（unit 3/4 + subtopic）
-  tcool_grade3_sci_kanghsuan.json  期末考卷清單（tcool.cc 爬取，26 筆）
+  *_期末_新增.json           第二批擴充（raw / classified / official_answers）
+  tcool_grade3_sci_kanghsuan.json  期末考卷清單（tcool.cc 爬取）
 docs/              GitHub Pages 部署目錄
   index.html       練習網站（單一 HTML，內嵌 CSS/JS）
   questions.json   最終題庫（期中＋期末合併，unit 1–4）
