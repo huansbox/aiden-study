@@ -687,6 +687,7 @@ function renderFlaggedSection() {
       <summary>已回報題目（${flagged.length}）</summary>
       ${rows}
       <div class="flagged-actions">
+        <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
         <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
       </div>
     </details>`;
@@ -811,6 +812,44 @@ window._resetChallenge = (unit, subtopic = null) => {
 };
 window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
 window._unflagAll = () => { State.unflagAll(); renderHome(); };
+
+// 回報到 GitHub：prefill issue URL（零後端；pad 瀏覽器需登入過 GitHub）
+const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
+const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
+
+function formatAnswer(q) {
+  if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
+  return `選項 ${q.answer}`;
+}
+
+function buildReportUrl() {
+  const qs = State.getFlagged().map(f => questionMap.get(f.questionId)).filter(Boolean);
+  const today = new Date().toISOString().slice(0, 10);
+  const title = `題目回報：${qs.length} 題（${today}）`;
+
+  const full = qs.map(q => {
+    let s = `### ${q.id}\n`;
+    s += `- 單元：第 ${q.unit} 單元／${q.subtopic}\n`;
+    s += `- 題目：${q.text}\n`;
+    if (q.options && q.options.length > 0) {
+      s += `- 選項：${q.options.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
+    }
+    s += `- 現存答案：${formatAnswer(q)}\n`;
+    s += `- 來源：${q.source}`;
+    return s;
+  }).join("\n\n");
+  const compact = qs.map(q => `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
+
+  // 題數多時逐級降格，避免超出 URL 長度上限
+  for (const body of [full, compact, idsOnly]) {
+    const url = `${ISSUE_URL}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    if (url.length <= ISSUE_URL_MAX) return url;
+  }
+  return `${ISSUE_URL}?title=${encodeURIComponent(title)}`;
+}
+
+window._reportToGitHub = () => { window.open(buildReportUrl(), "_blank"); };
 
 // ════════════════════════════════════════════════════
 // UI: Quiz
