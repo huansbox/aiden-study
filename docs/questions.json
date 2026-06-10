@@ -15304,7 +15304,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_1",
     "subject": "math",
     "unit": 6,
-    "subtopic": "none",
+    "subtopic": "圓的構造",
     "type": "multiple_choice",
     "text": "一個圓有幾條直徑？",
     "options": [
@@ -15320,7 +15320,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_2",
     "subject": "math",
     "unit": 6,
-    "subtopic": "none",
+    "subtopic": "圓規與畫圓",
     "type": "multiple_choice",
     "text": "有一個圓的直徑是 20 公分，和下列哪一 個圓不一樣大？",
     "options": [
@@ -15336,7 +15336,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_4",
     "subject": "math",
     "unit": 7,
-    "subtopic": "none",
+    "subtopic": "乘除應用",
     "type": "multiple_choice",
     "text": "文具店一塊橡皮擦原價 10 元，現在特價 8 元，老師買了一些，共花了 80 元，老師 買了多少塊橡皮擦？",
     "options": [
@@ -15352,7 +15352,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_5",
     "subject": "math",
     "unit": 8,
-    "subtopic": "none",
+    "subtopic": "時刻與時間單位",
     "type": "multiple_choice",
     "text": "下面哪一個事件的時間單位是合理的？",
     "options": [
@@ -15368,7 +15368,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_1",
     "subject": "math",
     "unit": 5,
-    "subtopic": "none",
+    "subtopic": "小數比大小",
     "type": "multiple_choice",
     "text": "建議國小學童每日至少飲用 1.5 公升的水， 下列是某日的喝水記錄，誰喝的水還不夠 ？",
     "options": [
@@ -15384,7 +15384,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_2",
     "subject": "math",
     "unit": 6,
-    "subtopic": "none",
+    "subtopic": "圓的構造",
     "type": "multiple_choice",
     "text": "把圓平分成兩半的摺線剛好是圓的什麼？",
     "options": [
@@ -15400,7 +15400,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_3",
     "subject": "math",
     "unit": 6,
-    "subtopic": "none",
+    "subtopic": "圓的大小比較",
     "type": "multiple_choice",
     "text": "下列選項是一些圓形圖卡的直徑長度，其 中最大的那張無法和其它圖卡一起裝進收 納袋裡。這張圖卡直徑是：",
     "options": [
@@ -15416,7 +15416,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_4",
     "subject": "math",
     "unit": 7,
-    "subtopic": "none",
+    "subtopic": "乘除應用",
     "type": "multiple_choice",
     "text": "爺爺將蒐集到的布袋戲偶每 12 個排成一 排，共可以排成 18 排，如果改成每 18 個 排成一排，共可以排成幾排？",
     "options": [
@@ -15432,7 +15432,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_5",
     "subject": "math",
     "unit": 7,
-    "subtopic": "none",
+    "subtopic": "乘除應用",
     "type": "multiple_choice",
     "text": "老師分裝 200 顆番茄，每個保鮮盒所裝的 番茄顆數相同，這樣剛好裝滿 8 個保鮮盒。 請問，每個保鮮盒裝幾顆番茄？這個問題 可以列成哪一個算式？",
     "options": [
@@ -15448,7 +15448,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_6",
     "subject": "math",
     "unit": 8,
-    "subtopic": "none",
+    "subtopic": "時刻與時間單位",
     "type": "multiple_choice",
     "text": "國小學生每週一次，用含氟漱口水漱口一 分鐘，可以預防蛀牙。選出和一分鐘不一 樣長的時間：",
     "options": [
@@ -15464,7 +15464,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_7",
     "subject": "math",
     "unit": 8,
-    "subtopic": "none",
+    "subtopic": "時制互換",
     "type": "multiple_choice",
     "text": "下列哪一個時刻不同？",
     "options": [
@@ -15474,6 +15474,38 @@
       "下午 5 時 25 分"
     ],
     "answer": "2",
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "下面哪一個選項錯誤？",
+    "options": [
+      "0.4 和 0.6 合起來是 1",
+      "10 個 0.1 是 1.0",
+      "9 個 0.1 合起來是 0.9",
+      "8 個 0.1 是 1/8"
+    ],
+    "answer": "4",
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_8",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "下列哪一個選項正確？",
+    "options": [
+      "0.3 和 0.7 合起來是 0.10",
+      "27 個 0.1 是 0.27",
+      "0.8 是 80 個 0.1",
+      "9 個 0.1 和 9/10 一樣大"
+    ],
+    "answer": "4",
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   }
 ]

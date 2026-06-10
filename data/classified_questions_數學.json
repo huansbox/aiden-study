@@ -13,9 +13,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "6",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "直接考圓的直徑條數，屬圓心/半徑/直徑關係核心概念",
+    "subtopic": "圓的構造",
+    "confidence": 98,
+    "classify_reason": "直接詢問一個圓有幾條直徑，考直徑數量為無限多條的基本性質。",
     "needs_review": false
   },
   {
@@ -32,9 +32,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "6",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考圓的大小比較，選項(3)圓規打開20公分所畫直徑為40公分，與直徑20公分不同大",
+    "subtopic": "圓規與畫圓",
+    "confidence": 92,
+    "classify_reason": "選項含「圓規打開20公分所畫的圓」vs 直徑20公分，核心考點是圓規開度＝半徑（非直徑）的關係。",
     "needs_review": false
   },
   {
@@ -51,9 +51,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "7",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "已知單價8元與總價80元求數量，為整數除法應用問題（80÷8=10）",
+    "subtopic": "乘除應用",
+    "confidence": 97,
+    "classify_reason": "已知總花費80元、特價每個8元，求購買數量，為除法文字應用題（80÷8＝10）。",
     "needs_review": false
   },
   {
@@ -70,9 +70,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "8",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "考合理時間單位判斷，屬時間單元核心概念",
+    "subtopic": "時刻與時間單位",
+    "confidence": 98,
+    "classify_reason": "四個選項各給一事件與時間單位，判斷哪一組合在現實中合理，直接考時間單位選擇。",
     "needs_review": false
   },
   {
@@ -89,9 +89,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "5",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考一位小數大小比較（0.7 < 1.5），屬小數單元核心概念",
+    "subtopic": "小數比大小",
+    "confidence": 97,
+    "classify_reason": "需將0.7、1.5、1.8、2.3與基準1.5比較大小，核心考一位小數比大小。",
     "needs_review": false
   },
   {
@@ -108,9 +108,9 @@
     "answer": "2",
     "has_image": false,
     "unit": "6",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "考圓的直徑定義（通過圓心的折線即直徑），屬圓的基本概念",
+    "subtopic": "圓的構造",
+    "confidence": 98,
+    "classify_reason": "對摺圓形後摺線即為直徑（過圓心且將圓平分兩半），直接考直徑的定義。",
     "needs_review": false
   },
   {
@@ -127,9 +127,9 @@
     "answer": "4",
     "has_image": false,
     "unit": "6",
-    "subtopic": "none",
-    "confidence": 96,
-    "classify_reason": "考圓形圖卡直徑大小比較，選項最大值32公分（選項4）為答案",
+    "subtopic": "圓的大小比較",
+    "confidence": 95,
+    "classify_reason": "比較4張圓形圖卡的直徑數值（含小數4.6、8.2與整數16、32），找最大者，核心考以直徑判斷圓的大小。",
     "needs_review": false
   },
   {
@@ -146,9 +146,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "7",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "12×18=216總數，再除以18求排數（216÷18=12），為乘除互逆兩步驟應用問題",
+    "subtopic": "乘除應用",
+    "confidence": 97,
+    "classify_reason": "先以12×18求出總數216，再除以18求新排數（216÷18＝12），兩步驟乘除文字應用。",
     "needs_review": false
   },
   {
@@ -165,9 +165,9 @@
     "answer": "1",
     "has_image": false,
     "unit": "7",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "考除法算式列式（200÷( )＝8），屬整數除法核心概念",
+    "subtopic": "乘除應用",
+    "confidence": 90,
+    "classify_reason": "分裝200顆至8個保鮮盒，考判斷對應哪個除法算式（列式判斷屬乘除應用子主題）。",
     "needs_review": false
   },
   {
@@ -184,9 +184,9 @@
     "answer": "3",
     "has_image": false,
     "unit": "8",
-    "subtopic": "none",
-    "confidence": 98,
-    "classify_reason": "考時間等量轉換，分針走1大格＝5分鐘而非1分鐘，屬時刻與時間量概念",
+    "subtopic": "時刻與時間單位",
+    "confidence": 97,
+    "classify_reason": "判斷60秒、秒針走60小格、分針走1大格、秒針走1圈哪個不等於1分鐘，考時間單位等量關係。",
     "needs_review": false
   },
   {
@@ -203,9 +203,49 @@
     "answer": "2",
     "has_image": false,
     "unit": "8",
-    "subtopic": "none",
-    "confidence": 99,
-    "classify_reason": "考12時制與24時制互換，17:25＝下午5:25 PM，而5:25無標示則為上午5時25分，屬時制互換核心概念",
+    "subtopic": "時制互換",
+    "confidence": 98,
+    "classify_reason": "17:25＝5:25PM＝下午5時25分，而5:25（無AM/PM標示）代表上午5:25，考24時制與12時制互換。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 3,
+    "text": "下面哪一個選項錯誤？",
+    "options": [
+      "0.4 和 0.6 合起來是 1",
+      "10 個 0.1 是 1.0",
+      "9 個 0.1 合起來是 0.9",
+      "8 個 0.1 是 1/8"
+    ],
+    "answer": "4",
+    "has_image": false,
+    "reflowed": true,
+    "unit": "5",
+    "subtopic": "小數的認識",
+    "confidence": 98,
+    "classify_reason": "選項(4)錯在8個0.1＝0.8＝8/10，而非1/8，直接考N個0.1的化聚與小數分數關係。",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 8,
+    "text": "下列哪一個選項正確？",
+    "options": [
+      "0.3 和 0.7 合起來是 0.10",
+      "27 個 0.1 是 0.27",
+      "0.8 是 80 個 0.1",
+      "9 個 0.1 和 9/10 一樣大"
+    ],
+    "answer": "4",
+    "has_image": false,
+    "reflowed": true,
+    "unit": "5",
+    "subtopic": "小數的認識",
+    "confidence": 98,
+    "classify_reason": "選項(4)正確：9個0.1＝0.9＝9/10，其餘三選項均違反N個0.1的化聚規則，考小數與分數的對應。",
     "needs_review": false
   }
 ]
