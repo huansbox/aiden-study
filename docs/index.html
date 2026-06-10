@@ -195,6 +195,34 @@ body {
 }
 .next-btn:active { background: #3451c7; }
 
+/* ── 題目回報 ── */
+.flag-area { margin-top: 12px; text-align: center; }
+.flag-btn {
+  background: none; border: none; color: #aab; font-size: 0.85rem;
+  text-decoration: underline; cursor: pointer; padding: 6px 10px;
+}
+.flag-confirm {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; color: #b71c1c;
+}
+.flag-confirm button {
+  padding: 6px 12px; border: none; border-radius: 8px;
+  font-size: 0.9rem; cursor: pointer;
+}
+.flag-yes { border: 1px solid #e74c3c; background: #fdecea; color: #b71c1c; }
+.flag-no { border: 1px solid #ccc; background: #fff; color: #666; }
+
+/* 首頁已回報清單 */
+.flagged-section { border-top: 2px solid #eee; padding-top: 16px; margin-top: 8px; }
+.flagged-section summary { font-size: 0.9rem; color: #888; cursor: pointer; padding: 4px; }
+.flagged-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 14px; margin: 6px 0;
+  border: 1px solid #ececec; border-radius: 10px; background: #fafbfc;
+}
+.flagged-text { font-size: 0.9rem; color: #555; }
+.flagged-actions { display: flex; gap: 8px; margin-top: 8px; }
+
 /* ── 摘要頁 ── */
 .summary { text-align: center; padding-top: 40px; }
 .summary .score { font-size: 3rem; font-weight: 800; color: #4361ee; margin: 16px 0; }
@@ -591,6 +619,34 @@ function advance() {
   renderQuiz();
 }
 
+// 確認回報：清除該題記錄、從本輪 queue 抽掉、直接進下一題
+function flagCurrentQuestion() {
+  const q = getCurrentQuestion();
+  if (!q) return;
+  State.flagQuestion(q.id, q.unit);
+
+  // 撤銷本題剛剛的作答（進度點與總結不計入）
+  const last = quiz.answered[quiz.answered.length - 1];
+  if (last && last.questionId === q.id) quiz.answered.pop();
+
+  quiz.isAnswered = false;
+  if (quiz.mode === "full") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.totalForProgress = questionIdsFor(quiz.unit, quiz.subtopic).length;
+    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    if (quiz.queue.length === 0) { renderSummary(); return; }
+  } else if (quiz.mode === "quick") {
+    quiz.queue.splice(quiz.index, 1);
+    quiz.totalForProgress--;
+    if (quiz.index >= quiz.totalForProgress) { renderSummary(); return; }
+  } else if (quiz.mode === "error") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.totalForProgress--;
+    if (quiz.queue.length === 0) { renderSummary(); return; }
+  }
+  renderQuiz();
+}
+
 function leaveQuiz() {
   // Full mode: queue already saved on each answer
   showPage("page-home");
@@ -610,6 +666,31 @@ const SEMESTERS = {
     { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
   ] },
 };
+
+// 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
+function renderFlaggedSection() {
+  const flagged = State.getFlagged();
+  if (flagged.length === 0) return "";
+  let rows = "";
+  for (const f of flagged) {
+    const q = questionMap.get(f.questionId);
+    if (!q) continue;
+    const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
+    rows += `
+      <div class="flagged-row">
+        <span class="flagged-text">[第 ${q.unit} 單元] ${snippet}</span>
+        <button class="st-btn" onclick="window._unflag('${q.id}')">還原</button>
+      </div>`;
+  }
+  return `
+    <details class="flagged-section">
+      <summary>已回報題目（${flagged.length}）</summary>
+      ${rows}
+      <div class="flagged-actions">
+        <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
+      </div>
+    </details>`;
+}
 
 // 期末單元卡片下的 subtopic 練習入口（全部可接續、快速智慧抽）
 function renderSubtopics(u) {
@@ -700,6 +781,7 @@ function renderHome() {
   }
 
   html += '</div>';
+  html += renderFlaggedSection();
   home.innerHTML = html;
   showPage("page-home");
 }
@@ -727,6 +809,8 @@ window._resetChallenge = (unit, subtopic = null) => {
   State.resetChallenge(challengeKey(unit, subtopic));
   renderHome();
 };
+window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
+window._unflagAll = () => { State.unflagAll(); renderHome(); };
 
 // ════════════════════════════════════════════════════
 // UI: Quiz
@@ -793,6 +877,14 @@ function renderQuiz() {
       <div class="options" id="q-options">${optionsHtml}</div>
       <div class="result-hint hidden" id="result-hint"></div>
       <button class="next-btn hidden" id="next-btn">下一題</button>
+      <div class="flag-area hidden" id="flag-area">
+        <button class="flag-btn" id="flag-btn">題目有問題</button>
+        <span class="flag-confirm hidden" id="flag-confirm">
+          此題將不再出現
+          <button class="flag-yes" id="flag-yes">確定回報</button>
+          <button class="flag-no" id="flag-no">取消</button>
+        </span>
+      </div>
     </div>`;
 
   // Bind events
@@ -925,6 +1017,14 @@ function renderFeedback(correct, q) {
 
   nextBtn.textContent = isLast ? "查看結果" : "下一題";
   nextBtn.onclick = advance;
+
+  // 題目回報：低調入口，按下原地變 inline 確認
+  const flagBtn = document.getElementById("flag-btn");
+  const flagConfirm = document.getElementById("flag-confirm");
+  document.getElementById("flag-area").classList.remove("hidden");
+  flagBtn.onclick = () => { flagBtn.classList.add("hidden"); flagConfirm.classList.remove("hidden"); };
+  document.getElementById("flag-no").onclick = () => { flagConfirm.classList.add("hidden"); flagBtn.classList.remove("hidden"); };
+  document.getElementById("flag-yes").onclick = flagCurrentQuestion;
 }
 
 // Patch submitAnswer to store selected value
