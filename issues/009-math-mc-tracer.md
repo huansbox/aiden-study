@@ -18,13 +18,20 @@
 
 ## Acceptance criteria
 
-- [ ] 桃子腳 112下 選擇題（5 題）萃取題幹＋選項正確，官方答案 100% 對 PDF 核對
-- [ ] 分數亂序疑慮題全部進跳過清單，無一混入題庫（題庫內題目逐題目視核對）
-- [ ] math parser 為獨立模組，自然科 `extract.py` 共用 regex 零改動；期中/期末既有 pytest 全綠
-- [ ] math parser 有自己的 pytest fixture（桃子腳卷文字樣本 → 預期題目結構）
-- [ ] 分類產出 `unit`∈{5..9, none}、`subtopic` 全 `none`，併入 `docs/questions.json`（subject=`math`）
-- [ ] 網站數學科目下可實際練到這批選擇題 —— Playwright 實測
-- [ ] 安和 113下：勘查結論寫入本 issue（順收或挪 010），若順收則上述條款同樣適用
+- [x] 桃子腳 112下 選擇題（5 題）萃取題幹＋選項正確，官方答案 100% 對 PDF 核對（Q1=1/Q2=3/Q4=2/Q5=4，Q3 進跳過清單）
+- [x] 分數亂序疑慮題全部進跳過清單，無一混入題庫（桃Q3、安Q8 → `data/skipped_questions_數學.json`＋`skipped_questions.md`；入庫 11 題逐題目視核對無分數殘渣）
+- [x] math parser 為獨立模組（`scripts/extract_math.py`），自然科 `extract.py` 共用 regex 零改動（只 import 純函式 normalize_mc_answer/normalize_pua）；期中/期末既有 pytest 全綠
+- [x] math parser 有自己的 pytest fixture（`tests/test_extract_math.py` 6 案例：桃子腳/安和真實卷面文字樣本）
+- [x] 分類產出 `unit`∈{5..9, none}、`subtopic` 全 `none`，併入 `docs/questions.json`（subject=`math`；11 題＝單元5×1/6×4/7×3/8×3，信心全 ≥90）
+- [x] 網站數學科目下可實際練到這批選擇題 —— Playwright 實測（單元 6 作答、mastered/queue 正確記錄；單元 9 無題自動隱藏）
+- [x] 安和 113下：**順收**。結構同族（格式A 答案內嵌、雙欄、①②③④、括號答案），僅一怪癖＝部分答案數字逸出括號（`（ ）2.` 數字浮上一行），parser 以「純數字行緊接空括號題首」規則復原（Q2/Q6 驗證正確）。7 題入庫＋Q8 跳過。
+
+## 完成紀錄（2026-06-11）
+
+- 萃取走「答案卷」一次取得題目＋官方答案（同自然科格式A 經驗），needs_review 全 False，無 AI 補答案
+- 單元名稱暫依均一「類康軒版」（5 小數/6 圓/7 乘法與除法/8 時間/9 統計表），與卷面內容吻合；正式查證留 010
+- 雙欄交錯：數學卷固定雙欄，parser 逐頁切左右欄依閱讀順序合併（不沿用自然科 is_true_two_column 判斷）
+- 已知殘留：安Q8 的 raw_text 混入頁首雜訊（跨欄續行污染）；題在跳過清單內，010 重組時一併處理
 
 ## Blocked by
 

@@ -1,0 +1,211 @@
+[
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 1,
+    "text": "一個圓有幾條直徑？",
+    "options": [
+      "無限多條",
+      "1 條",
+      "5 條",
+      "10 條"
+    ],
+    "answer": "1",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "直接考圓的直徑條數，屬圓心/半徑/直徑關係核心概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 2,
+    "text": "有一個圓的直徑是 20 公分，和下列哪一 個圓不一樣大？",
+    "options": [
+      "半徑 10 公分的圓",
+      "圓心到圓周的距離是 10 公分的圓",
+      "圓規打開 20 公分，所畫的圓",
+      "圓規打開 10 公分，所畫的圓"
+    ],
+    "answer": "3",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "none",
+    "confidence": 98,
+    "classify_reason": "考圓的大小比較，選項(3)圓規打開20公分所畫直徑為40公分，與直徑20公分不同大",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 4,
+    "text": "文具店一塊橡皮擦原價 10 元，現在特價 8 元，老師買了一些，共花了 80 元，老師 買了多少塊橡皮擦？",
+    "options": [
+      "8 塊",
+      "10 塊",
+      "12 塊",
+      "6 塊"
+    ],
+    "answer": "2",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "已知單價8元與總價80元求數量，為整數除法應用問題（80÷8=10）",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 5,
+    "text": "下面哪一個事件的時間單位是合理的？",
+    "options": [
+      "小亮參加學校運動會三年級 100 公尺短 跑決賽，成績 18 分鐘，榮獲第一名",
+      "正確的洗手大約要 3 秒鐘",
+      "姑姑從板橋搭直達火車到臺南要 3 日",
+      "小諺喝一口水大約 4 秒鐘"
+    ],
+    "answer": "4",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "考合理時間單位判斷，屬時間單元核心概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 1,
+    "text": "建議國小學童每日至少飲用 1.5 公升的水， 下列是某日的喝水記錄，誰喝的水還不夠 ？",
+    "options": [
+      "弟弟喝了 1.5 公升",
+      "姊姊喝了 2.3 公升",
+      "哥哥喝了 0.7 公升",
+      "妹妹 喝了 1.8 公升"
+    ],
+    "answer": "3",
+    "has_image": false,
+    "unit": "5",
+    "subtopic": "none",
+    "confidence": 98,
+    "classify_reason": "考一位小數大小比較（0.7 < 1.5），屬小數單元核心概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 2,
+    "text": "把圓平分成兩半的摺線剛好是圓的什麼？",
+    "options": [
+      "圓周",
+      "直徑",
+      "圓心",
+      "半徑"
+    ],
+    "answer": "2",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "考圓的直徑定義（通過圓心的折線即直徑），屬圓的基本概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 3,
+    "text": "下列選項是一些圓形圖卡的直徑長度，其 中最大的那張無法和其它圖卡一起裝進收 納袋裡。這張圖卡直徑是：",
+    "options": [
+      "4.6 公分",
+      "8.2 公分",
+      "16 公分",
+      "32 公分"
+    ],
+    "answer": "4",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "none",
+    "confidence": 96,
+    "classify_reason": "考圓形圖卡直徑大小比較，選項最大值32公分（選項4）為答案",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 4,
+    "text": "爺爺將蒐集到的布袋戲偶每 12 個排成一 排，共可以排成 18 排，如果改成每 18 個 排成一排，共可以排成幾排？",
+    "options": [
+      "12 排",
+      "18 排",
+      "6 排",
+      "216 排"
+    ],
+    "answer": "1",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "12×18=216總數，再除以18求排數（216÷18=12），為乘除互逆兩步驟應用問題",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 5,
+    "text": "老師分裝 200 顆番茄，每個保鮮盒所裝的 番茄顆數相同，這樣剛好裝滿 8 個保鮮盒。 請問，每個保鮮盒裝幾顆番茄？這個問題 可以列成哪一個算式？",
+    "options": [
+      "200÷( )＝8",
+      "200×( )＝8",
+      "( )÷8＝200",
+      "( )÷200＝8"
+    ],
+    "answer": "1",
+    "has_image": false,
+    "unit": "7",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "考除法算式列式（200÷( )＝8），屬整數除法核心概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 6,
+    "text": "國小學生每週一次，用含氟漱口水漱口一 分鐘，可以預防蛀牙。選出和一分鐘不一 樣長的時間：",
+    "options": [
+      "60 秒鐘",
+      "秒針走 60 小格的時間",
+      "分針走 1 大格的時間",
+      "秒針走 1 圈的時間"
+    ],
+    "answer": "3",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "none",
+    "confidence": 98,
+    "classify_reason": "考時間等量轉換，分針走1大格＝5分鐘而非1分鐘，屬時刻與時間量概念",
+    "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "multiple_choice",
+    "number": 7,
+    "text": "下列哪一個時刻不同？",
+    "options": [
+      "17：25",
+      "5：25",
+      "5：25ＰＭ",
+      "下午 5 時 25 分"
+    ],
+    "answer": "2",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "none",
+    "confidence": 99,
+    "classify_reason": "考12時制與24時制互換，17:25＝下午5:25 PM，而5:25無標示則為上午5時25分，屬時制互換核心概念",
+    "needs_review": false
+  }
+]
