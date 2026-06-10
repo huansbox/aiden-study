@@ -89,15 +89,20 @@
   - 直式 grid（移植 aiden-math `js/division.js` 長除法逐格邏輯＋新寫小數加減直式；aiden-study 零依賴單一 html，邏輯要內聯改寫不是 import）
 - 多空格題：全對才算對（計分與 errorBank 以「題」為單位，同現行）。
 
-## 實作順序（骨架）
+## 實作順序
 
-1. schema 定稿＋`build_questions.py` 加 subject（舊題回填，期中/期末自然回歸測試不能破）
-2. extract 數學版（先桃子腳112下＋安和113下 兩份打通，再擴）
-3. classify 數學 taxonomy（單元 5–9 名稱先查課本目錄）
-4. answer key 抽取＋注入
-5. 看表題截圖流程
-6. UI：科目切換 → fill_in_blank（numpad/按鈕）→ vertical_calc 直式 grid
-7. 第一批上線後再掃其餘 13 份卷
+已拆為 issues/008–015（2026-06-11，經 agent 依 vertical-slice 原則 review 後定稿，8 片）：
+
+1. `issues/008-subject-dimension.md` — subject 維度＋科目層 UI（自然不破）
+2. `issues/009-math-mc-tracer.md` — 選擇題 tracer（只桃子腳、分數亂序題先跳過、subtopic 暫 none）
+3. `issues/010-fraction-reflow-taxonomy.md` — 分數重組 spike＋正式 taxonomy（與 011 並行，spike 移出關鍵路徑）
+4. `issues/011-fill-in-blank-numpad.md` — fill_in_blank＋numpad（number 空格）
+5. `issues/012-calc-word-problems-pipeline.md` — 反推/時間/應用題 pipeline 擴充
+6. `issues/013-input-type-buttons.md` — comparison/code/text 按鈕
+7. `issues/014-vertical-calc-grid.md` — 直式逐格（aiden-math 移植＋小數直式新寫）
+8. `issues/015-table-image-questions.md` — 看表截圖（HITL）
+
+011 之後 012/013/014/15 可並行。「擴其餘 13 份卷」刻意不列——多數無答案卷，會帶出 AI 補答案＋複審新流程，第一批上線後再議。
 
 ## 尚待決定
 
