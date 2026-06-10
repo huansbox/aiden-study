@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="三下自然">
+<meta name="apple-mobile-web-app-title" content="三下練習">
 <meta name="theme-color" content="#f5f7fa">
 <link rel="manifest" href="manifest.json">
-<title>三下自然練習</title>
+<title>三下練習</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -41,6 +41,26 @@ body {
 /* ── 首頁 ── */
 .home { padding-top: 32px; }
 .home h1 { font-size: 1.6rem; text-align: center; margin-bottom: 16px; }
+
+/* 科目切換（自然/數學）：active 用實心藍，與學期切換區隔 */
+.subject-toggle {
+  display: flex; gap: 6px; margin-bottom: 12px;
+  background: #eef1f6; padding: 6px; border-radius: 14px;
+}
+.subject-toggle button {
+  flex: 1; padding: 12px; border: none; border-radius: 10px;
+  background: transparent; font-size: 1.05rem; font-weight: 600;
+  color: #777; cursor: pointer; transition: all 0.15s;
+}
+.subject-toggle button.active {
+  background: #4361ee; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+/* 科目尚無題目時的空狀態 */
+.empty-state {
+  background: #fff; border: 2px dashed #d8dee9; border-radius: 14px;
+  padding: 32px 20px; text-align: center; color: #889; font-size: 1.05rem;
+}
 
 /* 期中/期末 切換 */
 .semester-toggle {
@@ -259,7 +279,7 @@ body {
 const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final" };
+const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final", subject: "science" };
 
 const Storage = {
   load() {
@@ -305,6 +325,7 @@ const State = {
     if (!state.errorBank) state.errorBank = [];
     if (!state.stats) state.stats = {};
     if (!state.semester) state.semester = "final";
+    if (!state.subject) state.subject = "science";
     if (!state.mastered) state.mastered = {};
     if (!state.flagged) state.flagged = [];
     // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
@@ -314,6 +335,12 @@ const State = {
   // Semester (期中/期末 切換，記住選擇)
   setSemester(s) {
     state.semester = s;
+    Storage.save(state);
+  },
+
+  // Subject (自然/數學 切換，記住選擇)
+  setSubject(s) {
+    state.subject = s;
     Storage.save(state);
   },
 
@@ -658,15 +685,28 @@ function leaveQuiz() {
 // ════════════════════════════════════════════════════
 // UI: Home
 // ════════════════════════════════════════════════════
-const SEMESTERS = {
-  mid: { label: "期中", units: [
-    { id: 1, name: "第 1 單元：田園樂" },
-    { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
-  ] },
-  final: { label: "期末", units: [
-    { id: 3, name: "第 3 單元：動物", subtopics: ["動物分類", "身體構造", "生存與適應", "觀察方法"] },
-    { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
-  ] },
+// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9）
+// 數學單元正式名稱待查證（issues/010），無題單元不會渲染
+const SUBJECTS = {
+  science: { label: "自然", semesters: {
+    mid: { label: "期中", units: [
+      { id: 1, name: "第 1 單元：田園樂" },
+      { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
+    ] },
+    final: { label: "期末", units: [
+      { id: 3, name: "第 3 單元：動物", subtopics: ["動物分類", "身體構造", "生存與適應", "觀察方法"] },
+      { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
+    ] },
+  } },
+  math: { label: "數學", semesters: {
+    final: { label: "期末", units: [
+      { id: 5, name: "第 5 單元" },
+      { id: 6, name: "第 6 單元" },
+      { id: 7, name: "第 7 單元" },
+      { id: 8, name: "第 8 單元" },
+      { id: 9, name: "第 9 單元" },
+    ] },
+  } },
 };
 
 // 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
@@ -723,20 +763,36 @@ function renderSubtopics(u) {
 
 function renderHome() {
   const home = document.getElementById("page-home");
-  const sem = SEMESTERS[state.semester] ? state.semester : "mid";
-  const units = SEMESTERS[sem].units;
+  const subjKey = SUBJECTS[state.subject] ? state.subject : "science";
+  const subj = SUBJECTS[subjKey];
+  const semKeys = Object.keys(subj.semesters);
+  const sem = subj.semesters[state.semester] ? state.semester : semKeys[0];
+  const units = subj.semesters[sem].units;
 
-  let html = '<h1>三下自然練習</h1>';
+  let html = `<h1>三下${subj.label}練習</h1>`;
 
-  // 期中/期末 切換
-  html += '<div class="semester-toggle">';
-  for (const key of Object.keys(SEMESTERS)) {
-    html += `<button class="${key === sem ? 'active' : ''}" onclick="window._setSemester('${key}')">${SEMESTERS[key].label}</button>`;
+  // 科目切換
+  html += '<div class="subject-toggle">';
+  for (const key of Object.keys(SUBJECTS)) {
+    html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${SUBJECTS[key].label}</button>`;
   }
   html += '</div>';
 
-  // Unit sections
-  for (const u of units) {
+  // 期中/期末 切換（單一學期的科目不顯示）
+  if (semKeys.length > 1) {
+    html += '<div class="semester-toggle">';
+    for (const key of semKeys) {
+      html += `<button class="${key === sem ? 'active' : ''}" onclick="window._setSemester('${key}')">${subj.semesters[key].label}</button>`;
+    }
+    html += '</div>';
+  }
+
+  // Unit sections（無題單元不渲染；整科無題 → 空狀態）
+  const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
+  if (visibleUnits.length === 0) {
+    html += '<div class="empty-state">題庫準備中，敬請期待！</div>';
+  }
+  for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
     const done = State.doneCount(u.id);
     const isCleared = State.isCleared(u.id);
@@ -766,24 +822,26 @@ function renderHome() {
       </div>`;
   }
 
-  // Error section（限本學期範圍：期中=1,2；期末=3,4）
-  const semUnitIds = units.map(u => u.id);
-  const semErrors = State.getErrorBank(semUnitIds);
+  // Error section（限本科目本學期範圍；整科無題時不顯示）
+  if (visibleUnits.length > 0) {
+    const semUnitIds = visibleUnits.map(u => u.id);
+    const semErrors = State.getErrorBank(semUnitIds);
 
-  html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
+    html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
 
-  if (semErrors.length === 0) {
-    html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
-  } else {
-    const idsAttr = semUnitIds.join(",");
-    html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
-    for (const u of units) {
-      const errU = State.getErrorBank(u.id);
-      html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
+    if (semErrors.length === 0) {
+      html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
+    } else {
+      const idsAttr = semUnitIds.join(",");
+      html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
+      for (const u of visibleUnits) {
+        const errU = State.getErrorBank(u.id);
+        html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
+      }
     }
-  }
 
-  html += '</div>';
+    html += '</div>';
+  }
   html += renderFlaggedSection();
   home.innerHTML = html;
   showPage("page-home");
@@ -805,6 +863,10 @@ window._startError = (idsStr) => {
 };
 window._setSemester = (s) => {
   State.setSemester(s);
+  renderHome();
+};
+window._setSubject = (s) => {
+  State.setSubject(s);
   renderHome();
 };
 window._resetChallenge = (unit, subtopic = null) => {
