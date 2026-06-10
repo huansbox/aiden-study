@@ -4,7 +4,8 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from extract_math import parse_math_mc, _split_options, _find_mc_section
+from extract_math import (parse_math_mc, parse_math_fill, extract_blanks,
+                          _split_options, _find_mc_section)
 
 # 桃子腳 112下 答案卷（左欄節錄）：乾淨題 + 分數亂序題（殘渣行 1 / 8）
 TAOZIJIAO_SAMPLE = """一、選擇題：
@@ -91,3 +92,95 @@ def test_split_options_no_marks():
 
 def test_find_mc_section_missing():
     assert _find_mc_section("二、填填看：\n1. 沒有選擇題") == []
+
+
+# ── 填充題 parser ──────────────────────────────────────
+
+# 桃子腳填填看節錄：多空格、跨行、比較題（無答案括號）、分數亂序（殘渣跨題界）、代號/文字答案
+TAOZIJIAO_FILL = """二、填填看：
+1~3題每格1分，4~10題每格2分，共28分
+1. 800÷5＝160
+→ 160×5＝ ( 800 )
+→ 800÷160＝( 5 )
+2. 35.8 的十分位數字是( 8 )，十位數字是( 3 )。
+3. 現在是 15：57，再過 3 分鐘，是
+下午( 4 )時( 0 )分
+4. 9 個 1 和 12 個 0.1 合起來是( 10.2 )。
+5. 在□裡填入＞、＜或＝
+(1) 4 個 1 ＞ 24 個 0.1
+(2) 八點三 ＞ 3.8
+4
+6. 2 個 合起來是( 0.8 ) (請填小數)
+10
+7. 下列四個圓，哪一個最大？哪一個最小？
+填代號。
+最大：( 丁 ) 最小：( 丙 )
+三、計算題：用直式計算
+(1)25－6.7＝(18.3 )
+"""
+
+ANHE_FILL = """二、 填充題：每答 2 分，共 34 分
+1. 圓心到圓周的距離叫做( 半 )徑。
+2. 畫一個直徑 14 公分的圓，圓規要打開( 7 )
+公分。
+3. 右圖，甲、乙、丙
+分別是小、中、大圓的的圓心，
+那麼大圓的半徑是 ( 4 )公分。
+4. 一袋麵粉可以製作 10 個鬆餅，製作 1 個鬆餅需
+要(0.1 或十分之一)袋麵粉，2.8 袋麵粉剛好可
+以製作 ( 28 )個鬆餅。
+5. 這是三年甲班學生眼科與牙科健康統計表，請
+完成表格。 沒近視 ( 8 ) 6 14
+三、 計算題：每題 3 分，共 15 分
+"""
+
+
+def test_fill_multi_blank_and_placeholders():
+    qs, skips = parse_math_fill(TAOZIJIAO_FILL, "桃.pdf")
+    q1 = next(q for q in qs if q["number"] == 1)
+    assert q1["text"] == "800÷5＝160 → 160×5＝ （１） → 800÷160＝（２）"
+    assert [b["answer"] for b in q1["blanks"]] == ["800", "5"]
+    assert q1["section"] == "fill_in_blank"
+    q3 = next(q for q in qs if q["number"] == 3)
+    assert [b["answer"] for b in q3["blanks"]] == ["4", "0"]
+
+
+def test_fill_comparison_without_brackets_deferred():
+    qs, skips = parse_math_fill(TAOZIJIAO_FILL, "桃.pdf")
+    s5 = next(s for s in skips if s["number"] == 5)
+    assert s5["category"] == "no_blanks"
+    assert all(q["number"] != 5 for q in qs)
+
+
+def test_fill_fraction_stray_crosses_question_boundary():
+    qs, skips = parse_math_fill(TAOZIJIAO_FILL, "桃.pdf")
+    # 殘渣 4（題首行上方）與 10 都歸 Q6，Q5 不被污染成 fraction
+    s6 = next(s for s in skips if s["number"] == 6)
+    assert s6["category"] == "fraction"
+    assert "4" in s6["reason"] and "10" in s6["reason"]
+
+
+def test_fill_code_and_text_answers_extracted():
+    qs, _ = parse_math_fill(TAOZIJIAO_FILL, "桃.pdf")
+    q7 = next(q for q in qs if q["number"] == 7)
+    assert [b["answer"] for b in q7["blanks"]] == ["丁", "丙"]
+
+
+def test_fill_image_flag_and_alt_answer():
+    qs, skips = parse_math_fill(ANHE_FILL, "安.pdf")
+    q3 = next(q for q in qs if q["number"] == 3)
+    assert q3["has_image"] is True   # 「右圖」
+    q4 = next(q for q in qs if q["number"] == 4)
+    assert [b["answer"] for b in q4["blanks"]] == ["0.1", "28"]  # 「0.1 或十分之一」取 0.1
+
+
+def test_fill_table_deferred():
+    qs, skips = parse_math_fill(ANHE_FILL, "安.pdf")
+    s5 = next(s for s in skips if s["number"] == 5)
+    assert s5["category"] == "table"
+
+
+def test_extract_blanks_marker_and_hint_not_answers():
+    stem, blanks = extract_blanks("(1) 從寧埔站出發 ( 85 )元 (請填小數)")
+    assert [b["answer"] for b in blanks] == ["85"]
+    assert "(1)" in stem and "(請填小數)" in stem

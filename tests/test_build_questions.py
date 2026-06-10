@@ -67,3 +67,40 @@ def test_convert_block_empty_input():
     final_q, skipped = convert_block([], set(), "math", {5})
     assert final_q == []
     assert dict(skipped) == {}
+
+
+def _fill_q(number, blanks, unit="5"):
+    return {
+        "number": number, "unit": unit, "subtopic": "小數的認識",
+        "section": "fill_in_blank", "text": "題幹（１）",
+        "blanks": blanks, "options": [], "answer": "", "source": "y.pdf",
+    }
+
+
+def test_fill_question_final_schema_has_blanks_no_options():
+    qs = [_fill_q(1, [{"answer": "8", "input": "number"}])]
+    final_q, skipped = convert_block(qs, set(), "math", {5})
+    assert len(final_q) == 1
+    q = final_q[0]
+    assert q["type"] == "fill_in_blank"
+    assert q["blanks"] == [{"answer": "8", "input": "number"}]
+    assert "options" not in q and "answer" not in q
+
+
+def test_fill_unsupported_input_filtered_and_recorded():
+    qs = [
+        _fill_q(1, [{"answer": "8", "input": "number"}]),
+        _fill_q(2, [{"answer": "8", "input": "number"}, {"answer": "圓心", "input": "text"}]),
+    ]
+    filtered = []
+    final_q, skipped = convert_block(qs, set(), "math", {5}, filtered)
+    assert len(final_q) == 1
+    assert skipped["unsupported_input"] == 1
+    assert len(filtered) == 1 and "text" in filtered[0]["filter_reason"]
+
+
+def test_fill_invalid_blanks_skipped():
+    qs = [_fill_q(1, [{"answer": "", "input": "number"}])]
+    final_q, skipped = convert_block(qs, set(), "math", {5})
+    assert final_q == []
+    assert skipped["invalid_blanks"] == 1

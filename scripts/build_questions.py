@@ -23,6 +23,9 @@ import json
 import logging
 from collections import Counter
 
+sys.path.insert(0, os.path.dirname(__file__))
+from data_helpers import validate_blanks
+
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
@@ -33,10 +36,14 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "questions.json"))
 FINAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_期末.json"))
 MATH_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_數學.json"))
+FILTERED_PATH = os.path.abspath(os.path.join(ROOT, "data", "filtered_unsupported_數學.json"))
 
 MID_UNITS = {1, 2}
 FINAL_UNITS = {3, 4}
 MATH_UNITS = {5, 6, 7, 8, 9}
+
+# UI 已支援的 fill_in_blank 輸入型態（013 落地 comparison/code/text 後解禁）
+SUPPORTED_BLANK_INPUTS = {"number"}
 
 
 def unique_id(base: str, used: set) -> str:
@@ -53,20 +60,24 @@ def unique_id(base: str, used: set) -> str:
 
 
 def to_final_schema(q: dict, used_ids: set, subject: str) -> dict:
-    """classified 題目 → 網站最終 schema"""
+    """classified 題目 → 網站最終 schema（fill_in_blank 帶 blanks，不帶 options/answer）"""
     stem = q["source"].rsplit(".", 1)[0]
     base = f"{stem}_{q['section']}_{q['number']}"
-    return {
+    out = {
         "id": unique_id(base, used_ids),
         "subject": subject,
         "unit": int(q["unit"]),
         "subtopic": q.get("subtopic", "none"),
         "type": q["section"],
         "text": q["text"],
-        "options": q["options"],
-        "answer": q["answer"],
-        "source": q["source"],
     }
+    if q["section"] == "fill_in_blank":
+        out["blanks"] = q["blanks"]
+    else:
+        out["options"] = q["options"]
+        out["answer"] = q["answer"]
+    out["source"] = q["source"]
+    return out
 
 
 def preserve_schema(q: dict, subject: str) -> dict:
@@ -84,8 +95,12 @@ def preserve_schema(q: dict, subject: str) -> dict:
     }
 
 
-def convert_block(classified: list, used_ids: set, subject: str, allowed_units: set):
-    """classified 清單 → (最終題目清單, 排除統計)。空輸入回傳 ([], {})。"""
+def convert_block(classified: list, used_ids: set, subject: str, allowed_units: set,
+                  filtered_out: list | None = None):
+    """
+    classified 清單 → (最終題目清單, 排除統計)。空輸入回傳 ([], {})。
+    fill_in_blank 含 UI 未支援輸入型態的題不入庫，記到 filtered_out（013 解禁依據）。
+    """
     final_q = []
     skipped = Counter()
     for q in classified:
@@ -98,11 +113,24 @@ def convert_block(classified: list, used_ids: set, subject: str, allowed_units: 
         if q["section"] == "multiple_choice" and sum(1 for o in q["options"] if o.strip()) < 2:
             skipped["few_options"] += 1   # 含圖片型空選項（選項為圖示、文字空白）
             continue
+        if q["section"] == "fill_in_blank":
+            # 先分流未支援輸入型態（013 解禁清單；code 的 choices 等 013 才補，不在此驗證）
+            unsupported = sorted({b.get("input", "") for b in q.get("blanks") or []} - SUPPORTED_BLANK_INPUTS)
+            if unsupported:
+                skipped["unsupported_input"] += 1
+                if filtered_out is not None:
+                    filtered_out.append({**q, "filter_reason": f"未支援輸入型態: {','.join(unsupported)}"})
+                continue
+            if not validate_blanks(q.get("blanks")):
+                skipped["invalid_blanks"] += 1
+                log.warning(f"blanks 驗證失敗，跳過: {q['source']} #{q['number']}")
+                continue
         final_q.append(to_final_schema(q, used_ids, subject))
     return final_q, skipped
 
 
-def build_merged(existing: list, final_classified: list, math_classified: list) -> list:
+def build_merged(existing: list, final_classified: list, math_classified: list,
+                 filtered_out: list | None = None) -> list:
     """三來源合併（純函式）：保留期中、重建期末與數學。"""
     midterm = [preserve_schema(q, "science") for q in existing if int(q["unit"]) in MID_UNITS]
     log.info(f"期中題目: {len(midterm)}（原 docs/questions.json {len(existing)} 題）")
@@ -112,7 +140,7 @@ def build_merged(existing: list, final_classified: list, math_classified: list) 
     final_q, skipped = convert_block(final_classified, used_ids, "science", FINAL_UNITS)
     log.info(f"期末題目: {len(final_q)}（排除 {dict(skipped)}）")
 
-    math_q, math_skipped = convert_block(math_classified, used_ids, "math", MATH_UNITS)
+    math_q, math_skipped = convert_block(math_classified, used_ids, "math", MATH_UNITS, filtered_out)
     log.info(f"數學題目: {len(math_q)}（排除 {dict(math_skipped)}）")
 
     merged = midterm + final_q + math_q
@@ -143,7 +171,13 @@ def main():
     final_classified = load_classified(FINAL_CLASSIFIED, required=True)
     math_classified = load_classified(MATH_CLASSIFIED, required=False)
 
-    merged = build_merged(existing, final_classified, math_classified)
+    filtered_out = []
+    merged = build_merged(existing, final_classified, math_classified, filtered_out)
+
+    with open(FILTERED_PATH, "w", encoding="utf-8") as f:
+        json.dump(filtered_out, f, ensure_ascii=False, indent=2)
+    if filtered_out:
+        log.info(f"未支援輸入型態過濾清單: {FILTERED_PATH}（{len(filtered_out)} 題，013 解禁）")
 
     unit_counts = Counter(q["unit"] for q in merged)
     log.info(f"合併後總題數: {len(merged)}，各單元: {dict(sorted(unit_counts.items()))}")

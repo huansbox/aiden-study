@@ -11,7 +11,45 @@ from data_helpers import (
     dedupe_by_text,
     merge_answer,
     validate_unit_subtopic,
+    validate_blanks,
 )
+
+
+# ── fill_in_blank blanks 驗證 ──────────────────────────
+
+def test_validate_blanks_ok_multi():
+    assert validate_blanks([
+        {"answer": "8", "input": "number"},
+        {"answer": "3", "input": "number"},
+    ])
+
+
+def test_validate_blanks_rejects_empty_or_missing():
+    assert not validate_blanks([])
+    assert not validate_blanks(None)
+    assert not validate_blanks([{"answer": ""}])          # 空 answer
+    assert not validate_blanks([{"input": "number"}])     # 缺 answer
+
+
+def test_validate_blanks_number_must_be_numeric():
+    assert validate_blanks([{"answer": "10.2", "input": "number"}])
+    assert not validate_blanks([{"answer": "圓心", "input": "number"}])
+
+
+def test_validate_blanks_input_type_must_be_valid():
+    assert not validate_blanks([{"answer": "8", "input": "numpad"}])
+    assert validate_blanks([{"answer": "圓心", "input": "text"}])
+
+
+def test_validate_blanks_code_requires_choices():
+    assert not validate_blanks([{"answer": "丁", "input": "code"}])
+    assert validate_blanks([{"answer": "丁", "input": "code", "choices": ["甲", "乙", "丙", "丁"]}])
+    assert not validate_blanks([{"answer": "戊", "input": "code", "choices": ["甲", "乙"]}])
+
+
+def test_validate_blanks_without_input_field_ok():
+    # raw 階段（classify 前）尚無 input 欄位
+    assert validate_blanks([{"answer": "800"}, {"answer": "5"}])
 
 MIDTERM_VALID = {
     "蔬菜從哪裡來", "影響蔬菜生長的因素", "蔬菜生長的變化過程",

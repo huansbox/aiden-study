@@ -50,3 +50,37 @@ def validate_unit_subtopic(unit, subtopic, valid_units, valid_subtopics) -> bool
     if str(unit) != "none" and subtopic not in valid_subtopics:
         return False
     return True
+
+
+# fill_in_blank 空格的合法輸入型態（設計稿「輸入摩擦原則」）
+VALID_BLANK_INPUTS = {"number", "comparison", "code", "text"}
+
+
+def validate_blanks(blanks) -> bool:
+    """
+    fill_in_blank 的 blanks 欄位驗證：
+    - 非空 list，每格為 dict 且 answer 為非空字串
+    - input 欄位若存在須屬 VALID_BLANK_INPUTS
+    - number 格的 answer 須為數值形式（整數或小數）
+    - code 格須帶非空 choices 清單（answer 須在其中）
+    """
+    if not isinstance(blanks, list) or not blanks:
+        return False
+    for b in blanks:
+        if not isinstance(b, dict):
+            return False
+        ans = b.get("answer")
+        if not isinstance(ans, str) or not ans.strip():
+            return False
+        inp = b.get("input")
+        if inp is None:
+            continue
+        if inp not in VALID_BLANK_INPUTS:
+            return False
+        if inp == "number" and not re.fullmatch(r"\d+(\.\d+)?", ans.strip()):
+            return False
+        if inp == "code":
+            choices = b.get("choices")
+            if not isinstance(choices, list) or not choices or ans.strip() not in choices:
+                return False
+    return True

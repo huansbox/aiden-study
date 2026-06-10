@@ -19,6 +19,9 @@ import subprocess
 import argparse
 import logging
 
+sys.path.insert(0, os.path.dirname(__file__))
+from extract_math import extract_blanks
+
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
@@ -30,27 +33,33 @@ SKIPPED_PATH = os.path.join(DATA_DIR, "skipped_questions_數學.json")
 ARTIFACT_PATH = os.path.join(DATA_DIR, "reflowed_questions_數學.json")
 RAW_PATH = os.path.join(DATA_DIR, "raw_questions_數學.json")
 
-PROMPT = """以下是從國小三年級數學考卷 PDF 文字層抽出的選擇題原文。已知問題：
+PROMPT = """以下是從國小三年級數學考卷 PDF 文字層抽出的題目原文（選擇題或填充題）。已知問題：
 1. 印刷上的直式分數（分子在上、分母在下）被文字層拆成獨立的純數字片段，位置錯亂（可能跑到前一行或後一行）。
 2. 可能混入考卷頁首雜訊（學校名、學年度、姓名欄、成績欄「分數」等）。
 
 請重建題目，規則：
-- 找出散落的分子/分母數字，判斷分數應在句中哪個位置，以「分子/分母」斜線格式寫回（如 1/8、9/10）。
+- 找出散落的分子/分母數字，判斷分數應在句中哪個位置，以「分子/分母」斜線格式寫回（如 1/8、9/10、4/10）。
 - 每一個散落的純數字片段都必須被用掉（它們是某個分數的分子或分母），不可丟棄；
-  分子通常竄到該行之前（含前一選項句尾），分母通常落在該行之後。重組後句中不應殘留來路不明的孤立數字。
+  分子通常竄到該行之前（含前一行句尾），分母通常落在該行之後。重組後句中不應殘留來路不明的孤立數字。
 - 剔除頁首雜訊。
 - 題幹與選項忠於原文，不改寫、不糾正數學內容（即使選項是錯誤敘述也照抄）。
+- 填充題的答案括號（如「( 0.8 )」）原樣保留在句中，不要移動或改寫括號內容。
 
 只回傳 JSON array（不要其他文字），每個元素對應一題、按輸入順序：
-[{"number": 題號, "text": "題幹", "options": ["選項1","選項2","選項3","選項4"]}]
+- 選擇題：{"number": 題號, "section": "multiple_choice", "text": "題幹", "options": ["選項1","選項2","選項3","選項4"]}
+- 填充題：{"number": 題號, "section": "fill_in_blank", "text": "重建後全文（含答案括號）"}
 
 原文：
 """
 
 
+SECTION_LABEL = {"multiple_choice": "選擇題", "fill_in_blank": "填充題"}
+
+
 def run_reflow(skipped: list[dict]) -> list[dict]:
     payload = "\n\n".join(
-        f"【題 {s['number']}（{s['source']}）】\n{s['raw_text']}" for s in skipped
+        f"【{SECTION_LABEL.get(s['section'], s['section'])} 題 {s['number']}（{s['source']}）】\n{s['raw_text']}"
+        for s in skipped
     )
     result = subprocess.run(
         ["claude", "-p", "--model", "claude-sonnet-4-6", "--output-format", "json"],
@@ -72,16 +81,26 @@ def run_reflow(skipped: list[dict]) -> list[dict]:
     for s, r in zip(skipped, reflowed):
         if int(r["number"]) != int(s["number"]):
             raise RuntimeError(f"題號錯位：skipped {s['number']} vs reflow {r['number']}")
-        out.append({
+        entry = {
             "source": s["source"],
             "section": s["section"],
             "number": s["number"],
-            "text": r["text"],
-            "options": r["options"],
-            "answer": s.get("answer", ""),   # 官方答案來自跳過清單（括號抽取）
             "has_image": False,
             "reflowed": True,                # 標記：AI 重組題（已人工對 PNG 核對才 --apply）
-        })
+        }
+        if s["section"] == "fill_in_blank":
+            # 重建全文仍含答案括號 → 重用 extract 的括號抽取邏輯產生佔位符與 blanks
+            stem, blanks = extract_blanks(r["text"])
+            if not blanks:
+                raise RuntimeError(f"重組後抽不到答案括號：{s['source']} #{s['number']}")
+            entry.update({"text": stem, "blanks": blanks, "options": [], "answer": ""})
+        else:
+            entry.update({
+                "text": r["text"],
+                "options": r["options"],
+                "answer": s.get("answer", ""),   # 官方答案來自跳過清單（括號抽取）
+            })
+        out.append(entry)
     return out
 
 
@@ -117,11 +136,13 @@ def main():
         return
 
     with open(SKIPPED_PATH, encoding="utf-8") as f:
-        skipped = json.load(f)
+        all_skipped = json.load(f)
+    # 只重組分數亂序類；table（015 截圖）與 no_blanks（013 救回）不在此處理
+    skipped = [s for s in all_skipped if s.get("category", "fraction") == "fraction"]
     if not skipped:
-        log.info("跳過清單為空，無事可做")
+        log.info("跳過清單無分數亂序題，無事可做")
         return
-    log.info(f"重組 {len(skipped)} 題（claude -p）…")
+    log.info(f"重組 {len(skipped)} 題（claude -p；其餘類別 {len(all_skipped) - len(skipped)} 題不處理）…")
     reflowed = run_reflow(skipped)
     with open(ARTIFACT_PATH, "w", encoding="utf-8") as f:
         json.dump(reflowed, f, ensure_ascii=False, indent=2)
