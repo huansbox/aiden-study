@@ -1,12 +1,14 @@
-# Aiden Study - 三下自然題庫練習網站
+# Aiden Study - 三下題庫練習網站（自然＋數學）
 
 ## 專案目標
 
-從 `pdfs/`（27 份期中）與 `pdfs_期末/`（tcool.cc 抓取）的國小三下自然考卷 PDF，萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：期中＋期末共 1101 題已上線。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：自然 1101 題已上線（master）；數學 54 題完成於 feat/math 分支（**待家長過目後 merge 上線**）。
 
 ## 快速參考
 
-- **▶ 進行中：數學期末題庫（feat/math 分支）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)（scope 已逐大題對齊定案）；工作項＝`issues/008`～`015`（8 片 vertical slices，依賴順序見設計稿「實作順序」）。卷源 `pdfs_數學/`（桃子腳112下＋安和113下），清單 `data/tcool_grade3_math_kanghsuan.json`。
+- **▶ 數學期末題庫已完成（issues 008–015，8/8，feat/math 分支未 merge）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)；各 issue 檔含驗收與完成紀錄。**待家長**：①subtopic 清單與單元名稱過目（issues/010）②分數斜線表記「1/8」可否（010）③看表題截圖品質與多答案順序 UX（015）④過目後 merge master 上線＋安和表格題 5 題批量補做（015 殘留）。
+  - 數學題型：選擇 13／填充 35（number/comparison/code/text 四種輸入）／直式逐格 6（小數加減＋長除法，移植 aiden-math）；看表題截圖嵌入（`docs/assets/math/`）。
+  - 數學 pipeline：`extract_math.py`（萃取＋分數亂序偵測）→`reflow_math.py`（AI 重組＋PNG 人工核對閘門）→`classify.py --semester math`→curated（看表題人工檔）→`build_questions.py`。
 - **期末題庫擴充已完成（issues 001–007，7/7）**：現況真相源＝[`HANDOFF.md`](HANDOFF.md)；**維護/擴充前先讀經驗筆記** [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)（pipeline、踩過的坑、重跑指令）。[`issues/prd.md`](issues/prd.md)＋`issues/001`～`007` 為歷史決策紀錄（已封存，不再更新）。
 - **考卷來源與取得流程**（期末擴充、tcool.cc 抓取、Cloudflare 繞過、課綱篩選界線）：[`docs-dev/exam-paper-sourcing.md`](docs-dev/exam-paper-sourcing.md)
   - 重點：三年級自然 **110下** 起才是現行 108 課綱，108下/109下 屬舊課綱需排除。
