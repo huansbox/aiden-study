@@ -16083,5 +16083,211 @@
     ],
     "answer": "4",
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "fill_in_blank",
+    "text": "完成 24 時制和 12 時制的互換：13：00 ＝（１）午（２）時；上午 7 時 15 分 ＝（３）：（４）",
+    "blanks": [
+      {
+        "answer": "下",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "15",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table2",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "這是小桃的功課表。老師規定體育課需要穿著體育服，請問小桃星期幾要穿體育服？（兩個答案，依星期順序作答）（１）（２）",
+    "image": "assets/math/tao112_schedule.png",
+    "blanks": [
+      {
+        "answer": "星期一",
+        "input": "code",
+        "choices": [
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五"
+        ]
+      },
+      {
+        "answer": "星期四",
+        "input": "code",
+        "choices": [
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五"
+        ]
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table31",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是臺鐵北迴線自強號的票價表。爸爸花了 600 元買 3 張車票，請從票價表中判斷是從哪一站到哪一站的車票（依票價表由上到下的順序作答）：從（１）站到（２）站",
+    "image": "assets/math/tao112_fares.png",
+    "blanks": [
+      {
+        "answer": "羅東",
+        "input": "code",
+        "choices": [
+          "宜蘭",
+          "羅東",
+          "蘇澳新",
+          "東澳",
+          "南澳",
+          "和平",
+          "新城",
+          "花蓮"
+        ]
+      },
+      {
+        "answer": "花蓮",
+        "input": "code",
+        "choices": [
+          "宜蘭",
+          "羅東",
+          "蘇澳新",
+          "東澳",
+          "南澳",
+          "和平",
+          "新城",
+          "花蓮"
+        ]
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table32",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "（票價表同上）小桃從和平站搭車，買了一張 90 元的車票，她要搭車到哪一站？（１）",
+    "image": "assets/math/tao112_fares.png",
+    "blanks": [
+      {
+        "answer": "蘇澳新站",
+        "input": "code",
+        "choices": [
+          "蘇澳新站",
+          "羅東站",
+          "新城站"
+        ]
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table41",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "看火車時刻表回答問題：車次 131 列車從新竹站離開時是（１）午（２）時（３）分",
+    "image": "assets/math/tao112_trains.png",
+    "blanks": [
+      {
+        "answer": "上",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "10",
+        "input": "number"
+      },
+      {
+        "answer": "49",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table42",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "看火車時刻表回答問題：小桃搭乘車次 113 從板橋站到新竹站，要花費多少時間？（１）時（２）分",
+    "image": "assets/math/tao112_trains.png",
+    "blanks": [
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table5",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是桃子蛋糕店價目表。媽媽帶 80 元，先買了 1 份巧克力蛋糕，剩下的錢想要買 1 杯飲料。媽媽可以買哪幾種飲料？（兩個答案，依價目表順序作答）（１）（２）",
+    "image": "assets/math/tao112_cakes.png",
+    "blanks": [
+      {
+        "answer": "紅茶",
+        "input": "code",
+        "choices": [
+          "紅茶",
+          "綠奶茶",
+          "果汁",
+          "咖啡"
+        ]
+      },
+      {
+        "answer": "綠奶茶",
+        "input": "code",
+        "choices": [
+          "紅茶",
+          "綠奶茶",
+          "果汁",
+          "咖啡"
+        ]
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   }
 ]

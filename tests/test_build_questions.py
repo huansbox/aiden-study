@@ -118,3 +118,13 @@ def test_fill_invalid_blanks_skipped():
     final_q, skipped = convert_block(qs, set(), "math", {5})
     assert final_q == []
     assert skipped["invalid_blanks"] == 1
+
+
+def test_image_field_passthrough():
+    # 015 看表題：image 欄位需進最終 schema（has_image=False 是「依賴未截圖圖片」的排除旗標，兩者不同）
+    q = _fill_q(2, [{"answer": "星期一", "input": "code", "choices": ["星期一", "星期四"]}], unit="9")
+    q["subtopic"] = "報讀表格"
+    q["image"] = "assets/math/tao112_schedule.png"
+    final_q, skipped = convert_block([q], set(), "math", {9})
+    assert len(final_q) == 1
+    assert final_q[0]["image"] == "assets/math/tao112_schedule.png"

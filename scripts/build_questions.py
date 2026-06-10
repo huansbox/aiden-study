@@ -36,6 +36,8 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "questions.json"))
 FINAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_期末.json"))
 MATH_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_數學.json"))
+# 人工 curated 題（015 看表題：手動截圖＋手寫 blanks，已含 unit/subtopic，不過 classify）
+MATH_CURATED = os.path.abspath(os.path.join(ROOT, "data", "curated_questions_數學.json"))
 FILTERED_PATH = os.path.abspath(os.path.join(ROOT, "data", "filtered_unsupported_數學.json"))
 
 MID_UNITS = {1, 2}
@@ -73,6 +75,8 @@ def to_final_schema(q: dict, used_ids: set, subject: str) -> dict:
         "type": q["section"],
         "text": q["text"],
     }
+    if q.get("image"):
+        out["image"] = q["image"]   # 看表題截圖（docs/ 相對路徑）
     if q["section"] == "fill_in_blank":
         out["blanks"] = q["blanks"]
     elif q["section"] == "vertical_calc":
@@ -181,9 +185,12 @@ def main():
 
     final_classified = load_classified(FINAL_CLASSIFIED, required=True)
     math_classified = load_classified(MATH_CLASSIFIED, required=False)
+    math_curated = load_classified(MATH_CURATED, required=False)
+    if math_curated:
+        log.info(f"人工 curated 題: {len(math_curated)}")
 
     filtered_out = []
-    merged = build_merged(existing, final_classified, math_classified, filtered_out)
+    merged = build_merged(existing, final_classified, math_classified + math_curated, filtered_out)
 
     with open(FILTERED_PATH, "w", encoding="utf-8") as f:
         json.dump(filtered_out, f, ensure_ascii=False, indent=2)

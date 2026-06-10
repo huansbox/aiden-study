@@ -15,13 +15,20 @@
 
 ## Acceptance criteria
 
-- [ ] `crop_pdf.py` bbox 模式：讀座標清單檔 → 輸出指定命名 PNG（pytest 或手動驗證紀錄）
-- [ ] 桃子腳 112下 看表題（功課表/票價表/時刻表/蛋糕價目表）截圖完成且品質過目通過
-- [ ] 時制互換題以文字重現入庫
-- [ ] UI：含 `image` 的題正確顯圖（pad 寬度下表格可讀），blanks 作答正常 —— Playwright 實測
-- [ ] 看表題官方答案對 PDF 核對通過
-- [ ] `docs/assets/math/` 進 repo（部署需要），檔案大小合理（單檔 < 200KB 為準）
-- [ ] `uv run pytest` 全綠
+- [x] `crop_pdf.py` bbox 模式：讀座標清單 `data/table_crops_數學.json` → 輸出指定命名 PNG（手動驗證紀錄＝本 session 逐張 PNG 親讀核對）
+- [x] 桃子腳 112下 看表題截圖完成（功課表/票價表/火車時刻表/蛋糕價目表 4 張，從**題目卷**裁切避免紅字答案）；操作者品質過目通過，**家長最終過目待回**（不擋合併）
+- [x] 時制互換題以文字重現入庫（上/下 為 code 格、時分為 number 格）
+- [x] UI：含 `image` 的題題幹上方正確顯圖（pad 寬度可讀），blanks 作答正常（混合 code＋number 面板切換）—— Playwright 實測
+- [x] 看表題官方答案對 PDF 紅字逐題核對（含票價表√＝蘇澳新站、蛋糕題 80−40=40→紅茶/綠奶茶）
+- [x] `docs/assets/math/` 進 repo，單檔 8–13KB（遠低於 200KB）
+- [x] `uv run pytest` 全綠（90 passed）
+
+## 完成紀錄（2026-06-11）
+
+- 看表題走**人工 curated 路線**：`data/curated_questions_數學.json`（classified 形狀、手寫 blanks/unit/subtopic）由 build 直接併入，不過 classify——HITL 題的分類本來就是人工
+- 桃子腳五大題拆 7 題入庫：時制互換(unit 8)＋功課表/票價表×2/火車時刻表×2/蛋糕(unit 9 報讀表格)；題庫 1155 題（數學 54）
+- 多答案順序問題（星期一、星期四／紅茶、綠奶茶／羅東→花蓮）：blanks 逐格嚴格比對，題幹明示「依～順序作答」固定順序——家長過目時可確認此 UX 是否 OK
+- **殘留（記錄，下批處理）**：安和表格題 5 題（填充8 健康統計表/填充9 公車票價表/填充10 優酪乳營養表、應用4 高鐵時刻表/應用5 影展時刻表）仍在延後清單——同 curated 流程可做，留待家長確認桃子腳這批的呈現品質後再批量做
 
 ## Blocked by
 

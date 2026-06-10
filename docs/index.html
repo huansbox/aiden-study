@@ -180,6 +180,11 @@ body {
 }
 .q-type.tf { background: #8b5cf6; }
 .q-text { font-size: 1.25rem; line-height: 1.7; margin-bottom: 20px; }
+/* 看表題截圖（題幹上方顯示） */
+.q-image {
+  width: 100%; max-width: 560px; align-self: center;
+  border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 12px;
+}
 .options { display: flex; flex-direction: column; gap: 12px; }
 
 .opt-btn {
@@ -1078,6 +1083,7 @@ function renderQuiz() {
     ${progressHtml}
     <div class="question-card">
       <span class="${typeClass}">${typeLabel}</span>
+      ${q.image ? `<img class="q-image" src="${q.image}" alt="題目附表">` : ""}
       <div class="q-text">${displayText}</div>
       ${answerHtml}
       <div class="result-hint hidden" id="result-hint"></div>
