@@ -2,11 +2,13 @@
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：自然 1101 題已上線（master）；數學 54 題完成於 feat/math 分支（**待家長過目後 merge 上線**）。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：1155 題（自然 1101＋數學 54）已上線；自然期末 499 題附作答後說明。
 
 ## 快速參考
 
-- **▶ 數學期末題庫已完成（issues 008–015，8/8，feat/math 分支未 merge）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)；各 issue 檔含驗收與完成紀錄。**待家長**：①subtopic 清單與單元名稱過目（issues/010）②分數斜線表記「1/8」可否（010）③看表題截圖品質與多答案順序 UX（015）④過目後 merge master 上線＋安和表格題 5 題批量補做（015 殘留）。
+- **▶ 殘留待辦**：安和表格題 5 題（填充8/9/10、應用4/5）用 curated 流程批量補做（issues/015 殘留）。
+- **期末作答後說明已上線（自然 unit 3/4，499 題）**：資料＝`docs/explanations.json`（id → 說明，前端 join）；批次結果＝`data/exp_results/`，重建跑 `uv run python scripts/build_explanations.py`；PRD＝`issues/prd-期末說明.md`；抽查全錄＝`docs-dev/review_期末說明_抽查.md`。期中題（unit 1/2）尚無說明。
+- **數學期末題庫已完成上線（issues 008–015，8/8）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)；各 issue 檔含驗收與完成紀錄。
   - 數學題型：選擇 13／填充 35（number/comparison/code/text 四種輸入）／直式逐格 6（小數加減＋長除法，移植 aiden-math）；看表題截圖嵌入（`docs/assets/math/`）。
   - 數學 pipeline：`extract_math.py`（萃取＋分數亂序偵測）→`reflow_math.py`（AI 重組＋PNG 人工核對閘門）→`classify.py --semester math`→curated（看表題人工檔）→`build_questions.py`。
 - **期末題庫擴充已完成（issues 001–007，7/7）**：現況真相源＝[`HANDOFF.md`](HANDOFF.md)；**維護/擴充前先讀經驗筆記** [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)（pipeline、踩過的坑、重跑指令）。[`issues/prd.md`](issues/prd.md)＋`issues/001`～`007` 為歷史決策紀錄（已封存，不再更新）。
@@ -28,6 +30,7 @@ scripts/           Python 資料處理 pipeline
   classify.py      claude -p 批次分類（可切換 taxonomy：--semester mid|final|math）
   data_helpers.py  去重/答案合併/驗證純函式（深模組B）
   build_questions.py classified → docs/questions.json 三來源合併（冪等、id 去碰撞、subject 欄位）
+  build_explanations.py data/exp_results/ → docs/explanations.json 合併驗證
   fix_classified.py 期中分類修正腳本
 data/              中間資料
   raw_questions.json        期中萃取（659 題）
@@ -42,6 +45,7 @@ data/              中間資料
 docs/              GitHub Pages 部署目錄
   index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學）
   questions.json   最終題庫（自然 unit 1–4＋數學 unit 5–9，全題帶 subject）
+  explanations.json 作答後說明（自然期末 499 題，id → 說明）
 tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）
@@ -61,6 +65,9 @@ skipped_questions.md  跳過題目清單（供手動確認）
 - **全部練習**：queue 制，答對移出/答錯移到隊尾，可接續，通關後可重置
 - **快速練習**：智慧選 10 題（錯誤率高 + 練習次數少優先），不可接續
 - **錯題練習**：答對從錯題庫移除，答錯留在庫中排到隊尾
+
+### 作答後說明
+- 自然期末題（unit 3/4）答題 feedback 畫面顯示說明卡（1–3 句、小三用語）；`explanations.json` 缺 id 時不顯示，不影響作答流程
 
 ### 題目回報（flag）
 - 答題 feedback 畫面（答對/答錯皆有）低調按鈕「題目有問題」→ inline 確認後 flag
