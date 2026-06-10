@@ -18,12 +18,18 @@
 
 ## Acceptance criteria
 
-- [ ] `docs/questions.json` 全題含 `subject` 欄位（既有 1101 題回填 `science`），id/unit/題數與重構前完全一致
-- [ ] `build_questions.py` 三來源結構：自然 unit 1–4 保留、數學 unit 5–9 重建入口預留（空輸入時產出 0 題不報錯）
-- [ ] 首頁出現科目層：自然（現有四單元入口照常）／數學（空狀態合理顯示，不出現可點但壞掉的入口）
-- [ ] 自然科全功能回歸：三種練習模式、subtopic 練習、flag 回報/還原、錯題庫、stats —— Playwright 實測通過
-- [ ] 既有 localStorage 進度（challenge/errorBank/stats/flagged）升級後完整保留
-- [ ] `uv run pytest` 全綠（期中/期末回歸不破）
+- [x] `docs/questions.json` 全題含 `subject` 欄位（既有 1101 題回填 `science`），id/unit/題數與重構前完全一致（diff 驗證：+1101 行全為 subject，0 刪除）
+- [x] `build_questions.py` 三來源結構：自然 unit 1–4 保留、數學 unit 5–9 重建入口預留（空輸入時產出 0 題不報錯；`tests/test_build_questions.py` 5 案例）
+- [x] 首頁出現科目層：自然（現有四單元入口照常）／數學（空狀態「題庫準備中」，無學期切換、無壞入口）
+- [x] 自然科全功能回歸：三種練習模式、subtopic 練習、flag 回報/還原、錯題庫、stats —— Playwright 實測通過（2026-06-11）
+- [x] 既有 localStorage 進度（challenge/errorBank/stats/flagged）升級後完整保留（植入無 subject 的 v2 存檔驗證）
+- [x] `uv run pytest` 全綠（54 passed）
+
+## 完成紀錄（2026-06-11）
+
+- commits：`297e75c`（build 三來源＋subject 回填）、`10da6a7`（科目層 UI）
+- 附帶決策：站名改科目中性「三下練習」（title/manifest/apple-title）；首頁 h1 依科目動態顯示「三下自然練習／三下數學練習」
+- 數學單元名稱暫為「第 N 單元」佔位（無題不渲染），正式名稱待 010
 
 ## Blocked by
 
