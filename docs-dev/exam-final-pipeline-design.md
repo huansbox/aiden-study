@@ -1,5 +1,7 @@
 # 三下自然「期末」題庫 — pipeline 與網站設計稿
 
+> **狀態：已實作完成**（2026-06-09 上線）。本檔為設計歷史紀錄，不再更新；實作後的真相見 `期末-實作經驗筆記.md` 與 `../HANDOFF.md`。
+>
 > 對齊 session：2026-06-09（grill-me 對齊，本 session 不動 code）。
 > 內部開發文件，不部署（放 `docs-dev/`）。
 > 來源 PDF 取得見 [`exam-paper-sourcing.md`](exam-paper-sourcing.md)；課綱界線見記憶 `grade3-science-curriculum-cutoff`。

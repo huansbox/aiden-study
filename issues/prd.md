@@ -1,5 +1,7 @@
 # PRD — 三下自然「期末」題庫練習
 
+> **狀態：已全部實作完成**（issues 001–007，7/7，2026-06-09 部署上線）。本檔為需求歷史紀錄，不再更新；現況與後續批次見 `HANDOFF.md`。
+>
 > 對齊來源：2026-06-09 grill-me session。設計細節見 `docs-dev/exam-final-pipeline-design.md`。
 > 考卷來源與課綱界線見 `docs-dev/exam-paper-sourcing.md`。
 

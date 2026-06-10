@@ -1,3 +1,5 @@
+> **狀態：已完成**（2026-06-09 merge 部署）。歷史工作項紀錄，不再更新；現況見 `HANDOFF.md`。
+
 ## Parent PRD
 
 `issues/prd.md`（深模組「模組C 學期分類設定」、subtopic 分類體系、Implementation Decisions）
