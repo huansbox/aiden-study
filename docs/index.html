@@ -228,6 +228,22 @@ body {
 .numpad button:disabled { opacity: 0.4; cursor: default; }
 .next-btn:disabled { opacity: 0.4; cursor: default; }
 
+/* comparison（＞＜＝）與 code（甲乙丙丁）按鈕列 */
+.choice-row { display: flex; gap: 10px; margin-top: 14px; justify-content: center; flex-wrap: wrap; }
+.choice-btn {
+  min-width: 72px; padding: 14px 18px; font-size: 1.5rem; font-weight: 700;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer;
+}
+.choice-btn:active:not(:disabled) { background: #f0f4ff; transform: scale(0.97); }
+.choice-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* text 自由輸入 */
+.text-input {
+  margin-top: 14px; width: 100%; padding: 14px; font-size: 1.3rem;
+  border: 2px solid #e0e0e0; border-radius: 12px;
+  -webkit-user-select: text; user-select: text;
+}
+
 .result-hint {
   margin-top: 16px; padding: 12px 16px; border-radius: 12px;
   font-size: 1.1rem; font-weight: 600; text-align: center;
@@ -917,7 +933,7 @@ const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
 function formatAnswer(q) {
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
   if (q.type === "fill_in_blank") {
-    return q.blanks.map((b, i) => `（${i + 1}）${b.answer}`).join("　");
+    return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
   return `選項 ${q.answer}`;
 }
@@ -998,12 +1014,9 @@ function renderQuiz() {
         <span class="blank-label">（${FW[i]}）</span>
         <div class="blank-box${i === 0 ? " active" : ""}" data-idx="${i}"></div>
       </div>`).join("");
-    const keys = ["1","2","3","4","5","6","7","8","9",".","0","del"];
-    const padHtml = keys.map(k =>
-      `<button data-key="${k}">${k === "del" ? "⌫" : k}</button>`).join("");
     answerHtml = `
       <div class="blank-list" id="blank-list">${blanksHtml}</div>
-      <div class="numpad" id="numpad">${padHtml}</div>
+      <div id="fill-input-panel"></div>
       <button class="next-btn" id="fib-submit" disabled>確認答案</button>`;
   } else {
     let options;
@@ -1058,49 +1071,109 @@ function renderQuiz() {
   }
 }
 
-// 填充題互動：點空格選取、numpad 輸入、全部填滿才能送出
+// 比較符號顯示用全形
+const COMPARE_DISPLAY = { ">": "＞", "<": "＜", "=": "＝" };
+
+// 填充題互動：點空格選取、輸入面板依空格型態切換（number/comparison/code/text）
 function bindFillEvents(q) {
   const boxes = [...document.querySelectorAll(".blank-box")];
   const submitBtn = document.getElementById("fib-submit");
+  const panel = document.getElementById("fill-input-panel");
+
   const refresh = () => {
     boxes.forEach((box, i) => {
-      box.textContent = quiz._fillValues[i];
+      const v = quiz._fillValues[i];
+      box.textContent = COMPARE_DISPLAY[v] || v;
       box.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
     });
     submitBtn.disabled = quiz._fillValues.some(v => !v);
   };
+
+  const setActive = (idx) => {
+    quiz._fillActive = idx;
+    refresh();
+    renderPanel();
+  };
+
+  // 單值型（comparison/code）按下即填，自動跳到下一個空格（輸入摩擦最小化）
+  const setSingleValue = (val) => {
+    quiz._fillValues[quiz._fillActive] = val;
+    const n = quiz._fillValues.length;
+    for (let step = 1; step <= n; step++) {
+      const i = (quiz._fillActive + step) % n;
+      if (!quiz._fillValues[i]) { setActive(i); return; }
+    }
+    refresh();
+  };
+
+  function renderPanel() {
+    if (quiz.isAnswered) return;
+    const blank = q.blanks[quiz._fillActive];
+    const type = blank.input || "number";
+    if (type === "number") {
+      const keys = ["1","2","3","4","5","6","7","8","9",".","0","del"];
+      panel.innerHTML = `<div class="numpad" id="numpad">${keys.map(k =>
+        `<button data-key="${k}">${k === "del" ? "⌫" : k}</button>`).join("")}</div>`;
+      panel.querySelectorAll("button").forEach(btn => {
+        btn.onclick = () => {
+          if (quiz.isAnswered) return;
+          const k = btn.dataset.key;
+          let v = quiz._fillValues[quiz._fillActive];
+          if (k === "del") v = v.slice(0, -1);
+          else if (k === ".") { if (!v.includes(".") && v.length < 8) v += "."; }
+          else if (v.length < 8) v += k;
+          quiz._fillValues[quiz._fillActive] = v;
+          refresh();
+        };
+      });
+    } else if (type === "comparison" || type === "code") {
+      const choices = type === "comparison" ? [">", "<", "="] : (blank.choices || []);
+      panel.innerHTML = `<div class="choice-row">${choices.map(c =>
+        `<button class="choice-btn" data-val="${c}">${COMPARE_DISPLAY[c] || c}</button>`).join("")}</div>`;
+      panel.querySelectorAll(".choice-btn").forEach(btn => {
+        btn.onclick = () => { if (!quiz.isAnswered) setSingleValue(btn.dataset.val); };
+      });
+    } else {  // text：自由輸入（系統鍵盤）
+      panel.innerHTML = `<input class="text-input" id="fib-text" type="text" maxlength="10" placeholder="請輸入答案">`;
+      const inp = panel.querySelector("#fib-text");
+      inp.value = quiz._fillValues[quiz._fillActive];
+      inp.oninput = () => {
+        if (quiz.isAnswered) return;
+        quiz._fillValues[quiz._fillActive] = inp.value.trim();
+        refresh();   // 不重繪面板，避免輸入框失焦
+      };
+    }
+  }
+
   boxes.forEach(box => {
-    box.onclick = () => {
-      if (quiz.isAnswered) return;
-      quiz._fillActive = Number(box.dataset.idx);
-      refresh();
-    };
-  });
-  document.querySelectorAll("#numpad button").forEach(btn => {
-    btn.onclick = () => {
-      if (quiz.isAnswered) return;
-      const k = btn.dataset.key;
-      let v = quiz._fillValues[quiz._fillActive];
-      if (k === "del") v = v.slice(0, -1);
-      else if (k === ".") { if (!v.includes(".") && v.length < 8) v += "."; }
-      else if (v.length < 8) v += k;
-      quiz._fillValues[quiz._fillActive] = v;
-      refresh();
-    };
+    box.onclick = () => { if (!quiz.isAnswered) setActive(Number(box.dataset.idx)); };
   });
   submitBtn.onclick = () => {
     if (!submitBtn.disabled) submitAnswer([...quiz._fillValues]);
   };
+  renderPanel();
 }
 
-// 單格比對：number 用數值相等（63 與 63.0 視為相同），其餘正規化字串比對
+// 全半形正規化＋去空白（與 data_helpers.normalize_for_compare 對齊）
+function normalizeCompare(s) {
+  let out = "";
+  for (const ch of String(s ?? "")) {
+    const c = ch.codePointAt(0);
+    if (c >= 0xFF01 && c <= 0xFF5E) out += String.fromCodePoint(c - 0xFEE0);
+    else if (ch === "　") out += " ";
+    else out += ch;
+  }
+  return out.replace(/\s+/g, "");
+}
+
+// 單格比對：number 用數值相等（63 與 63.0 視為相同），其餘全半形正規化字串比對
 function isBlankCorrect(blank, value) {
   const v = String(value ?? "").trim();
   if (blank.input === "number") {
     const got = parseFloat(v), want = parseFloat(blank.answer);
     return Number.isFinite(got) && got === want;
   }
-  return v.replace(/\s+/g, "") === String(blank.answer).trim().replace(/\s+/g, "");
+  return normalizeCompare(v) === normalizeCompare(blank.answer);
 }
 
 function renderProgress() {
@@ -1161,14 +1234,16 @@ function renderFeedback(correct, q) {
   let wrongHint;
   if (q.type === "fill_in_blank") {
     // 標出每格對錯；錯格旁顯示正解（家長定案：對小孩友善優先）
-    document.querySelectorAll("#numpad button").forEach(b => { b.disabled = true; });
+    document.querySelectorAll("#fill-input-panel button, #fill-input-panel input")
+      .forEach(el => { el.disabled = true; });
     document.getElementById("fib-submit").classList.add("hidden");
     document.querySelectorAll(".blank-box").forEach((box, i) => {
       box.classList.remove("active");
       box.classList.add(quiz._fillResults[i] ? "b-correct" : "b-wrong");
       if (!quiz._fillResults[i]) {
+        const ans = q.blanks[i].answer;
         box.insertAdjacentHTML("afterend",
-          `<span class="blank-correct-val">正解：${q.blanks[i].answer}</span>`);
+          `<span class="blank-correct-val">正解：${COMPARE_DISPLAY[ans] || ans}</span>`);
       }
     });
     wrongHint = "答錯了，紅色格子旁有正確答案";

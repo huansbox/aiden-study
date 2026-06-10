@@ -79,8 +79,26 @@ def validate_blanks(blanks) -> bool:
             return False
         if inp == "number" and not re.fullmatch(r"\d+(\.\d+)?", ans.strip()):
             return False
+        if inp == "comparison" and ans.strip() not in {">", "<", "="}:
+            return False
         if inp == "code":
             choices = b.get("choices")
             if not isinstance(choices, list) or not choices or ans.strip() not in choices:
                 return False
     return True
+
+
+def normalize_for_compare(s: str) -> str:
+    """
+    text 空格比對的正規化：全形英數/符號轉半形、移除所有空白。
+    與網站 isBlankCorrect 的 JS 實作保持一致（雙端各自實作，pytest 鎖此端）。
+    """
+    out = []
+    for ch in (s or ""):
+        code = ord(ch)
+        if 0xFF01 <= code <= 0xFF5E:        # 全形 ASCII 區
+            ch = chr(code - 0xFEE0)
+        elif ch == "　":                 # 全形空白
+            ch = " "
+        out.append(ch)
+    return re.sub(r"\s+", "", "".join(out))

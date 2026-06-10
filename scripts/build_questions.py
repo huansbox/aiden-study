@@ -42,8 +42,8 @@ MID_UNITS = {1, 2}
 FINAL_UNITS = {3, 4}
 MATH_UNITS = {5, 6, 7, 8, 9}
 
-# UI 已支援的 fill_in_blank 輸入型態（013 落地 comparison/code/text 後解禁）
-SUPPORTED_BLANK_INPUTS = {"number"}
+# UI 已支援的 fill_in_blank 輸入型態（013 已落地全部四種）
+SUPPORTED_BLANK_INPUTS = {"number", "comparison", "code", "text"}
 
 
 def unique_id(base: str, used: set) -> str:

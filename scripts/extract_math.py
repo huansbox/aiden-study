@@ -191,6 +191,9 @@ def parse_math_mc(text: str, source: str) -> tuple[list[dict], list[dict]]:
 FW_DIGITS = str.maketrans("０１２３４５６７８９．", "0123456789.")
 # 空格佔位符（題幹中的（１）（２）…）
 PLACEHOLDERS = "１２３４５６７８９"
+# 比較題：答案 ＞＜＝ 直接印在字裡（無括號），以空白環繞的獨立符號抽取
+COMPARISON_TOKEN = re.compile(r"(?<=\s)[＞＜＝><=](?=\s)")
+COMPARISON_NORMALIZE = {"＞": ">", "＜": "<", "＝": "="}
 
 
 def _normalize_blank_answer(raw: str) -> str:
@@ -291,8 +294,15 @@ def parse_math_fill(text: str, source: str) -> tuple[list[dict], list[dict]]:
         # 答案括號 → （１）（２）佔位符；括號內容＝官方答案
         stem, blanks = extract_blanks(body)
 
+        # 比較題：答案 ＞＜＝ 印在字裡無括號（如「在□裡填入＞、＜或＝」）→ 抽獨立符號
+        if not blanks and "填入" in body:
+            def comp_repl(m):
+                blanks.append({"answer": COMPARISON_NORMALIZE.get(m.group(), m.group())})
+                return f"（{PLACEHOLDERS[len(blanks) - 1]}）"
+            stem = COMPARISON_TOKEN.sub(comp_repl, body).strip()
+
         if not blanks:
-            defer("no_blanks", "無答案括號（比較題或圈選題，待 013 救回）")
+            defer("no_blanks", "無答案括號（圈選題等，待人工救回）")
             continue
         questions.append({
             "source": source,

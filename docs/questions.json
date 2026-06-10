@@ -15437,6 +15437,64 @@
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   },
   {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_5",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數比大小",
+    "type": "fill_in_blank",
+    "text": "在□裡填入＞、＜或＝ (1) 4 個 1 （１） 24 個 0.1 (2) 八點三 （２） 3.8 (3) 1 日 （３） 60 小時 (4) 110 秒鐘 （４） 1 分鐘 10 秒鐘 背面尚有 期第 2 次定期評量 評量範圍： 學領域試題 單元 5～單元 9 三年 班 號 姓名",
+    "blanks": [
+      {
+        "answer": ">",
+        "input": "comparison"
+      },
+      {
+        "answer": ">",
+        "input": "comparison"
+      },
+      {
+        "answer": "<",
+        "input": "comparison"
+      },
+      {
+        "answer": ">",
+        "input": "comparison"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_7",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的大小比較",
+    "type": "fill_in_blank",
+    "text": "下列四個圓，哪一個最大？哪一個最小？ 填代號。 甲：半徑 5 公分的圓 乙：直徑 15 公分的圓 丙：直徑 5 公分的圓 丁：半徑 10 公分的圓 最大：（１） 最小：（２）",
+    "blanks": [
+      {
+        "answer": "丁",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_8",
     "subject": "math",
     "unit": 6,
@@ -15447,6 +15505,21 @@
       {
         "answer": "6",
         "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_9",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "將一張圓形紙上下、左右各對摺一次，打開後兩 條摺線相交的那一點，是圓的（１）。",
+    "blanks": [
+      {
+        "answer": "圓心",
+        "input": "text"
       }
     ],
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
@@ -15650,7 +15723,7 @@
     "id": "新北市_安和國小_113下期末2_數學康軒_答案_multiple_choice_4",
     "subject": "math",
     "unit": 7,
-    "subtopic": "乘除互逆",
+    "subtopic": "乘除應用",
     "type": "multiple_choice",
     "text": "爺爺將蒐集到的布袋戲偶每 12 個排成一 排，共可以排成 18 排，如果改成每 18 個 排成一排，共可以排成幾排？",
     "options": [
@@ -15708,6 +15781,21 @@
       "下午 5 時 25 分"
     ],
     "answer": "2",
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_1",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "圓心到圓周的距離叫做（１）徑。",
+    "blanks": [
+      {
+        "answer": "半",
+        "input": "text"
+      }
+    ],
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   },
   {

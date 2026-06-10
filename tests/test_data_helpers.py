@@ -12,6 +12,7 @@ from data_helpers import (
     merge_answer,
     validate_unit_subtopic,
     validate_blanks,
+    normalize_for_compare,
 )
 
 
@@ -50,6 +51,20 @@ def test_validate_blanks_code_requires_choices():
 def test_validate_blanks_without_input_field_ok():
     # raw 階段（classify 前）尚無 input 欄位
     assert validate_blanks([{"answer": "800"}, {"answer": "5"}])
+
+
+def test_validate_blanks_comparison_answer_set():
+    assert validate_blanks([{"answer": ">", "input": "comparison"}])
+    assert not validate_blanks([{"answer": "＞", "input": "comparison"}])  # 須先正規化為半形
+    assert not validate_blanks([{"answer": "8", "input": "comparison"}])
+
+
+def test_normalize_for_compare():
+    assert normalize_for_compare("　圓 心 ") == "圓心"
+    assert normalize_for_compare("１２．５") == "12.5"     # 全形英數轉半形
+    assert normalize_for_compare("ＡＢ ｃ") == "ABc"
+    assert normalize_for_compare("") == ""
+    assert normalize_for_compare(None) == ""
 
 MIDTERM_VALID = {
     "蔬菜從哪裡來", "影響蔬菜生長的因素", "蔬菜生長的變化過程",

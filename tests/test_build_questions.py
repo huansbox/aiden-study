@@ -87,16 +87,30 @@ def test_fill_question_final_schema_has_blanks_no_options():
     assert "options" not in q and "answer" not in q
 
 
+def test_fill_all_four_input_types_supported():
+    # 013 解禁後 number/comparison/code/text 全部入庫
+    qs = [_fill_q(1, [
+        {"answer": "8", "input": "number"},
+        {"answer": ">", "input": "comparison"},
+        {"answer": "丁", "input": "code", "choices": ["甲", "乙", "丙", "丁"]},
+        {"answer": "圓心", "input": "text"},
+    ])]
+    final_q, skipped = convert_block(qs, set(), "math", {5})
+    assert len(final_q) == 1
+    assert dict(skipped) == {}
+
+
 def test_fill_unsupported_input_filtered_and_recorded():
+    # 過濾機制保留：未來新增型態（如直式 grid）落地前先進解禁清單
     qs = [
         _fill_q(1, [{"answer": "8", "input": "number"}]),
-        _fill_q(2, [{"answer": "8", "input": "number"}, {"answer": "圓心", "input": "text"}]),
+        _fill_q(2, [{"answer": "8", "input": "number"}, {"answer": "格", "input": "grid"}]),
     ]
     filtered = []
     final_q, skipped = convert_block(qs, set(), "math", {5}, filtered)
     assert len(final_q) == 1
     assert skipped["unsupported_input"] == 1
-    assert len(filtered) == 1 and "text" in filtered[0]["filter_reason"]
+    assert len(filtered) == 1 and "grid" in filtered[0]["filter_reason"]
 
 
 def test_fill_invalid_blanks_skipped():

@@ -146,11 +146,13 @@ def test_fill_multi_blank_and_placeholders():
     assert [b["answer"] for b in q3["blanks"]] == ["4", "0"]
 
 
-def test_fill_comparison_without_brackets_deferred():
+def test_fill_comparison_recovered_as_blanks():
+    # 013：比較題（＞＜＝印在字裡無括號）抽成 comparison 空格，不再延後
     qs, skips = parse_math_fill(TAOZIJIAO_FILL, "桃.pdf")
-    s5 = next(s for s in skips if s["number"] == 5)
-    assert s5["category"] == "no_blanks"
-    assert all(q["number"] != 5 for q in qs)
+    q5 = next(q for q in qs if q["number"] == 5)
+    assert [b["answer"] for b in q5["blanks"]] == [">", ">"]   # fixture 只含 (1)(2) 兩子題
+    assert "（１）" in q5["text"] and "填入＞、＜或＝" in q5["text"]  # 指令裡的符號不被誤抽
+    assert all(s["number"] != 5 for s in skips)
 
 
 def test_fill_fraction_stray_crosses_question_boundary():
