@@ -10,3 +10,4 @@ __pycache__/
 data/_imgs/
 data/_imgs_math/
 data/_cf_cookie.json
+.claude/

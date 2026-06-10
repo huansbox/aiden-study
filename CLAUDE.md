@@ -18,11 +18,14 @@
 ```
 pdfs/              27 份原始期中考卷 PDF（108-113 學年度，北市/新北/台中）
 pdfs_期末/          期末考卷 PDF（tcool.cc 抓取，三下自然康軒，現行課綱 110下~113下）
+pdfs_數學/          數學期末考卷 PDF（桃子腳112下＋安和113下，題目＋答案卷）
 scripts/           Python 資料處理 pipeline
-  extract.py       PDF → raw（純函式 parse_questions_from_text + --input/--output）
-  classify.py      claude -p 批次分類（可切換學期 taxonomy：--semester mid|final）
+  extract.py       自然 PDF → raw（純函式 parse_questions_from_text + --input/--output）
+  extract_math.py  數學答案卷 → raw（獨立模組：雙欄切分、括號答案、分數亂序偵測）
+  reflow_math.py   分數亂序題 AI 重組（artifact 人工核對後 --apply 併回 raw）
+  classify.py      claude -p 批次分類（可切換 taxonomy：--semester mid|final|math）
   data_helpers.py  去重/答案合併/驗證純函式（深模組B）
-  build_questions.py classified → docs/questions.json 合併（冪等、id 去碰撞）
+  build_questions.py classified → docs/questions.json 三來源合併（冪等、id 去碰撞、subject 欄位）
   fix_classified.py 期中分類修正腳本
 data/              中間資料
   raw_questions.json        期中萃取（659 題）
@@ -30,11 +33,14 @@ data/              中間資料
   raw_questions_期末.json    期末萃取（第一批）
   classified_questions_期末.json 期末分類（unit 3/4 + subtopic）
   *_期末_新增.json           第二批擴充（raw / classified / official_answers）
-  tcool_grade3_sci_kanghsuan.json  期末考卷清單（tcool.cc 爬取）
+  raw_questions_數學.json    數學萃取（含 reflow 撈回題）
+  classified_questions_數學.json 數學分類（unit 5–9 + subtopic）
+  skipped_questions_數學.json / reflowed_questions_數學.json  分數亂序跳過清單／重組 artifact
+  tcool_grade3_sci_kanghsuan.json / tcool_grade3_math_kanghsuan.json  考卷清單（tcool.cc 爬取）
 docs/              GitHub Pages 部署目錄
-  index.html       練習網站（單一 HTML，內嵌 CSS/JS）
-  questions.json   最終題庫（期中＋期末合併，unit 1–4）
-tests/             pytest（parser / data_helpers / classify config / 期中回歸）
+  index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學）
+  questions.json   最終題庫（自然 unit 1–4＋數學 unit 5–9，全題帶 subject）
+tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）
 ```
@@ -67,12 +73,18 @@ skipped_questions.md  跳過題目清單（供手動確認）
 
 ## 分類規則
 
-期中（unit 1–2）／期末（unit 3–4）為 `classify.py` 的兩組可切換 config（`--semester`）。
+自然期中（unit 1–2）／自然期末（unit 3–4）／數學期末（unit 5–9）為 `classify.py` 的三組可切換 config（`--semester mid|final|math`）。unit 全域唯一。
 
 - **第 1 單元：田園樂** — 蔬菜種類/部位/生長因素/生長過程
 - **第 2 單元：溫度變化對物質的影響** — 物質變化因素/水三態/其他物質受溫度改變
 - **第 3 單元：動物** — 動物分類/身體構造/生存與適應/觀察方法
 - **第 4 單元：天氣** — 風/氣溫測量/雨量降雨/天氣預報（以桃子腳國小範圍為基準）
+- **第 5 單元：小數** — 小數的認識/小數比大小/小數加減
+- **第 6 單元：圓** — 圓的構造/圓規與畫圓/圓的大小比較
+- **第 7 單元：乘法與除法** — 乘除互逆/乘除計算/乘除應用
+- **第 8 單元：時間** — 時刻與時間單位/時制互換/時間計算
+- **第 9 單元：統計表** — 報讀表格（單一子主題，UI 不另列概念入口）
+- 數學單元名稱依均一「類康軒版」＋搜尋交叉查證（與兩卷卷面吻合；非課本目錄原件，家長可抽查課本）
 - 衝突規則：優先歸屬題目直接詢問的核心概念所屬單元；範圍外標 `none` 排除
 
 ## 部署
