@@ -3,6 +3,8 @@
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
     "section": "multiple_choice",
     "number": 3,
+    "has_image": false,
+    "reflowed": true,
     "text": "下面哪一個選項錯誤？",
     "options": [
       "0.4 和 0.6 合起來是 1",
@@ -10,14 +12,29 @@
       "9 個 0.1 合起來是 0.9",
       "8 個 0.1 是 1/8"
     ],
-    "answer": "4",
+    "answer": "4"
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 6,
     "has_image": false,
-    "reflowed": true
+    "reflowed": true,
+    "text": "2 個 4/10 合起來是（１） (請填小數)",
+    "blanks": [
+      {
+        "answer": "0.8"
+      }
+    ],
+    "options": [],
+    "answer": ""
   },
   {
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
     "section": "multiple_choice",
     "number": 8,
+    "has_image": false,
+    "reflowed": true,
     "text": "下列哪一個選項正確？",
     "options": [
       "0.3 和 0.7 合起來是 0.10",
@@ -25,8 +42,6 @@
       "0.8 是 80 個 0.1",
       "9 個 0.1 和 9/10 一樣大"
     ],
-    "answer": "4",
-    "has_image": false,
-    "reflowed": true
+    "answer": "4"
   }
 ]

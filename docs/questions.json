@@ -15320,7 +15320,7 @@
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_2",
     "subject": "math",
     "unit": 6,
-    "subtopic": "圓規與畫圓",
+    "subtopic": "圓的大小比較",
     "type": "multiple_choice",
     "text": "有一個圓的直徑是 20 公分，和下列哪一 個圓不一樣大？",
     "options": [
@@ -15362,6 +15362,108 @@
       "小諺喝一口水大約 4 秒鐘"
     ],
     "answer": "4",
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "800÷5＝160 → 160×5＝ （１） → 800÷160＝（２）",
+    "blanks": [
+      {
+        "answer": "800",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "35.8 的十分位數字是（１），十位數字是（２）。",
+    "blanks": [
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "3",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "fill_in_blank",
+    "text": "現在是 15：57，再過 3 分鐘，是 下午（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "9 個 1 和 12 個 0.1 合起來是（１）。",
+    "blanks": [
+      {
+        "answer": "10.2",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_8",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓規與畫圓",
+    "type": "fill_in_blank",
+    "text": "畫一個直徑 12 公分的圓，圓規要打開 （１）公分。",
+    "blanks": [
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_10",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "運動會時，同學們在操場上表演健康操，每 12 個 人排成一行，共排了 9 行，一共有 108 人。換隊 形後改成每 9 個人排成一行，排了 12 行，請問現 在操場上共有多少人？（１）人",
+    "blanks": [
+      {
+        "answer": "108",
+        "input": "number"
+      }
+    ],
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   },
   {
@@ -15477,6 +15579,89 @@
     "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
   },
   {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_2",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓規與畫圓",
+    "type": "fill_in_blank",
+    "text": "畫一個直徑 14 公分的圓，圓規要打開（１） 公分。",
+    "blanks": [
+      {
+        "answer": "7",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "一袋麵粉可以製作 10 個鬆餅，製作 1 個鬆餅需 要（１）袋麵粉，2.8 袋麵粉剛好可 以製作 （２）個鬆餅。",
+    "blanks": [
+      {
+        "answer": "0.1",
+        "input": "number"
+      },
+      {
+        "answer": "28",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "大廚先備料 2 小時，再將食材燉煮 1 小時 20 分 鐘，完成了美味雞湯。大廚備料和燉煮共花了 （１）分鐘。",
+    "blanks": [
+      {
+        "answer": "200",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_6",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "媽媽從上午 6 時 35 分出門爬山，3 小時 15 分鐘 後回家，是上午（１）時（２）分。",
+    "blanks": [
+      {
+        "answer": "9",
+        "input": "number"
+      },
+      {
+        "answer": "50",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_安和國小_113下期末2_數學康軒_答案_fill_in_blank_7",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "已知「996÷166＝6」，那麼「6×□＝996」。想 一想，□裡要填上什麼數？（１）",
+    "blanks": [
+      {
+        "answer": "166",
+        "input": "number"
+      }
+    ],
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf"
+  },
+  {
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_multiple_choice_3",
     "subject": "math",
     "unit": 5,
@@ -15490,6 +15675,21 @@
       "8 個 0.1 是 1/8"
     ],
     "answer": "4",
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
+  },
+  {
+    "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_6",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "2 個 4/10 合起來是（１） (請填小數)",
+    "blanks": [
+      {
+        "answer": "0.8",
+        "input": "number"
+      }
+    ],
     "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf"
   },
   {

@@ -18,13 +18,21 @@
 
 ## Acceptance criteria
 
-- [ ] blanks schema 落地（`blanks: [{input, answer}]`），`data_helpers` 驗證函式擴充並有 pytest（含多空格、缺欄位、空 answer 等案例）
-- [ ] 桃子腳 112下 填填看 number 空格題萃取＋官方答案多空格抽取正確（對 PDF 核對）
-- [ ] classify 數學 config 輸出每格 `input` 型態標註
-- [ ] 含未支援 input 型態的題被 build 過濾並記錄清單（013 解禁依據）
-- [ ] numpad UI：數字＋小數點＋退格，pad 上可逐格作答；多空格全對才算對；答錯標出錯格並顯示正解 —— Playwright 實測
-- [ ] flag 回報對 fill_in_blank 題型顯示正常（不出現「選項 undefined」），prefill URL 內容正確
-- [ ] 自然科回歸不破（pytest 全綠＋抽查網站行為）
+- [x] blanks schema 落地（`blanks: [{input, answer}]`），`data_helpers.validate_blanks` 擴充並有 pytest（多空格、缺欄位、空 answer、number 數值形式、code 需 choices 等 6 案例）
+- [x] 桃子腳 112下 填填看 number 空格題萃取＋官方答案多空格抽取正確（Q1=800,5／Q2=8,3／Q3=4,0／Q4=10.2／Q8=6／Q10=108，對 PDF 核對）；安和填充題順帶完成（Q2,4,5,6,7；「0.1 或十分之一」取 0.1）
+- [x] classify 數學 config 輸出每格 `input` 型態標註（blank_inputs 長度與值域驗證；15 題全標對）
+- [x] 含未支援 input 型態的題被 build 過濾並記錄 `data/filtered_unsupported_數學.json`（3 題：桃Q7 code、桃Q9 text、安Q1 text）
+- [x] numpad UI：數字＋小數點＋退格，逐格作答（點格選取）；多空格全對才算對；答錯標紅錯格＋旁顯正解；number 採數值等價比對（200.0=200）—— Playwright 實測
+- [x] flag 回報對 fill_in_blank 正常（prefill body 無 undefined、現存答案格式「（1）166」）
+- [x] 自然科回歸不破（pytest 77 passed＋網站抽查是非題作答）
+
+## 完成紀錄（2026-06-11）
+
+- 填充題 parser 與 MC 同模組（extract_math.py）：答案括號判別＝「內容前後有空白 或 含『或』」（兩卷實測可分離 (1) 子題標記與 (請填小數) 提示）；題界殘渣歸屬＝前題奇數殘渣補前題、否則歸新題（桃Q6 的 4/10 跨題界 case）
+- 延後分流：fraction → reflow（桃fill Q6 已撈回）；table → 015；no_blanks（桃Q5 比較題）→ 013
+- reflow_math.py 擴充支援填充題（重建全文保留答案括號 → 重用 extract_blanks）
+- 012 範圍預告：安和卷無獨立計算/應用大題結構差異——其反推（填充Q7）/時間（Q5,Q6）已隨填充題入庫；012 處理桃子腳計算題大題與兩卷應用題
+- 測試方法教訓（記錄）：Playwright 測試中 `localStorage.clear()` 後必須 reload 再操作，否則頁面記憶體舊 state 會在下次 save 復活（010 的「已通關」異常即此因，非 app bug）
 
 ## Blocked by
 

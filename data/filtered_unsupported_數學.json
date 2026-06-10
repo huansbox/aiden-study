@@ -1,0 +1,69 @@
+[
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 7,
+    "text": "下列四個圓，哪一個最大？哪一個最小？ 填代號。 甲：半徑 5 公分的圓 乙：直徑 15 公分的圓 丙：直徑 5 公分的圓 丁：半徑 10 公分的圓 最大：（１） 最小：（２）",
+    "blanks": [
+      {
+        "answer": "丁",
+        "input": "code"
+      },
+      {
+        "answer": "丙",
+        "input": "code"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "圓的大小比較",
+    "confidence": 98,
+    "classify_reason": "題目要求將四個圓換算為直徑後比較大小（丁=20cm 最大，丙=5cm 最小），考查以半徑/直徑判斷圓的大小。",
+    "needs_review": false,
+    "filter_reason": "未支援輸入型態: code"
+  },
+  {
+    "source": "新北市_桃子腳國小_112下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 9,
+    "text": "將一張圓形紙上下、左右各對摺一次，打開後兩 條摺線相交的那一點，是圓的（１）。",
+    "blanks": [
+      {
+        "answer": "圓心",
+        "input": "text"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "圓的構造",
+    "confidence": 99,
+    "classify_reason": "題目考查上下左右各對摺一次後兩條摺線的交點，直接對應「對摺找圓心」的概念。",
+    "needs_review": false,
+    "filter_reason": "未支援輸入型態: text"
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 1,
+    "text": "圓心到圓周的距離叫做（１）徑。",
+    "blanks": [
+      {
+        "answer": "半",
+        "input": "text"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "6",
+    "subtopic": "圓的構造",
+    "confidence": 98,
+    "classify_reason": "直接問圓心到圓周距離的名稱，核心概念是半徑定義",
+    "needs_review": false,
+    "filter_reason": "未支援輸入型態: text"
+  }
+]
