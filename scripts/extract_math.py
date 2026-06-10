@@ -153,6 +153,7 @@ def parse_math_mc(text: str, source: str) -> tuple[list[dict], list[dict]]:
                 "number": rq["number"],
                 "reason": f"分數亂序疑慮（純數字殘渣行: {','.join(rq['suspect_strays'])}）",
                 "raw_text": body,
+                "answer": answer,   # 官方答案照常可抽，重組（reflow_math.py）後直接沿用
             })
             continue
         questions.append({
