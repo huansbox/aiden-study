@@ -52,10 +52,16 @@ skipped_questions.md  跳過題目清單（供手動確認）
 - **快速練習**：智慧選 10 題（錯誤率高 + 練習次數少優先），不可接續
 - **錯題練習**：答對從錯題庫移除，答錯留在庫中排到隊尾
 
+### 題目回報（flag）
+- 答題 feedback 畫面（答對/答錯皆有）低調按鈕「題目有問題」→ inline 確認後 flag
+- flag 效果：清除該題全部 stats、移出 errorBank 與 mastered（先前答對視為可能猜對）、從本輪 queue 抽掉；三種模式題池與通關分母（`questionIdsFor`）全部排除
+- 首頁底部「已回報題目（N）」（N=0 隱藏）：單題還原/全部還原；「回報到 GitHub」開 prefill issue URL（零後端，pad 瀏覽器需登入 GitHub；URL 過長自動降格為精簡格式）
+
 ### localStorage 結構（key: aiden_study_v2）
 - `challenge`: 每單元的 queue 狀態（null=未開始, []=已通關, [ids]=進行中）
 - `errorBank`: 錯題庫（去重，只在錯題模式答對時移除）
 - `stats`: 每題統計（practiced/correct，所有模式共用）
+- `flagged`: 已回報題目（`[{questionId, unit, flaggedAt}]`，排除於所有題池與分母，可還原）
 
 ## 分類規則
 
