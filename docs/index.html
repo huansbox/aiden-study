@@ -621,13 +621,15 @@ function advance() {
 
 // 確認回報：清除該題記錄、從本輪 queue 抽掉、直接進下一題
 function flagCurrentQuestion() {
-  const q = getCurrentQuestion();
+  // flag 對象是「剛作答的題」：full/error 模式 submitAnswer 已 shift queue，
+  // 此時 getCurrentQuestion() 指向下一題，必須改從作答記錄取
+  const last = quiz.answered[quiz.answered.length - 1];
+  const q = last && questionMap.get(last.questionId);
   if (!q) return;
   State.flagQuestion(q.id, q.unit);
 
   // 撤銷本題剛剛的作答（進度點與總結不計入）
-  const last = quiz.answered[quiz.answered.length - 1];
-  if (last && last.questionId === q.id) quiz.answered.pop();
+  quiz.answered.pop();
 
   quiz.isAnswered = false;
   if (quiz.mode === "full") {
