@@ -302,13 +302,8 @@ body {
 .next-btn:active { background: #3451c7; }
 
 /* ── 題目回報 ── */
-.flag-area { margin-top: 12px; text-align: center; }
-.flag-btn {
-  background: none; border: none; color: #aab; font-size: 0.85rem;
-  text-decoration: underline; cursor: pointer; padding: 6px 10px;
-}
-.skip-area { margin-top: 12px; text-align: center; }
-.skip-btn {
+.flag-area, .skip-area { margin-top: 12px; text-align: center; }
+.flag-btn, .skip-btn {
   background: none; border: none; color: #aab; font-size: 0.85rem;
   text-decoration: underline; cursor: pointer; padding: 6px 10px;
 }
@@ -1514,10 +1509,8 @@ function renderFeedback(correct, q) {
   const nextBtn = document.getElementById("next-btn");
   nextBtn.classList.remove("hidden");
 
-  // Check if this is last question
-  let isLast = false;
-  if (quiz.mode === "full") isLast = quiz.queue.length === 0;
-  else if (quiz.mode === "error") isLast = quiz.queue.length === 0;
+  // Check if this is last question（full/error 皆以 queue 清空為準）
+  const isLast = quiz.queue.length === 0;
 
   nextBtn.textContent = isLast ? "查看結果" : "下一題";
   nextBtn.onclick = advance;
@@ -1556,10 +1549,12 @@ function renderSummary() {
       title = "通關！";
       scoreLabel = "所有題目都答對了";
     } else {
-      // queue 清空但有跳過的題 → 本輪結束、未通關
+      // queue 清空但未通關：有跳過的題；極端情況（整輪題目全被回報）remaining 為 0
       const remaining = quiz.totalForProgress - State.doneCount(quiz.unit, quiz.subtopic);
       title = "本輪結束";
-      scoreLabel = `跳過的 ${remaining} 題，下次練習會再出現`;
+      scoreLabel = remaining > 0
+        ? `跳過的 ${remaining} 題，下次練習會再出現`
+        : "這一輪的題目都處理完了";
     }
   } else {
     title = "錯題清除！";
