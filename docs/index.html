@@ -435,10 +435,7 @@ const State = {
     Storage.save(state);
   },
 
-  // Stats
-  getStats(qId) {
-    return state.stats[qId] || { practiced: 0, correct: 0 };
-  },
+  // Stats（目前只寫不讀：保留每題作答記錄，供未來功能使用）
   recordAnswer(qId, isCorrect) {
     if (!state.stats[qId]) state.stats[qId] = { practiced: 0, correct: 0 };
     state.stats[qId].practiced++;
@@ -580,11 +577,10 @@ let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
 
 const quiz = {
-  mode: null,    // "full" | "quick" | "error"
-  unit: null,    // full/quick: 單元數字；error: 單元陣列
-  subtopic: null,// full/quick 限定的 subtopic（null=整單元）
+  mode: null,    // "full" | "error"
+  unit: null,    // full: 單元數字；error: 單元陣列
+  subtopic: null,// full 限定的 subtopic（null=整單元）
   queue: [],     // question ids
-  index: 0,      // for quick mode sequential access
   answered: [],  // [{ questionId, correct }]
   totalForProgress: 0, // fixed denominator for progress
   isAnswered: false
@@ -622,19 +618,6 @@ const Picker = {
     return [...cached, ...fresh];
   },
 
-  forQuickPractice(unit, subtopic, count = 10) {
-    const unitQs = allQuestions.filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id));
-    const scored = unitQs.map(q => {
-      const s = State.getStats(q.id);
-      const errorRate = s.practiced === 0 ? 0.5 : (s.practiced - s.correct) / s.practiced;
-      const priority = errorRate * 2 + 1 / (s.practiced + 1);
-      return { id: q.id, priority };
-    });
-    scored.sort((a, b) => b.priority - a.priority);
-    const pool = scored.slice(0, count * 2);
-    return shuffle(pool).slice(0, count).map(s => s.id);
-  },
-
   forErrorPractice(unitFilter) {
     const errors = State.getErrorBank(unitFilter || null);
     const ids = errors.map(e => e.questionId).filter(id => questionMap.has(id));
@@ -650,16 +633,12 @@ function startQuiz(mode, unit, subtopic = null) {
   quiz.unit = unit;
   quiz.subtopic = subtopic;
   quiz.answered = [];
-  quiz.index = 0;
   quiz.isAnswered = false;
 
   if (mode === "full") {
     quiz.queue = Picker.forFullPractice(unit, subtopic);
     quiz.totalForProgress = questionIdsFor(unit, subtopic).length;
     State.saveChallenge(challengeKey(unit, subtopic), quiz.queue);
-  } else if (mode === "quick") {
-    quiz.queue = Picker.forQuickPractice(unit, subtopic);
-    quiz.totalForProgress = quiz.queue.length;
   } else if (mode === "error") {
     quiz.queue = Picker.forErrorPractice(unit);
     quiz.totalForProgress = quiz.queue.length;
@@ -670,9 +649,6 @@ function startQuiz(mode, unit, subtopic = null) {
 }
 
 function getCurrentQuestion() {
-  if (quiz.mode === "quick") {
-    return questionMap.get(quiz.queue[quiz.index]);
-  }
   // full & error: always queue[0]
   return questionMap.get(quiz.queue[0]);
 }
@@ -705,10 +681,6 @@ function submitAnswer(selected) {
       State.addToErrorBank(q.id, q.unit);
     }
     State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
-  } else if (quiz.mode === "quick") {
-    if (!correct) {
-      State.addToErrorBank(q.id, q.unit);
-    }
   } else if (quiz.mode === "error") {
     quiz.queue.shift();
     if (correct) {
@@ -730,13 +702,6 @@ function advance() {
     State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), []); // 清空順序快取；通關由 mastered 判定
     renderSummary();
     return;
-  }
-  if (quiz.mode === "quick") {
-    quiz.index++;
-    if (quiz.index >= quiz.totalForProgress) {
-      renderSummary();
-      return;
-    }
   }
   if (quiz.mode === "error" && quiz.queue.length === 0) {
     renderSummary();
@@ -774,10 +739,6 @@ function flagCurrentQuestion() {
     quiz.totalForProgress = questionIdsFor(quiz.unit, quiz.subtopic).length;
     State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
     if (quiz.queue.length === 0) { renderSummary(); return; }
-  } else if (quiz.mode === "quick") {
-    quiz.queue.splice(quiz.index, 1);
-    quiz.totalForProgress--;
-    if (quiz.index >= quiz.totalForProgress) { renderSummary(); return; }
   } else if (quiz.mode === "error") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
     quiz.totalForProgress--;
@@ -845,7 +806,7 @@ function renderFlaggedSection() {
     </details>`;
 }
 
-// 期末單元卡片下的 subtopic 練習入口（全部可接續、快速智慧抽）
+// 期末單元卡片下的 subtopic 練習入口（可接續）
 function renderSubtopics(u) {
   if (!u.subtopics) return "";
   let rows = "";
@@ -863,8 +824,7 @@ function renderSubtopics(u) {
       <div class="subtopic-row">
         <span class="subtopic-name">${st}${statusHtml}</span>
         <span class="st-actions">
-          <button class="st-btn" onclick="window._startFull(${u.id}, '${st}')">全部</button>
-          <button class="st-btn" onclick="window._startQuick(${u.id}, '${st}')">快速</button>
+          <button class="st-btn" onclick="window._startFull(${u.id}, '${st}')">練習</button>
         </span>
       </div>`;
   }
@@ -927,7 +887,6 @@ function renderHome() {
         <div class="unit-title">${u.name}</div>
         <button class="sub-btn" onclick="window._startFull(${u.id})">${fullLabel}${fullStatus}</button>
         ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
-        <button class="sub-btn" onclick="window._startQuick(${u.id})">快速練習<span class="status">10 題</span></button>
         ${renderSubtopics(u)}
       </div>`;
   }
@@ -966,7 +925,6 @@ window._startFull = (unit, subtopic = null) => {
   }
   startQuiz("full", unit, subtopic);
 };
-window._startQuick = (unit, subtopic = null) => startQuiz("quick", unit, subtopic);
 window._startError = (idsStr) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
   startQuiz("error", units);
@@ -1044,7 +1002,6 @@ function renderQuiz() {
   let modeText = "";
   const scopeText = `第${quiz.unit}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
   if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
-  else if (quiz.mode === "quick") modeText = `快速練習 — ${scopeText}`;
   else {
     const eu = quiz.unit;  // error 模式：unit 為單元陣列
     if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${eu[0]}單元`;
@@ -1438,9 +1395,6 @@ function isBlankCorrect(blank, value) {
 }
 
 function renderProgress() {
-  if (quiz.mode === "quick") {
-    return renderDots(quiz.totalForProgress, quiz.index, quiz.answered);
-  }
   if (quiz.mode === "full") {
     return renderBarProgress();
   }
@@ -1563,7 +1517,6 @@ function renderFeedback(correct, q) {
   // Check if this is last question
   let isLast = false;
   if (quiz.mode === "full") isLast = quiz.queue.length === 0;
-  else if (quiz.mode === "quick") isLast = quiz.index >= quiz.totalForProgress - 1;
   else if (quiz.mode === "error") isLast = quiz.queue.length === 0;
 
   nextBtn.textContent = isLast ? "查看結果" : "下一題";
@@ -1608,15 +1561,9 @@ function renderSummary() {
       title = "本輪結束";
       scoreLabel = `跳過的 ${remaining} 題，下次練習會再出現`;
     }
-  } else if (quiz.mode === "error") {
+  } else {
     title = "錯題清除！";
     scoreLabel = "所有錯題都答對了";
-  } else {
-    title = "練習結束";
-    scoreLabel =
-      correctCount === total ? "全部答對，太厲害了！" :
-      correctCount >= total * 0.8 ? "表現很好！" :
-      correctCount >= total * 0.6 ? "繼續加油！" : "多練習幾次吧！";
   }
 
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
@@ -1628,10 +1575,6 @@ function renderSummary() {
   } else if (quiz.mode === "full") {
     buttonsHtml = `
       <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">繼續練習</button>
-      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
-  } else if (quiz.mode === "quick") {
-    buttonsHtml = `
-      <button class="summary-btn primary" onclick="window._startQuick(${quiz.unit}, ${stArg})">再來 10 題</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else {
     buttonsHtml = `
