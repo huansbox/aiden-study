@@ -2,12 +2,15 @@
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：上線 1159 題（自然 1099＝期中 601＋期末 498；數學 60）。自然期末 498 題附作答後說明。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：本分支題庫 1245 題（自然 1099＝期中 601＋期末 498；數學 146）。自然期末 498 題與數學首批 60 題附作答後說明（數學說明在 feat/math-explanations 分支待家長抽查）。
 
 ## 快速參考
 
-- **▶ 待辦**：①數學 60 題作答後說明（沿用 build_explanations 那套，含抽查）②期末 AI 補答案獨立複驗（第二輪 AI 重答→只把分歧題給家長看）③期中自然（unit 1/2）作答後說明（考後再議）④隱藏題救回 3 題（見 `skipped_questions.md` 清理紀錄，考後再議）。
-- **數學補完批次已 merge 上線（2026-06-11）**：安和表格 5 題＋應用3 救回（數學 60，延後清單清空）＋填充 chip／條列換行／表格圖全寬。
+- **▶ 待辦（家長閘門）**：①數學說明抽查 → merge `feat/math-explanations`（`docs-dev/review_數學說明_抽查.md`）②期末複驗 5 題分歧定奪（`docs-dev/review_期末_複驗_分歧.md`，其中 2 題建議改答案）③數學擴充驗收 → merge `feat/math-expansion`（中正 5 題 AI 補答案在複查清單）。
+- **▶ 待辦（後續工作）**：①兩分支都 merge 後，為擴充的 86 題數學新題補作答後說明（沿用 batch_math 流程；merge 後 `build_explanations.py` 會因缺 id 驗證失敗，做完說明才能重跑）②期中自然（unit 1/2）作答後說明（考後再議）③隱藏題救回 3 題（考後再議）④數學其餘 9 份無答案卷＝AI 補答案＋複審新流程（另議）。
+- **數學擴充批次完成（2026-06-11，feat/math-expansion）**：桃子腳110＋安和111＋彰化中正111＋彰化田中111 四卷（tcool 有答案卷的全收齊），數學 60→146（+72 文字題＋14 看表題）。四卷版面與格式A 不合，走**人工策展＋官方答案＋PNG 逐題核對**（非 extract_math），剔除紀錄＝`skipped_questions.md`「數學擴充批次」節。110/111 卷的純長度題（公分/毫米）不在現行 taxonomy → none 排除；小數×長度混合題保留。
+- **期末 AI 補答案第二輪複驗完成（2026-06-11，master）**：266 題盲審重答、98.1% 一致；5 分歧已查證寫成 `docs-dev/review_期末_複驗_分歧.md`（維持 3／建議改 2：大墩113雲題④→①、東光113 166/167題○→✕）。
+- **數學補完批次已 merge 上線（2026-06-11）**：安和表格 5 題＋應用3 救回＋填充 chip／條列換行／表格圖全寬。
 - **自然滲漏清理已上線（2026-06-11）**：44 題處置（修 42／移除 1／圖片排除 1／官方答案錯誤覆寫 1），紀錄＝`skipped_questions.md`「自然選擇題萃取滲漏清理」節。
 - **期末作答後說明已上線（自然 unit 3/4，499 題）**：資料＝`docs/explanations.json`（id → 說明，前端 join）；批次結果＝`data/exp_results/`，重建跑 `uv run python scripts/build_explanations.py`；PRD＝`issues/prd-期末說明.md`；抽查全錄＝`docs-dev/review_期末說明_抽查.md`。期中題（unit 1/2）尚無說明。
 - **數學期末題庫已完成上線（issues 008–015，8/8）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)；各 issue 檔含驗收與完成紀錄。
@@ -24,7 +27,7 @@
 ```
 pdfs/              27 份原始期中考卷 PDF（108-113 學年度，北市/新北/台中）
 pdfs_期末/          期末考卷 PDF（tcool.cc 抓取，三下自然康軒，現行課綱 110下~113下）
-pdfs_數學/          數學期末考卷 PDF（桃子腳112下＋安和113下，題目＋答案卷）
+pdfs_數學/          數學期末考卷 PDF（桃子腳112/110下、安和113/111下、中正111下、田中111下）
 scripts/           Python 資料處理 pipeline
   extract.py       自然 PDF → raw（純函式 parse_questions_from_text + --input/--output）
   extract_math.py  數學答案卷 → raw（獨立模組：雙欄切分、括號答案、分數亂序偵測）
@@ -41,7 +44,9 @@ data/              中間資料
   classified_questions_期末.json 期末分類（unit 3/4 + subtopic）
   *_期末_新增.json           第二批擴充（raw / classified / official_answers）
   raw_questions_數學.json    數學萃取（含 reflow 撈回題）
-  classified_questions_數學.json 數學分類（unit 5–9 + subtopic）
+  *_數學_新增.json           數學擴充批（4 卷人工策展 raw / classified）
+  classified_questions_數學.json 數學分類（unit 5–9 + subtopic，含擴充批合併）
+  curated_questions_數學.json / table_crops_數學.json  看表題人工檔／截圖座標
   skipped_questions_數學.json / reflowed_questions_數學.json  分數亂序跳過清單／重組 artifact
   tcool_grade3_sci_kanghsuan.json / tcool_grade3_math_kanghsuan.json  考卷清單（tcool.cc 爬取）
 docs/              GitHub Pages 部署目錄
