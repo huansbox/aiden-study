@@ -307,6 +307,11 @@ body {
   background: none; border: none; color: #aab; font-size: 0.85rem;
   text-decoration: underline; cursor: pointer; padding: 6px 10px;
 }
+.skip-area { margin-top: 12px; text-align: center; }
+.skip-btn {
+  background: none; border: none; color: #aab; font-size: 0.85rem;
+  text-decoration: underline; cursor: pointer; padding: 6px 10px;
+}
 .flag-confirm {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 0.9rem; color: #b71c1c;
@@ -741,6 +746,16 @@ function advance() {
   renderQuiz();
 }
 
+// 跳過（只限全部模式、作答前）：移出本輪 queue，不動統計／錯題庫／mastered。
+// 沒進 mastered → 不算通關，下次接續或重練時會再出現
+function skipCurrentQuestion() {
+  if (quiz.mode !== "full" || quiz.isAnswered) return;
+  quiz.queue.shift();
+  State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+  if (quiz.queue.length === 0) { renderSummary(); return; }
+  renderQuiz();
+}
+
 // 確認回報：清除該題記錄、從本輪 queue 抽掉、直接進下一題
 function flagCurrentQuestion() {
   // flag 對象是「剛作答的題」：full/error 模式 submitAnswer 已 shift queue，
@@ -1132,10 +1147,16 @@ function renderQuiz() {
           <button class="flag-no" id="flag-no">取消</button>
         </span>
       </div>
+      ${quiz.mode === "full" ? `
+      <div class="skip-area" id="skip-area">
+        <button class="skip-btn" id="skip-btn">先跳過這題</button>
+      </div>` : ""}
     </div>`;
 
   // Bind events
   document.getElementById("btn-leave").onclick = leaveQuiz;
+  const skipBtn = document.getElementById("skip-btn");
+  if (skipBtn) skipBtn.onclick = skipCurrentQuestion;
   if (isVc) {
     bindVcEvents(q);
   } else if (isFill) {
@@ -1451,7 +1472,7 @@ function renderBarProgress() {
   let done, total, label;
   if (quiz.mode === "full") {
     total = quiz.totalForProgress;
-    done = total - quiz.queue.length;
+    done = State.doneCount(quiz.unit, quiz.subtopic); // 以 mastered 為準：跳過的題不算已答對
     label = `已答對 ${done} / ${total} 題`;
   } else {
     // error mode with bar
@@ -1548,6 +1569,10 @@ function renderFeedback(correct, q) {
   nextBtn.textContent = isLast ? "查看結果" : "下一題";
   nextBtn.onclick = advance;
 
+  // 作答後跳過已無意義，隱藏（與回報入口互斥）
+  const skipArea = document.getElementById("skip-area");
+  if (skipArea) skipArea.classList.add("hidden");
+
   // 題目回報：低調入口，按下原地變 inline 確認
   const flagBtn = document.getElementById("flag-btn");
   const flagConfirm = document.getElementById("flag-confirm");
@@ -1572,9 +1597,17 @@ function renderSummary() {
   const total = quiz.answered.length;
 
   let title, scoreLabel;
+  const fullCleared = quiz.mode === "full" && State.isCleared(quiz.unit, quiz.subtopic);
   if (quiz.mode === "full") {
-    title = "通關！";
-    scoreLabel = "所有題目都答對了";
+    if (fullCleared) {
+      title = "通關！";
+      scoreLabel = "所有題目都答對了";
+    } else {
+      // queue 清空但有跳過的題 → 本輪結束、未通關
+      const remaining = quiz.totalForProgress - State.doneCount(quiz.unit, quiz.subtopic);
+      title = "本輪結束";
+      scoreLabel = `跳過的 ${remaining} 題，下次練習會再出現`;
+    }
   } else if (quiz.mode === "error") {
     title = "錯題清除！";
     scoreLabel = "所有錯題都答對了";
@@ -1588,9 +1621,13 @@ function renderSummary() {
 
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
   let buttonsHtml = "";
-  if (quiz.mode === "full") {
+  if (quiz.mode === "full" && fullCleared) {
     buttonsHtml = `
       <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg})">重新挑戰</button>
+      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
+  } else if (quiz.mode === "full") {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">繼續練習</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else if (quiz.mode === "quick") {
     buttonsHtml = `
