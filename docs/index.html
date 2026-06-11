@@ -211,6 +211,19 @@ body {
 .blank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
 .blank-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .blank-label { font-size: 1.05rem; color: #666; min-width: 48px; }
+/* 題幹空格 chip：長得像輸入格而非題目內容（避免（２）被誤讀成數字 2）；
+   與下方作答格同步 highlight，作答時即時回填輸入值 */
+.q-chip {
+  display: inline-block; min-width: 44px; padding: 0 10px;
+  border: 2px dashed #bbb; border-radius: 8px; background: #fafafa;
+  color: #999; text-align: center; line-height: 1.5;
+  margin: 0 2px; cursor: pointer; user-select: none;
+}
+.q-chip.filled { border-style: solid; border-color: #999; background: #fff; color: #222; }
+.q-chip.active { border-color: #4361ee; background: #f0f4ff; color: #4361ee; }
+.q-chip.b-correct { border-style: solid; border-color: #2ecc71; background: #e8faf0; color: #1a7a44; }
+.q-chip.b-wrong { border-style: solid; border-color: #e74c3c; background: #fdecea; color: #b03a2e; }
+.blank-label .q-chip { cursor: default; }
 .blank-box {
   flex: 1; min-width: 110px; min-height: 52px;
   border: 2px solid #e0e0e0; border-radius: 12px; background: #fff;
@@ -1053,9 +1066,15 @@ function renderQuiz() {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
     const FW = "１２３４５６７８９";
+    // 題幹（Ｎ）標記 → chip（只認全形括號＋全形數字；半形 (1) 是原卷子題編號，不動）
+    displayText = displayText.replace(/（([１-９])）/g, (m, d) => {
+      const idx = FW.indexOf(d);
+      return idx >= 0 && idx < q.blanks.length
+        ? `<span class="q-chip${idx === 0 ? " active" : ""}" data-chip="${idx}">${d}</span>` : m;
+    });
     const blanksHtml = q.blanks.map((b, i) => `
       <div class="blank-row">
-        <span class="blank-label">（${FW[i]}）</span>
+        <span class="blank-label"><span class="q-chip${i === 0 ? " active" : ""}" data-chip-row="${i}">${FW[i]}</span></span>
         <div class="blank-box${i === 0 ? " active" : ""}" data-idx="${i}"></div>
       </div>`).join("");
     answerHtml = `
@@ -1272,6 +1291,9 @@ const COMPARE_DISPLAY = { ">": "＞", "<": "＜", "=": "＝" };
 // 填充題互動：點空格選取、輸入面板依空格型態切換（number/comparison/code/text）
 function bindFillEvents(q) {
   const boxes = [...document.querySelectorAll(".blank-box")];
+  const chips = [...document.querySelectorAll(".q-chip[data-chip]")];
+  const rowChips = [...document.querySelectorAll(".q-chip[data-chip-row]")];
+  const FW = "１２３４５６７８９";
   const submitBtn = document.getElementById("fib-submit");
   const panel = document.getElementById("fill-input-panel");
 
@@ -1280,6 +1302,17 @@ function bindFillEvents(q) {
       const v = quiz._fillValues[i];
       box.textContent = COMPARE_DISPLAY[v] || v;
       box.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
+    });
+    // 題幹 chip 即時回填：有值顯示值、無值顯示編號；與作答格同步 highlight
+    chips.forEach(chip => {
+      const i = Number(chip.dataset.chip);
+      const v = quiz._fillValues[i];
+      chip.textContent = COMPARE_DISPLAY[v] || v || FW[i];
+      chip.classList.toggle("filled", !!v);
+      chip.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
+    });
+    rowChips.forEach(chip => {
+      chip.classList.toggle("active", Number(chip.dataset.chipRow) === quiz._fillActive && !quiz.isAnswered);
     });
     submitBtn.disabled = quiz._fillValues.some(v => !v);
   };
@@ -1342,6 +1375,9 @@ function bindFillEvents(q) {
 
   boxes.forEach(box => {
     box.onclick = () => { if (!quiz.isAnswered) setActive(Number(box.dataset.idx)); };
+  });
+  chips.forEach(chip => {
+    chip.onclick = () => { if (!quiz.isAnswered) setActive(Number(chip.dataset.chip)); };
   });
   submitBtn.onclick = () => {
     if (!submitBtn.disabled) submitAnswer([...quiz._fillValues]);
@@ -1443,6 +1479,10 @@ function renderFeedback(correct, q) {
         box.insertAdjacentHTML("afterend",
           `<span class="blank-correct-val">正解：${COMPARE_DISPLAY[ans] || ans}</span>`);
       }
+    });
+    document.querySelectorAll(".q-chip[data-chip]").forEach(chip => {
+      chip.classList.remove("active");
+      chip.classList.add(quiz._fillResults[Number(chip.dataset.chip)] ? "b-correct" : "b-wrong");
     });
     wrongHint = "答錯了，紅色格子旁有正確答案";
   } else {

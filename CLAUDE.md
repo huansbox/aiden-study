@@ -69,6 +69,9 @@ skipped_questions.md  跳過題目清單（供手動確認）
 ### 作答後說明
 - 自然期末題（unit 3/4）答題 feedback 畫面顯示說明卡（1–3 句、小三用語）；`explanations.json` 缺 id 時不顯示，不影響作答流程
 
+### 填充題空格 chip（家長提案：（２）標記乍看像答案）
+- 題幹（Ｎ）全形標記渲染成 chip（虛線小格），與下方作答格同步 highlight、可點選、輸入時即時回填顯示值；答題後同步綠/紅。資料格式不變（仍存（１）），純前端 renderer 處理；半形 (1) 是原卷子題編號不轉換
+
 ### 題目回報（flag）
 - 答題 feedback 畫面（答對/答錯皆有）低調按鈕「題目有問題」→ inline 確認後 flag
 - flag 效果：清除該題全部 stats、移出 errorBank 與 mastered（先前答對視為可能猜對）、從本輪 queue 抽掉；三種模式題池與通關分母（`questionIdsFor`）全部排除
