@@ -243,5 +243,24 @@
     "confidence": 100,
     "classify_reason": "人工 curated（015 看表大題，安和批次，應用5；核心＝時間計算與時制互換，表只供查 15:50）",
     "needs_review": false
+  },
+  {
+    "source": "新北市_安和國小_113下期末2_數學康軒_答案.pdf",
+    "section": "fill_in_blank",
+    "number": 3,
+    "origin": "word",
+    "text": "1600 公尺大隊接力賽跑，乙班成績 308 秒鐘，丙班成績 4 分鐘 48 秒鐘。跑得比較快的是（１），快了（２）秒鐘",
+    "blanks": [
+      { "answer": "丙班", "input": "code", "choices": ["乙班", "丙班"] },
+      { "answer": "20", "input": "number" }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "8",
+    "subtopic": "時間計算",
+    "confidence": 100,
+    "classify_reason": "人工 curated（複合答案「丙班快 20 秒鐘」手工拆 code＋number 兩格，家長定奪救回）",
+    "needs_review": false
   }
 ]

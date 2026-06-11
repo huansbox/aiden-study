@@ -2,11 +2,11 @@
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：上線 1155 題（自然 1101＋數學 54）；feat/math-anhe-tables 分支再補安和表格題 5 題（→1160，待 merge）。自然期末 499 題附作答後說明。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：上線 1155 題（自然 1101＋數學 54）；feat/math-anhe-tables 分支再補安和表格 5 題＋應用3 救回（→1161，待 merge）。自然期末 499 題附作答後說明。
 
 ## 快速參考
 
-- **▶ 殘留待辦**：①feat/math-anhe-tables 分支（安和表格 5 題＋表格圖吃滿容器寬）待 merge 上線。②安和應用3（丙班快 20 秒鐘）唯一仍延後題，可拆 code＋number 兩格救回，待家長定奪（見 `skipped_questions.md`）。
+- **▶ 殘留待辦**：feat/math-anhe-tables 分支（安和表格 5 題＋應用3 救回＋表格圖吃滿容器寬）待 merge 上線。數學延後清單已清空（兩卷可萃取題全數入庫）。
 - **期末作答後說明已上線（自然 unit 3/4，499 題）**：資料＝`docs/explanations.json`（id → 說明，前端 join）；批次結果＝`data/exp_results/`，重建跑 `uv run python scripts/build_explanations.py`；PRD＝`issues/prd-期末說明.md`；抽查全錄＝`docs-dev/review_期末說明_抽查.md`。期中題（unit 1/2）尚無說明。
 - **數學期末題庫已完成上線（issues 008–015，8/8）**：設計稿＝[`docs-dev/exam-math-pipeline-design.md`](docs-dev/exam-math-pipeline-design.md)；各 issue 檔含驗收與完成紀錄。
   - 數學題型：選擇 13／填充 35（number/comparison/code/text 四種輸入）／直式逐格 6（小數加減＋長除法，移植 aiden-math）；看表題截圖嵌入（`docs/assets/math/`）。
