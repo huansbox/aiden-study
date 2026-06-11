@@ -5,6 +5,8 @@
 """
 from build_explanations import (
     final_exam_ids,
+    math_ids,
+    format_answer,
     validate_entries,
     merge_entries,
     MAX_LEN,
@@ -14,6 +16,7 @@ QUESTIONS = [
     {"id": "mid_1", "unit": 1},
     {"id": "fin_a", "unit": 3},
     {"id": "fin_b", "unit": 4},
+    {"id": "math_a", "unit": 5, "subject": "math"},
 ]
 
 
@@ -29,6 +32,36 @@ class TestFinalExamIds:
 
     def test_string_unit_coerced(self):
         assert final_exam_ids([{"id": "x", "unit": "3"}]) == {"x"}
+
+
+class TestMathIds:
+    def test_only_math_subject(self):
+        assert math_ids(QUESTIONS) == {"math_a"}
+
+    def test_no_subject_field_excluded(self):
+        assert math_ids([{"id": "x", "unit": 5}]) == set()
+
+
+# ── 報告答案格式 ──────────────────────────────────────────
+
+class TestFormatAnswer:
+    def test_true_false(self):
+        assert format_answer({"type": "true_false", "answer": "false"}) == "✕ 錯"
+
+    def test_multiple_choice_with_options(self):
+        q = {"type": "multiple_choice", "answer": "2", "options": ["甲", "乙"]}
+        assert format_answer(q) == "(2) 乙"
+
+    def test_fill_in_blank_joins_blanks(self):
+        q = {"type": "fill_in_blank", "blanks": [{"answer": "8"}, {"answer": "3"}]}
+        assert format_answer(q) == "（1）8；（2）3"
+
+    def test_vertical_calc_plain_answer(self):
+        assert format_answer({"type": "vertical_calc", "answer": "18.3"}) == "18.3"
+
+    def test_vertical_calc_quotient_remainder(self):
+        q = {"type": "vertical_calc", "answer": {"quotient": 42, "remainder": 4}}
+        assert format_answer(q) == "商 42 餘 4"
 
 
 # ── 驗證 ──────────────────────────────────────────────────
