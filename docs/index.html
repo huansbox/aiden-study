@@ -1066,6 +1066,15 @@ function renderQuiz() {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
     const FW = "１２３４５６７８９";
+    // 條列換行（純顯示，資料不動）：分號後、(N) 子題前、甲乙丙丁列舉前、答案槽標籤前。
+    // 只套填充題——選擇題的 (N) 命中多為萃取欄位滲漏雜訊，套了會放大雜訊
+    displayText = displayText.replace(/；\s*/g, "；<br>");
+    if ((displayText.match(/\([1-9]\)/g) || []).length >= 2)
+      displayText = displayText.replace(/\s*(\([1-9]\))/g, "<br>$1");
+    if ((displayText.match(/[甲乙丙丁戊]：/g) || []).length >= 2)
+      displayText = displayText.replace(/\s*([甲乙丙丁戊]：)/g, "<br>$1");
+    displayText = displayText.replace(/\s*((?:答|最大|最小)：)/g, "<br>$1");
+    displayText = displayText.replace(/^(<br>)+/, "");
     // 題幹（Ｎ）標記 → chip（只認全形括號＋全形數字；半形 (1) 是原卷子題編號，不動）
     displayText = displayText.replace(/（([１-９])）/g, (m, d) => {
       const idx = FW.indexOf(d);
