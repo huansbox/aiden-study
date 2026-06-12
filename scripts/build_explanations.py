@@ -46,9 +46,9 @@ UNIT_NAMES = {
     9: "第9單元 統計表",
 }
 
-MAX_LEN = 120          # 寫手規格 100 字，留審核改寫的緩衝
+MAX_LEN = 140          # 寫手規格 100 字；看表題空格多（5–8 格）需逐格交代，放寬緩衝
 MIN_LEN = 5
-MAX_SENTENCES = 4      # 規格 1–3 句，容忍短補充句
+MAX_SENTENCES = 5      # 規格 1–3 句；多空格看表題逐格分句，容忍補充句
 
 _SENTENCE_END = re.compile(r"[。！？!?]")
 

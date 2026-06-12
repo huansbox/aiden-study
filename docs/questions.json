@@ -438,7 +438,7 @@
     "source": "北市內湖112三下期中自然.pdf"
   },
   {
-    "id": "北市內湖112三下期中自然_multiple_choice_1",
+    "id": "北市內湖112三下期中自然_multiple_choice_1-2",
     "subject": "science",
     "unit": 1,
     "subtopic": "影響蔬菜生長的因素",
@@ -454,7 +454,7 @@
     "source": "北市內湖112三下期中自然.pdf"
   },
   {
-    "id": "北市內湖112三下期中自然_multiple_choice_2",
+    "id": "北市內湖112三下期中自然_multiple_choice_2-2",
     "subject": "science",
     "unit": 1,
     "subtopic": "蔬菜生長的變化過程",
@@ -470,7 +470,7 @@
     "source": "北市內湖112三下期中自然.pdf"
   },
   {
-    "id": "北市內湖112三下期中自然_multiple_choice_3",
+    "id": "北市內湖112三下期中自然_multiple_choice_3-2",
     "subject": "science",
     "unit": 1,
     "subtopic": "影響蔬菜生長的因素",
@@ -486,7 +486,7 @@
     "source": "北市內湖112三下期中自然.pdf"
   },
   {
-    "id": "北市內湖112三下期中自然_multiple_choice_4",
+    "id": "北市內湖112三下期中自然_multiple_choice_4-2",
     "subject": "science",
     "unit": 1,
     "subtopic": "蔬菜生長的變化過程",
@@ -502,7 +502,7 @@
     "source": "北市內湖112三下期中自然.pdf"
   },
   {
-    "id": "北市內湖112三下期中自然_multiple_choice_5",
+    "id": "北市內湖112三下期中自然_multiple_choice_5-2",
     "subject": "science",
     "unit": 1,
     "subtopic": "蔬菜生長的變化過程",
@@ -17249,6 +17249,2487 @@
     "source": "彰化縣_田中國小_111下期末2_數學康軒_題目.pdf"
   },
   {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_2",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "multiple_choice",
+    "text": "下列有關「圓」的敘述何者錯誤？",
+    "options": [
+      "直徑有無限多條",
+      "半徑是直徑的 2 倍",
+      "直徑是圓內最長的直線",
+      "半徑越小，畫的圓越小"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "multiple_choice",
+    "text": "下午 2 時 36 分用 24 時制表示是幾時幾分？",
+    "options": [
+      "22 時 36 分",
+      "12 時 36 分",
+      "14 時 36 分",
+      "17 時 36 分"
+    ],
+    "answer": "3",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "multiple_choice",
+    "text": "動物園買了 102 根香蕉平分給猴子，每隻猴子分到 6 根香蕉，動物園裡有幾隻猴子？",
+    "options": [
+      "19 隻",
+      "18 隻",
+      "17 隻",
+      "16 隻"
+    ],
+    "answer": "3",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_5",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的大小比較",
+    "type": "multiple_choice",
+    "text": "媽媽做了一個半徑 6 公分的圓形披薩，哥哥做了一個直徑 10 公分的圓形披薩，哪一個人做的披薩比較大？",
+    "options": [
+      "一樣大",
+      "媽媽",
+      "哥哥",
+      "不能比較"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "請用小數填填看：一個蛋糕平分成 10 片，2 片是（１）個蛋糕。一盒鉛筆有 10 枝，17 個 0.1 盒鉛筆合起來是（２）盒鉛筆。",
+    "blanks": [
+      {
+        "answer": "0.2",
+        "input": "number"
+      },
+      {
+        "answer": "1.7",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "20÷5＝4、4×5＝□、20÷▲＝4、4×▲＝□。上面 4 個算式中的□和▲分別代表一個數。想想看，「□×▲」的答案是（１）。",
+    "blanks": [
+      {
+        "answer": "100",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "「十六點八」寫成小數是（１），這個小數的十分位數字是（２），個位數字是（３），十位數字是（４）。",
+    "blanks": [
+      {
+        "answer": "16.8",
+        "input": "number"
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "爸爸 6 月 20 日上午開車帶全家到花蓮玩，上午 9:20 出發，共開了 2 小時 25 分鐘，請問到達花蓮的時間是上午（１）時（２）分。",
+    "blanks": [
+      {
+        "answer": "11",
+        "input": "number"
+      },
+      {
+        "answer": "45",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_trip1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "金小弟 7:50AM 要到校集合參加校外教學，家裡走路到學校要 15 分鐘，請問金小弟最慢上午幾時幾分一定要離開家？ 答：上午（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "35",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_trip2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "碧妞買了 103 包魚飼料，平分給 9 個班級，每個班級分到幾包魚飼料？還剩下幾包？ 答：每班（１）包，剩下（２）包",
+    "blanks": [
+      {
+        "answer": "11",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_trip3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "湖哥有 532 元，買每個相同價錢的乾隆年製彩瓷文件夾剛好可以買 4 個，一個乾隆年製彩瓷文件夾多少元？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "133",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_show1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "multiple_choice",
+    "text": "兒童新樂園展演《粽太郎》的演出場次：第 1 場 11：00、第 2 場 13：00、第 3 場 14：00。佳萱要看第 2 場，她看的場次是幾時開始？",
+    "options": [
+      "11：00AM",
+      "1：00PM",
+      "3：00AM"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_show2",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "兒童新樂園展演《粽太郎》的演出場次：第 1 場 11：00、第 2 場 13：00、第 3 場 14：00。曉明下午 1 時 15 分到劇場，他最快幾時可以看到劇場表演？",
+    "options": [
+      "2：00AM",
+      "2：00PM",
+      "4：00PM"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_compare1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "比比看，在□裡填入＞、＜或＝ (1) 九點三 （１） 3.9 (2) 90 分鐘 （２） 1 時 20 分鐘 (3) 140 秒 （３） 2 分 20 秒鐘",
+    "blanks": [
+      {
+        "answer": ">",
+        "input": "comparison"
+      },
+      {
+        "answer": ">",
+        "input": "comparison"
+      },
+      {
+        "answer": "=",
+        "input": "comparison"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_vertical_calc_calc1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：267÷4＝",
+    "op": "long_division",
+    "operands": [
+      267,
+      4
+    ],
+    "answer": {
+      "quotient": 66,
+      "remainder": 3
+    },
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "40 公分－35 毫米＝（１）公分",
+    "blanks": [
+      {
+        "answer": "36.5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "工人鋪馬路，每天鋪一樣的長度，7 天可以鋪 371 公尺，請問每天鋪了多少公尺？ 答：（１）公尺",
+    "blanks": [
+      {
+        "answer": "53",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "外婆包粽子時，用掉 8.7 公斤的糯米，還剩下 1.5 公斤，請問原來有幾公斤的糯米？ 答：（１）公斤",
+    "blanks": [
+      {
+        "answer": "10.2",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_multiple_choice_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "十二點九的正確數字記法為",
+    "options": [
+      "1.29",
+      "2.9",
+      "12.9",
+      "129"
+    ],
+    "answer": "3",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_multiple_choice_2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "multiple_choice",
+    "text": "我們知道「125÷5＝25」，利用此算式也可以知道 25×5 是多少？",
+    "options": [
+      "25",
+      "125",
+      "100",
+      "625"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_multiple_choice_3",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "multiple_choice",
+    "text": "阿明拿一條長 10 公分的繩子，固定繩子的一邊為圓心，繩子的另一邊繞著圓心旋轉畫一個圓，畫出來的圓直徑是多少公分？",
+    "options": [
+      "5 公分",
+      "10 公分",
+      "15 公分",
+      "20 公分"
+    ],
+    "answer": "4",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_multiple_choice_4",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "下面是某簡餐店今日午餐點套餐人數的統計表。A 套餐 15 人、B 套餐 20 人、C 套餐 12 人、D 套餐 8 人。點哪一種套餐的人數最少？今日午餐點套餐人數共有多少人？",
+    "options": [
+      "A 餐，54 人",
+      "B 餐，55 人",
+      "D 餐，55 人",
+      "D 餐，53 人"
+    ],
+    "answer": "3",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_multiple_choice_5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "multiple_choice",
+    "text": "早午餐店上午 7 點整開門營業到下午 1 點整休息，是經過多少小時？",
+    "options": [
+      "3 小時",
+      "4 小時",
+      "5 小時",
+      "6 小時"
+    ],
+    "answer": "4",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "2.6 是（１）個 1 和（２）個 0.1 合起來的。",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "圓的最外圈周界稱為（１）。",
+    "blanks": [
+      {
+        "answer": "圓周",
+        "input": "text"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "想一想：（１）÷5＝100；100×6＝（２）",
+    "blanks": [
+      {
+        "answer": "500",
+        "input": "number"
+      },
+      {
+        "answer": "600",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "fill_in_blank",
+    "text": "完成 12 時制和 24 時制的互換：8：00 是上午（１）時；下午 2 時 用 24 時制記成（２）：00；19：00 是下午（３）時。",
+    "blanks": [
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "14",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_calc1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "2 時 22 分＋15 分＝（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "37",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "50 公分－35 毫米＝（１）公分",
+    "blanks": [
+      {
+        "answer": "46.5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_vertical_calc_calc3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：1.7＋0.8＝",
+    "op": "add_decimal",
+    "operands": [
+      1.7,
+      0.8
+    ],
+    "answer": "2.5",
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_calc4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "8×（１）＝160",
+    "blanks": [
+      {
+        "answer": "20",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_vertical_calc_calc5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：888÷7＝",
+    "op": "long_division",
+    "operands": [
+      888,
+      7
+    ],
+    "answer": {
+      "quotient": 126,
+      "remainder": 6
+    },
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_compare1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數比大小",
+    "type": "fill_in_blank",
+    "text": "在□裡填入＞、＜或＝ (1) 5.9 （１） 6.7 (2) 零點一 （２） 0.1 (3) 3 分鐘 16 秒鐘 （３） 316 秒鐘 (4) 60 秒 （４） 1 分鐘 (5) 50×3 （５） 150÷3 (6) 100÷4 （６） 100×4",
+    "blanks": [
+      {
+        "answer": "<",
+        "input": "comparison"
+      },
+      {
+        "answer": "=",
+        "input": "comparison"
+      },
+      {
+        "answer": "<",
+        "input": "comparison"
+      },
+      {
+        "answer": "=",
+        "input": "comparison"
+      },
+      {
+        "answer": ">",
+        "input": "comparison"
+      },
+      {
+        "answer": "<",
+        "input": "comparison"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "小蘋每天上下班搭同一段捷運來回，單趟車費都一樣多，搭了 5 天，共花了 250 元，小蘋一天搭捷運花多少元？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "50",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "甲袋稻米用掉 4.8 公斤後就和乙袋稻米一樣重，如果乙袋是 5.2 公斤，兩袋共重多少公斤？ 答：（１）公斤",
+    "blanks": [
+      {
+        "answer": "15.2",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "阿文從 16 時 20 分開始寫功課，寫了 1 小時 35 分鐘，寫完是下午幾時幾分？ 答：下午（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "55",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "一本字典厚 4.6 公分，兩本相同的字典疊在一起厚度多少？ 答：（１）公分",
+    "blanks": [
+      {
+        "answer": "9.2",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "家長會發獎學金給 8 位同學，每個人都拿到 360 元，請問家長會共發了多少獎學金？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "2880",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word6",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "三個人一起寫作業，靜靜寫了 1 小時 25 分鐘，玲玲寫了 90 分鐘，小瑜再寫 25 分鐘就等於寫了 2 小時，請問誰寫作業用最多時間？ 答：（１）",
+    "blanks": [
+      {
+        "answer": "小瑜",
+        "input": "code",
+        "choices": [
+          "靜靜",
+          "玲玲",
+          "小瑜"
+        ]
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_multiple_choice_1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "multiple_choice",
+    "text": "桃園市立體育場的網球場每天的開放時間是 6：00～21：00，網球場每天的開放時間一共是多少小時？",
+    "options": [
+      "17 小時",
+      "16 小時",
+      "15 小時",
+      "14 小時"
+    ],
+    "answer": "3",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_multiple_choice_2",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的大小比較",
+    "type": "multiple_choice",
+    "text": "下面哪一個圓最小？",
+    "options": [
+      "半徑 7 公分的圓",
+      "半徑 8 公分的圓",
+      "直徑 12 公分的圓",
+      "直徑 18 公分的圓"
+    ],
+    "answer": "3",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_multiple_choice_3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "multiple_choice",
+    "text": "老師在黑板上寫下：「196÷7＝28」，利用此算式可以知道 28×7 是多少？",
+    "options": [
+      "1372",
+      "196",
+      "28",
+      "7"
+    ],
+    "answer": "2",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_multiple_choice_5",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "9 公分 7 毫米也可以說是多少公分？",
+    "options": [
+      "0.97 公分",
+      "970 公分",
+      "97 公分",
+      "9.7 公分"
+    ],
+    "answer": "4",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "true_false",
+    "text": "19 時 52 分是下午 7 時 52 分。",
+    "options": [],
+    "answer": "true",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_2",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時刻與時間單位",
+    "type": "true_false",
+    "text": "數字鐘上的「PM」是表示下午。",
+    "options": [],
+    "answer": "true",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時刻與時間單位",
+    "type": "true_false",
+    "text": "從桃園開車到臺中大約要 2 小時，2 小時表示的是「時刻」。",
+    "options": [],
+    "answer": "false",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_4",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "true_false",
+    "text": "圓的半徑越短，圓的直徑就越短。",
+    "options": [],
+    "answer": "true",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_5",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "true_false",
+    "text": "一個圓可以有很多個圓心。",
+    "options": [],
+    "answer": "false",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_true_false_6",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "true_false",
+    "text": "一個圓只能畫出一條直徑。",
+    "options": [],
+    "answer": "false",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "「八點六」寫成小數是（１），這個小數的十分位數字是（２），個位數字是（３）。",
+    "blanks": [
+      {
+        "answer": "8.6",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "3 個 0.1 和 10 個 1 合起來是（１）。",
+    "blanks": [
+      {
+        "answer": "10.3",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時刻與時間單位",
+    "type": "fill_in_blank",
+    "text": "一日＝（１）小時；一小時＝（２）分鐘",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      },
+      {
+        "answer": "60",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_4",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時刻與時間單位",
+    "type": "fill_in_blank",
+    "text": "6 分鐘和（１）秒鐘一樣長。",
+    "blanks": [
+      {
+        "answer": "360",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "奇奇彈琴花了 2 小時 35 分鐘，也可以說是（１）分鐘。",
+    "blanks": [
+      {
+        "answer": "155",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_6",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "圓的中心叫做圓心，圓的周界叫做（１）。",
+    "blanks": [
+      {
+        "answer": "圓周",
+        "input": "text"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_7",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓規與畫圓",
+    "type": "fill_in_blank",
+    "text": "把圓規兩腳打開（１）公分，可以畫出一個直徑是 20 公分的圓。",
+    "blanks": [
+      {
+        "answer": "10",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_vertical_calc_calc1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：10.7＋9.3＝",
+    "op": "add_decimal",
+    "operands": [
+      10.7,
+      9.3
+    ],
+    "answer": "20",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_vertical_calc_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：30－15.4＝",
+    "op": "sub_decimal",
+    "operands": [
+      30,
+      15.4
+    ],
+    "answer": "14.6",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_calc4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "（１）×6＝66",
+    "blanks": [
+      {
+        "answer": "11",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_vertical_calc_calc5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：982÷4＝",
+    "op": "long_division",
+    "operands": [
+      982,
+      4
+    ],
+    "answer": {
+      "quotient": 245,
+      "remainder": 2
+    },
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "一條毛巾價錢的 6 倍，剛好可以買一雙 900 元的休閒鞋，一條毛巾多少元？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "150",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "妮妮把一些 5 元硬幣，平分成 5 堆，每堆有 140 個硬幣，妮妮一共有多少個 5 元硬幣？ 答：（１）個",
+    "blanks": [
+      {
+        "answer": "700",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "豆豆把高 64 毫米的玩具士兵放在高 2.8 公分的石頭上，一共高幾公分？ 答：（１）公分",
+    "blanks": [
+      {
+        "answer": "9.2",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_word4",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "哥哥從家裡到學校要 35 分鐘，他上午 9 時 10 分從家裡出發，到學校是上午幾時幾分？ 答：上午（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "9",
+        "input": "number"
+      },
+      {
+        "answer": "45",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_multiple_choice_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "十分之九和下面選項中哪兩個小數合起來一樣大？",
+    "options": [
+      "0.5＋0.2",
+      "0.4＋0.3",
+      "0.3＋0.6",
+      "0.7＋0.1"
+    ],
+    "answer": "3",
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_multiple_choice_3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "multiple_choice",
+    "text": "已知 540＝270×2；540＝108×5；540＝90×6；540＝60×9。民權國小運動會，有 540 位學生參加大會舞，在排隊形時，每 90 位學生排一排，可以排成幾排？",
+    "options": [
+      "5 排",
+      "6 排",
+      "9 排",
+      "60 排"
+    ],
+    "answer": "2",
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_multiple_choice_4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "multiple_choice",
+    "text": "170 個 1 毫米，合起來是多少公分？",
+    "options": [
+      "0.1 公分",
+      "0.17 公分",
+      "1.7 公分",
+      "17 公分"
+    ],
+    "answer": "4",
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_multiple_choice_5",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "multiple_choice",
+    "text": "下列敘述何者正確？",
+    "options": [
+      "一個圓只能畫出 1 條直徑",
+      "一個圓只有 1 個圓心",
+      "圓的半徑越短，圓的直徑就越長",
+      "半徑 3 公分的圓比直徑 5 公分的圓還小"
+    ],
+    "answer": "2",
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "23×7＝161；161÷7＝（１）",
+    "blanks": [
+      {
+        "answer": "23",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓規與畫圓",
+    "type": "fill_in_blank",
+    "text": "畫一個直徑 6 公分的圓，圓規需要打開（１）公分。",
+    "blanks": [
+      {
+        "answer": "3",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "0.8 公分＝（１）毫米",
+    "blanks": [
+      {
+        "answer": "8",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_4",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "圓心到圓周的距離叫做（１）。",
+    "blanks": [
+      {
+        "answer": "半徑",
+        "input": "text"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "姐姐上午喝了 0.6 瓶水，下午又喝了 1.4 瓶水，下午是喝了（１）個 0.1 瓶。她今天共喝了（２）個 0.1 瓶，是（３）瓶水。",
+    "blanks": [
+      {
+        "answer": "14",
+        "input": "number"
+      },
+      {
+        "answer": "20",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_6",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "從上午 7 時 20 分一直到下午 7 時 20 分，時針轉了（１）圈，是經過（２）小時。",
+    "blanks": [
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "12",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_7",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "fill_in_blank",
+    "text": "現在是 14:58，再過 2 分鐘，就是下午（１）時（２）分。",
+    "blanks": [
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_calc1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "10.6－5.7＝（１）",
+    "blanks": [
+      {
+        "answer": "4.9",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "19.8＋0.7＝（１）",
+    "blanks": [
+      {
+        "answer": "20.5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_calc3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "3×（１）＝486",
+    "blanks": [
+      {
+        "answer": "162",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_verify1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "508÷6＝（１）…（２）",
+    "blanks": [
+      {
+        "answer": "84",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_verify2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "221÷9＝（１）…（２）",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "一包色紙有 10 張。媽媽買了 2 包色紙，小華用 0.7 包摺紙，小真用 0.8 包做勞作，現在還剩下多少張色紙？ 答：（１）張",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "媽媽在分裝 336 顆的巧克力，每一袋要裝幾顆，才能剛好分裝成 8 袋？ 答：（１）顆",
+    "blanks": [
+      {
+        "answer": "42",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "美佳做了一些餅乾，每 9 片餅乾裝成一包，共裝了 12 包，美佳做了多少片餅乾？ 答：（１）片",
+    "blanks": [
+      {
+        "answer": "108",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_word4",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "下面是小明的日本旅遊日記，看日記回答問題。「今天我們全家人去東京迪士尼樂園玩。我們在上午 7 時 16 分從飯店出發，到達遊樂園門口時，我手錶上面的時間顯示 10:45。巨雷山有好多人在排隊，我們從下午 1 時 22 分開始排，等了 35 分鐘才輪到我們。摩天輪搭一圈要 17 分鐘，我們回到地面時，已經是下午 3 時 35 分了。」 (1)小明他們從飯店出發到遊樂園，花了（１）分鐘。 (2)小明在下午（２）時（３）分玩到巨雷山。 (3)小明在下午（４）時（５）分搭上摩天輪。",
+    "blanks": [
+      {
+        "answer": "209",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "57",
+        "input": "number"
+      },
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "18",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "一盒鍋貼有 10 顆，宛馨吃 6 顆，用小數記成（１）盒。",
+    "blanks": [
+      {
+        "answer": "0.6",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "371÷7＝53；53×7＝（１）；371÷53＝（２）",
+    "blanks": [
+      {
+        "answer": "371",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "十位是 1，個位是 2，十分位是 5 的小數是（１）。",
+    "blanks": [
+      {
+        "answer": "12.5",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "有一個圓的直徑長 12 公分，半徑是（１）公分。",
+    "blanks": [
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_6",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數比大小",
+    "type": "fill_in_blank",
+    "text": "按照順序寫出正確的數字：2.4、2.3、（１）、2.1、（２）、1.9",
+    "blanks": [
+      {
+        "answer": "2.2",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_7",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "用小數回答：4 毫米＝（１）公分",
+    "blanks": [
+      {
+        "answer": "0.4",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_8",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "6 個 1 和 24 個 0.1 合起來是（１）。",
+    "blanks": [
+      {
+        "answer": "8.4",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_9",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓規與畫圓",
+    "type": "fill_in_blank",
+    "text": "用圓規畫出直徑 8 公分的圓，圓規兩腳之間的距離要打開（１）公分。",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_11",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是松山國小各血型人數統計表：A 型 208 人、B 型 192 人、O 型 352 人、AB 型 48 人。 (1)哪一種血型人數最多？（１）型 (2)哪一種血型人數最少？（２）型 (3)人數最多和最少的血型相差（３）人。 (4)A 型和 B 型人數合起來，比 O 型人數多還少？（４）",
+    "blanks": [
+      {
+        "answer": "O",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "O",
+          "AB"
+        ]
+      },
+      {
+        "answer": "AB",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "O",
+          "AB"
+        ]
+      },
+      {
+        "answer": "304",
+        "input": "number"
+      },
+      {
+        "answer": "多",
+        "input": "code",
+        "choices": [
+          "多",
+          "少"
+        ]
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_13",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的大小比較",
+    "type": "fill_in_blank",
+    "text": "將下面的圓由大到小排列，用代號填填看。甲：直徑 12 公分的圓；乙：半徑 8 公分的圓；丙：半徑 4 公分的圓。（１）＞（２）＞（３）",
+    "blanks": [
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙"
+        ]
+      },
+      {
+        "answer": "甲",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙"
+        ]
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙"
+        ]
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_15",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "一盒披薩有 10 片，有 2 片章魚燒口味、3 片雪花牛口味和 5 片和風雞口味。(用小數回答) (1)章魚燒口味是（１）盒。 (2)雪花牛口味是（２）盒。 (3)和風雞口味是（３）盒。",
+    "blanks": [
+      {
+        "answer": "0.2",
+        "input": "number"
+      },
+      {
+        "answer": "0.3",
+        "input": "number"
+      },
+      {
+        "answer": "0.5",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_16",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "下表是爆米花兩種口味每包成分含量表。青花椒麻口味：熱量 510.1 大卡、蛋白質 4.4 公克、脂肪 26.5 公克、醣類 63.5 公克。玉米濃湯口味：熱量 487.6 大卡、蛋白質 4.3 公克、脂肪 24.4 公克、醣類 62.7 公克。 (1)雅琪兩種各吃一包，她共吃了（１）公克的蛋白質。 (2)兩種口味的脂肪相差了（２）公克。 (3)如果雅琪要減少熱量的攝取，你會建議她吃哪一種口味？（３）口味",
+    "blanks": [
+      {
+        "answer": "8.7",
+        "input": "number"
+      },
+      {
+        "answer": "2.1",
+        "input": "number"
+      },
+      {
+        "answer": "玉米濃湯",
+        "input": "code",
+        "choices": [
+          "青花椒麻",
+          "玉米濃湯"
+        ]
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_vertical_calc_calc1",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：5＋3.4＝",
+    "op": "add_decimal",
+    "operands": [
+      5,
+      3.4
+    ],
+    "answer": "8.4",
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_vertical_calc_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "vertical_calc",
+    "text": "用直式計算：6.7－4.3＝",
+    "op": "sub_decimal",
+    "operands": [
+      6.7,
+      4.3
+    ],
+    "answer": "2.4",
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_vertical_calc_calc3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：128÷8＝",
+    "op": "long_division",
+    "operands": [
+      128,
+      8
+    ],
+    "answer": {
+      "quotient": 16,
+      "remainder": 0
+    },
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_vertical_calc_calc4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：157÷5＝",
+    "op": "long_division",
+    "operands": [
+      157,
+      5
+    ],
+    "answer": {
+      "quotient": 31,
+      "remainder": 2
+    },
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "政斌哥是樂器行老闆，他將全部直笛平分裝成 5 箱，每箱有 20 支直笛，他原本有幾支直笛？ 答：（１）支",
+    "blanks": [
+      {
+        "answer": "100",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "學校買 100 盒快篩，平分給 9 個班級，每個班級分到幾盒快篩？還剩下幾盒？ 答：每班（１）盒，剩下（２）盒",
+    "blanks": [
+      {
+        "answer": "11",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "凱茹每天都存 6 元，存了一段時間後，一共存了 420 元，請問她存錢存了幾天？ 答：（１）天",
+    "blanks": [
+      {
+        "answer": "70",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "社寮國小有 140 個學生，運動會的時候將學生平分各組，每組剛好有 7 個人，請問一共有幾組？ 答：（１）組",
+    "blanks": [
+      {
+        "answer": "20",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word6",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "下表為上校爺爺蛋塔的營養標示（每份）：熱量 182 大卡、蛋白質 2.6 公克、脂肪 11.4 公克、醣類 17.3 公克、鈉 0.1 公克。蛋白質、脂肪和醣類共有多少公克？ 答：（１）公克",
+    "blanks": [
+      {
+        "answer": "31.3",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_word7",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "哥哥有 125 元，弟弟有 55 元，兩個人的錢加起來，剛好能買 9 瓶優酪乳，請問一瓶優酪乳多少錢？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "20",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "56 個 0.1 合起來是（１）。",
+    "blanks": [
+      {
+        "answer": "5.6",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_3",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時刻與時間單位",
+    "type": "fill_in_blank",
+    "text": "秒針走 5 圈，分針會走（１）小格，也可以說是（２）分鐘。",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "42÷7＝（１）；42÷6＝（２）；6×7＝（３）；7×6＝（４）",
+    "blanks": [
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "42",
+        "input": "number"
+      },
+      {
+        "answer": "42",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_6",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "從今天上午 6 時，到明天上午 6 時，一共經過（１）小時，也可以說是（２）日。",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_7",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時制互換",
+    "type": "fill_in_blank",
+    "text": "18：56 是（１）午（２）時（３）分。",
+    "blanks": [
+      {
+        "answer": "下",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "56",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_9",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "想一想：（１）×5＝45；45÷（２）＝9",
+    "blanks": [
+      {
+        "answer": "9",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "5×（１）＝600",
+    "blanks": [
+      {
+        "answer": "120",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc2",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "15＋2.7＝（１）",
+    "blanks": [
+      {
+        "answer": "17.7",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "（１）÷7＝126",
+    "blanks": [
+      {
+        "answer": "882",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc4",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "5.6－0.5＝（１）",
+    "blanks": [
+      {
+        "answer": "5.1",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "312÷4＝（１）…（２）",
+    "blanks": [
+      {
+        "answer": "78",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_calc6",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "220÷6＝（１）…（２）",
+    "blanks": [
+      {
+        "answer": "36",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "從桃園到嘉義坐高鐵要 1 小時 20 分鐘，坐火車要 3 小時 58 分鐘，坐火車和坐高鐵相差幾小時幾分鐘？ 答：（１）小時（２）分鐘",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "38",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "一枝筆 6 元，老師買幾枝筆時，剛好要付 246 元？ 答：（１）枝",
+    "blanks": [
+      {
+        "answer": "41",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "有 192 瓶運動飲料，每幾瓶裝成一箱時，剛好裝成 8 箱？ 答：每（１）瓶裝成一箱",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "健康國小校外教學，所有參加的學生都要搭纜車，每節車廂可以坐 8 個人，用 12 節車廂剛好載完，參加的學生有多少個人？ 答：（１）個人",
+    "blanks": [
+      {
+        "answer": "96",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "爸爸發零用錢給 3 個孩子，每個人都拿到 245 元，爸爸發了多少元？ 答：（１）元",
+    "blanks": [
+      {
+        "answer": "735",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word6",
+    "subject": "math",
+    "unit": 8,
+    "subtopic": "時間計算",
+    "type": "fill_in_blank",
+    "text": "品睿在下午 4 時 15 分出門，1 小時 10 分鐘後到電影院，是下午幾時幾分？ 答：下午（１）時（２）分",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "25",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_word7",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數加減",
+    "type": "fill_in_blank",
+    "text": "冰箱裡有一瓶 2.4 公升的礦泉水，哥哥今天喝了 1.2 公升，弟弟喝了 0.8 公升。 (1)兩個人共喝了（１）公升的礦泉水。 (2)冰箱裡還剩下（２）公升的礦泉水。",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "0.4",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_multiple_choice_3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "multiple_choice",
+    "text": "把一些遊戲卡平分成 6 堆，每堆有 26 張。把這些遊戲卡平分成 26 堆，每堆有多少張？",
+    "options": [
+      "5 張",
+      "6 張",
+      "9 張",
+      "12 張"
+    ],
+    "answer": "2",
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_multiple_choice_4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "multiple_choice",
+    "text": "（　）÷6＝50…3，（　）裡的數是多少？",
+    "options": [
+      "133",
+      "237",
+      "303",
+      "408"
+    ],
+    "answer": "3",
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_multiple_choice_7",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "multiple_choice",
+    "text": "甲數的 8 倍是 832，甲數是多少？",
+    "options": [
+      "94",
+      "99",
+      "104",
+      "109"
+    ],
+    "answer": "3",
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_multiple_choice_6",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "下面是醇咖啡店的價目表。飲料：烏龍茶 30 元、拿鐵 55 元、紅茶 35 元、鮮奶茶 50 元、氣泡水 40 元；餐點：水果派 50 元、三明治 35 元、貝果 55 元、冰淇淋 45 元、滷味拼盤 75 元。玉靜買了 2 份貝果、1 杯鮮奶茶和 1 杯氣泡水，她要付多少元？",
+    "options": [
+      "120 元",
+      "145 元",
+      "185 元",
+      "200 元"
+    ],
+    "answer": "4",
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_do4",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是新鮮麵包坊星期四到星期日賣出的麵包數量：星期四 2358 個、星期五 1963 個、星期六 3049 個、星期日 2630 個。把賣出的麵包數量，用＞的符號，由多到少排列出來：（１）＞（２）＞（３）＞（４）",
+    "blanks": [
+      {
+        "answer": "星期六",
+        "input": "code",
+        "choices": [
+          "星期四",
+          "星期五",
+          "星期六",
+          "星期日"
+        ]
+      },
+      {
+        "answer": "星期日",
+        "input": "code",
+        "choices": [
+          "星期四",
+          "星期五",
+          "星期六",
+          "星期日"
+        ]
+      },
+      {
+        "answer": "星期四",
+        "input": "code",
+        "choices": [
+          "星期四",
+          "星期五",
+          "星期六",
+          "星期日"
+        ]
+      },
+      {
+        "answer": "星期五",
+        "input": "code",
+        "choices": [
+          "星期四",
+          "星期五",
+          "星期六",
+          "星期日"
+        ]
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_6",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "想一想：335÷5＝（１）；（１）×6＝（２）",
+    "blanks": [
+      {
+        "answer": "67",
+        "input": "number"
+      },
+      {
+        "answer": "402",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_3",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "用小數回答：8 毫米＝（１）公分",
+    "blanks": [
+      {
+        "answer": "0.8",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_5",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "(1) 24×7＝168；168÷7＝（１） (2) 676÷26＝26；26×26＝（２）",
+    "blanks": [
+      {
+        "answer": "24",
+        "input": "number"
+      },
+      {
+        "answer": "676",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_7",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除互逆",
+    "type": "fill_in_blank",
+    "text": "根據算式，填填看。313÷46＝6…37；313－37＝（１）×（２）（請依「除數×商」的順序作答）",
+    "blanks": [
+      {
+        "answer": "46",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_8",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是兩種廠牌咖啡每一份的成分含量表。甲咖啡：熱量 87 大卡、蛋白質 1 公克、脂肪 3 公克、醣類 14 公克。乙咖啡：熱量 74 大卡、蛋白質 2 公克、脂肪 2 公克、醣類 12 公克。 (1)一份甲咖啡含有醣類（１）公克 (2)一份乙咖啡含有脂肪（２）公克 (3)哪一種咖啡的蛋白質含量比較多？（３）咖啡 (4)甲咖啡和乙咖啡各一份的熱量相差（４）大卡 (5)甲咖啡和乙咖啡各一份的醣類合起來是（５）公克",
+    "blanks": [
+      {
+        "answer": "14",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙"
+        ]
+      },
+      {
+        "answer": "13",
+        "input": "number"
+      },
+      {
+        "answer": "26",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_compare1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "fill_in_blank",
+    "text": "在□裡填入＞、＜或＝：136÷8 （１） 108÷6",
+    "blanks": [
+      {
+        "answer": "<",
+        "input": "comparison"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_vertical_calc_calc3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：636÷6＝",
+    "op": "long_division",
+    "operands": [
+      636,
+      6
+    ],
+    "answer": {
+      "quotient": 106,
+      "remainder": 0
+    },
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_vertical_calc_calc4",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除計算",
+    "type": "vertical_calc",
+    "text": "用直式計算：259÷4＝",
+    "op": "long_division",
+    "operands": [
+      259,
+      4
+    ],
+    "answer": {
+      "quotient": 64,
+      "remainder": 3
+    },
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_word1",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "家瑜練習游泳，每天游相同的距離，一個星期共游了 560 公尺，家瑜每天游多少公尺？ 答：（１）公尺",
+    "blanks": [
+      {
+        "answer": "80",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_word2",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "老師買了一些巧克力，平分成 8 袋，每袋有 28 顆，老師買了幾顆巧克力？ 答：（１）顆",
+    "blanks": [
+      {
+        "answer": "224",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_word3",
+    "subject": "math",
+    "unit": 7,
+    "subtopic": "乘除應用",
+    "type": "fill_in_blank",
+    "text": "媽媽做了一些小籠包，每 5 個裝一盒，裝了 7 盒，還剩下 3 個，媽媽一共做了多少個小籠包？ 答：（１）個",
+    "blanks": [
+      {
+        "answer": "38",
+        "input": "number"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
+  },
+  {
     "id": "新北市_桃子腳國小_112下期末2_數學康軒_答案_fill_in_blank_table1",
     "subject": "math",
     "unit": 8,
@@ -18034,5 +20515,660 @@
       }
     ],
     "source": "彰化縣_田中國小_111下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_table1",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是臺鐵北迴線自強號的票價表，看表回答問題。(1)從宜蘭站到羅東站的票價是（１）元。 (2)叔叔買了 4 張從羅東站到花蓮站的車票，一共要付（２）元。 (3)美美從花蓮站搭到和平站，來回一趟總共要付（３）元。",
+    "image": "assets/math/minquan113_fares.png",
+    "blanks": [
+      {
+        "answer": "23",
+        "input": "number"
+      },
+      {
+        "answer": "812",
+        "input": "number"
+      },
+      {
+        "answer": "178",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_民權國小_113下期末2_數學康軒_題目_fill_in_blank_table2",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "請先完成永福國小三年級各班的男、女生人數統計表，再回答問題。女生人數：甲班（１）人、乙班（２）人。 (1)依照三年級各班女生的人數，由多到少排列：（３）班＞（４）班＞（５）班＞（６）班 (2)永福國小三年級全部有（７）人。",
+    "image": "assets/math/minquan113_classes.png",
+    "blanks": [
+      {
+        "answer": "12",
+        "input": "number"
+      },
+      {
+        "answer": "11",
+        "input": "number"
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "丁",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "甲",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "105",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_multiple_choice_table4",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "下面是三年甲班和乙班調查喜歡的天氣統計表（用「正」字畫記）。三年甲班和三年乙班喜歡晴天的人數共有幾人？",
+    "image": "assets/math/jiande113_weather.png",
+    "options": [
+      "18 人",
+      "16 人",
+      "7 人",
+      "8 人"
+    ],
+    "answer": "1",
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_table9",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是高鐵南下時刻表。(1)車次 149 列車共停靠（１）個站。 (2)車次 1241 列車到達左營是下午（２）時（３）分。 (3)車次 1545 列車從桃園到臺中要花（４）分鐘。",
+    "image": "assets/math/jiande113_hsr.png",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "41",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "桃園市_建德國小_113下期末2_數學康軒_題目_fill_in_blank_table10",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "這是三年丙班的功課表。(1)星期一的第四節上（１）課。 (2)星期（２）和星期（３）上半天課（依星期順序作答）。 (3)陶藝課是在星期（４）的第（５）節課。",
+    "image": "assets/math/jiande113_schedule.png",
+    "blanks": [
+      {
+        "answer": "英語",
+        "input": "text"
+      },
+      {
+        "answer": "三",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "五",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "二",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_table6",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "數一數下面的圖形，整理成統計表：愛心有（１）個、星星有（２）個、笑臉有（３）個，合計（４）個。",
+    "image": "assets/math/neihu113_shapes.png",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "11",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_chart1",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "以下為臺鐵集集線（往水里）簡略版火車時刻表。 ①班次 1 號列車從干城站離開是（１）午（２）時（３）分。 ②班次 2 列車在下午 2 時 32 分會從哪一站離開？（４）站。 ③小君搭高鐵在上午 10 時 10 分到達高鐵臺中站，她要到集集站，她最快能搭班次（５）的列車。 ④同一站中，第二和三班列車間隔（６）小時。",
+    "image": "assets/math/neihu113_jiji.png",
+    "blanks": [
+      {
+        "answer": "上",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "名間國中",
+        "input": "text"
+      },
+      {
+        "answer": "2",
+        "input": "code",
+        "choices": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_chart2",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "三年甲班同學票選最愛夜市小吃人數統計表：(甲)蚵仔煎：男生（１）人、女生 4 人、合計 7 人；(乙)烤香腸：男生 4 人、女生（２）人、合計 5 人；(丙)雪花冰：男生 4 人、女生 5 人、合計（３）人；(丁)豬血糕：男生 4 人、女生 3 人、合計 7 人。男生合計 15 人、女生合計 13 人，全班合計（４）人。 ②最多人喜歡的是哪一項？（５） ③全班女生最不喜歡哪一項？（６） ④所有項目中，總人數相同的是（７）和（８）（請依甲乙丙丁順序作答）。",
+    "blanks": [
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "9",
+        "input": "number"
+      },
+      {
+        "answer": "28",
+        "input": "number"
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "甲",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "丁",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_113下期末2_數學康軒_題目_fill_in_blank_word7",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的大小比較",
+    "type": "fill_in_blank",
+    "text": "假設下圖中小圓半徑是 2 公分，大圓的半徑是小圓半徑的（１）倍，大圓直徑是（２）公分。",
+    "image": "assets/math/neihu113_circles.png",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_table1",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "multiple_choice",
+    "text": "如下圖，圓的半徑是 4 公分，正方形的每邊長是多少公分？",
+    "image": "assets/math/neihu112_square.png",
+    "options": [
+      "4 公分",
+      "8 公分",
+      "16 公分",
+      "32 公分"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_table7",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "寫出圓的各部位名稱：ㄅ是（１），ㄆ是（２），ㄇ是（３）。",
+    "image": "assets/math/neihu112_parts.png",
+    "blanks": [
+      {
+        "answer": "直徑",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      },
+      {
+        "answer": "半徑",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      },
+      {
+        "answer": "圓周",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_table8",
+    "subject": "math",
+    "unit": 6,
+    "subtopic": "圓的構造",
+    "type": "fill_in_blank",
+    "text": "看圖回答問題。①A、B、C、D 四條直線，（１）線最長。 ②圓心到哪一個點的距離比圓的半徑短？（２）點。 ③C 線長是（３）線的 2 倍。",
+    "image": "assets/math/neihu112_lines.png",
+    "blanks": [
+      {
+        "answer": "C",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      {
+        "answer": "ㄅ",
+        "input": "code",
+        "choices": [
+          "ㄅ",
+          "ㄆ"
+        ]
+      },
+      {
+        "answer": "D",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_table4",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是六年 A 班學生票選班長的紀錄表，數一數每個人得到的○（已知碧妞 5 票、珠妹妹 8 票、金小弟 5 票）：湖哥（１）票、鷺姐姐（２）票。 (2)最多票跟最少票相差（３）票。 (3)一個人只能投一票，共有（４）個人投票。",
+    "image": "assets/math/neihu112_votes.png",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "28",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_hsr1",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。子玲到南港站要搭高鐵到苗栗站採草莓，她可以搭哪個車次的高鐵？",
+    "image": "assets/math/neihu112_hsr.png",
+    "options": [
+      "125",
+      "639",
+      "829"
+    ],
+    "answer": "3",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_multiple_choice_hsr2",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "multiple_choice",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。爸爸 1:30PM 要到新竹，他可以搭乘哪個車次的高鐵？",
+    "image": "assets/math/neihu112_hsr.png",
+    "options": [
+      "125",
+      "639",
+      "829"
+    ],
+    "answer": "2",
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "臺北市_內湖國小_112下期末2_數學康軒_題目_fill_in_blank_hsr3",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。(3)小君搭乘 639 車次高鐵從桃園站到左營站要花（１）小時（２）分鐘。 (4)車次 125 列車從南港站出發到左營站一共停靠（３）個站。",
+    "image": "assets/math/neihu112_hsr.png",
+    "blanks": [
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "35",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_112下期末2_數學康軒_題目_fill_in_blank_table8",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是臺鐵北迴線自強號的票價表，看表回答問題。(1)從宜蘭站到新城站的票價是（１）元。 (2)爸爸買了 4 張從羅東站到花蓮站的車票，一共要付（２）元。 (3)叔叔從南澳站搭車，買了一張 100 元的車票，他要搭車到（３）站。 (4)宥希從宜蘭站坐到（４）站的票價是 133 元。",
+    "image": "assets/math/sheliao112_fares.png",
+    "blanks": [
+      {
+        "answer": "186",
+        "input": "number"
+      },
+      {
+        "answer": "812",
+        "input": "number"
+      },
+      {
+        "answer": "新城",
+        "input": "code",
+        "choices": [
+          "東澳",
+          "和平",
+          "新城"
+        ]
+      },
+      {
+        "answer": "和平",
+        "input": "code",
+        "choices": [
+          "和平",
+          "蘇澳新",
+          "羅東"
+        ]
+      }
+    ],
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_table10",
+    "subject": "math",
+    "unit": 5,
+    "subtopic": "小數的認識",
+    "type": "fill_in_blank",
+    "text": "塗色部分是多少張？用小數回答：（１）張。",
+    "image": "assets/math/sheliao110_strips.png",
+    "blanks": [
+      {
+        "answer": "0.5",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "南投縣_社寮國小_110下期末2_數學康軒_題目_fill_in_blank_table12",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "下面是鐵路局集集線火車票價表，看表填填看。(1)從濁水站到水里站，要付（１）元。 (2)從二水站到集集站，要付（２）元。 (3)票價 45 元是從二水站到（３）站。 (4)文馨在車埕站只帶 40 元，最遠可以搭到（４）站。 (5)倩雯先從二水站搭到濁水站，再從濁水站搭到水里站，她共花（５）元買火車票。",
+    "image": "assets/math/sheliao110_fares.png",
+    "blanks": [
+      {
+        "answer": "25",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "車埕",
+        "input": "text"
+      },
+      {
+        "answer": "源泉",
+        "input": "text"
+      },
+      {
+        "answer": "45",
+        "input": "number"
+      }
+    ],
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf"
+  },
+  {
+    "id": "彰化縣_舊館國小_111下期末3_數學康軒_題目_fill_in_blank_table5",
+    "subject": "math",
+    "unit": 9,
+    "subtopic": "報讀表格",
+    "type": "fill_in_blank",
+    "text": "看火車時刻表回答問題。(1)車次 144 列車到達臺北站是（１）午（２）時（３）分。 (2)車次 562 列車從臺中站行駛到臺北站共花了（４）小時（５）分鐘。 (3)車次 554 列車在下午 7 時 12 分會到（６）站。",
+    "image": "assets/math/jiuguan111_trains.png",
+    "blanks": [
+      {
+        "answer": "下",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "10",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      },
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "新竹",
+        "input": "text"
+      }
+    ],
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf"
   }
 ]

@@ -105,7 +105,7 @@ class TestValidate:
 
     def test_too_many_sentences_reported(self):
         problems = validate_entries(
-            [entry("fin_a", text="對。對。對。對。對。")], {"fin_a"}
+            [entry("fin_a", text="對。對。對。對。對。對。")], {"fin_a"}
         )
         assert any("句數過多" in p for p in problems)
 

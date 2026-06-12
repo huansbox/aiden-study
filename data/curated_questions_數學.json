@@ -6,10 +6,26 @@
     "origin": "table",
     "text": "完成 24 時制和 12 時制的互換：13：00 ＝（１）午（２）時；上午 7 時 15 分 ＝（３）：（４）",
     "blanks": [
-      { "answer": "下", "input": "code", "choices": ["上", "下"] },
-      { "answer": "1", "input": "number" },
-      { "answer": "7", "input": "number" },
-      { "answer": "15", "input": "number" }
+      {
+        "answer": "下",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "15",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -27,8 +43,28 @@
     "origin": "table",
     "text": "這是小桃的功課表。老師規定體育課需要穿著體育服，請問小桃星期幾要穿體育服？（兩個答案，依星期順序作答）（１）（２）",
     "blanks": [
-      { "answer": "星期一", "input": "code", "choices": ["星期一", "星期二", "星期三", "星期四", "星期五"] },
-      { "answer": "星期四", "input": "code", "choices": ["星期一", "星期二", "星期三", "星期四", "星期五"] }
+      {
+        "answer": "星期一",
+        "input": "code",
+        "choices": [
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五"
+        ]
+      },
+      {
+        "answer": "星期四",
+        "input": "code",
+        "choices": [
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -47,8 +83,34 @@
     "origin": "table",
     "text": "下面是臺鐵北迴線自強號的票價表。爸爸花了 600 元買 3 張車票，請從票價表中判斷是從哪一站到哪一站的車票（依票價表由上到下的順序作答）：從（１）站到（２）站",
     "blanks": [
-      { "answer": "羅東", "input": "code", "choices": ["宜蘭", "羅東", "蘇澳新", "東澳", "南澳", "和平", "新城", "花蓮"] },
-      { "answer": "花蓮", "input": "code", "choices": ["宜蘭", "羅東", "蘇澳新", "東澳", "南澳", "和平", "新城", "花蓮"] }
+      {
+        "answer": "羅東",
+        "input": "code",
+        "choices": [
+          "宜蘭",
+          "羅東",
+          "蘇澳新",
+          "東澳",
+          "南澳",
+          "和平",
+          "新城",
+          "花蓮"
+        ]
+      },
+      {
+        "answer": "花蓮",
+        "input": "code",
+        "choices": [
+          "宜蘭",
+          "羅東",
+          "蘇澳新",
+          "東澳",
+          "南澳",
+          "和平",
+          "新城",
+          "花蓮"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -67,7 +129,15 @@
     "origin": "table",
     "text": "（票價表同上）小桃從和平站搭車，買了一張 90 元的車票，她要搭車到哪一站？（１）",
     "blanks": [
-      { "answer": "蘇澳新站", "input": "code", "choices": ["蘇澳新站", "羅東站", "新城站"] }
+      {
+        "answer": "蘇澳新站",
+        "input": "code",
+        "choices": [
+          "蘇澳新站",
+          "羅東站",
+          "新城站"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -86,9 +156,22 @@
     "origin": "table",
     "text": "看火車時刻表回答問題：車次 131 列車從新竹站離開時是（１）午（２）時（３）分",
     "blanks": [
-      { "answer": "上", "input": "code", "choices": ["上", "下"] },
-      { "answer": "10", "input": "number" },
-      { "answer": "49", "input": "number" }
+      {
+        "answer": "上",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "10",
+        "input": "number"
+      },
+      {
+        "answer": "49",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -107,8 +190,14 @@
     "origin": "table",
     "text": "看火車時刻表回答問題：小桃搭乘車次 113 從板橋站到新竹站，要花費多少時間？（１）時（２）分",
     "blanks": [
-      { "answer": "1", "input": "number" },
-      { "answer": "0", "input": "number" }
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -127,8 +216,26 @@
     "origin": "table",
     "text": "下面是桃子蛋糕店價目表。媽媽帶 80 元，先買了 1 份巧克力蛋糕，剩下的錢想要買 1 杯飲料。媽媽可以買哪幾種飲料？（兩個答案，依價目表順序作答）（１）（２）",
     "blanks": [
-      { "answer": "紅茶", "input": "code", "choices": ["紅茶", "綠奶茶", "果汁", "咖啡"] },
-      { "answer": "綠奶茶", "input": "code", "choices": ["紅茶", "綠奶茶", "果汁", "咖啡"] }
+      {
+        "answer": "紅茶",
+        "input": "code",
+        "choices": [
+          "紅茶",
+          "綠奶茶",
+          "果汁",
+          "咖啡"
+        ]
+      },
+      {
+        "answer": "綠奶茶",
+        "input": "code",
+        "choices": [
+          "紅茶",
+          "綠奶茶",
+          "果汁",
+          "咖啡"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -147,8 +254,14 @@
     "origin": "table",
     "text": "這是三年甲班學生眼科與牙科健康統計表，請完成表格：沒近視也沒蛀牙的有（１）人；全班合計共（２）人",
     "blanks": [
-      { "answer": "8", "input": "number" },
-      { "answer": "29", "input": "number" }
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "29",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -167,8 +280,23 @@
     "origin": "table",
     "text": "這是花東公車的全票票價表（單位：元）。(1)從寧埔站到奚卜蘭站的票價是（１）元。(2)從石梯坪站搭到（２）站的票價是 167 元",
     "blanks": [
-      { "answer": "85", "input": "number" },
-      { "answer": "玉里", "input": "code", "choices": ["玉里", "安通", "寧埔", "長濱", "奚卜蘭", "石梯坪", "金剛山"] }
+      {
+        "answer": "85",
+        "input": "number"
+      },
+      {
+        "answer": "玉里",
+        "input": "code",
+        "choices": [
+          "玉里",
+          "安通",
+          "寧埔",
+          "長濱",
+          "奚卜蘭",
+          "石梯坪",
+          "金剛山"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -187,10 +315,27 @@
     "origin": "table",
     "text": "奶奶買了一些優酪乳，圖中是每種優酪乳每 100 毫升的熱量和營養成分。請完成統計：草莓優酪乳的熱量是（１）大卡；原味優酪乳的脂肪是（２）公克；無加糖優酪乳的糖是（３）公克。如果想減少糖的攝取，可以買（４）優酪乳",
     "blanks": [
-      { "answer": "69.4", "input": "number" },
-      { "answer": "0.4", "input": "number" },
-      { "answer": "3.5", "input": "number" },
-      { "answer": "無加糖", "input": "code", "choices": ["原味", "無加糖", "草莓"] }
+      {
+        "answer": "69.4",
+        "input": "number"
+      },
+      {
+        "answer": "0.4",
+        "input": "number"
+      },
+      {
+        "answer": "3.5",
+        "input": "number"
+      },
+      {
+        "answer": "無加糖",
+        "input": "code",
+        "choices": [
+          "原味",
+          "無加糖",
+          "草莓"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -209,9 +354,25 @@
     "origin": "table",
     "text": "這是台灣高鐵南下部分車次時刻表。爸爸和爸比在下午 4 時到達板橋站，他們想在下午 6 時以前到達嘉義站參加喜宴。他們要搭乘（１）車次的列車才能最早到達；這班列車從板橋站到嘉義站，要花（２）小時（３）分鐘",
     "blanks": [
-      { "answer": "661", "input": "code", "choices": ["1321", "841", "661", "145", "1541"] },
-      { "answer": "1", "input": "number" },
-      { "answer": "21", "input": "number" }
+      {
+        "answer": "661",
+        "input": "code",
+        "choices": [
+          "1321",
+          "841",
+          "661",
+          "145",
+          "1541"
+        ]
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "21",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -230,9 +391,22 @@
     "origin": "table",
     "text": "這是台灣國際兒童影展播出時刻表。姊姊在下午 3 時 32 分出門參加影展活動，她到影展會場需要先走路 3 分鐘，再騎乘公共自行車 5 分鐘。請問：她到達影展會場是（１）時（２）分（用 24 時制回答）；她（３）觀賞〈小南和小雞工廠〉這部影片",
     "blanks": [
-      { "answer": "15", "input": "number" },
-      { "answer": "40", "input": "number" },
-      { "answer": "來得及", "input": "code", "choices": ["來得及", "來不及"] }
+      {
+        "answer": "15",
+        "input": "number"
+      },
+      {
+        "answer": "40",
+        "input": "number"
+      },
+      {
+        "answer": "來得及",
+        "input": "code",
+        "choices": [
+          "來得及",
+          "來不及"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -251,8 +425,18 @@
     "origin": "word",
     "text": "1600 公尺大隊接力賽跑，乙班成績 308 秒鐘，丙班成績 4 分鐘 48 秒鐘。跑得比較快的是（１），快了（２）秒鐘",
     "blanks": [
-      { "answer": "丙班", "input": "code", "choices": ["乙班", "丙班"] },
-      { "answer": "20", "input": "number" }
+      {
+        "answer": "丙班",
+        "input": "code",
+        "choices": [
+          "乙班",
+          "丙班"
+        ]
+      },
+      {
+        "answer": "20",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -269,7 +453,12 @@
     "number": 6,
     "origin": "table",
     "text": "下表是電影放映的時刻表，佳佳下午 2：40 到達電影院，最快可以看哪場電影？",
-    "options": ["第一場", "第二場", "第三場", "第四場"],
+    "options": [
+      "第一場",
+      "第二場",
+      "第三場",
+      "第四場"
+    ],
     "answer": "2",
     "has_image": false,
     "image": "assets/math/tao110_movies.png",
@@ -286,9 +475,38 @@
     "origin": "table",
     "text": "下表是臺鐵部分區間車的價目表，請看表回答問題。(1)哪一站到哪一站的票價是 27 元？（兩站依表中由上到下順序作答）（１）站、（２）站 (2)曉婷從板橋站坐到基隆站探望爺爺，再從基隆站坐到汐止站去找朋友，車票共花了（３）元。",
     "blanks": [
-      { "answer": "八堵", "input": "code", "choices": ["基隆", "八堵", "七堵", "汐止", "松山", "臺北", "板橋", "樹林"] },
-      { "answer": "松山", "input": "code", "choices": ["基隆", "八堵", "七堵", "汐止", "松山", "臺北", "板橋", "樹林"] },
-      { "answer": "71", "input": "number" }
+      {
+        "answer": "八堵",
+        "input": "code",
+        "choices": [
+          "基隆",
+          "八堵",
+          "七堵",
+          "汐止",
+          "松山",
+          "臺北",
+          "板橋",
+          "樹林"
+        ]
+      },
+      {
+        "answer": "松山",
+        "input": "code",
+        "choices": [
+          "基隆",
+          "八堵",
+          "七堵",
+          "汐止",
+          "松山",
+          "臺北",
+          "板橋",
+          "樹林"
+        ]
+      },
+      {
+        "answer": "71",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -307,10 +525,29 @@
     "origin": "table",
     "text": "下表是高鐵部分車次時刻表，請看表回答問題。(1) 1241 車次的列車，一共停靠（１）個站。(2)搭乘 667 車次的列車，從臺北站到臺中站要花（２）小時（３）分鐘。(3)阿城在下午六時到達臺中站，他要搭乘（４）車次的列車才能最快到達左營站。",
     "blanks": [
-      { "answer": "6", "input": "number" },
-      { "answer": "1", "input": "number" },
-      { "answer": "4", "input": "number" },
-      { "answer": "149", "input": "code", "choices": ["1241", "845", "667", "149", "1545"] }
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "149",
+        "input": "code",
+        "choices": [
+          "1241",
+          "845",
+          "667",
+          "149",
+          "1545"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -329,8 +566,19 @@
     "origin": "table",
     "text": "下表是滿意咖啡店週一～五的銷售資料，請看表回答問題。(1)週五，（１）咖啡賣出最多杯。(2)週二和週四這兩天賣出的咖啡杯數相差（２）杯。",
     "blanks": [
-      { "answer": "招牌", "input": "code", "choices": ["招牌", "拿鐵", "手沖"] },
-      { "answer": "5", "input": "number" }
+      {
+        "answer": "招牌",
+        "input": "code",
+        "choices": [
+          "招牌",
+          "拿鐵",
+          "手沖"
+        ]
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -349,12 +597,48 @@
     "origin": "table",
     "text": "下面是從礁溪站到花蓮站區間火車的票價表。(1)從宜蘭站到蘇澳站票價是（１）元。(2)從花蓮站到冬山站票價是（２）元。(3)從（３）站到（４）站的票價最貴，是（５）元（兩站依表中由上到下順序作答）。(4)彥彤先從宜蘭站搭火車到蘇澳新站買東西，再到花蓮站找朋友，她共花（６）元買火車票。",
     "blanks": [
-      { "answer": "33", "input": "number" },
-      { "answer": "123", "input": "number" },
-      { "answer": "礁溪", "input": "code", "choices": ["礁溪", "宜蘭", "羅東", "冬山", "蘇澳新", "蘇澳", "花蓮"] },
-      { "answer": "花蓮", "input": "code", "choices": ["礁溪", "宜蘭", "羅東", "冬山", "蘇澳新", "蘇澳", "花蓮"] },
-      { "answer": "155", "input": "number" },
-      { "answer": "144", "input": "number" }
+      {
+        "answer": "33",
+        "input": "number"
+      },
+      {
+        "answer": "123",
+        "input": "number"
+      },
+      {
+        "answer": "礁溪",
+        "input": "code",
+        "choices": [
+          "礁溪",
+          "宜蘭",
+          "羅東",
+          "冬山",
+          "蘇澳新",
+          "蘇澳",
+          "花蓮"
+        ]
+      },
+      {
+        "answer": "花蓮",
+        "input": "code",
+        "choices": [
+          "礁溪",
+          "宜蘭",
+          "羅東",
+          "冬山",
+          "蘇澳新",
+          "蘇澳",
+          "花蓮"
+        ]
+      },
+      {
+        "answer": "155",
+        "input": "number"
+      },
+      {
+        "answer": "144",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -373,7 +657,10 @@
     "origin": "table",
     "text": "下面是古早味早餐店的價目表。鎮家用 100 元去買了 1 杯花生湯、1 份玉米蛋餅和 1 個蔥花卷後，還剩下（１）元。",
     "blanks": [
-      { "answer": "23", "input": "number" }
+      {
+        "answer": "23",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -392,9 +679,34 @@
     "origin": "table",
     "text": "下面是中正國小各年級學生人數統計表。(1)（１）年級的男同學最多，（２）年級的女同學最少。(2)三年級和四年級的學生，一共有（３）個人。",
     "blanks": [
-      { "answer": "六", "input": "code", "choices": ["一", "二", "三", "四", "五", "六"] },
-      { "answer": "一", "input": "code", "choices": ["一", "二", "三", "四", "五", "六"] },
-      { "answer": "517", "input": "number" }
+      {
+        "answer": "六",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五",
+          "六"
+        ]
+      },
+      {
+        "answer": "一",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五",
+          "六"
+        ]
+      },
+      {
+        "answer": "517",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -413,9 +725,18 @@
     "origin": "table",
     "text": "三年 15 班全班 28 人參加考試，下面是國語和數學成績的人數統計表。(1)國語及格的有（１）人。(2)數學及格的有（２）人。(3)兩科都不及格的有（３）人。",
     "blanks": [
-      { "answer": "23", "input": "number" },
-      { "answer": "21", "input": "number" },
-      { "answer": "2", "input": "number" }
+      {
+        "answer": "23",
+        "input": "number"
+      },
+      {
+        "answer": "21",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -434,8 +755,23 @@
     "origin": "table",
     "text": "下表是鐵路局集集線火車票價表（白色格子是孩童/敬老/愛心票價，灰色格子是全票票價）。(1)宣予和兩個爸爸從集集站搭火車到濁水站，他們買了 1 張孩童票和 2 張全票，一共要付（１）元。(2)旅客從龍泉站搭車，買了一張 25 元的全票，他要搭車到（２）站。",
     "blanks": [
-      { "answer": "38", "input": "number" },
-      { "answer": "二水", "input": "code", "choices": ["二水", "源泉", "濁水", "龍泉", "集集", "水里", "車埕"] }
+      {
+        "answer": "38",
+        "input": "number"
+      },
+      {
+        "answer": "二水",
+        "input": "code",
+        "choices": [
+          "二水",
+          "源泉",
+          "濁水",
+          "龍泉",
+          "集集",
+          "水里",
+          "車埕"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -454,9 +790,22 @@
     "origin": "table",
     "text": "下表是二家速食店每一小包薯條的營養成分表。(1)如果兩種薯條各吃一包，可以攝取（１）公克的蛋白質。(2)兩種薯條的脂肪含量相差了（２）毫克。(3)弟弟想買一包薯條吃又想減少熱量的攝取，他最好選哪一家的薯條？（３）",
     "blanks": [
-      { "answer": "6.3", "input": "number" },
-      { "answer": "0.1", "input": "number" },
-      { "answer": "買好吃薯條", "input": "code", "choices": ["買好吃薯條", "啃美味薯條"] }
+      {
+        "answer": "6.3",
+        "input": "number"
+      },
+      {
+        "answer": "0.1",
+        "input": "number"
+      },
+      {
+        "answer": "買好吃薯條",
+        "input": "code",
+        "choices": [
+          "買好吃薯條",
+          "啃美味薯條"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -475,9 +824,25 @@
     "origin": "table",
     "text": "瑞瑞的爺爺、奶奶帶瑞瑞和哥哥搭高鐵從彰化到台北。下表是台灣高鐵時刻表（北上）。他們在上午七點到車站，搭的高鐵是車程最快的那一班：他們是搭車次（１）的班次，這班車從彰化到臺北用了（２）小時（３）分鐘。",
     "blanks": [
-      { "answer": "1302", "input": "code", "choices": ["508", "300", "802", "1302", "806"] },
-      { "answer": "1", "input": "number" },
-      { "answer": "5", "input": "number" }
+      {
+        "answer": "1302",
+        "input": "code",
+        "choices": [
+          "508",
+          "300",
+          "802",
+          "1302",
+          "806"
+        ]
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -496,8 +861,14 @@
     "origin": "table",
     "text": "回家的時候，他們在下午 5：50 到台北車站。下表是台灣高鐵時刻表（南下）。最快可以在（１）時（２）分到彰化站（用 24 時制回答）。",
     "blanks": [
-      { "answer": "19", "input": "number" },
-      { "answer": "30", "input": "number" }
+      {
+        "answer": "19",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -516,7 +887,10 @@
     "origin": "table",
     "text": "瑞瑞的爺爺（67 歲）、奶奶（66 歲）、瑞瑞（三年級）和哥哥（五年級）四個人從彰化搭高鐵到台北，下表是高鐵全票與優待票票價表（灰色對角線下方為優待票價；優待票使用對象見表下說明）。他們四個人的單程票價一共是多少元？ 答：（１）元",
     "blanks": [
-      { "answer": "1640", "input": "number" }
+      {
+        "answer": "1640",
+        "input": "number"
+      }
     ],
     "options": [],
     "answer": "",
@@ -535,9 +909,32 @@
     "origin": "table",
     "text": "他們到了姑姑開的咖啡廳，下表是姑姑上個星期賣出各類咖啡數量的統計表。(1)上個星期姑姑總共賣出了（１）杯咖啡。(2)這三種咖啡當中，最受歡迎的是（２）咖啡。(3)（３）的手沖咖啡賣出去最少杯。",
     "blanks": [
-      { "answer": "1269", "input": "number" },
-      { "answer": "拿鐵", "input": "code", "choices": ["招牌", "拿鐵", "手沖"] },
-      { "answer": "星期三", "input": "code", "choices": ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"] }
+      {
+        "answer": "1269",
+        "input": "number"
+      },
+      {
+        "answer": "拿鐵",
+        "input": "code",
+        "choices": [
+          "招牌",
+          "拿鐵",
+          "手沖"
+        ]
+      },
+      {
+        "answer": "星期三",
+        "input": "code",
+        "choices": [
+          "星期日",
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五",
+          "星期六"
+        ]
+      }
     ],
     "options": [],
     "answer": "",
@@ -547,6 +944,773 @@
     "subtopic": "報讀表格",
     "confidence": 100,
     "classify_reason": "人工 curated（看表題，田中111 擴充批次；官方答案卷 1269／拿鐵／星期三；381＋501＋387＝1269 驗算一致）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 1,
+    "origin": "table",
+    "text": "下面是臺鐵北迴線自強號的票價表，看表回答問題。(1)從宜蘭站到羅東站的票價是（１）元。 (2)叔叔買了 4 張從羅東站到花蓮站的車票，一共要付（２）元。 (3)美美從花蓮站搭到和平站，來回一趟總共要付（３）元。",
+    "blanks": [
+      {
+        "answer": "23",
+        "input": "number"
+      },
+      {
+        "answer": "812",
+        "input": "number"
+      },
+      {
+        "answer": "178",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/minquan113_fares.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_民權國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 2,
+    "origin": "table",
+    "text": "請先完成永福國小三年級各班的男、女生人數統計表，再回答問題。女生人數：甲班（１）人、乙班（２）人。 (1)依照三年級各班女生的人數，由多到少排列：（３）班＞（４）班＞（５）班＞（６）班 (2)永福國小三年級全部有（７）人。",
+    "blanks": [
+      {
+        "answer": "12",
+        "input": "number"
+      },
+      {
+        "answer": "11",
+        "input": "number"
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "丁",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "甲",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "105",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/minquan113_classes.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf",
+    "section": "multiple_choice",
+    "number": 4,
+    "origin": "table",
+    "text": "下面是三年甲班和乙班調查喜歡的天氣統計表（用「正」字畫記）。三年甲班和三年乙班喜歡晴天的人數共有幾人？",
+    "options": [
+      "18 人",
+      "16 人",
+      "7 人",
+      "8 人"
+    ],
+    "answer": "1",
+    "has_image": false,
+    "image": "assets/math/jiande113_weather.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 9,
+    "origin": "table",
+    "text": "下面是高鐵南下時刻表。(1)車次 149 列車共停靠（１）個站。 (2)車次 1241 列車到達左營是下午（２）時（３）分。 (3)車次 1545 列車從桃園到臺中要花（４）分鐘。",
+    "blanks": [
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "41",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/jiande113_hsr.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "桃園市_建德國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 10,
+    "origin": "table",
+    "text": "這是三年丙班的功課表。(1)星期一的第四節上（１）課。 (2)星期（２）和星期（３）上半天課（依星期順序作答）。 (3)陶藝課是在星期（４）的第（５）節課。",
+    "blanks": [
+      {
+        "answer": "英語",
+        "input": "text"
+      },
+      {
+        "answer": "三",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "五",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "二",
+        "input": "code",
+        "choices": [
+          "一",
+          "二",
+          "三",
+          "四",
+          "五"
+        ]
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/jiande113_schedule.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 6,
+    "origin": "table",
+    "text": "數一數下面的圖形，整理成統計表：愛心有（１）個、星星有（２）個、笑臉有（３）個，合計（４）個。",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      },
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "11",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu113_shapes.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 1,
+    "origin": "chart",
+    "text": "以下為臺鐵集集線（往水里）簡略版火車時刻表。 ①班次 1 號列車從干城站離開是（１）午（２）時（３）分。 ②班次 2 列車在下午 2 時 32 分會從哪一站離開？（４）站。 ③小君搭高鐵在上午 10 時 10 分到達高鐵臺中站，她要到集集站，她最快能搭班次（５）的列車。 ④同一站中，第二和三班列車間隔（６）小時。",
+    "blanks": [
+      {
+        "answer": "上",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "名間國中",
+        "input": "text"
+      },
+      {
+        "answer": "2",
+        "input": "code",
+        "choices": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      {
+        "answer": "5",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu113_jiji.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 2,
+    "origin": "chart",
+    "text": "三年甲班同學票選最愛夜市小吃人數統計表：(甲)蚵仔煎：男生（１）人、女生 4 人、合計 7 人；(乙)烤香腸：男生 4 人、女生（２）人、合計 5 人；(丙)雪花冰：男生 4 人、女生 5 人、合計（３）人；(丁)豬血糕：男生 4 人、女生 3 人、合計 7 人。男生合計 15 人、女生合計 13 人，全班合計（４）人。 ②最多人喜歡的是哪一項？（５） ③全班女生最不喜歡哪一項？（６） ④所有項目中，總人數相同的是（７）和（８）（請依甲乙丙丁順序作答）。",
+    "blanks": [
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "9",
+        "input": "number"
+      },
+      {
+        "answer": "28",
+        "input": "number"
+      },
+      {
+        "answer": "丙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "乙",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "甲",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      },
+      {
+        "answer": "丁",
+        "input": "code",
+        "choices": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ]
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三，簡單表文字重現）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_113下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 7,
+    "origin": "word",
+    "text": "假設下圖中小圓半徑是 2 公分，大圓的半徑是小圓半徑的（１）倍，大圓直徑是（２）公分。",
+    "blanks": [
+      {
+        "answer": "2",
+        "input": "number"
+      },
+      {
+        "answer": "8",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu113_circles.png",
+    "unit": "6",
+    "subtopic": "圓的大小比較",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看圖題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "multiple_choice",
+    "number": 1,
+    "origin": "table",
+    "text": "如下圖，圓的半徑是 4 公分，正方形的每邊長是多少公分？",
+    "options": [
+      "4 公分",
+      "8 公分",
+      "16 公分",
+      "32 公分"
+    ],
+    "answer": "2",
+    "has_image": false,
+    "image": "assets/math/neihu112_square.png",
+    "unit": "6",
+    "subtopic": "圓的構造",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看圖題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 7,
+    "origin": "table",
+    "text": "寫出圓的各部位名稱：ㄅ是（１），ㄆ是（２），ㄇ是（３）。",
+    "blanks": [
+      {
+        "answer": "直徑",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      },
+      {
+        "answer": "半徑",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      },
+      {
+        "answer": "圓周",
+        "input": "code",
+        "choices": [
+          "圓心",
+          "半徑",
+          "直徑",
+          "圓周"
+        ]
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu112_parts.png",
+    "unit": "6",
+    "subtopic": "圓的構造",
+    "confidence": 95,
+    "classify_reason": "人工 curated（批三看圖題，ㄇ箭頭指圓周界線已目視確認）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 8,
+    "origin": "table",
+    "text": "看圖回答問題。①A、B、C、D 四條直線，（１）線最長。 ②圓心到哪一個點的距離比圓的半徑短？（２）點。 ③C 線長是（３）線的 2 倍。",
+    "blanks": [
+      {
+        "answer": "C",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      {
+        "answer": "ㄅ",
+        "input": "code",
+        "choices": [
+          "ㄅ",
+          "ㄆ"
+        ]
+      },
+      {
+        "answer": "D",
+        "input": "code",
+        "choices": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu112_lines.png",
+    "unit": "6",
+    "subtopic": "圓的構造",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看圖題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 4,
+    "origin": "table",
+    "text": "下面是六年 A 班學生票選班長的紀錄表，數一數每個人得到的○（已知碧妞 5 票、珠妹妹 8 票、金小弟 5 票）：湖哥（１）票、鷺姐姐（２）票。 (2)最多票跟最少票相差（３）票。 (3)一個人只能投一票，共有（４）個人投票。",
+    "blanks": [
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      },
+      {
+        "answer": "4",
+        "input": "number"
+      },
+      {
+        "answer": "28",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu112_votes.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "multiple_choice",
+    "number": 1,
+    "origin": "hsr",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。子玲到南港站要搭高鐵到苗栗站採草莓，她可以搭哪個車次的高鐵？",
+    "options": [
+      "125",
+      "639",
+      "829"
+    ],
+    "answer": "3",
+    "has_image": false,
+    "image": "assets/math/neihu112_hsr.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "multiple_choice",
+    "number": 2,
+    "origin": "hsr",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。爸爸 1:30PM 要到新竹，他可以搭乘哪個車次的高鐵？",
+    "options": [
+      "125",
+      "639",
+      "829"
+    ],
+    "answer": "2",
+    "has_image": false,
+    "image": "assets/math/neihu112_hsr.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "臺北市_內湖國小_112下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 3,
+    "origin": "hsr",
+    "text": "下表是臺灣高鐵南下部分車次時刻表。(3)小君搭乘 639 車次高鐵從桃園站到左營站要花（１）小時（２）分鐘。 (4)車次 125 列車從南港站出發到左營站一共停靠（３）個站。",
+    "blanks": [
+      {
+        "answer": "1",
+        "input": "number"
+      },
+      {
+        "answer": "35",
+        "input": "number"
+      },
+      {
+        "answer": "6",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/neihu112_hsr.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "南投縣_社寮國小_112下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 8,
+    "origin": "table",
+    "text": "下面是臺鐵北迴線自強號的票價表，看表回答問題。(1)從宜蘭站到新城站的票價是（１）元。 (2)爸爸買了 4 張從羅東站到花蓮站的車票，一共要付（２）元。 (3)叔叔從南澳站搭車，買了一張 100 元的車票，他要搭車到（３）站。 (4)宥希從宜蘭站坐到（４）站的票價是 133 元。",
+    "blanks": [
+      {
+        "answer": "186",
+        "input": "number"
+      },
+      {
+        "answer": "812",
+        "input": "number"
+      },
+      {
+        "answer": "新城",
+        "input": "code",
+        "choices": [
+          "東澳",
+          "和平",
+          "新城"
+        ]
+      },
+      {
+        "answer": "和平",
+        "input": "code",
+        "choices": [
+          "和平",
+          "蘇澳新",
+          "羅東"
+        ]
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/sheliao112_fares.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 10,
+    "origin": "table",
+    "text": "塗色部分是多少張？用小數回答：（１）張。",
+    "blanks": [
+      {
+        "answer": "0.5",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/sheliao110_strips.png",
+    "unit": "5",
+    "subtopic": "小數的認識",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看圖題）",
+    "needs_review": false
+  },
+  {
+    "source": "南投縣_社寮國小_110下期末2_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 12,
+    "origin": "table",
+    "text": "下面是鐵路局集集線火車票價表，看表填填看。(1)從濁水站到水里站，要付（１）元。 (2)從二水站到集集站，要付（２）元。 (3)票價 45 元是從二水站到（３）站。 (4)文馨在車埕站只帶 40 元，最遠可以搭到（４）站。 (5)倩雯先從二水站搭到濁水站，再從濁水站搭到水里站，她共花（５）元買火車票。",
+    "blanks": [
+      {
+        "answer": "25",
+        "input": "number"
+      },
+      {
+        "answer": "30",
+        "input": "number"
+      },
+      {
+        "answer": "車埕",
+        "input": "text"
+      },
+      {
+        "answer": "源泉",
+        "input": "text"
+      },
+      {
+        "answer": "45",
+        "input": "number"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/sheliao110_fares.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
+    "needs_review": false
+  },
+  {
+    "source": "彰化縣_舊館國小_111下期末3_數學康軒_題目.pdf",
+    "section": "fill_in_blank",
+    "number": 5,
+    "origin": "table",
+    "text": "看火車時刻表回答問題。(1)車次 144 列車到達臺北站是（１）午（２）時（３）分。 (2)車次 562 列車從臺中站行駛到臺北站共花了（４）小時（５）分鐘。 (3)車次 554 列車在下午 7 時 12 分會到（６）站。",
+    "blanks": [
+      {
+        "answer": "下",
+        "input": "code",
+        "choices": [
+          "上",
+          "下"
+        ]
+      },
+      {
+        "answer": "10",
+        "input": "number"
+      },
+      {
+        "answer": "0",
+        "input": "number"
+      },
+      {
+        "answer": "3",
+        "input": "number"
+      },
+      {
+        "answer": "7",
+        "input": "number"
+      },
+      {
+        "answer": "新竹",
+        "input": "text"
+      }
+    ],
+    "options": [],
+    "answer": "",
+    "has_image": false,
+    "image": "assets/math/jiuguan111_trains.png",
+    "unit": "9",
+    "subtopic": "報讀表格",
+    "confidence": 100,
+    "classify_reason": "人工 curated（批三看表題）",
     "needs_review": false
   }
 ]

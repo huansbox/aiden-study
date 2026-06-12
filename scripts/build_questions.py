@@ -147,10 +147,17 @@ def convert_block(classified: list, used_ids: set, subject: str, allowed_units: 
 def build_merged(existing: list, final_classified: list, math_classified: list,
                  filtered_out: list | None = None) -> list:
     """三來源合併（純函式）：保留期中、重建期末與數學。"""
-    midterm = [preserve_schema(q, "science") for q in existing if int(q["unit"]) in MID_UNITS]
+    # 期中保留既有內容；但既有 seed 內偶有同 source 同題號的不同題撞 id
+    # （如某校 PDF 含兩份選擇題，皆編 1–5），需在此去碰撞，否則 localStorage
+    # 的 mastered/errorBank 以 id 為鍵會把兩題混為一題。
+    used_ids: set = set()
+    midterm = []
+    for q in existing:
+        if int(q["unit"]) in MID_UNITS:
+            e = preserve_schema(q, "science")
+            e["id"] = unique_id(e["id"], used_ids)
+            midterm.append(e)
     log.info(f"期中題目: {len(midterm)}（原 docs/questions.json {len(existing)} 題）")
-
-    used_ids = {q["id"] for q in midterm}
 
     final_q, skipped = convert_block(final_classified, used_ids, "science", FINAL_UNITS)
     log.info(f"期末題目: {len(final_q)}（排除 {dict(skipped)}）")
@@ -160,11 +167,11 @@ def build_merged(existing: list, final_classified: list, math_classified: list,
 
     merged = midterm + final_q + math_q
 
-    # 檢查重建區塊 id 唯一（期中既有重複屬 out-of-scope，不在此處理）
-    rebuilt_ids = [q["id"] for q in final_q + math_q]
-    dup = [k for k, v in Counter(rebuilt_ids).items() if v > 1]
+    # 全庫 id 唯一性檢查（期中已在上方去碰撞，重建區塊由 unique_id 保證）
+    all_ids = [q["id"] for q in merged]
+    dup = [k for k, v in Counter(all_ids).items() if v > 1]
     if dup:
-        log.warning(f"重建區塊重複 id（未解）: {dup}")
+        log.warning(f"重複 id（未解）: {dup}")
 
     return merged
 
