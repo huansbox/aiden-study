@@ -14,7 +14,7 @@ FINAL_8_SUBTOPICS = {
 
 
 def test_all_configs_present():
-    assert set(SEMESTERS) == {"mid", "final", "math"}
+    assert set(SEMESTERS) == {"mid", "final", "math", "social"}
 
 
 def test_final_config_units_and_subtopics():
@@ -69,3 +69,24 @@ def test_math_config_units_and_subtopics():
     assert not validate_unit_subtopic("3", "動物分類", math["valid_units"], math["valid_subtopics"])
     # 範圍外題 unit=none 不檢 subtopic
     assert validate_unit_subtopic("none", "none", math["valid_units"], math["valid_subtopics"])
+
+
+SOCIAL_6_SUBTOPICS = {
+    "聰明消費", "綠色消費",
+    "地名的由來", "探索家鄉的地名",
+    "家鄉的人物與發展", "傳說與文化保存",
+}
+
+
+def test_social_config_units_and_subtopics():
+    social = SEMESTERS["social"]
+    # 社會內部 unit 10/11/12（課本第 4/5/6 單元；避開自然 unit 4）
+    assert social["valid_units"] == {"10", "11", "12", "none"}
+    assert social["valid_subtopics"] == SOCIAL_6_SUBTOPICS
+    assert validate_unit_subtopic("10", "綠色消費", social["valid_units"], social["valid_subtopics"])
+    assert validate_unit_subtopic("12", "傳說與文化保存", social["valid_units"], social["valid_subtopics"])
+    # 數學/自然 unit 在社會 config 下非法
+    assert not validate_unit_subtopic("4", "綠色消費", social["valid_units"], social["valid_subtopics"])
+    assert not validate_unit_subtopic("10", "動物分類", social["valid_units"], social["valid_subtopics"])
+    # 範圍外題 unit=none 不檢 subtopic
+    assert validate_unit_subtopic("none", "none", social["valid_units"], social["valid_subtopics"])

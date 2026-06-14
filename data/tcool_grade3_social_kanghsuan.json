@@ -1,0 +1,911 @@
+[
+  {
+    "city": "桃園市",
+    "school": "建德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001163b2246798a6b6.pdf",
+    "a": ""
+  },
+  {
+    "city": "基隆市",
+    "school": "東光國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001104b32461a58ec9.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000996b32455fdbced.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "和順國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000825b324701acabb.pdf",
+    "a": "/d/a/20000825a324701acabb.pdf"
+  },
+  {
+    "city": "基隆市",
+    "school": "東光國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001076b32149842f93.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000973b3210164ab4e.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "和順國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000801b3214c182c05.pdf",
+    "a": "/d/a/20000801a3214c182c05.pdf"
+  },
+  {
+    "city": "高雄市",
+    "school": "永安國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "113下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000238b32163f9445c.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002674b32132a526f3.pdf",
+    "a": "/d/a/20002674a32132a526f3.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002100b3210b0b2b1b.pdf",
+    "a": "/d/a/20002100a3210b0b2b1b.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001859b32151bf0064.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "和順國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20000729b32460b0c944.pdf",
+    "a": "/d/a/20000729a32460b0c944.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048816695e985da9d8.pdf",
+    "a": "/d/a/10048816695e985daf5f.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "太平國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1005165668c91e50927e.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10031296683ac207c867.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100488066839f5e23861.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029016682497b71218.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "文德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1002876667286f117ddf.pdf",
+    "a": "/d/a/1002876667286f11906c.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002673b314119c67de.pdf",
+    "a": "/d/a/20002673a314119c67de.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002099b31428ebd37d.pdf",
+    "a": "/d/a/20002099a31428ebd37d.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001858b311341f98a4.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺南市",
+    "school": "和順國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000705b321026462b7.pdf",
+    "a": "/d/a/20000705a321026462b7.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "大墩國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20000528b3211f3d0576.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10048816694d76a212eb.pdf",
+    "a": "/d/a/100488166908d02e7463.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "太平國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1005165668c91e5069f9.pdf",
+    "a": "/d/a/1005165668c91e507cf1.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10031296683a9e661ab3.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488066839d4186931.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "文德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "112下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100287666270038f3446.pdf",
+    "a": "/d/a/1002876662700390059a.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002014b321746035ef.pdf",
+    "a": "/d/a/20002014a321746035ef.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100488064fa76e0a99b1.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "吉林國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100513064a4e61cdcb83.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "文德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1002876649a8376190f6.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "舊館國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/1002932649d399092968.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "舊館國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/1002932646b0181729d6.pdf",
+    "a": "/d/a/1002932646b018173581.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002013b3141fc9cd24.pdf",
+    "a": "/d/a/20002013a3141fc9cd24.pdf"
+  },
+  {
+    "city": "桃園市",
+    "school": "大華國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001438b3144c6eeeea.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "雙蓮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1005167654c80debd733.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488064fa7456449b7.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "吉林國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100513064a4e24476d47.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "大莊國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002991645b09df72802.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸仁國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028946450b458dc525.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "國聖國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028686441f9ca6522d.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "文德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100287664350267090fe.pdf",
+    "a": "/d/a/1002876643508bacf0bd.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "舊館國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "111下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029326433a4fc85993.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20002484b321249cd5ac.pdf",
+    "a": "/d/a/20002484a321249cd5ac.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/20001684b32112217c3c.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "中正國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/1002995637450cb71b2d.pdf",
+    "a": "/d/a/1002995637450cb7207d.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100312962cbd0f2b867a.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "竹塘國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100301062c933c2c9140.pdf",
+    "a": "/d/a/100301062c933c2c94a2.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100503062b511ba6c262.pdf",
+    "a": "/d/a/100503062b511ba6c3b5.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "桃子腳國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20002483b31471f25f9f.pdf",
+    "a": "/d/a/20002483a31471f25f9f.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "民權國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/20001683b31141d78be2.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "後寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100301662fddafe6a3dd.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺東縣",
+    "school": "新生國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100434962df70dad96fd.pdf",
+    "a": "/d/a/100434962df70dad9bbd.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100503062b50dec6f855.pdf",
+    "a": "/d/a/100503062b50dec6fa2d.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "竹塘國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100301062996edcb968f.pdf",
+    "a": "/d/a/100301062996edcb9a21.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100312962678c30a3dfd.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "伸仁國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "110下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002894625f6b1d2507c.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/100178564094bc689754.pdf",
+    "a": "/d/a/100178564094bc68999f.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "育英國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/1002938609caf1c773d8.pdf",
+    "a": ""
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1001785640942cdbc5af.pdf",
+    "a": "/d/a/1001785640942cdbc90c.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488061725ac4974aa.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "延平國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100517060ee5151c084e.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺北市",
+    "school": "成德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100524560ebd122b5998.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100290160ebbce181271.pdf",
+    "a": "/d/a/100290160ebbce1820aa.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100488160e54a913a793.pdf",
+    "a": "/d/a/100488160e54a913aa3a.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "日新國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100290960c076431c87a.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100320360ab52c19a3cd.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "竹塘國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100301060893e2f32775.pdf",
+    "a": "/d/a/100301060893e2f32f80.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "三潭國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029566087b4304df7a.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "文德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002876608108be456e4.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "員林國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "109下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/100293760632e31ca2d5.pdf",
+    "a": "/d/a/100293760632e31ca553.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "成德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10052456073b66ae1a8a.pdf",
+    "a": "/d/a/10052456073b66af2e55.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "四維國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048815fb4803742cb0.pdf",
+    "a": "/d/a/10048815fb4803742e1b.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10017855f3366a1d6e89.pdf",
+    "a": "/d/a/10017855f3366a1d6f92.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "興南國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10016515f321a0229954.pdf",
+    "a": "/d/a/10016515f321a0229bf4.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "曉陽國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10028915f2a20c713b27.pdf",
+    "a": "/d/a/10028915f2a20c713c4e.pdf"
+  },
+  {
+    "city": "臺南市",
+    "school": "海佃國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10050305f1946bf2d6b3.pdf",
+    "a": "/d/a/10050305f1946bf2d7c8.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10032035f150c98ef0cb.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10029015f14e2801cfbc.pdf",
+    "a": "/d/a/10029015f14e2801d71c.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10048805fc6f643939b9.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "社寮國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10031295f0c009d39e08.pdf",
+    "a": ""
+  },
+  {
+    "city": "桃園市",
+    "school": "草漯國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末2",
+    "publisher": "康軒",
+    "q": "/d/q/10021685fd1c261e00ea.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "田尾國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期末3",
+    "publisher": "康軒",
+    "q": "/d/q/10029745fd0780abf305.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/10029985f20f2ac7a329.pdf",
+    "a": "/d/a/10029985f20f2ac7a6fc.pdf"
+  },
+  {
+    "city": "臺中市",
+    "school": "益民國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/10027635f0d788948731.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "寶山國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中2",
+    "publisher": "康軒",
+    "q": "/d/q/10028745ee2e8bb0a6db.pdf",
+    "a": "/d/a/10028745ee2e8bb0a8e0.pdf"
+  },
+  {
+    "city": "臺北市",
+    "school": "成德國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1005245606562f6449ed.pdf",
+    "a": "/d/a/1005245606562f644d39.pdf"
+  },
+  {
+    "city": "臺東縣",
+    "school": "新生國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1004349605995abbad75.pdf",
+    "a": "/d/a/1004349605995abbb22e.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "興南國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10016515f31039ae15ca.pdf",
+    "a": "/d/a/10016515f31039ae176d.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "廣興國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029985f20f1764afc3.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "文心國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10048805fc6f8ea001b2.pdf",
+    "a": ""
+  },
+  {
+    "city": "臺中市",
+    "school": "益民國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10027635f0d7727c7caf.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "草港國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10029015ecde26eef3c5.pdf",
+    "a": "/d/a/10029015ecde26eefb32.pdf"
+  },
+  {
+    "city": "新北市",
+    "school": "安和國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10017855ec22bdc31e85.pdf",
+    "a": "/d/a/10017855ec22bdc32043.pdf"
+  },
+  {
+    "city": "南投縣",
+    "school": "潭南國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10032035ebba27f4ef95.pdf",
+    "a": ""
+  },
+  {
+    "city": "南投縣",
+    "school": "國姓國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10031795ebb972925d7e.pdf",
+    "a": "/d/a/10031795ebb972925ec2.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "曉陽國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002891602e1987218e5.pdf",
+    "a": "/d/a/10028915eb8c35ab3a5a.pdf"
+  },
+  {
+    "city": "彰化縣",
+    "school": "中正國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/1002995602f5bba2f78d.pdf",
+    "a": "/d/a/1002995602f5bba39977.pdf"
+  },
+  {
+    "city": "桃園市",
+    "school": "草漯國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10021685eb4e06943454.pdf",
+    "a": ""
+  },
+  {
+    "city": "彰化縣",
+    "school": "寶山國小",
+    "grade_subject": "3年級 社會",
+    "year_period": "108下 期中1",
+    "publisher": "康軒",
+    "q": "/d/q/10028745eb0dd2c0781d.pdf",
+    "a": ""
+  }
+]

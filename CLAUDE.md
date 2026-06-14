@@ -1,12 +1,13 @@
-# Aiden Study - 三下題庫練習網站（自然＋數學）
+# Aiden Study - 三下題庫練習網站（自然＋數學＋社會）
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1406 題（自然 1099＝期中 601＋期末 498；數學 307）。自然期末 498 題＋數學全部 307 題附作答後說明（`explanations.json` 805 題）。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1466 題（自然 1099＝期中 601＋期末 498；數學 307；社會 60）。自然期末 498 題＋數學全部 307 題附作答後說明（`explanations.json` 805 題；社會尚無說明）。
 
 ## 快速參考
 
-- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）。（③數學 9 份無答案卷已於 2026-06-12 完成，見下）
+- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會擴充其餘 9 卷＋作答後說明（見下社會 pilot）。
+- **社會科 pilot 已完成（2026-06-14，桃子腳兩卷端到端，未 commit）**：第三個科目上線。桃子腳 110下＋112下 → 社會 60 題（21 是非＋39 選擇），unit **10/11/12＝課本第 4/5/6 單元**（消費與選擇／家鄉的地名／家鄉的故事，各 2 子主題）→ 題庫 1406→1466。**前一 session 幻覺已更正**：`social-tcool-blocked.md`（宣稱 tcool 換 nginx 擋下載、繞過全失敗）整段捏造，實測仍 Cloudflare、既有 Playwright→cf_clearance 流程照常可用、已下載 11 卷。新流程＝`extract.py`→`clean_social_raw.py`（社會頁尾噪音清理＋雙欄題號修正）→官方答案（桃112文字抽／桃110掃描圖象限放大親讀）→`classify.py --semester social`→`apply_answer_key`→`build_questions`（加 social 區塊）→`index.html` 加社會科目層（`unitNum()` 顯示課本號）。crosscheck AI vs 官方 59/60 一致，唯一分歧射日傳說官方 true 勝出。tests 111 passed。完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)。**已下載未處理＝其餘 9 卷在 `pdfs_社會/`**。
 - **數學批三 9 份無答案卷已完成（2026-06-12，feat/math-batch3）**：建德113／民權113／內湖113,112／社寮112,110／舊館111 七卷收錄（草港112、吉林111 純掃描圖整卷剔除）→ 數學 146→307、題庫 1406、`explanations.json` 805 全覆蓋。**AI 補答案＋複審新流程**＝主迴圈親算 166 題→每卷 2 個獨立盲解 agent→程式化比對 332 次一致 331/332（唯一分歧票選○計數放大原圖採 6）。**獨立驗證**（`scripts/verify_batch3.py`）：30 題機械重算、131 題主模型逐題親算全數正確；另發現並修正 build_questions 期中 id 去碰撞漏洞（5 組重複）＋2 張截圖 bug（社寮112票價表截斷、社寮110誤掛血型表）。看表/看圖 17 截圖＝`docs/assets/math/`。剔除全錄＝`skipped_questions.md`「數學批三」節。
 - **數學說明擴充批 86 題已 merge 上線（2026-06-11）**：沿用 batch_math 流程（9 寫手 sonnet→9 獨立審核→主迴圈裁決），72 pass／14 審核改寫（多為直式借位位值寫錯、超齡解法、列式結構誤導），0 答案疑點；批次檔＝`batch_math_06..14.json`，`explanations.json` 644 題全覆蓋（自然期末 498＋數學 146）、tests 109 passed；抽查全錄＝`docs-dev/review_數學說明_抽查.md`。
 - **期末複驗 5 題分歧已定奪（2026-06-11，家長逐題確認）**：改 3 題（大墩113選6 ④→①、大墩112選9 ②→④、東光113是非7 ○→✕）、維持 2 題；百葉箱題推翻原查證（家長翻課本實證「可測最高最低溫」為課本明文）。定奪全錄＝`docs-dev/review_期末_複驗_分歧.md`；三題作答後說明同步改寫（exp_results＋explanations.json）。
@@ -35,9 +36,11 @@ scripts/           Python 資料處理 pipeline
   extract.py       自然 PDF → raw（純函式 parse_questions_from_text + --input/--output）
   extract_math.py  數學答案卷 → raw（獨立模組：雙欄切分、括號答案、分數亂序偵測）
   reflow_math.py   分數亂序題 AI 重組（artifact 人工核對後 --apply 併回 raw）
-  classify.py      claude -p 批次分類（可切換 taxonomy：--semester mid|final|math）
+  classify.py      claude -p 批次分類（可切換 taxonomy：--semester mid|final|math|social）
+  clean_social_raw.py 社會 raw 後處理（頁尾噪音清理＋雙欄切壞題號修正；extract 後 classify 前）
+  download_tcool_social.ps1 / sweep_tcool_social.ps1  社會卷下載器／清單掃描器
   data_helpers.py  去重/答案合併/驗證純函式（深模組B）
-  build_questions.py classified → docs/questions.json 三來源合併（冪等、id 去碰撞、subject 欄位）
+  build_questions.py classified → docs/questions.json 四來源合併（冪等、id 去碰撞、subject 欄位）
   build_explanations.py data/exp_results/ → docs/explanations.json 合併驗證
   fix_classified.py 期中分類修正腳本
 data/              中間資料
@@ -51,10 +54,12 @@ data/              中間資料
   classified_questions_數學.json 數學分類（unit 5–9 + subtopic，含擴充批合併）
   curated_questions_數學.json / table_crops_數學.json  看表題人工檔／截圖座標
   skipped_questions_數學.json / reflowed_questions_數學.json  分數亂序跳過清單／重組 artifact
-  tcool_grade3_sci_kanghsuan.json / tcool_grade3_math_kanghsuan.json  考卷清單（tcool.cc 爬取）
+  raw_questions_社會.json / classified_questions_社會.json  社會萃取／分類（unit 10–12）
+  official_answers_社會.json  社會官方答案（桃112文字抽＋桃110視覺判讀）
+  tcool_grade3_sci_kanghsuan.json / _math_ / _social_kanghsuan.json  考卷清單（tcool.cc 爬取）
 docs/              GitHub Pages 部署目錄
-  index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學）
-  questions.json   最終題庫（自然 unit 1–4＋數學 unit 5–9，全題帶 subject）
+  index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學/社會）
+  questions.json   最終題庫（自然 1–4＋數學 5–9＋社會 10–12，全題帶 subject）
   explanations.json 作答後說明（自然期末 499 題，id → 說明）
 tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
@@ -100,7 +105,7 @@ skipped_questions.md  跳過題目清單（供手動確認）
 
 ## 分類規則
 
-自然期中（unit 1–2）／自然期末（unit 3–4）／數學期末（unit 5–9）為 `classify.py` 的三組可切換 config（`--semester mid|final|math`）。unit 全域唯一。
+自然期中（unit 1–2）／自然期末（unit 3–4）／數學期末（unit 5–9）／社會期末（unit 10–12）為 `classify.py` 的四組可切換 config（`--semester mid|final|math|social`）。unit 全域唯一。社會內部 10/11/12＝課本第 4/5/6 單元（避開自然 unit 4；`index.html` 以 `unitNum()` 顯示課本號）。
 
 - **第 1 單元：田園樂** — 蔬菜種類/部位/生長因素/生長過程
 - **第 2 單元：溫度變化對物質的影響** — 物質變化因素/水三態/其他物質受溫度改變
@@ -111,7 +116,10 @@ skipped_questions.md  跳過題目清單（供手動確認）
 - **第 7 單元：乘法與除法** — 乘除互逆/乘除計算/乘除應用
 - **第 8 單元：時間** — 時刻與時間單位/時制互換/時間計算
 - **第 9 單元：統計表** — 報讀表格（單一子主題，UI 不另列概念入口）
-- 數學單元名稱依均一「類康軒版」＋搜尋交叉查證（與兩卷卷面吻合；非課本目錄原件，家長可抽查課本）
+- **社會 unit 10（課本第 4 單元）消費與選擇** — 聰明消費/綠色消費
+- **社會 unit 11（課本第 5 單元）家鄉的地名** — 地名的由來/探索家鄉的地名
+- **社會 unit 12（課本第 6 單元）家鄉的故事** — 家鄉的人物與發展/傳說與文化保存
+- 數學/社會單元名稱依均一「類康軒版」＋搜尋交叉查證（與卷面吻合；非課本目錄原件，家長可抽查課本）
 - 衝突規則：優先歸屬題目直接詢問的核心概念所屬單元；範圍外標 `none` 排除
 
 ## 部署
