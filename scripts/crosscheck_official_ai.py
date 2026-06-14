@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
-"""交叉比對：視覺讀的官方答案 vs classify 的 AI 判答。列出分歧供人工仲裁。"""
-import sys, io, json, os
+"""交叉比對：官方答案 vs classify 的 AI 判答。列出分歧供人工仲裁。
+
+用法：
+  uv run python scripts/crosscheck_official_ai.py                          # 期末新增（預設）
+  uv run python scripts/crosscheck_official_ai.py --classified <檔> --official <檔>   # 其他科目
+"""
+import sys, io, json, os, argparse
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-classified = json.load(open(os.path.join(ROOT, "data", "classified_questions_期末_新增.json"), encoding="utf-8"))
-official = json.load(open(os.path.join(ROOT, "data", "official_answers_期末_新增.json"), encoding="utf-8"))
+ap = argparse.ArgumentParser()
+ap.add_argument("--classified", default=os.path.join(ROOT, "data", "classified_questions_期末_新增.json"))
+ap.add_argument("--official", default=os.path.join(ROOT, "data", "official_answers_期末_新增.json"))
+args = ap.parse_args()
+classified = json.load(open(os.path.abspath(args.classified), encoding="utf-8"))
+official = json.load(open(os.path.abspath(args.official), encoding="utf-8"))
 
 agree = disagree = no_official = 0
 disagreements = []

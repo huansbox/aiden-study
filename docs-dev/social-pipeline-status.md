@@ -97,7 +97,22 @@ pilot 已 commit＋merge＋push（`35a4c82` feat + `2a072b7` merge，origin/mast
 
 </details>
 
-### 路 A 起手式（其餘 8 卷官方答案批；PDF 已在 `pdfs_社會/`）— ★下一批
+### ✅ 路 A 已完成（5 卷官方答案批，2026-06-14）
+
+社會題庫 60 → **226（+166）**，題庫總 1466 → **1632**。原規劃 8 卷，probe 後 3 卷整卷剔除 → 實做 5 卷（安和111/112、四維112、竹塘110、海佃110），**全文字可抽答案卷、無需整卷視覺判讀**。
+
+關鍵發現與處置（完整剔除/補抽紀錄見 `skipped_questions.md`「社會擴充批（路 A）」節）：
+- **3 卷整卷剔除**：中正110（內容為**舊課綱**，與基準卷不同調，家長定案剔除）、和順112/113（題目卷本身 0 字純掃描圖，非僅答案卷）。交接文件「8 卷／中正視覺判讀」前提作廢。
+- **跨校無逐字重題**：實測 6 卷間＋與桃子腳 normalize_text 去重＝0（各校考同概念但題幹用字全異）→ **不需新去重機制**，交接文件「大量重題」預期不成立。
+- **選項標記格式分歧**（本批真正難點，非視覺判讀）：安和裸`○文字`／四維海佃`○數字`／竹塘`數字○`混用＋雙欄切碎 → `clean_social_raw.py` 新增 `recover_social_options`（`○`切分＋去孤立編號＋壓空白＋句末截斷，重組乾淨題幹）。`extract.py` NON_TARGET 補「勾選題/排出順序/生活情境題」截斷（順帶修期中 2 題勾選題滲漏，golden `raw_questions.json` 同步更新、tests 113 passed）。
+- **官方答案**：5 卷答案卷格式全不同 → `extract_social_answers.py` 逐卷專用 parser（含 PUA U+F0CD→╳、空括號=false）。完整性 167/167。7 題雙欄跑版答案 render 視覺判讀補（記於 MANUAL_OVERRIDE）。
+- **竹塘題目卷/答案卷不同版本**（tr7、mc7 換題）：tr7「八德命名」答案有課本爭議→剔除；mc7「消費者專線1950」確定事實→人工確認保留。
+- crosscheck AI vs 官方 **161/166 一致**，5 分歧皆官方正確（內容竄改型是非題）。
+- 流程：extract→clean_social_raw→extract_social_answers→classify(social,none=0)→apply→merge_classified→crosscheck→build。前端不改（科目層通用）。Playwright 實測：科目層/unit課本號/補抽選項題渲染/作答判對全正確。
+
+未處理（更後面）：原 8 卷的其餘題型策展、無答案卷 AI 補答案批、社會作答後說明擴充（pilot 60 題已有說明，新增 166 題尚無）。
+
+<details><summary>原路 A 起手式（已執行，存檔備查）</summary>
 
 剔除：**彰化文德112 整卷剔除**——tcool 的題目卷與答案卷是**同一個掃描圖檔**（md5 相同、0 文字層），無獨立答案、題幹也抽不到。
 
@@ -118,6 +133,8 @@ pilot 已 commit＋merge＋push（`35a4c82` feat + `2a072b7` merge，origin/mast
 3. 官方答案：文字卷比照桃112（`N.(答案)`，注意**閱讀/配合題重用 1-N 題號 → 各號取首次出現或限定選擇題 section**）；掃描卷比照桃110（render scale 4.0 切 L/R×上下半象限，主模型親讀，**勿用 agent 讀整頁**）。寫進 `official_answers_社會.json`。
 4. classify `--semester social`（dedupe_by_text 會去跨校重題）→ apply_answer_key → crosscheck → build。
 5. **跨校重題**：社會單元 4-6 各校大量重題，去重後淨增遠小於卷數×題數，屬預期。
+
+</details>
 
 ### 其他後續（更後面）
 - 無答案卷（民權各年、社寮、太平等，題目卷文字可抽但無答案）＝「AI 補答案＋複審」批（比照數學批三：多個獨立盲解 agent + 程式化比對）。

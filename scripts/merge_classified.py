@@ -5,16 +5,21 @@
 _新增 檔，本腳本以正規化題目文字跨檔去重（新題文字若已存在於既有題庫則丟棄），
 保留既有資料原封不動，只 append 倖存的新題。原地覆寫 classified_questions_期末.json。
 
-用法： uv run python scripts/merge_classified.py
+用法：
+  uv run python scripts/merge_classified.py                       # 期末（預設）
+  uv run python scripts/merge_classified.py --main <主檔> --new <新增檔>   # 其他科目（如社會）
 """
-import sys, io, json, os
+import sys, io, json, os, argparse
 sys.path.insert(0, os.path.dirname(__file__))
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 from data_helpers import normalize_text
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-MAIN = os.path.join(ROOT, "data", "classified_questions_期末.json")
-NEW = os.path.join(ROOT, "data", "classified_questions_期末_新增.json")
+ap = argparse.ArgumentParser()
+ap.add_argument("--main", default=os.path.join(ROOT, "data", "classified_questions_期末.json"))
+ap.add_argument("--new", default=os.path.join(ROOT, "data", "classified_questions_期末_新增.json"))
+args = ap.parse_args()
+MAIN, NEW = os.path.abspath(args.main), os.path.abspath(args.new)
 
 main = json.load(open(MAIN, encoding="utf-8"))
 new = json.load(open(NEW, encoding="utf-8"))
