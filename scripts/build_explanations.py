@@ -74,6 +74,19 @@ def social_ids(questions: list) -> set:
     return {q["id"] for q in questions if q.get("subject") == "social"}
 
 
+def expected_explanation_ids(questions: list, entry_ids: set) -> set:
+    """應有說明的 id 集合。
+
+    自然期末（unit 3/4）與數學：完整覆蓋（每題都須有說明）。
+    社會：漸進覆蓋——題庫分批擴充、說明分批補，只把「已寫了說明」的社會題
+    （entry_ids ∩ social）納入預期，避免新批社會題尚無說明時擋下驗證；
+    但 entry 裡的社會 id 必須是有效社會題（不在 social 者 → 仍會被當多出 orphan 抓出）。
+    """
+    return final_exam_ids(questions) | math_ids(questions) | (
+        social_ids(questions) & entry_ids
+    )
+
+
 def validate_entries(entries: list, expected_ids: set) -> list:
     """驗證說明條目，回傳問題描述清單（空清單＝通過）。
 
@@ -185,10 +198,6 @@ def main():
     science_ids = final_exam_ids(questions)
     math = math_ids(questions)
     social = social_ids(questions)
-    expected = science_ids | math | social
-    log.info(
-        f"自然期末題數: {len(science_ids)}，數學題數: {len(math)}，社會題數: {len(social)}"
-    )
 
     entries = []
     files = sorted(glob.glob(RESULTS_GLOB))
@@ -196,6 +205,15 @@ def main():
         with open(path, encoding="utf-8") as f:
             entries.extend(json.load(f))
     log.info(f"批次檔: {len(files)} 個，條目: {len(entries)}")
+
+    # 自然期末（unit 3/4）與數學「完整覆蓋」；社會「漸進覆蓋」（見 expected_explanation_ids）。
+    exp_ids = {e.get("id") for e in entries}
+    social_covered = social & exp_ids
+    expected = expected_explanation_ids(questions, exp_ids)
+    log.info(
+        f"自然期末題數: {len(science_ids)}，數學題數: {len(math)}，"
+        f"社會題數: {len(social)}（已覆蓋說明 {len(social_covered)}）"
+    )
 
     problems = validate_entries(entries, expected)
     if problems:

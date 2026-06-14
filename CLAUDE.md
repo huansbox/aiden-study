@@ -2,11 +2,13 @@
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1632 題（自然 1099＝期中 601＋期末 498；數學 307；社會 226）。自然期末 498 題＋數學全部 307 題＋社會桃子腳 60 題附作答後說明（`explanations.json` 865 題；社會擴充 166 題尚無說明）。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會有答案卷、`pdfs_社會_補答案/` 期末社會無答案卷）萃取題目、AI 分類、建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1858 題（自然 1099＝期中 601＋期末 498；數學 307；社會 452）。自然期末 498＋數學全 307＋社會 226 題附作答後說明（`explanations.json` 1031 題；社會無答案卷批新增 226 題尚無說明）。
 
 ## 快速參考
 
-- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批已完成（2026-06-14，社會 60→226）**；剩 **社會擴充 166 題作答後說明**（比照路 B 雙盲流程）、社會特有題型策展、無答案卷 AI 補答案批。
+- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批＋路 B 擴充說明 166＋無答案卷 AI 補答案批 226 皆已完成（2026-06-14，社會 60→452）**；剩 **社會無答案卷批新增 226 題作答後說明**（比照路 B 雙盲）、社會看圖題策展（甲乙標章/此標章等，比照數學看表題截圖）、可再收更多無答案卷。
+- **社會無答案卷 AI 補答案批已完成（2026-06-14，11 卷，社會 226→452、題庫 1632→1858）**：tcool ≥110下期末「無官方答案卷」14 卷下載（草港112/吉林111 純掃描圖、民權112 圖多 共 3 卷整卷剔除）→ 276 萃取→去重淨增 240→**AI 補答案（比照數學批三）**。流程＝3 獨立盲解 agent **三方比對 230/240 一致**→主迴圈裁決 10 分歧（7 答 3 剔）→**classify 自填＝第 4 意見**揪一致票 2 隱性錯（布農族依月亮非太陽、琉璃珠排灣非阿美）→**主迴圈全 233 題事實覆審**再揪 2 全模型共錯（竹山自然環境非生產、鹹菜客家非閩南）＋剔 3 看圖/全對題→入庫 226 題全 `needs_review=True`。**cf_clearance 取法更新**＝Playwright 導 PDF URL 過 managed challenge 後 IWR 才放行（直接用首頁 cookie 對 PDF 端點仍 403）。`build_explanations.py` 社會改「漸進覆蓋」（`expected_explanation_ids`，新批題庫不擋說明驗證）＋3 測試，tests **116 passed**，Playwright 科目層 154/132/166＋新題判對。下載器＝`scripts/download_tcool_social_noans.ps1`；完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)＋`skipped_questions.md`「無答案卷 AI 補答案批」節。
+- **社會擴充 166 題作答後說明已完成（路 B 擴充，2026-06-14，explanations 865→1031）**：社會 226 題（pilot 60＋擴充 166）全覆蓋。8 sonnet 寫手（附主迴圈已核定典故事實 brief）→6 獨立盲審→主迴圈裁決 **150 pass／16 fixed**（「全臺最古老媽祖廟」軟化、消費專線干擾號碼錯標移除、統一發票誤引選項改正、大甲藺草誤掛洪鴦改正、射日刪課本外推論）。批次檔＝`data/exp_results/batch_social_03..10.json`；抽查＝`docs-dev/review_社會說明_抽查.md`。
 - **社會擴充批（路 A）已完成（2026-06-14，5 卷，社會 60→226、題庫 1466→1632）**：安和111/112、四維112、竹塘110、海佃110 端到端（21→101 是非＋39→125 選擇）。原規劃 8 卷，probe 後 **3 卷整卷剔除**：中正110（內容舊課綱，家長定案剔除）、和順112/113（題目卷本身 0 字純掃描圖）。**跨校無逐字重題**（normalize_text 去重＝0，交接文件「大量重題」預期不成立，不需新去重機制）。**本批難點＝選項標記格式分歧**（非視覺判讀）：`clean_social_raw.py` 新增 `recover_social_options`（裸`○`/`○數字`/`數字○`混用＋雙欄切碎統一補抽）；`extract.py` NON_TARGET 補「勾選題/排出順序/生活情境題」截斷（順帶修期中 2 題勾選滲漏，golden 同步更新）。**官方答案**＝`extract_social_answers.py` 逐卷專用 parser（5 卷格式全不同＋PUA U+F0CD→╳＋空括號=false），完整性 167/167，7 題雙欄跑版答案 render 視覺判讀補（MANUAL_OVERRIDE）。**竹塘題目卷/答案卷不同版本**（tr7/mc7 換題）：tr7 剔除、mc7 人工確認保留。crosscheck AI vs 官方 **161/166 一致**（5 分歧皆官方正確，內容竄改型是非題）。tests **113 passed**，Playwright 實測科目層/unit課本號/補抽選項題/作答判對全正確。完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)「✅ 路 A 已完成」節＋`skipped_questions.md`「社會擴充批（路 A）」節。
 - **社會科 pilot 已完成（2026-06-14，桃子腳兩卷端到端，未 commit）**：第三個科目上線。桃子腳 110下＋112下 → 社會 60 題（21 是非＋39 選擇），unit **10/11/12＝課本第 4/5/6 單元**（消費與選擇／家鄉的地名／家鄉的故事，各 2 子主題）→ 題庫 1406→1466。**前一 session 幻覺已更正**：`social-tcool-blocked.md`（宣稱 tcool 換 nginx 擋下載、繞過全失敗）整段捏造，實測仍 Cloudflare、既有 Playwright→cf_clearance 流程照常可用、已下載 11 卷。新流程＝`extract.py`→`clean_social_raw.py`（社會頁尾噪音清理＋雙欄題號修正）→官方答案（桃112文字抽／桃110掃描圖象限放大親讀）→`classify.py --semester social`→`apply_answer_key`→`build_questions`（加 social 區塊）→`index.html` 加社會科目層（`unitNum()` 顯示課本號）。crosscheck AI vs 官方 59/60 一致，唯一分歧射日傳說官方 true 勝出。tests 111 passed。完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)。**已下載未處理＝其餘 9 卷在 `pdfs_社會/`**。
 - **社會作答後說明已完成（2026-06-14，60 題，路 B）**：沿用 batch_math 雙盲流程（3 寫手 sonnet 分批寫＋附主迴圈已核定典故事實 → 3 獨立審核 agent 盲審 → 主迴圈裁決，**54 pass／6 fixed**：環保袋/地形氣候/即期品/拆包裝語序採審核改寫，琉璃珠泛稱與施世榜「大約十年」兩 flag 由主迴圈裁定）。`explanations.json` 805→**865** 全覆蓋。**程式改點**＝`build_explanations.py` 加 `social_ids()`（subject=social 納入 expected 集合驗證）＋社會抽查報告；**前端不改**（說明卡通用 `explanations[q.id]`，社會進檔即顯示）。tests **113 passed**（+`TestSocialIds`）。Playwright 實測社會 60 題 join 100% 命中。批次檔＝`data/exp_results/batch_social_0{0,1,2}.json`；抽查全錄＝`docs-dev/review_社會說明_抽查.md`。射日傳說桃110是非#18 官方 true 已正確寫成肯定句（被射傷太陽變月亮、要求布農族定期祭典、族人答應）。
@@ -62,7 +64,7 @@ data/              中間資料
 docs/              GitHub Pages 部署目錄
   index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學/社會）
   questions.json   最終題庫（自然 1–4＋數學 5–9＋社會 10–12，全題帶 subject）
-  explanations.json 作答後說明（自然期末 499 題，id → 說明）
+  explanations.json 作答後說明（自然期末498＋數學307＋社會226＝1031 題，id → 說明）
 tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）

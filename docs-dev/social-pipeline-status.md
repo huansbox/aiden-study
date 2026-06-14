@@ -110,7 +110,23 @@ pilot 已 commit＋merge＋push（`35a4c82` feat + `2a072b7` merge，origin/mast
 - crosscheck AI vs 官方 **161/166 一致**，5 分歧皆官方正確（內容竄改型是非題）。
 - 流程：extract→clean_social_raw→extract_social_answers→classify(social,none=0)→apply→merge_classified→crosscheck→build。前端不改（科目層通用）。Playwright 實測：科目層/unit課本號/補抽選項題渲染/作答判對全正確。
 
-未處理（更後面）：原 8 卷的其餘題型策展、無答案卷 AI 補答案批、社會作答後說明擴充（pilot 60 題已有說明，新增 166 題尚無）。
+未處理（更後面）：原 8 卷的其餘題型策展、看圖題策展。
+
+## ✅ 社會擴充 166 題作答後說明已完成（路 B 擴充，2026-06-14）
+
+擴充批 166 題（安和111/112、四維112、竹塘110、海佃110）全補作答後說明，社會 226 題（pilot 60＋擴充 166）全覆蓋、`explanations.json` 865→**1031**。沿用路 B 雙盲：8 sonnet 寫手分批（附主迴圈已核定典故事實 brief）→ 6 獨立盲審 agent → 主迴圈裁決，**150 pass／16 fixed**。主要改寫＝「全臺最古老媽祖廟」軟化、消費專線干擾號碼錯標移除、統一發票題誤引選項改正、大甲藺草誤掛洪鴦改正、射日傳說刪課本外推論。tests 116 passed；Playwright social join 226/226。commit `4244819`+merge `ad88622`（已 push）。
+
+## ✅ 無答案卷 AI 補答案批已完成（2026-06-14）
+
+tcool ≥110下期末「無官方答案卷」14 卷下載 → 端到端 AI 補答案，社會 226→**452**（+226），題庫 1632→**1858**。
+
+- **下載**：`scripts/download_tcool_social_noans.ps1`（篩 `a` 欄空）。cf_clearance 取法更新＝**Playwright 導到任一 `/d/q/*.pdf` 真實導航通過 managed challenge → 取升級後 cf_clearance → PowerShell IWR 才放行**（直接用首頁 cookie 對 PDF 端點仍 403；過挑戰後全站 PDF 生效）。
+- **剔除**：草港112/吉林111 純掃描圖、民權112 圖多文字殘缺（整卷）；東光 2 亂碼、社寮安全帽選項黏連、太平探索步驟題義模糊、民權射日四選項全對、文德甲乙/民權此標章看圖題（逐題）。詳見 `skipped_questions.md`「無答案卷 AI 補答案批」節。
+- **AI 補答案（比照數學批三）**：240 淨新題 → **3 獨立盲解 agent 三方比對 230/240 一致** → 主迴圈裁決 10 分歧 → **classify 自填＝第 4 意見**揪出一致票 2 處隱性錯誤（布農族依月亮非太陽、琉璃珠排灣非阿美）→ **主迴圈全題事實覆審**再揪 2 處（竹山自然環境非生產、鹹菜客家非閩南）。最終入庫 226 題全 `needs_review=True`。
+- **程式改點**：`build_explanations.py` 社會改「漸進覆蓋」（`expected_explanation_ids`：自然期末/數學完整覆蓋、社會只要求已寫說明的 id 有效，新批題庫擴充不擋驗證）＋ 3 測試。前端不改。tests **116 passed**。Playwright 實測科目層 154/132/166、新題作答判對。
+- **lineage**：`data/raw_questions_社會_補答案.json`（萃取276）／`_final.json`（清理後236，答案=null）／`classified_questions_社會_補答案.json`（分類233，含答案+needs_review），答案已併入 `classified_questions_社會.json`（226→459）。
+
+**後續**：新增 226 題作答後說明尚無（比照路 B），看圖題策展（甲乙標章/此標章等），可再收更多無答案卷。
 
 <details><summary>原路 A 起手式（已執行，存檔備查）</summary>
 
