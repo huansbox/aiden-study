@@ -15,6 +15,7 @@ import sys
 import os
 import re
 import json
+import argparse
 import logging
 from collections import defaultdict
 
@@ -23,18 +24,25 @@ sys.stderr.reconfigure(encoding="utf-8")
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-RAW_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "raw_questions_社會.json")
+DEFAULT_RAW = os.path.join(os.path.dirname(__file__), "..", "data", "raw_questions_社會.json")
 
-# 噪音錨點：出現即從該處切到字串尾（皆為考卷頁面 furniture，不會出現在正當題幹/選項）
+# 噪音錨點：出現即從該處切到字串尾（皆為考卷頁面 furniture，不會出現在正當題幹/選項）。
+# 各校頁尾字串不同，擴充批（安和/四維/竹塘/海佃）陸續補入；題幹/選項尾巴常滲入這些字串。
 SOCIAL_NOISE = re.compile(
-    r"(背面)?尚有試題"
-    r"|背面尚"
+    r"(背面)?[尚還]有試題"
+    r"|背面[尚還]"
     r"|【?三年級社會試"
     r"|試卷第[一二三四五六]"
     r"|期第\s*\d+\s*次定期評量"
     r"|學期第[一二三四五六]?\s*次定期評量"
+    r"|第[一二三四五六]?\s*次定期[評考][量查]"     # 次定期評量／次定期考查（安和「第二次定期考查試題」）
+    r"|次成績考查"                                  # 海佃「次成績考查 社會科試卷」
+    r"|學業評量試卷"                                # 竹塘「末學業評量試卷」
+    r"|社會[科領][試域]"                            # 海佃「社會科試卷」、四維「社會領域」
     r"|評量範圍"
-    r"|三年_*\s*班_*\s*號"
+    r"|三年[_\s]*班[座_\s]*號"                      # 三年__班座號__（竹塘/安和/海佃姓名欄）
+    r"|[_\s]*年[_\s]*班\s*座號[：:]"                # 海佃「____年 ____班 座號：」
+    r"|座號[：:_\s]*姓名"                           # 座號：__ 姓名 殘留
 )
 # 尾端孤立頁碼：限定「句號＋空白＋1-2 位數字結尾」，避免誤剝正當的尾端數字
 TRAIL_PAGENUM = re.compile(r"(?<=。)\s+\d{1,2}\s*$")
@@ -56,6 +64,40 @@ def strip_noise(s: str) -> tuple[str, bool]:
         # 清掉切割後殘留的尾端空白與孤立標點（僅切過的字串才動，不影響正常題幹句號）
         s = re.sub(r"[\s。，、；：]+$", "", s).strip()
     return s, changed
+
+
+# 選擇題選項補抽：各校選項標記格式不一（裸 ○文字／○數字文字／數字○文字），
+# extract.py 的 extract_options 只認部分變體，抽不到時改用本函式統一補抽。
+OPT_MARKS = "①②③④⑤"
+
+
+def recover_social_options(text: str):
+    """社會卷選項統一補抽。回傳 (乾淨題幹, [選項…])；無法補抽回 None。
+
+    社會選擇題一律以 ○ 為選項項目符號，編號（1-4／１-４）散落在 ○ 前後或對齊行。
+    策略：以第一個「(編號?)○」定題幹/選項分界 → 去除孤立編號 → 用 ○ 切分 →
+    壓掉雙欄切碎的字間空白 → 每段砍到第一個句末標點（去尾部頁尾噪音／題組導語）。
+    """
+    if text.count("○") < 3:
+        return None
+    m = re.search(r"[1-4１-４]?\s*○", text)
+    if not m:
+        return None
+    stem = re.sub(r"\s+", " ", text[:m.start()]).strip()
+    seg = text[m.start():]
+    # 去孤立編號（○ 前後緊貼的 1-4、對齊編號行），不動多位數（如電話 1922）
+    seg = re.sub(r"(?<![0-9０-９])[1-4１-４](?![0-9０-９])", "", seg)
+    opts = []
+    for p in seg.split("○"):
+        p = re.sub(r"\s+", "", p)               # 壓雙欄切碎空白
+        p = re.split(r"[。？！]", p)[0]          # 砍到第一個句末標點
+        p = p.strip("ˉ，、；：.·-—–　")
+        if p:
+            opts.append(p)
+    if len(opts) < 3:
+        return None
+    opts = opts[:4]
+    return stem, opts
 
 
 def fix_numbering(questions: list) -> int:
@@ -85,7 +127,10 @@ def fix_numbering(questions: list) -> int:
 
 
 def main():
-    path = os.path.abspath(RAW_PATH)
+    parser = argparse.ArgumentParser(description="社會 raw 後處理（頁尾噪音清理＋雙欄題號修正＋選項補抽）")
+    parser.add_argument("--input", default=DEFAULT_RAW, help="raw JSON 路徑（原地覆寫；預設主檔）")
+    args = parser.parse_args()
+    path = os.path.abspath(args.input)
     with open(path, encoding="utf-8") as f:
         questions = json.load(f)
 
@@ -96,6 +141,21 @@ def main():
             noise_hits += 1
         if q.get("options"):
             q["options"] = [strip_noise(o)[0] for o in q["options"]]
+
+    # 選項補抽：mc 有效選項 <4（社會選擇題皆 4 選；extract 對標記變體常只抽中一部分）→
+    # 統一補抽並重組乾淨題幹。已抽滿 4 選的乾淨題不動（避免誤切）。
+    recovered = 0
+    for q in questions:
+        if q["section"] != "multiple_choice":
+            continue
+        if sum(1 for o in q.get("options") or [] if o.strip()) >= 4:
+            continue
+        res = recover_social_options(q["text"])
+        if res:
+            stem, opts = res
+            q["options"] = opts
+            q["text"] = stem + "".join(f"{OPT_MARKS[i]}{o}" for i, o in enumerate(opts))
+            recovered += 1
 
     renum = fix_numbering(questions)
 
@@ -112,7 +172,7 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(questions, f, ensure_ascii=False, indent=2)
 
-    log.info(f"清理頁尾噪音: {noise_hits} 題；題號修正: {renum} 題")
+    log.info(f"清理頁尾噪音: {noise_hits} 題；選項補抽: {recovered} 題；題號修正: {renum} 題")
     if problems:
         log.warning("待人工確認：")
         for p in problems:
