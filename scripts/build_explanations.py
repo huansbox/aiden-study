@@ -4,13 +4,15 @@
 輸入：data/exp_results/batch_*.json（審核後的批次結果，
 每筆 {id, text, verdict: pass|fixed, reason?}）。
 
-驗證：id 必須與「自然期末題（unit 3/4）∪ 數學題（subject math）」集合
-完全一致、無重複、無空白說明、長度與句數在約束內。驗證全過才寫出，冪等可重跑。
+驗證：id 必須與「自然期末題（unit 3/4）∪ 數學題（subject math）∪ 社會題
+（subject social）」集合完全一致、無重複、無空白說明、長度與句數在約束內。
+驗證全過才寫出，冪等可重跑。
 
 產出：
   - docs/explanations.json：{question_id: 說明文字}（前端 join 用）
   - docs-dev/review_期末說明_抽查.md：自然期末全題清單供家長驗收
   - docs-dev/review_數學說明_抽查.md：數學全題清單供家長驗收
+  - docs-dev/review_社會說明_抽查.md：社會全題清單供家長驗收
 
 用法：
   uv run python scripts/build_explanations.py
@@ -35,6 +37,7 @@ RESULTS_GLOB = os.path.abspath(os.path.join(ROOT, "data", "exp_results", "batch_
 OUTPUT_PATH = os.path.abspath(os.path.join(ROOT, "docs", "explanations.json"))
 REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_期末說明_抽查.md"))
 MATH_REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_數學說明_抽查.md"))
+SOCIAL_REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_社會說明_抽查.md"))
 
 UNIT_NAMES = {
     3: "第3單元 動物",
@@ -44,6 +47,9 @@ UNIT_NAMES = {
     7: "第7單元 乘法與除法",
     8: "第8單元 時間",
     9: "第9單元 統計表",
+    10: "社會第4單元 消費與選擇",
+    11: "社會第5單元 家鄉的地名",
+    12: "社會第6單元 家鄉的故事",
 }
 
 MAX_LEN = 140          # 寫手規格 100 字；看表題空格多（5–8 格）需逐格交代，放寬緩衝
@@ -61,6 +67,11 @@ def final_exam_ids(questions: list) -> set:
 def math_ids(questions: list) -> set:
     """docs/questions.json 題目列表 → 數學題（subject math）id 集合"""
     return {q["id"] for q in questions if q.get("subject") == "math"}
+
+
+def social_ids(questions: list) -> set:
+    """docs/questions.json 題目列表 → 社會題（subject social）id 集合"""
+    return {q["id"] for q in questions if q.get("subject") == "social"}
 
 
 def validate_entries(entries: list, expected_ids: set) -> list:
@@ -173,8 +184,11 @@ def main():
         questions = json.load(f)
     science_ids = final_exam_ids(questions)
     math = math_ids(questions)
-    expected = science_ids | math
-    log.info(f"自然期末題數: {len(science_ids)}，數學題數: {len(math)}")
+    social = social_ids(questions)
+    expected = science_ids | math | social
+    log.info(
+        f"自然期末題數: {len(science_ids)}，數學題數: {len(math)}，社會題數: {len(social)}"
+    )
 
     entries = []
     files = sorted(glob.glob(RESULTS_GLOB))
@@ -206,6 +220,12 @@ def main():
     with open(MATH_REPORT_PATH, "w", encoding="utf-8") as f:
         f.write(math_report)
     log.info(f"已寫入 {MATH_REPORT_PATH}")
+
+    social_entries = [e for e in entries if e["id"] in social]
+    social_report = build_report(questions, social_entries, title="社會說明")
+    with open(SOCIAL_REPORT_PATH, "w", encoding="utf-8") as f:
+        f.write(social_report)
+    log.info(f"已寫入 {SOCIAL_REPORT_PATH}")
 
 
 if __name__ == "__main__":
