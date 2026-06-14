@@ -751,8 +751,9 @@ function leaveQuiz() {
 // ════════════════════════════════════════════════════
 // UI: Home
 // ════════════════════════════════════════════════════
-// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9）
+// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9、社會 10-12）
 // 數學單元正式名稱待查證（issues/010），無題單元不會渲染
+// 社會內部 unit 10/11/12 ＝ 課本第 4/5/6 單元（避開自然 unit 4）；num 為顯示用課本號
 const SUBJECTS = {
   science: { label: "自然", semesters: {
     mid: { label: "期中", units: [
@@ -773,7 +774,21 @@ const SUBJECTS = {
       { id: 9, name: "第 9 單元：統計表" },
     ] },
   } },
+  social: { label: "社會", semesters: {
+    final: { label: "期末", units: [
+      { id: 10, num: 4, name: "第 4 單元：消費與選擇", subtopics: ["聰明消費", "綠色消費"] },
+      { id: 11, num: 5, name: "第 5 單元：家鄉的地名", subtopics: ["地名的由來", "探索家鄉的地名"] },
+      { id: 12, num: 6, name: "第 6 單元：家鄉的故事", subtopics: ["家鄉的人物與發展", "傳說與文化保存"] },
+    ] },
+  } },
 };
+
+// 全域 unit id → 顯示用課本單元號（社會 10/11/12 → 4/5/6；自然/數學 預設＝id）
+const UNIT_NUM = {};
+for (const subj of Object.values(SUBJECTS))
+  for (const sem of Object.values(subj.semesters))
+    for (const u of sem.units) UNIT_NUM[u.id] = u.num ?? u.id;
+const unitNum = (id) => UNIT_NUM[id] ?? id;
 
 // 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
 function renderFlaggedSection() {
@@ -786,7 +801,7 @@ function renderFlaggedSection() {
     const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
     rows += `
       <div class="flagged-row">
-        <span class="flagged-text">[第 ${q.unit} 單元] ${snippet}</span>
+        <span class="flagged-text">[第 ${unitNum(q.unit)} 單元] ${snippet}</span>
         <button class="st-btn" onclick="window._unflag('${q.id}')">還原</button>
       </div>`;
   }
@@ -900,7 +915,7 @@ function renderHome() {
       html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
       for (const u of visibleUnits) {
         const errU = State.getErrorBank(u.id);
-        html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${u.id} 單元錯題<span class="badge">${errU.length}</span></button>`;
+        html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${unitNum(u.id)} 單元錯題<span class="badge">${errU.length}</span></button>`;
       }
     }
 
@@ -964,7 +979,7 @@ function buildReportUrl() {
 
   const full = qs.map(q => {
     let s = `### ${q.id}\n`;
-    s += `- 單元：第 ${q.unit} 單元／${q.subtopic}\n`;
+    s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
     if (q.options && q.options.length > 0) {
       s += `- 選項：${q.options.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
@@ -995,11 +1010,11 @@ function renderQuiz() {
 
   // Mode label
   let modeText = "";
-  const scopeText = `第${quiz.unit}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
+  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
   if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
   else {
     const eu = quiz.unit;  // error 模式：unit 為單元陣列
-    if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${eu[0]}單元`;
+    if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${unitNum(eu[0])}單元`;
     else if (Array.isArray(eu) && eu.length > 1) modeText = "錯題練習 — 本學期全部";
     else modeText = "錯題練習 — 全部";
   }

@@ -51,6 +51,16 @@ def test_math_block_gets_math_subject_and_unit_range():
     assert math_q[0]["unit"] == 7
 
 
+def test_social_block_gets_social_subject_and_unit_range():
+    existing = [_existing_q("a", 1)]
+    social = [_classified_q(1, "10"), _classified_q(2, "12"),
+              _classified_q(3, "none"), _classified_q(4, "5")]  # none 與數學 unit 5 皆排除
+    merged = build_merged(existing, [], [], social)
+    social_q = [q for q in merged if q["subject"] == "social"]
+    assert len(social_q) == 2
+    assert {q["unit"] for q in social_q} == {10, 12}
+
+
 def test_convert_block_filters_image_and_few_options():
     qs = [
         _classified_q(1, "5", has_image=True),

@@ -1,13 +1,14 @@
 """
 合併分類結果進 docs/questions.json（網站讀取的最終題庫）
 
-三來源結構：
+四來源結構：
   - 期中（unit 1-2，自然）：保留既有 docs/questions.json 內容，不重建
   - 期末（unit 3-4，自然）：從 data/classified_questions_期末.json 重建
   - 數學（unit 5-9）：從 data/classified_questions_數學.json 重建（檔案不存在＝0 題，不報錯）
+  - 社會（unit 10-12）：從 data/classified_questions_社會.json 重建（同上，內部 10/11/12＝課本第 4/5/6 單元）
 
-冪等：重跑前先剔除既有的重建區塊（3-4、5-9），期中原封不動。
-全題帶 subject 欄位（unit 1-4 = science；5-9 = math）。
+冪等：每次都從各來源全量重建合併（期中保留既有內容）。
+全題帶 subject 欄位（unit 1-4 = science；5-9 = math；10-12 = social）。
 
 過濾規則（各區塊相同）：
   - unit == "none" 或不在該區塊值域 → 排除
@@ -38,11 +39,14 @@ FINAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questi
 MATH_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_數學.json"))
 # 人工 curated 題（015 看表題：手動截圖＋手寫 blanks，已含 unit/subtopic，不過 classify）
 MATH_CURATED = os.path.abspath(os.path.join(ROOT, "data", "curated_questions_數學.json"))
+SOCIAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_社會.json"))
 FILTERED_PATH = os.path.abspath(os.path.join(ROOT, "data", "filtered_unsupported_數學.json"))
 
 MID_UNITS = {1, 2}
 FINAL_UNITS = {3, 4}
 MATH_UNITS = {5, 6, 7, 8, 9}
+# 社會：內部 unit 10/11/12 = 課本第 4/5/6 單元（全域唯一，避開自然 unit 4）
+SOCIAL_UNITS = {10, 11, 12}
 
 # UI 已支援的 fill_in_blank 輸入型態（013 已落地全部四種）
 SUPPORTED_BLANK_INPUTS = {"number", "comparison", "code", "text"}
@@ -145,8 +149,9 @@ def convert_block(classified: list, used_ids: set, subject: str, allowed_units: 
 
 
 def build_merged(existing: list, final_classified: list, math_classified: list,
+                 social_classified: list | None = None,
                  filtered_out: list | None = None) -> list:
-    """三來源合併（純函式）：保留期中、重建期末與數學。"""
+    """四來源合併（純函式）：保留期中、重建期末／數學／社會。"""
     # 期中保留既有內容；但既有 seed 內偶有同 source 同題號的不同題撞 id
     # （如某校 PDF 含兩份選擇題，皆編 1–5），需在此去碰撞，否則 localStorage
     # 的 mastered/errorBank 以 id 為鍵會把兩題混為一題。
@@ -165,7 +170,10 @@ def build_merged(existing: list, final_classified: list, math_classified: list,
     math_q, math_skipped = convert_block(math_classified, used_ids, "math", MATH_UNITS, filtered_out)
     log.info(f"數學題目: {len(math_q)}（排除 {dict(math_skipped)}）")
 
-    merged = midterm + final_q + math_q
+    social_q, social_skipped = convert_block(social_classified or [], used_ids, "social", SOCIAL_UNITS)
+    log.info(f"社會題目: {len(social_q)}（排除 {dict(social_skipped)}）")
+
+    merged = midterm + final_q + math_q + social_q
 
     # 全庫 id 唯一性檢查（期中已在上方去碰撞，重建區塊由 unique_id 保證）
     all_ids = [q["id"] for q in merged]
@@ -195,9 +203,11 @@ def main():
     math_curated = load_classified(MATH_CURATED, required=False)
     if math_curated:
         log.info(f"人工 curated 題: {len(math_curated)}")
+    social_classified = load_classified(SOCIAL_CLASSIFIED, required=False)
 
     filtered_out = []
-    merged = build_merged(existing, final_classified, math_classified + math_curated, filtered_out)
+    merged = build_merged(existing, final_classified, math_classified + math_curated,
+                          social_classified, filtered_out)
 
     with open(FILTERED_PATH, "w", encoding="utf-8") as f:
         json.dump(filtered_out, f, ensure_ascii=False, indent=2)

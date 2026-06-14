@@ -4,7 +4,9 @@ site/
 pdfs/
 pdfs_期末/
 pdfs_數學/
+pdfs_社會/
 data/tcool_*.html
+social-home.png
 .venv/
 __pycache__/
 data/_imgs/
