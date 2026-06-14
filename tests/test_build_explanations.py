@@ -6,6 +6,7 @@
 from build_explanations import (
     final_exam_ids,
     math_ids,
+    social_ids,
     format_answer,
     validate_entries,
     merge_entries,
@@ -17,6 +18,7 @@ QUESTIONS = [
     {"id": "fin_a", "unit": 3},
     {"id": "fin_b", "unit": 4},
     {"id": "math_a", "unit": 5, "subject": "math"},
+    {"id": "soc_a", "unit": 10, "subject": "social"},
 ]
 
 
@@ -40,6 +42,14 @@ class TestMathIds:
 
     def test_no_subject_field_excluded(self):
         assert math_ids([{"id": "x", "unit": 5}]) == set()
+
+
+class TestSocialIds:
+    def test_only_social_subject(self):
+        assert social_ids(QUESTIONS) == {"soc_a"}
+
+    def test_no_subject_field_excluded(self):
+        assert social_ids([{"id": "x", "unit": 10}]) == set()
 
 
 # ── 報告答案格式 ──────────────────────────────────────────
