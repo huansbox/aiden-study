@@ -7,6 +7,7 @@ from build_explanations import (
     final_exam_ids,
     math_ids,
     social_ids,
+    expected_explanation_ids,
     format_answer,
     validate_entries,
     merge_entries,
@@ -19,6 +20,7 @@ QUESTIONS = [
     {"id": "fin_b", "unit": 4},
     {"id": "math_a", "unit": 5, "subject": "math"},
     {"id": "soc_a", "unit": 10, "subject": "social"},
+    {"id": "soc_b", "unit": 11, "subject": "social"},
 ]
 
 
@@ -46,10 +48,29 @@ class TestMathIds:
 
 class TestSocialIds:
     def test_only_social_subject(self):
-        assert social_ids(QUESTIONS) == {"soc_a"}
+        assert social_ids(QUESTIONS) == {"soc_a", "soc_b"}
 
     def test_no_subject_field_excluded(self):
         assert social_ids([{"id": "x", "unit": 10}]) == set()
+
+
+class TestExpectedExplanationIds:
+    """自然期末/數學完整覆蓋；社會漸進覆蓋（只納入已寫說明的社會題）。"""
+
+    def test_science_and_math_always_required(self):
+        # 沒寫任何說明時，自然期末＋數學仍是預期（完整覆蓋）
+        assert expected_explanation_ids(QUESTIONS, set()) == {"fin_a", "fin_b", "math_a"}
+
+    def test_social_only_covered_subset_required(self):
+        # 只寫了 soc_a 的說明 → soc_a 納入預期，soc_b 不要求（漸進覆蓋）
+        exp = expected_explanation_ids(QUESTIONS, {"fin_a", "fin_b", "math_a", "soc_a"})
+        assert exp == {"fin_a", "fin_b", "math_a", "soc_a"}
+        assert "soc_b" not in exp
+
+    def test_orphan_social_id_not_swallowed(self):
+        # entry 帶了一個不存在的社會 id → 不會被納入預期（後續 validate 會當多出 orphan 抓出）
+        exp = expected_explanation_ids(QUESTIONS, {"soc_a", "soc_ghost"})
+        assert "soc_ghost" not in exp
 
 
 # ── 報告答案格式 ──────────────────────────────────────────
