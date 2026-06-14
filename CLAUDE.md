@@ -6,7 +6,7 @@
 
 ## 快速參考
 
-- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會擴充其餘 9 卷＋作答後說明（見下社會 pilot）。
+- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續（家長定案：**先 B 社會 60 題作答後說明 → 再 A 擴充官方答案批 8 卷**；起手式＝`docs-dev/social-pipeline-status.md`「下一步/Handoff」節）。
 - **社會科 pilot 已完成（2026-06-14，桃子腳兩卷端到端，未 commit）**：第三個科目上線。桃子腳 110下＋112下 → 社會 60 題（21 是非＋39 選擇），unit **10/11/12＝課本第 4/5/6 單元**（消費與選擇／家鄉的地名／家鄉的故事，各 2 子主題）→ 題庫 1406→1466。**前一 session 幻覺已更正**：`social-tcool-blocked.md`（宣稱 tcool 換 nginx 擋下載、繞過全失敗）整段捏造，實測仍 Cloudflare、既有 Playwright→cf_clearance 流程照常可用、已下載 11 卷。新流程＝`extract.py`→`clean_social_raw.py`（社會頁尾噪音清理＋雙欄題號修正）→官方答案（桃112文字抽／桃110掃描圖象限放大親讀）→`classify.py --semester social`→`apply_answer_key`→`build_questions`（加 social 區塊）→`index.html` 加社會科目層（`unitNum()` 顯示課本號）。crosscheck AI vs 官方 59/60 一致，唯一分歧射日傳說官方 true 勝出。tests 111 passed。完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)。**已下載未處理＝其餘 9 卷在 `pdfs_社會/`**。
 - **數學批三 9 份無答案卷已完成（2026-06-12，feat/math-batch3）**：建德113／民權113／內湖113,112／社寮112,110／舊館111 七卷收錄（草港112、吉林111 純掃描圖整卷剔除）→ 數學 146→307、題庫 1406、`explanations.json` 805 全覆蓋。**AI 補答案＋複審新流程**＝主迴圈親算 166 題→每卷 2 個獨立盲解 agent→程式化比對 332 次一致 331/332（唯一分歧票選○計數放大原圖採 6）。**獨立驗證**（`scripts/verify_batch3.py`）：30 題機械重算、131 題主模型逐題親算全數正確；另發現並修正 build_questions 期中 id 去碰撞漏洞（5 組重複）＋2 張截圖 bug（社寮112票價表截斷、社寮110誤掛血型表）。看表/看圖 17 截圖＝`docs/assets/math/`。剔除全錄＝`skipped_questions.md`「數學批三」節。
 - **數學說明擴充批 86 題已 merge 上線（2026-06-11）**：沿用 batch_math 流程（9 寫手 sonnet→9 獨立審核→主迴圈裁決），72 pass／14 審核改寫（多為直式借位位值寫錯、超齡解法、列式結構誤導），0 答案疑點；批次檔＝`batch_math_06..14.json`，`explanations.json` 644 題全覆蓋（自然期末 498＋數學 146）、tests 109 passed；抽查全錄＝`docs-dev/review_數學說明_抽查.md`。

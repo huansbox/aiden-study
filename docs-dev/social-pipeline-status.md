@@ -66,10 +66,46 @@
 ### 分類基準（unit 編號定案）
 unit 全域唯一：自然 1–4、數學 5–9、**社會 10/11/12**（顯示課本第 4/5/6 單元）。
 
-## 後續可擴充（同 pipeline，未做）
+## 下一步 / Handoff 給下個 session（2026-06-14）
 
-- 其餘 9 卷官方答案批（安和111/112、和順112/113、四維112、文德112、中正110、竹塘110、海佃110，已下載在 `pdfs_社會/`）：跑 extract→clean→官方答案（文字抽 4 卷／掃描圖 5 卷視覺判讀）→classify→build。注意各校頁尾樣式可能新增，`clean_social_raw.py` 的 `SOCIAL_NOISE` 需視情況補。
-- 無答案卷（民權各年、社寮等）＝「AI 補答案＋複審」批。
-- 社會特有題型（連連看／配合題／勾選題／看圖／閱讀題）策展納入（比照數學看表題）。
-- 期中卷（單元一～三）若要收，再開 period=1 清單。
-- 作答後說明（社會 60 題）尚未做。
+pilot 已 commit＋merge＋push（`35a4c82` feat + `2a072b7` merge，origin/master 已含）。線上站台部署中。
+
+### 下一批順序（家長定案 2026-06-14）：**先 B（社會說明）再 A（擴充官方答案批）**
+
+### 路 B 起手式（社會作答後說明）— ★先做
+為現有 60 題補作答後說明，與自然期末／數學同級。沿用 `batch_math` 流程（多個 sonnet 寫手分批 → 各批獨立審核 agent → 主迴圈裁決 pass/fixed）。
+
+關鍵接點：
+- 說明批結果寫進 `data/exp_results/batch_*.json`，每筆 `{id, text, verdict: pass|fixed, reason?}`（id ＝ `docs/questions.json` 內社會題的 id，subject=social）。
+- **必改 `scripts/build_explanations.py`**：它**嚴格驗證 exp_results 的 id 集合恰等於「自然期末(unit 3/4) ∪ 數學(subject math)」**，要把社會（subject=social）納入預期集合，否則驗證直接擋下不寫出。順帶加一份社會抽查報告（比照 `review_數學說明_抽查.md`）。
+- **前端不用改**：`index.html` 的說明卡是通用的（`explanations[q.id]` 有值就顯示，不分科目/單元），社會說明進 `explanations.json` 即自動顯示。
+- build：`uv run python scripts/build_explanations.py` → `explanations.json` 805 → 865。
+- 社會題偏記憶（地名由來、傳說、消費常識），說明用小三用語 1–3 句、講「為什麼這個答案對」。注意桃110 是非#18 射日傳說官方=true（受傷太陽變月亮要求布農族定期祭典、族人答應），說明別寫反。
+
+### 路 A 起手式（其餘 8 卷官方答案批；PDF 已在 `pdfs_社會/`）— B 之後做
+
+剔除：**彰化文德112 整卷剔除**——tcool 的題目卷與答案卷是**同一個掃描圖檔**（md5 相同、0 文字層），無獨立答案、題幹也抽不到。
+
+| 學校 年度 | 題目卷文字 | 答案卷格式 | 官方答案取法 |
+|---|---|---|---|
+| 新北 安和 111下 | 待 probe | 文字可抽 | 程式抽 |
+| 新北 安和 112下 | 待 probe | 文字可抽 | 程式抽 |
+| 臺中 四維 112下 | 待 probe | 文字可抽 | 程式抽 |
+| 彰化 竹塘 110下 | 待 probe | 文字可抽 | 程式抽 |
+| 臺南 海佃 110下 | 待 probe | 文字可抽 | 程式抽 |
+| 彰化 中正 110下 | 待 probe | ★掃描圖 | 象限放大視覺判讀 |
+| 臺南 和順 112下 | 待 probe | ★掃描圖 | 象限放大視覺判讀 |
+| 臺南 和順 113下 | 待 probe | ★掃描圖 | 象限放大視覺判讀 |
+
+起手步驟：
+1. **先 probe 8 卷題目卷文字可抽性**（`pdfplumber` 抽字數，0 字＝掃描圖整卷剔除，如文德）。
+2. extract.py 抽是非＋選擇 → `clean_social_raw.py`（**各校頁尾字串可能不同，視殘留補 `SOCIAL_NOISE`**）。
+3. 官方答案：文字卷比照桃112（`N.(答案)`，注意**閱讀/配合題重用 1-N 題號 → 各號取首次出現或限定選擇題 section**）；掃描卷比照桃110（render scale 4.0 切 L/R×上下半象限，主模型親讀，**勿用 agent 讀整頁**）。寫進 `official_answers_社會.json`。
+4. classify `--semester social`（dedupe_by_text 會去跨校重題）→ apply_answer_key → crosscheck → build。
+5. **跨校重題**：社會單元 4-6 各校大量重題，去重後淨增遠小於卷數×題數，屬預期。
+
+### 其他後續（更後面）
+- 無答案卷（民權各年、社寮、太平等，題目卷文字可抽但無答案）＝「AI 補答案＋複審」批（比照數學批三：多個獨立盲解 agent + 程式化比對）。
+- 社會特有題型策展（連連看／配合／勾選／看圖／閱讀，比照數學看表題截圖）。
+- 期中卷（單元一～三）：tcool 清單已含 period=期中1 卷，要收再篩。
+- cf_clearance cookie 30 分過期；重抓用 Playwright 導任一 PDF URL → `page.context().cookies()` 取 cf_clearance（HttpOnly，document.cookie 讀不到）→ 寫 `data/_cf_cookie.json` → `download_tcool_social.ps1`。
