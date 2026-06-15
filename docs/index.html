@@ -1031,13 +1031,29 @@ function buildBackupText(stateOrJson, date = new Date()) {
   return `${BACKUP_MARKER} ${ts}\n${jsonStr}`;
 }
 
-// 備份文字（可帶或不帶記號首行）→ 驗證形狀 → 物件或 null。
+// 內文裡「最後一段」備份的記號起始位置（行首的記號）；無記號回 -1。
+// 為何：分享到「既有筆記」會把新備份附加在後 → 一則筆記可能累積多段，還原一律取最新那段。
+// 只認行首記號，避免命中 JSON 值裡剛好含 "AIDEN備份" 的字串。
+function lastBackupBlockStart(text) {
+  let mark = -1, pos = text.indexOf(BACKUP_MARKER);
+  while (pos !== -1) {
+    if (pos === 0 || text[pos - 1] === "\n") mark = pos;
+    pos = text.indexOf(BACKUP_MARKER, pos + 1);
+  }
+  return mark;
+}
+
+// 備份文字（可帶或不帶記號首行；可能累積多段）→ 取最後一段 → 驗證形狀 → 物件或 null。
 // 形狀檢查＝沿用匯入既有規則：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）。
 function parseBackup(text) {
   if (typeof text !== "string") return null;
   let body = text.trim();
-  const nl = body.indexOf("\n");
-  if (body.startsWith(BACKUP_MARKER) && nl !== -1) body = body.slice(nl + 1).trim();
+  const mark = lastBackupBlockStart(body);
+  if (mark !== -1) {
+    const after = body.slice(mark);              // "AIDEN備份 …\n{json}"
+    const nl = after.indexOf("\n");
+    body = nl !== -1 ? after.slice(nl + 1).trim() : after;
+  }
   let obj;
   try { obj = JSON.parse(body); } catch (e) { return null; }
   if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) return null;
@@ -1062,11 +1078,13 @@ function buildShortcutDeepLink(name) {
   return `shortcuts://run-shortcut?name=${encodeURIComponent(name)}`;
 }
 
-// 備份文字首行若是記號行 → 回傳其 timecode 部分（"2026-06-15 14:30"），否則 null。供還原確認顯示日期。
+// 內文「最後一段」備份的記號行 → 回傳其 timecode（"2026-06-15 14:30"），否則 null。供還原確認顯示日期。
+// 取最後一段：與 parseBackup 一致（多段累積時顯示的是真正會還原的那份日期）。
 function backupLabel(text) {
   if (typeof text !== "string") return null;
-  const first = text.split("\n")[0].trim();
-  if (!first.startsWith(BACKUP_MARKER)) return null;
+  const mark = lastBackupBlockStart(text);
+  if (mark === -1) return null;
+  const first = text.slice(mark).split("\n")[0].trim();
   return first.slice(BACKUP_MARKER.length).trim() || null;
 }
 
