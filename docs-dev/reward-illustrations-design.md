@@ -218,7 +218,7 @@ ${reward ? `<img class="reward-img" src="${reward}" alt="" onerror="this.remove(
 > 以下屬「圖片內容／規格」，由設計圖片 session 拍板。**2026-06-15 設計圖片 session 已回覆並定案**（詳見 [`reward-illustrations-brief.md`](reward-illustrations-brief.md) 內「我的回答」）。
 
 1. **背景（已定案）**：**實底滿版方形、自帶乾淨背景、無透明 alpha**。→ 已回填本文 §5（容器只加圓角＋投影，不替圖補底色）。
-2. **產圖規格**：master 1536×1536 →上線 1024×1024 WebP；**1536 masters 不進 `docs/`**（gitignore）；單張 ≤ ~100KB；q80–85 lossy，平塗可順手比 lossless。
+2. **產圖規格**：**交付物＝1024×1024 WebP（硬驗收：尺寸/格式/≤100KB）**；master 1536×1536 為理想來源、**非硬性**（imagegen 原生 ~1024 即可，勿從更小圖上採樣；2026-06-16 與生圖 session 確認放寬，內建 imagegen 無穩定 1536 參數、換 CLI/API 太慢不值得）；**1536 masters（若有）不進 `docs/`**；q80–85 lossy，平塗可順手比 lossless。
 3. **每池張數（取代「370」）**：`clamp(ceil(題數/20), 3, 8)`，總約 **136 張**。逐 subtopic 建議值見下表。
 4. **標記到 subtopic**：用題庫現有 subtopic 字串當 manifest key（逐字，見對照表）。
 5. **通用鼓勵池（已定案 8 張）**：另畫 **8 張**通用慶祝/鼓勵圖 → `__generic__`（錯題清除＋最終 fallback 共用）。第一版總量＝128 subtopic ＋ 8 通用 ＝ **136 張**。
