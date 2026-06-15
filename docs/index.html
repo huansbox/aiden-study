@@ -1061,7 +1061,8 @@ window._importProgress = () => {
   let obj;
   try { obj = JSON.parse(text); }
   catch (e) { msg.textContent = "格式不對，請貼完整的備份 JSON"; return; }
-  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !("mastered" in obj)) {
+  // 接受 loader 能載入的形狀：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）
+  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) {
     msg.textContent = "這看起來不是進度備份檔"; return;
   }
   // 二次確認（覆蓋不可復原）
