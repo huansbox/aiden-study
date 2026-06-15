@@ -8,8 +8,12 @@ import { readFileSync } from "node:fs";
 const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
 const m = html.match(/\/\/ <backup-pure>([\s\S]*?)\/\/ <\/backup-pure>/);
 if (!m) throw new Error("docs/index.html 找不到 <backup-pure> 區塊");
-const { BACKUP_MARKER, buildBackupText, parseBackup, encodeBackup, decodeBackup } =
-  new Function(m[1] + "\nreturn { BACKUP_MARKER, buildBackupText, parseBackup, encodeBackup, decodeBackup };")();
+const exported = "BACKUP_MARKER, buildBackupText, parseBackup, encodeBackup, decodeBackup, " +
+  "buildShortcutDeepLink, backupLabel, readRestoreHash, isBackupOversized, BACKUP_SIZE_WARN";
+const {
+  BACKUP_MARKER, buildBackupText, parseBackup, encodeBackup, decodeBackup,
+  buildShortcutDeepLink, backupLabel, readRestoreHash, isBackupOversized, BACKUP_SIZE_WARN,
+} = new Function(m[1] + `\nreturn { ${exported} };`)();
 
 test("buildBackupText 首行＝記號＋timecode，其後為原始 JSON", () => {
   const json = JSON.stringify({ mastered: { "3": ["a"] } });
@@ -59,4 +63,52 @@ test("parseBackup 不造成 prototype pollution", () => {
   const obj = parseBackup('{"mastered":{},"__proto__":{"polluted":1}}');
   assert.ok(obj && typeof obj === "object");
   assert.equal({}.polluted, undefined);             // 全域原型未被污染
+});
+
+// ── #9 還原側純函式 ──
+
+test("buildShortcutDeepLink 對中文捷徑名 percent-encode", () => {
+  assert.equal(buildShortcutDeepLink("Aiden還原"),
+    "shortcuts://run-shortcut?name=Aiden%E9%82%84%E5%8E%9F");
+  // 還原可解碼回原名
+  const enc = buildShortcutDeepLink("Aiden還原").split("name=")[1];
+  assert.equal(decodeURIComponent(enc), "Aiden還原");
+});
+
+test("backupLabel：記號行回 timecode，無記號回 null", () => {
+  assert.equal(backupLabel(`${BACKUP_MARKER} 2026-06-15 14:30\n{"mastered":{}}`), "2026-06-15 14:30");
+  assert.equal(backupLabel('{"mastered":{}}'), null);
+  assert.equal(backupLabel(123), null);
+});
+
+test("readRestoreHash round-trip：buildBackupText→encode→#restore= 還原回原 obj＋label", () => {
+  const obj = { mastered: { "3": ["x"] }, challenge: {} };
+  const text = buildBackupText(obj, new Date(2026, 5, 15, 14, 30));
+  const hash = "#restore=" + encodeBackup(text);
+  const res = readRestoreHash(hash);
+  assert.deepEqual(res.obj, obj);
+  assert.equal(res.label, "2026-06-15 14:30");
+});
+
+test("readRestoreHash：無 restore 參數／空 payload／壞 base64／形狀不符回 null", () => {
+  assert.equal(readRestoreHash("#foo=bar"), null);
+  assert.equal(readRestoreHash(""), null);
+  assert.equal(readRestoreHash("#restore="), null);            // 空 payload（[^&]+ 不匹配）
+  assert.equal(readRestoreHash("#restore=&foo=bar"), null);    // 空 payload 後接其他參數
+  assert.equal(readRestoreHash("#restore=!!!not-base64!!!"), null);
+  assert.equal(readRestoreHash("#restore=" + encodeBackup('{"foo":1}')), null); // 形狀不符
+  assert.equal(readRestoreHash(42), null);
+});
+
+test("readRestoreHash 接受純 JSON payload（無記號）→ label null", () => {
+  const res = readRestoreHash("#restore=" + encodeBackup('{"mastered":{}}'));
+  assert.deepEqual(res.obj, { mastered: {} });
+  assert.equal(res.label, null);
+});
+
+test("isBackupOversized：保守閾值內 false、超過 true", () => {
+  assert.equal(isBackupOversized("x".repeat(BACKUP_SIZE_WARN)), false);
+  assert.equal(isBackupOversized("x".repeat(BACKUP_SIZE_WARN + 1)), true);
+  assert.equal(isBackupOversized(""), false);
+  assert.equal(isBackupOversized(123), false);
 });
