@@ -1,0 +1,45 @@
+{
+  "pools": {
+    "小數的認識": [
+      "decimal_understanding_01.webp",
+      "decimal_understanding_02.webp",
+      "decimal_understanding_03.webp"
+    ],
+    "溫度對水的變化": [
+      "water_temperature_01.webp",
+      "water_temperature_02.webp",
+      "water_temperature_03.webp",
+      "water_temperature_04.webp",
+      "water_temperature_05.webp",
+      "water_temperature_06.webp",
+      "water_temperature_07.webp",
+      "water_temperature_08.webp"
+    ],
+    "天氣預報": [
+      "weather_forecast_01.webp",
+      "weather_forecast_02.webp",
+      "weather_forecast_03.webp",
+      "weather_forecast_04.webp",
+      "weather_forecast_05.webp",
+      "weather_forecast_06.webp"
+    ],
+    "聰明消費": [
+      "smart_spending_01.webp",
+      "smart_spending_02.webp",
+      "smart_spending_03.webp",
+      "smart_spending_04.webp",
+      "smart_spending_05.webp",
+      "smart_spending_06.webp"
+    ],
+    "__generic__": [
+      "cheer_01.webp",
+      "cheer_02.webp",
+      "cheer_03.webp",
+      "cheer_04.webp",
+      "cheer_05.webp",
+      "cheer_06.webp",
+      "cheer_07.webp",
+      "cheer_08.webp"
+    ]
+  }
+}
