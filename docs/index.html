@@ -596,6 +596,7 @@ let allQuestions = [];
 let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
 let rewards = { pools: {} };           // reward 插畫 manifest（缺檔靜默；見 docs-dev/reward-illustrations-design.md）
+let _rewardGen = 0;                     // 導覽世代：每次 showPage +1，讓載入中的 reward 預載 callback 在期間導覽他頁時失效
 const subtopicsByUnit = new Map();     // unit(number) → Set(subtopic)：reward roll-up 用（init 內由題庫建）
 const subtopicsBySubject = new Map();  // subject → Set(subtopic)
 const unitToSubject = new Map();       // unit → subject
@@ -633,6 +634,7 @@ function nextBatchSize(remaining, max = 10) {
 }
 
 function showPage(id) {
+  _rewardGen++;   // 任何換頁都作廢「載入中的 reward 預載 callback」，避免它稍後把使用者硬拉回 summary
   document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
   window.scrollTo(0, 0);
@@ -2033,12 +2035,15 @@ function pickReward(kind, unit) {
   return file ? ("assets/rewards/" + file) : null;
 }
 
-// 預載選中的圖，載好（或失敗）才執行 cb，避免畫面空白閃一下
+// 預載選中的圖，載好（或失敗）才執行 cb，避免畫面空白閃一下。
+// 用導覽世代守門：排程後若期間有任何 showPage（如使用者按「離開」回首頁），此 callback 作廢。
 function preloadThen(path, cb) {
-  if (!path) { cb(); return; }
+  const gen = _rewardGen;
+  const run = () => { if (gen === _rewardGen) cb(); };
+  if (!path) { run(); return; }
   const img = new Image();
-  img.onload = cb;
-  img.onerror = cb;
+  img.onload = run;
+  img.onerror = run;
   img.src = path;
 }
 

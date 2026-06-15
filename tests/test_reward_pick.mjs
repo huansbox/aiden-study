@@ -81,6 +81,24 @@ test("resolve error kind：永遠 __generic__", () => {
   assert.deepEqual(r, { key: "__generic__", items: ["g1", "g2"] });
 });
 
+test("resolve error kind：generic 也空 → key __generic__、items 空（drawFromBag 會回 null）", () => {
+  const r = rwResolvePool({ pools: {} }, { kind: "error" });
+  assert.deepEqual(r, { key: "__generic__", items: [] });
+  assert.equal(rwDrawFromBag({}, r.key, r.items, zero), null);
+});
+
+test("resolve unit kind：unit 池空 → roll-up 到 subject 合併池", () => {
+  const r = rwResolvePool(M, { kind: "unit", unitKeys: ["雨量降雨"], subjectKeys: ["雨量降雨", "風"] });
+  assert.equal(r.key, "__subject__");
+  assert.deepEqual(r.items, ["w1"]);
+});
+
+test("resolve unit kind：unit/subject 皆空 → __generic__", () => {
+  const r = rwResolvePool(M, { kind: "unit", unitKeys: ["雨量降雨"], subjectKeys: ["雨量降雨"] });
+  assert.equal(r.key, "__generic__");
+  assert.deepEqual(r.items, ["g1", "g2"]);
+});
+
 test("resolve：全空 manifest → key null、items 空", () => {
   const r = rwResolvePool({ pools: {} }, { kind: "batch", subtopic: "風", unitKeys: ["風"], subjectKeys: ["風"] });
   assert.deepEqual(r, { key: null, items: [] });
