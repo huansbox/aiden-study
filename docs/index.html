@@ -329,6 +329,21 @@ body {
 .flagged-text { font-size: 0.9rem; color: #555; }
 .flagged-actions { display: flex; gap: 8px; margin-top: 8px; }
 
+.backup-section { border-top: 2px solid #eee; padding-top: 16px; margin-top: 8px; }
+.backup-section summary { font-size: 0.9rem; color: #888; cursor: pointer; padding: 4px; }
+.backup-body { padding: 8px 4px; }
+.backup-hint { font-size: 0.85rem; color: #777; margin: 6px 0 10px; line-height: 1.5; }
+.backup-body > .st-btn { margin-right: 8px; }
+.backup-io { margin-top: 12px; }
+.backup-io textarea {
+  width: 100%; box-sizing: border-box; min-height: 110px; padding: 10px;
+  border: 1px solid #cdd6ff; border-radius: 8px; font-size: 0.78rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace; resize: vertical; color: #444;
+}
+.backup-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+.backup-actions a.st-btn { text-decoration: none; display: inline-block; }
+.backup-msg { font-size: 0.85rem; color: #4361ee; margin-left: 4px; display: inline-flex; align-items: center; gap: 8px; }
+
 /* ── 摘要頁 ── */
 .summary { text-align: center; padding-top: 40px; }
 .summary .score { font-size: 3rem; font-weight: 800; color: #4361ee; margin: 16px 0; }
@@ -843,6 +858,21 @@ function renderFlaggedSection() {
     </details>`;
 }
 
+// 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔
+// （iPad 主畫面 App 的儲存可能被 iOS 清掉，家長可手動備份保命）
+function renderBackupSection() {
+  return `
+    <details class="backup-section">
+      <summary>進度備份 / 還原</summary>
+      <div class="backup-body">
+        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾匯出存一份。</p>
+        <button class="st-btn" onclick="window._exportProgress()">匯出進度</button>
+        <button class="st-btn" onclick="window._showImport()">匯入進度</button>
+        <div id="backup-io" class="backup-io hidden"></div>
+      </div>
+    </details>`;
+}
+
 // 期末單元卡片下的 subtopic 練習入口（可接續）
 function renderSubtopics(u) {
   if (!u.subtopics) return "";
@@ -949,6 +979,7 @@ function renderHome() {
     html += '</div>';
   }
   html += renderFlaggedSection();
+  html += renderBackupSection();
   home.innerHTML = html;
   showPage("page-home");
 }
@@ -981,6 +1012,65 @@ window._resetChallenge = (unit, subtopic = null) => {
 };
 window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
 window._unflagAll = () => { State.unflagAll(); renderHome(); };
+
+// ── 進度備份／還原（純前端；備份的就是 localStorage 那份存檔）
+window._exportProgress = () => {
+  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+  const box = document.getElementById("backup-io");
+  box.classList.remove("hidden");
+  box.innerHTML = `
+    <p class="backup-hint">這是目前的進度。複製起來貼到備忘錄／Email 給自己，或下載存檔：</p>
+    <textarea id="backup-text" readonly></textarea>
+    <div class="backup-actions">
+      <button class="st-btn" id="backup-copy">複製</button>
+      <a class="st-btn" id="backup-dl" download="aiden-study-進度備份-${stamp}.json">下載檔案</a>
+      <span id="backup-msg" class="backup-msg"></span>
+    </div>`;
+  const ta = document.getElementById("backup-text");
+  ta.value = json; // 用 .value 設定，避開 HTML escape 問題
+  document.getElementById("backup-dl").href =
+    URL.createObjectURL(new Blob([json], { type: "application/json" }));
+  document.getElementById("backup-copy").onclick = async () => {
+    ta.focus(); ta.select();
+    let ok = false;
+    try { await navigator.clipboard.writeText(json); ok = true; }
+    catch (e) { try { ok = document.execCommand("copy"); } catch (e2) {} }
+    document.getElementById("backup-msg").textContent = ok ? "已複製！" : "請長按上面文字手動複製";
+  };
+};
+
+window._showImport = () => {
+  const box = document.getElementById("backup-io");
+  box.classList.remove("hidden");
+  box.innerHTML = `
+    <p class="backup-hint">把備份內容整段貼進來，按還原。<b>會覆蓋目前進度</b>。</p>
+    <textarea id="import-text" placeholder="貼上備份的 JSON…"></textarea>
+    <div class="backup-actions">
+      <button class="st-btn" id="import-go">還原</button>
+      <span id="backup-msg" class="backup-msg"></span>
+    </div>`;
+  document.getElementById("import-go").onclick = window._importProgress;
+};
+
+window._importProgress = () => {
+  const text = (document.getElementById("import-text").value || "").trim();
+  const msg = document.getElementById("backup-msg");
+  if (!text) { msg.textContent = "請先貼上備份內容"; return; }
+  let obj;
+  try { obj = JSON.parse(text); }
+  catch (e) { msg.textContent = "格式不對，請貼完整的備份 JSON"; return; }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !("mastered" in obj)) {
+    msg.textContent = "這看起來不是進度備份檔"; return;
+  }
+  // 二次確認（覆蓋不可復原）
+  msg.innerHTML = `確定用這份覆蓋目前進度？<button class="st-btn" id="import-confirm">確定還原</button>`;
+  document.getElementById("import-confirm").onclick = () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    location.reload();
+  };
+};
 
 // 回報到 GitHub：prefill issue URL（零後端；pad 瀏覽器需登入過 GitHub）
 const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
