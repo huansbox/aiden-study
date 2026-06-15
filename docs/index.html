@@ -355,6 +355,13 @@ body {
 }
 .summary-btn.primary { background: #4361ee; color: #fff; border-color: #4361ee; }
 .summary-btn:active { transform: scale(0.98); }
+/* 獎勵插畫（批末/通關/錯題清除）：實底滿版方形收藏卡、淡入 */
+.reward-img {
+  display: block; width: min(72vw, 400px); aspect-ratio: 1 / 1; object-fit: cover;
+  margin: 16px auto; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  animation: rewardIn 0.3s ease-out;
+}
+@keyframes rewardIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 
 /* ── 錯誤頁 ── */
 .error-msg { text-align: center; padding-top: 60px; color: #888; font-size: 1.1rem; }
@@ -588,6 +595,10 @@ function questionIdsFor(unit, subtopic) {
 let allQuestions = [];
 let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
+let rewards = { pools: {} };           // reward 插畫 manifest（缺檔靜默；見 docs-dev/reward-illustrations-design.md）
+const subtopicsByUnit = new Map();     // unit(number) → Set(subtopic)：reward roll-up 用（init 內由題庫建）
+const subtopicsBySubject = new Map();  // subject → Set(subtopic)
+const unitToSubject = new Map();       // unit → subject
 
 const quiz = {
   mode: null,    // "full" | "error"
@@ -1954,6 +1965,89 @@ submitAnswer = function(selected) {
 };
 
 // ════════════════════════════════════════════════════
+// 獎勵插畫選圖（見 docs-dev/reward-illustrations-design.md）
+// ════════════════════════════════════════════════════
+// <reward-pick-pure>
+// 純函式區塊：不得引用外部全域，才能被 tests/test_reward_pick.mjs 抽出獨立 eval。
+// rng 以參數注入（rng()→[0,1)）以利測試；缺省當 0。
+function rwPoolFor(m, key) { return (m && m.pools && m.pools[key]) || []; }
+function rwMergedPool(m, keys) {
+  const o = [];
+  for (const k of keys) for (const f of rwPoolFor(m, k)) o.push(f);
+  return o;
+}
+// 出現最多的 subtopic；平手用 rng 在並列中挑一個
+function rwDominantKey(subs, rng) {
+  if (!subs || !subs.length) return null;
+  const c = new Map();
+  for (const s of subs) c.set(s, (c.get(s) || 0) + 1);
+  let mx = 0;
+  for (const v of c.values()) if (v > mx) mx = v;
+  const tied = [...c].filter(([, v]) => v === mx).map(([k]) => k);
+  return tied[Math.floor((rng ? rng() : 0) * tied.length)];
+}
+// ctx={kind:'batch'|'unit'|'error', subtopic?, unitKeys?, subjectKeys?} → {key, items}（含 roll-up）
+function rwResolvePool(m, ctx) {
+  if (ctx.kind === "error") return { key: "__generic__", items: rwPoolFor(m, "__generic__") };
+  if (ctx.kind === "batch" && ctx.subtopic) {
+    const sp = rwPoolFor(m, ctx.subtopic);
+    if (sp.length) return { key: ctx.subtopic, items: sp };
+  }
+  let it = rwMergedPool(m, ctx.unitKeys || []);
+  if (it.length) return { key: "__unit__" + (ctx.unitKeys || []).join(","), items: it };
+  it = rwMergedPool(m, ctx.subjectKeys || []);
+  if (it.length) return { key: "__subject__", items: it };
+  it = rwPoolFor(m, "__generic__");
+  if (it.length) return { key: "__generic__", items: it };
+  return { key: null, items: [] };
+}
+// shuffle-bag：bag={key:剩餘陣列}；抽完重裝；回傳檔名或 null
+function rwDrawFromBag(bag, key, items, rng) {
+  if (!key || !items.length) return null;
+  let rem = bag[key];
+  if (!rem || !rem.length) rem = bag[key] = items.slice();
+  const i = Math.floor((rng ? rng() : 0) * rem.length);
+  const f = rem[i];
+  rem.splice(i, 1);
+  return f;
+}
+// </reward-pick-pure>
+
+const rewardBag = {};   // module-level shuffle-bag；reload 即清（符合「用完即丟」）
+
+// 依情境選一張獎勵插畫路徑（無圖則 null）。
+// kind: 'batch'（批末，看這批主力 subtopic）｜'unit'（整單元通關，合併池）｜'error'（錯題清除，通用池）
+function pickReward(kind, unit) {
+  const ctx = { kind };
+  if (kind !== "error") {
+    ctx.unitKeys = [...(subtopicsByUnit.get(unit) || [])];
+    ctx.subjectKeys = [...(subtopicsBySubject.get(unitToSubject.get(unit)) || [])];
+  }
+  if (kind === "batch") {
+    // 只看真的作答過的題（跳過/回報不在 answered）
+    const subs = quiz.answered.map(a => questionMap.get(a.questionId)).filter(Boolean).map(q => q.subtopic);
+    ctx.subtopic = rwDominantKey(subs, Math.random);
+  }
+  const { key, items } = rwResolvePool(rewards, ctx);
+  const file = rwDrawFromBag(rewardBag, key, items, Math.random);
+  return file ? ("assets/rewards/" + file) : null;
+}
+
+// 預載選中的圖，載好（或失敗）才執行 cb，避免畫面空白閃一下
+function preloadThen(path, cb) {
+  if (!path) { cb(); return; }
+  const img = new Image();
+  img.onload = cb;
+  img.onerror = cb;
+  img.src = path;
+}
+
+// 獎勵插畫 <img>（路徑為 null 則空字串）；onerror 自我移除（執行期 404 時不破版）
+function rewardImgHtml(path) {
+  return path ? `<img class="reward-img" src="${path}" alt="" onerror="this.remove()">` : "";
+}
+
+// ════════════════════════════════════════════════════
 // UI: 批間畫面（本批完成、整單元尚未通關時）
 // ════════════════════════════════════════════════════
 function renderBatchBreak() {
@@ -1961,15 +2055,19 @@ function renderBatchBreak() {
   const unitDone = State.doneCount(quiz.unit, quiz.subtopic);
   const nextN = nextBatchSize(unitTotal - unitDone); // 下一批實際題數（依當下剩餘現算）
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
-  document.getElementById("page-summary").innerHTML = `
-    <h2>這批完成！</h2>
-    <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
-    <div style="margin-top:24px">
-      <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">再做 ${nextN} 題</button>
-      <button class="summary-btn" onclick="window._goHome()">離開</button>
-    </div>`;
-  showPage("page-summary");
-  playSound("complete");
+  const reward = pickReward("batch", quiz.unit);   // 看這批主力 subtopic 抽圖（缺則 roll-up/null）
+  preloadThen(reward, () => {
+    document.getElementById("page-summary").innerHTML = `
+      <h2>這批完成！</h2>
+      ${rewardImgHtml(reward)}
+      <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
+      <div style="margin-top:24px">
+        <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">再做 ${nextN} 題</button>
+        <button class="summary-btn" onclick="window._goHome()">離開</button>
+      </div>`;
+    showPage("page-summary");
+    playSound("complete");
+  });
 }
 
 // ════════════════════════════════════════════════════
@@ -2001,14 +2099,18 @@ function renderSummary() {
       <button class="summary-btn primary" onclick="window._goHome()">回選單</button>`;
   }
 
-  document.getElementById("page-summary").innerHTML = `
-    <h2>${title}</h2>
-    <div class="score">${correctCount} / ${total}</div>
-    <div class="score-label">${scoreLabel}</div>
-    <div style="margin-top:24px">${buttonsHtml}</div>`;
-
-  showPage("page-summary");
-  playSound(quiz.mode === "full" ? "victory" : "complete");
+  // full 通關＝整單元合併池；錯題清除＝通用鼓勵池
+  const reward = pickReward(quiz.mode === "full" ? "unit" : "error", quiz.unit);
+  preloadThen(reward, () => {
+    document.getElementById("page-summary").innerHTML = `
+      <h2>${title}</h2>
+      ${rewardImgHtml(reward)}
+      <div class="score">${correctCount} / ${total}</div>
+      <div class="score-label">${scoreLabel}</div>
+      <div style="margin-top:24px">${buttonsHtml}</div>`;
+    showPage("page-summary");
+    playSound(quiz.mode === "full" ? "victory" : "complete");
+  });
 }
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
@@ -2038,8 +2140,24 @@ async function init() {
       console.warn("explanations.json not loaded:", e);
     }
 
+    try {
+      const rwResp = await fetch("./rewards.json");
+      if (rwResp.ok) rewards = await rwResp.json();
+    } catch (e) {
+      console.warn("rewards.json not loaded:", e);
+    }
+
     // Build question map
     questionMap = new Map(allQuestions.map(q => [q.id, q]));
+
+    // reward roll-up 索引：unit/subject → subtopic 集合（選圖缺池時往上合併）
+    for (const q of allQuestions) {
+      if (!subtopicsByUnit.has(q.unit)) subtopicsByUnit.set(q.unit, new Set());
+      subtopicsByUnit.get(q.unit).add(q.subtopic);
+      if (!subtopicsBySubject.has(q.subject)) subtopicsBySubject.set(q.subject, new Set());
+      subtopicsBySubject.get(q.subject).add(q.subtopic);
+      unitToSubject.set(q.unit, q.subject);
+    }
 
     // Clean orphan errorBank / flagged entries
     state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
