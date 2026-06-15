@@ -1296,6 +1296,33 @@ function buildReportUrl() {
 
 window._reportToGitHub = () => { window.open(buildReportUrl(), "_blank"); };
 
+// <enum-break-pure>
+// ══════ 題幹列舉條列換行（純函式；待辦⑤，做法 B）══════
+// 在「已切選項後」的題幹裡遇 CJK 序數列舉標記（括號式（甲）/(甲)、裸式 甲. 甲： 甲、），
+// 於標記前插 <br>，讓並列項分行。純顯示、不動題庫。改這裡連 tests/test_breaks_pure.mjs 跑（node --test）。
+// 注意：此區塊到 </enum-break-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
+function applyEnumBreaks(stem) {
+  if (typeof stem !== "string") return stem;
+  // 標記＝括號包單一序數，或序數緊接定界符（. ． ： : 、）。只認 CJK 天干，不收數字/拉丁/羅馬。
+  const MARK = /[（(][甲乙丙丁戊己庚辛壬癸][）)]|[甲乙丙丁戊己庚辛壬癸][.．：:、]/g;
+  const ms = [...stem.matchAll(MARK)];
+  if (ms.length < 2) return stem;
+  // 只斷「後面有實質內容」的標記（標記後到下個標記前須有非空白字）。
+  // 這條把「用甲、乙、丙三個容器」這種句中代號指稱（標記互相緊鄰、無內容）整題排除。
+  const breakAt = [];
+  for (let i = 0; i < ms.length; i++) {
+    const end = ms[i].index + ms[i][0].length;
+    const next = i + 1 < ms.length ? ms[i + 1].index : stem.length;
+    if (stem.slice(end, next).trim().length > 0) breakAt.push(ms[i].index);
+  }
+  if (breakAt.length < 2) return stem;          // 至少兩個帶內容的項才算列舉
+  let out = stem;                                // 由後往前插，避免位移
+  for (let i = breakAt.length - 1; i >= 0; i--)
+    out = out.slice(0, breakAt[i]) + "<br>" + out.slice(breakAt[i]);
+  return out.replace(/(<br>){2,}/g, "<br>").replace(/^<br>/, "");
+}
+// </enum-break-pure>
+
 // ════════════════════════════════════════════════════
 // UI: Quiz
 // ════════════════════════════════════════════════════
@@ -1332,6 +1359,8 @@ function renderQuiz() {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
+  // 列舉條列換行（選擇/是非題；MC 已切選項，故答案串①甲乙丁不在 displayText 內。填充在下方自有分支處理）
+  if (!isFill && !isVc) displayText = applyEnumBreaks(displayText);
 
   // Answer area（依題型）
   let answerHtml;
@@ -1352,6 +1381,8 @@ function renderQuiz() {
       displayText = displayText.replace(/\s*([甲乙丙丁戊]：)/g, "<br>$1");
     displayText = displayText.replace(/\s*((?:答|最大|最小)：)/g, "<br>$1");
     displayText = displayText.replace(/^(<br>)+/, "");
+    // 補括號式 (甲)/句點式 甲. 列舉（上方只處理 ；/(N)/甲：；相鄰 <br> 由 applyEnumBreaks 收尾收合）
+    displayText = applyEnumBreaks(displayText);
     // 題幹（Ｎ）標記 → chip（只認全形括號＋全形數字；半形 (1) 是原卷子題編號，不動）
     displayText = displayText.replace(/（([１-９])）/g, (m, d) => {
       const idx = FW.indexOf(d);
