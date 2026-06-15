@@ -1,6 +1,6 @@
 # 題幹列舉條列換行 — 設計稿（2026-06-15 grill-me 對齊，定案做法 B）
 
-對應 CLAUDE.md 快速參考 待辦 ⑤。本稿為「對齊但本 session 不動 code」的設計捕捉，實作以此為真相源。
+對應 CLAUDE.md 快速參考 待辦 ⑤。**狀態：已實作於 feat/enum-break-lists（commit 4e401b2），驗證通過、待 merge＋部署。** 純函式 `applyEnumBreaks` 在 `docs/index.html` 的 `<enum-break-pure>` 區塊，測試 `tests/test_breaks_pure.mjs`（12/12）。全庫審計剛好 10 題斷行、全為真列舉、0 假陽性；Playwright live 實測 MC＋fill 分行正確。
 
 ## 為什麼（rationale）
 
