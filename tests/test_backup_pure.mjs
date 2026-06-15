@@ -65,6 +65,33 @@ test("parseBackup 不造成 prototype pollution", () => {
   assert.equal({}.polluted, undefined);             // 全域原型未被污染
 });
 
+// ── append 防呆：分享到「既有筆記」會把新備份附加在後，一則筆記累積多段 → 一律取最後一段 ──
+
+test("parseBackup 累積多段 → 取最後（最新）那段", () => {
+  const older = buildBackupText({ mastered: { a: 1 }, challenge: {} }, new Date(2026, 5, 15, 16, 47));
+  const newer = buildBackupText({ mastered: { b: 2 }, challenge: {} }, new Date(2026, 5, 15, 16, 52));
+  assert.deepEqual(parseBackup(older + "\n" + newer), { mastered: { b: 2 }, challenge: {} });
+});
+
+test("parseBackup 不被 JSON 值裡的 'AIDEN備份' 字串誤切（只認行首記號）", () => {
+  const state = { mastered: { "標題含AIDEN備份的題": 1 } };
+  assert.deepEqual(parseBackup(buildBackupText(state)), state);
+});
+
+test("backupLabel 累積多段 → 回最後一段的 timecode", () => {
+  const older = buildBackupText({ mastered: {} }, new Date(2026, 5, 15, 16, 47));
+  const newer = buildBackupText({ mastered: {} }, new Date(2026, 5, 15, 16, 52));
+  assert.equal(backupLabel(older + "\n" + newer), "2026-06-15 16:52");
+});
+
+test("readRestoreHash 累積多段 → obj＋label 取最後一段", () => {
+  const older = buildBackupText({ mastered: { a: 1 }, challenge: {} }, new Date(2026, 5, 15, 16, 47));
+  const newer = buildBackupText({ mastered: { b: 2 }, challenge: {} }, new Date(2026, 5, 15, 16, 52));
+  const res = readRestoreHash("#restore=" + encodeBackup(older + "\n" + newer));
+  assert.deepEqual(res.obj, { mastered: { b: 2 }, challenge: {} });
+  assert.equal(res.label, "2026-06-15 16:52");
+});
+
 // ── #9 還原側純函式 ──
 
 test("buildShortcutDeepLink 對中文捷徑名 percent-encode", () => {
