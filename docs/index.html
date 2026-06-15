@@ -1647,7 +1647,8 @@ function renderFeedback(correct, q) {
   // Check if this is last question（full/error 皆以 queue 清空為準）
   const isLast = quiz.queue.length === 0;
 
-  nextBtn.textContent = isLast ? "查看結果" : "下一題";
+  // full 批末 → 批間畫面（「這批完成！」）或通關，非結算清單，故不寫「查看結果」
+  nextBtn.textContent = isLast ? (quiz.mode === "full" ? "完成這批" : "查看結果") : "下一題";
   nextBtn.onclick = advance;
 
   // 作答後跳過已無意義，隱藏（與回報入口互斥）
@@ -1695,20 +1696,12 @@ function renderSummary() {
   const correctCount = quiz.answered.filter(a => a.correct).length;
   const total = quiz.answered.length;
 
+  // 此函式只在兩種情形被呼叫：full 模式整單元通關（finishBatch 保證 isCleared），
+  // 或錯題模式清空。full 未通關一律由 finishBatch 導向 renderBatchBreak，不到這裡。
   let title, scoreLabel;
-  const fullCleared = quiz.mode === "full" && State.isCleared(quiz.unit, quiz.subtopic);
   if (quiz.mode === "full") {
-    if (fullCleared) {
-      title = "通關！";
-      scoreLabel = "所有題目都答對了";
-    } else {
-      // queue 清空但未通關：有跳過的題；極端情況（整輪題目全被回報）remaining 為 0
-      const remaining = quiz.totalForProgress - State.doneCount(quiz.unit, quiz.subtopic);
-      title = "本輪結束";
-      scoreLabel = remaining > 0
-        ? `跳過的 ${remaining} 題，下次練習會再出現`
-        : "這一輪的題目都處理完了";
-    }
+    title = "通關！";
+    scoreLabel = "所有題目都答對了";
   } else {
     title = "錯題清除！";
     scoreLabel = "所有錯題都答對了";
@@ -1716,13 +1709,9 @@ function renderSummary() {
 
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
   let buttonsHtml = "";
-  if (quiz.mode === "full" && fullCleared) {
+  if (quiz.mode === "full") {
     buttonsHtml = `
       <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg})">重新挑戰</button>
-      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
-  } else if (quiz.mode === "full") {
-    buttonsHtml = `
-      <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">繼續練習</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else {
     buttonsHtml = `
