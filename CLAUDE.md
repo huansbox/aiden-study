@@ -6,7 +6,7 @@
 
 ## 快速參考
 
-- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批＋路 B 擴充說明 166＋無答案卷 AI 補答案批 226＋無答案卷批 226 題作答後說明皆已完成（社會 452 題說明全覆蓋，explanations 1257；見下方無答案卷說明條目）**；剩 社會看圖題策展（甲乙標章/此標章等，比照數學看表題截圖）、可再收更多無答案卷。④**分批練習 PRD #2**：sub-issue #3–#6 全部完成並關閉（2026-06-15，見下方分批條目）；父票 PRD #2 暫留，唯餘 1 項 cosmetic 債（resume 半批進度條歸零）待家長定奪是否修。
+- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批＋路 B 擴充說明 166＋無答案卷 AI 補答案批 226＋無答案卷批 226 題作答後說明皆已完成（社會 452 題說明全覆蓋，explanations 1257；見下方無答案卷說明條目）**；剩 社會看圖題策展（甲乙標章/此標章等，比照數學看表題截圖）、可再收更多無答案卷。④**分批練習 PRD #2**：sub-issue #3–#6 全部完成並關閉（2026-06-15，見下方分批條目）；父票 PRD #2 暫留，唯餘 1 項 cosmetic 債（resume 半批進度條歸零）待家長定奪是否修。⑤**題幹條列換行擴及選擇/是非題（下次做，家長 2026-06-15 提）**：情境列舉題（如桃子腳112 unit10 綠色消費「花爸花媽…（甲）…（乙）…（丙）…（丁）…」）甲乙丙丁全擠一段、只靠自動換行很吃力，應在 **（甲）（乙）（丙）（丁）全形列舉標記前主動換行**。現行條列換行 renderer 只套填充題、選擇題刻意不套（因半形 (N) 命中多是萃取滲漏雜訊）——但全形（甲）（乙）標記安全，可擴用；**注意別誤斷選項末尾的「①甲乙丙②甲乙丁」答案串**。見下方「填充題空格 chip＋條列換行」節。
 - **分批練習（碎片化）已完成上線（2026-06-15，PRD #2 / issue #3「016」，feat/batch-practice 已 merge＋push commit 797493a）**：「全部練習」從「整單元數十題一個 queue」改成「一次一批（上限 10）」。`challenge[key]` 存當前批 `{batch:[ids]}`（取代舊 `{queue}`；`getBatch` 視舊格式為 null＝無進行中批次，進度靠 `mastered` 保留不倒退）；新增純函式 `nextBatchSize(N,max=10)=ceil(N/ceil(N/max))`（平均拆無零頭，node 對照表驗證）、`Picker.nextBatch`（接續半批或現算新批）、`finishBatch`（**先判 isCleared→通關、否則 renderBatchBreak，順序不可反**）、`renderBatchBreak`（批間畫面）。進度條 full 模式分子/分母改看 `quiz.batchIds`。Playwright 實測：23→8/8/7、≤10 直接通關不出批間、重新挑戰仍分批、答錯重出、跳過縮批、錯題不分批、舊格式遷移不倒退。批間主鈕家長定案用**「再做 N 題」**（非「再來」，小孩好懂＋保留動態題數）。
 - **進度備份/還原已完成上線（2026-06-15，feat/export-import-progress 已 merge＋push commit 0e84d58）**：純前端匯出/匯入 localStorage 存檔（**iPad 主畫面 App 的 localStorage 會被 iOS 約 7 天規則清掉，加主畫面也擋不住**）。首頁底部「進度備份/還原」摺疊區：匯出＝文字框＋複製（clipboard API＋execCommand fallback）＋下載；匯入＝貼 JSON→驗證（物件且含 mastered 或 challenge）→二次確認→`setItem`+reload。多 agent code review 唯一真 finding＝匯入驗證過嚴已修（接受 loader 能載入的形狀）。家長真實備份（gitignore，勿 commit）＝`aiden-study-進度備份-20260615.json`（含 31 題 mastered），另一份在 Dropbox。
 - **PRD #2 sub-issue #4/#5/#6 已驗證關閉（2026-06-15，chore/batch-practice-followup 已 merge master，commit cce0816；未 push）**：全程 Playwright 對 live build 端到端實測——#4（017）subtopic 同走 startFull 自動分批（探索家鄉的地名 11 剩餘→批 6）、錯題模式不經 nextBatchSize（15 題一次出）、首頁「已答對 35/132」＋通關狀態不變、errorBank 累積一致（full 答錯加入/答對不移除）；#5（018）半批 reload 原樣接續同題（sameSet/sameOrder，不重切不補題）、離開→重抽新批、v3 長 queue 遷移（getBatch 視舊格式 null＋mastered 保留）、v2 無 mastered→backfillMastered 反推 102 不倒退；#6（019）跳過/回報縮分母、跳過清空＋回報清空皆走 finishBatch 批間判定（非舊 summary）。**review 小債清掉 2/3**：renderSummary 的「本輪結束」full dead code 已刪（collapse 成 通關）、批末 next-btn full 模式改「完成這批」。**唯餘 1 項 cosmetic 債**：resume 半批時批內進度條歸零（顯示「0/5」而非「3/8」；要修需在 challenge 存原始批大小，動存檔格式），待家長定奪是否值得。
@@ -95,6 +95,7 @@ skipped_questions.md  跳過題目清單（供手動確認）
 ### 填充題空格 chip＋條列換行（家長提案：（２）標記乍看像答案、子題擠成一段）
 - 題幹（Ｎ）全形標記渲染成 chip（虛線小格），與下方作答格同步 highlight、可點選、輸入時即時回填顯示值；答題後同步綠/紅。資料格式不變（仍存（１）），純前端 renderer 處理；半形 (1) 是原卷子題編號不轉換
 - 條列換行（只套填充題）：「；」後／≥2 個半形 (N) 子題前／≥2 個甲乙丙丁列舉前／「答：」「最大：」「最小：」標籤前。選擇題不套——其 (N) 命中多為萃取欄位滲漏雜訊
+- **TODO（待辦 ⑤）**：選擇/是非題的情境列舉題（含（甲）（乙）（丙）（丁）全形列舉）也應換行，只套全形列舉標記（不套半形 (N)，避開選項末尾「①甲乙丙②甲乙丁」答案串）。例：桃子腳112 unit10 綠色消費「花爸花媽…」
 
 ### 跳過題目（只在全部模式）
 - 答題畫面作答前低調按鈕「先跳過這題」→ 移出本批 queue、本批分母（`batchIds`）減 1，不動 stats／errorBank／mastered
