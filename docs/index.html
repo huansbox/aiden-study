@@ -865,7 +865,8 @@ function renderBackupSection() {
     <details class="backup-section">
       <summary>進度備份 / 還原</summary>
       <div class="backup-body">
-        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾匯出存一份。</p>
+        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾備份存一份。iPad 可用「備份到備忘錄」一鍵存進備忘錄。</p>
+        <button class="st-btn" onclick="window._shareBackup()">備份到備忘錄</button>
         <button class="st-btn" onclick="window._exportProgress()">匯出進度</button>
         <button class="st-btn" onclick="window._showImport()">匯入進度</button>
         <div id="backup-io" class="backup-io hidden"></div>
@@ -1013,6 +1014,49 @@ window._resetChallenge = (unit, subtopic = null) => {
 window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
 window._unflagAll = () => { State.unflagAll(); renderHome(); };
 
+// <backup-pure>
+// ══════ 備份格式契約（純函式；issue #8，與還原側 #9 共用）══════
+// 改這裡會同時牽動備份與還原，務必連 tests/test_backup_pure.mjs 一起跑（node --test）。
+// 注意：此區塊到 </backup-pure> 為止不得引用外部全域變數（如 state/STORAGE_KEY），
+// 才能被 node 測試抽出獨立 eval。
+const BACKUP_MARKER = "AIDEN備份";
+
+// state 物件或 JSON 字串（＋時間）→ 備忘錄文字：首行＝標題＝記號＋timecode，其後為原始可讀 JSON。
+function buildBackupText(stateOrJson, date = new Date()) {
+  const jsonStr = typeof stateOrJson === "string" ? stateOrJson : JSON.stringify(stateOrJson);
+  const p = n => String(n).padStart(2, "0");
+  const ts = `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())} ` +
+             `${p(date.getHours())}:${p(date.getMinutes())}`;
+  return `${BACKUP_MARKER} ${ts}\n${jsonStr}`;
+}
+
+// 備份文字（可帶或不帶記號首行）→ 驗證形狀 → 物件或 null。
+// 形狀檢查＝沿用匯入既有規則：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）。
+function parseBackup(text) {
+  if (typeof text !== "string") return null;
+  let body = text.trim();
+  const nl = body.indexOf("\n");
+  if (body.startsWith(BACKUP_MARKER) && nl !== -1) body = body.slice(nl + 1).trim();
+  let obj;
+  try { obj = JSON.parse(body); } catch (e) { return null; }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) return null;
+  return obj;
+}
+
+// 文字 ↔ URL-safe base64（UTF-8 safe；中文不炸）。供 #9 的 #restore= 與捷徑 deep link 搬運用。
+function encodeBackup(text) {
+  let bin = "";
+  for (const b of new TextEncoder().encode(text)) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodeBackup(b64) {
+  let s = String(b64).replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  const bytes = Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+// </backup-pure>
+
 // ── 進度備份／還原（純前端；備份的就是 localStorage 那份存檔）
 window._exportProgress = () => {
   const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
@@ -1041,6 +1085,25 @@ window._exportProgress = () => {
   };
 };
 
+// 備份到備忘錄：叫出系統分享選單（內容＝記號＋timecode＋原始 JSON），家長點「備忘錄」即存成一則有日期筆記。
+// 不支援 navigator.share（多為桌面瀏覽器）→ 退回現有複製/下載面板。
+window._shareBackup = async () => {
+  if (!state) return;  // 進度尚未載入，別備份出空資料
+  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const text = buildBackupText(json);
+  let shareFailed = false;  // 區分「裝置不支援」與「支援但這次失敗」，退回文案才不誤導
+  if (navigator.share) {
+    try { await navigator.share({ title: "Aiden 進度備份", text }); return; }
+    catch (e) {
+      if (e && e.name === "AbortError") return;  // 使用者取消分享，不退回、不算失敗
+      shareFailed = true;                        // 支援 share 但這次 reject（非取消）
+    }
+  }
+  window._exportProgress();  // 不支援或分享失敗 → 退回複製/下載
+  const msg = document.getElementById("backup-msg");
+  if (msg) msg.textContent = shareFailed ? "分享沒成功，已改用複製" : "此裝置不支援分享，已改用複製";
+};
+
 window._showImport = () => {
   const box = document.getElementById("backup-io");
   box.classList.remove("hidden");
@@ -1058,13 +1121,9 @@ window._importProgress = () => {
   const text = (document.getElementById("import-text").value || "").trim();
   const msg = document.getElementById("backup-msg");
   if (!text) { msg.textContent = "請先貼上備份內容"; return; }
-  let obj;
-  try { obj = JSON.parse(text); }
-  catch (e) { msg.textContent = "格式不對，請貼完整的備份 JSON"; return; }
-  // 接受 loader 能載入的形狀：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）
-  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) {
-    msg.textContent = "這看起來不是進度備份檔"; return;
-  }
+  // parseBackup：容忍帶或不帶記號首行（貼整則備忘錄或純 JSON 皆可），形狀不符回 null
+  const obj = parseBackup(text);
+  if (!obj) { msg.textContent = "這看起來不是進度備份檔"; return; }
   // 二次確認（覆蓋不可復原）
   msg.innerHTML = `確定用這份覆蓋目前進度？<button class="st-btn" id="import-confirm">確定還原</button>`;
   document.getElementById("import-confirm").onclick = () => {
