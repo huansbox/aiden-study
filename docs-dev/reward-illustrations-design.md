@@ -79,10 +79,10 @@ dominantSubtopic(answered):
 ```json
 {
   "pools": {
-    "風": ["wind_1.webp", "wind_2.webp", "wind_3.webp"],
-    "天氣預報": ["forecast_1.webp", "forecast_2.webp", "...共 6 張..."],
-    "綠色消費": ["green_1.webp", "green_2.webp", "green_3.webp"],
-    "__generic__": ["cheer_1.webp", "...5-10 張通用鼓勵..."]
+    "風": ["wind_01.webp", "wind_02.webp", "wind_03.webp"],
+    "天氣預報": ["forecast_01.webp", "forecast_02.webp", "...共 6 張..."],
+    "綠色消費": ["green_01.webp", "green_02.webp", "green_03.webp"],
+    "__generic__": ["cheer_01.webp", "...共 8 張通用鼓勵..."]
   }
 }
 ```
