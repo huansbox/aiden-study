@@ -6,7 +6,10 @@
 
 ## 快速參考
 
-- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批＋路 B 擴充說明 166＋無答案卷 AI 補答案批 226 皆已完成（2026-06-14，社會 60→452）**；剩 **社會無答案卷批新增 226 題作答後說明**（比照路 B 雙盲）、社會看圖題策展（甲乙標章/此標章等，比照數學看表題截圖）、可再收更多無答案卷。
+- **▶ 待辦（後續工作）**：①期中自然（unit 1/2）作答後說明（考後再議）②隱藏題救回 3 題（考後再議）③社會後續：**路 A 擴充批＋路 B 擴充說明 166＋無答案卷 AI 補答案批 226 皆已完成（2026-06-14，社會 60→452）**；剩 **社會無答案卷批新增 226 題作答後說明**（比照路 B 雙盲）、社會看圖題策展（甲乙標章/此標章等，比照數學看表題截圖）、可再收更多無答案卷。④**分批練習 PRD #2**：核心 issue #3 已上線，剩 #4/#5/#6 多為「驗證現有實作＋關 issue」（見下方分批條目）。
+- **分批練習（碎片化）已完成上線（2026-06-15，PRD #2 / issue #3「016」，feat/batch-practice 已 merge＋push commit 797493a）**：「全部練習」從「整單元數十題一個 queue」改成「一次一批（上限 10）」。`challenge[key]` 存當前批 `{batch:[ids]}`（取代舊 `{queue}`；`getBatch` 視舊格式為 null＝無進行中批次，進度靠 `mastered` 保留不倒退）；新增純函式 `nextBatchSize(N,max=10)=ceil(N/ceil(N/max))`（平均拆無零頭，node 對照表驗證）、`Picker.nextBatch`（接續半批或現算新批）、`finishBatch`（**先判 isCleared→通關、否則 renderBatchBreak，順序不可反**）、`renderBatchBreak`（批間畫面）。進度條 full 模式分子/分母改看 `quiz.batchIds`。Playwright 實測：23→8/8/7、≤10 直接通關不出批間、重新挑戰仍分批、答錯重出、跳過縮批、錯題不分批、舊格式遷移不倒退。批間主鈕家長定案用**「再做 N 題」**（非「再來」，小孩好懂＋保留動態題數）。
+- **進度備份/還原已完成上線（2026-06-15，feat/export-import-progress 已 merge＋push commit 0e84d58）**：純前端匯出/匯入 localStorage 存檔（**iPad 主畫面 App 的 localStorage 會被 iOS 約 7 天規則清掉，加主畫面也擋不住**）。首頁底部「進度備份/還原」摺疊區：匯出＝文字框＋複製（clipboard API＋execCommand fallback）＋下載；匯入＝貼 JSON→驗證（物件且含 mastered 或 challenge）→二次確認→`setItem`+reload。多 agent code review 唯一真 finding＝匯入驗證過嚴已修（接受 loader 能載入的形狀）。家長真實備份（gitignore，勿 commit）＝`aiden-study-進度備份-20260615.json`（含 31 題 mastered），另一份在 Dropbox。
+- **PRD #2 剩餘 #4/#5/#6 多由 #3 實作涵蓋（下個 session＝「驗證＋關 issue」非重做）**：#3（016）端到端做完整套分批系統，連帶——#4（017 回歸保護）錯題不分批/首頁不變/errorBank 不變 已實測，**subtopic 分批只差明確 Playwright 驗證**（同一 `startQuiz("full")` 路徑必然分批）；#5（018 半批接續＋遷移）resume/舊`{queue}`遷移不倒退 已實測，**v2 無 mastered 的 backfill 路徑只差明確驗證**；#6（019 批內跳過/回報）跳過縮批 已實測，**flag 清空本批走批間 已實作只差明確驗證**。**review 裁決的非阻擋小債**（可順手清）：renderSummary 的「本輪結束」full 分支現為 dead code（finishBatch 非 cleared 一律走 batch break）、resume 半批時批內進度條歸零（cosmetic）、批界 next-btn 仍寫「查看結果」（cosmetic）。
 - **社會無答案卷 AI 補答案批已完成（2026-06-14，11 卷，社會 226→452、題庫 1632→1858）**：tcool ≥110下期末「無官方答案卷」14 卷下載（草港112/吉林111 純掃描圖、民權112 圖多 共 3 卷整卷剔除）→ 276 萃取→去重淨增 240→**AI 補答案（比照數學批三）**。流程＝3 獨立盲解 agent **三方比對 230/240 一致**→主迴圈裁決 10 分歧（7 答 3 剔）→**classify 自填＝第 4 意見**揪一致票 2 隱性錯（布農族依月亮非太陽、琉璃珠排灣非阿美）→**主迴圈全 233 題事實覆審**再揪 2 全模型共錯（竹山自然環境非生產、鹹菜客家非閩南）＋剔 3 看圖/全對題→入庫 226 題全 `needs_review=True`。**cf_clearance 取法更新**＝Playwright 導 PDF URL 過 managed challenge 後 IWR 才放行（直接用首頁 cookie 對 PDF 端點仍 403）。`build_explanations.py` 社會改「漸進覆蓋」（`expected_explanation_ids`，新批題庫不擋說明驗證）＋3 測試，tests **116 passed**，Playwright 科目層 154/132/166＋新題判對。下載器＝`scripts/download_tcool_social_noans.ps1`；完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)＋`skipped_questions.md`「無答案卷 AI 補答案批」節。
 - **社會擴充 166 題作答後說明已完成（路 B 擴充，2026-06-14，explanations 865→1031）**：社會 226 題（pilot 60＋擴充 166）全覆蓋。8 sonnet 寫手（附主迴圈已核定典故事實 brief）→6 獨立盲審→主迴圈裁決 **150 pass／16 fixed**（「全臺最古老媽祖廟」軟化、消費專線干擾號碼錯標移除、統一發票誤引選項改正、大甲藺草誤掛洪鴦改正、射日刪課本外推論）。批次檔＝`data/exp_results/batch_social_03..10.json`；抽查＝`docs-dev/review_社會說明_抽查.md`。
 - **社會擴充批（路 A）已完成（2026-06-14，5 卷，社會 60→226、題庫 1466→1632）**：安和111/112、四維112、竹塘110、海佃110 端到端（21→101 是非＋39→125 選擇）。原規劃 8 卷，probe 後 **3 卷整卷剔除**：中正110（內容舊課綱，家長定案剔除）、和順112/113（題目卷本身 0 字純掃描圖）。**跨校無逐字重題**（normalize_text 去重＝0，交接文件「大量重題」預期不成立，不需新去重機制）。**本批難點＝選項標記格式分歧**（非視覺判讀）：`clean_social_raw.py` 新增 `recover_social_options`（裸`○`/`○數字`/`數字○`混用＋雙欄切碎統一補抽）；`extract.py` NON_TARGET 補「勾選題/排出順序/生活情境題」截斷（順帶修期中 2 題勾選滲漏，golden 同步更新）。**官方答案**＝`extract_social_answers.py` 逐卷專用 parser（5 卷格式全不同＋PUA U+F0CD→╳＋空括號=false），完整性 167/167，7 題雙欄跑版答案 render 視覺判讀補（MANUAL_OVERRIDE）。**竹塘題目卷/答案卷不同版本**（tr7/mc7 換題）：tr7 剔除、mc7 人工確認保留。crosscheck AI vs 官方 **161/166 一致**（5 分歧皆官方正確，內容竄改型是非題）。tests **113 passed**，Playwright 實測科目層/unit課本號/補抽選項題/作答判對全正確。完整紀錄＝[`docs-dev/social-pipeline-status.md`](docs-dev/social-pipeline-status.md)「✅ 路 A 已完成」節＋`skipped_questions.md`「社會擴充批（路 A）」節。
@@ -81,8 +84,8 @@ skipped_questions.md  跳過題目清單（供手動確認）
 ## 練習網站功能
 
 ### 兩種模式
-- **全部練習**：queue 制，答對移出/答錯移到隊尾，可接續，通關後可重置
-- **錯題練習**：答對從錯題庫移除，答錯留在庫中排到隊尾
+- **全部練習**：分批制（一次一批、上限 10；2026-06-15 起，見快速參考「分批練習」）。本批內答對移出/答錯移到批尾重出，全批答對→批間畫面「再做 N 題／離開」；整單元全 mastered→「通關！」。可接續半批，通關後可重置。
+- **錯題練習**：答對從錯題庫移除，答錯留在庫中排到隊尾（**不分批**，一次出全部錯題）
 - 快速練習（智慧選 10 題）已整個移除（2026-06-11 家長定案）：選題邏輯與另兩模式重疊、不累積通關進度、版面按鈕過多眼花；stats 仍照常記錄（目前只寫不讀），勿因「沒人讀」順手刪掉記錄端
 
 ### 作答後說明
@@ -93,16 +96,21 @@ skipped_questions.md  跳過題目清單（供手動確認）
 - 條列換行（只套填充題）：「；」後／≥2 個半形 (N) 子題前／≥2 個甲乙丙丁列舉前／「答：」「最大：」「最小：」標籤前。選擇題不套——其 (N) 命中多為萃取欄位滲漏雜訊
 
 ### 跳過題目（只在全部模式）
-- 答題畫面作答前低調按鈕「先跳過這題」→ 移出本輪 queue，不動 stats／errorBank／mastered
-- 跳過≠答對：進度條「已答對」以 mastered 計；整輪有跳過 → 結算頁「本輪結束」＋「繼續練習」（不重置），全對才顯示「通關！」；跳過的題下輪會再出現
+- 答題畫面作答前低調按鈕「先跳過這題」→ 移出本批 queue、本批分母（`batchIds`）減 1，不動 stats／errorBank／mastered
+- 跳過≠答對：進度條「已答對」以 mastered 計；本批做完未通關 → 批間畫面（被跳題之後別批會再出現），整單元全 mastered 才「通關！」（分批後不再走舊「本輪結束」summary）
 
 ### 題目回報（flag）
 - 答題 feedback 畫面（答對/答錯皆有）低調按鈕「題目有問題」→ inline 確認後 flag
-- flag 效果：清除該題全部 stats、移出 errorBank 與 mastered（先前答對視為可能猜對）、從本輪 queue 抽掉；兩種模式題池與通關分母（`questionIdsFor`）全部排除
+- flag 效果：清除該題全部 stats、移出 errorBank 與 mastered（先前答對視為可能猜對）、從本批 queue 抽掉並使本批分母（`batchIds`）減 1（本批因此清空→走批間判定）；兩種模式題池與通關分母（`questionIdsFor`）全部排除
 - 首頁底部「已回報題目（N）」（N=0 隱藏）：單題還原/全部還原；「回報到 GitHub」開 prefill issue URL（零後端，pad 瀏覽器需登入 GitHub；URL 過長自動降格為精簡格式）
 
+### 進度備份/還原（家長用；2026-06-15）
+- 首頁底部「進度備份/還原」摺疊區：純前端匯出/匯入整份 localStorage 存檔。**為何**＝iPad 主畫面 App 的 localStorage 會被 iOS 約 7 天規則清掉、加主畫面也擋不住。
+- 匯出＝`window._exportProgress`（讀 `localStorage` 那份，文字框＋複製＋下載 `aiden-study-進度備份-YYYYMMDD.json`）；匯入＝`window._showImport`/`_importProgress`（貼 JSON→驗證物件且含 `mastered` 或 `challenge`→二次確認→`setItem`+reload）。
+- 還原管道與 loader 一致：匯入舊版（無 mastered）備份也能靠 `backfillMastered` 重建
+
 ### localStorage 結構（key: aiden_study_v2）
-- `challenge`: 每單元的 queue 狀態（null=未開始, []=已通關, [ids]=進行中）
+- `challenge`: 每單元/subtopic 的**當前批**狀態（`{batch:[ids]}`=進行中半批, null=無進行中批次；2026-06-15 改自舊 `{queue}`。`getBatch` 把舊 `{queue}` 視為 null；通關與否一律由 `mastered` 推導，不存 cleared 標記）
 - `errorBank`: 錯題庫（去重，只在錯題模式答對時移除）
 - `stats`: 每題統計（practiced/correct；快速練習移除後只寫不讀，保留供未來功能）
 - `flagged`: 已回報題目（`[{questionId, unit, flaggedAt}]`，排除於所有題池與分母，可還原）
