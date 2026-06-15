@@ -865,7 +865,9 @@ function renderBackupSection() {
     <details class="backup-section">
       <summary>進度備份 / 還原</summary>
       <div class="backup-body">
-        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾匯出存一份。</p>
+        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾備份存一份。iPad 可用「備份到備忘錄」一鍵存進備忘錄、「從備忘錄還原」一鍵帶回（需先裝還原捷徑）。</p>
+        <button class="st-btn" onclick="window._shareBackup()">備份到備忘錄</button>
+        <button class="st-btn" onclick="window._restoreFromNotes()">從備忘錄還原</button>
         <button class="st-btn" onclick="window._exportProgress()">匯出進度</button>
         <button class="st-btn" onclick="window._showImport()">匯入進度</button>
         <div id="backup-io" class="backup-io hidden"></div>
@@ -1013,6 +1015,83 @@ window._resetChallenge = (unit, subtopic = null) => {
 window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
 window._unflagAll = () => { State.unflagAll(); renderHome(); };
 
+// <backup-pure>
+// ══════ 備份格式契約（純函式；issue #8，與還原側 #9 共用）══════
+// 改這裡會同時牽動備份與還原，務必連 tests/test_backup_pure.mjs 一起跑（node --test）。
+// 注意：此區塊到 </backup-pure> 為止不得引用外部全域變數（如 state/STORAGE_KEY），
+// 才能被 node 測試抽出獨立 eval。
+const BACKUP_MARKER = "AIDEN備份";
+
+// state 物件或 JSON 字串（＋時間）→ 備忘錄文字：首行＝標題＝記號＋timecode，其後為原始可讀 JSON。
+function buildBackupText(stateOrJson, date = new Date()) {
+  const jsonStr = typeof stateOrJson === "string" ? stateOrJson : JSON.stringify(stateOrJson);
+  const p = n => String(n).padStart(2, "0");
+  const ts = `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())} ` +
+             `${p(date.getHours())}:${p(date.getMinutes())}`;
+  return `${BACKUP_MARKER} ${ts}\n${jsonStr}`;
+}
+
+// 備份文字（可帶或不帶記號首行）→ 驗證形狀 → 物件或 null。
+// 形狀檢查＝沿用匯入既有規則：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）。
+function parseBackup(text) {
+  if (typeof text !== "string") return null;
+  let body = text.trim();
+  const nl = body.indexOf("\n");
+  if (body.startsWith(BACKUP_MARKER) && nl !== -1) body = body.slice(nl + 1).trim();
+  let obj;
+  try { obj = JSON.parse(body); } catch (e) { return null; }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) return null;
+  return obj;
+}
+
+// 文字 ↔ URL-safe base64（UTF-8 safe；中文不炸）。供 #9 的 #restore= 與捷徑 deep link 搬運用。
+function encodeBackup(text) {
+  let bin = "";
+  for (const b of new TextEncoder().encode(text)) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodeBackup(b64) {
+  let s = String(b64).replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  const bytes = Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+// 捷徑名 → shortcuts:// 深連結（喚起指定捷徑）。中文名需 percent-encode。
+function buildShortcutDeepLink(name) {
+  return `shortcuts://run-shortcut?name=${encodeURIComponent(name)}`;
+}
+
+// 備份文字首行若是記號行 → 回傳其 timecode 部分（"2026-06-15 14:30"），否則 null。供還原確認顯示日期。
+function backupLabel(text) {
+  if (typeof text !== "string") return null;
+  const first = text.split("\n")[0].trim();
+  if (!first.startsWith(BACKUP_MARKER)) return null;
+  return first.slice(BACKUP_MARKER.length).trim() || null;
+}
+
+// location.hash（#restore=<base64>）→ { obj, label } 或 null（無 restore 參數／解碼失敗／形狀不符）。
+function readRestoreHash(hash) {
+  if (typeof hash !== "string") return null;
+  const m = hash.match(/[#&]?restore=([^&]+)/);
+  if (!m) return null;
+  let text;
+  try { text = decodeBackup(m[1]); } catch (e) { return null; }
+  const obj = parseBackup(text);
+  if (!obj) return null;
+  return { obj, label: backupLabel(text) };
+}
+
+// 長度防護：保守上限（字元）。超過 → 提示備份太大、捷徑/網址還原可能塞不下（真機校準閾值留 #11）。
+const BACKUP_SIZE_WARN = 40000;
+function isBackupOversized(text, max = BACKUP_SIZE_WARN) {
+  return typeof text === "string" && text.length > max;
+}
+// </backup-pure>
+
+// 捷徑名稱：與家長在 Shortcuts 建立的還原捷徑名稱必須一字不差（深連結寫死；#10 配方文件須標註此耦合）。
+const SHORTCUT_NAME = "Aiden還原";
+
 // ── 進度備份／還原（純前端；備份的就是 localStorage 那份存檔）
 window._exportProgress = () => {
   const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
@@ -1041,6 +1120,26 @@ window._exportProgress = () => {
   };
 };
 
+// 備份到備忘錄：叫出系統分享選單（內容＝記號＋timecode＋原始 JSON），家長點「備忘錄」即存成一則有日期筆記。
+// 不支援 navigator.share（多為桌面瀏覽器）→ 退回現有複製/下載面板。
+window._shareBackup = async () => {
+  if (!state) return;  // 進度尚未載入，別備份出空資料
+  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const text = buildBackupText(json);
+  if (isBackupOversized(text)) _warnBackupOversized();  // 非阻擋：仍照常分享，但提醒捷徑還原可能塞不下
+  let shareFailed = false;  // 區分「裝置不支援」與「支援但這次失敗」，退回文案才不誤導
+  if (navigator.share) {
+    try { await navigator.share({ title: "Aiden 進度備份", text }); return; }
+    catch (e) {
+      if (e && e.name === "AbortError") return;  // 使用者取消分享，不退回、不算失敗
+      shareFailed = true;                        // 支援 share 但這次 reject（非取消）
+    }
+  }
+  window._exportProgress();  // 不支援或分享失敗 → 退回複製/下載
+  const msg = document.getElementById("backup-msg");
+  if (msg) msg.textContent = shareFailed ? "分享沒成功，已改用複製" : "此裝置不支援分享，已改用複製";
+};
+
 window._showImport = () => {
   const box = document.getElementById("backup-io");
   box.classList.remove("hidden");
@@ -1058,13 +1157,9 @@ window._importProgress = () => {
   const text = (document.getElementById("import-text").value || "").trim();
   const msg = document.getElementById("backup-msg");
   if (!text) { msg.textContent = "請先貼上備份內容"; return; }
-  let obj;
-  try { obj = JSON.parse(text); }
-  catch (e) { msg.textContent = "格式不對，請貼完整的備份 JSON"; return; }
-  // 接受 loader 能載入的形狀：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）
-  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) {
-    msg.textContent = "這看起來不是進度備份檔"; return;
-  }
+  // parseBackup：容忍帶或不帶記號首行（貼整則備忘錄或純 JSON 皆可），形狀不符回 null
+  const obj = parseBackup(text);
+  if (!obj) { msg.textContent = "這看起來不是進度備份檔"; return; }
   // 二次確認（覆蓋不可復原）
   msg.innerHTML = `確定用這份覆蓋目前進度？<button class="st-btn" id="import-confirm">確定還原</button>`;
   document.getElementById("import-confirm").onclick = () => {
@@ -1072,6 +1167,70 @@ window._importProgress = () => {
     location.reload();
   };
 };
+
+// 從備忘錄還原：喚起還原捷徑（深連結）。iOS 對捷徑未裝/失敗無回呼、無法偵測 → 同畫面先給後備指引。
+window._restoreFromNotes = () => {
+  const box = document.getElementById("backup-io");
+  if (box) {
+    box.classList.remove("hidden");
+    box.innerHTML = `
+      <p class="backup-hint">正在開啟「還原捷徑」…<br>
+      沒跳出捷徑（可能還沒安裝）？改用
+      <button class="st-btn" onclick="window._showImport()">貼文字框還原</button>。</p>`;
+  }
+  location.href = buildShortcutDeepLink(SHORTCUT_NAME);
+};
+
+// 備份過大提示（非阻擋）：開備份區、提示改用下載檔案還原。
+function _warnBackupOversized() {
+  const det = document.querySelector("details.backup-section");
+  if (det) det.open = true;
+  const box = document.getElementById("backup-io");
+  if (!box) return;
+  box.classList.remove("hidden");
+  box.innerHTML = `<p class="backup-hint">這份備份較大，捷徑/網址還原可能塞不下；建議改用「匯出進度 → 下載檔案」保存、用「匯入進度」還原。</p>`;
+}
+
+// 避免把不可信文字（如備份 label，來源是任意 #restore= 連結）直接塞 innerHTML → XSS
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// 載入時若帶 #restore=<base64>（還原捷徑帶回）→ 二次確認顯示日期後覆蓋；失敗則清掉壞 hash 並提示。
+function handleRestoreHash() {
+  if (!location.hash || location.hash.indexOf("restore=") === -1) return;
+  const cleanUrl = location.pathname + location.search;  // 去掉 hash 的乾淨網址
+  const res = readRestoreHash(location.hash);
+  // 捷徑可能在做題中途用 Open URL 帶 hash 進來 → 先回首頁，備份區 DOM 才在、確認/錯誤才看得到
+  showPage("page-home");
+  renderHome();
+  const det = document.querySelector("details.backup-section");
+  if (det) det.open = true;
+  const box = document.getElementById("backup-io");
+  if (!box) { history.replaceState(null, "", cleanUrl); return; }  // 極端：無處呈現，至少清掉 hash
+  box.classList.remove("hidden");
+  if (!res) {
+    history.replaceState(null, "", cleanUrl);  // 壞 hash：清掉、不 reload
+    box.innerHTML = `<p class="backup-hint">這個還原連結看不懂或已損壞，沒有還原。請改用「匯入進度」貼上備份。</p>`;
+    return;
+  }
+  const when = res.label ? `（${escapeHtml(res.label)} 的備份）` : "";
+  box.innerHTML = `
+    <p class="backup-hint">要用備忘錄這份${when}覆蓋目前進度嗎？<b>覆蓋後不可復原</b>。</p>
+    <div class="backup-actions">
+      <button class="st-btn" id="restore-confirm">確定還原</button>
+      <button class="st-btn" id="restore-cancel">取消</button>
+    </div>`;
+  document.getElementById("restore-confirm").onclick = () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(res.obj));
+    location.replace(cleanUrl);  // reload 並去掉 hash（不留歷史，避免重觸發）
+  };
+  document.getElementById("restore-cancel").onclick = () => {
+    history.replaceState(null, "", cleanUrl);
+    box.innerHTML = `<p class="backup-hint">已取消還原。</p>`;
+  };
+  if (det) det.scrollIntoView({ behavior: "smooth" });
+}
 
 // 回報到 GitHub：prefill issue URL（零後端；pad 瀏覽器需登入過 GitHub）
 const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
@@ -1766,12 +1925,15 @@ async function init() {
     if (state._needMasteredBackfill) State.backfillMastered();
 
     renderHome();
+    handleRestoreHash();  // 若帶 #restore=（還原捷徑帶回）→ 二次確認後覆蓋
   } catch (e) {
     console.error("Failed to load:", e);
     showPage("page-error");
   }
 }
 
+// 網站已開著時，還原捷徑用 Open URL 帶 #restore= 進來是「同文件 hash 變更、不 reload」→ 也要接住
+window.addEventListener("hashchange", handleRestoreHash);
 init();
 })();
 </script>
