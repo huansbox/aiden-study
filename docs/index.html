@@ -480,20 +480,23 @@ const State = {
     Storage.save(state);
   },
 
-  // Challenge Queue（key 為複合鍵：單元 "3" 或 單元+subtopic "3/動物分類"）
-  getChallenge(key) {
-    return state.challenge[key] || null;
+  // 當前批次（key 為複合鍵：單元 "3" 或 單元+subtopic "3/動物分類"）
+  // 新格式 { batch:[ids] }＝進行中的半批；null＝無進行中批次（下次現算新批）
+  // 舊格式 { queue:[...] } 由 getBatch 視為 null（丟棄排序，進度由 mastered 保留、不倒退）
+  getBatch(key) {
+    const ch = state.challenge[key];
+    return ch && Array.isArray(ch.batch) ? ch.batch : null;
   },
-  saveChallenge(key, queue) {
-    state.challenge[key] = { queue: [...queue] };
+  saveBatch(key, batch) {
+    state.challenge[key] = { batch: [...batch] };
     Storage.save(state);
   },
-  clearChallenge(key) {
-    state.challenge[key] = { queue: [] }; // [] = 已通關
+  clearBatch(key) {
+    state.challenge[key] = null; // 本批完成 → 無進行中批次
     Storage.save(state);
   },
   resetChallenge(key) {
-    state.challenge[key] = null; // null = 未開始
+    state.challenge[key] = null; // 未開始
     Storage.save(state);
   },
 
@@ -575,9 +578,10 @@ const quiz = {
   mode: null,    // "full" | "error"
   unit: null,    // full: 單元數字；error: 單元陣列
   subtopic: null,// full 限定的 subtopic（null=整單元）
-  queue: [],     // question ids
+  queue: [],     // question ids（本批工作佇列，答錯會 recycle 到尾巴）
+  batchIds: [],  // full: 本批涵蓋的相異題（進度條分母；skip/flag 會縮）
   answered: [],  // [{ questionId, correct }]
-  totalForProgress: 0, // fixed denominator for progress
+  totalForProgress: 0, // error 模式進度分母（full 改看 batchIds）
   isAnswered: false
 };
 
@@ -593,6 +597,15 @@ function shuffle(arr) {
   return a;
 }
 
+// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
+// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
+function nextBatchSize(remaining, max = 10) {
+  if (remaining <= 0) return 0;
+  if (remaining <= max) return remaining;
+  const k = Math.ceil(remaining / max);
+  return Math.ceil(remaining / k);
+}
+
 function showPage(id) {
   document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
@@ -603,14 +616,18 @@ function showPage(id) {
 // Picker
 // ════════════════════════════════════════════════════
 const Picker = {
-  forFullPractice(unit, subtopic) {
+  // 全部練習：取一「批」（上限 10）。有未完成半批則接續，否則從剩餘未答對題現算新批。
+  nextBatch(unit, subtopic) {
     const mastered = State.getMasteredSet(unit);
-    // 真相＝mastered；queue 只排序「尚未答對」的題（在別處答對的會被濾掉、不再出）
-    const target = questionIdsFor(unit, subtopic).filter(id => !mastered.has(id) && questionMap.has(id));
-    const ch = State.getChallenge(challengeKey(unit, subtopic));
-    const cached = (ch && ch.queue ? ch.queue : []).filter(id => target.includes(id)); // 保留既有題序
-    const fresh = shuffle(target.filter(id => !cached.includes(id)));                    // 新題打散
-    return [...cached, ...fresh];
+    // 剩餘未答對題（整單元/subtopic 題 − mastered；flagged 已由 questionIdsFor 排除）
+    const remaining = questionIdsFor(unit, subtopic).filter(id => !mastered.has(id) && questionMap.has(id));
+    const saved = State.getBatch(challengeKey(unit, subtopic)); // 半批 ids 或 null
+    if (saved && saved.length) {
+      const cont = saved.filter(id => remaining.includes(id));  // 仍未答對且仍在題庫
+      if (cont.length) return cont;                             // 接續半批（中途被打斷）
+    }
+    const shuffled = shuffle(remaining);
+    return shuffled.slice(0, nextBatchSize(shuffled.length));   // 開新批
   },
 
   forErrorPractice(unitFilter) {
@@ -631,9 +648,10 @@ function startQuiz(mode, unit, subtopic = null) {
   quiz.isAnswered = false;
 
   if (mode === "full") {
-    quiz.queue = Picker.forFullPractice(unit, subtopic);
-    quiz.totalForProgress = questionIdsFor(unit, subtopic).length;
-    State.saveChallenge(challengeKey(unit, subtopic), quiz.queue);
+    quiz.queue = Picker.nextBatch(unit, subtopic);
+    quiz.batchIds = [...new Set(quiz.queue)];                       // 本批相異題（進度條分母）
+    quiz.totalForProgress = questionIdsFor(unit, subtopic).length;  // 整單元數（僅防禦用）
+    State.saveBatch(challengeKey(unit, subtopic), quiz.queue);
   } else if (mode === "error") {
     quiz.queue = Picker.forErrorPractice(unit);
     quiz.totalForProgress = quiz.queue.length;
@@ -675,7 +693,7 @@ function submitAnswer(selected) {
       quiz.queue.push(q.id);
       State.addToErrorBank(q.id, q.unit);
     }
-    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
   } else if (quiz.mode === "error") {
     quiz.queue.shift();
     if (correct) {
@@ -694,8 +712,7 @@ function advance() {
 
   // Check if finished
   if (quiz.mode === "full" && quiz.queue.length === 0) {
-    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), []); // 清空順序快取；通關由 mastered 判定
-    renderSummary();
+    finishBatch();
     return;
   }
   if (quiz.mode === "error" && quiz.queue.length === 0) {
@@ -706,13 +723,23 @@ function advance() {
   renderQuiz();
 }
 
+// 本批做完：先判整單元清空（→「通關！」），否則進「批間畫面」。
+// 順序不可反——整單元 ≤10 題只一批時，答完要直接通關、不出現批間畫面。
+function finishBatch() {
+  State.clearBatch(challengeKey(quiz.unit, quiz.subtopic));
+  if (State.isCleared(quiz.unit, quiz.subtopic)) renderSummary();
+  else renderBatchBreak();
+}
+
 // 跳過（只限全部模式、作答前）：移出本輪 queue，不動統計／錯題庫／mastered。
 // 沒進 mastered → 不算通關，下次接續或重練時會再出現
 function skipCurrentQuestion() {
   if (quiz.mode !== "full" || quiz.isAnswered) return;
+  const id = quiz.queue[0];
   quiz.queue.shift();
-  State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
-  if (quiz.queue.length === 0) { renderSummary(); return; }
+  quiz.batchIds = quiz.batchIds.filter(x => x !== id); // 本批分母 −1；被跳過題之後別批會再出現
+  State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+  if (quiz.queue.length === 0) { finishBatch(); return; }
   renderQuiz();
 }
 
@@ -731,9 +758,9 @@ function flagCurrentQuestion() {
   quiz.isAnswered = false;
   if (quiz.mode === "full") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
-    quiz.totalForProgress = questionIdsFor(quiz.unit, quiz.subtopic).length;
-    State.saveChallenge(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
-    if (quiz.queue.length === 0) { renderSummary(); return; }
+    quiz.batchIds = quiz.batchIds.filter(id => id !== q.id); // 本批分母 −1；該題永久排除於所有題池
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    if (quiz.queue.length === 0) { finishBatch(); return; }
   } else if (quiz.mode === "error") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
     quiz.totalForProgress--;
@@ -1435,8 +1462,10 @@ function renderDots(total, currentIdx, answered) {
 function renderBarProgress() {
   let done, total, label;
   if (quiz.mode === "full") {
-    total = quiz.totalForProgress;
-    done = State.doneCount(quiz.unit, quiz.subtopic); // 以 mastered 為準：跳過的題不算已答對
+    // 本批進度：分母＝本批相異題、分子＝其中已 mastered（答對）數（不沿用整單元 doneCount）
+    const set = State.getMasteredSet(quiz.unit);
+    total = quiz.batchIds.length;
+    done = quiz.batchIds.filter(id => set.has(id)).length;
     label = `已答對 ${done} / ${total} 題`;
   } else {
     // error mode with bar
@@ -1549,6 +1578,24 @@ submitAnswer = function(selected) {
   quiz._lastSelected = selected;
   _origSubmit(selected);
 };
+
+// ════════════════════════════════════════════════════
+// UI: 批間畫面（本批完成、整單元尚未通關時）
+// ════════════════════════════════════════════════════
+function renderBatchBreak() {
+  const unitTotal = questionIdsFor(quiz.unit, quiz.subtopic).length;
+  const unitDone = State.doneCount(quiz.unit, quiz.subtopic);
+  const nextN = nextBatchSize(unitTotal - unitDone); // 下一批實際題數（依當下剩餘現算）
+  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  document.getElementById("page-summary").innerHTML = `
+    <h2>這批完成！</h2>
+    <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
+    <div style="margin-top:24px">
+      <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">再做 ${nextN} 題</button>
+      <button class="summary-btn" onclick="window._goHome()">離開</button>
+    </div>`;
+  showPage("page-summary");
+}
 
 // ════════════════════════════════════════════════════
 // UI: Summary
