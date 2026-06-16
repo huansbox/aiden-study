@@ -40,6 +40,33 @@
       "cheer_06.webp",
       "cheer_07.webp",
       "cheer_08.webp"
+    ],
+    "蔬菜生長的變化過程": [
+      "vegetable_growth_01.webp",
+      "vegetable_growth_02.webp",
+      "vegetable_growth_03.webp",
+      "vegetable_growth_04.webp",
+      "vegetable_growth_05.webp",
+      "vegetable_growth_06.webp",
+      "vegetable_growth_07.webp",
+      "vegetable_growth_08.webp"
+    ],
+    "影響蔬菜生長的因素": [
+      "vegetable_growth_factors_01.webp",
+      "vegetable_growth_factors_02.webp",
+      "vegetable_growth_factors_03.webp",
+      "vegetable_growth_factors_04.webp",
+      "vegetable_growth_factors_05.webp",
+      "vegetable_growth_factors_06.webp",
+      "vegetable_growth_factors_07.webp"
+    ],
+    "生存與適應": [
+      "survival_adaptation_01.webp",
+      "survival_adaptation_02.webp",
+      "survival_adaptation_03.webp",
+      "survival_adaptation_04.webp",
+      "survival_adaptation_05.webp",
+      "survival_adaptation_06.webp"
     ]
   }
 }
