@@ -25,7 +25,7 @@ import logging
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(__file__))
-from data_helpers import validate_blanks, validate_vertical_calc
+from data_helpers import validate_blanks, validate_vertical_calc, clean_question_text
 
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
@@ -77,33 +77,38 @@ def to_final_schema(q: dict, used_ids: set, subject: str) -> dict:
         "unit": int(q["unit"]),
         "subtopic": q.get("subtopic", "none"),
         "type": q["section"],
-        "text": q["text"],
+        "text": clean_question_text(q["text"]),
     }
     if q.get("image"):
         out["image"] = q["image"]   # 看表題截圖（docs/ 相對路徑）
     if q["section"] == "fill_in_blank":
-        out["blanks"] = q["blanks"]
+        # blank 答案只壓空格、不砍題尾（'100頁' 等合法答案結尾不可砍）
+        out["blanks"] = [
+            {**b, "answer": clean_question_text(b["answer"], strip_tail_furniture=False)}
+            if isinstance(b.get("answer"), str) else b
+            for b in q["blanks"]
+        ]
     elif q["section"] == "vertical_calc":
         out["op"] = q["op"]
         out["operands"] = q["operands"]
         out["answer"] = q["answer"]
     else:
-        out["options"] = q["options"]
+        out["options"] = [clean_question_text(o) for o in q["options"]]
         out["answer"] = q["answer"]
     out["source"] = q["source"]
     return out
 
 
 def preserve_schema(q: dict, subject: str) -> dict:
-    """既有題目 → 統一 key 順序並補 subject（值原封不動）"""
+    """既有題目（期中）→ 統一 key 順序並補 subject；text/options 套萃取雜訊清理（冪等）"""
     return {
         "id": q["id"],
         "subject": subject,
         "unit": int(q["unit"]),
         "subtopic": q.get("subtopic", "none"),
         "type": q["type"],
-        "text": q["text"],
-        "options": q["options"],
+        "text": clean_question_text(q["text"]),
+        "options": [clean_question_text(o) for o in q["options"]],
         "answer": q["answer"],
         "source": q["source"],
     }

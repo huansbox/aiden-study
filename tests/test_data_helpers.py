@@ -14,6 +14,7 @@ from data_helpers import (
     validate_blanks,
     normalize_for_compare,
     validate_vertical_calc,
+    clean_question_text,
 )
 
 
@@ -82,6 +83,101 @@ def test_validate_vertical_calc_long_division():
     assert validate_vertical_calc("long_division", [340, 8], {"quotient": 42, "remainder": 4})
     assert not validate_vertical_calc("long_division", [340, 8], {"quotient": 42, "remainder": 5})
     assert not validate_vertical_calc("long_division", [340, 8], {"quotient": 41, "remainder": 12})  # 餘須<除數
+
+
+# ── clean_question_text：萃取雜訊清理 ──────────────────────
+
+def test_clean_collapses_cjk_linewrap_spaces():
+    # 兩中文字間的斷行假空格移除；連續多組一次收斂
+    assert clean_question_text("出 門 遊玩") == "出門遊玩"
+    assert clean_question_text("形 狀都不同") == "形狀都不同"
+    assert clean_question_text("增加接觸空 氣面積") == "增加接觸空氣面積"
+
+
+def test_clean_keeps_legit_spaces_around_digits_and_latin():
+    # 中文與數字/英文間的空白不是斷行假空格，保留（避免黏成 CAS標章/○1認證）
+    assert clean_question_text("選購有 CAS 標章") == "選購有 CAS 標章"
+    assert clean_question_text("○1 認證標章") == "○1 認證標章"
+    assert clean_question_text("約 27℃ 的天氣") == "約 27℃ 的天氣"
+
+
+def test_clean_strips_tail_page_furniture():
+    assert clean_question_text("讓根有空間生長。 1頁") == "讓根有空間生長。"
+    assert clean_question_text("○4 00C。 第3 頁 第4 頁") == "○4 00C。"
+    assert clean_question_text("放在冷水中 1 頁") == "放在冷水中"
+    assert clean_question_text("④風力 〈背面還有題目喔！〉 1") == "④風力"
+
+
+def test_clean_keeps_legit_angle_bracket_title_ending():
+    # 〈〉 分支限定翻頁字眼才砍；以合法 〈標題〉 結尾的題不可誤砍
+    assert clean_question_text("請欣賞兒童影展〈小桃的一天〉") == "請欣賞兒童影展〈小桃的一天〉"
+
+
+def test_clean_strips_form_field_footer_leak():
+    # 考卷頁腳表單欄滲漏：從強 furniture 字眼回溯到最後句末標點後全砍
+    assert clean_question_text(
+        "莖也會變粗。○ 1 年度第2學期三年級自然科期中試卷年班學生號姓名"
+    ) == "莖也會變粗。"
+    assert clean_question_text(
+        "來照顧。 背面還有題目喔!!! 第1 分數度第一次定期考查試題期座號姓名分數人數家長簽章"
+    ) == "來照顧。"
+    assert clean_question_text(
+        "在傍晚。 1 學期第二次定期評量成家長績簽章"
+    ) == "在傍晚。"
+
+
+def test_clean_form_furniture_conservative_when_no_sentence_end_before_token():
+    # 強字眼前無句末標點 → 保守不砍（避免誤食正文）；無此字眼 → 完全不動
+    # （仍會套 CJK 空格收斂，故用無內部空格的輸入隔離 strip 行為）
+    assert clean_question_text("期中試卷座號姓名") == "期中試卷座號姓名"
+    assert clean_question_text("今天天氣晴朗適合出遊。") == "今天天氣晴朗適合出遊。"
+
+
+def test_clean_does_not_treat_weak_school_words_as_furniture():
+    # 「座號／姓名」是社會科學校生活題的合法正文詞，不可當 furniture 砍（code review finding）
+    assert clean_question_text("同學的座號代表什麼？他叫什麼姓名？") == "同學的座號代表什麼？他叫什麼姓名？"
+    assert clean_question_text("學校用座號方便點名。座號是每個人的編號。") == "學校用座號方便點名。座號是每個人的編號。"
+
+
+def test_clean_strips_tail_bare_page_number():
+    # 句末標點後的孤立裸頁碼（未帶「頁」字）
+    assert clean_question_text("④第一節課下課後。 1") == "④第一節課下課後。"
+    assert clean_question_text("③棕色 ④白色。 2") == "③棕色 ④白色。"
+    assert clean_question_text("丙→乙→甲。 1") == "丙→乙→甲。"
+
+
+def test_clean_keeps_trailing_number_that_is_real_content():
+    # 數字緊接非句末標點（屬內容）不可砍：'答案是 3'、純數字選項
+    assert clean_question_text("正方形的邊數是 4") == "正方形的邊數是 4"
+    assert clean_question_text("100", strip_tail_furniture=False) == "100"
+
+
+def test_clean_does_not_clip_legit_sentence_endings():
+    # 真句子以句末標點收尾，不被題尾 furniture 規則誤砍
+    assert clean_question_text("①東風 ②西風 ③南風 ④北風。") == "①東風 ②西風 ③南風 ④北風。"
+    assert clean_question_text("這本故事書共有 100 頁。") == "這本故事書共有 100 頁。"
+
+
+def test_clean_blank_answer_mode_keeps_tail_digits_page():
+    # blank 答案（strip_tail_furniture=False）：'100頁' 結尾不可砍，只壓空格
+    assert clean_question_text("100頁", strip_tail_furniture=False) == "100頁"
+    assert clean_question_text("下 午", strip_tail_furniture=False) == "下午"
+
+
+def test_clean_collapses_multiple_ascii_spaces():
+    assert clean_question_text("○1  提高溫度") == "○1 提高溫度"
+
+
+def test_clean_is_idempotent():
+    samples = ["讓根有空間生長。 1頁", "出 門 遊玩", "○4 00C。 第3 頁 第4 頁", "①北風。"]
+    for s in samples:
+        once = clean_question_text(s)
+        assert clean_question_text(once) == once
+
+
+def test_clean_handles_empty_and_none():
+    assert clean_question_text("") == ""
+    assert clean_question_text(None) is None
     assert not validate_vertical_calc("long_division", [340.5, 8], {"quotient": 42, "remainder": 4})  # 須整數
     assert not validate_vertical_calc("long_division", [340, 8], "42...4")  # answer 須為 dict
 
