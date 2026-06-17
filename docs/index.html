@@ -471,6 +471,11 @@ const State = {
     if (isCorrect) state.stats[qId].correct++;
     Storage.save(state);
   },
+  // 累計答錯次數（practiced − correct）。用來判斷是否「錯夠多次」才進錯題庫。
+  wrongCount(qId) {
+    const s = state.stats[qId];
+    return s ? s.practiced - s.correct : 0;
+  },
 
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter) {
@@ -803,7 +808,9 @@ function submitAnswer(selected) {
       State.addMastered(quiz.unit, q.id); // 雙向共享：整單元與 subtopic 進度同步計入
     } else {
       quiz.queue.push(q.id);
-      State.addToErrorBank(q.id, q.unit);
+      // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
+      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，wrongCount 已含本次。
+      if (State.wrongCount(q.id) >= 2) State.addToErrorBank(q.id, q.unit);
     }
     State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
   } else if (quiz.mode === "error") {
@@ -2196,6 +2203,10 @@ async function init() {
     // Clean orphan errorBank / flagged entries
     state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
     state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
+    // 對齊「錯 ≥ 2 次才進錯題庫」新規則：清掉舊版只錯一次（且已答對過）就被收進去的題。
+    // 保守起見只在有作答統計可判斷時才清；無 stats 者保留不動。
+    state.errorBank = state.errorBank.filter(e =>
+      !state.stats[e.questionId] || State.wrongCount(e.questionId) >= 2);
     Storage.save(state);
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
