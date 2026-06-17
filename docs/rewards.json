@@ -67,6 +67,142 @@
       "survival_adaptation_04.webp",
       "survival_adaptation_05.webp",
       "survival_adaptation_06.webp"
+    ],
+    "小數加減": [
+      "decimal_addsub_01.webp",
+      "decimal_addsub_02.webp",
+      "decimal_addsub_03.webp"
+    ],
+    "小數比大小": [
+      "decimal_compare_01.webp",
+      "decimal_compare_02.webp",
+      "decimal_compare_03.webp"
+    ],
+    "圓的構造": [
+      "circle_parts_01.webp",
+      "circle_parts_02.webp",
+      "circle_parts_03.webp"
+    ],
+    "圓規與畫圓": [
+      "compass_draw_01.webp",
+      "compass_draw_02.webp",
+      "compass_draw_03.webp"
+    ],
+    "圓的大小比較": [
+      "circle_size_01.webp",
+      "circle_size_02.webp",
+      "circle_size_03.webp"
+    ],
+    "乘除應用": [
+      "muldiv_apply_01.webp",
+      "muldiv_apply_02.webp",
+      "muldiv_apply_03.webp"
+    ],
+    "乘除互逆": [
+      "muldiv_inverse_01.webp",
+      "muldiv_inverse_02.webp",
+      "muldiv_inverse_03.webp"
+    ],
+    "乘除計算": [
+      "muldiv_calc_01.webp",
+      "muldiv_calc_02.webp",
+      "muldiv_calc_03.webp"
+    ],
+    "時間計算": [
+      "time_calc_01.webp",
+      "time_calc_02.webp",
+      "time_calc_03.webp"
+    ],
+    "時制互換": [
+      "time_format_01.webp",
+      "time_format_02.webp",
+      "time_format_03.webp"
+    ],
+    "時刻與時間單位": [
+      "time_unit_01.webp",
+      "time_unit_02.webp",
+      "time_unit_03.webp"
+    ],
+    "報讀表格": [
+      "read_table_01.webp",
+      "read_table_02.webp",
+      "read_table_03.webp"
+    ],
+    "蔬菜從哪裡來": [
+      "vegetable_source_01.webp",
+      "vegetable_source_02.webp",
+      "vegetable_source_03.webp"
+    ],
+    "影響物質變化的因素": [
+      "matter_change_factors_01.webp",
+      "matter_change_factors_02.webp",
+      "matter_change_factors_03.webp"
+    ],
+    "溫度對其他物質的影響": [
+      "temperature_other_matter_01.webp",
+      "temperature_other_matter_02.webp",
+      "temperature_other_matter_03.webp"
+    ],
+    "身體構造": [
+      "body_structure_01.webp",
+      "body_structure_02.webp",
+      "body_structure_03.webp",
+      "body_structure_04.webp"
+    ],
+    "動物分類": [
+      "animal_classification_01.webp",
+      "animal_classification_02.webp",
+      "animal_classification_03.webp"
+    ],
+    "觀察方法": [
+      "observation_method_01.webp",
+      "observation_method_02.webp",
+      "observation_method_03.webp"
+    ],
+    "風": [
+      "wind_01.webp",
+      "wind_02.webp",
+      "wind_03.webp"
+    ],
+    "氣溫測量": [
+      "temperature_measure_01.webp",
+      "temperature_measure_02.webp",
+      "temperature_measure_03.webp"
+    ],
+    "雨量降雨": [
+      "rainfall_01.webp",
+      "rainfall_02.webp",
+      "rainfall_03.webp"
+    ],
+    "綠色消費": [
+      "green_consumption_01.webp",
+      "green_consumption_02.webp",
+      "green_consumption_03.webp"
+    ],
+    "地名的由來": [
+      "placename_origin_01.webp",
+      "placename_origin_02.webp",
+      "placename_origin_03.webp",
+      "placename_origin_04.webp",
+      "placename_origin_05.webp"
+    ],
+    "探索家鄉的地名": [
+      "explore_placename_01.webp",
+      "explore_placename_02.webp",
+      "explore_placename_03.webp"
+    ],
+    "傳說與文化保存": [
+      "legend_culture_01.webp",
+      "legend_culture_02.webp",
+      "legend_culture_03.webp",
+      "legend_culture_04.webp",
+      "legend_culture_05.webp",
+      "legend_culture_06.webp"
+    ],
+    "家鄉的人物與發展": [
+      "hometown_people_01.webp",
+      "hometown_people_02.webp",
+      "hometown_people_03.webp"
     ]
   }
 }
