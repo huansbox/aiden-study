@@ -133,3 +133,67 @@ def normalize_for_compare(s: str) -> str:
             ch = " "
         out.append(ch)
     return re.sub(r"\s+", "", "".join(out))
+
+
+# ── 萃取雜訊清理（build 階段套用，display 用）─────────────────
+# CJK 統一表意文字：擴展 A（U+3400–4DBF）＋主區（U+4E00–9FFF）＋相容表意字（U+F900–FAFF，
+# 台灣 Big5 系 PDF 嵌入字偶見）。自然/數學/社會題幹用字皆落此區。
+_CJK = "㐀-䶿一-鿿豈-﫿"
+# 兩個中文字之間的空白＝PDF 斷行假空格。零寬斷言（lookbehind/lookahead）不消耗邊界字，
+# 連續多組（「出 門 遊」）一次掃描即收斂。含半形空白、tab、全形空白。
+_CJK_GAP = re.compile(f"(?<=[{_CJK}])[ \\t\\u3000]+(?=[{_CJK}])")
+# 題尾頁碼／〈翻頁提示〉 furniture（錨定字串結尾）：
+#   「第?N頁/面」一段以上（'1頁'、'第3 頁 第4 頁'）｜含翻頁字眼的「〈…〉」導語後可帶孤立頁碼（'〈背面還有題目喔！〉 1'）。
+# 〈〉 分支限定內含翻頁 furniture 關鍵字才砍，避免誤砍以合法 〈某標題〉 結尾的題（資料中確有〈〉合法用例）。
+# 真句子以句末標點（。？！）收尾、不落在此 pattern 內 → 不被誤砍（全庫反查 0 誤砍）。
+# 表單欄滲漏（'年度第2學期…座號 姓名'）等不規則雜訊不在此，走人工/agent 複審。
+_TAIL_FURNITURE = re.compile(
+    r"\s*(?:(?:第?\s*\d+\s*[頁面]\s*)+|〈[^〉]*(?:背面|還有題目|尚有試題|翻頁|繼續作答)[^〉]*〉\s*\d*)\s*$"
+)
+# 句末標點後的孤立裸頁碼（'…白色。 2' → '…白色。'）：頁碼未帶「頁/面」字、_TAIL_FURNITURE 漏接。
+# lookbehind 保留句末標點本身；限定前置為句末標點，故純數字選項（'5'、'100'，無前置句末標點）不受影響。
+# ⚠️ 這是 empirical guard 非 logical：全庫反查此型 14 處全為頁碼、0 合法案例。成立前提＝「題幹本身不以
+# 句末標點+空白+1~2位數字結尾」；blank 答案已由 strip_tail_furniture=False 隔離。未來若出現此型合法題幹須重審。
+_TAIL_BARE_PAGENUM = re.compile(r"(?<=[。？！」』】])\s+\d{1,2}\s*$")
+# 考卷頁腳「表單欄」滲漏的強 furniture 字眼。刻意只收三下題幹正文「客觀上不可能出現」的詞——
+# 不含「座號／學生號／姓名」這類弱詞（社會科學校生活題正文可能合法出現，如「同學的座號代表什麼？」），
+# 否則弱詞被命中會漏砍或誤截正文（code review finding，2026-06-17）。全庫反查：這些強詞只命中頁腳滲漏題。
+# 命中後砍除：從「最後一個」強詞往前回溯到其前最後一個句末標點之後全部刪掉（'…變粗。○1 …期中試卷…姓名' → '…變粗。'）。
+# 找不到前置句末標點時保守不砍（避免誤食正文）。句末標點不含 ASCII '.'（避開小數點 136.3）。
+_FORM_FURNITURE = re.compile(r"期中試卷|期末試卷|定期考查|定期評量|考查試題|家長簽章|評量範圍")
+_SENTENCE_END = "。？！」』】"
+
+
+def _strip_form_furniture(s: str) -> str:
+    last = None
+    for last in _FORM_FURNITURE.finditer(s):
+        pass  # 取最後一個 token：頁腳永遠在尾
+    if last is None:
+        return s
+    head = s[:last.start()]
+    cut = max((head.rfind(c) for c in _SENTENCE_END), default=-1)
+    if cut < 0:
+        return s  # 強詞前無句末標點 → 保守不砍
+    return s[:cut + 1].rstrip()
+
+
+def clean_question_text(s: str, strip_tail_furniture: bool = True) -> str:
+    """萃取雜訊清理（純函式、冪等）：
+
+    1) strip_tail_furniture：砍頁腳表單欄滲漏（'…變粗。…期中試卷…姓名' → '…變粗。'）
+       與題尾頁碼／〈背面…〉 furniture（'…生長。 1頁' → '…生長。'）
+    2) 移除兩中文字間的 PDF 斷行假空格（'出 門 遊玩' → '出門遊玩'）
+    3) 連續半形空白壓成單一、去頭尾空白
+
+    僅處理機械可證安全的型態。blank 答案請傳 strip_tail_furniture=False
+    （'100頁' 之類合法答案結尾不可砍；blank 比對本就忽略空白，此處純為顯示美觀）。
+    """
+    if not s:
+        return s
+    if strip_tail_furniture:
+        s = _strip_form_furniture(s)
+        s = _TAIL_FURNITURE.sub("", s)
+        s = _TAIL_BARE_PAGENUM.sub("", s)
+    s = _CJK_GAP.sub("", s)
+    s = re.sub(r"[ \t]{2,}", " ", s).strip()
+    return s
