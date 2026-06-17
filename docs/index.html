@@ -362,6 +362,18 @@ body {
   animation: rewardIn 0.3s ease-out;
 }
 @keyframes rewardIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+/* 完成畫面：先跳一個小獎杯，點了才揭曉插畫（拆獎品的儀式感） */
+.reward-reveal { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 16px auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.reward-trophy {
+  font-size: 76px; line-height: 1;
+  animation: trophyPop 0.5s cubic-bezier(.18,.89,.32,1.28) both, trophyIdle 1.8s ease-in-out 0.7s infinite;
+}
+.reward-cap { font-size: 0.95rem; color: #888; }
+.reward-reveal:active .reward-trophy { animation: none; transform: scale(0.92); }
+.reward-reveal.revealed .reward-trophy, .reward-reveal.revealed .reward-cap { display: none; }
+.reward-reveal .reward-img { margin: 0 auto; }  /* 容器已置中，圖自身不再加外距 */
+@keyframes trophyPop { 0% { transform: scale(0) rotate(-18deg); opacity: 0; } 60% { transform: scale(1.18) rotate(7deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+@keyframes trophyIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 /* ── 錯誤頁 ── */
 .error-msg { text-align: center; padding-top: 60px; color: #888; font-size: 1.1rem; }
@@ -2048,9 +2060,26 @@ function preloadThen(path, cb) {
 }
 
 // 獎勵插畫 <img>（路徑為 null 則空字串）；onerror 自我移除（執行期 404 時不破版）
-function rewardImgHtml(path) {
-  return path ? `<img class="reward-img" src="${path}" alt="" onerror="this.remove()">` : "";
+function rewardImgHtml(path, extraClass = "") {
+  return path ? `<img class="reward-img${extraClass}" src="${path}" alt="" onerror="this.remove()">` : "";
 }
+
+// 完成畫面先跳一個小獎杯，點了才揭曉插畫；無圖則回空字串＝靜默不顯示（同 rewardImgHtml）。
+function rewardRevealHtml(path) {
+  if (!path) return "";
+  return `<div class="reward-reveal" onclick="window._revealReward(this)">
+      <div class="reward-trophy">🏆</div>
+      <div class="reward-cap">點獎杯看圖</div>
+      ${rewardImgHtml(path, " hidden")}
+    </div>`;
+}
+window._revealReward = (el) => {
+  if (el.classList.contains("revealed")) return;
+  el.classList.add("revealed");
+  const img = el.querySelector(".reward-img");
+  if (img) img.classList.remove("hidden");  // 切回 display:block → 觸發 rewardIn 淡入
+  playSound("correct");                      // 揭曉的小回饋
+};
 
 // ════════════════════════════════════════════════════
 // UI: 批間畫面（本批完成、整單元尚未通關時）
@@ -2064,7 +2093,7 @@ function renderBatchBreak() {
   preloadThen(reward, () => {
     document.getElementById("page-summary").innerHTML = `
       <h2>這批完成！</h2>
-      ${rewardImgHtml(reward)}
+      ${rewardRevealHtml(reward)}
       <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
       <div style="margin-top:24px">
         <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">再做 ${nextN} 題</button>
@@ -2109,7 +2138,7 @@ function renderSummary() {
   preloadThen(reward, () => {
     document.getElementById("page-summary").innerHTML = `
       <h2>${title}</h2>
-      ${rewardImgHtml(reward)}
+      ${rewardRevealHtml(reward)}
       <div class="score">${correctCount} / ${total}</div>
       <div class="score-label">${scoreLabel}</div>
       <div style="margin-top:24px">${buttonsHtml}</div>`;
