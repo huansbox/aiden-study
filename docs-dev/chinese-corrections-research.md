@@ -19,7 +19,15 @@ Pilot data：
 
 `data/curated_questions_國語.json`
 
-用途：先人工整理 20 題答案明確的一題一錯字資料，供正式整合前檢查資料長相。這批資料目前尚未接進 `docs/questions.json`。
+用途：先人工整理答案明確的一題一錯字資料，供正式整合前檢查資料長相。這批資料目前尚未接進 `docs/questions.json`。
+
+現況：53 題。
+
+跳過紀錄：
+
+`data/skipped_questions_國語.json`
+
+用途：記錄看不清、疑似多字修正、或不是改錯字的項目。現況：9 筆。
 
 資料驗證：
 

@@ -29,7 +29,23 @@ def test_curated_chinese_pilot_data_valid():
     path = ROOT / "data" / "curated_questions_國語.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     assert validate_questions(data) == []
-    assert len(data) == 20
+    assert len(data) == 53
+
+
+def test_skipped_chinese_records_have_reasons():
+    path = ROOT / "data" / "skipped_questions_國語.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data
+    for item in data:
+        assert item["source"].startswith("aiden-cht-")
+        assert item["location"]
+        assert item["reason"] in {
+            "multiple_corrections",
+            "multiple_or_unclear",
+            "not_correction",
+            "scan_unclear",
+        }
+        assert item["note"]
 
 
 def test_rejects_original_wrong_in_choices():

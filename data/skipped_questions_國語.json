@@ -1,0 +1,56 @@
+[
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：酸白菜/傳承附近",
+    "reason": "scan_unclear",
+    "note": "「酸白泡菜」或「酸白菜」判讀不穩，暫不入庫。"
+  },
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：研發新口味附近",
+    "reason": "scan_unclear",
+    "note": "疑似「再接再厲」相關錯字，但原句與錯字位置不夠清楚。"
+  },
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：商品疑惑附近",
+    "reason": "scan_unclear",
+    "note": "「疑惑/疑試」附近字跡與印刷重疊，暫不入庫。"
+  },
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：保護猴子附近",
+    "reason": "multiple_corrections",
+    "note": "同一句疑似有「不曾/不僅」「保互/保護」兩處修正，第一版一題一錯字，暫不拆。"
+  },
+  {
+    "source": "aiden-cht-2.jpg",
+    "location": "L9-L10 生字成語：諱疾忌醫附近",
+    "reason": "scan_unclear",
+    "note": "原卷成語與圈選字判讀不穩，暫不入庫。"
+  },
+  {
+    "source": "aiden-cht-3.jpg",
+    "location": "L9-L10 短文式：端熱湯附近",
+    "reason": "not_correction",
+    "note": "看起來主要是寫國字/注音欄位，未確認有改錯字。"
+  },
+  {
+    "source": "aiden-cht-4.jpg",
+    "location": "L9-L10 短文式：樂色/垃圾附近",
+    "reason": "multiple_corrections",
+    "note": "「樂色」應改為「垃圾」疑似兩字都需修正，第一版一題一錯字，暫不拆。"
+  },
+  {
+    "source": "aiden-cht-4.jpg",
+    "location": "L9-L10 生字成語：既往不咎附近",
+    "reason": "multiple_or_unclear",
+    "note": "原卷看似「即住不咎」，可能同時涉及「既」與「往」，暫不入庫。"
+  },
+  {
+    "source": "aiden-cht-4.jpg",
+    "location": "L9-L10 短文式：尖端科技附近",
+    "reason": "scan_unclear",
+    "note": "圈選與手寫答案交疊，無法穩定判定錯字。"
+  }
+]
