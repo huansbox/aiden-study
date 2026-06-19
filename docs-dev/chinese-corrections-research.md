@@ -15,6 +15,19 @@ branch：`feat/chinese-corrections`
 
 用途：只驗 Step 1 逐字點選、點錯輕提示、Step 2 四選一的手感；不接正式題庫，不代表正式 UI 定案。
 
+Pilot data：
+
+`data/curated_questions_國語.json`
+
+用途：先人工整理 20 題答案明確的一題一錯字資料，供正式整合前檢查資料長相。這批資料目前尚未接進 `docs/questions.json`。
+
+資料驗證：
+
+```bash
+uv run python scripts/validate_chinese_curated.py
+uv run pytest tests/test_chinese_curated.py
+```
+
 ## 原始掃描放置
 
 原始掃描圖已複製到：
