@@ -29,7 +29,7 @@ def test_curated_chinese_pilot_data_valid():
     path = ROOT / "data" / "curated_questions_國語.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     assert validate_questions(data) == []
-    assert len(data) == 64
+    assert len(data) == 66
 
 
 def test_site_questions_include_curated_chinese_data():
@@ -48,7 +48,7 @@ def test_skipped_chinese_records_have_reasons():
     path = ROOT / "data" / "skipped_questions_國語.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data
-    assert len(data) == 2
+    assert len(data) == 1
     for item in data:
         assert item["source"].startswith("aiden-cht-")
         assert item["location"]

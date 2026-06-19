@@ -28514,5 +28514,41 @@
     ],
     "note": "建築物或校園邊界的牆面，要寫「牆」。",
     "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_046",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "國家必須的尖媏科技要持續進步，避免競爭力下降。",
+    "wrong": "媏",
+    "answer": "端",
+    "choices": [
+      "端",
+      "瑞",
+      "喘",
+      "揣"
+    ],
+    "note": "最先進、關鍵的科技是「尖端科技」，要用「端」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_047",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "國家必須的尖端科技要持續進步，避勉競爭力下降。",
+    "wrong": "勉",
+    "answer": "免",
+    "choices": [
+      "免",
+      "兔",
+      "晚",
+      "娩"
+    ],
+    "note": "不要讓事情發生，要寫「避免」。",
+    "source": "aiden-cht-4.jpg"
   }
 ]

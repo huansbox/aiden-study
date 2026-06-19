@@ -3,12 +3,6 @@
     "source": "aiden-cht-3.jpg",
     "location": "L9-L10 短文式：端熱湯附近",
     "reason": "not_correction",
-    "note": "這是寫國字/注音題，不是改錯字；「端熱湯」本身沒有可轉成單錯字題的錯字。"
-  },
-  {
-    "source": "aiden-cht-4.jpg",
-    "location": "L9-L10 短文式：尖端科技附近",
-    "reason": "scan_unclear",
-    "note": "圈選與手寫答案交疊，看起來也可能是生字/注音或圈字練習，不能穩定判定錯字位置。"
+    "note": "這是寫國字/注音題，不是改錯字；「端熱湯」本身沒有可轉成單錯字題的錯字。使用者確認不收。"
   }
 ]
