@@ -21,7 +21,7 @@ Pilot data：
 
 用途：人工整理答案明確的一題一錯字資料。這批資料已由 `scripts/build_questions.py` 接進 `docs/questions.json`。
 
-現況：63 題。
+現況：64 題。
 
 人工確認候選：
 
@@ -33,7 +33,7 @@ Pilot data：
 
 `data/skipped_questions_國語.json`
 
-用途：記錄看不清或不是改錯字、暫不適合轉成題目的項目。現況：3 筆。
+用途：記錄看不清或不是改錯字、暫不適合轉成題目的項目。現況：2 筆。
 
 資料驗證：
 
@@ -217,7 +217,7 @@ Step 2 是選出正確字。第一版行為：
 1. 新增 subject `chinese`。
 2. 新增 unit 13/14。
 3. 新增 `chinese_correction` 題型。
-4. 將 63 題 curated data 併入 `docs/questions.json`。
+4. 將 64 題 curated data 併入 `docs/questions.json`。
 5. Step 1：一句話逐字可點，只需點出一個錯字。
 6. Step 2：針對該錯字選出正確字，第一版採四選一。
 7. 作答後顯示簡短說明。
@@ -238,4 +238,4 @@ Step 2 是選出正確字。第一版行為：
 1. 手動開 `http://localhost:8765/`，切到國語，確認手機寬度下 Step 1 點字與 Step 2 四選一的手感。
 2. 確認 Step 1 點到正確字時的提示文字「這個字沒錯，再找找看」是否太明顯或太淡。
 3. 確認國語單元名稱是否採「L7-L8：改錯字」「L9-L10：改錯字」即可，或要改成課本正式課名。
-4. 目前跳過 3 筆仍留在 `data/skipped_questions_國語.json`，需要新掃描或人工讀卷才能再處理。
+4. 目前跳過 2 筆仍留在 `data/skipped_questions_國語.json`，需要新掃描或人工讀卷才能再處理。

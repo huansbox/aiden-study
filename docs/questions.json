@@ -28426,6 +28426,24 @@
     "source": "aiden-cht-1.jpg"
   },
   {
+    "id": "cht_l7_l8_correction_019",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "老闆再接再利研發新口味。",
+    "wrong": "利",
+    "answer": "厲",
+    "choices": [
+      "厲",
+      "歷",
+      "勵",
+      "礪"
+    ],
+    "note": "「再接再厲」表示繼續努力，要用「厲」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
     "id": "cht_l9_l10_correction_042",
     "subject": "chinese",
     "unit": 14,

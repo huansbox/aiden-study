@@ -2,9 +2,9 @@
 
 ## 專案目標
 
-從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會有答案卷、`pdfs_社會_補答案/` 期末社會無答案卷）與人工整理掃描題（國語改錯字）建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1921 題（自然 1099＝期中 601＋期末 498；數學 307；社會 452；國語 63）。
+從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會有答案卷、`pdfs_社會_補答案/` 期末社會無答案卷）與人工整理掃描題（國語改錯字）建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1922 題（自然 1099＝期中 601＋期末 498；數學 307；社會 452；國語 64）。
 
-**最新（2026-06-19，branch `feat/chinese-corrections`）**：國語改錯字已接進正式網站。`data/curated_questions_國語.json` 63 題由 `scripts/build_questions.py` 併入 `docs/questions.json`，subject=`chinese`，unit 13=L7-L8 改錯字、unit 14=L9-L10 改錯字，題型 `chinese_correction`。前端流程：Step 1 點句子中的錯字，點到正確字只提示不記分；Step 2 固定四選一，正式答錯統計以 Step 2 為準。細節與待人工 smoke check 見 [`docs-dev/chinese-corrections-research.md`](docs-dev/chinese-corrections-research.md)。
+**最新（2026-06-19，branch `feat/chinese-corrections`）**：國語改錯字已接進正式網站。`data/curated_questions_國語.json` 64 題由 `scripts/build_questions.py` 併入 `docs/questions.json`，subject=`chinese`，unit 13=L7-L8 改錯字、unit 14=L9-L10 改錯字，題型 `chinese_correction`。前端流程：Step 1 點句子中的錯字，點到正確字只提示不記分；Step 2 固定四選一，正式答錯統計以 Step 2 為準。細節與待人工 smoke check 見 [`docs-dev/chinese-corrections-research.md`](docs-dev/chinese-corrections-research.md)。
 
 ## 快速參考
 
