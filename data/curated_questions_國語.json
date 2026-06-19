@@ -143,19 +143,6 @@
     "source": "aiden-cht-1.jpg"
   },
   {
-    "id": "cht_l7_l8_correction_012",
-    "subject": "chinese",
-    "unit": 13,
-    "subtopic": "L7-L8 改錯字",
-    "type": "chinese_correction",
-    "text": "酸白菜已經傳成三代。",
-    "wrong": "成",
-    "answer": "承",
-    "choices": ["承", "誠", "城", "乘"],
-    "note": "一代接一代延續下去，要寫「傳承」。",
-    "source": "aiden-cht-1.jpg"
-  },
-  {
     "id": "cht_l7_l8_correction_013",
     "subject": "chinese",
     "unit": 13,
@@ -179,6 +166,32 @@
     "answer": "適",
     "choices": ["適", "試", "勢", "室"],
     "note": "剛剛好的分量是「適量」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_015",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "人們不再隨意餵食猴子，不曾可以改變牠的生活型態，保護猴子，也能讓人猴和平共存。",
+    "wrong": "曾",
+    "answer": "僅",
+    "choices": ["僅", "謹", "緊", "盡"],
+    "note": "「不僅」表示不只如此，這裡要用「僅」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_016",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "人們不再隨意餵食猴子，不僅可以改變牠的生活型態，保互猴子，也能讓人猴和平共存。",
+    "wrong": "互",
+    "answer": "護",
+    "choices": ["護", "戶", "滬", "扈"],
+    "note": "照顧、維護動物，要寫「保護」。",
     "source": "aiden-cht-1.jpg"
   },
   {
@@ -686,6 +699,32 @@
     "answer": "呆",
     "choices": ["呆", "杏", "困", "古"],
     "note": "驚呆得像木雞一樣，是「呆若木雞」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_040",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "即往不咎",
+    "wrong": "即",
+    "answer": "既",
+    "choices": ["既", "記", "季", "紀"],
+    "note": "成語是「既往不咎」，已經過去的事不再責備。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_041",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "既住不咎",
+    "wrong": "住",
+    "answer": "往",
+    "choices": ["往", "網", "望", "旺"],
+    "note": "「既往」指已經過去的事，要用「往」。",
     "source": "aiden-cht-4.jpg"
   }
 ]

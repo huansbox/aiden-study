@@ -1,0 +1,76 @@
+[
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：酸白菜/傳承附近",
+    "reason": "needs_text_confirmation",
+    "note": "「傳成」改「傳承」很清楚，但產品名稱是「酸白菜」或「酸白泡菜」判讀不穩，先移出正式題庫。",
+    "candidates": [
+      {
+        "text": "酸白菜已經傳成三代。",
+        "wrong": "成",
+        "answer": "承",
+        "choices": ["承", "誠", "城", "乘"],
+        "note": "一代接一代延續下去，要寫「傳承」。"
+      }
+    ]
+  },
+  {
+    "source": "aiden-cht-1.jpg",
+    "location": "L7-L8 短文式：商品疑惑附近",
+    "reason": "needs_text_confirmation",
+    "note": "疑似「疑試」改「疑惑」，但印刷、手寫與陰影重疊，需要人工確認原句。",
+    "candidates": [
+      {
+        "text": "如果對商品感到疑試，就不要購買。",
+        "wrong": "試",
+        "answer": "惑",
+        "choices": ["惑", "或", "獲", "霍"],
+        "note": "不明白、不確定時，是感到「疑惑」。"
+      }
+    ]
+  },
+  {
+    "source": "aiden-cht-2.jpg",
+    "location": "L9-L10 生字成語：諱疾忌醫附近",
+    "reason": "needs_text_confirmation",
+    "note": "疑似「諱疫忌醫」改「諱疾忌醫」，但圈選字與紅筆交疊，需要人工確認。",
+    "candidates": [
+      {
+        "text": "諱疫忌醫",
+        "wrong": "疫",
+        "answer": "疾",
+        "choices": ["疾", "嫉", "急", "及"],
+        "note": "成語是「諱疾忌醫」，比喻怕人批評而不願改正缺點。"
+      }
+    ]
+  },
+  {
+    "source": "aiden-cht-4.jpg",
+    "location": "L9-L10 短文式：樂色/垃圾附近",
+    "reason": "needs_split_confirmation",
+    "note": "「樂色」可拆成「垃圾」兩題，但同句還疑似有「強邊」改「牆邊」，需要人工確認要拆 2 題或 3 題。",
+    "candidates": [
+      {
+        "text": "近日發現有民眾將樂圾丟棄在本校牆邊，造成環境髒亂。",
+        "wrong": "樂",
+        "answer": "垃",
+        "choices": ["垃", "拉", "啦", "粒"],
+        "note": "不要的廢棄物是「垃圾」。"
+      },
+      {
+        "text": "近日發現有民眾將垃色丟棄在本校牆邊，造成環境髒亂。",
+        "wrong": "色",
+        "answer": "圾",
+        "choices": ["圾", "及", "級", "岌"],
+        "note": "不要的廢棄物是「垃圾」。"
+      },
+      {
+        "text": "近日發現有民眾將垃圾丟棄在本校強邊，造成環境髒亂。",
+        "wrong": "強",
+        "answer": "牆",
+        "choices": ["牆", "墻", "檣", "薔"],
+        "note": "建築物或校園邊界的牆面，要寫「牆」。"
+      }
+    ]
+  }
+]
