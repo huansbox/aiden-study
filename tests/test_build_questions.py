@@ -4,7 +4,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from build_questions import build_merged, convert_block
+from build_questions import build_merged, convert_block, convert_chinese_block
 
 
 def _existing_q(qid, unit, **over):
@@ -59,6 +59,56 @@ def test_social_block_gets_social_subject_and_unit_range():
     social_q = [q for q in merged if q["subject"] == "social"]
     assert len(social_q) == 2
     assert {q["unit"] for q in social_q} == {10, 12}
+
+
+def _chinese_q(qid="cht_001", unit=13, **over):
+    q = {
+        "id": qid,
+        "subject": "chinese",
+        "unit": unit,
+        "subtopic": "L7-L8 改錯字",
+        "type": "chinese_correction",
+        "text": "醃字泡菜已經傳承三代。",
+        "wrong": "字",
+        "answer": "製",
+        "choices": ["製", "制", "治", "置"],
+        "note": "把食物加工做成泡菜，要寫「醃製」。",
+        "source": "aiden-cht-1.jpg",
+    }
+    q.update(over)
+    return q
+
+
+def test_chinese_block_preserves_correction_schema():
+    final_q, skipped = convert_chinese_block([_chinese_q()], set())
+    assert dict(skipped) == {}
+    assert final_q == [{
+        "id": "cht_001",
+        "subject": "chinese",
+        "unit": 13,
+        "subtopic": "L7-L8 改錯字",
+        "type": "chinese_correction",
+        "text": "醃字泡菜已經傳承三代。",
+        "wrong": "字",
+        "answer": "製",
+        "choices": ["製", "制", "治", "置"],
+        "note": "把食物加工做成泡菜，要寫「醃製」。",
+        "source": "aiden-cht-1.jpg",
+    }]
+
+
+def test_chinese_block_filters_wrong_unit():
+    final_q, skipped = convert_chinese_block([_chinese_q(unit=3)], set())
+    assert final_q == []
+    assert skipped["wrong_unit"] == 1
+
+
+def test_build_merged_appends_chinese_questions():
+    existing = [_existing_q("a", 1)]
+    merged = build_merged(existing, [], [], chinese_curated=[_chinese_q()])
+    chinese_q = [q for q in merged if q["subject"] == "chinese"]
+    assert len(chinese_q) == 1
+    assert chinese_q[0]["type"] == "chinese_correction"
 
 
 def test_convert_block_filters_image_and_few_options():

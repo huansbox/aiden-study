@@ -32,6 +32,18 @@ def test_curated_chinese_pilot_data_valid():
     assert len(data) == 63
 
 
+def test_site_questions_include_curated_chinese_data():
+    curated_path = ROOT / "data" / "curated_questions_國語.json"
+    site_path = ROOT / "docs" / "questions.json"
+    curated = json.loads(curated_path.read_text(encoding="utf-8"))
+    site = json.loads(site_path.read_text(encoding="utf-8"))
+    chinese_site = [q for q in site if q.get("subject") == "chinese"]
+
+    assert len(chinese_site) == len(curated)
+    assert {q["id"] for q in chinese_site} == {q["id"] for q in curated}
+    assert all(q["type"] == "chinese_correction" for q in chinese_site)
+
+
 def test_skipped_chinese_records_have_reasons():
     path = ROOT / "data" / "skipped_questions_國語.json"
     data = json.loads(path.read_text(encoding="utf-8"))

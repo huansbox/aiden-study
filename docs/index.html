@@ -179,6 +179,7 @@ body {
   margin-bottom: 12px; align-self: flex-start;
 }
 .q-type.tf { background: #8b5cf6; }
+.q-type.chinese { background: #0f766e; }
 .q-text { font-size: 1.25rem; line-height: 1.7; margin-bottom: 20px; }
 /* 看表題截圖（題幹上方顯示）；寬表（如高鐵時刻表 12 欄）需吃滿容器寬才可讀 */
 .q-image {
@@ -205,6 +206,33 @@ body {
 .opt-btn.wrong-answer { border-color: #e74c3c; background: #fdecea; }
 .opt-btn.wrong-answer .opt-label { background: #e74c3c; color: #fff; }
 .opt-btn.disabled { pointer-events: none; opacity: 0.85; }
+
+/* ── 國語改錯字（chinese_correction）── */
+.chinese-sentence {
+  display: flex; flex-wrap: wrap; gap: 6px 4px;
+  align-items: center; line-height: 1.8;
+}
+.chinese-char {
+  min-width: 38px; min-height: 44px; padding: 4px 6px;
+  border: 1px solid #d8dee9; border-radius: 8px; background: #fff;
+  color: #1a1a2e; font: inherit; font-size: 1.55rem; line-height: 1;
+  cursor: pointer; transition: transform 0.12s, background 0.12s, border-color 0.12s;
+}
+.chinese-char:active:not(:disabled) { transform: scale(0.96); }
+.chinese-char:hover:not(:disabled) { border-color: #0f766e; background: #effdf8; }
+.chinese-char.miss { border-color: #ef4444; background: #fff1f2; animation: charShake 0.22s ease-in-out; }
+.chinese-char.picked { border-color: #0f766e; background: #ccfbf1; color: #0f3f3a; font-weight: 800; }
+.chinese-char:disabled { cursor: default; opacity: 1; }
+.chinese-punct { font-size: 1.35rem; padding: 0 1px; color: #2d2d3a; }
+.chinese-inline-hint {
+  min-height: 28px; margin-top: 4px; color: #b42318;
+  font-size: 0.95rem; font-weight: 600;
+}
+@keyframes charShake {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-3px); }
+  70% { transform: translateX(3px); }
+}
 
 /* ── 填充題（fill_in_blank）── */
 .q-type.fib { background: #0d9488; }
@@ -621,7 +649,11 @@ const quiz = {
   batchIds: [],  // full: 本批涵蓋的相異題（進度條分母；skip/flag 會縮）
   answered: [],  // [{ questionId, correct }]
   totalForProgress: 0, // error 模式進度分母（full 改看 batchIds）
-  isAnswered: false
+  isAnswered: false,
+  activeQuestionId: null,
+  chineseStage: "find",
+  chinesePickedIndex: null,
+  chineseChoices: null
 };
 
 // ════════════════════════════════════════════════════
@@ -650,6 +682,13 @@ function showPage(id) {
   document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
   window.scrollTo(0, 0);
+}
+
+function resetQuestionRuntime() {
+  quiz.activeQuestionId = null;
+  quiz.chineseStage = "find";
+  quiz.chinesePickedIndex = null;
+  quiz.chineseChoices = null;
 }
 
 // ════════════════════════════════════════════════════
@@ -758,6 +797,7 @@ function startQuiz(mode, unit, subtopic = null) {
   quiz.subtopic = subtopic;
   quiz.answered = [];
   quiz.isAnswered = false;
+  resetQuestionRuntime();
 
   if (mode === "full") {
     quiz.queue = Picker.nextBatch(unit, subtopic);
@@ -821,6 +861,7 @@ function submitAnswer(selected) {
 
 function advance() {
   quiz.isAnswered = false;
+  resetQuestionRuntime();
 
   // Check if finished
   if (quiz.mode === "full" && quiz.queue.length === 0) {
@@ -851,6 +892,7 @@ function skipCurrentQuestion() {
   quiz.queue.shift();
   quiz.batchIds = quiz.batchIds.filter(x => x !== id); // 本批分母 −1；被跳過題之後別批會再出現
   State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+  resetQuestionRuntime();
   if (quiz.queue.length === 0) { finishBatch(); return; }
   renderQuiz();
 }
@@ -868,6 +910,7 @@ function flagCurrentQuestion() {
   quiz.answered.pop();
 
   quiz.isAnswered = false;
+  resetQuestionRuntime();
   if (quiz.mode === "full") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
     quiz.batchIds = quiz.batchIds.filter(id => id !== q.id); // 本批分母 −1；該題永久排除於所有題池
@@ -890,7 +933,7 @@ function leaveQuiz() {
 // ════════════════════════════════════════════════════
 // UI: Home
 // ════════════════════════════════════════════════════
-// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9、社會 10-12）
+// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9、社會 10-12、國語 13-14）
 // 數學單元正式名稱待查證（issues/010），無題單元不會渲染
 // 社會內部 unit 10/11/12 ＝ 課本第 4/5/6 單元（避開自然 unit 4）；num 為顯示用課本號
 const SUBJECTS = {
@@ -918,6 +961,12 @@ const SUBJECTS = {
       { id: 10, num: 4, name: "第 4 單元：消費與選擇", subtopics: ["聰明消費", "綠色消費"] },
       { id: 11, num: 5, name: "第 5 單元：家鄉的地名", subtopics: ["地名的由來", "探索家鄉的地名"] },
       { id: 12, num: 6, name: "第 6 單元：家鄉的故事", subtopics: ["家鄉的人物與發展", "傳說與文化保存"] },
+    ] },
+  } },
+  chinese: { label: "國語", semesters: {
+    final: { label: "期末", units: [
+      { id: 13, name: "L7-L8：改錯字", subtopics: ["L7-L8 改錯字"] },
+      { id: 14, name: "L9-L10：改錯字", subtopics: ["L9-L10 改錯字"] },
     ] },
   } },
 };
@@ -1353,6 +1402,7 @@ const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
 
 function formatAnswer(q) {
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
+  if (q.type === "chinese_correction") return `「${q.wrong}」改成「${q.answer}」`;
   if (q.type === "fill_in_blank") {
     return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
@@ -1373,8 +1423,9 @@ function buildReportUrl() {
     let s = `### ${q.id}\n`;
     s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
-    if (q.options && q.options.length > 0) {
-      s += `- 選項：${q.options.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
+    const opts = q.options || q.choices || [];
+    if (opts.length > 0) {
+      s += `- 選項：${opts.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
     }
     s += `- 現存答案：${formatAnswer(q)}\n`;
     s += `- 來源：${q.source}`;
@@ -1423,9 +1474,65 @@ function applyEnumBreaks(stem) {
 // ════════════════════════════════════════════════════
 // UI: Quiz
 // ════════════════════════════════════════════════════
+function isCjkChar(ch) {
+  return /^[\u3400-\u9fff\uf900-\ufaff]$/.test(ch);
+}
+
+function renderChineseSentence(q) {
+  const interactive = quiz.chineseStage === "find";
+  return `<div class="chinese-sentence">${[...q.text].map((ch, i) => {
+    if (isCjkChar(ch)) {
+      const cls = ["chinese-char"];
+      if (quiz.chineseStage === "choose" && i === quiz.chinesePickedIndex) cls.push("picked");
+      return `<button type="button" class="${cls.join(" ")}" data-idx="${i}" data-char="${escapeHtml(ch)}"${interactive ? "" : " disabled"}>${escapeHtml(ch)}</button>`;
+    }
+    if (/\s/.test(ch)) return " ";
+    return `<span class="chinese-punct">${escapeHtml(ch)}</span>`;
+  }).join("")}</div>`;
+}
+
+function bindChineseEvents(q) {
+  if (quiz.chineseStage === "choose") {
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.onclick = () => submitAnswer(btn.dataset.value);
+    });
+    return;
+  }
+
+  const hint = document.getElementById("chinese-hint");
+  document.querySelectorAll(".chinese-char").forEach(btn => {
+    btn.onclick = () => {
+      if (quiz.isAnswered) return;
+      const idx = Number(btn.dataset.idx);
+      const ch = btn.dataset.char;
+      if (ch === q.wrong) {
+        quiz.chineseStage = "choose";
+        quiz.chinesePickedIndex = idx;
+        quiz.chineseChoices = shuffle(q.choices || []);
+        renderQuiz();
+        return;
+      }
+      btn.classList.remove("miss");
+      void btn.offsetWidth;
+      btn.classList.add("miss");
+      if (hint) {
+        hint.textContent = "這個字沒錯，再找找看";
+        hint.classList.remove("hidden");
+      }
+    };
+  });
+}
+
 function renderQuiz() {
   const q = getCurrentQuestion();
   if (!q) { leaveQuiz(); return; }
+
+  if (quiz.activeQuestionId !== q.id) {
+    quiz.activeQuestionId = q.id;
+    quiz.chineseStage = "find";
+    quiz.chinesePickedIndex = null;
+    quiz.chineseChoices = null;
+  }
 
   // Mode label
   let modeText = "";
@@ -1445,19 +1552,21 @@ function renderQuiz() {
   const isTF = q.type === "true_false";
   const isFill = q.type === "fill_in_blank";
   const isVc = q.type === "vertical_calc";
+  const isChinese = q.type === "chinese_correction";
   let typeClass = "q-type", typeLabel = "選擇題";
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
+  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.chineseStage === "choose" ? "改錯字：選正確字" : "改錯字"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
-  if (!isTF && !isFill && !isVc && q.options.length > 0) {
+  if (!isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
   // 列舉條列換行（選擇/是非題；MC 已切選項，故答案串①甲乙丁不在 displayText 內。填充在下方自有分支處理）
-  if (!isFill && !isVc) displayText = applyEnumBreaks(displayText);
+  if (!isFill && !isVc && !isChinese) displayText = applyEnumBreaks(displayText);
 
   // Answer area（依題型）
   let answerHtml;
@@ -1465,6 +1574,19 @@ function renderQuiz() {
     answerHtml = `
       <div class="vc-grid" id="vc-grid"></div>
       <div id="fill-input-panel"></div>`;
+  } else if (isChinese) {
+    displayText = renderChineseSentence(q);
+    if (quiz.chineseStage === "choose") {
+      const choices = quiz.chineseChoices || q.choices || [];
+      const optionsHtml = choices.map((choice, i) =>
+        `<button class="opt-btn" data-value="${escapeHtml(choice)}">
+          <span class="opt-label">${i + 1}</span><span>${escapeHtml(choice)}</span>
+        </button>`
+      ).join("");
+      answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
+    } else {
+      answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
+    }
   } else if (isFill) {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
@@ -1551,6 +1673,8 @@ function renderQuiz() {
     bindVcEvents(q);
   } else if (isFill) {
     bindFillEvents(q);
+  } else if (isChinese) {
+    bindChineseEvents(q);
   } else {
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.onclick = () => submitAnswer(btn.dataset.value);
@@ -1906,6 +2030,16 @@ function renderFeedback(correct, q) {
       chip.classList.add(quiz._fillResults[Number(chip.dataset.chip)] ? "b-correct" : "b-wrong");
     });
     wrongHint = "答錯了，紅色格子旁有正確答案";
+  } else if (q.type === "chinese_correction") {
+    document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
+    const selectedValue = quiz._lastSelected;
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.classList.add("disabled");
+      const val = btn.dataset.value;
+      if (val === q.answer) btn.classList.add("correct-answer");
+      if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
+    });
+    wrongHint = `答錯了，正確答案是「${q.answer}」`;
   } else {
     const selectedValue = quiz._lastSelected;
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
@@ -1932,7 +2066,7 @@ function renderFeedback(correct, q) {
   }
 
   // 作答後說明：答對答錯都顯示，無說明（期中題等）則不渲染
-  const explainText = explanations[q.id];
+  const explainText = explanations[q.id] || (q.type === "chinese_correction" ? q.note : "");
   if (explainText) {
     const explainEl = document.getElementById("explain-card");
     explainEl.textContent = explainText;

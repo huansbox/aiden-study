@@ -27362,5 +27362,1139 @@
     ],
     "answer": "1",
     "source": "臺北市_民權國小_113下期末2_社會康軒_題目.pdf"
+  },
+  {
+    "id": "cht_l7_l8_correction_001",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "爸爸決定繼丞爺爺的事業。",
+    "wrong": "丞",
+    "answer": "承",
+    "choices": [
+      "承",
+      "成",
+      "城",
+      "誠"
+    ],
+    "note": "接續前人的工作或責任，要用「承」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_002",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "妳知道自己是什麼血形嗎？",
+    "wrong": "形",
+    "answer": "型",
+    "choices": [
+      "型",
+      "刑",
+      "行",
+      "幸"
+    ],
+    "note": "血液分類要寫「血型」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_003",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "弟弟硬開雙臂模仿飛機。",
+    "wrong": "硬",
+    "answer": "展",
+    "choices": [
+      "展",
+      "晨",
+      "輾",
+      "嶄"
+    ],
+    "note": "把手臂張開、伸開，要寫「展開」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_004",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "哥哥因為盲場炎住院。",
+    "wrong": "場",
+    "answer": "腸",
+    "choices": [
+      "腸",
+      "湯",
+      "暢",
+      "揚"
+    ],
+    "note": "身體器官是「腸」，所以是「盲腸炎」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_005",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "她的處理方式讓我很困優。",
+    "wrong": "優",
+    "answer": "擾",
+    "choices": [
+      "擾",
+      "憂",
+      "煩",
+      "惱"
+    ],
+    "note": "讓人覺得麻煩、煩惱，是「困擾」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_006",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "他的心匈寬大，不會跟你計較這種小事。",
+    "wrong": "匈",
+    "answer": "胸",
+    "choices": [
+      "胸",
+      "凶",
+      "洶",
+      "恟"
+    ],
+    "note": "形容人的氣度和心量，要寫「心胸」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_007",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "爸爸的戶照過期了，需要重辦。",
+    "wrong": "戶",
+    "answer": "護",
+    "choices": [
+      "護",
+      "滬",
+      "扈",
+      "互"
+    ],
+    "note": "出國用的證件是「護照」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_008",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "各班展現出活波與自信。",
+    "wrong": "波",
+    "answer": "潑",
+    "choices": [
+      "潑",
+      "泊",
+      "坡",
+      "破"
+    ],
+    "note": "形容活力充沛，要寫「活潑」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_009",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "我們班抬頭挺胸，精神百被的邁開整齊步伐。",
+    "wrong": "被",
+    "answer": "倍",
+    "choices": [
+      "倍",
+      "備",
+      "背",
+      "培"
+    ],
+    "note": "精神很好、更加有活力，要寫「精神百倍」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_010",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "某些班級裝成舞者，不及不徐的踩著舞步進場。",
+    "wrong": "及",
+    "answer": "疾",
+    "choices": [
+      "疾",
+      "急",
+      "即",
+      "集"
+    ],
+    "note": "速度不快也不慢，是「不疾不徐」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_011",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "原來是愛心至工團進場。",
+    "wrong": "至",
+    "answer": "志",
+    "choices": [
+      "志",
+      "治",
+      "誌",
+      "智"
+    ],
+    "note": "自願服務的人是「志工」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_013",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "老闆堅持使用健康有意處的天然原料。",
+    "wrong": "意",
+    "answer": "益",
+    "choices": [
+      "益",
+      "義",
+      "億",
+      "憶"
+    ],
+    "note": "對人有好處，要寫「有益處」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_014",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "外包裝上印著請市量食用的標語。",
+    "wrong": "市",
+    "answer": "適",
+    "choices": [
+      "適",
+      "試",
+      "勢",
+      "室"
+    ],
+    "note": "剛剛好的分量是「適量」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_015",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "人們不再隨意餵食猴子，不曾可以改變牠的生活型態，保護猴子，也能讓人猴和平共存。",
+    "wrong": "曾",
+    "answer": "僅",
+    "choices": [
+      "僅",
+      "謹",
+      "緊",
+      "盡"
+    ],
+    "note": "「不僅」表示不只如此，這裡要用「僅」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_016",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "人們不再隨意餵食猴子，不僅可以改變牠的生活型態，保互猴子，也能讓人猴和平共存。",
+    "wrong": "互",
+    "answer": "護",
+    "choices": [
+      "護",
+      "戶",
+      "滬",
+      "扈"
+    ],
+    "note": "照顧、維護動物，要寫「保護」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_001",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這一次，我不會再受偏上當。",
+    "wrong": "偏",
+    "answer": "騙",
+    "choices": [
+      "騙",
+      "篇",
+      "遍",
+      "編"
+    ],
+    "note": "被人用假話或假動作欺騙，是「受騙」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_002",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這件洋妝非常漂亮。",
+    "wrong": "妝",
+    "answer": "裝",
+    "choices": [
+      "裝",
+      "壯",
+      "莊",
+      "樁"
+    ],
+    "note": "衣服要寫「服裝」或「洋裝」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_003",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "他病得很勵害，不再吸菸又找到適合的醫療方式，終於恢復往日的健康。",
+    "wrong": "勵",
+    "answer": "厲",
+    "choices": [
+      "厲",
+      "歷",
+      "曆",
+      "利"
+    ],
+    "note": "程度很嚴重或很強，要寫「厲害」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_004",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "甘天，老師帶全班到博物館參觀展覽。",
+    "wrong": "甘",
+    "answer": "某",
+    "choices": [
+      "某",
+      "莫",
+      "甚",
+      "其"
+    ],
+    "note": "不確定是哪一天，可以說「某一天」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_005",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "半信半移",
+    "wrong": "移",
+    "answer": "疑",
+    "choices": [
+      "疑",
+      "宜",
+      "儀",
+      "誼"
+    ],
+    "note": "有點相信又有點懷疑，是「半信半疑」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_006",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "鐵石心湯",
+    "wrong": "湯",
+    "answer": "腸",
+    "choices": [
+      "腸",
+      "場",
+      "常",
+      "長"
+    ],
+    "note": "形容心腸很硬，要寫「鐵石心腸」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_007",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "愁眉不硬",
+    "wrong": "硬",
+    "answer": "展",
+    "choices": [
+      "展",
+      "輾",
+      "嶄",
+      "斬"
+    ],
+    "note": "眉頭打結、不能舒展，是「愁眉不展」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_008",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "是可而止",
+    "wrong": "是",
+    "answer": "適",
+    "choices": [
+      "適",
+      "試",
+      "室",
+      "勢"
+    ],
+    "note": "做到剛好的程度就停止，是「適可而止」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_009",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "相得益章",
+    "wrong": "章",
+    "answer": "彰",
+    "choices": [
+      "彰",
+      "張",
+      "樟",
+      "漳"
+    ],
+    "note": "彼此配合後更加顯著，要寫「相得益彰」。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_010",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "養成使用夾鍵袋的習慣，可以避免餅乾軟化。",
+    "wrong": "鍵",
+    "answer": "鏈",
+    "choices": [
+      "鏈",
+      "連",
+      "蓮",
+      "練"
+    ],
+    "note": "可以密封的袋子叫「夾鏈袋」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_011",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "即刻消失，再不留下從影。",
+    "wrong": "從",
+    "answer": "蹤",
+    "choices": [
+      "蹤",
+      "縱",
+      "棕",
+      "綜"
+    ],
+    "note": "留下的痕跡是「蹤影」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_012",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "為了減少拉圾，這家店決定不提供免洗餐具。",
+    "wrong": "拉",
+    "answer": "垃",
+    "choices": [
+      "垃",
+      "立",
+      "啦",
+      "粒"
+    ],
+    "note": "不要的廢棄物是「垃圾」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_013",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這幅畫裡的京魚換個角度瞧，竟然會變成蛇。",
+    "wrong": "京",
+    "answer": "鯨",
+    "choices": [
+      "鯨",
+      "驚",
+      "境",
+      "景"
+    ],
+    "note": "海裡的大型動物是「鯨魚」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_014",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "哥哥很愛運動，所以身體記健康又強壯。",
+    "wrong": "記",
+    "answer": "既",
+    "choices": [
+      "既",
+      "紀",
+      "技",
+      "季"
+    ],
+    "note": "「既……又……」表示兩種情況同時存在。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_015",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這道梅子番茄可以開位。",
+    "wrong": "位",
+    "answer": "胃",
+    "choices": [
+      "胃",
+      "味",
+      "謂",
+      "畏"
+    ],
+    "note": "讓人想吃東西，是「開胃」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_016",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "我的姐姐習慣戴著畫家瑁，在戶外寫生。",
+    "wrong": "瑁",
+    "answer": "帽",
+    "choices": [
+      "帽",
+      "冒",
+      "貌",
+      "貿"
+    ],
+    "note": "戴在頭上的東西是「帽」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_017",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "她明年即將娶得博士學位。",
+    "wrong": "娶",
+    "answer": "取",
+    "choices": [
+      "取",
+      "趣",
+      "趨",
+      "區"
+    ],
+    "note": "得到、拿到成果，要寫「取得」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_018",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這個鍋子著的米飯十分好吃。",
+    "wrong": "著",
+    "answer": "煮",
+    "choices": [
+      "煮",
+      "署",
+      "暑",
+      "煎"
+    ],
+    "note": "用鍋子把米飯做熟，要寫「煮」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_019",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "消防隊員邊指揮目登口呆的民眾離開現場。",
+    "wrong": "登",
+    "answer": "瞪",
+    "choices": [
+      "瞪",
+      "燈",
+      "蹬",
+      "澄"
+    ],
+    "note": "驚訝到眼睛睜大、說不出話，是「目瞪口呆」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_020",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "他的寵物整天都沒位口。",
+    "wrong": "位",
+    "answer": "胃",
+    "choices": [
+      "胃",
+      "味",
+      "謂",
+      "畏"
+    ],
+    "note": "想不想吃東西，和「胃口」有關。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_021",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "他差點咬了他的母指。",
+    "wrong": "母",
+    "answer": "拇",
+    "choices": [
+      "拇",
+      "姆",
+      "每",
+      "侮"
+    ],
+    "note": "大拇指的「拇」有提手旁。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_022",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "撒哈拉沙漠遼闊，一望無記。",
+    "wrong": "記",
+    "answer": "際",
+    "choices": [
+      "際",
+      "紀",
+      "既",
+      "技"
+    ],
+    "note": "看不到邊際，要寫「一望無際」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_023",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "我希望外送食物附送的叉子沒有添加話學物質。",
+    "wrong": "話",
+    "answer": "化",
+    "choices": [
+      "化",
+      "花",
+      "華",
+      "畫"
+    ],
+    "note": "和化學成分有關，要寫「化學物質」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_024",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "他畫的圓案，顏色鮮豔，筆觸生動。",
+    "wrong": "圓",
+    "answer": "圖",
+    "choices": [
+      "圖",
+      "塗",
+      "圍",
+      "園"
+    ],
+    "note": "畫面上的花樣或設計是「圖案」。",
+    "source": "aiden-cht-3.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_025",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "餐桌上使用公快夾菜，以減少疾病傳染的風險。",
+    "wrong": "快",
+    "answer": "筷",
+    "choices": [
+      "筷",
+      "塊",
+      "決",
+      "訣"
+    ],
+    "note": "夾菜用的餐具是「筷子」，多人共用要用「公筷」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_026",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "你是這家書店的會元嗎？",
+    "wrong": "元",
+    "answer": "員",
+    "choices": [
+      "員",
+      "圓",
+      "園",
+      "原"
+    ],
+    "note": "店家的會員，要寫「員」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_027",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "這碗濃易非常好喝。",
+    "wrong": "易",
+    "answer": "湯",
+    "choices": [
+      "湯",
+      "場",
+      "陽",
+      "楊"
+    ],
+    "note": "可以喝的熱食是「濃湯」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_028",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "寫作文時，思緒要靈活一點，不要太吊板了。",
+    "wrong": "吊",
+    "answer": "呆",
+    "choices": [
+      "呆",
+      "杏",
+      "困",
+      "古"
+    ],
+    "note": "不靈活、很死板，是「呆板」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_029",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "誰不起成績比較差的同學，是不對的行為。",
+    "wrong": "誰",
+    "answer": "瞧",
+    "choices": [
+      "瞧",
+      "樵",
+      "憔",
+      "譙"
+    ],
+    "note": "看不起別人，要寫「瞧不起」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_030",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "昨晚被菜刀割傷的大母指傷口好一點了嗎？",
+    "wrong": "母",
+    "answer": "拇",
+    "choices": [
+      "拇",
+      "姆",
+      "每",
+      "侮"
+    ],
+    "note": "大拇指的「拇」有提手旁。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_031",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "錙銖必教",
+    "wrong": "教",
+    "answer": "較",
+    "choices": [
+      "較",
+      "校",
+      "郊",
+      "絞"
+    ],
+    "note": "連很少的錢也計較，是「錙銖必較」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_032",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "灰金如土",
+    "wrong": "灰",
+    "answer": "揮",
+    "choices": [
+      "揮",
+      "輝",
+      "徽",
+      "暉"
+    ],
+    "note": "大把花錢像灑土一樣，是「揮金如土」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_033",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "不修邊服",
+    "wrong": "服",
+    "answer": "幅",
+    "choices": [
+      "幅",
+      "福",
+      "副",
+      "腹"
+    ],
+    "note": "不注意外表衣著，是「不修邊幅」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_034",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "按塗索驥",
+    "wrong": "塗",
+    "answer": "圖",
+    "choices": [
+      "圖",
+      "途",
+      "徒",
+      "屠"
+    ],
+    "note": "照著圖去找馬，是「按圖索驥」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_035",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "在所難兔",
+    "wrong": "兔",
+    "answer": "免",
+    "choices": [
+      "免",
+      "勉",
+      "娩",
+      "晚"
+    ],
+    "note": "很難避免，要寫「在所難免」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_036",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "出神入北",
+    "wrong": "北",
+    "answer": "化",
+    "choices": [
+      "化",
+      "花",
+      "華",
+      "畫"
+    ],
+    "note": "技藝達到高妙境界，是「出神入化」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_037",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "投機曲巧",
+    "wrong": "曲",
+    "answer": "取",
+    "choices": [
+      "取",
+      "娶",
+      "趣",
+      "趨"
+    ],
+    "note": "用不正當的小聰明取得好處，是「投機取巧」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_038",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "畫它添足",
+    "wrong": "它",
+    "answer": "蛇",
+    "choices": [
+      "蛇",
+      "舌",
+      "捨",
+      "舍"
+    ],
+    "note": "多做不必要的事，反而不好，是「畫蛇添足」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_039",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "吊若木雞",
+    "wrong": "吊",
+    "answer": "呆",
+    "choices": [
+      "呆",
+      "杏",
+      "困",
+      "古"
+    ],
+    "note": "驚呆得像木雞一樣，是「呆若木雞」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_040",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "即往不咎",
+    "wrong": "即",
+    "answer": "既",
+    "choices": [
+      "既",
+      "記",
+      "季",
+      "紀"
+    ],
+    "note": "成語是「既往不咎」，已經過去的事不再責備。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_041",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "既住不咎",
+    "wrong": "住",
+    "answer": "往",
+    "choices": [
+      "往",
+      "網",
+      "望",
+      "旺"
+    ],
+    "note": "「既往」指已經過去的事，要用「往」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_012",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "醃字泡菜已經傳承三代。",
+    "wrong": "字",
+    "answer": "製",
+    "choices": [
+      "製",
+      "制",
+      "治",
+      "置"
+    ],
+    "note": "把食物加工做成泡菜，要寫「醃製」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_017",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "醃製泡菜已經傳成三代。",
+    "wrong": "成",
+    "answer": "承",
+    "choices": [
+      "承",
+      "誠",
+      "城",
+      "乘"
+    ],
+    "note": "一代接一代延續下去，要寫「傳承」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l7_l8_correction_018",
+    "subject": "chinese",
+    "unit": 13,
+    "subtopic": "L7-L8 改錯字",
+    "type": "chinese_correction",
+    "text": "如果對商品感到疑或，就不要購買。",
+    "wrong": "或",
+    "answer": "惑",
+    "choices": [
+      "惑",
+      "獲",
+      "霍",
+      "貨"
+    ],
+    "note": "不明白、不確定時，是感到「疑惑」。",
+    "source": "aiden-cht-1.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_042",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "諱疫忌醫",
+    "wrong": "疫",
+    "answer": "疾",
+    "choices": [
+      "疾",
+      "嫉",
+      "急",
+      "及"
+    ],
+    "note": "成語是「諱疾忌醫」，比喻怕人批評而不願改正缺點。",
+    "source": "aiden-cht-2.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_043",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "近日發現有民眾將樂圾丟棄在本校牆邊，造成環境髒亂。",
+    "wrong": "樂",
+    "answer": "垃",
+    "choices": [
+      "垃",
+      "拉",
+      "啦",
+      "粒"
+    ],
+    "note": "不要的廢棄物是「垃圾」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_044",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "近日發現有民眾將垃色丟棄在本校牆邊，造成環境髒亂。",
+    "wrong": "色",
+    "answer": "圾",
+    "choices": [
+      "圾",
+      "及",
+      "級",
+      "岌"
+    ],
+    "note": "不要的廢棄物是「垃圾」。",
+    "source": "aiden-cht-4.jpg"
+  },
+  {
+    "id": "cht_l9_l10_correction_045",
+    "subject": "chinese",
+    "unit": 14,
+    "subtopic": "L9-L10 改錯字",
+    "type": "chinese_correction",
+    "text": "近日發現有民眾將垃圾丟棄在本校強邊，造成環境髒亂。",
+    "wrong": "強",
+    "answer": "牆",
+    "choices": [
+      "牆",
+      "墻",
+      "檣",
+      "薔"
+    ],
+    "note": "建築物或校園邊界的牆面，要寫「牆」。",
+    "source": "aiden-cht-4.jpg"
   }
 ]

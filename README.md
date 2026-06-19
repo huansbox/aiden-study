@@ -1,37 +1,38 @@
-# Aiden Study - 三下自然練習
+# Aiden Study - 三下題庫練習
 
-國小三年級下學期自然科題庫練習網站（期中＋期末）。從考卷 PDF 萃取題目、AI 分類，建成零依賴的靜態互動練習網站。
+國小三年級下學期題庫練習網站，目前包含自然、數學、社會、國語。從考卷 PDF 或人工整理資料建立零依賴的靜態互動練習網站。
 
 **線上使用**: https://huansbox.github.io/aiden-study/
 
 ## 功能
 
-- **期中／期末切換** — 期中＝第 1、2 單元；期末＝第 3、4 單元
-- **全部練習** — 挑戰整個單元，答錯的題目會再次出現，全部答對才算通關。支援中途離開接續。
-- **快速練習** — 智慧抽 10 題，優先出錯誤率高和練習次數少的題目。
-- **依概念練習** — 期末單元下可選 subtopic（如「動物分類」「天氣預報」）單獨練，全部/快速皆可。
+- **科目切換** — 自然、數學、社會、國語。
+- **期中／期末切換** — 目前自然有期中／期末，其餘科目以期末題庫為主。
+- **全部練習** — 分批挑戰整個單元，答錯的題目會再次出現，全部答對才算通關。支援中途離開接續。
+- **依概念練習** — 單元下可選 subtopic 單獨練習。
 - **錯題練習** — 從累積的錯題庫出題，答對才能移除。
+- **國語改錯字** — Step 1 先點出錯字，Step 2 用四選一選正確字。
 - **題目回報** — 答題後可標記「題目有問題」，該題立即退出題池與統計（可從首頁還原）；可一鍵開 GitHub issue 回報待修。
 
 所有練習紀錄存在瀏覽器 localStorage，不需登入。
 
 ## 題庫
 
-共 1101 題（期中 602＋期末 499），來源為 108–113 學年度多縣市國小三下自然（康軒）考卷：
+共 1921 題：
 
-- 第 1 單元：田園樂（324 題）
-- 第 2 單元：溫度變化對物質的影響（278 題）
-- 第 3 單元：動物（250 題）
-- 第 4 單元：天氣（249 題）
+- 自然：1099 題（unit 1-4）
+- 數學：307 題（unit 5-9）
+- 社會：452 題（unit 10-12）
+- 國語：63 題（unit 13-14，改錯字）
 
-期末僅收現行 108 課綱（110 下起）的考卷；無官方答案卷的題目由 AI 補答案並經盲審複查。
+自然、數學、社會多由考卷萃取與分類產生；國語目前由掃描考卷人工整理成 curated data。
 
 ## 開發
 
 ### 環境
 
 - Python（uv 管理，`uv sync` 安裝相依；核心套件 pdfplumber）
-- Claude Code CLI（AI 分類用 `claude -p`）
+- Claude Code CLI（AI 分類用 `claude -p`；只在重跑萃取/分類流程時需要）
 
 ### 資料處理 pipeline
 
@@ -39,10 +40,10 @@
 # 1. PDF 萃取（--input 指定 PDF 檔或目錄）
 uv run python scripts/extract.py --input pdfs_期末 --output data/raw_questions_期末.json
 
-# 2. AI 分類（--semester mid|final 切換學期 taxonomy）
+# 2. AI 分類（--semester mid|final|math|social 切換 taxonomy）
 uv run python scripts/classify.py --semester final
 
-# 3. 合併入最終題庫 docs/questions.json（冪等）
+# 3. 合併入最終題庫 docs/questions.json（冪等；包含國語 curated data）
 uv run python scripts/build_questions.py
 
 # 測試

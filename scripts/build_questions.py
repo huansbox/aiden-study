@@ -1,14 +1,15 @@
 """
 合併分類結果進 docs/questions.json（網站讀取的最終題庫）
 
-四來源結構：
+五來源結構：
   - 期中（unit 1-2，自然）：保留既有 docs/questions.json 內容，不重建
   - 期末（unit 3-4，自然）：從 data/classified_questions_期末.json 重建
   - 數學（unit 5-9）：從 data/classified_questions_數學.json 重建（檔案不存在＝0 題，不報錯）
   - 社會（unit 10-12）：從 data/classified_questions_社會.json 重建（同上，內部 10/11/12＝課本第 4/5/6 單元）
+  - 國語（unit 13-14）：從 data/curated_questions_國語.json 重建
 
 冪等：每次都從各來源全量重建合併（期中保留既有內容）。
-全題帶 subject 欄位（unit 1-4 = science；5-9 = math；10-12 = social）。
+全題帶 subject 欄位（unit 1-4 = science；5-9 = math；10-12 = social；13-14 = chinese）。
 
 過濾規則（各區塊相同）：
   - unit == "none" 或不在該區塊值域 → 排除
@@ -40,6 +41,7 @@ MATH_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questio
 # 人工 curated 題（015 看表題：手動截圖＋手寫 blanks，已含 unit/subtopic，不過 classify）
 MATH_CURATED = os.path.abspath(os.path.join(ROOT, "data", "curated_questions_數學.json"))
 SOCIAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_社會.json"))
+CHINESE_CURATED = os.path.abspath(os.path.join(ROOT, "data", "curated_questions_國語.json"))
 FILTERED_PATH = os.path.abspath(os.path.join(ROOT, "data", "filtered_unsupported_數學.json"))
 
 MID_UNITS = {1, 2}
@@ -47,6 +49,8 @@ FINAL_UNITS = {3, 4}
 MATH_UNITS = {5, 6, 7, 8, 9}
 # 社會：內部 unit 10/11/12 = 課本第 4/5/6 單元（全域唯一，避開自然 unit 4）
 SOCIAL_UNITS = {10, 11, 12}
+# 國語：L7-L8 / L9-L10 掃描題，沿用全域唯一 unit id
+CHINESE_UNITS = {13, 14}
 
 # UI 已支援的 fill_in_blank 輸入型態（013 已落地全部四種）
 SUPPORTED_BLANK_INPUTS = {"number", "comparison", "code", "text"}
@@ -114,6 +118,23 @@ def preserve_schema(q: dict, subject: str) -> dict:
     }
 
 
+def preserve_chinese_schema(q: dict, used_ids: set) -> dict:
+    """國語人工 curated 題 → 網站最終 schema（保留改錯字專用欄位）。"""
+    return {
+        "id": unique_id(q["id"], used_ids),
+        "subject": "chinese",
+        "unit": int(q["unit"]),
+        "subtopic": q.get("subtopic", "none"),
+        "type": q["type"],
+        "text": clean_question_text(q["text"]),
+        "wrong": q["wrong"],
+        "answer": q["answer"],
+        "choices": [clean_question_text(c) for c in q["choices"]],
+        "note": clean_question_text(q["note"]),
+        "source": q["source"],
+    }
+
+
 def convert_block(classified: list, used_ids: set, subject: str, allowed_units: set,
                   filtered_out: list | None = None):
     """
@@ -153,10 +174,26 @@ def convert_block(classified: list, used_ids: set, subject: str, allowed_units: 
     return final_q, skipped
 
 
+def convert_chinese_block(curated: list, used_ids: set):
+    """國語 curated 題 → (最終題目清單, 排除統計)。"""
+    final_q = []
+    skipped = Counter()
+    for q in curated:
+        if int(q["unit"]) not in CHINESE_UNITS:
+            skipped["wrong_unit"] += 1
+            continue
+        if q.get("subject") != "chinese" or q.get("type") != "chinese_correction":
+            skipped["wrong_schema"] += 1
+            continue
+        final_q.append(preserve_chinese_schema(q, used_ids))
+    return final_q, skipped
+
+
 def build_merged(existing: list, final_classified: list, math_classified: list,
                  social_classified: list | None = None,
-                 filtered_out: list | None = None) -> list:
-    """四來源合併（純函式）：保留期中、重建期末／數學／社會。"""
+                 filtered_out: list | None = None,
+                 chinese_curated: list | None = None) -> list:
+    """五來源合併（純函式）：保留期中、重建期末／數學／社會／國語。"""
     # 期中保留既有內容；但既有 seed 內偶有同 source 同題號的不同題撞 id
     # （如某校 PDF 含兩份選擇題，皆編 1–5），需在此去碰撞，否則 localStorage
     # 的 mastered/errorBank 以 id 為鍵會把兩題混為一題。
@@ -178,7 +215,10 @@ def build_merged(existing: list, final_classified: list, math_classified: list,
     social_q, social_skipped = convert_block(social_classified or [], used_ids, "social", SOCIAL_UNITS)
     log.info(f"社會題目: {len(social_q)}（排除 {dict(social_skipped)}）")
 
-    merged = midterm + final_q + math_q + social_q
+    chinese_q, chinese_skipped = convert_chinese_block(chinese_curated or [], used_ids)
+    log.info(f"國語題目: {len(chinese_q)}（排除 {dict(chinese_skipped)}）")
+
+    merged = midterm + final_q + math_q + social_q + chinese_q
 
     # 全庫 id 唯一性檢查（期中已在上方去碰撞，重建區塊由 unique_id 保證）
     all_ids = [q["id"] for q in merged]
@@ -209,10 +249,13 @@ def main():
     if math_curated:
         log.info(f"人工 curated 題: {len(math_curated)}")
     social_classified = load_classified(SOCIAL_CLASSIFIED, required=False)
+    chinese_curated = load_classified(CHINESE_CURATED, required=False)
+    if chinese_curated:
+        log.info(f"國語 curated 題: {len(chinese_curated)}")
 
     filtered_out = []
     merged = build_merged(existing, final_classified, math_classified + math_curated,
-                          social_classified, filtered_out)
+                          social_classified, filtered_out, chinese_curated)
 
     with open(FILTERED_PATH, "w", encoding="utf-8") as f:
         json.dump(filtered_out, f, ensure_ascii=False, indent=2)
