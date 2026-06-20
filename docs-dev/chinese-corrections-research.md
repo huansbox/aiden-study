@@ -226,7 +226,37 @@ Step 2 是選出正確字。第一版行為：
 
 - 筆順外部連結。
 - 內建手寫練習。
-- 瀏覽器實機 smoke check：Node/資料/語法測試已通過；本機 Chrome headless 在目前環境以 exit code 134 關閉，需回到可操作瀏覽器時手動確認一次。
+
+## 2026-06-20 smoke check
+
+本機網站：`python3 -m http.server 8765 --directory docs`
+
+已確認：
+
+1. 國語首頁顯示 L7-L8 19 題、L9-L10 47 題。
+2. Step 1 點到正確字時停留原題，只顯示「這個字沒錯，再找找看」，不進 Step 2。
+3. Step 1 點到錯字後立刻進 Step 2，原句的錯字會標成 picked，其他字停用。
+4. Step 2 四選一不包含原本錯字；答錯會標出所選錯字與正解，答對會更新進度。
+5. 作答後顯示題目 note，並隱藏「先跳過這題」。
+6. L7-L8 與 L9-L10 入口都能進題；L9-L10 長句在桌面、iPad portrait、390px 手機寬度下都沒有水平溢出。
+7. 瀏覽器 console 沒有 error/warn。
+
+實測例：
+
+- `弟弟硬開雙臂模仿飛機。`：Step 1 `硬`，Step 2 `展`。
+- `如果對商品感到疑或，就不要購買。`：Step 1 `或`，Step 2 `惑`。
+- `近日發現有民眾將樂圾丟棄在本校牆邊，造成環境髒亂。`：Step 1 `樂`，Step 2 `垃`。
+- `即刻消失，再不留下從影。`：Step 1 `從`，Step 2 `蹤`。
+
+驗證：
+
+- `python3 scripts/validate_chinese_curated.py`
+- `node --test tests/test_backup_pure.mjs`
+- `node --test tests/test_breaks_pure.mjs`
+- `node --test tests/test_reward_pick.mjs`
+- `uv run pytest`
+
+明顯 UX 問題：本輪未發現需要立刻修的國語專屬問題。
 
 答錯後顯示：
    - 錯字
@@ -235,7 +265,6 @@ Step 2 是選出正確字。第一版行為：
 
 ## 待使用者回來審核
 
-1. 手動開 `http://localhost:8765/`，切到國語，確認手機寬度下 Step 1 點字與 Step 2 四選一的手感。
-2. 確認 Step 1 點到正確字時的提示文字「這個字沒錯，再找找看」是否太明顯或太淡。
-3. 確認國語單元名稱是否採「L7-L8：改錯字」「L9-L10：改錯字」即可，或要改成課本正式課名。
-4. 目前跳過 1 筆仍留在 `data/skipped_questions_國語.json`，已標記使用者確認不收。
+1. 使用者實機確認 Step 1 點到正確字時的提示文字「這個字沒錯，再找找看」是否太明顯或太淡。
+2. 確認國語單元名稱是否採「L7-L8：改錯字」「L9-L10：改錯字」即可，或要改成課本正式課名。
+3. 目前跳過 1 筆仍留在 `data/skipped_questions_國語.json`，已標記使用者確認不收。
