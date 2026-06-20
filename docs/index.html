@@ -552,6 +552,10 @@ function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
   };
 }
 
+function shouldMasterErrorPracticeCorrect(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting";
+}
+
 function cleanStat(s) {
   return {
     practiced: Math.max(0, Number(s && s.practiced) || 0),
@@ -1116,6 +1120,9 @@ function submitAnswer(selected) {
     quiz.queue.shift();
     if (correct) {
       State.removeFromErrorBank(q.id, quiz.practiceMode);
+      if (shouldMasterErrorPracticeCorrect(quiz.practiceMode)) {
+        State.addMastered(q.unit, q.id, quiz.practiceMode);
+      }
     } else {
       quiz.queue.push(q.id);
     }
@@ -1326,6 +1333,20 @@ function chineseHandwritingStatus(unit, total) {
   return `<span class="st-count">${total} 題</span>`;
 }
 
+function renderErrorModeButtons(visibleUnits, mode, label) {
+  const semUnitIds = visibleUnits.map(u => u.id);
+  const semErrors = State.getErrorBank(semUnitIds, mode);
+  const idsAttr = semUnitIds.join(",");
+  let html = `<div class="subtopic-list"><div class="subtopic-head">${label}</div>`;
+  html += `<button class="sub-btn" ${semErrors.length === 0 ? 'disabled' : ''} onclick="window._startError('${idsAttr}', '${mode}')">本學期全部${label}<span class="badge">${semErrors.length}</span></button>`;
+  for (const u of visibleUnits) {
+    const errU = State.getErrorBank(u.id, mode);
+    html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}', '${mode}')">第 ${unitNum(u.id)} 單元${label}<span class="badge">${errU.length}</span></button>`;
+  }
+  html += "</div>";
+  return html;
+}
+
 function renderHome() {
   const home = document.getElementById("page-home");
   const subjKey = SUBJECTS[state.subject] ? state.subject : "science";
@@ -1412,12 +1433,17 @@ function renderHome() {
   // Error section（限本科目本學期範圍；整科無題時不顯示）
   if (visibleUnits.length > 0) {
     const semUnitIds = visibleUnits.map(u => u.id);
-    const semErrors = State.getErrorBank(semUnitIds, DEFAULT_PRACTICE_MODE);
+    const choiceErrors = State.getErrorBank(semUnitIds, DEFAULT_PRACTICE_MODE);
+    const handwritingErrors = State.getErrorBank(semUnitIds, HANDWRITING_PRACTICE_MODE);
+    const semErrors = subjKey === "chinese" ? [...choiceErrors, ...handwritingErrors] : choiceErrors;
 
     html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
 
     if (semErrors.length === 0) {
       html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
+    } else if (subjKey === "chinese") {
+      html += renderErrorModeButtons(visibleUnits, DEFAULT_PRACTICE_MODE, "選擇錯題");
+      html += renderErrorModeButtons(visibleUnits, HANDWRITING_PRACTICE_MODE, "手寫錯題");
     } else {
       const idsAttr = semUnitIds.join(",");
       html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;

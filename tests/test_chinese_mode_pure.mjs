@@ -18,6 +18,7 @@ const {
   advanceHandwritingRemedial,
   shouldTraceHandwritingAttempt,
   recordHandwritingHelpMistake,
+  shouldMasterErrorPracticeCorrect,
   getModeStat,
   hasModeStat,
   recordModeAnswer,
@@ -42,6 +43,7 @@ return {
   advanceHandwritingRemedial,
   shouldTraceHandwritingAttempt,
   recordHandwritingHelpMistake,
+  shouldMasterErrorPracticeCorrect,
   getModeStat,
   hasModeStat,
   recordModeAnswer,
@@ -125,6 +127,12 @@ test("recordHandwritingHelpMistake：remedial 完成後錯題仍保留", () => {
   assert.equal(filterModeErrorBank(recorded.errorBank, 14, "handwriting").some(e => e.questionId === "q2"), true);
 });
 
+test("shouldMasterErrorPracticeCorrect：只有 handwriting 錯題答對會加入 mastered", () => {
+  assert.equal(shouldMasterErrorPracticeCorrect("choice"), false);
+  assert.equal(shouldMasterErrorPracticeCorrect("handwriting"), true);
+  assert.equal(shouldMasterErrorPracticeCorrect("unknown"), false);
+});
+
 test("stats：舊格式視為 choice，handwriting 初始為空", () => {
   const stats = { q1: { practiced: 3, correct: 1 } };
   assert.deepEqual(getModeStat(stats, "q1", "choice"), { practiced: 3, correct: 1 });
@@ -206,6 +214,38 @@ test("mastered：舊 unit 陣列只算 choice，handwriting 獨立", () => {
   mastered = addModeMastered(mastered, 13, "q2", "choice");
   assert.deepEqual(masteredListForMode(mastered, 13, "choice"), ["q1", "q2"]);
   assert.deepEqual(masteredListForMode(mastered, 13, "handwriting"), ["q1"]);
+});
+
+test("handwriting error review：答對只清 handwriting error 並加入 handwriting mastered", () => {
+  const bank = [
+    { questionId: "q1", unit: 13, mode: "choice" },
+    { questionId: "q1", unit: 13, mode: "handwriting" },
+  ];
+  let mastered = {};
+  const nextBank = removeModeError(bank, "q1", "handwriting");
+  if (shouldMasterErrorPracticeCorrect("handwriting")) {
+    mastered = addModeMastered(mastered, 13, "q1", "handwriting");
+  }
+  assert.equal(filterModeErrorBank(nextBank, 13, "choice").length, 1);
+  assert.equal(filterModeErrorBank(nextBank, 13, "handwriting").length, 0);
+  assert.deepEqual(masteredListForMode(mastered, 13, "handwriting"), ["q1"]);
+  assert.deepEqual(masteredListForMode(mastered, 13, "choice"), []);
+});
+
+test("choice error review：答對不加入 choice mastered，handwriting error 保留", () => {
+  const bank = [
+    { questionId: "q1", unit: 13, mode: "choice" },
+    { questionId: "q1", unit: 13, mode: "handwriting" },
+  ];
+  let mastered = {};
+  const nextBank = removeModeError(bank, "q1", "choice");
+  if (shouldMasterErrorPracticeCorrect("choice")) {
+    mastered = addModeMastered(mastered, 13, "q1", "choice");
+  }
+  assert.equal(filterModeErrorBank(nextBank, 13, "choice").length, 0);
+  assert.equal(filterModeErrorBank(nextBank, 13, "handwriting").length, 1);
+  assert.deepEqual(masteredListForMode(mastered, 13, "choice"), []);
+  assert.deepEqual(masteredListForMode(mastered, 13, "handwriting"), []);
 });
 
 test("removeQuestionFromAllModeMastered：flag 題時清掉所有 mode mastered", () => {
