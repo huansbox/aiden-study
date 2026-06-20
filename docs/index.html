@@ -1244,6 +1244,29 @@ function renderHome() {
       fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
 
+    if (subjKey === "chinese") {
+      let choiceStatus;
+      if (isCleared) {
+        choiceStatus = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+      } else if (done > 0) {
+        choiceStatus = `<span class="st-count">接續 ${done}/${totalInUnit}</span>`;
+      } else {
+        choiceStatus = `<span class="st-count">${totalInUnit} 題</span>`;
+      }
+      html += `
+        <div class="unit-section">
+          <div class="unit-title">${u.name}</div>
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：選擇${choiceStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id})">練習</button>
+            </span>
+          </div>
+          ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
+        </div>`;
+      continue;
+    }
+
     html += `
       <div class="unit-section">
         <div class="unit-title">${u.name}</div>
@@ -1706,7 +1729,7 @@ function renderQuiz() {
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
-  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.chineseStage === "choose" ? "改錯字：選正確字" : "改錯字"; }
+  else if (isChinese) { typeClass += " chinese"; typeLabel = "改錯：選擇"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
