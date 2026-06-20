@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>國語改錯字 Prototype</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f4;
+      --panel: #ffffff;
+      --ink: #1f2422;
+      --muted: #68716d;
+      --line: #d8dfda;
+      --accent: #19766d;
+      --accent-soft: #dff2ee;
+      --warn: #b94b32;
+      --warn-soft: #fde7df;
+      --gold: #f2b84b;
+      --gold-soft: #fff2d4;
+      --ok: #2d7a4f;
+      --shadow: 0 16px 40px rgba(31, 36, 34, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.66), rgba(255,255,255,0)),
+        var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    .app {
+      width: min(960px, 100%);
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0 6px;
+    }
+
+    .title {
+      display: grid;
+      gap: 2px;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.25;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .progress {
+      min-width: 88px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .surface {
+      align-self: start;
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stage-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status {
+      min-height: 30px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .sentence {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+      min-height: 112px;
+      padding: 18px;
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.72)),
+        #f7f1e4;
+      border: 1px solid #eadfcd;
+    }
+
+    .char-btn {
+      width: 44px;
+      height: 52px;
+      border: 1px solid #d4cdc0;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.78);
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
+      user-select: none;
+    }
+
+    .char-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(25,118,109,0.12);
+    }
+
+    .char-btn:focus-visible {
+      outline: 3px solid rgba(25,118,109,0.24);
+      outline-offset: 2px;
+    }
+
+    .char-btn.selected {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      box-shadow: 0 0 0 3px rgba(242,184,75,0.2);
+    }
+
+    .char-btn.miss {
+      border-color: var(--warn);
+      background: var(--warn-soft);
+      animation: shake 220ms ease;
+    }
+
+    .char-mark {
+      width: 24px;
+      height: 52px;
+      display: inline-grid;
+      place-items: center;
+      color: #8b8175;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      min-height: 72px;
+    }
+
+    .choice-btn {
+      min-height: 62px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1.7rem;
+      font-weight: 800;
+      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(25,118,109,0.12);
+    }
+
+    .choice-btn:focus-visible {
+      outline: 3px solid rgba(25,118,109,0.24);
+      outline-offset: 2px;
+    }
+
+    .choice-btn.correct {
+      border-color: var(--ok);
+      background: #e6f3eb;
+      color: var(--ok);
+    }
+
+    .choice-btn.wrong {
+      border-color: var(--warn);
+      background: var(--warn-soft);
+      color: var(--warn);
+    }
+
+    .choice-btn:disabled {
+      cursor: default;
+    }
+
+    .feedback {
+      min-height: 70px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfb;
+      display: grid;
+      gap: 4px;
+      line-height: 1.55;
+    }
+
+    .feedback strong {
+      font-size: 1rem;
+    }
+
+    .feedback .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .feedback.correct {
+      border-color: #bfd8c9;
+      background: #eef8f2;
+    }
+
+    .feedback.wrong {
+      border-color: #edc7bc;
+      background: #fff4ef;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 14px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .btn.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn:disabled {
+      cursor: default;
+      opacity: 0.45;
+    }
+
+    .notes {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 14px 12px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .title h1 {
+        font-size: 1.18rem;
+      }
+
+      .surface {
+        padding: 14px;
+      }
+
+      .stage-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .status {
+        text-align: left;
+      }
+
+      .sentence {
+        min-height: 128px;
+        padding: 12px;
+        gap: 6px;
+      }
+
+      .char-btn {
+        width: 40px;
+        height: 48px;
+        font-size: 1.42rem;
+      }
+
+      .char-mark {
+        width: 18px;
+        height: 48px;
+      }
+
+      .choices {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="title">
+        <h1>國語改錯字</h1>
+        <div class="meta">Prototype</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </header>
+
+    <section class="surface" aria-live="polite">
+      <div class="stage-header">
+        <div class="stage-label" id="stageLabel"></div>
+        <div class="status" id="status"></div>
+      </div>
+
+      <div class="sentence" id="sentence"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback" hidden></div>
+
+      <div class="actions">
+        <button class="btn" id="resetBtn" type="button">重新開始</button>
+        <button class="btn primary" id="nextBtn" type="button" disabled>下一題</button>
+      </div>
+    </section>
+
+    <footer class="notes">
+      臨時頁面：只驗逐字點選、輕提示、四選一流程。不接正式題庫。
+    </footer>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      {
+        text: "爸爸決定繼丞爺爺的事業。",
+        wrong: "丞",
+        correct: "承",
+        choices: ["承", "成", "城", "誠"],
+        note: "這裡是接下來做同一件事，要用「承」。"
+      },
+      {
+        text: "這家店決定不提共塑膠餐具。",
+        wrong: "共",
+        correct: "供",
+        choices: ["供", "拱", "洪", "哄"],
+        note: "提供東西給別人使用，要寫「供」。"
+      },
+      {
+        text: "他看到好朋友受傷，心裡很膽心。",
+        wrong: "膽",
+        correct: "擔",
+        choices: ["擔", "但", "旦", "耽"],
+        note: "心裡掛念、放心不下，是「擔心」。"
+      }
+    ];
+
+    const sentenceEl = document.getElementById("sentence");
+    const choicesEl = document.getElementById("choices");
+    const feedbackEl = document.getElementById("feedback");
+    const statusEl = document.getElementById("status");
+    const stageLabelEl = document.getElementById("stageLabel");
+    const progressEl = document.getElementById("progress");
+    const nextBtn = document.getElementById("nextBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const state = {
+      index: 0,
+      phase: "find",
+      selectedIndex: -1,
+      missIndex: -1,
+      answered: false,
+      result: null,
+      selectedChoice: ""
+    };
+
+    function currentQuestion() {
+      return QUESTIONS[state.index];
+    }
+
+    function isChineseChar(char) {
+      return /\p{Script=Han}/u.test(char);
+    }
+
+    function wrongIndex(q) {
+      return Array.from(q.text).findIndex(char => char === q.wrong);
+    }
+
+    function render() {
+      const q = currentQuestion();
+      const chars = Array.from(q.text);
+      const targetIndex = wrongIndex(q);
+
+      progressEl.textContent = `${state.index + 1} / ${QUESTIONS.length}`;
+      stageLabelEl.textContent = state.phase === "find" ? "Step 1 找錯字" : "Step 2 選正字";
+      statusEl.textContent = statusText();
+      nextBtn.disabled = !state.answered;
+
+      sentenceEl.innerHTML = chars.map((char, index) => {
+        if (!isChineseChar(char)) return `<span class="char-mark">${escapeHtml(char)}</span>`;
+        const classes = ["char-btn"];
+        if (index === state.selectedIndex) classes.push("selected");
+        if (index === state.missIndex) classes.push("miss");
+        const disabled = state.phase !== "find" ? "disabled" : "";
+        return `<button class="${classes.join(" ")}" type="button" data-index="${index}" ${disabled}>${escapeHtml(char)}</button>`;
+      }).join("");
+
+      choicesEl.innerHTML = state.phase === "choose"
+        ? q.choices.map(choice => {
+            const classes = ["choice-btn"];
+            if (state.answered && choice === q.correct) classes.push("correct");
+            if (state.answered && choice === state.selectedChoice && choice !== q.correct) classes.push("wrong");
+            const disabled = state.answered ? "disabled" : "";
+            return `<button class="${classes.join(" ")}" type="button" data-choice="${escapeAttr(choice)}" ${disabled}>${escapeHtml(choice)}</button>`;
+          }).join("")
+        : "";
+
+      if (state.answered) {
+        feedbackEl.hidden = false;
+        feedbackEl.className = `feedback ${state.result}`;
+        feedbackEl.innerHTML = feedbackHtml(q);
+      } else {
+        feedbackEl.hidden = true;
+        feedbackEl.className = "feedback";
+        feedbackEl.innerHTML = "";
+      }
+
+      sentenceEl.querySelectorAll(".char-btn").forEach(btn => {
+        btn.addEventListener("click", () => pickChar(Number(btn.dataset.index)));
+      });
+      choicesEl.querySelectorAll(".choice-btn").forEach(btn => {
+        btn.addEventListener("click", () => pickChoice(btn.dataset.choice));
+      });
+    }
+
+    function statusText() {
+      if (state.phase === "choose") return "選出正確的字";
+      if (state.missIndex >= 0) return "這個字沒錯，再找找看";
+      return "找出句子裡用錯的字";
+    }
+
+    function pickChar(index) {
+      if (state.phase !== "find") return;
+      const q = currentQuestion();
+      if (index === wrongIndex(q)) {
+        state.selectedIndex = index;
+        state.phase = "choose";
+        state.missIndex = -1;
+        render();
+        return;
+      }
+      state.missIndex = index;
+      render();
+      window.setTimeout(() => {
+        if (state.phase === "find" && state.missIndex === index) {
+          state.missIndex = -1;
+          render();
+        }
+      }, 650);
+    }
+
+    function pickChoice(choice) {
+      if (state.phase !== "choose" || state.answered) return;
+      const q = currentQuestion();
+      state.selectedChoice = choice;
+      state.answered = true;
+      state.result = choice === q.correct ? "correct" : "wrong";
+      render();
+    }
+
+    function feedbackHtml(q) {
+      if (state.result === "correct") {
+        return `
+          <strong>答對了：${escapeHtml(q.wrong)} 改成 ${escapeHtml(q.correct)}</strong>
+          <div class="sub">${escapeHtml(q.note)}</div>`;
+      }
+      return `
+        <strong>正確答案：${escapeHtml(q.wrong)} 改成 ${escapeHtml(q.correct)}</strong>
+        <div class="sub">${escapeHtml(q.note)}</div>`;
+    }
+
+    function nextQuestion() {
+      state.index = (state.index + 1) % QUESTIONS.length;
+      resetQuestionState();
+      render();
+    }
+
+    function resetAll() {
+      state.index = 0;
+      resetQuestionState();
+      render();
+    }
+
+    function resetQuestionState() {
+      state.phase = "find";
+      state.selectedIndex = -1;
+      state.missIndex = -1;
+      state.answered = false;
+      state.result = null;
+      state.selectedChoice = "";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    nextBtn.addEventListener("click", nextQuestion);
+    resetBtn.addEventListener("click", resetAll);
+    render();
+  </script>
+</body>
+</html>
