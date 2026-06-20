@@ -228,6 +228,91 @@ body {
   min-height: 28px; margin-top: 4px; color: #b42318;
   font-size: 0.95rem; font-weight: 600;
 }
+.handwriting-panel {
+  --handwriting-board-size: min(86vw, 520px);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.handwriting-panel.remedial { --handwriting-board-size: min(86vw, 460px, 58vh); }
+.handwriting-board-wrap {
+  position: relative; width: var(--handwriting-board-size); max-width: 100%; aspect-ratio: 1 / 1;
+  border: 2px solid #d8dee9; border-radius: 12px; background: #fff;
+  overflow: hidden; touch-action: none;
+}
+.handwriting-board-wrap::before,
+.handwriting-board-wrap::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+}
+.handwriting-board-wrap::before {
+  background:
+    linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board-wrap::after {
+  background:
+    linear-gradient(45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(-45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board {
+  position: relative; z-index: 1; display: block;
+  width: 100%; height: 100%; touch-action: none;
+}
+.handwriting-trace {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(15, 63, 58, 0.16); font-size: min(70vw, 22rem, 42vh); font-weight: 700; line-height: 1;
+}
+.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size); max-width: 100%; }
+.handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
+.handwriting-remedial-note {
+  color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
+}
+.handwriting-remedial-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
+  padding: 10px 12px; border-radius: 10px; background: #effdf8;
+  color: #0f3f3a; font-size: 1rem; font-weight: 700; text-align: center;
+}
+.handwriting-done-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
+  padding: 20px 16px; border-radius: 12px; background: #effdf8;
+  color: #0f3f3a; font-size: 1.25rem; font-weight: 800; text-align: center;
+}
+.handwriting-self-check {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px; width: 100%; align-items: stretch;
+}
+.handwriting-remedial-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; width: var(--handwriting-board-size); max-width: 100%;
+}
+.handwriting-compare-card {
+  border: 1px solid #e0e0e0; border-radius: 12px; background: #fafbfc;
+  padding: 12px; text-align: center;
+}
+.handwriting-compare-title { font-size: 0.9rem; color: #667; margin-bottom: 8px; font-weight: 600; }
+.handwriting-capture {
+  width: 100%; aspect-ratio: 1 / 1; object-fit: contain;
+  border: 1px solid #e3e8ef; border-radius: 10px; background: #fff;
+}
+.handwriting-correct-char {
+  width: 100%; aspect-ratio: 1 / 1; border: 1px solid #e3e8ef; border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(5rem, 28vw, 10rem); font-weight: 700; color: #0f3f3a;
+}
+.handwriting-remedial-compare .handwriting-compare-card { padding: 8px; }
+.handwriting-remedial-compare .handwriting-capture,
+.handwriting-remedial-compare .handwriting-correct-char {
+  height: 112px; aspect-ratio: auto;
+}
+.handwriting-remedial-compare .handwriting-correct-char { font-size: 4.5rem; }
+.handwriting-correct-sentence {
+  margin-top: 12px; padding: 12px 14px; border-radius: 12px;
+  background: #effdf8; color: #0f3f3a; font-size: 1.05rem; line-height: 1.6;
+}
+@media (max-width: 560px) {
+  .handwriting-self-check { grid-template-columns: 1fr; }
+  .question-card:has(.handwriting-panel),
+  .question-card:has(.handwriting-self-check) { padding-left: 10px; padding-right: 10px; }
+}
 @keyframes charShake {
   0%, 100% { transform: translateX(0); }
   30% { transform: translateX(-3px); }
@@ -428,6 +513,233 @@ const STORAGE_KEY = "aiden_study_v2";
 const OLD_KEY = "aiden_study_records";
 
 const DEFAULT_DATA = { challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final", subject: "science" };
+const DEFAULT_PRACTICE_MODE = "choice";
+const HANDWRITING_PRACTICE_MODE = "handwriting";
+
+// <chinese-mode-pure>
+// ══════ 國語改錯字練習模式狀態（純函式；choice/handwriting 隔離）══════
+// 注意：此區塊到 </chinese-mode-pure> 為止不得引用外部全域變數，
+// 才能被 node 測試抽出獨立 eval。
+function normalizePracticeMode(mode) {
+  return mode === "handwriting" ? "handwriting" : "choice";
+}
+
+function modeChallengeKey(unit, subtopic = null, mode = "choice") {
+  const base = subtopic ? `${unit}/${subtopic}` : String(unit);
+  const m = normalizePracticeMode(mode);
+  return m === "choice" ? base : `${m}:${base}`;
+}
+
+function batchSizeForMode(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting" ? 5 : 10;
+}
+
+function balancedBatchSize(remaining, max = 10) {
+  if (remaining <= 0) return 0;
+  if (remaining <= max) return remaining;
+  const k = Math.ceil(remaining / max);
+  return Math.ceil(remaining / k);
+}
+
+function nextBatchSizeForMode(remaining, mode = "choice") {
+  return balancedBatchSize(remaining, batchSizeForMode(mode));
+}
+
+function beginHandwritingRemedial(reason = "hint") {
+  return {
+    stage: "remedial",
+    attempt: 1,
+    total: 3,
+    reason: reason === "selfCheck" ? "selfCheck" : "hint",
+  };
+}
+
+function advanceHandwritingRemedial(remedial) {
+  const total = Math.max(1, Number(remedial && remedial.total) || 3);
+  const attempt = Math.max(1, Number(remedial && remedial.attempt) || 1);
+  if (attempt >= total) return { ...remedial, stage: "done", attempt: total, total };
+  if (attempt === 2) return { ...remedial, stage: "review", attempt, total };
+  return { ...remedial, stage: "remedial", attempt: attempt + 1, total };
+}
+
+function continueHandwritingRemedialAfterReview(remedial) {
+  const total = Math.max(1, Number(remedial && remedial.total) || 3);
+  const attempt = Math.min(total, Math.max(1, Number(remedial && remedial.attempt) || 1) + 1);
+  return { ...remedial, stage: "remedial", attempt, total };
+}
+
+function shouldTraceHandwritingAttempt(remedial) {
+  return Number(remedial && remedial.attempt) === 1;
+}
+
+function shouldOfferHandwritingRemedialHint(remedial) {
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  return remedial && remedial.stage === "remedial" && attempt > 1;
+}
+
+function shouldTraceHandwritingRemedialHint(remedial, hintVisible = false) {
+  return shouldOfferHandwritingRemedialHint(remedial) && Boolean(hintVisible);
+}
+
+function handwritingRemedialPrompt(remedial) {
+  if (remedial && remedial.stage === "done") return "練完了，真棒";
+  if (remedial && remedial.stage === "review") return "很好，再看一下剛剛寫的字";
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  if (attempt === 2) return "很好，自己練習寫寫看";
+  if (attempt === 3) return "很好，再練習寫一次看看";
+  return "";
+}
+
+function shouldShowHandwritingRemedialComparison(remedial) {
+  if (remedial && remedial.stage === "done") return true;
+  return remedial && remedial.stage === "review";
+}
+
+function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
+  return {
+    stats: recordModeAnswer(stats, questionId, false, "handwriting"),
+    errorBank: addModeError(errorBank, questionId, unit, "handwriting"),
+  };
+}
+
+function shouldMasterErrorPracticeCorrect(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting";
+}
+
+function cleanStat(s) {
+  return {
+    practiced: Math.max(0, Number(s && s.practiced) || 0),
+    correct: Math.max(0, Number(s && s.correct) || 0),
+  };
+}
+
+function statsModesFromEntry(entry) {
+  const modes = {};
+  if (entry && typeof entry === "object" && entry.modes && typeof entry.modes === "object") {
+    for (const [mode, stat] of Object.entries(entry.modes)) {
+      modes[normalizePracticeMode(mode)] = cleanStat(stat);
+    }
+  } else if (entry && typeof entry === "object") {
+    modes.choice = cleanStat(entry);
+  }
+  return modes;
+}
+
+function getModeStat(stats, qId, mode = "choice") {
+  const modes = statsModesFromEntry((stats || {})[qId]);
+  return modes[normalizePracticeMode(mode)] || { practiced: 0, correct: 0 };
+}
+
+function hasModeStat(stats, qId, mode = "choice") {
+  const modes = statsModesFromEntry((stats || {})[qId]);
+  return Object.prototype.hasOwnProperty.call(modes, normalizePracticeMode(mode));
+}
+
+function recordModeAnswer(stats, qId, isCorrect, mode = "choice") {
+  const next = { ...(stats || {}) };
+  const modes = statsModesFromEntry(next[qId]);
+  const m = normalizePracticeMode(mode);
+  const cur = modes[m] || { practiced: 0, correct: 0 };
+  modes[m] = { practiced: cur.practiced + 1, correct: cur.correct + (isCorrect ? 1 : 0) };
+  next[qId] = { modes };
+  return next;
+}
+
+function recordsToModeStats(records, mode = "choice") {
+  let stats = {};
+  for (const r of records || []) {
+    if (r && r.questionId) stats = recordModeAnswer(stats, r.questionId, !!r.correct, mode);
+  }
+  return stats;
+}
+
+function modeWrongCount(stats, qId, mode = "choice") {
+  const s = getModeStat(stats, qId, mode);
+  return s.practiced - s.correct;
+}
+
+function errorEntryMode(e) {
+  return normalizePracticeMode(e && e.mode);
+}
+
+function unitMatchesFilter(unit, unitFilter) {
+  if (!unitFilter) return true;
+  if (Array.isArray(unitFilter)) return unitFilter.includes(unit);
+  return unit === unitFilter;
+}
+
+function filterModeErrorBank(errorBank, unitFilter = null, mode = "choice") {
+  const m = normalizePracticeMode(mode);
+  return (errorBank || []).filter(e => unitMatchesFilter(e.unit, unitFilter) && errorEntryMode(e) === m);
+}
+
+function addModeError(errorBank, qId, unit, mode = "choice") {
+  const bank = [...(errorBank || [])];
+  const m = normalizePracticeMode(mode);
+  if (!bank.some(e => e.questionId === qId && errorEntryMode(e) === m)) {
+    bank.push({ questionId: qId, unit, mode: m });
+  }
+  return bank;
+}
+
+function removeModeError(errorBank, qId, mode = "choice") {
+  const m = normalizePracticeMode(mode);
+  return (errorBank || []).filter(e => !(e.questionId === qId && errorEntryMode(e) === m));
+}
+
+function removeAllModeErrors(errorBank, qId) {
+  return (errorBank || []).filter(e => e.questionId !== qId);
+}
+
+function shouldKeepModeError(stats, entry, choiceWrongThreshold = 2) {
+  const mode = errorEntryMode(entry);
+  if (mode !== "choice") return true;
+  return !hasModeStat(stats, entry.questionId, mode) || modeWrongCount(stats, entry.questionId, mode) >= choiceWrongThreshold;
+}
+
+function shouldAddModeError(stats, qId, mode = "choice", choiceWrongThreshold = 2) {
+  const m = normalizePracticeMode(mode);
+  if (m !== "choice") return true;
+  return modeWrongCount(stats, qId, m) >= choiceWrongThreshold;
+}
+
+function masteredModesFromEntry(entry) {
+  const modes = {};
+  if (Array.isArray(entry)) {
+    modes.choice = [...new Set(entry)];
+  } else if (entry && typeof entry === "object" && entry.modes && typeof entry.modes === "object") {
+    for (const [mode, ids] of Object.entries(entry.modes)) {
+      if (Array.isArray(ids)) modes[normalizePracticeMode(mode)] = [...new Set(ids)];
+    }
+  }
+  return modes;
+}
+
+function masteredListForMode(mastered, unit, mode = "choice") {
+  const modes = masteredModesFromEntry((mastered || {})[String(unit)]);
+  return modes[normalizePracticeMode(mode)] || [];
+}
+
+function addModeMastered(mastered, unit, qId, mode = "choice") {
+  const next = { ...(mastered || {}) };
+  const u = String(unit);
+  const modes = masteredModesFromEntry(next[u]);
+  const m = normalizePracticeMode(mode);
+  if (!modes[m]) modes[m] = [];
+  if (!modes[m].includes(qId)) modes[m].push(qId);
+  next[u] = { modes };
+  return next;
+}
+
+function removeQuestionFromAllModeMastered(mastered, unit, qId) {
+  const next = { ...(mastered || {}) };
+  const u = String(unit);
+  const modes = masteredModesFromEntry(next[u]);
+  for (const m of Object.keys(modes)) modes[m] = modes[m].filter(id => id !== qId);
+  next[u] = { modes };
+  return next;
+}
+// </chinese-mode-pure>
 
 const Storage = {
   load() {
@@ -447,13 +759,7 @@ const Storage = {
       if (!raw) return;
       const old = JSON.parse(raw);
       const records = old.records || [];
-      const stats = {};
-      for (const r of records) {
-        if (!r.questionId) continue;
-        if (!stats[r.questionId]) stats[r.questionId] = { practiced: 0, correct: 0 };
-        stats[r.questionId].practiced++;
-        if (r.correct) stats[r.questionId].correct++;
-      }
+      const stats = recordsToModeStats(records, DEFAULT_PRACTICE_MODE);
       const v2 = { ...DEFAULT_DATA, stats };
       Storage.save(v2);
       localStorage.removeItem(OLD_KEY);
@@ -493,31 +799,25 @@ const State = {
   },
 
   // Stats（目前只寫不讀：保留每題作答記錄，供未來功能使用）
-  recordAnswer(qId, isCorrect) {
-    if (!state.stats[qId]) state.stats[qId] = { practiced: 0, correct: 0 };
-    state.stats[qId].practiced++;
-    if (isCorrect) state.stats[qId].correct++;
+  recordAnswer(qId, isCorrect, mode = DEFAULT_PRACTICE_MODE) {
+    state.stats = recordModeAnswer(state.stats, qId, isCorrect, mode);
     Storage.save(state);
   },
   // 累計答錯次數（practiced − correct）。用來判斷是否「錯夠多次」才進錯題庫。
-  wrongCount(qId) {
-    const s = state.stats[qId];
-    return s ? s.practiced - s.correct : 0;
+  wrongCount(qId, mode = DEFAULT_PRACTICE_MODE) {
+    return modeWrongCount(state.stats, qId, mode);
   },
 
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
-  getErrorBank(unitFilter) {
-    if (!unitFilter) return [...state.errorBank];
-    if (Array.isArray(unitFilter)) return state.errorBank.filter(e => unitFilter.includes(e.unit));
-    return state.errorBank.filter(e => e.unit === unitFilter);
+  getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
+    return filterModeErrorBank(state.errorBank, unitFilter, mode);
   },
-  addToErrorBank(qId, unit) {
-    if (state.errorBank.find(e => e.questionId === qId)) return; // dedup
-    state.errorBank.push({ questionId: qId, unit });
+  addToErrorBank(qId, unit, mode = DEFAULT_PRACTICE_MODE) {
+    state.errorBank = addModeError(state.errorBank, qId, unit, mode);
     Storage.save(state);
   },
-  removeFromErrorBank(qId) {
-    state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
+  removeFromErrorBank(qId, mode = DEFAULT_PRACTICE_MODE) {
+    state.errorBank = removeModeError(state.errorBank, qId, mode);
     Storage.save(state);
   },
 
@@ -533,9 +833,8 @@ const State = {
     state.flagged.push({ questionId: qId, unit, flaggedAt: Date.now() });
     // 題目本身有疑慮 → 該題的歷史作答記錄一律視為不可信，整筆清除
     delete state.stats[qId];
-    state.errorBank = state.errorBank.filter(e => e.questionId !== qId);
-    const u = String(unit);
-    if (state.mastered[u]) state.mastered[u] = state.mastered[u].filter(id => id !== qId);
+    state.errorBank = removeAllModeErrors(state.errorBank, qId);
+    state.mastered = removeQuestionFromAllModeMastered(state.mastered, unit, qId);
     Storage.save(state);
   },
   unflagQuestion(qId) {
@@ -568,36 +867,40 @@ const State = {
   },
 
   // ── Mastered（已答對題目，單一真相源；整單元與 subtopic 進度皆由此推導）
-  getMasteredSet(unit) {
-    return new Set(state.mastered[String(unit)] || []);
+  getMasteredSet(unit, mode = DEFAULT_PRACTICE_MODE) {
+    return new Set(masteredListForMode(state.mastered, unit, mode));
   },
-  addMastered(unit, qId) {
-    const u = String(unit);
-    if (!state.mastered[u]) state.mastered[u] = [];
-    if (!state.mastered[u].includes(qId)) state.mastered[u].push(qId);
+  addMastered(unit, qId, mode = DEFAULT_PRACTICE_MODE) {
+    state.mastered = addModeMastered(state.mastered, unit, qId, mode);
     Storage.save(state);
   },
-  resetMastered(unit, subtopic = null) {
+  resetMastered(unit, subtopic = null, mode = null) {
     const u = String(unit);
     if (!state.mastered[u]) return;
+    const modes = masteredModesFromEntry(state.mastered[u]);
+    const targetModes = mode ? [normalizePracticeMode(mode)] : Object.keys(modes);
+    if (targetModes.length === 0) return;
     if (subtopic) {
-      state.mastered[u] = state.mastered[u].filter(id => {
-        const q = questionMap.get(id);
-        return q && q.subtopic !== subtopic;
-      });
+      for (const m of targetModes) {
+        modes[m] = (modes[m] || []).filter(id => {
+          const q = questionMap.get(id);
+          return q && q.subtopic !== subtopic;
+        });
+      }
     } else {
-      state.mastered[u] = [];
+      for (const m of targetModes) modes[m] = [];
     }
+    state.mastered[u] = { modes };
     Storage.save(state);
   },
-  doneCount(unit, subtopic = null) {
-    const set = State.getMasteredSet(unit);
+  doneCount(unit, subtopic = null, mode = DEFAULT_PRACTICE_MODE) {
+    const set = State.getMasteredSet(unit, mode);
     return questionIdsFor(unit, subtopic).filter(id => set.has(id)).length;
   },
-  isCleared(unit, subtopic = null) {
+  isCleared(unit, subtopic = null, mode = DEFAULT_PRACTICE_MODE) {
     const ids = questionIdsFor(unit, subtopic);
     if (ids.length === 0) return false;
-    const set = State.getMasteredSet(unit);
+    const set = State.getMasteredSet(unit, mode);
     return ids.every(id => set.has(id));
   },
   // v2→v3 反推：每個 challenge queue 的「範圍題 \ queue」＝已答對（無損、與舊顯示等價）
@@ -609,12 +912,8 @@ const State = {
       const subtopic = slash === -1 ? null : key.slice(slash + 1);
       if (!unit) continue;
       const remaining = new Set(ch.queue);
-      const u = String(unit);
-      if (!state.mastered[u]) state.mastered[u] = [];
       for (const id of questionIdsFor(unit, subtopic)) {
-        if (!remaining.has(id) && !state.mastered[u].includes(id)) {
-          state.mastered[u].push(id);
-        }
+        if (!remaining.has(id)) state.mastered = addModeMastered(state.mastered, unit, id, DEFAULT_PRACTICE_MODE);
       }
     }
     delete state._needMasteredBackfill;
@@ -622,9 +921,9 @@ const State = {
   }
 };
 
-// challenge 複合鍵：subtopic 練習用 "unit/subtopic"，整單元用 "unit"
-function challengeKey(unit, subtopic) {
-  return subtopic ? `${unit}/${subtopic}` : String(unit);
+// challenge 複合鍵：choice 沿用舊鍵；handwriting 用前綴，避免批次狀態互撞
+function challengeKey(unit, subtopic, mode = DEFAULT_PRACTICE_MODE) {
+  return modeChallengeKey(unit, subtopic, mode);
 }
 
 // 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
@@ -648,6 +947,7 @@ const unitToSubject = new Map();       // unit → subject
 
 const quiz = {
   mode: null,    // "full" | "error"
+  practiceMode: DEFAULT_PRACTICE_MODE, // "choice" | "handwriting"
   unit: null,    // full: 單元數字；error: 單元陣列
   subtopic: null,// full 限定的 subtopic（null=整單元）
   queue: [],     // question ids（本批工作佇列，答錯會 recycle 到尾巴）
@@ -658,7 +958,13 @@ const quiz = {
   activeQuestionId: null,
   chineseStage: "find",
   chinesePickedIndex: null,
-  chineseChoices: null
+  chineseChoices: null,
+  handwritingDataUrl: null,
+  handwritingRemedialDataUrl: null,
+  handwritingRemedial: null,
+  handwritingRemedialQuestionId: null,
+  handwritingRemedialAdvancedFor: null,
+  handwritingRemedialHintVisible: false
 };
 
 // ════════════════════════════════════════════════════
@@ -676,10 +982,7 @@ function shuffle(arr) {
 // 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
 // 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
 function nextBatchSize(remaining, max = 10) {
-  if (remaining <= 0) return 0;
-  if (remaining <= max) return remaining;
-  const k = Math.ceil(remaining / max);
-  return Math.ceil(remaining / k);
+  return balancedBatchSize(remaining, max);
 }
 
 function showPage(id) {
@@ -694,6 +997,12 @@ function resetQuestionRuntime() {
   quiz.chineseStage = "find";
   quiz.chinesePickedIndex = null;
   quiz.chineseChoices = null;
+  quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
+  quiz.handwritingRemedial = null;
+  quiz.handwritingRemedialQuestionId = null;
+  quiz.handwritingRemedialAdvancedFor = null;
+  quiz.handwritingRemedialHintVisible = false;
 }
 
 // ════════════════════════════════════════════════════
@@ -773,21 +1082,21 @@ function playSound(name) {
 // ════════════════════════════════════════════════════
 const Picker = {
   // 全部練習：取一「批」（上限 10）。有未完成半批則接續，否則從剩餘未答對題現算新批。
-  nextBatch(unit, subtopic) {
-    const mastered = State.getMasteredSet(unit);
+  nextBatch(unit, subtopic, practiceMode = DEFAULT_PRACTICE_MODE) {
+    const mastered = State.getMasteredSet(unit, practiceMode);
     // 剩餘未答對題（整單元/subtopic 題 − mastered；flagged 已由 questionIdsFor 排除）
     const remaining = questionIdsFor(unit, subtopic).filter(id => !mastered.has(id) && questionMap.has(id));
-    const saved = State.getBatch(challengeKey(unit, subtopic)); // 半批 ids 或 null
+    const saved = State.getBatch(challengeKey(unit, subtopic, practiceMode)); // 半批 ids 或 null
     if (saved && saved.length) {
       const cont = saved.filter(id => remaining.includes(id));  // 仍未答對且仍在題庫
       if (cont.length) return cont;                             // 接續半批（中途被打斷）
     }
     const shuffled = shuffle(remaining);
-    return shuffled.slice(0, nextBatchSize(shuffled.length));   // 開新批
+    return shuffled.slice(0, nextBatchSizeForMode(shuffled.length, practiceMode));   // 開新批
   },
 
-  forErrorPractice(unitFilter) {
-    const errors = State.getErrorBank(unitFilter || null);
+  forErrorPractice(unitFilter, practiceMode = DEFAULT_PRACTICE_MODE) {
+    const errors = State.getErrorBank(unitFilter || null, practiceMode);
     const ids = errors.map(e => e.questionId).filter(id => questionMap.has(id));
     return shuffle(ids);
   }
@@ -796,8 +1105,9 @@ const Picker = {
 // ════════════════════════════════════════════════════
 // Quiz Engine
 // ════════════════════════════════════════════════════
-function startQuiz(mode, unit, subtopic = null) {
+function startQuiz(mode, unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) {
   quiz.mode = mode;
+  quiz.practiceMode = normalizePracticeMode(practiceMode);
   quiz.unit = unit;
   quiz.subtopic = subtopic;
   quiz.answered = [];
@@ -805,12 +1115,12 @@ function startQuiz(mode, unit, subtopic = null) {
   resetQuestionRuntime();
 
   if (mode === "full") {
-    quiz.queue = Picker.nextBatch(unit, subtopic);
+    quiz.queue = Picker.nextBatch(unit, subtopic, quiz.practiceMode);
     quiz.batchIds = [...new Set(quiz.queue)];                       // 本批相異題（進度條分母）
     quiz.totalForProgress = questionIdsFor(unit, subtopic).length;  // 整單元數（僅防禦用）
-    State.saveBatch(challengeKey(unit, subtopic), quiz.queue);
+    State.saveBatch(challengeKey(unit, subtopic, quiz.practiceMode), quiz.queue);
   } else if (mode === "error") {
-    quiz.queue = Picker.forErrorPractice(unit);
+    quiz.queue = Picker.forErrorPractice(unit, quiz.practiceMode);
     quiz.totalForProgress = quiz.queue.length;
   }
 
@@ -821,6 +1131,13 @@ function startQuiz(mode, unit, subtopic = null) {
 function getCurrentQuestion() {
   // full & error: always queue[0]
   return questionMap.get(quiz.queue[0]);
+}
+
+function getDisplayQuestion() {
+  if ((quiz.chineseStage === "remedial" || quiz.chineseStage === "remedialReview" || quiz.chineseStage === "remedialDone") && quiz.handwritingRemedialQuestionId) {
+    return questionMap.get(quiz.handwritingRemedialQuestionId) || getCurrentQuestion();
+  }
+  return getCurrentQuestion();
 }
 
 function submitAnswer(selected) {
@@ -839,24 +1156,27 @@ function submitAnswer(selected) {
   }
 
   // Update stats (all modes)
-  State.recordAnswer(q.id, correct);
+  State.recordAnswer(q.id, correct, quiz.practiceMode);
 
   // Mode-specific queue logic
   if (quiz.mode === "full") {
     quiz.queue.shift();
     if (correct) {
-      State.addMastered(quiz.unit, q.id); // 雙向共享：整單元與 subtopic 進度同步計入
+      State.addMastered(quiz.unit, q.id, quiz.practiceMode); // 雙向共享：整單元與 subtopic 進度同步計入
     } else {
       quiz.queue.push(q.id);
       // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
       // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，wrongCount 已含本次。
-      if (State.wrongCount(q.id) >= 2) State.addToErrorBank(q.id, q.unit);
+      if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
     }
-    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
   } else if (quiz.mode === "error") {
     quiz.queue.shift();
     if (correct) {
-      State.removeFromErrorBank(q.id);
+      State.removeFromErrorBank(q.id, quiz.practiceMode);
+      if (shouldMasterErrorPracticeCorrect(quiz.practiceMode)) {
+        State.addMastered(q.unit, q.id, quiz.practiceMode);
+      }
     } else {
       quiz.queue.push(q.id);
     }
@@ -886,8 +1206,8 @@ function advance() {
 // 本批做完：先判整單元清空（→「通關！」），否則進「批間畫面」。
 // 順序不可反——整單元 ≤10 題只一批時，答完要直接通關、不出現批間畫面。
 function finishBatch() {
-  State.clearBatch(challengeKey(quiz.unit, quiz.subtopic));
-  if (State.isCleared(quiz.unit, quiz.subtopic)) renderSummary();
+  State.clearBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode));
+  if (State.isCleared(quiz.unit, quiz.subtopic, quiz.practiceMode)) renderSummary();
   else renderBatchBreak();
 }
 
@@ -898,7 +1218,7 @@ function skipCurrentQuestion() {
   const id = quiz.queue[0];
   quiz.queue.shift();
   quiz.batchIds = quiz.batchIds.filter(x => x !== id); // 本批分母 −1；被跳過題之後別批會再出現
-  State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+  State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
   resetQuestionRuntime();
   if (quiz.queue.length === 0) { finishBatch(); return; }
   renderQuiz();
@@ -921,7 +1241,7 @@ function flagCurrentQuestion() {
   if (quiz.mode === "full") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
     quiz.batchIds = quiz.batchIds.filter(id => id !== q.id); // 本批分母 −1；該題永久排除於所有題池
-    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic), quiz.queue);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
     if (quiz.queue.length === 0) { finishBatch(); return; }
   } else if (quiz.mode === "error") {
     quiz.queue = quiz.queue.filter(id => id !== q.id);
@@ -1035,7 +1355,7 @@ function renderSubtopics(u) {
   for (const st of u.subtopics) {
     const count = questionIdsFor(u.id, st).length;
     if (count === 0) continue;  // 該 subtopic 無題則不顯示
-    const done = State.doneCount(u.id, st);
+    const done = State.doneCount(u.id, st, DEFAULT_PRACTICE_MODE);
     let statusHtml = `<span class="st-count">${count} 題</span>`;
     if (done >= count) {
       statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
@@ -1051,6 +1371,29 @@ function renderSubtopics(u) {
       </div>`;
   }
   return rows ? `<div class="subtopic-list"><div class="subtopic-head">依概念練習</div>${rows}</div>` : "";
+}
+
+// 國語單元某模式（choice/handwriting）的首頁狀態文字（已通關／接續／題數）
+function chineseModeStatus(unit, total, mode) {
+  const done = State.doneCount(unit, null, mode);
+  if (done >= total) return '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+  if (done > 0) return `<span class="st-count">接續 ${done}/${total}</span>`;
+  return `<span class="st-count">${total} 題</span>`;
+}
+
+function renderErrorModeButtons(visibleUnits, mode, label) {
+  const semUnitIds = visibleUnits.map(u => u.id);
+  const semErrors = State.getErrorBank(semUnitIds, mode);
+  if (semErrors.length === 0) return "";  // 該模式整科無錯題則整段不渲染（避免空的灰按鈕雜訊）
+  const idsAttr = semUnitIds.join(",");
+  let html = `<div class="subtopic-list"><div class="subtopic-head">${label}</div>`;
+  html += `<button class="sub-btn" ${semErrors.length === 0 ? 'disabled' : ''} onclick="window._startError('${idsAttr}', '${mode}')">本學期全部${label}<span class="badge">${semErrors.length}</span></button>`;
+  for (const u of visibleUnits) {
+    const errU = State.getErrorBank(u.id, mode);
+    html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}', '${mode}')">第 ${unitNum(u.id)} 單元${label}<span class="badge">${errU.length}</span></button>`;
+  }
+  html += "</div>";
+  return html;
 }
 
 function renderHome() {
@@ -1086,8 +1429,8 @@ function renderHome() {
   }
   for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
-    const done = State.doneCount(u.id);
-    const isCleared = State.isCleared(u.id);
+    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
+    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
     let fullStatus, fullLabel;
 
     if (isCleared) {
@@ -1104,6 +1447,32 @@ function renderHome() {
       fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
 
+    if (subjKey === "chinese") {
+      const choiceStatus = chineseModeStatus(u.id, totalInUnit, DEFAULT_PRACTICE_MODE);
+      const handwritingStatus = chineseModeStatus(u.id, totalInUnit, HANDWRITING_PRACTICE_MODE);
+      const choiceCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
+      const handwritingCleared = State.isCleared(u.id, null, HANDWRITING_PRACTICE_MODE);
+      html += `
+        <div class="unit-section">
+          <div class="unit-title">${u.name}</div>
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：選擇${choiceStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id})">練習</button>
+            </span>
+          </div>
+          ${choiceCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${DEFAULT_PRACTICE_MODE}')">重置選擇進度</button>` : ''}
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：手寫${handwritingStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">練習</button>
+            </span>
+          </div>
+          ${handwritingCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">重置手寫進度</button>` : ''}
+        </div>`;
+      continue;
+    }
+
     html += `
       <div class="unit-section">
         <div class="unit-title">${u.name}</div>
@@ -1116,17 +1485,22 @@ function renderHome() {
   // Error section（限本科目本學期範圍；整科無題時不顯示）
   if (visibleUnits.length > 0) {
     const semUnitIds = visibleUnits.map(u => u.id);
-    const semErrors = State.getErrorBank(semUnitIds);
+    const choiceErrors = State.getErrorBank(semUnitIds, DEFAULT_PRACTICE_MODE);
+    const handwritingErrors = State.getErrorBank(semUnitIds, HANDWRITING_PRACTICE_MODE);
+    const semErrors = subjKey === "chinese" ? [...choiceErrors, ...handwritingErrors] : choiceErrors;
 
     html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
 
     if (semErrors.length === 0) {
       html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
+    } else if (subjKey === "chinese") {
+      html += renderErrorModeButtons(visibleUnits, DEFAULT_PRACTICE_MODE, "選擇錯題");
+      html += renderErrorModeButtons(visibleUnits, HANDWRITING_PRACTICE_MODE, "手寫錯題");
     } else {
       const idsAttr = semUnitIds.join(",");
       html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
       for (const u of visibleUnits) {
-        const errU = State.getErrorBank(u.id);
+        const errU = State.getErrorBank(u.id, DEFAULT_PRACTICE_MODE);
         html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${unitNum(u.id)} 單元錯題<span class="badge">${errU.length}</span></button>`;
       }
     }
@@ -1140,17 +1514,18 @@ function renderHome() {
 }
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
-window._startFull = (unit, subtopic = null) => {
-  if (State.isCleared(unit, subtopic)) {
+window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  if (State.isCleared(unit, subtopic, mode)) {
     // 已通關，重置再開始
-    State.resetMastered(unit, subtopic);
-    State.resetChallenge(challengeKey(unit, subtopic));
+    State.resetMastered(unit, subtopic, mode);
+    State.resetChallenge(challengeKey(unit, subtopic, mode));
   }
-  startQuiz("full", unit, subtopic);
+  startQuiz("full", unit, subtopic, mode);
 };
-window._startError = (idsStr) => {
+window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
-  startQuiz("error", units);
+  startQuiz("error", units, null, normalizePracticeMode(practiceMode));
 };
 window._setSemester = (s) => {
   State.setSemester(s);
@@ -1160,9 +1535,10 @@ window._setSubject = (s) => {
   State.setSubject(s);
   renderHome();
 };
-window._resetChallenge = (unit, subtopic = null) => {
-  State.resetMastered(unit, subtopic);
-  State.resetChallenge(challengeKey(unit, subtopic));
+window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  State.resetMastered(unit, subtopic, mode);
+  State.resetChallenge(challengeKey(unit, subtopic, mode));
   renderHome();
 };
 window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
@@ -1485,12 +1861,21 @@ function isCjkChar(ch) {
   return /^[\u3400-\u9fff\uf900-\ufaff]$/.test(ch);
 }
 
+function correctedChineseText(q) {
+  const chars = [...q.text];
+  if (quiz.chinesePickedIndex !== null && chars[quiz.chinesePickedIndex] === q.wrong) {
+    chars[quiz.chinesePickedIndex] = q.answer;
+    return chars.join("");
+  }
+  return q.text.replace(q.wrong, q.answer);
+}
+
 function renderChineseSentence(q) {
   const interactive = quiz.chineseStage === "find";
   return `<div class="chinese-sentence">${[...q.text].map((ch, i) => {
     if (isCjkChar(ch)) {
       const cls = ["chinese-char"];
-      if (quiz.chineseStage === "choose" && i === quiz.chinesePickedIndex) cls.push("picked");
+      if (quiz.chineseStage !== "find" && i === quiz.chinesePickedIndex) cls.push("picked");
       return `<button type="button" class="${cls.join(" ")}" data-idx="${i}" data-char="${escapeHtml(ch)}"${interactive ? "" : " disabled"}>${escapeHtml(ch)}</button>`;
     }
     if (/\s/.test(ch)) return " ";
@@ -1498,11 +1883,298 @@ function renderChineseSentence(q) {
   }).join("")}</div>`;
 }
 
+function handwritingPanelHtml(options = {}) {
+  const panelClass = ["handwriting-panel", options.panelClass].filter(Boolean).join(" ");
+  const trace = options.traceChar
+    ? `<div class="handwriting-trace">${escapeHtml(options.traceChar)}</div>`
+    : "";
+  const title = options.title
+    ? `<div class="handwriting-remedial-note">${escapeHtml(options.title)}</div>`
+    : "";
+  const message = options.message
+    ? `<div class="handwriting-remedial-message">${escapeHtml(options.message)}</div>`
+    : "";
+  const hintButton = options.showHint
+    ? `<button class="st-btn" id="handwriting-help"${typeof options.hintPressed === "boolean" ? ` aria-pressed="${options.hintPressed ? "true" : "false"}"` : ""}>${escapeHtml(options.hintLabel || "看提示")}</button>`
+    : "";
+  return `
+    <div class="${panelClass}">
+      ${title}
+      ${message}
+      ${options.comparisonHtml || ""}
+      <div class="handwriting-board-wrap">
+        ${trace}
+        <canvas class="handwriting-board" id="handwriting-board" aria-label="手寫區"></canvas>
+      </div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-clear">清除</button>
+        ${hintButton}
+        <button class="st-btn" id="handwriting-done">我寫好了</button>
+      </div>
+    </div>`;
+}
+
+function handwritingComparisonHtml(q, dataUrl, extraClass = "") {
+  const img = dataUrl
+    ? `<img class="handwriting-capture" src="${dataUrl}" alt="你寫的字">`
+    : `<div class="handwriting-capture" aria-label="你寫的字"></div>`;
+  return `
+    <div class="handwriting-self-check ${extraClass}">
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">你寫的</div>
+        ${img}
+      </div>
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">正確字</div>
+        <div class="handwriting-correct-char">${escapeHtml(q.answer)}</div>
+      </div>
+    </div>`;
+}
+
+function handwritingSelfCheckHtml(q) {
+  return `
+    ${handwritingComparisonHtml(q, quiz.handwritingDataUrl)}
+    <div class="handwriting-correct-sentence">${escapeHtml(correctedChineseText(q))}</div>
+    <div class="handwriting-actions">
+      <button class="st-btn" id="handwriting-needs-practice">不太會寫</button>
+      <button class="st-btn" id="handwriting-correct">我寫對了</button>
+    </div>`;
+}
+
+function handwritingRemedialHtml(q) {
+  const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
+  const canShowHint = shouldOfferHandwritingRemedialHint(remedial);
+  const shouldTrace = shouldTraceHandwritingAttempt(remedial) || shouldTraceHandwritingRemedialHint(remedial, quiz.handwritingRemedialHintVisible);
+  const traceChar = shouldTrace ? q.answer : null;
+  return handwritingPanelHtml({
+    title: `練習 ${remedial.attempt} / ${remedial.total}`,
+    message: handwritingRemedialPrompt(remedial),
+    panelClass: "remedial",
+    traceChar,
+    showHint: canShowHint,
+    hintLabel: quiz.handwritingRemedialHintVisible ? "收起提示" : "提示",
+    hintPressed: quiz.handwritingRemedialHintVisible,
+  });
+}
+
+function handwritingRemedialReviewHtml(q) {
+  return `
+    <div class="handwriting-panel remedial">
+      <div class="handwriting-remedial-message">${escapeHtml(handwritingRemedialPrompt(quiz.handwritingRemedial))}</div>
+      ${handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")}
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-remedial-continue">很好，讓我們再練習寫一次</button>
+      </div>
+    </div>`;
+}
+
+function handwritingRemedialDoneHtml(q) {
+  return `
+    <div class="handwriting-panel remedial">
+      ${handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")}
+      <div class="handwriting-done-message">${escapeHtml(handwritingRemedialPrompt(quiz.handwritingRemedial))}</div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-remedial-next">下一題</button>
+      </div>
+    </div>`;
+}
+
+function setupHandwritingCanvas(canvas, onDone) {
+  const wrap = canvas.parentElement;
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  const resize = () => {
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.round(rect.width * scale));
+    canvas.height = Math.max(1, Math.round(rect.height * scale));
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.lineWidth = 9;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#172033";
+  };
+
+  const point = (ev) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+  };
+
+  const start = (ev) => {
+    if (quiz.isAnswered) return;
+    drawing = true;
+    canvas.setPointerCapture(ev.pointerId);
+    const p = point(ev);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ev.preventDefault();
+  };
+  const move = (ev) => {
+    if (!drawing || quiz.isAnswered) return;
+    const p = point(ev);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ev.preventDefault();
+  };
+  const end = (ev) => {
+    if (!drawing) return;
+    drawing = false;
+    try { canvas.releasePointerCapture(ev.pointerId); } catch {}
+    ev.preventDefault();
+  };
+
+  resize();
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  canvas.addEventListener("pointerup", end);
+  canvas.addEventListener("pointercancel", end);
+  document.getElementById("handwriting-clear").onclick = () => {
+    if (quiz.isAnswered) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+  document.getElementById("handwriting-done").onclick = () => {
+    if (quiz.isAnswered) return;
+    const dataUrl = canvas.toDataURL("image/png");
+    if (typeof onDone === "function") {
+      onDone(dataUrl);
+      return;
+    }
+    quiz.handwritingDataUrl = dataUrl;
+    quiz.chineseStage = "selfCheck";
+    renderQuiz();
+  };
+}
+
+function bindHandwritingSelfCheck(q) {
+  const btn = document.getElementById("handwriting-correct");
+  if (btn) btn.onclick = () => submitAnswer(q.answer);
+  const needsPractice = document.getElementById("handwriting-needs-practice");
+  if (needsPractice) needsPractice.onclick = () => startHandwritingRemedial(q, "selfCheck");
+}
+
+function startHandwritingRemedial(q, reason = "hint") {
+  const recorded = recordHandwritingHelpMistake(state.stats, state.errorBank, q.id, q.unit);
+  state.stats = recorded.stats;
+  state.errorBank = recorded.errorBank;
+  Storage.save(state);
+  quiz.handwritingRemedial = beginHandwritingRemedial(reason);
+  quiz.handwritingRemedialQuestionId = q.id;
+  quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
+  quiz.handwritingRemedialHintVisible = false;
+  quiz.chineseStage = "remedial";
+  renderQuiz();
+}
+
+function finishHandwritingRemedialQuestion(q) {
+  if (quiz.handwritingRemedialAdvancedFor === q.id) return;
+  if (quiz.mode === "full" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+  } else if (quiz.mode === "error" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+  }
+  quiz.answered.push({ questionId: q.id, correct: false });
+  quiz.handwritingRemedialAdvancedFor = q.id;
+}
+
+function completeHandwritingRemedialAttempt(q, dataUrl) {
+  quiz.handwritingRemedialDataUrl = dataUrl || null;
+  quiz.handwritingRemedialHintVisible = false;
+  const next = advanceHandwritingRemedial(quiz.handwritingRemedial);
+  quiz.handwritingRemedial = next;
+  if (next.stage === "done") {
+    quiz.chineseStage = "remedialDone";
+  } else if (next.stage === "review") {
+    quiz.chineseStage = "remedialReview";
+  }
+  renderQuiz();
+}
+
+function bindHandwritingRemedialDone(q) {
+  const btn = document.getElementById("handwriting-remedial-next");
+  if (btn) btn.onclick = () => {
+    finishHandwritingRemedialQuestion(q);
+    advance();
+  };
+}
+
+function bindHandwritingRemedialReview() {
+  const btn = document.getElementById("handwriting-remedial-continue");
+  if (btn) btn.onclick = () => {
+    quiz.handwritingRemedial = continueHandwritingRemedialAfterReview(quiz.handwritingRemedial);
+    quiz.handwritingRemedialDataUrl = null;
+    quiz.handwritingRemedialHintVisible = false;
+    quiz.chineseStage = "remedial";
+    renderQuiz();
+  };
+}
+
+function toggleHandwritingRemedialHint(q) {
+  quiz.handwritingRemedialHintVisible = !quiz.handwritingRemedialHintVisible;
+  const btn = document.getElementById("handwriting-help");
+  if (btn) {
+    btn.textContent = quiz.handwritingRemedialHintVisible ? "收起提示" : "提示";
+    btn.setAttribute("aria-pressed", quiz.handwritingRemedialHintVisible ? "true" : "false");
+  }
+  const wrap = document.querySelector(".handwriting-board-wrap");
+  if (!wrap) return;
+  let trace = wrap.querySelector(".handwriting-trace");
+  if (quiz.handwritingRemedialHintVisible) {
+    if (!trace) {
+      trace = document.createElement("div");
+      trace.className = "handwriting-trace";
+      const canvas = wrap.querySelector(".handwriting-board");
+      wrap.insertBefore(trace, canvas || null);
+    }
+    trace.textContent = q.answer;
+  } else if (trace) {
+    trace.remove();
+  }
+}
+
 function bindChineseEvents(q) {
   if (quiz.chineseStage === "choose") {
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.onclick = () => submitAnswer(btn.dataset.value);
     });
+    return;
+  }
+  if (quiz.chineseStage === "write") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) {
+      setupHandwritingCanvas(canvas, (dataUrl) => {
+        quiz.handwritingDataUrl = dataUrl;
+        quiz.chineseStage = "selfCheck";
+        renderQuiz();
+      });
+    }
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => startHandwritingRemedial(q, "hint");
+    return;
+  }
+  if (quiz.chineseStage === "selfCheck") {
+    bindHandwritingSelfCheck(q);
+    return;
+  }
+  if (quiz.chineseStage === "remedial") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) setupHandwritingCanvas(canvas, (dataUrl) => completeHandwritingRemedialAttempt(q, dataUrl));
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => toggleHandwritingRemedialHint(q);
+    return;
+  }
+  if (quiz.chineseStage === "remedialReview") {
+    bindHandwritingRemedialReview();
+    return;
+  }
+  if (quiz.chineseStage === "remedialDone") {
+    bindHandwritingRemedialDone(q);
     return;
   }
 
@@ -1513,9 +2185,14 @@ function bindChineseEvents(q) {
       const idx = Number(btn.dataset.idx);
       const ch = btn.dataset.char;
       if (ch === q.wrong) {
-        quiz.chineseStage = "choose";
         quiz.chinesePickedIndex = idx;
-        quiz.chineseChoices = shuffle(q.choices || []);
+        if (quiz.practiceMode === HANDWRITING_PRACTICE_MODE) {
+          quiz.chineseStage = "write";
+          quiz.chineseChoices = null;
+        } else {
+          quiz.chineseStage = "choose";
+          quiz.chineseChoices = shuffle(q.choices || []);
+        }
         renderQuiz();
         return;
       }
@@ -1531,7 +2208,7 @@ function bindChineseEvents(q) {
 }
 
 function renderQuiz() {
-  const q = getCurrentQuestion();
+  const q = getDisplayQuestion();
   if (!q) { leaveQuiz(); return; }
 
   if (quiz.activeQuestionId !== q.id) {
@@ -1539,6 +2216,12 @@ function renderQuiz() {
     quiz.chineseStage = "find";
     quiz.chinesePickedIndex = null;
     quiz.chineseChoices = null;
+    quiz.handwritingDataUrl = null;
+    quiz.handwritingRemedialDataUrl = null;
+    quiz.handwritingRemedial = null;
+    quiz.handwritingRemedialQuestionId = null;
+    quiz.handwritingRemedialAdvancedFor = null;
+    quiz.handwritingRemedialHintVisible = false;
   }
 
   // Mode label
@@ -1564,7 +2247,7 @@ function renderQuiz() {
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
-  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.chineseStage === "choose" ? "改錯字：選正確字" : "改錯字"; }
+  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
@@ -1591,6 +2274,16 @@ function renderQuiz() {
         </button>`
       ).join("");
       answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
+    } else if (quiz.chineseStage === "write") {
+      answerHtml = handwritingPanelHtml({ showHint: true });
+    } else if (quiz.chineseStage === "selfCheck") {
+      answerHtml = handwritingSelfCheckHtml(q);
+    } else if (quiz.chineseStage === "remedial") {
+      answerHtml = handwritingRemedialHtml(q);
+    } else if (quiz.chineseStage === "remedialReview") {
+      answerHtml = handwritingRemedialReviewHtml(q);
+    } else if (quiz.chineseStage === "remedialDone") {
+      answerHtml = handwritingRemedialDoneHtml(q);
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
@@ -1644,6 +2337,8 @@ function renderQuiz() {
     answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
   }
 
+  const showSkip = quiz.mode === "full" && !(isChinese && quiz.practiceMode === HANDWRITING_PRACTICE_MODE && quiz.chineseStage !== "find");
+
   document.getElementById("page-quiz").innerHTML = `
     <div class="quiz-header">
       <button class="leave-btn" id="btn-leave">&larr; 離開</button>
@@ -1666,7 +2361,7 @@ function renderQuiz() {
           <button class="flag-no" id="flag-no">取消</button>
         </span>
       </div>
-      ${quiz.mode === "full" ? `
+      ${showSkip ? `
       <div class="skip-area" id="skip-area">
         <button class="skip-btn" id="skip-btn">先跳過這題</button>
       </div>` : ""}
@@ -1990,7 +2685,7 @@ function renderBarProgress() {
   let done, total, label;
   if (quiz.mode === "full") {
     // 本批進度：分母＝本批相異題、分子＝其中已 mastered（答對）數（不沿用整單元 doneCount）
-    const set = State.getMasteredSet(quiz.unit);
+    const set = State.getMasteredSet(quiz.unit, quiz.practiceMode);
     total = quiz.batchIds.length;
     done = quiz.batchIds.filter(id => set.has(id)).length;
     label = `已答對 ${done} / ${total} 題`;
@@ -2227,9 +2922,10 @@ window._revealReward = (el) => {
 // ════════════════════════════════════════════════════
 function renderBatchBreak() {
   const unitTotal = questionIdsFor(quiz.unit, quiz.subtopic).length;
-  const unitDone = State.doneCount(quiz.unit, quiz.subtopic);
-  const nextN = nextBatchSize(unitTotal - unitDone); // 下一批實際題數（依當下剩餘現算）
+  const unitDone = State.doneCount(quiz.unit, quiz.subtopic, quiz.practiceMode);
+  const nextN = nextBatchSizeForMode(unitTotal - unitDone, quiz.practiceMode); // 下一批實際題數（依當下剩餘現算）
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
   const reward = pickReward("batch", quiz.unit);   // 看這批主力 subtopic 抽圖（缺則 roll-up/null）
   preloadThen(reward, () => {
     document.getElementById("page-summary").innerHTML = `
@@ -2237,7 +2933,7 @@ function renderBatchBreak() {
       ${rewardRevealHtml(reward)}
       <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
       <div style="margin-top:24px">
-        <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg})">再做 ${nextN} 題</button>
+        <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg}, ${modeArg})">再做 ${nextN} 題</button>
         <button class="summary-btn" onclick="window._goHome()">離開</button>
       </div>`;
     showPage("page-summary");
@@ -2264,10 +2960,11 @@ function renderSummary() {
   }
 
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
   let buttonsHtml = "";
   if (quiz.mode === "full") {
     buttonsHtml = `
-      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg})">重新挑戰</button>
+      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg}, ${modeArg})">重新挑戰</button>
       <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
   } else {
     buttonsHtml = `
@@ -2289,10 +2986,11 @@ function renderSummary() {
 }
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
-window._resetAndStartFull = (unit, subtopic = null) => {
-  State.resetMastered(unit, subtopic);
-  State.resetChallenge(challengeKey(unit, subtopic));
-  startQuiz("full", unit, subtopic);
+window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  State.resetMastered(unit, subtopic, mode);
+  State.resetChallenge(challengeKey(unit, subtopic, mode));
+  startQuiz("full", unit, subtopic, mode);
 };
 
 // ════════════════════════════════════════════════════
@@ -2339,8 +3037,7 @@ async function init() {
     state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
     // 對齊「錯 ≥ 2 次才進錯題庫」新規則：清掉舊版只錯一次（且已答對過）就被收進去的題。
     // 保守起見只在有作答統計可判斷時才清；無 stats 者保留不動。
-    state.errorBank = state.errorBank.filter(e =>
-      !state.stats[e.questionId] || State.wrongCount(e.questionId) >= 2);
+    state.errorBank = state.errorBank.filter(e => shouldKeepModeError(state.stats, e));
     Storage.save(state);
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
