@@ -568,8 +568,13 @@ function continueHandwritingRemedialAfterReview(remedial) {
   return { ...remedial, stage: "remedial", attempt, total };
 }
 
-function shouldTraceHandwritingAttempt(remedial) {
-  return Number(remedial && remedial.attempt) === 1;
+function shouldTraceHandwritingAttempt(remedial, hintVisible = false) {
+  return Number(remedial && remedial.attempt) === 1 || Boolean(hintVisible);
+}
+
+function shouldOfferHandwritingRemedialHint(remedial) {
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  return remedial && remedial.stage === "remedial" && attempt > 1;
 }
 
 function handwritingRemedialPrompt(remedial) {
@@ -954,7 +959,8 @@ const quiz = {
   handwritingRemedialDataUrl: null,
   handwritingRemedial: null,
   handwritingRemedialQuestionId: null,
-  handwritingRemedialAdvancedFor: null
+  handwritingRemedialAdvancedFor: null,
+  handwritingRemedialHintVisible: false
 };
 
 // ════════════════════════════════════════════════════
@@ -992,6 +998,7 @@ function resetQuestionRuntime() {
   quiz.handwritingRemedial = null;
   quiz.handwritingRemedialQuestionId = null;
   quiz.handwritingRemedialAdvancedFor = null;
+  quiz.handwritingRemedialHintVisible = false;
 }
 
 // ════════════════════════════════════════════════════
@@ -1886,7 +1893,7 @@ function handwritingPanelHtml(options = {}) {
     ? `<div class="handwriting-remedial-message">${escapeHtml(options.message)}</div>`
     : "";
   const hintButton = options.showHint
-    ? '<button class="st-btn" id="handwriting-help">看提示</button>'
+    ? `<button class="st-btn" id="handwriting-help"${typeof options.hintPressed === "boolean" ? ` aria-pressed="${options.hintPressed ? "true" : "false"}"` : ""}>${escapeHtml(options.hintLabel || "看提示")}</button>`
     : "";
   return `
     <div class="${panelClass}">
@@ -1934,12 +1941,16 @@ function handwritingSelfCheckHtml(q) {
 
 function handwritingRemedialHtml(q) {
   const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
-  const traceChar = shouldTraceHandwritingAttempt(remedial) ? q.answer : null;
+  const canShowHint = shouldOfferHandwritingRemedialHint(remedial);
+  const traceChar = shouldTraceHandwritingAttempt(remedial, quiz.handwritingRemedialHintVisible) ? q.answer : null;
   return handwritingPanelHtml({
     title: `練習 ${remedial.attempt} / ${remedial.total}`,
     message: handwritingRemedialPrompt(remedial),
     panelClass: "remedial",
     traceChar,
+    showHint: canShowHint,
+    hintLabel: quiz.handwritingRemedialHintVisible ? "收起提示" : "提示",
+    hintPressed: quiz.handwritingRemedialHintVisible,
   });
 }
 
@@ -2050,6 +2061,7 @@ function startHandwritingRemedial(q, reason = "hint") {
   quiz.handwritingRemedialQuestionId = q.id;
   quiz.handwritingDataUrl = null;
   quiz.handwritingRemedialDataUrl = null;
+  quiz.handwritingRemedialHintVisible = false;
   quiz.chineseStage = "remedial";
   renderQuiz();
 }
@@ -2070,6 +2082,7 @@ function finishHandwritingRemedialQuestion(q) {
 
 function completeHandwritingRemedialAttempt(q, dataUrl) {
   quiz.handwritingRemedialDataUrl = dataUrl || null;
+  quiz.handwritingRemedialHintVisible = false;
   const next = advanceHandwritingRemedial(quiz.handwritingRemedial);
   quiz.handwritingRemedial = next;
   if (next.stage === "done") {
@@ -2093,9 +2106,33 @@ function bindHandwritingRemedialReview() {
   if (btn) btn.onclick = () => {
     quiz.handwritingRemedial = continueHandwritingRemedialAfterReview(quiz.handwritingRemedial);
     quiz.handwritingRemedialDataUrl = null;
+    quiz.handwritingRemedialHintVisible = false;
     quiz.chineseStage = "remedial";
     renderQuiz();
   };
+}
+
+function toggleHandwritingRemedialHint(q) {
+  quiz.handwritingRemedialHintVisible = !quiz.handwritingRemedialHintVisible;
+  const btn = document.getElementById("handwriting-help");
+  if (btn) {
+    btn.textContent = quiz.handwritingRemedialHintVisible ? "收起提示" : "提示";
+    btn.setAttribute("aria-pressed", quiz.handwritingRemedialHintVisible ? "true" : "false");
+  }
+  const wrap = document.querySelector(".handwriting-board-wrap");
+  if (!wrap) return;
+  let trace = wrap.querySelector(".handwriting-trace");
+  if (quiz.handwritingRemedialHintVisible) {
+    if (!trace) {
+      trace = document.createElement("div");
+      trace.className = "handwriting-trace";
+      const canvas = wrap.querySelector(".handwriting-board");
+      wrap.insertBefore(trace, canvas || null);
+    }
+    trace.textContent = q.answer;
+  } else if (trace) {
+    trace.remove();
+  }
 }
 
 function bindChineseEvents(q) {
@@ -2125,6 +2162,8 @@ function bindChineseEvents(q) {
   if (quiz.chineseStage === "remedial") {
     const canvas = document.getElementById("handwriting-board");
     if (canvas) setupHandwritingCanvas(canvas, (dataUrl) => completeHandwritingRemedialAttempt(q, dataUrl));
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => toggleHandwritingRemedialHint(q);
     return;
   }
   if (quiz.chineseStage === "remedialReview") {
@@ -2179,6 +2218,7 @@ function renderQuiz() {
     quiz.handwritingRemedial = null;
     quiz.handwritingRemedialQuestionId = null;
     quiz.handwritingRemedialAdvancedFor = null;
+    quiz.handwritingRemedialHintVisible = false;
   }
 
   // Mode label
