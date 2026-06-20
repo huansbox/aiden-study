@@ -17,6 +17,8 @@ const {
   beginHandwritingRemedial,
   advanceHandwritingRemedial,
   shouldTraceHandwritingAttempt,
+  handwritingRemedialPrompt,
+  shouldShowHandwritingRemedialComparison,
   recordHandwritingHelpMistake,
   shouldMasterErrorPracticeCorrect,
   getModeStat,
@@ -42,6 +44,8 @@ return {
   beginHandwritingRemedial,
   advanceHandwritingRemedial,
   shouldTraceHandwritingAttempt,
+  handwritingRemedialPrompt,
+  shouldShowHandwritingRemedialComparison,
   recordHandwritingHelpMistake,
   shouldMasterErrorPracticeCorrect,
   getModeStat,
@@ -90,17 +94,25 @@ test("handwriting remedial：看提示從第 1 次描字開始，三次後完成
   const first = beginHandwritingRemedial("hint");
   assert.deepEqual(first, { stage: "remedial", attempt: 1, total: 3, reason: "hint" });
   assert.equal(shouldTraceHandwritingAttempt(first), true);
+  assert.equal(handwritingRemedialPrompt(first), "");
+  assert.equal(shouldShowHandwritingRemedialComparison(first), false);
 
   const second = advanceHandwritingRemedial(first);
   assert.deepEqual(second, { stage: "remedial", attempt: 2, total: 3, reason: "hint" });
   assert.equal(shouldTraceHandwritingAttempt(second), false);
+  assert.equal(handwritingRemedialPrompt(second), "很好，自己練習寫寫看");
+  assert.equal(shouldShowHandwritingRemedialComparison(second), false);
 
   const third = advanceHandwritingRemedial(second);
   assert.deepEqual(third, { stage: "remedial", attempt: 3, total: 3, reason: "hint" });
   assert.equal(shouldTraceHandwritingAttempt(third), false);
+  assert.equal(handwritingRemedialPrompt(third), "很好，再練習寫一次看看");
+  assert.equal(shouldShowHandwritingRemedialComparison(third), true);
 
   const done = advanceHandwritingRemedial(third);
   assert.deepEqual(done, { stage: "done", attempt: 3, total: 3, reason: "hint" });
+  assert.equal(handwritingRemedialPrompt(done), "練完了，真棒");
+  assert.equal(shouldShowHandwritingRemedialComparison(done), true);
 });
 
 test("handwriting remedial：不太會寫 reason 正規化", () => {

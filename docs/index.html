@@ -228,9 +228,13 @@ body {
   min-height: 28px; margin-top: 4px; color: #b42318;
   font-size: 0.95rem; font-weight: 600;
 }
-.handwriting-panel { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.handwriting-panel {
+  --handwriting-board-size: min(86vw, 520px);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.handwriting-panel.remedial { --handwriting-board-size: min(86vw, 460px, 58vh); }
 .handwriting-board-wrap {
-  position: relative; width: min(86vw, 520px); max-width: 100%; aspect-ratio: 1 / 1;
+  position: relative; width: var(--handwriting-board-size); max-width: 100%; aspect-ratio: 1 / 1;
   border: 2px solid #d8dee9; border-radius: 12px; background: #fff;
   overflow: hidden; touch-action: none;
 }
@@ -255,20 +259,30 @@ body {
 .handwriting-trace {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   display: flex; align-items: center; justify-content: center;
-  color: rgba(15, 63, 58, 0.16); font-size: clamp(7rem, 34vw, 14rem); font-weight: 700;
+  color: rgba(15, 63, 58, 0.16); font-size: min(70vw, 22rem, 42vh); font-weight: 700; line-height: 1;
 }
-.handwriting-actions { display: flex; gap: 10px; width: min(86vw, 520px); max-width: 100%; }
+.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size); max-width: 100%; }
 .handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
 .handwriting-remedial-note {
   color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
 }
+.handwriting-remedial-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
+  padding: 10px 12px; border-radius: 10px; background: #effdf8;
+  color: #0f3f3a; font-size: 1rem; font-weight: 700; text-align: center;
+}
 .handwriting-done-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
   padding: 20px 16px; border-radius: 12px; background: #effdf8;
   color: #0f3f3a; font-size: 1.25rem; font-weight: 800; text-align: center;
 }
 .handwriting-self-check {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px; width: 100%; align-items: stretch;
+}
+.handwriting-remedial-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; width: var(--handwriting-board-size); max-width: 100%;
 }
 .handwriting-compare-card {
   border: 1px solid #e0e0e0; border-radius: 12px; background: #fafbfc;
@@ -284,6 +298,12 @@ body {
   background: #fff; display: flex; align-items: center; justify-content: center;
   font-size: clamp(5rem, 28vw, 10rem); font-weight: 700; color: #0f3f3a;
 }
+.handwriting-remedial-compare .handwriting-compare-card { padding: 8px; }
+.handwriting-remedial-compare .handwriting-capture,
+.handwriting-remedial-compare .handwriting-correct-char {
+  height: 112px; aspect-ratio: auto;
+}
+.handwriting-remedial-compare .handwriting-correct-char { font-size: 4.5rem; }
 .handwriting-correct-sentence {
   margin-top: 12px; padding: 12px 14px; border-radius: 12px;
   background: #effdf8; color: #0f3f3a; font-size: 1.05rem; line-height: 1.6;
@@ -543,6 +563,19 @@ function advanceHandwritingRemedial(remedial) {
 
 function shouldTraceHandwritingAttempt(remedial) {
   return Number(remedial && remedial.attempt) === 1;
+}
+
+function handwritingRemedialPrompt(remedial) {
+  if (remedial && remedial.stage === "done") return "練完了，真棒";
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  if (attempt === 2) return "很好，自己練習寫寫看";
+  if (attempt === 3) return "很好，再練習寫一次看看";
+  return "";
+}
+
+function shouldShowHandwritingRemedialComparison(remedial) {
+  if (remedial && remedial.stage === "done") return true;
+  return Number(remedial && remedial.attempt) === 3;
 }
 
 function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
@@ -910,6 +943,7 @@ const quiz = {
   chinesePickedIndex: null,
   chineseChoices: null,
   handwritingDataUrl: null,
+  handwritingRemedialDataUrl: null,
   handwritingRemedial: null,
   handwritingRemedialQuestionId: null,
   handwritingRemedialAdvancedFor: null
@@ -946,6 +980,7 @@ function resetQuestionRuntime() {
   quiz.chinesePickedIndex = null;
   quiz.chineseChoices = null;
   quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
   quiz.handwritingRemedialQuestionId = null;
   quiz.handwritingRemedialAdvancedFor = null;
@@ -1832,18 +1867,24 @@ function renderChineseSentence(q) {
 }
 
 function handwritingPanelHtml(options = {}) {
+  const panelClass = ["handwriting-panel", options.panelClass].filter(Boolean).join(" ");
   const trace = options.traceChar
     ? `<div class="handwriting-trace">${escapeHtml(options.traceChar)}</div>`
     : "";
   const title = options.title
     ? `<div class="handwriting-remedial-note">${escapeHtml(options.title)}</div>`
     : "";
+  const message = options.message
+    ? `<div class="handwriting-remedial-message">${escapeHtml(options.message)}</div>`
+    : "";
   const hintButton = options.showHint
     ? '<button class="st-btn" id="handwriting-help">看提示</button>'
     : "";
   return `
-    <div class="handwriting-panel">
+    <div class="${panelClass}">
       ${title}
+      ${message}
+      ${options.comparisonHtml || ""}
       <div class="handwriting-board-wrap">
         ${trace}
         <canvas class="handwriting-board" id="handwriting-board" aria-label="手寫區"></canvas>
@@ -1856,12 +1897,12 @@ function handwritingPanelHtml(options = {}) {
     </div>`;
 }
 
-function handwritingSelfCheckHtml(q) {
-  const img = quiz.handwritingDataUrl
-    ? `<img class="handwriting-capture" src="${quiz.handwritingDataUrl}" alt="你寫的字">`
+function handwritingComparisonHtml(q, dataUrl, extraClass = "") {
+  const img = dataUrl
+    ? `<img class="handwriting-capture" src="${dataUrl}" alt="你寫的字">`
     : `<div class="handwriting-capture" aria-label="你寫的字"></div>`;
   return `
-    <div class="handwriting-self-check">
+    <div class="handwriting-self-check ${extraClass}">
       <div class="handwriting-compare-card">
         <div class="handwriting-compare-title">你寫的</div>
         ${img}
@@ -1870,7 +1911,12 @@ function handwritingSelfCheckHtml(q) {
         <div class="handwriting-compare-title">正確字</div>
         <div class="handwriting-correct-char">${escapeHtml(q.answer)}</div>
       </div>
-    </div>
+    </div>`;
+}
+
+function handwritingSelfCheckHtml(q) {
+  return `
+    ${handwritingComparisonHtml(q, quiz.handwritingDataUrl)}
     <div class="handwriting-correct-sentence">${escapeHtml(correctedChineseText(q))}</div>
     <div class="handwriting-actions">
       <button class="st-btn" id="handwriting-needs-practice">不太會寫</button>
@@ -1881,16 +1927,23 @@ function handwritingSelfCheckHtml(q) {
 function handwritingRemedialHtml(q) {
   const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
   const traceChar = shouldTraceHandwritingAttempt(remedial) ? q.answer : null;
+  const comparisonHtml = shouldShowHandwritingRemedialComparison(remedial)
+    ? handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")
+    : "";
   return handwritingPanelHtml({
     title: `練習 ${remedial.attempt} / ${remedial.total}`,
+    message: handwritingRemedialPrompt(remedial),
+    panelClass: "remedial",
+    comparisonHtml,
     traceChar,
   });
 }
 
-function handwritingRemedialDoneHtml() {
+function handwritingRemedialDoneHtml(q) {
   return `
-    <div class="handwriting-panel">
-      <div class="handwriting-done-message">練完了，真棒</div>
+    <div class="handwriting-panel remedial">
+      ${handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")}
+      <div class="handwriting-done-message">${escapeHtml(handwritingRemedialPrompt(quiz.handwritingRemedial))}</div>
       <div class="handwriting-actions">
         <button class="st-btn" id="handwriting-remedial-next">下一題</button>
       </div>
@@ -1981,6 +2034,7 @@ function startHandwritingRemedial(q, reason = "hint") {
   quiz.handwritingRemedial = beginHandwritingRemedial(reason);
   quiz.handwritingRemedialQuestionId = q.id;
   quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
   quiz.chineseStage = "remedial";
   renderQuiz();
 }
@@ -1999,7 +2053,8 @@ function finishHandwritingRemedialQuestion(q) {
   quiz.handwritingRemedialAdvancedFor = q.id;
 }
 
-function completeHandwritingRemedialAttempt(q) {
+function completeHandwritingRemedialAttempt(q, dataUrl) {
+  quiz.handwritingRemedialDataUrl = dataUrl || null;
   const next = advanceHandwritingRemedial(quiz.handwritingRemedial);
   quiz.handwritingRemedial = next;
   if (next.stage === "done") {
@@ -2042,7 +2097,7 @@ function bindChineseEvents(q) {
   }
   if (quiz.chineseStage === "remedial") {
     const canvas = document.getElementById("handwriting-board");
-    if (canvas) setupHandwritingCanvas(canvas, () => completeHandwritingRemedialAttempt(q));
+    if (canvas) setupHandwritingCanvas(canvas, (dataUrl) => completeHandwritingRemedialAttempt(q, dataUrl));
     return;
   }
   if (quiz.chineseStage === "remedialDone") {
@@ -2089,6 +2144,7 @@ function renderQuiz() {
     quiz.chinesePickedIndex = null;
     quiz.chineseChoices = null;
     quiz.handwritingDataUrl = null;
+    quiz.handwritingRemedialDataUrl = null;
     quiz.handwritingRemedial = null;
     quiz.handwritingRemedialQuestionId = null;
     quiz.handwritingRemedialAdvancedFor = null;
@@ -2151,7 +2207,7 @@ function renderQuiz() {
     } else if (quiz.chineseStage === "remedial") {
       answerHtml = handwritingRemedialHtml(q);
     } else if (quiz.chineseStage === "remedialDone") {
-      answerHtml = handwritingRemedialDoneHtml();
+      answerHtml = handwritingRemedialDoneHtml(q);
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
