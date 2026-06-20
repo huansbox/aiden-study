@@ -27819,7 +27819,7 @@
     "unit": 14,
     "subtopic": "L9-L10 改錯字",
     "type": "chinese_correction",
-    "text": "即刻消失，再不留下從影。",
+    "text": "即刻消失，再也不留下從影。",
     "wrong": "從",
     "answer": "蹤",
     "choices": [
@@ -27909,14 +27909,14 @@
     "unit": 14,
     "subtopic": "L9-L10 改錯字",
     "type": "chinese_correction",
-    "text": "我的姐姐習慣戴著畫家瑁，在戶外寫生。",
-    "wrong": "瑁",
+    "text": "我的姐姐習慣戴著畫家冒，在戶外寫生。",
+    "wrong": "冒",
     "answer": "帽",
     "choices": [
       "帽",
-      "冒",
       "貌",
-      "貿"
+      "貿",
+      "茂"
     ],
     "note": "戴在頭上的東西是「帽」。",
     "source": "aiden-cht-3.jpg"
@@ -27963,7 +27963,7 @@
     "unit": 14,
     "subtopic": "L9-L10 改錯字",
     "type": "chinese_correction",
-    "text": "消防隊員邊指揮目登口呆的民眾離開現場。",
+    "text": "消防隊員指揮目登口呆的民眾離開現場。",
     "wrong": "登",
     "answer": "瞪",
     "choices": [
@@ -28508,7 +28508,7 @@
     "answer": "牆",
     "choices": [
       "牆",
-      "墻",
+      "搶",
       "檣",
       "薔"
     ],
@@ -28521,7 +28521,7 @@
     "unit": 14,
     "subtopic": "L9-L10 改錯字",
     "type": "chinese_correction",
-    "text": "國家必須的尖媏科技要持續進步，避免競爭力下降。",
+    "text": "國家必備的尖媏科技要持續進步，避免競爭力下降。",
     "wrong": "媏",
     "answer": "端",
     "choices": [
@@ -28539,7 +28539,7 @@
     "unit": 14,
     "subtopic": "L9-L10 改錯字",
     "type": "chinese_correction",
-    "text": "國家必須的尖端科技要持續進步，避勉競爭力下降。",
+    "text": "國家必備的尖端科技要持續進步，避勉競爭力下降。",
     "wrong": "勉",
     "answer": "免",
     "choices": [
