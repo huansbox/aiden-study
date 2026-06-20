@@ -16,6 +16,7 @@ const {
   nextBatchSizeForMode,
   beginHandwritingRemedial,
   advanceHandwritingRemedial,
+  continueHandwritingRemedialAfterReview,
   shouldTraceHandwritingAttempt,
   handwritingRemedialPrompt,
   shouldShowHandwritingRemedialComparison,
@@ -43,6 +44,7 @@ return {
   nextBatchSizeForMode,
   beginHandwritingRemedial,
   advanceHandwritingRemedial,
+  continueHandwritingRemedialAfterReview,
   shouldTraceHandwritingAttempt,
   handwritingRemedialPrompt,
   shouldShowHandwritingRemedialComparison,
@@ -104,12 +106,18 @@ test("handwriting remedial：看提示從第 1 次描字開始，三次後完成
   assert.equal(shouldShowHandwritingRemedialComparison(second), false);
 
   const third = advanceHandwritingRemedial(second);
-  assert.deepEqual(third, { stage: "remedial", attempt: 3, total: 3, reason: "hint" });
+  assert.deepEqual(third, { stage: "review", attempt: 2, total: 3, reason: "hint" });
   assert.equal(shouldTraceHandwritingAttempt(third), false);
-  assert.equal(handwritingRemedialPrompt(third), "很好，再練習寫一次看看");
+  assert.equal(handwritingRemedialPrompt(third), "很好，再看一下剛剛寫的字");
   assert.equal(shouldShowHandwritingRemedialComparison(third), true);
 
-  const done = advanceHandwritingRemedial(third);
+  const thirdPractice = continueHandwritingRemedialAfterReview(third);
+  assert.deepEqual(thirdPractice, { stage: "remedial", attempt: 3, total: 3, reason: "hint" });
+  assert.equal(shouldTraceHandwritingAttempt(thirdPractice), false);
+  assert.equal(handwritingRemedialPrompt(thirdPractice), "很好，再練習寫一次看看");
+  assert.equal(shouldShowHandwritingRemedialComparison(thirdPractice), false);
+
+  const done = advanceHandwritingRemedial(thirdPractice);
   assert.deepEqual(done, { stage: "done", attempt: 3, total: 3, reason: "hint" });
   assert.equal(handwritingRemedialPrompt(done), "練完了，真棒");
   assert.equal(shouldShowHandwritingRemedialComparison(done), true);
@@ -134,6 +142,7 @@ test("recordHandwritingHelpMistake：remedial 完成後錯題仍保留", () => {
   let remedial = beginHandwritingRemedial("hint");
   remedial = advanceHandwritingRemedial(remedial);
   remedial = advanceHandwritingRemedial(remedial);
+  remedial = continueHandwritingRemedialAfterReview(remedial);
   remedial = advanceHandwritingRemedial(remedial);
   assert.equal(remedial.stage, "done");
   assert.equal(filterModeErrorBank(recorded.errorBank, 14, "handwriting").some(e => e.questionId === "q2"), true);
