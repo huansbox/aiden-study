@@ -568,13 +568,17 @@ function continueHandwritingRemedialAfterReview(remedial) {
   return { ...remedial, stage: "remedial", attempt, total };
 }
 
-function shouldTraceHandwritingAttempt(remedial, hintVisible = false) {
-  return Number(remedial && remedial.attempt) === 1 || Boolean(hintVisible);
+function shouldTraceHandwritingAttempt(remedial) {
+  return Number(remedial && remedial.attempt) === 1;
 }
 
 function shouldOfferHandwritingRemedialHint(remedial) {
   const attempt = Number(remedial && remedial.attempt) || 1;
   return remedial && remedial.stage === "remedial" && attempt > 1;
+}
+
+function shouldTraceHandwritingRemedialHint(remedial, hintVisible = false) {
+  return shouldOfferHandwritingRemedialHint(remedial) && Boolean(hintVisible);
 }
 
 function handwritingRemedialPrompt(remedial) {
@@ -1942,7 +1946,8 @@ function handwritingSelfCheckHtml(q) {
 function handwritingRemedialHtml(q) {
   const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
   const canShowHint = shouldOfferHandwritingRemedialHint(remedial);
-  const traceChar = shouldTraceHandwritingAttempt(remedial, quiz.handwritingRemedialHintVisible) ? q.answer : null;
+  const shouldTrace = shouldTraceHandwritingAttempt(remedial) || shouldTraceHandwritingRemedialHint(remedial, quiz.handwritingRemedialHintVisible);
+  const traceChar = shouldTrace ? q.answer : null;
   return handwritingPanelHtml({
     title: `練習 ${remedial.attempt} / ${remedial.total}`,
     message: handwritingRemedialPrompt(remedial),
