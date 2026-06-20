@@ -4,7 +4,7 @@
 
 從考卷 PDF（`pdfs/` 期中自然、`pdfs_期末/` 期末自然、`pdfs_數學/` 期末數學、`pdfs_社會/` 期末社會有答案卷、`pdfs_社會_補答案/` 期末社會無答案卷）與人工整理掃描題（國語改錯字）建立給小孩在 pad 上練習的靜態題庫網站。現況：題庫 1924 題（自然 1099＝期中 601＋期末 498；數學 307；社會 452；國語 66）。
 
-**最新（2026-06-19，branch `feat/chinese-corrections`）**：國語改錯字已接進正式網站。`data/curated_questions_國語.json` 66 題由 `scripts/build_questions.py` 併入 `docs/questions.json`，subject=`chinese`，unit 13=L7-L8 改錯字、unit 14=L9-L10 改錯字，題型 `chinese_correction`。前端流程：Step 1 點句子中的錯字，點到正確字只提示不記分；Step 2 固定四選一，正式答錯統計以 Step 2 為準。細節與待人工 smoke check 見 [`docs-dev/chinese-corrections-research.md`](docs-dev/chinese-corrections-research.md)。
+**國語改錯字已上線（2026-06-20 merge master，PR #13／merge commit `af28d68`；功能 commit `2cd79e2`、審查後雜訊修正 `08fed7d`）**：`data/curated_questions_國語.json` 66 題由 `scripts/build_questions.py` 併入 `docs/questions.json`，subject=`chinese`，unit 13=L7-L8 改錯字（19 題）、unit 14=L9-L10 改錯字（47 題），題型 `chinese_correction`。**schema 專用欄位**＝`wrong`/`answer`/`choices`/`note`（與其他題型不同，走 `preserve_chinese_schema`／`convert_chinese_block`）；驗證腳本＝`scripts/validate_chinese_curated.py`（單一中文字、wrong≠answer、text 含 wrong 剛好一次、choices 4 個含 answer 不含 wrong）。前端流程：Step 1 點句子中的錯字（純前端 `renderChineseSentence`/`bindChineseEvents`，點到正確字只抖動提示、不記分），Step 2 固定四選一（洗牌），正式對錯／統計／mastered／errorBank 全以 Step 2 為準（走標準 `submitAnswer`）。**作答後說明用題目自帶的 `note` 欄位**（非 `explanations.json`；前端 `explanations[q.id] || q.note`）。**多 agent 內容審查（2026-06-20，72 agent＝18 審查員＋對抗式裁決）：66 題答案全部正確、無正解標錯；揪 6 題題幹/選項瑕疵已修**（045 選項「墻」是「牆」異體字＝雙正解→改「搶」；019 刪孤立「邊」；046/047「必須的」→「必備的」；011「再不」→「再也不」；016 罕用錯字「瑁」→自然形近「冒」、選項「冒」→「茂」）。驗證＝validate OK、pytest **141 passed**、node 18/12/18、Playwright live 兩階段流程＋6 修正題資料完整性全過。細節見 [`docs-dev/chinese-corrections-research.md`](docs-dev/chinese-corrections-research.md)。**唯一待辦：iPad 真機 smoke check（小孩實點一遍）。**
 
 ## 快速參考
 
@@ -52,7 +52,8 @@ scripts/           Python 資料處理 pipeline
   clean_social_raw.py 社會 raw 後處理（頁尾噪音清理＋雙欄切壞題號修正；extract 後 classify 前）
   download_tcool_social.ps1 / sweep_tcool_social.ps1  社會卷下載器／清單掃描器
   data_helpers.py  去重/答案合併/驗證純函式（深模組B）
-  build_questions.py classified → docs/questions.json 四來源合併（冪等、id 去碰撞、subject 欄位）
+  build_questions.py classified → docs/questions.json 五來源合併（期中/期末/數學/社會/國語；冪等、id 去碰撞、subject 欄位）
+  validate_chinese_curated.py 國語改錯字題庫驗證（單字/wrong≠answer/text 含 wrong 一次/choices 4 含 answer 不含 wrong）
   build_explanations.py data/exp_results/ → docs/explanations.json 合併驗證
   fix_classified.py 期中分類修正腳本
 data/              中間資料
@@ -68,12 +69,14 @@ data/              中間資料
   skipped_questions_數學.json / reflowed_questions_數學.json  分數亂序跳過清單／重組 artifact
   raw_questions_社會.json / classified_questions_社會.json  社會萃取／分類（unit 10–12）
   official_answers_社會.json  社會官方答案（桃112文字抽＋桃110視覺判讀）
+  curated_questions_國語.json  國語改錯字人工題（unit 13/14，chinese_correction，掃描整理；驗證＝scripts/validate_chinese_curated.py）
+  review_questions_國語.json / skipped_questions_國語.json  國語策展中間檔／跳過清單
   tcool_grade3_sci_kanghsuan.json / _math_ / _social_kanghsuan.json  考卷清單（tcool.cc 爬取）
 docs/              GitHub Pages 部署目錄
-  index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學/社會）
-  questions.json   最終題庫（自然 1–4＋數學 5–9＋社會 10–12，全題帶 subject）
+  index.html       練習網站（單一 HTML，內嵌 CSS/JS，科目層 自然/數學/社會/國語）
+  questions.json   最終題庫（自然 1–4＋數學 5–9＋社會 10–12＋國語 13–14，全題帶 subject）
   explanations.json 作答後說明（自然期末498＋數學307＋社會452＝1257 題，id → 說明）
-tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 期中回歸）
+tests/             pytest（parser / 數學 parser / data_helpers / classify config / build / 國語 curated 驗證 / 期中回歸）
 docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）
 ```
@@ -124,7 +127,7 @@ skipped_questions.md  跳過題目清單（供手動確認）
 
 ## 分類規則
 
-自然期中（unit 1–2）／自然期末（unit 3–4）／數學期末（unit 5–9）／社會期末（unit 10–12）為 `classify.py` 的四組可切換 config（`--semester mid|final|math|social`）。unit 全域唯一。社會內部 10/11/12＝課本第 4/5/6 單元（避開自然 unit 4；`index.html` 以 `unitNum()` 顯示課本號）。
+自然期中（unit 1–2）／自然期末（unit 3–4）／數學期末（unit 5–9）／社會期末（unit 10–12）為 `classify.py` 的四組可切換 config（`--semester mid|final|math|social`）。unit 全域唯一。社會內部 10/11/12＝課本第 4/5/6 單元（避開自然 unit 4；`index.html` 以 `unitNum()` 顯示課本號）。國語（unit 13/14）為 curated 人工題，**不過 classify**，直接由 `build_questions.py` 併入（同數學看表 curated 題的處理）。
 
 - **第 1 單元：田園樂** — 蔬菜種類/部位/生長因素/生長過程
 - **第 2 單元：溫度變化對物質的影響** — 物質變化因素/水三態/其他物質受溫度改變
