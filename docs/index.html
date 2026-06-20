@@ -252,8 +252,20 @@ body {
   position: relative; z-index: 1; display: block;
   width: 100%; height: 100%; touch-action: none;
 }
+.handwriting-trace {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(15, 63, 58, 0.16); font-size: clamp(7rem, 34vw, 14rem); font-weight: 700;
+}
 .handwriting-actions { display: flex; gap: 10px; width: min(86vw, 520px); max-width: 100%; }
 .handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
+.handwriting-remedial-note {
+  color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
+}
+.handwriting-done-message {
+  padding: 20px 16px; border-radius: 12px; background: #effdf8;
+  color: #0f3f3a; font-size: 1.25rem; font-weight: 800; text-align: center;
+}
 .handwriting-self-check {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px; width: 100%; align-items: stretch;
@@ -511,6 +523,33 @@ function balancedBatchSize(remaining, max = 10) {
 
 function nextBatchSizeForMode(remaining, mode = "choice") {
   return balancedBatchSize(remaining, batchSizeForMode(mode));
+}
+
+function beginHandwritingRemedial(reason = "hint") {
+  return {
+    stage: "remedial",
+    attempt: 1,
+    total: 3,
+    reason: reason === "selfCheck" ? "selfCheck" : "hint",
+  };
+}
+
+function advanceHandwritingRemedial(remedial) {
+  const total = Math.max(1, Number(remedial && remedial.total) || 3);
+  const attempt = Math.max(1, Number(remedial && remedial.attempt) || 1);
+  if (attempt >= total) return { ...remedial, stage: "done", attempt: total, total };
+  return { ...remedial, stage: "remedial", attempt: attempt + 1, total };
+}
+
+function shouldTraceHandwritingAttempt(remedial) {
+  return Number(remedial && remedial.attempt) === 1;
+}
+
+function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
+  return {
+    stats: recordModeAnswer(stats, questionId, false, "handwriting"),
+    errorBank: addModeError(errorBank, questionId, unit, "handwriting"),
+  };
 }
 
 function cleanStat(s) {
@@ -866,7 +905,10 @@ const quiz = {
   chineseStage: "find",
   chinesePickedIndex: null,
   chineseChoices: null,
-  handwritingDataUrl: null
+  handwritingDataUrl: null,
+  handwritingRemedial: null,
+  handwritingRemedialQuestionId: null,
+  handwritingRemedialAdvancedFor: null
 };
 
 // ════════════════════════════════════════════════════
@@ -900,6 +942,9 @@ function resetQuestionRuntime() {
   quiz.chinesePickedIndex = null;
   quiz.chineseChoices = null;
   quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedial = null;
+  quiz.handwritingRemedialQuestionId = null;
+  quiz.handwritingRemedialAdvancedFor = null;
 }
 
 // ════════════════════════════════════════════════════
@@ -1028,6 +1073,13 @@ function startQuiz(mode, unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_
 function getCurrentQuestion() {
   // full & error: always queue[0]
   return questionMap.get(quiz.queue[0]);
+}
+
+function getDisplayQuestion() {
+  if ((quiz.chineseStage === "remedial" || quiz.chineseStage === "remedialDone") && quiz.handwritingRemedialQuestionId) {
+    return questionMap.get(quiz.handwritingRemedialQuestionId) || getCurrentQuestion();
+  }
+  return getCurrentQuestion();
 }
 
 function submitAnswer(selected) {
@@ -1753,14 +1805,26 @@ function renderChineseSentence(q) {
   }).join("")}</div>`;
 }
 
-function handwritingPanelHtml() {
+function handwritingPanelHtml(options = {}) {
+  const trace = options.traceChar
+    ? `<div class="handwriting-trace">${escapeHtml(options.traceChar)}</div>`
+    : "";
+  const title = options.title
+    ? `<div class="handwriting-remedial-note">${escapeHtml(options.title)}</div>`
+    : "";
+  const hintButton = options.showHint
+    ? '<button class="st-btn" id="handwriting-help">看提示</button>'
+    : "";
   return `
     <div class="handwriting-panel">
+      ${title}
       <div class="handwriting-board-wrap">
+        ${trace}
         <canvas class="handwriting-board" id="handwriting-board" aria-label="手寫區"></canvas>
       </div>
       <div class="handwriting-actions">
         <button class="st-btn" id="handwriting-clear">清除</button>
+        ${hintButton}
         <button class="st-btn" id="handwriting-done">我寫好了</button>
       </div>
     </div>`;
@@ -1783,11 +1847,31 @@ function handwritingSelfCheckHtml(q) {
     </div>
     <div class="handwriting-correct-sentence">${escapeHtml(correctedChineseText(q))}</div>
     <div class="handwriting-actions">
+      <button class="st-btn" id="handwriting-needs-practice">不太會寫</button>
       <button class="st-btn" id="handwriting-correct">我寫對了</button>
     </div>`;
 }
 
-function setupHandwritingCanvas(canvas) {
+function handwritingRemedialHtml(q) {
+  const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
+  const traceChar = shouldTraceHandwritingAttempt(remedial) ? q.answer : null;
+  return handwritingPanelHtml({
+    title: `練習 ${remedial.attempt} / ${remedial.total}`,
+    traceChar,
+  });
+}
+
+function handwritingRemedialDoneHtml() {
+  return `
+    <div class="handwriting-panel">
+      <div class="handwriting-done-message">練完了，真棒</div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-remedial-next">下一題</button>
+      </div>
+    </div>`;
+}
+
+function setupHandwritingCanvas(canvas, onDone) {
   const wrap = canvas.parentElement;
   const ctx = canvas.getContext("2d");
   let drawing = false;
@@ -1845,7 +1929,12 @@ function setupHandwritingCanvas(canvas) {
   };
   document.getElementById("handwriting-done").onclick = () => {
     if (quiz.isAnswered) return;
-    quiz.handwritingDataUrl = canvas.toDataURL("image/png");
+    const dataUrl = canvas.toDataURL("image/png");
+    if (typeof onDone === "function") {
+      onDone(dataUrl);
+      return;
+    }
+    quiz.handwritingDataUrl = dataUrl;
     quiz.chineseStage = "selfCheck";
     renderQuiz();
   };
@@ -1854,6 +1943,51 @@ function setupHandwritingCanvas(canvas) {
 function bindHandwritingSelfCheck(q) {
   const btn = document.getElementById("handwriting-correct");
   if (btn) btn.onclick = () => submitAnswer(q.answer);
+  const needsPractice = document.getElementById("handwriting-needs-practice");
+  if (needsPractice) needsPractice.onclick = () => startHandwritingRemedial(q, "selfCheck");
+}
+
+function startHandwritingRemedial(q, reason = "hint") {
+  const recorded = recordHandwritingHelpMistake(state.stats, state.errorBank, q.id, q.unit);
+  state.stats = recorded.stats;
+  state.errorBank = recorded.errorBank;
+  Storage.save(state);
+  quiz.handwritingRemedial = beginHandwritingRemedial(reason);
+  quiz.handwritingRemedialQuestionId = q.id;
+  quiz.handwritingDataUrl = null;
+  quiz.chineseStage = "remedial";
+  renderQuiz();
+}
+
+function finishHandwritingRemedialQuestion(q) {
+  if (quiz.handwritingRemedialAdvancedFor === q.id) return;
+  if (quiz.mode === "full" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+  } else if (quiz.mode === "error" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+  }
+  quiz.answered.push({ questionId: q.id, correct: false });
+  quiz.handwritingRemedialAdvancedFor = q.id;
+}
+
+function completeHandwritingRemedialAttempt(q) {
+  const next = advanceHandwritingRemedial(quiz.handwritingRemedial);
+  quiz.handwritingRemedial = next;
+  if (next.stage === "done") {
+    quiz.chineseStage = "remedialDone";
+  }
+  renderQuiz();
+}
+
+function bindHandwritingRemedialDone(q) {
+  const btn = document.getElementById("handwriting-remedial-next");
+  if (btn) btn.onclick = () => {
+    finishHandwritingRemedialQuestion(q);
+    advance();
+  };
 }
 
 function bindChineseEvents(q) {
@@ -1865,11 +1999,28 @@ function bindChineseEvents(q) {
   }
   if (quiz.chineseStage === "write") {
     const canvas = document.getElementById("handwriting-board");
-    if (canvas) setupHandwritingCanvas(canvas);
+    if (canvas) {
+      setupHandwritingCanvas(canvas, (dataUrl) => {
+        quiz.handwritingDataUrl = dataUrl;
+        quiz.chineseStage = "selfCheck";
+        renderQuiz();
+      });
+    }
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => startHandwritingRemedial(q, "hint");
     return;
   }
   if (quiz.chineseStage === "selfCheck") {
     bindHandwritingSelfCheck(q);
+    return;
+  }
+  if (quiz.chineseStage === "remedial") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) setupHandwritingCanvas(canvas, () => completeHandwritingRemedialAttempt(q));
+    return;
+  }
+  if (quiz.chineseStage === "remedialDone") {
+    bindHandwritingRemedialDone(q);
     return;
   }
 
@@ -1903,7 +2054,7 @@ function bindChineseEvents(q) {
 }
 
 function renderQuiz() {
-  const q = getCurrentQuestion();
+  const q = getDisplayQuestion();
   if (!q) { leaveQuiz(); return; }
 
   if (quiz.activeQuestionId !== q.id) {
@@ -1912,6 +2063,9 @@ function renderQuiz() {
     quiz.chinesePickedIndex = null;
     quiz.chineseChoices = null;
     quiz.handwritingDataUrl = null;
+    quiz.handwritingRemedial = null;
+    quiz.handwritingRemedialQuestionId = null;
+    quiz.handwritingRemedialAdvancedFor = null;
   }
 
   // Mode label
@@ -1965,9 +2119,13 @@ function renderQuiz() {
       ).join("");
       answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
     } else if (quiz.chineseStage === "write") {
-      answerHtml = handwritingPanelHtml();
+      answerHtml = handwritingPanelHtml({ showHint: true });
     } else if (quiz.chineseStage === "selfCheck") {
       answerHtml = handwritingSelfCheckHtml(q);
+    } else if (quiz.chineseStage === "remedial") {
+      answerHtml = handwritingRemedialHtml(q);
+    } else if (quiz.chineseStage === "remedialDone") {
+      answerHtml = handwritingRemedialDoneHtml();
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
