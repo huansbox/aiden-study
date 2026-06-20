@@ -228,6 +228,59 @@ body {
   min-height: 28px; margin-top: 4px; color: #b42318;
   font-size: 0.95rem; font-weight: 600;
 }
+.handwriting-panel { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.handwriting-board-wrap {
+  position: relative; width: min(86vw, 520px); max-width: 100%; aspect-ratio: 1 / 1;
+  border: 2px solid #d8dee9; border-radius: 12px; background: #fff;
+  overflow: hidden; touch-action: none;
+}
+.handwriting-board-wrap::before,
+.handwriting-board-wrap::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+}
+.handwriting-board-wrap::before {
+  background:
+    linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board-wrap::after {
+  background:
+    linear-gradient(45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(-45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board {
+  position: relative; z-index: 1; display: block;
+  width: 100%; height: 100%; touch-action: none;
+}
+.handwriting-actions { display: flex; gap: 10px; width: min(86vw, 520px); max-width: 100%; }
+.handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
+.handwriting-self-check {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px; width: 100%; align-items: stretch;
+}
+.handwriting-compare-card {
+  border: 1px solid #e0e0e0; border-radius: 12px; background: #fafbfc;
+  padding: 12px; text-align: center;
+}
+.handwriting-compare-title { font-size: 0.9rem; color: #667; margin-bottom: 8px; font-weight: 600; }
+.handwriting-capture {
+  width: 100%; aspect-ratio: 1 / 1; object-fit: contain;
+  border: 1px solid #e3e8ef; border-radius: 10px; background: #fff;
+}
+.handwriting-correct-char {
+  width: 100%; aspect-ratio: 1 / 1; border: 1px solid #e3e8ef; border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(5rem, 28vw, 10rem); font-weight: 700; color: #0f3f3a;
+}
+.handwriting-correct-sentence {
+  margin-top: 12px; padding: 12px 14px; border-radius: 12px;
+  background: #effdf8; color: #0f3f3a; font-size: 1.05rem; line-height: 1.6;
+}
+@media (max-width: 560px) {
+  .handwriting-self-check { grid-template-columns: 1fr; }
+  .question-card:has(.handwriting-panel),
+  .question-card:has(.handwriting-self-check) { padding-left: 10px; padding-right: 10px; }
+}
 @keyframes charShake {
   0%, 100% { transform: translateX(0); }
   30% { transform: translateX(-3px); }
@@ -443,6 +496,21 @@ function modeChallengeKey(unit, subtopic = null, mode = "choice") {
   const base = subtopic ? `${unit}/${subtopic}` : String(unit);
   const m = normalizePracticeMode(mode);
   return m === "choice" ? base : `${m}:${base}`;
+}
+
+function batchSizeForMode(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting" ? 5 : 10;
+}
+
+function balancedBatchSize(remaining, max = 10) {
+  if (remaining <= 0) return 0;
+  if (remaining <= max) return remaining;
+  const k = Math.ceil(remaining / max);
+  return Math.ceil(remaining / k);
+}
+
+function nextBatchSizeForMode(remaining, mode = "choice") {
+  return balancedBatchSize(remaining, batchSizeForMode(mode));
 }
 
 function cleanStat(s) {
@@ -797,7 +865,8 @@ const quiz = {
   activeQuestionId: null,
   chineseStage: "find",
   chinesePickedIndex: null,
-  chineseChoices: null
+  chineseChoices: null,
+  handwritingDataUrl: null
 };
 
 // ════════════════════════════════════════════════════
@@ -815,10 +884,7 @@ function shuffle(arr) {
 // 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
 // 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
 function nextBatchSize(remaining, max = 10) {
-  if (remaining <= 0) return 0;
-  if (remaining <= max) return remaining;
-  const k = Math.ceil(remaining / max);
-  return Math.ceil(remaining / k);
+  return balancedBatchSize(remaining, max);
 }
 
 function showPage(id) {
@@ -833,6 +899,7 @@ function resetQuestionRuntime() {
   quiz.chineseStage = "find";
   quiz.chinesePickedIndex = null;
   quiz.chineseChoices = null;
+  quiz.handwritingDataUrl = null;
 }
 
 // ════════════════════════════════════════════════════
@@ -922,7 +989,7 @@ const Picker = {
       if (cont.length) return cont;                             // 接續半批（中途被打斷）
     }
     const shuffled = shuffle(remaining);
-    return shuffled.slice(0, nextBatchSize(shuffled.length));   // 開新批
+    return shuffled.slice(0, nextBatchSizeForMode(shuffled.length, practiceMode));   // 開新批
   },
 
   forErrorPractice(unitFilter, practiceMode = DEFAULT_PRACTICE_MODE) {
@@ -1193,6 +1260,20 @@ function renderSubtopics(u) {
   return rows ? `<div class="subtopic-list"><div class="subtopic-head">依概念練習</div>${rows}</div>` : "";
 }
 
+function chineseChoiceStatus(unit, total) {
+  const done = State.doneCount(unit, null, DEFAULT_PRACTICE_MODE);
+  if (done >= total) return '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+  if (done > 0) return `<span class="st-count">接續 ${done}/${total}</span>`;
+  return `<span class="st-count">${total} 題</span>`;
+}
+
+function chineseHandwritingStatus(unit, total) {
+  const done = State.doneCount(unit, null, HANDWRITING_PRACTICE_MODE);
+  if (done >= total) return '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+  if (done > 0) return `<span class="st-count">接續 ${done}/${total}</span>`;
+  return `<span class="st-count">${total} 題</span>`;
+}
+
 function renderHome() {
   const home = document.getElementById("page-home");
   const subjKey = SUBJECTS[state.subject] ? state.subject : "science";
@@ -1245,14 +1326,8 @@ function renderHome() {
     }
 
     if (subjKey === "chinese") {
-      let choiceStatus;
-      if (isCleared) {
-        choiceStatus = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
-      } else if (done > 0) {
-        choiceStatus = `<span class="st-count">接續 ${done}/${totalInUnit}</span>`;
-      } else {
-        choiceStatus = `<span class="st-count">${totalInUnit} 題</span>`;
-      }
+      const choiceStatus = chineseChoiceStatus(u.id, totalInUnit);
+      const handwritingStatus = chineseHandwritingStatus(u.id, totalInUnit);
       html += `
         <div class="unit-section">
           <div class="unit-title">${u.name}</div>
@@ -1260,6 +1335,12 @@ function renderHome() {
             <span class="subtopic-name">改錯：選擇${choiceStatus}</span>
             <span class="st-actions">
               <button class="st-btn" onclick="window._startFull(${u.id})">練習</button>
+            </span>
+          </div>
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：手寫${handwritingStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">練習</button>
             </span>
           </div>
           ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
@@ -1650,12 +1731,21 @@ function isCjkChar(ch) {
   return /^[\u3400-\u9fff\uf900-\ufaff]$/.test(ch);
 }
 
+function correctedChineseText(q) {
+  const chars = [...q.text];
+  if (quiz.chinesePickedIndex !== null && chars[quiz.chinesePickedIndex] === q.wrong) {
+    chars[quiz.chinesePickedIndex] = q.answer;
+    return chars.join("");
+  }
+  return q.text.replace(q.wrong, q.answer);
+}
+
 function renderChineseSentence(q) {
   const interactive = quiz.chineseStage === "find";
   return `<div class="chinese-sentence">${[...q.text].map((ch, i) => {
     if (isCjkChar(ch)) {
       const cls = ["chinese-char"];
-      if (quiz.chineseStage === "choose" && i === quiz.chinesePickedIndex) cls.push("picked");
+      if (quiz.chineseStage !== "find" && i === quiz.chinesePickedIndex) cls.push("picked");
       return `<button type="button" class="${cls.join(" ")}" data-idx="${i}" data-char="${escapeHtml(ch)}"${interactive ? "" : " disabled"}>${escapeHtml(ch)}</button>`;
     }
     if (/\s/.test(ch)) return " ";
@@ -1663,11 +1753,123 @@ function renderChineseSentence(q) {
   }).join("")}</div>`;
 }
 
+function handwritingPanelHtml() {
+  return `
+    <div class="handwriting-panel">
+      <div class="handwriting-board-wrap">
+        <canvas class="handwriting-board" id="handwriting-board" aria-label="手寫區"></canvas>
+      </div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-clear">清除</button>
+        <button class="st-btn" id="handwriting-done">我寫好了</button>
+      </div>
+    </div>`;
+}
+
+function handwritingSelfCheckHtml(q) {
+  const img = quiz.handwritingDataUrl
+    ? `<img class="handwriting-capture" src="${quiz.handwritingDataUrl}" alt="你寫的字">`
+    : `<div class="handwriting-capture" aria-label="你寫的字"></div>`;
+  return `
+    <div class="handwriting-self-check">
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">你寫的</div>
+        ${img}
+      </div>
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">正確字</div>
+        <div class="handwriting-correct-char">${escapeHtml(q.answer)}</div>
+      </div>
+    </div>
+    <div class="handwriting-correct-sentence">${escapeHtml(correctedChineseText(q))}</div>
+    <div class="handwriting-actions">
+      <button class="st-btn" id="handwriting-correct">我寫對了</button>
+    </div>`;
+}
+
+function setupHandwritingCanvas(canvas) {
+  const wrap = canvas.parentElement;
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  const resize = () => {
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.round(rect.width * scale));
+    canvas.height = Math.max(1, Math.round(rect.height * scale));
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.lineWidth = 9;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#172033";
+  };
+
+  const point = (ev) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+  };
+
+  const start = (ev) => {
+    if (quiz.isAnswered) return;
+    drawing = true;
+    canvas.setPointerCapture(ev.pointerId);
+    const p = point(ev);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ev.preventDefault();
+  };
+  const move = (ev) => {
+    if (!drawing || quiz.isAnswered) return;
+    const p = point(ev);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ev.preventDefault();
+  };
+  const end = (ev) => {
+    if (!drawing) return;
+    drawing = false;
+    try { canvas.releasePointerCapture(ev.pointerId); } catch {}
+    ev.preventDefault();
+  };
+
+  resize();
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  canvas.addEventListener("pointerup", end);
+  canvas.addEventListener("pointercancel", end);
+  document.getElementById("handwriting-clear").onclick = () => {
+    if (quiz.isAnswered) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+  document.getElementById("handwriting-done").onclick = () => {
+    if (quiz.isAnswered) return;
+    quiz.handwritingDataUrl = canvas.toDataURL("image/png");
+    quiz.chineseStage = "selfCheck";
+    renderQuiz();
+  };
+}
+
+function bindHandwritingSelfCheck(q) {
+  const btn = document.getElementById("handwriting-correct");
+  if (btn) btn.onclick = () => submitAnswer(q.answer);
+}
+
 function bindChineseEvents(q) {
   if (quiz.chineseStage === "choose") {
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.onclick = () => submitAnswer(btn.dataset.value);
     });
+    return;
+  }
+  if (quiz.chineseStage === "write") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) setupHandwritingCanvas(canvas);
+    return;
+  }
+  if (quiz.chineseStage === "selfCheck") {
+    bindHandwritingSelfCheck(q);
     return;
   }
 
@@ -1678,9 +1880,14 @@ function bindChineseEvents(q) {
       const idx = Number(btn.dataset.idx);
       const ch = btn.dataset.char;
       if (ch === q.wrong) {
-        quiz.chineseStage = "choose";
         quiz.chinesePickedIndex = idx;
-        quiz.chineseChoices = shuffle(q.choices || []);
+        if (quiz.practiceMode === HANDWRITING_PRACTICE_MODE) {
+          quiz.chineseStage = "write";
+          quiz.chineseChoices = null;
+        } else {
+          quiz.chineseStage = "choose";
+          quiz.chineseChoices = shuffle(q.choices || []);
+        }
         renderQuiz();
         return;
       }
@@ -1704,6 +1911,7 @@ function renderQuiz() {
     quiz.chineseStage = "find";
     quiz.chinesePickedIndex = null;
     quiz.chineseChoices = null;
+    quiz.handwritingDataUrl = null;
   }
 
   // Mode label
@@ -1729,7 +1937,7 @@ function renderQuiz() {
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
-  else if (isChinese) { typeClass += " chinese"; typeLabel = "改錯：選擇"; }
+  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
 
   // Question text: remove option markers for MC
   let displayText = q.text;
@@ -1756,6 +1964,10 @@ function renderQuiz() {
         </button>`
       ).join("");
       answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
+    } else if (quiz.chineseStage === "write") {
+      answerHtml = handwritingPanelHtml();
+    } else if (quiz.chineseStage === "selfCheck") {
+      answerHtml = handwritingSelfCheckHtml(q);
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
@@ -1809,6 +2021,8 @@ function renderQuiz() {
     answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
   }
 
+  const showSkip = quiz.mode === "full" && !(isChinese && quiz.practiceMode === HANDWRITING_PRACTICE_MODE && quiz.chineseStage !== "find");
+
   document.getElementById("page-quiz").innerHTML = `
     <div class="quiz-header">
       <button class="leave-btn" id="btn-leave">&larr; 離開</button>
@@ -1831,7 +2045,7 @@ function renderQuiz() {
           <button class="flag-no" id="flag-no">取消</button>
         </span>
       </div>
-      ${quiz.mode === "full" ? `
+      ${showSkip ? `
       <div class="skip-area" id="skip-area">
         <button class="skip-btn" id="skip-btn">先跳過這題</button>
       </div>` : ""}
@@ -2393,7 +2607,7 @@ window._revealReward = (el) => {
 function renderBatchBreak() {
   const unitTotal = questionIdsFor(quiz.unit, quiz.subtopic).length;
   const unitDone = State.doneCount(quiz.unit, quiz.subtopic, quiz.practiceMode);
-  const nextN = nextBatchSize(unitTotal - unitDone); // 下一批實際題數（依當下剩餘現算）
+  const nextN = nextBatchSizeForMode(unitTotal - unitDone, quiz.practiceMode); // 下一批實際題數（依當下剩餘現算）
   const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
   const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
   const reward = pickReward("batch", quiz.unit);   // 看這批主力 subtopic 抽圖（缺則 roll-up/null）

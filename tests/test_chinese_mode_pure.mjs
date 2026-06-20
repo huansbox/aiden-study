@@ -12,6 +12,8 @@ if (!m) throw new Error("docs/index.html 找不到 <chinese-mode-pure> 區塊");
 const {
   normalizePracticeMode,
   modeChallengeKey,
+  batchSizeForMode,
+  nextBatchSizeForMode,
   getModeStat,
   hasModeStat,
   recordModeAnswer,
@@ -30,6 +32,8 @@ const {
 return {
   normalizePracticeMode,
   modeChallengeKey,
+  batchSizeForMode,
+  nextBatchSizeForMode,
   getModeStat,
   hasModeStat,
   recordModeAnswer,
@@ -58,6 +62,18 @@ test("modeChallengeKey：choice 沿用舊鍵，handwriting 不與舊鍵碰撞", 
   assert.equal(modeChallengeKey(13, "L7-L8 改錯字", "choice"), "13/L7-L8 改錯字");
   assert.equal(modeChallengeKey(13, null, "handwriting"), "handwriting:13");
   assert.equal(modeChallengeKey(13, "L7-L8 改錯字", "handwriting"), "handwriting:13/L7-L8 改錯字");
+});
+
+test("batchSizeForMode：choice 維持 10 題，handwriting 改為 5 題", () => {
+  assert.equal(batchSizeForMode("choice"), 10);
+  assert.equal(batchSizeForMode("handwriting"), 5);
+  assert.equal(batchSizeForMode("unknown"), 10);
+});
+
+test("nextBatchSizeForMode：批末文案與實際開批題數一致", () => {
+  assert.equal(nextBatchSizeForMode(14, "choice"), 7);
+  assert.equal(nextBatchSizeForMode(14, "handwriting"), 5);
+  assert.equal(nextBatchSizeForMode(4, "handwriting"), 4);
 });
 
 test("stats：舊格式視為 choice，handwriting 初始為空", () => {
