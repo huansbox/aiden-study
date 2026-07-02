@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>注音 TTS 可行性測試（iPad 用）</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, "PingFang TC", "Heiti TC", sans-serif; margin: 0; padding: 16px; background: #f5f2ea; color: #333; }
+  h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  .sub { color: #777; font-size: .85rem; margin-bottom: 16px; }
+  .panel { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .panel h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  .hint { font-size: .82rem; color: #8a6d3b; background: #fdf6e3; border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  button.say {
+    font-size: 1.5rem; padding: 12px 18px; min-width: 74px; min-height: 60px;
+    border: 2px solid #d8cfc0; border-radius: 12px; background: #fffdf8; color: #222;
+    font-family: inherit; cursor: pointer;
+  }
+  button.say:active { background: #ffe9b8; border-color: #e0a800; }
+  button.say .cap { display: block; font-size: .7rem; color: #999; margin-top: 2px; }
+  label { font-size: .9rem; }
+  select, input[type=range] { font-size: 1rem; max-width: 100%; }
+  .ctl { display: flex; flex-direction: column; gap: 10px; }
+  #log { font-size: .8rem; color: #666; white-space: pre-wrap; max-height: 8em; overflow-y: auto; background:#faf8f3; border-radius:8px; padding:8px; }
+  .warn { color: #b00; font-weight: bold; }
+  .checklist { font-size: .88rem; line-height: 1.7; }
+</style>
+</head>
+<body>
+<h1>注音 TTS 可行性測試</h1>
+<div class="sub">在 iPad Safari 打開，逐條點按來聽。目的：決定注音學習 app 的聲音走「家長親錄」還是「Apple 語音生成」。</div>
+
+<div class="panel">
+  <h2>0. 語音設定</h2>
+  <div class="ctl">
+    <label>語音（優先選 zh-TW，例如 Mei-Jia／美佳）：<br>
+      <select id="voiceSel"></select>
+    </label>
+    <label>語速：<span id="rateVal">0.8</span>
+      <input type="range" id="rate" min="0.4" max="1.2" step="0.1" value="0.8">
+    </label>
+    <div id="log">（尚未發聲）</div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>1. 單獨注音符號（直接餵符號）</h2>
+  <div class="hint">聽重點：ㄅ 應該唸「ㄅㄛ」。若唸成英文字母、拼字、或沉默 → 這條路對「單獨符號」不可行。</div>
+  <div class="btns" data-group="raw-symbol"></div>
+</div>
+
+<div class="panel">
+  <h2>2. 符號的載體字（教學唸名用真實字代替）</h2>
+  <div class="hint">對照組：如果第 1 區失敗，改唸這些字能不能當「符號的聲音」？（玻=ㄅ、坡=ㄆ、摸=ㄇ、佛=ㄈ、阿=ㄚ、屋=ㄨ；注意「佛」是二聲，教學上 ㄈ 唸一聲的「ㄈㄛ」，聽聽差多少）</div>
+  <div class="btns" data-group="carrier-symbol"></div>
+</div>
+
+<div class="panel">
+  <h2>3. 拼音組合（直接餵注音＋聲調符號）</h2>
+  <div class="hint">聽重點：①有沒有唸成正確音節＋正確聲調 ②「ㄅㄨˊ」這種沒有常用國字的組合行不行。任何一條唸錯或拆開唸 → 原始注音字串這條路不可行。</div>
+  <div class="btns" data-group="raw-syllable"></div>
+</div>
+
+<div class="panel">
+  <h2>4. 真實字載體（拼音用同音國字代替）</h2>
+  <div class="hint">對照組：用「八拔把爸」代替「ㄅㄚ 四聲」。聽重點：單字唸得標不標準、聲調對不對（特別是三聲的「把、馬、斧」單獨唸會不會變怪）。</div>
+  <div class="btns" data-group="carrier-syllable"></div>
+</div>
+
+<div class="panel">
+  <h2>5. 詞彙（自然度參考）</h2>
+  <div class="hint">聽重點：整體音質。小孩要聽幾百次，這個聲音你能接受嗎？</div>
+  <div class="btns" data-group="words"></div>
+</div>
+
+<div class="panel">
+  <h2>判讀表</h2>
+  <div class="checklist">
+    ✅ 第 3 區全對 → 可走「Mac 批次生成音檔」，維護最省力<br>
+    ✅ 第 3 區失敗、第 4 區可以 → 走「真實字載體生成」，但無字組合（如 ㄅㄨˊ）要親錄補洞<br>
+    ✅ 第 1、2 區都不理想 → 至少「符號單音」要家長親錄<br>
+    ❌ 音質整體聽不下去 → 全部親錄（約 50 段，我做錄音工具頁）
+  </div>
+</div>
+
+<script>
+(function () {
+  var GROUPS = {
+    "raw-symbol":      ["ㄅ","ㄆ","ㄇ","ㄈ","ㄚ","ㄨ"],
+    "carrier-symbol":  ["玻","坡","摸","佛","阿","屋"],
+    "raw-syllable":    ["ㄅㄚ","ㄅㄚˊ","ㄅㄚˇ","ㄅㄚˋ","ㄇㄚ˙","ㄅㄨˊ","ㄆㄨˋ","ㄇㄨˋ","ㄈㄚˇ"],
+    "carrier-syllable":["八","拔","把","爸","媽","麻","馬","罵","布","瀑","木","法","夫","福","斧","父"],
+    "words":           ["爸爸","媽媽","木瓜","法師","爬山"]
+  };
+  var CAPS = { // 小字標註，幫家長對照期望音
+    "玻":"=ㄅ","坡":"=ㄆ","摸":"=ㄇ","佛":"=ㄈ(二聲)","阿":"=ㄚ","屋":"=ㄨ",
+    "八":"ㄅㄚ","拔":"ㄅㄚˊ","把":"ㄅㄚˇ","爸":"ㄅㄚˋ",
+    "媽":"ㄇㄚ","麻":"ㄇㄚˊ","馬":"ㄇㄚˇ","罵":"ㄇㄚˋ",
+    "布":"ㄅㄨˋ","瀑":"ㄆㄨˋ","木":"ㄇㄨˋ","法":"ㄈㄚˇ",
+    "夫":"ㄈㄨ","福":"ㄈㄨˊ","斧":"ㄈㄨˇ","父":"ㄈㄨˋ"
+  };
+
+  var voiceSel = document.getElementById("voiceSel");
+  var rateInp = document.getElementById("rate");
+  var rateVal = document.getElementById("rateVal");
+  var log = document.getElementById("log");
+  var voices = [];
+
+  function loadVoices() {
+    voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+    voiceSel.innerHTML = "";
+    if (!voices.length) {
+      var o = document.createElement("option");
+      o.textContent = "（語音清單尚未載入，點任一按鈕後再看）";
+      voiceSel.appendChild(o);
+      return;
+    }
+    // zh 語音排前面，zh-TW 最優先
+    var sorted = voices.slice().sort(function (a, b) {
+      function score(v) {
+        if (/^zh[-_]TW/i.test(v.lang)) return 0;
+        if (/^zh/i.test(v.lang)) return 1;
+        return 2;
+      }
+      return score(a) - score(b);
+    });
+    sorted.forEach(function (v) {
+      var o = document.createElement("option");
+      o.value = v.name + "|" + v.lang;
+      o.textContent = v.name + " (" + v.lang + ")";
+      voiceSel.appendChild(o);
+    });
+  }
+  loadVoices();
+  if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+
+  function currentVoice() {
+    var key = voiceSel.value || "";
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].name + "|" + voices[i].lang === key) return voices[i];
+    }
+    return null;
+  }
+
+  rateInp.addEventListener("input", function () { rateVal.textContent = rateInp.value; });
+
+  function speak(text) {
+    if (!window.speechSynthesis) {
+      log.innerHTML = '<span class="warn">此瀏覽器不支援 speechSynthesis</span>';
+      return;
+    }
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    var v = currentVoice();
+    if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "zh-TW"; }
+    u.rate = parseFloat(rateInp.value);
+    u.onstart = function () {
+      log.textContent = "唸出：「" + text + "」\n語音：" + (v ? v.name + " (" + v.lang + ")" : "預設 zh-TW") + "　語速：" + u.rate;
+    };
+    u.onerror = function (e) {
+      log.innerHTML = '<span class="warn">發聲失敗：' + (e.error || "unknown") + "</span>";
+    };
+    speechSynthesis.speak(u);
+    loadVoices(); // iOS 常在第一次互動後才給語音清單
+  }
+
+  Object.keys(GROUPS).forEach(function (g) {
+    var box = document.querySelector('[data-group="' + g + '"]');
+    GROUPS[g].forEach(function (t) {
+      var b = document.createElement("button");
+      b.className = "say";
+      b.innerHTML = t + (CAPS[t] ? '<span class="cap">' + CAPS[t] + "</span>" : "");
+      b.addEventListener("click", function () { speak(t); });
+      box.appendChild(b);
+    });
+  });
+})();
+</script>
+</body>
+</html>
