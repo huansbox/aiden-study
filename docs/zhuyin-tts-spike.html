@@ -76,12 +76,23 @@
 </div>
 
 <div class="panel">
+  <h2>6. 自動連播驗證（最重要，兩條都要跑）</h2>
+  <div class="hint">驗證 app 核心前提：<b>只按一次「開始」，之後每一題的聲音都由程式自動播、不再點按</b>。按下後請把 iPad 留在這個畫面（不要鎖屏、不要切走），等它自己播完 6 段（約 70 秒，間隔越拉越長，模擬弟弟答題的思考空檔）。兩條各驗一種播放方式：TTS＝語音合成路線；音檔＝家長親錄路線（每段換不同音檔，最容易被 iOS 擋）。</div>
+  <div class="btns">
+    <button class="say" id="autoTtsBtn">開始<span class="cap">TTS 連播</span></button>
+    <button class="say" id="autoAudioBtn">開始<span class="cap">音檔連播</span></button>
+  </div>
+  <div id="autoLog" style="font-size:.85rem; line-height:1.7; background:#faf8f3; border-radius:8px; padding:8px; margin-top:10px;">（尚未開始）</div>
+</div>
+
+<div class="panel">
   <h2>判讀表</h2>
   <div class="checklist">
     ✅ 第 3 區全對 → 可走「Mac 批次生成音檔」，維護最省力<br>
     ✅ 第 3 區失敗、第 4 區可以 → 走「真實字載體生成」，但無字組合（如 ㄅㄨˊ）要親錄補洞<br>
     ✅ 第 1、2 區都不理想 → 至少「符號單音」要家長親錄<br>
-    ❌ 音質整體聽不下去 → 全部親錄（約 50 段，我做錄音工具頁）
+    ❌ 音質整體聽不下去 → 全部親錄（約 50 段，我做錄音工具頁）<br>
+    ⚠️ 第 6 區任一段沒自動出聲（出現 ❌ 或整段沉默）→ 回報是哪一條的第幾段，播放層設計要改
   </div>
 </div>
 
@@ -174,6 +185,118 @@
       b.innerHTML = t + (CAPS[t] ? '<span class="cap">' + CAPS[t] + "</span>" : "");
       b.addEventListener("click", function () { speak(t); });
       box.appendChild(b);
+    });
+  });
+
+  // ===== 第 6 區：自動連播驗證 =====
+  // 間隔遞增（秒）：0, 4, 10, 20, 40, 70 — 模擬答題間越等越久的空檔
+  var AUTO_AT = [0, 4, 10, 20, 40, 70];
+  var autoLog = document.getElementById("autoLog");
+  var autoTtsBtn = document.getElementById("autoTtsBtn");
+  var autoAudioBtn = document.getElementById("autoAudioBtn");
+  var autoRunning = false;
+  var autoLines = [];
+  var countdownTimer = null;
+
+  function autoRender(extra) {
+    autoLog.innerHTML = autoLines.join("<br>") + (extra ? "<br>" + extra : "");
+  }
+
+  function autoFinish(label, okCount, total) {
+    autoRunning = false;
+    autoTtsBtn.disabled = autoAudioBtn.disabled = false;
+    clearInterval(countdownTimer);
+    var verdict = okCount === total
+      ? "✅ " + label + "：" + okCount + "/" + total + " 全部自動發聲成功"
+      : '<span class="warn">❌ ' + label + "：只成功 " + okCount + "/" + total + "，請回報上面哪幾段失敗</span>";
+    autoLines.push(verdict);
+    autoRender("");
+  }
+
+  function runChain(label, playFn) {
+    if (autoRunning) return;
+    autoRunning = true;
+    autoTtsBtn.disabled = autoAudioBtn.disabled = true;
+    autoLines = ["【" + label + "】開始，請勿再點按、勿鎖屏，全程約 " + AUTO_AT[AUTO_AT.length - 1] + " 秒"];
+    autoRender("");
+    var okCount = 0, done = 0, startMs = Date.now();
+
+    clearInterval(countdownTimer);
+    countdownTimer = setInterval(function () {
+      var elapsed = (Date.now() - startMs) / 1000;
+      var next = null;
+      for (var i = 0; i < AUTO_AT.length; i++) {
+        if (AUTO_AT[i] > elapsed) { next = AUTO_AT[i]; break; }
+      }
+      autoRender(next !== null ? "⏳ 下一段自動播放：約 " + Math.ceil(next - elapsed) + " 秒後" : "⏳ 播放中⋯");
+    }, 1000);
+
+    AUTO_AT.forEach(function (at, idx) {
+      setTimeout(function () {
+        playFn(idx, function (ok, detail) {
+          done++;
+          if (ok) okCount++;
+          autoLines.push((ok ? "✅" : '<span class="warn">❌</span>') + " 第 " + (idx + 1) + " 段（+" + at + "s）" + detail);
+          autoRender("");
+          if (done === AUTO_AT.length) autoFinish(label, okCount, AUTO_AT.length);
+        });
+      }, at * 1000);
+    });
+  }
+
+  // 6a. TTS 連播：同一批注音音節，全程 speechSynthesis 程式化發聲
+  var AUTO_TTS_TEXTS = ["ㄅㄚ", "ㄇㄚˇ", "ㄅㄨˊ", "ㄈㄚˇ", "爸爸", "ㄆㄨˋ"];
+  autoTtsBtn.addEventListener("click", function () {
+    if (!window.speechSynthesis) {
+      autoLog.innerHTML = '<span class="warn">此瀏覽器不支援 speechSynthesis</span>';
+      return;
+    }
+    runChain("TTS 連播", function (idx, report) {
+      var text = AUTO_TTS_TEXTS[idx];
+      var u = new SpeechSynthesisUtterance(text);
+      var v = currentVoice();
+      if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "zh-TW"; }
+      u.rate = parseFloat(rateInp.value);
+      var reported = false;
+      u.onstart = function () { if (!reported) { reported = true; report(true, "「" + text + "」"); } };
+      u.onerror = function (e) { if (!reported) { reported = true; report(false, "「" + text + "」錯誤：" + (e.error || "unknown")); } };
+      // onstart/onerror 都沒來（iOS 靜默吞掉）也要記失敗
+      setTimeout(function () { if (!reported) { reported = true; report(false, "「" + text + "」無回應（靜默）"); } }, 3000);
+      speechSynthesis.speak(u);
+    });
+  });
+
+  // 6b. 音檔連播：單一 <audio> 元素、每段換 src（兩種音高的生成 beep 交替），模擬親錄路線每題換音檔
+  function makeBeepDataUri(freq) {
+    var sr = 8000, dur = 0.4, n = Math.floor(sr * dur);
+    var bytes = new Uint8Array(44 + n * 2);
+    var dv = new DataView(bytes.buffer);
+    function wstr(off, s) { for (var i = 0; i < s.length; i++) bytes[off + i] = s.charCodeAt(i); }
+    wstr(0, "RIFF"); dv.setUint32(4, 36 + n * 2, true); wstr(8, "WAVE");
+    wstr(12, "fmt "); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, sr, true); dv.setUint32(28, sr * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true);
+    wstr(36, "data"); dv.setUint32(40, n * 2, true);
+    for (var i = 0; i < n; i++) {
+      var fade = Math.min(1, i / 200, (n - i) / 200); // 去爆音
+      dv.setInt16(44 + i * 2, Math.sin(2 * Math.PI * freq * i / sr) * fade * 12000, true);
+    }
+    var bin = "";
+    for (var j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
+    return "data:audio/wav;base64," + btoa(bin);
+  }
+  var beepUris = null;
+  var autoAudioEl = null;
+  autoAudioBtn.addEventListener("click", function () {
+    if (!beepUris) beepUris = [makeBeepDataUri(660), makeBeepDataUri(880)];
+    if (!autoAudioEl) autoAudioEl = new Audio();
+    runChain("音檔連播", function (idx, report) {
+      var reported = false;
+      autoAudioEl.onplaying = function () { if (!reported) { reported = true; report(true, idx % 2 ? "高音 beep" : "低音 beep"); } };
+      autoAudioEl.onerror = function () { if (!reported) { reported = true; report(false, "音檔載入/播放錯誤"); } };
+      autoAudioEl.src = beepUris[idx % 2];
+      var p = autoAudioEl.play();
+      if (p && p.catch) p.catch(function (err) { if (!reported) { reported = true; report(false, "play() 被拒：" + err.name); } });
+      setTimeout(function () { if (!reported) { reported = true; report(false, "無回應（靜默）"); } }, 3000);
     });
   });
 })();
