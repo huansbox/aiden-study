@@ -85,6 +85,8 @@ docs-dev/          內部開發文件（不部署）→ 見「快速參考」
 skipped_questions.md  跳過題目清單（供手動確認）
 ```
 
+`wiki/` + `.github/workflows/publish-wiki.yml` = GitHub wiki 唯一編輯處，CI 自動發佈到 `.wiki.git`，不要在網頁上編輯。穩定頁（Home/Maintenance）跟機制變更的 PR 順手改；快照頁（Plan/Roadmap/Tech-Debt）標快照日期，milestone 或每月用 /repo-wiki refresh 刷新。
+
 ## 技術決策
 
 - 資料處理：Python（pdfplumber 萃取、claude -p 批次分類）
