@@ -535,6 +535,8 @@ function batchSizeForMode(mode = "choice") {
   return normalizePracticeMode(mode) === "handwriting" ? 5 : 10;
 }
 
+// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
+// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
 function balancedBatchSize(remaining, max = 10) {
   if (remaining <= 0) return 0;
   if (remaining <= max) return remaining;
@@ -546,13 +548,8 @@ function nextBatchSizeForMode(remaining, mode = "choice") {
   return balancedBatchSize(remaining, batchSizeForMode(mode));
 }
 
-function beginHandwritingRemedial(reason = "hint") {
-  return {
-    stage: "remedial",
-    attempt: 1,
-    total: 3,
-    reason: reason === "selfCheck" ? "selfCheck" : "hint",
-  };
+function beginHandwritingRemedial() {
+  return { stage: "remedial", attempt: 1, total: 3 };
 }
 
 function advanceHandwritingRemedial(remedial) {
@@ -589,18 +586,6 @@ function handwritingRemedialPrompt(remedial) {
   if (attempt === 2) return "很好，自己練習寫寫看";
   if (attempt === 3) return "很好，再練習寫一次看看";
   return "";
-}
-
-function shouldShowHandwritingRemedialComparison(remedial) {
-  if (remedial && remedial.stage === "done") return true;
-  return remedial && remedial.stage === "review";
-}
-
-function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
-  return {
-    stats: recordModeAnswer(stats, questionId, false, "handwriting"),
-    errorBank: addModeError(errorBank, questionId, unit, "handwriting"),
-  };
 }
 
 function shouldMasterErrorPracticeCorrect(mode = "choice") {
@@ -804,11 +789,6 @@ const State = {
     state.stats = recordModeAnswer(state.stats, qId, isCorrect, mode);
     Storage.save(state);
   },
-  // 累計答錯次數（practiced − correct）。用來判斷是否「錯夠多次」才進錯題庫。
-  wrongCount(qId, mode = DEFAULT_PRACTICE_MODE) {
-    return modeWrongCount(state.stats, qId, mode);
-  },
-
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
     return filterModeErrorBank(state.errorBank, unitFilter, mode);
@@ -963,8 +943,6 @@ const quiz = {
   handwritingDataUrl: null,
   handwritingRemedialDataUrl: null,
   handwritingRemedial: null,
-  handwritingRemedialQuestionId: null,
-  handwritingRemedialAdvancedFor: null,
   handwritingRemedialHintVisible: false
 };
 
@@ -978,12 +956,6 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
-}
-
-// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
-// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
-function nextBatchSize(remaining, max = 10) {
-  return balancedBatchSize(remaining, max);
 }
 
 function showPage(id) {
@@ -1001,8 +973,6 @@ function resetQuestionRuntime() {
   quiz.handwritingDataUrl = null;
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
-  quiz.handwritingRemedialQuestionId = null;
-  quiz.handwritingRemedialAdvancedFor = null;
   quiz.handwritingRemedialHintVisible = false;
 }
 
@@ -1134,13 +1104,6 @@ function getCurrentQuestion() {
   return questionMap.get(quiz.queue[0]);
 }
 
-function getDisplayQuestion() {
-  if ((quiz.chineseStage === "remedial" || quiz.chineseStage === "remedialReview" || quiz.chineseStage === "remedialDone") && quiz.handwritingRemedialQuestionId) {
-    return questionMap.get(quiz.handwritingRemedialQuestionId) || getCurrentQuestion();
-  }
-  return getCurrentQuestion();
-}
-
 function submitAnswer(selected) {
   if (quiz.isAnswered) return;
   quiz.isAnswered = true;
@@ -1167,7 +1130,7 @@ function submitAnswer(selected) {
     } else {
       quiz.queue.push(q.id);
       // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
-      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，wrongCount 已含本次。
+      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，shouldAddModeError 讀到的 stats 已含本次。
       if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
     }
     State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
@@ -2059,14 +2022,7 @@ function setupHandwritingCanvas(canvas, onDone) {
   };
   document.getElementById("handwriting-done").onclick = () => {
     if (quiz.isAnswered) return;
-    const dataUrl = canvas.toDataURL("image/png");
-    if (typeof onDone === "function") {
-      onDone(dataUrl);
-      return;
-    }
-    quiz.handwritingDataUrl = dataUrl;
-    quiz.chineseStage = "selfCheck";
-    renderQuiz();
+    onDone(canvas.toDataURL("image/png"));
   };
 }
 
@@ -2076,16 +2032,15 @@ function bindHandwritingSelfCheck(q) {
   const needsPractice = document.getElementById("handwriting-needs-practice");
   if (needsPractice) needsPractice.onclick = () => {
     if (quiz.isAnswered) return;
-    startHandwritingRemedial(q, "selfCheck");
+    startHandwritingRemedial(q);
   };
 }
 
-function startHandwritingRemedial(q, reason = "hint") {
+function startHandwritingRemedial(q) {
   // 求助（看提示/不太會寫）＝立即記一次手寫答錯＋進手寫錯題庫（自評制，求助即需加強）
   State.recordAnswer(q.id, false, HANDWRITING_PRACTICE_MODE);
   State.addToErrorBank(q.id, q.unit, HANDWRITING_PRACTICE_MODE);
-  quiz.handwritingRemedial = beginHandwritingRemedial(reason);
-  quiz.handwritingRemedialQuestionId = q.id;
+  quiz.handwritingRemedial = beginHandwritingRemedial();
   quiz.handwritingDataUrl = null;
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedialHintVisible = false;
@@ -2094,7 +2049,6 @@ function startHandwritingRemedial(q, reason = "hint") {
 }
 
 function finishHandwritingRemedialQuestion(q) {
-  if (quiz.handwritingRemedialAdvancedFor === q.id) return;
   if (quiz.mode === "full" && quiz.queue[0] === q.id) {
     quiz.queue.shift();
     quiz.queue.push(q.id);
@@ -2104,7 +2058,6 @@ function finishHandwritingRemedialQuestion(q) {
     quiz.queue.push(q.id);
   }
   quiz.answered.push({ questionId: q.id, correct: false });
-  quiz.handwritingRemedialAdvancedFor = q.id;
 }
 
 function completeHandwritingRemedialAttempt(q, dataUrl) {
@@ -2179,7 +2132,7 @@ function bindChineseEvents(q) {
       });
     }
     const help = document.getElementById("handwriting-help");
-    if (help) help.onclick = () => startHandwritingRemedial(q, "hint");
+    if (help) help.onclick = () => startHandwritingRemedial(q);
     return;
   }
   if (quiz.chineseStage === "selfCheck") {
@@ -2232,7 +2185,7 @@ function bindChineseEvents(q) {
 }
 
 function renderQuiz() {
-  const q = getDisplayQuestion();
+  const q = getCurrentQuestion();
   if (!q) { leaveQuiz(); return; }
 
   if (quiz.activeQuestionId !== q.id) {

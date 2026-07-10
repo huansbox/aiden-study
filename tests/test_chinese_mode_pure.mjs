@@ -21,8 +21,6 @@ const {
   shouldOfferHandwritingRemedialHint,
   shouldTraceHandwritingRemedialHint,
   handwritingRemedialPrompt,
-  shouldShowHandwritingRemedialComparison,
-  recordHandwritingHelpMistake,
   shouldMasterErrorPracticeCorrect,
   getModeStat,
   hasModeStat,
@@ -51,8 +49,6 @@ return {
   shouldOfferHandwritingRemedialHint,
   shouldTraceHandwritingRemedialHint,
   handwritingRemedialPrompt,
-  shouldShowHandwritingRemedialComparison,
-  recordHandwritingHelpMistake,
   shouldMasterErrorPracticeCorrect,
   getModeStat,
   hasModeStat,
@@ -97,71 +93,62 @@ test("nextBatchSizeForMode：批末文案與實際開批題數一致", () => {
 });
 
 test("handwriting remedial：看提示從第 1 次描字開始，三次後完成", () => {
-  const first = beginHandwritingRemedial("hint");
-  assert.deepEqual(first, { stage: "remedial", attempt: 1, total: 3, reason: "hint" });
+  const first = beginHandwritingRemedial();
+  assert.deepEqual(first, { stage: "remedial", attempt: 1, total: 3 });
   assert.equal(shouldTraceHandwritingAttempt(first), true);
   assert.equal(shouldOfferHandwritingRemedialHint(first), false);
   assert.equal(shouldTraceHandwritingRemedialHint(first, true), false);
   assert.equal(handwritingRemedialPrompt(first), "");
-  assert.equal(shouldShowHandwritingRemedialComparison(first), false);
 
   const second = advanceHandwritingRemedial(first);
-  assert.deepEqual(second, { stage: "remedial", attempt: 2, total: 3, reason: "hint" });
+  assert.deepEqual(second, { stage: "remedial", attempt: 2, total: 3 });
   assert.equal(shouldTraceHandwritingAttempt(second), false);
   assert.equal(shouldOfferHandwritingRemedialHint(second), true);
   assert.equal(shouldTraceHandwritingRemedialHint(second), false);
   assert.equal(shouldTraceHandwritingRemedialHint(second, true), true);
   assert.equal(handwritingRemedialPrompt(second), "很好，自己練習寫寫看");
-  assert.equal(shouldShowHandwritingRemedialComparison(second), false);
 
   const third = advanceHandwritingRemedial(second);
-  assert.deepEqual(third, { stage: "review", attempt: 2, total: 3, reason: "hint" });
+  assert.deepEqual(third, { stage: "review", attempt: 2, total: 3 });
   assert.equal(shouldTraceHandwritingAttempt(third), false);
   assert.equal(shouldOfferHandwritingRemedialHint(third), false);
   assert.equal(shouldTraceHandwritingRemedialHint(third, true), false);
   assert.equal(handwritingRemedialPrompt(third), "很好，再看一下剛剛寫的字");
-  assert.equal(shouldShowHandwritingRemedialComparison(third), true);
 
   const thirdPractice = continueHandwritingRemedialAfterReview(third);
-  assert.deepEqual(thirdPractice, { stage: "remedial", attempt: 3, total: 3, reason: "hint" });
+  assert.deepEqual(thirdPractice, { stage: "remedial", attempt: 3, total: 3 });
   assert.equal(shouldTraceHandwritingAttempt(thirdPractice), false);
   assert.equal(shouldOfferHandwritingRemedialHint(thirdPractice), true);
   assert.equal(shouldTraceHandwritingRemedialHint(thirdPractice), false);
   assert.equal(shouldTraceHandwritingRemedialHint(thirdPractice, true), true);
   assert.equal(handwritingRemedialPrompt(thirdPractice), "很好，再練習寫一次看看");
-  assert.equal(shouldShowHandwritingRemedialComparison(thirdPractice), false);
 
   const done = advanceHandwritingRemedial(thirdPractice);
-  assert.deepEqual(done, { stage: "done", attempt: 3, total: 3, reason: "hint" });
+  assert.deepEqual(done, { stage: "done", attempt: 3, total: 3 });
   assert.equal(shouldOfferHandwritingRemedialHint(done), false);
   assert.equal(shouldTraceHandwritingRemedialHint(done, true), false);
   assert.equal(handwritingRemedialPrompt(done), "練完了，真棒");
-  assert.equal(shouldShowHandwritingRemedialComparison(done), true);
 });
 
-test("handwriting remedial：不太會寫 reason 正規化", () => {
-  assert.equal(beginHandwritingRemedial("selfCheck").reason, "selfCheck");
-  assert.equal(beginHandwritingRemedial("other").reason, "hint");
-});
-
-test("recordHandwritingHelpMistake：只記 handwriting 錯題，choice 不受影響", () => {
-  const choiceBank = [{ questionId: "q1", unit: 13, mode: "choice" }];
-  const { stats, errorBank } = recordHandwritingHelpMistake({}, choiceBank, "q1", 13);
+// 看提示/不太會寫 求助路徑＝立即記一次 handwriting 答錯＋進手寫錯題庫（app 端走 State.recordAnswer + State.addToErrorBank）
+test("求助記錯：只記 handwriting，choice 不受影響", () => {
+  const stats = recordModeAnswer({}, "q1", false, "handwriting");
+  const errorBank = addModeError([{ questionId: "q1", unit: 13, mode: "choice" }], "q1", 13, "handwriting");
   assert.deepEqual(getModeStat(stats, "q1", "handwriting"), { practiced: 1, correct: 0 });
   assert.deepEqual(getModeStat(stats, "q1", "choice"), { practiced: 0, correct: 0 });
   assert.equal(filterModeErrorBank(errorBank, 13, "choice").length, 1);
   assert.equal(filterModeErrorBank(errorBank, 13, "handwriting").length, 1);
 });
 
-test("recordHandwritingHelpMistake：remedial 完成後錯題仍保留", () => {
-  const recorded = recordHandwritingHelpMistake({}, [], "q2", 14);
-  let remedial = beginHandwritingRemedial("hint");
+test("求助記錯：remedial 完成後錯題仍保留", () => {
+  const errorBank = addModeError([], "q2", 14, "handwriting");
+  let remedial = beginHandwritingRemedial();
   remedial = advanceHandwritingRemedial(remedial);
   remedial = advanceHandwritingRemedial(remedial);
   remedial = continueHandwritingRemedialAfterReview(remedial);
   remedial = advanceHandwritingRemedial(remedial);
   assert.equal(remedial.stage, "done");
-  assert.equal(filterModeErrorBank(recorded.errorBank, 14, "handwriting").some(e => e.questionId === "q2"), true);
+  assert.equal(filterModeErrorBank(errorBank, 14, "handwriting").some(e => e.questionId === "q2"), true);
 });
 
 test("shouldMasterErrorPracticeCorrect：只有 handwriting 錯題答對會加入 mastered", () => {
