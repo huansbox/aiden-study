@@ -2081,10 +2081,9 @@ function bindHandwritingSelfCheck(q) {
 }
 
 function startHandwritingRemedial(q, reason = "hint") {
-  const recorded = recordHandwritingHelpMistake(state.stats, state.errorBank, q.id, q.unit);
-  state.stats = recorded.stats;
-  state.errorBank = recorded.errorBank;
-  Storage.save(state);
+  // 求助（看提示/不太會寫）＝立即記一次手寫答錯＋進手寫錯題庫（自評制，求助即需加強）
+  State.recordAnswer(q.id, false, HANDWRITING_PRACTICE_MODE);
+  State.addToErrorBank(q.id, q.unit, HANDWRITING_PRACTICE_MODE);
   quiz.handwritingRemedial = beginHandwritingRemedial(reason);
   quiz.handwritingRemedialQuestionId = q.id;
   quiz.handwritingDataUrl = null;
@@ -2237,16 +2236,8 @@ function renderQuiz() {
   if (!q) { leaveQuiz(); return; }
 
   if (quiz.activeQuestionId !== q.id) {
+    resetQuestionRuntime();
     quiz.activeQuestionId = q.id;
-    quiz.chineseStage = "find";
-    quiz.chinesePickedIndex = null;
-    quiz.chineseChoices = null;
-    quiz.handwritingDataUrl = null;
-    quiz.handwritingRemedialDataUrl = null;
-    quiz.handwritingRemedial = null;
-    quiz.handwritingRemedialQuestionId = null;
-    quiz.handwritingRemedialAdvancedFor = null;
-    quiz.handwritingRemedialHintVisible = false;
   }
 
   // Mode label
