@@ -1393,24 +1393,8 @@ function renderHome() {
   }
   for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
-    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
-    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
-    let fullStatus, fullLabel;
 
-    if (isCleared) {
-      // 已通關
-      fullLabel = "全部練習";
-      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
-    } else if (done > 0) {
-      // 進行中
-      fullLabel = "全部練習（接續）";
-      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
-    } else {
-      // 未開始
-      fullLabel = "全部練習";
-      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
-    }
-
+    // 國語分支不用下方的 choice 整單元狀態，先行處理免得每單元白掃一次題庫
     if (subjKey === "chinese") {
       const choiceStatus = chineseModeStatus(u.id, totalInUnit, DEFAULT_PRACTICE_MODE);
       const handwritingStatus = chineseModeStatus(u.id, totalInUnit, HANDWRITING_PRACTICE_MODE);
@@ -1435,6 +1419,24 @@ function renderHome() {
           ${handwritingCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">重置手寫進度</button>` : ''}
         </div>`;
       continue;
+    }
+
+    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
+    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
+    let fullStatus, fullLabel;
+
+    if (isCleared) {
+      // 已通關
+      fullLabel = "全部練習";
+      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (done > 0) {
+      // 進行中
+      fullLabel = "全部練習（接續）";
+      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
+    } else {
+      // 未開始
+      fullLabel = "全部練習";
+      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
 
     html += `
