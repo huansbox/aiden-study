@@ -2052,7 +2052,10 @@ function bindHandwritingSelfCheck(q) {
   const btn = document.getElementById("handwriting-correct");
   if (btn) btn.onclick = () => submitAnswer(q.answer);
   const needsPractice = document.getElementById("handwriting-needs-practice");
-  if (needsPractice) needsPractice.onclick = () => startHandwritingRemedial(q, "selfCheck");
+  if (needsPractice) needsPractice.onclick = () => {
+    if (quiz.isAnswered) return;
+    startHandwritingRemedial(q, "selfCheck");
+  };
 }
 
 function startHandwritingRemedial(q, reason = "hint") {
@@ -2734,6 +2737,8 @@ function renderFeedback(correct, q) {
     wrongHint = "答錯了，紅色格子旁有正確答案";
   } else if (q.type === "chinese_correction") {
     document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
+    // 手寫 selfCheck 的「不太會寫／我寫對了」在作答後也要失效，避免對已 mastered 的題再記錯
+    document.querySelectorAll(".handwriting-actions .st-btn").forEach(btn => { btn.disabled = true; });
     const selectedValue = quiz._lastSelected;
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.classList.add("disabled");
