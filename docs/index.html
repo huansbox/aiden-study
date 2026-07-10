@@ -2003,8 +2003,10 @@ function setupHandwritingCanvas(canvas, onDone) {
     return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
   };
 
+  // 只認第一個觸點（isPrimary）：手掌或第二指落板不得重置 path、
+  // 不得與主筆畫交錯連線、抬起也不得切斷主筆畫
   const start = (ev) => {
-    if (quiz.isAnswered) return;
+    if (quiz.isAnswered || !ev.isPrimary) return;
     drawing = true;
     canvas.setPointerCapture(ev.pointerId);
     const p = point(ev);
@@ -2013,26 +2015,45 @@ function setupHandwritingCanvas(canvas, onDone) {
     ev.preventDefault();
   };
   const move = (ev) => {
-    if (!drawing || quiz.isAnswered) return;
+    if (!drawing || quiz.isAnswered || !ev.isPrimary) return;
     const p = point(ev);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
     ev.preventDefault();
   };
   const end = (ev) => {
-    if (!drawing) return;
+    if (!drawing || !ev.isPrimary) return;
     drawing = false;
     try { canvas.releasePointerCapture(ev.pointerId); } catch {}
     ev.preventDefault();
   };
 
+  // 旋轉／分割視窗改變外框尺寸時重設 backing store（否則畫布被裁切或出現寫不進的死區），
+  // 既有筆跡等比搬回。畫面切走後 canvas 脫離 DOM → 監聽器自我移除。
+  const onWindowResize = () => {
+    if (!canvas.isConnected) { window.removeEventListener("resize", onWindowResize); return; }
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    if (canvas.width === Math.max(1, Math.round(rect.width * scale)) &&
+        canvas.height === Math.max(1, Math.round(rect.height * scale))) return;
+    const prev = document.createElement("canvas");
+    prev.width = canvas.width;
+    prev.height = canvas.height;
+    prev.getContext("2d").drawImage(canvas, 0, 0);
+    resize();
+    ctx.drawImage(prev, 0, 0, rect.width, rect.height);
+  };
+
   resize();
+  window.addEventListener("resize", onWindowResize);
   canvas.addEventListener("pointerdown", start);
   canvas.addEventListener("pointermove", move);
   canvas.addEventListener("pointerup", end);
   canvas.addEventListener("pointercancel", end);
   document.getElementById("handwriting-clear").onclick = () => {
     if (quiz.isAnswered) return;
+    drawing = false;               // 清除＝重新開始：進行中的筆畫一併結束
+    ctx.beginPath();               // 丟棄累積 path，否則下一個 pointermove 會整條重畫回來
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
   document.getElementById("handwriting-done").onclick = () => {
