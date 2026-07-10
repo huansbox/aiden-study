@@ -261,7 +261,8 @@ body {
   display: flex; align-items: center; justify-content: center;
   color: rgba(15, 63, 58, 0.16); font-size: min(70vw, 22rem, 42vh); font-weight: 700; line-height: 1;
 }
-.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size); max-width: 100%; }
+/* fallback 100%：selfCheck 的按鈕列在 .handwriting-panel 外（無此變數），與上方比較卡同寬 */
+.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size, 100%); max-width: 100%; }
 .handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
 .handwriting-remedial-note {
   color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
@@ -534,6 +535,8 @@ function batchSizeForMode(mode = "choice") {
   return normalizePracticeMode(mode) === "handwriting" ? 5 : 10;
 }
 
+// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
+// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
 function balancedBatchSize(remaining, max = 10) {
   if (remaining <= 0) return 0;
   if (remaining <= max) return remaining;
@@ -545,13 +548,8 @@ function nextBatchSizeForMode(remaining, mode = "choice") {
   return balancedBatchSize(remaining, batchSizeForMode(mode));
 }
 
-function beginHandwritingRemedial(reason = "hint") {
-  return {
-    stage: "remedial",
-    attempt: 1,
-    total: 3,
-    reason: reason === "selfCheck" ? "selfCheck" : "hint",
-  };
+function beginHandwritingRemedial() {
+  return { stage: "remedial", attempt: 1, total: 3 };
 }
 
 function advanceHandwritingRemedial(remedial) {
@@ -588,18 +586,6 @@ function handwritingRemedialPrompt(remedial) {
   if (attempt === 2) return "很好，自己練習寫寫看";
   if (attempt === 3) return "很好，再練習寫一次看看";
   return "";
-}
-
-function shouldShowHandwritingRemedialComparison(remedial) {
-  if (remedial && remedial.stage === "done") return true;
-  return remedial && remedial.stage === "review";
-}
-
-function recordHandwritingHelpMistake(stats, errorBank, questionId, unit) {
-  return {
-    stats: recordModeAnswer(stats, questionId, false, "handwriting"),
-    errorBank: addModeError(errorBank, questionId, unit, "handwriting"),
-  };
 }
 
 function shouldMasterErrorPracticeCorrect(mode = "choice") {
@@ -803,11 +789,6 @@ const State = {
     state.stats = recordModeAnswer(state.stats, qId, isCorrect, mode);
     Storage.save(state);
   },
-  // 累計答錯次數（practiced − correct）。用來判斷是否「錯夠多次」才進錯題庫。
-  wrongCount(qId, mode = DEFAULT_PRACTICE_MODE) {
-    return modeWrongCount(state.stats, qId, mode);
-  },
-
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
     return filterModeErrorBank(state.errorBank, unitFilter, mode);
@@ -962,8 +943,6 @@ const quiz = {
   handwritingDataUrl: null,
   handwritingRemedialDataUrl: null,
   handwritingRemedial: null,
-  handwritingRemedialQuestionId: null,
-  handwritingRemedialAdvancedFor: null,
   handwritingRemedialHintVisible: false
 };
 
@@ -977,12 +956,6 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
-}
-
-// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
-// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
-function nextBatchSize(remaining, max = 10) {
-  return balancedBatchSize(remaining, max);
 }
 
 function showPage(id) {
@@ -1000,8 +973,6 @@ function resetQuestionRuntime() {
   quiz.handwritingDataUrl = null;
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
-  quiz.handwritingRemedialQuestionId = null;
-  quiz.handwritingRemedialAdvancedFor = null;
   quiz.handwritingRemedialHintVisible = false;
 }
 
@@ -1133,13 +1104,6 @@ function getCurrentQuestion() {
   return questionMap.get(quiz.queue[0]);
 }
 
-function getDisplayQuestion() {
-  if ((quiz.chineseStage === "remedial" || quiz.chineseStage === "remedialReview" || quiz.chineseStage === "remedialDone") && quiz.handwritingRemedialQuestionId) {
-    return questionMap.get(quiz.handwritingRemedialQuestionId) || getCurrentQuestion();
-  }
-  return getCurrentQuestion();
-}
-
 function submitAnswer(selected) {
   if (quiz.isAnswered) return;
   quiz.isAnswered = true;
@@ -1166,7 +1130,7 @@ function submitAnswer(selected) {
     } else {
       quiz.queue.push(q.id);
       // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
-      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，wrongCount 已含本次。
+      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，shouldAddModeError 讀到的 stats 已含本次。
       if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
     }
     State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
@@ -1429,24 +1393,8 @@ function renderHome() {
   }
   for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
-    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
-    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
-    let fullStatus, fullLabel;
 
-    if (isCleared) {
-      // 已通關
-      fullLabel = "全部練習";
-      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
-    } else if (done > 0) {
-      // 進行中
-      fullLabel = "全部練習（接續）";
-      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
-    } else {
-      // 未開始
-      fullLabel = "全部練習";
-      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
-    }
-
+    // 國語分支不用下方的 choice 整單元狀態，先行處理免得每單元白掃一次題庫
     if (subjKey === "chinese") {
       const choiceStatus = chineseModeStatus(u.id, totalInUnit, DEFAULT_PRACTICE_MODE);
       const handwritingStatus = chineseModeStatus(u.id, totalInUnit, HANDWRITING_PRACTICE_MODE);
@@ -1471,6 +1419,24 @@ function renderHome() {
           ${handwritingCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">重置手寫進度</button>` : ''}
         </div>`;
       continue;
+    }
+
+    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
+    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
+    let fullStatus, fullLabel;
+
+    if (isCleared) {
+      // 已通關
+      fullLabel = "全部練習";
+      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (done > 0) {
+      // 進行中
+      fullLabel = "全部練習（接續）";
+      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
+    } else {
+      // 未開始
+      fullLabel = "全部練習";
+      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
 
     html += `
@@ -2003,8 +1969,10 @@ function setupHandwritingCanvas(canvas, onDone) {
     return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
   };
 
+  // 只認第一個觸點（isPrimary）：手掌或第二指落板不得重置 path、
+  // 不得與主筆畫交錯連線、抬起也不得切斷主筆畫
   const start = (ev) => {
-    if (quiz.isAnswered) return;
+    if (quiz.isAnswered || !ev.isPrimary) return;
     drawing = true;
     canvas.setPointerCapture(ev.pointerId);
     const p = point(ev);
@@ -2013,38 +1981,50 @@ function setupHandwritingCanvas(canvas, onDone) {
     ev.preventDefault();
   };
   const move = (ev) => {
-    if (!drawing || quiz.isAnswered) return;
+    if (!drawing || quiz.isAnswered || !ev.isPrimary) return;
     const p = point(ev);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
     ev.preventDefault();
   };
   const end = (ev) => {
-    if (!drawing) return;
+    if (!drawing || !ev.isPrimary) return;
     drawing = false;
     try { canvas.releasePointerCapture(ev.pointerId); } catch {}
     ev.preventDefault();
   };
 
+  // 旋轉／分割視窗改變外框尺寸時重設 backing store（否則畫布被裁切或出現寫不進的死區），
+  // 既有筆跡等比搬回。畫面切走後 canvas 脫離 DOM → 監聽器自我移除。
+  const onWindowResize = () => {
+    if (!canvas.isConnected) { window.removeEventListener("resize", onWindowResize); return; }
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    if (canvas.width === Math.max(1, Math.round(rect.width * scale)) &&
+        canvas.height === Math.max(1, Math.round(rect.height * scale))) return;
+    const prev = document.createElement("canvas");
+    prev.width = canvas.width;
+    prev.height = canvas.height;
+    prev.getContext("2d").drawImage(canvas, 0, 0);
+    resize();
+    ctx.drawImage(prev, 0, 0, rect.width, rect.height);
+  };
+
   resize();
+  window.addEventListener("resize", onWindowResize);
   canvas.addEventListener("pointerdown", start);
   canvas.addEventListener("pointermove", move);
   canvas.addEventListener("pointerup", end);
   canvas.addEventListener("pointercancel", end);
   document.getElementById("handwriting-clear").onclick = () => {
     if (quiz.isAnswered) return;
+    drawing = false;               // 清除＝重新開始：進行中的筆畫一併結束
+    ctx.beginPath();               // 丟棄累積 path，否則下一個 pointermove 會整條重畫回來
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
   document.getElementById("handwriting-done").onclick = () => {
     if (quiz.isAnswered) return;
-    const dataUrl = canvas.toDataURL("image/png");
-    if (typeof onDone === "function") {
-      onDone(dataUrl);
-      return;
-    }
-    quiz.handwritingDataUrl = dataUrl;
-    quiz.chineseStage = "selfCheck";
-    renderQuiz();
+    onDone(canvas.toDataURL("image/png"));
   };
 }
 
@@ -2052,16 +2032,17 @@ function bindHandwritingSelfCheck(q) {
   const btn = document.getElementById("handwriting-correct");
   if (btn) btn.onclick = () => submitAnswer(q.answer);
   const needsPractice = document.getElementById("handwriting-needs-practice");
-  if (needsPractice) needsPractice.onclick = () => startHandwritingRemedial(q, "selfCheck");
+  if (needsPractice) needsPractice.onclick = () => {
+    if (quiz.isAnswered) return;
+    startHandwritingRemedial(q);
+  };
 }
 
-function startHandwritingRemedial(q, reason = "hint") {
-  const recorded = recordHandwritingHelpMistake(state.stats, state.errorBank, q.id, q.unit);
-  state.stats = recorded.stats;
-  state.errorBank = recorded.errorBank;
-  Storage.save(state);
-  quiz.handwritingRemedial = beginHandwritingRemedial(reason);
-  quiz.handwritingRemedialQuestionId = q.id;
+function startHandwritingRemedial(q) {
+  // 求助（看提示/不太會寫）＝立即記一次手寫答錯＋進手寫錯題庫（自評制，求助即需加強）
+  State.recordAnswer(q.id, false, HANDWRITING_PRACTICE_MODE);
+  State.addToErrorBank(q.id, q.unit, HANDWRITING_PRACTICE_MODE);
+  quiz.handwritingRemedial = beginHandwritingRemedial();
   quiz.handwritingDataUrl = null;
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedialHintVisible = false;
@@ -2070,7 +2051,6 @@ function startHandwritingRemedial(q, reason = "hint") {
 }
 
 function finishHandwritingRemedialQuestion(q) {
-  if (quiz.handwritingRemedialAdvancedFor === q.id) return;
   if (quiz.mode === "full" && quiz.queue[0] === q.id) {
     quiz.queue.shift();
     quiz.queue.push(q.id);
@@ -2080,7 +2060,6 @@ function finishHandwritingRemedialQuestion(q) {
     quiz.queue.push(q.id);
   }
   quiz.answered.push({ questionId: q.id, correct: false });
-  quiz.handwritingRemedialAdvancedFor = q.id;
 }
 
 function completeHandwritingRemedialAttempt(q, dataUrl) {
@@ -2155,7 +2134,7 @@ function bindChineseEvents(q) {
       });
     }
     const help = document.getElementById("handwriting-help");
-    if (help) help.onclick = () => startHandwritingRemedial(q, "hint");
+    if (help) help.onclick = () => startHandwritingRemedial(q);
     return;
   }
   if (quiz.chineseStage === "selfCheck") {
@@ -2208,20 +2187,12 @@ function bindChineseEvents(q) {
 }
 
 function renderQuiz() {
-  const q = getDisplayQuestion();
+  const q = getCurrentQuestion();
   if (!q) { leaveQuiz(); return; }
 
   if (quiz.activeQuestionId !== q.id) {
+    resetQuestionRuntime();
     quiz.activeQuestionId = q.id;
-    quiz.chineseStage = "find";
-    quiz.chinesePickedIndex = null;
-    quiz.chineseChoices = null;
-    quiz.handwritingDataUrl = null;
-    quiz.handwritingRemedialDataUrl = null;
-    quiz.handwritingRemedial = null;
-    quiz.handwritingRemedialQuestionId = null;
-    quiz.handwritingRemedialAdvancedFor = null;
-    quiz.handwritingRemedialHintVisible = false;
   }
 
   // Mode label
@@ -2734,6 +2705,8 @@ function renderFeedback(correct, q) {
     wrongHint = "答錯了，紅色格子旁有正確答案";
   } else if (q.type === "chinese_correction") {
     document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
+    // 手寫 selfCheck 的「不太會寫／我寫對了」在作答後也要失效，避免對已 mastered 的題再記錯
+    document.querySelectorAll(".handwriting-actions .st-btn").forEach(btn => { btn.disabled = true; });
     const selectedValue = quiz._lastSelected;
     document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
       btn.classList.add("disabled");
