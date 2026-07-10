@@ -261,7 +261,8 @@ body {
   display: flex; align-items: center; justify-content: center;
   color: rgba(15, 63, 58, 0.16); font-size: min(70vw, 22rem, 42vh); font-weight: 700; line-height: 1;
 }
-.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size); max-width: 100%; }
+/* fallback 100%：selfCheck 的按鈕列在 .handwriting-panel 外（無此變數），與上方比較卡同寬 */
+.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size, 100%); max-width: 100%; }
 .handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
 .handwriting-remedial-note {
   color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
