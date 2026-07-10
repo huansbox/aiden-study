@@ -1,7 +1,9 @@
 # PRD：注音符號學習 app（弟弟版 v1）——「我會拼字了」
 
 > 2026-07-02 由規劃 session 產出：8 題逐題對齊家長 ＋ 3 個獨立 reviewer agent 審查（架構／測試接縫／幼兒教學，全數 approve-with-changes，修正已併入本文）。
-> GitHub issue 掛 `ready-for-agent`。**實作前先讀本文末「⚠️ 待家長拍板」節——有 2 項開工前置。**
+> GitHub issue 掛 `ready-for-agent`。~~**實作前先讀本文末「⚠️ 待家長拍板」節——有 2 項開工前置。**~~
+>
+> **狀態更新 2026-07-11**：「⚠️ 待家長拍板」節已全數處理完畢，以 GitHub issue #15 的「開工拍板紀錄」comment 為準——聲音策略＝**全親錄**；先走 **MVP 選項 A**（3 符號 ㄅㄇㄚ＋ㄅㄚ/ㄇㄚ×四聲，只做聽音辨認＋示範卡＋聽音組字）；**雲端同步延後**（CF 帳號、child 識別字串兩項拍板隨之延後）。spike 頁已搬至 `docs/zhuyin-tts-spike.html`（自動連播驗證已補、家長 iPad 真機通過，勿重做）。MVP 拆票＝#15 的 sub-issues。
 
 ## Problem Statement
 
