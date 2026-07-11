@@ -1,0 +1,17 @@
+// 家庭進度同步服務部署設定。部署步驟（#27，一次性）：
+//   1. npx wrangler login                                  ← 家長瀏覽器 OAuth（HITL）
+//   2. npx wrangler kv namespace create SYNC_KV            ← 把回傳的 id 填進下方 kv_namespaces.id
+//   3. npx wrangler secret put TOKEN                        ← 貼入鑄好的 family token（不進 git）
+//      token 一律用 `openssl rand -hex 16` 產生：?k= query 傳遞經 URL 解碼，含 '+'/'%' 的 token 會壞
+//   4. npx wrangler deploy
+{
+  "name": "aiden-kids-sync",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-07-01",
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "a2e1919289e84a21bb2169097ab33877"
+    }
+  ]
+}
