@@ -1,7 +1,7 @@
 # Aiden Study - 三下題庫練習網站（自然＋數學＋社會＋國語）
 
 - 詞彙表見 `CONTEXT.md`；涉及架構的改動先查 `docs-dev/adr/`（本 repo `docs/` 是部署目錄，ADR 放 docs-dev）
-- **本 repo 已拍板重整為全家學習平台 monorepo**（ADR-0001；hub＋registry＋各 app 子資料夾＋自訂網域＋進度同步），規劃 grill 進行中，落地前現有結構照舊
+- **本 repo 已拍板重整為全家學習平台 monorepo**（ADR-0001～0004）：spec＝GitHub issue #26（兩顆 child 圖示入口＋registry 驅動＋kids.linshuhuan.com＋CF Worker 同步；Phase 1 重整/搬遷、Phase 2 同步），待 /to-issues 拆票；落地前現有結構照舊
 
 ## 專案目標
 
