@@ -142,6 +142,25 @@
     border-radius: 30px; padding: 12px 28px; cursor: pointer;
   }
   .msg { font-size: 1rem; color: #667; line-height: 1.8; text-align: center; max-width: 420px; }
+
+  /* 家長區（文字介面，弟弟不進來） */
+  .parent-link { background: none; border: none; color: #99a; font-size: 0.9rem; text-decoration: underline; cursor: pointer; margin-top: 24px; }
+  .parent-screen { justify-content: flex-start; align-items: stretch; gap: 14px; overflow-y: auto; padding-bottom: 24px; }
+  .parent-title { font-size: 1.3rem; color: #445; margin: 8px 0 0; }
+  .parent-block { background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .parent-label { font-size: 0.85rem; color: #778; margin-bottom: 8px; }
+  .mode-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 0.95rem; padding: 8px 14px; border-radius: 20px; border: 2px solid #d8c9ae; background: #fff; cursor: pointer; }
+  .chip.on { background: #43a047; border-color: #43a047; color: #fff; }
+  .overview { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .overview td, .overview th { padding: 4px 6px; border-bottom: 1px solid #eee6d8; text-align: left; }
+  .overview .stat-weak { color: #c0392b; }
+  .overview .stat-new { color: #99a; }
+  .overview .stat-ok { color: #2a8a4a; }
+  .parent-btn { font-size: 0.95rem; padding: 10px 16px; border: none; border-radius: 8px; background: #e8eaef; color: #223; cursor: pointer; margin-right: 8px; }
+  .parent-btn.danger { background: #f6d7d4; color: #a12d22; }
+  .parent-status { font-size: 0.85rem; color: #667; margin-top: 8px; line-height: 1.6; word-break: break-all; }
+  #backup-box { width: 100%; margin-top: 10px; font-size: 12px; font-family: ui-monospace, monospace; border: 1px solid #d8c9ae; border-radius: 8px; padding: 8px; }
 </style>
 </head>
 <body>
@@ -150,6 +169,38 @@
     <h1 class="home-title">ㄅㄆㄇ 拼字小遊戲</h1>
     <p class="home-sub">給弟弟的注音練習（家長按開始）</p>
     <button class="btn-start" id="btn-start">▶ 開始練習</button>
+    <button class="parent-link" id="btn-parent">家長區</button>
+  </div>
+  <div id="screen-parent" class="screen parent-screen hidden">
+    <h2 class="parent-title">家長區</h2>
+    <div class="parent-block">
+      <div class="parent-label">練習範圍（本次開啟有效）</div>
+      <div class="mode-chips">
+        <button class="chip" data-mode="all">混合（預設）</button>
+        <button class="chip" data-mode="listen">只認符號</button>
+        <button class="chip" data-mode="build">只拼音節</button>
+      </div>
+    </div>
+    <div class="parent-block">
+      <div class="parent-label">進度總覽</div>
+      <table class="overview" id="parent-overview"></table>
+    </div>
+    <div class="parent-block">
+      <div class="parent-label">音效自檢（逐段播放全部音檔）</div>
+      <button class="parent-btn" id="btn-audit">開始自檢</button>
+      <div class="parent-status" id="audit-status"></div>
+    </div>
+    <div class="parent-block">
+      <div class="parent-label">進度備份／還原（只含這個 app 的進度）</div>
+      <button class="parent-btn" id="btn-export">匯出</button>
+      <button class="parent-btn" id="btn-import">還原貼上的備份</button>
+      <textarea id="backup-box" rows="4" placeholder="匯出後複製保存；還原時把備份貼進來再按還原"></textarea>
+      <div class="parent-status" id="backup-status"></div>
+    </div>
+    <div class="parent-block">
+      <button class="parent-btn danger" id="btn-reset">重置全部進度</button>
+    </div>
+    <button class="btn-quiet" id="btn-parent-home">回首頁</button>
   </div>
   <div id="screen-card" class="screen hidden">
     <div id="dots"></div>
@@ -477,6 +528,8 @@ const app = {
   symbolAudio: {},   // glyph -> 音檔 key
   syllables: [],     // content.syllables（音節卡與聲調鈕用）
   rewards: null,     // ../rewards.json manifest（缺＝批末靜默無獎圖）
+  practiceMode: "all", // 家長選的練習範圍：all｜listen（只符號卡）｜build（只音節卡）；不入存檔
+  audioKeys: [],     // content.json 宣告的全部音檔 key（音效自檢用）
   hasAudio: new Set(),
   progress: null,
   queue: [],         // 本批剩餘卡（zyBuildPool 的卡物件）
@@ -517,7 +570,9 @@ function renderDots() {
 }
 
 function startBatch() {
-  const pool = zyBuildPool(app.entryOrder, app.symbolAudio, app.syllables, app.progress);
+  const pool = zyBuildPool(app.entryOrder, app.symbolAudio, app.syllables, app.progress)
+    .filter((c) => app.practiceMode === "all" ||
+      (app.practiceMode === "listen" ? c.kind === "sym" : c.kind === "syl"));
   app.queue = zyBuildBatch({
     pool,
     progress: app.progress,
@@ -810,6 +865,7 @@ async function init() {
     const keys = [];
     for (const s of content.symbols) keys.push(s.audio);
     for (const y of content.syllables) { keys.push(y.audio); if (y.word) keys.push(y.word.audio); }
+    app.audioKeys = keys;
     await Promise.all(keys.map(async (k) => {
       try {
         const r = await fetch(app.audioDir + k + app.audioExt, { method: "HEAD" });
@@ -848,6 +904,92 @@ btnStart.addEventListener("click", async () => {
 document.getElementById("btn-again").addEventListener("click", () => startBatch());
 document.getElementById("btn-done").addEventListener("click", () => showScreen("screen-home"));
 document.getElementById("btn-msg-home").addEventListener("click", () => showScreen("screen-home"));
+
+// ════════════════════════════════════════════════════
+// 家長區：練習範圍、進度總覽、音效自檢、匯出／匯入逃生門、重置
+// 匯出／匯入＝哥哥版 docs/index.html _exportProgress/_importProgress pattern
+// （commit 0e84d58 時期版本）簡化：只 scope aiden_zhuyin_v1、文字框手動複製貼上。
+// ════════════════════════════════════════════════════
+function renderParent() {
+  for (const chip of document.querySelectorAll(".chip")) {
+    chip.classList.toggle("on", chip.dataset.mode === app.practiceMode);
+  }
+  const rows = [];
+  const row = (label, kind, st) => {
+    const status = !st.introduced
+      ? '<td class="stat-new">未學</td>'
+      : st.wrong
+        ? '<td class="stat-weak">要加強</td>'
+        : '<td class="stat-ok">已學</td>';
+    rows.push(`<tr><td>${label}</td><td>${kind}</td>${status}<td>${st.correct}／${st.practiced}</td></tr>`);
+  };
+  for (const g of app.entryOrder) row(g, "符號", zyCardState(app.progress, zyCardId(g)));
+  for (const y of app.syllables) row(y.onset + y.rime + TONE_MARK[y.tone], "音節", zyCardState(app.progress, zySylId(y)));
+  document.getElementById("parent-overview").innerHTML =
+    "<tr><th>卡</th><th>類型</th><th>狀態</th><th>答對／作答</th></tr>" + rows.join("");
+}
+
+document.getElementById("btn-parent").addEventListener("click", async () => {
+  await ready;
+  if (!app.content) { ready = init(); await ready; } // 上次失敗（如斷網）→ 重試，比照開始鈕
+  if (!app.content) return; // init 失敗畫面已顯示
+  renderParent();
+  showScreen("screen-parent");
+});
+document.getElementById("btn-parent-home").addEventListener("click", () => showScreen("screen-home"));
+document.querySelector(".mode-chips").addEventListener("click", (ev) => {
+  const chip = ev.target.closest(".chip");
+  if (!chip) return;
+  app.practiceMode = chip.dataset.mode;
+  renderParent();
+});
+
+// 音效自檢：缺檔列清單（不沉默跳過），可播的逐段連播一輪
+document.getElementById("btn-audit").addEventListener("click", () => {
+  const missing = app.audioKeys.filter((k) => !app.hasAudio.has(k));
+  const avail = app.audioKeys.filter((k) => app.hasAudio.has(k));
+  document.getElementById("audit-status").textContent =
+    (missing.length
+      ? `缺 ${missing.length}／${app.audioKeys.length} 段：${missing.join("、")}`
+      : `全部 ${app.audioKeys.length} 段音檔齊備`) +
+    (avail.length ? `。播放 ${avail.length} 段中⋯` : "");
+  playChain(avail);
+});
+
+document.getElementById("btn-export").addEventListener("click", () => {
+  let raw = null;
+  try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { /* 讀不到照樣提示 */ }
+  document.getElementById("backup-box").value = raw || "";
+  document.getElementById("backup-status").textContent = raw
+    ? "已填入下方文字框——全選複製後存到安全的地方（如備忘錄）。"
+    : "目前沒有進度可匯出。";
+  if (raw) document.getElementById("backup-box").select();
+});
+
+document.getElementById("btn-import").addEventListener("click", () => {
+  const $st = document.getElementById("backup-status");
+  const text = document.getElementById("backup-box").value.trim();
+  if (!text) { $st.textContent = "請先把備份內容貼進文字框。"; return; }
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (e) { parsed = null; }
+  // 匯入必須嚴格拒絕壞資料（不能像 loader 一樣靜默回空檔，否則等於清空進度）
+  if (!parsed || parsed.schemaVersion !== 1 || typeof parsed.cards !== "object" || !parsed.cards || Array.isArray(parsed.cards)) {
+    $st.textContent = "這段內容不是有效的備份（缺 schemaVersion 或 cards），沒有動任何進度。";
+    return;
+  }
+  if (!confirm("要用貼上的備份覆蓋現在的進度嗎？")) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch (e) {
+    $st.textContent = "寫入失敗，進度未變。";
+    return;
+  }
+  location.reload();
+});
+
+document.getElementById("btn-reset").addEventListener("click", () => {
+  if (!confirm("確定要清掉弟弟的全部練習進度嗎？此動作無法復原。")) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* 清不掉就算了 */ }
+  location.reload();
+});
 </script>
 </body>
 </html>
