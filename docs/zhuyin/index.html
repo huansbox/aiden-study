@@ -38,6 +38,7 @@
     width: 96px; height: 96px; cursor: pointer; box-shadow: 0 4px 0 #d9a325;
   }
   .btn-replay:active { transform: translateY(3px); box-shadow: 0 1px 0 #d9a325; }
+  .btn-replay:disabled { opacity: 0.45; pointer-events: none; }
 
   /* 字卡 */
   .choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; width: 100%; }
@@ -111,7 +112,8 @@
 "use strict";
 
 // <zhuyin-core-pure>
-// 純函式區塊：不得引用區塊外全域。改動時同步跑 node --test tests/test_zhuyin_core.mjs。
+// 注意：此區塊到 </zhuyin-core-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
+// 對應測試：node --test tests/test_zhuyin_core.mjs。
 // 排程＝MVP 簡化版（issue #17）：錯題優先 → 新卡按進場序 → 複習卡（rng 洗牌）；
 // 三檔優先權佇列／配額／熟練抽查／suspend 留擴充批（父 spec #15）。
 
@@ -140,6 +142,7 @@ function zyCardState(progress, id) {
   return progress.cards[id] || { introduced: false, wrong: false, practiced: 0, correct: 0 };
 }
 
+// 複製自哥哥版 docs/index.html 的 shuffle（commit 7a8d900 時期版本），加 rng 注入供測試
 function zyShuffle(arr, rng) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -184,11 +187,13 @@ function zyPickChoices(target, entered, rng, maxChoices = 4) {
   return others;
 }
 
-// 答完一題的狀態轉移：第一下就點對＝答對；曾點錯＝記錯（下批優先重出）
-function zyOnQuizResult(state, firstTapCorrect) {
+// 答完一題的狀態轉移。wrongThisBatch＝本批對此卡曾點錯過（含本次）：
+// 批尾複驗答對「計一次答對」但不洗掉 wrong——錯過的卡下一批仍優先重出，
+// 直到某批第一下就對才清除（否則跨批錯題優先永遠踩不到）。
+function zyOnQuizResult(state, firstTapCorrect, wrongThisBatch) {
   return {
-    introduced: state.introduced,
-    wrong: !firstTapCorrect,
+    ...state,
+    wrong: !!wrongThisBatch || !firstTapCorrect,
     practiced: state.practiced + 1,
     correct: state.correct + (firstTapCorrect ? 1 : 0),
   };
@@ -292,7 +297,7 @@ const BATCH_MAX = 5;
 const TAP_GUARD_MS = 400; // 換題後短暫不吃點擊（防連點誤答，story 13）
 
 const app = {
-  content: null,
+  content: null,     // 載入成功的 content.json（null＝init 未成／失敗，開始鈕會重試）
   audioDir: "", audioExt: "",
   entryOrder: [],
   symbolAudio: {},   // glyph -> 音檔 key
@@ -300,6 +305,7 @@ const app = {
   progress: null,
   queue: [],         // 本批剩餘卡（glyph）
   doneCount: 0,      // 本批已完成題數（含複驗）
+  wrongThisBatch: new Set(), // 本批曾點錯過的卡（複驗答對不洗 wrong 用）
   answered: false,   // 當前判分題已出結果（防 auto-advance 期間再點）
   firstTap: true,    // 當前題還沒點錯過
   shownAt: 0,
@@ -312,7 +318,7 @@ function saveProgress() {
 }
 
 function showScreen(id) {
-  for (const el of document.querySelectorAll("#app > .screen, #app > div")) el.classList.add("hidden");
+  for (const el of document.querySelectorAll("#app > .screen")) el.classList.add("hidden");
   document.getElementById(id).classList.remove("hidden");
 }
 
@@ -338,6 +344,7 @@ function startBatch() {
     rng: Math.random,
   });
   app.doneCount = 0;
+  app.wrongThisBatch = new Set();
   if (!app.queue.length) {
     document.getElementById("msg-text").textContent =
       "還沒有可以練的卡——題目音檔還沒錄好。請家長先用錄音工具頁（recorder.html）錄音，放進 assets/audio/ 後再來。";
@@ -374,21 +381,16 @@ function renderIntro(glyph) {
   document.getElementById("btn-intro-next").addEventListener("click", () => {
     if (tapGuarded()) return;
     const id = zyCardId(glyph);
-    const st = zyCardState(app.progress, id);
-    app.progress.cards[id] = { ...st, introduced: true };
+    app.progress.cards[id] = { ...zyCardState(app.progress, id), introduced: true };
     saveProgress();
-    app.doneCount++;
-    app.queue = zyAdvanceQueue(app.queue, true); // 介紹卡不判分，看完即移出
-    if (app.queue.length) renderCard();
-    else finishBatch();
+    advanceCard(true); // 介紹卡不判分，看完即移出
   });
   playVoice(app.symbolAudio[glyph]);
 }
 
 // 聽音辨認：自動播題目音＋大重聽鈕；答錯＝中性音效→錯卡變灰→自動重播→續選到對
 function renderQuiz(glyph, entered) {
-  const choices = zyPickChoices(glyph, entered, Math.random);
-  if (!choices) { renderIntro(glyph); return; } // 理論上到不了（zyCardKind 已擋池<2），保險降級
+  const choices = zyPickChoices(glyph, entered, Math.random); // zyCardKind 已保證池 ≥2 且目標已進場
   const area = document.getElementById("card-area");
   area.innerHTML = `
     <button class="btn-replay" id="btn-replay">🔊</button>
@@ -402,6 +404,7 @@ function renderQuiz(glyph, entered) {
     if (card.dataset.g === glyph) {
       app.answered = true;
       if (app.replayTimer) { clearTimeout(app.replayTimer); app.replayTimer = null; }
+      document.getElementById("btn-replay").disabled = true; // 空窗期重聽會被下一題換 src 腰斬
       card.classList.add("right");
       for (const el of document.querySelectorAll(".zycard")) {
         if (el !== card) el.classList.add("faded");
@@ -421,16 +424,23 @@ function renderQuiz(glyph, entered) {
 }
 
 function completeQuiz(glyph, firstTapCorrect) {
+  if (!firstTapCorrect) app.wrongThisBatch.add(glyph);
   const id = zyCardId(glyph);
-  app.progress.cards[id] = zyOnQuizResult(zyCardState(app.progress, id), firstTapCorrect);
+  app.progress.cards[id] = zyOnQuizResult(
+    zyCardState(app.progress, id), firstTapCorrect, app.wrongThisBatch.has(glyph));
   saveProgress();
+  advanceCard(firstTapCorrect);
+}
+
+// 完成一張卡後的批推進（intro/quiz 共用；#18 加新卡型也走這裡）
+function advanceCard(firstTapCorrect) {
   app.doneCount++;
   app.queue = zyAdvanceQueue(app.queue, firstTapCorrect);
   if (app.queue.length) renderCard();
   else finishBatch();
 }
 
-// 批間畫面：「再一批／今天到這裡」（哥哥版 renderBatchBreak pattern，docs/index.html）
+// 批間畫面：「再一批／今天到這裡」（複製自哥哥版 docs/index.html renderBatchBreak pattern，commit 7a8d900 時期版本）
 function finishBatch() {
   clearTimers();
   showScreen("screen-break");
@@ -441,41 +451,49 @@ function finishBatch() {
 // 初始化
 // ════════════════════════════════════════════════════
 async function init() {
-  let content;
+  // content.json 是外部資料邊界：連形狀壞掉（合法 JSON 但缺欄位）也要進錯誤畫面，
+  // 不能讓 ready reject 把「開始練習」變成無聲死按鈕。
   try {
     const res = await fetch("content.json");
     if (!res.ok) throw new Error(res.status);
-    content = await res.json();
+    const content = await res.json();
+    app.audioDir = content.audio.dir;
+    app.audioExt = content.audio.ext;
+    app.entryOrder = content.circles[0].entryOrder;
+    for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
+    app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
+
+    // 音檔可用性探測（HEAD content.json 宣告的全部 key；失敗＝缺檔，組批時過濾）
+    const keys = [];
+    for (const s of content.symbols) keys.push(s.audio);
+    for (const y of content.syllables) { keys.push(y.audio); if (y.word) keys.push(y.word.audio); }
+    await Promise.all(keys.map(async (k) => {
+      try {
+        const r = await fetch(app.audioDir + k + app.audioExt, { method: "HEAD" });
+        if (r.ok) app.hasAudio.add(k);
+      } catch (e) { /* 探不到＝缺檔 */ }
+    }));
+    app.content = content; // 最後才標記成功，兼作「init 完成」旗標
   } catch (e) {
-    document.getElementById("msg-text").textContent = "讀不到 content.json，請檢查網路後重新整理。";
+    app.content = null;
+    document.getElementById("msg-text").textContent = "讀不到 content.json（或內容壞掉），請檢查網路後再按一次開始。";
     document.getElementById("msg-emoji").textContent = "😢";
     showScreen("screen-msg");
-    return;
   }
-  app.content = content;
-  app.audioDir = content.audio.dir;
-  app.audioExt = content.audio.ext;
-  app.entryOrder = content.circles[0].entryOrder;
-  for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
-  app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
-
-  // 音檔可用性探測（HEAD 全部 key；失敗＝缺檔，組批時過濾）
-  const keys = [];
-  for (const s of content.symbols) keys.push(s.audio);
-  for (const y of content.syllables) { keys.push(y.audio); if (y.word) keys.push(y.word.audio); }
-  await Promise.all(keys.map(async (k) => {
-    try {
-      const r = await fetch(app.audioDir + k + app.audioExt, { method: "HEAD" });
-      if (r.ok) app.hasAudio.add(k);
-    } catch (e) { /* 探不到＝缺檔 */ }
-  }));
 }
-const ready = init();
+let ready = init();
 
-document.getElementById("btn-start").addEventListener("click", async () => {
+const btnStart = document.getElementById("btn-start");
+btnStart.addEventListener("click", async () => {
+  btnStart.disabled = true; // await 空窗防連點
   unlockAudio(); // iOS：一次手勢解鎖，之後迴圈內程式化換 src 播放
-  await ready;
-  if (!app.content) return; // init 失敗已顯示錯誤畫面
+  try {
+    await ready;
+    if (!app.content) { ready = init(); await ready; } // 上次失敗（如斷網）→ 重試
+  } finally {
+    btnStart.disabled = false;
+  }
+  if (!app.content) return; // init 失敗畫面已顯示
   startBatch();
 });
 document.getElementById("btn-again").addEventListener("click", () => startBatch());

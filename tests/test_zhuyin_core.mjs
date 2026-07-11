@@ -11,7 +11,7 @@ if (!m) throw new Error("docs/zhuyin/index.html 找不到 <zhuyin-core-pure> 區
 const {
   zyCardId, zyResolveAudio, zyLoadProgress, zyCardState, zyShuffle,
   zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices, zyOnQuizResult, zyAdvanceQueue,
-} = new Function(m[1] + `
+} = new Function('"use strict";' + m[1] + `
 return { zyCardId, zyResolveAudio, zyLoadProgress, zyCardState, zyShuffle,
   zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices, zyOnQuizResult, zyAdvanceQueue };`)();
 
@@ -134,10 +134,20 @@ test("干擾項：正解位置由 rng 決定", () => {
 
 // ── zyOnQuizResult ──
 
-test("判分映射：第一下就對＝答對、清 wrong；點錯過＝記錯", () => {
+test("判分映射：本批沒錯過且第一下就對＝答對、清 wrong；點錯＝記錯", () => {
   const st = card({ introduced: true, wrong: true, practiced: 2, correct: 1 });
-  assert.deepEqual(zyOnQuizResult(st, true), { introduced: true, wrong: false, practiced: 3, correct: 2 });
-  assert.deepEqual(zyOnQuizResult(st, false), { introduced: true, wrong: true, practiced: 3, correct: 1 });
+  assert.deepEqual(zyOnQuizResult(st, true, false), { introduced: true, wrong: false, practiced: 3, correct: 2 });
+  assert.deepEqual(zyOnQuizResult(st, false, true), { introduced: true, wrong: true, practiced: 3, correct: 1 });
+});
+
+test("判分映射：批尾複驗答對＝計答對但 wrong 保留（下批仍優先重出）", () => {
+  const st = card({ introduced: true, wrong: true, practiced: 3, correct: 1 });
+  assert.deepEqual(zyOnQuizResult(st, true, true), { introduced: true, wrong: true, practiced: 4, correct: 2 });
+});
+
+test("判分映射：未知欄位原樣保留（擴充批新欄位不被判分洗掉）", () => {
+  const st = { ...card({ introduced: true }), suspend: "2026-08-01" };
+  assert.equal(zyOnQuizResult(st, true, false).suspend, "2026-08-01");
 });
 
 // ── zyAdvanceQueue ──
