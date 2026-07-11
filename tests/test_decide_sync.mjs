@@ -1,6 +1,13 @@
+// 同步協定純函式測試：從 docs/shared/sync-v1.js 抽出 <sync-pure> sentinel 區塊 eval
+// （shipped 真相源；比照 test_backup_pure 對 index.html 的做法）。
 import test from "node:test";
 import assert from "node:assert/strict";
-import { decideSync, classifyRemote } from "../worker/decide-sync.mjs";
+import { readFileSync } from "node:fs";
+
+const src = readFileSync(new URL("../docs/shared/sync-v1.js", import.meta.url), "utf8");
+const m = src.match(/\/\/ <sync-pure>([\s\S]*?)\/\/ <\/sync-pure>/);
+if (!m) throw new Error("docs/shared/sync-v1.js 找不到 <sync-pure> 區塊");
+const { decideSync, classifyRemote } = new Function(m[1] + "\nreturn { classifyRemote, decideSync };")();
 
 const L = (syncedRev, dirty, schemaVersion = 1, lastWriteId = undefined) => ({
   syncedRev,

@@ -2,7 +2,7 @@
 // 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；有值時回 {rev,data,writeId}
 // （writeId 讓 client 認出「遠端領先的那筆是我自己的 beacon」）。404 只留給路由／key 格式錯誤。
 // PUT 帶 writeId 冪等：response 遺失後重送同 writeId → 200 現行 rev，不重複遞增。
-// writeId 契約＝client 每次新寫入以 crypto.randomUUID() 新產、每 key 至多一筆未決寫入（見 decide-sync.mjs）。
+// writeId 契約＝client 每次新寫入以 crypto.randomUUID() 新產、每 key 至多一筆未決寫入（見 docs/shared/sync-v1.js）。
 // sendBeacon 不能帶 header，token 一律支援 ?k= query（與圖示網址同一把）；POST 為 PUT 的 beacon 別名。
 // 已知接受限制（家庭規模、KV 無 conditional write）：同 rev 併發 PUT 可能雙雙 200，
 // 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
