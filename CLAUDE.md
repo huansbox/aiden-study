@@ -1,7 +1,7 @@
 # Aiden Study - 三下題庫練習網站（自然＋數學＋社會＋國語）
 
 - 詞彙表見 `CONTEXT.md`；涉及架構的改動先查 `docs-dev/adr/`（本 repo `docs/` 是部署目錄，ADR 放 docs-dev）
-- **本 repo 已拍板重整為全家學習平台 monorepo**（ADR-0001～0004）：spec＝GitHub issue #26（兩顆 child 圖示入口＋registry 驅動＋kids.linshuhuan.com＋CF Worker 同步；同步先行於舊 origin、再搬家波）。**拆票已發布＝9 張 native sub-issues**：#35（1/9 iPad spike，HITL、不擋鏈）→ #27（2/9 Worker）→ #28（3/9 study 接入）→ #29（4/9 zhuyin 接入）→ #30（5/9 repo 重整）→ #31（6/9 hub＋registry）→ #32（7/9 搬入＋spelling 收割，HITL）→ #33（8/9 math＋spelling 接同步）→ #34（9/9 掛網域搬遷，HITL，blocked by #33＋#35）。spec 與拆票各過一輪 3-reviewer doc-review（12＋11 組 findings 全採納）；落地前現有結構照舊
+- **本 repo 已拍板重整為全家學習平台 monorepo**（ADR-0001～0004）：spec＝GitHub issue #26（兩顆 child 圖示入口＋registry 驅動＋kids.linshuhuan.com＋CF Worker 同步；同步先行於舊 origin、再搬家波）。**拆票已發布＝9 張 native sub-issues**：#35（1/9 iPad spike，HITL、不擋鏈）→ **#27（2/9 Worker）✅ 已完成**（PR #36 merge 2026-07-11；服務 live＝`aiden-kids-sync.huansbox.workers.dev`，`worker/` 目錄＋`tests/test_{decide_sync,sync_worker,sync_contract}.mjs` 33 例；family token 在家長 1Password；client 契約義務已寫進 #28 票面）→ #28（3/9 study 接入）→ #29（4/9 zhuyin 接入）→ #30（5/9 repo 重整）→ #31（6/9 hub＋registry）→ #32（7/9 搬入＋spelling 收割，HITL）→ #33（8/9 math＋spelling 接同步）→ #34（9/9 掛網域搬遷，HITL，blocked by #33＋#35）。spec 與拆票各過一輪 3-reviewer doc-review（12＋11 組 findings 全採納）；落地前現有結構照舊
 
 ## 專案目標
 
