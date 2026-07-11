@@ -532,6 +532,7 @@ body {
 const KidsSync = window.KidsSyncV1 || null; // shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）
 const STUDY_APP_ID = "study";
 const STUDY_SCHEMA_VERSION = 1;
+// interim copy — registry（#31）落地後改讀 registry
 const CHILD_INFO = {
   aiden: { label: "哥哥", emoji: "👦" },
   bingpu: { label: "弟弟", emoji: "🧒" },
@@ -558,12 +559,10 @@ function planImportWrite(child, obj) {
 }
 // </child-store-pure>
 
-// 身分解析：圖示網址帶死參數 ?child=（無參數＝aiden，study 歸哥哥）；?k= 首開寫入本機供之後讀取
-const urlIdentity = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null, token: null };
-const currentChild = urlIdentity.child || LEGACY_CHILD;
-if (KidsSync && urlIdentity.token) {
-  try { localStorage.setItem(KidsSync.TOKEN_STORAGE_KEY, urlIdentity.token); } catch {}
-}
+// 身分解析：圖示網址帶死參數 ?child=（無參數＝aiden，study 歸哥哥）；?k= 首開寫入本機、
+// 之後 getToken 走「網址 > 本機」fallback（組合邏輯在共用腳本 bootIdentity，各 app 不自己拼）
+const identity = KidsSync ? KidsSync.bootIdentity(location.search, localStorage) : null;
+const currentChild = (identity && identity.child) || LEGACY_CHILD;
 let sync = null; // sync client（initSyncClient 建立；無 KidsSync 時保持 null）
 
 // ════════════════════════════════════════════════════
@@ -799,8 +798,16 @@ const Storage = {
     let prev = null;
     try { prev = localStorage.getItem(STORAGE_KEY); } catch {}
     localStorage.setItem(STORAGE_KEY, json);
-    if (sync && json !== prev) sync.markDirty(); // 真有變更才標 dirty（init 期的等值 save 不推雲）
+    // 真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
+    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+    if (sync && json !== prev) sync.markDirty();
   },
+  // init 期整理（orphan 清理等）專用：不標 dirty。舊快取題庫誤判 orphan 時只影響本機，
+  // 不會 push 上雲剝掉他機的有效 errorBank/flagged（use-site 本就有 questionMap 過濾）
+  saveQuiet(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  },
+  // 回傳是否本次做了 child 維度播種（呼叫端據此走匯入定錨語意上雲）
   migrate() {
     // 舊世代鏈（哥哥的 lineage，寫回舊 key、維持原樣）：aiden_study_records → aiden_study_v2
     try {
@@ -818,8 +825,12 @@ const Storage = {
     // child 維度播種：複製不搬移（#28；aiden_study_v2 原樣保留）
     try {
       const plan = planLegacySeed(currentChild, localStorage.getItem(LEGACY_STORAGE_KEY), localStorage.getItem(STORAGE_KEY));
-      if (plan) localStorage.setItem(plan.key, plan.value);
+      if (plan) {
+        localStorage.setItem(plan.key, plan.value);
+        return true;
+      }
     } catch {}
+    return false;
   }
 };
 
@@ -830,10 +841,7 @@ function readSyncMeta(child) {
   try { return JSON.parse(localStorage.getItem(childSyncMetaKey(child))); } catch { return null; }
 }
 function getSyncToken() {
-  if (!KidsSync) return null;
-  let stored = null;
-  try { stored = localStorage.getItem(KidsSync.TOKEN_STORAGE_KEY); } catch {}
-  return KidsSync.resolveToken(urlIdentity.token, stored);
+  return identity ? identity.getToken() : null;
 }
 function makeSyncClient(child, hooks = {}) {
   if (!KidsSync) return null;
@@ -853,9 +861,12 @@ function makeSyncClient(child, hooks = {}) {
   });
 }
 // adopt（含 conflict-adopt）＝整包取遠端：boot 時 State 尚未初始化（存檔已被 saveData 覆蓋、init 接著讀）；
-// session 中（雙裝置衝突，罕見）則換掉 in-memory state，首頁可見時重畫
+// session 中（雙裝置衝突，罕見）則換掉 in-memory state，首頁可見時重畫。
+// 做題中不換：quiz runtime 仍指舊批次，混合覆蓋比整包不換更糟——存檔已是遠端版，
+// 下一次作答的 Storage.save 會整包寫回本機狀態＝「作答中的裝置贏」，仍是乾淨的 LWW
 function adoptRemoteData(data) {
   if (!state) return;
+  if (!document.getElementById("page-quiz").classList.contains("hidden")) return;
   State.init(data && typeof data === "object" ? data : null);
   if (state._needMasteredBackfill) State.backfillMastered();
   if (!document.getElementById("page-home").classList.contains("hidden")) renderHome();
@@ -865,6 +876,8 @@ function initSyncClient() {
     onAdopt: adoptRemoteData,
     onHealth: () => refreshSyncStatus(),
   });
+  // 離頁／切背景立即 flush（監聽對組合是平台知識，掛法統一在共用腳本）
+  if (sync) sync.attachLifecycle(window, document);
 }
 
 function childInfo(child) {
@@ -1446,16 +1459,12 @@ function formatSyncTime(ts) {
   const p = n => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
-// 錯誤分流文案：無 token／金鑰錯／服務異常都明說「不是離線」，家長才不會白等網路
-const SYNC_STATUS_TEXT = {
-  ok: ["sync-ok", "同步正常"],
-  offline: ["sync-bad", "離線或連不上同步服務"],
-  "no-token": ["sync-bad", "尚未設定同步金鑰（不是離線，請在下方輸入）"],
-  auth: ["sync-bad", "同步金鑰不對，請重新輸入（不是離線）"],
-  "data-error": ["sync-bad", "同步服務回應異常（不是離線）"],
-  "schema-block": ["sync-bad", "雲端資料版本較新：已暫停同步保護本機，請先更新 app"],
-  retry: ["", "雲端讀取暫時落後，稍後會自動重試"],
-};
+// 健康狀態文案在共用腳本（KidsSync.HEALTH_TEXT，平台詞彙）；app 只決定 CSS class
+function syncStatusClass(status) {
+  if (status === "ok") return "sync-ok";
+  if (status === "retry") return "";
+  return "sync-bad";
+}
 function syncStatusHtml() {
   const info = childInfo(currentChild);
   if (!KidsSync) {
@@ -1465,10 +1474,11 @@ function syncStatusHtml() {
   const token = getSyncToken();
   let statusLine;
   if (!token) {
-    statusLine = `<span class="sync-bad">${SYNC_STATUS_TEXT["no-token"][1]}</span>`;
-  } else if (m.health && SYNC_STATUS_TEXT[m.health.status]) {
-    const [cls, text] = SYNC_STATUS_TEXT[m.health.status];
-    statusLine = `<span class="${cls}">${text}</span>`;
+    statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
+  } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
+    statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
+  } else if (m.health) {
+    statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
   } else {
     statusLine = "還沒同步過";
   }
@@ -1483,18 +1493,29 @@ function syncStatusHtml() {
         <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
         <button class="st-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
         <button class="st-btn" onclick="window._syncNow()">立即同步</button>
+        <span id="sync-msg" class="backup-msg"></span>
       </div>
     </div>`;
 }
 function refreshSyncStatus() {
   const el = document.getElementById("sync-status");
-  if (el) el.outerHTML = syncStatusHtml();
+  if (!el) return;
+  // 家長輸入金鑰到一半時背景同步輪會觸發本函式——別把打到一半的金鑰洗掉
+  const input = document.getElementById("sync-token-input");
+  if (input && (document.activeElement === input || input.value)) return;
+  el.outerHTML = syncStatusHtml();
 }
 window._saveSyncToken = () => {
   const input = document.getElementById("sync-token-input");
+  const msg = document.getElementById("sync-msg");
   const v = ((input && input.value) || "").trim();
-  if (!v || !KidsSync) return;
-  try { localStorage.setItem(KidsSync.TOKEN_STORAGE_KEY, v); } catch {}
+  if (!v || !identity) {
+    if (msg) msg.textContent = "請先貼上金鑰";
+    return;
+  }
+  identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+  if (input) { input.value = ""; input.blur(); } // 清空＋失焦，健康燈輪到時才刷得動
+  if (msg) msg.textContent = "金鑰已儲存";
   refreshSyncStatus();
   if (sync) sync.syncNow().catch(() => {}); // 剛設好金鑰 → 立刻試一輪，健康燈即時更新
 };
@@ -1872,20 +1893,28 @@ function pickedChild(name) {
   return (el && el.value) || currentChild;
 }
 
-// 匯入／還原共用落地：直寫目標 child 的新格式 key → 同步定錨＋立即 push →
-// 目標＝當前 child 就 reload 生效；不是就留在原畫面（呼叫端顯示完成訊息）。
-// 離線也不擋：dirty 已持久化，下次上線補推
+// 匯入／還原共用落地：直寫目標 child 的新格式 key → 定錨標記 → 上雲。
+// 目標＝當前 child：只同步地寫 key＋markImported 就立刻 reload——不 await 網路輪，
+// 否則等待窗內頁面仍可操作、任何 Storage.save 會用舊 state 蓋掉剛匯入的資料；
+// 定錨＋push 由 reload 後的 boot 輪完成（anchorPending 已持久化，離線也不丟）。
+// 目標＝其他 child：本頁存檔不受影響，安心 await 推完再回報。
+// 回傳 "write-failed" | "reloading" | "done"
 async function commitImport(child, obj, { reloadTo = null } = {}) {
   const plan = planImportWrite(child, obj);
-  localStorage.setItem(plan.key, plan.value);
-  const c = child === currentChild ? sync : makeSyncClient(child);
-  if (c) { try { await c.importedLocal(); } catch {} }
+  try {
+    localStorage.setItem(plan.key, plan.value);
+  } catch (e) {
+    return "write-failed"; // quota／私密模式：進度沒動，讓呼叫端回報
+  }
   if (child === currentChild) {
+    if (sync) sync.markImported();
     if (reloadTo) location.replace(reloadTo);
     else location.reload();
-    return true; // reload 前的殘影期不再做事
+    return "reloading"; // reload 前的殘影期不再做事
   }
-  return false;
+  const c = makeSyncClient(child);
+  if (c) { try { await c.importedLocal(); } catch {} } // 離線也不擋：標記已持久化，該 child 下次開站補推
+  return "done";
 }
 
 window._importProgress = () => {
@@ -1899,9 +1928,15 @@ window._importProgress = () => {
   msg.innerHTML = `${childPickerHtml("import-child")}確定用這份覆蓋所選進度？<button class="st-btn" id="import-confirm">確定還原</button>`;
   document.getElementById("import-confirm").onclick = async () => {
     const child = pickedChild("import-child");
-    document.getElementById("import-confirm").disabled = true;
-    const reloaded = await commitImport(child, obj);
-    if (!reloaded) msg.textContent = `已還原到 ${childInfo(child).label} 的進度`;
+    const btn = document.getElementById("import-confirm");
+    btn.disabled = true;
+    const r = await commitImport(child, obj);
+    if (r === "write-failed") {
+      btn.disabled = false;
+      msg.textContent = "還原失敗（無法寫入儲存空間），進度沒有變動";
+    } else if (r === "done") {
+      msg.textContent = `已還原到 ${childInfo(child).label} 的進度`;
+    }
   };
 };
 
@@ -1961,10 +1996,14 @@ function handleRestoreHash() {
     </div>`;
   document.getElementById("restore-confirm").onclick = async () => {
     const child = pickedChild("restore-child");
-    document.getElementById("restore-confirm").disabled = true;
+    const btn = document.getElementById("restore-confirm");
+    btn.disabled = true;
     // 目標＝當前 child：reload 並去掉 hash（不留歷史，避免重觸發）；其他 child：留在原畫面報完成
-    const reloaded = await commitImport(child, res.obj, { reloadTo: cleanUrl });
-    if (!reloaded) {
+    const r = await commitImport(child, res.obj, { reloadTo: cleanUrl });
+    if (r === "write-failed") {
+      btn.disabled = false;
+      box.insertAdjacentHTML("beforeend", `<p class="backup-hint">還原失敗（無法寫入儲存空間），進度沒有變動。</p>`);
+    } else if (r === "done") {
       history.replaceState(null, "", cleanUrl);
       box.innerHTML = `<p class="backup-hint">已還原到 ${childInfo(child).label} 的進度。</p>`;
     }
@@ -3203,14 +3242,19 @@ window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACT
 async function init() {
   try {
     renderChildBadge();
-    Storage.migrate();      // 含 child 維度播種（複製不搬移）
+    const seeded = Storage.migrate();  // 含 child 維度播種（複製不搬移）
     initSyncClient();
+    // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
+    // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉數月 legacy
+    if (sync && seeded) sync.markImported();
+    // 題庫抓取與同步 boot 平行：boot 只碰進度存檔，首屏不用疊上同步的網路延遲
+    const questionsPromise = fetch("./questions.json");
     // 開啟時 pull：adopt 直寫本機存檔，下一行 load 才讀（離線／無 token 靜默走本機）
     if (sync) { try { await sync.boot(); } catch {} }
     const saved = Storage.load();
     State.init(saved);
 
-    const resp = await fetch("./questions.json");
+    const resp = await questionsPromise;
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     allQuestions = await resp.json();
 
@@ -3246,7 +3290,7 @@ async function init() {
     // 對齊「錯 ≥ 2 次才進錯題庫」新規則：清掉舊版只錯一次（且已答對過）就被收進去的題。
     // 保守起見只在有作答統計可判斷時才清；無 stats 者保留不動。
     state.errorBank = state.errorBank.filter(e => shouldKeepModeError(state.stats, e));
-    Storage.save(state);
+    Storage.saveQuiet(state);  // init 整理不推雲（見 saveQuiet 註解）
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
     if (state._needMasteredBackfill) State.backfillMastered();
@@ -3262,11 +3306,7 @@ async function init() {
 // 網站已開著時，還原捷徑用 Open URL 帶 #restore= 進來是「同文件 hash 變更、不 reload」→ 也要接住
 window.addEventListener("hashchange", handleRestoreHash);
 
-// 離頁／切背景立即 flush（iOS 按 Home 後 JS 凍結，不能只靠 debounce）；beacon 後永不清 dirty
-window.addEventListener("pagehide", () => { if (sync) sync.flushBeacon(); });
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden" && sync) sync.flushBeacon();
-});
+// 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSyncClient 的 attachLifecycle 統一掛。
 // bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
 window.addEventListener("pageshow", (e) => {
   if (!e.persisted) return;

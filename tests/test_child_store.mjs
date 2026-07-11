@@ -15,8 +15,8 @@ const {
 const syncSrc = readFileSync(new URL("../docs/shared/sync-v1.js", import.meta.url), "utf8");
 const clientBlk = syncSrc.match(/\/\/ <sync-client>([\s\S]*?)\/\/ <\/sync-client>/);
 if (!clientBlk) throw new Error("docs/shared/sync-v1.js 找不到 <sync-client> 區塊");
-const { normalizeChildId, identityFromSearch, resolveToken } = new Function(clientBlk[1] +
-  "\nreturn { normalizeChildId, identityFromSearch, resolveToken };")();
+const { normalizeChildId, identityFromSearch, resolveToken, bootIdentity } = new Function(clientBlk[1] +
+  "\nreturn { normalizeChildId, identityFromSearch, resolveToken, bootIdentity };")();
 
 test("key 尋址：progress 與 sync meta 每 child 各自一把、互不相同", () => {
   assert.equal(childProgressKey("aiden"), "study:progress:aiden");
@@ -91,4 +91,34 @@ test("resolveToken fallback：網址參數 > 本機儲存 > 無", () => {
   assert.equal(resolveToken(null, "stored-t"), "stored-t");
   assert.equal(resolveToken(null, null), null);
   assert.equal(resolveToken("", "stored-t"), "stored-t", "空字串視同無");
+});
+
+test("bootIdentity：?k= 首開持久化、getToken fallback、setToken 蓋過網址舊 token", () => {
+  const store = new Map();
+  const storage = { getItem: (k) => (store.has(k) ? store.get(k) : null), setItem: (k, v) => store.set(k, v) };
+  const id = bootIdentity("?child=aiden&k=old-tok", storage);
+  assert.equal(id.child, "aiden");
+  assert.equal(store.get("kids_sync_token"), "old-tok", "?k= 首開即寫入本機");
+  assert.equal(id.getToken(), "old-tok");
+  // 家長貼新金鑰：本 session 立即生效，不被網址殘留的舊 ?k= 蓋回
+  id.setToken("new-tok");
+  assert.equal(id.getToken(), "new-tok");
+  assert.equal(store.get("kids_sync_token"), "new-tok");
+  id.setToken(""); // 空值不動作
+  assert.equal(id.getToken(), "new-tok");
+  // 無網址 token → 走本機儲存；兩邊皆無 → null
+  const id2 = bootIdentity("", storage);
+  assert.equal(id2.child, null);
+  assert.equal(id2.getToken(), "new-tok");
+  const id3 = bootIdentity("", { getItem: () => null, setItem: () => {} });
+  assert.equal(id3.getToken(), null);
+});
+
+test("normalizeChildId 與 worker KEY_RE 一字不差（雲端 key 段格式契約，防單邊放寬）", () => {
+  const workerSrc = readFileSync(new URL("../worker/worker.mjs", import.meta.url), "utf8");
+  const workerRe = workerSrc.match(/const KEY_RE = (\/[^;\n]+\/);/);
+  const clientRe = clientBlk[1].match(/function normalizeChildId[\s\S]{0,200}?(\/[^/\n]+\/)\.test/);
+  assert.ok(workerRe, "worker.mjs 找不到 KEY_RE 字面量");
+  assert.ok(clientRe, "sync-v1.js 找不到 normalizeChildId 的 regex 字面量");
+  assert.equal(clientRe[1], workerRe[1], "格式漂移會讓合法 child id 靜默 fallback 成 aiden（資料混寫）");
 });

@@ -5,7 +5,8 @@
 // client 必守不變量（兩端契約的前提）：
 // - writeId＝每次新寫入以 crypto.randomUUID() 新產；僅重送同一筆未確認寫入時重用；每 key 同時至多一筆未決寫入
 // - dirty 只能在「讀到 PUT 200」或「adopt 遠端」後清——sendBeacon 讀不到 response，故 beacon 後永不清 dirty
-// - 手動匯入／還原＝匯入當下先 GET 定錨（syncedRev＝當下遠端 rev）再標 dirty，同輪立即 push
+// - 手動匯入／還原＝寫入後同步持久化 anchorPending＋dirty（markImported），下一次成功 GET 完成定錨
+//   （syncedRev＝當下遠端 rev）→ 同輪 push；標記持久化使 busy 併發／reload／定錨 GET 失敗都不丟定錨
 // - push／reseed 的 PUT 一律以「本輪 GET 到的 remote.rev」為 base rev
 //
 // 衝突（遠端 rev 領先且本地有新變更）＝整包取遠端、棄本地增量（LWW by rev）——
@@ -80,7 +81,19 @@ function decideSync(local, remote) {
 const DEFAULT_ENDPOINT = "https://aiden-kids-sync.huansbox.workers.dev";
 const TOKEN_STORAGE_KEY = "kids_sync_token";
 
-// child id 與雲端 key 段共用同一格式（worker KEY_RE）；不合法回 null
+// 健康狀態 → 家長區文案（平台詞彙表，各 app 共用；app 只包 HTML/CSS）。
+// 「不是離線」字樣是錯誤分流的核心：無 token／金鑰錯／服務異常時家長不該白等網路。
+const HEALTH_TEXT = {
+  ok: "同步正常",
+  offline: "離線或連不上同步服務",
+  "no-token": "尚未設定同步金鑰（不是離線，請在下方輸入）",
+  "auth-error": "同步金鑰不對，請重新輸入（不是離線）",
+  "data-error": "同步服務回應異常（不是離線）",
+  "schema-block": "雲端資料版本較新：已暫停同步保護本機，請先更新 app",
+  retry: "雲端讀取暫時落後，稍後會自動重試",
+};
+
+// child id 與雲端 key 段共用同一格式（worker KEY_RE，tests/test_child_store.mjs 釘住兩邊一字不差）
 function normalizeChildId(raw) {
   return typeof raw === "string" && /^[a-z0-9-]{1,32}$/.test(raw) ? raw : null;
 }
@@ -102,6 +115,29 @@ function resolveToken(urlToken, storedToken) {
   return urlToken || storedToken || null;
 }
 
+// 開機身分組合（各 app 同一套：解析 → ?k= 首開寫入本機 → 讀取 fallback）。
+// setToken＝家長貼新金鑰：本 session 立即生效（蓋過網址上殘留的舊 ?k=），並持久化。
+function bootIdentity(search, storage) {
+  const parsed = identityFromSearch(search);
+  let sessionToken = parsed.token;
+  if (sessionToken && storage) {
+    try { storage.setItem(TOKEN_STORAGE_KEY, sessionToken); } catch {}
+  }
+  return {
+    child: parsed.child,
+    getToken() {
+      let stored = null;
+      if (storage) { try { stored = storage.getItem(TOKEN_STORAGE_KEY); } catch {} }
+      return resolveToken(sessionToken, stored);
+    },
+    setToken(v) {
+      if (!v) return;
+      sessionToken = v;
+      if (storage) { try { storage.setItem(TOKEN_STORAGE_KEY, v); } catch {} }
+    },
+  };
+}
+
 // opts：
 //   endpoint?      同步服務 base URL（預設 production Worker）
 //   child, app     雲端 key＝{child}:{app}
@@ -109,9 +145,9 @@ function resolveToken(urlToken, storedToken) {
 //   getToken()     () => token|null
 //   loadData()     () => 本機現行進度（要 push 的 payload）
 //   saveData(d)    adopt 時覆蓋本機（不得觸發 markDirty）
-//   loadMeta() / saveMeta(m)  sync meta 持久化（syncedRev/dirty/lastWriteId/pendingWriteId/健康狀態）
+//   loadMeta() / saveMeta(m)  sync meta 持久化（syncedRev/dirty/anchorPending/lastWriteId/pendingWriteId/健康狀態）
 //   onAdopt(d)?    adopt／conflict-adopt 後通知 app 重載狀態
-//   onHealth(h)?   健康狀態更新通知（家長區刷新）
+//   onHealth(status)?  健康狀態更新通知（HEALTH_TEXT 的 key 字串；家長區刷新）
 //   fetchImpl? / beaconImpl? / uuid? / now? / debounceMs? / timeoutMs?  可注入（測試／調校）
 function createSyncClient(opts) {
   const endpoint = String(opts.endpoint || DEFAULT_ENDPOINT).replace(/\/+$/, "");
@@ -136,12 +172,12 @@ function createSyncClient(opts) {
     return {
       syncedRev: Number.isInteger(m.syncedRev) ? m.syncedRev : 0,
       dirty: !!m.dirty,
+      anchorPending: !!m.anchorPending,
       lastWriteId: typeof m.lastWriteId === "string" ? m.lastWriteId : undefined,
       pendingWriteId: typeof m.pendingWriteId === "string" ? m.pendingWriteId : null,
       lastSyncAt: m.lastSyncAt ?? null,
-      lastBeaconAt: m.lastBeaconAt ?? null,
       reseedAt: m.reseedAt ?? null,
-      health: m.health ?? null,
+      health: typeof m.health === "string" ? m.health : null,
     };
   }
   function patchMeta(patch) {
@@ -150,10 +186,8 @@ function createSyncClient(opts) {
     return m;
   }
   function setHealth(status) {
-    const h = { status, at: now() };
-    patchMeta({ health: h });
-    try { onHealth(h); } catch {}
-    return h;
+    patchMeta({ health: status });
+    try { onHealth(status); } catch {}
   }
 
   function keyUrl(token) {
@@ -161,12 +195,12 @@ function createSyncClient(opts) {
   }
 
   async function fetchWithTimeout(u, init) {
-    const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-    const t = ctrl ? setTimeout(() => ctrl.abort(), timeoutMs) : null;
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
-      return await fetchImpl(u, ctrl ? { ...init, signal: ctrl.signal } : init);
+      return await fetchImpl(u, { ...init, signal: ctrl.signal });
     } finally {
-      if (t) clearTimeout(t);
+      clearTimeout(t);
     }
   }
 
@@ -205,8 +239,10 @@ function createSyncClient(opts) {
   }
 
   // 一輪同步：GET → classify → decideSync → 依 action 行動。
-  // anchorImport=true＝手動匯入／還原後的那一輪：GET 定錨（syncedRev＝當下遠端 rev）再標 dirty，同輪 push。
-  async function syncRound(anchorImport) {
+  // 手動匯入／還原＝markImported() 先「同步地」持久化 anchorPending＋dirty，本輪（或下一次成功 GET 的
+  // 任何一輪，含 reload 後 boot）才完成定錨：syncedRev＝當下遠端 rev → decideSync 走 push、以 LWW
+  // 最新寫入身分勝出。持久化標記讓 busy 併發、reload 殺佇列、定錨 GET 失敗三種路徑都不會弄丟定錨。
+  async function syncRound() {
     const token = getToken();
     if (!token) {
       setHealth("no-token"); // 無 token＝設定問題，非離線（家長區顯示異常）
@@ -214,10 +250,8 @@ function createSyncClient(opts) {
     }
     const remote = await getRemote(token);
     let m = meta();
-    if (anchorImport) {
-      m = remote.kind === "ok"
-        ? patchMeta({ syncedRev: remote.rev, dirty: true, pendingWriteId: null })
-        : patchMeta({ dirty: true, pendingWriteId: null }); // 定錨失敗：dirty 已持久化，之後照常收斂
+    if (m.anchorPending && remote.kind === "ok") {
+      m = patchMeta({ syncedRev: remote.rev, dirty: true, pendingWriteId: null, anchorPending: false });
     }
     const local = { syncedRev: m.syncedRev, dirty: m.dirty, schemaVersion, lastWriteId: m.lastWriteId };
     const action = decideSync(local, remote);
@@ -225,10 +259,7 @@ function createSyncClient(opts) {
 
     if (action.type === "offline" || action.type === "auth-error" || action.type === "data-error" ||
         action.type === "schema-block" || action.type === "retry") {
-      setHealth(action.type === "offline" ? "offline"
-        : action.type === "auth-error" ? "auth"
-        : action.type === "retry" ? "retry"
-        : action.type);
+      setHealth(action.type);
       return out;
     }
     if (action.type === "none") {
@@ -276,27 +307,30 @@ function createSyncClient(opts) {
       if (second.type === "adopt" || second.type === "conflict-adopt") {
         adoptRemote(again);
       } else {
-        setHealth("retry"); // 罕見（如自己的 beacon 剛搶先落地）：dirty 已持久化，下一輪收斂
+        // 罕見（如自己的 beacon 剛搶先落地→push）：不在本輪重推，dirty 已持久化、下一輪收斂；
+        // 二次 GET 若是錯誤類，健康燈用準確標籤，其餘歸 retry
+        const errorish = ["offline", "auth-error", "data-error", "schema-block"];
+        setHealth(errorish.includes(second.type) ? second.type : "retry");
       }
       return out;
     }
     if (res.status === 401) {
-      setHealth("auth");
+      setHealth("auth-error");
       return out;
     }
     setHealth("data-error");
     return out;
   }
 
-  // 同時只跑一輪；重疊觸發合併成「跑完再補一輪」
-  async function syncNow(anchorImport) {
+  // 同時只跑一輪；重疊觸發合併成「跑完再補一輪」（定錨等持久狀態在 meta，補跑輪不丟資訊）
+  async function syncNow() {
     if (roundActive) {
       roundQueued = true;
       return { action: "busy", putRejected: false };
     }
     roundActive = true;
     try {
-      return await syncRound(!!anchorImport);
+      return await syncRound();
     } finally {
       roundActive = false;
       if (roundQueued) {
@@ -304,6 +338,11 @@ function createSyncClient(opts) {
         setTimeout(() => { syncNow().catch(() => {}); }, 0);
       }
     }
+  }
+
+  // 手動匯入／還原完成後呼叫：同步地持久化定錨標記＋dirty（不打網路、不受 busy/reload 影響）
+  function markImported() {
+    patchMeta({ dirty: true, anchorPending: true, pendingWriteId: null });
   }
 
   // 本機有新變更：標 dirty、作廢未決寫入（新變更＝新寫入）、debounce 後推（debounceMs 0＝不排程，測試用）
@@ -328,7 +367,7 @@ function createSyncClient(opts) {
     if (!token) return false;
     const writeId = m.pendingWriteId || uuid();
     const body = JSON.stringify({ rev: m.syncedRev, data: loadData(), writeId });
-    patchMeta({ lastWriteId: writeId, pendingWriteId: writeId, lastBeaconAt: now() });
+    patchMeta({ lastWriteId: writeId, pendingWriteId: writeId });
     const u = keyUrl(token);
     let sent = false;
     try {
@@ -343,12 +382,23 @@ function createSyncClient(opts) {
     return true;
   }
 
+  // 協定生命週期監聽（iOS 按 Home 後 JS 凍結，不能只靠 debounce；pagehide 單掛在 iOS 不可靠，
+  // 必須成對掛 visibilitychange——這對組合是平台知識，app 只呼叫一次別自己拼）
+  function attachLifecycle(win, doc) {
+    win.addEventListener("pagehide", () => { flushBeacon(); });
+    doc.addEventListener("visibilitychange", () => {
+      if (doc.visibilityState === "hidden") flushBeacon();
+    });
+  }
+
   return {
-    boot: () => syncNow(false),          // 開啟時 pull（adopt 直寫本機存檔，app 之後再讀）
-    syncNow: () => syncNow(false),
-    importedLocal: () => syncNow(true),  // 手動匯入／還原完成後呼叫：定錨＋立即 push
+    boot: syncNow,           // 開啟時 pull（adopt 直寫本機存檔，app 之後再讀）
+    syncNow,
+    markImported,            // 匯入落地後同步呼叫；接著 syncNow()（或 reload 後 boot）完成定錨＋push
+    importedLocal: () => { markImported(); return syncNow(); },
     markDirty,
     flushBeacon,
+    attachLifecycle,
     meta,
   };
 }
@@ -359,9 +409,11 @@ if (typeof window !== "undefined") {
     classifyRemote,
     decideSync,
     createSyncClient,
+    bootIdentity,
     normalizeChildId,
     identityFromSearch,
     resolveToken,
+    HEALTH_TEXT,
     DEFAULT_ENDPOINT,
     TOKEN_STORAGE_KEY,
   };
