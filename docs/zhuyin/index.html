@@ -931,6 +931,7 @@ function renderParent() {
 
 document.getElementById("btn-parent").addEventListener("click", async () => {
   await ready;
+  if (!app.content) { ready = init(); await ready; } // 上次失敗（如斷網）→ 重試，比照開始鈕
   if (!app.content) return; // init 失敗畫面已顯示
   renderParent();
   showScreen("screen-parent");
