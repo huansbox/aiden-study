@@ -86,7 +86,7 @@
     cursor: pointer; box-shadow: 0 5px 0 #d8c9ae; font-family: inherit;
   }
   .tone-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #d8c9ae; }
-  .tone-btn.dim { background: #eceae6; color: #c4c1bb; border-color: #dcd9d3; box-shadow: none; pointer-events: none; }
+  .tone-btn.dim { background: #eceae6; color: #c4c1bb; border-color: #dcd9d3; box-shadow: none; } /* 淘汰但保留可點聽（票面：每顆恆可點聽） */
   .tone-btn.right { background: #e9f8ec; border-color: #43a047; box-shadow: 0 5px 0 #43a047; animation: zyPop 0.5s; }
   .tone-btn.faded { opacity: 0.25; pointer-events: none; }
 
@@ -99,6 +99,7 @@
     font-size: min(42vw, 220px); font-weight: 800; color: #b8862f;
     cursor: pointer; box-shadow: 0 6px 0 #d9a325; animation: zyPop 0.6s;
   }
+  .intro-card.multi { font-size: min(19vw, 100px); } /* 音節示範卡 2–3 字（含調號）不溢出 */
   .btn-next {
     font-size: 2.2rem; color: #fff; background: #43a047; border: none; border-radius: 50px;
     padding: 16px 56px; cursor: pointer; box-shadow: 0 5px 0 #2e7031;
@@ -155,12 +156,6 @@
 function zyCardId(glyph) { return "sym:" + glyph; }
 function zySylId(syl) { return "syl:" + syl.onset + syl.rime + syl.tone; }
 
-// 音檔 fallback 鏈：依序回傳第一個可用 key；全缺回 null（呼叫端靜默略過該段聲音）
-function zyResolveAudio(keys, hasAudio) {
-  for (const k of keys || []) if (k && hasAudio(k)) return k;
-  return null;
-}
-
 // 進度存檔載入：壞 JSON／版本不符 → 全新空檔（schemaVersion 為日後遷移預留）
 function zyLoadProgress(raw) {
   const empty = { schemaVersion: 1, cards: {} };
@@ -209,7 +204,7 @@ function zyBuildPool(entryOrder, symbolAudio, syllables, progress) {
 function zyBuildBatch({ pool, progress, hasAudio, max, rng }) {
   const wrong = [], fresh = [], review = [];
   for (const c of pool) {
-    if (zyResolveAudio([c.promptKey], hasAudio) === null) continue;
+    if (!c.promptKey || !hasAudio(c.promptKey)) continue;
     const st = zyCardState(progress, c.id);
     if (!st.introduced) fresh.push(c);
     else if (st.wrong) wrong.push(c);
@@ -221,6 +216,8 @@ function zyBuildBatch({ pool, progress, hasAudio, max, rng }) {
 // 卡片呈現型態：
 // 符號卡：首次＝不判分介紹卡；判分題只在已進場池 ≥2 時出（湊不出選擇題就再看一次介紹卡）。
 // 音節卡：首次＝不判分示範卡（demo）；第二次起＝聽音組字（build）。
+// 音節卡不看 enteredCount：zyBuildPool 入池條件（聲韻皆已進場）已保證組字選符步池 ≥2；
+// 改入池規則時此不變量必須一起檢視，否則 build 步的 zyPickChoices 可能回 null。
 function zyCardKind(card, progress, enteredCount) {
   const introduced = zyCardState(progress, card.id).introduced;
   if (card.kind === "sym") {
@@ -237,11 +234,12 @@ function zyDemoChain(syl, symbolAudio, hasAudio) {
   return hasAudio(syl.audio) ? [syl.audio] : [];
 }
 
-// 聲調步的四顆鈕：同聲韻的四聲變體音檔 key（content 沒收錄該調或缺檔→null＝點了靜默）
-function zyToneOptions(syl, syllables) {
+// 聲調步的四顆鈕：同聲韻的四聲變體音檔 key（content 沒收錄該調或音檔缺檔→null，
+// 呼叫端據此走「中性音效＋重播題目」的答錯回饋，不會誤播正解音）
+function zyToneOptions(syl, syllables, hasAudio) {
   return [1, 2, 3, 4].map((t) => {
     const hit = (syllables || []).find((y) => y.onset === syl.onset && y.rime === syl.rime && y.tone === t);
-    return { tone: t, audio: hit ? hit.audio : null };
+    return { tone: t, audio: hit && hasAudio(hit.audio) ? hit.audio : null };
   });
 }
 
@@ -374,7 +372,9 @@ function unlockAudio() {
 let chainKeys = [];
 let chainTimer = null;
 voice.addEventListener("ended", () => {
-  if (!chainKeys.length) return;
+  // 過期 ended 防護：舊段自然播完的 ended 可能已排入事件佇列、新播放才啟動——
+  // 派發時若元素已換 src 開新播放（voice.ended 為 false），不得推進新鏈。
+  if (!voice.ended || !chainKeys.length) return;
   chainTimer = setTimeout(() => {
     chainTimer = null;
     const k = chainKeys.shift();
@@ -426,7 +426,8 @@ const app = {
   stepLock: false,   // 組字子步驟切換動畫期間不吃點擊
   shownAt: 0,
   replayTimer: null,
-  advanceTimer: null,
+  advanceTimer: null,  // 整卡層級：答對後推進下一卡
+  stepTimer: null,     // 組字子步驟切換（confirm 空窗）——與換卡語意分開，勿混用
 };
 
 function saveProgress() {
@@ -441,6 +442,8 @@ function showScreen(id) {
 function clearTimers() {
   if (app.replayTimer) { clearTimeout(app.replayTimer); app.replayTimer = null; }
   if (app.advanceTimer) { clearTimeout(app.advanceTimer); app.advanceTimer = null; }
+  if (app.stepTimer) { clearTimeout(app.stepTimer); app.stepTimer = null; }
+  app.stepLock = false; // stepLock 的解鎖繫在 stepTimer 上，殺 timer 必須一併解鎖
   stopChain();
 }
 
@@ -465,6 +468,7 @@ function startBatch() {
   if (!app.queue.length) {
     document.getElementById("msg-text").textContent =
       "還沒有可以練的卡——題目音檔還沒錄好。請家長先用錄音工具頁（recorder.html）錄音，放進 assets/audio/ 後再來。";
+    document.getElementById("msg-emoji").textContent = "🎙️"; // init 失敗路徑可能殘留 😢
     showScreen("screen-msg");
     return;
   }
@@ -494,9 +498,10 @@ function tapGuarded() { return performance.now() - app.shownAt < TAP_GUARD_MS; }
 // 介紹卡（符號首次）／示範卡（音節首次）共用骨架：不判分，大字卡＋播音；點卡重聽、按 ➜ 進下一題
 function renderTeaching(card, { label, display, replayKeys }) {
   const area = document.getElementById("card-area");
+  const multi = display.length > 1 ? " multi" : ""; // 音節示範卡 2–3 字，需縮字才不溢出
   area.innerHTML = `
     <div class="intro-label">${label}</div>
-    <div class="intro-card" id="intro-card">${display}</div>
+    <div class="intro-card${multi}" id="intro-card">${display}</div>
     <button class="btn-next" id="btn-intro-next">➜</button>`;
   document.getElementById("intro-card").addEventListener("click", () => playChain(replayKeys));
   document.getElementById("btn-intro-next").addEventListener("click", () => {
@@ -553,13 +558,18 @@ function renderQuiz(card, entered) {
       app.advanceTimer = setTimeout(() => completeScored(card, firstTap), 1100);
     } else {
       app.firstTap = false;
-      el.classList.add("dim");
-      playSound("neutral");
-      if (app.replayTimer) clearTimeout(app.replayTimer);
-      app.replayTimer = setTimeout(() => playVoice(app.symbolAudio[glyph]), 600);
+      retryFeedback(el, app.symbolAudio[glyph]);
     }
   });
   playVoice(app.symbolAudio[glyph]);
+}
+
+// 答錯共通回饋：錯項變灰＋中性音效＋600ms 後重播題目音（聽音辨認與組字聲韻步、缺音聲調步共用）
+function retryFeedback(el, replayKey) {
+  el.classList.add("dim");
+  playSound("neutral");
+  if (app.replayTimer) clearTimeout(app.replayTimer);
+  app.replayTimer = setTimeout(() => playVoice(replayKey), 600);
 }
 
 // 判分卡（聽音辨認／聽音組字）完成：記錄結果＋批推進
@@ -587,13 +597,13 @@ function renderBuild(card) {
     <div class="build-slots">
       <span class="slot" id="slot-onset"></span><span class="slot" id="slot-rime"></span><span class="slot-tone" id="slot-tone"></span>
     </div>
-    <div id="build-area" class="build-area"></div>`;
+    <div id="build-area"></div>`;
   document.getElementById("btn-replay").addEventListener("click", () => playVoice(y.audio));
   document.getElementById("btn-slow").addEventListener("click", () =>
     playChain(zyDemoChain(y, app.symbolAudio, has)));
   renderBuildStep(card);
   const demo = zyDemoChain(y, app.symbolAudio, has);
-  playChain(demo.length === 3 ? [y.audio, ...demo] : [y.audio]); // 完整音節＋（素材齊時）接一次分段慢速
+  playChain(demo.length > 1 ? [y.audio, ...demo] : [y.audio]); // 完整音節＋（真有分段素材時）接一次分段慢速
 }
 
 function renderBuildStep(card) {
@@ -611,11 +621,11 @@ function renderBuildStep(card) {
     }</div>`;
     buildArea.querySelector(".choices").addEventListener("click", (ev) => {
       const el = ev.target.closest(".zycard");
-      if (!el || app.answered || app.stepLock || tapGuarded()) return;
+      if (!el || app.stepLock || tapGuarded()) return;
       onBuildPick(card, target, el);
     });
   } else {
-    const opts = zyToneOptions(y, app.syllables);
+    const opts = zyToneOptions(y, app.syllables, (k) => app.hasAudio.has(k));
     buildArea.innerHTML = `<div class="choices tones">${
       opts.map((o) => `<button class="tone-btn" data-tone="${o.tone}" data-k="${o.audio || ""}">${
         y.onset + y.rime + (TONE_MARK[o.tone] || "")
@@ -635,10 +645,7 @@ function onBuildPick(card, target, el) {
   const r = zyBuildStep(app.buildState, g === target);
   app.buildState = { phase: r.phase, hadWrong: r.hadWrong };
   if (r.effect === "retry") {
-    el.classList.add("dim");
-    playSound("neutral");
-    if (app.replayTimer) clearTimeout(app.replayTimer);
-    app.replayTimer = setTimeout(() => playVoice(y.audio), 600);
+    retryFeedback(el, y.audio);
     return;
   }
   // confirm-onset / confirm-rime：填格、播該符號音確認、短暫停後進下一步
@@ -648,23 +655,26 @@ function onBuildPick(card, target, el) {
   slot.classList.add("filled");
   el.classList.add("right");
   playVoice(app.symbolAudio[g]);
-  app.stepLock = true; // 換步空窗不吃點擊
-  app.advanceTimer = setTimeout(() => renderBuildStep(card), 800);
+  app.stepLock = true; // 換步空窗不吃點擊（解鎖繫在 stepTimer，clearTimers 會一併重置）
+  app.stepTimer = setTimeout(() => { app.stepTimer = null; renderBuildStep(card); }, 800);
 }
 
 function onTonePick(card, el) {
   const y = card.syl;
   const tone = Number(el.dataset.tone);
   const toneKey = el.dataset.k || null;
+  if (el.classList.contains("dim")) { // 已淘汰的鈕保留「點聽」：只播該調音、不再判分（票面：每顆恆可點聽）
+    if (toneKey) playVoice(toneKey);
+    return;
+  }
   const r = zyBuildStep(app.buildState, tone === y.tone);
   app.buildState = { phase: r.phase, hadWrong: r.hadWrong };
   if (r.effect === "retry") {
-    el.classList.add("dim");
-    if (toneKey) playChain([toneKey, y.audio]); // 聽你點的→聽題目，直接對比
-    else { playSound("neutral"); playVoice(y.audio); }
+    if (toneKey) { el.classList.add("dim"); playChain([toneKey, y.audio]); } // 聽你點的→聽題目，直接對比
+    else retryFeedback(el, y.audio); // 該調缺音檔：與其他答錯路徑一致（中性音效＋延遲重播）
     return;
   }
-  // celebrate
+  if (r.effect !== "celebrate") return; // 狀態機 totality：done 後的 noop 不得 fall-through 重跑 celebrate
   app.answered = true;
   document.getElementById("btn-replay").disabled = true;
   document.getElementById("btn-slow").disabled = true;
@@ -673,10 +683,10 @@ function onTonePick(card, el) {
     if (other !== el) other.classList.add("faded");
   }
   const slotTone = document.getElementById("slot-tone");
-  slotTone.textContent = TONE_MARK[y.tone] || "–";
+  slotTone.textContent = TONE_MARK[y.tone]; // 一聲無記號，與聲調鈕呈現一致（filled 綠底已標示完成）
   slotTone.classList.add("filled");
   playVoice(y.audio);
-  setTimeout(() => playSound("correct"), 400);
+  app.replayTimer = setTimeout(() => playSound("correct"), 400);
   app.advanceTimer = setTimeout(() => completeScored(card, !r.hadWrong), 1500);
 }
 

@@ -9,11 +9,11 @@ const html = readFileSync(new URL("../docs/zhuyin/index.html", import.meta.url),
 const m = html.match(/\/\/ <zhuyin-core-pure>([\s\S]*?)\/\/ <\/zhuyin-core-pure>/);
 if (!m) throw new Error("docs/zhuyin/index.html 找不到 <zhuyin-core-pure> 區塊");
 const {
-  zyCardId, zySylId, zyResolveAudio, zyLoadProgress, zyCardState, zyShuffle,
+  zyCardId, zySylId, zyLoadProgress, zyCardState, zyShuffle,
   zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices,
   zyOnQuizResult, zyAdvanceQueue, zyDemoChain, zyToneOptions, zyBuildStep,
 } = new Function('"use strict";' + m[1] + `
-return { zyCardId, zySylId, zyResolveAudio, zyLoadProgress, zyCardState, zyShuffle,
+return { zyCardId, zySylId, zyLoadProgress, zyCardState, zyShuffle,
   zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices,
   zyOnQuizResult, zyAdvanceQueue, zyDemoChain, zyToneOptions, zyBuildStep };`)();
 
@@ -54,17 +54,6 @@ test("zyLoadProgress：合法存檔原樣載入", () => {
   assert.deepEqual(zyLoadProgress(JSON.stringify(p)), p);
 });
 
-// ── zyResolveAudio（fallback 鏈）──
-
-test("zyResolveAudio：取第一個可用 key、跳過缺檔、全缺回 null", () => {
-  const has = (k) => k === "b";
-  assert.equal(zyResolveAudio(["a", "b"], has), "b");
-  assert.equal(zyResolveAudio(["b", "a"], has), "b");
-  assert.equal(zyResolveAudio(["a", "c"], has), null);
-  assert.equal(zyResolveAudio([], has), null);
-  assert.equal(zyResolveAudio([null, "b"], has), "b");
-});
-
 // ── zySylId ──
 
 test("zySylId：聲韻調組合為卡 id", () => {
@@ -103,10 +92,19 @@ test("組批：全新進度 → 新卡按池序、上限 max", () => {
   assert.deepEqual(b.map((c) => c.glyph), ["ㄅ", "ㄇ", "ㄚ", "ㄈ", "ㄨ"]);
 });
 
-test("組批：可出卡數 N＜max 時 batch＝N", () => {
+test("組批：可出卡數 N＜max 時 batch＝N（順序保持池序）", () => {
   const pool = zyBuildPool(ORDER3, AUDIO, [], prog({}));
   const b = zyBuildBatch({ pool, progress: prog({}), hasAudio: allAudio, max: 5, rng: zero });
-  assert.equal(b.length, 3);
+  assert.deepEqual(b.map((c) => c.glyph), ["ㄅ", "ㄇ", "ㄚ"]);
+});
+
+test("組批：純複習批（無錯無新）洗牌不丟卡不重複", () => {
+  const p = introducedAll(ORDER3);
+  const pool = zyBuildPool(ORDER3, AUDIO, [], p);
+  for (const rng of [zero, high, Math.random]) {
+    const b = zyBuildBatch({ pool, progress: p, hasAudio: allAudio, max: 5, rng });
+    assert.deepEqual(b.map((c) => c.glyph).sort(), ["ㄅ", "ㄇ", "ㄚ"].sort());
+  }
 });
 
 test("組批：題目提示音缺檔的卡不入批（符號與音節同規則）", () => {
@@ -211,12 +209,19 @@ test("示範鏈：任一段缺檔 → fallback 常速整音節；整音節也缺
 // ── zyToneOptions（聲調步四顆鈕）──
 
 test("聲調選項：恆四顆、audio 取同聲韻變體、content 沒收錄該調→null", () => {
-  const opts = zyToneOptions(SYLS[5], SYLS); // ㄇㄚ 只收錄 1、3 聲
+  const opts = zyToneOptions(SYLS[5], SYLS, allAudio); // ㄇㄚ 只收錄 1、3 聲
   assert.deepEqual(opts.map((o) => o.tone), [1, 2, 3, 4]);
   assert.equal(opts[0].audio, "syl-ma1");
   assert.equal(opts[1].audio, null);
   assert.equal(opts[2].audio, "syl-ma3");
   assert.equal(opts[3].audio, null);
+});
+
+test("聲調選項：content 有收錄但音檔缺檔→null（呼叫端走中性答錯回饋、不誤播正解音）", () => {
+  const noMa1 = (k) => k !== "syl-ma1";
+  const opts = zyToneOptions(SYLS[5], SYLS, noMa1);
+  assert.equal(opts[0].audio, null);
+  assert.equal(opts[2].audio, "syl-ma3");
 });
 
 // ── zyBuildStep（組字判分狀態機：狀態×事件逐格）──
