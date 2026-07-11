@@ -24,6 +24,10 @@ _Avoid_: 帳號、user、account
 藏在圖示網址參數的家庭密鑰，同步服務以它驗身，取代登入帳號（見 ADR-0003）。
 _Avoid_: 密碼、API key
 
+**sync client**：
+接同步的 app 內嵌的共用同步腳本（`/shared/sync-v<N>.js`）：開啟時 pull、進度變更後 push、離線靜默略過。平台基建，共用不複製（見 ADR-0004）。
+_Avoid_: 同步模組、sync snippet
+
 **逃生門（escape hatch）**：
 不依賴雲端的手動進度備援——文字框匯出／匯入 localStorage 存檔（沿用哥哥版與注音版既有慣例）。
 _Avoid_: 備份功能
