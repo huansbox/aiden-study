@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>注音錄音工具（家長用）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; margin: 0; padding: 16px; background: #f5f6f8; color: #223; }
+  h1 { font-size: 1.3rem; margin: 0 0 8px; }
+  .intro { font-size: 0.9rem; color: #556; line-height: 1.6; margin: 0 0 12px; }
+  .intro code { background: #e8eaef; padding: 1px 5px; border-radius: 4px; }
+  #banner { display: none; background: #fff3cd; border: 1px solid #e0c46c; border-radius: 8px; padding: 10px 12px; font-size: 0.9rem; line-height: 1.5; margin-bottom: 12px; }
+  #banner.show { display: block; }
+  #progress { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; }
+  .card { background: #fff; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .card.done { background: #f0faf2; }
+  .card .head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .card .title { font-size: 2rem; font-weight: 700; }
+  .card .kind { font-size: 0.8rem; color: #778; }
+  .card .fname { font-size: 0.8rem; color: #99a; font-family: ui-monospace, monospace; margin-left: auto; }
+  .card .hint { font-size: 0.9rem; color: #446; line-height: 1.5; margin: 6px 0 10px; }
+  .card .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card button { font-size: 1rem; padding: 10px 16px; border: none; border-radius: 8px; background: #e8eaef; color: #223; cursor: pointer; }
+  .card button:disabled { opacity: 0.4; cursor: default; }
+  .card button.rec { background: #d9534f; color: #fff; }
+  .card button.rec.recording { background: #333; }
+  .card button.dl { background: #3b7dd8; color: #fff; }
+  .card audio { height: 36px; max-width: 200px; }
+  .card .status { font-size: 0.85rem; color: #2a8a4a; font-weight: 600; }
+  .card .err { font-size: 0.85rem; color: #c0392b; }
+</style>
+</head>
+<body>
+<h1>注音錄音工具</h1>
+<p class="intro">
+  每段：<b>錄音 → 試聽 → 滿意就下載</b>。檔名自動照規約命名，<b>不用改名</b>；
+  錄完把全部檔案放進 repo 的 <code>docs/zhuyin/assets/audio/</code> 即可
+  （iPhone／iPad 下載的檔案在「檔案」app 的「下載項目」）。
+</p>
+<div id="banner"></div>
+<div id="progress"></div>
+<div id="list">載入中…</div>
+<script>
+(async function () {
+  const $list = document.getElementById("list");
+  const $banner = document.getElementById("banner");
+  const $progress = document.getElementById("progress");
+
+  function pickMime() {
+    if (!window.MediaRecorder || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return null;
+    for (const t of ["audio/mp4;codecs=mp4a.40.2", "audio/mp4"]) {
+      if (MediaRecorder.isTypeSupported(t)) return t;
+    }
+    return null;
+  }
+  const MIME = pickMime();
+  if (!MIME) {
+    $banner.textContent = "此瀏覽器錄不出 iPad 可播的 m4a（AAC）格式——請改用 iPhone／iPad／Mac 的 Safari 開啟本頁。";
+    $banner.classList.add("show");
+  }
+
+  let content;
+  try {
+    const res = await fetch("content.json");
+    if (!res.ok) throw new Error(res.status);
+    content = await res.json();
+  } catch (e) {
+    $list.textContent = "讀不到 content.json——請透過網址（https 或 localhost）開啟本頁，不要直接開本機檔案。";
+    return;
+  }
+
+  const TONE_MARK = { 1: "", 2: "ˊ", 3: "ˇ", 4: "ˋ" };
+  const TONE_NAME = { 1: "一聲", 2: "二聲", 3: "三聲", 4: "四聲" };
+
+  // 從 content.json 生成錄音清單；音節後緊接它的詞，錄起來順口
+  const items = [];
+  for (const s of content.symbols) {
+    items.push({ key: s.audio, title: s.glyph, kind: "符號",
+      hint: s.recordHint || "唸這個符號的本音，短促" });
+  }
+  for (const y of content.syllables) {
+    const z = y.onset + y.rime + TONE_MARK[y.tone];
+    items.push({ key: y.audio, title: z, kind: "音節（" + TONE_NAME[y.tone] + "）",
+      hint: "自然唸出「" + z + "」，聲調清楚" });
+    if (y.word) {
+      items.push({ key: y.word.audio, title: y.word.emoji + " " + y.word.text, kind: "詞",
+        hint: "自然唸出「" + y.word.text + "」，平常說話的語氣即可" });
+    }
+  }
+
+  const state = new Map(); // key -> { blob, url, downloaded }
+  for (const it of items) state.set(it.key, { blob: null, url: null, downloaded: false });
+  let active = null; // { recorder, btn } 一次只允許一段在錄
+
+  function updateProgress() {
+    let n = 0;
+    for (const st of state.values()) if (st.downloaded) n++;
+    $progress.textContent = "已下載 " + n + " / " + items.length + " 段";
+  }
+
+  function render(it, card) {
+    const st = state.get(it.key);
+    card.classList.toggle("done", st.downloaded);
+    card.querySelector(".status").textContent = st.downloaded ? "✓ 已下載" : "";
+    const audio = card.querySelector("audio");
+    if (st.url) { audio.src = st.url; audio.style.display = ""; }
+    else { audio.removeAttribute("src"); audio.style.display = "none"; }
+    card.querySelector(".dl").disabled = !st.blob;
+  }
+
+  async function toggleRecord(it, card) {
+    const btn = card.querySelector(".rec");
+    const err = card.querySelector(".err");
+    if (active && active.recorder.state === "recording") {
+      const mine = active.btn === btn;
+      active.recorder.stop();
+      if (mine) return;
+    }
+    err.textContent = "";
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      err.textContent = "拿不到麥克風權限，請允許本頁使用麥克風後再試。";
+      return;
+    }
+    const recorder = new MediaRecorder(stream, { mimeType: MIME });
+    const chunks = [];
+    recorder.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    recorder.onstop = () => {
+      stream.getTracks().forEach((t) => t.stop());
+      btn.textContent = "● 重錄";
+      btn.classList.remove("recording");
+      if (active && active.btn === btn) active = null;
+      const st = state.get(it.key);
+      if (st.url) URL.revokeObjectURL(st.url);
+      st.blob = new Blob(chunks, { type: "audio/mp4" });
+      st.url = URL.createObjectURL(st.blob);
+      st.downloaded = false;
+      render(it, card);
+      updateProgress();
+    };
+    recorder.start();
+    active = { recorder, btn };
+    btn.textContent = "■ 停止";
+    btn.classList.add("recording");
+  }
+
+  function download(it, card) {
+    const st = state.get(it.key);
+    if (!st.blob) return;
+    const a = document.createElement("a");
+    a.href = st.url;
+    a.download = it.key + content.audio.ext;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    st.downloaded = true;
+    render(it, card);
+    updateProgress();
+  }
+
+  $list.textContent = "";
+  for (const it of items) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<div class="head"><span class="title"></span><span class="kind"></span><span class="fname"></span></div>' +
+      '<div class="hint"></div>' +
+      '<div class="row"><button class="rec">● 開始錄音</button>' +
+      '<audio controls style="display:none"></audio>' +
+      '<button class="dl" disabled>下載</button>' +
+      '<span class="status"></span><span class="err"></span></div>';
+    card.querySelector(".title").textContent = it.title;
+    card.querySelector(".kind").textContent = it.kind;
+    card.querySelector(".fname").textContent = it.key + content.audio.ext;
+    card.querySelector(".hint").textContent = it.hint;
+    const recBtn = card.querySelector(".rec");
+    recBtn.disabled = !MIME;
+    recBtn.addEventListener("click", () => toggleRecord(it, card));
+    card.querySelector(".dl").addEventListener("click", () => download(it, card));
+    $list.appendChild(card);
+  }
+  updateProgress();
+})();
+</script>
+</body>
+</html>
