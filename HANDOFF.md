@@ -1,51 +1,41 @@
-# HANDOFF — 三下自然「期末」題庫擴充
+# HANDOFF — 2026-07-11 全家學習平台：規劃全部完成，實作尚未開工
 
-> 給下一個 session 的交接：定位「現況／下一步／別重踩的坑」。細節真相源：
-> [`issues/prd.md`](issues/prd.md)（PRD）＋ `issues/001`～`007`（原始工作項，**皆已完成**）；
-> pipeline 與踩坑：[`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)；
-> 考卷來源與蒐集狀態：[`docs-dev/exam-paper-sourcing.md`](docs-dev/exam-paper-sourcing.md)；
-> 設計稿：[`docs-dev/exam-final-pipeline-design.md`](docs-dev/exam-final-pipeline-design.md)。
+## 目標
 
-## 現況（2026-06-10）
+aiden-study 重整為全家學習平台 monorepo（hub 入口＋registry＋kids.linshuhuan.com＋CF Worker 進度同步）。真相源：**spec＝issue #26**、拆票＝**native sub-issues #27–#35**（9 張，線性 blocked-by 鏈）、決策＝`docs-dev/adr/0001–0004`、詞彙＝`CONTEXT.md`。
 
-期末題庫已上線，做過三批擴充：
-- **第一批（issues 001–007，臺北＋新北）**：建立 `PDF→萃取→分類→網站` pipeline，期中/期末切換＋subtopic 練習。已完成並 merge 到 master。
-- **第二批 Stage 1（其他縣市官方答案卷）**：全台掃描找新卷，併入 100 題官方答案（三民111、四維112、廣興111、廣興112）。已 merge 到 master。
-- **第二批 Stage 2（7 份無官方答案卷）**：大墩113/112、文心112/111、路上111、永安113、東光113 → 萃取 178 題、AI 判答、**單票盲審 review B**（148 題、95.3% 一致、7 分歧人工定奪）→ +160 題入庫。路上111 意外是格式A 內嵌答案（16 題官方答案）。已 merge 到 master。
+## 進度
 
-**題庫現況**：`docs/questions.json` 共 1101 題（期中 602＝unit1 324＋unit2 278；期末 499＝unit3 250＋unit4 249）。`uv run pytest` 49 passed。部署＝push master → GitHub Pages 自動從 `/docs` 上線。
+- 已完成：grill 對齊→ADR 落檔→spec 發佈→3-reviewer doc-review（12 findings 全採納）→拆票→拆票批次 3-reviewer doc-review（11 組 findings 全採納）→9 票發佈、依賴邊接好。**零程式碼——實作完全未開工。**
+- 進行中：無（乾淨交接點）。
+- 下一步：兩張無依賴票可並行開工——**#35**（iPad spike，家長一個下午，架構前提 stop-gate）與 **#27**（Worker＋KV，實作票）。
 
-**網站新增（2026-06-10）**：題目回報（flag）功能上線 — 答題後可標記「題目有問題」，該題退出題池、統計與通關分母；首頁可還原、可開 GitHub prefill issue 回報。細節見 `CLAUDE.md`「題目回報」。
+## 對話中已對齊、尚未落檔的決策
 
-**複查清單**：`review_期末_ai答案.md` 共 266 題 AI 補答案待家長核對（review A＋B 已盲審過一輪，分歧已定奪；清單供最終人工抽查）。
+（幾乎全部已落檔；僅餘工作方式類）
 
-## 單票盲審做法（review B 已工具化）
+- 家長偏好：review findings **一次一條**白話確認，不整包呈報；小事可由 agent 代拍板但要註明。
+- 票號≠順序：平台 1/9＝#35（首輪建票 zsh 陣列錯位補建所致），其餘 2/9–9/9＝#27–#34 依序。
 
-1. `uv run python scripts/build_review_blind.py`（從 `classified_questions_期末_新增.json` 產 `data/_review_blind.json` 盲版，只含會進題庫的 needs_review 題）
-2. 平行開 N 個 agent，各盲答一段 index 範圍（agent 自己 Read 盲版檔，args 只給範圍）
-3. 比對盲答 vs classified 記錄，只列分歧；**先查主題庫先例**（同概念題的既有答案）再定奪，課綱外爭議可 websearch（如百葉箱題）
-4. 定奪結果寫回 `_新增` 檔再 merge
+## 注意事項
 
-## 暫緩項（次要，可不做）
+- 本機（此 Mac）**未裝 wrangler、無 CF 憑證**——#27 部署段需家長 `wrangler login` 一次（票內已標 HITL）。
+- spelling-bee-trainer repo **已是 archived 狀態**（2026-03-17）——#32/#34 票內已寫對應處置，別被「未動舊 repo」驗收弄糊塗。
+- 注音音檔目錄仍空（家長閘門 #20 未過）——#29 已授權 Playwright stub 音檔驗法，不要把錄音拉進依賴。
+- 站內引用**一律相對路徑**（新舊 origin base path 不同）——spec 鐵律，flip 日斷線的頭號雷。
+- 兩個「順手項」未辦：aiden-baseball 只在本機未 push GitHub；world-cup 專案下落不明（可能在 Windows 機）。
 
-- **海佃110**：選擇有官方答案、是非空白；但 header「對的畫○錯的打✕」被底線打散＋「選出正確的號碼」不在 SECTION_PATTERNS＋後段配合題無 NON_TARGET 邊界 → 需動通用 regex（影響期中 regression），產出低。
-- **三民111 是非**：答案卷雙欄打散，是非 12 題只抽到 6（#2,3,5,9,10,12），抽到的對齊正確；補齊需改善雙欄處理。
-- **整卷掃描圖片無法處理**：草港112、內安111/112（連題幹都抽不到，已跳過）。
+## Suggested skills
 
-## 別重踩的坑（仍適用）
+- 逐票實作照票面驗收走，spec/票已齊備**不需再 grill**（除非發現票與現實不符——票尾有明文：停下回報回對齊）。
+- 每票 PR merge 前 `/code-review`（effort 隨規模；#30 機械搬移用 low）。
+- 實作中改動 CLAUDE.md 指標行即可，勿重寫歷史段落。
 
-- **答案卷＝格式A 內嵌答案**：題目卷與答案卷同版面、答案在前置括號（如安和、三民）→ 直接對**答案卷**跑 `extract.py` 一次取得題目＋官方答案。
-- **掃描圖片答案卷**（chars≈0 或紅字標選項）：用 `render_pdf.py`＋`crop_pdf.py` 切 2×2 象限放大親讀官方答案 →`official_answers_*.json`→`apply_answer_key.py` 注入。**整頁縮圖 OCR / sonnet agent 不可靠**，務必象限放大由主模型親讀，並用 `crosscheck_official_ai.py` 與 AI 判答交叉比對。
-- **PUA 選項標記**：某些題目卷的 ①②③④ 是私用區碼位 U+F06A–E，已在 `extract.py` 的 `normalize_pua()` 修掉。遇「選擇題抽到但 opts=0」先疑此。
-- **改 `extract.py` 的 SECTION_PATTERNS / NON_TARGET 會動到期中** → 改完務必 `uv run pytest`（`tests/test_regression.py` 比對期中 golden）。
-- **課綱界線**：三年級自然 110下 起才是現行 108 課綱；108下/109下 屬舊課綱，排除勿納。
-- **claude -p 批次逾時**：期末用 sonnet、batch 15、timeout 300s；若見 `classify_reason=="分類失敗"` 的 none 是逾時造成，需重跑。
-- **再抓 tcool.cc PDF**：PDF 端點被 Cloudflare 擋，流程見 `docs-dev/exam-paper-sourcing.md`（`sweep_tcool.ps1` 查清單；Playwright 取 cf_clearance 交接 `download_tcool.ps1` 下載）。
+## 如何接續
 
-## 已對齊的題庫結構（參考）
+1. 任一台機器：`git pull` master（規劃全在 master，無 feature branch）。
+2. 讀 issue #26＋要做的那張票（建議從 #27 開，開 `feat/platform-sync-worker` 之類分支）；#35 提醒家長排時間。
+3. 先跑 `uv run pytest`＋既有 node 測試確認基線綠，再動工。
 
-- `unit`＝整數 1–4（期中 1 田園樂／2 溫度變化；期末 3 動物／4 天氣），全域唯一。
-- 兩層 unit→subtopic：動物{動物分類/身體構造/生存與適應/觀察方法}、天氣{風/氣溫測量/雨量降雨/天氣預報}，以桃子腳國小範圍為基準，範圍外標 `none` 排除。
-- 題型：只做是非＋選擇；填一填/配合題/題組 out of scope。
-- 答案：官方優先（needs_review=False）；無官方則 AI 補＋標 needs_review 進複查清單。
-- 哪些是 AI 補：classified 的 `needs_review`；`docs/questions.json` 不帶此欄，只能靠 `source` 區分。
+---
+本檔讀完即刪（`/handoff` 接班流程會處理）。
