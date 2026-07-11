@@ -119,11 +119,14 @@
     }
     err.textContent = "";
     let stream;
+    btn.disabled = true; // 權限提示等待期間防重入（重入會漏掉沒 stop 的 recorder、卡住麥克風）
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (e) {
       err.textContent = "拿不到麥克風權限，請允許本頁使用麥克風後再試。";
       return;
+    } finally {
+      btn.disabled = false;
     }
     const recorder = new MediaRecorder(stream, { mimeType: MIME });
     const chunks = [];
