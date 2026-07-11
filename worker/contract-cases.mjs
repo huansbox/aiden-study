@@ -44,11 +44,41 @@ export const CONTRACT_CASES = [
     },
   },
   {
-    name: "PUT 競態被拒後收斂：GET 後另一裝置先寫入",
+    name: "PUT 競態被拒後收斂：GET 後另一裝置先寫入（雲端終值＝競態勝者，輸家增量被棄）",
     server: { rev: 3, data: { mastered: ["q1"] }, writeId: "w0" },
     client: { syncedRev: 3, dirty: true, data: { mastered: ["q1", "qB"] }, schemaVersion: 1 },
     raceWriteBeforePut: { data: { mastered: ["q1", "qA"] } },
-    expect: { firstAction: "push", putRejected: true, finalServerRev: 4, converged: true },
+    expect: {
+      firstAction: "push",
+      putRejected: true,
+      finalServerRev: 4,
+      converged: true,
+      finalMasteredContains: ["qA"],
+      finalMasteredLacks: ["qB"],
+    },
+  },
+  {
+    name: "own-write 疊推：遠端領先的那筆是自己的 beacon（writeId 命中）→ 續 push 不丟離線增量",
+    server: { rev: 4, data: { mastered: ["q1", "q2"] }, writeId: "beacon-w" },
+    client: {
+      syncedRev: 3,
+      dirty: true,
+      data: { mastered: ["q1", "q2", "q3"] },
+      schemaVersion: 1,
+      lastWriteId: "beacon-w",
+    },
+    expect: {
+      firstAction: "push",
+      finalServerRev: 5,
+      converged: true,
+      finalMasteredContains: ["q3"],
+    },
+  },
+  {
+    name: "雲端被清空（namespace 重建/誤刪 key）→ reseed 重新播種，不卡死",
+    server: null,
+    client: { syncedRev: 5, dirty: false, data: { mastered: ["q1", "q2"] }, schemaVersion: 1 },
+    expect: { firstAction: "reseed", finalServerRev: 1, converged: true },
   },
   {
     name: "response 遺失重送：同 writeId 冪等、rev 不重複遞增",
@@ -58,7 +88,9 @@ export const CONTRACT_CASES = [
     expect: { firstAction: "push", finalServerRev: 3, converged: true },
   },
   {
-    name: "手動匯入後立即上雲：他端 pull 得到",
+    // 匯入流程規約：匯入當下先 GET 定錨（syncedRev＝當下遠端 rev）再標 dirty——
+    // 即使雲端已領先，匯入仍以 LWW 最新寫入身分勝出；此 case 的 client 即定錨後的形狀
+    name: "手動匯入後立即上雲（GET 定錨當下遠端 rev）：他端 pull 得到",
     server: { rev: 1, data: { mastered: ["q1"] }, writeId: "w0" },
     client: { syncedRev: 1, dirty: true, data: { mastered: ["imported-1", "imported-2"] }, schemaVersion: 1 },
     secondClientPull: true,
@@ -75,18 +107,18 @@ export const CONTRACT_CASES = [
     server: { rev: 2, data: { mastered: ["q1"] }, writeId: "w0" },
     client: { syncedRev: 2, dirty: true, data: { mastered: ["q1", "q2"] }, schemaVersion: 1 },
     wrongToken: true,
-    expect: { firstAction: "auth-error", finalServerRev: 2, serverUnchanged: true },
+    expect: { firstAction: "auth-error", serverUnchanged: true },
   },
   {
     name: "schemaVersion 比 app 新：拒讀拒 push 保本地",
     server: { rev: 3, data: { schemaVersion: 9, mastered: ["q1"] }, writeId: "w0" },
     client: { syncedRev: 1, dirty: true, data: { schemaVersion: 1, mastered: ["local"] }, schemaVersion: 1 },
-    expect: { firstAction: "schema-block", finalServerRev: 3, serverUnchanged: true, clientKeepsLocal: true },
+    expect: { firstAction: "schema-block", serverUnchanged: true, clientKeepsLocal: true },
   },
   {
     name: "遠端 rev 落後（KV 舊讀）：本輪不動作",
     server: { rev: 2, data: { mastered: ["q1"] }, writeId: "w0" },
     client: { syncedRev: 3, dirty: true, data: { mastered: ["q1", "q2"] }, schemaVersion: 1 },
-    expect: { firstAction: "retry", finalServerRev: 2, serverUnchanged: true, clientKeepsLocal: true },
+    expect: { firstAction: "retry", serverUnchanged: true, clientKeepsLocal: true },
   },
 ];

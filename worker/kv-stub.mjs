@@ -16,6 +16,5 @@ export function kvStub(initial = {}) {
           .map(([name, v]) => ({ name, metadata: v.metadata })),
       };
     },
-    _store: store,
   };
 }

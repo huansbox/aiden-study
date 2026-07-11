@@ -1,7 +1,11 @@
 // 家庭進度同步服務（Cloudflare Worker＋KV）。spec＝issue #26「進度同步」節、票＝#27。
-// 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；404 只留給路由／key 格式錯誤。
+// 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；有值時回 {rev,data,writeId}
+// （writeId 讓 client 認出「遠端領先的那筆是我自己的 beacon」）。404 只留給路由／key 格式錯誤。
 // PUT 帶 writeId 冪等：response 遺失後重送同 writeId → 200 現行 rev，不重複遞增。
+// writeId 契約＝client 每次新寫入以 crypto.randomUUID() 新產、每 key 至多一筆未決寫入（見 decide-sync.mjs）。
 // sendBeacon 不能帶 header，token 一律支援 ?k= query（與圖示網址同一把）；POST 為 PUT 的 beacon 別名。
+// 已知接受限制（家庭規模、KV 無 conditional write）：同 rev 併發 PUT 可能雙雙 200，
+// 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
 
 const ALLOWED_ORIGINS = new Set([
   "https://huansbox.github.io",
@@ -27,7 +31,9 @@ function corsHeaders(request) {
 function json(status, body, cors) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json", ...cors },
+    // no-store：同步正確性依賴每次 GET 讀到最新 rev，URL 又固定（?k= 不變），
+    // 不能賭瀏覽器（尤其 Safari）的啟發式快取
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...cors },
   });
 }
 
@@ -46,6 +52,17 @@ export default {
       return new Response(null, { status: 204, headers: cors });
     }
 
+    // 未捕捉例外會讓 runtime 回不帶 CORS header 的錯誤頁，瀏覽器端會誤判成離線——
+    // KV 拋錯（429、值超限）必須以帶 CORS 的 500 回，client 才分得出 data-error vs offline
+    try {
+      return await handle(request, env, url, cors);
+    } catch {
+      return json(500, { error: "internal" }, cors);
+    }
+  },
+};
+
+async function handle(request, env, url, cors) {
     const token = tokenFrom(request, url);
     if (!token || token !== env.TOKEN) return json(401, { error: "bad token" }, cors);
 
@@ -84,7 +101,10 @@ export default {
         } catch {
           return json(500, { error: "corrupt" }, cors);
         }
-        return json(200, { rev: stored.rev, data: stored.data }, cors);
+        // 形狀壞（可 parse 但缺 rev）與不可 parse 同罪：回 200 假資料會讓 client 空轉、
+        // 回 409 會把 key 磚化——都不如有訊號的 500
+        if (!Number.isInteger(stored.rev)) return json(500, { error: "corrupt" }, cors);
+        return json(200, { rev: stored.rev, data: stored.data, writeId: stored.writeId }, cors);
       }
 
       if (request.method === "PUT" || request.method === "POST") {
@@ -113,6 +133,7 @@ export default {
           } catch {
             return json(500, { error: "corrupt" }, cors);
           }
+          if (!Number.isInteger(current.rev)) return json(500, { error: "corrupt" }, cors);
         }
         if (body.rev !== current.rev) {
           if (body.writeId === current.writeId) {
@@ -136,5 +157,4 @@ export default {
     }
 
     return json(404, { error: "not found" }, cors);
-  },
-};
+}

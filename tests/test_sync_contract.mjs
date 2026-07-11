@@ -1,10 +1,12 @@
-// 契約測試：同一份 case 矩陣（worker/contract-cases.mjs）同時餵 client（decideSync）與
-// server（worker handler），跑最小 client 迴圈，斷言兩端判定一致且收斂。
+// 契約測試：同一份 case 矩陣（worker/contract-cases.mjs）同時餵 client（classifyRemote＋decideSync）
+// 與 server（worker handler），跑最小 client 迴圈，斷言兩端判定一致且收斂。
+// 本檔的 fetchRemote／syncRound＝#28 落地前的替身迴圈；#28 完成後改由
+// docs/shared/sync-v1.js 的 sentinel 抽取真 client 的 sync round，本替身刪除。
 
 import test from "node:test";
 import assert from "node:assert/strict";
 import worker from "../worker/worker.mjs";
-import { decideSync } from "../worker/decide-sync.mjs";
+import { decideSync, classifyRemote } from "../worker/decide-sync.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 import { CONTRACT_CASES } from "../worker/contract-cases.mjs";
 
@@ -37,24 +39,20 @@ async function call(env, method, token, body) {
 }
 
 async function fetchRemote(env, token) {
-  let res;
-  try {
-    res = await call(env, "GET", token);
-  } catch {
-    return { kind: "network" };
-  }
-  if (res.status === 401) return { kind: "auth" };
-  if (res.status !== 200) return { kind: "http" };
+  // in-process 呼叫不會 throw（真離線的 threw:true 由 classifyRemote 矩陣測試覆蓋）
+  const res = await call(env, "GET", token);
+  let jsonOk = true;
   let body;
   try {
     body = await res.json();
   } catch {
-    return { kind: "bad-payload" };
+    jsonOk = false;
   }
-  return { kind: "ok", rev: body.rev, data: body.data, schemaVersion: body.data?.schemaVersion };
+  return classifyRemote({ threw: false, status: res.status, jsonOk, body });
 }
 
-// 最小 client 同步迴圈：GET → decideSync → 依 action 行動；PUT 被拒（409）→ 重新 GET → 再判定
+// 最小 client 同步迴圈：GET → classify → decideSync → 依 action 行動；
+// push／reseed 一律以本輪 remote.rev 為 base；PUT 被拒（409）→ 重新 GET → 再判定
 async function syncRound(env, client, token, twists = {}) {
   const remote = await fetchRemote(env, token);
   const action = decideSync(client, remote);
@@ -66,7 +64,7 @@ async function syncRound(env, client, token, twists = {}) {
     client.dirty = false;
     return out;
   }
-  if (action.type !== "push") return out;
+  if (action.type !== "push" && action.type !== "reseed") return out;
 
   if (twists.raceWriteBeforePut) {
     const raceRes = await call(env, "PUT", TOKEN, {
@@ -77,12 +75,13 @@ async function syncRound(env, client, token, twists = {}) {
     assert.equal(raceRes.status, 200, "競態寫入應成功");
   }
 
-  const putBody = { rev: client.syncedRev, data: client.data, writeId: "client-w1" };
+  const putBody = { rev: remote.rev, data: client.data, writeId: "client-w1" };
   const res = await call(env, "PUT", token, putBody);
 
   if (res.status === 200) {
     const body = await res.json();
     client.syncedRev = body.rev;
+    client.lastWriteId = putBody.writeId;
     client.dirty = false;
     if (twists.replayPut) {
       const retry = await call(env, "PUT", token, putBody);
@@ -147,6 +146,14 @@ for (const c of CONTRACT_CASES) {
     }
     if (c.expect.clientKeepsLocal) {
       assert.deepEqual(client.data, initialClientData, "client 應保留本地資料");
+    }
+    for (const id of c.expect.finalMasteredContains ?? []) {
+      assert.ok((after.data.mastered ?? []).includes(id), `雲端終值應含 ${id}`);
+      assert.ok((client.data.mastered ?? []).includes(id), `client 終值應含 ${id}`);
+    }
+    for (const id of c.expect.finalMasteredLacks ?? []) {
+      assert.ok(!(after.data.mastered ?? []).includes(id), `雲端終值不得含 ${id}`);
+      assert.ok(!(client.data.mastered ?? []).includes(id), `client 終值不得含 ${id}`);
     }
     if (c.expect.finalDataLacksErrorBankEntry) {
       const gone = c.expect.finalDataLacksErrorBankEntry;

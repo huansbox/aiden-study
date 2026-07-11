@@ -79,7 +79,8 @@ test("PUT 播種→GET round-trip", async () => {
   assert.equal(put.status, 200);
   assert.deepEqual(await put.json(), { rev: 1 });
   const get = await worker.fetch(req("/v1/progress/test-a/study"), env(kv));
-  assert.deepEqual(await get.json(), { rev: 1, data: { m: [1] } });
+  assert.deepEqual(await get.json(), { rev: 1, data: { m: [1] }, writeId: "w1" });
+  assert.equal(get.headers.get("Cache-Control"), "no-store");
 });
 
 test("POST 為 PUT 的 beacon 別名", async () => {
@@ -126,6 +127,35 @@ test("GET 到損毀存檔 → 500（非合法空）", async () => {
   const kv = kvStub({ "p:test-a:study": { value: "{{{not json", metadata: null } });
   const res = await worker.fetch(req("/v1/progress/test-a/study"), env(kv));
   assert.equal(res.status, 500);
+});
+
+test("形狀壞的存檔（可 parse 但缺 rev）→ GET/PUT 皆 500，不磚化不回假資料", async () => {
+  const kv = kvStub({ "p:test-a:study": { value: "{}", metadata: null } });
+  const get = await worker.fetch(req("/v1/progress/test-a/study"), env(kv));
+  assert.equal(get.status, 500);
+  const put = await worker.fetch(
+    req("/v1/progress/test-a/study", { method: "PUT", body: { rev: 0, data: null, writeId: "w1" } }),
+    env(kv),
+  );
+  assert.equal(put.status, 500);
+});
+
+test("KV 拋錯 → 帶 CORS 的 500（不可漏成無 header 錯誤頁被誤判離線）", async () => {
+  const throwing = {
+    async get() {
+      throw new Error("kv boom");
+    },
+    async put() {
+      throw new Error("kv boom");
+    },
+    async list() {
+      throw new Error("kv boom");
+    },
+  };
+  const res = await worker.fetch(req("/v1/progress/test-a/study", { origin: NEW_ORIGIN }), { TOKEN, KV: throwing });
+  assert.equal(res.status, 500);
+  assert.deepEqual(await res.json(), { error: "internal" });
+  assert.equal(res.headers.get("Access-Control-Allow-Origin"), NEW_ORIGIN);
 });
 
 test("路由／key 格式錯誤 → 404；method 錯誤 → 405", async () => {
