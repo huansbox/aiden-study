@@ -106,6 +106,29 @@
   }
   .btn-next:active { transform: translateY(3px); box-shadow: 0 2px 0 #2e7031; }
 
+  /* 真實詞卡（拼對音節的北極星時刻） */
+  .word-card { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; animation: zyPop 0.6s; }
+  .word-emoji { font-size: min(45vw, 230px); line-height: 1.1; }
+  .word-text { font-size: 2.4rem; font-weight: 800; color: #e07b39; }
+
+  /* 批末獎勵（複製自哥哥版 docs/index.html 獎杯揭曉 CSS，commit af0d199 時期版本，尺寸微調） */
+  .reward-img {
+    display: block; width: min(60vw, 320px); aspect-ratio: 1 / 1; object-fit: cover;
+    margin: 0 auto; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    animation: rewardIn 0.3s ease-out;
+  }
+  @keyframes rewardIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+  .reward-reveal { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .reward-trophy {
+    font-size: 76px; line-height: 1;
+    animation: trophyPop 0.5s cubic-bezier(.18,.89,.32,1.28) both, trophyIdle 1.8s ease-in-out 0.7s infinite;
+  }
+  .reward-cap { font-size: 0.95rem; color: #888; }
+  .reward-reveal:active .reward-trophy { animation: none; transform: scale(0.92); }
+  .reward-reveal.revealed .reward-trophy, .reward-reveal.revealed .reward-cap { display: none; }
+  @keyframes trophyPop { 0% { transform: scale(0) rotate(-18deg); opacity: 0; } 60% { transform: scale(1.18) rotate(7deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+  @keyframes trophyIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
   /* 批間／訊息畫面 */
   .break-emoji { font-size: 4rem; }
   .break-title { font-size: 1.6rem; font-weight: 800; color: #e07b39; margin: 0; }
@@ -135,6 +158,7 @@
   <div id="screen-break" class="screen hidden">
     <div class="break-emoji">🎉</div>
     <h2 class="break-title">這一批練完了！</h2>
+    <div id="break-reward"></div>
     <button class="btn-again" id="btn-again">再一批</button>
     <button class="btn-quiet" id="btn-done">今天到這裡</button>
   </div>
@@ -402,6 +426,43 @@ function playChain(keys) {
 function playVoice(key) { playChain([key]); }
 
 // ════════════════════════════════════════════════════
+// 批末獎勵：MVP 借用哥哥版 __generic__ 通用池（../rewards.json＋../assets/rewards/）。
+// 以下三個函式複製自哥哥版 docs/index.html 的 rwDrawFromBag／rewardRevealHtml／_revealReward
+// （commit af0d199 時期版本）再裁剪：單一池不需 roll-up，缺 manifest／缺圖靜默不顯示。
+// ════════════════════════════════════════════════════
+const rewardBag = {}; // shuffle-bag：抽完重裝；reload 即清
+function rwDrawFromBag(bag, key, items, rng) {
+  if (!key || !items.length) return null;
+  let rem = bag[key];
+  if (!rem || !rem.length) rem = bag[key] = items.slice();
+  const i = Math.floor((rng ? rng() : 0) * rem.length);
+  const f = rem[i];
+  rem.splice(i, 1);
+  return f;
+}
+function drawRewardPath() {
+  const pool = app.rewards && app.rewards.pools && app.rewards.pools.__generic__;
+  if (!Array.isArray(pool) || !pool.length) return null;
+  const file = rwDrawFromBag(rewardBag, "__generic__", pool, Math.random);
+  return file ? "../assets/rewards/" + file : null;
+}
+function rewardRevealHtml(path) {
+  if (!path) return "";
+  return `<div class="reward-reveal" onclick="window._revealReward(this)">
+      <div class="reward-trophy">🏆</div>
+      <div class="reward-cap">點獎杯看圖</div>
+      <img class="reward-img hidden" src="${path}" alt="" onerror="this.closest('.reward-reveal').remove()">
+    </div>`;
+}
+window._revealReward = (el) => {
+  if (el.classList.contains("revealed")) return;
+  el.classList.add("revealed");
+  const img = el.querySelector(".reward-img");
+  if (img) img.classList.remove("hidden"); // 切回 display:block → 觸發 rewardIn 淡入
+  playSound("correct");                     // 揭曉的小回饋
+};
+
+// ════════════════════════════════════════════════════
 // App 狀態與流程
 // ════════════════════════════════════════════════════
 const STORAGE_KEY = "aiden_zhuyin_v1";
@@ -415,6 +476,7 @@ const app = {
   entryOrder: [],
   symbolAudio: {},   // glyph -> 音檔 key
   syllables: [],     // content.syllables（音節卡與聲調鈕用）
+  rewards: null,     // ../rewards.json manifest（缺＝批末靜默無獎圖）
   hasAudio: new Set(),
   progress: null,
   queue: [],         // 本批剩餘卡（zyBuildPool 的卡物件）
@@ -687,7 +749,26 @@ function onTonePick(card, el) {
   slotTone.classList.add("filled");
   playVoice(y.audio);
   app.replayTimer = setTimeout(() => playSound("correct"), 400);
-  app.advanceTimer = setTimeout(() => completeScored(card, !r.hadWrong), 1500);
+  // 有詞連結→先跳真實詞卡（北極星時刻）再推進；沒有→一般答對回饋直接推進
+  app.advanceTimer = setTimeout(() => {
+    if (y.word) renderWordCard(card, !r.hadWrong);
+    else completeScored(card, !r.hadWrong);
+  }, 1500);
+}
+
+// 真實詞卡：emoji 大圖＋詞語音（「馬！」）；詞語音缺檔只顯圖（story 7、8）
+function renderWordCard(card, firstTapCorrect) {
+  clearTimers();
+  const w = card.syl.word;
+  const area = document.getElementById("card-area");
+  area.innerHTML = `
+    <div class="word-card" id="word-card">
+      <div class="word-emoji">${w.emoji}</div>
+      <div class="word-text">${w.text}</div>
+    </div>`;
+  document.getElementById("word-card").addEventListener("click", () => playVoice(w.audio));
+  playVoice(w.audio);
+  app.advanceTimer = setTimeout(() => completeScored(card, firstTapCorrect), 2600);
 }
 
 // 完成一張卡後的批推進（intro/quiz 共用；#18 加新卡型也走這裡）
@@ -701,6 +782,9 @@ function advanceCard(firstTapCorrect) {
 // 批間畫面：「再一批／今天到這裡」（複製自哥哥版 docs/index.html renderBatchBreak pattern，commit 7a8d900 時期版本）
 function finishBatch() {
   clearTimers();
+  const path = drawRewardPath();
+  document.getElementById("break-reward").innerHTML = rewardRevealHtml(path); // null→空＝靜默無獎圖
+  if (path) new Image().src = path; // 預載：點獎杯揭曉時圖多半已就緒
   showScreen("screen-break");
   playSound("complete");
 }
@@ -732,6 +816,12 @@ async function init() {
         if (r.ok) app.hasAudio.add(k);
       } catch (e) { /* 探不到＝缺檔 */ }
     }));
+    // 批末獎勵 manifest（哥哥版共用資產；缺檔/壞檔＝批末靜默無獎圖，不擋任何流程）
+    try {
+      const rr = await fetch("../rewards.json");
+      if (rr.ok) app.rewards = await rr.json();
+    } catch (e) { /* 靜默 */ }
+
     app.content = content; // 最後才標記成功，兼作「init 完成」旗標
   } catch (e) {
     app.content = null;
