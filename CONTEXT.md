@@ -25,7 +25,7 @@ _Avoid_: 帳號、user、account
 _Avoid_: 密碼、API key
 
 **sync client**：
-接同步的 app 內嵌的共用同步腳本（`/shared/sync-v<N>.js`）：開啟時 pull、進度變更後 push、離線靜默略過。平台基建，共用不複製（見 ADR-0004）。
+接同步的 app 內嵌的共用同步腳本（`shared/sync-v<N>.js`，站內一律相對路徑引用——新舊 origin base path 不同）：開啟時 pull、進度變更後 push、離線靜默略過。平台基建，共用不複製（見 ADR-0004）。
 _Avoid_: 同步模組、sync snippet
 
 **逃生門（escape hatch）**：
