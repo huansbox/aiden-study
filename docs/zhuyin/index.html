@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ㄅㄆㄇ 拼字小遊戲</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    margin: 0; background: #fdf6ec; color: #334;
+    display: flex; flex-direction: column; align-items: center;
+    user-select: none; -webkit-user-select: none;
+  }
+  #app { width: 100%; max-width: 720px; padding: 16px; flex: 1; display: flex; flex-direction: column; }
+  .screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+  .hidden { display: none !important; }
+
+  /* 首頁 */
+  .home-title { font-size: 2rem; font-weight: 800; color: #e07b39; margin: 0; }
+  .home-sub { font-size: 0.9rem; color: #889; margin: 0; }
+  .btn-start {
+    font-size: 1.8rem; font-weight: 700; color: #fff; background: #43a047;
+    border: none; border-radius: 60px; padding: 26px 64px; cursor: pointer;
+    box-shadow: 0 6px 0 #2e7031;
+  }
+  .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #2e7031; }
+
+  /* 進度點（批內） */
+  #dots { display: flex; gap: 8px; justify-content: center; min-height: 14px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: #e3d9c8; }
+  .dot.on { background: #43a047; }
+
+  /* 重聽鈕 */
+  .btn-replay {
+    font-size: 2.6rem; background: #fff; border: 3px solid #f0b429; border-radius: 50%;
+    width: 96px; height: 96px; cursor: pointer; box-shadow: 0 4px 0 #d9a325;
+  }
+  .btn-replay:active { transform: translateY(3px); box-shadow: 0 1px 0 #d9a325; }
+
+  /* 字卡 */
+  .choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; width: 100%; }
+  .zycard {
+    width: min(38vw, 240px); height: min(38vw, 240px);
+    display: flex; align-items: center; justify-content: center;
+    background: #fff; border: 4px solid #d8c9ae; border-radius: 24px;
+    font-size: min(24vw, 150px); font-weight: 700; color: #334;
+    cursor: pointer; box-shadow: 0 5px 0 #d8c9ae;
+  }
+  .zycard:active { transform: translateY(3px); box-shadow: 0 2px 0 #d8c9ae; }
+  .zycard.dim { background: #eceae6; color: #c4c1bb; border-color: #dcd9d3; box-shadow: none; pointer-events: none; }
+  .zycard.right { background: #e9f8ec; border-color: #43a047; box-shadow: 0 5px 0 #43a047; animation: zyPop 0.5s; }
+  .zycard.faded { opacity: 0.25; pointer-events: none; }
+  @keyframes zyPop { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
+
+  /* 介紹卡 */
+  .intro-label { font-size: 1.1rem; color: #b8862f; font-weight: 700; letter-spacing: 2px; }
+  .intro-card {
+    width: min(64vw, 340px); height: min(64vw, 340px);
+    display: flex; align-items: center; justify-content: center;
+    background: #fff8e8; border: 5px solid #f0b429; border-radius: 32px;
+    font-size: min(42vw, 220px); font-weight: 800; color: #b8862f;
+    cursor: pointer; box-shadow: 0 6px 0 #d9a325; animation: zyPop 0.6s;
+  }
+  .btn-next {
+    font-size: 2.2rem; color: #fff; background: #43a047; border: none; border-radius: 50px;
+    padding: 16px 56px; cursor: pointer; box-shadow: 0 5px 0 #2e7031;
+  }
+  .btn-next:active { transform: translateY(3px); box-shadow: 0 2px 0 #2e7031; }
+
+  /* 批間／訊息畫面 */
+  .break-emoji { font-size: 4rem; }
+  .break-title { font-size: 1.6rem; font-weight: 800; color: #e07b39; margin: 0; }
+  .btn-again {
+    font-size: 1.4rem; font-weight: 700; color: #fff; background: #43a047; border: none;
+    border-radius: 40px; padding: 18px 44px; cursor: pointer; box-shadow: 0 5px 0 #2e7031;
+  }
+  .btn-again:active { transform: translateY(3px); box-shadow: 0 2px 0 #2e7031; }
+  .btn-quiet {
+    font-size: 1rem; color: #667; background: #eee6d8; border: none;
+    border-radius: 30px; padding: 12px 28px; cursor: pointer;
+  }
+  .msg { font-size: 1rem; color: #667; line-height: 1.8; text-align: center; max-width: 420px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="screen-home" class="screen">
+    <h1 class="home-title">ㄅㄆㄇ 拼字小遊戲</h1>
+    <p class="home-sub">給弟弟的注音練習（家長按開始）</p>
+    <button class="btn-start" id="btn-start">▶ 開始練習</button>
+  </div>
+  <div id="screen-card" class="screen hidden">
+    <div id="dots"></div>
+    <div id="card-area" class="screen" style="flex:1; width:100%"></div>
+  </div>
+  <div id="screen-break" class="screen hidden">
+    <div class="break-emoji">🎉</div>
+    <h2 class="break-title">這一批練完了！</h2>
+    <button class="btn-again" id="btn-again">再一批</button>
+    <button class="btn-quiet" id="btn-done">今天到這裡</button>
+  </div>
+  <div id="screen-msg" class="screen hidden">
+    <div class="break-emoji" id="msg-emoji">🎙️</div>
+    <p class="msg" id="msg-text"></p>
+    <button class="btn-quiet" id="btn-msg-home">回首頁</button>
+  </div>
+</div>
+<script>
+"use strict";
+
+// <zhuyin-core-pure>
+// 純函式區塊：不得引用區塊外全域。改動時同步跑 node --test tests/test_zhuyin_core.mjs。
+// 排程＝MVP 簡化版（issue #17）：錯題優先 → 新卡按進場序 → 複習卡（rng 洗牌）；
+// 三檔優先權佇列／配額／熟練抽查／suspend 留擴充批（父 spec #15）。
+
+function zyCardId(glyph) { return "sym:" + glyph; }
+
+// 音檔 fallback 鏈：依序回傳第一個可用 key；全缺回 null（呼叫端靜默略過該段聲音）
+function zyResolveAudio(keys, hasAudio) {
+  for (const k of keys || []) if (k && hasAudio(k)) return k;
+  return null;
+}
+
+// 進度存檔載入：壞 JSON／版本不符 → 全新空檔（schemaVersion 為日後遷移預留）
+function zyLoadProgress(raw) {
+  const empty = { schemaVersion: 1, cards: {} };
+  if (!raw) return empty;
+  try {
+    const p = JSON.parse(raw);
+    if (!p || p.schemaVersion !== 1 || typeof p.cards !== "object" || !p.cards || Array.isArray(p.cards)) return empty;
+    return p;
+  } catch (e) {
+    return empty;
+  }
+}
+
+function zyCardState(progress, id) {
+  return progress.cards[id] || { introduced: false, wrong: false, practiced: 0, correct: 0 };
+}
+
+function zyShuffle(arr, rng) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// 組批：題目提示音缺檔的卡直接過濾（聲音導向 app 不出無聲題）。
+// 錯題優先 → 新卡按進場序 → 複習卡（已學無錯，rng 洗牌）；上限 max、可出卡數不足時批就這麼大。
+function zyBuildBatch({ entryOrder, symbolAudio, progress, hasAudio, max, rng }) {
+  const wrong = [], fresh = [], review = [];
+  for (const g of entryOrder) {
+    if (zyResolveAudio([symbolAudio[g]], hasAudio) === null) continue;
+    const st = zyCardState(progress, zyCardId(g));
+    if (!st.introduced) fresh.push(g);
+    else if (st.wrong) wrong.push(g);
+    else review.push(g);
+  }
+  return wrong.concat(fresh, zyShuffle(review, rng)).slice(0, max);
+}
+
+function zyEnteredGlyphs(entryOrder, progress) {
+  return entryOrder.filter((g) => zyCardState(progress, zyCardId(g)).introduced);
+}
+
+// 卡片呈現型態：新符號首次＝不判分介紹卡；判分題只在已進場池 ≥2 時出（湊不出選擇題就再看一次介紹卡）
+function zyCardKind(glyph, progress, enteredCount) {
+  if (!zyCardState(progress, zyCardId(glyph)).introduced) return "intro";
+  return enteredCount >= 2 ? "quiz" : "intro";
+}
+
+// 干擾項：只從已進場符號抽；池不足 4 降 3／2 選一（下限 2，池 1 出不了題回 null）。
+// 不變量：正解恰出現一次、無重複、全部來自已進場池。
+function zyPickChoices(target, entered, rng, maxChoices = 4) {
+  if (!entered.includes(target) || entered.length < 2) return null;
+  const n = Math.min(maxChoices, entered.length);
+  const others = zyShuffle(entered.filter((g) => g !== target), rng).slice(0, n - 1);
+  const pos = Math.floor(rng() * n);
+  others.splice(pos, 0, target);
+  return others;
+}
+
+// 答完一題的狀態轉移：第一下就點對＝答對；曾點錯＝記錯（下批優先重出）
+function zyOnQuizResult(state, firstTapCorrect) {
+  return {
+    introduced: state.introduced,
+    wrong: !firstTapCorrect,
+    practiced: state.practiced + 1,
+    correct: state.correct + (firstTapCorrect ? 1 : 0),
+  };
+}
+
+// 批內佇列前進：第一下就對→移出；否則排批尾複驗（直到某次第一下就對）
+function zyAdvanceQueue(queue, firstTapCorrect) {
+  const rest = queue.slice(1);
+  return firstTapCorrect ? rest : rest.concat(queue[0]);
+}
+// </zhuyin-core-pure>
+
+// ════════════════════════════════════════════════════
+// 音效（Web Audio 合成，播放失敗不影響作答）
+// 來源：複製自哥哥版 docs/index.html 的 SOUND_PATTERNS/playTone/playSound
+// （commit 7a8d900 時期版本）再裁剪——wrong 本就是柔和低音雙音，直接當「中性音效」用。
+// ════════════════════════════════════════════════════
+let audioCtx = null;
+const SOUND_PATTERNS = {
+  correct: [
+    [0.00, 523.25, 0.11, { type: "triangle", volume: 0.22 }],
+    [0.09, 659.25, 0.13, { type: "triangle", volume: 0.22 }],
+    [0.18, 783.99, 0.15, { type: "triangle", volume: 0.18 }],
+  ],
+  neutral: [
+    [0.00, 246.94, 0.08, { type: "sine", volume: 0.20 }],
+    [0.10, 196.00, 0.14, { type: "sine", volume: 0.18 }],
+  ],
+  complete: [
+    [0.00, 523.25, 0.12, { volume: 0.20 }],
+    [0.11, 659.25, 0.12, { volume: 0.22 }],
+    [0.22, 783.99, 0.13, { volume: 0.23 }],
+    [0.34, 1046.50, 0.28, { volume: 0.24 }],
+  ],
+};
+function getAudioContext() {
+  const Ctor = window.AudioContext || window.webkitAudioContext;
+  if (!Ctor) return null;
+  if (!audioCtx) audioCtx = new Ctor();
+  if (audioCtx.state === "suspended") {
+    const r = audioCtx.resume();
+    if (r && typeof r.catch === "function") r.catch(() => {});
+  }
+  return audioCtx;
+}
+function playTone(ctx, start, freq, duration, options = {}) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = options.type || "sine";
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(options.volume || 0.2, start + 0.018);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(start);
+  osc.stop(start + duration + 0.03);
+}
+function playSound(name) {
+  try {
+    const ctx = getAudioContext();
+    const pattern = SOUND_PATTERNS[name];
+    if (!ctx || !pattern) return;
+    const start = ctx.currentTime + 0.01;
+    for (const [offset, freq, duration, opts] of pattern) playTone(ctx, start + offset, freq, duration, opts);
+  } catch (e) {
+    // 音效只是情緒回饋；瀏覽器若擋播放，答題流程照常。
+  }
+}
+
+// ════════════════════════════════════════════════════
+// 語音播放 adapter：單一 Audio 元素、換 src 連播
+// （iPad spike 真機驗證的模式：一次手勢解鎖後程式化換 src 播放成立，
+//  見 docs/zhuyin-tts-spike.html 第 6 區＋issue #15 開工拍板紀錄）
+// ════════════════════════════════════════════════════
+const voice = new Audio();
+const SILENT_WAV = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+function unlockAudio() {
+  try {
+    voice.src = SILENT_WAV;
+    const p = voice.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  } catch (e) { /* 解鎖失敗照常進流程，首播仍在手勢鏈內 */ }
+  getAudioContext();
+}
+function playVoice(key) {
+  const k = zyResolveAudio([key], (x) => app.hasAudio.has(x));
+  if (!k) return; // 缺檔靜默略過（story 27）
+  try {
+    voice.src = app.audioDir + k + app.audioExt;
+    const p = voice.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  } catch (e) { /* 播不出來不擋作答 */ }
+}
+
+// ════════════════════════════════════════════════════
+// App 狀態與流程
+// ════════════════════════════════════════════════════
+const STORAGE_KEY = "aiden_zhuyin_v1";
+const BATCH_MAX = 5;
+const TAP_GUARD_MS = 400; // 換題後短暫不吃點擊（防連點誤答，story 13）
+
+const app = {
+  content: null,
+  audioDir: "", audioExt: "",
+  entryOrder: [],
+  symbolAudio: {},   // glyph -> 音檔 key
+  hasAudio: new Set(),
+  progress: null,
+  queue: [],         // 本批剩餘卡（glyph）
+  doneCount: 0,      // 本批已完成題數（含複驗）
+  answered: false,   // 當前判分題已出結果（防 auto-advance 期間再點）
+  firstTap: true,    // 當前題還沒點錯過
+  shownAt: 0,
+  replayTimer: null,
+  advanceTimer: null,
+};
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(app.progress)); } catch (e) { /* 寫不進去照常練 */ }
+}
+
+function showScreen(id) {
+  for (const el of document.querySelectorAll("#app > .screen, #app > div")) el.classList.add("hidden");
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function clearTimers() {
+  if (app.replayTimer) { clearTimeout(app.replayTimer); app.replayTimer = null; }
+  if (app.advanceTimer) { clearTimeout(app.advanceTimer); app.advanceTimer = null; }
+}
+
+function renderDots() {
+  const total = app.doneCount + app.queue.length;
+  let html = "";
+  for (let i = 0; i < total; i++) html += `<div class="dot${i < app.doneCount ? " on" : ""}"></div>`;
+  document.getElementById("dots").innerHTML = html;
+}
+
+function startBatch() {
+  app.queue = zyBuildBatch({
+    entryOrder: app.entryOrder,
+    symbolAudio: app.symbolAudio,
+    progress: app.progress,
+    hasAudio: (k) => app.hasAudio.has(k),
+    max: BATCH_MAX,
+    rng: Math.random,
+  });
+  app.doneCount = 0;
+  if (!app.queue.length) {
+    document.getElementById("msg-text").textContent =
+      "還沒有可以練的卡——題目音檔還沒錄好。請家長先用錄音工具頁（recorder.html）錄音，放進 assets/audio/ 後再來。";
+    showScreen("screen-msg");
+    return;
+  }
+  showScreen("screen-card");
+  renderCard();
+}
+
+function renderCard() {
+  clearTimers();
+  const glyph = app.queue[0];
+  const entered = zyEnteredGlyphs(app.entryOrder, app.progress);
+  const kind = zyCardKind(glyph, app.progress, entered.length);
+  app.answered = false;
+  app.firstTap = true;
+  app.shownAt = performance.now();
+  renderDots();
+  if (kind === "intro") renderIntro(glyph);
+  else renderQuiz(glyph, entered);
+}
+
+function tapGuarded() { return performance.now() - app.shownAt < TAP_GUARD_MS; }
+
+// 介紹卡：不判分，大字卡＋播符號音；點卡重聽、按 ➜ 進下一題
+function renderIntro(glyph) {
+  const area = document.getElementById("card-area");
+  area.innerHTML = `
+    <div class="intro-label">新朋友！聽聽看</div>
+    <div class="intro-card" id="intro-card">${glyph}</div>
+    <button class="btn-next" id="btn-intro-next">➜</button>`;
+  document.getElementById("intro-card").addEventListener("click", () => playVoice(app.symbolAudio[glyph]));
+  document.getElementById("btn-intro-next").addEventListener("click", () => {
+    if (tapGuarded()) return;
+    const id = zyCardId(glyph);
+    const st = zyCardState(app.progress, id);
+    app.progress.cards[id] = { ...st, introduced: true };
+    saveProgress();
+    app.doneCount++;
+    app.queue = zyAdvanceQueue(app.queue, true); // 介紹卡不判分，看完即移出
+    if (app.queue.length) renderCard();
+    else finishBatch();
+  });
+  playVoice(app.symbolAudio[glyph]);
+}
+
+// 聽音辨認：自動播題目音＋大重聽鈕；答錯＝中性音效→錯卡變灰→自動重播→續選到對
+function renderQuiz(glyph, entered) {
+  const choices = zyPickChoices(glyph, entered, Math.random);
+  if (!choices) { renderIntro(glyph); return; } // 理論上到不了（zyCardKind 已擋池<2），保險降級
+  const area = document.getElementById("card-area");
+  area.innerHTML = `
+    <button class="btn-replay" id="btn-replay">🔊</button>
+    <div class="choices" id="choices">${
+      choices.map((g) => `<div class="zycard" data-g="${g}">${g}</div>`).join("")
+    }</div>`;
+  document.getElementById("btn-replay").addEventListener("click", () => playVoice(app.symbolAudio[glyph]));
+  document.getElementById("choices").addEventListener("click", (ev) => {
+    const card = ev.target.closest(".zycard");
+    if (!card || app.answered || tapGuarded()) return;
+    if (card.dataset.g === glyph) {
+      app.answered = true;
+      if (app.replayTimer) { clearTimeout(app.replayTimer); app.replayTimer = null; }
+      card.classList.add("right");
+      for (const el of document.querySelectorAll(".zycard")) {
+        if (el !== card) el.classList.add("faded");
+      }
+      playSound("correct");
+      const firstTap = app.firstTap;
+      app.advanceTimer = setTimeout(() => completeQuiz(glyph, firstTap), 1100);
+    } else {
+      app.firstTap = false;
+      card.classList.add("dim");
+      playSound("neutral");
+      if (app.replayTimer) clearTimeout(app.replayTimer);
+      app.replayTimer = setTimeout(() => playVoice(app.symbolAudio[glyph]), 600);
+    }
+  });
+  playVoice(app.symbolAudio[glyph]);
+}
+
+function completeQuiz(glyph, firstTapCorrect) {
+  const id = zyCardId(glyph);
+  app.progress.cards[id] = zyOnQuizResult(zyCardState(app.progress, id), firstTapCorrect);
+  saveProgress();
+  app.doneCount++;
+  app.queue = zyAdvanceQueue(app.queue, firstTapCorrect);
+  if (app.queue.length) renderCard();
+  else finishBatch();
+}
+
+// 批間畫面：「再一批／今天到這裡」（哥哥版 renderBatchBreak pattern，docs/index.html）
+function finishBatch() {
+  clearTimers();
+  showScreen("screen-break");
+  playSound("complete");
+}
+
+// ════════════════════════════════════════════════════
+// 初始化
+// ════════════════════════════════════════════════════
+async function init() {
+  let content;
+  try {
+    const res = await fetch("content.json");
+    if (!res.ok) throw new Error(res.status);
+    content = await res.json();
+  } catch (e) {
+    document.getElementById("msg-text").textContent = "讀不到 content.json，請檢查網路後重新整理。";
+    document.getElementById("msg-emoji").textContent = "😢";
+    showScreen("screen-msg");
+    return;
+  }
+  app.content = content;
+  app.audioDir = content.audio.dir;
+  app.audioExt = content.audio.ext;
+  app.entryOrder = content.circles[0].entryOrder;
+  for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
+  app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
+
+  // 音檔可用性探測（HEAD 全部 key；失敗＝缺檔，組批時過濾）
+  const keys = [];
+  for (const s of content.symbols) keys.push(s.audio);
+  for (const y of content.syllables) { keys.push(y.audio); if (y.word) keys.push(y.word.audio); }
+  await Promise.all(keys.map(async (k) => {
+    try {
+      const r = await fetch(app.audioDir + k + app.audioExt, { method: "HEAD" });
+      if (r.ok) app.hasAudio.add(k);
+    } catch (e) { /* 探不到＝缺檔 */ }
+  }));
+}
+const ready = init();
+
+document.getElementById("btn-start").addEventListener("click", async () => {
+  unlockAudio(); // iOS：一次手勢解鎖，之後迴圈內程式化換 src 播放
+  await ready;
+  if (!app.content) return; // init 失敗已顯示錯誤畫面
+  startBatch();
+});
+document.getElementById("btn-again").addEventListener("click", () => startBatch());
+document.getElementById("btn-done").addEventListener("click", () => showScreen("screen-home"));
+document.getElementById("btn-msg-home").addEventListener("click", () => showScreen("screen-home"));
+</script>
+</body>
+</html>
