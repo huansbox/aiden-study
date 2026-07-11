@@ -17,7 +17,7 @@ _Avoid_: 目錄、清單、catalog
 _Avoid_: 子專案、模組
 
 **child**：
-進度歸屬的小孩身分，雲端進度 key 的第一維（`{child}:{app}`）。
+進度歸屬的小孩身分，雲端進度 key 的第一維（`{child}:{app}`）。識別字串固定為：哥哥＝`aiden`、弟弟＝`bingpu`（取定不換，換＝進度搬家）。
 _Avoid_: 帳號、user、account
 
 **family token**：
