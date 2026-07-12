@@ -17,9 +17,13 @@
      search 與 hash 都要帶過去——
        hash：備忘錄還原捷徑寫死舊根網址帶 #restore=，丟了＝還原靜默失敗
        search：圖示網址帶 ?child=&k=，丟了＝身分退回 LEGACY_CHILD，弟弟的作答寫進哥哥的存檔 -->
-<a href="study/">前往題庫</a>
+<a id="go" href="study/">前往題庫</a>
 <script>
-location.replace("study/" + location.search + location.hash);
+// 連結與自動跳轉走同一個目標：只要 JS 有跑，兩條路徑都帶著參數
+// （JS 全關時題庫本來就不能用，那個連結只是告知「搬家了」）
+var target = "study/" + location.search + location.hash;
+document.getElementById("go").href = target;
+location.replace(target);
 </script>
 </body>
 </html>
