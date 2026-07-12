@@ -1,12 +1,12 @@
 // child 維度 key 尋址＋身分/token 解析純函式測試（票 #28）。
-// 抽取：docs/index.html 的 <child-store-pure>＋docs/shared/sync-v1.js 的 <sync-client>（只取身分函式）。
+// 抽取：docs/study/index.html 的 <child-store-pure>＋docs/shared/sync-v1.js 的 <sync-client>（只取身分函式）。
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
 const storeBlk = html.match(/\/\/ <child-store-pure>([\s\S]*?)\/\/ <\/child-store-pure>/);
-if (!storeBlk) throw new Error("docs/index.html 找不到 <child-store-pure> 區塊");
+if (!storeBlk) throw new Error("docs/study/index.html 找不到 <child-store-pure> 區塊");
 const {
   LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey, planLegacySeed, planImportWrite,
 } = new Function(storeBlk[1] +

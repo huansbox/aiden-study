@@ -13,9 +13,9 @@
 - 檔名：ASCII slug + 兩位數流水號（如 `wind_01.webp`），逐字檔名靠 manifest 對應。建議 slug 已列在下表，沿用即可。
 
 ## 目錄與 git 規範（重要）
-- 圖檔只放 `docs/assets/rewards/`。
+- 圖檔只放 `docs/shared/rewards/`。
 - master 原始大圖（1536 PNG 等）**不要** commit 進 `docs/`，放你工作區或 gitignore。
-- **更新 manifest＝在「現有」 `docs/rewards.json` 的 `pools` 物件裡「新增」key，不要覆蓋整檔**。現已存在 8 個 key（小數的認識、溫度對水的變化、天氣預報、聰明消費、`__generic__`、蔬菜生長的變化過程、影響蔬菜生長的因素、生存與適應），請保留，只把下表新 key append 進去。
+- **更新 manifest＝在「現有」 `docs/shared/rewards.json` 的 `pools` 物件裡「新增」key，不要覆蓋整檔**。現已存在 8 個 key（小數的認識、溫度對水的變化、天氣預報、聰明消費、`__generic__`、蔬菜生長的變化過程、影響蔬菜生長的因素、生存與適應），請保留，只把下表新 key append 進去。
 - **不要碰 git**（不 add／不 commit／不 push）。放好圖＋更新 `rewards.json` 後告訴主 session，由主 session 跑審計＋commit/push。
 
 ## 已完成（不要重做）
@@ -53,7 +53,7 @@
 | 傳說與文化保存 | 6 | legend_culture | 廟宇、傳說、文化資產 |
 | 家鄉的人物與發展 | 3 | hometown_people | 開墾、橋樑、歷史人物 |
 
-## manifest 範例（append 到現有 `docs/rewards.json` 的 `pools`）
+## manifest 範例（append 到現有 `docs/shared/rewards.json` 的 `pools`）
 ```json
 "風": ["wind_01.webp", "wind_02.webp", "wind_03.webp"],
 "身體構造": ["body_structure_01.webp", "body_structure_02.webp", "body_structure_03.webp", "body_structure_04.webp"],

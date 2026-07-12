@@ -1,13 +1,13 @@
 // 備份格式契約純函式測試（issue #8）。
 // 執行：node --test tests/test_backup_pure.mjs
-// 做法：從 docs/index.html 抽出 <backup-pure> sentinel 區塊 eval，避免把純函式拆出單檔（維持單一 index.html）。
+// 做法：從 docs/study/index.html 抽出 <backup-pure> sentinel 區塊 eval，避免把純函式拆出單檔（維持單一 index.html）。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
 const m = html.match(/\/\/ <backup-pure>([\s\S]*?)\/\/ <\/backup-pure>/);
-if (!m) throw new Error("docs/index.html 找不到 <backup-pure> 區塊");
+if (!m) throw new Error("docs/study/index.html 找不到 <backup-pure> 區塊");
 const exported = "BACKUP_MARKER, buildBackupText, parseBackup, encodeBackup, decodeBackup, " +
   "buildShortcutDeepLink, backupLabel, readRestoreHash, isBackupOversized, BACKUP_SIZE_WARN";
 const {

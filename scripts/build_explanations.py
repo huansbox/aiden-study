@@ -1,5 +1,5 @@
 """
-合併說明批次結果 → docs/explanations.json ＋ 家長抽查報告
+合併說明批次結果 → docs/study/explanations.json ＋ 家長抽查報告
 
 輸入：data/exp_results/batch_*.json（審核後的批次結果，
 每筆 {id, text, verdict: pass|fixed, reason?}）。
@@ -9,7 +9,7 @@
 驗證全過才寫出，冪等可重跑。
 
 產出：
-  - docs/explanations.json：{question_id: 說明文字}（前端 join 用）
+  - docs/study/explanations.json：{question_id: 說明文字}（前端 join 用）
   - docs-dev/review_期末說明_抽查.md：自然期末全題清單供家長驗收
   - docs-dev/review_數學說明_抽查.md：數學全題清單供家長驗收
   - docs-dev/review_社會說明_抽查.md：社會全題清單供家長驗收
@@ -32,9 +32,9 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "questions.json"))
+QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "study", "questions.json"))
 RESULTS_GLOB = os.path.abspath(os.path.join(ROOT, "data", "exp_results", "batch_*.json"))
-OUTPUT_PATH = os.path.abspath(os.path.join(ROOT, "docs", "explanations.json"))
+OUTPUT_PATH = os.path.abspath(os.path.join(ROOT, "docs", "study", "explanations.json"))
 REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_期末說明_抽查.md"))
 MATH_REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_數學說明_抽查.md"))
 SOCIAL_REPORT_PATH = os.path.abspath(os.path.join(ROOT, "docs-dev", "review_社會說明_抽查.md"))
@@ -60,17 +60,17 @@ _SENTENCE_END = re.compile(r"[。！？!?]")
 
 
 def final_exam_ids(questions: list) -> set:
-    """docs/questions.json 題目列表 → 自然期末題（unit 3/4）id 集合"""
+    """docs/study/questions.json 題目列表 → 自然期末題（unit 3/4）id 集合"""
     return {q["id"] for q in questions if int(q["unit"]) in (3, 4)}
 
 
 def math_ids(questions: list) -> set:
-    """docs/questions.json 題目列表 → 數學題（subject math）id 集合"""
+    """docs/study/questions.json 題目列表 → 數學題（subject math）id 集合"""
     return {q["id"] for q in questions if q.get("subject") == "math"}
 
 
 def social_ids(questions: list) -> set:
-    """docs/questions.json 題目列表 → 社會題（subject social）id 集合"""
+    """docs/study/questions.json 題目列表 → 社會題（subject social）id 集合"""
     return {q["id"] for q in questions if q.get("subject") == "social"}
 
 

@@ -550,7 +550,7 @@ function playChain(keys) {
 function playVoice(key) { playChain([key]); }
 
 // ════════════════════════════════════════════════════
-// 批末獎勵：MVP 借用哥哥版 __generic__ 通用池（../rewards.json＋../assets/rewards/）。
+// 批末獎勵：MVP 借用哥哥版 __generic__ 通用池（../shared/rewards.json＋../shared/rewards/）。
 // 以下三個函式複製自哥哥版 docs/index.html 的 rwDrawFromBag／rewardRevealHtml／_revealReward
 // （commit af0d199 時期版本）再裁剪：單一池不需 roll-up，缺 manifest／缺圖靜默不顯示。
 // ════════════════════════════════════════════════════
@@ -568,7 +568,7 @@ function drawRewardPath() {
   const pool = app.rewards && app.rewards.pools && app.rewards.pools.__generic__;
   if (!Array.isArray(pool) || !pool.length) return null;
   const file = rwDrawFromBag(rewardBag, "__generic__", pool, Math.random);
-  return file ? "../assets/rewards/" + file : null;
+  return file ? "../shared/rewards/" + file : null;
 }
 function rewardRevealHtml(path) {
   if (!path) return "";
@@ -600,7 +600,7 @@ const app = {
   entryOrder: [],
   symbolAudio: {},   // glyph -> 音檔 key
   syllables: [],     // content.syllables（音節卡與聲調鈕用）
-  rewards: null,     // ../rewards.json manifest（缺＝批末靜默無獎圖）
+  rewards: null,     // ../shared/rewards.json manifest（缺＝批末靜默無獎圖）
   practiceMode: "all", // 家長選的練習範圍：all｜listen（只符號卡）｜build（只音節卡）；不入存檔
   audioKeys: [],     // content.json 宣告的全部音檔 key（音效自檢用）
   hasAudio: new Set(),
@@ -1049,7 +1049,7 @@ async function init() {
     }));
     // 批末獎勵 manifest（哥哥版共用資產；缺檔/壞檔＝批末靜默無獎圖，不擋任何流程）
     try {
-      const rr = await fetch("../rewards.json");
+      const rr = await fetch("../shared/rewards.json");
       if (rr.ok) app.rewards = await rr.json();
     } catch (e) { /* 靜默 */ }
 
