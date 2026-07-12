@@ -804,19 +804,23 @@ const Storage = {
       return JSON.parse(raw);
     } catch { return null; }
   },
+  // 寫入整段包起來（同 load）：封鎖 Cookie 類設定下連 localStorage 取值都拋 SecurityError，
+  // 不包的話首次作答就炸；吞掉＝退回「可練不持久」（本輪照常作答，離開就沒了）
   save(data) {
-    const json = JSON.stringify(data);
-    let prev = null;
-    try { prev = localStorage.getItem(STORAGE_KEY); } catch {}
-    localStorage.setItem(STORAGE_KEY, json);
-    // 真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
-    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
-    if (sync && json !== prev) sync.markDirty();
+    try {
+      const json = JSON.stringify(data);
+      let prev = null;
+      try { prev = localStorage.getItem(STORAGE_KEY); } catch {}
+      localStorage.setItem(STORAGE_KEY, json);
+      // 真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
+      // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+      if (sync && json !== prev) sync.markDirty();
+    } catch {}
   },
   // init 期整理（orphan 清理等）專用：不標 dirty。舊快取題庫誤判 orphan 時只影響本機，
   // 不會 push 上雲剝掉他機的有效 errorBank/flagged（use-site 本就有 questionMap 過濾）
   saveQuiet(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
   },
   // 回傳是否本次做了 child 維度播種（呼叫端據此走匯入定錨語意上雲）
   migrate() {
@@ -3344,8 +3348,10 @@ async function init() {
   }
 }
 
-// 網站已開著時，還原捷徑用 Open URL 帶 #restore= 進來是「同文件 hash 變更、不 reload」→ 也要接住
-window.addEventListener("hashchange", handleRestoreHash);
+// 網站已開著時，還原捷徑用 Open URL 帶 #restore= 進來是「同文件 hash 變更、不 reload」→ 也要接住。
+// 身分不可解時不掛：init 已拒絕開站，但這條路徑繞過 init、會用退回的 LEGACY_CHILD 落地匯入——
+// 正是那個守衛要防的跨小孩寫入
+if (!identityUnresolvable()) window.addEventListener("hashchange", handleRestoreHash);
 
 // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSyncClient 的 attachLifecycle 統一掛。
 // bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
