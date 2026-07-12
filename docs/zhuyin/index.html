@@ -278,8 +278,11 @@ function planImportWrite(child, obj) {
 // </child-store-pure>
 
 // 身分解析：圖示網址帶死參數 ?child=（無參數＝bingpu，zhuyin 歸弟弟）；?k= 首開寫入本機、
-// 之後 getToken 走「網址 > 本機」fallback（組合邏輯在共用腳本 bootIdentity，各 app 不自己拼）
-const identity = KidsSync ? KidsSync.bootIdentity(location.search, localStorage) : null;
+// 之後 getToken 走「網址 > 本機」fallback（組合邏輯在共用腳本 bootIdentity，各 app 不自己拼）。
+// localStorage 全域在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——頂層拋出會殺掉
+// 整個 script（連練習按鈕都死），包一層讓 app 退回「可練不持久」的舊行為
+const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
 const currentChild = (identity && identity.child) || LEGACY_CHILD;
 let sync = null; // sync client（initSyncClient 建立；無 KidsSync 時保持 null）
 
@@ -623,6 +626,16 @@ function saveProgress() {
 // ════════════════════════════════════════════════════
 function readSyncMeta(child) {
   try { return JSON.parse(localStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
+}
+// KidsSync 未載入（腳本抓取失敗）時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
+// 播種與匯入只發生一次，錯過定錨就永遠補不回——雲端被他機 rev 佔住時，下次 boot 會 adopt
+// 空資料蓋掉剛播種/匯入的進度；先落標記，下次腳本載入的 boot 輪即完成定錨＋push
+function markImportedFallback(child) {
+  try {
+    const m = readSyncMeta(child);
+    localStorage.setItem(childSyncMetaKey(child), JSON.stringify(
+      { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
+  } catch (e) {}
 }
 function getSyncToken() {
   return identity ? identity.getToken() : null;
@@ -985,11 +998,15 @@ async function init() {
     initSyncClient();
     // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
     // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
-    if (sync && seeded) sync.markImported();
-    // content 抓取與同步 boot 平行：boot 只碰進度存檔，首屏不用疊上同步的網路延遲
+    if (seeded) {
+      if (sync) sync.markImported();
+      else markImportedFallback(currentChild); // 腳本沒載到也不能丟定錨（播種只此一次）
+    }
+    // content 抓取與同步 boot 平行（boot 只碰進度存檔）；先裁決 content——
+    // 離線時立即進錯誤畫面，不被 boot 的 5s timeout 拖住（boot 的 .catch 掛在建立當下，不留
+    // unhandled rejection 窗口；boot 完成與否在下方讀進度前才 await）
     const contentPromise = fetch("content.json");
-    // 開啟時 pull：adopt 直寫本機存檔，下方讀進度時才讀（離線／無 token 靜默走本機）
-    if (sync) { try { await sync.boot(); } catch (e) {} }
+    const bootPromise = sync ? sync.boot().catch(() => {}) : null;
     const res = await contentPromise;
     if (!res.ok) throw new Error(res.status);
     const content = await res.json();
@@ -998,6 +1015,8 @@ async function init() {
     app.entryOrder = content.circles[0].entryOrder;
     app.syllables = content.syllables;
     for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
+    // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
+    if (bootPromise) await bootPromise;
     app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
 
     // 音檔可用性探測（HEAD content.json 宣告的全部 key；失敗＝缺檔，組批時過濾）
@@ -1094,13 +1113,12 @@ function syncStatusHtml() {
       </div>
     </div>`;
 }
+// 健康燈唯一重繪入口（背景同步輪、adopt→renderParent、chips 切換全走這裡）：
+// 家長輸入金鑰到一半時跳過——別把打到一半的金鑰洗掉
 function refreshSyncStatus() {
-  const el = document.getElementById("sync-status");
-  if (!el) return;
-  // 家長輸入金鑰到一半時背景同步輪會觸發本函式——別把打到一半的金鑰洗掉
   const input = document.getElementById("sync-token-input");
   if (input && (document.activeElement === input || input.value)) return;
-  el.outerHTML = syncStatusHtml();
+  document.getElementById("sync-block").innerHTML = syncStatusHtml();
 }
 window._saveSyncToken = () => {
   const input = document.getElementById("sync-token-input");
@@ -1112,8 +1130,9 @@ window._saveSyncToken = () => {
   }
   identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
   if (input) { input.value = ""; input.blur(); } // 清空＋失焦，健康燈輪到時才刷得動
-  if (msg) msg.textContent = "金鑰已儲存";
-  refreshSyncStatus();
+  refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（反過來會在同 tick 被重繪銷毀、從未上畫）
+  const saved = document.getElementById("sync-msg");
+  if (saved) saved.textContent = "金鑰已儲存";
   if (sync) sync.syncNow().catch(() => {}); // 剛設好金鑰 → 立刻試一輪，健康燈即時更新
 };
 window._syncNow = async () => {
@@ -1126,7 +1145,7 @@ function renderParent() {
   for (const chip of document.querySelectorAll(".chip")) {
     chip.classList.toggle("on", chip.dataset.mode === app.practiceMode);
   }
-  document.getElementById("sync-block").innerHTML = syncStatusHtml();
+  refreshSyncStatus();
   const rows = [];
   const row = (label, kind, st) => {
     const status = !st.introduced
@@ -1208,28 +1227,42 @@ async function commitImport(child, obj) {
   }
   if (child === currentChild) {
     if (sync) sync.markImported();
+    else markImportedFallback(child); // 腳本沒載到也不能丟定錨，否則日後 boot adopt 蓋掉匯入
     location.reload();
     return "reloading"; // reload 前的殘影期不再做事
   }
   const c = makeSyncClient(child);
   if (c) { try { await c.importedLocal(); } catch (e) {} } // 離線也不擋：標記已持久化，該 child 下次開站補推
+  else markImportedFallback(child);
   return "done";
+}
+
+// 匯入必須嚴格拒絕壞資料（不能像 loader 一樣靜默回空檔，否則等於清空進度）；壞形狀回 null
+function parseZhuyinBackup(text) {
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (e) { parsed = null; }
+  if (!parsed || parsed.schemaVersion !== 1 || typeof parsed.cards !== "object" || !parsed.cards || Array.isArray(parsed.cards)) return null;
+  return parsed;
 }
 
 document.getElementById("btn-import").addEventListener("click", () => {
   const $st = document.getElementById("backup-status");
   const text = document.getElementById("backup-box").value.trim();
   if (!text) { $st.textContent = "請先把備份內容貼進文字框。"; return; }
-  let parsed;
-  try { parsed = JSON.parse(text); } catch (e) { parsed = null; }
-  // 匯入必須嚴格拒絕壞資料（不能像 loader 一樣靜默回空檔，否則等於清空進度）
-  if (!parsed || parsed.schemaVersion !== 1 || typeof parsed.cards !== "object" || !parsed.cards || Array.isArray(parsed.cards)) {
+  if (!parseZhuyinBackup(text)) {
     $st.textContent = "這段內容不是有效的備份（缺 schemaVersion 或 cards），沒有動任何進度。";
     return;
   }
   // 二次確認（覆蓋不可復原）＋選 child
   $st.innerHTML = `${childPickerHtml("zy-import-child")}要用貼上的備份覆蓋所選的進度嗎？<button class="parent-btn" id="import-confirm">確定還原</button>`;
   document.getElementById("import-confirm").onclick = async () => {
+    // 確認鈕可能掛著很久（沒有任何流程會清掉它）——按下當刻重讀文字框重新驗證，
+    // 才不會把「按還原當時」的舊 payload 蓋掉家長後來貼的新內容
+    const parsed = parseZhuyinBackup(document.getElementById("backup-box").value.trim());
+    if (!parsed) {
+      $st.textContent = "文字框的內容已變更且不是有效的備份，沒有動任何進度。";
+      return;
+    }
     const child = pickedChild("zy-import-child");
     const btn = document.getElementById("import-confirm");
     btn.disabled = true;
@@ -1246,8 +1279,9 @@ document.getElementById("btn-import").addEventListener("click", () => {
 document.getElementById("btn-reset").addEventListener("click", async () => {
   if (!confirm(`確定要清掉 ${childInfo(currentChild).label} 的全部練習進度嗎？此動作無法復原。`)) return;
   // 重置＝匯入一份空進度：走同一條定錨路徑把雲端也重置——
-  // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機
-  const r = await commitImport(currentChild, { schemaVersion: 1, cards: {} });
+  // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機。
+  // 空檔形狀以 loader 為唯一真相源（zyLoadProgress(null)＝空進度）
+  const r = await commitImport(currentChild, zyLoadProgress(null));
   if (r === "write-failed") location.reload(); // 寫不進去就算了（比照舊行為），reload 後照舊
 });
 
