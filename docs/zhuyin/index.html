@@ -161,9 +161,26 @@
   .parent-btn.danger { background: #f6d7d4; color: #a12d22; }
   .parent-status { font-size: 0.85rem; color: #667; margin-top: 8px; line-height: 1.6; word-break: break-all; }
   #backup-box { width: 100%; margin-top: 10px; font-size: 12px; font-family: ui-monospace, monospace; border: 1px solid #d8c9ae; border-radius: 8px; padding: 8px; }
+
+  /* child 徽章（頁首常駐當前使用者，點錯圖示一眼可辨；#29） */
+  #child-badge {
+    position: fixed; top: 8px; right: 10px; z-index: 50;
+    background: rgba(255,255,255,.92); border: 1px solid #e3d9c8; border-radius: 999px;
+    padding: 4px 12px; font-size: 0.9rem; color: #556; box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    pointer-events: none;
+  }
+
+  /* 家長區雲端同步狀態（#29） */
+  .sync-bad { color: #c0392b; font-weight: 600; }
+  .sync-ok { color: #2a8a4a; font-weight: 600; }
+  .sync-token-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .sync-token-row input { flex: 1; min-width: 160px; padding: 6px 8px; border: 1px solid #d8c9ae; border-radius: 8px; font-size: 0.85rem; }
+  .child-pick { margin: 8px 0; }
+  .child-pick label { margin-right: 12px; white-space: nowrap; }
 </style>
 </head>
 <body>
+<div id="child-badge" class="hidden"></div>
 <div id="app">
   <div id="screen-home" class="screen">
     <h1 class="home-title">ㄅㄆㄇ 拼字小遊戲</h1>
@@ -186,12 +203,16 @@
       <table class="overview" id="parent-overview"></table>
     </div>
     <div class="parent-block">
+      <div class="parent-label">雲端同步</div>
+      <div id="sync-block"></div>
+    </div>
+    <div class="parent-block">
       <div class="parent-label">音效自檢（逐段播放全部音檔）</div>
       <button class="parent-btn" id="btn-audit">開始自檢</button>
       <div class="parent-status" id="audit-status"></div>
     </div>
     <div class="parent-block">
-      <div class="parent-label">進度備份／還原（只含這個 app 的進度）</div>
+      <div class="parent-label">進度備份／還原（只含這個 app、當前使用者的進度）</div>
       <button class="parent-btn" id="btn-export">匯出</button>
       <button class="parent-btn" id="btn-import">還原貼上的備份</button>
       <textarea id="backup-box" rows="4" placeholder="匯出後複製保存；還原時把備份貼進來再按還原"></textarea>
@@ -219,8 +240,48 @@
     <button class="btn-quiet" id="btn-msg-home">回首頁</button>
   </div>
 </div>
+<script src="../shared/sync-v1.js"></script>
 <script>
 "use strict";
+
+// ════════════════════════════════════════════════════
+// Child 身分與同步（#29：本機存檔 key 加 child 維度；雲端 key＝{child}:zhuyin）
+// ════════════════════════════════════════════════════
+const KidsSync = window.KidsSyncV1 || null; // shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）
+const ZHUYIN_APP_ID = "zhuyin";
+const ZHUYIN_SCHEMA_VERSION = 1; // 與進度存檔（zyLoadProgress 的 schemaVersion）同步演進
+// interim copy — registry（#31）落地後改讀 registry
+const CHILD_INFO = {
+  aiden: { label: "哥哥", emoji: "👦" },
+  bingpu: { label: "弟弟", emoji: "🧒" },
+};
+const KNOWN_CHILDREN = Object.keys(CHILD_INFO);
+
+// <child-store-pure>
+// ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
+const LEGACY_STORAGE_KEY = "aiden_zhuyin_v1";
+const LEGACY_CHILD = "bingpu"; // 舊存檔歸屬 per-app 指定：zhuyin→弟弟（ADR-0004，歸屬看「app 是誰的」）
+function childProgressKey(child) { return `zhuyin:progress:${child}`; }
+function childSyncMetaKey(child) { return `zhuyin:sync:${child}`; }
+// 遷移採「複製、不搬移」：新 key 已有資料／舊 blob 不存在／child 非舊存檔歸屬 → 不動作。
+// 舊 key 原樣保留：本票 revert 時舊程式讀舊 key 一切如常。
+function planLegacySeed(child, legacyRaw, childRaw) {
+  if (childRaw !== null && childRaw !== undefined) return null;
+  if (typeof legacyRaw !== "string" || legacyRaw === "") return null;
+  if (child !== LEGACY_CHILD) return null;
+  return { key: childProgressKey(child), value: legacyRaw };
+}
+// 匯入寫入計畫：只寫目標 child 的新格式 key（不繞 legacy migration guard、不碰其他 child）
+function planImportWrite(child, obj) {
+  return { key: childProgressKey(child), value: JSON.stringify(obj) };
+}
+// </child-store-pure>
+
+// 身分解析：圖示網址帶死參數 ?child=（無參數＝bingpu，zhuyin 歸弟弟）；?k= 首開寫入本機、
+// 之後 getToken 走「網址 > 本機」fallback（組合邏輯在共用腳本 bootIdentity，各 app 不自己拼）
+const identity = KidsSync ? KidsSync.bootIdentity(location.search, localStorage) : null;
+const currentChild = (identity && identity.child) || LEGACY_CHILD;
+let sync = null; // sync client（initSyncClient 建立；無 KidsSync 時保持 null）
 
 // <zhuyin-core-pure>
 // 注意：此區塊到 </zhuyin-core-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
@@ -516,7 +577,7 @@ window._revealReward = (el) => {
 // ════════════════════════════════════════════════════
 // App 狀態與流程
 // ════════════════════════════════════════════════════
-const STORAGE_KEY = "aiden_zhuyin_v1";
+const STORAGE_KEY = childProgressKey(currentChild); // child 維度存檔（legacy aiden_zhuyin_v1 由播種複製、原樣保留）
 const BATCH_MAX = 5;
 const TAP_GUARD_MS = 400; // 換題後短暫不吃點擊（防連點誤答，story 13）
 const TONE_MARK = { 1: "", 2: "ˊ", 3: "ˇ", 4: "ˋ" };
@@ -546,7 +607,70 @@ const app = {
 };
 
 function saveProgress() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(app.progress)); } catch (e) { /* 寫不進去照常練 */ }
+  try {
+    const json = JSON.stringify(app.progress);
+    let prev = null;
+    try { prev = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+    localStorage.setItem(STORAGE_KEY, json);
+    // 真有變更才標 dirty：擋掉等值 save 造成的空推雲；
+    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+    if (sync && json !== prev) sync.markDirty();
+  } catch (e) { /* 寫不進去照常練 */ }
+}
+
+// ════════════════════════════════════════════════════
+// 同步接線（sync client 對本 app 的效果注入；平台基建走共用腳本——ADR-0004）
+// ════════════════════════════════════════════════════
+function readSyncMeta(child) {
+  try { return JSON.parse(localStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
+}
+function getSyncToken() {
+  return identity ? identity.getToken() : null;
+}
+function makeSyncClient(child, hooks = {}) {
+  if (!KidsSync) return null;
+  const key = childProgressKey(child);
+  return KidsSync.createSyncClient({
+    child,
+    app: ZHUYIN_APP_ID,
+    schemaVersion: ZHUYIN_SCHEMA_VERSION,
+    getToken: getSyncToken,
+    // 直讀直寫 localStorage、不走 saveProgress：adopt 覆蓋本機不得反過來標 dirty
+    loadData: () => { try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; } },
+    saveData: (d) => { try { localStorage.setItem(key, JSON.stringify(d)); } catch (e) {} },
+    loadMeta: () => readSyncMeta(child),
+    saveMeta: (m) => { try { localStorage.setItem(childSyncMetaKey(child), JSON.stringify(m)); } catch (e) {} },
+    onAdopt: hooks.onAdopt,
+    onHealth: hooks.onHealth,
+  });
+}
+// adopt（含 conflict-adopt）＝整包取遠端。boot 時 app.progress 尚未初始化（存檔已被 saveData
+// 覆蓋、init 接著讀）；做題中不換 in-memory——存檔已是遠端版，下一次 saveProgress 整包寫回
+// 本機狀態＝「作答中的裝置贏」，仍是乾淨的 LWW
+function adoptRemoteData(data) {
+  if (!app.progress) return;
+  if (!document.getElementById("screen-card").classList.contains("hidden")) return;
+  app.progress = zyLoadProgress(data ? JSON.stringify(data) : null); // 借道 loader＝同一套形狀驗證
+  if (!document.getElementById("screen-parent").classList.contains("hidden")) renderParent();
+}
+function initSyncClient() {
+  if (sync) return; // init 失敗重試會再進來：lifecycle 監聽不得重複掛
+  sync = makeSyncClient(currentChild, {
+    onAdopt: adoptRemoteData,
+    onHealth: () => refreshSyncStatus(),
+  });
+  // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）——掛法統一在共用腳本
+  if (sync) sync.attachLifecycle(window, document);
+}
+
+function childInfo(child) {
+  return CHILD_INFO[child] || { label: child, emoji: "🙂" };
+}
+function renderChildBadge() {
+  const el = document.getElementById("child-badge");
+  const info = childInfo(currentChild);
+  el.textContent = `${info.emoji} ${info.label}`;
+  el.classList.remove("hidden");
 }
 
 function showScreen(id) {
@@ -851,7 +975,22 @@ async function init() {
   // content.json 是外部資料邊界：連形狀壞掉（合法 JSON 但缺欄位）也要進錯誤畫面，
   // 不能讓 ready reject 把「開始練習」變成無聲死按鈕。
   try {
-    const res = await fetch("content.json");
+    renderChildBadge();
+    // child 維度播種：複製不搬移（aiden_zhuyin_v1 原樣保留、歸弟弟——ADR-0004）
+    let seeded = false;
+    try {
+      const plan = planLegacySeed(currentChild, localStorage.getItem(LEGACY_STORAGE_KEY), localStorage.getItem(STORAGE_KEY));
+      if (plan) { localStorage.setItem(plan.key, plan.value); seeded = true; }
+    } catch (e) {}
+    initSyncClient();
+    // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
+    // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
+    if (sync && seeded) sync.markImported();
+    // content 抓取與同步 boot 平行：boot 只碰進度存檔，首屏不用疊上同步的網路延遲
+    const contentPromise = fetch("content.json");
+    // 開啟時 pull：adopt 直寫本機存檔，下方讀進度時才讀（離線／無 token 靜默走本機）
+    if (sync) { try { await sync.boot(); } catch (e) {} }
+    const res = await contentPromise;
     if (!res.ok) throw new Error(res.status);
     const content = await res.json();
     app.audioDir = content.audio.dir;
@@ -910,10 +1049,84 @@ document.getElementById("btn-msg-home").addEventListener("click", () => showScre
 // 匯出／匯入＝哥哥版 docs/index.html _exportProgress/_importProgress pattern
 // （commit 0e84d58 時期版本）簡化：只 scope aiden_zhuyin_v1、文字框手動複製貼上。
 // ════════════════════════════════════════════════════
+// ── 家長區雲端同步狀態（健康燈＋token 輸入；#29）──
+function formatSyncTime(ts) {
+  if (!ts) return null;
+  const d = new Date(ts);
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+// 健康狀態文案在共用腳本（KidsSync.HEALTH_TEXT，平台詞彙）；app 只決定 CSS class
+function syncStatusClass(status) {
+  if (status === "ok") return "sync-ok";
+  if (status === "retry") return "";
+  return "sync-bad";
+}
+function syncStatusHtml() {
+  if (!KidsSync) {
+    return `<div class="parent-status" id="sync-status">同步腳本未載入（shared/sync-v1.js），目前僅本機記錄。</div>`;
+  }
+  const info = childInfo(currentChild);
+  const m = readSyncMeta(currentChild) || {};
+  const token = getSyncToken();
+  let statusLine;
+  if (!token) {
+    statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
+  } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
+    statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
+  } else if (m.health) {
+    statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
+  } else {
+    statusLine = "還沒同步過";
+  }
+  const reseed = m.reseedAt
+    ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(m.reseedAt)} 重新上傳</div>` : "";
+  return `
+    <div class="parent-status" id="sync-status">
+      <div>雲端同步（${info.emoji} ${info.label}）：${statusLine}</div>
+      <div>上次成功同步：${formatSyncTime(m.lastSyncAt) || "還沒同步過"}</div>
+      ${reseed}
+      <div class="sync-token-row">
+        <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
+        <button class="parent-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
+        <button class="parent-btn" onclick="window._syncNow()">立即同步</button>
+        <span id="sync-msg"></span>
+      </div>
+    </div>`;
+}
+function refreshSyncStatus() {
+  const el = document.getElementById("sync-status");
+  if (!el) return;
+  // 家長輸入金鑰到一半時背景同步輪會觸發本函式——別把打到一半的金鑰洗掉
+  const input = document.getElementById("sync-token-input");
+  if (input && (document.activeElement === input || input.value)) return;
+  el.outerHTML = syncStatusHtml();
+}
+window._saveSyncToken = () => {
+  const input = document.getElementById("sync-token-input");
+  const msg = document.getElementById("sync-msg");
+  const v = ((input && input.value) || "").trim();
+  if (!v || !identity) {
+    if (msg) msg.textContent = "請先貼上金鑰";
+    return;
+  }
+  identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+  if (input) { input.value = ""; input.blur(); } // 清空＋失焦，健康燈輪到時才刷得動
+  if (msg) msg.textContent = "金鑰已儲存";
+  refreshSyncStatus();
+  if (sync) sync.syncNow().catch(() => {}); // 剛設好金鑰 → 立刻試一輪，健康燈即時更新
+};
+window._syncNow = async () => {
+  if (!sync) return;
+  try { await sync.syncNow(); } catch (e) {}
+  refreshSyncStatus();
+};
+
 function renderParent() {
   for (const chip of document.querySelectorAll(".chip")) {
     chip.classList.toggle("on", chip.dataset.mode === app.practiceMode);
   }
+  document.getElementById("sync-block").innerHTML = syncStatusHtml();
   const rows = [];
   const row = (label, kind, st) => {
     const status = !st.introduced
@@ -961,10 +1174,47 @@ document.getElementById("btn-export").addEventListener("click", () => {
   try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { /* 讀不到照樣提示 */ }
   document.getElementById("backup-box").value = raw || "";
   document.getElementById("backup-status").textContent = raw
-    ? "已填入下方文字框——全選複製後存到安全的地方（如備忘錄）。"
+    ? `已填入下方文字框（${childInfo(currentChild).label} 的進度）——全選複製後存到安全的地方（如備忘錄）。`
     : "目前沒有進度可匯出。";
   if (raw) document.getElementById("backup-box").select();
 });
+
+// 匯入／還原的 child 選擇（家長選；預設當前 child）。currentChild 不在名單（如 test- id）時補列
+function childPickerHtml(name) {
+  const options = KNOWN_CHILDREN.includes(currentChild) ? KNOWN_CHILDREN : [...KNOWN_CHILDREN, currentChild];
+  const rows = options.map((ch) => {
+    const info = childInfo(ch); // child id 經 normalizeChildId 白名單、label 為靜態字串，直插安全
+    return `<label><input type="radio" name="${name}" value="${ch}" ${ch === currentChild ? "checked" : ""}>${info.emoji} ${info.label}</label>`;
+  }).join("");
+  return `<div class="child-pick">還原到誰的進度？${rows}</div>`;
+}
+function pickedChild(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return (el && el.value) || currentChild;
+}
+
+// 匯入／重置共用落地：直寫目標 child 的新格式 key → 定錨標記 → 上雲。
+// 目標＝當前 child：只同步地寫 key＋markImported 就立刻 reload——不 await 網路輪，
+// 否則等待窗內頁面仍可操作、任何 saveProgress 會用舊 state 蓋掉剛匯入的資料；
+// 定錨＋push 由 reload 後的 boot 輪完成（anchorPending 已持久化，離線也不丟）。
+// 目標＝其他 child：本頁存檔不受影響，安心 await 推完再回報。
+// 回傳 "write-failed" | "reloading" | "done"
+async function commitImport(child, obj) {
+  const plan = planImportWrite(child, obj);
+  try {
+    localStorage.setItem(plan.key, plan.value);
+  } catch (e) {
+    return "write-failed"; // quota／私密模式：進度沒動，讓呼叫端回報
+  }
+  if (child === currentChild) {
+    if (sync) sync.markImported();
+    location.reload();
+    return "reloading"; // reload 前的殘影期不再做事
+  }
+  const c = makeSyncClient(child);
+  if (c) { try { await c.importedLocal(); } catch (e) {} } // 離線也不擋：標記已持久化，該 child 下次開站補推
+  return "done";
+}
 
 document.getElementById("btn-import").addEventListener("click", () => {
   const $st = document.getElementById("backup-status");
@@ -977,18 +1227,37 @@ document.getElementById("btn-import").addEventListener("click", () => {
     $st.textContent = "這段內容不是有效的備份（缺 schemaVersion 或 cards），沒有動任何進度。";
     return;
   }
-  if (!confirm("要用貼上的備份覆蓋現在的進度嗎？")) return;
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch (e) {
-    $st.textContent = "寫入失敗，進度未變。";
-    return;
-  }
-  location.reload();
+  // 二次確認（覆蓋不可復原）＋選 child
+  $st.innerHTML = `${childPickerHtml("zy-import-child")}要用貼上的備份覆蓋所選的進度嗎？<button class="parent-btn" id="import-confirm">確定還原</button>`;
+  document.getElementById("import-confirm").onclick = async () => {
+    const child = pickedChild("zy-import-child");
+    const btn = document.getElementById("import-confirm");
+    btn.disabled = true;
+    const r = await commitImport(child, parsed);
+    if (r === "write-failed") {
+      btn.disabled = false;
+      $st.textContent = "寫入失敗，進度未變。";
+    } else if (r === "done") {
+      $st.textContent = `已還原到 ${childInfo(child).label} 的進度`;
+    }
+  };
 });
 
-document.getElementById("btn-reset").addEventListener("click", () => {
-  if (!confirm("確定要清掉弟弟的全部練習進度嗎？此動作無法復原。")) return;
-  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* 清不掉就算了 */ }
-  location.reload();
+document.getElementById("btn-reset").addEventListener("click", async () => {
+  if (!confirm(`確定要清掉 ${childInfo(currentChild).label} 的全部練習進度嗎？此動作無法復原。`)) return;
+  // 重置＝匯入一份空進度：走同一條定錨路徑把雲端也重置——
+  // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機
+  const r = await commitImport(currentChild, { schemaVersion: 1, cards: {} });
+  if (r === "write-failed") location.reload(); // 寫不進去就算了（比照舊行為），reload 後照舊
+});
+
+// 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSyncClient 的 attachLifecycle 統一掛。
+// bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  const id = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null };
+  if ((id.child || LEGACY_CHILD) !== currentChild) { location.reload(); return; }
+  if (sync) sync.syncNow().catch(() => {});
 });
 </script>
 </body>
