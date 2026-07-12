@@ -566,6 +566,14 @@ function planImportWrite(child, obj) {
 const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
 const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
 const currentChild = (identity && identity.child) || LEGACY_CHILD;
+// 網址指名了 child，但解析它的能力（bootIdentity）在 sync-v1.js 裡、而腳本沒載到——
+// 此時 currentChild 會靜默退回 LEGACY_CHILD，等於把這個小孩的作答寫進另一個小孩的存檔。
+// 猜身分比不讓他練危險得多（那個狀態下同步本來就是死的），拒絕開站。
+// 沒指名 child 的舊單人網址不受影響：照舊退回 LEGACY_CHILD、可練不持久。
+function identityUnresolvable() {
+  if (KidsSync) return false;
+  try { return !!new URLSearchParams(location.search).get("child"); } catch (e) { return false; }
+}
 let sync = null; // sync client（initSyncClient 建立；無 KidsSync 時保持 null）
 
 // ════════════════════════════════════════════════════
@@ -3264,6 +3272,13 @@ window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACT
 // ════════════════════════════════════════════════════
 async function init() {
   try {
+    // 身分不可解（見 identityUnresolvable）→ 在任何存檔讀寫之前擋下，別寫進錯的小孩
+    if (identityUnresolvable()) {
+      const p = document.querySelector("#page-error p");
+      if (p) p.textContent = "載入不完整，請重新整理頁面。";
+      showPage("page-error");
+      return;
+    }
     renderChildBadge();
     const seeded = Storage.migrate();  // 含 child 維度播種（複製不搬移）
     initSyncClient();
