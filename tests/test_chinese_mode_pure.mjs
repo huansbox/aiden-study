@@ -1,13 +1,13 @@
 // 國語改錯字 choice/handwriting mode 狀態純函式測試。
 // 執行：node --test tests/test_chinese_mode_pure.mjs
-// 做法：從 docs/index.html 抽出 <chinese-mode-pure> sentinel 區塊 eval。
+// 做法：從 docs/study/index.html 抽出 <chinese-mode-pure> sentinel 區塊 eval。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
 const m = html.match(/\/\/ <chinese-mode-pure>([\s\S]*?)\/\/ <\/chinese-mode-pure>/);
-if (!m) throw new Error("docs/index.html 找不到 <chinese-mode-pure> 區塊");
+if (!m) throw new Error("docs/study/index.html 找不到 <chinese-mode-pure> 區塊");
 
 const {
   normalizePracticeMode,

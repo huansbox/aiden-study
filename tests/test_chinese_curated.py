@@ -34,7 +34,7 @@ def test_curated_chinese_pilot_data_valid():
 
 def test_site_questions_include_curated_chinese_data():
     curated_path = ROOT / "data" / "curated_questions_國語.json"
-    site_path = ROOT / "docs" / "questions.json"
+    site_path = ROOT / "docs" / "study" / "questions.json"
     curated = json.loads(curated_path.read_text(encoding="utf-8"))
     site = json.loads(site_path.read_text(encoding="utf-8"))
     chinese_site = [q for q in site if q.get("subject") == "chinese"]

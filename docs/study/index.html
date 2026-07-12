@@ -1,0 +1,3368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- 加到主畫面後以 app 形式（standalone）開啟，無瀏覽器網址列 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="三下練習">
+<meta name="theme-color" content="#f5f7fa">
+<link rel="manifest" href="manifest.json">
+<title>三下練習</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: #f5f7fa;
+  color: #1a1a2e;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 768px;
+  padding: 16px;
+  /* 加到主畫面 standalone 開啟時，避開瀏海/狀態列與底部 home indicator */
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 首頁 ── */
+.home { padding-top: 32px; }
+.home h1 { font-size: 1.6rem; text-align: center; margin-bottom: 16px; }
+
+/* 科目切換（自然/數學）：active 用實心藍，與學期切換區隔 */
+.subject-toggle {
+  display: flex; gap: 6px; margin-bottom: 12px;
+  background: #eef1f6; padding: 6px; border-radius: 14px;
+}
+.subject-toggle button {
+  flex: 1; padding: 12px; border: none; border-radius: 10px;
+  background: transparent; font-size: 1.05rem; font-weight: 600;
+  color: #777; cursor: pointer; transition: all 0.15s;
+}
+.subject-toggle button.active {
+  background: #4361ee; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+/* 科目尚無題目時的空狀態 */
+.empty-state {
+  background: #fff; border: 2px dashed #d8dee9; border-radius: 14px;
+  padding: 32px 20px; text-align: center; color: #889; font-size: 1.05rem;
+}
+
+/* 期中/期末 切換 */
+.semester-toggle {
+  display: flex; gap: 6px; margin-bottom: 24px;
+  background: #eef1f6; padding: 6px; border-radius: 14px;
+}
+.semester-toggle button {
+  flex: 1; padding: 12px; border: none; border-radius: 10px;
+  background: transparent; font-size: 1.05rem; font-weight: 600;
+  color: #777; cursor: pointer; transition: all 0.15s;
+}
+.semester-toggle button.active {
+  background: #fff; color: #4361ee; box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+.unit-section { margin-bottom: 20px; }
+.unit-section .unit-title {
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 8px; padding-left: 4px;
+}
+
+.sub-btn {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; padding: 18px 20px; margin-bottom: 8px;
+  border: 2px solid #e0e0e0; border-radius: 14px;
+  background: #fff; font-size: 1.05rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; text-align: left;
+}
+.sub-btn:active:not(:disabled) { transform: scale(0.98); }
+.sub-btn:hover:not(:disabled) { border-color: #4361ee; background: #f0f4ff; }
+.sub-btn:disabled { opacity: 0.4; cursor: default; }
+.sub-btn .status { font-size: 0.85rem; color: #888; white-space: nowrap; margin-left: 12px; }
+.sub-btn .badge {
+  background: #e74c3c; color: #fff; border-radius: 10px;
+  padding: 2px 10px; font-size: 0.85rem; font-weight: 600;
+  min-width: 28px; text-align: center; margin-left: 12px;
+}
+
+/* subtopic 依概念練習 */
+.subtopic-list { margin: 6px 0 4px; padding: 4px 0 0; }
+.subtopic-head { font-size: 0.8rem; color: #999; margin: 6px 4px; }
+.subtopic-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; margin-bottom: 6px;
+  border: 1px solid #ececec; border-radius: 10px; background: #fafbfc;
+}
+.subtopic-name { font-size: 0.98rem; font-weight: 500; }
+.st-count { font-size: 0.78rem; color: #999; margin-left: 8px; font-weight: 400; }
+.st-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.st-btn {
+  padding: 7px 14px; border: 1px solid #cdd6ff; border-radius: 8px;
+  background: #fff; color: #4361ee; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer;
+}
+.st-btn:active { transform: scale(0.96); background: #f0f4ff; }
+
+.error-section { border-top: 2px solid #eee; padding-top: 20px; margin-top: 8px; }
+
+.no-errors {
+  background: #e8faf0; border-radius: 14px; padding: 20px;
+  text-align: center; color: #1a7a42; font-size: 1.1rem; font-weight: 600;
+}
+.no-errors::before { content: ""; display: block; font-size: 2rem; margin-bottom: 4px; }
+
+.reset-link {
+  display: inline-block; margin-top: 4px;
+  font-size: 0.8rem; color: #888; text-decoration: underline;
+  cursor: pointer; background: none; border: none;
+}
+
+/* ── Quiz Header ── */
+.quiz-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.leave-btn {
+  background: none; border: 1px solid #ddd; border-radius: 8px;
+  padding: 8px 14px; font-size: 0.95rem; color: #666; cursor: pointer;
+}
+.leave-btn:active { background: #f0f0f0; }
+.mode-label { font-size: 0.85rem; color: #999; }
+
+/* ── 進度 ── */
+.progress-bar {
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.progress-bar .label { font-size: 0.9rem; color: #666; margin-right: 8px; white-space: nowrap; }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #ddd; flex-shrink: 0;
+}
+.dot.correct { background: #2ecc71; }
+.dot.wrong { background: #e74c3c; }
+.dot.current { box-shadow: 0 0 0 2px #4361ee; }
+
+.progress-text { margin-bottom: 12px; }
+.progress-text .text-line { font-size: 0.9rem; color: #666; margin-bottom: 6px; }
+.progress-bar-track {
+  height: 8px; background: #eee; border-radius: 4px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; background: #2ecc71; border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ── 題目 ── */
+.question-card {
+  background: #fff; border-radius: 16px;
+  padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex: 1; display: flex; flex-direction: column;
+}
+.q-type {
+  font-size: 0.8rem; color: #fff; background: #4361ee;
+  display: inline-block; padding: 2px 10px; border-radius: 8px;
+  margin-bottom: 12px; align-self: flex-start;
+}
+.q-type.tf { background: #8b5cf6; }
+.q-type.chinese { background: #0f766e; }
+.q-text { font-size: 1.25rem; line-height: 1.7; margin-bottom: 20px; }
+/* 看表題截圖（題幹上方顯示）；寬表（如高鐵時刻表 12 欄）需吃滿容器寬才可讀 */
+.q-image {
+  width: 100%; align-self: center;
+  border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 12px;
+}
+.options { display: flex; flex-direction: column; gap: 12px; }
+
+.opt-btn {
+  display: flex; align-items: center; min-height: 56px;
+  padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 12px;
+  background: #fff; font-size: 1.125rem; line-height: 1.5;
+  cursor: pointer; transition: all 0.15s; text-align: left; gap: 10px;
+}
+.opt-btn:active:not(.disabled) { transform: scale(0.98); }
+.opt-btn:hover:not(.disabled) { border-color: #4361ee; background: #f0f4ff; }
+.opt-btn .opt-label {
+  width: 28px; height: 28px; border-radius: 50%; background: #eee;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+}
+.opt-btn.correct-answer { border-color: #2ecc71; background: #e8faf0; }
+.opt-btn.correct-answer .opt-label { background: #2ecc71; color: #fff; }
+.opt-btn.wrong-answer { border-color: #e74c3c; background: #fdecea; }
+.opt-btn.wrong-answer .opt-label { background: #e74c3c; color: #fff; }
+.opt-btn.disabled { pointer-events: none; opacity: 0.85; }
+
+/* ── 國語改錯字（chinese_correction）── */
+.chinese-sentence {
+  display: flex; flex-wrap: wrap; gap: 6px 4px;
+  align-items: center; line-height: 1.8;
+}
+.chinese-char {
+  min-width: 38px; min-height: 44px; padding: 4px 6px;
+  border: 1px solid #d8dee9; border-radius: 8px; background: #fff;
+  color: #1a1a2e; font: inherit; font-size: 1.55rem; line-height: 1;
+  cursor: pointer; transition: transform 0.12s, background 0.12s, border-color 0.12s;
+}
+.chinese-char:active:not(:disabled) { transform: scale(0.96); }
+.chinese-char:hover:not(:disabled) { border-color: #0f766e; background: #effdf8; }
+.chinese-char.miss { border-color: #ef4444; background: #fff1f2; animation: charShake 0.22s ease-in-out; }
+.chinese-char.picked { border-color: #0f766e; background: #ccfbf1; color: #0f3f3a; font-weight: 800; }
+.chinese-char:disabled { cursor: default; opacity: 1; }
+.chinese-punct { font-size: 1.35rem; padding: 0 1px; color: #2d2d3a; }
+.chinese-inline-hint {
+  min-height: 28px; margin-top: 4px; color: #b42318;
+  font-size: 0.95rem; font-weight: 600;
+}
+.handwriting-panel {
+  --handwriting-board-size: min(86vw, 520px);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.handwriting-panel.remedial { --handwriting-board-size: min(86vw, 460px, 58vh); }
+.handwriting-board-wrap {
+  position: relative; width: var(--handwriting-board-size); max-width: 100%; aspect-ratio: 1 / 1;
+  border: 2px solid #d8dee9; border-radius: 12px; background: #fff;
+  overflow: hidden; touch-action: none;
+}
+.handwriting-board-wrap::before,
+.handwriting-board-wrap::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+}
+.handwriting-board-wrap::before {
+  background:
+    linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(transparent calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% - 0.5px), rgba(15,118,110,0.22) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board-wrap::after {
+  background:
+    linear-gradient(45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(-45deg, transparent calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% - 0.5px), rgba(15,118,110,0.14) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+.handwriting-board {
+  position: relative; z-index: 1; display: block;
+  width: 100%; height: 100%; touch-action: none;
+}
+.handwriting-trace {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(15, 63, 58, 0.16); font-size: min(70vw, 22rem, 42vh); font-weight: 700; line-height: 1;
+}
+/* fallback 100%：selfCheck 的按鈕列在 .handwriting-panel 外（無此變數），與上方比較卡同寬 */
+.handwriting-actions { display: flex; gap: 10px; width: var(--handwriting-board-size, 100%); max-width: 100%; }
+.handwriting-actions .st-btn { flex: 1; padding: 12px 16px; font-size: 1rem; }
+.handwriting-remedial-note {
+  color: #4b5563; font-size: 0.98rem; font-weight: 600; text-align: center;
+}
+.handwriting-remedial-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
+  padding: 10px 12px; border-radius: 10px; background: #effdf8;
+  color: #0f3f3a; font-size: 1rem; font-weight: 700; text-align: center;
+}
+.handwriting-done-message {
+  width: var(--handwriting-board-size); max-width: 100%; box-sizing: border-box;
+  padding: 20px 16px; border-radius: 12px; background: #effdf8;
+  color: #0f3f3a; font-size: 1.25rem; font-weight: 800; text-align: center;
+}
+.handwriting-self-check {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px; width: 100%; align-items: stretch;
+}
+.handwriting-remedial-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; width: var(--handwriting-board-size); max-width: 100%;
+}
+.handwriting-compare-card {
+  border: 1px solid #e0e0e0; border-radius: 12px; background: #fafbfc;
+  padding: 12px; text-align: center;
+}
+.handwriting-compare-title { font-size: 0.9rem; color: #667; margin-bottom: 8px; font-weight: 600; }
+.handwriting-capture {
+  width: 100%; aspect-ratio: 1 / 1; object-fit: contain;
+  border: 1px solid #e3e8ef; border-radius: 10px; background: #fff;
+}
+.handwriting-correct-char {
+  width: 100%; aspect-ratio: 1 / 1; border: 1px solid #e3e8ef; border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(5rem, 28vw, 10rem); font-weight: 700; color: #0f3f3a;
+}
+.handwriting-remedial-compare .handwriting-compare-card { padding: 8px; }
+.handwriting-remedial-compare .handwriting-capture,
+.handwriting-remedial-compare .handwriting-correct-char {
+  height: 112px; aspect-ratio: auto;
+}
+.handwriting-remedial-compare .handwriting-correct-char { font-size: 4.5rem; }
+.handwriting-correct-sentence {
+  margin-top: 12px; padding: 12px 14px; border-radius: 12px;
+  background: #effdf8; color: #0f3f3a; font-size: 1.05rem; line-height: 1.6;
+}
+@media (max-width: 560px) {
+  .handwriting-self-check { grid-template-columns: 1fr; }
+  .question-card:has(.handwriting-panel),
+  .question-card:has(.handwriting-self-check) { padding-left: 10px; padding-right: 10px; }
+}
+@keyframes charShake {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-3px); }
+  70% { transform: translateX(3px); }
+}
+
+/* ── 填充題（fill_in_blank）── */
+.q-type.fib { background: #0d9488; }
+.blank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.blank-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.blank-label { font-size: 1.05rem; color: #666; min-width: 48px; }
+/* 題幹空格 chip：長得像輸入格而非題目內容（避免（２）被誤讀成數字 2）；
+   與下方作答格同步 highlight，作答時即時回填輸入值 */
+.q-chip {
+  display: inline-block; min-width: 44px; padding: 0 10px;
+  border: 2px dashed #bbb; border-radius: 8px; background: #fafafa;
+  color: #999; text-align: center; line-height: 1.5;
+  margin: 0 2px; cursor: pointer; user-select: none;
+}
+.q-chip.filled { border-style: solid; border-color: #999; background: #fff; color: #222; }
+.q-chip.active { border-color: #4361ee; background: #f0f4ff; color: #4361ee; }
+.q-chip.b-correct { border-style: solid; border-color: #2ecc71; background: #e8faf0; color: #1a7a44; }
+.q-chip.b-wrong { border-style: solid; border-color: #e74c3c; background: #fdecea; color: #b03a2e; }
+.blank-label .q-chip { cursor: default; }
+.blank-box {
+  flex: 1; min-width: 110px; min-height: 52px;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; cursor: pointer;
+}
+.blank-box.active { border-color: #4361ee; background: #f0f4ff; }
+.blank-box.b-correct { border-color: #2ecc71; background: #e8faf0; }
+.blank-box.b-wrong { border-color: #e74c3c; background: #fdecea; }
+.blank-correct-val { font-size: 0.95rem; color: #1a7a42; font-weight: 600; white-space: nowrap; }
+.numpad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-top: 14px; max-width: 360px; align-self: center; width: 100%;
+}
+.numpad button {
+  padding: 14px; font-size: 1.5rem; font-weight: 600;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer;
+}
+.numpad button:active:not(:disabled) { background: #f0f4ff; transform: scale(0.97); }
+.numpad button:disabled { opacity: 0.4; cursor: default; }
+.next-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* comparison（＞＜＝）與 code（甲乙丙丁）按鈕列 */
+.choice-row { display: flex; gap: 10px; margin-top: 14px; justify-content: center; flex-wrap: wrap; }
+.choice-btn {
+  min-width: 72px; padding: 14px 18px; font-size: 1.5rem; font-weight: 700;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer;
+}
+.choice-btn:active:not(:disabled) { background: #f0f4ff; transform: scale(0.97); }
+.choice-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* text 自由輸入 */
+.text-input {
+  margin-top: 14px; width: 100%; padding: 14px; font-size: 1.3rem;
+  border: 2px solid #e0e0e0; border-radius: 12px;
+  -webkit-user-select: text; user-select: text;
+}
+
+/* ── 直式計算（vertical_calc）── */
+.q-type.vc { background: #d97706; }
+.vc-grid { display: grid; gap: 4px; justify-content: center; margin: 4px 0; --vc-cell: 48px; }
+.vc-cell {
+  width: var(--vc-cell); height: var(--vc-cell);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700; border-radius: 8px;
+}
+.vc-fillable { border: 2px dashed #c4cbe0; background: #f8f9fc; }
+.vc-active { border: 2px solid #4361ee; background: #f0f4ff; }
+.vc-filled { border: 2px solid #2ecc71; background: #e8faf0; color: #1a7a42; }
+.vc-error { animation: vc-shake 0.3s; border: 2px solid #e74c3c !important; background: #fdecea !important; }
+@keyframes vc-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+/* 算式線：加減答案列上緣；除法商列下緣＋除號直線 */
+.vc-ansline { border-top: 3px solid #1a1a2e; border-radius: 0; }
+.vc-divline { border-top: 3px solid #1a1a2e; border-radius: 0; }
+.vc-divisor { border-right: 3px solid #1a1a2e; border-radius: 0; }
+.vc-sep { border-bottom: 2px solid #888; border-radius: 0; }
+
+.result-hint {
+  margin-top: 16px; padding: 12px 16px; border-radius: 12px;
+  font-size: 1.1rem; font-weight: 600; text-align: center;
+}
+.result-hint.correct { background: #e8faf0; color: #1a7a42; }
+.result-hint.wrong { background: #fdecea; color: #b71c1c; }
+
+.explain-card {
+  margin-top: 10px; padding: 12px 16px; border-radius: 12px;
+  background: #f4f6fb; color: #444; font-size: 1rem; line-height: 1.6;
+  text-align: left;
+}
+
+.next-btn {
+  display: block; width: 100%; margin-top: 16px; padding: 16px;
+  border: none; border-radius: 12px; background: #4361ee; color: #fff;
+  font-size: 1.1rem; font-weight: 600; cursor: pointer;
+}
+.next-btn:active { background: #3451c7; }
+
+/* ── 題目回報 ── */
+.flag-area, .skip-area { margin-top: 12px; text-align: center; }
+.flag-btn, .skip-btn {
+  background: none; border: none; color: #aab; font-size: 0.85rem;
+  text-decoration: underline; cursor: pointer; padding: 6px 10px;
+}
+.flag-confirm {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; color: #b71c1c;
+}
+.flag-confirm button {
+  padding: 6px 12px; border: none; border-radius: 8px;
+  font-size: 0.9rem; cursor: pointer;
+}
+.flag-yes { border: 1px solid #e74c3c; background: #fdecea; color: #b71c1c; }
+.flag-no { border: 1px solid #ccc; background: #fff; color: #666; }
+
+/* 首頁已回報清單 */
+.flagged-section { border-top: 2px solid #eee; padding-top: 16px; margin-top: 8px; }
+.flagged-section summary { font-size: 0.9rem; color: #888; cursor: pointer; padding: 4px; }
+.flagged-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 14px; margin: 6px 0;
+  border: 1px solid #ececec; border-radius: 10px; background: #fafbfc;
+}
+.flagged-text { font-size: 0.9rem; color: #555; }
+.flagged-actions { display: flex; gap: 8px; margin-top: 8px; }
+
+.backup-section { border-top: 2px solid #eee; padding-top: 16px; margin-top: 8px; }
+.backup-section summary { font-size: 0.9rem; color: #888; cursor: pointer; padding: 4px; }
+.backup-body { padding: 8px 4px; }
+.backup-hint { font-size: 0.85rem; color: #777; margin: 6px 0 10px; line-height: 1.5; }
+.backup-body > .st-btn { margin-right: 8px; }
+.backup-io { margin-top: 12px; }
+.backup-io textarea {
+  width: 100%; box-sizing: border-box; min-height: 110px; padding: 10px;
+  border: 1px solid #cdd6ff; border-radius: 8px; font-size: 0.78rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace; resize: vertical; color: #444;
+}
+.backup-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+.backup-actions a.st-btn { text-decoration: none; display: inline-block; }
+.backup-msg { font-size: 0.85rem; color: #4361ee; margin-left: 4px; display: inline-flex; align-items: center; gap: 8px; }
+
+/* ── 摘要頁 ── */
+.summary { text-align: center; padding-top: 40px; }
+.summary .score { font-size: 3rem; font-weight: 800; color: #4361ee; margin: 16px 0; }
+.summary .score-label { font-size: 1.1rem; color: #666; }
+.summary-btn {
+  display: block; width: 100%; padding: 16px; margin-top: 12px;
+  border: 2px solid #e0e0e0; border-radius: 12px; background: #fff;
+  font-size: 1.05rem; font-weight: 600; cursor: pointer;
+}
+.summary-btn.primary { background: #4361ee; color: #fff; border-color: #4361ee; }
+.summary-btn:active { transform: scale(0.98); }
+/* 獎勵插畫（批末/通關/錯題清除）：實底滿版方形收藏卡、淡入 */
+.reward-img {
+  display: block; width: min(72vw, 400px); aspect-ratio: 1 / 1; object-fit: cover;
+  margin: 16px auto; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  animation: rewardIn 0.3s ease-out;
+}
+@keyframes rewardIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+/* 完成畫面：先跳一個小獎杯，點了才揭曉插畫（拆獎品的儀式感） */
+.reward-reveal { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 16px auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.reward-trophy {
+  font-size: 76px; line-height: 1;
+  animation: trophyPop 0.5s cubic-bezier(.18,.89,.32,1.28) both, trophyIdle 1.8s ease-in-out 0.7s infinite;
+}
+.reward-cap { font-size: 0.95rem; color: #888; }
+.reward-reveal:active .reward-trophy { animation: none; transform: scale(0.92); }
+.reward-reveal.revealed .reward-trophy, .reward-reveal.revealed .reward-cap { display: none; }
+.reward-reveal .reward-img { margin: 0 auto; }  /* 容器已置中，圖自身不再加外距 */
+@keyframes trophyPop { 0% { transform: scale(0) rotate(-18deg); opacity: 0; } 60% { transform: scale(1.18) rotate(7deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+@keyframes trophyIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* ── 錯誤頁 ── */
+.error-msg { text-align: center; padding-top: 60px; color: #888; font-size: 1.1rem; }
+
+/* ── child 徽章（頁首常駐當前使用者，點錯圖示一眼可辨；#28）── */
+#child-badge {
+  position: fixed; top: 8px; right: 10px; z-index: 50;
+  background: rgba(255,255,255,.92); border: 1px solid #e0e0e0; border-radius: 999px;
+  padding: 4px 12px; font-size: 0.9rem; color: #555; box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  pointer-events: none;
+}
+
+/* ── 家長區雲端同步狀態 ── */
+.sync-status { margin: 10px 0; padding: 10px 12px; background: #f8f8f8; border-radius: 10px; font-size: 0.9rem; color: #555; }
+.sync-status .sync-bad { color: #e74c3c; font-weight: 600; }
+.sync-status .sync-ok { color: #2ecc71; font-weight: 600; }
+.sync-token-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.sync-token-row input { flex: 1; min-width: 160px; padding: 6px 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.85rem; }
+.child-pick { margin: 8px 0; }
+.child-pick label { margin-right: 12px; white-space: nowrap; }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="child-badge" class="hidden"></div>
+<div class="container" id="app">
+  <div id="page-home" class="home"></div>
+  <div id="page-quiz" class="hidden"></div>
+  <div id="page-summary" class="summary hidden"></div>
+  <div id="page-error" class="error-msg hidden"><p>題庫載入失敗，請重新整理頁面。</p></div>
+</div>
+
+<script src="../shared/sync-v1.js"></script>
+<script>
+(function() {
+"use strict";
+
+// ════════════════════════════════════════════════════
+// Child 身分與同步（#28：本機存檔 key 加 child 維度；雲端 key＝{child}:study）
+// ════════════════════════════════════════════════════
+const KidsSync = window.KidsSyncV1 || null; // shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）
+const STUDY_APP_ID = "study";
+const STUDY_SCHEMA_VERSION = 1;
+// interim copy — registry（#31）落地後改讀 registry
+const CHILD_INFO = {
+  aiden: { label: "哥哥", emoji: "👦" },
+  bingpu: { label: "弟弟", emoji: "🧒" },
+};
+const KNOWN_CHILDREN = Object.keys(CHILD_INFO);
+
+// <child-store-pure>
+// ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
+const LEGACY_STORAGE_KEY = "aiden_study_v2";
+const LEGACY_CHILD = "aiden"; // 舊存檔歸屬 per-app 指定：study→哥哥（ADR-0004）
+function childProgressKey(child) { return `study:progress:${child}`; }
+function childSyncMetaKey(child) { return `study:sync:${child}`; }
+// 遷移採「複製、不搬移」：新 key 已有資料／舊 blob 不存在／child 非舊存檔歸屬 → 不動作。
+// 舊 key 原樣保留：本票 revert 時舊程式讀舊 key 一切如常。
+function planLegacySeed(child, legacyRaw, childRaw) {
+  if (childRaw !== null && childRaw !== undefined) return null;
+  if (typeof legacyRaw !== "string" || legacyRaw === "") return null;
+  if (child !== LEGACY_CHILD) return null;
+  return { key: childProgressKey(child), value: legacyRaw };
+}
+// 匯入寫入計畫：只寫目標 child 的新格式 key（不繞 legacy migration guard、不碰其他 child）
+function planImportWrite(child, obj) {
+  return { key: childProgressKey(child), value: JSON.stringify(obj) };
+}
+// </child-store-pure>
+
+// 身分解析：圖示網址帶死參數 ?child=（無參數＝aiden，study 歸哥哥）；?k= 首開寫入本機、
+// 之後 getToken 走「網址 > 本機」fallback（組合邏輯在共用腳本 bootIdentity，各 app 不自己拼）。
+// localStorage 全域在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——頂層拋出會殺掉
+// 整個 script（連作答都死），包一層讓 app 退回「可練不持久」的舊行為
+const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
+const currentChild = (identity && identity.child) || LEGACY_CHILD;
+// 網址指名了 child，但解析它的能力（bootIdentity）在 sync-v1.js 裡、而腳本沒載到——
+// 此時 currentChild 會靜默退回 LEGACY_CHILD，等於把這個小孩的作答寫進另一個小孩的存檔。
+// 猜身分比不讓他練危險得多（那個狀態下同步本來就是死的），拒絕開站。
+// 沒指名 child 的舊單人網址不受影響：照舊退回 LEGACY_CHILD、可練不持久。
+function identityUnresolvable() {
+  if (KidsSync) return false;
+  try { return !!new URLSearchParams(location.search).get("child"); } catch (e) { return false; }
+}
+let sync = null; // sync client（initSyncClient 建立；無 KidsSync 時保持 null）
+
+// ════════════════════════════════════════════════════
+// Storage
+// ════════════════════════════════════════════════════
+const STORAGE_KEY = childProgressKey(currentChild);
+const OLD_KEY = "aiden_study_records";
+
+const DEFAULT_DATA = { schemaVersion: STUDY_SCHEMA_VERSION, challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final", subject: "science" };
+const DEFAULT_PRACTICE_MODE = "choice";
+const HANDWRITING_PRACTICE_MODE = "handwriting";
+
+// <chinese-mode-pure>
+// ══════ 國語改錯字練習模式狀態（純函式；choice/handwriting 隔離）══════
+// 注意：此區塊到 </chinese-mode-pure> 為止不得引用外部全域變數，
+// 才能被 node 測試抽出獨立 eval。
+function normalizePracticeMode(mode) {
+  return mode === "handwriting" ? "handwriting" : "choice";
+}
+
+function modeChallengeKey(unit, subtopic = null, mode = "choice") {
+  const base = subtopic ? `${unit}/${subtopic}` : String(unit);
+  const m = normalizePracticeMode(mode);
+  return m === "choice" ? base : `${m}:${base}`;
+}
+
+function batchSizeForMode(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting" ? 5 : 10;
+}
+
+// 批大小：剩 N 題時平均拆——最少要 k=ceil(N/max) 批，每批 ceil(N/k) 題，無零頭尾巴。
+// 邊界：N≤0→0、N≤max→N。每開新批依「當下剩餘」現算，不預先固定整單元批表。
+function balancedBatchSize(remaining, max = 10) {
+  if (remaining <= 0) return 0;
+  if (remaining <= max) return remaining;
+  const k = Math.ceil(remaining / max);
+  return Math.ceil(remaining / k);
+}
+
+function nextBatchSizeForMode(remaining, mode = "choice") {
+  return balancedBatchSize(remaining, batchSizeForMode(mode));
+}
+
+function beginHandwritingRemedial() {
+  return { stage: "remedial", attempt: 1, total: 3 };
+}
+
+function advanceHandwritingRemedial(remedial) {
+  const total = Math.max(1, Number(remedial && remedial.total) || 3);
+  const attempt = Math.max(1, Number(remedial && remedial.attempt) || 1);
+  if (attempt >= total) return { ...remedial, stage: "done", attempt: total, total };
+  if (attempt === 2) return { ...remedial, stage: "review", attempt, total };
+  return { ...remedial, stage: "remedial", attempt: attempt + 1, total };
+}
+
+function continueHandwritingRemedialAfterReview(remedial) {
+  const total = Math.max(1, Number(remedial && remedial.total) || 3);
+  const attempt = Math.min(total, Math.max(1, Number(remedial && remedial.attempt) || 1) + 1);
+  return { ...remedial, stage: "remedial", attempt, total };
+}
+
+function shouldTraceHandwritingAttempt(remedial) {
+  return Number(remedial && remedial.attempt) === 1;
+}
+
+function shouldOfferHandwritingRemedialHint(remedial) {
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  return remedial && remedial.stage === "remedial" && attempt > 1;
+}
+
+function shouldTraceHandwritingRemedialHint(remedial, hintVisible = false) {
+  return shouldOfferHandwritingRemedialHint(remedial) && Boolean(hintVisible);
+}
+
+function handwritingRemedialPrompt(remedial) {
+  if (remedial && remedial.stage === "done") return "練完了，真棒";
+  if (remedial && remedial.stage === "review") return "很好，再看一下剛剛寫的字";
+  const attempt = Number(remedial && remedial.attempt) || 1;
+  if (attempt === 2) return "很好，自己練習寫寫看";
+  if (attempt === 3) return "很好，再練習寫一次看看";
+  return "";
+}
+
+function shouldMasterErrorPracticeCorrect(mode = "choice") {
+  return normalizePracticeMode(mode) === "handwriting";
+}
+
+function cleanStat(s) {
+  return {
+    practiced: Math.max(0, Number(s && s.practiced) || 0),
+    correct: Math.max(0, Number(s && s.correct) || 0),
+  };
+}
+
+function statsModesFromEntry(entry) {
+  const modes = {};
+  if (entry && typeof entry === "object" && entry.modes && typeof entry.modes === "object") {
+    for (const [mode, stat] of Object.entries(entry.modes)) {
+      modes[normalizePracticeMode(mode)] = cleanStat(stat);
+    }
+  } else if (entry && typeof entry === "object") {
+    modes.choice = cleanStat(entry);
+  }
+  return modes;
+}
+
+function getModeStat(stats, qId, mode = "choice") {
+  const modes = statsModesFromEntry((stats || {})[qId]);
+  return modes[normalizePracticeMode(mode)] || { practiced: 0, correct: 0 };
+}
+
+function hasModeStat(stats, qId, mode = "choice") {
+  const modes = statsModesFromEntry((stats || {})[qId]);
+  return Object.prototype.hasOwnProperty.call(modes, normalizePracticeMode(mode));
+}
+
+function recordModeAnswer(stats, qId, isCorrect, mode = "choice") {
+  const next = { ...(stats || {}) };
+  const modes = statsModesFromEntry(next[qId]);
+  const m = normalizePracticeMode(mode);
+  const cur = modes[m] || { practiced: 0, correct: 0 };
+  modes[m] = { practiced: cur.practiced + 1, correct: cur.correct + (isCorrect ? 1 : 0) };
+  next[qId] = { modes };
+  return next;
+}
+
+function recordsToModeStats(records, mode = "choice") {
+  let stats = {};
+  for (const r of records || []) {
+    if (r && r.questionId) stats = recordModeAnswer(stats, r.questionId, !!r.correct, mode);
+  }
+  return stats;
+}
+
+function modeWrongCount(stats, qId, mode = "choice") {
+  const s = getModeStat(stats, qId, mode);
+  return s.practiced - s.correct;
+}
+
+function errorEntryMode(e) {
+  return normalizePracticeMode(e && e.mode);
+}
+
+function unitMatchesFilter(unit, unitFilter) {
+  if (!unitFilter) return true;
+  if (Array.isArray(unitFilter)) return unitFilter.includes(unit);
+  return unit === unitFilter;
+}
+
+function filterModeErrorBank(errorBank, unitFilter = null, mode = "choice") {
+  const m = normalizePracticeMode(mode);
+  return (errorBank || []).filter(e => unitMatchesFilter(e.unit, unitFilter) && errorEntryMode(e) === m);
+}
+
+function addModeError(errorBank, qId, unit, mode = "choice") {
+  const bank = [...(errorBank || [])];
+  const m = normalizePracticeMode(mode);
+  if (!bank.some(e => e.questionId === qId && errorEntryMode(e) === m)) {
+    bank.push({ questionId: qId, unit, mode: m });
+  }
+  return bank;
+}
+
+function removeModeError(errorBank, qId, mode = "choice") {
+  const m = normalizePracticeMode(mode);
+  return (errorBank || []).filter(e => !(e.questionId === qId && errorEntryMode(e) === m));
+}
+
+function removeAllModeErrors(errorBank, qId) {
+  return (errorBank || []).filter(e => e.questionId !== qId);
+}
+
+function shouldKeepModeError(stats, entry, choiceWrongThreshold = 2) {
+  const mode = errorEntryMode(entry);
+  if (mode !== "choice") return true;
+  return !hasModeStat(stats, entry.questionId, mode) || modeWrongCount(stats, entry.questionId, mode) >= choiceWrongThreshold;
+}
+
+function shouldAddModeError(stats, qId, mode = "choice", choiceWrongThreshold = 2) {
+  const m = normalizePracticeMode(mode);
+  if (m !== "choice") return true;
+  return modeWrongCount(stats, qId, m) >= choiceWrongThreshold;
+}
+
+function masteredModesFromEntry(entry) {
+  const modes = {};
+  if (Array.isArray(entry)) {
+    modes.choice = [...new Set(entry)];
+  } else if (entry && typeof entry === "object" && entry.modes && typeof entry.modes === "object") {
+    for (const [mode, ids] of Object.entries(entry.modes)) {
+      if (Array.isArray(ids)) modes[normalizePracticeMode(mode)] = [...new Set(ids)];
+    }
+  }
+  return modes;
+}
+
+function masteredListForMode(mastered, unit, mode = "choice") {
+  const modes = masteredModesFromEntry((mastered || {})[String(unit)]);
+  return modes[normalizePracticeMode(mode)] || [];
+}
+
+function addModeMastered(mastered, unit, qId, mode = "choice") {
+  const next = { ...(mastered || {}) };
+  const u = String(unit);
+  const modes = masteredModesFromEntry(next[u]);
+  const m = normalizePracticeMode(mode);
+  if (!modes[m]) modes[m] = [];
+  if (!modes[m].includes(qId)) modes[m].push(qId);
+  next[u] = { modes };
+  return next;
+}
+
+function removeQuestionFromAllModeMastered(mastered, unit, qId) {
+  const next = { ...(mastered || {}) };
+  const u = String(unit);
+  const modes = masteredModesFromEntry(next[u]);
+  for (const m of Object.keys(modes)) modes[m] = modes[m].filter(id => id !== qId);
+  next[u] = { modes };
+  return next;
+}
+// </chinese-mode-pure>
+
+const Storage = {
+  load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch { return null; }
+  },
+  // 寫入整段包起來（同 load）：封鎖 Cookie 類設定下連 localStorage 取值都拋 SecurityError，
+  // 不包的話首次作答就炸；吞掉＝退回「可練不持久」（本輪照常作答，離開就沒了）
+  save(data) {
+    try {
+      const json = JSON.stringify(data);
+      let prev = null;
+      try { prev = localStorage.getItem(STORAGE_KEY); } catch {}
+      localStorage.setItem(STORAGE_KEY, json);
+      // 真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
+      // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+      if (sync && json !== prev) sync.markDirty();
+    } catch {}
+  },
+  // init 期整理（orphan 清理等）專用：不標 dirty。舊快取題庫誤判 orphan 時只影響本機，
+  // 不會 push 上雲剝掉他機的有效 errorBank/flagged（use-site 本就有 questionMap 過濾）
+  saveQuiet(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+  },
+  // 回傳是否本次做了 child 維度播種（呼叫端據此走匯入定錨語意上雲）
+  migrate() {
+    // 舊世代鏈（哥哥的 lineage，寫回舊 key、維持原樣）：aiden_study_records → aiden_study_v2
+    try {
+      if (!localStorage.getItem(LEGACY_STORAGE_KEY)) {
+        const raw = localStorage.getItem(OLD_KEY);
+        if (raw) {
+          const old = JSON.parse(raw);
+          const records = old.records || [];
+          const stats = recordsToModeStats(records, DEFAULT_PRACTICE_MODE);
+          localStorage.setItem(LEGACY_STORAGE_KEY, JSON.stringify({ ...DEFAULT_DATA, stats }));
+          localStorage.removeItem(OLD_KEY);
+        }
+      }
+    } catch { /* ignore corrupt old data */ }
+    // child 維度播種：複製不搬移（#28；aiden_study_v2 原樣保留）
+    try {
+      const plan = planLegacySeed(currentChild, localStorage.getItem(LEGACY_STORAGE_KEY), localStorage.getItem(STORAGE_KEY));
+      if (plan) {
+        localStorage.setItem(plan.key, plan.value);
+        return true;
+      }
+    } catch {}
+    return false;
+  }
+};
+
+// ════════════════════════════════════════════════════
+// 同步接線（sync client 對本 app 的效果注入）
+// ════════════════════════════════════════════════════
+function readSyncMeta(child) {
+  try { return JSON.parse(localStorage.getItem(childSyncMetaKey(child))); } catch { return null; }
+}
+// KidsSync 未載入（腳本抓取失敗）時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
+// 播種與匯入只發生一次，錯過定錨就永遠補不回——雲端被他機 rev 佔住時，下次 boot 會 adopt
+// 空資料蓋掉剛播種/匯入的進度；先落標記，下次腳本載入的 boot 輪即完成定錨＋push
+function markImportedFallback(child) {
+  try {
+    const m = readSyncMeta(child);
+    localStorage.setItem(childSyncMetaKey(child), JSON.stringify(
+      { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
+  } catch {}
+}
+function getSyncToken() {
+  return identity ? identity.getToken() : null;
+}
+function makeSyncClient(child, hooks = {}) {
+  if (!KidsSync) return null;
+  const key = childProgressKey(child);
+  return KidsSync.createSyncClient({
+    child,
+    app: STUDY_APP_ID,
+    schemaVersion: STUDY_SCHEMA_VERSION,
+    getToken: getSyncToken,
+    // 直讀直寫 localStorage、不走 Storage.save：adopt 覆蓋本機不得反過來標 dirty
+    loadData: () => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } },
+    saveData: (d) => { try { localStorage.setItem(key, JSON.stringify(d)); } catch {} },
+    loadMeta: () => readSyncMeta(child),
+    saveMeta: (m) => { try { localStorage.setItem(childSyncMetaKey(child), JSON.stringify(m)); } catch {} },
+    onAdopt: hooks.onAdopt,
+    onHealth: hooks.onHealth,
+  });
+}
+// adopt（含 conflict-adopt）＝整包取遠端：boot 時 State 尚未初始化（存檔已被 saveData 覆蓋、init 接著讀）；
+// session 中（雙裝置衝突，罕見）則換掉 in-memory state，首頁可見時重畫。
+// 做題中不換：quiz runtime 仍指舊批次，混合覆蓋比整包不換更糟——存檔已是遠端版，
+// 下一次作答的 Storage.save 會整包寫回本機狀態＝「作答中的裝置贏」，仍是乾淨的 LWW
+function adoptRemoteData(data) {
+  if (!state) return;
+  if (!document.getElementById("page-quiz").classList.contains("hidden")) return;
+  State.init(data && typeof data === "object" ? data : null);
+  if (state._needMasteredBackfill) State.backfillMastered();
+  if (!document.getElementById("page-home").classList.contains("hidden")) renderHome();
+}
+function initSyncClient() {
+  sync = makeSyncClient(currentChild, {
+    onAdopt: adoptRemoteData,
+    onHealth: () => refreshSyncStatus(),
+  });
+  // 離頁／切背景立即 flush（監聽對組合是平台知識，掛法統一在共用腳本）
+  if (sync) sync.attachLifecycle(window, document);
+}
+
+function childInfo(child) {
+  return CHILD_INFO[child] || { label: child, emoji: "🙂" };
+}
+function renderChildBadge() {
+  const el = document.getElementById("child-badge");
+  if (!el) return;
+  const info = childInfo(currentChild);
+  el.textContent = `${info.emoji} ${info.label}`;
+  el.classList.remove("hidden");
+}
+
+// ════════════════════════════════════════════════════
+// State
+// ════════════════════════════════════════════════════
+let state = null;
+
+const State = {
+  init(saved) {
+    state = saved ? { ...DEFAULT_DATA, ...saved } : { ...structuredClone(DEFAULT_DATA) };
+    state.schemaVersion = STUDY_SCHEMA_VERSION; // 本 app 寫出的資料一律標當前 schema（舊存檔無此欄）
+    if (!state.challenge) state.challenge = { "1": null, "2": null };
+    if (!state.errorBank) state.errorBank = [];
+    if (!state.stats) state.stats = {};
+    if (!state.semester) state.semester = "final";
+    if (!state.subject) state.subject = "science";
+    if (!state.mastered) state.mastered = {};
+    if (!state.flagged) state.flagged = [];
+    // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
+    if (saved && !saved.mastered) state._needMasteredBackfill = true;
+  },
+
+  // Semester (期中/期末 切換，記住選擇)
+  setSemester(s) {
+    state.semester = s;
+    Storage.save(state);
+  },
+
+  // Subject (自然/數學 切換，記住選擇)
+  setSubject(s) {
+    state.subject = s;
+    Storage.save(state);
+  },
+
+  // Stats（目前只寫不讀：保留每題作答記錄，供未來功能使用）
+  recordAnswer(qId, isCorrect, mode = DEFAULT_PRACTICE_MODE) {
+    state.stats = recordModeAnswer(state.stats, qId, isCorrect, mode);
+    Storage.save(state);
+  },
+  // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
+  getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
+    return filterModeErrorBank(state.errorBank, unitFilter, mode);
+  },
+  addToErrorBank(qId, unit, mode = DEFAULT_PRACTICE_MODE) {
+    state.errorBank = addModeError(state.errorBank, qId, unit, mode);
+    Storage.save(state);
+  },
+  removeFromErrorBank(qId, mode = DEFAULT_PRACTICE_MODE) {
+    state.errorBank = removeModeError(state.errorBank, qId, mode);
+    Storage.save(state);
+  },
+
+  // ── Flagged（回報有問題的題目：排除於所有題池與通關分母，可從首頁還原）
+  getFlagged() {
+    return [...state.flagged];
+  },
+  isFlagged(qId) {
+    return state.flagged.some(f => f.questionId === qId);
+  },
+  flagQuestion(qId, unit) {
+    if (State.isFlagged(qId)) return;
+    state.flagged.push({ questionId: qId, unit, flaggedAt: Date.now() });
+    // 題目本身有疑慮 → 該題的歷史作答記錄一律視為不可信，整筆清除
+    delete state.stats[qId];
+    state.errorBank = removeAllModeErrors(state.errorBank, qId);
+    state.mastered = removeQuestionFromAllModeMastered(state.mastered, unit, qId);
+    Storage.save(state);
+  },
+  unflagQuestion(qId) {
+    state.flagged = state.flagged.filter(f => f.questionId !== qId);
+    Storage.save(state);
+  },
+  unflagAll() {
+    state.flagged = [];
+    Storage.save(state);
+  },
+
+  // 當前批次（key 為複合鍵：單元 "3" 或 單元+subtopic "3/動物分類"）
+  // 新格式 { batch:[ids] }＝進行中的半批；null＝無進行中批次（下次現算新批）
+  // 舊格式 { queue:[...] } 由 getBatch 視為 null（丟棄排序，進度由 mastered 保留、不倒退）
+  getBatch(key) {
+    const ch = state.challenge[key];
+    return ch && Array.isArray(ch.batch) ? ch.batch : null;
+  },
+  saveBatch(key, batch) {
+    state.challenge[key] = { batch: [...batch] };
+    Storage.save(state);
+  },
+  clearBatch(key) {
+    state.challenge[key] = null; // 本批完成 → 無進行中批次
+    Storage.save(state);
+  },
+  resetChallenge(key) {
+    state.challenge[key] = null; // 未開始
+    Storage.save(state);
+  },
+
+  // ── Mastered（已答對題目，單一真相源；整單元與 subtopic 進度皆由此推導）
+  getMasteredSet(unit, mode = DEFAULT_PRACTICE_MODE) {
+    return new Set(masteredListForMode(state.mastered, unit, mode));
+  },
+  addMastered(unit, qId, mode = DEFAULT_PRACTICE_MODE) {
+    state.mastered = addModeMastered(state.mastered, unit, qId, mode);
+    Storage.save(state);
+  },
+  resetMastered(unit, subtopic = null, mode = null) {
+    const u = String(unit);
+    if (!state.mastered[u]) return;
+    const modes = masteredModesFromEntry(state.mastered[u]);
+    const targetModes = mode ? [normalizePracticeMode(mode)] : Object.keys(modes);
+    if (targetModes.length === 0) return;
+    if (subtopic) {
+      for (const m of targetModes) {
+        modes[m] = (modes[m] || []).filter(id => {
+          const q = questionMap.get(id);
+          return q && q.subtopic !== subtopic;
+        });
+      }
+    } else {
+      for (const m of targetModes) modes[m] = [];
+    }
+    state.mastered[u] = { modes };
+    Storage.save(state);
+  },
+  doneCount(unit, subtopic = null, mode = DEFAULT_PRACTICE_MODE) {
+    const set = State.getMasteredSet(unit, mode);
+    return questionIdsFor(unit, subtopic).filter(id => set.has(id)).length;
+  },
+  isCleared(unit, subtopic = null, mode = DEFAULT_PRACTICE_MODE) {
+    const ids = questionIdsFor(unit, subtopic);
+    if (ids.length === 0) return false;
+    const set = State.getMasteredSet(unit, mode);
+    return ids.every(id => set.has(id));
+  },
+  // v2→v3 反推：每個 challenge queue 的「範圍題 \ queue」＝已答對（無損、與舊顯示等價）
+  backfillMastered() {
+    for (const [key, ch] of Object.entries(state.challenge || {})) {
+      if (!ch || !ch.queue) continue; // null = 未開始，無貢獻
+      const slash = key.indexOf("/");
+      const unit = Number(slash === -1 ? key : key.slice(0, slash));
+      const subtopic = slash === -1 ? null : key.slice(slash + 1);
+      if (!unit) continue;
+      const remaining = new Set(ch.queue);
+      for (const id of questionIdsFor(unit, subtopic)) {
+        if (!remaining.has(id)) state.mastered = addModeMastered(state.mastered, unit, id, DEFAULT_PRACTICE_MODE);
+      }
+    }
+    delete state._needMasteredBackfill;
+    Storage.save(state);
+  }
+};
+
+// challenge 複合鍵：choice 沿用舊鍵；handwriting 用前綴，避免批次狀態互撞
+function challengeKey(unit, subtopic, mode = DEFAULT_PRACTICE_MODE) {
+  return modeChallengeKey(unit, subtopic, mode);
+}
+
+// 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
+function questionIdsFor(unit, subtopic) {
+  return allQuestions
+    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id))
+    .map(q => q.id);
+}
+
+// ════════════════════════════════════════════════════
+// Runtime
+// ════════════════════════════════════════════════════
+let allQuestions = [];
+let questionMap = new Map();
+let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
+let rewards = { pools: {} };           // reward 插畫 manifest（缺檔靜默；見 docs-dev/reward-illustrations-design.md）
+let _rewardGen = 0;                     // 導覽世代：每次 showPage +1，讓載入中的 reward 預載 callback 在期間導覽他頁時失效
+const subtopicsByUnit = new Map();     // unit(number) → Set(subtopic)：reward roll-up 用（init 內由題庫建）
+const subtopicsBySubject = new Map();  // subject → Set(subtopic)
+const unitToSubject = new Map();       // unit → subject
+
+const quiz = {
+  mode: null,    // "full" | "error"
+  practiceMode: DEFAULT_PRACTICE_MODE, // "choice" | "handwriting"
+  unit: null,    // full: 單元數字；error: 單元陣列
+  subtopic: null,// full 限定的 subtopic（null=整單元）
+  queue: [],     // question ids（本批工作佇列，答錯會 recycle 到尾巴）
+  batchIds: [],  // full: 本批涵蓋的相異題（進度條分母；skip/flag 會縮）
+  answered: [],  // [{ questionId, correct }]
+  totalForProgress: 0, // error 模式進度分母（full 改看 batchIds）
+  isAnswered: false,
+  activeQuestionId: null,
+  chineseStage: "find",
+  chinesePickedIndex: null,
+  chineseChoices: null,
+  handwritingDataUrl: null,
+  handwritingRemedialDataUrl: null,
+  handwritingRemedial: null,
+  handwritingRemedialHintVisible: false
+};
+
+// ════════════════════════════════════════════════════
+// Utilities
+// ════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showPage(id) {
+  _rewardGen++;   // 任何換頁都作廢「載入中的 reward 預載 callback」，避免它稍後把使用者硬拉回 summary
+  document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+function resetQuestionRuntime() {
+  quiz.activeQuestionId = null;
+  quiz.chineseStage = "find";
+  quiz.chinesePickedIndex = null;
+  quiz.chineseChoices = null;
+  quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
+  quiz.handwritingRemedial = null;
+  quiz.handwritingRemedialHintVisible = false;
+}
+
+// ════════════════════════════════════════════════════
+// Sound Effects（Web Audio，音效失敗不影響作答）
+// ════════════════════════════════════════════════════
+let audioCtx = null;
+
+const SOUND_PATTERNS = {
+  correct: [
+    [0.00, 523.25, 0.11, { type: "triangle", volume: 0.22 }],
+    [0.09, 659.25, 0.13, { type: "triangle", volume: 0.22 }],
+    [0.18, 783.99, 0.15, { type: "triangle", volume: 0.18 }],
+  ],
+  wrong: [
+    [0.00, 246.94, 0.08, { type: "sine", volume: 0.20 }],
+    [0.10, 196.00, 0.14, { type: "sine", volume: 0.18 }],
+  ],
+  complete: [
+    [0.00, 523.25, 0.12, { volume: 0.20 }],
+    [0.11, 659.25, 0.12, { volume: 0.22 }],
+    [0.22, 783.99, 0.13, { volume: 0.23 }],
+    [0.34, 1046.50, 0.28, { volume: 0.24 }],
+  ],
+  victory: [
+    [0.00, 392.00, 0.13, { type: "triangle", volume: 0.15 }],
+    [0.00, 523.25, 0.13, { type: "triangle", volume: 0.12 }],
+    [0.17, 493.88, 0.11, { type: "triangle", volume: 0.14 }],
+    [0.17, 659.25, 0.11, { type: "triangle", volume: 0.11 }],
+    [0.36, 523.25, 0.66, { type: "sine", volume: 0.15 }],
+    [0.36, 659.25, 0.52, { type: "sine", volume: 0.08 }],
+    [0.36, 783.99, 0.58, { type: "triangle", volume: 0.09 }],
+    [0.36, 392.00, 0.44, { type: "sine", volume: 0.055 }],
+  ],
+};
+
+function getAudioContext() {
+  const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextCtor) return null;
+  if (!audioCtx) audioCtx = new AudioContextCtor();
+  if (audioCtx.state === "suspended") {
+    const resume = audioCtx.resume();
+    if (resume && typeof resume.catch === "function") resume.catch(() => {});
+  }
+  return audioCtx;
+}
+
+function playTone(ctx, start, freq, duration, options = {}) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = options.type || "sine";
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(options.volume || 0.2, start + 0.018);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(start);
+  osc.stop(start + duration + 0.03);
+}
+
+function playSound(name) {
+  try {
+    const ctx = getAudioContext();
+    const pattern = SOUND_PATTERNS[name];
+    if (!ctx || !pattern) return;
+    const start = ctx.currentTime + 0.01;
+    for (const [offset, freq, duration, opts] of pattern) {
+      playTone(ctx, start + offset, freq, duration, opts);
+    }
+  } catch {
+    // 音效只是情緒回饋；瀏覽器若擋播放，答題流程照常。
+  }
+}
+
+// ════════════════════════════════════════════════════
+// Picker
+// ════════════════════════════════════════════════════
+const Picker = {
+  // 全部練習：取一「批」（上限 10）。有未完成半批則接續，否則從剩餘未答對題現算新批。
+  nextBatch(unit, subtopic, practiceMode = DEFAULT_PRACTICE_MODE) {
+    const mastered = State.getMasteredSet(unit, practiceMode);
+    // 剩餘未答對題（整單元/subtopic 題 − mastered；flagged 已由 questionIdsFor 排除）
+    const remaining = questionIdsFor(unit, subtopic).filter(id => !mastered.has(id) && questionMap.has(id));
+    const saved = State.getBatch(challengeKey(unit, subtopic, practiceMode)); // 半批 ids 或 null
+    if (saved && saved.length) {
+      const cont = saved.filter(id => remaining.includes(id));  // 仍未答對且仍在題庫
+      if (cont.length) return cont;                             // 接續半批（中途被打斷）
+    }
+    const shuffled = shuffle(remaining);
+    return shuffled.slice(0, nextBatchSizeForMode(shuffled.length, practiceMode));   // 開新批
+  },
+
+  forErrorPractice(unitFilter, practiceMode = DEFAULT_PRACTICE_MODE) {
+    const errors = State.getErrorBank(unitFilter || null, practiceMode);
+    const ids = errors.map(e => e.questionId).filter(id => questionMap.has(id));
+    return shuffle(ids);
+  }
+};
+
+// ════════════════════════════════════════════════════
+// Quiz Engine
+// ════════════════════════════════════════════════════
+function startQuiz(mode, unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) {
+  quiz.mode = mode;
+  quiz.practiceMode = normalizePracticeMode(practiceMode);
+  quiz.unit = unit;
+  quiz.subtopic = subtopic;
+  quiz.answered = [];
+  quiz.isAnswered = false;
+  resetQuestionRuntime();
+
+  if (mode === "full") {
+    quiz.queue = Picker.nextBatch(unit, subtopic, quiz.practiceMode);
+    quiz.batchIds = [...new Set(quiz.queue)];                       // 本批相異題（進度條分母）
+    quiz.totalForProgress = questionIdsFor(unit, subtopic).length;  // 整單元數（僅防禦用）
+    State.saveBatch(challengeKey(unit, subtopic, quiz.practiceMode), quiz.queue);
+  } else if (mode === "error") {
+    quiz.queue = Picker.forErrorPractice(unit, quiz.practiceMode);
+    quiz.totalForProgress = quiz.queue.length;
+  }
+
+  showPage("page-quiz");
+  renderQuiz();
+}
+
+function getCurrentQuestion() {
+  // full & error: always queue[0]
+  return questionMap.get(quiz.queue[0]);
+}
+
+function submitAnswer(selected) {
+  if (quiz.isAnswered) return;
+  quiz.isAnswered = true;
+
+  const q = getCurrentQuestion();
+  let correct;
+  if (q.type === "fill_in_blank") {
+    quiz._fillResults = q.blanks.map((b, i) => isBlankCorrect(b, selected[i]));
+    correct = quiz._fillResults.every(Boolean);   // 多空格全對才算對
+  } else if (q.type === "vertical_calc") {
+    correct = selected.vcErrors === 0;            // 逐格即時驗證：零失誤才算對
+  } else {
+    correct = selected === q.answer;
+  }
+
+  // Update stats (all modes)
+  State.recordAnswer(q.id, correct, quiz.practiceMode);
+
+  // Mode-specific queue logic
+  if (quiz.mode === "full") {
+    quiz.queue.shift();
+    if (correct) {
+      State.addMastered(quiz.unit, q.id, quiz.practiceMode); // 雙向共享：整單元與 subtopic 進度同步計入
+    } else {
+      quiz.queue.push(q.id);
+      // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
+      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，shouldAddModeError 讀到的 stats 已含本次。
+      if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
+    }
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+  } else if (quiz.mode === "error") {
+    quiz.queue.shift();
+    if (correct) {
+      State.removeFromErrorBank(q.id, quiz.practiceMode);
+      if (shouldMasterErrorPracticeCorrect(quiz.practiceMode)) {
+        State.addMastered(q.unit, q.id, quiz.practiceMode);
+      }
+    } else {
+      quiz.queue.push(q.id);
+    }
+  }
+
+  quiz.answered.push({ questionId: q.id, correct });
+  renderFeedback(correct, q);
+}
+
+function advance() {
+  quiz.isAnswered = false;
+  resetQuestionRuntime();
+
+  // Check if finished
+  if (quiz.mode === "full" && quiz.queue.length === 0) {
+    finishBatch();
+    return;
+  }
+  if (quiz.mode === "error" && quiz.queue.length === 0) {
+    renderSummary();
+    return;
+  }
+
+  renderQuiz();
+}
+
+// 本批做完：先判整單元清空（→「通關！」），否則進「批間畫面」。
+// 順序不可反——整單元 ≤10 題只一批時，答完要直接通關、不出現批間畫面。
+function finishBatch() {
+  State.clearBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode));
+  if (State.isCleared(quiz.unit, quiz.subtopic, quiz.practiceMode)) renderSummary();
+  else renderBatchBreak();
+}
+
+// 跳過（只限全部模式、作答前）：移出本輪 queue，不動統計／錯題庫／mastered。
+// 沒進 mastered → 不算通關，下次接續或重練時會再出現
+function skipCurrentQuestion() {
+  if (quiz.mode !== "full" || quiz.isAnswered) return;
+  const id = quiz.queue[0];
+  quiz.queue.shift();
+  quiz.batchIds = quiz.batchIds.filter(x => x !== id); // 本批分母 −1；被跳過題之後別批會再出現
+  State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+  resetQuestionRuntime();
+  if (quiz.queue.length === 0) { finishBatch(); return; }
+  renderQuiz();
+}
+
+// 確認回報：清除該題記錄、從本輪 queue 抽掉、直接進下一題
+function flagCurrentQuestion() {
+  // flag 對象是「剛作答的題」：full/error 模式 submitAnswer 已 shift queue，
+  // 此時 getCurrentQuestion() 指向下一題，必須改從作答記錄取
+  const last = quiz.answered[quiz.answered.length - 1];
+  const q = last && questionMap.get(last.questionId);
+  if (!q) return;
+  State.flagQuestion(q.id, q.unit);
+
+  // 撤銷本題剛剛的作答（進度點與總結不計入）
+  quiz.answered.pop();
+
+  quiz.isAnswered = false;
+  resetQuestionRuntime();
+  if (quiz.mode === "full") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.batchIds = quiz.batchIds.filter(id => id !== q.id); // 本批分母 −1；該題永久排除於所有題池
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+    if (quiz.queue.length === 0) { finishBatch(); return; }
+  } else if (quiz.mode === "error") {
+    quiz.queue = quiz.queue.filter(id => id !== q.id);
+    quiz.totalForProgress--;
+    if (quiz.queue.length === 0) { renderSummary(); return; }
+  }
+  renderQuiz();
+}
+
+function leaveQuiz() {
+  // Full mode: queue already saved on each answer
+  showPage("page-home");
+  renderHome();
+}
+
+// ════════════════════════════════════════════════════
+// UI: Home
+// ════════════════════════════════════════════════════
+// 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9、社會 10-12、國語 13-14）
+// 數學單元正式名稱待查證（issues/010），無題單元不會渲染
+// 社會內部 unit 10/11/12 ＝ 課本第 4/5/6 單元（避開自然 unit 4）；num 為顯示用課本號
+const SUBJECTS = {
+  science: { label: "自然", semesters: {
+    mid: { label: "期中", units: [
+      { id: 1, name: "第 1 單元：田園樂" },
+      { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
+    ] },
+    final: { label: "期末", units: [
+      { id: 3, name: "第 3 單元：動物", subtopics: ["動物分類", "身體構造", "生存與適應", "觀察方法"] },
+      { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
+    ] },
+  } },
+  math: { label: "數學", semesters: {
+    final: { label: "期末", units: [
+      { id: 5, name: "第 5 單元：小數", subtopics: ["小數的認識", "小數比大小", "小數加減"] },
+      { id: 6, name: "第 6 單元：圓", subtopics: ["圓的構造", "圓規與畫圓", "圓的大小比較"] },
+      { id: 7, name: "第 7 單元：乘法與除法", subtopics: ["乘除互逆", "乘除計算", "乘除應用"] },
+      { id: 8, name: "第 8 單元：時間", subtopics: ["時刻與時間單位", "時制互換", "時間計算"] },
+      { id: 9, name: "第 9 單元：統計表" },
+    ] },
+  } },
+  social: { label: "社會", semesters: {
+    final: { label: "期末", units: [
+      { id: 10, num: 4, name: "第 4 單元：消費與選擇", subtopics: ["聰明消費", "綠色消費"] },
+      { id: 11, num: 5, name: "第 5 單元：家鄉的地名", subtopics: ["地名的由來", "探索家鄉的地名"] },
+      { id: 12, num: 6, name: "第 6 單元：家鄉的故事", subtopics: ["家鄉的人物與發展", "傳說與文化保存"] },
+    ] },
+  } },
+  chinese: { label: "國語", semesters: {
+    final: { label: "期末", units: [
+      { id: 13, name: "L7-L8：改錯字", subtopics: ["L7-L8 改錯字"] },
+      { id: 14, name: "L9-L10：改錯字", subtopics: ["L9-L10 改錯字"] },
+    ] },
+  } },
+};
+
+// 全域 unit id → 顯示用課本單元號（社會 10/11/12 → 4/5/6；自然/數學 預設＝id）
+const UNIT_NUM = {};
+for (const subj of Object.values(SUBJECTS))
+  for (const sem of Object.values(subj.semesters))
+    for (const u of sem.units) UNIT_NUM[u.id] = u.num ?? u.id;
+const unitNum = (id) => UNIT_NUM[id] ?? id;
+
+// 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
+function renderFlaggedSection() {
+  const flagged = State.getFlagged();
+  if (flagged.length === 0) return "";
+  let rows = "";
+  for (const f of flagged) {
+    const q = questionMap.get(f.questionId);
+    if (!q) continue;
+    const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
+    rows += `
+      <div class="flagged-row">
+        <span class="flagged-text">[第 ${unitNum(q.unit)} 單元] ${snippet}</span>
+        <button class="st-btn" onclick="window._unflag('${q.id}')">還原</button>
+      </div>`;
+  }
+  return `
+    <details class="flagged-section">
+      <summary>已回報題目（${flagged.length}）</summary>
+      ${rows}
+      <div class="flagged-actions">
+        <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
+        <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
+      </div>
+    </details>`;
+}
+
+// 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔＋雲端同步狀態（家長用）
+// （iPad 主畫面 App 的儲存可能被 iOS 清掉；雲端同步為主載體，手動備份為備援）
+function renderBackupSection() {
+  return `
+    <details class="backup-section">
+      <summary>進度備份 / 還原</summary>
+      <div class="backup-body">
+        ${syncStatusHtml()}
+        <p class="backup-hint">換機、清快取或更新後進度不見時，用這裡備份與還原。建議偶爾備份存一份。iPad 可用「備份到備忘錄」一鍵存進備忘錄、「從備忘錄還原」一鍵帶回（需先裝還原捷徑）。</p>
+        <button class="st-btn" onclick="window._shareBackup()">備份到備忘錄</button>
+        <button class="st-btn" onclick="window._restoreFromNotes()">從備忘錄還原</button>
+        <button class="st-btn" onclick="window._exportProgress()">匯出進度</button>
+        <button class="st-btn" onclick="window._showImport()">匯入進度</button>
+        <div id="backup-io" class="backup-io hidden"></div>
+      </div>
+    </details>`;
+}
+
+// ── 家長區雲端同步狀態（最後成功同步時間＋健康燈＋token 輸入；票 #28）
+function formatSyncTime(ts) {
+  if (!ts) return null;
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+// 健康狀態文案在共用腳本（KidsSync.HEALTH_TEXT，平台詞彙）；app 只決定 CSS class
+function syncStatusClass(status) {
+  if (status === "ok") return "sync-ok";
+  if (status === "retry") return "";
+  return "sync-bad";
+}
+function syncStatusHtml() {
+  const info = childInfo(currentChild);
+  if (!KidsSync) {
+    return `<div class="sync-status" id="sync-status">同步腳本未載入（shared/sync-v1.js），目前僅本機記錄。</div>`;
+  }
+  const m = readSyncMeta(currentChild) || {};
+  const token = getSyncToken();
+  let statusLine;
+  if (!token) {
+    statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
+  } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
+    statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
+  } else if (m.health) {
+    statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
+  } else {
+    statusLine = "還沒同步過";
+  }
+  const reseed = m.reseedAt
+    ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(m.reseedAt)} 重新上傳</div>` : "";
+  return `
+    <div class="sync-status" id="sync-status">
+      <div>雲端同步（${info.emoji} ${escapeHtml(info.label)}）：${statusLine}</div>
+      <div>上次成功同步：${formatSyncTime(m.lastSyncAt) || "還沒同步過"}</div>
+      ${reseed}
+      <div class="sync-token-row">
+        <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
+        <button class="st-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
+        <button class="st-btn" onclick="window._syncNow()">立即同步</button>
+        <span id="sync-msg" class="backup-msg"></span>
+      </div>
+    </div>`;
+}
+function refreshSyncStatus() {
+  const el = document.getElementById("sync-status");
+  if (!el) return;
+  // 家長輸入金鑰到一半時背景同步輪會觸發本函式——別把打到一半的金鑰洗掉
+  const input = document.getElementById("sync-token-input");
+  if (input && (document.activeElement === input || input.value)) return;
+  el.outerHTML = syncStatusHtml();
+}
+window._saveSyncToken = () => {
+  const input = document.getElementById("sync-token-input");
+  const msg = document.getElementById("sync-msg");
+  const v = ((input && input.value) || "").trim();
+  if (!v || !identity) {
+    if (msg) msg.textContent = "請先貼上金鑰";
+    return;
+  }
+  identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+  if (input) { input.value = ""; input.blur(); } // 清空＋失焦，健康燈輪到時才刷得動
+  refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（反過來會在同 tick 被重繪銷毀、從未上畫）
+  const saved = document.getElementById("sync-msg");
+  if (saved) saved.textContent = "金鑰已儲存";
+  if (sync) sync.syncNow().catch(() => {}); // 剛設好金鑰 → 立刻試一輪，健康燈即時更新
+};
+window._syncNow = async () => {
+  if (!sync) return;
+  try { await sync.syncNow(); } catch {}
+  refreshSyncStatus();
+};
+
+// 期末單元卡片下的 subtopic 練習入口（可接續）
+function renderSubtopics(u) {
+  if (!u.subtopics) return "";
+  let rows = "";
+  for (const st of u.subtopics) {
+    const count = questionIdsFor(u.id, st).length;
+    if (count === 0) continue;  // 該 subtopic 無題則不顯示
+    const done = State.doneCount(u.id, st, DEFAULT_PRACTICE_MODE);
+    let statusHtml = `<span class="st-count">${count} 題</span>`;
+    if (done >= count) {
+      statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (done > 0) {
+      statusHtml = `<span class="st-count">接續 ${done}/${count}</span>`;
+    }
+    rows += `
+      <div class="subtopic-row">
+        <span class="subtopic-name">${st}${statusHtml}</span>
+        <span class="st-actions">
+          <button class="st-btn" onclick="window._startFull(${u.id}, '${st}')">練習</button>
+        </span>
+      </div>`;
+  }
+  return rows ? `<div class="subtopic-list"><div class="subtopic-head">依概念練習</div>${rows}</div>` : "";
+}
+
+// 國語單元某模式（choice/handwriting）的首頁狀態文字（已通關／接續／題數）
+function chineseModeStatus(unit, total, mode) {
+  const done = State.doneCount(unit, null, mode);
+  if (done >= total) return '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
+  if (done > 0) return `<span class="st-count">接續 ${done}/${total}</span>`;
+  return `<span class="st-count">${total} 題</span>`;
+}
+
+function renderErrorModeButtons(visibleUnits, mode, label) {
+  const semUnitIds = visibleUnits.map(u => u.id);
+  const semErrors = State.getErrorBank(semUnitIds, mode);
+  if (semErrors.length === 0) return "";  // 該模式整科無錯題則整段不渲染（避免空的灰按鈕雜訊）
+  const idsAttr = semUnitIds.join(",");
+  let html = `<div class="subtopic-list"><div class="subtopic-head">${label}</div>`;
+  html += `<button class="sub-btn" ${semErrors.length === 0 ? 'disabled' : ''} onclick="window._startError('${idsAttr}', '${mode}')">本學期全部${label}<span class="badge">${semErrors.length}</span></button>`;
+  for (const u of visibleUnits) {
+    const errU = State.getErrorBank(u.id, mode);
+    html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}', '${mode}')">第 ${unitNum(u.id)} 單元${label}<span class="badge">${errU.length}</span></button>`;
+  }
+  html += "</div>";
+  return html;
+}
+
+function renderHome() {
+  const home = document.getElementById("page-home");
+  const subjKey = SUBJECTS[state.subject] ? state.subject : "science";
+  const subj = SUBJECTS[subjKey];
+  const semKeys = Object.keys(subj.semesters);
+  const sem = subj.semesters[state.semester] ? state.semester : semKeys[0];
+  const units = subj.semesters[sem].units;
+
+  let html = `<h1>三下${subj.label}練習</h1>`;
+
+  // 科目切換
+  html += '<div class="subject-toggle">';
+  for (const key of Object.keys(SUBJECTS)) {
+    html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${SUBJECTS[key].label}</button>`;
+  }
+  html += '</div>';
+
+  // 期中/期末 切換（單一學期的科目不顯示）
+  if (semKeys.length > 1) {
+    html += '<div class="semester-toggle">';
+    for (const key of semKeys) {
+      html += `<button class="${key === sem ? 'active' : ''}" onclick="window._setSemester('${key}')">${subj.semesters[key].label}</button>`;
+    }
+    html += '</div>';
+  }
+
+  // Unit sections（無題單元不渲染；整科無題 → 空狀態）
+  const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
+  if (visibleUnits.length === 0) {
+    html += '<div class="empty-state">題庫準備中，敬請期待！</div>';
+  }
+  for (const u of visibleUnits) {
+    const totalInUnit = questionIdsFor(u.id).length;
+
+    // 國語分支不用下方的 choice 整單元狀態，先行處理免得每單元白掃一次題庫
+    if (subjKey === "chinese") {
+      const choiceStatus = chineseModeStatus(u.id, totalInUnit, DEFAULT_PRACTICE_MODE);
+      const handwritingStatus = chineseModeStatus(u.id, totalInUnit, HANDWRITING_PRACTICE_MODE);
+      const choiceCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
+      const handwritingCleared = State.isCleared(u.id, null, HANDWRITING_PRACTICE_MODE);
+      html += `
+        <div class="unit-section">
+          <div class="unit-title">${u.name}</div>
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：選擇${choiceStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id})">練習</button>
+            </span>
+          </div>
+          ${choiceCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${DEFAULT_PRACTICE_MODE}')">重置選擇進度</button>` : ''}
+          <div class="subtopic-row">
+            <span class="subtopic-name">改錯：手寫${handwritingStatus}</span>
+            <span class="st-actions">
+              <button class="st-btn" onclick="window._startFull(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">練習</button>
+            </span>
+          </div>
+          ${handwritingCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id}, null, '${HANDWRITING_PRACTICE_MODE}')">重置手寫進度</button>` : ''}
+        </div>`;
+      continue;
+    }
+
+    const done = State.doneCount(u.id, null, DEFAULT_PRACTICE_MODE);
+    const isCleared = State.isCleared(u.id, null, DEFAULT_PRACTICE_MODE);
+    let fullStatus, fullLabel;
+
+    if (isCleared) {
+      // 已通關
+      fullLabel = "全部練習";
+      fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
+    } else if (done > 0) {
+      // 進行中
+      fullLabel = "全部練習（接續）";
+      fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
+    } else {
+      // 未開始
+      fullLabel = "全部練習";
+      fullStatus = `<span class="status">${totalInUnit} 題</span>`;
+    }
+
+    html += `
+      <div class="unit-section">
+        <div class="unit-title">${u.name}</div>
+        <button class="sub-btn" onclick="window._startFull(${u.id})">${fullLabel}${fullStatus}</button>
+        ${isCleared ? `<button class="reset-link" onclick="window._resetChallenge(${u.id})">重置進度</button>` : ''}
+        ${renderSubtopics(u)}
+      </div>`;
+  }
+
+  // Error section（限本科目本學期範圍；整科無題時不顯示）
+  if (visibleUnits.length > 0) {
+    const semUnitIds = visibleUnits.map(u => u.id);
+    const choiceErrors = State.getErrorBank(semUnitIds, DEFAULT_PRACTICE_MODE);
+    const handwritingErrors = State.getErrorBank(semUnitIds, HANDWRITING_PRACTICE_MODE);
+    const semErrors = subjKey === "chinese" ? [...choiceErrors, ...handwritingErrors] : choiceErrors;
+
+    html += '<div class="unit-section error-section"><div class="unit-title">錯題練習</div>';
+
+    if (semErrors.length === 0) {
+      html += '<div class="no-errors">沒有錯題，太厲害了！</div>';
+    } else if (subjKey === "chinese") {
+      html += renderErrorModeButtons(visibleUnits, DEFAULT_PRACTICE_MODE, "選擇錯題");
+      html += renderErrorModeButtons(visibleUnits, HANDWRITING_PRACTICE_MODE, "手寫錯題");
+    } else {
+      const idsAttr = semUnitIds.join(",");
+      html += `<button class="sub-btn" onclick="window._startError('${idsAttr}')">本學期全部錯題<span class="badge">${semErrors.length}</span></button>`;
+      for (const u of visibleUnits) {
+        const errU = State.getErrorBank(u.id, DEFAULT_PRACTICE_MODE);
+        html += `<button class="sub-btn" ${errU.length === 0 ? 'disabled' : ''} onclick="window._startError('${u.id}')">第 ${unitNum(u.id)} 單元錯題<span class="badge">${errU.length}</span></button>`;
+      }
+    }
+
+    html += '</div>';
+  }
+  html += renderFlaggedSection();
+  html += renderBackupSection();
+  home.innerHTML = html;
+  showPage("page-home");
+}
+
+// Global handlers for onclick（subtopic 可選；省略＝整單元）
+window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  if (State.isCleared(unit, subtopic, mode)) {
+    // 已通關，重置再開始
+    State.resetMastered(unit, subtopic, mode);
+    State.resetChallenge(challengeKey(unit, subtopic, mode));
+  }
+  startQuiz("full", unit, subtopic, mode);
+};
+window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const units = String(idsStr).split(",").map(Number).filter(Boolean);
+  startQuiz("error", units, null, normalizePracticeMode(practiceMode));
+};
+window._setSemester = (s) => {
+  State.setSemester(s);
+  renderHome();
+};
+window._setSubject = (s) => {
+  State.setSubject(s);
+  renderHome();
+};
+window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  State.resetMastered(unit, subtopic, mode);
+  State.resetChallenge(challengeKey(unit, subtopic, mode));
+  renderHome();
+};
+window._unflag = (qId) => { State.unflagQuestion(qId); renderHome(); };
+window._unflagAll = () => { State.unflagAll(); renderHome(); };
+
+// <backup-pure>
+// ══════ 備份格式契約（純函式；issue #8，與還原側 #9 共用）══════
+// 改這裡會同時牽動備份與還原，務必連 tests/test_backup_pure.mjs 一起跑（node --test）。
+// 注意：此區塊到 </backup-pure> 為止不得引用外部全域變數（如 state/STORAGE_KEY），
+// 才能被 node 測試抽出獨立 eval。
+const BACKUP_MARKER = "AIDEN備份";
+
+// state 物件或 JSON 字串（＋時間）→ 備忘錄文字：首行＝標題＝記號＋timecode，其後為原始可讀 JSON。
+function buildBackupText(stateOrJson, date = new Date()) {
+  const jsonStr = typeof stateOrJson === "string" ? stateOrJson : JSON.stringify(stateOrJson);
+  const p = n => String(n).padStart(2, "0");
+  const ts = `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())} ` +
+             `${p(date.getHours())}:${p(date.getMinutes())}`;
+  return `${BACKUP_MARKER} ${ts}\n${jsonStr}`;
+}
+
+// 內文裡「最後一段」備份的記號起始位置（行首的記號）；無記號回 -1。
+// 為何：分享到「既有筆記」會把新備份附加在後 → 一則筆記可能累積多段，還原一律取最新那段。
+// 只認行首記號，避免命中 JSON 值裡剛好含 "AIDEN備份" 的字串。
+function lastBackupBlockStart(text) {
+  let mark = -1, pos = text.indexOf(BACKUP_MARKER);
+  while (pos !== -1) {
+    if (pos === 0 || text[pos - 1] === "\n") mark = pos;
+    pos = text.indexOf(BACKUP_MARKER, pos + 1);
+  }
+  return mark;
+}
+
+// 備份文字（可帶或不帶記號首行；可能累積多段）→ 取最後一段 → 驗證形狀 → 物件或 null。
+// 形狀檢查＝沿用匯入既有規則：物件且含 mastered 或 challenge（舊版備份可能無 mastered，靠 backfill 還原）。
+function parseBackup(text) {
+  if (typeof text !== "string") return null;
+  let body = text.trim();
+  const mark = lastBackupBlockStart(body);
+  if (mark !== -1) {
+    const after = body.slice(mark);              // "AIDEN備份 …\n{json}"
+    const nl = after.indexOf("\n");
+    body = nl !== -1 ? after.slice(nl + 1).trim() : after;
+  }
+  let obj;
+  try { obj = JSON.parse(body); } catch (e) { return null; }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj) || !(obj.mastered || obj.challenge)) return null;
+  return obj;
+}
+
+// 文字 ↔ URL-safe base64（UTF-8 safe；中文不炸）。供 #9 的 #restore= 與捷徑 deep link 搬運用。
+function encodeBackup(text) {
+  let bin = "";
+  for (const b of new TextEncoder().encode(text)) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodeBackup(b64) {
+  let s = String(b64).replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  const bytes = Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+// 捷徑名 → shortcuts:// 深連結（喚起指定捷徑）。中文名需 percent-encode。
+function buildShortcutDeepLink(name) {
+  return `shortcuts://run-shortcut?name=${encodeURIComponent(name)}`;
+}
+
+// 內文「最後一段」備份的記號行 → 回傳其 timecode（"2026-06-15 14:30"），否則 null。供還原確認顯示日期。
+// 取最後一段：與 parseBackup 一致（多段累積時顯示的是真正會還原的那份日期）。
+function backupLabel(text) {
+  if (typeof text !== "string") return null;
+  const mark = lastBackupBlockStart(text);
+  if (mark === -1) return null;
+  const first = text.slice(mark).split("\n")[0].trim();
+  return first.slice(BACKUP_MARKER.length).trim() || null;
+}
+
+// location.hash（#restore=<base64>）→ { obj, label } 或 null（無 restore 參數／解碼失敗／形狀不符）。
+function readRestoreHash(hash) {
+  if (typeof hash !== "string") return null;
+  const m = hash.match(/[#&]?restore=([^&]+)/);
+  if (!m) return null;
+  let text;
+  try { text = decodeBackup(m[1]); } catch (e) { return null; }
+  const obj = parseBackup(text);
+  if (!obj) return null;
+  return { obj, label: backupLabel(text) };
+}
+
+// 長度防護：保守上限（字元）。超過 → 提示備份太大、捷徑/網址還原可能塞不下（真機校準閾值留 #11）。
+const BACKUP_SIZE_WARN = 40000;
+function isBackupOversized(text, max = BACKUP_SIZE_WARN) {
+  return typeof text === "string" && text.length > max;
+}
+// </backup-pure>
+
+// 捷徑名稱：與家長在 Shortcuts 建立的還原捷徑名稱必須一字不差（深連結寫死；#10 配方文件須標註此耦合）。
+const SHORTCUT_NAME = "Aiden還原";
+
+// ── 進度備份／還原（純前端；備份的就是 localStorage 那份存檔）
+window._exportProgress = () => {
+  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+  const box = document.getElementById("backup-io");
+  box.classList.remove("hidden");
+  box.innerHTML = `
+    <p class="backup-hint">這是目前的進度。複製起來貼到備忘錄／Email 給自己，或下載存檔：</p>
+    <textarea id="backup-text" readonly></textarea>
+    <div class="backup-actions">
+      <button class="st-btn" id="backup-copy">複製</button>
+      <a class="st-btn" id="backup-dl" download="aiden-study-進度備份-${stamp}.json">下載檔案</a>
+      <span id="backup-msg" class="backup-msg"></span>
+    </div>`;
+  const ta = document.getElementById("backup-text");
+  ta.value = json; // 用 .value 設定，避開 HTML escape 問題
+  document.getElementById("backup-dl").href =
+    URL.createObjectURL(new Blob([json], { type: "application/json" }));
+  document.getElementById("backup-copy").onclick = async () => {
+    ta.focus(); ta.select();
+    let ok = false;
+    try { await navigator.clipboard.writeText(json); ok = true; }
+    catch (e) { try { ok = document.execCommand("copy"); } catch (e2) {} }
+    document.getElementById("backup-msg").textContent = ok ? "已複製！" : "請長按上面文字手動複製";
+  };
+};
+
+// 備份到備忘錄：叫出系統分享選單（內容＝記號＋timecode＋原始 JSON），家長點「備忘錄」即存成一則有日期筆記。
+// 不支援 navigator.share（多為桌面瀏覽器）→ 退回現有複製/下載面板。
+window._shareBackup = async () => {
+  if (!state) return;  // 進度尚未載入，別備份出空資料
+  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const text = buildBackupText(json);
+  if (isBackupOversized(text)) _warnBackupOversized();  // 非阻擋：仍照常分享，但提醒捷徑還原可能塞不下
+  let shareFailed = false;  // 區分「裝置不支援」與「支援但這次失敗」，退回文案才不誤導
+  if (navigator.share) {
+    try { await navigator.share({ title: "Aiden 進度備份", text }); return; }
+    catch (e) {
+      if (e && e.name === "AbortError") return;  // 使用者取消分享，不退回、不算失敗
+      shareFailed = true;                        // 支援 share 但這次 reject（非取消）
+    }
+  }
+  window._exportProgress();  // 不支援或分享失敗 → 退回複製/下載
+  const msg = document.getElementById("backup-msg");
+  if (msg) msg.textContent = shareFailed ? "分享沒成功，已改用複製" : "此裝置不支援分享，已改用複製";
+};
+
+window._showImport = () => {
+  const box = document.getElementById("backup-io");
+  box.classList.remove("hidden");
+  box.innerHTML = `
+    <p class="backup-hint">把備份內容整段貼進來，按還原。<b>會覆蓋目前進度</b>。</p>
+    <textarea id="import-text" placeholder="貼上備份的 JSON…"></textarea>
+    <div class="backup-actions">
+      <button class="st-btn" id="import-go">還原</button>
+      <span id="backup-msg" class="backup-msg"></span>
+    </div>`;
+  document.getElementById("import-go").onclick = window._importProgress;
+};
+
+// 匯入／還原的 child 選擇（家長選；預設當前 child）。currentChild 不在名單（如 test- id）時補列
+function childPickerHtml(name) {
+  const options = KNOWN_CHILDREN.includes(currentChild) ? KNOWN_CHILDREN : [...KNOWN_CHILDREN, currentChild];
+  const rows = options.map(ch => {
+    const info = childInfo(ch);
+    return `<label><input type="radio" name="${name}" value="${ch}" ${ch === currentChild ? "checked" : ""}>${info.emoji} ${escapeHtml(info.label)}</label>`;
+  }).join("");
+  return `<div class="child-pick">還原到誰的進度？${rows}</div>`;
+}
+function pickedChild(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return (el && el.value) || currentChild;
+}
+
+// 匯入／還原共用落地：直寫目標 child 的新格式 key → 定錨標記 → 上雲。
+// 目標＝當前 child：只同步地寫 key＋markImported 就立刻 reload——不 await 網路輪，
+// 否則等待窗內頁面仍可操作、任何 Storage.save 會用舊 state 蓋掉剛匯入的資料；
+// 定錨＋push 由 reload 後的 boot 輪完成（anchorPending 已持久化，離線也不丟）。
+// 目標＝其他 child：本頁存檔不受影響，安心 await 推完再回報。
+// 回傳 "write-failed" | "reloading" | "done"
+async function commitImport(child, obj, { reloadTo = null } = {}) {
+  const plan = planImportWrite(child, obj);
+  try {
+    localStorage.setItem(plan.key, plan.value);
+  } catch (e) {
+    return "write-failed"; // quota／私密模式：進度沒動，讓呼叫端回報
+  }
+  if (child === currentChild) {
+    if (sync) sync.markImported();
+    else markImportedFallback(child); // 腳本沒載到也不能丟定錨，否則日後 boot adopt 蓋掉匯入
+    if (reloadTo) location.replace(reloadTo);
+    else location.reload();
+    return "reloading"; // reload 前的殘影期不再做事
+  }
+  const c = makeSyncClient(child);
+  if (c) { try { await c.importedLocal(); } catch {} } // 離線也不擋：標記已持久化，該 child 下次開站補推
+  else markImportedFallback(child);
+  return "done";
+}
+
+window._importProgress = () => {
+  const text = (document.getElementById("import-text").value || "").trim();
+  const msg = document.getElementById("backup-msg");
+  if (!text) { msg.textContent = "請先貼上備份內容"; return; }
+  // parseBackup：容忍帶或不帶記號首行（貼整則備忘錄或純 JSON 皆可），形狀不符回 null
+  // （這裡只當閘門；真正落地用的 payload 在確認當刻重讀重驗，見下）
+  if (!parseBackup(text)) { msg.textContent = "這看起來不是進度備份檔"; return; }
+  // 二次確認（覆蓋不可復原）＋選 child
+  msg.innerHTML = `${childPickerHtml("import-child")}確定用這份覆蓋所選進度？<button class="st-btn" id="import-confirm">確定還原</button>`;
+  document.getElementById("import-confirm").onclick = async () => {
+    // 確認鈕可能掛著很久（沒有任何流程會清掉它）——按下當刻重讀文字框重新驗證，
+    // 才不會把「按還原當時」的舊 payload 蓋掉家長後來貼的新內容
+    const fresh = parseBackup((document.getElementById("import-text").value || "").trim());
+    if (!fresh) {
+      msg.textContent = "文字框的內容已變更且不是進度備份檔，進度沒有變動";
+      return;
+    }
+    const child = pickedChild("import-child");
+    const btn = document.getElementById("import-confirm");
+    btn.disabled = true;
+    const r = await commitImport(child, fresh);
+    if (r === "write-failed") {
+      btn.disabled = false;
+      msg.textContent = "還原失敗（無法寫入儲存空間），進度沒有變動";
+    } else if (r === "done") {
+      msg.textContent = `已還原到 ${childInfo(child).label} 的進度`;
+    }
+  };
+};
+
+// 從備忘錄還原：喚起還原捷徑（深連結）。iOS 對捷徑未裝/失敗無回呼、無法偵測 → 同畫面先給後備指引。
+window._restoreFromNotes = () => {
+  const box = document.getElementById("backup-io");
+  if (box) {
+    box.classList.remove("hidden");
+    box.innerHTML = `
+      <p class="backup-hint">正在開啟「還原捷徑」…<br>
+      沒跳出捷徑（可能還沒安裝）？改用
+      <button class="st-btn" onclick="window._showImport()">貼文字框還原</button>。</p>`;
+  }
+  location.href = buildShortcutDeepLink(SHORTCUT_NAME);
+};
+
+// 備份過大提示（非阻擋）：開備份區、提示改用下載檔案還原。
+function _warnBackupOversized() {
+  const det = document.querySelector("details.backup-section");
+  if (det) det.open = true;
+  const box = document.getElementById("backup-io");
+  if (!box) return;
+  box.classList.remove("hidden");
+  box.innerHTML = `<p class="backup-hint">這份備份較大，捷徑/網址還原可能塞不下；建議改用「匯出進度 → 下載檔案」保存、用「匯入進度」還原。</p>`;
+}
+
+// 避免把不可信文字（如備份 label，來源是任意 #restore= 連結）直接塞 innerHTML → XSS
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// 載入時若帶 #restore=<base64>（還原捷徑帶回）→ 二次確認顯示日期後覆蓋；失敗則清掉壞 hash 並提示。
+function handleRestoreHash() {
+  if (!location.hash || location.hash.indexOf("restore=") === -1) return;
+  const cleanUrl = location.pathname + location.search;  // 去掉 hash 的乾淨網址
+  const res = readRestoreHash(location.hash);
+  // 捷徑可能在做題中途用 Open URL 帶 hash 進來 → 先回首頁，備份區 DOM 才在、確認/錯誤才看得到
+  showPage("page-home");
+  renderHome();
+  const det = document.querySelector("details.backup-section");
+  if (det) det.open = true;
+  const box = document.getElementById("backup-io");
+  if (!box) { history.replaceState(null, "", cleanUrl); return; }  // 極端：無處呈現，至少清掉 hash
+  box.classList.remove("hidden");
+  if (!res) {
+    history.replaceState(null, "", cleanUrl);  // 壞 hash：清掉、不 reload
+    box.innerHTML = `<p class="backup-hint">這個還原連結看不懂或已損壞，沒有還原。請改用「匯入進度」貼上備份。</p>`;
+    return;
+  }
+  const when = res.label ? `（${escapeHtml(res.label)} 的備份）` : "";
+  box.innerHTML = `
+    <p class="backup-hint">要用備忘錄這份${when}覆蓋進度嗎？<b>覆蓋後不可復原</b>。</p>
+    ${childPickerHtml("restore-child")}
+    <div class="backup-actions">
+      <button class="st-btn" id="restore-confirm">確定還原</button>
+      <button class="st-btn" id="restore-cancel">取消</button>
+    </div>`;
+  document.getElementById("restore-confirm").onclick = async () => {
+    const child = pickedChild("restore-child");
+    const btn = document.getElementById("restore-confirm");
+    btn.disabled = true;
+    // 目標＝當前 child：reload 並去掉 hash（不留歷史，避免重觸發）；其他 child：留在原畫面報完成
+    const r = await commitImport(child, res.obj, { reloadTo: cleanUrl });
+    if (r === "write-failed") {
+      btn.disabled = false;
+      box.insertAdjacentHTML("beforeend", `<p class="backup-hint">還原失敗（無法寫入儲存空間），進度沒有變動。</p>`);
+    } else if (r === "done") {
+      history.replaceState(null, "", cleanUrl);
+      box.innerHTML = `<p class="backup-hint">已還原到 ${childInfo(child).label} 的進度。</p>`;
+    }
+  };
+  document.getElementById("restore-cancel").onclick = () => {
+    history.replaceState(null, "", cleanUrl);
+    box.innerHTML = `<p class="backup-hint">已取消還原。</p>`;
+  };
+  if (det) det.scrollIntoView({ behavior: "smooth" });
+}
+
+// 回報到 GitHub：prefill issue URL（零後端；pad 瀏覽器需登入過 GitHub）
+const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
+const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
+
+function formatAnswer(q) {
+  if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
+  if (q.type === "chinese_correction") return `「${q.wrong}」改成「${q.answer}」`;
+  if (q.type === "fill_in_blank") {
+    return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
+  }
+  if (q.type === "vertical_calc") {
+    return q.op === "long_division"
+      ? `商 ${q.answer.quotient}、餘數 ${q.answer.remainder}`
+      : String(q.answer);
+  }
+  return `選項 ${q.answer}`;
+}
+
+function buildReportUrl() {
+  const qs = State.getFlagged().map(f => questionMap.get(f.questionId)).filter(Boolean);
+  const today = new Date().toISOString().slice(0, 10);
+  const title = `題目回報：${qs.length} 題（${today}）`;
+
+  const full = qs.map(q => {
+    let s = `### ${q.id}\n`;
+    s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
+    s += `- 題目：${q.text}\n`;
+    const opts = q.options || q.choices || [];
+    if (opts.length > 0) {
+      s += `- 選項：${opts.map((o, i) => `(${i + 1}) ${o}`).join("　")}\n`;
+    }
+    s += `- 現存答案：${formatAnswer(q)}\n`;
+    s += `- 來源：${q.source}`;
+    return s;
+  }).join("\n\n");
+  const compact = qs.map(q => `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
+
+  // 題數多時逐級降格，避免超出 URL 長度上限
+  for (const body of [full, compact, idsOnly]) {
+    const url = `${ISSUE_URL}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    if (url.length <= ISSUE_URL_MAX) return url;
+  }
+  return `${ISSUE_URL}?title=${encodeURIComponent(title)}`;
+}
+
+window._reportToGitHub = () => { window.open(buildReportUrl(), "_blank"); };
+
+// <enum-break-pure>
+// ══════ 題幹列舉條列換行（純函式；待辦⑤，做法 B）══════
+// 在「已切選項後」的題幹裡遇 CJK 序數列舉標記（括號式（甲）/(甲)、裸式 甲. 甲： 甲、），
+// 於標記前插 <br>，讓並列項分行。純顯示、不動題庫。改這裡連 tests/test_breaks_pure.mjs 跑（node --test）。
+// 注意：此區塊到 </enum-break-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
+function applyEnumBreaks(stem) {
+  if (typeof stem !== "string") return stem;
+  // 標記＝括號包單一序數，或序數緊接定界符（. ． ： : 、）。只認 CJK 天干，不收數字/拉丁/羅馬。
+  const MARK = /[（(][甲乙丙丁戊己庚辛壬癸][）)]|[甲乙丙丁戊己庚辛壬癸][.．：:、]/g;
+  const ms = [...stem.matchAll(MARK)];
+  if (ms.length < 2) return stem;
+  // 只斷「後面有實質內容」的標記（標記後到下個標記前須有非空白字）。
+  // 這條把「用甲、乙、丙三個容器」這種句中代號指稱（標記互相緊鄰、無內容）整題排除。
+  const breakAt = [];
+  for (let i = 0; i < ms.length; i++) {
+    const end = ms[i].index + ms[i][0].length;
+    const next = i + 1 < ms.length ? ms[i + 1].index : stem.length;
+    if (stem.slice(end, next).trim().length > 0) breakAt.push(ms[i].index);
+  }
+  if (breakAt.length < 2) return stem;          // 至少兩個帶內容的項才算列舉
+  let out = stem;                                // 由後往前插，避免位移
+  for (let i = breakAt.length - 1; i >= 0; i--)
+    out = out.slice(0, breakAt[i]) + "<br>" + out.slice(breakAt[i]);
+  return out.replace(/(<br>){2,}/g, "<br>").replace(/^<br>/, "");
+}
+// </enum-break-pure>
+
+// ════════════════════════════════════════════════════
+// UI: Quiz
+// ════════════════════════════════════════════════════
+function isCjkChar(ch) {
+  return /^[\u3400-\u9fff\uf900-\ufaff]$/.test(ch);
+}
+
+function correctedChineseText(q) {
+  const chars = [...q.text];
+  if (quiz.chinesePickedIndex !== null && chars[quiz.chinesePickedIndex] === q.wrong) {
+    chars[quiz.chinesePickedIndex] = q.answer;
+    return chars.join("");
+  }
+  return q.text.replace(q.wrong, q.answer);
+}
+
+function renderChineseSentence(q) {
+  const interactive = quiz.chineseStage === "find";
+  return `<div class="chinese-sentence">${[...q.text].map((ch, i) => {
+    if (isCjkChar(ch)) {
+      const cls = ["chinese-char"];
+      if (quiz.chineseStage !== "find" && i === quiz.chinesePickedIndex) cls.push("picked");
+      return `<button type="button" class="${cls.join(" ")}" data-idx="${i}" data-char="${escapeHtml(ch)}"${interactive ? "" : " disabled"}>${escapeHtml(ch)}</button>`;
+    }
+    if (/\s/.test(ch)) return " ";
+    return `<span class="chinese-punct">${escapeHtml(ch)}</span>`;
+  }).join("")}</div>`;
+}
+
+function handwritingPanelHtml(options = {}) {
+  const panelClass = ["handwriting-panel", options.panelClass].filter(Boolean).join(" ");
+  const trace = options.traceChar
+    ? `<div class="handwriting-trace">${escapeHtml(options.traceChar)}</div>`
+    : "";
+  const title = options.title
+    ? `<div class="handwriting-remedial-note">${escapeHtml(options.title)}</div>`
+    : "";
+  const message = options.message
+    ? `<div class="handwriting-remedial-message">${escapeHtml(options.message)}</div>`
+    : "";
+  const hintButton = options.showHint
+    ? `<button class="st-btn" id="handwriting-help"${typeof options.hintPressed === "boolean" ? ` aria-pressed="${options.hintPressed ? "true" : "false"}"` : ""}>${escapeHtml(options.hintLabel || "看提示")}</button>`
+    : "";
+  return `
+    <div class="${panelClass}">
+      ${title}
+      ${message}
+      ${options.comparisonHtml || ""}
+      <div class="handwriting-board-wrap">
+        ${trace}
+        <canvas class="handwriting-board" id="handwriting-board" aria-label="手寫區"></canvas>
+      </div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-clear">清除</button>
+        ${hintButton}
+        <button class="st-btn" id="handwriting-done">我寫好了</button>
+      </div>
+    </div>`;
+}
+
+function handwritingComparisonHtml(q, dataUrl, extraClass = "") {
+  const img = dataUrl
+    ? `<img class="handwriting-capture" src="${dataUrl}" alt="你寫的字">`
+    : `<div class="handwriting-capture" aria-label="你寫的字"></div>`;
+  return `
+    <div class="handwriting-self-check ${extraClass}">
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">你寫的</div>
+        ${img}
+      </div>
+      <div class="handwriting-compare-card">
+        <div class="handwriting-compare-title">正確字</div>
+        <div class="handwriting-correct-char">${escapeHtml(q.answer)}</div>
+      </div>
+    </div>`;
+}
+
+function handwritingSelfCheckHtml(q) {
+  return `
+    ${handwritingComparisonHtml(q, quiz.handwritingDataUrl)}
+    <div class="handwriting-correct-sentence">${escapeHtml(correctedChineseText(q))}</div>
+    <div class="handwriting-actions">
+      <button class="st-btn" id="handwriting-needs-practice">不太會寫</button>
+      <button class="st-btn" id="handwriting-correct">我寫對了</button>
+    </div>`;
+}
+
+function handwritingRemedialHtml(q) {
+  const remedial = quiz.handwritingRemedial || beginHandwritingRemedial();
+  const canShowHint = shouldOfferHandwritingRemedialHint(remedial);
+  const shouldTrace = shouldTraceHandwritingAttempt(remedial) || shouldTraceHandwritingRemedialHint(remedial, quiz.handwritingRemedialHintVisible);
+  const traceChar = shouldTrace ? q.answer : null;
+  return handwritingPanelHtml({
+    title: `練習 ${remedial.attempt} / ${remedial.total}`,
+    message: handwritingRemedialPrompt(remedial),
+    panelClass: "remedial",
+    traceChar,
+    showHint: canShowHint,
+    hintLabel: quiz.handwritingRemedialHintVisible ? "收起提示" : "提示",
+    hintPressed: quiz.handwritingRemedialHintVisible,
+  });
+}
+
+function handwritingRemedialReviewHtml(q) {
+  return `
+    <div class="handwriting-panel remedial">
+      <div class="handwriting-remedial-message">${escapeHtml(handwritingRemedialPrompt(quiz.handwritingRemedial))}</div>
+      ${handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")}
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-remedial-continue">很好，讓我們再練習寫一次</button>
+      </div>
+    </div>`;
+}
+
+function handwritingRemedialDoneHtml(q) {
+  return `
+    <div class="handwriting-panel remedial">
+      ${handwritingComparisonHtml(q, quiz.handwritingRemedialDataUrl, "handwriting-remedial-compare")}
+      <div class="handwriting-done-message">${escapeHtml(handwritingRemedialPrompt(quiz.handwritingRemedial))}</div>
+      <div class="handwriting-actions">
+        <button class="st-btn" id="handwriting-remedial-next">下一題</button>
+      </div>
+    </div>`;
+}
+
+function setupHandwritingCanvas(canvas, onDone) {
+  const wrap = canvas.parentElement;
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  const resize = () => {
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.round(rect.width * scale));
+    canvas.height = Math.max(1, Math.round(rect.height * scale));
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.lineWidth = 9;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#172033";
+  };
+
+  const point = (ev) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+  };
+
+  // 只認第一個觸點（isPrimary）：手掌或第二指落板不得重置 path、
+  // 不得與主筆畫交錯連線、抬起也不得切斷主筆畫
+  const start = (ev) => {
+    if (quiz.isAnswered || !ev.isPrimary) return;
+    drawing = true;
+    canvas.setPointerCapture(ev.pointerId);
+    const p = point(ev);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ev.preventDefault();
+  };
+  const move = (ev) => {
+    if (!drawing || quiz.isAnswered || !ev.isPrimary) return;
+    const p = point(ev);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ev.preventDefault();
+  };
+  const end = (ev) => {
+    if (!drawing || !ev.isPrimary) return;
+    drawing = false;
+    try { canvas.releasePointerCapture(ev.pointerId); } catch {}
+    ev.preventDefault();
+  };
+
+  // 旋轉／分割視窗改變外框尺寸時重設 backing store（否則畫布被裁切或出現寫不進的死區），
+  // 既有筆跡等比搬回。畫面切走後 canvas 脫離 DOM → 監聽器自我移除。
+  const onWindowResize = () => {
+    if (!canvas.isConnected) { window.removeEventListener("resize", onWindowResize); return; }
+    const rect = wrap.getBoundingClientRect();
+    const scale = window.devicePixelRatio || 1;
+    if (canvas.width === Math.max(1, Math.round(rect.width * scale)) &&
+        canvas.height === Math.max(1, Math.round(rect.height * scale))) return;
+    const prev = document.createElement("canvas");
+    prev.width = canvas.width;
+    prev.height = canvas.height;
+    prev.getContext("2d").drawImage(canvas, 0, 0);
+    resize();
+    ctx.drawImage(prev, 0, 0, rect.width, rect.height);
+  };
+
+  resize();
+  window.addEventListener("resize", onWindowResize);
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  canvas.addEventListener("pointerup", end);
+  canvas.addEventListener("pointercancel", end);
+  document.getElementById("handwriting-clear").onclick = () => {
+    if (quiz.isAnswered) return;
+    drawing = false;               // 清除＝重新開始：進行中的筆畫一併結束
+    ctx.beginPath();               // 丟棄累積 path，否則下一個 pointermove 會整條重畫回來
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+  document.getElementById("handwriting-done").onclick = () => {
+    if (quiz.isAnswered) return;
+    onDone(canvas.toDataURL("image/png"));
+  };
+}
+
+function bindHandwritingSelfCheck(q) {
+  const btn = document.getElementById("handwriting-correct");
+  if (btn) btn.onclick = () => submitAnswer(q.answer);
+  const needsPractice = document.getElementById("handwriting-needs-practice");
+  if (needsPractice) needsPractice.onclick = () => {
+    if (quiz.isAnswered) return;
+    startHandwritingRemedial(q);
+  };
+}
+
+function startHandwritingRemedial(q) {
+  // 求助（看提示/不太會寫）＝立即記一次手寫答錯＋進手寫錯題庫（自評制，求助即需加強）
+  State.recordAnswer(q.id, false, HANDWRITING_PRACTICE_MODE);
+  State.addToErrorBank(q.id, q.unit, HANDWRITING_PRACTICE_MODE);
+  quiz.handwritingRemedial = beginHandwritingRemedial();
+  quiz.handwritingDataUrl = null;
+  quiz.handwritingRemedialDataUrl = null;
+  quiz.handwritingRemedialHintVisible = false;
+  quiz.chineseStage = "remedial";
+  renderQuiz();
+}
+
+function finishHandwritingRemedialQuestion(q) {
+  if (quiz.mode === "full" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+  } else if (quiz.mode === "error" && quiz.queue[0] === q.id) {
+    quiz.queue.shift();
+    quiz.queue.push(q.id);
+  }
+  quiz.answered.push({ questionId: q.id, correct: false });
+}
+
+function completeHandwritingRemedialAttempt(q, dataUrl) {
+  quiz.handwritingRemedialDataUrl = dataUrl || null;
+  quiz.handwritingRemedialHintVisible = false;
+  const next = advanceHandwritingRemedial(quiz.handwritingRemedial);
+  quiz.handwritingRemedial = next;
+  if (next.stage === "done") {
+    quiz.chineseStage = "remedialDone";
+  } else if (next.stage === "review") {
+    quiz.chineseStage = "remedialReview";
+  }
+  renderQuiz();
+}
+
+function bindHandwritingRemedialDone(q) {
+  const btn = document.getElementById("handwriting-remedial-next");
+  if (btn) btn.onclick = () => {
+    finishHandwritingRemedialQuestion(q);
+    advance();
+  };
+}
+
+function bindHandwritingRemedialReview() {
+  const btn = document.getElementById("handwriting-remedial-continue");
+  if (btn) btn.onclick = () => {
+    quiz.handwritingRemedial = continueHandwritingRemedialAfterReview(quiz.handwritingRemedial);
+    quiz.handwritingRemedialDataUrl = null;
+    quiz.handwritingRemedialHintVisible = false;
+    quiz.chineseStage = "remedial";
+    renderQuiz();
+  };
+}
+
+function toggleHandwritingRemedialHint(q) {
+  quiz.handwritingRemedialHintVisible = !quiz.handwritingRemedialHintVisible;
+  const btn = document.getElementById("handwriting-help");
+  if (btn) {
+    btn.textContent = quiz.handwritingRemedialHintVisible ? "收起提示" : "提示";
+    btn.setAttribute("aria-pressed", quiz.handwritingRemedialHintVisible ? "true" : "false");
+  }
+  const wrap = document.querySelector(".handwriting-board-wrap");
+  if (!wrap) return;
+  let trace = wrap.querySelector(".handwriting-trace");
+  if (quiz.handwritingRemedialHintVisible) {
+    if (!trace) {
+      trace = document.createElement("div");
+      trace.className = "handwriting-trace";
+      const canvas = wrap.querySelector(".handwriting-board");
+      wrap.insertBefore(trace, canvas || null);
+    }
+    trace.textContent = q.answer;
+  } else if (trace) {
+    trace.remove();
+  }
+}
+
+function bindChineseEvents(q) {
+  if (quiz.chineseStage === "choose") {
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.onclick = () => submitAnswer(btn.dataset.value);
+    });
+    return;
+  }
+  if (quiz.chineseStage === "write") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) {
+      setupHandwritingCanvas(canvas, (dataUrl) => {
+        quiz.handwritingDataUrl = dataUrl;
+        quiz.chineseStage = "selfCheck";
+        renderQuiz();
+      });
+    }
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => startHandwritingRemedial(q);
+    return;
+  }
+  if (quiz.chineseStage === "selfCheck") {
+    bindHandwritingSelfCheck(q);
+    return;
+  }
+  if (quiz.chineseStage === "remedial") {
+    const canvas = document.getElementById("handwriting-board");
+    if (canvas) setupHandwritingCanvas(canvas, (dataUrl) => completeHandwritingRemedialAttempt(q, dataUrl));
+    const help = document.getElementById("handwriting-help");
+    if (help) help.onclick = () => toggleHandwritingRemedialHint(q);
+    return;
+  }
+  if (quiz.chineseStage === "remedialReview") {
+    bindHandwritingRemedialReview();
+    return;
+  }
+  if (quiz.chineseStage === "remedialDone") {
+    bindHandwritingRemedialDone(q);
+    return;
+  }
+
+  const hint = document.getElementById("chinese-hint");
+  document.querySelectorAll(".chinese-char").forEach(btn => {
+    btn.onclick = () => {
+      if (quiz.isAnswered) return;
+      const idx = Number(btn.dataset.idx);
+      const ch = btn.dataset.char;
+      if (ch === q.wrong) {
+        quiz.chinesePickedIndex = idx;
+        if (quiz.practiceMode === HANDWRITING_PRACTICE_MODE) {
+          quiz.chineseStage = "write";
+          quiz.chineseChoices = null;
+        } else {
+          quiz.chineseStage = "choose";
+          quiz.chineseChoices = shuffle(q.choices || []);
+        }
+        renderQuiz();
+        return;
+      }
+      btn.classList.remove("miss");
+      void btn.offsetWidth;
+      btn.classList.add("miss");
+      if (hint) {
+        hint.textContent = "這個字沒錯，再找找看";
+        hint.classList.remove("hidden");
+      }
+    };
+  });
+}
+
+function renderQuiz() {
+  const q = getCurrentQuestion();
+  if (!q) { leaveQuiz(); return; }
+
+  if (quiz.activeQuestionId !== q.id) {
+    resetQuestionRuntime();
+    quiz.activeQuestionId = q.id;
+  }
+
+  // Mode label
+  let modeText = "";
+  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
+  if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
+  else {
+    const eu = quiz.unit;  // error 模式：unit 為單元陣列
+    if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${unitNum(eu[0])}單元`;
+    else if (Array.isArray(eu) && eu.length > 1) modeText = "錯題練習 — 本學期全部";
+    else modeText = "錯題練習 — 全部";
+  }
+
+  // Progress
+  const progressHtml = renderProgress();
+
+  // Question type
+  const isTF = q.type === "true_false";
+  const isFill = q.type === "fill_in_blank";
+  const isVc = q.type === "vertical_calc";
+  const isChinese = q.type === "chinese_correction";
+  let typeClass = "q-type", typeLabel = "選擇題";
+  if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
+  else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
+  else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
+  else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
+
+  // Question text: remove option markers for MC
+  let displayText = q.text;
+  if (!isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
+    const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
+    if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
+  }
+  // 列舉條列換行（選擇/是非題；MC 已切選項，故答案串①甲乙丁不在 displayText 內。填充在下方自有分支處理）
+  if (!isFill && !isVc && !isChinese) displayText = applyEnumBreaks(displayText);
+
+  // Answer area（依題型）
+  let answerHtml;
+  if (isVc) {
+    answerHtml = `
+      <div class="vc-grid" id="vc-grid"></div>
+      <div id="fill-input-panel"></div>`;
+  } else if (isChinese) {
+    displayText = renderChineseSentence(q);
+    if (quiz.chineseStage === "choose") {
+      const choices = quiz.chineseChoices || q.choices || [];
+      const optionsHtml = choices.map((choice, i) =>
+        `<button class="opt-btn" data-value="${escapeHtml(choice)}">
+          <span class="opt-label">${i + 1}</span><span>${escapeHtml(choice)}</span>
+        </button>`
+      ).join("");
+      answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
+    } else if (quiz.chineseStage === "write") {
+      answerHtml = handwritingPanelHtml({ showHint: true });
+    } else if (quiz.chineseStage === "selfCheck") {
+      answerHtml = handwritingSelfCheckHtml(q);
+    } else if (quiz.chineseStage === "remedial") {
+      answerHtml = handwritingRemedialHtml(q);
+    } else if (quiz.chineseStage === "remedialReview") {
+      answerHtml = handwritingRemedialReviewHtml(q);
+    } else if (quiz.chineseStage === "remedialDone") {
+      answerHtml = handwritingRemedialDoneHtml(q);
+    } else {
+      answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
+    }
+  } else if (isFill) {
+    quiz._fillValues = q.blanks.map(() => "");
+    quiz._fillActive = 0;
+    const FW = "１２３４５６７８９";
+    // 條列換行（純顯示，資料不動）：分號後、(N) 子題前、甲乙丙丁列舉前、答案槽標籤前。
+    // 只套填充題——選擇題的 (N) 命中多為萃取欄位滲漏雜訊，套了會放大雜訊
+    displayText = displayText.replace(/；\s*/g, "；<br>");
+    if ((displayText.match(/\([1-9]\)/g) || []).length >= 2)
+      displayText = displayText.replace(/\s*(\([1-9]\))/g, "<br>$1");
+    if ((displayText.match(/[甲乙丙丁戊]：/g) || []).length >= 2)
+      displayText = displayText.replace(/\s*([甲乙丙丁戊]：)/g, "<br>$1");
+    displayText = displayText.replace(/\s*((?:答|最大|最小)：)/g, "<br>$1");
+    displayText = displayText.replace(/^(<br>)+/, "");
+    // 補括號式 (甲)/句點式 甲. 列舉（上方只處理 ；/(N)/甲：；相鄰 <br> 由 applyEnumBreaks 收尾收合）
+    displayText = applyEnumBreaks(displayText);
+    // 題幹（Ｎ）標記 → chip（只認全形括號＋全形數字；半形 (1) 是原卷子題編號，不動）
+    displayText = displayText.replace(/（([１-９])）/g, (m, d) => {
+      const idx = FW.indexOf(d);
+      return idx >= 0 && idx < q.blanks.length
+        ? `<span class="q-chip${idx === 0 ? " active" : ""}" data-chip="${idx}">${d}</span>` : m;
+    });
+    const blanksHtml = q.blanks.map((b, i) => `
+      <div class="blank-row">
+        <span class="blank-label"><span class="q-chip${i === 0 ? " active" : ""}" data-chip-row="${i}">${FW[i]}</span></span>
+        <div class="blank-box${i === 0 ? " active" : ""}" data-idx="${i}"></div>
+      </div>`).join("");
+    answerHtml = `
+      <div class="blank-list" id="blank-list">${blanksHtml}</div>
+      <div id="fill-input-panel"></div>
+      <button class="next-btn" id="fib-submit" disabled>確認答案</button>`;
+  } else {
+    let options;
+    if (isTF) {
+      options = [
+        { label: "O", value: "true", text: "正確" },
+        { label: "X", value: "false", text: "錯誤" },
+      ];
+    } else {
+      options = (q.options.length > 0 ? q.options : []).map((opt, i) => ({
+        label: String(i + 1), value: String(i + 1), text: opt,
+      }));
+    }
+    const optionsHtml = options.map(opt =>
+      `<button class="opt-btn" data-value="${opt.value}">
+        <span class="opt-label">${opt.label}</span><span>${opt.text}</span>
+      </button>`
+    ).join("");
+    answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
+  }
+
+  const showSkip = quiz.mode === "full" && !(isChinese && quiz.practiceMode === HANDWRITING_PRACTICE_MODE && quiz.chineseStage !== "find");
+
+  document.getElementById("page-quiz").innerHTML = `
+    <div class="quiz-header">
+      <button class="leave-btn" id="btn-leave">&larr; 離開</button>
+      <span class="mode-label">${modeText}</span>
+    </div>
+    ${progressHtml}
+    <div class="question-card">
+      <span class="${typeClass}">${typeLabel}</span>
+      ${q.image ? `<img class="q-image" src="${q.image}" alt="題目附表">` : ""}
+      <div class="q-text">${displayText}</div>
+      ${answerHtml}
+      <div class="result-hint hidden" id="result-hint"></div>
+      <div class="explain-card hidden" id="explain-card"></div>
+      <button class="next-btn hidden" id="next-btn">下一題</button>
+      <div class="flag-area hidden" id="flag-area">
+        <button class="flag-btn" id="flag-btn">題目有問題</button>
+        <span class="flag-confirm hidden" id="flag-confirm">
+          此題將不再出現
+          <button class="flag-yes" id="flag-yes">確定回報</button>
+          <button class="flag-no" id="flag-no">取消</button>
+        </span>
+      </div>
+      ${showSkip ? `
+      <div class="skip-area" id="skip-area">
+        <button class="skip-btn" id="skip-btn">先跳過這題</button>
+      </div>` : ""}
+    </div>`;
+
+  // Bind events
+  document.getElementById("btn-leave").onclick = leaveQuiz;
+  const skipBtn = document.getElementById("skip-btn");
+  if (skipBtn) skipBtn.onclick = skipCurrentQuestion;
+  if (isVc) {
+    bindVcEvents(q);
+  } else if (isFill) {
+    bindFillEvents(q);
+  } else if (isChinese) {
+    bindChineseEvents(q);
+  } else {
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.onclick = () => submitAnswer(btn.dataset.value);
+    });
+  }
+}
+
+// ════════════════════════════════════════════════════
+// 直式計算引擎（vertical_calc）
+// 長除法逐格邏輯移植自 aiden-math js/division.js（內聯改寫，行為一致：
+// 含前導零商位、每回合 商→乘積→落位 順序填）；小數加減直式為新寫。
+// ════════════════════════════════════════════════════
+function vcCalculateSteps(dividend, divisor) {
+  const digits = String(dividend).split("").map(Number);
+  const rounds = [];
+  let carry = 0;
+  for (let i = 0; i < digits.length; i++) {
+    const currentNumber = carry * 10 + digits[i];
+    const quotientDigit = Math.floor(currentNumber / divisor);
+    const product = quotientDigit * divisor;
+    const subtractResult = currentNumber - product;
+    rounds.push({ currentNumber, quotientDigit, product, subtractResult });
+    carry = subtractResult;
+  }
+  return { rounds };
+}
+
+function vcDivisionLayout(dividend, divisor) {
+  const steps = vcCalculateSteps(dividend, divisor);
+  const dDigits = String(dividend).split("");
+  const cells = [];
+  let order = 0;
+  cells.push({ row: 1, col: 0, value: String(divisor), type: "divisor", fillable: false });
+  dDigits.forEach((d, i) =>
+    cells.push({ row: 1, col: i + 1, value: d, type: "dividend", fillable: false }));
+  for (let r = 0; r < steps.rounds.length; r++) {
+    const round = steps.rounds[r];
+    const colStart = r + 1;
+    cells.push({ row: 0, col: colStart, value: String(round.quotientDigit),
+                 type: "quotient", fillable: true, order: order++ });
+    const refLen = String(round.currentNumber).length;
+    const pDigits = String(round.product).padStart(refLen, "0").split("");
+    pDigits.forEach((d, i) =>
+      cells.push({ row: 2 + r * 2, col: colStart + i - (pDigits.length - 1), value: d,
+                   type: "product", fillable: true, order: order++ }));
+    if (r < steps.rounds.length - 1) {
+      // 減的結果＋落下一位
+      const nextDigit = dDigits[r + 1];
+      const subDigits = round.subtractResult === 0
+        ? ["0", nextDigit]
+        : [...String(round.subtractResult).split(""), nextDigit];
+      subDigits.forEach((d, i) =>
+        cells.push({ row: 3 + r * 2, col: colStart + i - (subDigits.length - 1) + 1, value: d,
+                     type: "subtract", fillable: true, order: order++ }));
+    } else {
+      const rDigits = String(round.subtractResult).padStart(refLen, "0").split("");
+      rDigits.forEach((d, i) =>
+        cells.push({ row: 3 + r * 2, col: colStart + i - (rDigits.length - 1), value: d,
+                     type: "subtract", fillable: true, order: order++ }));
+    }
+  }
+  return { cells, totalCols: 1 + dDigits.length, kind: "division" };
+}
+
+function vcAddSubLayout(a, b, isAdd) {
+  const dec = (x) => (String(x).split(".")[1] || "").length;
+  const dw = Math.max(dec(a), dec(b));
+  const ansNum = isAdd ? a + b : a - b;
+  const ansStr = dw > 0 ? ansNum.toFixed(dw) : String(Math.round(ansNum));
+  const strs = [String(a), String(b), ansStr];
+  const intW = Math.max(...strs.map(s => s.split(".")[0].length));
+  const cells = [];
+  const placeNum = (s, row, fillable) => {
+    const [ip, fp = ""] = s.split(".");
+    for (let i = 0; i < ip.length; i++) {
+      cells.push({ row, col: 1 + intW - ip.length + i, value: ip[i], type: "digit", fillable });
+    }
+    if (fp.length > 0) {
+      cells.push({ row, col: 1 + intW, value: ".", type: "point", fillable: false });
+      for (let i = 0; i < fp.length; i++) {
+        cells.push({ row, col: 1 + intW + 1 + i, value: fp[i], type: "digit", fillable });
+      }
+    }
+  };
+  placeNum(strs[0], 0, false);
+  cells.push({ row: 1, col: 0, value: isAdd ? "＋" : "－", type: "op", fillable: false });
+  placeNum(strs[1], 1, false);
+  placeNum(strs[2], 2, true);
+  // 答案逐位由右到左填（直式運算順序）
+  cells.filter(c => c.fillable).sort((x, y) => y.col - x.col).forEach((c, i) => { c.order = i; });
+  return { cells, totalCols: 1 + intW + (dw > 0 ? 1 + dw : 0), kind: "addsub" };
+}
+
+function bindVcEvents(q) {
+  const layout = q.op === "long_division"
+    ? vcDivisionLayout(q.operands[0], q.operands[1])
+    : vcAddSubLayout(q.operands[0], q.operands[1], q.op === "add_decimal");
+  const grid = document.getElementById("vc-grid");
+  const panel = document.getElementById("fill-input-panel");
+  grid.style.gridTemplateColumns = `repeat(${layout.totalCols}, var(--vc-cell))`;
+
+  for (const cell of layout.cells) {
+    const el = document.createElement("div");
+    el.className = "vc-cell";
+    el.style.gridRow = String(cell.row + 1);
+    el.style.gridColumn = String(cell.col + 1);
+    if (cell.fillable) {
+      el.classList.add("vc-fillable");
+      el.dataset.order = cell.order;
+    } else {
+      el.textContent = cell.value;
+    }
+    if (layout.kind === "addsub" && cell.row === 2) el.classList.add("vc-ansline");
+    if (layout.kind === "division") {
+      if (cell.type === "dividend") el.classList.add("vc-divline");
+      if (cell.type === "divisor") el.classList.add("vc-divisor");
+      if (cell.type === "product") el.classList.add("vc-sep");
+    }
+    grid.appendChild(el);
+  }
+
+  const fillable = layout.cells.filter(c => c.fillable).sort((x, y) => x.order - y.order);
+  quiz._vc = { fillable, idx: 0, errors: 0 };
+  const cellEl = (order) => grid.querySelector(`[data-order="${order}"]`);
+  cellEl(fillable[0].order).classList.add("vc-active");
+
+  panel.innerHTML = `<div class="numpad" id="numpad">${
+    ["1","2","3","4","5","6","7","8","9","","0",""].map(k =>
+      k === "" ? "<span></span>" : `<button data-key="${k}">${k}</button>`).join("")}</div>`;
+  panel.querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => {
+      if (quiz.isAnswered) return;
+      const vc = quiz._vc;
+      const cell = vc.fillable[vc.idx];
+      const el = cellEl(cell.order);
+      if (btn.dataset.key === cell.value) {
+        el.classList.remove("vc-fillable", "vc-active", "vc-error");
+        el.classList.add("vc-filled");
+        el.textContent = cell.value;
+        vc.idx++;
+        if (vc.idx >= vc.fillable.length) {
+          submitAnswer({ vcErrors: vc.errors });   // 全格完成 → 自動結算
+        } else {
+          cellEl(vc.fillable[vc.idx].order).classList.add("vc-active");
+        }
+      } else {
+        vc.errors++;
+        el.classList.add("vc-error");
+        el.addEventListener("animationend", () => el.classList.remove("vc-error"), { once: true });
+      }
+    };
+  });
+}
+
+// 比較符號顯示用全形
+const COMPARE_DISPLAY = { ">": "＞", "<": "＜", "=": "＝" };
+
+// 填充題互動：點空格選取、輸入面板依空格型態切換（number/comparison/code/text）
+function bindFillEvents(q) {
+  const boxes = [...document.querySelectorAll(".blank-box")];
+  const chips = [...document.querySelectorAll(".q-chip[data-chip]")];
+  const rowChips = [...document.querySelectorAll(".q-chip[data-chip-row]")];
+  const FW = "１２３４５６７８９";
+  const submitBtn = document.getElementById("fib-submit");
+  const panel = document.getElementById("fill-input-panel");
+
+  const refresh = () => {
+    boxes.forEach((box, i) => {
+      const v = quiz._fillValues[i];
+      box.textContent = COMPARE_DISPLAY[v] || v;
+      box.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
+    });
+    // 題幹 chip 即時回填：有值顯示值、無值顯示編號；與作答格同步 highlight
+    chips.forEach(chip => {
+      const i = Number(chip.dataset.chip);
+      const v = quiz._fillValues[i];
+      chip.textContent = COMPARE_DISPLAY[v] || v || FW[i];
+      chip.classList.toggle("filled", !!v);
+      chip.classList.toggle("active", i === quiz._fillActive && !quiz.isAnswered);
+    });
+    rowChips.forEach(chip => {
+      chip.classList.toggle("active", Number(chip.dataset.chipRow) === quiz._fillActive && !quiz.isAnswered);
+    });
+    submitBtn.disabled = quiz._fillValues.some(v => !v);
+  };
+
+  const setActive = (idx) => {
+    quiz._fillActive = idx;
+    refresh();
+    renderPanel();
+  };
+
+  // 單值型（comparison/code）按下即填，自動跳到下一個空格（輸入摩擦最小化）
+  const setSingleValue = (val) => {
+    quiz._fillValues[quiz._fillActive] = val;
+    const n = quiz._fillValues.length;
+    for (let step = 1; step <= n; step++) {
+      const i = (quiz._fillActive + step) % n;
+      if (!quiz._fillValues[i]) { setActive(i); return; }
+    }
+    refresh();
+  };
+
+  function renderPanel() {
+    if (quiz.isAnswered) return;
+    const blank = q.blanks[quiz._fillActive];
+    const type = blank.input || "number";
+    if (type === "number") {
+      const keys = ["1","2","3","4","5","6","7","8","9",".","0","del"];
+      panel.innerHTML = `<div class="numpad" id="numpad">${keys.map(k =>
+        `<button data-key="${k}">${k === "del" ? "⌫" : k}</button>`).join("")}</div>`;
+      panel.querySelectorAll("button").forEach(btn => {
+        btn.onclick = () => {
+          if (quiz.isAnswered) return;
+          const k = btn.dataset.key;
+          let v = quiz._fillValues[quiz._fillActive];
+          if (k === "del") v = v.slice(0, -1);
+          else if (k === ".") { if (!v.includes(".") && v.length < 8) v += "."; }
+          else if (v.length < 8) v += k;
+          quiz._fillValues[quiz._fillActive] = v;
+          refresh();
+        };
+      });
+    } else if (type === "comparison" || type === "code") {
+      const choices = type === "comparison" ? [">", "<", "="] : (blank.choices || []);
+      panel.innerHTML = `<div class="choice-row">${choices.map(c =>
+        `<button class="choice-btn" data-val="${c}">${COMPARE_DISPLAY[c] || c}</button>`).join("")}</div>`;
+      panel.querySelectorAll(".choice-btn").forEach(btn => {
+        btn.onclick = () => { if (!quiz.isAnswered) setSingleValue(btn.dataset.val); };
+      });
+    } else {  // text：自由輸入（系統鍵盤）
+      panel.innerHTML = `<input class="text-input" id="fib-text" type="text" maxlength="10" placeholder="請輸入答案">`;
+      const inp = panel.querySelector("#fib-text");
+      inp.value = quiz._fillValues[quiz._fillActive];
+      inp.oninput = () => {
+        if (quiz.isAnswered) return;
+        quiz._fillValues[quiz._fillActive] = inp.value.trim();
+        refresh();   // 不重繪面板，避免輸入框失焦
+      };
+    }
+  }
+
+  boxes.forEach(box => {
+    box.onclick = () => { if (!quiz.isAnswered) setActive(Number(box.dataset.idx)); };
+  });
+  chips.forEach(chip => {
+    chip.onclick = () => { if (!quiz.isAnswered) setActive(Number(chip.dataset.chip)); };
+  });
+  submitBtn.onclick = () => {
+    if (!submitBtn.disabled) submitAnswer([...quiz._fillValues]);
+  };
+  renderPanel();
+}
+
+// 全半形正規化＋去空白（與 data_helpers.normalize_for_compare 對齊）
+function normalizeCompare(s) {
+  let out = "";
+  for (const ch of String(s ?? "")) {
+    const c = ch.codePointAt(0);
+    if (c >= 0xFF01 && c <= 0xFF5E) out += String.fromCodePoint(c - 0xFEE0);
+    else if (ch === "　") out += " ";
+    else out += ch;
+  }
+  return out.replace(/\s+/g, "");
+}
+
+// 單格比對：number 用數值相等（63 與 63.0 視為相同），其餘全半形正規化字串比對
+function isBlankCorrect(blank, value) {
+  const v = String(value ?? "").trim();
+  if (blank.input === "number") {
+    const got = parseFloat(v), want = parseFloat(blank.answer);
+    return Number.isFinite(got) && got === want;
+  }
+  return normalizeCompare(v) === normalizeCompare(blank.answer);
+}
+
+function renderProgress() {
+  if (quiz.mode === "full") {
+    return renderBarProgress();
+  }
+  // error mode
+  if (quiz.totalForProgress <= 30) {
+    // For error mode dots: show answered count
+    const answeredCorrect = quiz.answered.filter(a => a.correct).length;
+    return renderDots(quiz.totalForProgress, answeredCorrect, quiz.answered);
+  }
+  return renderBarProgress();
+}
+
+function renderDots(total, currentIdx, answered) {
+  const currentNum = Math.min(answered.length + 1, total);
+  let html = `<div class="progress-bar"><span class="label">第 ${currentNum} 題 / 共 ${total} 題</span>`;
+  for (let i = 0; i < total; i++) {
+    let cls = "dot";
+    if (i < answered.length) {
+      cls += answered[i].correct ? " correct" : " wrong";
+    }
+    if (i === answered.length) cls += " current";
+    html += `<span class="${cls}"></span>`;
+  }
+  html += "</div>";
+  return html;
+}
+
+function renderBarProgress() {
+  let done, total, label;
+  if (quiz.mode === "full") {
+    // 本批進度：分母＝本批相異題、分子＝其中已 mastered（答對）數（不沿用整單元 doneCount）
+    const set = State.getMasteredSet(quiz.unit, quiz.practiceMode);
+    total = quiz.batchIds.length;
+    done = quiz.batchIds.filter(id => set.has(id)).length;
+    label = `已答對 ${done} / ${total} 題`;
+  } else {
+    // error mode with bar
+    total = quiz.totalForProgress;
+    done = quiz.answered.filter(a => a.correct).length;
+    label = `已答對 ${done} / ${total} 題（剩餘 ${quiz.queue.length} 題）`;
+  }
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  return `
+    <div class="progress-text">
+      <div class="text-line">${label}</div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════
+// UI: Feedback
+// ════════════════════════════════════════════════════
+function renderFeedback(correct, q) {
+  playSound(correct ? "correct" : "wrong");
+
+  let wrongHint;
+  if (q.type === "vertical_calc") {
+    document.querySelectorAll("#fill-input-panel button").forEach(b => { b.disabled = true; });
+    wrongHint = `完成了！但填錯過 ${quiz._vc.errors} 次，這題之後會再練一次`;
+  } else if (q.type === "fill_in_blank") {
+    // 標出每格對錯；錯格旁顯示正解（家長定案：對小孩友善優先）
+    document.querySelectorAll("#fill-input-panel button, #fill-input-panel input")
+      .forEach(el => { el.disabled = true; });
+    document.getElementById("fib-submit").classList.add("hidden");
+    document.querySelectorAll(".blank-box").forEach((box, i) => {
+      box.classList.remove("active");
+      box.classList.add(quiz._fillResults[i] ? "b-correct" : "b-wrong");
+      if (!quiz._fillResults[i]) {
+        const ans = q.blanks[i].answer;
+        box.insertAdjacentHTML("afterend",
+          `<span class="blank-correct-val">正解：${COMPARE_DISPLAY[ans] || ans}</span>`);
+      }
+    });
+    document.querySelectorAll(".q-chip[data-chip]").forEach(chip => {
+      chip.classList.remove("active");
+      chip.classList.add(quiz._fillResults[Number(chip.dataset.chip)] ? "b-correct" : "b-wrong");
+    });
+    wrongHint = "答錯了，紅色格子旁有正確答案";
+  } else if (q.type === "chinese_correction") {
+    document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
+    // 手寫 selfCheck 的「不太會寫／我寫對了」在作答後也要失效，避免對已 mastered 的題再記錯
+    document.querySelectorAll(".handwriting-actions .st-btn").forEach(btn => { btn.disabled = true; });
+    const selectedValue = quiz._lastSelected;
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.classList.add("disabled");
+      const val = btn.dataset.value;
+      if (val === q.answer) btn.classList.add("correct-answer");
+      if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
+    });
+    wrongHint = `答錯了，正確答案是「${q.answer}」`;
+  } else {
+    const selectedValue = quiz._lastSelected;
+    document.querySelectorAll("#q-options .opt-btn").forEach(btn => {
+      btn.classList.add("disabled");
+      const val = btn.dataset.value;
+      if (val === q.answer) btn.classList.add("correct-answer");
+      if (!correct && val === selectedValue) btn.classList.add("wrong-answer");
+    });
+    const isTF = q.type === "true_false";
+    const ansLabel = isTF
+      ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
+      : `第 ${q.answer} 個選項`;
+    wrongHint = `答錯了，正確答案是 ${ansLabel}`;
+  }
+
+  const hint = document.getElementById("result-hint");
+  hint.classList.remove("hidden", "correct", "wrong");
+  if (correct) {
+    hint.classList.add("correct");
+    hint.textContent = "答對了！";
+  } else {
+    hint.classList.add("wrong");
+    hint.textContent = wrongHint;
+  }
+
+  // 作答後說明：答對答錯都顯示，無說明（期中題等）則不渲染
+  const explainText = explanations[q.id] || (q.type === "chinese_correction" ? q.note : "");
+  if (explainText) {
+    const explainEl = document.getElementById("explain-card");
+    explainEl.textContent = explainText;
+    explainEl.classList.remove("hidden");
+  }
+
+  // Update progress display
+  const progressContainer = document.querySelector(".progress-bar, .progress-text");
+  if (progressContainer) {
+    const newProgress = renderProgress();
+    const temp = document.createElement("div");
+    temp.innerHTML = newProgress;
+    progressContainer.replaceWith(temp.firstElementChild);
+  }
+
+  const nextBtn = document.getElementById("next-btn");
+  nextBtn.classList.remove("hidden");
+
+  // Check if this is last question（full/error 皆以 queue 清空為準）
+  const isLast = quiz.queue.length === 0;
+
+  // full 批末 → 批間畫面（「這批完成！」）或通關，非結算清單，故不寫「查看結果」
+  nextBtn.textContent = isLast ? (quiz.mode === "full" ? "完成這批" : "查看結果") : "下一題";
+  nextBtn.onclick = advance;
+
+  // 作答後跳過已無意義，隱藏（與回報入口互斥）
+  const skipArea = document.getElementById("skip-area");
+  if (skipArea) skipArea.classList.add("hidden");
+
+  // 題目回報：低調入口，按下原地變 inline 確認
+  const flagBtn = document.getElementById("flag-btn");
+  const flagConfirm = document.getElementById("flag-confirm");
+  document.getElementById("flag-area").classList.remove("hidden");
+  flagBtn.onclick = () => { flagBtn.classList.add("hidden"); flagConfirm.classList.remove("hidden"); };
+  document.getElementById("flag-no").onclick = () => { flagConfirm.classList.add("hidden"); flagBtn.classList.remove("hidden"); };
+  document.getElementById("flag-yes").onclick = flagCurrentQuestion;
+}
+
+// Patch submitAnswer to store selected value
+const _origSubmit = submitAnswer;
+submitAnswer = function(selected) {
+  quiz._lastSelected = selected;
+  _origSubmit(selected);
+};
+
+// ════════════════════════════════════════════════════
+// 獎勵插畫選圖（見 docs-dev/reward-illustrations-design.md）
+// ════════════════════════════════════════════════════
+// <reward-pick-pure>
+// 純函式區塊：不得引用外部全域，才能被 tests/test_reward_pick.mjs 抽出獨立 eval。
+// rng 以參數注入（rng()→[0,1)）以利測試；缺省當 0。
+function rwPoolFor(m, key) { return (m && m.pools && m.pools[key]) || []; }
+function rwMergedPool(m, keys) {
+  const o = [];
+  for (const k of keys) for (const f of rwPoolFor(m, k)) o.push(f);
+  return o;
+}
+// 出現最多的 subtopic；平手用 rng 在並列中挑一個
+function rwDominantKey(subs, rng) {
+  if (!subs || !subs.length) return null;
+  const c = new Map();
+  for (const s of subs) c.set(s, (c.get(s) || 0) + 1);
+  let mx = 0;
+  for (const v of c.values()) if (v > mx) mx = v;
+  const tied = [...c].filter(([, v]) => v === mx).map(([k]) => k);
+  return tied[Math.floor((rng ? rng() : 0) * tied.length)];
+}
+// ctx={kind:'batch'|'unit'|'error', subtopic?, unitKeys?, subjectKeys?} → {key, items}（含 roll-up）
+function rwResolvePool(m, ctx) {
+  if (ctx.kind === "error") return { key: "__generic__", items: rwPoolFor(m, "__generic__") };
+  if (ctx.kind === "batch" && ctx.subtopic) {
+    const sp = rwPoolFor(m, ctx.subtopic);
+    if (sp.length) return { key: ctx.subtopic, items: sp };
+  }
+  let it = rwMergedPool(m, ctx.unitKeys || []);
+  if (it.length) return { key: "__unit__" + (ctx.unitKeys || []).join(","), items: it };
+  it = rwMergedPool(m, ctx.subjectKeys || []);
+  if (it.length) return { key: "__subject__", items: it };
+  it = rwPoolFor(m, "__generic__");
+  if (it.length) return { key: "__generic__", items: it };
+  return { key: null, items: [] };
+}
+// shuffle-bag：bag={key:剩餘陣列}；抽完重裝；回傳檔名或 null
+function rwDrawFromBag(bag, key, items, rng) {
+  if (!key || !items.length) return null;
+  let rem = bag[key];
+  if (!rem || !rem.length) rem = bag[key] = items.slice();
+  const i = Math.floor((rng ? rng() : 0) * rem.length);
+  const f = rem[i];
+  rem.splice(i, 1);
+  return f;
+}
+// </reward-pick-pure>
+
+const rewardBag = {};   // module-level shuffle-bag；reload 即清（符合「用完即丟」）
+
+// 依情境選一張獎勵插畫路徑（無圖則 null）。
+// kind: 'batch'（批末，看這批主力 subtopic）｜'unit'（整單元通關，合併池）｜'error'（錯題清除，通用池）
+function pickReward(kind, unit) {
+  const ctx = { kind };
+  if (kind !== "error") {
+    ctx.unitKeys = [...(subtopicsByUnit.get(unit) || [])];
+    ctx.subjectKeys = [...(subtopicsBySubject.get(unitToSubject.get(unit)) || [])];
+  }
+  if (kind === "batch") {
+    // 只看真的作答過的題（跳過/回報不在 answered）
+    const subs = quiz.answered.map(a => questionMap.get(a.questionId)).filter(Boolean).map(q => q.subtopic);
+    ctx.subtopic = rwDominantKey(subs, Math.random);
+  }
+  const { key, items } = rwResolvePool(rewards, ctx);
+  const file = rwDrawFromBag(rewardBag, key, items, Math.random);
+  return file ? ("../shared/rewards/" + file) : null;
+}
+
+// 預載選中的圖，載好（或失敗）才執行 cb，避免畫面空白閃一下。
+// 用導覽世代守門：排程後若期間有任何 showPage（如使用者按「離開」回首頁），此 callback 作廢。
+function preloadThen(path, cb) {
+  const gen = _rewardGen;
+  const run = () => { if (gen === _rewardGen) cb(); };
+  if (!path) { run(); return; }
+  const img = new Image();
+  img.onload = run;
+  img.onerror = run;
+  img.src = path;
+}
+
+// 獎勵插畫 <img>（路徑為 null 則空字串）；onerror 自我移除（執行期 404 時不破版）
+function rewardImgHtml(path, extraClass = "") {
+  return path ? `<img class="reward-img${extraClass}" src="${path}" alt="" onerror="this.remove()">` : "";
+}
+
+// 完成畫面先跳一個小獎杯，點了才揭曉插畫；無圖則回空字串＝靜默不顯示（同 rewardImgHtml）。
+function rewardRevealHtml(path) {
+  if (!path) return "";
+  return `<div class="reward-reveal" onclick="window._revealReward(this)">
+      <div class="reward-trophy">🏆</div>
+      <div class="reward-cap">點獎杯看圖</div>
+      ${rewardImgHtml(path, " hidden")}
+    </div>`;
+}
+window._revealReward = (el) => {
+  if (el.classList.contains("revealed")) return;
+  el.classList.add("revealed");
+  const img = el.querySelector(".reward-img");
+  if (img) img.classList.remove("hidden");  // 切回 display:block → 觸發 rewardIn 淡入
+  playSound("correct");                      // 揭曉的小回饋
+};
+
+// ════════════════════════════════════════════════════
+// UI: 批間畫面（本批完成、整單元尚未通關時）
+// ════════════════════════════════════════════════════
+function renderBatchBreak() {
+  const unitTotal = questionIdsFor(quiz.unit, quiz.subtopic).length;
+  const unitDone = State.doneCount(quiz.unit, quiz.subtopic, quiz.practiceMode);
+  const nextN = nextBatchSizeForMode(unitTotal - unitDone, quiz.practiceMode); // 下一批實際題數（依當下剩餘現算）
+  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
+  const reward = pickReward("batch", quiz.unit);   // 看這批主力 subtopic 抽圖（缺則 roll-up/null）
+  preloadThen(reward, () => {
+    document.getElementById("page-summary").innerHTML = `
+      <h2>這批完成！</h2>
+      ${rewardRevealHtml(reward)}
+      <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
+      <div style="margin-top:24px">
+        <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg}, ${modeArg})">再做 ${nextN} 題</button>
+        <button class="summary-btn" onclick="window._goHome()">離開</button>
+      </div>`;
+    showPage("page-summary");
+    playSound("complete");
+  });
+}
+
+// ════════════════════════════════════════════════════
+// UI: Summary
+// ════════════════════════════════════════════════════
+function renderSummary() {
+  const correctCount = quiz.answered.filter(a => a.correct).length;
+  const total = quiz.answered.length;
+
+  // 此函式只在兩種情形被呼叫：full 模式整單元通關（finishBatch 保證 isCleared），
+  // 或錯題模式清空。full 未通關一律由 finishBatch 導向 renderBatchBreak，不到這裡。
+  let title, scoreLabel;
+  if (quiz.mode === "full") {
+    title = "通關！";
+    scoreLabel = "所有題目都答對了";
+  } else {
+    title = "錯題清除！";
+    scoreLabel = "所有錯題都答對了";
+  }
+
+  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
+  let buttonsHtml = "";
+  if (quiz.mode === "full") {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._resetAndStartFull(${quiz.unit}, ${stArg}, ${modeArg})">重新挑戰</button>
+      <button class="summary-btn" onclick="window._goHome()">回選單</button>`;
+  } else {
+    buttonsHtml = `
+      <button class="summary-btn primary" onclick="window._goHome()">回選單</button>`;
+  }
+
+  // full 通關＝整單元合併池；錯題清除＝通用鼓勵池
+  const reward = pickReward(quiz.mode === "full" ? "unit" : "error", quiz.unit);
+  preloadThen(reward, () => {
+    document.getElementById("page-summary").innerHTML = `
+      <h2>${title}</h2>
+      ${rewardRevealHtml(reward)}
+      <div class="score">${correctCount} / ${total}</div>
+      <div class="score-label">${scoreLabel}</div>
+      <div style="margin-top:24px">${buttonsHtml}</div>`;
+    showPage("page-summary");
+    playSound(quiz.mode === "full" ? "victory" : "complete");
+  });
+}
+
+window._goHome = () => { showPage("page-home"); renderHome(); };
+window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  const mode = normalizePracticeMode(practiceMode);
+  State.resetMastered(unit, subtopic, mode);
+  State.resetChallenge(challengeKey(unit, subtopic, mode));
+  startQuiz("full", unit, subtopic, mode);
+};
+
+// ════════════════════════════════════════════════════
+// Init
+// ════════════════════════════════════════════════════
+async function init() {
+  try {
+    // 身分不可解（見 identityUnresolvable）→ 在任何存檔讀寫之前擋下，別寫進錯的小孩
+    if (identityUnresolvable()) {
+      const p = document.querySelector("#page-error p");
+      if (p) p.textContent = "載入不完整，請重新整理頁面。";
+      showPage("page-error");
+      return;
+    }
+    renderChildBadge();
+    const seeded = Storage.migrate();  // 含 child 維度播種（複製不搬移）
+    initSyncClient();
+    // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
+    // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉數月 legacy
+    if (seeded) {
+      if (sync) sync.markImported();
+      else markImportedFallback(currentChild); // 腳本沒載到也不能丟定錨（播種只此一次）
+    }
+    // 題庫抓取與同步 boot 平行：boot 只碰進度存檔，首屏不用疊上同步的網路延遲
+    const questionsPromise = fetch("./questions.json");
+    // 開啟時 pull：adopt 直寫本機存檔，下一行 load 才讀（離線／無 token 靜默走本機）
+    if (sync) { try { await sync.boot(); } catch {} }
+    const saved = Storage.load();
+    State.init(saved);
+
+    const resp = await questionsPromise;
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    allQuestions = await resp.json();
+
+    try {
+      const expResp = await fetch("./explanations.json");
+      if (expResp.ok) explanations = await expResp.json();
+    } catch (e) {
+      console.warn("explanations.json not loaded:", e);
+    }
+
+    try {
+      const rwResp = await fetch("../shared/rewards.json");
+      if (rwResp.ok) rewards = await rwResp.json();
+    } catch (e) {
+      console.warn("rewards.json not loaded:", e);
+    }
+
+    // Build question map
+    questionMap = new Map(allQuestions.map(q => [q.id, q]));
+
+    // reward roll-up 索引：unit/subject → subtopic 集合（選圖缺池時往上合併）
+    for (const q of allQuestions) {
+      if (!subtopicsByUnit.has(q.unit)) subtopicsByUnit.set(q.unit, new Set());
+      subtopicsByUnit.get(q.unit).add(q.subtopic);
+      if (!subtopicsBySubject.has(q.subject)) subtopicsBySubject.set(q.subject, new Set());
+      subtopicsBySubject.get(q.subject).add(q.subtopic);
+      unitToSubject.set(q.unit, q.subject);
+    }
+
+    // Clean orphan errorBank / flagged entries
+    state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
+    state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
+    // 對齊「錯 ≥ 2 次才進錯題庫」新規則：清掉舊版只錯一次（且已答對過）就被收進去的題。
+    // 保守起見只在有作答統計可判斷時才清；無 stats 者保留不動。
+    state.errorBank = state.errorBank.filter(e => shouldKeepModeError(state.stats, e));
+    Storage.saveQuiet(state);  // init 整理不推雲（見 saveQuiet 註解）
+
+    // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
+    if (state._needMasteredBackfill) State.backfillMastered();
+
+    renderHome();
+    handleRestoreHash();  // 若帶 #restore=（還原捷徑帶回）→ 二次確認後覆蓋
+  } catch (e) {
+    console.error("Failed to load:", e);
+    showPage("page-error");
+  }
+}
+
+// 網站已開著時，還原捷徑用 Open URL 帶 #restore= 進來是「同文件 hash 變更、不 reload」→ 也要接住。
+// 身分不可解時不掛：init 已拒絕開站，但這條路徑繞過 init、會用退回的 LEGACY_CHILD 落地匯入——
+// 正是那個守衛要防的跨小孩寫入
+if (!identityUnresolvable()) window.addEventListener("hashchange", handleRestoreHash);
+
+// 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSyncClient 的 attachLifecycle 統一掛。
+// bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  const id = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null };
+  if ((id.child || LEGACY_CHILD) !== currentChild) { location.reload(); return; }
+  if (sync) sync.syncNow().catch(() => {});
+});
+init();
+})();
+</script>
+</body>
+</html>
