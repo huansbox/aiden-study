@@ -9,21 +9,24 @@ const m = src.match(/\/\/ <sync-pure>([\s\S]*?)\/\/ <\/sync-pure>/);
 if (!m) throw new Error("docs/shared/sync-v1.js 找不到 <sync-pure> 區塊");
 const { decideSync, classifyRemote } = new Function(m[1] + "\nreturn { classifyRemote, decideSync };")();
 
-const L = (syncedRev, dirty, schemaVersion = 1, lastWriteId = undefined) => ({
+const L = (syncedRev, dirty, schemaVersion = 1, lastWriteId = undefined, syncedEpoch = null) => ({
   syncedRev,
   dirty,
   schemaVersion,
   lastWriteId,
+  syncedEpoch,
 });
-const OK = (rev, data = null, schemaVersion = undefined, writeId = undefined) => ({
+const OK = (rev, data = null, schemaVersion = undefined, writeId = undefined, epoch = null) => ({
   kind: "ok",
   rev,
   data,
   schemaVersion,
   writeId,
+  epoch,
 });
 
-// 全矩陣：錯誤類 → 版本比對 → reseed → rev 三向（含 own-write 例外）
+// 全矩陣：錯誤類 → 版本比對 → reseed → 換代 → rev 三向（含 own-write 例外）
+// 第 4 欄＝預期的 action.regen（省略＝false）
 const MATRIX = [
   // 錯誤類（與 rev 無關）
   [L(0, true), { kind: "network" }, "offline"],
@@ -56,16 +59,32 @@ const MATRIX = [
   [L(2, true, 1), OK(2, { schemaVersion: 2 }, 2), "schema-block"],
   // 遠端 schemaVersion 相同 → 不擋
   [L(1, false, 2), OK(9, { schemaVersion: 2 }, 2), "adopt"],
+
+  // ── 換代（票 #37）：雲端遺失後由他機搶先重新播種，rev 從 1 重數 ──
+  // 這正是舊版永久卡死的情境（遠端 rev 落後、data 非 null → 落到 retry）：改判以本地重新播種
+  [L(50, false, 1, undefined, "E1"), OK(1, { a: 1 }, undefined, "w-a", "E2"), "push", true],
+  [L(50, true, 1, undefined, "E1"), OK(1, { a: 1 }, undefined, "w-a", "E2"), "push", true],
+  // 跨代 rev 不可比：遠端 rev 領先也不得走 adopt／conflict-adopt 的 rev 比較
+  [L(2, false, 1, undefined, "E1"), OK(7, { a: 1 }, undefined, "w-a", "E2"), "push", true],
+  [L(2, true, 1, undefined, "E1"), OK(7, { a: 1 }, undefined, "w-a", "E2"), "push", true],
+  // 同一枚章＝KV 最終一致的舊讀（非換代）→ 照舊 retry，不得誤觸發
+  [L(5, true, 1, undefined, "E1"), OK(2, { a: 1 }, undefined, "w-a", "E1"), "retry"],
+  [L(5, false, 1, undefined, "E1"), OK(2, { a: 1 }, undefined, "w-a", "E1"), "retry"],
+  // 兩端皆須為新協定才觸發：本地無章（新裝置／舊 client）或遠端無章（舊 worker）→ 行為同改動前
+  [L(5, true, 1, undefined, null), OK(2, { a: 1 }, undefined, "w-a", "E2"), "retry"],
+  [L(5, true, 1, undefined, "E1"), OK(2, { a: 1 }, undefined, "w-a", null), "retry"],
+  // 換代不得越過 schema 防護（遠端資料版本較新仍優先保本地）
+  [L(50, true, 1, undefined, "E1"), OK(1, { schemaVersion: 2 }, 2, "w-a", "E2"), "schema-block"],
+  // 雲端整包空掉（尚無人重新播種）＝ reseed，不是換代：空 key 根本沒有章
+  [L(50, false, 1, undefined, "E1"), OK(0, null, undefined, undefined, null), "reseed"],
 ];
 
 test("decideSync 全矩陣", () => {
-  for (const [local, remote, expected] of MATRIX) {
+  for (const [local, remote, expected, expectRegen = false] of MATRIX) {
     const got = decideSync(local, remote);
-    assert.equal(
-      got.type,
-      expected,
-      `local=${JSON.stringify(local)} remote=${JSON.stringify(remote)} → ${got.type}（預期 ${expected}）`,
-    );
+    const where = `local=${JSON.stringify(local)} remote=${JSON.stringify(remote)}`;
+    assert.equal(got.type, expected, `${where} → ${got.type}（預期 ${expected}）`);
+    assert.equal(!!got.regen, expectRegen, `${where} → regen=${!!got.regen}（預期 ${expectRegen}）`);
   }
 });
 
@@ -92,12 +111,12 @@ test("classifyRemote 分類矩陣", () => {
   }
 });
 
-test("classifyRemote 正常 200 抽取 rev/data/schemaVersion/writeId", () => {
+test("classifyRemote 正常 200 抽取 rev/data/schemaVersion/writeId/epoch", () => {
   const got = classifyRemote({
     threw: false,
     status: 200,
     jsonOk: true,
-    body: { rev: 4, data: { schemaVersion: 2, mastered: ["q1"] }, writeId: "w9" },
+    body: { rev: 4, data: { schemaVersion: 2, mastered: ["q1"] }, writeId: "w9", epoch: "E1" },
   });
   assert.deepEqual(got, {
     kind: "ok",
@@ -105,8 +124,24 @@ test("classifyRemote 正常 200 抽取 rev/data/schemaVersion/writeId", () => {
     data: { schemaVersion: 2, mastered: ["q1"] },
     schemaVersion: 2,
     writeId: "w9",
+    epoch: "E1",
   });
-  // 合法空：data null → schemaVersion undefined、data 保持 null
+  // 合法空：data null → schemaVersion undefined、data 保持 null、空 key 無章
   const empty = classifyRemote({ threw: false, status: 200, jsonOk: true, body: { rev: 0, data: null } });
-  assert.deepEqual(empty, { kind: "ok", rev: 0, data: null, schemaVersion: undefined, writeId: undefined });
+  assert.deepEqual(empty, {
+    kind: "ok",
+    rev: 0,
+    data: null,
+    schemaVersion: undefined,
+    writeId: undefined,
+    epoch: null,
+  });
+  // 舊 worker 不回 epoch／型別壞 → null（不得留 undefined 讓換代判定誤觸發）
+  const legacy = classifyRemote({
+    threw: false,
+    status: 200,
+    jsonOk: true,
+    body: { rev: 4, data: { a: 1 }, writeId: "w9", epoch: 42 },
+  });
+  assert.equal(legacy.epoch, null);
 });

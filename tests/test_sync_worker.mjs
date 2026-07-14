@@ -77,9 +77,12 @@ test("PUT 播種→GET round-trip", async () => {
     env(kv),
   );
   assert.equal(put.status, 200);
-  assert.deepEqual(await put.json(), { rev: 1 });
+  const putBody = await put.json();
+  assert.deepEqual(Object.keys(putBody).sort(), ["epoch", "rev"], "PUT 回應不得多帶非預期欄位");
+  assert.equal(putBody.rev, 1);
+  assert.equal(typeof putBody.epoch, "string");
   const get = await worker.fetch(req("/v1/progress/test-a/study"), env(kv));
-  assert.deepEqual(await get.json(), { rev: 1, data: { m: [1] }, writeId: "w1" });
+  assert.deepEqual(await get.json(), { rev: 1, data: { m: [1] }, writeId: "w1", epoch: putBody.epoch });
   assert.equal(get.headers.get("Cache-Control"), "no-store");
 });
 
@@ -112,6 +115,50 @@ test("PUT 重送同 writeId → 200 冪等、rev 不重複遞增", async () => {
   const retryBody = await retry.json();
   assert.equal(retryBody.rev, 1);
   assert.equal(retryBody.idempotent, true);
+});
+
+// ── 世代章 epoch（票 #37）：讓 client 分得出「KV 舊讀」與「雲端已被他機重新播種」──
+
+const PATH = "/v1/progress/test-a/study";
+const put = (kv, body) => worker.fetch(req(PATH, { method: "PUT", body }), env(kv));
+
+test("世代章：同一世代內的 PUT 原樣帶下去（rev 遞增、章不變）", async () => {
+  const kv = kvStub();
+  const seed = await put(kv, { rev: 0, data: { m: [1] }, writeId: "w1" });
+  const epoch = (await seed.json()).epoch;
+  const next = await put(kv, { rev: 1, data: { m: [2] }, writeId: "w2" });
+  const body = await next.json();
+  assert.equal(body.rev, 2);
+  assert.equal(body.epoch, epoch, "同一世代不得換章，否則他機每輪都誤判成換代");
+});
+
+test("世代章：KV 遺失後重新播種 → 鑄新章（#37 的換代訊號來源）", async () => {
+  const before = kvStub();
+  const a = await put(before, { rev: 0, data: { m: [1] }, writeId: "w1" });
+  const epochBefore = (await a.json()).epoch;
+
+  const rebuilt = kvStub(); // namespace 重建／key 誤刪＝整包空
+  const b = await put(rebuilt, { rev: 0, data: { m: [9] }, writeId: "w2" });
+  const after = await b.json();
+  assert.equal(after.rev, 1, "rev 從 1 重數（跨代不可比，正是卡死的根因）");
+  assert.notEqual(after.epoch, epochBefore, "換代必須換章，落後裝置才分得出這不是舊讀");
+});
+
+test("世代章：冪等重送回同一枚章", async () => {
+  const kv = kvStub();
+  const body = { rev: 0, data: { m: [1] }, writeId: "w1" };
+  const epoch = (await (await put(kv, body)).json()).epoch;
+  const retry = await (await put(kv, body)).json();
+  assert.equal(retry.idempotent, true);
+  assert.equal(retry.epoch, epoch);
+});
+
+test("世代章：舊協定存檔（無章）→ 下次 PUT 補鑄，不留無章存檔", async () => {
+  const kv = seeded([["test-a", "study", { rev: 3, data: { m: [1] }, writeId: "w0" }]]);
+  const get = await worker.fetch(req(PATH), env(kv));
+  assert.equal((await get.json()).epoch, undefined, "改動前寫的存檔本來就沒有章");
+  const res = await put(kv, { rev: 3, data: { m: [2] }, writeId: "w1" });
+  assert.equal(typeof (await res.json()).epoch, "string");
 });
 
 test("PUT 壞 JSON → 400；壞形狀 → 400", async () => {

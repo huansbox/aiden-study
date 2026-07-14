@@ -53,6 +53,7 @@ function makeHarness(caseClient, env, token, twists = {}) {
     data: structuredClone(caseClient.data),
     meta: {
       syncedRev: caseClient.syncedRev,
+      syncedEpoch: caseClient.syncedEpoch ?? null,
       dirty: caseClient.dirty,
       lastWriteId: caseClient.lastWriteId,
     },
@@ -114,6 +115,12 @@ for (const c of CONTRACT_CASES) {
     }
     if (c.expect.firstAction === "reseed") {
       assert.ok(store.meta.reseedAt, "reseed 應記健康事件（雲端資料曾遺失）");
+    }
+    if (c.expect.regen) {
+      assert.ok(store.meta.regenAt, "換代應記健康事件（雲端曾遺失並被他機重新播種）");
+    }
+    if (c.expect.finalSyncedEpoch !== undefined) {
+      assert.equal(store.meta.syncedEpoch, c.expect.finalSyncedEpoch, "須記下當代世代章");
     }
 
     if (c.replayPut) {
@@ -224,6 +231,54 @@ test("markImported 定錨標記持久化：定錨 GET 失敗 → 下一輪成功
   assert.deepEqual(after.data, { mastered: ["imported-1"] });
   assert.equal(store.meta.anchorPending, false, "定錨完成後標記須清除");
   assert.equal(store.meta.syncedRev, 43);
+});
+
+test("換代（#37）：落後裝置復活 → 兩機收斂，且不再重複判為換代（無限重推防護）", async () => {
+  // 雲端 KV 曾整包遺失，裝置 A 搶先重新播種：新世代 E2、rev 從 1 重數。
+  // 裝置 B 停在舊世代 E1、syncedRev 50 —— 舊版在此每輪回 retry，永遠不 push 不 adopt。
+  const env = makeEnv({ server: { rev: 1, data: { mastered: ["from-a"] }, writeId: "w-a", epoch: "E2" } });
+  const b = makeHarness(
+    { syncedRev: 50, syncedEpoch: "E1", dirty: false, data: { mastered: ["q1", "q2"] }, schemaVersion: 1 },
+    env,
+    TOKEN,
+  );
+
+  const first = await b.client.syncNow();
+  assert.equal(first.action, "push", "舊版此處回 retry 並永久卡死");
+  assert.ok(b.store.meta.regenAt, "換代須記健康事件");
+  assert.equal(b.store.meta.syncedEpoch, "E2", "須記下新世代章");
+  const after = await readServer(env);
+  assert.equal(after.rev, 2);
+  assert.deepEqual(after.data, { mastered: ["q1", "q2"] }, "本機殘存資料補回雲端");
+
+  const second = await b.client.syncNow();
+  assert.equal(second.action, "none", "已對齊新世代 → 不得再判換代（否則每輪重推）");
+
+  // 裝置 A（搶先播種的那台）：世代章相符 → 循常規 adopt 收斂，不分裂
+  const a = makeHarness(
+    { syncedRev: 1, syncedEpoch: "E2", dirty: false, data: { mastered: ["from-a"] }, schemaVersion: 1 },
+    env,
+    TOKEN,
+  );
+  const out = await a.client.syncNow();
+  assert.equal(out.action, "adopt");
+  assert.deepEqual(a.store.data, b.store.data, "兩機收斂到同一份資料");
+});
+
+test("換代（#37）：none 輪也須記下世代章，否則改動前已同步的裝置永遠觸發不了換代判定", async () => {
+  // 本次改動前就已同步的裝置＝meta 有 syncedRev、但沒有世代章。若 none 輪不補記章，
+  // 它會一直維持「無章」→ 換代規則的 local.syncedEpoch 短路 → 日後雲端遺失時照樣卡死。
+  const env = makeEnv({ server: { rev: 3, data: { mastered: ["q1"] }, writeId: "w0", epoch: "E1" } });
+  const { client, store } = makeHarness(
+    { syncedRev: 3, dirty: false, data: { mastered: ["q1"] }, schemaVersion: 1 }, // 刻意不給 syncedEpoch
+    env,
+    TOKEN,
+  );
+  assert.equal(store.meta.syncedEpoch, null, "前提：這台還沒有章");
+
+  const out = await client.syncNow();
+  assert.equal(out.action, "none", "rev 對齊且無本機變更");
+  assert.equal(store.meta.syncedEpoch, "E1", "none 輪也須補記章");
 });
 
 test("flushBeacon：beacon 後永不清 dirty；下輪 GET 認出 own-write → 疊推零損失", async () => {
