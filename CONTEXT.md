@@ -9,7 +9,7 @@ _Avoid_: 網站、整站
 _Avoid_: 首頁、入口、portal
 
 **registry**：
-驅動 hub 的 app 目錄資料檔——每個學習 app 一筆（名稱、路徑、對象、類別、狀態）。app 的增減與退役只改這份資料。
+驅動 hub 的 app 目錄資料檔（`docs/registry.json`）——每個學習 app 一筆。app 的增減、上下架、首頁順序只改這份資料。欄位語意：owner＝該 app 舊存檔／預設進度歸屬的 child（enum：aiden|bingpu）；audience＝首頁顯示對象（可複選，空＝僅家長目錄）；order＝每 child 的首頁排序（數字小在前）；status＝active|draft|parked|retired；category＝學科|興趣。
 _Avoid_: 目錄、清單、catalog
 
 **app**：

@@ -3,27 +3,302 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三下練習</title>
+<title>全家學習平台</title>
 <meta name="robots" content="noindex">
+<!-- hub（票 #31）：registry.json 驅動的入口頁——小孩選人進 app、家長看全目錄與同步健康。
+     hub 不掛 manifest（web app manifest 的 start_url 會吃掉圖示網址參數，spec 明文）。
+     站內連結一律相對路徑：GH Pages 專案頁（/aiden-study/）與自訂網域（/）兩邊都要對。 -->
 <style>
+  :root { --primary: #2d6cdf; --ink: #2c3542; --muted: #7a8494; --card: #ffffff; }
+  * { box-sizing: border-box; }
   body { font-family: -apple-system, "PingFang TC", sans-serif; background: #f5f7fa;
-         display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  a { color: #2d6cdf; font-size: 1.1rem; }
+         color: var(--ink); margin: 0; padding: 24px 16px 48px; }
+  .wrap { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; text-align: center; margin: 16px 0 24px; }
+  .hint { text-align: center; color: var(--muted); margin: 24px 0; }
+  .big-btn { display: flex; align-items: center; gap: 14px; width: 100%; padding: 18px 20px;
+             margin: 12px 0; background: var(--card); border: 2px solid transparent; border-radius: 16px;
+             box-shadow: 0 2px 8px rgba(44,53,66,.08); font-size: 1.3rem; color: var(--ink);
+             text-decoration: none; cursor: pointer; text-align: left; font-family: inherit; }
+  .big-btn:active { transform: scale(.98); }
+  .big-btn .ic { font-size: 2rem; width: 2.4rem; text-align: center; flex: none; }
+  .picker-btn { font-size: 1.5rem; padding: 24px 20px; }
+  .picker-btn .ic { font-size: 2.6rem; width: 3rem; }
+  .picker-btn.picked { border-color: var(--primary); }
+  .picker-btn .last { margin-left: auto; font-size: .8rem; color: var(--primary);
+                      border: 1px solid var(--primary); border-radius: 999px; padding: 2px 10px; flex: none; }
+  .head-badge { display: flex; align-items: center; justify-content: center; gap: 10px;
+                font-size: 1.4rem; margin: 8px 0 20px; }
+  .head-badge .ic { font-size: 2rem; }
+  .foot { display: flex; justify-content: center; gap: 24px; margin-top: 40px; }
+  .foot a { color: var(--muted); font-size: .9rem; text-decoration: none; }
+  /* 家長視圖 */
+  .parent { font-size: .95rem; }
+  .parent h2 { font-size: 1.05rem; margin: 28px 0 8px; }
+  .plist { background: var(--card); border-radius: 12px; padding: 4px 16px;
+           box-shadow: 0 1px 4px rgba(44,53,66,.06); }
+  .prow { display: flex; align-items: center; gap: 8px; padding: 10px 0; flex-wrap: wrap;
+          border-bottom: 1px solid #eef1f5; }
+  .prow:last-child { border-bottom: none; }
+  .prow .name { font-weight: 600; }
+  .prow .tag { color: var(--muted); font-size: .8rem; background: #eef1f5; border-radius: 6px; padding: 1px 8px; }
+  .prow a { color: var(--primary); font-size: .85rem; margin-left: auto; }
+  .health-bad { color: #c0392b; }
+  .health-ok { color: #1e8e4e; }
+  .token-box { font-family: ui-monospace, monospace; font-size: .85rem; word-break: break-all;
+               background: var(--card); border-radius: 12px; padding: 12px 16px;
+               box-shadow: 0 1px 4px rgba(44,53,66,.06); }
 </style>
 </head>
 <body>
-<!-- 舊入口跳轉頁（#30）：題庫已移至 /study/。#31 的 hub 落地後這頁會被 hub 取代。
-     相對路徑 "study/"：GH Pages 專案頁（/aiden-study/）與自訂網域（/）兩邊都對，寫死 "/study/" 會炸掉前者。
-     search 與 hash 都要帶過去——
-       hash：備忘錄還原捷徑寫死舊根網址帶 #restore=，丟了＝還原靜默失敗
-       search：圖示網址帶 ?child=&k=，丟了＝身分退回 LEGACY_CHILD，弟弟的作答寫進哥哥的存檔 -->
-<a id="go" href="study/">前往題庫</a>
 <script>
-// 連結與自動跳轉走同一個目標：只要 JS 有跑，兩條路徑都帶著參數
-// （JS 全關時題庫本來就不能用，那個連結只是告知「搬家了」）
-var target = "study/" + location.search + location.hash;
-document.getElementById("go").href = target;
-location.replace(target);
+// <hub-pure>
+// ══════ hub 純函式（node 測試由此 sentinel 抽取，不得引用外部全域）══════
+// 放在第一段 inline script：#restore= 轉送要用 restoreForwardTarget，而轉送必須零依賴、
+// 在 sync-v1.js／registry.json 之前就能跑——測試抽的與線上跑的必須是同一份。
+const HUB_CHILD_KEY = "kids_current_child"; // hub 落地的當前 child（選人畫面的「上次選擇」同一把）
+
+// hash 帶 restore=（非空 payload）→ 轉送 study/ 的目標（search＋hash 都保留）；否則 null。
+// 判定對齊 study 的 readRestoreHash（/[#&]?restore=([^&]+)/，接受 hash 內任意位置）——
+// study 收得下的，hub 就不能擋在門口。
+function restoreForwardTarget(search, hash) {
+  if (typeof hash !== "string" || !/[#&]?restore=[^&]/.test(hash)) return null;
+  return "study/" + (search || "") + hash;
+}
+
+// registry children 裡查得到才算已知，回傳該 child 物件（test- 等合法但未知的 id → null，走選人畫面）
+function knownChild(children, id) {
+  return (children || []).find((c) => c && c.id === id) || null;
+}
+
+// 某 child 首頁的 app 清單：active＋audience 含該 child，依 order（缺者排最後）再依 id 排序。
+// order 缺項是 audit 擋的髒資料，但 registry 是家長手編檔（可能沒跑測試就上）——runtime 仍要優雅
+function homeApps(apps, child) {
+  return (apps || [])
+    .filter((a) => a.status === "active" && Array.isArray(a.audience) && a.audience.includes(child))
+    .sort((x, y) => {
+      const ox = x.order && Number.isInteger(x.order[child]) ? x.order[child] : Infinity;
+      const oy = y.order && Number.isInteger(y.order[child]) ? y.order[child] : Infinity;
+      if (ox !== oy) return ox - oy;
+      return x.id < y.id ? -1 : 1;
+    });
+}
+
+// app 連結：站內 path 必帶 ?child=（app 的 bootIdentity 只認自身網址參數；丟了＝退回 LEGACY_CHILD）；
+// 外鏈 url 原樣（點了會跳出 webclip 到 Safari，spec 已載明接受）
+function appHref(app, child) {
+  if (app.path) return app.path + "?child=" + encodeURIComponent(child);
+  return app.url;
+}
+
+const STATUS_ORDER = ["active", "draft", "parked", "retired"];
+const STATUS_LABEL = { active: "現役", draft: "草案", parked: "封存", retired: "退役" };
+
+// 家長目錄：全部 app 依 status 分組（空組不出）
+function parentGroups(apps) {
+  return STATUS_ORDER
+    .map((s) => ({ status: s, label: STATUS_LABEL[s], apps: (apps || []).filter((a) => a.status === s) }))
+    .filter((g) => g.apps.length > 0);
+}
+
+// 健康燈資料：接同步的 app × 該 app audience 內的 child，join worker /v1/status 的 keys。
+// audience 外的組合（如 study×弟弟）結構上不會同步，無資料時不出列——否則永遠掛紅字「從未同步」，
+// 真異常被結構性噪音淹沒；但雲端真有資料（逃生門匯入到他 child）就照列，不藏資料。
+function healthRows(apps, children, statusKeys) {
+  const rows = [];
+  for (const app of (apps || []).filter((a) => a.sync)) {
+    for (const c of children || []) {
+      const hit = (statusKeys || []).find((k) => k && k.child === c.id && k.app === app.id);
+      const inAudience = Array.isArray(app.audience) && app.audience.includes(c.id);
+      if (!inAudience && !hit) continue;
+      rows.push({ app, child: c, lastWrite: hit ? hit.lastWrite : null, rev: hit ? hit.rev : null });
+    }
+  }
+  return rows;
+}
+// </hub-pure>
+
+// ── #restore= 轉送：必須最先執行、同步、零依賴（sync-v1.js／registry.json 掛了也要能轉）──
+// 備忘錄還原捷徑寫死舊根網址帶 #restore=（捷徑存家長 iCloud、改不了），丟 hash＝還原靜默失敗；
+// search 一併帶過去：?child= 丟了＝身分退回 LEGACY_CHILD＝跨 child 寫入。
+// 落地寫入由 /study/ 的 child-aware handleRestoreHash 處理，hub 只負責轉送。
+function forwardRestore() {
+  const t = restoreForwardTarget(location.search, location.hash);
+  if (t) location.replace(t);
+  return !!t;
+}
+forwardRestore();
+// hub 是會停留的頁（舊跳轉頁不是）：分頁停在 hub 時，捷徑的 Open URL 是「同文件 hash 變更、
+// 不 reload」——不掛 hashchange 就靜默丟還原（study 端同款防護）
+window.addEventListener("hashchange", forwardRestore);
+</script>
+<div class="wrap" id="hub"><p class="hint">載入中⋯</p></div>
+<noscript><p class="hint">需要開啟 JavaScript 才能使用。題庫在 <a href="study/">study/</a>。</p></noscript>
+<script src="shared/sync-v1.js"></script>
+<script>
+const KidsSync = window.KidsSyncV1 || null;
+// localStorage 在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——包一層，hub 退回「可用但不記憶」
+const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+const root = document.getElementById("hub");
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+// 格式與 study／zhuyin 家長區的 formatSyncTime 一致（YYYY-MM-DD HH:MM）——同一事件兩處顯示不該長不一樣
+function formatSyncTime(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+// 掛死不 reject 的連線不能讓畫面永遠停在「讀取中」（sync client 同款 AbortController 防護）
+function fetchWithTimeout(u, opts, ms = 8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms);
+  return fetch(u, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+}
+function rememberChild(id) {
+  if (!safeStorage) return;
+  try { safeStorage.setItem(HUB_CHILD_KEY, id); } catch (e) {}
+}
+function recallChild() {
+  if (!safeStorage) return null;
+  try { return safeStorage.getItem(HUB_CHILD_KEY); } catch (e) { return null; }
+}
+// 逃生連結必帶 search：?child= 丟了＝身分退回 LEGACY_CHILD＝跨 child 寫入（#40-A 修過的同款洞）；
+// sync-v1.js 沒載到的那種失敗，study 端會以 identityUnresolvable 拒開，不會寫錯人
+function fatalHtml() {
+  const q = escapeHtml(location.search);
+  return `<p class="hint">頁面載入不完整，請重新整理。<br>題庫也可以直接開 <a href="study/${q}">study/</a>。</p>`;
+}
+
+function renderPicker(reg) {
+  const def = knownChild(reg.children, recallChild());
+  const btns = reg.children.map((c) => `
+    <button class="big-btn picker-btn${def && c.id === def.id ? " picked" : ""}" data-child="${escapeHtml(c.id)}">
+      <span class="ic">${c.emoji}</span>${escapeHtml(c.name)}
+      ${def && c.id === def.id ? '<span class="last">上次是你</span>' : ""}
+    </button>`).join("");
+  root.innerHTML = `<h1>你是誰？</h1>${btns}
+    <div class="foot"><a href="?view=parent">家長區</a></div>`;
+  root.querySelectorAll(".picker-btn").forEach((b) => {
+    b.addEventListener("click", () => {
+      const id = b.getAttribute("data-child");
+      rememberChild(id);
+      location.href = "?child=" + encodeURIComponent(id);
+    });
+  });
+}
+
+function renderHome(reg, child) {
+  const apps = homeApps(reg.apps, child.id);
+  const list = apps.length
+    ? apps.map((a) => `
+        <a class="big-btn" href="${escapeHtml(appHref(a, child.id))}">
+          <span class="ic">${a.emoji}</span>${escapeHtml(a.name)}
+        </a>`).join("")
+    : `<p class="hint">還沒有可以練的 app</p>`;
+  root.innerHTML = `
+    <div class="head-badge"><span class="ic">${child.emoji}</span>${escapeHtml(child.name)}</div>
+    ${list}
+    <div class="foot"><a href="./">換人</a><a href="?view=parent">家長區</a></div>`;
+}
+
+function renderParent(reg, identity) {
+  const groups = parentGroups(reg.apps);
+  // 站內 app 的「開啟」帶 owner 身分：寫入目標與無參數時的 LEGACY_CHILD 相同（ADR-0004 owner＝舊存檔歸屬），
+  // 但帶了參數，腳本載入失敗時 app 的 identityUnresolvable 守衛才擋得住
+  const dir = groups.map((g) => `
+    <h2>${g.label}（${g.apps.length}）</h2>
+    <div class="plist">${g.apps.map((a) => `
+      <div class="prow">
+        <span>${a.emoji}</span><span class="name">${escapeHtml(a.name)}</span>
+        <span class="tag">${escapeHtml(a.id)}</span>
+        <span class="tag">${escapeHtml(a.category)}</span>
+        <span class="tag">歸屬 ${escapeHtml(a.owner)}</span>
+        ${a.sync ? '<span class="tag">同步</span>' : ""}
+        ${(a.audience || []).length ? `<span class="tag">首頁：${a.audience.map(escapeHtml).join("、")}</span>` : ""}
+        <a href="${escapeHtml(a.path ? appHref(a, a.owner) : a.url)}">開啟</a>
+      </div>`).join("")}
+    </div>`).join("");
+  const token = identity.getToken();
+  const tokenHtml = token
+    ? `<div class="token-box">${escapeHtml(token)}</div>`
+    : `<p class="hint">尚未設定同步金鑰——用帶 <code>?k=</code> 的網址開啟本頁，或在任一 app 的家長區輸入。</p>`;
+  root.innerHTML = `<div class="parent">
+    <h1>家長區</h1>
+    ${dir}
+    <h2>同步健康</h2>
+    <div class="plist" id="health"><div class="prow">讀取中⋯</div></div>
+    <h2>同步金鑰</h2>
+    ${tokenHtml}
+    <div class="foot"><a href="./">回入口</a></div>
+  </div>`;
+  loadHealth(reg, token);
+}
+
+// 跨容器健康燈：讀 worker /v1/status（每 key 最後成功寫入時間；test- key 由 server 過濾）。
+// 錯誤分流沿平台慣例明示「不是離線」。文案刻意不逐字用 HEALTH_TEXT：no-token／auth-error 的
+// 「請在下方輸入」「請重新輸入」在 hub 不成立（這裡沒有輸入框），照抄會誤導家長。
+async function loadHealth(reg, token) {
+  const el = document.getElementById("health");
+  if (!el) return;
+  if (!token) {
+    el.innerHTML = `<div class="prow health-bad">尚未設定同步金鑰，無法讀取（不是離線）</div>`;
+    return;
+  }
+  let res;
+  try {
+    res = await fetchWithTimeout(`${KidsSync.DEFAULT_ENDPOINT}/v1/status?k=${encodeURIComponent(token)}`);
+  } catch (e) {
+    el.innerHTML = `<div class="prow health-bad">連不上同步服務（離線，或非允許網域——本機測試屬預期）</div>`;
+    return;
+  }
+  if (res.status === 401) {
+    el.innerHTML = `<div class="prow health-bad">同步金鑰不對（不是離線）</div>`;
+    return;
+  }
+  let body = null;
+  try { body = await res.json(); } catch (e) {}
+  if (!res.ok || !body || !Array.isArray(body.keys)) {
+    el.innerHTML = `<div class="prow health-bad">${KidsSync.HEALTH_TEXT["data-error"]}</div>`;
+    return;
+  }
+  const rows = healthRows(reg.apps, reg.children, body.keys);
+  el.innerHTML = rows.length
+    ? rows.map((r) => {
+        const t = formatSyncTime(r.lastWrite);
+        return `<div class="prow">
+          <span>${r.app.emoji}</span><span class="name">${escapeHtml(r.app.name)}</span>
+          <span>${r.child.emoji} ${escapeHtml(r.child.name)}</span>
+          <span class="${t ? "health-ok" : "health-bad"}" style="margin-left:auto">${t ? `上次同步 ${t}（rev ${r.rev}）` : "從未同步"}</span>
+        </div>`;
+      }).join("")
+    : `<div class="prow">沒有接同步的 app</div>`;
+}
+
+(function main() {
+  // 首段 inline script 已 location.replace；replace 不中斷同步執行，這裡別再渲染（閃畫面）
+  if (restoreForwardTarget(location.search, location.hash)) return;
+  if (!KidsSync) { root.innerHTML = fatalHtml(); return; } // 身分落地能力不在＝不猜著做（比照 app 的 identityUnresolvable）
+  // 落地圖示網址參數：?k= → kids_sync_token（bootIdentity 寫入，各 app sync client 讀同一把）
+  const identity = KidsSync.bootIdentity(location.search, safeStorage);
+  // registry 靠 HTTP cache 即可（GH Pages max-age=600；本頁 HTML 同樣 10 分鐘內是舊的，
+  // no-cache 換不到更即時、還讓每次開站多吃一趟 RTT、斷網時放著快取不用直接 fatal）
+  fetchWithTimeout("registry.json")
+    .then((r) => { if (!r.ok) throw new Error("registry http " + r.status); return r.json(); })
+    .then((reg) => {
+      // ?child= 落地在驗證之後：test- 等合法但未知的 id 不得洗掉小孩的選人記憶
+      const child = knownChild(reg.children, identity.child);
+      if (child) rememberChild(child.id);
+      const params = new URLSearchParams(location.search);
+      if (params.get("view") === "parent") return renderParent(reg, identity);
+      if (child) return renderHome(reg, child);
+      renderPicker(reg);
+    })
+    .catch(() => { root.innerHTML = fatalHtml(); });
+})();
 </script>
 </body>
 </html>
