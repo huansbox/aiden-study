@@ -1507,8 +1507,11 @@ function syncStatusHtml() {
   } else {
     statusLine = "還沒同步過";
   }
-  const reseed = m.reseedAt
-    ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(m.reseedAt)} 重新上傳</div>` : "";
+  // reseedAt＝本機發現雲端空了而重新播種；regenAt＝雲端已被他機重新播種、本機以殘存資料補回（票 #37）。
+  // 同一個「雲端曾遺失」事件的兩種視角，家長都該看到——只認 reseedAt 會讓落後裝置那條路完全靜默
+  const lostAt = m.reseedAt || m.regenAt;
+  const reseed = lostAt
+    ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(lostAt)} 重新上傳</div>` : "";
   return `
     <div class="sync-status" id="sync-status">
       <div>雲端同步（${info.emoji} ${escapeHtml(info.label)}）：${statusLine}</div>

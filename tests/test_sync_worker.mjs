@@ -78,6 +78,7 @@ test("PUT 播種→GET round-trip", async () => {
   );
   assert.equal(put.status, 200);
   const putBody = await put.json();
+  assert.deepEqual(Object.keys(putBody).sort(), ["epoch", "rev"], "PUT 回應不得多帶非預期欄位");
   assert.equal(putBody.rev, 1);
   assert.equal(typeof putBody.epoch, "string");
   const get = await worker.fetch(req("/v1/progress/test-a/study"), env(kv));

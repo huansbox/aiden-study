@@ -265,6 +265,22 @@ test("換代（#37）：落後裝置復活 → 兩機收斂，且不再重複判
   assert.deepEqual(a.store.data, b.store.data, "兩機收斂到同一份資料");
 });
 
+test("換代（#37）：none 輪也須記下世代章，否則改動前已同步的裝置永遠觸發不了換代判定", async () => {
+  // 本次改動前就已同步的裝置＝meta 有 syncedRev、但沒有世代章。若 none 輪不補記章，
+  // 它會一直維持「無章」→ 換代規則的 local.syncedEpoch 短路 → 日後雲端遺失時照樣卡死。
+  const env = makeEnv({ server: { rev: 3, data: { mastered: ["q1"] }, writeId: "w0", epoch: "E1" } });
+  const { client, store } = makeHarness(
+    { syncedRev: 3, dirty: false, data: { mastered: ["q1"] }, schemaVersion: 1 }, // 刻意不給 syncedEpoch
+    env,
+    TOKEN,
+  );
+  assert.equal(store.meta.syncedEpoch, null, "前提：這台還沒有章");
+
+  const out = await client.syncNow();
+  assert.equal(out.action, "none", "rev 對齊且無本機變更");
+  assert.equal(store.meta.syncedEpoch, "E1", "none 輪也須補記章");
+});
+
 test("flushBeacon：beacon 後永不清 dirty；下輪 GET 認出 own-write → 疊推零損失", async () => {
   const env = makeEnv({ server: { rev: 2, data: { mastered: ["q1"] }, writeId: "w0" } });
   const beacons = [];

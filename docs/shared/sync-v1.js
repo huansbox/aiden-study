@@ -300,7 +300,9 @@ function createSyncClient(opts) {
       return out;
     }
     if (action.type === "none") {
-      patchMeta({ lastSyncAt: now() });
+      // 連當代章一起記：否則「已同步且無變更」的裝置永遠拿不到章（none 不經 adopt／push），
+      // 換代規則對它從不觸發＝#37 的卡死在這台原封不動（改動前就已同步的裝置正是此形）
+      patchMeta({ syncedEpoch: remote.epoch, lastSyncAt: now() });
       setHealth("ok");
       return out;
     }
