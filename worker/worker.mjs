@@ -1,7 +1,10 @@
 // 家庭進度同步服務（Cloudflare Worker＋KV）。spec＝issue #26「進度同步」節、票＝#27。
-// 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；有值時回 {rev,data,writeId}
+// 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；有值時回 {rev,data,writeId,epoch}
 // （writeId 讓 client 認出「遠端領先的那筆是我自己的 beacon」）。404 只留給路由／key 格式錯誤。
 // PUT 帶 writeId 冪等：response 遺失後重送同 writeId → 200 現行 rev，不重複遞增。
+// epoch＝世代章（票 #37）：key 從無到有被建立時鑄一枚隨機值，之後每次 PUT 原樣帶下去。
+// rev 在 KV 遺失後會從 1 重數，跨代不可比——epoch 是唯一能讓 client 分辨
+// 「KV 最終一致的舊讀」（同一枚 epoch）與「雲端已被他機重新播種」（換了一枚）的訊號。
 // writeId 契約＝client 每次新寫入以 crypto.randomUUID() 新產、每 key 至多一筆未決寫入（見 docs/shared/sync-v1.js）。
 // sendBeacon 不能帶 header，token 一律支援 ?k= query（與圖示網址同一把）；POST 為 PUT 的 beacon 別名。
 // 已知接受限制（家庭規模、KV 無 conditional write）：同 rev 併發 PUT 可能雙雙 200，
@@ -104,7 +107,11 @@ async function handle(request, env, url, cors) {
         // 形狀壞（可 parse 但缺 rev）與不可 parse 同罪：回 200 假資料會讓 client 空轉、
         // 回 409 會把 key 磚化——都不如有訊號的 500
         if (!Number.isInteger(stored.rev)) return json(500, { error: "corrupt" }, cors);
-        return json(200, { rev: stored.rev, data: stored.data, writeId: stored.writeId }, cors);
+        return json(
+          200,
+          { rev: stored.rev, data: stored.data, writeId: stored.writeId, epoch: stored.epoch },
+          cors,
+        );
       }
 
       if (request.method === "PUT" || request.method === "POST") {
@@ -137,7 +144,7 @@ async function handle(request, env, url, cors) {
         }
         if (body.rev !== current.rev) {
           if (body.writeId === current.writeId) {
-            return json(200, { rev: current.rev, idempotent: true }, cors);
+            return json(200, { rev: current.rev, epoch: current.epoch, idempotent: true }, cors);
           }
           return json(409, { rev: current.rev }, cors);
         }
@@ -145,12 +152,14 @@ async function handle(request, env, url, cors) {
           rev: current.rev + 1,
           data: body.data,
           writeId: body.writeId,
+          // key 從無到有（初次播種／KV 遺失後重新播種）＝新世代，鑄新章；既有 key 原樣帶下去
+          epoch: current.epoch || crypto.randomUUID(),
           updatedAt: new Date().toISOString(),
         };
         await env.KV.put(kvKey, JSON.stringify(next), {
           metadata: { rev: next.rev, updatedAt: next.updatedAt },
         });
-        return json(200, { rev: next.rev }, cors);
+        return json(200, { rev: next.rev, epoch: next.epoch }, cors);
       }
 
       return json(405, { error: "method" }, cors);

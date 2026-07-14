@@ -8,6 +8,8 @@
 // - 手動匯入／還原＝寫入後同步持久化 anchorPending＋dirty（markImported），下一次成功 GET 完成定錨
 //   （syncedRev＝當下遠端 rev）→ 同輪 push；標記持久化使 busy 併發／reload／定錨 GET 失敗都不丟定錨
 // - push／reseed 的 PUT 一律以「本輪 GET 到的 remote.rev」為 base rev
+// - syncedEpoch＝上次同步到的雲端世代章（票 #37）：每次 adopt／push 成功後隨 rev 一起更新，
+//   否則換代判定會在下一輪重複觸發（無限重推）
 //
 // 衝突（遠端 rev 領先且本地有新變更）＝整包取遠端、棄本地增量（LWW by rev）——
 // 進度資料非單調（錯題答對移除、flag、重置），合併會使已刪資料復活。
@@ -34,14 +36,15 @@ function classifyRemote({ threw, status, jsonOk, body }) {
     data: body.data ?? null,
     schemaVersion: body.data?.schemaVersion,
     writeId: body.writeId,
+    epoch: typeof body.epoch === "string" ? body.epoch : null, // 世代章（票 #37）；舊 worker 無此欄
   };
 }
 
-// local:  { syncedRev, dirty, schemaVersion, lastWriteId? }
+// local:  { syncedRev, dirty, schemaVersion, lastWriteId?, syncedEpoch? }
 // remote: classifyRemote 的輸出
 // 回傳 action.type：
 //   none            無事可做
-//   push            以本輪 remote.rev 為 base 上傳本地（含初次播種 rev 0、own-write 疊推）
+//   push            以本輪 remote.rev 為 base 上傳本地（含初次播種 rev 0、own-write 疊推、換代重播種）
 //   reseed          雲端被清空（rev 0＋data null 但 syncedRev>0）→ 以 rev 0 重新播種；
 //                   非靜默：client 應記錄健康事件（雲端資料曾遺失）
 //   adopt           取遠端覆蓋本地（本地無新變更）
@@ -51,6 +54,7 @@ function classifyRemote({ threw, status, jsonOk, body }) {
 //   data-error      HTTP 錯誤或回應不可解析（絕不視為空）
 //   schema-block    遠端 schemaVersion 比 app 新：拒讀拒 push 保本地
 //   retry           遠端 rev 落後於已同步 rev（KV 最終一致的舊讀），本輪不動作
+// action.regen＝true 時另表「雲端已換代」（見下），client 應記健康事件、行為同 push。
 function decideSync(local, remote) {
   if (remote.kind === "network") return { type: "offline" };
   if (remote.kind === "auth") return { type: "auth-error" };
@@ -62,6 +66,17 @@ function decideSync(local, remote) {
 
   if (remote.rev === 0 && remote.data === null && local.syncedRev > 0) {
     return { type: "reseed" };
+  }
+
+  // 換代（票 #37）：雲端 KV 遺失後由他機搶先重新播種 → rev 從 1 重數。本機 syncedRev 遠大於它，
+  // 卻不滿足 reseed 條件（data 非 null）→ 舊版一律落到 retry，永遠不 push 不 adopt＝同步實質死亡。
+  // epoch 是把「舊讀」與「換代」分開的唯一訊號：舊讀回同一枚章，換代必換一枚。
+  // 判定＝以本地重新播種（push）：跨代 rev 不可比，故不走 adopt／conflict 的 rev 比較；
+  // 且本機資料是「上一代雲端內容＋本機增量」的最完整殘存，推上去等於把遺失的雲端補回來。
+  // 收斂：本機 push 後記下新章，不再觸發；他機 epoch 相符、rev 落後 → 循常規 adopt 收斂。
+  // 兩端皆須為新協定才會觸發（舊 worker 不回 epoch／舊 client 不記 epoch → 行為與改動前一致）。
+  if (local.syncedEpoch && remote.epoch && remote.epoch !== local.syncedEpoch) {
+    return { type: "push", regen: true };
   }
 
   if (remote.rev === local.syncedRev) {
@@ -145,7 +160,8 @@ function bootIdentity(search, storage) {
 //   getToken()     () => token|null
 //   loadData()     () => 本機現行進度（要 push 的 payload）
 //   saveData(d)    adopt 時覆蓋本機（不得觸發 markDirty）
-//   loadMeta() / saveMeta(m)  sync meta 持久化（syncedRev/dirty/anchorPending/lastWriteId/pendingWriteId/健康狀態）
+//   loadMeta() / saveMeta(m)  sync meta 持久化（syncedRev/syncedEpoch/dirty/anchorPending/
+//                             lastWriteId/pendingWriteId/健康狀態）
 //   onAdopt(d)?    adopt／conflict-adopt 後通知 app 重載狀態
 //   onHealth(status)?  健康狀態更新通知（HEALTH_TEXT 的 key 字串；家長區刷新）
 //   fetchImpl? / beaconImpl? / uuid? / now? / debounceMs? / timeoutMs?  可注入（測試／調校）
@@ -171,12 +187,14 @@ function createSyncClient(opts) {
     m = m && typeof m === "object" ? m : {};
     return {
       syncedRev: Number.isInteger(m.syncedRev) ? m.syncedRev : 0,
+      syncedEpoch: typeof m.syncedEpoch === "string" ? m.syncedEpoch : null,
       dirty: !!m.dirty,
       anchorPending: !!m.anchorPending,
       lastWriteId: typeof m.lastWriteId === "string" ? m.lastWriteId : undefined,
       pendingWriteId: typeof m.pendingWriteId === "string" ? m.pendingWriteId : null,
       lastSyncAt: m.lastSyncAt ?? null,
       reseedAt: m.reseedAt ?? null,
+      regenAt: m.regenAt ?? null,
       health: typeof m.health === "string" ? m.health : null,
     };
   }
@@ -233,7 +251,13 @@ function createSyncClient(opts) {
 
   function adoptRemote(remote) {
     try { saveData(remote.data); } catch {}
-    patchMeta({ syncedRev: remote.rev, dirty: false, pendingWriteId: null, lastSyncAt: now() });
+    patchMeta({
+      syncedRev: remote.rev,
+      syncedEpoch: remote.epoch, // 記下當代章：下輪才分得出「舊讀」與「換代」
+      dirty: false,
+      pendingWriteId: null,
+      lastSyncAt: now(),
+    });
     setHealth("ok");
     try { onAdopt(remote.data); } catch {}
   }
@@ -251,9 +275,22 @@ function createSyncClient(opts) {
     const remote = await getRemote(token);
     let m = meta();
     if (m.anchorPending && remote.kind === "ok") {
-      m = patchMeta({ syncedRev: remote.rev, dirty: true, pendingWriteId: null, anchorPending: false });
+      // 定錨連當代章一起對齊：否則匯入遇上換代的雲端會多記一次換代事件（行為同為 push，僅噪音）
+      m = patchMeta({
+        syncedRev: remote.rev,
+        syncedEpoch: remote.epoch,
+        dirty: true,
+        pendingWriteId: null,
+        anchorPending: false,
+      });
     }
-    const local = { syncedRev: m.syncedRev, dirty: m.dirty, schemaVersion, lastWriteId: m.lastWriteId };
+    const local = {
+      syncedRev: m.syncedRev,
+      syncedEpoch: m.syncedEpoch,
+      dirty: m.dirty,
+      schemaVersion,
+      lastWriteId: m.lastWriteId,
+    };
     const action = decideSync(local, remote);
     const out = { action: action.type, putRejected: false };
 
@@ -274,6 +311,7 @@ function createSyncClient(opts) {
 
     // push／reseed
     if (action.type === "reseed") patchMeta({ reseedAt: now() }); // 雲端資料曾遺失：記健康事件，不全靜默
+    if (action.regen) patchMeta({ regenAt: now() }); // 同一事件的他機視角：雲端曾遺失並被重新播種
     const writeId = m.pendingWriteId || uuid(); // 僅重送同一筆未確認寫入時重用
     const seqAtStart = dirtySeq;
     patchMeta({ lastWriteId: writeId, pendingWriteId: writeId }); // 先落地：response 遺失時下輪重用同 writeId（冪等）
@@ -287,6 +325,9 @@ function createSyncClient(opts) {
     if (res.status === 200 && res.body && Number.isInteger(res.body.rev)) {
       patchMeta({
         syncedRev: res.body.rev,
+        // 記下這次寫進哪一代（初次播種／reseed 由 worker 當場鑄章，client 只能從 response 得知）。
+        // 換代 push 後若不更新此值，下一輪會再次判為換代 → 無限重推
+        syncedEpoch: typeof res.body.epoch === "string" ? res.body.epoch : null,
         pendingWriteId: null,
         dirty: dirtySeq !== seqAtStart, // PUT 在途期間又有新變更 → 留 dirty 給下一輪
         lastSyncAt: now(),
@@ -300,7 +341,13 @@ function createSyncClient(opts) {
       const again = await getRemote(token);
       const m2 = meta();
       const second = decideSync(
-        { syncedRev: m2.syncedRev, dirty: m2.dirty, schemaVersion, lastWriteId: m2.lastWriteId },
+        {
+          syncedRev: m2.syncedRev,
+          syncedEpoch: m2.syncedEpoch,
+          dirty: m2.dirty,
+          schemaVersion,
+          lastWriteId: m2.lastWriteId,
+        },
         again,
       );
       out.secondAction = second.type;

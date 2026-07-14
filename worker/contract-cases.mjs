@@ -121,4 +121,38 @@ export const CONTRACT_CASES = [
     client: { syncedRev: 3, dirty: true, data: { mastered: ["q1", "q2"] }, schemaVersion: 1 },
     expect: { firstAction: "retry", serverUnchanged: true, clientKeepsLocal: true },
   },
+  {
+    // 票 #37：雲端 KV 整包遺失 → 他機搶先重新播種 → rev 從 1 重數。本機 syncedRev 遠大於它、
+    // 遠端 data 又非 null（不滿足 reseed）→ 舊版每輪落到 retry，永遠不 push 不 adopt＝同步實質死亡。
+    // 世代章不同 → 判為換代 → 以本地重新播種（跨代 rev 不可比，不走 adopt／conflict 的 rev 比較）。
+    name: "換代：雲端遺失後他機搶先重新播種 → 落後裝置以本地重新播種，不永久卡死",
+    server: { rev: 1, data: { mastered: ["from-device-a"] }, writeId: "w-a", epoch: "E2" },
+    client: {
+      syncedRev: 50,
+      syncedEpoch: "E1",
+      dirty: false,
+      data: { mastered: ["q1", "q2", "q3"] },
+      schemaVersion: 1,
+    },
+    expect: {
+      firstAction: "push",
+      regen: true,
+      finalServerRev: 2,
+      converged: true,
+      finalSyncedEpoch: "E2", // 未記下新章 → 下輪再判換代 → 無限重推
+      finalMasteredContains: ["q1", "q2", "q3"],
+    },
+  },
+  {
+    name: "換代回歸：同一枚世代章＋遠端 rev 落後＝KV 舊讀，仍 retry（不得誤判成換代）",
+    server: { rev: 2, data: { mastered: ["q1"] }, writeId: "w0", epoch: "E1" },
+    client: {
+      syncedRev: 3,
+      syncedEpoch: "E1",
+      dirty: true,
+      data: { mastered: ["q1", "q2"] },
+      schemaVersion: 1,
+    },
+    expect: { firstAction: "retry", serverUnchanged: true, clientKeepsLocal: true },
+  },
 ];
