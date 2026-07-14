@@ -1,0 +1,93 @@
+{
+  "_comment": "registry＝驅動 hub 的 app 目錄（票 #31；欄位語意見 CONTEXT.md）。app 增減、上下架、首頁順序都只改這份資料。owner＝該 app 舊存檔／預設進度歸屬的 child；audience＝首頁顯示對象（可複選；空陣列＝僅家長目錄）；order＝每 child 首頁排序（數字小在前）。不變量由 tests/test_registry_audit.mjs 釘住。",
+  "children": [
+    { "id": "aiden", "name": "哥哥", "emoji": "👦" },
+    { "id": "bingpu", "name": "弟弟", "emoji": "🧒" }
+  ],
+  "apps": [
+    {
+      "id": "study",
+      "name": "題庫練習",
+      "emoji": "📚",
+      "path": "study/",
+      "audience": ["aiden"],
+      "category": "學科",
+      "status": "active",
+      "sync": true,
+      "owner": "aiden",
+      "order": { "aiden": 1 }
+    },
+    {
+      "id": "math",
+      "name": "長除法練習",
+      "emoji": "➗",
+      "url": "https://huansbox.github.io/aiden-math/",
+      "audience": ["aiden"],
+      "category": "學科",
+      "status": "active",
+      "sync": false,
+      "owner": "aiden",
+      "order": { "aiden": 2 }
+    },
+    {
+      "id": "spelling",
+      "name": "英文拼字",
+      "emoji": "🐝",
+      "url": "https://huansbox.github.io/spelling-bee-trainer/",
+      "audience": ["aiden"],
+      "category": "學科",
+      "status": "active",
+      "sync": false,
+      "owner": "aiden",
+      "order": { "aiden": 3 }
+    },
+    {
+      "id": "zhuyin",
+      "name": "注音練習",
+      "emoji": "ㄅ",
+      "path": "zhuyin/",
+      "audience": ["bingpu"],
+      "category": "學科",
+      "status": "active",
+      "sync": true,
+      "owner": "bingpu",
+      "order": { "bingpu": 1 }
+    },
+    {
+      "id": "animal-fight",
+      "name": "動物守護者",
+      "emoji": "🦁",
+      "url": "https://huansbox.github.io/animal-fight/",
+      "audience": [],
+      "category": "興趣",
+      "status": "active",
+      "sync": false,
+      "owner": "aiden",
+      "order": {}
+    },
+    {
+      "id": "english",
+      "name": "英文閱讀",
+      "emoji": "🔤",
+      "url": "https://huansbox.github.io/aiden-english/",
+      "audience": [],
+      "category": "學科",
+      "status": "draft",
+      "sync": false,
+      "owner": "aiden",
+      "order": {}
+    },
+    {
+      "id": "99-meteor",
+      "name": "隕石數學防衛隊",
+      "emoji": "☄️",
+      "url": "https://huansbox.github.io/99-meteor/",
+      "audience": [],
+      "category": "學科",
+      "status": "parked",
+      "sync": false,
+      "owner": "bingpu",
+      "order": {}
+    }
+  ]
+}
