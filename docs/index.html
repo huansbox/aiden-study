@@ -52,34 +52,27 @@
 </head>
 <body>
 <script>
-// ── #restore= 轉送：必須最先執行、同步、零依賴（sync-v1.js／registry.json 掛了也要能轉）──
-// 備忘錄還原捷徑寫死舊根網址帶 #restore=（捷徑存家長 iCloud、改不了），丟 hash＝還原靜默失敗；
-// search 一併帶過去：?child= 丟了＝身分退回 LEGACY_CHILD＝跨 child 寫入。
-// 落地寫入由 /study/ 的 child-aware handleRestoreHash 處理，hub 只負責轉送。
-if (location.hash.indexOf("#restore=") === 0) {
-  location.replace("study/" + location.search + location.hash);
-}
-</script>
-<div class="wrap" id="hub"><p class="hint">載入中⋯</p></div>
-<noscript><p class="hint">需要開啟 JavaScript 才能使用。題庫在 <a href="study/">study/</a>。</p></noscript>
-<script src="shared/sync-v1.js"></script>
-<script>
 // <hub-pure>
 // ══════ hub 純函式（node 測試由此 sentinel 抽取，不得引用外部全域）══════
+// 放在第一段 inline script：#restore= 轉送要用 restoreForwardTarget，而轉送必須零依賴、
+// 在 sync-v1.js／registry.json 之前就能跑——測試抽的與線上跑的必須是同一份。
 const HUB_CHILD_KEY = "kids_current_child"; // hub 落地的當前 child（選人畫面的「上次選擇」同一把）
 
-// #restore= 開頭的 hash → 轉送 study/ 的目標（search＋hash 都保留）；否則 null
+// hash 帶 restore=（非空 payload）→ 轉送 study/ 的目標（search＋hash 都保留）；否則 null。
+// 判定對齊 study 的 readRestoreHash（/[#&]?restore=([^&]+)/，接受 hash 內任意位置）——
+// study 收得下的，hub 就不能擋在門口。
 function restoreForwardTarget(search, hash) {
-  if (typeof hash !== "string" || hash.indexOf("#restore=") !== 0) return null;
+  if (typeof hash !== "string" || !/[#&]?restore=[^&]/.test(hash)) return null;
   return "study/" + (search || "") + hash;
 }
 
-// registry children 裡查得到的 child id 才算已知（test- 等合法但未知的 id → null，走選人畫面）
+// registry children 裡查得到才算已知，回傳該 child 物件（test- 等合法但未知的 id → null，走選人畫面）
 function knownChild(children, id) {
-  return (children || []).some((c) => c && c.id === id) ? id : null;
+  return (children || []).find((c) => c && c.id === id) || null;
 }
 
-// 某 child 首頁的 app 清單：active＋audience 含該 child，依 order（缺者排最後）再依 id 排序
+// 某 child 首頁的 app 清單：active＋audience 含該 child，依 order（缺者排最後）再依 id 排序。
+// order 缺項是 audit 擋的髒資料，但 registry 是家長手編檔（可能沒跑測試就上）——runtime 仍要優雅
 function homeApps(apps, child) {
   return (apps || [])
     .filter((a) => a.status === "active" && Array.isArray(a.audience) && a.audience.includes(child))
@@ -108,24 +101,41 @@ function parentGroups(apps) {
     .filter((g) => g.apps.length > 0);
 }
 
-// 健康燈資料：接同步的 app × 每個 child，join worker /v1/status 的 keys（無紀錄＝lastWrite null）
+// 健康燈資料：接同步的 app × 該 app audience 內的 child，join worker /v1/status 的 keys。
+// audience 外的組合（如 study×弟弟）結構上不會同步，無資料時不出列——否則永遠掛紅字「從未同步」，
+// 真異常被結構性噪音淹沒；但雲端真有資料（逃生門匯入到他 child）就照列，不藏資料。
 function healthRows(apps, children, statusKeys) {
   const rows = [];
   for (const app of (apps || []).filter((a) => a.sync)) {
     for (const c of children || []) {
       const hit = (statusKeys || []).find((k) => k && k.child === c.id && k.app === app.id);
+      const inAudience = Array.isArray(app.audience) && app.audience.includes(c.id);
+      if (!inAudience && !hit) continue;
       rows.push({ app, child: c, lastWrite: hit ? hit.lastWrite : null, rev: hit ? hit.rev : null });
     }
   }
   return rows;
 }
-
-// 選人畫面預選：上次選擇仍是已知 child 才預選（仍需點擊確認，不自動跳過）
-function pickerDefault(children, storedId) {
-  return knownChild(children, storedId);
-}
 // </hub-pure>
 
+// ── #restore= 轉送：必須最先執行、同步、零依賴（sync-v1.js／registry.json 掛了也要能轉）──
+// 備忘錄還原捷徑寫死舊根網址帶 #restore=（捷徑存家長 iCloud、改不了），丟 hash＝還原靜默失敗；
+// search 一併帶過去：?child= 丟了＝身分退回 LEGACY_CHILD＝跨 child 寫入。
+// 落地寫入由 /study/ 的 child-aware handleRestoreHash 處理，hub 只負責轉送。
+function forwardRestore() {
+  const t = restoreForwardTarget(location.search, location.hash);
+  if (t) location.replace(t);
+  return !!t;
+}
+forwardRestore();
+// hub 是會停留的頁（舊跳轉頁不是）：分頁停在 hub 時，捷徑的 Open URL 是「同文件 hash 變更、
+// 不 reload」——不掛 hashchange 就靜默丟還原（study 端同款防護）
+window.addEventListener("hashchange", forwardRestore);
+</script>
+<div class="wrap" id="hub"><p class="hint">載入中⋯</p></div>
+<noscript><p class="hint">需要開啟 JavaScript 才能使用。題庫在 <a href="study/">study/</a>。</p></noscript>
+<script src="shared/sync-v1.js"></script>
+<script>
 const KidsSync = window.KidsSyncV1 || null;
 // localStorage 在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——包一層，hub 退回「可用但不記憶」
 const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
@@ -134,53 +144,71 @@ const root = document.getElementById("hub");
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
+// 格式與 study／zhuyin 家長區的 formatSyncTime 一致（YYYY-MM-DD HH:MM）——同一事件兩處顯示不該長不一樣
 function formatSyncTime(iso) {
   if (!iso) return null;
   const d = new Date(iso);
   if (isNaN(d.getTime())) return null;
-  const pad = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
+// 掛死不 reject 的連線不能讓畫面永遠停在「讀取中」（sync client 同款 AbortController 防護）
+function fetchWithTimeout(u, opts, ms = 8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms);
+  return fetch(u, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+}
+function rememberChild(id) {
+  if (!safeStorage) return;
+  try { safeStorage.setItem(HUB_CHILD_KEY, id); } catch (e) {}
+}
+function recallChild() {
+  if (!safeStorage) return null;
+  try { return safeStorage.getItem(HUB_CHILD_KEY); } catch (e) { return null; }
+}
+// 逃生連結必帶 search：?child= 丟了＝身分退回 LEGACY_CHILD＝跨 child 寫入（#40-A 修過的同款洞）；
+// sync-v1.js 沒載到的那種失敗，study 端會以 identityUnresolvable 拒開，不會寫錯人
 function fatalHtml() {
-  return `<p class="hint">頁面載入不完整，請重新整理。<br>題庫也可以直接開 <a href="study/">study/</a>。</p>`;
+  const q = escapeHtml(location.search);
+  return `<p class="hint">頁面載入不完整，請重新整理。<br>題庫也可以直接開 <a href="study/${q}">study/</a>。</p>`;
 }
 
 function renderPicker(reg) {
-  const stored = safeStorage ? (() => { try { return safeStorage.getItem(HUB_CHILD_KEY); } catch (e) { return null; } })() : null;
-  const def = pickerDefault(reg.children, stored);
+  const def = knownChild(reg.children, recallChild());
   const btns = reg.children.map((c) => `
-    <button class="big-btn picker-btn${c.id === def ? " picked" : ""}" data-child="${escapeHtml(c.id)}">
+    <button class="big-btn picker-btn${def && c.id === def.id ? " picked" : ""}" data-child="${escapeHtml(c.id)}">
       <span class="ic">${c.emoji}</span>${escapeHtml(c.name)}
-      ${c.id === def ? '<span class="last">上次是你</span>' : ""}
+      ${def && c.id === def.id ? '<span class="last">上次是你</span>' : ""}
     </button>`).join("");
   root.innerHTML = `<h1>你是誰？</h1>${btns}
     <div class="foot"><a href="?view=parent">家長區</a></div>`;
   root.querySelectorAll(".picker-btn").forEach((b) => {
     b.addEventListener("click", () => {
       const id = b.getAttribute("data-child");
-      if (safeStorage) { try { safeStorage.setItem(HUB_CHILD_KEY, id); } catch (e) {} }
+      rememberChild(id);
       location.href = "?child=" + encodeURIComponent(id);
     });
   });
 }
 
-function renderHome(reg, childId) {
-  const info = reg.children.find((c) => c.id === childId);
-  const apps = homeApps(reg.apps, childId);
+function renderHome(reg, child) {
+  const apps = homeApps(reg.apps, child.id);
   const list = apps.length
     ? apps.map((a) => `
-        <a class="big-btn" href="${escapeHtml(appHref(a, childId))}">
+        <a class="big-btn" href="${escapeHtml(appHref(a, child.id))}">
           <span class="ic">${a.emoji}</span>${escapeHtml(a.name)}
         </a>`).join("")
     : `<p class="hint">還沒有可以練的 app</p>`;
   root.innerHTML = `
-    <div class="head-badge"><span class="ic">${info.emoji}</span>${escapeHtml(info.name)}</div>
+    <div class="head-badge"><span class="ic">${child.emoji}</span>${escapeHtml(child.name)}</div>
     ${list}
     <div class="foot"><a href="./">換人</a><a href="?view=parent">家長區</a></div>`;
 }
 
 function renderParent(reg, identity) {
   const groups = parentGroups(reg.apps);
+  // 站內 app 的「開啟」帶 owner 身分：寫入目標與無參數時的 LEGACY_CHILD 相同（ADR-0004 owner＝舊存檔歸屬），
+  // 但帶了參數，腳本載入失敗時 app 的 identityUnresolvable 守衛才擋得住
   const dir = groups.map((g) => `
     <h2>${g.label}（${g.apps.length}）</h2>
     <div class="plist">${g.apps.map((a) => `
@@ -191,7 +219,7 @@ function renderParent(reg, identity) {
         <span class="tag">歸屬 ${escapeHtml(a.owner)}</span>
         ${a.sync ? '<span class="tag">同步</span>' : ""}
         ${(a.audience || []).length ? `<span class="tag">首頁：${a.audience.map(escapeHtml).join("、")}</span>` : ""}
-        <a href="${escapeHtml(a.path ? a.path : a.url)}">開啟</a>
+        <a href="${escapeHtml(a.path ? appHref(a, a.owner) : a.url)}">開啟</a>
       </div>`).join("")}
     </div>`).join("");
   const token = identity.getToken();
@@ -211,7 +239,8 @@ function renderParent(reg, identity) {
 }
 
 // 跨容器健康燈：讀 worker /v1/status（每 key 最後成功寫入時間；test- key 由 server 過濾）。
-// 錯誤分流沿平台慣例：「無 token／金鑰錯／服務異常」≠「離線」，文案不得混為一談。
+// 錯誤分流沿平台慣例明示「不是離線」。文案刻意不逐字用 HEALTH_TEXT：no-token／auth-error 的
+// 「請在下方輸入」「請重新輸入」在 hub 不成立（這裡沒有輸入框），照抄會誤導家長。
 async function loadHealth(reg, token) {
   const el = document.getElementById("health");
   if (!el) return;
@@ -221,7 +250,7 @@ async function loadHealth(reg, token) {
   }
   let res;
   try {
-    res = await fetch(`${KidsSync.DEFAULT_ENDPOINT}/v1/status?k=${encodeURIComponent(token)}`);
+    res = await fetchWithTimeout(`${KidsSync.DEFAULT_ENDPOINT}/v1/status?k=${encodeURIComponent(token)}`);
   } catch (e) {
     el.innerHTML = `<div class="prow health-bad">連不上同步服務（離線，或非允許網域——本機測試屬預期）</div>`;
     return;
@@ -233,7 +262,7 @@ async function loadHealth(reg, token) {
   let body = null;
   try { body = await res.json(); } catch (e) {}
   if (!res.ok || !body || !Array.isArray(body.keys)) {
-    el.innerHTML = `<div class="prow health-bad">同步服務回應異常（不是離線）</div>`;
+    el.innerHTML = `<div class="prow health-bad">${KidsSync.HEALTH_TEXT["data-error"]}</div>`;
     return;
   }
   const rows = healthRows(reg.apps, reg.children, body.keys);
@@ -253,16 +282,18 @@ async function loadHealth(reg, token) {
   // 首段 inline script 已 location.replace；replace 不中斷同步執行，這裡別再渲染（閃畫面）
   if (restoreForwardTarget(location.search, location.hash)) return;
   if (!KidsSync) { root.innerHTML = fatalHtml(); return; } // 身分落地能力不在＝不猜著做（比照 app 的 identityUnresolvable）
-  // 落地圖示網址參數：?k= → kids_sync_token（bootIdentity 寫入，各 app sync client 讀同一把）；
-  // ?child= → kids_current_child（hub 自寫；app 讀的是連結上的 ?child=，這把供選人畫面記憶）
+  // 落地圖示網址參數：?k= → kids_sync_token（bootIdentity 寫入，各 app sync client 讀同一把）
   const identity = KidsSync.bootIdentity(location.search, safeStorage);
-  if (identity.child && safeStorage) { try { safeStorage.setItem(HUB_CHILD_KEY, identity.child); } catch (e) {} }
-  fetch("registry.json", { cache: "no-cache" })
+  // registry 靠 HTTP cache 即可（GH Pages max-age=600；本頁 HTML 同樣 10 分鐘內是舊的，
+  // no-cache 換不到更即時、還讓每次開站多吃一趟 RTT、斷網時放著快取不用直接 fatal）
+  fetchWithTimeout("registry.json")
     .then((r) => { if (!r.ok) throw new Error("registry http " + r.status); return r.json(); })
     .then((reg) => {
+      // ?child= 落地在驗證之後：test- 等合法但未知的 id 不得洗掉小孩的選人記憶
+      const child = knownChild(reg.children, identity.child);
+      if (child) rememberChild(child.id);
       const params = new URLSearchParams(location.search);
       if (params.get("view") === "parent") return renderParent(reg, identity);
-      const child = knownChild(reg.children, identity.child);
       if (child) return renderHome(reg, child);
       renderPicker(reg);
     })

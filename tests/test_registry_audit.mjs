@@ -11,7 +11,13 @@ const clientBlk = syncSrc.match(/\/\/ <sync-client>([\s\S]*?)\/\/ <\/sync-client
 if (!clientBlk) throw new Error("docs/shared/sync-v1.js 找不到 <sync-client> 區塊");
 const { normalizeChildId } = new Function(clientBlk[1] + "\nreturn { normalizeChildId };")();
 
-const STATUS = ["active", "draft", "parked", "retired"];
+// status 定義域的單一真相源＝hub 實際渲染的分組列表（parentGroups 對不在列的 status 是靜默消失，
+// 這裡若另抄一份，兩份漂移時 app 會從家長目錄無聲蒸發而測試全綠）
+const hubHtml = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const hubBlk = hubHtml.match(/\/\/ <hub-pure>([\s\S]*?)\/\/ <\/hub-pure>/);
+if (!hubBlk) throw new Error("docs/index.html 找不到 <hub-pure> 區塊");
+const { STATUS_ORDER: STATUS } = new Function(hubBlk[1] + "\nreturn { STATUS_ORDER };")();
+
 const CATEGORY = ["學科", "興趣"];
 const childIds = (reg.children || []).map((c) => c.id);
 
@@ -73,7 +79,7 @@ test("path xor url：站內相對路徑且實存；外鏈必為 https", () => {
   assert.deepEqual(errs, []);
 });
 
-test("sync 設定一致：sync=true 必為站內 app 且其頁面引用 shared/sync-v1.js", () => {
+test("sync 設定一致：sync=true 必為站內 app、頁面引用 sync client、雲端 key 段＝registry id", () => {
   const errs = [];
   for (const a of (reg.apps || []).filter((x) => x.sync === true)) {
     if (typeof a.path !== "string") { errs.push(`app ${a.id} sync=true 但非站內 path app`); continue; }
@@ -81,6 +87,13 @@ test("sync 設定一致：sync=true 必為站內 app 且其頁面引用 shared/s
     if (!existsSync(idx)) continue; // path 實存已由上一測項報
     const src = readFileSync(idx, "utf8");
     if (!src.includes("shared/sync-v1.js")) errs.push(`app ${a.id} sync=true 但 docs/${a.path}index.html 未引用 shared/sync-v1.js`);
+    // hub 健康燈 join 的真契約：registry id ＝ app 傳給 sync client 的雲端 key app 段。
+    // 兩 app 的慣例＝恰一個 <NAME>_APP_ID 常數、以 `app: <NAME>` 接線；0 或多個都當髒（響亮失敗勝過默過）
+    const ids = [...src.matchAll(/\bconst\s+([A-Z][A-Z0-9_]*_APP_ID)\s*=\s*"([a-z0-9-]+)"/g)];
+    if (ids.length !== 1) { errs.push(`app ${a.id} 頁面應恰有一個 *_APP_ID 常數，找到 ${ids.length} 個`); continue; }
+    const [, name, value] = ids[0];
+    if (!src.includes(`app: ${name}`)) errs.push(`app ${a.id} 的 ${name} 未接進 sync client（找不到「app: ${name}」）`);
+    if (value !== a.id) errs.push(`app ${a.id} 的雲端 key 段（${value}）與 registry id 不一致，健康燈 join 會永遠對不上`);
   }
   assert.deepEqual(errs, []);
 });
