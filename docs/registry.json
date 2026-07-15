@@ -36,7 +36,7 @@
       "path": "spelling/",
       "audience": ["aiden"],
       "category": "學科",
-      "status": "draft",
+      "status": "active",
       "sync": false,
       "owner": "aiden",
       "order": { "aiden": 3 }
