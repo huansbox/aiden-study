@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelling Bee 冠軍訓練器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #f3f4f6;
+            user-select: none; /* 防止誤選文字 */
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .mode-transition {
+            transition: all 0.3s ease;
+        }
+        /* 護眼專用：柔和的單字顯示區背景 */
+        .eye-care-bg {
+            background-color: #f8fafc; /* Slate-50 */
+            border: 3px solid #e2e8f0; /* Slate-200 */
+        }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+        .animate-pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+        /* Modal Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Custom Modal Overlay */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+        /* Tab Active State */
+        .tab-active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: bold;
+        }
+        .tab-inactive {
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-inactive:hover {
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+
+    <!-- 頂部導航 -->
+    <header class="bg-white shadow-sm p-4 sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-bee text-yellow-500"></i> Spelling Bee 訓練器
+            </h1>
+            
+            <div class="flex bg-gray-100 p-1 rounded-lg">
+                <button onclick="switchMode('practice')" id="btn-mode-practice" class="px-6 py-2 rounded-md text-sm font-bold transition-all duration-200 flex items-center gap-2">
+                    <i class="fas fa-book-open"></i> 練習模式
+                </button>
+                <button onclick="switchMode('rehearsal')" id="btn-mode-rehearsal" class="px-6 py-2 rounded-md text-sm font-bold transition-all duration-200 flex items-center gap-2">
+                    <i class="fas fa-microphone-alt"></i> 預演模式
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 錯題集訓營入口 (動態顯示) -->
+    <div id="bootcamp-banner" class="hidden bg-red-50 border-b border-red-200 cursor-pointer hover:bg-red-100 transition-colors" onclick="startBootcamp()">
+        <div class="max-w-4xl mx-auto p-3 flex justify-between items-center">
+            <div class="flex items-center gap-3 text-red-700 font-bold">
+                <div class="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center animate-pulse-red">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <span>錯題集訓營 (Weak Word Bootcamp)</span>
+                <span class="text-xs bg-red-200 text-red-800 px-2 py-1 rounded-full">累積 <span id="error-bank-count">0</span> 字</span>
+            </div>
+            <div class="text-red-600 text-sm font-bold flex items-center gap-1">
+                開始特訓 <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 進度條區域 (Bootcamp 模式隱藏) -->
+    <div id="main-progress-container">
+        <div class="bg-gray-200 h-4 w-full">
+            <div id="progress-bar" class="h-full bg-green-500 transition-all duration-500" style="width: 0%"></div>
+        </div>
+        
+        <!-- 組別選擇器 -->
+        <div class="bg-white border-b border-gray-200 py-3">
+            <div class="max-w-4xl mx-auto px-4 flex justify-center items-center gap-2">
+                <label for="batch-selector" class="text-gray-500 text-sm font-bold">目前進度：</label>
+                <div class="relative">
+                    <select id="batch-selector" onchange="changeBatch(this.value)" class="appearance-none bg-blue-50 border border-blue-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500 text-sm font-bold cursor-pointer">
+                        <!-- Options populated by JS -->
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 集訓模式頂部欄 (僅 Bootcamp 顯示) -->
+    <div id="bootcamp-header" class="hidden bg-red-600 text-white p-3 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="font-bold flex items-center gap-2">
+                <i class="fas fa-fire-alt"></i> 集訓模式
+            </div>
+            <button onclick="exitBootcamp()" class="text-xs bg-red-700 hover:bg-red-800 px-3 py-1 rounded border border-red-500">
+                <i class="fas fa-times"></i> 離開
+            </button>
+        </div>
+    </div>
+
+    <!-- 主內容區域 -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-4xl mx-auto w-full">
+        
+        <!-- 練習模式介面 -->
+        <div id="view-practice" class="w-full hidden">
+            <div class="bg-white rounded-3xl p-8 card-shadow border-b-8 border-blue-200 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-4 bg-blue-400"></div>
+                
+                <div class="mb-8">
+                    <div class="w-full h-64 md:h-80 eye-care-bg rounded-3xl flex items-center justify-center mb-4 relative overflow-hidden px-2">
+                        <div class="absolute w-96 h-96 bg-blue-50 rounded-full -top-20 -left-20 opacity-50"></div>
+                        <div class="absolute w-64 h-64 bg-indigo-50 rounded-full -bottom-10 -right-10 opacity-50"></div>
+                        
+                        <h2 id="practice-word" class="relative z-10 font-bold text-gray-700 tracking-wide select-none transition-all duration-300">
+                            word
+                        </h2>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium">單字卡 <span id="practice-counter">1/5</span></p>
+                </div>
+
+                <button onclick="playCurrentWord()" class="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white text-2xl font-bold py-6 px-12 rounded-full shadow-lg transform active:scale-95 transition-transform mb-8 flex items-center justify-center gap-4 mx-auto">
+                    <i class="fas fa-volume-up"></i> 聽發音 (x2)
+                </button>
+
+                <div class="flex justify-between items-center mt-4">
+                    <button id="btn-prev-practice" onclick="prevPracticeCard()" class="text-gray-400 hover:text-blue-500 p-4 text-xl transition-opacity">
+                        <i class="fas fa-chevron-left"></i> 上一個
+                    </button>
+                    <div class="flex gap-2" id="practice-dots"></div>
+                    <button id="btn-next-practice" onclick="nextPracticeCard()" class="text-gray-400 hover:text-blue-500 p-4 text-xl transition-opacity">
+                        下一個 <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="practice-finish-hint" class="hidden text-center mt-6 animate-bounce">
+                <button onclick="switchMode('rehearsal')" class="bg-orange-100 text-orange-600 px-6 py-3 rounded-full font-bold shadow-sm hover:bg-orange-200 transition-colors border-2 border-orange-200">
+                   這 5 個字熟了嗎？開始預演測試！ <i class="fas fa-trophy ml-1"></i>
+                </button>
+            </div>
+            <p class="text-center text-gray-500 mt-4 text-sm">💡 提示：先聽熟聲音，看熟拼字，再進入預演模式。</p>
+        </div>
+
+        <!-- 預演模式 & 集訓模式 共用介面 -->
+        <div id="view-rehearsal" class="w-full hidden">
+            
+            <!-- 階段 1: 老師出題 -->
+            <div id="rehearsal-step-question" class="bg-white rounded-3xl p-8 card-shadow border-b-8 border-orange-200 text-center relative w-full max-w-2xl mx-auto">
+                <div id="question-color-bar" class="absolute top-0 left-0 w-full h-4 bg-orange-400 transition-colors"></div>
+                <div id="question-badge" class="absolute top-4 left-4 bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-bold transition-colors">家長操作</div>
+
+                <div id="bootcamp-streak-indicator" class="hidden absolute top-4 right-4 bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-200">
+                    <i class="fas fa-fire"></i> 連續 OK: <span id="streak-count">0</span>/3
+                </div>
+
+                <h3 class="text-xl text-gray-500 mb-8 mt-4">請家長按下按鈕出題</h3>
+                
+                <div class="bg-gray-50 p-6 rounded-xl mb-8 border-2 border-dashed border-gray-200">
+                    <p class="text-sm text-gray-400 mb-2">目前單字 (僅家長可見)</p>
+                    <p id="rehearsal-hidden-word" class="text-3xl font-bold text-gray-800 blur-sm hover:blur-none cursor-pointer transition-all">hover to see</p>
+                </div>
+
+                <button onclick="playTeacherAudio()" id="btn-play-teacher" class="w-full bg-orange-500 hover:bg-orange-600 text-white text-3xl font-bold py-8 px-8 rounded-2xl shadow-lg transform active:scale-95 transition-transform flex items-col justify-center gap-3 mb-6 transition-colors">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-podcast text-4xl mb-2"></i>
+                        <span>播放老師出題</span>
+                    </div>
+                </button>
+                
+                <p class="text-gray-500 mb-6">小孩回答完畢後...</p>
+                <button onclick="showAnswer()" id="btn-show-answer" class="text-orange-500 font-bold text-lg border-2 border-orange-500 px-8 py-3 rounded-full hover:bg-orange-50 transition-colors">
+                    顯示答案與評分
+                </button>
+            </div>
+
+            <!-- 階段 2: 答案與評分 -->
+            <div id="rehearsal-step-answer" class="hidden bg-white rounded-3xl p-8 card-shadow border-b-8 border-green-200 text-center relative w-full max-w-2xl mx-auto">
+                <div class="absolute top-0 left-0 w-full h-4 bg-green-400"></div>
+                
+                <h3 class="text-gray-400 text-sm mb-2">標準答案格式</h3>
+                
+                <div class="bg-green-50 p-6 rounded-xl mb-6">
+                    <div id="answer-display" class="text-3xl md:text-4xl font-bold text-gray-800 font-mono"></div>
+                </div>
+
+                <button onclick="playCorrectSpelling()" class="mb-8 text-green-600 bg-green-100 hover:bg-green-200 px-4 py-2 rounded-lg text-sm font-bold">
+                    <i class="fas fa-volume-up"></i> 聽正確拼讀
+                </button>
+
+                <h3 class="text-xl font-bold text-gray-700 mb-4">小孩表現如何？</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <button onclick="rateWord('retry')" class="bg-red-100 hover:bg-red-200 text-red-600 py-4 rounded-xl font-bold flex flex-col items-center gap-2 border-b-4 border-red-300 active:border-b-0 active:translate-y-1">
+                        <i class="fas fa-times-circle text-2xl"></i>
+                        不熟
+                        <span class="text-xs font-normal text-red-400">稍後重考</span>
+                    </button>
+                    <button onclick="rateWord('hard')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-600 py-4 rounded-xl font-bold flex flex-col items-center gap-2 border-b-4 border-yellow-300 active:border-b-0 active:translate-y-1">
+                        <i class="fas fa-exclamation-circle text-2xl"></i>
+                        還可以
+                        <span class="text-xs font-normal text-yellow-500">保留在隊列</span>
+                    </button>
+                    <button onclick="rateWord('ok')" class="bg-green-100 hover:bg-green-200 text-green-600 py-4 rounded-xl font-bold flex flex-col items-center gap-2 border-b-4 border-green-300 active:border-b-0 active:translate-y-1">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                        OK!
+                        <span class="text-xs font-normal text-green-500">完成</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 階段 3: 本組完成 (一般預演) -->
+            <div id="rehearsal-step-complete" class="hidden text-center py-12">
+                <div class="text-6xl mb-6">🏆</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">恭喜！這組單字都熟了！</h2>
+                <p class="text-gray-600 mb-8">你的表現非常棒，準備好挑戰下一組了嗎？</p>
+                <button onclick="unlockNextBatch()" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white text-2xl font-bold py-4 px-12 rounded-full shadow-xl transform hover:scale-105 transition-all animate-bounce">
+                    解鎖下一組 (Next 5) <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- 階段 4: 集訓完成 (Bootcamp) -->
+            <div id="bootcamp-step-complete" class="hidden text-center py-12">
+                <div class="text-6xl mb-6">🔥</div>
+                <h2 class="text-3xl font-bold text-red-600 mb-4">太強了！錯題全部清除！</h2>
+                <p class="text-gray-600 mb-8">你已經戰勝了所有弱點，現在你是無敵的！</p>
+                <button onclick="exitBootcamp()" class="bg-gray-800 hover:bg-gray-900 text-white text-xl font-bold py-4 px-12 rounded-full shadow-lg transform hover:scale-105 transition-all">
+                    回到練習模式
+                </button>
+            </div>
+            
+            <!-- 狀態提示 -->
+            <div class="mt-6 text-center">
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-bold text-gray-500">
+                    剩餘需複習：<span id="queue-count">0</span> 個單字
+                </span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="py-8 bg-gray-100 border-t border-gray-200 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm text-gray-500">進度管理</div>
+            <div class="flex gap-2 flex-wrap">
+                 <button onclick="openLogModal()" class="bg-white border border-gray-300 text-indigo-600 hover:text-indigo-800 hover:border-indigo-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
+                    <i class="fas fa-chart-bar"></i> 練習日誌
+                </button>
+                <button onclick="confirmLoadDemo()" class="bg-white border border-gray-300 text-green-600 hover:text-green-800 hover:border-green-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
+                    <i class="fas fa-magic"></i> 匯入範例
+                </button>
+                <button onclick="exportProgress()" class="bg-white border border-gray-300 text-gray-600 hover:text-blue-600 hover:border-blue-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
+                    <i class="fas fa-file-export"></i> 匯出
+                </button>
+                <button onclick="showImportModal()" class="bg-white border border-gray-300 text-gray-600 hover:text-blue-600 hover:border-blue-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
+                    <i class="fas fa-file-import"></i> 匯入
+                </button>
+            </div>
+            <button onclick="confirmReset()" class="text-gray-400 text-xs hover:text-red-500 transition-colors border-b border-transparent hover:border-red-500 pb-1 mt-2 md:mt-0">
+                <i class="fas fa-trash-alt mr-1"></i> 重置
+            </button>
+        </div>
+    </footer>
+
+    <!-- 1. 練習日誌 Modal (含分頁) -->
+    <div id="log-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeLogModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                
+                <!-- Modal Header with Tabs -->
+                <div class="bg-white px-4 pt-5 sm:p-6 sm:pb-0">
+                    <div class="sm:flex sm:items-start justify-between mb-4">
+                        <h3 class="text-xl leading-6 font-bold text-gray-900">
+                            <i class="fas fa-history text-indigo-500"></i> 練習日誌
+                        </h3>
+                        <button type="button" class="text-gray-400 hover:text-gray-500" onclick="closeLogModal()">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <button onclick="switchLogTab('daily')" id="tab-btn-daily" class="tab-active whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                                📅 每日足跡
+                            </button>
+                            <button onclick="switchLogTab('ranking')" id="tab-btn-ranking" class="tab-inactive whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                                🏆 單字排行
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Scrollable Content -->
+                <div class="bg-white px-4 py-4 sm:p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                    
+                    <!-- Tab 1: Daily View -->
+                    <div id="log-view-daily">
+                        <!-- 今日統計 -->
+                        <div class="bg-indigo-50 rounded-lg p-4 mb-6">
+                            <p class="text-sm text-indigo-700 font-bold mb-1">今日成就 (Today)</p>
+                            <div class="flex justify-between items-end">
+                                <span class="text-3xl font-bold text-indigo-900" id="log-today-count">0</span>
+                                <span class="text-xs text-indigo-500" id="log-today-detail">瀏覽 0 / 測試 0</span>
+                            </div>
+                        </div>
+                        <!-- 歷史列表 -->
+                        <div id="log-history-list" class="space-y-4"></div>
+                    </div>
+
+                    <!-- Tab 2: Ranking View -->
+                    <div id="log-view-ranking" class="hidden">
+                        <!-- Sorting Controls -->
+                        <div class="flex gap-2 mb-4">
+                            <button onclick="sortRanking('asc')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-xs py-2 rounded text-gray-600 font-bold border border-gray-200">
+                                📉 由少到多 (Least)
+                            </button>
+                            <button onclick="sortRanking('desc')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-xs py-2 rounded text-gray-600 font-bold border border-gray-200">
+                                📈 由多到少 (Most)
+                            </button>
+                            <button onclick="sortRanking('alpha')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-xs py-2 rounded text-gray-600 font-bold border border-gray-200">
+                                🔤 A-Z
+                            </button>
+                        </div>
+                        <!-- Ranking List -->
+                        <div id="log-ranking-list" class="space-y-2">
+                            <!-- JS populated -->
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Footer -->
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm" onclick="closeLogModal()">
+                        關閉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 通用 Alert/Confirm Modal -->
+    <div id="generic-modal" class="hidden fixed inset-0 z-[60] overflow-y-auto" role="dialog">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 modal-overlay transition-opacity" onclick="closeGenericModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div id="modal-icon-container" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-info text-blue-600" id="modal-icon"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="generic-modal-title">提示</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="generic-modal-message">Message content</p>
+                                <!-- Input area for prompts -->
+                                <textarea id="generic-modal-input" class="hidden w-full mt-2 border border-gray-300 rounded p-2 text-sm h-24 font-mono" placeholder="請在此貼上..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                    <button type="button" id="generic-modal-confirm" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:w-auto sm:text-sm">
+                        確定
+                    </button>
+                    <button type="button" id="generic-modal-cancel" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm" onclick="closeGenericModal()">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Data Source ---
+        const fullWordList = [
+            // Part 1
+            "ace", "actor", "almond", "alphabet", "amount",
+            "arrow", "article", "badger", "barber", "basic",
+            "battle", "beginner", "bind", "borrow", "bother",
+            "cactus", "cartoon", "center", "checkers", "chimney",
+            "claim", "clerk", "click", "cliff", "clue",
+            // Part 2
+            "cocoon", "control", "corner", "cue", "daydream",
+            "disk", "drill", "dust", "enemy", "equal",
+            "erase", "example", "field", "firefly", "fireworks",
+            "firm", "flash", "flight", "fresh", "giant",
+            "grand", "harbor", "haunt", "history", "hungry",
+            // Part 3
+            "iron", "island", "jellyfish", "knight", "know-how",
+            "ladybird", "lighthouse", "lonely", "maple", "meter",
+            "middle", "mole", "narrow", "offer", "onion",
+            "period", "plain", "powerful", "pretend", "pride",
+            "recess", "record", "result", "rude", "season",
+            // Part 4
+            "settle", "share", "speech", "steak", "steel",
+            "Stone Age", "strawberry", "success", "sundown", "sunlit",
+            "sunrise", "supper", "telephone", "thirsty", "thread",
+            "toilet", "total", "trash", "value", "vote",
+            "wasp", "wildcat", "willow", "yourself", "youth"
+        ];
+
+        // --- 2. State Management ---
+        const BATCH_SIZE = 5;
+        const STORAGE_KEY = 'spelling_bee_progress_v4'; 
+
+        let state = {
+            currentBatchIndex: 0, 
+            maxUnlockedBatchIndex: 0,
+            mode: 'practice', 
+            practiceCardIndex: 0, 
+            rehearsalQueue: [], 
+            currentRehearsalWord: null,
+            errorBank: [],
+            bootcampQueue: [],
+            practiceLog: { total: {}, daily: {} }
+        };
+
+        // --- Modal Utilities ---
+        const modal = {
+            el: document.getElementById('generic-modal'),
+            title: document.getElementById('generic-modal-title'),
+            msg: document.getElementById('generic-modal-message'),
+            input: document.getElementById('generic-modal-input'),
+            confirmBtn: document.getElementById('generic-modal-confirm'),
+            cancelBtn: document.getElementById('generic-modal-cancel'),
+            iconContainer: document.getElementById('modal-icon-container'),
+            icon: document.getElementById('modal-icon')
+        };
+
+        function closeGenericModal() {
+            modal.el.classList.add('hidden');
+        }
+
+        function showGenericModal({ type, title, message, onConfirm, iconClass, colorClass }) {
+            modal.title.innerText = title;
+            modal.msg.innerText = message;
+            modal.el.classList.remove('hidden');
+            modal.icon.className = iconClass || "fas fa-info";
+            modal.iconContainer.className = `mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10 ${colorClass || 'bg-blue-100 text-blue-600'}`;
+            modal.input.classList.add('hidden');
+            modal.input.value = '';
+            modal.confirmBtn.onclick = () => { if (onConfirm) onConfirm(modal.input.value); closeGenericModal(); };
+            if (type === 'alert') modal.cancelBtn.classList.add('hidden'); else modal.cancelBtn.classList.remove('hidden');
+            if (type === 'input') { modal.input.classList.remove('hidden'); setTimeout(() => modal.input.focus(), 100); }
+        }
+
+        function showAlert(message) {
+            showGenericModal({ type: 'alert', title: '提示', message: message, iconClass: 'fas fa-info-circle text-blue-600', colorClass: 'bg-blue-100' });
+        }
+        function showConfirm(message, onYes) {
+            showGenericModal({ type: 'confirm', title: '確認', message: message, onConfirm: onYes, iconClass: 'fas fa-exclamation-triangle text-yellow-600', colorClass: 'bg-yellow-100' });
+        }
+        function showPrompt(message, onInput) {
+            showGenericModal({ type: 'input', title: '輸入', message: message, onConfirm: onInput, iconClass: 'fas fa-keyboard text-indigo-600', colorClass: 'bg-indigo-100' });
+        }
+
+        // --- 3. Initialization ---
+        function init() {
+            if (!loadProgress()) { loadBatch(0); } else { renderSelector(); }
+            render();
+            if (state.mode === 'rehearsal') checkRehearsalStateOnLoad();
+            if (state.mode === 'bootcamp') startBootcamp(true);
+        }
+        
+        function checkRehearsalStateOnLoad() {
+             if (state.rehearsalQueue.every(i => i.status === 'ok')) showRehearsalComplete();
+             else { if (!state.currentRehearsalWord) pickNextRehearsalWord(); setRehearsalView('question'); }
+        }
+
+        function saveProgress() {
+            const dataToSave = {
+                currentBatchIndex: state.currentBatchIndex,
+                maxUnlockedBatchIndex: state.maxUnlockedBatchIndex,
+                rehearsalQueue: state.rehearsalQueue,
+                mode: state.mode,
+                errorBank: state.errorBank,
+                practiceLog: state.practiceLog 
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+            renderBootcampBanner(); 
+        }
+
+        function loadProgress() {
+            let savedData = localStorage.getItem(STORAGE_KEY);
+            if (!savedData) {
+                // Fallback logic omitted for brevity but assumed same as before
+                const v3 = localStorage.getItem('spelling_bee_progress_v3');
+                if (v3) { try { Object.assign(state, JSON.parse(v3)); state.practiceLog={total:{},daily:{}}; saveProgress(); return true; } catch(e){} }
+                const v2 = localStorage.getItem('spelling_bee_progress_v2');
+                if (v2) { try { Object.assign(state, JSON.parse(v2)); state.practiceLog={total:{},daily:{}}; state.errorBank=[]; saveProgress(); return true; } catch(e){} }
+                return false;
+            }
+            try {
+                state = { ...state, ...JSON.parse(savedData) };
+                if (!state.practiceLog) state.practiceLog = { total: {}, daily: {} };
+                return true;
+            } catch (e) { return false; }
+        }
+
+        // --- New Demo/Reset/Import Logic ---
+        function confirmLoadDemo() {
+            showConfirm("這將會覆蓋您目前的練習紀錄，並載入虛擬的範例資料以供預覽。確定嗎？", () => generateDemoData());
+        }
+
+        function generateDemoData() {
+            const today = new Date();
+            const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+            const dayBefore = new Date(today); dayBefore.setDate(today.getDate() - 2);
+            const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+            const demoLog = { daily: {}, total: {} };
+            const add = (date, word, view, test) => {
+                if (!demoLog.daily[date]) demoLog.daily[date] = {};
+                if (!demoLog.daily[date][word]) demoLog.daily[date][word] = { view: 0, test: 0 };
+                demoLog.daily[date][word].view += view; demoLog.daily[date][word].test += test;
+                if (!demoLog.total[word]) demoLog.total[word] = 0;
+                demoLog.total[word] += (view + test);
+            };
+
+            const d1 = fmt(today); const d2 = fmt(yesterday); const d3 = fmt(dayBefore);
+            ["ace", "actor", "almond"].forEach(w => add(d3, w, 5, 0)); 
+            ["alphabet", "amount"].forEach(w => add(d3, w, 2, 0));
+            ["ace", "actor", "almond", "alphabet", "amount"].forEach(w => add(d2, w, 1, 3)); 
+            ["arrow", "article"].forEach(w => add(d2, w, 5, 0)); 
+            ["ace", "actor"].forEach(w => add(d1, w, 0, 1)); 
+            ["arrow", "article", "badger", "barber", "basic"].forEach(w => add(d1, w, 3, 2)); 
+
+            state.practiceLog = demoLog;
+            state.currentBatchIndex = 1; state.maxUnlockedBatchIndex = 1; state.mode = 'practice'; state.errorBank = [];
+            loadBatchQueue(1); saveProgress(); showAlert("✅ 範例資料已載入！請點擊「練習日誌」查看效果。"); render();
+        }
+
+        function confirmReset() {
+            showConfirm("確定要重置所有進度嗎？這將會清除所有的學習紀錄，回到第一個單字。", () => {
+                localStorage.removeItem(STORAGE_KEY);
+                state = { currentBatchIndex: 0, maxUnlockedBatchIndex: 0, mode: 'practice', practiceCardIndex: 0, rehearsalQueue: [], currentRehearsalWord: null, errorBank: [], bootcampQueue: [], practiceLog: { total: {}, daily: {} } };
+                loadBatchQueue(0); render(); showAlert("✅ 進度已重置。");
+            });
+        }
+
+        function exportProgress() {
+            const d = localStorage.getItem(STORAGE_KEY);
+            if(!d) { showAlert("無資料可匯出"); return; }
+            const t = btoa(encodeURIComponent(d));
+            navigator.clipboard.writeText(t).then(() => showAlert("✅ 進度代碼已複製到剪貼簿！\n請在另一台裝置使用「匯入」功能。")).catch(() => {
+                showGenericModal({ type: 'alert', title: '手動複製', message: '無法自動複製，請手動複製下方代碼：', iconClass: 'fas fa-copy text-gray-600', colorClass: 'bg-gray-100' });
+                modal.input.value = t; modal.input.classList.remove('hidden');
+            });
+        }
+
+        function showImportModal() {
+            showPrompt("請貼上您的進度代碼：", (code) => {
+                if(!code) return;
+                try {
+                    const j = decodeURIComponent(atob(code)); JSON.parse(j);
+                    localStorage.setItem(STORAGE_KEY, j); loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
+                } catch(e) { showAlert("❌ 代碼格式錯誤，無法匯入。"); }
+            });
+        }
+
+        // --- Logging Logic ---
+        function getTodayString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function logPracticeAction(word, type) {
+            const date = getTodayString();
+            if (!state.practiceLog.daily[date]) state.practiceLog.daily[date] = {};
+            if (!state.practiceLog.daily[date][word]) state.practiceLog.daily[date][word] = { view: 0, test: 0 };
+            state.practiceLog.daily[date][word][type]++;
+            if (!state.practiceLog.total[word]) state.practiceLog.total[word] = 0;
+            state.practiceLog.total[word]++;
+            saveProgress();
+        }
+
+        // --- UI Rendering: Log Modal ---
+        let currentLogTab = 'daily';
+        let currentSortType = 'asc'; // asc, desc, alpha
+
+        function openLogModal() {
+            switchLogTab('daily');
+            document.getElementById('log-modal').classList.remove('hidden');
+        }
+        function closeLogModal() {
+            document.getElementById('log-modal').classList.add('hidden');
+        }
+
+        function switchLogTab(tab) {
+            currentLogTab = tab;
+            const btnDaily = document.getElementById('tab-btn-daily');
+            const btnRanking = document.getElementById('tab-btn-ranking');
+            const viewDaily = document.getElementById('log-view-daily');
+            const viewRanking = document.getElementById('log-view-ranking');
+
+            if (tab === 'daily') {
+                btnDaily.className = "tab-active whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm";
+                btnRanking.className = "tab-inactive whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm";
+                viewDaily.classList.remove('hidden');
+                viewRanking.classList.add('hidden');
+                renderLogDaily();
+            } else {
+                btnDaily.className = "tab-inactive whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm";
+                btnRanking.className = "tab-active whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm";
+                viewDaily.classList.add('hidden');
+                viewRanking.classList.remove('hidden');
+                renderLogRanking();
+            }
+        }
+
+        function renderLogDaily() {
+            const today = getTodayString();
+            const dailyData = state.practiceLog.daily;
+            let todayTotal = 0; let todayView = 0; let todayTest = 0;
+            
+            if (dailyData[today]) {
+                Object.values(dailyData[today]).forEach(stats => { todayView += stats.view; todayTest += stats.test; });
+                todayTotal = todayView + todayTest;
+            }
+            document.getElementById('log-today-count').innerText = todayTotal;
+            document.getElementById('log-today-detail').innerText = `瀏覽 ${todayView} / 測試 ${todayTest}`;
+
+            const listEl = document.getElementById('log-history-list');
+            listEl.innerHTML = '';
+            const dates = Object.keys(dailyData).sort().reverse();
+            
+            if (dates.length === 0) { listEl.innerHTML = '<div class="text-gray-400 text-sm text-center py-4">尚未有練習紀錄</div>'; return; }
+
+            dates.forEach(date => {
+                const wordsObj = dailyData[date];
+                const wordList = Object.keys(wordsObj);
+                let dayTotal = 0;
+                wordList.forEach(w => dayTotal += (wordsObj[w].view + wordsObj[w].test));
+
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-200 rounded-lg p-3";
+                const header = document.createElement('div');
+                header.className = "flex justify-between items-center mb-2";
+                header.innerHTML = `<span class="font-bold text-gray-700 text-sm">${date === today ? '今天 (Today)' : date}</span><span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">練了 ${dayTotal} 次</span>`;
+                card.appendChild(header);
+
+                const tags = document.createElement('div');
+                tags.className = "flex flex-wrap gap-1";
+                wordList.sort((a,b) => (wordsObj[b].view + wordsObj[b].test) - (wordsObj[a].view + wordsObj[a].test));
+
+                wordList.forEach(w => {
+                    const stats = wordsObj[w];
+                    const count = stats.view + stats.test;
+                    const batchIndex = Math.floor(fullWordList.indexOf(w) / BATCH_SIZE) + 1; // Calc batch index
+                    const tag = document.createElement('span');
+                    const colorClass = stats.test > 0 ? "bg-orange-50 text-orange-700 border-orange-100" : "bg-blue-50 text-blue-700 border-blue-100";
+                    tag.className = `text-xs border px-2 py-0.5 rounded ${colorClass}`;
+                    tag.innerText = `${w} (${batchIndex}) x${count}`; // Added batch index
+                    tags.appendChild(tag);
+                });
+                card.appendChild(tags);
+                listEl.appendChild(card);
+            });
+        }
+
+        function sortRanking(type) {
+            currentSortType = type;
+            renderLogRanking();
+        }
+
+        function renderLogRanking() {
+            const listEl = document.getElementById('log-ranking-list');
+            listEl.innerHTML = '';
+
+            // Map all words to stats, defaulting to 0
+            const rankingData = fullWordList.map(word => ({
+                word: word,
+                count: state.practiceLog.total[word] || 0
+            }));
+
+            // Sort
+            rankingData.sort((a, b) => {
+                if (currentSortType === 'asc') return a.count - b.count; // Least practiced first
+                if (currentSortType === 'desc') return b.count - a.count; // Most practiced first
+                if (currentSortType === 'alpha') return a.word.localeCompare(b.word);
+                return 0;
+            });
+
+            rankingData.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2 hover:bg-gray-50 rounded border-b border-gray-100 last:border-0";
+                const batchIndex = Math.floor(fullWordList.indexOf(item.word) / BATCH_SIZE) + 1; // Calc batch index
+                
+                // Color code based on count
+                let badgeClass = "bg-gray-100 text-gray-600";
+                if (item.count > 10) badgeClass = "bg-green-100 text-green-700";
+                else if (item.count > 5) badgeClass = "bg-blue-100 text-blue-700";
+                else if (item.count > 0) badgeClass = "bg-yellow-100 text-yellow-700";
+                else badgeClass = "bg-red-50 text-red-400"; // Zero practice
+
+                row.innerHTML = `
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-gray-800 font-medium">${item.word}</span>
+                        <span class="text-xs text-gray-400">(${batchIndex})</span>
+                    </div>
+                    <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">
+                        ${item.count} 次
+                    </span>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        // --- Core Logic (Same as V4, condensed) ---
+        function addToErrorBank(word) {
+            const existingIndex = state.errorBank.findIndex(i => i.word === word);
+            if (existingIndex !== -1) state.errorBank[existingIndex].streak = 0;
+            else state.errorBank.push({ word: word, streak: 0 });
+            saveProgress();
+        }
+        function startBootcamp(isResume = false) {
+            if (state.errorBank.length === 0 && !isResume) { showAlert("目前沒有錯題！太棒了！"); return; }
+            state.mode = 'bootcamp';
+            if (!isResume) state.bootcampQueue = state.errorBank.map(item => ({ ...item }));
+            else if (!state.bootcampQueue || state.bootcampQueue.length === 0) state.bootcampQueue = state.errorBank.map(item => ({ ...item }));
+            saveProgress(); render(); pickNextRehearsalWord(); 
+        }
+        function exitBootcamp() {
+            state.mode = 'practice'; state.bootcampQueue = []; state.currentRehearsalWord = null;
+            saveProgress(); render();
+        }
+        function loadBatchQueue(batchIndex) {
+            const start = batchIndex * BATCH_SIZE; const end = start + BATCH_SIZE;
+            const batchWords = fullWordList.slice(start, end);
+            state.rehearsalQueue = batchWords.map(w => ({ word: w, status: 'pending' }));
+        }
+        function changeBatch(val) {
+            const newIndex = parseInt(val);
+            if (!isNaN(newIndex)) { loadBatch(newIndex); switchMode(state.mode); }
+        }
+        function loadBatch(batchIndex) {
+            state.currentBatchIndex = batchIndex; state.practiceCardIndex = 0;
+            state.currentRehearsalWord = null; loadBatchQueue(batchIndex); saveProgress(); 
+        }
+        
+        const synth = window.speechSynthesis;
+        function speakText(text) {
+            if (synth.speaking) synth.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'en-US'; utter.rate = 0.9; synth.speak(utter);
+        }
+        function playCurrentWord() { const word = getCurrentPracticeWord(); speakText(word); setTimeout(() => speakText(word), 1500); }
+        function playTeacherAudio() {
+            if (!state.currentRehearsalWord) pickNextRehearsalWord();
+            const word = state.currentRehearsalWord.word; speakText(word); setTimeout(() => speakText(word), 1500);
+        }
+        function playCorrectSpelling() { const word = state.currentRehearsalWord.word; speakText(word); }
+
+        function pickNextRehearsalWord() {
+            const isBootcamp = state.mode === 'bootcamp';
+            const queue = isBootcamp ? state.bootcampQueue : state.rehearsalQueue;
+            let pending = isBootcamp ? queue : queue.filter(item => item.status !== 'ok');
+            
+            if (pending.length === 0) {
+                state.currentRehearsalWord = null;
+                isBootcamp ? showBootcampComplete() : showRehearsalComplete();
+                return;
+            }
+            state.currentRehearsalWord = pending[0];
+            setRehearsalView('question');
+            const hiddenWordEl = document.getElementById('rehearsal-hidden-word');
+            hiddenWordEl.innerText = state.currentRehearsalWord.word;
+            hiddenWordEl.classList.add('blur-sm');
+            if (isBootcamp) {
+                const bankItem = state.errorBank.find(i => i.word === state.currentRehearsalWord.word);
+                document.getElementById('streak-count').innerText = bankItem ? bankItem.streak : 0;
+            }
+        }
+        function showAnswer() {
+            setRehearsalView('answer');
+            const word = state.currentRehearsalWord.word;
+            document.getElementById('answer-display').innerText = `${word}, ${word.split('').join('-')}, ${word}`;
+        }
+        function rateWord(rating) {
+            const word = state.currentRehearsalWord.word;
+            logPracticeAction(word, 'test');
+            if (state.mode === 'bootcamp') handleBootcampRating(word, rating);
+            else handleRehearsalRating(word, rating);
+            saveProgress(); pickNextRehearsalWord(); renderRehearsalStats(); 
+        }
+        function handleRehearsalRating(word, rating) {
+            const currentItem = state.rehearsalQueue.find(i => i.word === word);
+            if (rating === 'ok') currentItem.status = 'ok';
+            else {
+                addToErrorBank(word); currentItem.status = rating; 
+                state.rehearsalQueue = state.rehearsalQueue.filter(i => i !== currentItem);
+                state.rehearsalQueue.push(currentItem);
+            }
+        }
+        function handleBootcampRating(word, rating) {
+            const bankIndex = state.errorBank.findIndex(i => i.word === word);
+            if (bankIndex === -1) return; 
+            if (rating === 'ok') {
+                state.errorBank[bankIndex].streak += 1;
+                if (state.errorBank[bankIndex].streak >= 3) state.errorBank.splice(bankIndex, 1);
+                state.bootcampQueue.shift(); 
+            } else {
+                state.errorBank[bankIndex].streak = 0;
+                state.bootcampQueue.push(state.bootcampQueue.shift());
+            }
+        }
+        function setRehearsalView(view) {
+            ['rehearsal-step-question', 'rehearsal-step-answer', 'rehearsal-step-complete', 'bootcamp-step-complete'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            if (view === 'question') document.getElementById('rehearsal-step-question').classList.remove('hidden');
+            if (view === 'answer') document.getElementById('rehearsal-step-answer').classList.remove('hidden');
+            if (view === 'complete') document.getElementById('rehearsal-step-complete').classList.remove('hidden');
+            if (view === 'bootcamp_complete') document.getElementById('bootcamp-step-complete').classList.remove('hidden');
+        }
+        function showRehearsalComplete() { setRehearsalView('complete'); }
+        function showBootcampComplete() { setRehearsalView('bootcamp_complete'); }
+        function renderBootcampBanner() {
+            const banner = document.getElementById('bootcamp-banner');
+            const count = state.errorBank.length;
+            document.getElementById('error-bank-count').innerText = count;
+            banner.classList.toggle('hidden', count === 0 || state.mode === 'bootcamp');
+        }
+        function switchMode(mode) {
+            if (mode === 'bootcamp') startBootcamp();
+            else {
+                state.mode = mode; state.bootcampQueue = []; state.currentRehearsalWord = null;
+                if (mode === 'rehearsal') {
+                    if (state.currentBatchIndex > state.maxUnlockedBatchIndex) loadBatch(state.maxUnlockedBatchIndex);
+                    if (state.rehearsalQueue.every(i => i.status === 'ok')) showRehearsalComplete();
+                    else pickNextRehearsalWord();
+                }
+            }
+            saveProgress(); render();
+        }
+        function render() {
+            renderSelector(); renderBootcampBanner();
+            const isPrac = state.mode === 'practice';
+            const isReh = state.mode === 'rehearsal';
+            const isBoot = state.mode === 'bootcamp';
+            
+            document.getElementById('btn-mode-practice').className = `px-6 py-2 rounded-md text-sm font-bold transition-all duration-200 flex items-center gap-2 ${isPrac ? 'bg-blue-500 text-white shadow-lg scale-105' : 'text-gray-500 hover:bg-gray-200'}`;
+            document.getElementById('btn-mode-rehearsal').className = `px-6 py-2 rounded-md text-sm font-bold transition-all duration-200 flex items-center gap-2 ${isReh || isBoot ? 'bg-orange-500 text-white shadow-lg scale-105' : 'text-gray-500 hover:bg-gray-200'}`;
+            
+            document.getElementById('view-practice').classList.toggle('hidden', !isPrac);
+            document.getElementById('view-rehearsal').classList.toggle('hidden', isPrac);
+            document.getElementById('main-progress-container').classList.toggle('hidden', isBoot);
+            document.getElementById('bootcamp-header').classList.toggle('hidden', !isBoot);
+            document.getElementById('bootcamp-streak-indicator').classList.toggle('hidden', !isBoot);
+
+            if (isPrac) renderPractice();
+            else {
+                const qBar = document.getElementById('question-color-bar');
+                const qBadge = document.getElementById('question-badge');
+                const btnPT = document.getElementById('btn-play-teacher');
+                const btnSA = document.getElementById('btn-show-answer');
+                
+                qBar.className = `absolute top-0 left-0 w-full h-4 transition-colors ${isBoot ? 'bg-red-500' : 'bg-orange-400'}`;
+                qBadge.className = `absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold transition-colors ${isBoot ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600'}`;
+                
+                btnPT.className = `w-full text-white text-3xl font-bold py-8 px-8 rounded-2xl shadow-lg transform active:scale-95 transition-transform flex items-col justify-center gap-3 mb-6 transition-colors ${isBoot ? 'bg-red-500 hover:bg-red-600' : 'bg-orange-500 hover:bg-orange-600'}`;
+                btnSA.className = `font-bold text-lg border-2 px-8 py-3 rounded-full transition-colors ${isBoot ? 'text-red-500 border-red-500 hover:bg-red-50' : 'text-orange-500 border-orange-500 hover:bg-orange-50'}`;
+                
+                renderRehearsalStats();
+            }
+        }
+        function getCurrentPracticeWord() { return fullWordList[(state.currentBatchIndex * BATCH_SIZE) + state.practiceCardIndex]; }
+        function nextPracticeCard() { if (state.practiceCardIndex < BATCH_SIZE - 1) { logPracticeAction(getCurrentPracticeWord(), 'view'); state.practiceCardIndex++; render(); } }
+        function prevPracticeCard() { if (state.practiceCardIndex > 0) { state.practiceCardIndex--; render(); } }
+        function renderPractice() {
+            const word = getCurrentPracticeWord();
+            const el = document.getElementById('practice-word');
+            el.innerText = word;
+            el.className = "relative z-10 font-bold text-gray-700 tracking-wide select-none transition-all duration-300";
+            if (word.length <= 5) el.classList.add('text-7xl', 'md:text-9xl'); else if (word.length <= 8) el.classList.add('text-5xl', 'md:text-8xl'); else el.classList.add('text-4xl', 'md:text-7xl');
+            document.getElementById('practice-counter').innerText = `${state.practiceCardIndex + 1}/${BATCH_SIZE}`;
+            
+            const dots = document.getElementById('practice-dots'); dots.innerHTML = '';
+            for(let i=0; i<BATCH_SIZE; i++) {
+                const d = document.createElement('div');
+                d.className = `w-3 h-3 rounded-full ${i === state.practiceCardIndex ? 'bg-blue-500' : 'bg-gray-300'}`;
+                dots.appendChild(d);
+            }
+            const isFirst = state.practiceCardIndex === 0; const isLast = state.practiceCardIndex === BATCH_SIZE - 1;
+            const btnP = document.getElementById('btn-prev-practice'); const btnN = document.getElementById('btn-next-practice');
+            btnP.style.opacity = isFirst ? '0.3' : '1'; btnP.style.cursor = isFirst ? 'not-allowed' : 'pointer';
+            btnN.style.opacity = isLast ? '0.3' : '1'; btnN.style.cursor = isLast ? 'not-allowed' : 'pointer';
+            document.getElementById('practice-finish-hint').classList.toggle('hidden', !isLast);
+        }
+        function renderSelector() {
+            const sel = document.getElementById('batch-selector'); sel.innerHTML = '';
+            const limit = (state.mode === 'rehearsal') ? state.maxUnlockedBatchIndex : (fullWordList.length/BATCH_SIZE) - 1;
+            for (let i = 0; i < fullWordList.length/BATCH_SIZE; i++) {
+                if (state.mode === 'practice' || i <= limit) {
+                    const opt = document.createElement('option'); opt.value = i;
+                    opt.text = `第 ${i+1} 組 (${fullWordList[i*BATCH_SIZE]} - ${fullWordList[(i*BATCH_SIZE)+BATCH_SIZE-1]})`;
+                    if (i === state.currentBatchIndex) opt.selected = true;
+                    sel.appendChild(opt);
+                }
+            }
+        }
+        function renderRehearsalStats() {
+            document.getElementById('queue-count').innerText = state.mode === 'bootcamp' ? state.bootcampQueue.length : state.rehearsalQueue.filter(i => i.status !== 'ok').length;
+        }
+        function unlockNextBatch() {
+             const next = state.currentBatchIndex + 1;
+             if (next < (fullWordList.length / BATCH_SIZE)) {
+                 if (next > state.maxUnlockedBatchIndex) state.maxUnlockedBatchIndex = next;
+                 loadBatch(next); switchMode('practice');
+             } else showAlert("恭喜全破！");
+        }
+        init();
+    </script>
+</body>
+</html>
