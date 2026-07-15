@@ -25,7 +25,7 @@
       "audience": ["aiden"],
       "category": "學科",
       "status": "active",
-      "sync": false,
+      "sync": true,
       "owner": "aiden",
       "order": { "aiden": 2 }
     },
@@ -37,7 +37,7 @@
       "audience": ["aiden"],
       "category": "學科",
       "status": "active",
-      "sync": false,
+      "sync": true,
       "owner": "aiden",
       "order": { "aiden": 3 }
     },
