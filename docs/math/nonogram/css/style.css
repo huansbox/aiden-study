@@ -1,0 +1,491 @@
+:root {
+  /* 童趣（預設）：深藍漸層底 + 白卡片 + 暖橘點綴 */
+  --bg-top: #243b6b;
+  --bg-bottom: #1b2a4a;
+  --card: #ffffff;
+  --ink: #20304f;
+  --header-ink: #ffffff;
+  --cell-line: #9fb0cc;
+  --cell-fill: #2b59c3;
+  --divider: #20304f;
+  --accent: #ff8c42;
+  /* 格子尺寸由此控制；AIDEN = 15 欄，需在窄螢幕也塞得下 */
+  --cell: clamp(16px, 5.2vw, 34px);
+  --clue-font: clamp(10px, 2.6vw, 16px);
+}
+
+/* 清爽主題：淺色底 + 柔和藍綠，整個 app 即時換樣（見 app.js applySettings） */
+:root[data-theme="clean"] {
+  --bg-top: #eef3f8;
+  --bg-bottom: #dbe5ef;
+  --card: #ffffff;
+  --ink: #2b3a52;
+  --header-ink: #2b3a52;
+  --cell-line: #c3cede;
+  --cell-fill: #4a83b8;
+  --divider: #3a4d66;
+  --accent: #f0a14b;
+}
+
+* { box-sizing: border-box; }
+
+/* 對使用 hidden 屬性的元素，CSS 有設 display 時必須覆寫（見 CLAUDE.md） */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans TC', system-ui, sans-serif;
+  background: linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px);
+}
+
+.header { text-align: center; color: var(--header-ink); padding: 14px 0 8px; }
+.title { margin: 0; font-size: clamp(22px, 6vw, 34px); font-weight: 900; }
+.subtitle { margin: 4px 0 0; font-size: clamp(12px, 3.2vw, 16px); opacity: .85; }
+
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+/* ---- 首頁：編號題庫 ---- */
+.home-title {
+  margin: 4px 0 16px;
+  text-align: center;
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 900;
+}
+.library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+.puzzle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 92px;
+  padding: 14px 8px;
+  border: 2px solid var(--cell-line);
+  border-radius: 14px;
+  background: #f5f8ff;
+  color: var(--ink);
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.puzzle-card:active { transform: translateY(1px); }
+.puzzle-card.is-solved { border-color: var(--accent); background: #fff5ec; }
+.puzzle-card__num { font-size: clamp(15px, 4vw, 19px); font-weight: 900; }
+.puzzle-card__star {
+  font-size: clamp(22px, 6vw, 30px);
+  line-height: 1;
+  color: var(--cell-line);
+}
+.puzzle-card.is-solved .puzzle-card__star { color: var(--accent); }
+.library-msg {
+  grid-column: 1 / -1;
+  margin: 12px 0;
+  text-align: center;
+  font-size: clamp(14px, 3.8vw, 17px);
+  font-weight: 700;
+  color: var(--ink);
+  opacity: .8;
+}
+
+/* ---- 首頁：自訂出題 ---- */
+.custom {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 2px dashed var(--cell-line);
+  text-align: center;
+}
+.custom-title { margin: 0 0 2px; font-size: clamp(16px, 4.6vw, 21px); font-weight: 900; }
+.custom-sub { margin: 0 0 12px; font-size: clamp(12px, 3.2vw, 15px); font-weight: 700; opacity: .75; }
+.custom-display {
+  min-height: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 2px solid var(--cell-line);
+  border-radius: 12px;
+  background: #f5f8ff;
+}
+.custom-chip {
+  min-width: clamp(28px, 8vw, 40px);
+  height: clamp(38px, 11vw, 48px);
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--cell-fill);
+  color: #fff;
+  font-size: clamp(18px, 5.4vw, 26px);
+  font-weight: 900;
+}
+.custom-placeholder {
+  font-size: clamp(13px, 3.6vw, 16px);
+  font-weight: 700;
+  color: var(--cell-line);
+}
+.keyboard--custom { margin-bottom: 10px; }
+.custom-hint {
+  margin: 0 0 12px;
+  min-height: 1.4em;
+  font-size: clamp(13px, 3.6vw, 16px);
+  font-weight: 700;
+}
+.custom-hint.bad { color: #d14343; }
+
+/* ---- 首頁：設定（齒輪鈕 + 浮層，省主畫面空間）---- */
+.home { position: relative; }
+.settings-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 6;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--cell-line);
+  border-radius: 50%;
+  background: #f5f8ff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.settings-toggle:active { transform: translateY(1px); }
+.settings {
+  position: absolute;
+  top: 58px;
+  right: 12px;
+  left: auto;
+  z-index: 5;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 2px solid var(--cell-line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .25);
+  text-align: left;
+}
+.setting-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.setting-label { font-size: clamp(14px, 4vw, 17px); font-weight: 900; }
+.seg {
+  display: flex;
+  border: 2px solid var(--cell-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f8ff;
+}
+.seg-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 9px 16px;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: clamp(13px, 3.6vw, 16px);
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.seg-btn + .seg-btn { border-left: 2px solid var(--cell-line); }
+.seg-btn.is-active { background: var(--cell-fill); color: #fff; }
+
+/* ---- 全部過關畫面 ---- */
+.allclear { text-align: center; padding: 32px 16px; }
+.allclear-emoji { font-size: clamp(56px, 18vw, 96px); line-height: 1; }
+.allclear-title {
+  margin: 12px 0 6px;
+  font-size: clamp(24px, 7vw, 36px);
+  font-weight: 900;
+}
+.allclear-sub {
+  margin: 0 0 22px;
+  font-size: clamp(14px, 4vw, 18px);
+  font-weight: 700;
+  opacity: .8;
+}
+
+/* ---- 遊戲頂部列：回題庫 + 第 N 題 ---- */
+.game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.puzzle-label { font-size: clamp(15px, 4vw, 19px); font-weight: 900; }
+
+/* ---- 格盤：corner / col-clues / row-clues / grid ---- */
+.board {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  justify-content: center;
+  gap: 0;
+  /* 防止觸控塗色時頁面捲動 / 長按選取（拖曳留待 #003，但先行設好） */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.board-corner { /* 左上空白角落 */ }
+
+.col-clues {
+  display: flex;
+  align-items: flex-end;
+  /* 補回 .grid 的 2px 左框，讓提示與格欄對齊 */
+  border-left: 2px solid transparent;
+}
+.col-clue {
+  width: var(--cell);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 3px;
+  font-size: var(--clue-font);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.col-clue.is-zero { color: var(--cell-line); }
+
+.row-clues {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* 補回 .grid 的 2px 上框，讓提示與格列對齊 */
+  border-top: 2px solid transparent;
+}
+.row-clue {
+  height: var(--cell);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  padding-right: 6px;
+  /* 多數字提示一律單行；換行會 overflow 固定行高、與相鄰列疊在一起（擠壓）。
+     單行使 row-clues 欄寬撐到內容寬，fitGrid 量到後縮小格盤讓出空間。 */
+  white-space: nowrap;
+  font-size: var(--clue-font);
+  font-weight: 700;
+  color: var(--ink);
+}
+.row-clue.is-zero { color: var(--cell-line); }
+
+.grid {
+  display: grid;
+  /* grid-template-columns / rows 由 JS 動態設定（欄列數不可 CSS 寫死） */
+  border: 2px solid var(--divider);
+}
+
+.cell {
+  position: relative;
+  width: var(--cell);
+  height: var(--cell);
+  border-right: 1px solid var(--cell-line);
+  border-bottom: 1px solid var(--cell-line);
+  background: #fff;
+  cursor: pointer;
+}
+.cell.filled { background: var(--cell-fill); }
+/* 填色設為「按字母變色」時，遊玩中的塗色格即依所屬字母上色（--letter-color 由 JS 預設） */
+:root[data-fill="letter"] .cell.filled { background: var(--letter-color, var(--cell-fill)); }
+
+/* ---- 過關／看答案揭曉：按字母上色 + 標出多塗(extra)/漏塗(missing) ---- */
+.cell.revealed {
+  background: var(--letter-color, var(--cell-fill));
+  animation: cell-pop .35s ease;
+}
+@keyframes cell-pop {
+  0% { transform: scale(.6); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+/* 漏塗：正解該塗、玩家沒塗 → 在已上色格疊一個白圈提醒 */
+.cell.diff-missing::after {
+  content: '';
+  position: absolute;
+  inset: 22%;
+  border: 2px solid rgba(255, 255, 255, .95);
+  border-radius: 50%;
+}
+/* 多塗：正解不塗、玩家塗了 → 淡紅底 + ✕ */
+.cell.diff-extra { background: #ffe0e0; }
+.cell.diff-extra::after {
+  content: '✕';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d14343;
+  font-weight: 900;
+  font-size: calc(var(--cell) * .72);
+  line-height: 1;
+}
+
+/* 每 3 欄較粗分隔線輔助字母邊界（畫在字母邊界＝該欄左緣） */
+.cell--divider { border-left: 2px solid var(--divider); }
+.col-clue--divider { box-shadow: inset 2px 0 0 0 var(--divider); }
+
+/* ---- 答案欄 ---- */
+.answer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 12px;
+  cursor: pointer; /* 點一下叫出鍵盤抽屜 */
+  touch-action: manipulation; /* 觸控當作 tap，不啟用雙擊縮放、避免被當成 pan 手勢 */
+}
+.slot {
+  width: clamp(34px, 11vw, 52px);
+  height: clamp(44px, 14vw, 64px);
+  border: 3px solid var(--cell-line);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(22px, 7vw, 34px);
+  font-weight: 900;
+  color: var(--ink);
+  background: #f5f8ff;
+}
+.slot.filled { border-color: var(--cell-fill); }
+.slot.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 140, 66, .25); }
+/* 揭曉時整字按字母上色慶祝 */
+.slot.revealed {
+  color: var(--letter-color, var(--cell-fill));
+  border-color: var(--letter-color, var(--cell-fill));
+  background: #fff;
+  animation: cell-pop .35s ease;
+}
+
+/* ---- 螢幕鍵盤 ---- */
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.key {
+  min-width: clamp(28px, 8vw, 42px);
+  height: clamp(38px, 10vw, 48px);
+  padding: 0 4px;
+  border: none;
+  border-radius: 9px;
+  background: #eef2fb;
+  color: var(--ink);
+  font-size: clamp(15px, 4.2vw, 20px);
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.key:active { background: #dde6fb; transform: translateY(1px); }
+.key--del {
+  background: #ffe2d2;
+  min-width: clamp(48px, 14vw, 70px);
+}
+
+/* ---- 鍵盤抽屜（緊接遊戲卡片下方、in-flow；#4）---- */
+/* 收合時 max-height:0 不佔空間；展開時往下長出、緊貼卡片，空白自然落到鍵盤下方
+   （而非夾在卡片與鍵盤之間）。box-sizing:border-box 讓 padding 收進 max-height，收合得乾淨。 */
+.kb-drawer {
+  box-sizing: border-box;
+  overflow: hidden;
+  max-height: 0;
+  padding: 0 12px;            /* 收合時無垂直 padding → 真正 0 高、不留 sliver */
+  transition: max-height .24s ease, margin-top .24s ease;
+  background: var(--card);
+  border-radius: 18px;
+}
+.kb-drawer.is-open {
+  max-height: 70vh;
+  margin-top: 10px;
+  padding: 8px 12px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+.kb-drawer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 6px;
+}
+.kb-drawer__tip {
+  font-size: clamp(13px, 3.6vw, 16px);
+  font-weight: 700;
+  color: var(--ink);
+  opacity: .8;
+}
+.kb-drawer .keyboard { margin-bottom: 0; }
+
+/* ---- 動作按鈕與提示 ---- */
+.actions { display: flex; justify-content: center; gap: 12px; }
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 34px;
+  font-size: clamp(16px, 4.6vw, 20px);
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.btn--primary { background: var(--cell-fill); color: #fff; }
+.btn--primary:active { transform: translateY(1px); }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn:disabled:active { transform: none; }
+.btn--accent { background: var(--accent); color: #fff; }
+.btn--accent:active { transform: translateY(1px); }
+.btn--ghost {
+  padding: 8px 16px;
+  font-size: clamp(14px, 3.8vw, 17px);
+  background: #eef2fb;
+  color: var(--ink);
+}
+.btn--ghost:active { transform: translateY(1px); }
+
+.hint {
+  text-align: center;
+  margin: 14px 0 0;
+  min-height: 1.6em;
+  font-size: clamp(15px, 4.4vw, 19px);
+  font-weight: 700;
+}
+.hint.ok { color: #1f9d55; }
+.hint.bad { color: #d14343; }

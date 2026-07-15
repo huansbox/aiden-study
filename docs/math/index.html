@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0b3b2e">
+  <link rel="manifest" href="manifest.json">
+  <title>長除法練習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260310c">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="title-group">
+        <h1 class="title">長除法練習</h1>
+        <div id="boss-entry" class="boss-entry" hidden>
+          <button id="boss-btn" class="boss-btn">⚔️ 魔王挑戰</button>
+        </div>
+      </div>
+      <div class="stats">
+        <span id="badge" class="badge" hidden></span>
+        <span id="total-stars" class="total-stars">⭐ 0</span>
+        <span id="progress" class="progress">第 0/5 題</span>
+        <span id="streak" class="streak" hidden>🔥 <span class="streak-count">0</span></span>
+        <span id="stars" class="stars" hidden></span>
+        <span id="boss-lives" class="boss-lives" hidden>❤️❤️❤️</span>
+      </div>
+    </header>
+
+    <main class="card">
+      <div id="division-grid" class="division-grid">
+        <!-- Grid cells rendered by JS -->
+      </div>
+
+      <p id="hint" class="hint">載入中⋯</p>
+    </main>
+
+    <div class="numpad">
+      <div class="numpad-grid">
+        <button class="num-btn" data-digit="1">1</button>
+        <button class="num-btn" data-digit="2">2</button>
+        <button class="num-btn" data-digit="3">3</button>
+        <button class="num-btn" data-digit="4">4</button>
+        <button class="num-btn" data-digit="5">5</button>
+        <button class="num-btn" data-digit="6">6</button>
+        <button class="num-btn" data-digit="7">7</button>
+        <button class="num-btn" data-digit="8">8</button>
+        <button class="num-btn" data-digit="9">9</button>
+        <button class="num-btn num-btn--zero" data-digit="0">0</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

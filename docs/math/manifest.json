@@ -1,0 +1,8 @@
+{
+  "name": "長除法練習",
+  "short_name": "長除法",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b3b2e",
+  "theme_color": "#0b3b2e"
+}
