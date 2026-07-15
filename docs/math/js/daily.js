@@ -2,18 +2,23 @@ const KEY = 'aiden-math-progress';
 export const DAILY_GOAL = 5;
 
 function freshState(date) {
-  return { date, dailyCompleted: 0, dailyResults: [], totalProblems: 0, totalStars: 0 };
+  // schemaVersion＝雲端同步 schema-block 比對用（#33）：資料本體自帶，缺了保護永遠不觸發
+  return { schemaVersion: 1, date, dailyCompleted: 0, dailyResults: [], totalProblems: 0, totalStars: 0 };
 }
 
 export function loadProgress(storage, today) {
   const raw = storage.getItem(KEY);
   if (!raw) return freshState(today);
 
-  const saved = JSON.parse(raw);
+  // 壞 JSON／非物件（含同步 adopt 可能寫進來的 "null"）一律視同無存檔——這裡拋出去會把 app 永久卡死
+  let saved = null;
+  try { saved = JSON.parse(raw); } catch (e) {}
+  if (!saved || typeof saved !== 'object') return freshState(today);
   if (saved.date === today) return saved;
 
   // New day: keep totals, reset daily
   return {
+    schemaVersion: 1,
     date: today,
     dailyCompleted: 0,
     dailyResults: [],

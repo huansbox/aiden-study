@@ -1,7 +1,9 @@
-import { generateProblem, calculateSteps, generateLayout, validateInput } from './division.js';
-import { resumeAudio, playCorrect, playError, playComplete } from './sound.js';
-import { loadProgress, saveResult, isDaily, getDailySummary, DAILY_GOAL, getMilestone, getMilestoneBadge } from './daily.js';
-import { launchFireworks } from './fireworks.js';
+// import 帶版本參數：HTML 只能 bust 到 app.js 本身，子模組（尤其持有進度形狀的 daily.js）
+// 得靠這裡的 ?v= 一起換版，否則快取拼出新 app.js＋舊 daily.js 的混版模組圖
+import { generateProblem, calculateSteps, generateLayout, validateInput } from './division.js?v=20260715a';
+import { resumeAudio, playCorrect, playError, playComplete } from './sound.js?v=20260715a';
+import { loadProgress, saveResult, isDaily, getDailySummary, DAILY_GOAL, getMilestone, getMilestoneBadge } from './daily.js?v=20260715a';
+import { launchFireworks } from './fireworks.js?v=20260715a';
 
 const grid = document.getElementById('division-grid');
 const hintEl = document.getElementById('hint');
@@ -15,9 +17,13 @@ const bossLivesEl = document.getElementById('boss-lives');
 const bossEntryEl = document.getElementById('boss-entry');
 const bossBtnEl = document.getElementById('boss-btn');
 
+// 平台接線（#33，index.html 內建立）：child 維度存檔 facade＋同步 client。
+// store 把任何 key 映射到 math:progress:<child>，daily.js 的注入式 storage 介面因此免改。
+const PLATFORM = window.MathPlatform;
+
 let state = null;
 let streak = 0;
-let progress = loadProgress(localStorage, new Date().toISOString().slice(0, 10));
+let progress = null; // main() 等同步 boot pull 完成後才載入
 
 // Boss challenge state
 const BOSS_STAGES = [
@@ -325,7 +331,7 @@ function onBossProblemComplete() {
 
   // Save stars to progress
   progress.totalStars += stageConfig.reward;
-  localStorage.setItem('aiden-math-progress', JSON.stringify(progress));
+  PLATFORM.saveProgress(progress);
   updateTotalStars();
 
   if (bossMode.stage < BOSS_STAGES.length - 1) {
@@ -339,7 +345,7 @@ function onBossProblemComplete() {
     if (perfectBonus > 0) {
       bossMode.starsEarned += perfectBonus;
       progress.totalStars += perfectBonus;
-      localStorage.setItem('aiden-math-progress', JSON.stringify(progress));
+      PLATFORM.saveProgress(progress);
       updateTotalStars();
     }
     setTimeout(() => showBossVictory(bossMode.starsEarned, perfectBonus), 500);
@@ -492,7 +498,7 @@ function onProblemComplete() {
   streak++;
 
   const prevTotal = progress.totalProblems;
-  progress = saveResult(localStorage, progress, { stars, errors: state.errors });
+  progress = saveResult(PLATFORM.store, progress, { stars, errors: state.errors });
 
   updateStreak();
   updateTotalStars();
@@ -564,11 +570,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key >= '0' && e.key <= '9') handleDigit(Number(e.key));
 });
 
-// Show boss entry if daily already complete
-if (!isDaily(progress)) {
-  bossEntryEl.hidden = false;
-}
-
 // Boss button click handler
 bossBtnEl.addEventListener('click', () => {
   resumeAudio();
@@ -579,4 +580,30 @@ bossBtnEl.addEventListener('click', () => {
   }
 });
 
-startNewProblem();
+async function main() {
+  // 身分不可解（?child= 指名但 sync-v1.js 沒載到）→ index.html 已換上錯誤畫面，這裡不得動存檔
+  if (PLATFORM.blocked) return;
+  // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
+  await PLATFORM.ready;
+  progress = loadProgress(PLATFORM.store, new Date().toISOString().slice(0, 10));
+  // adopt（含 conflict-adopt）＝整包取遠端：存檔已被 saveData 覆蓋，重讀＋重繪表頭即可。
+  // 做題中換 progress 無妨——progress 只在題目完成時讀寫（totals），LWW 由下一次存檔收斂
+  PLATFORM.onAdopt(() => {
+    progress = loadProgress(PLATFORM.store, new Date().toISOString().slice(0, 10));
+    if (!bossMode) {
+      updateTotalStars();
+      updateBadge();
+      updateProgress();
+    }
+    if (!isDaily(progress) && !bossMode) bossEntryEl.hidden = false;
+  });
+
+  // Show boss entry if daily already complete
+  if (!isDaily(progress)) {
+    bossEntryEl.hidden = false;
+  }
+
+  startNewProblem();
+}
+
+main();

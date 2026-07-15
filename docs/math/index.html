@@ -12,6 +12,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260310c">
+  <style>
+    /* 平台接入（#33）：child 徽章＋家長區，配 app 深綠主題 */
+    .child-badge { color: #c8e6c9; font-size: 0.85rem; }
+    .parent-area {
+      max-width: 560px; margin: 12px auto 20px; padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.25); border-radius: 10px;
+      color: #c8e6c9; font-size: 0.85rem;
+    }
+    .parent-area summary { cursor: pointer; opacity: 0.75; }
+    .parent-status > div { margin: 6px 0; }
+    .sync-ok { color: #8ce8b0; }
+    .sync-bad { color: #ffab91; }
+    .sync-token-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .sync-token-row input {
+      flex: 1; min-width: 140px; padding: 6px 8px; border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.9); color: #333;
+    }
+    .parent-btn {
+      padding: 6px 10px; border: none; border-radius: 6px; cursor: pointer;
+      background: rgba(255, 255, 255, 0.85); color: #0b3b2e; font-weight: 700;
+    }
+    .blocked-msg { text-align: center; color: #e8f5e9; padding: 60px 20px; font-size: 1.1rem; }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -23,6 +46,7 @@
         </div>
       </div>
       <div class="stats">
+        <span id="child-badge" class="child-badge" hidden></span>
         <span id="badge" class="badge" hidden></span>
         <span id="total-stars" class="total-stars">⭐ 0</span>
         <span id="progress" class="progress">第 0/5 題</span>
@@ -54,8 +78,201 @@
         <button class="num-btn num-btn--zero" data-digit="0">0</button>
       </div>
     </div>
+    <details class="parent-area" id="parent-area">
+      <summary>家長區（雲端同步）</summary>
+      <div id="sync-block"></div>
+    </details>
   </div>
 
-  <script type="module" src="js/app.js"></script>
+  <script src="../shared/sync-v1.js"></script>
+  <script>
+"use strict";
+// ════════════════════════════════════════════════════
+// Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:math）
+// 平台接線集中在本段；app 本體（js/app.js）只經 window.MathPlatform 取用。
+// ════════════════════════════════════════════════════
+// shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）——但網址指名 child 時例外，見 identityUnresolvable
+const KidsSync = window.KidsSyncV1 || null;
+const MATH_APP_ID = "math";
+const MATH_SCHEMA_VERSION = 1; // 與 js/daily.js 的進度形狀同步演進
+// interim copy — 比照 study／zhuyin（平台化裁決在 #40-B），來源＝registry.json
+const CHILD_INFO = {
+  aiden: { label: "哥哥", emoji: "👦" },
+  bingpu: { label: "弟弟", emoji: "🧒" },
+};
+
+// <child-store-pure>
+// ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
+// LEGACY_STORAGE_KEY：runtime 不讀不寫（#33 拍板從零、無播種路徑），僅供 key 空間審計釘住不互撞
+const LEGACY_STORAGE_KEY = "aiden-math-progress";
+const LEGACY_CHILD = "aiden"; // math 歸哥哥（ADR-0004）
+function childProgressKey(child) { return `math:progress:${child}`; }
+function childSyncMetaKey(child) { return `math:sync:${child}`; }
+// </child-store-pure>
+
+// localStorage 全域在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——包一層讓 app
+// 退回「可練不持久」（同 #40-A 在 study 的修法）
+const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
+const currentChild = (identity && identity.child) || LEGACY_CHILD;
+const storageKey = childProgressKey(currentChild);
+let sync = null;
+// 網址指名了 child 但 sync-v1.js 沒載到 → currentChild 靜默退回 LEGACY_CHILD＝跨 child 寫入，
+// 拒絕開站（同 study／zhuyin，#40-A）。無 ?child= 的舊單人網址照舊可練不持久。
+function identityUnresolvable() {
+  if (KidsSync) return false;
+  try { return !!new URLSearchParams(location.search).get("child"); } catch (e) { return false; }
+}
+
+function readSyncMeta(child) {
+  try { return JSON.parse(safeStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
+}
+// math 無匯入／重置通道，故無 markImportedFallback（zhuyin／spelling 才有定錨後備的需求）
+function getSyncToken() {
+  return identity ? identity.getToken() : null;
+}
+function initSyncClient() {
+  if (sync || !KidsSync) return;
+  sync = KidsSync.createSyncClient({
+    child: currentChild,
+    app: MATH_APP_ID,
+    schemaVersion: MATH_SCHEMA_VERSION,
+    getToken: getSyncToken,
+    // 直讀直寫 localStorage、不走 app 的存檔函式：adopt 覆蓋本機不得反過來標 dirty
+    loadData: () => { try { return JSON.parse(safeStorage.getItem(storageKey)); } catch (e) { return null; } },
+    saveData: (d) => { try { safeStorage.setItem(storageKey, JSON.stringify(d)); } catch (e) {} },
+    loadMeta: () => readSyncMeta(currentChild),
+    saveMeta: (m) => { try { safeStorage.setItem(childSyncMetaKey(currentChild), JSON.stringify(m)); } catch (e) {} },
+    onAdopt: (d) => { if (adoptCb) { try { adoptCb(d); } catch (e) {} } },
+    onHealth: () => refreshSyncStatus(),
+  });
+  // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）——掛法統一在共用腳本
+  sync.attachLifecycle(window, document);
+}
+let adoptCb = null;
+
+function childInfo(child) {
+  return CHILD_INFO[child] || { label: child, emoji: "🙂" };
+}
+function renderChildBadge() {
+  const el = document.getElementById("child-badge");
+  const info = childInfo(currentChild);
+  el.textContent = `${info.emoji} ${info.label}`;
+  el.hidden = false;
+}
+
+// ══════ 家長區：健康燈＋token（文案在共用腳本 HEALTH_TEXT；時間格式同兩 app）══════
+function formatSyncTime(ts) {
+  if (!ts) return null;
+  const d = new Date(ts);
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function syncStatusClass(status) {
+  if (status === "ok") return "sync-ok";
+  if (status === "retry") return "";
+  return "sync-bad";
+}
+function syncStatusHtml() {
+  if (!KidsSync) {
+    return `<div class="parent-status">同步腳本未載入（shared/sync-v1.js），目前僅本機記錄。</div>`;
+  }
+  const info = childInfo(currentChild);
+  const m = readSyncMeta(currentChild) || {};
+  const token = getSyncToken();
+  let statusLine;
+  if (!token) {
+    statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
+  } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
+    statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
+  } else if (m.health) {
+    statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
+  } else {
+    statusLine = "還沒同步過";
+  }
+  const lostAt = m.reseedAt || m.regenAt; // 「雲端曾遺失」的兩種視角都要讓家長看到（#37）
+  const reseed = lostAt
+    ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(lostAt)} 重新上傳</div>` : "";
+  return `
+    <div class="parent-status" id="sync-status">
+      <div>雲端同步（${info.emoji} ${info.label}）：${statusLine}</div>
+      <div>上次成功同步：${formatSyncTime(m.lastSyncAt) || "還沒同步過"}</div>
+      ${reseed}
+      <div class="sync-token-row">
+        <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
+        <button class="parent-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
+        <button class="parent-btn" onclick="window._syncNow()">立即同步</button>
+        <span id="sync-msg"></span>
+      </div>
+    </div>`;
+}
+// 健康燈唯一重繪入口；家長輸入金鑰到一半時跳過——別把打到一半的金鑰洗掉
+function refreshSyncStatus() {
+  const input = document.getElementById("sync-token-input");
+  if (input && (document.activeElement === input || input.value)) return;
+  document.getElementById("sync-block").innerHTML = syncStatusHtml();
+}
+window._saveSyncToken = () => {
+  const input = document.getElementById("sync-token-input");
+  const msg = document.getElementById("sync-msg");
+  const v = ((input && input.value) || "").trim();
+  if (!v || !identity) {
+    if (msg) msg.textContent = "請先貼上金鑰";
+    return;
+  }
+  identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+  if (input) { input.value = ""; input.blur(); }
+  refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（#40-A：反過來會同 tick 被重繪銷毀）
+  const saved = document.getElementById("sync-msg");
+  if (saved) saved.textContent = "金鑰已儲存";
+  if (sync) sync.syncNow().catch(() => {});
+};
+window._syncNow = async () => {
+  if (!sync) return;
+  try { await sync.syncNow(); } catch (e) {}
+  refreshSyncStatus();
+};
+document.getElementById("parent-area").addEventListener("toggle", (e) => {
+  if (e.target.open) refreshSyncStatus();
+});
+
+// ══════ 對 app 本體（js/app.js）的接口 ══════
+const blocked = identityUnresolvable();
+if (blocked) {
+  document.querySelector(".container").innerHTML =
+    `<p class="blocked-msg">😢 載入不完整，請重新整理頁面。</p>`;
+} else {
+  // 平台接線壞掉不得拖死 app 本體（承諾＝腳本沒載到也照常可練，僅無同步）
+  try { renderChildBadge(); initSyncClient(); } catch (e) { sync = null; }
+}
+// Storage facade：daily.js 以 storage 參數注入，facade 把任何 key 映射到當前 child 的
+// math:progress:<child>（daily.js 內部 KEY 常數因此免改）；寫入包 try/catch＝可練不持久。
+// 這是 app 寫進度的唯一通道：寫入即標 dirty（漏標＝寫入永不推雲、日後被他機 adopt 蓋掉）；
+// adopt 覆蓋本機走 initSyncClient 的 saveData（另一條路），不會反過來標 dirty
+const store = {
+  getItem: () => { try { return safeStorage.getItem(storageKey); } catch (e) { return null; } },
+  setItem: (_k, v) => {
+    try { safeStorage.setItem(storageKey, v); } catch (e) {}
+    if (sync) sync.markDirty();
+  },
+};
+window.MathPlatform = {
+  blocked,
+  store,
+  saveProgress: (p) => { store.setItem(null, JSON.stringify(p)); },
+  // 開啟時 pull（adopt 直寫本機存檔，app 等它完成才讀進度；離線／無 token 靜默走本機）
+  ready: (!blocked && sync) ? sync.boot().catch(() => {}) : Promise.resolve(),
+  onAdopt: (cb) => { adoptCb = cb; },
+};
+
+// bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  const id = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null };
+  if ((id.child || LEGACY_CHILD) !== currentChild) { location.reload(); return; }
+  if (sync) sync.syncNow().catch(() => {});
+});
+  </script>
+  <script type="module" src="js/app.js?v=20260715a"></script>
 </body>
 </html>
