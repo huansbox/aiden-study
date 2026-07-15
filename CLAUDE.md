@@ -8,6 +8,8 @@
   - **localhost 打 worker 一定 CORS 失敗**——worker 的 `ALLOWED_ORIGINS` 只有 `huansbox.github.io` 與 `kids.linshuhuan.com`。本機測試看到同步 CORS error **是預期的、不是 bug**（反而證明 sync client 有在運作）。要驗同步就對 live origin 測。
   - **`build_explanations.py` 會順手改動 3 個 `docs-dev/review_*_抽查.md`**——那是既有陳舊產物（報告產於題庫文字清理之前，rebuild 才追上），**不是你改壞的**；要維持 diff 乾淨就 `git checkout --` 還原掉。
   - **`node --test` 的統計行是 `ℹ pass N`，不是 `# pass N`**——寫聚合腳本時別抓錯。
+  - **wrangler v4 的 `kv key list/delete` 預設打「本地模擬」namespace**——不加 `--remote` 會回空陣列，看起來像雲端沒資料（實際在）。查／刪 live KV 一律帶 `--remote`（namespace id 在 `worker/wrangler.jsonc`）。
+  - **本機 Playwright 驗改過的 JS 會吃到瀏覽器快取舊版**（python http.server 走 heuristic caching；ES module 尤其黏）——現象＝新 inline script 生效但 app 行為是舊的。解法＝改 `?v=` 版本參數（math 慣例：HTML script tag＋app.js 內的 import specifier 都要帶，只 bust HTML 端會拼出新 app.js＋舊子模組的混版）。
   - 驗「**腳本載入失敗**」（跨 child 寫入 bug 只在此狀態現形）：把 `docs/` 複製到 scratchpad 但**故意不複製 `shared/`** → `sync-v1.js` 404 → `KidsSync` undefined。
   - 驗「**封鎖 Cookie**」：複製 `docs/study/index.html`，在 app script **之前**插入把 `window.localStorage` getter 換成拋 SecurityError 的 shim（用 Playwright `browser_evaluate` 事後覆寫來不及）。
   - 全量測試：`for f in tests/*.mjs; do node --test "$f"; done`（現 node 168）＋`uv run pytest`（140 passed＋1 skipped）。
