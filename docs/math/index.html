@@ -103,8 +103,9 @@ const CHILD_INFO = {
 
 // <child-store-pure>
 // ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
+// LEGACY_STORAGE_KEY：runtime 不讀不寫（#33 拍板從零、無播種路徑），僅供 key 空間審計釘住不互撞
 const LEGACY_STORAGE_KEY = "aiden-math-progress";
-const LEGACY_CHILD = "aiden"; // math 歸哥哥（ADR-0004）；舊 key 不遷移、從零（#33 拍板舊進度可棄）
+const LEGACY_CHILD = "aiden"; // math 歸哥哥（ADR-0004）
 function childProgressKey(child) { return `math:progress:${child}`; }
 function childSyncMetaKey(child) { return `math:sync:${child}`; }
 // </child-store-pure>
@@ -126,7 +127,7 @@ function identityUnresolvable() {
 function readSyncMeta(child) {
   try { return JSON.parse(safeStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
 }
-// KidsSync 未載入時的定錨後備（比照 zhuyin markImportedFallback；math 無匯入通道，僅供對稱保留語意）
+// math 無匯入／重置通道，故無 markImportedFallback（zhuyin／spelling 才有定錨後備的需求）
 function getSyncToken() {
   return identity ? identity.getToken() : null;
 }
@@ -241,19 +242,24 @@ if (blocked) {
   document.querySelector(".container").innerHTML =
     `<p class="blocked-msg">😢 載入不完整，請重新整理頁面。</p>`;
 } else {
-  renderChildBadge();
-  initSyncClient();
+  // 平台接線壞掉不得拖死 app 本體（承諾＝腳本沒載到也照常可練，僅無同步）
+  try { renderChildBadge(); initSyncClient(); } catch (e) { sync = null; }
 }
+// Storage facade：daily.js 以 storage 參數注入，facade 把任何 key 映射到當前 child 的
+// math:progress:<child>（daily.js 內部 KEY 常數因此免改）；寫入包 try/catch＝可練不持久。
+// 這是 app 寫進度的唯一通道：寫入即標 dirty（漏標＝寫入永不推雲、日後被他機 adopt 蓋掉）；
+// adopt 覆蓋本機走 initSyncClient 的 saveData（另一條路），不會反過來標 dirty
+const store = {
+  getItem: () => { try { return safeStorage.getItem(storageKey); } catch (e) { return null; } },
+  setItem: (_k, v) => {
+    try { safeStorage.setItem(storageKey, v); } catch (e) {}
+    if (sync) sync.markDirty();
+  },
+};
 window.MathPlatform = {
   blocked,
-  storageKey,
-  // Storage facade：daily.js 以 storage 參數注入，facade 把任何 key 映射到當前 child 的
-  // math:progress:<child>（daily.js 內部 KEY 常數因此免改）；寫入包 try/catch＝可練不持久
-  store: {
-    getItem: () => { try { return safeStorage.getItem(storageKey); } catch (e) { return null; } },
-    setItem: (_k, v) => { try { safeStorage.setItem(storageKey, v); } catch (e) {} },
-  },
-  markDirty: () => { if (sync) sync.markDirty(); },
+  store,
+  saveProgress: (p) => { store.setItem(null, JSON.stringify(p)); },
   // 開啟時 pull（adopt 直寫本機存檔，app 等它完成才讀進度；離線／無 token 靜默走本機）
   ready: (!blocked && sync) ? sync.boot().catch(() => {}) : Promise.resolve(),
   onAdopt: (cb) => { adoptCb = cb; },
@@ -267,6 +273,6 @@ window.addEventListener("pageshow", (e) => {
   if (sync) sync.syncNow().catch(() => {});
 });
   </script>
-  <script type="module" src="js/app.js?v=20260715"></script>
+  <script type="module" src="js/app.js?v=20260715a"></script>
 </body>
 </html>

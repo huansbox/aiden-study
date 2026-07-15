@@ -1,7 +1,9 @@
-import { generateProblem, calculateSteps, generateLayout, validateInput } from './division.js';
-import { resumeAudio, playCorrect, playError, playComplete } from './sound.js';
-import { loadProgress, saveResult, isDaily, getDailySummary, DAILY_GOAL, getMilestone, getMilestoneBadge } from './daily.js';
-import { launchFireworks } from './fireworks.js';
+// import 帶版本參數：HTML 只能 bust 到 app.js 本身，子模組（尤其持有進度形狀的 daily.js）
+// 得靠這裡的 ?v= 一起換版，否則快取拼出新 app.js＋舊 daily.js 的混版模組圖
+import { generateProblem, calculateSteps, generateLayout, validateInput } from './division.js?v=20260715a';
+import { resumeAudio, playCorrect, playError, playComplete } from './sound.js?v=20260715a';
+import { loadProgress, saveResult, isDaily, getDailySummary, DAILY_GOAL, getMilestone, getMilestoneBadge } from './daily.js?v=20260715a';
+import { launchFireworks } from './fireworks.js?v=20260715a';
 
 const grid = document.getElementById('division-grid');
 const hintEl = document.getElementById('hint');
@@ -329,8 +331,7 @@ function onBossProblemComplete() {
 
   // Save stars to progress
   progress.totalStars += stageConfig.reward;
-  PLATFORM.store.setItem(PLATFORM.storageKey, JSON.stringify(progress));
-  PLATFORM.markDirty();
+  PLATFORM.saveProgress(progress);
   updateTotalStars();
 
   if (bossMode.stage < BOSS_STAGES.length - 1) {
@@ -344,8 +345,7 @@ function onBossProblemComplete() {
     if (perfectBonus > 0) {
       bossMode.starsEarned += perfectBonus;
       progress.totalStars += perfectBonus;
-      PLATFORM.store.setItem(PLATFORM.storageKey, JSON.stringify(progress));
-      PLATFORM.markDirty();
+      PLATFORM.saveProgress(progress);
       updateTotalStars();
     }
     setTimeout(() => showBossVictory(bossMode.starsEarned, perfectBonus), 500);
@@ -499,7 +499,6 @@ function onProblemComplete() {
 
   const prevTotal = progress.totalProblems;
   progress = saveResult(PLATFORM.store, progress, { stars, errors: state.errors });
-  PLATFORM.markDirty();
 
   updateStreak();
   updateTotalStars();

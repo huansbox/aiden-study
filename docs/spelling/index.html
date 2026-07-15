@@ -507,17 +507,23 @@
         const BATCH_SIZE = 5;
         const STORAGE_KEY = childProgressKey(currentChild); // child 維度（#33）；legacy v4 由 planLegacySeed 複製播種
 
-        let state = {
-            currentBatchIndex: 0, 
-            maxUnlockedBatchIndex: 0,
-            mode: 'practice', 
-            practiceCardIndex: 0, 
-            rehearsalQueue: [], 
-            currentRehearsalWord: null,
-            errorBank: [],
-            bootcampQueue: [],
-            practiceLog: { total: {}, daily: {} }
-        };
+        // 空進度的唯一真相源：開站初值與重置共用（兩份字面量會在加欄位時漂移）
+        function initialState() {
+            return {
+                currentBatchIndex: 0,
+                maxUnlockedBatchIndex: 0,
+                mode: 'practice',
+                practiceCardIndex: 0,
+                rehearsalQueue: [],
+                currentRehearsalWord: null,
+                errorBank: [],
+                bootcampQueue: [],
+                practiceLog: { total: {}, daily: {} }
+            };
+        }
+        let state = initialState();
+        let bootGate = true;   // platformInit 讀檔前擋下所有 saveProgress（見 saveProgress 註解）
+        let quietSave = false; // 寫本機但不標 dirty（處女機整理不推雲）
 
         // --- Modal Utilities ---
         const modal = {
@@ -560,7 +566,9 @@
 
         // --- 3. Initialization ---
         function init() {
-            if (!loadProgress()) { loadBatch(0); } else { renderSelector(); }
+            // 處女機（無任何存檔）整理出預設批次＝quiet 寫（不推雲）：處女機拿空資料佔住雲端 rev，
+            // 會讓「有真實進度但還沒設 token」的裝置日後 conflict-adopt 掉自己的進度（study #28 同款教訓）
+            if (!loadProgress()) { quietSave = true; loadBatch(0); quietSave = false; } else { renderSelector(); }
             render();
             if (state.mode === 'rehearsal') checkRehearsalStateOnLoad();
             if (state.mode === 'bootcamp') startBootcamp(true);
@@ -572,17 +580,24 @@
         }
 
         function saveProgress() {
+            // boot 等待窗（platformInit 讀檔前）任何 save 都是拿「未載入的預設 state」蓋真存檔——
+            // 頁首按鈕在 await sync.boot() 期間是活的（inline onclick），這裡是唯一擋得住的閘
+            if (bootGate) return false;
             const dataToSave = {
+                schemaVersion: SPELLING_SCHEMA_VERSION, // 資料本體自帶版本，schema-block 才有得比（協定契約）
                 currentBatchIndex: state.currentBatchIndex,
                 maxUnlockedBatchIndex: state.maxUnlockedBatchIndex,
                 rehearsalQueue: state.rehearsalQueue,
                 mode: state.mode,
                 errorBank: state.errorBank,
-                practiceLog: state.practiceLog 
+                practiceLog: state.practiceLog
             };
-            safeSet(STORAGE_KEY, JSON.stringify(dataToSave));
-            if (sync) sync.markDirty(); // 本機有新變更：debounce 後推雲
+            const ok = safeSet(STORAGE_KEY, JSON.stringify(dataToSave));
+            // 寫失敗不標 dirty：loadData 推的是「舊存檔」，標了等於把舊資料當最新寫入上雲。
+            // quietSave＝寫本機不推雲（處女機整理——study saveQuiet 同款，處女機不得拿空資料佔雲端 rev）
+            if (sync && ok && !quietSave) sync.markDirty();
             renderBootcampBanner();
+            return ok;
         }
 
         function loadProgress() {
@@ -605,7 +620,7 @@
 
         // --- New Demo/Reset/Import Logic ---
         function confirmLoadDemo() {
-            showConfirm("這將會覆蓋您目前的練習紀錄，並載入虛擬的範例資料以供預覽。確定嗎？", () => generateDemoData());
+            showConfirm("這將會覆蓋您目前的練習紀錄，並載入虛擬的範例資料以供預覽。已開啟雲端同步：覆蓋會同步到所有裝置、真實紀錄無法找回。確定嗎？", () => generateDemoData());
         }
 
         function generateDemoData() {
@@ -633,18 +648,23 @@
 
             state.practiceLog = demoLog;
             state.currentBatchIndex = 1; state.maxUnlockedBatchIndex = 1; state.mode = 'practice'; state.errorBank = [];
-            loadBatchQueue(1); saveProgress(); showAlert("✅ 範例資料已載入！請點擊「練習日誌」查看效果。"); render();
+            // 與匯入同一條路：手動覆蓋＝定錨（LWW 新寫入身分），否則雲端 rev 領先時下次 boot 會 adopt 回舊資料
+            loadBatchQueue(1); saveProgress(); anchorLocalWrite(true);
+            showAlert("✅ 範例資料已載入！請點擊「練習日誌」查看效果。"); render();
         }
 
         function confirmReset() {
             showConfirm("確定要重置所有進度嗎？這將會清除所有的學習紀錄，回到第一個單字。", () => {
-                state = { currentBatchIndex: 0, maxUnlockedBatchIndex: 0, mode: 'practice', practiceCardIndex: 0, rehearsalQueue: [], currentRehearsalWord: null, errorBank: [], bootcampQueue: [], practiceLog: { total: {}, daily: {} } };
+                state = initialState();
                 loadBatchQueue(0);
                 // 重置＝寫回一份空進度（非 removeItem）並走定錨路徑把雲端一併重置——
                 // 只清本機的話，下次 boot 會把雲端殘留的舊進度 adopt 回來，重置形同失效
-                saveProgress();
-                if (sync) sync.markImported(); else markImportedFallback(currentChild);
-                if (sync) sync.syncNow().catch(() => {});
+                if (!saveProgress()) {
+                    // 寫入失敗（quota／私密模式）：進度沒動，不得定錨、更不得回報成功
+                    loadProgress(); render(); showAlert("❌ 寫入失敗，進度未變。");
+                    return;
+                }
+                anchorLocalWrite(true);
                 render(); showAlert("✅ 進度已重置。");
             });
         }
@@ -666,9 +686,8 @@
                     const j = decodeURIComponent(atob(code)); JSON.parse(j);
                     if (!safeSet(STORAGE_KEY, j)) { showAlert("❌ 寫入失敗，進度未變。"); return; }
                     // 匯入＝定錨（視同手動還原）：否則雲端 rev 領先時下次 boot 會 adopt 蓋掉剛匯入的進度
-                    if (sync) sync.markImported(); else markImportedFallback(currentChild);
+                    anchorLocalWrite(true);
                     loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
-                    if (sync) sync.syncNow().catch(() => {});
                 } catch(e) { showAlert("❌ 代碼格式錯誤，無法匯入。"); }
             });
         }
@@ -1028,16 +1047,24 @@
         let sync = null;
         let appStarted = false; // init() 完成前 adopt 不動 in-memory（存檔已被 saveData 覆蓋、init 接著讀）
         function readSyncMeta(child) {
-            try { return JSON.parse(safeStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
+            try { return JSON.parse(safeGet(childSyncMetaKey(child))); } catch (e) { return null; }
         }
         // KidsSync 未載入（腳本抓取失敗）時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
         // 播種與匯入只發生一次，錯過定錨就永遠補不回（#40-A 教訓同款）
         function markImportedFallback(child) {
-            try {
-                const m = readSyncMeta(child);
-                safeStorage.setItem(childSyncMetaKey(child), JSON.stringify(
-                    { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
-            } catch (e) {}
+            const m = readSyncMeta(child);
+            safeSet(childSyncMetaKey(child), JSON.stringify(
+                { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
+        }
+        // 手動覆蓋類寫入（匯入／重置／示範資料）的統一定錨：漏一處＝該寫入日後被 boot adopt 蓋掉。
+        // pushNow＝立即推一輪（覆蓋當下就要見效）；播種路徑傳 false（boot 輪接手）
+        function anchorLocalWrite(pushNow) {
+            if (sync) {
+                sync.markImported();
+                if (pushNow) sync.syncNow().catch(() => {});
+            } else {
+                markImportedFallback(currentChild);
+            }
         }
         function getSyncToken() {
             return identity ? identity.getToken() : null;
@@ -1058,10 +1085,10 @@
                 schemaVersion: SPELLING_SCHEMA_VERSION,
                 getToken: getSyncToken,
                 // 直讀直寫 localStorage、不走 saveProgress：adopt 覆蓋本機不得反過來標 dirty
-                loadData: () => { try { return JSON.parse(safeStorage.getItem(STORAGE_KEY)); } catch (e) { return null; } },
-                saveData: (d) => { try { safeStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch (e) {} },
+                loadData: () => { try { return JSON.parse(safeGet(STORAGE_KEY)); } catch (e) { return null; } },
+                saveData: (d) => { safeSet(STORAGE_KEY, JSON.stringify(d)); },
                 loadMeta: () => readSyncMeta(currentChild),
-                saveMeta: (m) => { try { safeStorage.setItem(childSyncMetaKey(currentChild), JSON.stringify(m)); } catch (e) {} },
+                saveMeta: (m) => { safeSet(childSyncMetaKey(currentChild), JSON.stringify(m)); },
                 onAdopt: adoptRemoteData,
                 onHealth: () => refreshSyncStatus(),
             });
@@ -1162,20 +1189,15 @@
             if (identityUnresolvable()) { showBlocked(); return; }
             renderChildBadge();
             // child 維度播種：複製不搬移（spelling_bee_progress_v4 原樣保留、歸哥哥——ADR-0004）
-            let seeded = false;
-            try {
-                const plan = planLegacySeed(currentChild, safeGet(LEGACY_STORAGE_KEY), safeGet(STORAGE_KEY));
-                if (plan && safeSet(plan.key, plan.value)) seeded = true;
-            } catch (e) {}
+            const plan = planLegacySeed(currentChild, safeGet(LEGACY_STORAGE_KEY), safeGet(STORAGE_KEY));
+            const seeded = !!(plan && safeSet(plan.key, plan.value));
             initSyncClient();
             // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
             // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
-            if (seeded) {
-                if (sync) sync.markImported();
-                else markImportedFallback(currentChild);
-            }
+            if (seeded) anchorLocalWrite(false);
             // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
             if (sync) { try { await sync.boot(); } catch (e) {} }
+            bootGate = false; // 此後的 saveProgress 才拿得到「已載入的真實 state」
             init();
             appStarted = true;
             refreshSyncStatus();
