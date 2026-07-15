@@ -51,6 +51,19 @@
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(2px);
         }
+        /* 平台接入（#33）：家長區健康燈＋token */
+        .sync-ok { color: #16a34a; }
+        .sync-bad { color: #dc2626; }
+        .parent-status > div { margin: 4px 0; }
+        .sync-token-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .sync-token-row input {
+            flex: 1; min-width: 140px; padding: 6px 8px; border-radius: 6px;
+            border: 1px solid #d1d5db; background: #fff; color: #374151;
+        }
+        .parent-btn {
+            padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer;
+            background: #fff; color: #4f46e5; font-weight: 700;
+        }
         /* Tab Active State */
         .tab-active {
             border-bottom: 2px solid #4f46e5;
@@ -74,6 +87,7 @@
         <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
                 <i class="fas fa-bee text-yellow-500"></i> Spelling Bee 訓練器
+                <span id="child-badge" class="hidden text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full"></span>
             </h1>
             
             <div class="flex bg-gray-100 p-1 rounded-lg">
@@ -278,6 +292,9 @@
 
     <!-- 頁尾 -->
     <footer class="py-8 bg-gray-100 border-t border-gray-200 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 mb-4">
+            <div id="sync-block" class="text-sm text-gray-600"></div>
+        </div>
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-sm text-gray-500">進度管理</div>
             <div class="flex gap-2 flex-wrap">
@@ -288,7 +305,7 @@
                     <i class="fas fa-magic"></i> 匯入範例
                 </button>
                 <button onclick="exportProgress()" class="bg-white border border-gray-300 text-gray-600 hover:text-blue-600 hover:border-blue-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
-                    <i class="fas fa-file-export"></i> 匯出
+                    <i class="fas fa-file-export"></i> 匯出 <span class="text-[10px] text-gray-400">(將退役)</span>
                 </button>
                 <button onclick="showImportModal()" class="bg-white border border-gray-300 text-gray-600 hover:text-blue-600 hover:border-blue-400 px-3 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
                     <i class="fas fa-file-import"></i> 匯入
@@ -413,7 +430,51 @@
         </div>
     </div>
 
+    <script src="../shared/sync-v1.js"></script>
     <script>
+        // ════════════════════════════════════════════════════
+        // Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:spelling）
+        // ════════════════════════════════════════════════════
+        // shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）——但網址指名 child 時例外，見 identityUnresolvable
+        const KidsSync = window.KidsSyncV1 || null;
+        const SPELLING_APP_ID = "spelling";
+        const SPELLING_SCHEMA_VERSION = 1; // 與 saveProgress 的進度形狀同步演進
+        // interim copy — 比照 study／zhuyin（平台化裁決在 #40-B），來源＝registry.json
+        const CHILD_INFO = {
+            aiden: { label: "哥哥", emoji: "👦" },
+            bingpu: { label: "弟弟", emoji: "🧒" },
+        };
+
+        // <child-store-pure>
+        // ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
+        const LEGACY_STORAGE_KEY = "spelling_bee_progress_v4";
+        const LEGACY_CHILD = "aiden"; // spelling 歸哥哥（ADR-0004，歸屬看「app 是誰的」）
+        function childProgressKey(child) { return `spelling:progress:${child}`; }
+        function childSyncMetaKey(child) { return `spelling:sync:${child}`; }
+        // 遷移採「複製、不搬移」：新 key 已有資料／舊 blob 不存在／child 非舊存檔歸屬 → 不動作。
+        // 舊 key 原樣保留：本票 revert 時舊程式讀舊 key 一切如常。
+        function planLegacySeed(child, legacyRaw, childRaw) {
+            if (childRaw !== null && childRaw !== undefined) return null;
+            if (typeof legacyRaw !== "string" || legacyRaw === "") return null;
+            if (child !== LEGACY_CHILD) return null;
+            return { key: childProgressKey(child), value: legacyRaw };
+        }
+        // </child-store-pure>
+
+        // localStorage 在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——包一層
+        // 讓 app 退回「可練不持久」（#40-A 同款）；讀寫一律走 safeGet／safeSet
+        const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+        const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
+        const currentChild = (identity && identity.child) || LEGACY_CHILD;
+        // 網址指名了 child 但 sync-v1.js 沒載到 → currentChild 靜默退回 LEGACY_CHILD＝跨 child 寫入，
+        // 拒絕開站（同 study／zhuyin，#40-A）。無 ?child= 的舊單人網址照舊可練不持久。
+        function identityUnresolvable() {
+            if (KidsSync) return false;
+            try { return !!new URLSearchParams(location.search).get("child"); } catch (e) { return false; }
+        }
+        function safeGet(k) { try { return safeStorage.getItem(k); } catch (e) { return null; } }
+        function safeSet(k, v) { try { safeStorage.setItem(k, v); return true; } catch (e) { return false; } }
+
         // --- 1. Data Source ---
         const fullWordList = [
             // Part 1
@@ -444,7 +505,7 @@
 
         // --- 2. State Management ---
         const BATCH_SIZE = 5;
-        const STORAGE_KEY = 'spelling_bee_progress_v4'; 
+        const STORAGE_KEY = childProgressKey(currentChild); // child 維度（#33）；legacy v4 由 planLegacySeed 複製播種
 
         let state = {
             currentBatchIndex: 0, 
@@ -519,17 +580,19 @@
                 errorBank: state.errorBank,
                 practiceLog: state.practiceLog 
             };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-            renderBootcampBanner(); 
+            safeSet(STORAGE_KEY, JSON.stringify(dataToSave));
+            if (sync) sync.markDirty(); // 本機有新變更：debounce 後推雲
+            renderBootcampBanner();
         }
 
         function loadProgress() {
-            let savedData = localStorage.getItem(STORAGE_KEY);
+            let savedData = safeGet(STORAGE_KEY);
             if (!savedData) {
-                // Fallback logic omitted for brevity but assumed same as before
-                const v3 = localStorage.getItem('spelling_bee_progress_v3');
+                // v3/v2 遠古存檔鏈只對 legacy 歸屬 child 生效（跨 child 不得互染）；寫入走 saveProgress → 新格式 key
+                if (currentChild !== LEGACY_CHILD) return false;
+                const v3 = safeGet('spelling_bee_progress_v3');
                 if (v3) { try { Object.assign(state, JSON.parse(v3)); state.practiceLog={total:{},daily:{}}; saveProgress(); return true; } catch(e){} }
-                const v2 = localStorage.getItem('spelling_bee_progress_v2');
+                const v2 = safeGet('spelling_bee_progress_v2');
                 if (v2) { try { Object.assign(state, JSON.parse(v2)); state.practiceLog={total:{},daily:{}}; state.errorBank=[]; saveProgress(); return true; } catch(e){} }
                 return false;
             }
@@ -575,17 +638,22 @@
 
         function confirmReset() {
             showConfirm("確定要重置所有進度嗎？這將會清除所有的學習紀錄，回到第一個單字。", () => {
-                localStorage.removeItem(STORAGE_KEY);
                 state = { currentBatchIndex: 0, maxUnlockedBatchIndex: 0, mode: 'practice', practiceCardIndex: 0, rehearsalQueue: [], currentRehearsalWord: null, errorBank: [], bootcampQueue: [], practiceLog: { total: {}, daily: {} } };
-                loadBatchQueue(0); render(); showAlert("✅ 進度已重置。");
+                loadBatchQueue(0);
+                // 重置＝寫回一份空進度（非 removeItem）並走定錨路徑把雲端一併重置——
+                // 只清本機的話，下次 boot 會把雲端殘留的舊進度 adopt 回來，重置形同失效
+                saveProgress();
+                if (sync) sync.markImported(); else markImportedFallback(currentChild);
+                if (sync) sync.syncNow().catch(() => {});
+                render(); showAlert("✅ 進度已重置。");
             });
         }
 
         function exportProgress() {
-            const d = localStorage.getItem(STORAGE_KEY);
+            const d = safeGet(STORAGE_KEY);
             if(!d) { showAlert("無資料可匯出"); return; }
             const t = btoa(encodeURIComponent(d));
-            navigator.clipboard.writeText(t).then(() => showAlert("✅ 進度代碼已複製到剪貼簿！\n請在另一台裝置使用「匯入」功能。")).catch(() => {
+            navigator.clipboard.writeText(t).then(() => showAlert("✅ 進度代碼已複製到剪貼簿！\n請在另一台裝置使用「匯入」功能。\n（此功能將退役：進度已改走雲端同步）")).catch(() => {
                 showGenericModal({ type: 'alert', title: '手動複製', message: '無法自動複製，請手動複製下方代碼：', iconClass: 'fas fa-copy text-gray-600', colorClass: 'bg-gray-100' });
                 modal.input.value = t; modal.input.classList.remove('hidden');
             });
@@ -596,7 +664,11 @@
                 if(!code) return;
                 try {
                     const j = decodeURIComponent(atob(code)); JSON.parse(j);
-                    localStorage.setItem(STORAGE_KEY, j); loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
+                    if (!safeSet(STORAGE_KEY, j)) { showAlert("❌ 寫入失敗，進度未變。"); return; }
+                    // 匯入＝定錨（視同手動還原）：否則雲端 rev 領先時下次 boot 會 adopt 蓋掉剛匯入的進度
+                    if (sync) sync.markImported(); else markImportedFallback(currentChild);
+                    loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
+                    if (sync) sync.syncNow().catch(() => {});
                 } catch(e) { showAlert("❌ 代碼格式錯誤，無法匯入。"); }
             });
         }
@@ -950,7 +1022,174 @@
                  loadBatch(next); switchMode('practice');
              } else showAlert("恭喜全破！");
         }
-        init();
+        // ════════════════════════════════════════════════════
+        // 同步接線（sync client 對本 app 的效果注入；平台基建走共用腳本——ADR-0004）
+        // ════════════════════════════════════════════════════
+        let sync = null;
+        let appStarted = false; // init() 完成前 adopt 不動 in-memory（存檔已被 saveData 覆蓋、init 接著讀）
+        function readSyncMeta(child) {
+            try { return JSON.parse(safeStorage.getItem(childSyncMetaKey(child))); } catch (e) { return null; }
+        }
+        // KidsSync 未載入（腳本抓取失敗）時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
+        // 播種與匯入只發生一次，錯過定錨就永遠補不回（#40-A 教訓同款）
+        function markImportedFallback(child) {
+            try {
+                const m = readSyncMeta(child);
+                safeStorage.setItem(childSyncMetaKey(child), JSON.stringify(
+                    { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
+            } catch (e) {}
+        }
+        function getSyncToken() {
+            return identity ? identity.getToken() : null;
+        }
+        // adopt（含 conflict-adopt）＝整包取遠端。僅在練習模式主畫面且無 modal 時套進 in-memory；
+        // 其餘情境不換——存檔已是遠端版，下一次 saveProgress 整包寫回＝「作答中的裝置贏」，仍是乾淨的 LWW
+        function adoptRemoteData() {
+            if (!appStarted) return;
+            if (state.mode !== "practice") return;
+            if (!modal.el.classList.contains("hidden")) return;
+            loadProgress(); render();
+        }
+        function initSyncClient() {
+            if (sync || !KidsSync) return;
+            sync = KidsSync.createSyncClient({
+                child: currentChild,
+                app: SPELLING_APP_ID,
+                schemaVersion: SPELLING_SCHEMA_VERSION,
+                getToken: getSyncToken,
+                // 直讀直寫 localStorage、不走 saveProgress：adopt 覆蓋本機不得反過來標 dirty
+                loadData: () => { try { return JSON.parse(safeStorage.getItem(STORAGE_KEY)); } catch (e) { return null; } },
+                saveData: (d) => { try { safeStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch (e) {} },
+                loadMeta: () => readSyncMeta(currentChild),
+                saveMeta: (m) => { try { safeStorage.setItem(childSyncMetaKey(currentChild), JSON.stringify(m)); } catch (e) {} },
+                onAdopt: adoptRemoteData,
+                onHealth: () => refreshSyncStatus(),
+            });
+            // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）——掛法統一在共用腳本
+            sync.attachLifecycle(window, document);
+        }
+
+        function childInfo(child) {
+            return CHILD_INFO[child] || { label: child, emoji: "🙂" };
+        }
+        function renderChildBadge() {
+            const el = document.getElementById("child-badge");
+            const info = childInfo(currentChild);
+            el.textContent = `${info.emoji} ${info.label}`;
+            el.classList.remove("hidden");
+        }
+
+        // ══════ 家長區：健康燈＋token（文案在共用腳本 HEALTH_TEXT；時間格式同各 app）══════
+        function formatSyncTime(ts) {
+            if (!ts) return null;
+            const d = new Date(ts);
+            const p = (n) => String(n).padStart(2, "0");
+            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+        }
+        function syncStatusClass(status) {
+            if (status === "ok") return "sync-ok";
+            if (status === "retry") return "";
+            return "sync-bad";
+        }
+        function syncStatusHtml() {
+            if (!KidsSync) {
+                return `<div class="parent-status">同步腳本未載入（shared/sync-v1.js），目前僅本機記錄。</div>`;
+            }
+            const info = childInfo(currentChild);
+            const m = readSyncMeta(currentChild) || {};
+            const token = getSyncToken();
+            let statusLine;
+            if (!token) {
+                statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
+            } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
+                statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
+            } else if (m.health) {
+                statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
+            } else {
+                statusLine = "還沒同步過";
+            }
+            const lostAt = m.reseedAt || m.regenAt; // 「雲端曾遺失」的兩種視角都要讓家長看到（#37）
+            const reseed = lostAt
+                ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(lostAt)} 重新上傳</div>` : "";
+            return `
+                <div class="parent-status" id="sync-status">
+                    <div>雲端同步（${info.emoji} ${info.label}）：${statusLine}</div>
+                    <div>上次成功同步：${formatSyncTime(m.lastSyncAt) || "還沒同步過"}</div>
+                    ${reseed}
+                    <div class="sync-token-row">
+                        <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
+                        <button class="parent-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
+                        <button class="parent-btn" onclick="window._syncNow()">立即同步</button>
+                        <span id="sync-msg"></span>
+                    </div>
+                </div>`;
+        }
+        // 健康燈唯一重繪入口；家長輸入金鑰到一半時跳過——別把打到一半的金鑰洗掉
+        function refreshSyncStatus() {
+            const input = document.getElementById("sync-token-input");
+            if (input && (document.activeElement === input || input.value)) return;
+            const block = document.getElementById("sync-block");
+            if (block) block.innerHTML = syncStatusHtml();
+        }
+        window._saveSyncToken = () => {
+            const input = document.getElementById("sync-token-input");
+            const msg = document.getElementById("sync-msg");
+            const v = ((input && input.value) || "").trim();
+            if (!v || !identity) {
+                if (msg) msg.textContent = "請先貼上金鑰";
+                return;
+            }
+            identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+            if (input) { input.value = ""; input.blur(); }
+            refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（#40-A：反過來會同 tick 被重繪銷毀）
+            const saved = document.getElementById("sync-msg");
+            if (saved) saved.textContent = "金鑰已儲存";
+            if (sync) sync.syncNow().catch(() => {});
+        };
+        window._syncNow = async () => {
+            if (!sync) return;
+            try { await sync.syncNow(); } catch (e) {}
+            refreshSyncStatus();
+        };
+
+        function showBlocked() {
+            // 身分不可解 → 在任何存檔讀寫之前擋下，別寫進錯的小孩（#40-A）
+            document.body.innerHTML =
+                '<div style="text-align:center;padding:80px 20px;font-size:1.1rem;color:#374151;">😢 載入不完整，請重新整理頁面。</div>';
+        }
+
+        async function platformInit() {
+            if (identityUnresolvable()) { showBlocked(); return; }
+            renderChildBadge();
+            // child 維度播種：複製不搬移（spelling_bee_progress_v4 原樣保留、歸哥哥——ADR-0004）
+            let seeded = false;
+            try {
+                const plan = planLegacySeed(currentChild, safeGet(LEGACY_STORAGE_KEY), safeGet(STORAGE_KEY));
+                if (plan && safeSet(plan.key, plan.value)) seeded = true;
+            } catch (e) {}
+            initSyncClient();
+            // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
+            // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
+            if (seeded) {
+                if (sync) sync.markImported();
+                else markImportedFallback(currentChild);
+            }
+            // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
+            if (sync) { try { await sync.boot(); } catch (e) {} }
+            init();
+            appStarted = true;
+            refreshSyncStatus();
+        }
+
+        // bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
+        window.addEventListener("pageshow", (e) => {
+            if (!e.persisted) return;
+            const id = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null };
+            if ((id.child || LEGACY_CHILD) !== currentChild) { location.reload(); return; }
+            if (sync) sync.syncNow().catch(() => {});
+        });
+
+        platformInit();
     </script>
 </body>
 </html>
