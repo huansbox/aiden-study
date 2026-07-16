@@ -144,6 +144,23 @@ export const CONTRACT_CASES = [
     },
   },
   {
+    // PR #43 裁決（2026-07-16）：換代 push 的前提「本機＝最完整殘存」在本機進度亡佚時不成立
+    // （progress 與 meta 是兩把獨立 localStorage key，局部遺失 → loadData 回 null、meta 尚存）。
+    // 照 push 會拿空資料覆蓋他機剛播種的雲端、且他機下輪 adopt 把損失擴散；改走 adopt 取回遠端。
+    name: "換代守門：本機進度亡佚（meta 尚存）→ adopt 他機播種的雲端，不推空資料",
+    server: { rev: 1, data: { mastered: ["from-device-a"] }, writeId: "w-a", epoch: "E2" },
+    client: { syncedRev: 50, syncedEpoch: "E1", dirty: false, data: null, schemaVersion: 1 },
+    expect: {
+      firstAction: "adopt",
+      regen: true,
+      serverUnchanged: true,
+      finalServerRev: 1,
+      converged: true,
+      finalSyncedEpoch: "E2",
+      finalMasteredContains: ["from-device-a"],
+    },
+  },
+  {
     name: "換代回歸：同一枚世代章＋遠端 rev 落後＝KV 舊讀，仍 retry（不得誤判成換代）",
     server: { rev: 2, data: { mastered: ["q1"] }, writeId: "w0", epoch: "E1" },
     client: {

@@ -9,12 +9,13 @@ const m = src.match(/\/\/ <sync-pure>([\s\S]*?)\/\/ <\/sync-pure>/);
 if (!m) throw new Error("docs/shared/sync-v1.js 找不到 <sync-pure> 區塊");
 const { decideSync, classifyRemote } = new Function(m[1] + "\nreturn { classifyRemote, decideSync };")();
 
-const L = (syncedRev, dirty, schemaVersion = 1, lastWriteId = undefined, syncedEpoch = null) => ({
+const L = (syncedRev, dirty, schemaVersion = 1, lastWriteId = undefined, syncedEpoch = null, dataNull = false) => ({
   syncedRev,
   dirty,
   schemaVersion,
   lastWriteId,
   syncedEpoch,
+  dataNull,
 });
 const OK = (rev, data = null, schemaVersion = undefined, writeId = undefined, epoch = null) => ({
   kind: "ok",
@@ -75,6 +76,14 @@ const MATRIX = [
   [L(5, true, 1, undefined, "E1"), OK(2, { a: 1 }, undefined, "w-a", null), "retry"],
   // 換代不得越過 schema 防護（遠端資料版本較新仍優先保本地）
   [L(50, true, 1, undefined, "E1"), OK(1, { schemaVersion: 2 }, 2, "w-a", "E2"), "schema-block"],
+  // ── 換代守門（PR #43 裁決 2026-07-16）：本機進度亡佚（loadData null、meta 尚存）──
+  // 「本機＝最完整殘存」前提不成立 → 不得拿空資料覆蓋他機剛播種的雲端，改走 adopt 取回
+  [L(50, false, 1, undefined, "E1", true), OK(1, { a: 1 }, undefined, "w-a", "E2"), "adopt", true],
+  [L(50, true, 1, undefined, "E1", true), OK(1, { a: 1 }, undefined, "w-a", "E2"), "adopt", true],
+  // 遠端也空（換了代卻無資料）→ 無可 adopt，照舊 push（行為同守門前）
+  [L(50, false, 1, undefined, "E1", true), OK(1, null, undefined, "w-a", "E2"), "push", true],
+  // dataNull 只作用於換代分支：同一枚章＋遠端落後仍是 KV 舊讀 → retry，不得被守門劫走
+  [L(5, false, 1, undefined, "E1", true), OK(2, { a: 1 }, undefined, "w-a", "E1"), "retry"],
   // 雲端整包空掉（尚無人重新播種）＝ reseed，不是換代：空 key 根本沒有章
   [L(50, false, 1, undefined, "E1"), OK(0, null, undefined, undefined, null), "reseed"],
 ];

@@ -40,7 +40,9 @@ function classifyRemote({ threw, status, jsonOk, body }) {
   };
 }
 
-// local:  { syncedRev, dirty, schemaVersion, lastWriteId?, syncedEpoch? }
+// local:  { syncedRev, dirty, schemaVersion, lastWriteId?, syncedEpoch?, dataNull? }
+//         dataNull＝本機進度資料已亡佚（loadData 回 null；progress 與 meta 是兩把獨立
+//         localStorage key，局部遺失時 meta 尚存而進度已無）——換代守門用
 // remote: classifyRemote 的輸出
 // 回傳 action.type：
 //   none            無事可做
@@ -54,7 +56,8 @@ function classifyRemote({ threw, status, jsonOk, body }) {
 //   data-error      HTTP 錯誤或回應不可解析（絕不視為空）
 //   schema-block    遠端 schemaVersion 比 app 新：拒讀拒 push 保本地
 //   retry           遠端 rev 落後於已同步 rev（KV 最終一致的舊讀），本輪不動作
-// action.regen＝true 時另表「雲端已換代」（見下），client 應記健康事件、行為同 push。
+// action.regen＝true 時另表「雲端已換代」（見下），client 應記健康事件；行為＝push，
+// 唯本機進度已亡佚且遠端有資料時改走 adopt（PR #43 裁決 2026-07-16）。
 function decideSync(local, remote) {
   if (remote.kind === "network") return { type: "offline" };
   if (remote.kind === "auth") return { type: "auth-error" };
@@ -76,6 +79,10 @@ function decideSync(local, remote) {
   // 收斂：本機 push 後記下新章，不再觸發；他機 epoch 相符、rev 落後 → 循常規 adopt 收斂。
   // 兩端皆須為新協定才會觸發（舊 worker 不回 epoch／舊 client 不記 epoch → 行為與改動前一致）。
   if (local.syncedEpoch && remote.epoch && remote.epoch !== local.syncedEpoch) {
+    // 守門（PR #43 裁決 2026-07-16）：換代 push 的前提是「本機＝最完整殘存」。本機進度已亡佚
+    // （dataNull）時前提不成立——照 push 會拿空資料覆蓋他機剛播種的雲端，且他機下輪 adopt
+    // 會把損失擴散回去。遠端有資料 → 改走 adopt 取回；遠端也空 → 無可取，照舊 push。
+    if (local.dataNull && remote.data !== null) return { type: "adopt", regen: true };
     return { type: "push", regen: true };
   }
 
@@ -284,12 +291,16 @@ function createSyncClient(opts) {
         anchorPending: false,
       });
     }
+    // 換代守門的輸入：本機進度是否已亡佚（四 app 的 loadData 在進度 key 遺失時皆回 null）
+    let dataNull = false;
+    try { dataNull = loadData() == null; } catch {}
     const local = {
       syncedRev: m.syncedRev,
       syncedEpoch: m.syncedEpoch,
       dirty: m.dirty,
       schemaVersion,
       lastWriteId: m.lastWriteId,
+      dataNull,
     };
     const action = decideSync(local, remote);
     const out = { action: action.type, putRejected: false };
@@ -306,6 +317,8 @@ function createSyncClient(opts) {
       setHealth("ok");
       return out;
     }
+    // 換代健康事件在 adopt 分支之前記：亡佚機的換代走 adopt（守門），家長區同樣要看得到
+    if (action.regen) patchMeta({ regenAt: now() }); // 同一事件的他機視角：雲端曾遺失並被重新播種
     if (action.type === "adopt" || action.type === "conflict-adopt") {
       adoptRemote(remote);
       return out;
@@ -313,7 +326,6 @@ function createSyncClient(opts) {
 
     // push／reseed
     if (action.type === "reseed") patchMeta({ reseedAt: now() }); // 雲端資料曾遺失：記健康事件，不全靜默
-    if (action.regen) patchMeta({ regenAt: now() }); // 同一事件的他機視角：雲端曾遺失並被重新播種
     const writeId = m.pendingWriteId || uuid(); // 僅重送同一筆未確認寫入時重用
     const seqAtStart = dirtySeq;
     patchMeta({ lastWriteId: writeId, pendingWriteId: writeId }); // 先落地：response 遺失時下輪重用同 writeId（冪等）
