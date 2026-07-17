@@ -54,7 +54,7 @@
         /* 平台接入（#33）：家長區健康燈＋token */
         .sync-ok { color: #16a34a; }
         .sync-bad { color: #dc2626; }
-        .parent-status > div { margin: 4px 0; }
+        .sync-status > div { margin: 4px 0; } /* wiring 健康燈（#40-B 統一 class） */
         .sync-token-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
         .sync-token-row input {
             flex: 1; min-width: 140px; padding: 6px 8px; border-radius: 6px;
@@ -431,49 +431,24 @@
     </div>
 
     <script src="../shared/sync-v1.js"></script>
+    <script src="../shared/wiring-v1.js?v=20260717a"></script>
     <script>
         // ════════════════════════════════════════════════════
         // Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:spelling）
+        // 接線集中在共用 wiring-v1.js（#40-B），app 只留設定與 app 特有 hooks
         // ════════════════════════════════════════════════════
-        // shared/sync-v1.js 載入失敗時 app 照常可用（僅無同步）——但網址指名 child 時例外，見 identityUnresolvable
-        const KidsSync = window.KidsSyncV1 || null;
-        const SPELLING_APP_ID = "spelling";
-        const SPELLING_SCHEMA_VERSION = 1; // 與 saveProgress 的進度形狀同步演進
-        // interim copy — 比照 study／zhuyin（平台化裁決在 #40-B），來源＝registry.json
-        const CHILD_INFO = {
-            aiden: { label: "哥哥", emoji: "👦" },
-            bingpu: { label: "弟弟", emoji: "🧒" },
-        };
-
-        // <child-store-pure>
-        // ══════ child 維度 key 尋址（純函式；node 測試由此抽取，不得引用外部全域）══════
-        const LEGACY_STORAGE_KEY = "spelling_bee_progress_v4";
-        const LEGACY_CHILD = "aiden"; // spelling 歸哥哥（ADR-0004，歸屬看「app 是誰的」）
-        function childProgressKey(child) { return `spelling:progress:${child}`; }
-        function childSyncMetaKey(child) { return `spelling:sync:${child}`; }
-        // 遷移採「複製、不搬移」：新 key 已有資料／舊 blob 不存在／child 非舊存檔歸屬 → 不動作。
-        // 舊 key 原樣保留：本票 revert 時舊程式讀舊 key 一切如常。
-        function planLegacySeed(child, legacyRaw, childRaw) {
-            if (childRaw !== null && childRaw !== undefined) return null;
-            if (typeof legacyRaw !== "string" || legacyRaw === "") return null;
-            if (child !== LEGACY_CHILD) return null;
-            return { key: childProgressKey(child), value: legacyRaw };
-        }
-        // </child-store-pure>
-
-        // localStorage 在「完全封鎖 Cookie」類設定下連取值都會拋 SecurityError——包一層
-        // 讓 app 退回「可練不持久」（#40-A 同款）；讀寫一律走 safeGet／safeSet
-        const safeStorage = (() => { try { return window.localStorage; } catch (e) { return null; } })();
-        const identity = KidsSync ? KidsSync.bootIdentity(location.search, safeStorage) : null;
-        const currentChild = (identity && identity.child) || LEGACY_CHILD;
-        // 網址指名了 child 但 sync-v1.js 沒載到 → currentChild 靜默退回 LEGACY_CHILD＝跨 child 寫入，
-        // 拒絕開站（同 study／zhuyin，#40-A）。無 ?child= 的舊單人網址照舊可練不持久。
-        function identityUnresolvable() {
-            if (KidsSync) return false;
-            try { return !!new URLSearchParams(location.search).get("child"); } catch (e) { return false; }
-        }
-        function safeGet(k) { try { return safeStorage.getItem(k); } catch (e) { return null; } }
-        function safeSet(k, v) { try { safeStorage.setItem(k, v); return true; } catch (e) { return false; } }
+        // wiring 沒載到 → 拒開站（ADR-0006：不再沉默降級）；
+        // sync-v1.js 沒載到（wiring 有載到）的語意由 wiring 處理：指名 child 拒開站、legacy 網址可練不持久
+        const KidsWiring = window.KidsWiringV1 || null;
+        // <wiring-config>
+        const WIRING_CONFIG = { appId: "spelling", schemaVersion: 1, legacyChild: "aiden", legacyKey: "spelling_bee_progress_v4" };
+        // </wiring-config>
+        const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
+        const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
+        // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
+        function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
+        function safeGet(k) { return wiring ? wiring.safeGet(k) : null; }
+        function safeSet(k, v) { return wiring ? wiring.safeSet(k, v) : false; }
 
         // --- 1. Data Source ---
         const fullWordList = [
@@ -505,7 +480,8 @@
 
         // --- 2. State Management ---
         const BATCH_SIZE = 5;
-        const STORAGE_KEY = childProgressKey(currentChild); // child 維度（#33）；legacy v4 由 planLegacySeed 複製播種
+        // child 維度（#33）；legacy v4 由 wiring.seedLegacy 複製播種。wiring 沒載到時為 null＝已拒開站
+        const STORAGE_KEY = wiring ? wiring.store.progressKey(currentChild) : null;
 
         // 空進度的唯一真相源：開站初值與重置共用（兩份字面量會在加欄位時漂移）
         function initialState() {
@@ -584,7 +560,7 @@
             // 頁首按鈕在 await sync.boot() 期間是活的（inline onclick），這裡是唯一擋得住的閘
             if (bootGate) return false;
             const dataToSave = {
-                schemaVersion: SPELLING_SCHEMA_VERSION, // 資料本體自帶版本，schema-block 才有得比（協定契約）
+                schemaVersion: WIRING_CONFIG.schemaVersion, // 資料本體自帶版本，schema-block 才有得比（協定契約）
                 currentBatchIndex: state.currentBatchIndex,
                 maxUnlockedBatchIndex: state.maxUnlockedBatchIndex,
                 rehearsalQueue: state.rehearsalQueue,
@@ -604,7 +580,7 @@
             let savedData = safeGet(STORAGE_KEY);
             if (!savedData) {
                 // v3/v2 遠古存檔鏈只對 legacy 歸屬 child 生效（跨 child 不得互染）；寫入走 saveProgress → 新格式 key
-                if (currentChild !== LEGACY_CHILD) return false;
+                if (currentChild !== WIRING_CONFIG.legacyChild) return false;
                 const v3 = safeGet('spelling_bee_progress_v3');
                 if (v3) { try { Object.assign(state, JSON.parse(v3)); state.practiceLog={total:{},daily:{}}; saveProgress(); return true; } catch(e){} }
                 const v2 = safeGet('spelling_bee_progress_v2');
@@ -649,7 +625,7 @@
             state.practiceLog = demoLog;
             state.currentBatchIndex = 1; state.maxUnlockedBatchIndex = 1; state.mode = 'practice'; state.errorBank = [];
             // 與匯入同一條路：手動覆蓋＝定錨（LWW 新寫入身分），否則雲端 rev 領先時下次 boot 會 adopt 回舊資料
-            loadBatchQueue(1); saveProgress(); anchorLocalWrite(true);
+            loadBatchQueue(1); saveProgress(); wiring.anchorLocalWrite(true);
             showAlert("✅ 範例資料已載入！請點擊「練習日誌」查看效果。"); render();
         }
 
@@ -664,7 +640,7 @@
                     loadProgress(); render(); showAlert("❌ 寫入失敗，進度未變。");
                     return;
                 }
-                anchorLocalWrite(true);
+                wiring.anchorLocalWrite(true);
                 render(); showAlert("✅ 進度已重置。");
             });
         }
@@ -686,7 +662,7 @@
                     const j = decodeURIComponent(atob(code)); JSON.parse(j);
                     if (!safeSet(STORAGE_KEY, j)) { showAlert("❌ 寫入失敗，進度未變。"); return; }
                     // 匯入＝定錨（視同手動還原）：否則雲端 rev 領先時下次 boot 會 adopt 蓋掉剛匯入的進度
-                    anchorLocalWrite(true);
+                    wiring.anchorLocalWrite(true);
                     loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
                 } catch(e) { showAlert("❌ 代碼格式錯誤，無法匯入。"); }
             });
@@ -1042,33 +1018,10 @@
              } else showAlert("恭喜全破！");
         }
         // ════════════════════════════════════════════════════
-        // 同步接線（sync client 對本 app 的效果注入；平台基建走共用腳本——ADR-0004）
+        // 同步接線（sync client 建立與健康燈在 wiring；app 只注入 adopt hook）
         // ════════════════════════════════════════════════════
         let sync = null;
         let appStarted = false; // init() 完成前 adopt 不動 in-memory（存檔已被 saveData 覆蓋、init 接著讀）
-        function readSyncMeta(child) {
-            try { return JSON.parse(safeGet(childSyncMetaKey(child))); } catch (e) { return null; }
-        }
-        // KidsSync 未載入（腳本抓取失敗）時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
-        // 播種與匯入只發生一次，錯過定錨就永遠補不回（#40-A 教訓同款）
-        function markImportedFallback(child) {
-            const m = readSyncMeta(child);
-            safeSet(childSyncMetaKey(child), JSON.stringify(
-                { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
-        }
-        // 手動覆蓋類寫入（匯入／重置／示範資料）的統一定錨：漏一處＝該寫入日後被 boot adopt 蓋掉。
-        // pushNow＝立即推一輪（覆蓋當下就要見效）；播種路徑傳 false（boot 輪接手）
-        function anchorLocalWrite(pushNow) {
-            if (sync) {
-                sync.markImported();
-                if (pushNow) sync.syncNow().catch(() => {});
-            } else {
-                markImportedFallback(currentChild);
-            }
-        }
-        function getSyncToken() {
-            return identity ? identity.getToken() : null;
-        }
         // adopt（含 conflict-adopt）＝整包取遠端。僅在練習模式主畫面且無 modal 時套進 in-memory；
         // 其餘情境不換——存檔已是遠端版，下一次 saveProgress 整包寫回＝「作答中的裝置贏」，仍是乾淨的 LWW
         function adoptRemoteData() {
@@ -1078,106 +1031,11 @@
             loadProgress(); render();
         }
         function initSyncClient() {
-            if (sync || !KidsSync) return;
-            sync = KidsSync.createSyncClient({
-                child: currentChild,
-                app: SPELLING_APP_ID,
-                schemaVersion: SPELLING_SCHEMA_VERSION,
-                getToken: getSyncToken,
-                // 直讀直寫 localStorage、不走 saveProgress：adopt 覆蓋本機不得反過來標 dirty
-                loadData: () => { try { return JSON.parse(safeGet(STORAGE_KEY)); } catch (e) { return null; } },
-                saveData: (d) => { safeSet(STORAGE_KEY, JSON.stringify(d)); },
-                loadMeta: () => readSyncMeta(currentChild),
-                saveMeta: (m) => { safeSet(childSyncMetaKey(currentChild), JSON.stringify(m)); },
-                onAdopt: adoptRemoteData,
-                onHealth: () => refreshSyncStatus(),
-            });
-            // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）——掛法統一在共用腳本
-            sync.attachLifecycle(window, document);
+            sync = wiring.initSync({ onAdopt: adoptRemoteData }); // onHealth 預設＝wiring 刷新健康燈
         }
 
-        function childInfo(child) {
-            return CHILD_INFO[child] || { label: child, emoji: "🙂" };
-        }
-        function renderChildBadge() {
-            const el = document.getElementById("child-badge");
-            const info = childInfo(currentChild);
-            el.textContent = `${info.emoji} ${info.label}`;
-            el.classList.remove("hidden");
-        }
-
-        // ══════ 家長區：健康燈＋token（文案在共用腳本 HEALTH_TEXT；時間格式同各 app）══════
-        function formatSyncTime(ts) {
-            if (!ts) return null;
-            const d = new Date(ts);
-            const p = (n) => String(n).padStart(2, "0");
-            return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
-        }
-        function syncStatusClass(status) {
-            if (status === "ok") return "sync-ok";
-            if (status === "retry") return "";
-            return "sync-bad";
-        }
-        function syncStatusHtml() {
-            if (!KidsSync) {
-                return `<div class="parent-status">同步腳本未載入（shared/sync-v1.js），目前僅本機記錄。</div>`;
-            }
-            const info = childInfo(currentChild);
-            const m = readSyncMeta(currentChild) || {};
-            const token = getSyncToken();
-            let statusLine;
-            if (!token) {
-                statusLine = `<span class="sync-bad">${KidsSync.HEALTH_TEXT["no-token"]}</span>`;
-            } else if (typeof m.health === "string" && KidsSync.HEALTH_TEXT[m.health]) {
-                statusLine = `<span class="${syncStatusClass(m.health)}">${KidsSync.HEALTH_TEXT[m.health]}</span>`;
-            } else if (m.health) {
-                statusLine = `<span class="sync-bad">同步狀態異常</span>`; // 未知狀態別謊報成「還沒同步過」
-            } else {
-                statusLine = "還沒同步過";
-            }
-            const lostAt = m.reseedAt || m.regenAt; // 「雲端曾遺失」的兩種視角都要讓家長看到（#37）
-            const reseed = lostAt
-                ? `<div class="sync-bad">⚠️ 雲端進度曾遺失，已於 ${formatSyncTime(lostAt)} 重新上傳</div>` : "";
-            return `
-                <div class="parent-status" id="sync-status">
-                    <div>雲端同步（${info.emoji} ${info.label}）：${statusLine}</div>
-                    <div>上次成功同步：${formatSyncTime(m.lastSyncAt) || "還沒同步過"}</div>
-                    ${reseed}
-                    <div class="sync-token-row">
-                        <input type="password" id="sync-token-input" placeholder="${token ? "已設定金鑰（貼新的可覆蓋）" : "貼上家庭同步金鑰"}">
-                        <button class="parent-btn" onclick="window._saveSyncToken()">儲存金鑰</button>
-                        <button class="parent-btn" onclick="window._syncNow()">立即同步</button>
-                        <span id="sync-msg"></span>
-                    </div>
-                </div>`;
-        }
-        // 健康燈唯一重繪入口；家長輸入金鑰到一半時跳過——別把打到一半的金鑰洗掉
-        function refreshSyncStatus() {
-            const input = document.getElementById("sync-token-input");
-            if (input && (document.activeElement === input || input.value)) return;
-            const block = document.getElementById("sync-block");
-            if (block) block.innerHTML = syncStatusHtml();
-        }
-        window._saveSyncToken = () => {
-            const input = document.getElementById("sync-token-input");
-            const msg = document.getElementById("sync-msg");
-            const v = ((input && input.value) || "").trim();
-            if (!v || !identity) {
-                if (msg) msg.textContent = "請先貼上金鑰";
-                return;
-            }
-            identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
-            if (input) { input.value = ""; input.blur(); }
-            refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（#40-A：反過來會同 tick 被重繪銷毀）
-            const saved = document.getElementById("sync-msg");
-            if (saved) saved.textContent = "金鑰已儲存";
-            if (sync) sync.syncNow().catch(() => {});
-        };
-        window._syncNow = async () => {
-            if (!sync) return;
-            try { await sync.syncNow(); } catch (e) {}
-            refreshSyncStatus();
-        };
+        // ══════ 家長區：健康燈＋token 輸入整段在 wiring（#40-B），寫進 #sync-block 容器；
+        //        window._saveSyncToken／_syncNow 由 wiring 掛 ══════
 
         function showBlocked() {
             // 身分不可解 → 在任何存檔讀寫之前擋下，別寫進錯的小孩（#40-A）
@@ -1187,29 +1045,23 @@
 
         async function platformInit() {
             if (identityUnresolvable()) { showBlocked(); return; }
-            renderChildBadge();
+            wiring.renderChildBadge();
             // child 維度播種：複製不搬移（spelling_bee_progress_v4 原樣保留、歸哥哥——ADR-0004）
-            const plan = planLegacySeed(currentChild, safeGet(LEGACY_STORAGE_KEY), safeGet(STORAGE_KEY));
-            const seeded = !!(plan && safeSet(plan.key, plan.value));
+            const seeded = wiring.seedLegacy();
             initSyncClient();
             // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
             // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
-            if (seeded) anchorLocalWrite(false);
+            if (seeded) wiring.anchorLocalWrite(false);
             // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
             if (sync) { try { await sync.boot(); } catch (e) {} }
             bootGate = false; // 此後的 saveProgress 才拿得到「已載入的真實 state」
             init();
             appStarted = true;
-            refreshSyncStatus();
+            wiring.refreshSyncStatus();
         }
 
-        // bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
-        window.addEventListener("pageshow", (e) => {
-            if (!e.persisted) return;
-            const id = KidsSync ? KidsSync.identityFromSearch(location.search) : { child: null };
-            if ((id.child || LEGACY_CHILD) !== currentChild) { location.reload(); return; }
-            if (sync) sync.syncNow().catch(() => {});
-        });
+        // bfcache 復原（點錯圖示／hub 切人殘留頁）的身分重驗在 wiring
+        if (wiring) wiring.attachPageshowGuard();
 
         platformInit();
     </script>

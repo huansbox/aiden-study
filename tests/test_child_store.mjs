@@ -1,16 +1,19 @@
-// child 維度 key 尋址＋身分/token 解析純函式測試（票 #28）。
-// 抽取：docs/study/index.html 的 <child-store-pure>＋docs/shared/sync-v1.js 的 <sync-client>（只取身分函式）。
+// study 的 wiring 設定 pin＋身分/token 解析純函式測試（票 #28；#40-B 起 key 尋址移共用）。
+// key 尋址與播種語意的行為測試在 tests/test_wiring_pure.mjs（單一真相源）；
+// 這裡 pin 住 study 的 <wiring-config>——重接線不得默默改 key／歸屬（改了＝進度看似消失）。
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
-const storeBlk = html.match(/\/\/ <child-store-pure>([\s\S]*?)\/\/ <\/child-store-pure>/);
-if (!storeBlk) throw new Error("docs/study/index.html 找不到 <child-store-pure> 區塊");
-const {
-  LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey, planLegacySeed, planImportWrite,
-} = new Function(storeBlk[1] +
-  "\nreturn { LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey, planLegacySeed, planImportWrite };")();
+const cfgBlk = html.match(/\/\/ <wiring-config>[\s\S]*?const WIRING_CONFIG = (\{[\s\S]*?\});[\s\S]*?\/\/ <\/wiring-config>/);
+if (!cfgBlk) throw new Error("docs/study/index.html 找不到 <wiring-config> 區塊");
+const CONFIG = new Function(`return ${cfgBlk[1]};`)();
+
+const wiringSrc = readFileSync(new URL("../docs/shared/wiring-v1.js", import.meta.url), "utf8");
+const wiringBlk = wiringSrc.match(/\/\/ <wiring-pure>([\s\S]*?)\/\/ <\/wiring-pure>/);
+if (!wiringBlk) throw new Error("docs/shared/wiring-v1.js 找不到 <wiring-pure> 區塊");
+const { makeChildStore } = new Function(wiringBlk[1] + "\nreturn { makeChildStore };")();
 
 const syncSrc = readFileSync(new URL("../docs/shared/sync-v1.js", import.meta.url), "utf8");
 const clientBlk = syncSrc.match(/\/\/ <sync-client>([\s\S]*?)\/\/ <\/sync-client>/);
@@ -18,54 +21,18 @@ if (!clientBlk) throw new Error("docs/shared/sync-v1.js 找不到 <sync-client> 
 const { normalizeChildId, identityFromSearch, resolveToken, bootIdentity } = new Function(clientBlk[1] +
   "\nreturn { normalizeChildId, identityFromSearch, resolveToken, bootIdentity };")();
 
-test("key 尋址：progress 與 sync meta 每 child 各自一把、互不相同", () => {
-  assert.equal(childProgressKey("aiden"), "study:progress:aiden");
-  assert.equal(childProgressKey("bingpu"), "study:progress:bingpu");
-  assert.equal(childSyncMetaKey("aiden"), "study:sync:aiden");
-  assert.notEqual(childProgressKey("aiden"), childProgressKey("bingpu"));
-  assert.notEqual(childProgressKey("aiden"), childSyncMetaKey("aiden"));
-  assert.notEqual(childProgressKey("aiden"), LEGACY_STORAGE_KEY, "新格式 key 不得撞舊 key");
+test("study wiring 設定 pin：appId／schema／legacy 歸屬一字不差", () => {
+  assert.equal(CONFIG.appId, "study");
+  assert.equal(CONFIG.schemaVersion, 1);
+  assert.equal(CONFIG.legacyChild, "aiden", "ADR-0004：study 舊存檔歸哥哥");
+  assert.equal(CONFIG.legacyKey, "aiden_study_v2");
 });
 
-test("planLegacySeed：aiden＋新 key 空＋舊 blob 在 → 複製到新 key（值原樣）", () => {
-  const legacy = '{"mastered":{"3":["a"]}}';
-  const plan = planLegacySeed("aiden", legacy, null);
-  assert.deepEqual(plan, { key: "study:progress:aiden", value: legacy });
-});
-
-test("planLegacySeed：新 key 已有資料／舊 blob 不存在／child 非歸屬者 → 不動作", () => {
-  const legacy = '{"mastered":{}}';
-  assert.equal(planLegacySeed("aiden", legacy, '{"mastered":{"3":["b"]}}'), null, "新 key 已有資料不得覆蓋");
-  assert.equal(planLegacySeed("aiden", legacy, ""), null, "新 key 存過空字串也算存在，不覆蓋");
-  assert.equal(planLegacySeed("aiden", null, null), null, "無舊 blob");
-  assert.equal(planLegacySeed("aiden", "", null), null, "舊 blob 空字串視同不存在");
-  assert.equal(planLegacySeed("bingpu", legacy, null), null, "study 舊存檔歸 aiden，不播種給弟弟");
-  assert.equal(planLegacySeed("test-a", legacy, null), null);
-  assert.equal(LEGACY_CHILD, "aiden");
-});
-
-test("planImportWrite：只寫目標 child 的新格式 key，值＝JSON 序列化", () => {
-  const obj = { mastered: { "3": ["x"] }, challenge: {} };
-  const plan = planImportWrite("bingpu", obj);
-  assert.equal(plan.key, "study:progress:bingpu");
-  assert.deepEqual(JSON.parse(plan.value), obj);
-});
-
-test("交錯 case：新格式已有 bingpu 資料後匯入 legacy 備份 → 目標 child 得到、另一 child 不動", () => {
-  // 模擬容器現況：bingpu 已有新格式資料、legacy 舊 blob 還在
-  const store = new Map([
-    [childProgressKey("bingpu"), '{"mastered":{"13":["zh1"]}}'],
-    [LEGACY_STORAGE_KEY, '{"mastered":{"3":["old"]}}'],
-  ]);
-  // 家長把（legacy 形狀的）備份匯入給 aiden
-  const imported = { mastered: { "3": ["old"], "4": ["new"] }, challenge: {} };
-  const plan = planImportWrite("aiden", imported);
-  store.set(plan.key, plan.value);
-  assert.deepEqual(JSON.parse(store.get(childProgressKey("aiden"))), imported, "目標 child 得到匯入資料");
-  assert.equal(store.get(childProgressKey("bingpu")), '{"mastered":{"13":["zh1"]}}', "另一 child 不動");
-  assert.equal(store.get(LEGACY_STORAGE_KEY), '{"mastered":{"3":["old"]}}', "legacy blob 原樣保留");
-  // 匯入不繞 legacy migration guard：匯入後 seed 也不會再覆蓋 aiden 的新資料
-  assert.equal(planLegacySeed("aiden", store.get(LEGACY_STORAGE_KEY), store.get(childProgressKey("aiden"))), null);
+test("study 實際 key 派生不變（progress／sync meta）", () => {
+  const s = makeChildStore(CONFIG);
+  assert.equal(s.progressKey("aiden"), "study:progress:aiden");
+  assert.equal(s.progressKey("bingpu"), "study:progress:bingpu");
+  assert.equal(s.syncMetaKey("aiden"), "study:sync:aiden");
 });
 
 test("normalizeChildId：合法（小寫英數/連字號 ≤32）通過，其餘回 null", () => {
