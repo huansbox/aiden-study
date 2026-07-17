@@ -1,57 +1,38 @@
-// spelling child 維度 key 尋址純函式測試（票 #33）。
-// 抽取：docs/spelling/index.html 的 <child-store-pure>。
-// 身分／token 解析（bootIdentity 等）與 worker KEY_RE 契約已由 tests/test_child_store.mjs 釘住，不重複。
+// spelling 的 wiring 設定 pin（票 #33；#40-B 起 key 尋址移共用 wiring-v1.js）。
+// key 尋址與播種語意的行為測試在 tests/test_wiring_pure.mjs（單一真相源）；
+// 這裡 pin 住 spelling 的 <wiring-config>——重接線不得默默改 key／歸屬（改了＝進度看似消失）。
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../docs/spelling/index.html", import.meta.url), "utf8");
-const blk = html.match(/\/\/ <child-store-pure>([\s\S]*?)\/\/ <\/child-store-pure>/);
-if (!blk) throw new Error("docs/spelling/index.html 找不到 <child-store-pure> 區塊");
-const { LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey, planLegacySeed } = new Function(
-  blk[1] + "\nreturn { LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey, planLegacySeed };",
-)();
+const cfgBlk = html.match(/\/\/ <wiring-config>[\s\S]*?const WIRING_CONFIG = (\{[\s\S]*?\});[\s\S]*?\/\/ <\/wiring-config>/);
+if (!cfgBlk) throw new Error("docs/spelling/index.html 找不到 <wiring-config> 區塊");
+const CONFIG = new Function(`return ${cfgBlk[1]};`)();
 
-test("key 尋址：progress 與 sync meta 每 child 各自一把、互不相同", () => {
-  assert.equal(childProgressKey("aiden"), "spelling:progress:aiden");
-  assert.equal(childProgressKey("bingpu"), "spelling:progress:bingpu");
-  assert.equal(childSyncMetaKey("aiden"), "spelling:sync:aiden");
-  assert.notEqual(childProgressKey("aiden"), childProgressKey("bingpu"));
-  assert.notEqual(childProgressKey("aiden"), childSyncMetaKey("aiden"));
-  assert.notEqual(childProgressKey("aiden"), LEGACY_STORAGE_KEY, "新格式 key 不得撞舊 key");
-  assert.notEqual(childProgressKey("aiden"), "study:progress:aiden", "spelling 與 study 的 key 空間不得互撞");
+const wiringSrc = readFileSync(new URL("../docs/shared/wiring-v1.js", import.meta.url), "utf8");
+const wiringBlk = wiringSrc.match(/\/\/ <wiring-pure>([\s\S]*?)\/\/ <\/wiring-pure>/);
+if (!wiringBlk) throw new Error("docs/shared/wiring-v1.js 找不到 <wiring-pure> 區塊");
+const { makeChildStore } = new Function(wiringBlk[1] + "\nreturn { makeChildStore };")();
+
+test("spelling wiring 設定 pin：appId／schema／legacy 歸屬一字不差", () => {
+  assert.equal(CONFIG.appId, "spelling");
+  assert.equal(CONFIG.schemaVersion, 1);
+  assert.equal(CONFIG.legacyChild, "aiden", "ADR-0004：spelling 舊存檔（v4）歸哥哥");
+  assert.equal(CONFIG.legacyKey, "spelling_bee_progress_v4");
 });
 
-test("legacy 歸屬：spelling 舊存檔（v4）歸哥哥（ADR-0004 per-app 歸屬）", () => {
-  assert.equal(LEGACY_STORAGE_KEY, "spelling_bee_progress_v4");
-  assert.equal(LEGACY_CHILD, "aiden");
+test("spelling 實際 key 派生不變；與 study 的 key 空間不互撞", () => {
+  const s = makeChildStore(CONFIG);
+  assert.equal(s.progressKey("aiden"), "spelling:progress:aiden");
+  assert.equal(s.progressKey("bingpu"), "spelling:progress:bingpu");
+  assert.equal(s.syncMetaKey("aiden"), "spelling:sync:aiden");
+  assert.notEqual(s.progressKey("aiden"), "study:progress:aiden");
 });
 
-test("planLegacySeed：aiden＋新 key 空＋舊 v4 在 → 複製到新 key（值原樣）", () => {
-  const legacy = '{"currentBatchIndex":2,"maxUnlockedBatchIndex":3,"rehearsalQueue":[],"mode":"practice","errorBank":["cliff"],"practiceLog":{"total":{"ace":4},"daily":{}}}';
-  const plan = planLegacySeed("aiden", legacy, null);
-  assert.deepEqual(plan, { key: "spelling:progress:aiden", value: legacy });
-});
-
-test("planLegacySeed：新 key 已有資料／舊 blob 不存在／child 非歸屬者 → 不動作", () => {
-  const legacy = '{"currentBatchIndex":0}';
-  assert.equal(planLegacySeed("aiden", legacy, '{"currentBatchIndex":1}'), null, "新 key 已有資料不得覆蓋");
-  assert.equal(planLegacySeed("aiden", legacy, ""), null, "新 key 存過空字串也算存在，不覆蓋");
-  assert.equal(planLegacySeed("aiden", null, null), null, "無舊 blob");
-  assert.equal(planLegacySeed("aiden", "", null), null, "舊 blob 空字串視同不存在");
-  assert.equal(planLegacySeed("bingpu", legacy, null), null, "spelling 舊存檔歸 aiden，不播種給弟弟");
-  assert.equal(planLegacySeed("test-sp", legacy, null), null);
-});
-
-test("播種冪等：seed 落地後再跑 planLegacySeed → 不動作", () => {
-  const legacy = '{"currentBatchIndex":2}';
-  const store = new Map([[LEGACY_STORAGE_KEY, legacy]]);
-  const plan = planLegacySeed("aiden", store.get(LEGACY_STORAGE_KEY), store.get(childProgressKey("aiden")) ?? null);
-  store.set(plan.key, plan.value);
-  assert.equal(
-    planLegacySeed("aiden", store.get(LEGACY_STORAGE_KEY), store.get(childProgressKey("aiden"))),
-    null,
-    "第二次開站不得重複播種（否則會蓋掉之後的新進度）",
-  );
-  assert.equal(store.get(LEGACY_STORAGE_KEY), legacy, "legacy blob 原樣保留（複製不搬移）");
+test("v3/v2 遠古鏈鎖 legacy child：loadProgress 的 guard 讀 WIRING_CONFIG.legacyChild", () => {
+  // 遠古鏈是 app 內邏輯（不在 wiring）；guard 消失＝跨 child 互染回歸，用原始碼釘住
+  assert.match(html, /currentChild !== WIRING_CONFIG\.legacyChild\) return false/);
+  assert.match(html, /spelling_bee_progress_v3/);
+  assert.match(html, /spelling_bee_progress_v2/);
 });
