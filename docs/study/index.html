@@ -764,43 +764,37 @@ function removeQuestionFromAllModeMastered(mastered, unit, qId) {
 }
 // </chinese-mode-pure>
 
+// 讀寫一律走 wiring.safeGet／safeSet（封鎖 Cookie 類設定下連 localStorage 取值都拋
+// SecurityError，safe* 吞掉＝退回「可練不持久」：本輪照常作答，離開就沒了）
 const Storage = {
   load() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      return JSON.parse(raw);
-    } catch { return null; }
+    const raw = wiring.safeGet(STORAGE_KEY);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
   },
-  // 寫入整段包起來（同 load）：封鎖 Cookie 類設定下連 localStorage 取值都拋 SecurityError，
-  // 不包的話首次作答就炸；吞掉＝退回「可練不持久」（本輪照常作答，離開就沒了）
   save(data) {
-    try {
-      const json = JSON.stringify(data);
-      let prev = null;
-      try { prev = localStorage.getItem(STORAGE_KEY); } catch {}
-      localStorage.setItem(STORAGE_KEY, json);
-      // 真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
-      // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
-      if (sync && json !== prev) sync.markDirty();
-    } catch {}
+    const json = JSON.stringify(data);
+    const prev = wiring.safeGet(STORAGE_KEY);
+    // 真有寫入且真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
+    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+    if (wiring.safeSet(STORAGE_KEY, json) && sync && json !== prev) sync.markDirty();
   },
   // init 期整理（orphan 清理等）專用：不標 dirty。舊快取題庫誤判 orphan 時只影響本機，
   // 不會 push 上雲剝掉他機的有效 errorBank/flagged（use-site 本就有 questionMap 過濾）
   saveQuiet(data) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+    wiring.safeSet(STORAGE_KEY, JSON.stringify(data));
   },
   // 回傳是否本次做了 child 維度播種（呼叫端據此走匯入定錨語意上雲）
   migrate() {
     // 舊世代鏈（哥哥的 lineage，寫回舊 key、維持原樣）：aiden_study_records → aiden_study_v2
     try {
-      if (!localStorage.getItem(WIRING_CONFIG.legacyKey)) {
-        const raw = localStorage.getItem(OLD_KEY);
+      if (!wiring.safeGet(WIRING_CONFIG.legacyKey)) {
+        const raw = wiring.safeGet(OLD_KEY);
         if (raw) {
           const old = JSON.parse(raw);
           const records = old.records || [];
           const stats = recordsToModeStats(records, DEFAULT_PRACTICE_MODE);
-          localStorage.setItem(WIRING_CONFIG.legacyKey, JSON.stringify({ ...DEFAULT_DATA, stats }));
+          wiring.safeSet(WIRING_CONFIG.legacyKey, JSON.stringify({ ...DEFAULT_DATA, stats }));
           localStorage.removeItem(OLD_KEY);
         }
       }
@@ -1688,7 +1682,7 @@ const SHORTCUT_NAME = "Aiden還原";
 
 // ── 進度備份／還原（純前端；備份的就是 localStorage 那份存檔）
 window._exportProgress = () => {
-  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const json = wiring.safeGet(STORAGE_KEY) || JSON.stringify(state);
   const d = new Date();
   const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   const box = document.getElementById("backup-io");
@@ -1718,7 +1712,7 @@ window._exportProgress = () => {
 // 不支援 navigator.share（多為桌面瀏覽器）→ 退回現有複製/下載面板。
 window._shareBackup = async () => {
   if (!state) return;  // 進度尚未載入，別備份出空資料
-  const json = localStorage.getItem(STORAGE_KEY) || JSON.stringify(state);
+  const json = wiring.safeGet(STORAGE_KEY) || JSON.stringify(state);
   const text = buildBackupText(json);
   if (isBackupOversized(text)) _warnBackupOversized();  // 非阻擋：仍照常分享，但提醒捷徑還原可能塞不下
   let shareFailed = false;  // 區分「裝置不支援」與「支援但這次失敗」，退回文案才不誤導

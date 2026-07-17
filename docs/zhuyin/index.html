@@ -587,16 +587,13 @@ const app = {
   stepTimer: null,     // 組字子步驟切換（confirm 空窗）——與換卡語意分開，勿混用
 };
 
+// 讀寫走 wiring.safeGet／safeSet（封鎖 Cookie 類設定下 localStorage 取值即拋，safe* 吞掉＝可練不持久）
 function saveProgress() {
-  try {
-    const json = JSON.stringify(app.progress);
-    let prev = null;
-    try { prev = localStorage.getItem(STORAGE_KEY); } catch (e) {}
-    localStorage.setItem(STORAGE_KEY, json);
-    // 真有變更才標 dirty：擋掉等值 save 造成的空推雲；
-    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
-    if (sync && json !== prev) sync.markDirty();
-  } catch (e) { /* 寫不進去照常練 */ }
+  const json = JSON.stringify(app.progress);
+  const prev = wiring.safeGet(STORAGE_KEY);
+  // 真有寫入且真有變更才標 dirty：擋掉等值 save 造成的空推雲；
+  // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+  if (wiring.safeSet(STORAGE_KEY, json) && sync && json !== prev) sync.markDirty();
 }
 
 // ════════════════════════════════════════════════════
@@ -949,7 +946,7 @@ async function init() {
     for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
     // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
     if (bootPromise) await bootPromise;
-    app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
+    app.progress = zyLoadProgress(wiring.safeGet(STORAGE_KEY));
 
     // 音檔可用性探測（HEAD content.json 宣告的全部 key；失敗＝缺檔，組批時過濾）
     const keys = [];
@@ -1051,8 +1048,7 @@ document.getElementById("btn-audit").addEventListener("click", () => {
 });
 
 document.getElementById("btn-export").addEventListener("click", () => {
-  let raw = null;
-  try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { /* 讀不到照樣提示 */ }
+  const raw = wiring.safeGet(STORAGE_KEY); // 讀不到照樣提示
   document.getElementById("backup-box").value = raw || "";
   document.getElementById("backup-status").textContent = raw
     ? `已填入下方文字框（${wiring.childInfo(currentChild).label} 的進度）——全選複製後存到安全的地方（如備忘錄）。`
