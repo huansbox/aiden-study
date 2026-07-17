@@ -1095,7 +1095,8 @@ document.getElementById("btn-import").addEventListener("click", () => {
       btn.disabled = false;
       $st.textContent = "寫入失敗，進度未變。";
     } else if (r.status === "done") {
-      $st.textContent = `已還原到 ${wiring.childInfo(child).label} 的進度`;
+      // #40-B 行為變更：反映推雲結果——失敗不謊報「已還原」了事（分機匯入時雲端永遠等不到）
+      $st.textContent = wiring.importedFeedback(child, r.pushed);
     }
   };
 });

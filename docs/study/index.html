@@ -1774,7 +1774,8 @@ window._importProgress = () => {
       btn.disabled = false;
       msg.textContent = "還原失敗（無法寫入儲存空間），進度沒有變動";
     } else if (r.status === "done") {
-      msg.textContent = `已還原到 ${wiring.childInfo(child).label} 的進度`;
+      // #40-B 行為變更：反映推雲結果——失敗不謊報「已還原」了事（分機匯入時雲端永遠等不到）
+      msg.textContent = wiring.importedFeedback(child, r.pushed);
     }
   };
 };
@@ -1844,7 +1845,8 @@ function handleRestoreHash() {
       box.insertAdjacentHTML("beforeend", `<p class="backup-hint">還原失敗（無法寫入儲存空間），進度沒有變動。</p>`);
     } else if (r.status === "done") {
       history.replaceState(null, "", cleanUrl);
-      box.innerHTML = `<p class="backup-hint">已還原到 ${wiring.childInfo(child).label} 的進度。</p>`;
+      // #40-B 行為變更：反映推雲結果（同匯入文字框）
+      box.innerHTML = `<p class="backup-hint">${wiring.importedFeedback(child, r.pushed)}。</p>`;
     }
   };
   document.getElementById("restore-cancel").onclick = () => {
