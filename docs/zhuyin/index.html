@@ -221,6 +221,7 @@
     </div>
     <div class="parent-block">
       <button class="parent-btn danger" id="btn-reset">重置全部進度</button>
+      <div class="parent-status" id="reset-status"></div>
     </div>
     <button class="btn-quiet" id="btn-parent-home">回首頁</button>
   </div>
@@ -1107,7 +1108,10 @@ document.getElementById("btn-reset").addEventListener("click", async () => {
   // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機。
   // 空檔形狀以 loader 為唯一真相源（zyLoadProgress(null)＝空進度）
   const r = await wiring.commitImport(currentChild, zyLoadProgress(null));
-  if (r.status === "write-failed") location.reload(); // 寫不進去就算了（比照舊行為），reload 後照舊
+  // 寫入失敗不 reload——刷新畫面會讓家長以為清好了，實際舊進度原封不動（#40 裁決④）
+  if (r.status === "write-failed") {
+    document.getElementById("reset-status").textContent = "重置失敗（沒能寫入這台裝置），進度沒有被清除。";
+  }
 });
 
 // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSync 的 attachLifecycle 統一掛。
