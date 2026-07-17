@@ -109,12 +109,15 @@ function syncStatusInnerHtml(v) {
 // - adopted＝PUT 撞 409 後二次判定改採雲端（雲端比備份新，LWW 本該它贏）——此時備份已被
 //   雲端版本蓋掉、dirty 已清，「還在本機」「會自動補傳」兩句都不成立，須明講備份沒有被使用
 // - schema-block＝雲端資料版本較新、同步暫停——資料確實在本機＋定錨仍在，但補傳要等 app 更新
+// - anchor-failed＝資料寫進去了，但定錨標記寫失敗（quota 剛好卡在「大的進得去、小的進不去」的縫）
+//   ——沒有標記就沒有補傳，「會自動補傳」是假話，須明講可能不會上雲
 // - 其餘（offline／auth／no-token／data-error）＝資料在本機＋定錨已持久化，
 //   該 child 下次在「這台裝置」開啟本 app 的 boot 輪補推
 function importedFeedbackText(childLabel, pushed, reason) {
   if (pushed) return `已還原到 ${childLabel} 的進度，雲端也更新了`;
   if (reason === "adopted") return `雲端上已有 ${childLabel} 更新的進度，已改用雲端版本——這份備份沒有被使用`;
   if (reason === "schema-block") return `已寫入這台裝置，但雲端資料版本較新、同步暫停中——更新 app 後會自動補傳`;
+  if (reason === "anchor-failed") return `已寫入這台裝置，但裝置空間不足、沒能記下補傳備忘——這份備份可能不會自動上雲，請清出空間後重新匯入一次`;
   return `已寫入這台裝置，但雲端上傳沒成功（沒網路或金鑰問題）——${childLabel} 下次在這台裝置開啟這個 app 時會自動補傳`;
 }
 
@@ -164,10 +167,11 @@ function createWiring(cfg) {
   }
   // KidsSync 未載入時的定錨後備：直接落 anchorPending＋dirty（merge 既有 meta）。
   // 播種與匯入只發生一次，錯過定錨就永遠補不回——雲端被他機 rev 佔住時，下次 boot 會 adopt
-  // 舊資料蓋掉剛播種/匯入的進度；先落標記，下次腳本載入的 boot 輪即完成定錨＋push
+  // 舊資料蓋掉剛播種/匯入的進度；先落標記，下次腳本載入的 boot 輪即完成定錨＋push。
+  // 回傳是否寫成功：quota 邊界下標記可能寫不進去，呼叫端須誠實回報（不承諾「會自動補傳」）
   function markImportedFallback(child) {
     const m = readSyncMeta(child);
-    safeSet(store.syncMetaKey(child), JSON.stringify(
+    return safeSet(store.syncMetaKey(child), JSON.stringify(
       { ...(m && typeof m === "object" ? m : {}), dirty: true, anchorPending: true, pendingWriteId: null }));
   }
 
@@ -296,13 +300,19 @@ function createWiring(cfg) {
     }
     if (child === currentChild) {
       if (sync) sync.markImported();
-      else markImportedFallback(child); // 腳本沒載到也不能丟定錨，否則日後 boot adopt 蓋掉匯入
+      // 腳本沒載到也不能丟定錨，否則日後 boot adopt 蓋掉匯入；定錨寫失敗（quota 邊界）
+      // 得搶在 reload 前用 alert 明講——reload 後沒有任何回報面，不講等於假裝成功
+      else if (!markImportedFallback(child)) {
+        alert("資料已寫入這台裝置，但裝置空間不足、沒能記下同步備忘——可能不會自動上雲，請清出空間後重新匯入一次。");
+      }
       if (opts.reloadTo) location.replace(opts.reloadTo);
       else location.reload();
       return { status: "reloading" }; // reload 前的殘影期不再做事
     }
     const c = makeSyncClient(child);
-    if (!c) { markImportedFallback(child); return { status: "done", pushed: false, reason: null }; } // 下次開站補推
+    if (!c) { // 腳本沒載到：定錨後下次開站補推；連定錨都寫失敗＝回報可能不會上雲
+      return { status: "done", pushed: false, reason: markImportedFallback(child) ? null : "anchor-failed" };
+    }
     let r = null;
     try { r = await c.importedLocal(); } catch (e) {}
     // pushed 判準：本輪真的走了 push 且 PUT 被收下。

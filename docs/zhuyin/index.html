@@ -221,6 +221,7 @@
     </div>
     <div class="parent-block">
       <button class="parent-btn danger" id="btn-reset">重置全部進度</button>
+      <div class="parent-status" id="reset-status"></div>
     </div>
     <button class="btn-quiet" id="btn-parent-home">回首頁</button>
   </div>
@@ -242,7 +243,7 @@
   </div>
 </div>
 <script src="../shared/sync-v1.js"></script>
-<script src="../shared/wiring-v1.js?v=20260717a"></script>
+<script src="../shared/wiring-v1.js?v=20260717b"></script>
 <script>
 "use strict";
 
@@ -586,16 +587,13 @@ const app = {
   stepTimer: null,     // 組字子步驟切換（confirm 空窗）——與換卡語意分開，勿混用
 };
 
+// 讀寫走 wiring.safeGet／safeSet（封鎖 Cookie 類設定下 localStorage 取值即拋，safe* 吞掉＝可練不持久）
 function saveProgress() {
-  try {
-    const json = JSON.stringify(app.progress);
-    let prev = null;
-    try { prev = localStorage.getItem(STORAGE_KEY); } catch (e) {}
-    localStorage.setItem(STORAGE_KEY, json);
-    // 真有變更才標 dirty：擋掉等值 save 造成的空推雲；
-    // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
-    if (sync && json !== prev) sync.markDirty();
-  } catch (e) { /* 寫不進去照常練 */ }
+  const json = JSON.stringify(app.progress);
+  const prev = wiring.safeGet(STORAGE_KEY);
+  // 真有寫入且真有變更才標 dirty：擋掉等值 save 造成的空推雲；
+  // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
+  if (wiring.safeSet(STORAGE_KEY, json) && sync && json !== prev) sync.markDirty();
 }
 
 // ════════════════════════════════════════════════════
@@ -948,7 +946,7 @@ async function init() {
     for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
     // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
     if (bootPromise) await bootPromise;
-    app.progress = zyLoadProgress((() => { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } })());
+    app.progress = zyLoadProgress(wiring.safeGet(STORAGE_KEY));
 
     // 音檔可用性探測（HEAD content.json 宣告的全部 key；失敗＝缺檔，組批時過濾）
     const keys = [];
@@ -1050,8 +1048,7 @@ document.getElementById("btn-audit").addEventListener("click", () => {
 });
 
 document.getElementById("btn-export").addEventListener("click", () => {
-  let raw = null;
-  try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { /* 讀不到照樣提示 */ }
+  const raw = wiring.safeGet(STORAGE_KEY); // 讀不到照樣提示
   document.getElementById("backup-box").value = raw || "";
   document.getElementById("backup-status").textContent = raw
     ? `已填入下方文字框（${wiring.childInfo(currentChild).label} 的進度）——全選複製後存到安全的地方（如備忘錄）。`
@@ -1107,7 +1104,10 @@ document.getElementById("btn-reset").addEventListener("click", async () => {
   // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機。
   // 空檔形狀以 loader 為唯一真相源（zyLoadProgress(null)＝空進度）
   const r = await wiring.commitImport(currentChild, zyLoadProgress(null));
-  if (r.status === "write-failed") location.reload(); // 寫不進去就算了（比照舊行為），reload 後照舊
+  // 寫入失敗不 reload——刷新畫面會讓家長以為清好了，實際舊進度原封不動（#40 裁決④）
+  if (r.status === "write-failed") {
+    document.getElementById("reset-status").textContent = "重置失敗（沒能寫入這台裝置），進度沒有被清除。";
+  }
 });
 
 // 離頁／切背景立即 flush（pagehide＋visibilitychange 成對）由 initSync 的 attachLifecycle 統一掛。
