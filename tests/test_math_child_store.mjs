@@ -1,32 +1,36 @@
-// math child 維度 key 尋址純函式測試（票 #33）。
-// 抽取：docs/math/index.html 的 <child-store-pure>。
-// 身分／token 解析（bootIdentity 等）與 worker KEY_RE 契約已由 tests/test_child_store.mjs 釘住，不重複。
-// math 拍板從零（舊 aiden-math-progress 不遷移），故 pure 區塊刻意沒有 planLegacySeed。
+// math 的 wiring 設定 pin（票 #33；#40-B 起 key 尋址移共用 wiring-v1.js）。
+// key 尋址語意的行為測試在 tests/test_wiring_pure.mjs（單一真相源）；
+// 這裡 pin 住 math 的 <wiring-config>——重接線不得默默改 key／歸屬（改了＝進度看似消失）。
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../docs/math/index.html", import.meta.url), "utf8");
-const blk = html.match(/\/\/ <child-store-pure>([\s\S]*?)\/\/ <\/child-store-pure>/);
-if (!blk) throw new Error("docs/math/index.html 找不到 <child-store-pure> 區塊");
-const { LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey } = new Function(
-  blk[1] + "\nreturn { LEGACY_STORAGE_KEY, LEGACY_CHILD, childProgressKey, childSyncMetaKey };",
-)();
+const cfgBlk = html.match(/\/\/ <wiring-config>[\s\S]*?const WIRING_CONFIG = (\{[\s\S]*?\});[\s\S]*?\/\/ <\/wiring-config>/);
+if (!cfgBlk) throw new Error("docs/math/index.html 找不到 <wiring-config> 區塊");
+const CONFIG = new Function(`return ${cfgBlk[1]};`)();
 
-test("key 尋址：progress 與 sync meta 每 child 各自一把、互不相同", () => {
-  assert.equal(childProgressKey("aiden"), "math:progress:aiden");
-  assert.equal(childProgressKey("bingpu"), "math:progress:bingpu");
-  assert.equal(childSyncMetaKey("aiden"), "math:sync:aiden");
-  assert.notEqual(childProgressKey("aiden"), childProgressKey("bingpu"));
-  assert.notEqual(childProgressKey("aiden"), childSyncMetaKey("aiden"));
-  assert.notEqual(childProgressKey("aiden"), LEGACY_STORAGE_KEY, "新格式 key 不得撞舊 key");
-  assert.notEqual(childProgressKey("aiden"), "study:progress:aiden", "math 與 study 的 key 空間不得互撞");
-  assert.notEqual(childProgressKey("aiden"), "spelling:progress:aiden", "math 與 spelling 的 key 空間不得互撞");
+const wiringSrc = readFileSync(new URL("../docs/shared/wiring-v1.js", import.meta.url), "utf8");
+const wiringBlk = wiringSrc.match(/\/\/ <wiring-pure>([\s\S]*?)\/\/ <\/wiring-pure>/);
+if (!wiringBlk) throw new Error("docs/shared/wiring-v1.js 找不到 <wiring-pure> 區塊");
+const { makeChildStore } = new Function(wiringBlk[1] + "\nreturn { makeChildStore };")();
+
+test("math wiring 設定 pin：appId／schema／從零（無 legacyKey）", () => {
+  assert.equal(CONFIG.appId, "math");
+  assert.equal(CONFIG.schemaVersion, 1);
+  assert.equal(CONFIG.legacyChild, "aiden", "ADR-0004：math 歸哥哥");
+  // 從零拍板（#33）：legacyKey 出現非 null 值代表有人補了遷移路徑，需回票對齊而不是默默上線
+  assert.equal(CONFIG.legacyKey, null, "math 拍板不遷移舊進度（aiden-math-progress 不讀不寫）");
 });
 
-test("legacy 歸屬：math 舊存檔歸哥哥（ADR-0004），且從零＝pure 區塊沒有播種函式", () => {
-  assert.equal(LEGACY_STORAGE_KEY, "aiden-math-progress");
-  assert.equal(LEGACY_CHILD, "aiden");
-  // 從零拍板（#33）：出現 planLegacySeed 代表有人補了遷移路徑，需回票對齊而不是默默上線
-  assert.ok(!/planLegacySeed/.test(blk[1]), "math 拍板不遷移舊進度，<child-store-pure> 不應有 planLegacySeed");
+test("math 實際 key 派生不變；key 空間不互撞（舊 key／study／spelling）", () => {
+  const s = makeChildStore(CONFIG);
+  assert.equal(s.progressKey("aiden"), "math:progress:aiden");
+  assert.equal(s.progressKey("bingpu"), "math:progress:bingpu");
+  assert.equal(s.syncMetaKey("aiden"), "math:sync:aiden");
+  assert.notEqual(s.progressKey("aiden"), "aiden-math-progress", "新格式 key 不得撞舊 key");
+  assert.notEqual(s.progressKey("aiden"), "study:progress:aiden");
+  assert.notEqual(s.progressKey("aiden"), "spelling:progress:aiden");
+  // 從零語意：無 legacyKey → 播種計畫永遠不動作
+  assert.equal(s.planLegacySeed("aiden", '{"stars":9}', null), null);
 });
