@@ -28,6 +28,10 @@ _Avoid_: 密碼、API key
 接同步的 app 內嵌的共用同步腳本（`shared/sync-v<N>.js`，站內一律相對路徑引用——新舊 origin base path 不同）：開啟時 pull、進度變更後 push、離線靜默略過。平台基建，共用不複製（見 ADR-0004）。
 _Avoid_: 同步模組、sync snippet
 
+**wiring layer（接線層）**：
+app 與平台基建之間那段「開機準備工作」的統稱——身分解析、child 存檔尋址、同步 client 建立、家長區健康燈、匯入編排等四 app 同款的接線碼；共用腳本＝`shared/wiring-v1.js`（ADR-0005）。與 sync client 的分界：sync client 管雲端協定，接線層管 app 這一側怎麼把它接起來。
+_Avoid_: boilerplate、glue code、開機碼
+
 **逃生門（escape hatch）**：
 不依賴雲端的手動進度備援——文字框匯出／匯入 localStorage 存檔（沿用哥哥版與注音版既有慣例）。
 _Avoid_: 備份功能
