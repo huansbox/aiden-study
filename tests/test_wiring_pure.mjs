@@ -158,14 +158,27 @@ test("健康燈：child label 經 escape（不可信字串不得直插 HTML）",
 
 // ── 匯入回報文案（#40-B 行為變更）──
 
-test("importedFeedbackText：成功明說雲端已更新；失敗明說只在本機＋補傳條件", () => {
-  const ok = importedFeedbackText("弟弟", true);
+test("importedFeedbackText：成功明說雲端已更新；一般失敗明說只在本機＋補傳條件", () => {
+  const ok = importedFeedbackText("弟弟", true, null);
   assert.match(ok, /已還原到 弟弟 的進度/);
   assert.match(ok, /雲端也更新了/);
-  const fail = importedFeedbackText("弟弟", false);
+  const fail = importedFeedbackText("弟弟", false, null);
   assert.match(fail, /已寫入這台裝置/);
   assert.match(fail, /雲端上傳沒成功/);
   assert.match(fail, /弟弟 下次在這台裝置開啟這個 app 時會自動補傳/);
+});
+
+test("importedFeedbackText：adopted（409 後採雲端）明說備份沒被使用、不承諾補傳；schema-block 指向更新 app", () => {
+  const adopted = importedFeedbackText("弟弟", false, "adopted");
+  assert.match(adopted, /已改用雲端版本/);
+  assert.match(adopted, /這份備份沒有被使用/);
+  assert.doesNotMatch(adopted, /會自動補傳/, "備份已被雲端蓋掉，不得承諾補傳");
+  assert.doesNotMatch(adopted, /沒網路或金鑰/, "409 落敗與網路金鑰無關，不得誤導排查方向");
+  const sb = importedFeedbackText("弟弟", false, "schema-block");
+  assert.match(sb, /已寫入這台裝置/);
+  assert.match(sb, /雲端資料版本較新/);
+  assert.match(sb, /更新 app 後會自動補傳/);
+  assert.doesNotMatch(sb, /沒網路或金鑰/);
 });
 
 // ── child 選擇器 ──

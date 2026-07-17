@@ -105,11 +105,17 @@ function syncStatusInnerHtml(v) {
 }
 
 // 匯入到「非當前 child」的回報文案（#40-B 行為變更）：反映推雲結果，不謊報完成。
-// 失敗時資料只在本機＋定錨已持久化——該 child 下次在「這台裝置」開啟本 app 的 boot 輪補推
-function importedFeedbackText(childLabel, pushed) {
-  return pushed
-    ? `已還原到 ${childLabel} 的進度，雲端也更新了`
-    : `已寫入這台裝置，但雲端上傳沒成功（沒網路或金鑰問題）——${childLabel} 下次在這台裝置開啟這個 app 時會自動補傳`;
+// reason 分流（code review 揪出兩個「通用失敗文案說了假話」的分支）：
+// - adopted＝PUT 撞 409 後二次判定改採雲端（雲端比備份新，LWW 本該它贏）——此時備份已被
+//   雲端版本蓋掉、dirty 已清，「還在本機」「會自動補傳」兩句都不成立，須明講備份沒有被使用
+// - schema-block＝雲端資料版本較新、同步暫停——資料確實在本機＋定錨仍在，但補傳要等 app 更新
+// - 其餘（offline／auth／no-token／data-error）＝資料在本機＋定錨已持久化，
+//   該 child 下次在「這台裝置」開啟本 app 的 boot 輪補推
+function importedFeedbackText(childLabel, pushed, reason) {
+  if (pushed) return `已還原到 ${childLabel} 的進度，雲端也更新了`;
+  if (reason === "adopted") return `雲端上已有 ${childLabel} 更新的進度，已改用雲端版本——這份備份沒有被使用`;
+  if (reason === "schema-block") return `已寫入這台裝置，但雲端資料版本較新、同步暫停中——更新 app 後會自動補傳`;
+  return `已寫入這台裝置，但雲端上傳沒成功（沒網路或金鑰問題）——${childLabel} 下次在這台裝置開啟這個 app 時會自動補傳`;
 }
 
 // 匯入／還原的 child 選擇（家長選；預設當前 child）。currentChild 不在名單（如 test- 驗收 id）時補列
@@ -217,12 +223,13 @@ function createWiring(cfg) {
   }
 
   function syncStatusHtml() {
+    if (!KidsSync) return syncStatusInnerHtml({ scriptLoaded: false }); // 靜態文案，不用白算 meta/token
     return syncStatusInnerHtml({
-      scriptLoaded: !!KidsSync,
+      scriptLoaded: true,
       info: childInfo(currentChild),
       meta: readSyncMeta(currentChild),
       token: getToken(),
-      healthText: KidsSync ? KidsSync.HEALTH_TEXT : null,
+      healthText: KidsSync.HEALTH_TEXT,
       btnClass,
       msgClass,
     });
@@ -280,30 +287,39 @@ function createWiring(cfg) {
   // 否則等待窗內頁面仍可操作、任何 app 存檔會用舊 state 蓋掉剛匯入的資料；
   // 定錨＋push 由 reload 後的 boot 輪完成（anchorPending 已持久化，離線也不丟）。
   // 目標＝其他 child：本頁存檔不受影響，await 推完、回報帶推雲結果（#40-B 行為變更）。
-  // 回傳 "write-failed" | "reloading" | { status: "done", pushed }
+  // 回傳恆為物件 { status: "write-failed" | "reloading" | "done", pushed?, reason? }
+  // （不混用裸字串：呼叫端一律 r.status 判斷，寫錯分支不會靜默不進）
   async function commitImport(child, obj, opts = {}) {
     const plan = store.planImportWrite(child, obj);
     if (!safeSet(plan.key, plan.value)) {
-      return "write-failed"; // quota／私密模式：進度沒動，讓呼叫端回報
+      return { status: "write-failed" }; // quota／私密模式：進度沒動，讓呼叫端回報
     }
     if (child === currentChild) {
       if (sync) sync.markImported();
       else markImportedFallback(child); // 腳本沒載到也不能丟定錨，否則日後 boot adopt 蓋掉匯入
       if (opts.reloadTo) location.replace(opts.reloadTo);
       else location.reload();
-      return "reloading"; // reload 前的殘影期不再做事
+      return { status: "reloading" }; // reload 前的殘影期不再做事
     }
     const c = makeSyncClient(child);
-    if (!c) { markImportedFallback(child); return { status: "done", pushed: false }; } // 下次開站補推
+    if (!c) { markImportedFallback(child); return { status: "done", pushed: false, reason: null }; } // 下次開站補推
     let r = null;
     try { r = await c.importedLocal(); } catch (e) {}
-    // pushed 判準：本輪真的走了 push 且 PUT 被收下。罕見的 409 落敗（他機正在同步該 child、
-    // 雲端比匯入還新）歸 false——那時雲端資料比這份備份新，LWW 本來就該它贏
+    // pushed 判準：本輪真的走了 push 且 PUT 被收下。
+    // reason 供回報文案分流（importedFeedbackText）：
+    // - adopted＝PUT 撞 409 且二次判定採雲端（雲端比備份新，LWW 該它贏）——備份已被蓋掉、不會補傳
+    // - schema-block＝雲端版本較新暫停同步——資料在本機、更新 app 後補傳
     const pushed = !!(r && r.action === "push" && !r.putRejected && (c.meta().health === "ok"));
-    return { status: "done", pushed };
+    let reason = null;
+    if (!pushed && r) {
+      if (r.secondAction === "adopt" || r.secondAction === "conflict-adopt") reason = "adopted";
+      else if (r.action === "schema-block") reason = "schema-block";
+    }
+    return { status: "done", pushed, reason };
   }
-  function importedFeedback(child, pushed) {
-    return importedFeedbackText(childInfo(child).label, pushed);
+  // r＝commitImport 的回傳物件（status "done" 時呼叫）
+  function importedFeedback(child, r) {
+    return importedFeedbackText(childInfo(child).label, r.pushed, r.reason);
   }
 
   // bfcache 復原：重讀身分（點錯圖示／hub 切人殘留頁），不一致即 reload；一致則拉一次雲端
@@ -316,23 +332,16 @@ function createWiring(cfg) {
     });
   }
 
+  // 回傳面只放 app 實際呼叫的成員（多曝露一個＝多一條沒人測的公開契約）；
+  // KidsSync／identity／readSyncMeta／markImportedFallback／makeSyncClient 等留在閉包內部
   return {
-    KidsSync,
-    safeStorage,
-    identity,
     currentChild,
     store,
-    KNOWN_CHILDREN,
     identityUnresolvable,
     safeGet,
     safeSet,
-    readSyncMeta,
-    markImportedFallback,
-    getToken,
     childInfo,
-    makeSyncClient,
     initSync,
-    get sync() { return sync; },
     seedLegacy,
     anchorLocalWrite,
     syncStatusHtml,

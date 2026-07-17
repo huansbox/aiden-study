@@ -431,7 +431,7 @@
     </div>
 
     <script src="../shared/sync-v1.js"></script>
-    <script src="../shared/wiring-v1.js"></script>
+    <script src="../shared/wiring-v1.js?v=20260717a"></script>
     <script>
         // ════════════════════════════════════════════════════
         // Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:spelling）
@@ -444,7 +444,7 @@
         const WIRING_CONFIG = { appId: "spelling", schemaVersion: 1, legacyChild: "aiden", legacyKey: "spelling_bee_progress_v4" };
         // </wiring-config>
         const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
-        const currentChild = wiring ? wiring.currentChild : WIRING_CONFIG.legacyChild;
+        const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
         // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
         function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
         function safeGet(k) { return wiring ? wiring.safeGet(k) : null; }
@@ -625,7 +625,7 @@
             state.practiceLog = demoLog;
             state.currentBatchIndex = 1; state.maxUnlockedBatchIndex = 1; state.mode = 'practice'; state.errorBank = [];
             // 與匯入同一條路：手動覆蓋＝定錨（LWW 新寫入身分），否則雲端 rev 領先時下次 boot 會 adopt 回舊資料
-            loadBatchQueue(1); saveProgress(); anchorLocalWrite(true);
+            loadBatchQueue(1); saveProgress(); wiring.anchorLocalWrite(true);
             showAlert("✅ 範例資料已載入！請點擊「練習日誌」查看效果。"); render();
         }
 
@@ -640,7 +640,7 @@
                     loadProgress(); render(); showAlert("❌ 寫入失敗，進度未變。");
                     return;
                 }
-                anchorLocalWrite(true);
+                wiring.anchorLocalWrite(true);
                 render(); showAlert("✅ 進度已重置。");
             });
         }
@@ -662,7 +662,7 @@
                     const j = decodeURIComponent(atob(code)); JSON.parse(j);
                     if (!safeSet(STORAGE_KEY, j)) { showAlert("❌ 寫入失敗，進度未變。"); return; }
                     // 匯入＝定錨（視同手動還原）：否則雲端 rev 領先時下次 boot 會 adopt 蓋掉剛匯入的進度
-                    anchorLocalWrite(true);
+                    wiring.anchorLocalWrite(true);
                     loadProgress(); render(); showAlert("✅ 匯入成功！資料已更新。");
                 } catch(e) { showAlert("❌ 代碼格式錯誤，無法匯入。"); }
             });
@@ -1022,9 +1022,6 @@
         // ════════════════════════════════════════════════════
         let sync = null;
         let appStarted = false; // init() 完成前 adopt 不動 in-memory（存檔已被 saveData 覆蓋、init 接著讀）
-        // 手動覆蓋類寫入（匯入／重置／示範資料）的統一定錨在 wiring.anchorLocalWrite：
-        // 漏一處＝該寫入日後被 boot adopt 蓋掉；pushNow＝立即推一輪、播種路徑傳 false（boot 輪接手）
-        function anchorLocalWrite(pushNow) { wiring.anchorLocalWrite(pushNow); }
         // adopt（含 conflict-adopt）＝整包取遠端。僅在練習模式主畫面且無 modal 時套進 in-memory；
         // 其餘情境不換——存檔已是遠端版，下一次 saveProgress 整包寫回＝「作答中的裝置贏」，仍是乾淨的 LWW
         function adoptRemoteData() {
@@ -1039,7 +1036,6 @@
 
         // ══════ 家長區：健康燈＋token 輸入整段在 wiring（#40-B），寫進 #sync-block 容器；
         //        window._saveSyncToken／_syncNow 由 wiring 掛 ══════
-        function refreshSyncStatus() { if (wiring) wiring.refreshSyncStatus(); }
 
         function showBlocked() {
             // 身分不可解 → 在任何存檔讀寫之前擋下，別寫進錯的小孩（#40-A）
@@ -1055,13 +1051,13 @@
             initSyncClient();
             // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
             // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
-            if (seeded) anchorLocalWrite(false);
+            if (seeded) wiring.anchorLocalWrite(false);
             // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
             if (sync) { try { await sync.boot(); } catch (e) {} }
             bootGate = false; // 此後的 saveProgress 才拿得到「已載入的真實 state」
             init();
             appStarted = true;
-            refreshSyncStatus();
+            wiring.refreshSyncStatus();
         }
 
         // bfcache 復原（點錯圖示／hub 切人殘留頁）的身分重驗在 wiring

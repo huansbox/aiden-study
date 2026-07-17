@@ -85,7 +85,7 @@
   </div>
 
   <script src="../shared/sync-v1.js"></script>
-  <script src="../shared/wiring-v1.js"></script>
+  <script src="../shared/wiring-v1.js?v=20260717a"></script>
   <script>
 "use strict";
 // ════════════════════════════════════════════════════
@@ -101,7 +101,7 @@ const WIRING_CONFIG = { appId: "math", schemaVersion: 1, legacyChild: "aiden", l
 // legacyKey null＝無播種路徑（#33 拍板從零；舊 key "aiden-math-progress" runtime 不讀不寫，
 // key 空間不互撞由 tests/test_math_child_store.mjs 釘住）。math 也無匯入／重置通道。
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
-const currentChild = wiring ? wiring.currentChild : WIRING_CONFIG.legacyChild;
+const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
 const storageKey = wiring ? wiring.store.progressKey(currentChild) : null;
 let sync = null;
 let adoptCb = null;

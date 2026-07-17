@@ -522,7 +522,7 @@ body {
 </div>
 
 <script src="../shared/sync-v1.js"></script>
-<script src="../shared/wiring-v1.js"></script>
+<script src="../shared/wiring-v1.js?v=20260717a"></script>
 <script>
 (function() {
 "use strict";
@@ -538,7 +538,7 @@ const KidsWiring = window.KidsWiringV1 || null;
 const WIRING_CONFIG = { appId: "study", schemaVersion: 1, legacyChild: "aiden", legacyKey: "aiden_study_v2", btnClass: "st-btn", msgClass: "backup-msg" };
 // </wiring-config>
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
-const currentChild = wiring ? wiring.currentChild : WIRING_CONFIG.legacyChild;
+const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
 function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
 let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建立；沒同步時保持 null）
@@ -1770,12 +1770,12 @@ window._importProgress = () => {
     const btn = document.getElementById("import-confirm");
     btn.disabled = true;
     const r = await wiring.commitImport(child, fresh);
-    if (r === "write-failed") {
+    if (r.status === "write-failed") {
       btn.disabled = false;
       msg.textContent = "還原失敗（無法寫入儲存空間），進度沒有變動";
     } else if (r.status === "done") {
       // #40-B 行為變更：反映推雲結果——失敗不謊報「已還原」了事（分機匯入時雲端永遠等不到）
-      msg.textContent = wiring.importedFeedback(child, r.pushed);
+      msg.textContent = wiring.importedFeedback(child, r);
     }
   };
 };
@@ -1803,10 +1803,9 @@ function _warnBackupOversized() {
   box.innerHTML = `<p class="backup-hint">這份備份較大，捷徑/網址還原可能塞不下；建議改用「匯出進度 → 下載檔案」保存、用「匯入進度」還原。</p>`;
 }
 
-// 避免把不可信文字（如備份 label，來源是任意 #restore= 連結）直接塞 innerHTML → XSS
-function escapeHtml(s) {
-  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
+// 避免把不可信文字（如備份 label，來源是任意 #restore= 連結）直接塞 innerHTML → XSS。
+// 綁共用實作（單一副本；wiring 沒載到時 app 已拒開站，不會被呼叫）
+const escapeHtml = KidsWiring && KidsWiring.escapeHtml;
 
 // 載入時若帶 #restore=<base64>（還原捷徑帶回）→ 二次確認顯示日期後覆蓋；失敗則清掉壞 hash 並提示。
 function handleRestoreHash() {
@@ -1840,13 +1839,13 @@ function handleRestoreHash() {
     btn.disabled = true;
     // 目標＝當前 child：reload 並去掉 hash（不留歷史，避免重觸發）；其他 child：留在原畫面報完成
     const r = await wiring.commitImport(child, res.obj, { reloadTo: cleanUrl });
-    if (r === "write-failed") {
+    if (r.status === "write-failed") {
       btn.disabled = false;
       box.insertAdjacentHTML("beforeend", `<p class="backup-hint">還原失敗（無法寫入儲存空間），進度沒有變動。</p>`);
     } else if (r.status === "done") {
       history.replaceState(null, "", cleanUrl);
       // #40-B 行為變更：反映推雲結果（同匯入文字框）
-      box.innerHTML = `<p class="backup-hint">${wiring.importedFeedback(child, r.pushed)}。</p>`;
+      box.innerHTML = `<p class="backup-hint">${wiring.importedFeedback(child, r)}。</p>`;
     }
   };
   document.getElementById("restore-cancel").onclick = () => {
