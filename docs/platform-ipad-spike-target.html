@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="平台 Spike">
+<meta name="robots" content="noindex">
+<title>iPad 平台 Spike 目標頁</title>
+<!-- issue #35：本頁同樣刻意不掛 manifest。 -->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; padding: max(28px, env(safe-area-inset-top)) 16px
+         max(40px, env(safe-area-inset-bottom)); background: #eef7f2; color: #172033;
+         font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif; }
+  main { width: min(620px, 100%); margin: 0 auto; }
+  h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 5vw, 2rem); }
+  p { line-height: 1.55; }
+  .card { margin: 18px 0; padding: 18px; border: 1px solid #cce0d4; border-radius: 16px; background: #fff; }
+  .grid { display: grid; grid-template-columns: minmax(9rem, 1fr) minmax(0, 1.4fr); gap: 9px 14px; }
+  .label { color: #647266; }
+  .value { overflow-wrap: anywhere; font-weight: 600; }
+  .ok { color: #177245; }
+  .warn { color: #8b5200; }
+  .button { display: block; min-height: 50px; padding: 14px; border-radius: 11px; background: #2767d8;
+            color: #fff; font-weight: 600; text-align: center; text-decoration: none; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+  .small { color: #647266; font-size: .88rem; }
+  @media (max-width: 430px) { .grid { grid-template-columns: 1fr; gap: 2px; }
+                              .value { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>同源目標頁</h1>
+  <p>如果這一頁仍在主畫面 Web Clip 內，且能看到上一頁建立的標記，前提 1 與前提 3 的前半段成立。</p>
+  <section class="card">
+    <div class="grid">
+      <div class="label">Standalone</div><div class="value" id="standalone-value">讀取中</div>
+      <div class="label"><code>child</code></div><div class="value" id="child-value">讀取中</div>
+      <div class="label"><code>k</code> token</div><div class="value" id="token-value">讀取中</div>
+      <div class="label">LocalStorage</div><div class="value" id="storage-value">讀取中</div>
+      <div class="label">讀到的標記</div><div class="value" id="marker-value">讀取中</div>
+      <div class="label">回寫時間</div><div class="value" id="visited-value">讀取中</div>
+    </div>
+    <p class="small">token 原文不會顯示或保存。Safari 隔離仍須另開 Safari 比對，不能只看本頁判定。</p>
+  </section>
+  <a id="return-link" class="button" href="platform-ipad-spike.html">回主測試頁</a>
+</main>
+<script>
+const SPIKE_STORAGE_KEY = "kids:platform-spike:v1";
+const params = new URLSearchParams(location.search);
+const token = params.get("k");
+const mediaStandalone = window.matchMedia("(display-mode: standalone)").matches;
+const standalone = navigator.standalone === true || mediaStandalone;
+const byId = (id) => document.getElementById(id);
+let storage = null;
+let storageError = null;
+let record = null;
+
+function parseRecord(raw) {
+  if (typeof raw !== "string") return null;
+  try {
+    const value = JSON.parse(raw);
+    if (!value || typeof value.markerId !== "string" || !value.markerId.trim() || value.markerId.length > 80) return null;
+    if (typeof value.createdAt !== "string" || !value.createdAt) return null;
+    if (value.targetVisitedAt !== null && typeof value.targetVisitedAt !== "string") return null;
+    return { markerId: value.markerId, createdAt: value.createdAt, targetVisitedAt: value.targetVisitedAt };
+  } catch (error) { return null; }
+}
+
+try {
+  storage = window.localStorage;
+  record = parseRecord(storage.getItem(SPIKE_STORAGE_KEY));
+  if (record) {
+    record.targetVisitedAt = new Date().toISOString();
+    storage.setItem(SPIKE_STORAGE_KEY, JSON.stringify(record));
+  }
+} catch (error) {
+  storage = null;
+  storageError = error;
+}
+
+byId("standalone-value").textContent = standalone ? "是（仍在 Web Clip）" : "否（瀏覽器分頁）";
+byId("standalone-value").className = `value ${standalone ? "ok" : "warn"}`;
+byId("child-value").textContent = params.get("child") || "未提供";
+byId("token-value").textContent = token === null ? "未提供" : `參數存在（${token.length} 字元，原文已隱藏）`;
+byId("storage-value").textContent = storage ? "可讀寫" : `不可用${storageError ? `（${storageError.name}）` : ""}`;
+byId("storage-value").className = `value ${storage ? "ok" : "warn"}`;
+byId("marker-value").textContent = record ? record.markerId : "沒有讀到標記";
+byId("marker-value").className = `value ${record ? "ok" : "warn"}`;
+byId("visited-value").textContent = record ? record.targetVisitedAt : "未回寫";
+byId("return-link").href = `platform-ipad-spike.html${location.search}`;
+</script>
+</body>
+</html>
