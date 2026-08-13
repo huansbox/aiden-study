@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>新竹動物園小小探險｜A4 二分標籤</title>
+  <style>
+    @page { size: A4 landscape; margin: 0; }
+
+    :root {
+      --ink: #171717;
+      --mid: #686868;
+      --pale: #efefec;
+      --paper: #fff;
+      --font: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #cfcfcf;
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .screen-note {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 10px 18px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--paper);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .page {
+      width: 297mm;
+      height: 210mm;
+      display: grid;
+      grid-template-columns: repeat(2, 148.5mm);
+      margin: 10mm auto;
+      overflow: hidden;
+      background: var(--paper);
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .label-cell {
+      width: 148.5mm;
+      height: 210mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .label-cell:first-child { border-right: 0.25mm dashed #aaa; }
+
+    .card {
+      position: relative;
+      width: 117mm;
+      height: 170mm;
+      display: grid;
+      grid-template-rows: 12mm 19mm 82mm 27mm 16.5mm;
+      gap: 1.5mm;
+      padding: 3mm;
+      overflow: hidden;
+      border: 0.7mm solid var(--ink);
+      border-radius: 4mm;
+      background: var(--paper);
+    }
+
+    .card::after {
+      content: "2026-8-14";
+      position: absolute;
+      right: 4.5mm;
+      bottom: 1.1mm;
+      padding-left: 1.2mm;
+      background: var(--paper);
+      color: #666;
+      font-size: 8pt;
+      font-weight: 800;
+      letter-spacing: 0.035em;
+    }
+
+    .card.map-card { grid-template-rows: 13mm 108mm 25mm 12mm; }
+
+    .card.train-map-card { grid-template-rows: 13mm 108mm 25mm 12mm; }
+
+    .card.reflection-card {
+      grid-template-rows: 9mm 12mm 32mm 105mm;
+      gap: 1.2mm;
+    }
+
+    .reflection-card .station {
+      padding-bottom: 0.8mm;
+      font-size: 8.5pt;
+    }
+
+    .reflection-card .station .badge {
+      padding: 0.55mm 1.8mm;
+      font-size: 6.8pt;
+    }
+
+    .reflection-card .question {
+      font-size: 13pt;
+      line-height: 1.15;
+    }
+
+    .card.meerkat-card {
+      grid-template-rows: 12mm 15mm 25mm 65mm 23mm 16.5mm;
+      gap: 1.2mm;
+    }
+
+    .station {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5mm 1.2mm;
+      border-bottom: 0.45mm solid var(--ink);
+      font-size: 10.5pt;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .station .badge {
+      padding: 0.8mm 2.3mm;
+      border: 0.45mm solid var(--ink);
+      border-radius: 99mm;
+      font-size: 8pt;
+      letter-spacing: 0.03em;
+    }
+
+    .question {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2mm;
+      text-align: center;
+      font-size: 17.5pt;
+      font-weight: 950;
+      line-height: 1.2;
+    }
+
+    .meerkat-card .question { font-size: 15pt; }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2mm;
+    }
+
+    .choice {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 9.5mm 1fr;
+      overflow: hidden;
+      border: 0.55mm solid var(--ink);
+      border-radius: 3mm;
+      background: var(--paper);
+    }
+
+    .choice-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 0.4mm solid var(--ink);
+      background: var(--pale);
+      font-size: 16pt;
+      font-weight: 950;
+    }
+
+    .choice-art {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 0.6mm;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .choice-art img,
+    .reference-strip img,
+    .map-wrap svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .choice-art img,
+    .reference-strip img {
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .reference-strip {
+      display: grid;
+      grid-template-columns: 22mm 1fr;
+      align-items: center;
+      gap: 2mm;
+      padding: 1.2mm 3mm;
+      overflow: hidden;
+      border: 0.5mm solid var(--ink);
+      border-radius: 2.5mm;
+      background: #f7f7f3;
+    }
+
+    .reference-strip img {
+      min-width: 0;
+      object-fit: cover;
+      object-position: 58% 58%;
+    }
+
+    .reference-strip span {
+      font-size: 11.5pt;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .success {
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+      padding: 2.2mm 3mm;
+      border: 0.5mm solid var(--ink);
+      border-radius: 2.5mm;
+      background: var(--pale);
+      font-size: 10.8pt;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .success-mark {
+      flex: 0 0 8mm;
+      width: 8mm;
+      height: 8mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0.55mm solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+      font-size: 13pt;
+      font-weight: 950;
+    }
+
+    .parent-whisper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2mm 3mm;
+      transform: rotate(180deg);
+      border-top: 0.35mm dashed var(--mid);
+      color: #3d3d3d;
+      text-align: center;
+      font-size: 7.4pt;
+      font-weight: 700;
+      line-height: 1.23;
+    }
+
+    .map-wrap {
+      padding: 1mm;
+      overflow: hidden;
+      border: 0.55mm solid var(--ink);
+      border-radius: 3mm;
+      background: #f7f7f3;
+    }
+
+    .train-map-card .map-wrap {
+      padding: 0;
+      background: #e7e7e2;
+    }
+
+    .reflection-choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2mm;
+    }
+
+    .reflection-choice {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 6.5mm 1fr 7mm;
+      overflow: hidden;
+      border: 0.55mm solid var(--ink);
+      border-radius: 3mm;
+      background: var(--paper);
+    }
+
+    .reflection-choice .choice-number { font-size: 11pt; }
+
+    .reflection-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.3mm 3.6mm;
+      overflow: hidden;
+    }
+
+    .reflection-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .reflection-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 0.35mm solid #aaa;
+      background: #f7f7f3;
+      font-size: 6.8pt;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .memory-box {
+      position: relative;
+      overflow: hidden;
+      border: 0.55mm solid var(--ink);
+      border-radius: 3mm;
+      background: #fff;
+    }
+
+    .memory-box-label {
+      position: absolute;
+      top: 2.5mm;
+      left: 3mm;
+      color: var(--mid);
+      font-size: 8pt;
+      font-weight: 850;
+    }
+
+    .memory-box svg {
+      position: absolute;
+      right: 3mm;
+      bottom: 2mm;
+      width: 19mm;
+      height: 13mm;
+      opacity: 0.25;
+    }
+
+    .map-note {
+      display: flex;
+      align-items: center;
+      padding: 2.2mm 3mm;
+      border: 0.5mm solid var(--ink);
+      border-radius: 2.5mm;
+      background: var(--pale);
+      font-size: 10.5pt;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    svg .line {
+      fill: none;
+      stroke: var(--ink);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    svg .thin { stroke-width: 4; }
+    svg .thick { stroke-width: 12; }
+    svg .fill-dark { fill: var(--ink); }
+    svg .fill-white { fill: #fff; }
+    svg text { font-family: var(--font); fill: var(--ink); }
+    svg text.light-text { fill: #fff; }
+
+    @media print {
+      body { background: var(--paper); }
+      .screen-note { display: none; }
+      .page { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-note">A4 橫式二分標籤｜卡面 117 × 170 mm｜列印縮放 100%｜每頁 2 張</div>
+  <main id="pages"></main>
+
+  <template id="map-card">
+    <article class="card map-card">
+      <header class="station"><span>地圖小隊長</span><span class="badge">想停就停</span></header>
+      <div class="map-wrap">
+        <svg viewBox="0 0 390 405" role="img" aria-label="從一號入口到四個展示區與二號入口的簡化地圖">
+          <rect x="6" y="6" width="378" height="393" rx="25" class="fill-white line thin"/>
+          <path d="M295 374 C305 333 292 300 307 268 C322 235 333 212 327 178 C321 140 297 112 302 68" class="line thick" stroke="#deded8"/>
+          <path d="M295 374 C260 337 231 320 205 292 C180 265 174 229 164 196 C152 154 124 125 75 99" class="line thick" stroke="#deded8"/>
+          <path d="M164 196 C197 175 235 168 270 175 C295 180 313 174 327 160" class="line thick" stroke="#deded8"/>
+          <path d="M75 99 C126 62 191 52 244 59 C271 63 287 66 302 68" class="line thick" stroke="#deded8"/>
+
+          <g transform="translate(275 340)">
+            <rect width="85" height="42" rx="10" class="fill-dark"/>
+            <text x="42.5" y="18" text-anchor="middle" font-size="13" font-weight="900" class="light-text">一號入口</text>
+            <text x="42.5" y="33" text-anchor="middle" font-size="10" font-weight="700" class="light-text">從這裡開始</text>
+          </g>
+
+          <g transform="translate(263 252)">
+            <image x="9" y="3" width="66" height="66" href="images/v2-map-turtle-raccoon.webp"/>
+            <circle cx="42" cy="36" r="34" class="line thin"/>
+            <rect x="-3" y="70" width="90" height="18" rx="5" class="fill-white"/>
+            <text x="42" y="82" text-anchor="middle" font-size="12" font-weight="900">龜・浣熊</text>
+          </g>
+
+          <g transform="translate(126 204)">
+            <image x="9" y="3" width="66" height="66" href="images/v2-map-tiger-orangutan.webp"/>
+            <circle cx="42" cy="36" r="34" class="line thin"/>
+            <rect x="-16" y="70" width="116" height="18" rx="5" class="fill-white"/>
+            <text x="42" y="82" text-anchor="middle" font-size="12" font-weight="900">虎・紅毛猩猩</text>
+          </g>
+
+          <g transform="translate(36 74)">
+            <image x="9" y="3" width="66" height="66" href="images/v2-map-gibbon.webp"/>
+            <circle cx="42" cy="36" r="34" class="line thin"/>
+            <rect x="13" y="70" width="58" height="18" rx="5" class="fill-white"/>
+            <text x="42" y="82" text-anchor="middle" font-size="12" font-weight="900">猴島</text>
+          </g>
+
+          <g transform="translate(202 25)">
+            <image x="9" y="3" width="66" height="66" href="images/v2-map-hippo.webp"/>
+            <circle cx="42" cy="36" r="34" class="line thin"/>
+            <rect x="13" y="70" width="58" height="18" rx="5" class="fill-white"/>
+            <text x="42" y="82" text-anchor="middle" font-size="12" font-weight="900">河馬</text>
+          </g>
+
+          <g transform="translate(308 45)">
+            <rect width="68" height="40" rx="10" class="fill-dark"/>
+            <text x="34" y="17" text-anchor="middle" font-size="12" font-weight="900" class="light-text">二號入口</text>
+            <text x="34" y="31" text-anchor="middle" font-size="9" font-weight="700" class="light-text">可從這裡出去</text>
+          </g>
+
+          <g transform="translate(9 340)">
+            <rect width="121" height="41" rx="10" class="fill-white line thin"/>
+            <text x="60.5" y="17" text-anchor="middle" font-size="12" font-weight="900">昆蟲館支線</text>
+            <text x="60.5" y="32" text-anchor="middle" font-size="9.5" font-weight="750">回一號入口再決定</text>
+          </g>
+          <path d="M130 360 C184 360 225 361 275 361" class="line thin" stroke-dasharray="7 8"/>
+        </svg>
+      </div>
+      <div class="map-note">不用把每個圈走完。只要你自己選過一次方向，就是今天的地圖小隊長。</div>
+      <div class="parent-whisper">爸爸用法：只指出目前位置，不指定下一站；孩子選到哪裡就往哪裡，走不到也不用補。</div>
+    </article>
+  </template>
+
+  <template id="train-map-card">
+    <article class="card train-map-card">
+      <header class="station"><span>火車地圖小隊長</span><span class="badge">09:46 → 10:32</span></header>
+      <div class="map-wrap">
+        <svg viewBox="0 0 390 405" role="img" aria-label="鶯歌到新竹的臺灣西北部火車路線示意圖">
+          <rect width="390" height="405" fill="#f7f7f3"/>
+
+          <!-- 縣市外框由公開縣市界線資料簡化；保留實際相對輪廓與邊界。 -->
+          <path d="M296.3 174.3L291.0 185.8L278.0 189.1L265.8 202.0L237.8 211.4L239.3 231.4L205.1 249.2L188.7 220.0L196.3 212.0L192.5 203.4L182.8 193.0L163.3 192.9L169.7 189.7L168.7 183.0L158.8 174.2L164.4 164.8L157.4 161.5L162.0 159.1L159.7 150.1L182.8 141.4L182.1 124.1L148.1 102.2L180.7 91.1L179.4 85.4L185.6 85.4L183.4 80.2L195.8 59.5L213.6 44.8L239.5 44.5L258.1 72.2L269.7 69.1L264.8 77.9L271.7 82.9L247.8 94.7L257.0 110.7L281.7 123.7L291.1 117.9L283.6 104.7L296.6 103.8L299.1 96.1L305.9 96.0L304.5 100.9L334.2 98.0L331.0 111.8L336.6 130.3L357.9 136.2L346.6 146.9L311.8 154.2L313.7 165.9Z"
+                fill="#e3e3df" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M120.8 110.1L135.3 100.3L148.1 102.2L182.8 126.0L179.2 127.2L185.4 134.6L179.7 136.0L182.8 141.4L159.7 150.1L162.0 159.1L157.4 161.5L164.4 164.8L158.8 174.2L168.7 183.0L169.7 189.7L163.3 192.9L182.8 193.0L192.5 203.4L196.3 212.0L188.7 220.0L205.1 249.2L199.1 249.6L189.9 271.8L179.8 278.1L171.3 272.7L168.4 251.2L152.8 242.1L153.3 219.6L136.4 204.5L130.1 207.6L109.3 192.7L110.9 180.7L82.5 172.4L79.1 159.8L61.6 161.2L80.8 127.2Z"
+                fill="#d0d0ca" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M50.9 180.3L60.3 161.1L76.8 158.9L82.6 162.1L82.5 172.4L110.9 180.7L109.3 192.7L130.1 207.6L136.4 204.5L153.3 219.7L152.8 242.1L168.4 251.2L171.3 272.7L185.5 282.5L180.4 288.3L182.3 297.3L156.5 327.6L141.1 330.3L142.0 321.7L128.5 301.7L86.6 307.4L89.1 293.3L82.1 287.2L89.8 277.0L87.5 269.8L55.4 246.0L58.1 236.6L46.9 236.4L49.5 225.9L61.6 215.0L75.4 219.4L68.1 202.0L46.4 189.9Z"
+                fill="#bababa" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M39.8 198.4L40.7 189.5L65.8 200.1L75.2 220.0L63.6 213.8L49.5 225.9L46.9 236.4L40.6 234.8L38.9 226.9L31.1 229.5Z"
+                fill="#a4a4a4" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+
+          <text x="268" y="81" text-anchor="middle" font-size="13" font-weight="900">新北市</text>
+          <text x="118" y="136" text-anchor="middle" font-size="13" font-weight="900">桃園市</text>
+          <text x="121" y="287" text-anchor="middle" font-size="13" font-weight="900">新竹縣</text>
+          <text x="42" y="251" text-anchor="middle" font-size="10.5" font-weight="900">新竹市</text>
+
+          <g transform="translate(35 45)">
+            <path d="M0 29 L0 0 M0 0 L-8 12 M0 0 L8 12" fill="none" stroke="#171717" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="0" y="45" text-anchor="middle" font-size="13" font-weight="900">北</text>
+          </g>
+
+          <!-- 雙軌與枕木：鶯歌→桃園→中壢→楊梅→湖口→新竹。 -->
+          <g fill="none" stroke="#171717" stroke-width="2.3" stroke-linecap="round">
+            <path d="M230 166 L238 159 M221 157 L229 150 M211 150 L218 141 M190 140 L192 151 M177 143 L181 153 M164 151 L169 161 M149 159 L155 170 M136 173 L142 183 M122 183 L128 194 M106 190 L111 202 M91 198 L96 210 M78 207 L84 219 M67 221 L78 225 M60 235 L72 238 M56 251 L68 253"/>
+          </g>
+          <path d="M234 174 C225 158 214 149 201 144 C184 143 170 151 157 163 C145 177 132 187 116 194 C101 201 86 207 73 220 C65 232 60 247 56 270"
+                fill="none" stroke="#171717" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M234 174 C225 158 214 149 201 144 C184 143 170 151 157 163 C145 177 132 187 116 194 C101 201 86 207 73 220 C65 232 60 247 56 270"
+                fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <g transform="translate(234 174)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">1</text>
+            <text x="18" y="-12" font-size="16" font-weight="950">鶯歌</text>
+          </g>
+          <g transform="translate(201 144)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">2</text>
+            <text x="-3" y="-18" text-anchor="middle" font-size="16" font-weight="950">桃園</text>
+          </g>
+          <g transform="translate(157 163)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">3</text>
+            <text x="-2" y="-18" text-anchor="middle" font-size="16" font-weight="950">中壢</text>
+          </g>
+          <g transform="translate(116 194)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">4</text>
+            <text x="-17" y="-10" text-anchor="end" font-size="16" font-weight="950">楊梅</text>
+          </g>
+          <g transform="translate(73 220)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">5</text>
+            <text x="-17" y="-6" text-anchor="end" font-size="16" font-weight="950">湖口</text>
+          </g>
+          <g transform="translate(56 270)">
+            <circle r="12" fill="#171717" stroke="#fff" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="950" class="light-text">6</text>
+            <text x="18" y="6" font-size="16" font-weight="950">新竹</text>
+          </g>
+
+          <!-- 右下角獨立的灰階寫實普悠瑪與同透視鐵軌插圖：車頭朝左下。 -->
+          <g transform="translate(230 252)">
+            <image x="-2" y="-4" width="147" height="111" preserveAspectRatio="xMidYMid meet"
+                   href="images/v5-puyuma-with-track.webp"/>
+          </g>
+        </svg>
+      </div>
+      <div class="map-note">火車每到一站，就找下一個數字；從鶯歌到新竹，大方向是往西南走。</div>
+      <div class="parent-whisper">爸爸用法：這是相對位置示意，不考比例或背站名；孩子找到任何一站，就算建立了一小塊地理概念。</div>
+    </article>
+  </template>
+
+  <template id="tiger-card">
+    <article class="card">
+      <header class="station"><span>老虎花紋偵探</span><span class="badge">睏寶</span></header>
+      <div class="question">哪一塊身體花紋，和睏寶最像？</div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/tiger-1.webp" alt="彎曲、分岔且不規則的虎紋"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/tiger-2.webp" alt="規則、平行且不分岔的條紋"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/tiger-3.webp" alt="多段短而斷裂的條紋"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>沿著現場一條紋路比方向；說出「有沒有彎或分岔」就成功。</span></div>
+      <div class="parent-whisper">答案 1。需看清軀幹條紋；只有頭、沒有同視角照片或孩子想走，就直接收卡。</div>
+    </article>
+  </template>
+
+  <template id="hippo-card">
+    <article class="card meerkat-card">
+      <header class="station"><span>河馬腳趾密碼</span><span class="badge">樂樂</span></header>
+      <div class="question">先看上面的河馬腳，再找出放大的同一隻腳。</div>
+      <div class="reference-strip"><img src="images/v3-hippo-foot-reference.webp" alt="河馬腳參考圖"><span>先數有幾根腳趾，<br>再看前端形狀。</span></div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/hippo-foot-1.webp" alt="四趾、細長尖爪的腳"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/hippo-foot-2.webp" alt="四趾、寬鈍圓趾甲的河馬腳"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/hippo-foot-3.webp" alt="三趾、寬鈍圓趾甲的腳"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>趾數和前端形狀都要一樣。現場腳趾只算額外發現。</span></div>
+      <div class="parent-whisper">答案 2。參考圖已提供線索，不必等河馬露出腳，也不要先講「四趾、寬鈍趾甲」。</div>
+    </article>
+  </template>
+
+  <template id="arms-card">
+    <article class="card meerkat-card">
+      <header class="station"><span>長臂猿抓握手</span><span class="badge">猿類</span></header>
+      <div class="question">先看上面的長臂猿手，再找出放大的同一隻手。</div>
+      <div class="reference-strip"><img src="images/v3-gibbon-hand-reference.webp" alt="長臂猿手部參考圖"><span>先看手指形狀，<br>再找拇指從哪裡長出來。</span></div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/gibbon-hand-1.webp" alt="短直四指、低位拇指的手"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/gibbon-hand-2.webp" alt="長彎四指、高位拇指的手"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/gibbon-hand-3.webp" alt="長彎四指、低位拇指的長臂猿手"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>手指形狀和拇指起點都要一樣。現場抓握只算額外發現。</span></div>
+      <div class="parent-whisper">答案 3。參考圖已提供線索；不必等牠抓枝，也不要先講「長彎四指、低位拇指」。</div>
+    </article>
+  </template>
+
+  <template id="coati-card">
+    <article class="card">
+      <header class="station"><span>鼻子尾巴雙線索</span><span class="badge">看兩處</span></header>
+      <div class="question">哪一張同時放對了鼻子和尾巴？</div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/coati-1.webp" alt="短鼻子與環紋長尾"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/coati-2.webp" alt="長而微翹的鼻子與淡環紋長尾"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/coati-3.webp" alt="長鼻子與沒有環紋的短尾"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>看清鼻子或尾巴其中一處，就已經是發現；兩處都看到再選卡。</span></div>
+      <div class="parent-whisper">答案 2。30–90 秒內第二處看不到就不猜、不等待；帶著一個發現直接收卡。</div>
+    </article>
+  </template>
+
+  <template id="shell-card">
+    <article class="card">
+      <header class="station"><span>龜殼空拍員</span><span class="badge">沒有標準答案</span></header>
+      <div class="question">從正上方看，眼前的龜殼最像哪一張？</div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/turtle-1.webp" alt="寬橢圓、殼緣平順的象龜型背甲"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/turtle-2.webp" alt="較狹長、殼緣平順的水龜型背甲"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/turtle-3.webp" alt="後端較寬、後緣有淺鋸齒的擬鱷龜型背甲"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>安全看到接近正上方才選；只有側面，就指出一條殼線後收卡。</span></div>
+      <div class="parent-whisper">沒有固定答案。只比外形、盾片與殼緣；不要跨欄線、舉高孩子或比較背甲高度。</div>
+    </article>
+  </template>
+
+  <template id="meerkat-card">
+    <article class="card meerkat-card">
+      <header class="station"><span>狐獴挖土工具</span><span class="badge">先看線索</span></header>
+      <div class="question">先看上面的前腳，再找出放大的同一隻腳。</div>
+      <div class="reference-strip"><img src="images/v2-meerkat-reference.webp" alt="狐獴前腳參考圖"><span>先數有幾根腳趾，<br>再看爪有多長。</span></div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/v2-crops/meerkat-1.webp" alt="四趾長爪的前腳"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/v2-crops/meerkat-2.webp" alt="四趾短爪的前腳"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/v2-crops/meerkat-3.webp" alt="五趾長爪的前腳"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>趾數和爪長都要一樣。找到後，現場前腳只算額外發現。</span></div>
+      <div class="parent-whisper">答案 1。參考圖已提供線索，不必等狐獴露出腳，也不要先講「四趾長爪」。</div>
+    </article>
+  </template>
+
+  <template id="insect-card">
+    <article class="card">
+      <header class="station"><span>誰是昆蟲？</span><span class="badge">昆蟲館支線</span></header>
+      <div class="question">誰才是昆蟲？你是怎麼知道的？</div>
+      <div class="choices">
+        <div class="choice"><div class="choice-number">1</div><div class="choice-art"><img src="images/rhino-beetle-portrait.webp" alt="獨角仙"></div></div>
+        <div class="choice"><div class="choice-number">2</div><div class="choice-art"><img src="images/insect-trio.webp" alt="蜘蛛" style="object-fit:cover; object-position:50% center"></div></div>
+        <div class="choice"><div class="choice-number">3</div><div class="choice-art"><img src="images/insect-trio.webp" alt="蜈蚣" style="object-fit:cover; object-position:100% center"></div></div>
+      </div>
+      <div class="success"><span class="success-mark">✓</span><span>先選一隻，再說一個判斷線索就成功；不用把三隻全部解釋完。</span></div>
+      <div class="parent-whisper">答案 1。接受名稱、六隻腳、身體分段或排除法等理由；先讓孩子分類，不提示先數腳。</div>
+    </article>
+  </template>
+
+  <template id="reflection-card">
+    <article class="card reflection-card">
+      <header class="station"><span>今天的最佳發現</span><span class="badge">回程再玩</span></header>
+      <div class="question">今天你最想記住哪一個發現？</div>
+
+      <div class="reflection-choices">
+        <div class="reflection-choice">
+          <div class="choice-number">1</div>
+          <div class="reflection-icon">
+            <svg viewBox="0 0 100 78" role="img" aria-label="眼睛：看到一個特別的地方">
+              <path d="M8 39 Q26 13 50 13 Q74 13 92 39 Q74 65 50 65 Q26 65 8 39 Z" fill="#e4e4e0" stroke="#171717" stroke-width="4"/>
+              <circle cx="50" cy="39" r="18" fill="#858585" stroke="#171717" stroke-width="3.5"/>
+              <circle cx="50" cy="39" r="9" fill="#171717"/>
+              <circle cx="44" cy="33" r="4" fill="#fff"/>
+              <path d="M16 25 L8 19 M29 16 L25 7 M50 13 L50 3 M71 16 L75 7 M84 25 L92 19" fill="none" stroke="#686868" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="reflection-label">看到特別的地方</div>
+        </div>
+
+        <div class="reflection-choice">
+          <div class="choice-number">2</div>
+          <div class="reflection-icon">
+            <svg viewBox="0 0 100 78" role="img" aria-label="動作線：看到動物做一件事">
+              <path d="M18 52 C31 51 34 40 42 35 C49 30 57 30 64 34 C72 38 78 47 86 47" fill="none" stroke="#858585" stroke-width="11" stroke-linecap="round"/>
+              <circle cx="68" cy="30" r="11" fill="#a3a3a3" stroke="#171717" stroke-width="3"/>
+              <path d="M62 20 Q59 11 66 9 Q72 12 72 21 M45 38 L29 24 M52 43 L43 61 M75 42 L89 30" fill="none" stroke="#171717" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 20 L29 20 M5 33 L27 33 M9 46 L25 46" fill="none" stroke="#686868" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="reflection-label">看到一個動作</div>
+        </div>
+
+        <div class="reflection-choice">
+          <div class="choice-number">3</div>
+          <div class="reflection-icon">
+            <svg viewBox="0 0 100 78" role="img" aria-label="愛心：就是很喜歡">
+              <path d="M50 68 C42 58 13 42 13 24 C13 8 34 4 50 22 C66 4 87 8 87 24 C87 42 58 58 50 68 Z" fill="#8f8f8f" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+              <path d="M27 19 Q35 12 43 20" fill="none" stroke="#dcdcdc" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="reflection-label">就是很喜歡</div>
+        </div>
+      </div>
+
+      <div class="memory-box">
+        <div class="memory-box-label">可以畫一筆、貼一張，或請爸爸寫一句話</div>
+        <svg viewBox="0 0 100 68" aria-hidden="true">
+          <path d="M15 55 L25 30 L66 8 L83 25 L42 47 Z" fill="none" stroke="#171717" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M25 30 L42 47 M66 8 L83 25 M15 55 L36 50" fill="none" stroke="#171717" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+    </article>
+  </template>
+
+  <script>
+    const cardIds = [
+      "map-card",
+      "tiger-card",
+      "hippo-card",
+      "arms-card",
+      "coati-card",
+      "shell-card",
+      "meerkat-card",
+      "insect-card",
+      "train-map-card",
+      "reflection-card",
+    ];
+
+    const pages = document.querySelector("#pages");
+    for (let index = 0; index < cardIds.length; index += 2) {
+      const page = document.createElement("section");
+      page.className = "page";
+      for (const cardId of cardIds.slice(index, index + 2)) {
+        const cell = document.createElement("div");
+        cell.className = "label-cell";
+        cell.append(document.querySelector(`#${cardId}`).content.cloneNode(true));
+        page.append(cell);
+      }
+      pages.append(page);
+    }
+  </script>
+</body>
+</html>

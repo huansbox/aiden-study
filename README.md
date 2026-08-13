@@ -37,6 +37,11 @@ docs-dev/             ADR、設計稿與人工驗收文件
 wiki/                 GitHub Wiki 的版本控制真相源
 ```
 
+### 已完成的家庭學習素材
+
+- [`docs-dev/hsinchu-zoo-adventure/`](docs-dev/hsinchu-zoo-adventure/)：2026-08-14 新竹動物園／火車探險卡，可編輯來源、圖資、prompt 與列印 PDF。
+- [`docs-dev/child-observation-card-design-lessons.md`](docs-dev/child-observation-card-design-lessons.md)：從本次多輪設計提煉的幼兒現場觀察任務卡方法，供後續場館／旅行素材重用。
+
 ## 開發環境
 
 - Python 3.13，由 [uv](https://docs.astral.sh/uv/) 管理。
