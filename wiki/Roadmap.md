@@ -64,9 +64,7 @@ Aiden Study 已從單一三年級題庫，轉成家中兩個孩子共用的學�
 
 ### 家庭學習任務
 
-- 場館、旅行與節慶等一次性活動歸入 `learning-tasks/<task>/`，不為了保存素材而註冊成 app。
-- 新任務先查 `learning-tasks/README.md` 的相近案例；完成後回填索引，讓之後的 session 能發現。
-- 原則、模板或素材至少在兩個不同任務實際使用後，才提升到 `learning-tasks/shared/`；不先抽大型 framework。
+- 場館、旅行與節慶等一次性活動另有任務庫；分類、建立、索引與共用規則以 `learning-tasks/README.md` 為準。
 
 ## 非目標
 

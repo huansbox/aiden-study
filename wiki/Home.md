@@ -39,7 +39,7 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 - **Registry 驅動**：新增、退役、上下架或調整孩子首頁順序，都先改 `docs/registry.json`，並由 audit 測試檢查。
 - **進度跟 child 走**：study、zhuyin、math、spelling 的本機 key 都帶 child 維度，並同步到 Cloudflare KV；family token 只存裝置、Cloudflare secret 與 1Password，不進 Git。
 - **平台基建共用、app 邏輯獨立**：同步協定與 wiring layer 共用；各 app 的教學流程維持簡單、各自演進。
-- **任務先索引、重用後再共用**：一次性活動先歸入 `learning-tasks/<task>/`；相同方法或素材在第二個任務實際重用後，才提升到 `learning-tasks/shared/`。
+- **家庭學習任務有獨立入口**：一次性活動的分類、建立、索引與共用規則以 `learning-tasks/README.md` 為準。
 - **站內連結使用相對路徑**：目前 GitHub project site 與未來自訂網域的 base path 不同，絕對路徑會在搬遷時失效。
 - **iPad 儲存不能只信 localStorage**：Safari 與主畫面 App 是不同容器，且 iOS 可能清除長期未使用的資料；雲端同步是主要保護，文字匯出／匯入是逃生門。
 
