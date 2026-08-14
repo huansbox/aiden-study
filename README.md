@@ -34,8 +34,13 @@ scripts/              Python 題庫萃取、分類與建置 pipeline
 data/                 題庫中間資料與人工策展資料
 tests/                pytest 與 Node.js test runner 測試
 docs-dev/             ADR、設計稿與人工驗收文件
+learning-tasks/       一次性家庭學習任務、可重建成品與重用經驗
 wiki/                 GitHub Wiki 的版本控制真相源
 ```
+
+### 家庭學習任務與素材
+
+場館、旅行與其他一次性學習活動的索引、歸檔規則及共用素材入口見 [`learning-tasks/README.md`](learning-tasks/README.md)。目前收錄 2026-08-14 新竹動物園／火車探險卡及其幼兒觀察任務設計經驗。
 
 ## 開發環境
 
@@ -88,7 +93,9 @@ uv run python scripts/build_questions.py
 ## 維護入口
 
 - [`CLAUDE.md`](CLAUDE.md)：專案架構、技術決策與當前待辦的 AI 記憶快照。
+- [`AGENTS.md`](AGENTS.md)：Codex 的 repo 導覽與家庭學習任務路由規則。
 - [`CONTEXT.md`](CONTEXT.md)：平台詞彙與 registry 欄位語意。
+- [`learning-tasks/README.md`](learning-tasks/README.md)：家庭學習任務索引、分類邊界與歸檔規格。
 - [`docs-dev/adr/`](docs-dev/adr/)：架構決策紀錄。
 - [`wiki/Home.md`](wiki/Home.md)：給人的穩定維護說明。
 

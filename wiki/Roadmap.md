@@ -62,6 +62,10 @@ Aiden Study 已從單一三年級題庫，轉成家中兩個孩子共用的學�
 - 任一 child 的 active app 達 5 個以上時，再評估是否需要孩子自行排序；目前由家長改 registry 即可。
 - 99timestable、99-meteor 等舊項目等弟弟實際需要時再評估，不為「搬齊」而搬。
 
+### 家庭學習任務
+
+- 場館、旅行與節慶等一次性活動另有任務庫；分類、建立、索引與共用規則以 `learning-tasks/README.md` 為準。
+
 ## 非目標
 
 - 不做登入帳號、密碼系統或多租戶後端；維持 family token＋child 維度。
