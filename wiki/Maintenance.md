@@ -29,6 +29,7 @@ uv sync
 | `scripts/`、`data/` | 題庫萃取、分類、策展與建置 |
 | `tests/` | Python 與 Node.js 測試 |
 | `docs-dev/adr/` | 架構決策紀錄 |
+| `learning-tasks/` | 一次性家庭學習任務庫；`README.md` 是索引與歸檔規則 |
 | `wiki/` | GitHub Wiki 原始檔；不要直接改 Wiki 網頁 |
 
 ## 日常驗證

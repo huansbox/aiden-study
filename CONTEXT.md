@@ -16,6 +16,10 @@ _Avoid_: 目錄、清單、catalog
 平台下的一個學習單元（題庫、注音、長除法、spelling bee⋯），各自是 `docs/` 下的子資料夾、獨立頁面與獨立 localStorage key。
 _Avoid_: 子專案、模組
 
+**learning task（家庭學習任務）**：
+有特定活動、場地或日期的學習素材包，例如旅行觀察卡；歸檔於 `learning-tasks/<task>/`，不部署到 hub，也不在 app registry 登記。索引與分類規則見 `learning-tasks/README.md`。
+_Avoid_: app、開發文件
+
 **child**：
 進度歸屬的小孩身分，雲端進度 key 的第一維（`{child}:{app}`）。識別字串固定為：哥哥＝`aiden`、弟弟＝`bingpu`（取定不換，換＝進度搬家）。
 _Avoid_: 帳號、user、account

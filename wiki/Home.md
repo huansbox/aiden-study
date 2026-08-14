@@ -30,6 +30,7 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 | 共用資產 | `docs/shared/rewards.json`、`docs/shared/rewards/` | 題庫與注音共用的獎勵插畫 |
 | 同步服務 | `worker/` | Cloudflare Worker＋KV（key-value 雲端儲存）；以 family token 驗證，key 為 `{child}:{app}` |
 | 題庫 pipeline | `scripts/`、`data/` | PDF 萃取、AI 分類、人工策展、建置題庫與作答說明 |
+| 家庭學習任務庫 | `learning-tasks/` | 場館、旅行等一次性活動的可重建成品、索引與重用經驗 |
 | 驗證 | `tests/` | pytest、Node.js 純函式／契約／audit 測試 |
 
 ## 核心設計
@@ -38,6 +39,7 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 - **Registry 驅動**：新增、退役、上下架或調整孩子首頁順序，都先改 `docs/registry.json`，並由 audit 測試檢查。
 - **進度跟 child 走**：study、zhuyin、math、spelling 的本機 key 都帶 child 維度，並同步到 Cloudflare KV；family token 只存裝置、Cloudflare secret 與 1Password，不進 Git。
 - **平台基建共用、app 邏輯獨立**：同步協定與 wiring layer 共用；各 app 的教學流程維持簡單、各自演進。
+- **任務先索引、重用後再共用**：一次性活動先歸入 `learning-tasks/<task>/`；相同方法或素材在第二個任務實際重用後，才提升到 `learning-tasks/shared/`。
 - **站內連結使用相對路徑**：目前 GitHub project site 與未來自訂網域的 base path 不同，絕對路徑會在搬遷時失效。
 - **iPad 儲存不能只信 localStorage**：Safari 與主畫面 App 是不同容器，且 iOS 可能清除長期未使用的資料；雲端同步是主要保護，文字匯出／匯入是逃生門。
 

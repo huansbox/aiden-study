@@ -7,12 +7,13 @@
 
 ## 交付內容
 
-- `cards-half-label.html`：10 張大 Poker 探險卡的列印來源。
-- `images/`：最終 HTML 實際使用的高品質 WebP 圖資。
-- `image-prompts.md`：本次補圖使用的 imagegen prompt set。
-- `hsinchu-zoo-adventure-cards-half-label-a4.pdf`：可直接列印的 A4 橫式二分標籤 PDF。
-- `preview-page-5.png`：GitHub 快速預覽；完整成品以 PDF 為準。
-- `../child-observation-card-design-lessons.md`：從本次多輪討論與 review 提煉的跨任務設計經驗。
+- `source/cards-half-label.html`：10 張大 Poker 探險卡的可編輯列印來源。
+- `source/image-prompts.md`：本次補圖使用的 imagegen prompt set。
+- `source/question-design-v2.md`、`source/replacement-design-hippo-gibbon-v3.md`：通過 review 的題目設計與替換題規格。
+- `assets/images/`：最終 HTML 實際使用的高品質 WebP 圖資。
+- `output/hsinchu-zoo-adventure-cards-half-label-a4.pdf`：可直接列印的 A4 橫式二分標籤 PDF。
+- `output/preview-page-5.png`：GitHub 快速預覽；完整成品以 PDF 為準。
+- `design-lessons.md`：從本次多輪討論與 review 提煉、可供後續任務檢驗的設計經驗。
 - 卡面尺寸沿用 `animal-fight` 最新實作：`117 × 170 mm`。
 - 適用標示 `122 × 175 mm` 的大 Poker；名義上四邊各留 `2.5 mm` 貼合容錯。
 - 所有三選一題目都使用 `1／2／3`，不使用英文字母。
@@ -57,7 +58,7 @@
 ## 歸檔與再輸出
 
 - 本目錄只保留可重建最終 PDF 所需的來源、實際引用圖資、重要設計紀錄與代表性 preview；舊版 render、未採用圖與重複 master 不進 Git。
-- 重新輸出時，以 Chrome／Chromium headless 列印 `cards-half-label.html`，關閉頁首頁尾並保持 `100%`；再用 Poppler `pdftoppm` render 全頁做視覺檢查。
+- 重新輸出時，以 Chrome／Chromium headless 列印 `source/cards-half-label.html`，關閉頁首頁尾並保持 `100%`；再用 Poppler `pdftoppm` render 全頁做視覺檢查。
 - HTML 的圖資由原始 PNG 轉為 `q=100`、`alpha_q=100` 的 WebP；轉檔後已重新輸出與逐頁核對，列印版面與核可版一致。
 - 經驗與設計原則放在可搜尋的 Markdown；單次行程細節與成品留在本目錄，避免把 repo 專案狀態寫進通用知識筆記。
 
