@@ -2,7 +2,7 @@
 
 狀態：實作與自動驗證完成；2026-09-08 使用者核可 land 至 master，iPad 真機待試用。
 正式入口：https://huansbox.github.io/aiden-study/mind-map.html
-分支：`codex/reading-mind-map`
+交付分支：`master`；原工作分支 `codex/reading-mind-map`、`codex/mind-map-ipad-layout` 已合併。
 
 ## 目標與範圍
 
@@ -38,3 +38,9 @@
 - 加入獨立的 mind-map.webmanifest 與 Apple 主畫面 App 設定；入口仍是 mind-map.html，未加入離線功能。
 - 瀏覽器 1024×650 完成五步，全部下一步按鈕位於畫面內；完成版於 1024×650、1024×768、1180×720 圖與操作列可完整顯示，768×1024 無水平溢出。仍待 iPad 真機驗證加入主畫面與觸控。
 - Python 141、Node.js 236 項通過。
+
+## 收尾紀錄（2026-09-08）
+
+實作完成並發布於 5f2c3ed，GitHub test 與 Pages 均成功。[使用與再製入口](../learning-tasks/reading-mind-map/README.md) 已歸檔。尚待家長以 iPad 橫向 Safari／主畫面 App 確認尺寸與觸控，由本紀錄承接，不另開項目。
+
+Housekeeping：字型研究暫存 .scratch/font-source 不再需要，發布字型與暫存 Bold 的 SHA256 相同，正式資產與授權完整保留。刪除暫存遭自動核可審查以 blocked by policy 拒絕，故未刪除、未入版控；後續可由使用者手動清理此特定目錄。

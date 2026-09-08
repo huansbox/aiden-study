@@ -1,25 +1,25 @@
 # HANDOFF
 
 - Status: idle
-- Task/issue: GitHub #35（iPad 單容器 spike）；後續 #34（自訂網域搬遷）
+- Task/issue: issues/021-reading-mind-map.md（閱讀心智圖）
 - Branch: master
-- Updated: 2026-08-13
+- Updated: 2026-09-08
 
 ## Progress
 
-本 session 完成專案與遷移狀態回顧。平台 #27–#33 已完成，現況停在正式切換前的 #35 iPad stop-gate；#34 仍 blocked by #35。使用者決定「期中自然 unit 1/2 作答後說明」與「3 題隱藏數學題救回」均為 not planned，已更新 `CLAUDE.md` 與 `skipped_questions.md`，不再列入後續工作。
+本 session 完成閱讀心智圖、粗體注音、iPad 橫向版面與主畫面 App 設定，已發布 5f2c3ed。收尾補齊 learning-tasks/reading-mind-map/README.md 與任務索引，確認兩個工作分支均已合併。
 
 ## Next step
 
-取得 iPad 後，依 `docs-dev/platform-ipad-spike-checklist.md` 執行 #35 三項真機驗證。三項全 PASS 才關閉 #35 並開始 #34；任一 FAIL 則停止 #34，先用 `/grill-me` 重新對齊架構。若仍沒有 iPad，本 repo 目前沒有已選定的桌面工作要接續。
+家長於 iPad 橫向 Safari／主畫面 App 試用，結果回填 issues/021-reading-mind-map.md。暫存清理受限亦已記於該紀錄，可手動移除 .scratch/font-source。本工作樹無待續實作。原平台 GitHub #35 真機驗證及 #34 前置門檻仍依原 tracker 與 docs-dev/platform-ipad-spike-checklist.md 接續，本次未重驗或改動。
 
 ## Validation
 
-- `git fetch --prune`：`master` 與 `origin/master` 對齊，session 開始時 working tree 乾淨。
-- GitHub：#35、#34、#26、#20、#15 狀態與 parent/child 關係已查核；無 open PR；最新 `master` test 與 Pages workflow 成功。
-- Live HTTP：hub、platform iPad spike、zhuyin recorder 均回 200；同步 API 無 token 回 401，符合預期。
-- 本 session 只修改文件與 tracker，未執行 Python／Node.js test suites。
+- Python 141、Node.js 236 項通過；GitHub test 與 Pages deployment 成功。
+- 瀏覽器完成五步；1024×650 按鈕可見；1024×650、1024×768、1180×720 完成圖與操作列可完整顯示；768×1024 無水平溢出。
+- 正式頁面更新與 manifest HTTP 200 已確認；未做 iPad 真機、觸控或加入主畫面實測。
+- 收尾 fetch --prune、合併狀態及 diff 檢查；暫存與發布字型 SHA256 相同。純文件收尾不重跑已通過的程式測試。
 
 ## Blockers
 
-目前手邊沒有 iPad，無法執行 #35 真機驗證；桌面瀏覽器、模擬器與自動測試不可替代。#34 在 #35 通過前不得開始正式切換。
+暫存刪除遭自動核可審查拒絕（blocked by policy）；保留在本機，不影響發布與跨機交接。
