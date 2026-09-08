@@ -44,25 +44,55 @@ if (typeof document !== 'undefined') {
   function renderMap() {
     document.getElementById('map').innerHTML = `<svg class="map-lines" aria-hidden="true"></svg><div class="center-node">${state.picks[0][0] || '我的中心主題'}</div><div class="branches">${STEPS.slice(1).map((s,j) => {
       const i = j + 1, picks = state.picks[i];
-      return `<section class="branch ${picks.length ? '' : 'empty'}" style="--branch:${COLORS[j][0]};--tint:${COLORS[j][1]}"><h3>${s.label}</h3><ul>${picks.length ? picks.map(p=>`<li>${p}</li>`).join('') : '<li>還沒選</li>'}</ul>${picks.length ? `<button data-edit="${i}">改一改${s.label}</button>` : ''}</section>`;
+      return `<section class="branch quadrant-${j} ${picks.length ? '' : 'empty'}" style="--branch:${COLORS[j][0]};--tint:${COLORS[j][1]}"><h3 class="branch-label"><button data-edit="${i}" aria-label="修改${s.label}">${s.label}</button></h3><ul>${(picks.length ? picks : ['還沒選']).map((p,k)=>`<li class="map-leaf leaf-${k}">${p}</li>`).join('')}</ul></section>`;
     }).join('')}</div>`;
     document.getElementById('word-count').textContent = `抄寫 ${mapWordCount(state.picks)} 字`;
     document.getElementById('save-status').textContent = storageOK ? '選擇會自動記在這個瀏覽器。' : '目前無法儲存；離開前請先截圖留下你的圖。';
     document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>edit(Number(b.dataset.edit)));
+    annotateReading(document.getElementById('map'));
+    annotateReading(document.getElementById('save-status'));
     requestAnimationFrame(drawLines);
   }
   function drawLines() {
     const map=document.getElementById('map'), svg=map.querySelector('svg');
     if(!svg)return;
     const bounds=map.getBoundingClientRect(), center=map.querySelector('.center-node').getBoundingClientRect();
-    const x=center.left+center.width/2-bounds.left, y=center.bottom-bounds.top;
+    const x=center.left+center.width/2-bounds.left, y=center.top+center.height/2-bounds.top;
     svg.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
     svg.innerHTML=[...map.querySelectorAll('.branch')].map((node,i)=>{
-      const box=node.getBoundingClientRect(), endX=box.left+box.width/2-bounds.left, endY=box.top-bounds.top;
-      return `<path d="M ${x} ${y} V ${endY-12} H ${endX} V ${endY}" fill="none" stroke="${COLORS[i][0]}" stroke-width="2"/>`;
+      const left=i%2===0, top=i<2, label=node.querySelector('.branch-label').getBoundingClientRect();
+      const jointX=label.left+label.width/2-bounds.left;
+      // 文字與注音的完整盒子之外再留 12px；折線只在各自象限內延伸。
+      const jointY=top ? label.bottom-bounds.top+12 : label.top-bounds.top-12;
+      const startX=x+(left?-1:1)*center.width*.43;
+      const startY=y+(top?-1:1)*center.height*.28;
+      let d=`M ${startX} ${startY} L ${jointX} ${jointY}`;
+      const outerY=top ? label.top-bounds.top-12 : label.bottom-bounds.top+12;
+      const leafBoxes=[...node.querySelectorAll('.map-leaf')].map(leaf=>leaf.getBoundingClientRect());
+      const gutterX=left ? Math.max(...leafBoxes.map(b=>b.right))-bounds.left+12 : Math.min(...leafBoxes.map(b=>b.left))-bounds.left-12;
+      const useGutter=left ? jointX<gutterX : jointX>gutterX;
+      leafBoxes.forEach(box=>{
+        const endX=(left?box.right:box.left)-bounds.left+(left?12:-12);
+        const endY=box.top+box.height/2-bounds.top;
+        // 從主枝標籤的外側重新起筆，不讓向外的線穿過主枝文字。
+        d+=useGutter
+          ? ` M ${jointX} ${outerY} L ${gutterX} ${outerY} M ${gutterX} ${outerY} L ${gutterX} ${endY} M ${gutterX} ${endY} L ${endX} ${endY}`
+          : ` M ${jointX} ${outerY} L ${endX} ${endY}`;
+      });
+      return `<path d="${d}" fill="none" stroke="${COLORS[i][0]}" stroke-width="2.5" stroke-linecap="round"/>`;
     }).join('');
   }
   new ResizeObserver(drawLines).observe(document.getElementById('map'));
+  document.fonts.load('700 28px "ZihiReading"').then(fonts=>{
+    if(!fonts.length)throw new Error('Font unavailable');
+    document.getElementById('font-status').hidden=true;
+    drawLines();
+  }).catch(()=>{
+    document.getElementById('font-status').textContent='注音字型未能載入，目前先顯示中文字。連線後請重新整理。';
+    drawLines();
+  });
+  window.addEventListener('beforeprint',drawLines);
+  window.addEventListener('afterprint',drawLines);
   function edit(step) { state.step=step; state.finished=false; save(); render(); guide.scrollIntoView({block:'start'}); }
   function render() {
     document.body.classList.toggle('copy-mode',state.finished);
@@ -75,6 +105,7 @@ if (typeof document !== 'undefined') {
       finish.innerHTML='<h2>換你把圖畫到作業本上</h2><p>先寫中間的主題，再往外畫四條線。抄上短詞，就完成了！</p><p class="muted">也可以先用 iPad 截圖，把自己的圖留下來。</p><div class="actions"><button id="revise">回去改一改</button><button id="print">列印這張圖</button></div>';
       document.getElementById('revise').onclick=()=>edit(0);
       document.getElementById('print').onclick=()=>window.print();
+      annotateReading(document.querySelector('main'));
       return;
     }
     const s=STEPS[state.step], picks=state.picks[state.step];
@@ -84,7 +115,7 @@ if (typeof document !== 'undefined') {
       if(index>=0) picks.splice(index,1);
       else if(s.max===1) picks.splice(0,picks.length,option);
       else if(picks.length<s.max) picks.push(option);
-      else { document.getElementById('feedback').textContent='留下兩個就好。先點一下已選的字卡，就能換一個。';return; }
+      else { document.getElementById('feedback').textContent='留下兩個就好。先點一下已選的字卡，就能換一個。';annotateReading(guide);return; }
       save();renderMap();
       guide.querySelectorAll('[data-choice]').forEach(btn=>{
         const selected=picks.includes(s.options[Number(btn.dataset.choice)]);
@@ -92,6 +123,7 @@ if (typeof document !== 'undefined') {
       });
       document.getElementById('next').disabled=!picks.length;
       document.getElementById('feedback').textContent=`已選 ${picks.length} 個${picks.length?'，可以繼續，也可以換。':'，請選一個重點。'}`;
+      annotateReading(guide);
     });
     document.getElementById('back').onclick=()=>{state.step--;save();render();document.getElementById('question').focus();};
     document.getElementById('next').onclick=()=>{
@@ -101,6 +133,8 @@ if (typeof document !== 'undefined') {
       save();render();
       if(state.finished)window.scrollTo(0,0);else document.getElementById('question').focus();
     };
+    annotateReading(document.querySelector('main'));
   }
+  annotateReading(document.querySelector('header'));
   render();
 }
