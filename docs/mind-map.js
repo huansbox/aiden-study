@@ -46,7 +46,6 @@ if (typeof document !== 'undefined') {
       const i = j + 1, picks = state.picks[i];
       return `<section class="branch quadrant-${j} ${picks.length ? '' : 'empty'}" style="--branch:${COLORS[j][0]};--tint:${COLORS[j][1]}"><h3 class="branch-label"><button data-edit="${i}" aria-label="修改${s.label}">${s.label}</button></h3><ul>${(picks.length ? picks : ['還沒選']).map((p,k)=>`<li class="map-leaf leaf-${k}">${p}</li>`).join('')}</ul></section>`;
     }).join('')}</div>`;
-    document.getElementById('word-count').textContent = `抄寫 ${mapWordCount(state.picks)} 字`;
     document.getElementById('save-status').textContent = storageOK ? '選擇會自動記在這個瀏覽器。' : '目前無法儲存；離開前請先截圖留下你的圖。';
     document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>edit(Number(b.dataset.edit)));
     annotateReading(document.getElementById('map'));
