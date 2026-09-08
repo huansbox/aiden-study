@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5ee">
+<title>拼出我的閱讀心智圖</title>
+<link rel="stylesheet" href="mind-map.css">
+</head>
+<body>
+<header><a href="index.html">回練習首頁</a><span>閱讀小工坊</span></header>
+<main>
+  <section class="intro"><p class="eyebrow">讀一讀 · 選一選 · 畫下來</p><h1>拼出我的心智圖</h1><p>把文章變成幾個短短的重點。你來決定，圖上留下什麼。</p></section>
+  <div class="workspace">
+    <section id="guide" class="card" aria-label="選擇重點"></section>
+    <section class="card map-card" aria-label="我的心智圖">
+      <div class="map-heading"><h2 id="map-heading">我的圖，慢慢長大</h2><span id="word-count"></span></div>
+      <p id="map-help" class="muted">每選一張字卡，這裡就會多一個重點。</p>
+      <div id="map" class="mind-map"></div>
+      <p id="save-status" role="status" class="muted"></p>
+    </section>
+  </div>
+  <section id="finish" class="card" hidden></section>
+  <details class="parent-note"><summary>給陪讀的大人</summary><p>內容依提供的兩頁文章整理，照片未顯示文章標題；中心名稱是孩子選的摘要，不冒充原題。〈客中初夏〉是文中引用的詩名。每組選項都是有文章依據的重點，不計分；可先請孩子說說理由，再點選。圖中的「感受」指文章作者的感受。</p><p>先抄中心，再畫四條線，寫上分支和短詞即可。進度只保存在目前瀏覽器，不會同步到其他裝置。</p></details>
+</main>
+<script src="mind-map.js"></script>
+</body>
+</html>
