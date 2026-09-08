@@ -1,6 +1,7 @@
 # 021：閱讀心智圖選詞引導
 
-狀態：本機實作與驗證完成；尚未發布，iPad 真機待試用。
+狀態：實作與自動驗證完成；2026-09-08 使用者核可 land 至 master，iPad 真機待試用。
+正式入口：https://huansbox.github.io/aiden-study/mind-map.html
 分支：`codex/reading-mind-map`
 
 ## 目標與範圍
@@ -27,4 +28,6 @@
 
 ## 下一步
 
-家長與孩子於 iPad Safari 試用；若確認要發布，再合併／推送至 master 的 GitHub Pages。瀏覽器尺寸驗證不等同 iPad 真機觸控及列印驗證。
+家長與孩子於 iPad Safari 試用。瀏覽器尺寸驗證不等同 iPad 真機觸控及列印驗證。
+
+發布整合驗證：已整合 origin/master 的全家學習平台，保留 hub 與其他 app；Python 141 項、Node.js 236 項全數通過。此頁不帶平台同步，也不修改其他 app 的進度。
