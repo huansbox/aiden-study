@@ -20,7 +20,7 @@
 | Q6 | 每池張數 | `clamp(ceil(subtopic題數 / 20), 下限 3, 上限 8)`，總計約 **136 張**（非線性 1:5 的 370 張） | 獎勵次數由批數（≈題數/10）決定、非題數；R3＋真實單次練習只 3–6 批 → 池 4–6 張就幾乎不重播 |
 | Q7 | 錯題模式 | **也給獎勵**。錯題主題太雜 → 用**獨立「通用鼓勵池」5–10 張**洗牌輪播，不配 subtopic | 軟化「打掃任務」、強化成就感；共用 `renderSummary` 幾乎免費 |
 | Q7 | 通關抽哪池 | 全模式通關＝**整單元合併池**隨機抽；錯題清除＝**通用鼓勵池** | 通關是集大成，用整單元混抽最有感 |
-| Q8 | manifest | 新增 `docs/rewards.json`，**key＝subtopic 字串**，含保留 key `__generic__`；圖放 `docs/assets/rewards/` | key 對齊題庫 subtopic，零對照表；unit／科目層池由程式自動合併，設計圖片 session 不用管 roll-up |
+| Q8 | manifest | 新增 `docs/shared/rewards.json`，**key＝subtopic 字串**，含保留 key `__generic__`；圖放 `docs/shared/rewards/` | key 對齊題庫 subtopic，零對照表；unit／科目層池由程式自動合併，設計圖片 session 不用管 roll-up |
 | Q9a | 出現方式 | **淡入（fade + 輕微 scale，約 0.3s）** | 純 CSS 幾行、零依賴、多一點揭曉儀式感 |
 | Q9b | 防閃爍 | **預載**：批做完瞬間先 `new Image()` 載選中那張，載好再進畫面；失敗走 roll-up／不顯示 | 圖小本機快、等待幾乎無感，避免空白閃 |
 | Q9c | 互動 | **不可點、純展示** | 點圖放大／回看是乙的事，現在加會誘導碰持久化，違背「先上甲」 |
@@ -31,7 +31,7 @@
 ## 3. 觸發點與選圖演算法
 
 ### 觸發點（只在這兩個現有函式裡插入獎勵渲染）
-- `renderBatchBreak()`（`docs/index.html` 約 L1959）：全模式、本批做完、整單元未通關。
+- `renderBatchBreak()`（`docs/study/index.html` 約 L1959）：全模式、本批做完、整單元未通關。
 - `renderSummary()`（約 L1978）：全模式通關（`title="通關！"`）或錯題清除（`title="錯題清除！"`）。
 
 > 離開做題中途（`leaveQuiz`）不給獎勵。批末是「queue 清空」觸發 → 已隱含本批全部答對（答錯會重排到批尾）。
@@ -74,7 +74,7 @@ dominantSubtopic(answered):
 
 ## 4. manifest 契約（兩個 session 的唯一接縫）
 
-新增檔 `docs/rewards.json`；圖檔放 `docs/assets/rewards/`。
+新增檔 `docs/shared/rewards.json`；圖檔放 `docs/shared/rewards/`。
 
 ```json
 {
@@ -103,7 +103,7 @@ dominantSubtopic(answered):
 - **不可點**：純 `<img>`，無 click handler。
 - **音效**：沿用現有 `complete`（批末）／`victory`（通關）／`complete`（錯題清除），不新增。
 
-## 6. 實作 step-by-step（給實作 session 照著走；行號為 2026-06-15 `docs/index.html`）
+## 6. 實作 step-by-step（給實作 session 照著走；行號為 2026-06-15 `docs/study/index.html`）
 
 > 全程零依賴、純前端，不動 Python pipeline。風格 match 周邊 code（內嵌、繁中註解）。
 
@@ -211,7 +211,7 @@ ${reward ? `<img class="reward-img" src="${reward}" alt="" onerror="this.remove(
 
 **Step 12 — pytest**：不受影響（純前端、不動 pipeline）；確認既有測試仍綠。
 
-> **與生圖 session 的職責切割（共用目錄、不開 worktree）**：生圖 session 只新增 `docs/assets/rewards/*.webp` ＋ 寫 `docs/rewards.json`，**完全不執行 git**；本 session（主導）擁有 `index.html`／`tests/`／`docs-dev/` 與全部 git 操作。兩邊檔案路徑不重疊、唯一接縫＝`rewards.json`（只有生圖 session 寫、本 session 只在 runtime 讀），故無同檔衝突。本 session 的單元測試用 inline manifest（不需檔案）；live 驗證等生圖 session 落幾張真圖後再跑。
+> **與生圖 session 的職責切割（共用目錄、不開 worktree）**：生圖 session 只新增 `docs/shared/rewards/*.webp` ＋ 寫 `docs/shared/rewards.json`，**完全不執行 git**；本 session（主導）擁有 `index.html`／`tests/`／`docs-dev/` 與全部 git 操作。兩邊檔案路徑不重疊、唯一接縫＝`rewards.json`（只有生圖 session 寫、本 session 只在 runtime 讀），故無同檔衝突。本 session 的單元測試用 inline manifest（不需檔案）；live 驗證等生圖 session 落幾張真圖後再跑。
 
 ## 7. 待與「設計圖片 session」對齊清單（彙整）
 
@@ -265,7 +265,7 @@ ${reward ? `<img class="reward-img" src="${reward}" alt="" onerror="this.remove(
 | —  | —（通用） | `__generic__` | — | 8 |
 | | | **合計** | | **136（128＋8）** |
 
-> 注意：subtopic 字串須與 `docs/questions.json` 逐字一致（含全形）。實作前用 `questions.json` 重新點一次題數/字串，避免題庫更新後對不上。
+> 注意：subtopic 字串須與 `docs/study/questions.json` 逐字一致（含全形）。實作前用 `questions.json` 重新點一次題數/字串，避免題庫更新後對不上。
 
 ## 8. 乙（收集圖鑑 / collection）backlog
 

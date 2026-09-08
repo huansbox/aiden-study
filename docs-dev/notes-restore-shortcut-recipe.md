@@ -13,17 +13,20 @@
 網站「從備忘錄還原」鈕
   → shortcuts://run-shortcut?name=Aiden還原   （只喚起捷徑，不帶資料）
     → 捷徑：尋找備忘錄 → 從列表選擇 → 取內文 → base64 → 打開 URL
-      → https://huansbox.github.io/aiden-study/#restore=<base64>
-        → 網站讀 hash → 解碼＋驗證 → 二次確認（顯示日期）→ 覆蓋 localStorage → 重載
+      → https://huansbox.github.io/aiden-study/#restore=<base64>   ← 舊「根」網址，寫死在捷徑裡
+        → 根 index.html 跳轉頁 → study/#restore=<base64>（**hash 必須被帶過去**）
+          → 網站讀 hash → 解碼＋驗證 → 二次確認（顯示日期）→ 覆蓋 localStorage → 重載
 ```
 
-捷徑是**自給自足**的：它自己去翻備忘錄、自己讓家長挑，網站的深連結**不傳任何資料**進來（見 `docs/index.html` 的 `buildShortcutDeepLink`，只帶捷徑名稱）。
+⚠️ **這條捷徑存在家長的 iCloud、不在 git 裡，那個網址改不了。** #30 把題庫搬到 `/study/` 之後，還原鏈是靠根目錄跳轉頁把 `#restore=` 原樣帶過去才沒斷（`docs/index.html`：`location.replace("study/" + location.search + location.hash)`）。**動那張跳轉頁時，丟掉 hash＝備忘錄還原靜默失敗、而且不會有任何錯誤訊息。** #31 的 hub 取代跳轉頁時同樣要保留這個行為。
+
+捷徑是**自給自足**的：它自己去翻備忘錄、自己讓家長挑，網站的深連結**不傳任何資料**進來（見 `docs/study/index.html` 的 `buildShortcutDeepLink`，只帶捷徑名稱）。
 
 ## ⚠️ 耦合點：捷徑名稱必須一字不差 = `Aiden還原`
 
 網站深連結把捷徑名稱**寫死**在 code：
 
-- `docs/index.html` → `const SHORTCUT_NAME = "Aiden還原";`（約 line 1093）
+- `docs/study/index.html` → `const SHORTCUT_NAME = "Aiden還原";`（約 line 1093）
 - 喚起的 URL ＝ `shortcuts://run-shortcut?name=Aiden%E9%82%84%E5%8E%9F`
 
 捷徑名稱差一個字（含全形／半形、大小寫、空白），網站的「從備忘錄還原」鈕就喚不起它。改名要同步改 code 的 `SHORTCUT_NAME`。
@@ -39,7 +42,7 @@ AIDEN備份 2026-06-15 14:30
 
 - **第一行**＝記號 `AIDEN備份` ＋空格 ＋ 日期時間（`YYYY-MM-DD HH:MM`）。備忘錄以首行為標題，所以筆記標題就帶日期，家長掃一眼就知哪份最新。
 - **第二行起**＝原始 JSON（整份 localStorage 存檔）。
-- 格式契約寫在 `docs/index.html` 的 `<backup-pure>…</backup-pure>` 區塊；改那裡務必連 `tests/test_backup_pure.mjs` 一起跑。
+- 格式契約寫在 `docs/study/index.html` 的 `<backup-pure>…</backup-pure>` 區塊；改那裡務必連 `tests/test_backup_pure.mjs` 一起跑。
 
 捷徑要做的，就是把這整則筆記內文（**含**第一行記號）base64 編碼後接到 `#restore=` 後面。
 
@@ -199,5 +202,5 @@ shortcuts run Aiden還原
 ## 待 #11 真機校準
 
 - 用**最大**存檔在真機實測：`navigator.share` 文字大小、`#restore=` 網址長度上限。
-- 必要時調 `docs/index.html` 的 `BACKUP_SIZE_WARN`（目前 40000 字元，保守值）。
+- 必要時調 `docs/study/index.html` 的 `BACKUP_SIZE_WARN`（目前 40000 字元，保守值）。
 - 觀察 standalone（加到主畫面）模式 localStorage 是否真被 iOS 約 7 天清除（非阻擋觀察項）。

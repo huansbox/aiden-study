@@ -1,8 +1,8 @@
 """
-合併分類結果進 docs/questions.json（網站讀取的最終題庫）
+合併分類結果進 docs/study/questions.json（網站讀取的最終題庫）
 
 五來源結構：
-  - 期中（unit 1-2，自然）：保留既有 docs/questions.json 內容，不重建
+  - 期中（unit 1-2，自然）：保留既有 docs/study/questions.json 內容，不重建
   - 期末（unit 3-4，自然）：從 data/classified_questions_期末.json 重建
   - 數學（unit 5-9）：從 data/classified_questions_數學.json 重建（檔案不存在＝0 題，不報錯）
   - 社會（unit 10-12）：從 data/classified_questions_社會.json 重建（同上，內部 10/11/12＝課本第 4/5/6 單元）
@@ -35,7 +35,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "questions.json"))
+QUESTIONS_PATH = os.path.abspath(os.path.join(ROOT, "docs", "study", "questions.json"))
 FINAL_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_期末.json"))
 MATH_CLASSIFIED = os.path.abspath(os.path.join(ROOT, "data", "classified_questions_數學.json"))
 # 人工 curated 題（015 看表題：手動截圖＋手寫 blanks，已含 unit/subtopic，不過 classify）
@@ -204,7 +204,7 @@ def build_merged(existing: list, final_classified: list, math_classified: list,
             e = preserve_schema(q, "science")
             e["id"] = unique_id(e["id"], used_ids)
             midterm.append(e)
-    log.info(f"期中題目: {len(midterm)}（原 docs/questions.json {len(existing)} 題）")
+    log.info(f"期中題目: {len(midterm)}（原 docs/study/questions.json {len(existing)} 題）")
 
     final_q, skipped = convert_block(final_classified, used_ids, "science", FINAL_UNITS)
     log.info(f"期末題目: {len(final_q)}（排除 {dict(skipped)}）")

@@ -5,7 +5,7 @@
    uv run python scripts/crop_pdf.py <pdf> <page1based> [--nx 2] [--ny 1] [--dpi 300] [--outdir data/_imgs]
 
 2. bbox 模式（issues/015 看表題截圖）：讀座標清單 JSON，逐筆裁出指定命名 PNG。
-   uv run python scripts/crop_pdf.py --bboxfile data/table_crops_數學.json [--outdir docs/assets/math] [--dpi 200]
+   uv run python scripts/crop_pdf.py --bboxfile data/table_crops_數學.json [--outdir docs/study/assets/math] [--dpi 200]
    清單格式：[{"pdf": "pdfs_數學/xxx.pdf", "page": 2, "bbox": [x0, y0, x1, y1], "name": "tao112_trains"}]
    座標單位＝PDF point（左上原點，與 pdfplumber crop 相同）。
 """
@@ -66,7 +66,7 @@ def main():
     args = ap.parse_args()
 
     if args.bboxfile:
-        args.outdir = args.outdir or "docs/assets/math"
+        args.outdir = args.outdir or "docs/study/assets/math"
         if args.dpi == 300:
             args.dpi = 200   # 截圖預設 200dpi（控檔案大小）
         crop_bboxes(args)

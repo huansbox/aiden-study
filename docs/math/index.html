@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0b3b2e">
+  <link rel="manifest" href="manifest.json">
+  <title>長除法練習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260310c">
+  <style>
+    /* 平台接入（#33）：child 徽章＋家長區，配 app 深綠主題 */
+    .child-badge { color: #c8e6c9; font-size: 0.85rem; }
+    .parent-area {
+      max-width: 560px; margin: 12px auto 20px; padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.25); border-radius: 10px;
+      color: #c8e6c9; font-size: 0.85rem;
+    }
+    .parent-area summary { cursor: pointer; opacity: 0.75; }
+    .sync-status > div { margin: 6px 0; } /* wiring 健康燈（#40-B 統一 class） */
+    .sync-ok { color: #8ce8b0; }
+    .sync-bad { color: #ffab91; }
+    .sync-token-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .sync-token-row input {
+      flex: 1; min-width: 140px; padding: 6px 8px; border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.9); color: #333;
+    }
+    .parent-btn {
+      padding: 6px 10px; border: none; border-radius: 6px; cursor: pointer;
+      background: rgba(255, 255, 255, 0.85); color: #0b3b2e; font-weight: 700;
+    }
+    .blocked-msg { text-align: center; color: #e8f5e9; padding: 60px 20px; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="title-group">
+        <h1 class="title">長除法練習</h1>
+        <div id="boss-entry" class="boss-entry" hidden>
+          <button id="boss-btn" class="boss-btn">⚔️ 魔王挑戰</button>
+        </div>
+      </div>
+      <div class="stats">
+        <span id="child-badge" class="child-badge" hidden></span>
+        <span id="badge" class="badge" hidden></span>
+        <span id="total-stars" class="total-stars">⭐ 0</span>
+        <span id="progress" class="progress">第 0/5 題</span>
+        <span id="streak" class="streak" hidden>🔥 <span class="streak-count">0</span></span>
+        <span id="stars" class="stars" hidden></span>
+        <span id="boss-lives" class="boss-lives" hidden>❤️❤️❤️</span>
+      </div>
+    </header>
+
+    <main class="card">
+      <div id="division-grid" class="division-grid">
+        <!-- Grid cells rendered by JS -->
+      </div>
+
+      <p id="hint" class="hint">載入中⋯</p>
+    </main>
+
+    <div class="numpad">
+      <div class="numpad-grid">
+        <button class="num-btn" data-digit="1">1</button>
+        <button class="num-btn" data-digit="2">2</button>
+        <button class="num-btn" data-digit="3">3</button>
+        <button class="num-btn" data-digit="4">4</button>
+        <button class="num-btn" data-digit="5">5</button>
+        <button class="num-btn" data-digit="6">6</button>
+        <button class="num-btn" data-digit="7">7</button>
+        <button class="num-btn" data-digit="8">8</button>
+        <button class="num-btn" data-digit="9">9</button>
+        <button class="num-btn num-btn--zero" data-digit="0">0</button>
+      </div>
+    </div>
+    <details class="parent-area" id="parent-area">
+      <summary>家長區（雲端同步）</summary>
+      <div id="sync-block"></div>
+    </details>
+  </div>
+
+  <script src="../shared/sync-v1.js"></script>
+  <script src="../shared/wiring-v1.js?v=20260717b"></script>
+  <script>
+"use strict";
+// ════════════════════════════════════════════════════
+// Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:math）
+// 接線集中在共用 wiring-v1.js（#40-B）；app 本體（js/app.js）只經 window.MathPlatform 取用。
+// ════════════════════════════════════════════════════
+// wiring 沒載到 → 拒開站（ADR-0006：不再沉默降級）；
+// sync-v1.js 沒載到（wiring 有載到）的語意由 wiring 處理：指名 child 拒開站、legacy 網址可練不持久
+const KidsWiring = window.KidsWiringV1 || null;
+// <wiring-config>
+const WIRING_CONFIG = { appId: "math", schemaVersion: 1, legacyChild: "aiden", legacyKey: null };
+// </wiring-config>
+// legacyKey null＝無播種路徑（#33 拍板從零；舊 key "aiden-math-progress" runtime 不讀不寫，
+// key 空間不互撞由 tests/test_math_child_store.mjs 釘住）。math 也無匯入／重置通道。
+const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
+const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
+const storageKey = wiring ? wiring.store.progressKey(currentChild) : null;
+let sync = null;
+let adoptCb = null;
+
+function initSyncClient() {
+  sync = wiring.initSync({
+    onAdopt: (d) => { if (adoptCb) { try { adoptCb(d); } catch (e) {} } },
+  }); // onHealth 預設＝wiring 刷新健康燈（寫進 #sync-block）
+}
+
+document.getElementById("parent-area").addEventListener("toggle", (e) => {
+  if (e.target.open && wiring) wiring.refreshSyncStatus();
+});
+
+// ══════ 對 app 本體（js/app.js）的接口 ══════
+// 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
+const blocked = !wiring || wiring.identityUnresolvable();
+if (blocked) {
+  document.querySelector(".container").innerHTML =
+    `<p class="blocked-msg">😢 載入不完整，請重新整理頁面。</p>`;
+} else {
+  // 平台接線壞掉不得拖死 app 本體（sync-v1 沒載到也照常可練，僅無同步）
+  try { wiring.renderChildBadge(); initSyncClient(); } catch (e) { sync = null; }
+}
+// Storage facade：daily.js 以 storage 參數注入，facade 把任何 key 映射到當前 child 的
+// math:progress:<child>（daily.js 內部 KEY 常數因此免改）；寫入走 wiring.safeSet＝可練不持久。
+// 這是 app 寫進度的唯一通道：寫入即標 dirty（漏標＝寫入永不推雲、日後被他機 adopt 蓋掉）；
+// adopt 覆蓋本機走 sync client 的 saveData（另一條路），不會反過來標 dirty
+const store = {
+  getItem: () => (wiring ? wiring.safeGet(storageKey) : null),
+  setItem: (_k, v) => {
+    if (wiring) wiring.safeSet(storageKey, v);
+    if (sync) sync.markDirty();
+  },
+};
+window.MathPlatform = {
+  blocked,
+  store,
+  saveProgress: (p) => { store.setItem(null, JSON.stringify(p)); },
+  // 開啟時 pull（adopt 直寫本機存檔，app 等它完成才讀進度；離線／無 token 靜默走本機）
+  ready: (!blocked && sync) ? sync.boot().catch(() => {}) : Promise.resolve(),
+  onAdopt: (cb) => { adoptCb = cb; },
+};
+
+// bfcache 復原（點錯圖示／hub 切人殘留頁）的身分重驗在 wiring
+if (wiring) wiring.attachPageshowGuard();
+  </script>
+  <script type="module" src="js/app.js?v=20260715a"></script>
+</body>
+</html>

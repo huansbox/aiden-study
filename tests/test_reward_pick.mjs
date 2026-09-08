@@ -1,13 +1,13 @@
 // 獎勵插畫選圖純函式測試（見 docs-dev/reward-illustrations-design.md）。
 // 執行：node --test tests/test_reward_pick.mjs
-// 做法：從 docs/index.html 抽出 <reward-pick-pure> sentinel 區塊 eval（維持單一 index.html）。
+// 做法：從 docs/study/index.html 抽出 <reward-pick-pure> sentinel 區塊 eval（維持單一 index.html）。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
 const m = html.match(/\/\/ <reward-pick-pure>([\s\S]*?)\/\/ <\/reward-pick-pure>/);
-if (!m) throw new Error("docs/index.html 找不到 <reward-pick-pure> 區塊");
+if (!m) throw new Error("docs/study/index.html 找不到 <reward-pick-pure> 區塊");
 const { rwPoolFor, rwMergedPool, rwDominantKey, rwResolvePool, rwDrawFromBag } =
   new Function(m[1] + "\nreturn { rwPoolFor, rwMergedPool, rwDominantKey, rwResolvePool, rwDrawFromBag };")();
 

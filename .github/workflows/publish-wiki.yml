@@ -1,0 +1,23 @@
+name: publish-wiki
+
+on:
+  push:
+    branches: [master]   # 改為 repo 的 default branch（發佈目標判定拿到的 defaultBranchRef）
+    paths: ['wiki/**']   # 必留：只在 wiki 檔變動時觸發，避免高頻 push 空跑
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-wiki
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # pin SHA：此 action 持有 contents:write token，供應鏈防護用 SHA 固定（= v4.4.0）
+      - uses: Andrew-Chen-Wang/github-wiki-action@50650fccf3a10f741995523cf9708c53cec8912a
+        with:
+          path: wiki/

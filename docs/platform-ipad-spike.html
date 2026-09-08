@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="平台 Spike">
+<meta name="robots" content="noindex">
+<title>iPad 平台架構 Spike</title>
+<!-- issue #35：本頁刻意不掛 manifest，避免 start_url 改寫主畫面圖示原有的 query。 -->
+<style>
+  :root { color-scheme: light; --ink: #172033; --muted: #637083; --line: #dce3ec;
+          --card: #fff; --blue: #2767d8; --green: #177245; --amber: #9a5b00; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; padding: max(24px, env(safe-area-inset-top)) 16px
+         max(40px, env(safe-area-inset-bottom)); background: #f3f6fa;
+         color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif; }
+  main { width: min(680px, 100%); margin: 0 auto; }
+  h1 { margin: 0 0 8px; font-size: clamp(1.55rem, 5vw, 2rem); }
+  h2 { margin: 0 0 12px; font-size: 1.1rem; }
+  p { line-height: 1.55; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+  .notice { margin: 0 0 16px; padding: 12px 14px; border: 1px solid #efc779;
+            border-radius: 12px; background: #fff8e7; color: #704300; line-height: 1.5; }
+  .card { margin: 12px 0; padding: 18px; border: 1px solid var(--line); border-radius: 16px;
+          background: var(--card); box-shadow: 0 2px 8px rgba(23,32,51,.05); }
+  .grid { display: grid; grid-template-columns: minmax(9rem, 1fr) minmax(0, 1.4fr); gap: 9px 14px; }
+  .label { color: var(--muted); }
+  .value { overflow-wrap: anywhere; font-weight: 600; }
+  .ok { color: var(--green); }
+  .warn { color: var(--amber); }
+  label { display: block; margin-bottom: 7px; color: var(--muted); font-size: .92rem; }
+  input { width: 100%; min-height: 48px; border: 1px solid #b9c5d5; border-radius: 10px;
+          padding: 10px 12px; color: var(--ink); background: #fff; font: inherit; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  button, .button { min-height: 48px; border: 1px solid var(--blue); border-radius: 11px; padding: 11px 15px;
+                    background: var(--blue); color: #fff; font: 600 1rem/1.2 inherit;
+                    text-decoration: none; cursor: pointer; text-align: center; }
+  button.secondary, .button.secondary { background: #fff; color: var(--blue); }
+  button.danger { border-color: #a33b36; background: #fff; color: #a33b36; }
+  .button.block { display: block; width: 100%; padding: 15px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+  pre { max-height: 300px; overflow: auto; padding: 12px; border-radius: 10px; background: #101827;
+        color: #e8edf5; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .78rem; }
+  .small { color: var(--muted); font-size: .88rem; }
+  #copy-result { min-height: 1.4em; }
+  @media (max-width: 430px) { .grid { grid-template-columns: 1fr; gap: 2px; }
+                              .value { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>iPad 平台架構 Spike</h1>
+  <p class="lead">issue #35 的真機驗證工具。這不是正式 app，不會寫入學習進度。</p>
+  <p class="notice"><strong>判讀限制：</strong>桌面瀏覽器只能做預檢；三個前提仍要在 iPad 主畫面 Web Clip 與 Safari 各跑一次。</p>
+
+  <section class="card" aria-labelledby="runtime-title">
+    <h2 id="runtime-title">1. 執行環境與網址參數</h2>
+    <div class="grid">
+      <div class="label">Standalone</div><div class="value" id="standalone-value">讀取中</div>
+      <div class="label"><code>navigator.standalone</code></div><div class="value" id="navigator-value">讀取中</div>
+      <div class="label"><code>display-mode</code></div><div class="value" id="display-mode-value">讀取中</div>
+      <div class="label"><code>child</code></div><div class="value" id="child-value">讀取中</div>
+      <div class="label"><code>k</code> token</div><div class="value" id="token-value">讀取中</div>
+    </div>
+    <p class="small">安全規則：只顯示 token 是否存在與字元數，不顯示或保存原文。</p>
+  </section>
+
+  <section class="card" aria-labelledby="storage-title">
+    <h2 id="storage-title">2. LocalStorage 容器</h2>
+    <div class="grid">
+      <div class="label">LocalStorage</div><div class="value" id="storage-value">讀取中</div>
+      <div class="label">目前標記</div><div class="value" id="current-marker">尚未建立</div>
+      <div class="label">目標頁回寫</div><div class="value" id="target-visited">尚未回寫</div>
+    </div>
+    <p>
+      <label for="marker-id">本次測試標記</label>
+      <input id="marker-id" maxlength="80" autocomplete="off" spellcheck="false">
+    </p>
+    <div class="actions">
+      <button id="save-marker" type="button">建立／覆蓋標記</button>
+      <button id="refresh-state" class="secondary" type="button">重新讀取</button>
+      <button id="clear-marker" class="danger" type="button">清除標記</button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="navigation-title">
+    <h2 id="navigation-title">3. 同源跨頁導覽</h2>
+    <p>先建立標記，再點下方連結。目標頁會讀取同一把 LocalStorage key、回寫造訪時間，並保留目前 query。</p>
+    <a id="target-link" class="button block" href="platform-ipad-spike-target.html">前往同源目標頁</a>
+    <p class="small">在 iPad Web Clip 中，這一步不得跳出 Safari；目標頁也應看到相同標記。</p>
+  </section>
+
+  <section class="card" aria-labelledby="report-title">
+    <h2 id="report-title">安全測試報告</h2>
+    <pre id="report-output">建立中</pre>
+    <div class="actions"><button id="copy-report" class="secondary" type="button">複製報告</button></div>
+    <p id="copy-result" class="small" role="status"></p>
+  </section>
+</main>
+
+<script>
+// <platform-spike-pure>
+// ══════ issue #35 純函式（Node.js 測試由 sentinel 抽取，不得引用外層狀態）══════
+const SPIKE_STORAGE_KEY = "kids:platform-spike:v1";
+
+// k 是 secret：只回傳是否存在與長度，絕不回傳原文。
+function spikeParams(search) {
+  const params = new URLSearchParams(typeof search === "string" ? search : "");
+  const token = params.get("k");
+  return {
+    child: params.get("child") || "",
+    hasToken: token !== null,
+    tokenLength: token === null ? 0 : token.length,
+  };
+}
+
+function isStandalone(navigatorStandalone, mediaStandalone) {
+  return navigatorStandalone === true || mediaStandalone === true;
+}
+
+// 同目錄相對導覽，保留 query、清除 hash；回傳絕對 URL 方便靜態與 runtime 一起驗。
+function targetHref(baseHref, search) {
+  const target = new URL("platform-ipad-spike-target.html", baseHref);
+  target.search = typeof search === "string" ? search : "";
+  target.hash = "";
+  return target.href;
+}
+
+// LocalStorage 可能被手改：只接受報告會用到的安全欄位，其他欄位一律丟棄。
+function parseSpikeRecord(raw) {
+  if (typeof raw !== "string") return null;
+  try {
+    const value = JSON.parse(raw);
+    if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+    if (typeof value.markerId !== "string" || !value.markerId.trim() || value.markerId.length > 80) return null;
+    if (typeof value.createdAt !== "string" || !value.createdAt) return null;
+    if (value.targetVisitedAt !== null && typeof value.targetVisitedAt !== "string") return null;
+    return {
+      markerId: value.markerId,
+      createdAt: value.createdAt,
+      targetVisitedAt: value.targetVisitedAt,
+    };
+  } catch (error) {
+    return null;
+  }
+}
+// </platform-spike-pure>
+
+const byId = (id) => document.getElementById(id);
+const mediaStandalone = window.matchMedia("(display-mode: standalone)").matches;
+const runtimeStandalone = isStandalone(navigator.standalone, mediaStandalone);
+const queryState = spikeParams(location.search);
+let storage = null;
+let storageError = null;
+
+try {
+  storage = window.localStorage;
+  const probe = "kids:platform-spike:probe";
+  storage.setItem(probe, "1");
+  storage.removeItem(probe);
+} catch (error) {
+  storage = null;
+  storageError = error;
+}
+
+function makeMarkerId() {
+  const tail = Math.random().toString(36).slice(2, 7);
+  return `spike-${new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14)}-${tail}`;
+}
+
+function readRecord() {
+  if (!storage) return null;
+  try { return parseSpikeRecord(storage.getItem(SPIKE_STORAGE_KEY)); }
+  catch (error) { storageError = error; return null; }
+}
+
+function reportObject(record) {
+  return {
+    generatedAt: new Date().toISOString(),
+    page: "platform-ipad-spike",
+    standalone: runtimeStandalone,
+    navigatorStandalone: navigator.standalone === true,
+    displayModeStandalone: mediaStandalone,
+    query: {
+      child: queryState.child || null,
+      tokenPresent: queryState.hasToken,
+      tokenLength: queryState.tokenLength,
+    },
+    localStorage: {
+      available: storage !== null,
+      errorName: storageError ? storageError.name : null,
+      markerId: record ? record.markerId : null,
+      createdAt: record ? record.createdAt : null,
+      targetVisitedAt: record ? record.targetVisitedAt : null,
+    },
+    userAgent: navigator.userAgent,
+  };
+}
+
+function render() {
+  const record = readRecord();
+  byId("standalone-value").textContent = runtimeStandalone ? "是" : "否";
+  byId("standalone-value").className = `value ${runtimeStandalone ? "ok" : "warn"}`;
+  byId("navigator-value").textContent = navigator.standalone === true ? "true" : String(navigator.standalone ?? "未提供");
+  byId("display-mode-value").textContent = mediaStandalone ? "standalone" : "browser";
+  byId("child-value").textContent = queryState.child || "未提供";
+  byId("token-value").textContent = queryState.hasToken
+    ? `參數存在（${queryState.tokenLength} 字元，原文已隱藏）`
+    : "未提供";
+  byId("storage-value").textContent = storage ? "可讀寫" : `不可用${storageError ? `（${storageError.name}）` : ""}`;
+  byId("storage-value").className = `value ${storage ? "ok" : "warn"}`;
+  byId("current-marker").textContent = record ? record.markerId : "尚未建立";
+  byId("target-visited").textContent = record && record.targetVisitedAt ? record.targetVisitedAt : "尚未回寫";
+  byId("report-output").textContent = JSON.stringify(reportObject(record), null, 2);
+}
+
+byId("marker-id").value = (readRecord() || {}).markerId || makeMarkerId();
+byId("target-link").href = targetHref(location.href, location.search);
+
+byId("save-marker").addEventListener("click", () => {
+  if (!storage) { render(); return; }
+  const markerId = byId("marker-id").value.trim() || makeMarkerId();
+  byId("marker-id").value = markerId;
+  try {
+    storage.setItem(SPIKE_STORAGE_KEY, JSON.stringify({
+      markerId,
+      createdAt: new Date().toISOString(),
+      targetVisitedAt: null,
+    }));
+  } catch (error) { storageError = error; }
+  render();
+});
+
+byId("refresh-state").addEventListener("click", render);
+byId("clear-marker").addEventListener("click", () => {
+  if (storage) {
+    try { storage.removeItem(SPIKE_STORAGE_KEY); }
+    catch (error) { storageError = error; }
+  }
+  byId("marker-id").value = makeMarkerId();
+  render();
+});
+
+byId("copy-report").addEventListener("click", async () => {
+  const output = byId("report-output").textContent;
+  try {
+    await navigator.clipboard.writeText(output);
+    byId("copy-result").textContent = "已複製。報告不含 token 原文。";
+  } catch (error) {
+    byId("copy-result").textContent = "無法自動複製，請手動選取上方報告。";
+  }
+});
+
+window.addEventListener("pageshow", render);
+render();
+</script>
+</body>
+</html>

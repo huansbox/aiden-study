@@ -1,0 +1,11 @@
+{
+  "name": "數織解謎",
+  "short_name": "數織",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "landscape",
+  "lang": "zh-TW",
+  "background_color": "#1b2a4a",
+  "theme_color": "#1b2a4a"
+}

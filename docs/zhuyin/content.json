@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "audio": {
+    "dir": "assets/audio/",
+    "ext": ".m4a"
+  },
+  "symbols": [
+    {
+      "glyph": "ㄅ",
+      "kind": "onset",
+      "audio": "sym-b",
+      "recordHint": "唸本音：短促的 /b/（像「爸」只發最開頭那一下就停），不要唸呼讀音「ㄅㄛ」"
+    },
+    {
+      "glyph": "ㄇ",
+      "kind": "onset",
+      "audio": "sym-m",
+      "recordHint": "唸本音：短促的 /m/（雙唇閉住的鼻音哼一下），不要唸呼讀音「ㄇㄛ」"
+    },
+    {
+      "glyph": "ㄚ",
+      "kind": "rime",
+      "audio": "sym-a",
+      "recordHint": "唸「啊」（一聲），清楚、不拖長"
+    }
+  ],
+  "circles": [
+    {
+      "id": "mvp-1",
+      "name": "第一圈（MVP）",
+      "entryOrder": ["ㄅ", "ㄇ", "ㄚ"]
+    }
+  ],
+  "syllables": [
+    { "onset": "ㄅ", "rime": "ㄚ", "tone": 1, "audio": "syl-ba1" },
+    { "onset": "ㄅ", "rime": "ㄚ", "tone": 2, "audio": "syl-ba2" },
+    { "onset": "ㄅ", "rime": "ㄚ", "tone": 3, "audio": "syl-ba3" },
+    {
+      "onset": "ㄅ",
+      "rime": "ㄚ",
+      "tone": 4,
+      "audio": "syl-ba4",
+      "word": { "text": "爸爸", "emoji": "👨", "audio": "word-baba" }
+    },
+    {
+      "onset": "ㄇ",
+      "rime": "ㄚ",
+      "tone": 1,
+      "audio": "syl-ma1",
+      "word": { "text": "媽媽", "emoji": "👩", "audio": "word-mama" }
+    },
+    { "onset": "ㄇ", "rime": "ㄚ", "tone": 2, "audio": "syl-ma2" },
+    {
+      "onset": "ㄇ",
+      "rime": "ㄚ",
+      "tone": 3,
+      "audio": "syl-ma3",
+      "word": { "text": "馬", "emoji": "🐴", "audio": "word-ma" }
+    },
+    { "onset": "ㄇ", "rime": "ㄚ", "tone": 4, "audio": "syl-ma4" }
+  ]
+}

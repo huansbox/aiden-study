@@ -1,13 +1,13 @@
 // 題幹列舉條列換行純函式測試（待辦⑤，做法 B）。
 // 執行：node --test tests/test_breaks_pure.mjs
-// 做法：從 docs/index.html 抽出 <enum-break-pure> sentinel 區塊 eval（維持單一 index.html）。
+// 做法：從 docs/study/index.html 抽出 <enum-break-pure> sentinel 區塊 eval（維持單一 index.html）。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../docs/index.html", import.meta.url), "utf8");
+const html = readFileSync(new URL("../docs/study/index.html", import.meta.url), "utf8");
 const m = html.match(/\/\/ <enum-break-pure>([\s\S]*?)\/\/ <\/enum-break-pure>/);
-if (!m) throw new Error("docs/index.html 找不到 <enum-break-pure> 區塊");
+if (!m) throw new Error("docs/study/index.html 找不到 <enum-break-pure> 區塊");
 const { applyEnumBreaks } = new Function(m[1] + "\nreturn { applyEnumBreaks };")();
 
 // ── 真列舉：在標記前分行 ──

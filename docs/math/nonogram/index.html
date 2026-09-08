@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1b2a4a">
+  <link rel="manifest" href="manifest.json">
+  <title>數織解謎</title>
+  <!-- 先於 CSS 套用已存的主題/填色，避免清爽主題使用者載入時閃一下深色（FOUC）。
+       app.js 之後仍會以 applySettings 重新套用為權威值。 -->
+  <script>
+    try {
+      var s = JSON.parse(localStorage.getItem('nonogram:settings'));
+      if (s) {
+        if (s.theme === 'clean' || s.theme === 'playful') document.documentElement.dataset.theme = s.theme;
+        if (s.fillMode === 'mono' || s.fillMode === 'letter') document.documentElement.dataset.fill = s.fillMode;
+      }
+    } catch (e) { /* localStorage 不可用就用預設主題 */ }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260604f">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">數織解謎</h1>
+      <p class="subtitle">看提示塗格子，猜出隱藏的單字！</p>
+    </header>
+
+    <!-- 首頁：編號題庫（不顯示單字以免劇透） -->
+    <main id="home" class="card home" hidden>
+      <!-- 設定：齒輪鈕收合，點開才浮出設定面板（省主畫面空間）。 -->
+      <button id="settings-toggle" class="settings-toggle" aria-label="設定" aria-expanded="false" aria-controls="settings">⚙️</button>
+      <section id="settings" class="settings" aria-label="設定" hidden>
+        <div class="setting-row">
+          <span class="setting-label">主題</span>
+          <div class="seg" id="theme-seg" role="group" aria-label="主題">
+            <button class="seg-btn" data-theme="playful">童趣</button>
+            <button class="seg-btn" data-theme="clean">清爽</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">填色</span>
+          <div class="seg" id="fill-seg" role="group" aria-label="填色">
+            <button class="seg-btn" data-fill="mono">單色</button>
+            <button class="seg-btn" data-fill="letter">按字母變色</button>
+          </div>
+        </div>
+      </section>
+
+      <h2 class="home-title">選一題開始玩</h2>
+      <div id="library" class="library" aria-label="題庫"></div>
+
+      <!-- 自訂出題：暫時從首頁隱藏（程式碼與測試保留），待主畫面優化後由 app.js 的 SHOW_CUSTOM 開回。 -->
+      <section id="custom" class="custom" aria-label="自訂出題" hidden>
+        <h3 class="custom-title">自己出一題 ✏️</h3>
+        <p class="custom-sub">打一個英文單字或數字，馬上變成謎題！</p>
+        <div id="custom-display" class="custom-display" aria-live="polite"></div>
+        <div id="custom-keyboard" class="keyboard keyboard--custom"></div>
+        <p id="custom-hint" class="custom-hint" aria-live="polite"></p>
+        <button id="custom-start-btn" class="btn btn--primary" disabled>開始玩</button>
+      </section>
+    </main>
+
+    <!-- 遊戲畫面 -->
+    <main id="game" class="card" hidden>
+      <div class="game-top">
+        <button id="home-btn" class="btn btn--ghost">← 題庫</button>
+        <span id="puzzle-label" class="puzzle-label"></span>
+      </div>
+
+      <!-- 格盤：四宮格 = 角落 / 上方列提示 / 左側行提示 / 格盤本體 -->
+      <div id="board" class="board">
+        <div class="board-corner"></div>
+        <div id="col-clues" class="col-clues"></div>
+        <div id="row-clues" class="row-clues"></div>
+        <div id="grid" class="grid"></div>
+      </div>
+
+      <!-- 答案欄（點一下展開下方鍵盤抽屜）-->
+      <div id="answer" class="answer" role="button" tabindex="0"
+           aria-label="答案欄，點一下打字"></div>
+
+      <div id="actions" class="actions">
+        <button id="check-btn" class="btn btn--primary">檢查</button>
+        <button id="reveal-btn" class="btn btn--ghost">看答案</button>
+        <button id="replay-btn" class="btn btn--ghost" hidden>重玩</button>
+        <button id="next-btn" class="btn btn--accent" hidden>下一題 →</button>
+      </div>
+
+      <p id="hint" class="hint"></p>
+    </main>
+
+    <!-- 螢幕鍵盤抽屜（緊接遊戲卡片下方、in-flow；點答案欄展開、收起時收合）-->
+    <div id="kb-drawer" class="kb-drawer">
+      <div class="kb-drawer__bar">
+        <span class="kb-drawer__tip">用鍵盤打出你猜的單字</span>
+        <button id="kb-close" class="btn btn--ghost">收起</button>
+      </div>
+      <div class="keyboard" id="keyboard"></div>
+    </div>
+
+    <!-- 全部過關畫面 -->
+    <main id="allclear" class="card allclear" hidden>
+      <div class="allclear-emoji">🏆</div>
+      <h2 class="allclear-title">全部過關！</h2>
+      <p class="allclear-sub">你把所有題目都破完了，太厲害了！</p>
+      <button id="allclear-home-btn" class="btn btn--primary">回題庫看星星 ★</button>
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js?v=20260604f"></script>
+</body>
+</html>
