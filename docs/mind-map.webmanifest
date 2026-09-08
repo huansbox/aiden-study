@@ -1,0 +1,11 @@
+{
+  "id": "./mind-map.html",
+  "name": "拼出我的閱讀心智圖",
+  "short_name": "閱讀心智圖",
+  "lang": "zh-TW",
+  "start_url": "./mind-map.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5ee",
+  "theme_color": "#f7f5ee"
+}

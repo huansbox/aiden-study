@@ -6,4 +6,39 @@
 .copy-mode .intro,.copy-mode #guide,.copy-mode .parent-note,.copy-mode #map-help,.copy-mode #save-status{display:none}.copy-mode .workspace{display:block}.copy-mode .map-card{max-width:1020px;margin:auto}.copy-mode #finish{max-width:1020px;margin:28px auto}
 @media(max-width:700px){header,main{padding:16px}.card{padding:20px}.mind-map{font-size:22px;height:540px}.center-node{width:150px}.branch-label{font-size:22px}}
 @media(max-width:480px){:root{font-size:22px}h1{font-size:28px}h2{font-size:26px}.card{padding:14px}.mind-map{font-size:18px;height:530px}.center-node{font-size:20px;padding:12px 4px}.branch-label{font-size:20px}.quadrant-0 .branch-label,.quadrant-2 .branch-label{left:26%}.quadrant-1 .branch-label,.quadrant-3 .branch-label{left:74%}.choice{gap:8px;padding:12px}.choice[aria-pressed=true]{padding:11px}.choice .mark{font-size:16px}.actions{gap:10px}.actions button{font-size:20px}.hint summary{font-size:20px}}
+/* 橫向 iPad：依 Safari／主畫面 App 實際可用高度排版，不鎖定縮放。 */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-height:100dvh}
+header{padding-top:max(10px,env(safe-area-inset-top));padding-right:max(16px,env(safe-area-inset-right));padding-left:max(16px,env(safe-area-inset-left))}
+main{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+@media screen and (min-width:960px) and (orientation:landscape){
+  :root{font-size:24px;line-height:1.5}
+  header,main{max-width:1400px;width:100%;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  header{font-size:16px;padding-bottom:4px;line-height:1.4}
+  main{padding-top:4px}
+  .intro{margin:0 0 10px}.intro h1{font-size:26px;margin:0;line-height:1.4}.intro .eyebrow,.intro>p:not(.eyebrow){display:none}
+  .workspace{display:grid;grid-template-columns:minmax(0,44fr) minmax(0,56fr);gap:16px;align-items:start}
+  .card{padding:14px;border-radius:18px}#guide{max-width:none;margin:0}
+  h2{font-size:26px;line-height:1.45;margin:0 0 10px}p{margin:6px 0 10px}
+  .step{font-size:17px;line-height:1.4}progress{height:5px;margin:4px 0 6px}
+  #guide>p{font-size:22px;line-height:1.5}
+  .hint{padding:8px 10px}.hint summary{font-size:18px;min-height:32px;line-height:1.5}.hint blockquote{font-size:22px;line-height:1.7;margin:12px 0}
+  .choices{grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+  #guide:has(progress[value="1"]) .choices{grid-template-columns:1fr}
+  .choice{font-size:22px;min-height:52px;padding:8px;gap:4px;line-height:1.5}
+  .choice[aria-pressed=true]{padding:7px}.choice .mark{font-size:14px}
+  #guide:not(:has(progress[value="1"])) .choice{flex-direction:column;align-items:flex-start;gap:0}
+  #guide:not(:has(progress[value="1"])) .choice .mark{align-self:flex-end;line-height:1}
+  #guide #feedback{font-size:17px;min-height:26px;line-height:1.5;margin:8px 0}
+  .actions{gap:10px}.actions button{font-size:20px;min-height:48px;padding:8px 10px;line-height:1.5}
+  .map-heading h2{font-size:22px;margin:0 0 6px}.map-card .muted{font-size:16px;line-height:1.5;margin:4px 0}
+  .mind-map{height:clamp(370px,calc(100dvh - 205px),560px);font-size:22px}
+  .center-node{width:140px;padding:10px 8px;line-height:1.5}.branch-label{font-size:21px}.branch-label button{min-height:44px;padding:0 5px}
+  .parent-note{font-size:16px;margin:14px 0}.parent-note summary{min-height:32px}
+  .copy-mode .map-card{max-width:1100px;padding:14px 24px}.copy-mode .map-heading h2{font-size:24px}
+  .copy-mode .mind-map{height:clamp(370px,calc(100dvh - 210px),620px);font-size:26px}
+  .copy-mode .center-node{width:170px}.copy-mode .branch-label{font-size:24px}
+  .copy-mode #finish{max-width:1100px;margin:10px auto 0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .copy-mode #finish h2,.copy-mode #finish p{display:none}.copy-mode #finish .actions{width:100%}
+}
 @media print{header,.intro,#guide,#finish,.parent-note,#map-help,#save-status{display:none!important}.workspace{display:block}.card{border:0;padding:0}.map-card{width:100%;max-width:none!important}body{background:white}.mind-map{height:570px;break-inside:avoid}.branch-label button{border:0}main{padding:0}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
