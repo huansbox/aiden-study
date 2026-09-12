@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "task": "grade4-math-first-practice",
+  "unit": "U1 一億以內的數",
+  "created_at": "2026-09-12",
+  "selection_basis": "家長確認先製作 U1；來源題須已核為 M1a/M1b 且有可讀的學校官方答案。",
+  "estimated_minutes": {
+    "total": "15-20",
+    "segments": [
+      {"practice_ids": ["U1-P01", "U1-P02", "U1-P03", "U1-P04"], "minutes": "5-6", "focus": "讀寫、化聚與位值"},
+      {"practice_ids": ["U1-P05", "U1-P06", "U1-P07"], "minutes": "4-5", "focus": "大小比較與數列"},
+      {"practice_ids": ["U1-P08", "U1-P09", "U1-P10"], "minutes": "6-9", "focus": "大數加減與情境"}
+    ],
+    "note": "編排估計，尚未經孩子實測。"
+  },
+  "papers": {
+    "tyk111": {
+      "label": "桃子腳 111 學年度第 1 學期第 1 次定期評量",
+      "question_file": "tcool_20002593_q.pdf",
+      "answer_file": "tcool_20002593_a.pdf"
+    },
+    "tyk113": {
+      "label": "桃子腳 113 學年度第 1 學期第 1 次定期評量",
+      "question_file": "tcool_20000022_q.pdf",
+      "answer_file": "tcool_20000022_a.pdf"
+    },
+    "anh114": {
+      "label": "安和國小 114 學年度第一學期第一次定期考查",
+      "question_file": "tcool_20002844_q.pdf",
+      "answer_file": "tcool_20002844_a.pdf"
+    }
+  },
+  "items": [
+    {
+      "practice_id": "U1-P01",
+      "concept": "M1a 含零大數讀法",
+      "paper_id": "tyk111",
+      "question_page": 1,
+      "answer_page": 1,
+      "original_ids": ["tyk111-I-01"],
+      "dependency": null,
+      "retain_context": "完整題幹與四個讀法選項",
+      "adaptation": "移除原卷配分與考卷標頭，並將選擇題括號作答改成『請圈起來』；題幹核心敘述、數字與選項未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P02",
+      "concept": "M1a 大數寫法",
+      "paper_id": "tyk113",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["tyk113-II-11a"],
+      "dependency": null,
+      "retain_context": "完整國字數量與阿拉伯數字作答要求",
+      "adaptation": "由原四小題題組抽取可獨立作答的小題；保留國字數量與阿拉伯數字作答要求，將行內填空改為下方作答提示。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P03",
+      "concept": "M1a 化聚",
+      "paper_id": "tyk113",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["tyk113-II-11d"],
+      "dependency": null,
+      "retain_context": "所有位值數量與完整問句",
+      "adaptation": "由原四小題題組抽取可獨立作答的小題；保留原大題阿拉伯數字作答要求，將位值合成填空改成獨立問句；位值數量未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P04",
+      "concept": "M1a 位值變化",
+      "paper_id": "tyk111",
+      "question_page": 1,
+      "answer_page": 1,
+      "original_ids": ["tyk111-II-02"],
+      "dependency": null,
+      "retain_context": "原數、替換前後數字與增加量問句",
+      "adaptation": "移除原卷大題說明，將填空句改成獨立問句；原數與替換數字未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P05",
+      "concept": "M1b 大數比較",
+      "paper_id": "tyk111",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["tyk111-IV-01"],
+      "dependency": null,
+      "retain_context": "比較號兩側完整數量",
+      "adaptation": "補上原大題的『填入＞、＜或＝』指示；兩側數量未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P06",
+      "concept": "M1b 缺位數字比較",
+      "paper_id": "tyk113",
+      "question_page": 1,
+      "answer_page": 1,
+      "original_ids": ["tyk113-II-01"],
+      "dependency": null,
+      "retain_context": "不等式、方框位置與 0～9 候選範圍",
+      "adaptation": "補上要把所有可用數字寫出的提示；不等式與數字未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P07",
+      "concept": "M1a 數列與千位值",
+      "paper_id": "anh114",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["anh114-II-08"],
+      "dependency": null,
+      "retain_context": "完整四項等差數列與中間空格",
+      "adaptation": "移除原卷題號，補上『找出規律，填入空格』作答指示，並將窄填空改成固定長缺項線；數列未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P08",
+      "concept": "M1b 以萬表示的大數加法",
+      "paper_id": "tyk111",
+      "question_page": 1,
+      "answer_page": 1,
+      "original_ids": ["tyk111-III-03"],
+      "dependency": null,
+      "retain_context": "兩個完整加數與直式作答空間",
+      "adaptation": "保留原數字與加法；新增『寫直式』與下方作答提示以延續原大題要求，移除過窄的行內填空。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P09",
+      "concept": "M1b 一億以內大數減法",
+      "paper_id": "tyk113",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["tyk113-III-05"],
+      "dependency": null,
+      "retain_context": "完整被減數、減數與直式作答空間",
+      "adaptation": "保留原數字與減法；新增『寫直式』與下方作答提示以延續原大題要求，移除過窄的行內填空。",
+      "verification": "independently_recomputed_and_matches_official"
+    },
+    {
+      "practice_id": "U1-P10",
+      "concept": "M1b 以萬為單位的大數減法情境",
+      "paper_id": "anh114",
+      "question_page": 2,
+      "answer_page": 2,
+      "original_ids": ["anh114-II-16"],
+      "dependency": null,
+      "retain_context": "去年數量、相差數量、比較方向與今年問句",
+      "adaptation": "將原填空問句改成『多少萬顆』並補上列式作答指示與空間；比較情境、數字與所求未改。",
+      "verification": "independently_recomputed_and_matches_official"
+    }
+  ]
+}

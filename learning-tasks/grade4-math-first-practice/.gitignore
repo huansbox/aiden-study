@@ -1,0 +1,5 @@
+# 私用題文、原卷及其成品不得進入 public repo。
+/source/private/
+/output/pdf/
+/output/preview/
+/tmp/
