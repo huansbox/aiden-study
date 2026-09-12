@@ -6,13 +6,13 @@ import sys
 
 import pytest
 
+import build_private_study_pack as private_builder
 from build_private_study_pack import (
     EXPECTED,
     EXPECTED_IDS,
     MAX_BYTES,
     PackBuildError,
     build_pack,
-    build_to_path,
     ensure_safe_output_path,
     serialize_pack,
 )
@@ -153,7 +153,9 @@ def test_invalid_source_fails_without_changing_previous_output(tmp_path, mutate,
     paths = _paths(tmp_path, values)
 
     with pytest.raises(PackBuildError, match=message):
-        build_to_path(*paths, output)
+        private_builder._build_synthetic_to_path_for_test(
+            *paths, output, test_output_root=tmp_path
+        )
 
     assert output.read_bytes() == b"previous valid output"
 
@@ -169,7 +171,9 @@ def test_revision_bump_cannot_replace_same_id_with_different_semantics(tmp_path)
     values = _fixture()
     paths = _paths(tmp_path, values)
     output = tmp_path / "pack.json"
-    build_to_path(*paths, output)
+    private_builder._build_synthetic_to_path_for_test(
+        *paths, output, test_output_root=tmp_path
+    )
     previous = output.read_bytes()
     values[0]["revision"] = 2
     values[1]["revision"] = 2
@@ -177,7 +181,9 @@ def test_revision_bump_cannot_replace_same_id_with_different_semantics(tmp_path)
     values[0]["items"][0]["question"]["text"] = "Different synthetic question with the same ID?"
 
     with pytest.raises(PackBuildError, match="same ID has different"):
-        build_to_path(*_paths(tmp_path, values), output)
+        private_builder._build_synthetic_to_path_for_test(
+            *_paths(tmp_path, values), output, test_output_root=tmp_path
+        )
 
     assert output.read_bytes() == previous
 
@@ -200,7 +206,9 @@ def test_oversize_pack_fails_before_replacing_output(tmp_path):
     output.write_bytes(b"previous valid output")
 
     with pytest.raises(PackBuildError, match="limit"):
-        build_to_path(*paths, output)
+        private_builder._build_synthetic_to_path_for_test(
+            *paths, output, test_output_root=tmp_path
+        )
 
     assert output.read_bytes() == b"previous valid output"
 
@@ -208,6 +216,77 @@ def test_oversize_pack_fails_before_replacing_output(tmp_path):
 def test_output_inside_repo_must_be_private():
     with pytest.raises(PackBuildError, match="must stay under"):
         ensure_safe_output_path(Path(__file__).resolve().parents[1] / "docs" / "study" / "private-pack.json")
+
+
+def test_output_outside_repo_is_rejected_without_test_seam(tmp_path):
+    with pytest.raises(PackBuildError, match="private root"):
+        ensure_safe_output_path(tmp_path / "pack.json")
+
+
+def test_production_private_output_is_accepted_only_while_git_ignored():
+    private_output = private_builder.PRIVATE_DIR / "w3-policy-probe.json"
+
+    assert ensure_safe_output_path(private_output) == private_output.resolve()
+
+
+def test_explicit_synthetic_seam_can_write_under_its_test_root(tmp_path):
+    output = tmp_path / "synthetic" / "pack.json"
+
+    private_builder._build_synthetic_to_path_for_test(
+        *_paths(tmp_path / "inputs", _fixture()), output, test_output_root=tmp_path
+    )
+
+    assert output.exists()
+
+
+def test_synthetic_seam_cannot_write_outside_its_test_root(tmp_path):
+    test_root = tmp_path / "allowed"
+    with pytest.raises(PackBuildError, match="test root"):
+        private_builder._build_synthetic_to_path_for_test(
+            *_paths(test_root / "inputs", _fixture()),
+            tmp_path / "outside" / "pack.json",
+            test_output_root=test_root,
+        )
+
+
+def test_production_output_is_rejected_when_private_root_is_not_ignored(monkeypatch):
+    unignored_root = Path(__file__).resolve().parents[1] / "data" / "w3-unignored-probe"
+    monkeypatch.setattr(private_builder, "PRIVATE_DIR", unignored_root)
+
+    with pytest.raises(PackBuildError, match="not ignored"):
+        private_builder.ensure_safe_output_path(unignored_root / "pack.json")
+
+
+def test_cli_rejects_public_and_external_output_paths_without_writing(tmp_path):
+    paths = _paths(tmp_path / "inputs", _fixture())
+    root = Path(__file__).resolve().parents[1]
+    script = root / "scripts" / "build_private_study_pack.py"
+    targets = [
+        root / "docs" / "study" / "w3-policy-probe.json",
+        root.parents[1] / "w3-other-worktree" / "aiden-study" / "docs" / "study" / "w3-policy-probe.json",
+        root / "data" / "exp_results" / "w3-policy-probe.json",
+        tmp_path / "arbitrary-external" / "pack.json",
+    ]
+
+    for target in targets:
+        assert not target.exists()
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(script),
+                "--curated", str(paths[0]),
+                "--explanations", str(paths[1]),
+                "--metadata", str(paths[2]),
+                "--public-questions", str(paths[3]),
+                "--output", str(target),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode != 0
+        assert "production output must stay under the private root" in result.stderr
+        assert not target.exists()
 
 
 def test_cli_bad_json_returns_nonzero_and_preserves_output(tmp_path):

@@ -14,6 +14,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import tempfile
 from typing import Any
 
@@ -245,15 +246,31 @@ def _is_relative_to(path: Path, parent: Path) -> bool:
         return False
 
 
-def ensure_safe_output_path(output_path: Path) -> Path:
+def ensure_safe_output_path(output_path: Path, *, test_output_root: Path | None = None) -> Path:
     resolved = output_path.resolve()
-    if _is_relative_to(resolved, ROOT) and not _is_relative_to(resolved, PRIVATE_DIR.resolve()):
-        raise PackBuildError("output inside this repo must stay under data/private/study/g4-s1-math-u1")
+    if test_output_root is not None and _is_relative_to(resolved, test_output_root.resolve()):
+        return resolved
+    if not _is_relative_to(resolved, PRIVATE_DIR.resolve()):
+        raise PackBuildError("production output must stay under the private root data/private/study/g4-s1-math-u1")
+    try:
+        relative = resolved.relative_to(ROOT).as_posix()
+        ignored = subprocess.run(
+            ["git", "check-ignore", "--quiet", "--no-index", "--", relative],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+        )
+    except (OSError, ValueError) as exc:
+        raise PackBuildError("cannot verify that the production output is ignored") from exc
+    if ignored.returncode != 0:
+        raise PackBuildError("production private root is not ignored; refusing to generate the pack")
     return resolved
 
 
-def write_pack_atomic(output_path: Path, payload: bytes) -> None:
-    output = ensure_safe_output_path(output_path)
+def write_pack_atomic(
+    output_path: Path, payload: bytes, *, test_output_root: Path | None = None
+) -> None:
+    output = ensure_safe_output_path(output_path, test_output_root=test_output_root)
     output.parent.mkdir(parents=True, exist_ok=True)
     temp_name: str | None = None
     try:
@@ -299,9 +316,14 @@ def _normalized_revision_content(pack: dict[str, Any]) -> tuple[Any, ...]:
     )
 
 
-def ensure_compatible_with_existing(output_path: Path, pack: dict[str, Any]) -> None:
+def ensure_compatible_with_existing(
+    output_path: Path,
+    pack: dict[str, Any],
+    *,
+    test_output_root: Path | None = None,
+) -> None:
     """Mirror W1's conservative same-ID and revision replacement rules."""
-    output = ensure_safe_output_path(output_path)
+    output = ensure_safe_output_path(output_path, test_output_root=test_output_root)
     if not output.exists():
         return
     previous = _read_json(output)
@@ -337,6 +359,23 @@ def ensure_compatible_with_existing(output_path: Path, pack: dict[str, Any]) -> 
         raise PackBuildError("content changes require a higher revision")
 
 
+def _build_to_path(
+    curated_path: Path,
+    explanations_path: Path,
+    metadata_path: Path,
+    public_questions_path: Path,
+    output_path: Path,
+    *,
+    test_output_root: Path | None = None,
+) -> tuple[dict[str, Any], bytes]:
+    """Validate everything, then replace production output or an explicit test root."""
+    pack = build_pack(curated_path, explanations_path, metadata_path, public_questions_path)
+    payload = serialize_pack(pack)
+    ensure_compatible_with_existing(output_path, pack, test_output_root=test_output_root)
+    write_pack_atomic(output_path, payload, test_output_root=test_output_root)
+    return pack, payload
+
+
 def build_to_path(
     curated_path: Path,
     explanations_path: Path,
@@ -344,12 +383,38 @@ def build_to_path(
     public_questions_path: Path,
     output_path: Path,
 ) -> tuple[dict[str, Any], bytes]:
-    """Validate everything in memory, then atomically replace the output."""
-    pack = build_pack(curated_path, explanations_path, metadata_path, public_questions_path)
-    payload = serialize_pack(pack)
-    ensure_compatible_with_existing(output_path, pack)
-    write_pack_atomic(output_path, payload)
-    return pack, payload
+    """Build only to this repo's ignored production private root."""
+    return _build_to_path(
+        curated_path, explanations_path, metadata_path, public_questions_path, output_path
+    )
+
+
+def _build_synthetic_to_path_for_test(
+    curated_path: Path,
+    explanations_path: Path,
+    metadata_path: Path,
+    public_questions_path: Path,
+    output_path: Path,
+    *,
+    test_output_root: Path,
+) -> tuple[dict[str, Any], bytes]:
+    """Explicit test-only seam: every input and output must stay in one temp root."""
+    test_root = test_output_root.resolve()
+    if _is_relative_to(test_root, ROOT) or _is_relative_to(ROOT, test_root):
+        raise PackBuildError("synthetic test root must be separate from the repository")
+    paths = (
+        curated_path, explanations_path, metadata_path, public_questions_path, output_path
+    )
+    if any(not _is_relative_to(path.resolve(), test_root) for path in paths):
+        raise PackBuildError("synthetic test inputs and output must stay under the test root")
+    return _build_to_path(
+        curated_path,
+        explanations_path,
+        metadata_path,
+        public_questions_path,
+        output_path,
+        test_output_root=test_root,
+    )
 
 
 def parse_args() -> argparse.Namespace:
