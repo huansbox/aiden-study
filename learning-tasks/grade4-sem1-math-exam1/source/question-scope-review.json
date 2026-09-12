@@ -2,7 +2,7 @@
   "schema_version": 1,
   "reviewed_at": "2026-09-12",
   "baseline": "curriculum-comparison.md（正式段考範圍尚未公布）",
-  "counting_unit": "最小可分開作答的作答格／選項／判斷／連線列／作圖／應用題結果。複合量的公里與公尺若印成兩格，各算一單位；商與餘數各算一單位；驗算框另算一單位。未分小題、只要求一個最終結果的應用題算一單位。",
+  "counting_unit": "依作答欄位、選擇題、判斷、連線列、作圖或未分小題應用題建立的標記作答單位，含相依欄位。複合量的公里與公尺若印成兩格，各算一單位；商與餘數各算一單位；驗算框另算一單位。未分小題的應用題維持一單位，即使要求多個結果；選擇題每題一單位，不按選項拆算。不是互不相依的完整題數，也不等於配分；不可與 C 的 review item 加總。",
   "group_schema": {
     "ids": "同一判定群組內的穩定作答單位 ID；每個 ID 都繼承本群組其餘欄位",
     "page": "題目 PDF 的 1-based 頁碼",
@@ -21,8 +21,8 @@
   "summary": {
     "counting_units": 216,
     "by_status": {
-      "core_provisional": 179,
-      "hold_scope": 11,
+      "core_provisional": 180,
+      "hold_scope": 10,
       "later_scope": 26,
       "needs_review": 0
     },
@@ -31,8 +31,8 @@
       "partial_usable": 5,
       "temporarily_exclude": 0
     },
-    "m5a_tagged_units": 20,
-    "m5a_direct_kilometer_units": 14,
+    "m5a_tagged_units": 21,
+    "m5a_direct_kilometer_units": 15,
     "m5a_assessment": "合併五卷後，公里量感、公里↔公尺、公里↔公分與大小比較均有題，暫不判為不足；但桃子腳111與安和112沒有 M5a。"
   },
   "papers": [
@@ -111,7 +111,7 @@
       "paper_label": "安和 114",
       "question_file": "source/papers/tcool_20002844_q.pdf",
       "paper_classification": "partial_usable",
-      "classification_reason": "M1–M4 與 M5a 可拆用；M5b 的複合量加減與路線題須暫緩。",
+      "classification_reason": "M1–M4 與 M5a 可拆用；V-03 往返可換公尺後乘二再換回，列核心；須二階複合量加減的 M5b 題仍暫緩。",
       "review_groups": [
         {"ids":["anh114-I-01"],"page":1,"concept_tags":["M5a"],"mapped_115_unit":"U5","status":"core_provisional","reason":"長度單位量感，含已學過的毫米。"},
         {"ids":["anh114-I-02"],"page":1,"concept_tags":["M2b"],"mapped_115_unit":"U2","status":"core_provisional","reason":"整十乘法與積末尾零。"},
@@ -138,7 +138,7 @@
         {"ids":["anh114-IV-01"],"page":2,"concept_tags":["M3a"],"mapped_115_unit":"U3","status":"core_provisional","reason":"畫指定角。"},
         {"ids":["anh114-V-01"],"page":3,"concept_tags":["M3c"],"mapped_115_unit":"U3","status":"core_provisional","reason":"由周角與兩個相等角求角度；圖中沒有使用三角形性質。"},
         {"ids":["anh114-V-02"],"page":3,"concept_tags":["M2a"],"mapped_115_unit":"U2","status":"core_provisional","reason":"倍數與總價的兩步驟情境，不要求 U8 併式規則。"},
-        {"ids":["anh114-V-03"],"page":3,"concept_tags":["M5b"],"mapped_115_unit":"U5","status":"hold_scope","reason":"路線圖中的公里／公尺加減與往返總長。"},
+        {"ids":["anh114-V-03"],"page":3,"concept_tags":["M2a","M5a"],"mapped_115_unit":"U2/U5","status":"core_provisional","reason":"每段路各走兩次，可先將全長換為3535公尺，以3535×2＝7070公尺再換回7公里70公尺；原題未強制二階加減。","dependency":"須保留完整路線圖、各點位置、全長、行走順序及單位要求。"},
         {"ids":["anh114-V-04a","anh114-V-04b","anh114-V-04c"],"page":3,"concept_tags":["M2a","M4a"],"mapped_115_unit":"U2/U4","status":"core_provisional","reason":"箱數、瓶數、總價的乘除與單價比較，位數皆在核心內。","dependency":"三小題共用同一表格；抽取任一小題須保留表格。"}
       ]
     },

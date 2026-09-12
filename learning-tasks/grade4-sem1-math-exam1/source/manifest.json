@@ -10,7 +10,7 @@
     "exam_period": "第一次段考（期中1）",
     "subject": "數學",
     "target_publisher": "康軒",
-    "range_status": "已按 curriculum-comparison 暫定基準逐題核對；待獨立驗收與桃子腳 115 正式段考範圍公告",
+    "range_status": "已按 curriculum-comparison 暫定基準逐題核對並完成獨立驗收及修正複驗；正式段考範圍待確認，見 acceptance-review.md",
     "excluded_work": [
       "題目轉寫",
       "生成答案",
@@ -85,7 +85,7 @@
         }
       },
       "duplicate_status": "未與本批其他檔案重複",
-      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對，不因同為康軒直接判定適用",
+      "range_status": "已依 curriculum-comparison.md 暫定基準完成逐題核對與 D 複驗；分類及相依條件見 question-scope-review.json。僅部分可用，正式單元／頁碼範圍仍待確認。",
       "failure_reason": null
     },
     {
@@ -138,7 +138,7 @@
         }
       },
       "duplicate_status": "未與本批其他檔案重複",
-      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對。111–112 的公里、三角形章節與 115 有移序，不能只因順序不同排除。",
+      "range_status": "已依 curriculum-comparison.md 暫定基準完成逐題核對與 D 複驗；分類及相依條件見 question-scope-review.json。僅部分可用，正式單元／頁碼範圍仍待確認。",
       "failure_reason": null
     },
     {
@@ -191,7 +191,7 @@
         }
       },
       "duplicate_status": "未與本批其他檔案重複",
-      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對",
+      "range_status": "已依 curriculum-comparison.md 暫定基準完成逐題核對與 D 複驗；分類及相依條件見 question-scope-review.json。僅部分可用，正式單元／頁碼範圍仍待確認。",
       "failure_reason": null
     },
     {
@@ -213,8 +213,7 @@
         "大數與位值",
         "乘除計算",
         "角度與旋轉",
-        "三角形分類與對應",
-        "公里、公尺換算與應用"
+        "三角形分類與對應"
       ],
       "source": {
         "url": "https://drive.google.com/drive/folders/1vRn1eal2J6DKq_an7TsF6g47U5BuJtHa",
@@ -246,7 +245,7 @@
         }
       },
       "duplicate_status": "未與本批其他檔案重複；未重複下載 tcool 20002109",
-      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對。章節移序本身不是排除理由。",
+      "range_status": "已依 curriculum-comparison.md 暫定基準完成逐題核對與 D 複驗；分類及相依條件見 question-scope-review.json。僅部分可用，正式單元／頁碼範圍仍待確認。",
       "failure_reason": null
     },
     {
@@ -294,7 +293,7 @@
         "answer": null
       },
       "duplicate_status": "未與本批其他檔案重複",
-      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對",
+      "range_status": "已依 curriculum-comparison.md 暫定基準完成逐題核對與 D 複驗；分類及相依條件見 question-scope-review.json。僅部分可用，正式單元／頁碼範圍仍待確認。",
       "failure_reason": "官方答案未提供；tcool 的 answer_token／站內答案不屬學校官方答案，本輪不下載"
     }
   ]
