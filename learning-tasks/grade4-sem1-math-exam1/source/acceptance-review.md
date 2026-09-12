@@ -1,6 +1,6 @@
 # A／B／C 數學來源與範圍標記：獨立驗收
 
-**目前狀態：D-01 至 D-04 已依統籌者核准完成最小修正，針對性複驗通過；收集與範圍判讀已完成（依暫定範圍；正式範圍待確認）。主工作目錄整合結果見文末紀錄。** B 現況為核心 180、M5b 暫緩 10、後續／範圍外 26、待核 0，總 216 個標記作答單位；C 維持 60／10／45／11，總 126 個 review items，兩批不加總題數。
+**目前狀態：D-01 至 D-04 已依統籌者核准完成最小修正，針對性複驗通過；收集與範圍判讀已完成（依暫定範圍；正式範圍待確認）。主工作目錄 `D:/mywork/aiden-study` 已完成整合，結果見文末紀錄。** B 現況為核心 180、M5b 暫緩 10、後續／範圍外 26、待核 0，總 216 個標記作答單位；C 維持 60／10／45／11，總 126 個 review items，兩批不加總題數。
 
 下方「初驗」段落保留當時 finding、建議與數字，供追溯；不是尚未修正的現況。
 
@@ -181,3 +181,13 @@ B 與 C 的計數口徑不同，以下分開保留，不提供合併題數，也
 C 的三個成果檔與初驗提交逐字相同，尤其桃子腳 112 一、6 的題目標記與答案完全未改。八份題目、六份答案的完整 SHA256 均與原 manifest 一致；PDF 格式、20 頁題目／15 頁答案及 Git ignore 再次核對通過。初驗已全頁視讀，此次未重抓原卷、未重算全部答案；沒有網站程式變更，因此未跑 app tests。`git diff --check` 通過。
 
 B 最新逐卷表見 [question-scope-review.md](question-scope-review.md)，C 見 [supplemental-review.md](supplemental-review.md)，完整本機入口見 [task README](../README.md)。原卷缺官方答案的兩份仍是桃子腳 114 期中、民權 114 期中；正式範圍與 C 的 11 項方法待核均保留，未阻擋本次收集任務完成。
+
+
+## 主工作目錄整合紀錄（2026-09-12）
+
+- 目的地：`D:/mywork/aiden-study`，原分支 `master`、原 HEAD `487344d`。整合前只有未追蹤 `.scratch/`，沒有已追蹤檔案的人工修改；`.scratch/` 未操作、未覆蓋，整合後仍保持未追蹤。
+- 先核對分支祖先與變更路徑，只包含 `learning-tasks/grade4-sem1-math-exam1/` 及 `learning-tasks/README.md`。`master` 以 `git merge --ff-only` 整合至修正提交 `8b82155`，無衝突、無 reset／clean；本整合紀錄另以後續文件提交保存。
+- 已追蹤成果共 12 檔（任務內 11 檔及學習任務索引），在主工作目錄與執行工作樹逐檔比較內容相同；包括 A／B／C 研究與 metadata、核題紀錄、D 驗收、README 及局部 `.gitignore`。
+- 原卷來源限定為 `C:/Users/linshuhuan/.codex/worktrees/e08d/aiden-study/learning-tasks/grade4-sem1-math-exam1/source/papers/`，目的地限定為 `D:/mywork/aiden-study/learning-tasks/grade4-sem1-math-exam1/source/papers/`。複製前解析全部絕對路徑並核對位於指定 task 內；同名不同雜湊會停止，本次沒有衝突。
+- 只新增複製 manifest 列出的 14 個 PDF，沒有複製研究暫存、PNG 或其他檔案。目的地完整 SHA256 全數等於來源及 manifest，8 題目／6 答案、20＋15＝35 頁均符合；14 個檔案均受局部 `.gitignore` 排除。上方雜湊表及兩份 manifest 的完整值同樣適用於主目錄原卷。
+- 主目錄 README 所有本機連結均存在，任務 README 與學習任務索引均標示已完成（依暫定範圍；正式範圍待確認）。未 push、未修改 remote issue、自動化、網站程式或既有題庫。
