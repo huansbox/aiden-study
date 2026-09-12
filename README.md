@@ -4,7 +4,7 @@
 
 線上入口：<https://huansbox.github.io/aiden-study/>
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成共用程式、首批六題 private pack 與 desktop 整合驗證，保留舊三下題目與進度；真 iPad／家長驗收仍待完成。執行狀態見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成共用程式、首批六題 private pack 與原 manual import 的 desktop 整合驗證；最新核准的 [#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 正在實作，目標是從原 Study 入口自動載入六題，不要求家長傳檔。舊三下題目與進度保留，真 iPad／家長驗收仍待新路徑發布後完成。執行狀態見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
 
 ## 現況
 
@@ -26,12 +26,12 @@
 docs/                 GitHub Pages 部署根目錄
   index.html          選人、child 首頁與家長視圖 hub
   registry.json       hub app registry
-  study/              1,924 題公開題庫 app；私用題包由家長本機匯入
+  study/              1,924 題公開題庫 app；私用題包自動讀取實作中，手動匯入保留為備援
   math/               長除法與 nonogram
   spelling/           英文拼字 app
   zhuyin/             注音 app 與錄音工具
   shared/             同步、接線與獎勵共用資源
-worker/               Cloudflare Worker 同步 API
+worker/               Cloudflare Worker 同步 API；固定家庭唯讀題包端點實作中
 scripts/              Python 題庫萃取、分類與建置 pipeline
 data/                 題庫中間資料與人工策展資料
 tests/                pytest 與 Node.js test runner 測試
@@ -79,7 +79,7 @@ localhost 不在 Worker 的 CORS 白名單，所以 app 的同步請求在本機
 
 ## 題庫 pipeline
 
-題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1 首批六題不加入 public data，而是從 ignored 路徑 `data/private/study/g4-s1-math-u1/` 建置並由家長匯入；重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
+題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1 首批六題不加入 public data，而是從 ignored 路徑 `data/private/study/g4-s1-math-u1/` 建置；#58 將由管理端把已驗證 pack 寫入獨立 Cloudflare KV，Study 以 family token 自動唯讀取得。這條新路徑尚未發布，既有本機手動匯入仍保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
 ```bash
 # PDF 萃取範例

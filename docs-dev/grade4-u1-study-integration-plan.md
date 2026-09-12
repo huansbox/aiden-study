@@ -2,17 +2,17 @@
 
 日期：2026-09-12。調查基底：`ae74bc491146c64b73c6cb914bd2d3b4ceeee272`，與當時主目錄本地 master HEAD 相同（含 #54 三個尚未 push 的 commits）。統籌已於同日採納本文件的方案基線，並建立主追蹤 [#55](https://github.com/huansbox/aiden-study/issues/55)。
 
-> 即時狀態：W1 [#56](https://github.com/huansbox/aiden-study/issues/56) 與 W2 [#57](https://github.com/huansbox/aiden-study/issues/57) 已完成，題包契約、Study 共用程式、六題 private builder 與公開追溯 metadata 已交付；W3 clean-context 整合 review 已通過且無未解 finding。Public static data 仍為原 1,924 題；六題正式 pack 只在 ignored 本機路徑。W4 真 iPad／家長驗收 pending，#55 在取得該證據前保持 open；本狀態不宣稱 #35 或 #34 已完成。
+> 即時狀態：W1 [#56](https://github.com/huansbox/aiden-study/issues/56) 與 W2 [#57](https://github.com/huansbox/aiden-study/issues/57) 已完成，題包契約、Study 共用程式、六題 private builder 與原 manual import QA 已交付；W3 clean-context 整合 review 已通過。2026-09-12 最新核准方案以 [#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 取代「每容器首次傳檔」作為正常 UX，#58 尚在實作、未上線。Public static data 仍為原 1,924 題；六題正式 pack 只在 ignored 本機路徑。真 iPad／家長驗收須等 #58 發布後進行；本狀態不宣稱 iPad 已有 token，也不宣稱 #35 或 #34 已完成。
 
 ## 1. 推薦結論與交付目標
 
 在既有 `docs/study/` 增加「三下／四上」選擇，保留原有 1,924 題與進度。四上 U1 使用新的全域數字 unit `15`，畫面顯示課本第 1 單元。先選已審題中的 **P01、P02、P03、P04、P05、P07，共 6 題**，沿用選擇、數字填空及比較輸入；不為湊滿十題開發新題型。
 
-統籌已採納的私用接入方式：家長把本地生成的 JSON 題包送到 iPad「檔案」，再由現有 Study 的家長入口匯入，每個裝置／容器首次匯入一次。題文、答案、解說只留私用來源與裝置本機；public 網站提供共用程式、既有公開題庫與不含題文的單元定義。不新增後端、題包雲端庫或登入服務。
+最新採納的私用接入方式：沿用既有 family token 與 Cloudflare Worker／KV，Study 開啟或選擇四上時自動唯讀取得固定 `g4-s1-math-u1`。題文、答案、解說仍不進 public Git／Pages；管理端從 ignored、已驗證 pack 寫入獨立 content KV，瀏覽器無題包寫入能力。既有手動 JSON import 保留為備援，不再是正常流程。這是對本文件原「每裝置／容器首次傳檔」決策的明確覆蓋，只限本家庭與固定 pack，不泛化為 CMS 或新登入服務。
 
 「離開再回來接續」沿用現有半批儲存：已答對題不再出現，未完成批次按保存的剩餘題目順序接續；未送出的輸入重新填寫。第一批六題自然形成一批，不改既有批次大小規則。
 
-完成標準：家長在孩子實際使用的 iPad 容器匯入一次；孩子選四上 U1、完成部分題、離開並重新開啟，能繼續同一批剩餘題並完成全單元；切回三下仍見原進度，兩個範圍的挑戰、錯題與重練互不影響。程式驗證通過與真 iPad 操作通過分開記錄。
+完成標準：#58 的 Worker／KV／Study 垂直路徑、管理端部署、完整測試、獨立 review 與分階段發布先通過；之後在孩子實際使用的 iPad 容器核對或設定 family token，從原 Study 入口自動取得六題。孩子完成部分題、離開並重新開啟後能繼續同一批剩餘題；切回三下仍見原進度，另一 child 也不受影響。程式驗證與真 iPad 操作分開記錄。
 
 ## 2. 範圍與不做
 
@@ -21,7 +21,7 @@
 - 不新增紙本題目或 PDF，不重新收卷，不重審全部 14 個原卷 PDF，不重開全 `aiden-math` 整合。舊 `aiden-math` app 已匯入本 repo 的 `docs/math/`（含 `nonogram/`）；舊 worksheets／word-problems 保留來源即可。
 - 不移動舊題、不重編舊 ID、不搬移 storage key、不清除舊進度、不把四上加入三下混練。不建跨教材分類 framework、完整課程管理或多解集合判題引擎。
 - 不進行 #34 網域遷移。`docs-dev/platform-ipad-spike-checklist.md` 表明 #35 是該遷移的真機門檻，並不阻擋現網址的內容開發；本計畫不能宣稱桌面操作通過就等於 #35 或本批真機通過。
-- 規劃階段只新增本計畫與 #55；後續 W1–W3 已依工作包完成，未讀取孩子真實雲端進度或 family token。W4 仍由家長在孩子實際使用的 iPad／容器執行，不把 desktop 證據冒充真機結果。
+- W1–W3 已完成並保留歷史；#56／#57 不重開。#58 是本輪單一修正實作票，不擴章節／科目、不做新帳號、不改 #34／#35。工人仍不讀取孩子真實雲端進度或 family token；發布後真機由家長在孩子實際使用的 iPad／容器執行，不把 desktop 證據冒充真機結果。
 
 ## 3. 現有能力與實際缺口
 
@@ -34,6 +34,7 @@
 | 批次／進度 | `State.getBatch/saveBatch`、`Picker.nextBatch`、`submitAnswer`、`balancedBatchSize` | 已存 `{batch: [ids]}`、答對即記 `mastered`；不必新增整個 session 儲存模型，但需覆蓋新 unit 與題包未載入情境 |
 | 錯題／回報 | `filterModeErrorBank` 依 unit 與 mode 篩選；`questionIdsFor` 排除 flagged；`renderHome` 全部錯題使用當前可見 unit 清單 | `init` 會把不在 `questionMap` 的 `errorBank/flagged` 刪除；可選題包讓「未載入」不再等於「無效題」，必須停止以缺席判刪除 |
 | 同步 | `docs/shared/wiring-v1.js`、`docs/shared/sync-v1.js`、`worker/worker.mjs` | 依 child/app 同步整包進度，並非逐題聯集。無題包的裝置也可能收到四上進度，須保留；題文不能進該整包 state |
+| 家庭權限內容 | `wiring` 已保存／取得 family token；`worker.fetch` 已有 CORS、token 驗證、KV 與可直接測試的 contract seam | 尚無固定題包 GET。#58 新增 `GET /v1/packs/g4-s1-math-u1` 與 `c:study:g4-s1-math-u1`；全域 `OPTIONS` 只維持 preflight 且不回題包，其餘非 GET／其他 packId 拒絕；內容和 `p:` 進度必須隔離 |
 | 備份／還原 | `buildBackupText`、`parseBackup`、`_exportProgress`、`wiring.commitImport`；`tests/test_backup_pure.mjs` | 備份原始進度 JSON、還原覆蓋選定 child；可保留新增選擇欄位和 unit 15，但不會自帶裝置另存的題包 |
 | 題庫 build | `scripts/build_questions.py` 的固定來源、`MATH_UNITS`、`build_merged`、`to_final_schema` | 直接放 unit 15 會被數學 5–9 篩掉；重建亦不保留任意新增區塊。`unique_id` 碰撞後依順序加尾碼，不適合新題包 stable ID |
 | 解說 build | `scripts/build_explanations.py` 的 `expected_explanation_ids`、`validate_entries`、`build_report` | math 要完整解說覆蓋；public 題庫一旦加四上就新增必填 ID。`main` 的數學抽查報告含完整題文／答案，不能讓私用新題流入預設輸出 |
@@ -72,19 +73,23 @@
 
 原 #54 的 `learning-tasks/grade4-math-first-practice/source/private/practice-content.json` 僅作只讀來源與追溯依據；數位版整理後的輸入和產物不回寫紙本 task。紙本 task 維持已完成，不新增 learning-task；app 程式、可重建資料與一次性活動各歸原有位置。生成器及不含私用內容的 metadata 可版本控制，curated 題文、答案、解說和題包本身不可。
 
-前端家長入口使用檔案選擇器，讀取檔案後先做大小與 schema 驗證、唯一 ID、unit 隔離、答案與題型一致性、解說完整性，再一次寫入獨立 localStorage key，例如 `study:private-pack:g4-s1-math-u1`。小批文字題包使用 localStorage 足夠，暫不引入 IndexedDB。可設 128 KiB 明確上限；寫入失敗須告知「未保存」，保留前一有效包，不顯示匯入成功或承諾下次可接續。
+正常路徑由 Study 以既有 family token 呼叫 `GET /v1/packs/g4-s1-math-u1`；成功回應使用 `Cache-Control: no-store`。Worker 從 `c:study:g4-s1-math-u1` 唯讀回傳內容；這個 key 與所有 `p:` progress key 分離。全域 `OPTIONS` 可維持 CORS preflight 的 204，但不讀取或回傳題包；其餘非 GET method 與其他 `packId` 拒絕內容操作，瀏覽器沒有新增、覆寫或刪除題包的 API。
 
-題包 key 屬同裝置、同 origin／容器，供該容器內兩個孩子共用題目內容；進度仍各依 child 分開。題包不含孩子身分，不隨切換孩子重寫。boot 先讀並驗證本機包、合併公開題庫與解說，再建立 `questionMap`。重匯同包應冪等；只有 revision 提高、且同 ID 的 `type/text/options/answer/blanks` 逐值完全一致時，才替換舊包。未知 schema 或同 ID 語意欄位有任何差異時拒收，保留原包和進度。
+正式 pack 只由管理端從 `data/private/study/g4-s1-math-u1/pack.json` 的 ignored、已驗證輸出部署；部署前重跑 production validator，不把題文、答案、解說或 token 印到 log。公開 Git、Pages、CI fixture 與報告均不攜帶真包。發布相依順序是 Worker contract／管理端部署路徑、正式 pack 寫入、Study 前端／Pages；任一步失敗都可停止而不破壞既有題包或進度。
 
-實作須為匯入文字定義安全輸出路徑：純文字先 escape，再加入程式生成的換行與填空 chip；同樣涵蓋選項、解說與回報題目區。不能只驗 JSON 外形，或只擋 `<script>`。測試用合成特殊字串驗證，public fixtures 不抄私用題。
+Study 保留 `study:private-pack:g4-s1-math-u1` 作已驗證本機 cache。boot 或切到四上時以非阻塞方式自動取得；先沿用 production validator 檢查大小、schema、固定 ID、unit、題型、答案與解說，再依現有 revision／同 ID semantic 規則核對最新持久包。只有有效新包才原子替換 cache；作答中延後採用，不替換 `questionMap`、重排或打斷 current batch。
 
-**不把題包加入 `state`、進度備份、同步 request、public `questions.json`、public `explanations.json`、`data/exp_results/batch_*.json` 或公開抽查報告。** 現有公開題庫不因本計畫被宣告已取得新來源的再授權；#54 已核准的私用邊界繼續適用。沒有公開上架權利不阻擋本地轉換與家長匯入。
+無 token、401、404、timeout、Worker／KV 服務異常、回應超限、錯誤 packId、較舊 revision、同 revision 異內容或 semantic／schema 驗證失敗，都保留上一個有效 cache 與目前 state，並顯示不洩漏 secret／題文的家長提示。未設定 token 的裝置仍須完成既有一次家庭設定；`wiring` 只做讓 Study 讀取 token 及保存後可選 callback 重試的最小擴充，其他 app 預設行為不變。
+
+實作須為題包文字定義安全輸出路徑：純文字先 escape，再加入程式生成的換行與填空 chip；同樣涵蓋選項、解說與回報題目區。不能只驗 JSON 外形，或只擋 `<script>`。測試用合成特殊字串驗證，public fixtures 不抄私用題。既有家長檔案選擇器與 import 流程完整保留為備援，並沿用同一 validator、revision、semantic 與原子保存規則。
+
+**不把題包加入 `state`、進度備份、同步 request、public `questions.json`、public `explanations.json`、`data/exp_results/batch_*.json` 或公開抽查報告。** 現有公開題庫不因本計畫被宣告已取得新來源的再授權；#54 已核准的私用邊界繼續適用。沒有公開上架權利不阻擋家庭權限唯讀服務。
 
 實際使用與備份取捨：
 
-1. 家長以自行選擇的私用傳檔方式把題包放到 iPad「檔案」，在孩子慣用的 Study 容器匯入一次。不能把不同 Safari／主畫面容器當成一定共用 localStorage。
-2. 網站更新後，該容器保留題包就不必再匯入；清除網站資料、換裝置或容器後需要重匯。保留原始題包檔即為內容備份，不另造內容雲端備份。
-3. 「匯出進度」仍只有進度；換機需「匯入題包」與「還原／同步進度」兩件事，家長介面應清楚交代。缺包時顯示「尚未匯入本機題包」，不能顯示進度歸零。
+1. 有正確 family token 的裝置從原 Study 入口自動取得，不要求家長傳檔。沒有 token 時顯示一次家庭設定；設定後可立即重試。不能假設實際 iPad 已設定，也不能把不同 Safari／主畫面容器當成一定共用 localStorage。
+2. 有效題包 cache 可讓短暫服務失敗時保留可用內容；清除網站資料、換裝置或容器後，仍可用 family token 再取得。手動保留的原始題包可作備援，但不是正常步驟。
+3. 「匯出進度」仍只有進度；內容 cache、content KV 與 progress backup／sync 是三個清楚分離的邊界。缺包或服務失敗時不能顯示進度歸零。
 4. 儲存題包不等於完整離線 app。現有 boot 仍 fetch 公開題庫與其他資源，本計畫不新增 Service Worker；離線冷啟動不列交付承諾。已開頁斷網時作答能否保存，仍需單獨驗證。
 
 ### 4.4 進度與舊版本邊界
@@ -95,7 +100,7 @@
 
 `mastered`、`challenge`、`stats` 的未知題紀錄也保持原樣；缺包時不呼叫該單元的 `startQuiz`、reset 或 completion 計算來覆寫批次。重新載入題包後再用相同 ID 恢復顯示。匯入／同步先於題包或後於題包都要成立。
 
-當前 sync 是整包 LWW／衝突選擇，不提供兩台同時練習的逐題合併；跨機需各自匯入包並沿用原同步規則。更新版 app 可以保留未載入包的紀錄；更新前已開著的舊版 app 仍可能執行舊清理。第一次寫入四上進度前，家長應把其他使用中的 Study 頁面重新載入到更新版；不承諾任何舊版常駐分頁都向前相容，也不在本批擴作同步協定改版。
+當前 sync 是整包 LWW／衝突選擇，不提供兩台同時練習的逐題合併；跨機各自透過 family token 取得內容 cache，進度仍沿用原同步規則。更新版 app 可以保留未載入包的紀錄；更新前已開著的舊版 app 仍可能執行舊清理。第一次寫入四上進度前，家長應把其他使用中的 Study 頁面重新載入到更新版；不承諾任何舊版常駐分頁都向前相容，也不在本批擴作同步協定改版。
 
 ## 5. 逐題接入判斷
 
@@ -146,6 +151,8 @@
 | --- | --- | --- |
 | Public build 回歸 | 固定既有題庫的 ID／unit／subject 與各科題數；加入私用生成流程前後完全一致；私用輸出路徑不得落在 docs 或 public report | `tests/test_build_questions.py`、`tests/test_build_explanations.py`；臨時目錄跑生成器，不在測試中覆寫正式產物 |
 | 私用 build | 合成選擇、八位填空、比較題；穩定 ID 在重排、重建後不變，碰撞失敗；每題解說剛好一份；錯誤輸入不寫出 | 新 pack builder 測試，重用現有 validator；真題核對只在 ignored 本地報告 |
+| Worker 家庭唯讀內容 | 正確／缺少／錯誤 token；固定 GET path；`OPTIONS` 只做 preflight 不回題包；其他 method／packId 拒絕；404、KV error、`no-store`；`c:` 與 `p:` key 隔離 | 直接呼叫 `worker.fetch`，沿用 `worker/kv-stub.mjs` 與 contract cases；只用 synthetic pack，不印 token 或題文 |
+| Study 自動取得 | boot／選四上非阻塞讀取、設定 token 後 callback 重試、timeout／HTTP error／超限／stale／同 revision 異內容／semantic 拒收保留 cache 與 state；作答中延後採用 | 延伸 production Study harness，注入 fake fetch／KV／storage，執行實際 wiring 與 production validator，不只測 helper |
 | 年級隔離 | 同時有舊 unit 1、5–9 與新 unit 15，切換後抽題與全部錯題只有當前範圍；重練 unit 15 不改舊進度 | 依現有 `<...-pure>` sentinel 測試慣例，將範圍解析、包驗證與半批挑選抽出最小純函式；不為測試重寫整個 app |
 | 半批進度 | 用可控制順序的合成 queue，執行 save→重新 init→resume；測答對、錯題回隊、skip、最後一題答對後關頁仍完成，以及最後一題答錯後關頁仍待重試 | 新 Study 行為測試；測實際 State／Picker 邊界，不能只 assert 寫進去的 JSON 相等 |
 | 題包缺席 | 有新舊進度但未載入包，boot、改科目、一般 save、export 後未知 ID 原樣存在；重新匯包恢復計數與批次 | 覆蓋 `init` 清理與 `Storage.saveQuiet` 後續 save；特別測 errorBank／flagged |
@@ -157,13 +164,14 @@
 
 ### 真 iPad 最終驗收
 
-使用測試 child、本機合成進度與經私用轉換核對的題包，先完成 UI 流程；不讓工人讀取孩子 token 或雲端真實進度。家長在自己實際使用容器的最終確認由統籌安排。
+自動化與 desktop CUA 使用 `test-child`、synthetic pack、fake fetch／KV／storage；真 pack 只在 ignored 本機做唯讀驗證。不讓工人讀取孩子 token 或雲端真實進度。家長在自己實際使用容器的最終確認由統籌安排。
 
-- 「檔案」選取 JSON、匯入成功、重開後題包仍在；iPadOS 版本、Safari／主畫面容器與方向記錄清楚。
+- 先記錄 iPadOS 版本、Safari／主畫面容器、方向與 family token 是否已設定；未設定時完成既有一次家庭設定，不能假稱裝置原本已有。
+- 從原 Study 入口開啟或選四上，自動取得六題且正常流程不要求檔案／JSON；設定 token 後重試可立即生效。另驗服務失敗保留有效 cache 與清楚提示，手動 import 只作備援。
 - 四上 U1 與三下選擇清楚；首批六題題文、八位輸入、比較按鈕、確認與離開按鈕可操作且不被鍵盤遮住。
 - 作答中回 hub／切背景／關閉再重開，同容器已提交進度和半批成立；未提交輸入清空符合上述定義。
 - 三下原測試紀錄未改；切另一 child 不讀到前一 child 的四上進度。
-- 匯出進度不含題文；在另一測試容器先還原進度而未匯題包時出現缺包提示，匯入相同題包後進度恢復。
+- 匯出進度不含題文；在另一測試容器先還原進度而尚未取得題包時出現明確提示，使用 family token 自動取得相同 pack 後進度恢復。
 - 網路失敗、本機不能保存的提示可理解；不把斷網後頁面仍開著的結果寫成完整離線冷啟動驗收。
 
 此清單驗收本次 Study 內容與接續，並不自動關閉 #35；#35 的跨容器與網域前提仍由原檢查表判定。
@@ -174,22 +182,23 @@
 
 | 工作包 | 輸入／依賴 | 可交付範圍與完成門檻 | 建議工人 model／思考強度 |
 | --- | --- | --- | --- |
-| W0 統籌定案（已完成） | 本計畫 | 已採納每裝置／容器首次匯入一次私用題包、六題首批、unit 15、現有半批接續與舊 key 不變，並建立主追蹤 #55 | 統籌，gpt-6-astra／high |
+| W0 統籌原定案（已完成、交付方式已被覆蓋） | 本計畫 | 當時採納每裝置／容器首次匯入一次私用題包、六題首批、unit 15、現有半批接續與舊 key 不變，並建立主追蹤 #55；manual 方案現只保留歷史／備援 | 統籌，gpt-6-astra／high |
 | W1 Study 入口、題包與進度相容（已完成） | W0；[#56](https://github.com/huansbox/aiden-study/issues/56) | 已交付 STUDY_TERMS、unit 15、studyTerm fallback、家長檔案匯入、獨立本機題包、安全文字顯示、缺包不刪進度與保存失敗處理；合成題包流程、半批接續及三下隔離已驗證 | gpt-6-astra／high；多處狀態交界需完整推理 |
 | W2 六題私用轉換與 build（已完成） | W1 凍結包契約；[#57](https://github.com/huansbox/aiden-study/issues/57) | 已交付 private builder、public 追溯 metadata、精確 ignore 的 curated／六題 pack／解說／QA；六題獨立重算一致，public 內容無差異，重建冪等且 production 輸出受 private root 限制 | gpt-5.6-sol／high；需精確數值與來源核對 |
 | W3 獨立整合審查與桌面驗證（已完成） | W1、W2 | Clean-context review 已通過，無未解 finding；完整 Node／pytest、六題語意、舊進度隔離、缺包再載入、payload 邊界、desktop 真 DOM 與原生 file chooser 均有證據 | gpt-6-astra／high |
-| W4 真 iPad 與家長交付（pending） | W3 已通過；共用程式發布與 private 傳檔 | 在孩子實際使用的 iPad／容器完成首次匯入、部分作答後接續及三下隔離，記錄通過或具體阻擋；驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
+| Auto 修正（實作中） | W3 歷史基線；[#58](https://github.com/huansbox/aiden-study/issues/58) | 完成 Worker 固定家庭唯讀題包、管理端安全部署、Study 自動取得／token 重試／cache 失敗語意、完整測試、獨立 review 與分階段發布；不改六題或進度 contract | 單一修正實作票；另一 task 獨立 review |
+| W4 真 iPad 與家長交付（pending） | #58 已整合並發布 | 在孩子實際使用的 iPad／容器核對或設定 family token，完成自動取得、部分作答後接續、三下與另一 child 隔離，記錄通過或具體阻擋；驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
 
 W1 已用合成題包驗證答對、答錯回隊、關閉／重載接續與三下欄位不變；W3 再以正式六題 pack 驗證多題半批、最後一題答對／答錯立即重載及缺包恢復。這些 desktop 證據不取代 W4 真 iPad。
 
-各工人使用獨立工作 branch／worktree，且未 reset 主目錄。W1 與 W2 已按凍結契約完成；W3 使用獨立上下文審查，採納的 finding 回到原工作包修正並通過相關複驗。現在只剩 W4 依表中 gate 等待家長真機操作。
+各工人使用獨立工作 branch／worktree，且未 reset 主目錄。W1 與 W2 已按凍結契約完成；原 W3 使用獨立上下文審查並通過。現在由 #58 單票完成新 auto path，另由新 context task review；不得沿用原 manual-path review 冒充。#58 整合／發布後才進 W4。
 
 後續完成第一輪孩子實測，才考慮 P10、經目標調整的 P08／P09 或下一章。P06 只有真實練習需求證明值得做集合判題時才重開。正式考試範圍到手後處理 M5b／C11，不回頭阻擋已確認 U1。
 
 ## 9. 統籌已採納決策與文件／tracker 驗證
 
-統籌已在使用者授權的決策範圍內採納：**以「家長本機檔案匯入＋同容器 localStorage 保存私用題包」作為第一批送達方式，每裝置／容器首次匯入一次。** 此方案保留現有網址、既有進度與 #54 私用邊界，只新增小型前端載入功能。已接受的取捨是：進度備份不含題包，清除資料、換裝置或容器後須重匯，也不承諾完整離線啟動。不再以這項決策向家長提問；私用託管、後端或公開題文不在本次範圍。
+統籌先前採納的「家長本機檔案匯入＋同容器 localStorage 保存私用題包」已由 2026-09-12 最新授權明確取代為：**正常 UX 沿用既有 family token，從 Cloudflare Worker／KV 自動唯讀取得固定 `g4-s1-math-u1`；手動 import 保留為備援。** 這次覆蓋只限本家庭與此固定 pack，不泛化成 CMS，也不把題文放進 public repo／Pages。原 manual 實作、desktop QA 與 localStorage cache 保留歷史價值，但不能寫成新 auto path 已上線。
 
-統籌同時採納六題選擇、數字 unit 15、現有半批接續與舊 key 不變；schemaVersion 不變、未送出輸入不保存的技術細節沿用本計畫。app 私用資料以 `data/private/study/g4-s1-math-u1/` 為落點，原 #54 紙本 task 保持已完成且只讀追溯。W0–W3 已完成，沒有需要再問家長的待定方案；W4 只等待孩子實際 iPad／容器的操作證據。
+統籌同時採納六題選擇、數字 unit 15、現有半批接續與舊 key 不變；schemaVersion 不變、未送出輸入不保存的技術細節沿用本計畫。app 私用資料以 `data/private/study/g4-s1-math-u1/` 為落點，原 #54 紙本 task 保持已完成且只讀追溯。#58 負責 auto path 的完整實作、review 與發布；完成後才進孩子實際 iPad／容器 gate。
 
-實作與整合階段完成：W1／W2 acceptance 已由統籌接受；W3 clean-context review 對 public diff、六題語意、private 邊界、進度隔離、缺包恢復、desktop DOM 與原生 file chooser 均完成驗證，且無未解 finding。Public static data 維持 1,924 題，private pack 不進 Git。這些結果仍不代表 W4 真 iPad 或 #35／#34 已完成；#55 必須保持 open 到家長完成實際容器驗收。
+W1／W2 acceptance 已由統籌接受；原 W3 clean-context review 對 public diff、六題語意、private 邊界、進度隔離、缺包恢復、desktop DOM 與原生 file chooser 均完成驗證，且無未解 finding。Public static data 維持 1,924 題，private pack 不進 Git。#58 的 auto path 尚在實作，須另有完整測試與新 context review；這些結果也不代表真 iPad 或 #35／#34 已完成，#55 必須保持 open。
