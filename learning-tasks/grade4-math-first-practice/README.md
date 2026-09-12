@@ -12,6 +12,7 @@
 - `output/pdf/grade4-math-u1-parent-guide.pdf`：完整答案、簡短核對方法與誤答回看提示。
 - `output/preview/`：最終 PDF 的逐頁 render 圖，供本機版面驗收。
 - `source/qa-review.md`：題目、答案、mapping、重建與全頁視讀的驗收結果。
+- [source/acceptance-review.md](source/acceptance-review.md)：獨立驗收的查核方法、已修 findings 與最終通過證據。
 
 以上檔案是私用衍生成品，由局部 `.gitignore` 排除，不會隨 public repo clone 取得。
 
