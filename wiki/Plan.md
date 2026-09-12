@@ -4,11 +4,17 @@
 
 ## 結論
 
-下一個執行目標是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。方案已定案：把第一批六題加入既有 Study，讓孩子在 iPad 練習，離開再回來仍能接續；先用 app 已有題型做小批驗證，舊三下題目與進度保留，四上練習不混入舊流程。W1–W4 尚未啟動。
+下一個執行目標是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。方案已定案：把第一批六題加入既有 Study，讓孩子在 iPad 練習，離開再回來仍能接續；先用 app 已有題型做小批驗證，舊三下題目與進度保留，四上練習不混入舊流程。
 
 平台搬遷仍受 #35 與 #34 約束，但那是換網域、換圖示與清理舊站的 gate，不阻擋在現行網址新增題庫內容。注音收尾可在適合的家長／iPad 時段並行。
 
 詳細實作方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)；本頁不重複資料 schema、題型映射與測試清單。
+
+## 即時狀態
+
+- 文件與主 tracker 已由 `master@0aa77b1` push；`test`、`publish-wiki`、Pages 均成功。
+- W1 [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) 進行中：Astra／high task `01a094c0-2690-7bd1-b535-04b88bfeb230`，branch `codex/grade4-u1-w1`，worktree `82b9`。新契約文件 `docs-dev/grade4-u1-pack-contract.md` 尚待完成。
+- W2 等待 W1 契約與實作；W3 獨立 review 與 W4 真 iPad 驗收 pending。Main `master` 可正常開啟，實作在獨立 branch／worktree。
 
 ## 已確認基線
 
@@ -22,14 +28,15 @@
 
 | Issue | 性質 | 現況 | 下一個動作 |
 |---|---|---|---|
-| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | 方案已定案；W1–W4 未啟動 | 依 tracker workflow 先把 W1 具體化為單張實作票，再開始程式工作 |
+| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | 方案已定案；W1 進行中 | 等 #56 凍結契約並通過驗收，再安排 W2 |
+| [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Astra／high 獨立 worktree 實作中 | 等工人回報後，由統籌驗收並開 clean-context review |
 | [#35 平台 1/9：iPad spike](https://github.com/huansbox/aiden-study/issues/35) | HITL stop-gate | Open | 在真 iPad 驗證單 origin 導航、網址參數與 localStorage 容器三個架構前提 |
 | [#34 平台 9/9：掛網域＋搬遷](https://github.com/huansbox/aiden-study/issues/34) | HITL 搬遷 | Blocked by #35 | #35 關閉後，逐容器完成備份、同步健康與進度對帳；對帳前不移除舊圖示、不清舊 repo |
 | [#20 注音 MVP 5/5 收尾](https://github.com/huansbox/aiden-study/issues/20) | 內容＋HITL | 程式已 merge；正式錄音與 iPad checklist 待完成 | 錄音、audit、真機走完兩活動 |
 | [#26 全家學習平台 PRD](https://github.com/huansbox/aiden-study/issues/26) | Umbrella | Open | #34 完成後做整體 close audit |
 | [#15 注音學習 app PRD](https://github.com/huansbox/aiden-study/issues/15) | Umbrella | Open | #20 驗收完成後關閉 |
 
-#55 是本輪主追蹤 issue；W1–W4 仍依序執行，不在主 issue 建立時視為已開工或已驗收。
+#55 是本輪主追蹤 issue；W1 已由 #56 開始，W2–W4 仍依序等待，不能因工單建立就視為已驗收。
 
 ## 執行順序
 
