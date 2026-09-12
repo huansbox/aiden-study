@@ -83,7 +83,7 @@ test("missing pack: real sync adopt → save/export → restore → reimport pre
   e.window._startFull(15); e.window._resetChallenge(15); e.window._startError("15");
   e.app.State.resetMastered(15); e.app.State.resetChallenge("15");
   assert.deepEqual(JSON.parse(e.st.getItem(key(e.child))), before);
-  assert.match(e.node("page-home").innerHTML,/尚未匯入本機題包/);
+  assert.match(e.node("page-home").innerHTML,/尚未載入家庭題包/);
   e.window._exportProgress();
   const backup = e.node("backup-text").value;
   assert.ok(backup.includes(ids[1]));

@@ -1,4 +1,4 @@
-// 家庭進度同步服務（Cloudflare Worker＋KV）。spec＝issue #26「進度同步」節、票＝#27。
+// 家庭進度同步服務（Cloudflare Worker＋KV）。spec＝issue #26「進度同步」節、票＝#27；唯讀題包＝#58。
 // 協定：GET 從未寫過的 key → 200 {rev:0,data:null}（合法空、可播種）；有值時回 {rev,data,writeId,epoch}
 // （writeId 讓 client 認出「遠端領先的那筆是我自己的 beacon」）。404 只留給路由／key 格式錯誤。
 // PUT 帶 writeId 冪等：response 遺失後重送同 writeId → 200 現行 rev，不重複遞增。
@@ -9,6 +9,8 @@
 // sendBeacon 不能帶 header，token 一律支援 ?k= query（與圖示網址同一把）；POST 為 PUT 的 beacon 別名。
 // 已知接受限制（家庭規模、KV 無 conditional write）：同 rev 併發 PUT 可能雙雙 200，
 // 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
+
+import "../docs/study/private-pack.js";
 
 const ALLOWED_ORIGINS = new Set([
   "https://huansbox.github.io",
@@ -71,6 +73,18 @@ async function handle(request, env, url, cors) {
 
     const parts = url.pathname.split("/").filter(Boolean);
     if (parts[0] !== "v1") return json(404, { error: "not found" }, cors);
+
+    // 題目只由管理端部署；不能經由 progress 或此路由寫入，status 也不列內容。
+    if (parts.length === 3 && parts[1] === "packs" && parts[2] === "g4-s1-math-u1") {
+      if (request.method !== "GET") return json(405, { error: "method" }, cors);
+      const raw = await env.KV.get("c:study:g4-s1-math-u1");
+      if (raw === null) return json(404, { error: "pack missing" }, cors);
+      try { globalThis.StudyPrivatePack.parse(raw); }
+      catch { return json(500, { error: "corrupt pack" }, cors); }
+      return new Response(raw, {
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...cors },
+      });
+    }
 
     if (parts.length === 2 && parts[1] === "status") {
       if (request.method !== "GET") return json(405, { error: "method" }, cors);

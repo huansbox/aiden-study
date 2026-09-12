@@ -76,13 +76,17 @@
 
 ## 內容與進度的分界
 
-內容只存 `study:private-pack:g4-s1-math-u1`，同 origin／容器共用，沒有 child 欄位。Study boot 先讀有效包與 public 題庫，再重建 map／索引。
+依修正票 #58，家庭內容由管理端寫入既有 Worker KV 的 `c:study:g4-s1-math-u1`，裝置 cache 仍為 `study:private-pack:g4-s1-math-u1`，同 origin／容器共用，沒有 child 欄位。Study boot 先讀有效包與 public 題庫，再重建 map／索引；背景自動取得不增加 boot 等待。
+
+家庭授權唯讀 API 為 `GET /v1/packs/g4-s1-math-u1`，沿用既有 family token（Study 使用 `Authorization: Bearer ...`）與 endpoint，回傳原始 pack JSON、`Cache-Control: no-store`。缺 token／錯 token 為 401，未部署為 404，損毀／服務異常為 500，其他內容操作為 405；其他 packId 為 404。OPTIONS 沿用全域 204 CORS preflight，不讀題包。`/v1/status` 仍只列 `p:` 進度 metadata，不列內容。
+
+開啟 Study、選四上、保存家庭金鑰後會自動取得，亦可按「重試取得題包」。整輪下載含 body 最多等待 8 秒，逐段 UTF-8 接收且限制 128 KiB；無 token、401、404、網路／服務異常與逾時分別提示。下載先驗契約，回到首頁安全時點再以既有 `save` 核對最新持久包並原子保存；作答途中不替換 map、題包 cache 或批次。重試的新請求使先前回應失效。所有失敗保留原有效包與進度，不用 fixtures fallback。手動 JSON 匯入保留為家長備援。
 
 進度仍為 `study:progress:<child>`，同步仍是 `study:sync:<child>`；`appId: study`、`schemaVersion: 1`、legacy key／歸屬不變。新增單一選擇欄位 `studyTerm`：`g3-s2` 或 `g4-s1`，缺省三下；原 `semester` 仍保留 `mid/final` 的意義。
 
 題包不進 state、進度匯出、備份、同步 payload 或 public 題庫／解說／報告。私用題目的 GitHub 預填回報只帶 stable ID、packId、revision 與「家長標記題目有問題」；不送出 `source` 等任意匯入文字。舊公開題仍沿用原回報內容。
 
-缺包時顯示「尚未匯入本機題包」，保留所有未載入題的 mastered、challenge、stats、errorBank、flagged，禁止四上開始／重置。匯入有效包後，使用原 ID 恢復已答對計數與剩餘批次。每次送出只保存一次完整 stats／mastered／queue，失敗顯示持續警示；未送出的輸入與畫面回饋仍不保存。
+缺包時顯示「尚未載入家庭題包」與可重試／家庭設定提示，保留所有未載入題的 mastered、challenge、stats、errorBank、flagged，禁止四上開始／重置。載入有效包後，使用原 ID 恢復已答對計數與剩餘批次。每次送出只保存一次完整 stats／mastered／queue，失敗顯示持續警示；未送出的輸入與畫面回饋仍不保存。
 
 ## 合成驗證與 W2 使用方式
 
@@ -111,3 +115,14 @@ W2 仍須先加入計畫指定的精確 ignore 規則、驗證排除，再生成
 - 另一個本機 8767 origin 用 `test-security` 匯入含 `<img src="/w1-probe" onerror=...>`／`<svg onload=...>` 的合成文字；實際 DOM 題文／選項沒有 img、svg、script 元素，解說為純文字，本機回報摘要也安全；測試 server 沒有收到 `/w1-probe` 請求。未開啟 GitHub 預填連結或送出外部回報。
 
 剩餘門檻由統籌接續 W2 真題 build／內容核對、W3 獨立 review、W4 實際 iPad 容器驗收；桌面 viewport 不代表 iPad Safari／主畫面容器通過，也不承諾離線冷啟動。
+
+## #58 自動載入候選：實作者 QA（2026-09-12）
+
+- 既有 harness 執行真 Study／wiring／validator，新增 10 個 Worker／自動載入行為測試，涵蓋 auth、固定路由、唯讀、KV 與進度隔離、無 token 設定後生效、重試、cache reload、半批、跨 child、串流超限／中斷／UTF-8、整輪逾時、revision／semantic／跨分頁競態，以及作答中延後採用。
+- 自我檢查發現背景重畫可能銷毀家長表單，已改成只更新練習區和題包文字，保留家庭設定、手動匯入及還原確認。新增 DOM ports 回歸測試；CUA 在實際頁面輸入還原草稿，重試成功後草稿原樣存在。
+- 完整 Node：264 passed。完整 `uv run pytest`：166 passed、1 skipped（worktree 未帶原卷的 extraction regression）。Public 題庫與解說 blob 未變，1,924 題的 ID／unit／subject 指紋測試通過。
+- Codex in-app browser、loopback 8778、`test-child` 與 synthetic 題包：首次無 token 提示 → 既有家庭設定保存測試金鑰 → 自動出現六題；兩題答對、一題答錯後 reload 顯示 2／6，開始接續時進入剩餘四題的首題。服務 503 後仍顯示六題與 2／6，手動 JSON file chooser 備援成功，進度不變。
+- 可重現 server：`node tests/helpers/serve-study-auto-pack.mjs 8778`，僅 bind `127.0.0.1`，開 `/test-start` 只初始化此隔離 origin 的合成資料；server 使用 production Worker.fetch／fake KV，將測試回應中的 sync endpoint 指向自己，CSP 限制連線只到本機。不連正式同步服務、不讀真題。
+- Wrangler `4.120.1 deploy --dry-run` 封裝成功，沒有部署。正式 ignored pack 經唯讀 production verifier，及本機 Worker.fetch＋fake token 回傳 200；4,102 bytes、revision 1、SHA256 `695DEC01844F5D136C2BE353F98BD0F7EDD017F13A82DA70184CBDAA06EA77D0` 不變。
+
+以上為實作者自己的 QA，並非獨立 review、正式環境 positive GET 或真 iPad 驗收；統籌另安排 clean-context review 與 Worker→正式內容→Pages 發布，W4 真容器 gate 保持 pending。

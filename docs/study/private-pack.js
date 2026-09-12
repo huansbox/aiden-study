@@ -1,4 +1,4 @@
-// 私用 U1 題包契約；內容只留在本機，與 child 進度分開保存。
+// 私用 U1 題包契約；家庭唯讀內容與 child 進度分開保存。
 (function(root) {
   "use strict";
   const KEY = "study:private-pack:g4-s1-math-u1";
@@ -65,5 +65,38 @@
     if (!safeSet(KEY, JSON.stringify(pack))) throw new Error("題包未保存：本機儲存空間不足或遭封鎖，原題包與進度保留。");
     return pack;
   }
-  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, parse, save };
+  async function fetchRemote(endpoint, token, signal) {
+    if (!token) throw new Error("尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。");
+    let response;
+    try {
+      response = await fetch(`${endpoint.replace(/\/+$/, "")}/v1/packs/g4-s1-math-u1`, {
+        method: "GET", headers: { Authorization: `Bearer ${token}` }, cache: "no-store", signal,
+      });
+    } catch { throw new Error("無法連線取得題包，請檢查網路後重試。"); }
+    if (response.status === 401) throw new Error("家庭金鑰不正確。請在家庭設定重新輸入。");
+    if (response.status === 404) throw new Error("家庭題包尚未發布，請家長確認部署後重試。");
+    if (!response.ok) throw new Error("題包服務異常，請稍後重試或請家長檢查服務。");
+    if (Number(response.headers.get("Content-Length")) > MAX_BYTES) throw new Error("題包超過 128 KiB，未載入。");
+    // 串流逐段限額：不先把無上限的 response.text() 全收進記憶體。
+    if (!response.body) throw new Error("題包回應沒有內容，未載入。");
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8", { fatal: true });
+    let size = 0, raw = "";
+    try {
+      while (true) {
+        let chunk;
+        try { chunk = await reader.read(); }
+        catch { throw new Error("讀取題包中斷，請檢查網路後重試。"); }
+        const { done, value } = chunk;
+        if (done) break;
+        size += value.byteLength;
+        if (size > MAX_BYTES) throw new Error("題包超過 128 KiB，未載入。");
+        try { raw += decoder.decode(value, { stream: true }); }
+        catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
+      }
+      try { return raw + decoder.decode(); }
+      catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
+    } finally { reader.cancel().catch(() => {}); }
+  }
+  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, parse, save, fetchRemote };
 })(globalThis);

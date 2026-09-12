@@ -522,8 +522,8 @@ body {
 </div>
 
 <script src="../shared/sync-v1.js"></script>
-<script src="../shared/wiring-v1.js?v=20260717b"></script>
-<script src="./private-pack.js"></script>
+<script src="../shared/wiring-v1.js?v=20260912"></script>
+<script src="./private-pack.js?v=20260912"></script>
 <script>
 (function() {
 "use strict";
@@ -538,6 +538,7 @@ const KidsWiring = window.KidsWiringV1 || null;
 // <wiring-config>
 const WIRING_CONFIG = { appId: "study", schemaVersion: 1, legacyChild: "aiden", legacyKey: "aiden_study_v2", btnClass: "st-btn", msgClass: "backup-msg" };
 // </wiring-config>
+WIRING_CONFIG.onTokenChange = () => loadPrivatePack();
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
@@ -1030,6 +1031,64 @@ let publicQuestions = [];
 let publicExplanations = {};
 let activePack = null;
 let packNotice = "";
+let packCacheNotice = "";
+let pendingPackRaw = null;
+let packRequest = 0;
+let packController = null;
+let currentPage = null;
+
+function applyPendingPack() {
+  if (pendingPackRaw === null) return;
+  const raw = pendingPackRaw;
+  pendingPackRaw = null;
+  try { importPrivatePack(raw); }
+  catch (e) { packNotice = `未載入：${e.message} 原題包與進度保留。`; }
+}
+async function loadPrivatePack() {
+  const request = ++packRequest;
+  if (packController) packController.abort();
+  pendingPackRaw = null;
+  const controller = new AbortController();
+  packController = controller;
+  let timer;
+  const token = wiring.getToken();
+  packNotice = token ? "正在取得家庭題包；已有本機題包仍可練習。" : "尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。";
+  if (currentPage === "page-home") renderHome(true);
+  if (!token) { packController = null; return; }
+  try {
+    // 包含 body 讀取的整輪期限；不 await 此函式即可繼續使用本機／三下。
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        reject(new Error("取得題包逾時，請檢查網路後重試。"));
+        controller.abort();
+      }, 8000);
+    });
+    const raw = await Promise.race([
+      StudyPrivatePack.fetchRemote(window.KidsSyncV1.DEFAULT_ENDPOINT, token, controller.signal),
+      timeout,
+    ]);
+    if (request !== packRequest) return;
+    StudyPrivatePack.parse(raw, publicQuestions, activePack);
+    pendingPackRaw = raw;
+    packNotice = "家庭題包已取得，回首頁後載入；目前作答不受影響。";
+  } catch (e) {
+    if (request !== packRequest) return;
+    packNotice = `未載入：${e.message || "題包回應無法讀取。"} 原題包與進度保留。`;
+  } finally {
+    clearTimeout(timer);
+    controller.abort(); // 包含 HTTP／Content-Length 提早拒收時未消耗的 body。
+    if (request === packRequest) {
+      packController = null;
+      if (currentPage === "page-home") renderHome(true);
+    }
+  }
+}
+window._retryPrivatePack = loadPrivatePack;
+window._openFamilySettings = () => {
+  const section = document.getElementById("family-settings");
+  section.open = true;
+  document.getElementById("sync-token-input").focus();
+};
 let allQuestions = [];
 function rebuildQuestionIndices() {
   allQuestions = [...publicQuestions, ...(activePack ? activePack.questions : [])];
@@ -1098,6 +1157,7 @@ function shuffle(arr) {
 }
 
 function showPage(id) {
+  currentPage = id;
   _rewardGen++;   // 任何換頁都作廢「載入中的 reward 預載 callback」，避免它稍後把使用者硬拉回 summary
   document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
@@ -1448,7 +1508,7 @@ function renderFlaggedSection() {
     <details class="flagged-section">
       <summary>已回報題目（${flagged.length}）</summary>
       ${rows}
-      ${activePack && flagged.some(f => f.unit === 15) ? '<p class="backup-hint">私用題目內容留在本機，GitHub 回報只附題號與題包版本。</p>' : ""}
+      ${activePack && flagged.some(f => f.unit === 15) ? '<p class="backup-hint">私用題目不公開，GitHub 回報只附題號與題包版本。</p>' : ""}
       <div class="flagged-actions">
         <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
         <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
@@ -1459,15 +1519,19 @@ function renderFlaggedSection() {
 // 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔＋雲端同步狀態（家長用）
 // （iPad 主畫面 App 的儲存可能被 iOS 清掉；雲端同步為主載體，手動備份為備援）
 function renderPrivatePackSection() {
-  return `<details class="flagged-section" ${packNotice ? "open" : ""}>
-    <summary>家長：四上題包匯入</summary>
+  return `<details class="flagged-section" id="private-pack-details" ${packNotice ? "open" : ""}>
+    <summary>家長：四上家庭題包</summary>
     <div class="backup-body">
-      <p class="backup-hint">${activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未匯入題包。"}
-      題包供同容器的孩子共用，作答進度仍各自保存。請在孩子慣用的 Safari 或主畫面容器匯入。</p>
-      <p class="backup-hint">進度備份與雲端同步不含題包。換裝置或清除網站資料後，需要重新匯入原始題包檔。
-      首次練四上前，請將其他使用中的 Study 頁面重新載入。</p>
-      <label class="st-btn">選擇 JSON 題包 <input id="private-pack-file" type="file" accept=".json,application/json" onchange="window._importPrivatePackFile(this)"></label>
-      <p class="backup-msg" role="status">${escapeHtml(packNotice)}</p>
+      <p class="backup-hint" id="pack-availability">${activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未載入題包。"}</p>
+      <p class="backup-hint">開啟 Study 或選四上時會用家庭金鑰自動取得。題包供同容器的孩子共用，作答進度仍各自保存。</p>
+      <p class="backup-msg" role="status" id="pack-status">${escapeHtml(packNotice)}</p>
+      ${packCacheNotice ? `<p class="backup-msg">${escapeHtml(packCacheNotice)}</p>` : ""}
+      <button class="st-btn" onclick="window._retryPrivatePack()">重試取得題包</button>
+      <button class="st-btn" onclick="window._openFamilySettings()">家庭設定</button>
+      <details><summary>手動匯入備援</summary>
+        <p class="backup-hint">進度備份不含題包。自動取得暫時不可用時，可選擇原始題包檔。</p>
+        <label class="st-btn">選擇 JSON 題包 <input id="private-pack-file" type="file" accept=".json,application/json" onchange="window._importPrivatePackFile(this)"></label>
+      </details>
     </div>
   </details>`;
 }
@@ -1486,7 +1550,7 @@ window._importPrivatePackFile = async input => {
 
 function renderBackupSection() {
   return `
-    <details class="backup-section">
+    <details class="backup-section" id="family-settings">
       <summary>進度備份 / 還原</summary>
       <div class="backup-body">
         ${wiring.syncStatusHtml()}
@@ -1552,7 +1616,8 @@ function renderErrorModeButtons(visibleUnits, mode, label) {
   return html;
 }
 
-function renderHome() {
+function renderHome(preserveParentForms = false) {
+  applyPendingPack();
   const home = document.getElementById("page-home");
   const { term, subjects, subjKey, subj, semKeys, sem, units } = currentScope();
   let html = `<h1>${term.label}${subj.label}練習</h1><div class="semester-toggle">`;
@@ -1581,7 +1646,7 @@ function renderHome() {
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
   if (visibleUnits.length === 0) {
     html += state.studyTerm === "g4-s1" && !activePack
-      ? '<div class="empty-state">第 1 單元：一億以內的數<br>尚未匯入本機題包。已有進度保留，匯入後即可接續。請家長在下方匯入題包。</div>'
+      ? `<div class="empty-state">第 1 單元：一億以內的數<br>尚未載入家庭題包。已有進度保留，載入後即可接續。<br>${escapeHtml(packNotice)}</div>`
       : '<div class="empty-state">目前沒有可練習的題目；已回報題目可在下方還原。</div>';
   }
   for (const u of visibleUnits) {
@@ -1666,6 +1731,15 @@ function renderHome() {
 
     html += '</div>';
   }
+  if (preserveParentForms) {
+    // 背景題包結果只更新練習區與文字提示，不銷毀正在輸入的金鑰、備份或還原確認。
+    document.getElementById("study-home-content").innerHTML = html;
+    document.getElementById("pack-status").textContent = packNotice;
+    document.getElementById("pack-availability").textContent = activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未載入題包。";
+    if (!activePack || packNotice.startsWith("未載入")) document.getElementById("private-pack-details").open = true;
+    return;
+  }
+  html = `<div id="study-home-content">${html}</div>`;
   html += renderFlaggedSection();
   html += renderPrivatePackSection();
   html += renderBackupSection();
@@ -1688,7 +1762,7 @@ window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
   startQuiz("error", units, null, normalizePracticeMode(practiceMode));
 };
-window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); };
+window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); if (term === "g4-s1") loadPrivatePack(); };
 window._setSemester = (s) => {
   State.setSemester(s);
   renderHome();
@@ -1995,7 +2069,7 @@ function buildReportUrl() {
   const title = `題目回報：${qs.length} 題（${today}）`;
 
   const full = qs.map(q => {
-    if (q.unit === 15) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容僅留本機）`;
+    if (q.unit === 15) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容不公開）`;
     let s = `### ${q.id}\n`;
     s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
@@ -3248,7 +3322,7 @@ async function init() {
     const rawPack = wiring.safeGet(StudyPrivatePack.KEY);
     if (rawPack !== null) {
       try { activePack = StudyPrivatePack.parse(rawPack, publicQuestions); }
-      catch { packNotice = "本機題包無法載入，進度保留。請保留原始題包檔並請家長協助處理。"; }
+      catch { packCacheNotice = "本機題包無法載入，進度保留。請保留原始題包檔並請家長協助處理。"; }
     }
     rebuildQuestionIndices();
     // 可選題包缺席不代表紀錄無效；僅整理既有公開題目的歷史錯題規則。
@@ -3261,6 +3335,7 @@ async function init() {
 
     renderHome();
     handleRestoreHash();  // 若帶 #restore=（還原捷徑帶回）→ 二次確認後覆蓋
+    loadPrivatePack();
   } catch (e) {
     console.error("Failed to load:", e);
     showPage("page-error");

@@ -134,7 +134,8 @@ function childPickerInnerHtml(currentChild, name) {
 
 // ══════ 效果層：createWiring（每 app 開機呼叫一次，config 見各 app 的 <wiring-config>）══════
 // cfg：appId、schemaVersion、legacyChild、legacyKey?（null＝無播種）、
-//      btnClass?（健康燈按鈕 CSS class，預設 parent-btn）、msgClass?（回饋 span 的 class）
+//      btnClass?（健康燈按鈕 CSS class，預設 parent-btn）、msgClass?（回饋 span 的 class）、
+//      onTokenChange?（保存金鑰後的 app hook；其餘 app 預設無動作）
 function createWiring(cfg) {
   const KidsSync = window.KidsSyncV1 || null; // sync-v1.js 沒載到＝僅無同步（守衛見 identityUnresolvable）
   const store = makeChildStore(cfg);
@@ -264,6 +265,7 @@ function createWiring(cfg) {
     const saved = document.getElementById("sync-msg");
     if (saved) saved.textContent = "金鑰已儲存";
     if (sync) sync.syncNow().catch(() => {}); // 剛設好金鑰 → 立刻試一輪，健康燈即時更新
+    if (cfg.onTokenChange) cfg.onTokenChange();
   };
   window._syncNow = async () => {
     if (!sync) return;
@@ -346,6 +348,7 @@ function createWiring(cfg) {
   // KidsSync／identity／readSyncMeta／markImportedFallback／makeSyncClient 等留在閉包內部
   return {
     currentChild,
+    getToken,
     store,
     identityUnresolvable,
     safeGet,
