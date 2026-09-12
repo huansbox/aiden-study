@@ -1045,7 +1045,8 @@ function rebuildQuestionIndices() {
   }
 }
 function importPrivatePack(raw) {
-  const candidate = StudyPrivatePack.save(raw, publicQuestions, activePack, (key, value) => wiring.safeSet(key, value));
+  const candidate = StudyPrivatePack.save(raw, publicQuestions, activePack,
+    key => localStorage.getItem(key), (key, value) => wiring.safeSet(key, value));
   activePack = candidate;
   rebuildQuestionIndices();
   packNotice = "題包已保存，這個容器可重開繼續使用。";
@@ -3019,7 +3020,10 @@ submitAnswer = function(selected) {
 // <reward-pick-pure>
 // 純函式區塊：不得引用外部全域，才能被 tests/test_reward_pick.mjs 抽出獨立 eval。
 // rng 以參數注入（rng()→[0,1)）以利測試；缺省當 0。
-function rwPoolFor(m, key) { return (m && m.pools && m.pools[key]) || []; }
+function rwPoolFor(m, key) {
+  const pools = m && m.pools;
+  return pools && Object.hasOwn(pools, key) && Array.isArray(pools[key]) ? pools[key] : [];
+}
 function rwMergedPool(m, keys) {
   const o = [];
   for (const k of keys) for (const f of rwPoolFor(m, k)) o.push(f);
@@ -3053,8 +3057,12 @@ function rwResolvePool(m, ctx) {
 // shuffle-bag：bag={key:剩餘陣列}；抽完重裝；回傳檔名或 null
 function rwDrawFromBag(bag, key, items, rng) {
   if (!key || !items.length) return null;
-  let rem = bag[key];
-  if (!rem || !rem.length) rem = bag[key] = items.slice();
+  let rem = Object.hasOwn(bag, key) ? bag[key] : null;
+  if (!Array.isArray(rem) || !rem.length) {
+    rem = items.slice();
+    // __proto__ 也可以是實際 pool 名稱；定義 own property 不觸發原型 setter。
+    Object.defineProperty(bag, key, { value: rem, writable: true, enumerable: true, configurable: true });
+  }
   const i = Math.floor((rng ? rng() : 0) * rem.length);
   const f = rem[i];
   rem.splice(i, 1);
@@ -3238,9 +3246,9 @@ async function init() {
     }
 
     const rawPack = wiring.safeGet(StudyPrivatePack.KEY);
-    if (rawPack) {
+    if (rawPack !== null) {
       try { activePack = StudyPrivatePack.parse(rawPack, publicQuestions); }
-      catch { packNotice = "本機題包無法載入，進度保留。請重新匯入有效題包。"; }
+      catch { packNotice = "本機題包無法載入，進度保留。請保留原始題包檔並請家長協助處理。"; }
     }
     rebuildQuestionIndices();
     // 可選題包缺席不代表紀錄無效；僅整理既有公開題目的歷史錯題規則。

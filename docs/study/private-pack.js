@@ -49,8 +49,19 @@
     }
     return pack;
   }
-  function save(raw, publicQuestions, previous, safeSet) {
+  function save(raw, publicQuestions, previous, readStored, safeSet) {
     const pack = parse(raw, publicQuestions, previous);
+    // 另一分頁可能已匯入／升版；寫入前讀最新持久包，不以本頁快照代替。
+    // readStored 必須保留讀取失敗，不能將 SecurityError 吞成「沒有包」。
+    let storedRaw;
+    try { storedRaw = readStored(KEY); }
+    catch { throw new Error("無法讀取本機題包，未匯入。請確認儲存空間可用後重試。"); }
+    if (storedRaw !== null) {
+      let stored;
+      try { stored = parse(storedRaw, publicQuestions); }
+      catch { throw new Error("本機題包已損毀或版本不支援，未覆寫。請先保留原檔並請家長協助處理。"); }
+      parse(raw, publicQuestions, stored);
+    }
     if (!safeSet(KEY, JSON.stringify(pack))) throw new Error("題包未保存：本機儲存空間不足或遭封鎖，原題包與進度保留。");
     return pack;
   }

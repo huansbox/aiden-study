@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { boot, storage, publicQuestions } from "./helpers/study-harness.mjs";
+import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
 import { syntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
@@ -143,6 +143,80 @@ test("same pack reorder is idempotent; higher revision explanation update preser
   e.app.importPrivatePack(JSON.stringify(p));assert.equal(e.st.getItem(key(e.child)),before);
   p.revision=2;p.explanations[ids[0]]="更新合成解說";e.app.importPrivatePack(JSON.stringify(p));
   assert.equal(e.app.State.doneCount(15),1); assert.throws(()=>e.app.importPrivatePack(JSON.stringify(syntheticPack())),/較舊/);
+});
+test("two initially empty tabs: persisted pack blocks stale tab from replacing same-ID answers", async () => {
+  const st = storage();
+  const a = await boot(st);
+  const b = await boot(st);
+  a.app.importPrivatePack(JSON.stringify(syntheticPack()));
+  const savedPack = st.getItem(packKey);
+  const savedProgress = st.getItem(key(a.child));
+  const beforeMap = b.app.map;
+  const different = syntheticPack(); different.questions[0].answer = "3";
+  assert.throws(() => b.app.importPrivatePack(JSON.stringify(different)), /相同 ID/);
+  assert.equal(b.app.activePack, null);
+  assert.equal(b.app.map, beforeMap);
+  assert.equal(st.getItem(packKey), savedPack);
+  assert.equal(st.getItem(key(a.child)), savedProgress);
+  b.app.importPrivatePack(savedPack);
+  assert.equal(b.app.activePack.revision, 1);
+});
+test("two rev1 tabs: latest persisted revision prevents downgrade or conflicting update", async () => {
+  const a = await ready();
+  const b = await boot(a.st);
+  const oldActive = b.app.activePack;
+  const oldMap = b.app.map;
+  const update = syntheticPack(); update.revision = 2; update.explanations[ids[0]] = "合成新版解說";
+  a.app.importPrivatePack(JSON.stringify(update));
+  const savedPack = a.st.getItem(packKey);
+  const savedProgress = a.st.getItem(key(a.child));
+  assert.throws(() => b.app.importPrivatePack(JSON.stringify(syntheticPack())), /較舊版本/);
+  const conflict = syntheticPack(); conflict.revision = 2;
+  assert.throws(() => b.app.importPrivatePack(JSON.stringify(conflict)), /提高 revision/);
+  assert.equal(b.app.activePack, oldActive);
+  assert.equal(b.app.map, oldMap);
+  assert.equal(a.st.getItem(packKey), savedPack);
+  assert.equal(a.st.getItem(key(a.child)), savedProgress);
+  b.app.importPrivatePack(savedPack);
+  assert.equal(b.app.activePack.revision, 2);
+});
+test("unreadable or corrupt stored pack is never treated as empty during import", async () => {
+  const e = await ready();
+  const active = e.app.activePack;
+  const map = e.app.map;
+  const progress = e.st.getItem(key(e.child));
+  for (const corrupt of ["", "bad JSON", '{"schemaVersion":2}']) {
+    e.st.map.set(packKey, corrupt);
+    assert.throws(() => e.app.importPrivatePack(JSON.stringify(syntheticPack())), /本機題包/);
+    assert.equal(e.st.getItem(packKey), corrupt);
+    assert.equal(e.app.activePack, active);
+    assert.equal(e.app.map, map);
+    assert.equal(e.st.getItem(key(e.child)), progress);
+  }
+  const read = e.st.getItem;
+  e.st.getItem = function(k) { if (k === packKey) throw Error("SecurityError"); return read.call(this, k); };
+  assert.throws(() => e.app.importPrivatePack(JSON.stringify(syntheticPack())), /無法讀取本機題包/);
+  assert.equal(e.app.activePack, active);
+});
+test("valid prototype-named subtopics complete all six questions with the real reward manifest and fallback", async () => {
+  const mathTopics = new Set(publicQuestions.filter(q => q.subject === "math").map(q => q.subtopic));
+  const mathRewards = [...mathTopics].flatMap(k => Object.hasOwn(rewardManifest.pools, k) ? rewardManifest.pools[k] : []);
+  assert.ok(mathRewards.length);
+  for (const subtopic of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+    const e = await boot();
+    const pack = syntheticPack(); pack.questions.forEach(q => { q.subtopic = subtopic; });
+    e.app.importPrivatePack(JSON.stringify(pack)); e.app.State.setStudyTerm("g4-s1");
+    e.app.startQuiz("full", 15);
+    while (e.app.quiz.queue.length) {
+      e.app.submitAnswer(answer(e.app.map.get(e.app.quiz.queue[0])));
+      e.app.advance(); // Includes the final "完成這批" action and actual renderSummary.
+    }
+    assert.match(e.node("page-summary").innerHTML, /通關！/);
+    assert.equal(e.node("page-summary").classList.contains("hidden"), false);
+    assert.equal(e.app.State.doneCount(15), 6);
+    assert.equal(e.loadedImages.length, 1);
+    assert.ok(mathRewards.some(file => e.loadedImages[0] === `../shared/rewards/${file}`));
+  }
 });
 test("blocked progress save has visible warning, one atomic answer write and no false persisted completion",async()=>{
   const e=await ready();e.app.startQuiz("full",15);const saved=e.st.getItem(key(e.child));

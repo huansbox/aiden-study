@@ -69,6 +69,8 @@
 - 提高 `revision` 才可更新 `source`、`subtopic`、`explanations`。較舊版本拒收。
 - 已載入包中相同 ID 的 `type`、`text`、`options`、`answer` 與每格的 `input/answer` 必須精確相同。連題幹中的空白、錯字變更都不自動推定語意相同；目前無強制覆寫入口。若需修題，由統籌另依來源核對決定版本策略，不能只換 revision 偷渡。
 - 未載入／換容器時只能驗證這份包本身，沒有跨裝置歷史內容 registry；W2 仍須負責 stable ID 的內容一致性。合成包只用於測試容器，不要先匯進實際孩子容器後再換真包，因為合成與真題同 ID 但內容不同。
+- 每次寫入前重新讀取同容器儲存 key 的最新題包，核對 ID 內容與 revision；另一分頁匯入或升版後，本頁的舊記憶體快照不能用來覆寫異題或降版。仍保留本頁已載入內容的相容核對；兩者都通過才保存。
+- 最新持久包若無法讀取、是空字串、JSON 損毀或不支援版本，拒絕覆寫並保留原資料；不把它當成「尚未匯入」。目前沒有自動修復或強制清除入口，須由家長保留原檔後另行處理。
 - 壞 JSON、超限、未知 version、缺題／重複 ID、未支援欄位／題型、錯誤範圍、無效答案、缺／空解說、同 ID 異題或儲存失敗，一律保留原 active 包、索引和已保存進度。成功寫入 localStorage 後才替換記憶體內容。
 - 題文、選項、解說可含看似 HTML 的字串，但都顯示為文字；不接受額外 `image`、URL 或 HTML 設定欄位。題文先 escape，再加入程式產生的換行與 chip。
 
@@ -101,8 +103,9 @@ W2 仍須先加入計畫指定的精確 ignore 規則、驗證排除，再生成
 
 2026-09-12 實作者驗證證據（不等於獨立 review 或 iPad 驗收）：
 
-- 新增 12 個行為測試，執行實際 Study inline script、State／Picker／submitAnswer、真 wiring／sync client，使用 fake storage 與 DOM ports；含缺包 adopt→save→export→commitImport→boot→reimport、two-child 隔離、單次保存失敗、原選擇錯題門檻與國語手寫進度隔離。
-- 全套 Node 測試 248 通過；pytest 140 通過、1 個 extraction regression 因缺原卷資料略過。public 1,924 題的 ID／unit／subject 指紋固定，public 題庫／解說檔案無修改。
+- 新增 16 個行為測試，執行實際 Study inline script、State／Picker／submitAnswer、真 wiring／sync client，使用 fake storage 與 DOM ports；含缺包 adopt→save→export→commitImport→boot→reimport、two-child 隔離、單次保存失敗、原選擇錯題門檻與國語手寫進度隔離，以及兩個 app 實例共用 storage 的過期分頁匯入衝突。
+- review 修正後，harness 預設讀取真實 `rewards.json`，以 Image port 觸發載入回呼；合法 subtopic `__proto__`／`constructor`／`toString`／`hasOwnProperty` 都走完六題與最後完成畫面，獎勵查找只取 own array pool，缺池按既有順序回退。另補兩項 reward 純函式測試，涵蓋非 array／繼承屬性和實際宣告的特殊名稱 pool，不以黑名單限制 subtopic。
+- 全套 Node 測試 254 通過；W1 原 pytest 驗證 140 通過、1 個 extraction regression 因缺原卷資料略過（本次 review 修正無 Python 變更）。public 1,924 題的 ID／unit／subject 指紋固定，public 題庫／解說檔案無修改。
 - Codex in-app browser，以 `test-child`、本機 8766 origin 匯入合成六題，兩題正確＋一題錯答後重載顯示 2／6 並接續剩餘四題。完成最後一題後直接重載，仍顯示已通關；切三下仍為原本未練狀態。含既有三下紀錄的逐欄不變由上述行為測試驗證。
 - 768×1024 桌面 viewport 可完整輸入八位數；輸入後未送出直接重載，空格清空且接續同題；比較符號可按、錯答題留到隊尾。
 - 另一個本機 8767 origin 用 `test-security` 匯入含 `<img src="/w1-probe" onerror=...>`／`<svg onload=...>` 的合成文字；實際 DOM 題文／選項沒有 img、svg、script 元素，解說為純文字，本機回報摘要也安全；測試 server 沒有收到 `/w1-probe` 請求。未開啟 GitHub 預填連結或送出外部回報。

@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 const read = path => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
 export const publicQuestions = JSON.parse(read("docs/study/questions.json"));
+export const rewardManifest = JSON.parse(read("docs/shared/rewards.json"));
 export function storage() {
   const map = new Map();
   return { map, writes: [], fail: () => false,
@@ -29,10 +30,12 @@ export async function boot(st = storage(), child = "test-child") {
     createElement: tag => node(`created-${tag}`), body: { prepend(n) { nodes.set(n.id, n); } }, addEventListener() {}, activeElement: null };
   const errors = [];
   const requests = [];
+  const loadedImages = [];
   const ctx = vm.createContext({ document, localStorage: st, location: { search: `?child=${child}`, hash: "", pathname: "/study/", reload() {} },
     console: { log() {}, warn() {}, error: (...e) => errors.push(e) }, TextEncoder, TextDecoder, structuredClone, URL, URLSearchParams, Blob, AbortController,
     setTimeout: () => 1, clearTimeout() {}, addEventListener() {}, scrollTo() {},
-    fetch: async url => { requests.push(url); return { ok: true, json: async () => url === "./questions.json" ? structuredClone(publicQuestions) : {} }; },
+    Image: class { set src(path) { loadedImages.push(path); this.onload(); } },
+    fetch: async url => { requests.push(url); return { ok: true, json: async () => structuredClone(url === "./questions.json" ? publicQuestions : url === "../shared/rewards.json" ? rewardManifest : {}) }; },
   });
   ctx.window = ctx;
   vm.runInContext(read("docs/shared/sync-v1.js"), ctx);
@@ -47,5 +50,5 @@ export async function boot(st = storage(), child = "test-child") {
   vm.runInContext(inline.replace(/\ninit\(\);\s*\n\}\)\(\);/, `\n${expose}\n})();`), ctx);
   await ctx.app.init();
   if (errors.length) throw Error(errors.map(e => e.join(" ")).join("\n"));
-  return { app: ctx.app, window: ctx, st, nodes, node, requests, syncConfig, child };
+  return { app: ctx.app, window: ctx, st, nodes, node, requests, loadedImages, syncConfig, child };
 }

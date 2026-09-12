@@ -21,6 +21,26 @@ test("rwPoolFor：缺 manifest/缺 key 回空陣列、不炸", () => {
   assert.deepEqual(rwPoolFor({ pools: {} }, "風"), []);
   assert.deepEqual(rwPoolFor({ pools: { "風": ["a"] } }, "風"), ["a"]);
 });
+test("reward lookup only uses own array pools and safely falls back for prototype names", () => {
+  const pools = Object.create({ inherited: ["not-a-real-pool"] });
+  pools.__generic__ = ["fallback"];
+  pools.invalid = "not-an-array";
+  for (const key of ["__proto__", "constructor", "toString", "hasOwnProperty", "inherited", "invalid"]) {
+    assert.deepEqual(rwPoolFor({ pools }, key), []);
+    assert.deepEqual(rwResolvePool({ pools }, { kind: "batch", subtopic: key, unitKeys: [key], subjectKeys: [key] }), { key: "__generic__", items: ["fallback"] });
+  }
+});
+test("an explicitly declared prototype-named pool and shuffle bag work without changing the bag prototype", () => {
+  const pools = JSON.parse('{"__proto__":["first","second"]}');
+  const result = rwResolvePool({ pools }, { kind: "batch", subtopic: "__proto__" });
+  assert.deepEqual(result, { key: "__proto__", items: ["first", "second"] });
+  const bag = {};
+  assert.equal(rwDrawFromBag(bag, result.key, result.items, zero), "first");
+  assert.equal(Object.getPrototypeOf(bag), Object.prototype);
+  assert.equal(Object.hasOwn(bag, "__proto__"), true);
+  assert.equal(rwDrawFromBag(bag, result.key, result.items, zero), "second");
+  assert.equal(rwDrawFromBag(bag, result.key, result.items, zero), "first");
+});
 
 test("rwMergedPool：多 key 合併、缺 key 跳過", () => {
   const m = { pools: { "風": ["w1", "w2"], "雨量降雨": ["r1"] } };
