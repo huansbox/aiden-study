@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "task": "grade4-sem1-math-exam1",
+  "updated_at": "2026-09-12T12:45:00+08:00",
+  "scope": {
+    "target_school": "新北市立桃子腳國民中小學國小部",
+    "target_academic_year": 115,
+    "grade": 4,
+    "semester": 1,
+    "exam_period": "第一次段考（期中1）",
+    "subject": "數學",
+    "target_publisher": "康軒",
+    "range_status": "待 curriculum-comparison 與桃子腳 115 實際段考範圍逐題核對",
+    "excluded_work": [
+      "題目轉寫",
+      "生成答案",
+      "加入網站題庫",
+      "自然與社會收集"
+    ]
+  },
+  "candidate_inventory": {
+    "source_url": "https://www.tcool.cc/",
+    "filters": {
+      "grade": "4",
+      "subject": "數學",
+      "semester": "1",
+      "period": "1",
+      "publisher": "康軒",
+      "city": "",
+      "years_included": [111, 112, 113, 114]
+    },
+    "candidate_count": 23,
+    "official_answer_candidate_count": 8,
+    "site_generated_answer_only_or_no_official_count": 15,
+    "inventory_note": "tcool 的 answer_token／站內答案按鈕不算官方答案；official 數量以 has_answer=official 篩選及獨立答案 PDF 連結核對。"
+  },
+  "papers": [
+    {
+      "record_id": "tcool-20000022",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第一次定期評量",
+      "subject": "數學",
+      "site_publisher_label": "康軒",
+      "paper_face_verification": {
+        "school": "已確認：卷面有桃子腳校徽與校名",
+        "academic_year": "已確認：113 學年度",
+        "grade_semester_period": "已確認：四年級、第 1 學期、第 1 次定期評量",
+        "publisher": "卷面未印出版社；tcool 標示待課程研究交叉核對"
+      },
+      "observed_concepts": [
+        "大數與位值",
+        "乘除計算與估算",
+        "角度與旋轉",
+        "公里、公尺、公分換算與應用"
+      ],
+      "source": {
+        "url": "https://www.tcool.cc/",
+        "locator": "exam_id=20000022；POST grade=4 subject=數學 semester=1 period=1 publisher=康軒",
+        "school_repository_url": "https://drive.google.com/drive/folders/1sf2hdC0bnGt89fxGdg0TBnHf_78TC-P0?usp=sharing"
+      },
+      "downloaded_at": "2026-09-12T12:17:01+08:00",
+      "question_file": "source/papers/tcool_20000022_q.pdf",
+      "answer_file": "source/papers/tcool_20000022_a.pdf",
+      "answer_type": "學校官方答案 PDF",
+      "answer_provenance": "tcool has_answer=official 篩選包含此 exam_id；獨立 answer PDF 與題目卷有相同桃子腳卷面，為紅字作答版，不是 answer_token／AI 頁面。",
+      "download_status": {
+        "question": "downloaded",
+        "answer": "downloaded"
+      },
+      "pdf_validation": {
+        "question": {
+          "magic": "%PDF-",
+          "pages": 3,
+          "readability": "全部 3 頁已渲染，文字與圖形清楚，文字層可讀",
+          "sha256": "FF10306F1CE4E470969794B91BFE0701190CECD1E4AC3370FA6BE09ACA88C062"
+        },
+        "answer": {
+          "magic": "%PDF-",
+          "pages": 3,
+          "readability": "全部 3 頁已渲染，紅字答案清楚，文字層可讀",
+          "sha256": "EE622F48D6193A2676BA9CB384499CB3E64C8EDFE69016750166856EE94E71C8"
+        }
+      },
+      "duplicate_status": "未與本批其他檔案重複",
+      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對，不因同為康軒直接判定適用",
+      "failure_reason": null
+    },
+    {
+      "record_id": "tcool-20002593",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 111,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第一次定期評量",
+      "subject": "數學",
+      "site_publisher_label": "康軒",
+      "paper_face_verification": {
+        "school": "已確認：答案卷卷面有桃子腳校徽與校名；題目卷與答案版版面一致",
+        "academic_year": "已確認：111 學年度",
+        "grade_semester_period": "已確認：四年級、第 1 學期、第 1 次定期評量",
+        "publisher": "卷面未印出版社；tcool 標示待課程研究交叉核對"
+      },
+      "observed_concepts": [
+        "大數與位值",
+        "乘除計算",
+        "角度與旋轉",
+        "全等三角形、角的分類與三角形"
+      ],
+      "source": {
+        "url": "https://www.tcool.cc/",
+        "locator": "exam_id=20002593；POST grade=4 subject=數學 semester=1 period=1 publisher=康軒",
+        "school_repository_url": null
+      },
+      "downloaded_at": "2026-09-12T12:18:54+08:00",
+      "question_file": "source/papers/tcool_20002593_q.pdf",
+      "answer_file": "source/papers/tcool_20002593_a.pdf",
+      "answer_type": "學校官方答案 PDF（掃描作答版）",
+      "answer_provenance": "tcool has_answer=official 篩選包含此 exam_id；獨立 answer PDF 為相同桃子腳卷面與紅筆手寫答案，不是 answer_token／AI 頁面。",
+      "download_status": {
+        "question": "downloaded",
+        "answer": "downloaded"
+      },
+      "pdf_validation": {
+        "question": {
+          "magic": "%PDF-",
+          "pages": 2,
+          "readability": "全部 2 頁已渲染，文字與圖形清楚，文字層可讀",
+          "sha256": "6AAC30ADEF08801AE8E6001F2E683CF6F3BDC9C522F8E60F344189DC7C8BA4C4"
+        },
+        "answer": {
+          "magic": "%PDF-",
+          "pages": 2,
+          "readability": "全部 2 頁已渲染，掃描影像與紅筆答案清楚；無可用文字層",
+          "sha256": "7FA73CC7D552AA590F99D8366D17943F075BBEBDCD072BA4245CCD29918B307B"
+        }
+      },
+      "duplicate_status": "未與本批其他檔案重複",
+      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對。111–112 的公里、三角形章節與 115 有移序，不能只因順序不同排除。",
+      "failure_reason": null
+    },
+    {
+      "record_id": "tcool-20002844",
+      "school": "新北市土城區安和國民小學",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第一次定期考查",
+      "subject": "數學",
+      "site_publisher_label": "康軒",
+      "paper_face_verification": {
+        "school": "已確認：卷面印有安和國民小學",
+        "academic_year": "已確認：114 學年度",
+        "grade_semester_period": "已確認：四年級、第一學期、第一次定期考查",
+        "publisher": "卷面未印出版社；tcool 標示待課程研究交叉核對"
+      },
+      "observed_concepts": [
+        "大數與位值",
+        "乘除計算",
+        "角度與旋轉",
+        "公里、公尺、公分、毫米換算與應用"
+      ],
+      "source": {
+        "url": "https://www.tcool.cc/",
+        "locator": "exam_id=20002844；POST grade=4 subject=數學 semester=1 period=1 publisher=康軒",
+        "school_repository_url": "https://drive.google.com/drive/folders/11orkSjAS9RdXMOVQkrvf39qbaDUXYWKU"
+      },
+      "downloaded_at": "2026-09-12T12:20:10+08:00",
+      "question_file": "source/papers/tcool_20002844_q.pdf",
+      "answer_file": "source/papers/tcool_20002844_a.pdf",
+      "answer_type": "學校官方答案 PDF",
+      "answer_provenance": "tcool has_answer=official 篩選包含此 exam_id；獨立 answer PDF 與題目卷版面相同並含紅字答案，不是 answer_token／AI 頁面。",
+      "download_status": {
+        "question": "downloaded",
+        "answer": "downloaded"
+      },
+      "pdf_validation": {
+        "question": {
+          "magic": "%PDF-",
+          "pages": 3,
+          "readability": "全部 3 頁已渲染，文字、量角器與圖表清楚，文字層可讀",
+          "sha256": "E47DDCCA2528F1DE7C531A5C9C18F4C85850C98514E64CE4C7A26BB59AB6C291"
+        },
+        "answer": {
+          "magic": "%PDF-",
+          "pages": 3,
+          "readability": "全部 3 頁已渲染，紅字答案清楚，文字層可讀",
+          "sha256": "1CA12E8BC4A9BF0A4D57A2EDE68FB8B806ABE76B4DB8347EE72FC74013A5E19D"
+        }
+      },
+      "duplicate_status": "未與本批其他檔案重複",
+      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對",
+      "failure_reason": null
+    },
+    {
+      "record_id": "anhoes-drive-112-math4-midterm",
+      "school": "新北市土城區安和國民小學",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第一次定期考查",
+      "subject": "數學",
+      "site_publisher_label": "康軒（tcool exam_id=20002109 交叉索引）",
+      "paper_face_verification": {
+        "school": "已確認：卷面印有安和國民小學",
+        "academic_year": "已確認：112 學年度",
+        "grade_semester_period": "已確認：四年級、第一學期、第一次定期考查",
+        "publisher": "卷面未印出版社；tcool 標示待課程研究交叉核對"
+      },
+      "observed_concepts": [
+        "大數與位值",
+        "乘除計算",
+        "角度與旋轉",
+        "三角形分類與對應",
+        "公里、公尺換算與應用"
+      ],
+      "source": {
+        "url": "https://drive.google.com/drive/folders/1vRn1eal2J6DKq_an7TsF6g47U5BuJtHa",
+        "question_url": "https://drive.google.com/file/d/1jtauDUvxqTm_4WSkVAlZeXOEKfppbKgo/view",
+        "answer_url": "https://drive.google.com/file/d/1nS-z1Ab3oJN2QLHrA0VZ4GhjA3qntkMP/view",
+        "locator": "安和官方 Drive：112學年度／上學期／期中考／112上數學4期中.pdf 與 112上數學4期中答案.pdf"
+      },
+      "downloaded_at": "2026-09-12T12:23:38+08:00",
+      "question_file": "source/papers/anhoes_112_math4_midterm_q.pdf",
+      "answer_file": "source/papers/anhoes_112_math4_midterm_a.pdf",
+      "answer_type": "學校官方答案 PDF",
+      "answer_provenance": "安和國小官方公開 Drive 同一資料夾直接提供題目檔與命名為答案的對應檔。",
+      "download_status": {
+        "question": "downloaded",
+        "answer": "downloaded"
+      },
+      "pdf_validation": {
+        "question": {
+          "magic": "%PDF-",
+          "pages": 2,
+          "readability": "全部 2 頁已渲染，文字與圖形清楚，文字層可讀",
+          "sha256": "59159E1A630519983626582A0DF080BEE55807534FC3A1654DC07C2E6D4572CD"
+        },
+        "answer": {
+          "magic": "%PDF-",
+          "pages": 2,
+          "readability": "全部 2 頁已渲染，紅字答案清楚，文字層可讀",
+          "sha256": "A79A731D87A80A078D3AA80A7CAFC9436886F2EA1019BCC9AF748A7AAD7D3D50"
+        }
+      },
+      "duplicate_status": "未與本批其他檔案重複；未重複下載 tcool 20002109",
+      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對。章節移序本身不是排除理由。",
+      "failure_reason": null
+    },
+    {
+      "record_id": "tcool-20003685",
+      "school": "臺北市民權國民小學",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "期中評量",
+      "subject": "數學",
+      "site_publisher_label": "康軒",
+      "paper_face_verification": {
+        "school": "已確認：卷面印有臺北市民權國小",
+        "academic_year": "已確認：114 學年",
+        "grade_semester_period": "已確認：四年級、第一學期、期中評量",
+        "publisher": "卷面未印出版社；tcool 標示待課程研究交叉核對"
+      },
+      "observed_concepts": [
+        "大數與位值",
+        "乘除計算與估算",
+        "角度",
+        "公里、公尺、公分、毫米換算與應用"
+      ],
+      "source": {
+        "url": "https://www.tcool.cc/",
+        "locator": "exam_id=20003685；POST grade=4 subject=數學 semester=1 period=1 publisher=康軒",
+        "school_repository_url": null
+      },
+      "downloaded_at": "2026-09-12T12:21:12+08:00",
+      "question_file": "source/papers/tcool_20003685_q.pdf",
+      "answer_file": null,
+      "answer_type": "無官方答案；tcool 只有站內產生答案按鈕，本批未取得也不採用",
+      "answer_provenance": null,
+      "download_status": {
+        "question": "downloaded",
+        "answer": "not_available_as_official"
+      },
+      "pdf_validation": {
+        "question": {
+          "magic": "%PDF-",
+          "pages": 2,
+          "readability": "全部 2 頁已渲染，文字與圖形清楚，文字層可讀",
+          "sha256": "B572ECF1BE46D0606C08EA26491BC9E42CEB2A8422CC3CB9D8AE1FABAD040D2F"
+        },
+        "answer": null
+      },
+      "duplicate_status": "未與本批其他檔案重複",
+      "range_status": "候選；待 A 的概念映射與 115 實際範圍逐題核對",
+      "failure_reason": "官方答案未提供；tcool 的 answer_token／站內答案不屬學校官方答案，本輪不下載"
+    }
+  ]
+}
