@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "packId": "g4-s1-math-u1",
+  "revision": 1,
+  "sourceTask": "learning-tasks/grade4-math-first-practice",
+  "sourceMapping": "learning-tasks/grade4-math-first-practice/source/mapping-metadata.json",
+  "items": [
+    {
+      "appId": "math-g4s1-tyk111-I-01-v1",
+      "practiceId": "U1-P01",
+      "originalId": "tyk111-I-01",
+      "paperId": "tyk111",
+      "questionPage": 1,
+      "answerPage": 1,
+      "concept": "M1a 含零大數讀法",
+      "contextPolicy": "保留完整題幹與四個讀法選項",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除原卷配分與考卷標頭，題幹核心敘述、數字與選項未改；紙本圈選改為數位單選。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-11a-v1",
+      "practiceId": "U1-P02",
+      "originalId": "tyk113-II-11a",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "concept": "M1a 大數寫法",
+      "contextPolicy": "保留完整國字數量與阿拉伯數字作答要求",
+      "digitalAdaptation": "fill_in_blank:number",
+      "sourceAdaptation": "由原四小題題組抽出可獨立作答的小題，保留國字數量與阿拉伯數字作答要求；紙本填空改為八位數內的數字輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-11d-v1",
+      "practiceId": "U1-P03",
+      "originalId": "tyk113-II-11d",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "concept": "M1a 化聚",
+      "contextPolicy": "保留所有位值數量、完整問句與阿拉伯數字作答要求",
+      "digitalAdaptation": "fill_in_blank:number",
+      "sourceAdaptation": "由原四小題題組抽出可獨立作答的小題，位值數量未改；紙本填空改為八位數內的數字輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-tyk111-II-02-v1",
+      "practiceId": "U1-P04",
+      "originalId": "tyk111-II-02",
+      "paperId": "tyk111",
+      "questionPage": 1,
+      "answerPage": 1,
+      "concept": "M1a 位值變化",
+      "contextPolicy": "保留原數、替換前後數字與增加量問句",
+      "digitalAdaptation": "fill_in_blank:number",
+      "sourceAdaptation": "移除原卷大題說明並改成獨立問句，原數與替換數字未改；紙本填空改為數字輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-tyk111-IV-01-v1",
+      "practiceId": "U1-P05",
+      "originalId": "tyk111-IV-01",
+      "paperId": "tyk111",
+      "questionPage": 2,
+      "answerPage": 2,
+      "concept": "M1b 大數比較",
+      "contextPolicy": "保留比較號兩側完整數量與三種比較符號範圍",
+      "digitalAdaptation": "fill_in_blank:comparison",
+      "sourceAdaptation": "補上原大題的比較符號指示，兩側數量未改；紙本方框改為數位比較符號輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-08-v1",
+      "practiceId": "U1-P07",
+      "originalId": "anh114-II-08",
+      "paperId": "anh114",
+      "questionPage": 2,
+      "answerPage": 2,
+      "concept": "M1a 數列與千位值",
+      "contextPolicy": "保留完整四項等差數列與中間缺項",
+      "digitalAdaptation": "fill_in_blank:number",
+      "sourceAdaptation": "移除原卷題號並補上找規律指示，數列未改；紙本缺項線改為數字輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    }
+  ]
+}
