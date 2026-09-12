@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "grade4-sem1-math-exam1",
-  "updated_at": "2026-09-12T12:45:00+08:00",
+  "updated_at": "2026-09-12T12:43:33+08:00",
   "scope": {
     "target_school": "新北市立桃子腳國民中小學國小部",
     "target_academic_year": 115,
@@ -10,7 +10,7 @@
     "exam_period": "第一次段考（期中1）",
     "subject": "數學",
     "target_publisher": "康軒",
-    "range_status": "待 curriculum-comparison 與桃子腳 115 實際段考範圍逐題核對",
+    "range_status": "已按 curriculum-comparison 暫定基準逐題核對；待獨立驗收與桃子腳 115 正式段考範圍公告",
     "excluded_work": [
       "題目轉寫",
       "生成答案",
