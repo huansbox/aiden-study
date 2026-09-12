@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="三下練習">
+<meta name="apple-mobile-web-app-title" content="課業練習">
 <meta name="theme-color" content="#f5f7fa">
 <link rel="manifest" href="manifest.json">
-<title>三下練習</title>
+<title>課業練習</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -523,6 +523,7 @@ body {
 
 <script src="../shared/sync-v1.js"></script>
 <script src="../shared/wiring-v1.js?v=20260717b"></script>
+<script src="./private-pack.js"></script>
 <script>
 (function() {
 "use strict";
@@ -550,7 +551,7 @@ let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建
 const STORAGE_KEY = wiring ? wiring.store.progressKey(currentChild) : null;
 const OLD_KEY = "aiden_study_records";
 
-const DEFAULT_DATA = { schemaVersion: WIRING_CONFIG.schemaVersion, challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], semester: "final", subject: "science" };
+const DEFAULT_DATA = { schemaVersion: WIRING_CONFIG.schemaVersion, challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], studyTerm: "g3-s2", semester: "final", subject: "science" };
 const DEFAULT_PRACTICE_MODE = "choice";
 const HANDWRITING_PRACTICE_MODE = "handwriting";
 
@@ -766,23 +767,48 @@ function removeQuestionFromAllModeMastered(mastered, unit, qId) {
 
 // 讀寫一律走 wiring.safeGet／safeSet（封鎖 Cookie 類設定下連 localStorage 取值都拋
 // SecurityError，safe* 吞掉＝退回「可練不持久」：本輪照常作答，離開就沒了）
+let progressSaveFailed = false;
+function showSaveStatus(ok) {
+  progressSaveFailed = !ok;
+  let notice = document.getElementById("save-warning");
+  if (!notice) {
+    notice = document.createElement("p");
+    notice.id = "save-warning";
+    notice.setAttribute("role", "alert");
+    notice.style.cssText = "position:sticky;top:0;z-index:100;background:#fff0d1;color:#7a3000;padding:12px;margin:0;text-align:center";
+    document.body.prepend(notice);
+  }
+  notice.textContent = ok ? "" : "進度未保存：本機儲存空間不足或遭封鎖。畫面上的作答只留在這次開啟，離開後可能無法接續。";
+  notice.hidden = ok;
+}
 const Storage = {
+  deferred: false,
+  transaction(action) {
+    this.deferred = true;
+    try { action(); } finally { this.deferred = false; }
+    return this.save(state);
+  },
   load() {
     const raw = wiring.safeGet(STORAGE_KEY);
     if (!raw) return null;
     try { return JSON.parse(raw); } catch { return null; }
   },
   save(data) {
+    if (this.deferred) return true;
     const json = JSON.stringify(data);
     const prev = wiring.safeGet(STORAGE_KEY);
     // 真有寫入且真有變更才標 dirty：擋掉等值 save（如重按已選中的科目/學期 tab）造成的空推雲；
     // 不能改用 in-memory 快照——adopt 的 saveData 直寫 localStorage、不經此處
-    if (wiring.safeSet(STORAGE_KEY, json) && sync && json !== prev) sync.markDirty();
+    const ok = wiring.safeSet(STORAGE_KEY, json);
+    showSaveStatus(ok);
+    if (ok && sync && json !== prev) sync.markDirty();
+    return ok;
   },
-  // init 期整理（orphan 清理等）專用：不標 dirty。舊快取題庫誤判 orphan 時只影響本機，
-  // 不會 push 上雲剝掉他機的有效 errorBank/flagged（use-site 本就有 questionMap 過濾）
+  // init 的相容整理不標 dirty；缺席題目的持久紀錄一律保留。
   saveQuiet(data) {
-    wiring.safeSet(STORAGE_KEY, JSON.stringify(data));
+    const ok = wiring.safeSet(STORAGE_KEY, JSON.stringify(data));
+    showSaveStatus(ok);
+    return ok;
   },
   // 回傳是否本次做了 child 維度播種（呼叫端據此走匯入定錨語意上雲）
   migrate() {
@@ -835,13 +861,22 @@ const State = {
     if (!state.errorBank) state.errorBank = [];
     if (!state.stats) state.stats = {};
     if (!state.semester) state.semester = "final";
-    if (!state.subject) state.subject = "science";
+    if (!STUDY_TERMS[state.studyTerm]) state.studyTerm = "g3-s2";
+    const subjects = STUDY_TERMS[state.studyTerm].subjects;
+    if (!subjects[state.subject]) state.subject = Object.keys(subjects)[0];
     if (!state.mastered) state.mastered = {};
     if (!state.flagged) state.flagged = [];
     // 舊 v2 存檔沒有 mastered → 題庫載入後從既有 challenge 進度反推
     if (saved && !saved.mastered) state._needMasteredBackfill = true;
   },
 
+  setStudyTerm(term) {
+    if (!STUDY_TERMS[term]) return;
+    state.studyTerm = term;
+    const subjects = STUDY_TERMS[term].subjects;
+    if (!subjects[state.subject]) state.subject = Object.keys(subjects)[0];
+    Storage.save(state);
+  },
   // Semester (期中/期末 切換，記住選擇)
   setSemester(s) {
     state.semester = s;
@@ -861,7 +896,7 @@ const State = {
   },
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
-    return filterModeErrorBank(state.errorBank, unitFilter, mode);
+    return filterModeErrorBank(state.errorBank, unitFilter, mode).filter(e => questionMap.has(e.questionId));
   },
   addToErrorBank(qId, unit, mode = DEFAULT_PRACTICE_MODE) {
     state.errorBank = addModeError(state.errorBank, qId, unit, mode);
@@ -874,7 +909,8 @@ const State = {
 
   // ── Flagged（回報有問題的題目：排除於所有題池與通關分母，可從首頁還原）
   getFlagged() {
-    return [...state.flagged];
+    const units = currentScope().units.map(u => u.id);
+    return state.flagged.filter(f => units.includes(f.unit) && questionMap.has(f.questionId));
   },
   isFlagged(qId) {
     return state.flagged.some(f => f.questionId === qId);
@@ -893,7 +929,8 @@ const State = {
     Storage.save(state);
   },
   unflagAll() {
-    state.flagged = [];
+    const visible = new Set(State.getFlagged().map(f => f.questionId));
+    state.flagged = state.flagged.filter(f => !visible.has(f.questionId));
     Storage.save(state);
   },
 
@@ -913,6 +950,7 @@ const State = {
     Storage.save(state);
   },
   resetChallenge(key) {
+    if (key === "15" && !activePack) return;
     state.challenge[key] = null; // 未開始
     Storage.save(state);
   },
@@ -926,6 +964,7 @@ const State = {
     Storage.save(state);
   },
   resetMastered(unit, subtopic = null, mode = null) {
+    if (unit === 15 && !activePack) return;
     const u = String(unit);
     if (!state.mastered[u]) return;
     const modes = masteredModesFromEntry(state.mastered[u]);
@@ -935,7 +974,7 @@ const State = {
       for (const m of targetModes) {
         modes[m] = (modes[m] || []).filter(id => {
           const q = questionMap.get(id);
-          return q && q.subtopic !== subtopic;
+          return !q || q.subtopic !== subtopic;
         });
       }
     } else {
@@ -987,7 +1026,36 @@ function questionIdsFor(unit, subtopic) {
 // ════════════════════════════════════════════════════
 // Runtime
 // ════════════════════════════════════════════════════
+let publicQuestions = [];
+let publicExplanations = {};
+let activePack = null;
+let packNotice = "";
 let allQuestions = [];
+function rebuildQuestionIndices() {
+  allQuestions = [...publicQuestions, ...(activePack ? activePack.questions : [])];
+  explanations = { ...publicExplanations, ...(activePack ? activePack.explanations : {}) };
+  questionMap = new Map(allQuestions.map(q => [q.id, q]));
+  subtopicsByUnit.clear(); subtopicsBySubject.clear(); unitToSubject.clear();
+  for (const q of allQuestions) {
+    if (!subtopicsByUnit.has(q.unit)) subtopicsByUnit.set(q.unit, new Set());
+    subtopicsByUnit.get(q.unit).add(q.subtopic);
+    if (!subtopicsBySubject.has(q.subject)) subtopicsBySubject.set(q.subject, new Set());
+    subtopicsBySubject.get(q.subject).add(q.subtopic);
+    unitToSubject.set(q.unit, q.subject);
+  }
+}
+function importPrivatePack(raw) {
+  const candidate = StudyPrivatePack.save(raw, publicQuestions, activePack, (key, value) => wiring.safeSet(key, value));
+  activePack = candidate;
+  rebuildQuestionIndices();
+  packNotice = "題包已保存，這個容器可重開繼續使用。";
+  return candidate;
+}
+function canPracticeUnits(unit) {
+  const requested = Array.isArray(unit) ? unit : [unit];
+  const allowed = currentScope().units.map(u => u.id);
+  return requested.length > 0 && requested.every(id => allowed.includes(id) && (id !== 15 || activePack));
+}
 let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
 let rewards = { pools: {} };           // reward 插畫 manifest（缺檔靜默；見 docs-dev/reward-illustrations-design.md）
@@ -1147,6 +1215,7 @@ const Picker = {
 // Quiz Engine
 // ════════════════════════════════════════════════════
 function startQuiz(mode, unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) {
+  if (!canPracticeUnits(unit)) return;
   quiz.mode = mode;
   quiz.practiceMode = normalizePracticeMode(practiceMode);
   quiz.unit = unit;
@@ -1189,33 +1258,35 @@ function submitAnswer(selected) {
     correct = selected === q.answer;
   }
 
-  // Update stats (all modes)
-  State.recordAnswer(q.id, correct, quiz.practiceMode);
+  // 一次送出只保存一次完整進度，避免 stats／mastered／queue 分次落地。
+  Storage.transaction(() => {
+    State.recordAnswer(q.id, correct, quiz.practiceMode);
 
-  // Mode-specific queue logic
-  if (quiz.mode === "full") {
-    quiz.queue.shift();
-    if (correct) {
-      State.addMastered(quiz.unit, q.id, quiz.practiceMode); // 雙向共享：整單元與 subtopic 進度同步計入
-    } else {
-      quiz.queue.push(q.id);
-      // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
-      // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，shouldAddModeError 讀到的 stats 已含本次。
-      if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
-    }
-    State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
-  } else if (quiz.mode === "error") {
-    quiz.queue.shift();
-    if (correct) {
-      State.removeFromErrorBank(q.id, quiz.practiceMode);
-      if (shouldMasterErrorPracticeCorrect(quiz.practiceMode)) {
-        State.addMastered(q.unit, q.id, quiz.practiceMode);
+    // Mode-specific queue logic
+    if (quiz.mode === "full") {
+      quiz.queue.shift();
+      if (correct) {
+        State.addMastered(quiz.unit, q.id, quiz.practiceMode); // 雙向共享：整單元與 subtopic 進度同步計入
+      } else {
+        quiz.queue.push(q.id);
+        // 只有「累計答錯 ≥ 2 次」才進錯題庫：一次粗心、同批內馬上自己改對的不算，
+        // 錯題庫＝真正需要加強的題。recordAnswer 已先累加，shouldAddModeError 讀到的 stats 已含本次。
+        if (shouldAddModeError(state.stats, q.id, quiz.practiceMode)) State.addToErrorBank(q.id, q.unit, quiz.practiceMode);
       }
-    } else {
-      quiz.queue.push(q.id);
+      State.saveBatch(challengeKey(quiz.unit, quiz.subtopic, quiz.practiceMode), quiz.queue);
+    } else if (quiz.mode === "error") {
+      quiz.queue.shift();
+      if (correct) {
+        State.removeFromErrorBank(q.id, quiz.practiceMode);
+        if (shouldMasterErrorPracticeCorrect(quiz.practiceMode)) {
+          State.addMastered(q.unit, q.id, quiz.practiceMode);
+        }
+      } else {
+        quiz.queue.push(q.id);
+      }
     }
-  }
 
+  });
   quiz.answered.push({ questionId: q.id, correct });
   renderFeedback(correct, q);
 }
@@ -1332,14 +1403,32 @@ const SUBJECTS = {
   } },
 };
 
+const STUDY_TERMS = {
+  "g3-s2": { grade: 3, term: 2, label: "三下", subjects: SUBJECTS },
+  "g4-s1": { grade: 4, term: 1, label: "四上", subjects: {
+    math: { label: "數學", semesters: { final: { label: "", units: [
+      { id: 15, num: 1, name: "第 1 單元：一億以內的數" }
+    ] } } }
+  } }
+};
+function currentScope() {
+  const term = STUDY_TERMS[state.studyTerm] || STUDY_TERMS["g3-s2"];
+  const subjects = term.subjects;
+  const subjKey = subjects[state.subject] ? state.subject : Object.keys(subjects)[0];
+  const subj = subjects[subjKey];
+  const semKeys = Object.keys(subj.semesters);
+  const sem = subj.semesters[state.semester] ? state.semester : semKeys[0];
+  return { term, subjects, subjKey, subj, semKeys, sem, units: subj.semesters[sem].units };
+}
 // 全域 unit id → 顯示用課本單元號（社會 10/11/12 → 4/5/6；自然/數學 預設＝id）
 const UNIT_NUM = {};
-for (const subj of Object.values(SUBJECTS))
+for (const term of Object.values(STUDY_TERMS))
+for (const subj of Object.values(term.subjects))
   for (const sem of Object.values(subj.semesters))
     for (const u of sem.units) UNIT_NUM[u.id] = u.num ?? u.id;
 const unitNum = (id) => UNIT_NUM[id] ?? id;
 
-// 首頁底部「已回報題目」：家長管理入口（N=0 隱藏；跨學期全列）
+// 首頁底部「已回報題目」：只管理目前範圍且已載入的題目。
 function renderFlaggedSection() {
   const flagged = State.getFlagged();
   if (flagged.length === 0) return "";
@@ -1350,7 +1439,7 @@ function renderFlaggedSection() {
     const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
     rows += `
       <div class="flagged-row">
-        <span class="flagged-text">[第 ${unitNum(q.unit)} 單元] ${snippet}</span>
+        <span class="flagged-text">[第 ${unitNum(q.unit)} 單元] ${escapeHtml(snippet)}</span>
         <button class="st-btn" onclick="window._unflag('${q.id}')">還原</button>
       </div>`;
   }
@@ -1358,6 +1447,7 @@ function renderFlaggedSection() {
     <details class="flagged-section">
       <summary>已回報題目（${flagged.length}）</summary>
       ${rows}
+      ${activePack && flagged.some(f => f.unit === 15) ? '<p class="backup-hint">私用題目內容留在本機，GitHub 回報只附題號與題包版本。</p>' : ""}
       <div class="flagged-actions">
         <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
         <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
@@ -1367,6 +1457,32 @@ function renderFlaggedSection() {
 
 // 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔＋雲端同步狀態（家長用）
 // （iPad 主畫面 App 的儲存可能被 iOS 清掉；雲端同步為主載體，手動備份為備援）
+function renderPrivatePackSection() {
+  return `<details class="flagged-section" ${packNotice ? "open" : ""}>
+    <summary>家長：四上題包匯入</summary>
+    <div class="backup-body">
+      <p class="backup-hint">${activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未匯入題包。"}
+      題包供同容器的孩子共用，作答進度仍各自保存。請在孩子慣用的 Safari 或主畫面容器匯入。</p>
+      <p class="backup-hint">進度備份與雲端同步不含題包。換裝置或清除網站資料後，需要重新匯入原始題包檔。
+      首次練四上前，請將其他使用中的 Study 頁面重新載入。</p>
+      <label class="st-btn">選擇 JSON 題包 <input id="private-pack-file" type="file" accept=".json,application/json" onchange="window._importPrivatePackFile(this)"></label>
+      <p class="backup-msg" role="status">${escapeHtml(packNotice)}</p>
+    </div>
+  </details>`;
+}
+window._importPrivatePackFile = async input => {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  input.disabled = true;
+  try {
+    if (file.size > StudyPrivatePack.MAX_BYTES) throw new Error("題包超過 128 KiB，未匯入。");
+    importPrivatePack(await file.text());
+  } catch (e) {
+    packNotice = `未匯入：${e.message || "無法讀取檔案。"} 原題包與進度保留。`;
+  }
+  renderHome();
+};
+
 function renderBackupSection() {
   return `
     <details class="backup-section">
@@ -1437,18 +1553,17 @@ function renderErrorModeButtons(visibleUnits, mode, label) {
 
 function renderHome() {
   const home = document.getElementById("page-home");
-  const subjKey = SUBJECTS[state.subject] ? state.subject : "science";
-  const subj = SUBJECTS[subjKey];
-  const semKeys = Object.keys(subj.semesters);
-  const sem = subj.semesters[state.semester] ? state.semester : semKeys[0];
-  const units = subj.semesters[sem].units;
-
-  let html = `<h1>三下${subj.label}練習</h1>`;
+  const { term, subjects, subjKey, subj, semKeys, sem, units } = currentScope();
+  let html = `<h1>${term.label}${subj.label}練習</h1><div class="semester-toggle">`;
+  for (const [key, item] of Object.entries(STUDY_TERMS)) {
+    html += `<button class="${key === state.studyTerm ? 'active' : ''}" onclick="window._setStudyTerm('${key}')">${item.label}</button>`;
+  }
+  html += '</div>';
 
   // 科目切換
   html += '<div class="subject-toggle">';
-  for (const key of Object.keys(SUBJECTS)) {
-    html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${SUBJECTS[key].label}</button>`;
+  for (const key of Object.keys(subjects)) {
+    html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${subjects[key].label}</button>`;
   }
   html += '</div>';
 
@@ -1464,7 +1579,9 @@ function renderHome() {
   // Unit sections（無題單元不渲染；整科無題 → 空狀態）
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
   if (visibleUnits.length === 0) {
-    html += '<div class="empty-state">題庫準備中，敬請期待！</div>';
+    html += state.studyTerm === "g4-s1" && !activePack
+      ? '<div class="empty-state">第 1 單元：一億以內的數<br>尚未匯入本機題包。已有進度保留，匯入後即可接續。請家長在下方匯入題包。</div>'
+      : '<div class="empty-state">目前沒有可練習的題目；已回報題目可在下方還原。</div>';
   }
   for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
@@ -1549,6 +1666,7 @@ function renderHome() {
     html += '</div>';
   }
   html += renderFlaggedSection();
+  html += renderPrivatePackSection();
   html += renderBackupSection();
   home.innerHTML = html;
   showPage("page-home");
@@ -1556,6 +1674,7 @@ function renderHome() {
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
 window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   if (State.isCleared(unit, subtopic, mode)) {
     // 已通關，重置再開始
@@ -1568,6 +1687,7 @@ window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
   startQuiz("error", units, null, normalizePracticeMode(practiceMode));
 };
+window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); };
 window._setSemester = (s) => {
   State.setSemester(s);
   renderHome();
@@ -1577,6 +1697,7 @@ window._setSubject = (s) => {
   renderHome();
 };
 window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
@@ -1873,6 +1994,7 @@ function buildReportUrl() {
   const title = `題目回報：${qs.length} 題（${today}）`;
 
   const full = qs.map(q => {
+    if (q.unit === 15) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容僅留本機）`;
     let s = `### ${q.id}\n`;
     s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
@@ -1884,7 +2006,7 @@ function buildReportUrl() {
     s += `- 來源：${q.source}`;
     return s;
   }).join("\n\n");
-  const compact = qs.map(q => `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const compact = qs.map(q => q.unit === 15 ? `- ${q.id} (${activePack.packId} revision ${activePack.revision})` : `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
   const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
 
   // 題數多時逐級降格，避免超出 URL 長度上限
@@ -2325,8 +2447,8 @@ function renderQuiz() {
   else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
 
   // Question text: remove option markers for MC
-  let displayText = q.text;
-  if (!isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
+  let displayText = q.unit === 15 ? escapeHtml(q.text).replace(/\n/g, "<br>") : q.text;
+  if (q.unit !== 15 && !isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
@@ -2406,7 +2528,7 @@ function renderQuiz() {
     }
     const optionsHtml = options.map(opt =>
       `<button class="opt-btn" data-value="${opt.value}">
-        <span class="opt-label">${opt.label}</span><span>${opt.text}</span>
+        <span class="opt-label">${opt.label}</span><span>${q.unit === 15 ? escapeHtml(opt.text) : opt.text}</span>
       </button>`
     ).join("");
     answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
@@ -3064,6 +3186,7 @@ function renderSummary() {
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
 window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+  if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
@@ -3098,11 +3221,11 @@ async function init() {
 
     const resp = await questionsPromise;
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    allQuestions = await resp.json();
+    publicQuestions = await resp.json();
 
     try {
       const expResp = await fetch("./explanations.json");
-      if (expResp.ok) explanations = await expResp.json();
+      if (expResp.ok) publicExplanations = await expResp.json();
     } catch (e) {
       console.warn("explanations.json not loaded:", e);
     }
@@ -3114,24 +3237,15 @@ async function init() {
       console.warn("rewards.json not loaded:", e);
     }
 
-    // Build question map
-    questionMap = new Map(allQuestions.map(q => [q.id, q]));
-
-    // reward roll-up 索引：unit/subject → subtopic 集合（選圖缺池時往上合併）
-    for (const q of allQuestions) {
-      if (!subtopicsByUnit.has(q.unit)) subtopicsByUnit.set(q.unit, new Set());
-      subtopicsByUnit.get(q.unit).add(q.subtopic);
-      if (!subtopicsBySubject.has(q.subject)) subtopicsBySubject.set(q.subject, new Set());
-      subtopicsBySubject.get(q.subject).add(q.subtopic);
-      unitToSubject.set(q.unit, q.subject);
+    const rawPack = wiring.safeGet(StudyPrivatePack.KEY);
+    if (rawPack) {
+      try { activePack = StudyPrivatePack.parse(rawPack, publicQuestions); }
+      catch { packNotice = "本機題包無法載入，進度保留。請重新匯入有效題包。"; }
     }
-
-    // Clean orphan errorBank / flagged entries
-    state.errorBank = state.errorBank.filter(e => questionMap.has(e.questionId));
-    state.flagged = state.flagged.filter(f => questionMap.has(f.questionId));
-    // 對齊「錯 ≥ 2 次才進錯題庫」新規則：清掉舊版只錯一次（且已答對過）就被收進去的題。
-    // 保守起見只在有作答統計可判斷時才清；無 stats 者保留不動。
-    state.errorBank = state.errorBank.filter(e => shouldKeepModeError(state.stats, e));
+    rebuildQuestionIndices();
+    // 可選題包缺席不代表紀錄無效；僅整理既有公開題目的歷史錯題規則。
+    const publicIds = new Set(publicQuestions.map(q => q.id));
+    state.errorBank = state.errorBank.filter(e => !publicIds.has(e.questionId) || shouldKeepModeError(state.stats, e));
     Storage.saveQuiet(state);  // init 整理不推雲（見 saveQuiet 註解）
 
     // v2→v3：題庫就緒後，從既有 challenge 進度反推 mastered（冪等、無損）
