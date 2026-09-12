@@ -4,7 +4,7 @@
 
 ## 方向
 
-Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。第一個規劃目標是四上數學 U1「一億以內的數」；舊三下題目與進度必須保留，四上練習須有清楚邊界，不混入舊練習。
+Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。下一個目標是 [#55 四上數學 U1「一億以內的數」](https://github.com/huansbox/aiden-study/issues/55)；舊三下題目與進度必須保留，四上練習須有清楚邊界，不混入舊練習。
 
 另有兩種支援路線，但只在實際需要時啟動：
 
@@ -28,14 +28,13 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 
 | 順序 | 工作 | 依賴 | 完成訊號 |
 |---|---|---|---|
-| 1 | 規劃四上 U1 第一小批歷屆題加入既有 Study | #53 的已核來源；沿用 app 已有題型 | 資料邊界、進度隔離與驗收方案確認 |
-| 2 | 實作 U1 第一小批並做 iPad 接續驗收 | 前項方案確認；孩子實際操作 | 孩子能只進入四上 U1，離開後可接續；舊三下題目與進度不變 |
-| 3 | 依孩子使用證據擴充題量或章節 | 前兩項通過；實際學習進度 | 先補同章缺口，再決定是否進下一章；不按章自動產紙本 |
-| 4 | [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35) | 真 iPad | 單 origin 導航、網址參數與 localStorage 容器三項都有真機紀錄 |
-| 5 | [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34) | #35 關閉、逐容器備份與同步健康 | 新網址與新圖示完成進度對帳後，才移除舊圖示或清理舊 repo |
+| 1 | [#55 四上 U1](https://github.com/huansbox/aiden-study/issues/55) 第一小批歷屆題加入既有 Study | 方案已定案；#53 的已核來源；沿用 app 已有題型 | 六題題包與程式整合通過桌面驗證、獨立 review 與真 iPad 驗收 |
+| 2 | 依孩子使用證據擴充 U1 題量或章節 | #55 完成；實際學習進度 | 先補同章缺口，再決定是否進下一章；不按章自動產紙本 |
+| 3 | [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35) | 真 iPad | 單 origin 導航、網址參數與 localStorage 容器三項都有真機紀錄 |
+| 4 | [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34) | #35 關閉、逐容器備份與同步健康 | 新網址與新圖示完成進度對帳後，才移除舊圖示或清理舊 repo |
 | 並行 | [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20) | 家長錄音與 iPad | 14 段正式錄音入庫並完成真機驗收 |
 
-四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
+四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。方案已定案，但 W1–W4 尚未啟動。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
 
 ## 後續方向
 

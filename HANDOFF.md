@@ -1,33 +1,32 @@
 # HANDOFF
 
-- Status: planning ready for integration
-- Task/issue: 四上 U1 歷屆題整合進既有 Study（尚未建立 remote issue）
-- Branch: codex/docs-grade4-u1-study-direction
+- Status: idle
+- Task/issue: https://github.com/huansbox/aiden-study/issues/55（四上數學 U1：歷屆題庫接入 iPad 練習）
+- Branch: master
 - Updated: 2026-09-12
 
 ## Progress
 
-本輪可重用來源已就緒：#53 已關閉，完成四上第一次段考數學的跨版本研究，並收集 8 份題目卷與 6 份學校官方答案，共 14 個私用 PDF；#54 已關閉，完成 U1「一億以內的數」10 題紙本短練習與家長答案。原卷、私用題文、PDF 與 preview 都維持各自的局部 `.gitignore` 邊界。正式段考範圍仍未知，跨年度／版本必須依概念而非章節序號對齊。
+本輪完成必要文件、詳細執行方案與主 tracker 的收尾。學習內容主軸已更新為「歷屆題庫 → iPad 練習」；[#55](https://github.com/huansbox/aiden-study/issues/55) 是後續實作的 canonical parent issue，[`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md) 保存資料邊界、題型映射、進度契約、測試 seam 與 W1–W4 順序。方案已定案，不需再向家長確認六題、`unit 15`、私用題包匯入或半批接續等決策。
 
-本次已把文件方向更新為「歷屆題庫 → iPad 練習」主軸。下一個規劃目標是孩子在既有 Study 完成第一批四上 U1 題，離開再回來可接續；舊三下題目與進度必須保留，不能混入四上練習。第一批先用 app 已支援題型，小批通過後才擴題或擴章。詳細方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
+#53 與 #54 都已關閉，作為 #55 的來源：前者保存四上段考候選卷研究與 8 份題目卷＋6 份官方答案的私用索引；後者保存 U1 十題紙本短練習、答案與驗收，其中 P01／P02／P03／P04／P05／P07 六題進入數位版首批。正式段考範圍仍未知，跨年度／版本繼續依概念對齊。
 
-舊 `aiden-math` 的 app 已由 commit `4eb27f4` 匯入本 repo 的 `docs/math/`（含 nonogram）；該 commit 明文排除 `worksheets/`。來源 repo 的 [`worksheets/word-problems/`](https://github.com/huansbox/aiden-math/tree/main/worksheets/word-problems) 尚有題型分析 Markdown 與 4 份可列印 HTML，未進本 repo。本輪不整包搬入、不另建 learning task，也不把它們描述成孩子真實錯題；需要時才核對並挑選保存。在此之前，#34 不得清空舊 `aiden-math` repo。
+主 issue 已使用核准 canonical body 建立；GitHub readback 在只正規化 CRLF 與單一尾端 newline 後，與本地 body 完全一致。W1–W4 尚未啟動，沒有修改 app、建立六題數位題包、執行 app 測試、push 或發布網站／Wiki，也尚未完成真 iPad 驗收。
 
 ## Next step
 
-1. 整合並確認 `docs-dev/grade4-u1-study-integration-plan.md` 的資料邊界、題型映射、進度隔離與驗收方案。
-2. 依確認後的方案從 #53 已核 U1 題目挑第一小批，加入既有 Study；不改動舊三下題目 ID 與既有進度語意。
-3. 跑相關自動驗證後，在 iPad 做「部分作答 → 離開 → 重返接續」與三下進度不受影響的人工驗收。
-4. 依孩子實際使用再決定補 U1、進下一章、做按需紙本或建立單一技能互動練習。
+1. 依既有授權的 issue workflow，把 #55 的 W1「Study 入口、題包與進度相容」具體化為一張可單獨交付的實作票；不要先建立整批 child issues。
+2. W1 完成並凍結私用題包契約後，再依序安排 W2 六題 private build、W3 獨立整合審查與 desktop 驗證、W4 真 iPad／家長交付。
+3. 共用程式發布與私用題包傳送分開處理；真 iPad 通過後，才依孩子實際使用決定補 U1 或進下一章。
 
-平台維運另線保留：#35 仍是 #34 的真 iPad stop-gate；#34 的逐容器備份、同步健康與進度對帳未完成前，不移除舊圖示、不清理舊 repo。這些限制不阻擋現行網址新增題庫內容。#20／#15／#26 仍 open；#11 已 closed。
+平台維運維持另一條線：#35 仍是 #34 自訂網域搬遷的真 iPad stop-gate；#34 的逐容器備份、同步健康與進度對帳完成前，不移除舊圖示或清理舊 repo。這不阻擋現行網址執行 #55。
 
 ## Validation
 
-- 以 GitHub read-only 查證：#11、#53、#54 closed；#35、#34、#26、#20、#15 open。
-- 查核 import commit `4eb27f4` 與 `aiden-math` 的 `worksheets/word-problems/` 現況，確認 worksheets 未匯入且目前包含 1 份題型分析 Markdown、4 份可列印 HTML，另有該舊目錄的說明檔。
-- 本次只更新規劃與交接文件，沒有修改 app、題目資料或私用 PDF；未執行 app 測試，也不引用舊測試數字作為本次結果。
+- #55 建立前已查無同標題 issue；建立後 readback 的標題與 canonical body exact compare 通過，統籌亦已獨立複核通過。
+- 本輪七個 Markdown 的 `git diff --check`、相對連結與 Wiki 部署 URL 對應本地檔案檢查通過；變更範圍不含 code、data 或 PDF。
+- 未執行 app 測試，因本輪只有文件與 tracker 收尾；不引用舊測試數字冒充本次驗證。
 
 ## Blockers
 
-None。詳細方案由並行規劃工作補入後，即可由統籌進行整合與後續實作分流。
+不需再詢問家長方案決策。W1–W4 與最終真 iPad 驗收尚未完成，屬 #55 的後續工作，不是本輪文件／tracker 收尾的 blocker。

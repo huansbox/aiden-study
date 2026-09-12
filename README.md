@@ -4,7 +4,7 @@
 
 線上入口：<https://huansbox.github.io/aiden-study/>
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。第一個規劃目標為四上數學 U1「一億以內的數」：沿用既有 Study 支援的題型，保留舊三下題目與進度，並驗證離開後可接續。執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。下一個目標為 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)：沿用既有 Study 支援的題型，保留舊三下題目與進度，並驗證離開後可接續。執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
 
 ## 現況
 

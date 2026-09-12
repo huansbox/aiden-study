@@ -37,6 +37,6 @@
 
 ## 後續方向
 
-目前學習主軸是把已核歷屆題小批加入既有 Study，先讓孩子在 iPad 完成四上 U1 並可離開後接續；本任務仍是已完成的紙本成品，尚未進入 Study。具體整合邊界與驗收方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](../../docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習主軸是把已核歷屆題小批加入既有 Study，先讓孩子在 iPad 完成四上 U1 並可離開後接續；本任務仍是已完成的紙本成品，尚未進入 Study。後續由 [#55](https://github.com/huansbox/aiden-study/issues/55) 追蹤，具體整合邊界與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](../../docs-dev/grade4-u1-study-integration-plan.md)。
 
 日後只有在孩子需要紙筆計算、特定題型回看或短時間離線練習時，才沿用本任務的來源映射、觀念欄與孩子／家長分卷格式製作下一份紙本；不預設每章都有 PDF，也不先建立跨章 framework。

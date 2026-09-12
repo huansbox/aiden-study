@@ -45,7 +45,7 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 
 ## 目前階段
 
-平台第 2/9 至 8/9 階段已完成：同步 Worker、四 app 同步、repo 重整、hub／registry、math／spelling 搬入，以及共用 wiring layer 都已上線。學習內容目前以「歷屆題庫 → iPad 練習」為主軸，下一個規劃目標是把第一批四上數學 U1 題加入既有 Study，保留舊三下題目與進度，並驗證離開後可接續。詳細順序見 [執行中計畫](Plan)。
+平台第 2/9 至 8/9 階段已完成：同步 Worker、四 app 同步、repo 重整、hub／registry、math／spelling 搬入，以及共用 wiring layer 都已上線。學習內容目前以「歷屆題庫 → iPad 練習」為主軸；下一個目標為 [#55 四上數學 U1](https://github.com/huansbox/aiden-study/issues/55)，方案已定案但 W1–W4 尚未啟動。工作會保留舊三下題目與進度，並驗證離開後可接續；詳細順序見 [執行中計畫](Plan)。
 
 平台維運剩餘工作集中在：
 
