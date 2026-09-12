@@ -45,12 +45,15 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 
 ## 目前階段
 
-平台第 2/9 至 8/9 階段已完成：同步 Worker、四 app 同步、repo 重整、hub／registry、math／spelling 搬入，以及共用 wiring layer 都已上線。現在沒有只靠程式端即可完成的待辦，剩餘工作集中在：
+平台第 2/9 至 8/9 階段已完成：同步 Worker、四 app 同步、repo 重整、hub／registry、math／spelling 搬入，以及共用 wiring layer 都已上線。學習內容目前以「歷屆題庫 → iPad 練習」為主軸，下一個規劃目標是把第一批四上數學 U1 題加入既有 Study，保留舊三下題目與進度，並驗證離開後可接續。詳細順序見 [執行中計畫](Plan)。
+
+平台維運剩餘工作集中在：
 
 1. [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35)：驗證 standalone 導航、網址參數與 localStorage 容器三個架構前提。
 2. [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20)：錄製 14 段音檔並完成 iPad checklist。
 3. [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34)：通過 flip-gate 後才設定自訂網域、安裝新圖示、對帳進度與清理舊站。
-4. [#11 iPad 備份還原驗收](https://github.com/huansbox/aiden-study/issues/11)：standalone 還原仍採手動貼上作為後備，剪貼簿橋樑暫緩。
+
+#35 是 #34 的真機 stop-gate；#34 完成備份、同步健康與進度對帳前，不移除舊圖示或清理舊 repo。這些限制不阻擋在現行網址新增 Study 題庫。#11 已關閉，不再列為 open 工作。
 
 ## Wiki 導覽
 
@@ -61,4 +64,4 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 | [執行中計畫](Plan) | 目前 open issues、依賴關係與完成條件 |
 | [技術債](Tech-Debt) | 依利息排序的已知成本、償還條件與接受限制 |
 
-> Wiki 是導覽與日期快照。現況以程式碼、`docs/registry.json`、[GitHub issues](https://github.com/huansbox/aiden-study/issues) 與 [`CLAUDE.md`](https://github.com/huansbox/aiden-study/blob/master/CLAUDE.md) 為準；架構決策以 [`CONTEXT.md`](https://github.com/huansbox/aiden-study/blob/master/CONTEXT.md) 與 [ADR（Architecture Decision Record，架構決策紀錄）](https://github.com/huansbox/aiden-study/tree/master/docs-dev/adr) 為準。
+> Wiki 是導覽與日期快照。現況以程式碼、`docs/registry.json`、Git 歷史與 [GitHub issues](https://github.com/huansbox/aiden-study/issues) 為準；架構決策見 [ADR（Architecture Decision Record，架構決策紀錄）](https://github.com/huansbox/aiden-study/tree/master/docs-dev/adr)，平台詞彙與 registry 欄位語意見 [`CONTEXT.md`](https://github.com/huansbox/aiden-study/blob/master/CONTEXT.md)。

@@ -4,7 +4,7 @@
 
 線上入口：<https://huansbox.github.io/aiden-study/>
 
-本次閱讀作業：[司馬光閱讀心智圖](https://huansbox.github.io/aiden-study/mind-map.html)。以五步選詞完成四角放射式心智圖，整個流程附字嗨粗體注音；只在目前瀏覽器保存選擇，不接入平台同步。操作與驗證見 [`issues/021-reading-mind-map.md`](issues/021-reading-mind-map.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。第一個規劃目標為四上數學 U1「一億以內的數」：沿用既有 Study 支援的題型，保留舊三下題目與進度，並驗證離開後可接續。執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
 
 ## 現況
 
@@ -18,7 +18,7 @@
 
 `docs/registry.json` 是 hub 的 app 清單真相源；app 上下架、對象與排序都從這裡調整。同步中的四個 app 共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，後端位於 `worker/`。
 
-自訂網域 `kids.linshuhuan.com` 的搬遷是 issue #34，必須先完成 issue #35 的 iPad 單容器真機 spike。測試頁與未勾選的真機步驟見 [`docs-dev/platform-ipad-spike-checklist.md`](docs-dev/platform-ipad-spike-checklist.md)。
+自訂網域 `kids.linshuhuan.com` 的搬遷是 issue #34，必須先完成 issue #35 的 iPad 單容器真機 spike。測試頁與未勾選的真機步驟見 [`docs-dev/platform-ipad-spike-checklist.md`](docs-dev/platform-ipad-spike-checklist.md)。這項 gate 限制換網域、換圖示與清理舊站，不阻擋現行網址新增題庫內容。
 
 ## 專案結構
 
@@ -42,7 +42,7 @@ wiki/                 GitHub Wiki 的版本控制真相源
 
 ### 家庭學習任務與素材
 
-場館、旅行與其他一次性學習活動的索引、歸檔規則及共用素材入口見 [`learning-tasks/README.md`](learning-tasks/README.md)。目前收錄 2026-08-14 新竹動物園／火車探險卡及其幼兒觀察任務設計經驗。
+紙本練習、場館、旅行與其他一次性學習活動的索引、歸檔規則及共用素材入口見 [`learning-tasks/README.md`](learning-tasks/README.md)。其中四上 U1 第一份紙本短練習已完成，但只在實際需要時製作後續紙本，不按章自動產生 PDF。
 
 ## 開發環境
 
@@ -63,7 +63,7 @@ uv run pytest
 node --test "tests/*.mjs"
 ```
 
-目前預期結果是 pytest 140 passed、1 skipped；Node.js 231 passed。注音測試會列出 14 個缺少的 `.m4a`，在正式錄音完成前是預期警告，不會讓測試失敗。
+測試數量會隨功能與資料更新；執行工作時以當次命令的實際輸出為準，不把舊快照數字當成目前結果。注音正式錄音完成前，相關 audit 仍可能列出缺少的 `.m4a`。
 
 ## 本機啟動
 
@@ -94,11 +94,11 @@ uv run python scripts/build_questions.py
 
 ## 維護入口
 
-- [`CLAUDE.md`](CLAUDE.md)：專案架構、技術決策與當前待辦的 AI 記憶快照。
+- [`CLAUDE.md`](CLAUDE.md)：專案架構背景與歷史技術快照；當前狀態仍回查 code、Git 歷史與 issues。
 - [`AGENTS.md`](AGENTS.md)：Codex 的 repo 導覽與家庭學習任務路由規則。
-- [`CONTEXT.md`](CONTEXT.md)：平台詞彙與 registry 欄位語意。
+- [`CONTEXT.md`](CONTEXT.md)：平台詞彙與 registry 欄位語意；不存工作計畫。
 - [`learning-tasks/README.md`](learning-tasks/README.md)：家庭學習任務索引、分類邊界與歸檔規格。
 - [`docs-dev/adr/`](docs-dev/adr/)：架構決策紀錄。
-- [`wiki/Home.md`](wiki/Home.md)：給人的穩定維護說明。
+- [`wiki/Home.md`](wiki/Home.md)：給人的穩定導覽；長期方向見 [`wiki/Roadmap.md`](wiki/Roadmap.md)，執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，當前交接見 [`HANDOFF.md`](HANDOFF.md)。現況仍以 code、Git 歷史與 GitHub issues 為準。
 
 family token 是 secret，只能放在 Cloudflare Worker secret、家長的密碼管理器與裝置網址，不得寫進 repo、issue、測試 fixture 或 log。

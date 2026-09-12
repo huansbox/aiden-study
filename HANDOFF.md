@@ -1,25 +1,33 @@
 # HANDOFF
 
-- Status: idle
-- Task/issue: https://github.com/huansbox/aiden-study/issues/53（四上第一次段考數學：跨版本適用性確認與考卷收集）
-- Branch: master
+- Status: planning ready for integration
+- Task/issue: 四上 U1 歷屆題整合進既有 Study（尚未建立 remote issue）
+- Branch: codex/docs-grade4-u1-study-direction
 - Updated: 2026-09-12
 
 ## Progress
 
-本 session 完成 issue #53 的課程研究、8 份數學題目卷與 6 份學校官方答案收集、逐題範圍標記、獨立驗收及 D-01～D-04 修正。原創文件已整合到 master 並推送；14 個原卷 PDF 共 35 頁只存於本機 `learning-tasks/grade4-sem1-math-exam1/source/papers/`，受局部 `.gitignore` 排除。B 保留 216 個含相依欄位的標記作答單位，狀態為核心 180、M5b 待確認 10、後續／範圍外 26、待核 0；C 保留 126 個小題／必要子題，狀態為核心 60、M5b 待確認 10、後續 45、方法／格式待核 11。兩批計數口徑不同，不合併成題數。issue #53 已完成並關閉。
+本輪可重用來源已就緒：#53 已關閉，完成四上第一次段考數學的跨版本研究，並收集 8 份題目卷與 6 份學校官方答案，共 14 個私用 PDF；#54 已關閉，完成 U1「一億以內的數」10 題紙本短練習與家長答案。原卷、私用題文、PDF 與 preview 都維持各自的局部 `.gitignore` 邊界。正式段考範圍仍未知，跨年度／版本必須依概念而非章節序號對齊。
+
+本次已把文件方向更新為「歷屆題庫 → iPad 練習」主軸。下一個規劃目標是孩子在既有 Study 完成第一批四上 U1 題，離開再回來可接續；舊三下題目與進度必須保留，不能混入四上練習。第一批先用 app 已支援題型，小批通過後才擴題或擴章。詳細方案預留在 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
+
+舊 `aiden-math` 的 app 已由 commit `4eb27f4` 匯入本 repo 的 `docs/math/`（含 nonogram）；該 commit 明文排除 `worksheets/`。來源 repo 的 [`worksheets/word-problems/`](https://github.com/huansbox/aiden-math/tree/main/worksheets/word-problems) 尚有題型分析 Markdown 與 4 份可列印 HTML，未進本 repo。本輪不整包搬入、不另建 learning task，也不把它們描述成孩子真實錯題；需要時才核對並挑選保存。在此之前，#34 不得清空舊 `aiden-math` repo。
 
 ## Next step
 
-桃子腳 115 第一次數學正式範圍公布後，先讀 `learning-tasks/grade4-sem1-math-exam1/README.md` 與 B／C 核題清單，核定 M5b 的 20 個待確認標記及 C 的 11 個方法／格式待核項目，再依實際需求選題。跨機接續時，14 個原卷不在 Git；須從本機安全帶走，或依 manifest 的公開來源重新取得並尊重登入、付費與反自動化限制。其他既知平台後續仍為 GitHub #35 iPad 真機驗證與 #34 前置門檻，本 session 未重驗或改動。
+1. 整合並確認 `docs-dev/grade4-u1-study-integration-plan.md` 的資料邊界、題型映射、進度隔離與驗收方案。
+2. 依確認後的方案從 #53 已核 U1 題目挑第一小批，加入既有 Study；不改動舊三下題目 ID 與既有進度語意。
+3. 跑相關自動驗證後，在 iPad 做「部分作答 → 離開 → 重返接續」與三下進度不受影響的人工驗收。
+4. 依孩子實際使用再決定補 U1、進下一章、做按需紙本或建立單一技能互動練習。
+
+平台維運另線保留：#35 仍是 #34 的真 iPad stop-gate；#34 的逐容器備份、同步健康與進度對帳未完成前，不移除舊圖示、不清理舊 repo。這些限制不阻擋現行網址新增題庫內容。#20／#15／#26 仍 open；#11 已 closed。
 
 ## Validation
 
-- 8 份題目卷與 6 份答案卷共 35 頁均已逐頁視讀；14 個 PDF 的 `%PDF-`、頁數、完整 SHA256、答案對應、跨批去重與本機連結通過驗證，全部仍受局部 `.gitignore` 排除。
-- B／C JSON 可讀，穩定 ID 無重複，狀態統計、README 表格、manifest 與頁碼一致；B 的既有 dependency 全部保留，只有核准的 `anh114-V-03` 改為 M2a＋M5a 核心。C 三個成果檔及桃子腳 112 一、6 保持不變。
-- `git diff --check`、衝突標記、除錯殘留與憑證樣式掃描通過；待推送範圍只含本任務 12 個追蹤檔。`git fetch --prune` 後確認 A／B／C／D 分支的 patch 均已落在 master；`origin/master` 已推送並核對至 `5873de0`。
-- 未跑 app 全套測試，因本 session 沒有網站程式變更；沒有重新下載或逐題重算全部答案。
+- 以 GitHub read-only 查證：#11、#53、#54 closed；#35、#34、#26、#20、#15 open。
+- 查核 import commit `4eb27f4` 與 `aiden-math` 的 `worksheets/word-problems/` 現況，確認 worksheets 未匯入且目前包含 1 份題型分析 Markdown、4 份可列印 HTML，另有該舊目錄的說明檔。
+- 本次只更新規劃與交接文件，沒有修改 app、題目資料或私用 PDF；未執行 app 測試，也不引用舊測試數字作為本次結果。
 
 ## Blockers
 
-None
+None。詳細方案由並行規劃工作補入後，即可由統籌進行整合與後續實作分流。
