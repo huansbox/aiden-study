@@ -2,7 +2,7 @@
 
 日期：2026-09-12。調查基底：`ae74bc491146c64b73c6cb914bd2d3b4ceeee272`，與當時主目錄本地 master HEAD 相同（含 #54 三個尚未 push 的 commits）。統籌已於同日採納本文件的方案基線，並建立主追蹤 [#55](https://github.com/huansbox/aiden-study/issues/55)。
 
-> 即時狀態：文件與 tracker 已由 `master@0aa77b1` push，`test`、`publish-wiki`、Pages 均成功。W1 [#56](https://github.com/huansbox/aiden-study/issues/56) 由 Astra／high task `01a094c0-2690-7bd1-b535-04b88bfeb230` 在 branch `codex/grade4-u1-w1`、worktree `82b9` 實作中；`docs-dev/grade4-u1-pack-contract.md` 尚待完成。W2 等待 W1 契約與實作，W3 review、W4 真 iPad 驗收 pending；main `master` 可正常使用。
+> 即時狀態：W1 [#56](https://github.com/huansbox/aiden-study/issues/56) 與 W2 [#57](https://github.com/huansbox/aiden-study/issues/57) 已完成，題包契約、Study 共用程式、六題 private builder 與公開追溯 metadata 已交付；W3 clean-context 整合 review 已通過且無未解 finding。Public static data 仍為原 1,924 題；六題正式 pack 只在 ignored 本機路徑。W4 真 iPad／家長驗收 pending，#55 在取得該證據前保持 open；本狀態不宣稱 #35 或 #34 已完成。
 
 ## 1. 推薦結論與交付目標
 
@@ -21,7 +21,7 @@
 - 不新增紙本題目或 PDF，不重新收卷，不重審全部 14 個原卷 PDF，不重開全 `aiden-math` 整合。舊 `aiden-math` app 已匯入本 repo 的 `docs/math/`（含 `nonogram/`）；舊 worksheets／word-problems 保留來源即可。
 - 不移動舊題、不重編舊 ID、不搬移 storage key、不清除舊進度、不把四上加入三下混練。不建跨教材分類 framework、完整課程管理或多解集合判題引擎。
 - 不進行 #34 網域遷移。`docs-dev/platform-ipad-spike-checklist.md` 表明 #35 是該遷移的真機門檻，並不阻擋現網址的內容開發；本計畫不能宣稱桌面操作通過就等於 #35 或本批真機通過。
-- 規劃工人當時只新增本計畫、做文件檢查與本地 commit；統籌在文件收尾建立 #55 作為主追蹤，但仍未啟動下列工作包、push 網站，或讀取孩子真實雲端進度與 token。
+- 規劃階段只新增本計畫與 #55；後續 W1–W3 已依工作包完成，未讀取孩子真實雲端進度或 family token。W4 仍由家長在孩子實際使用的 iPad／容器執行，不把 desktop 證據冒充真機結果。
 
 ## 3. 現有能力與實際缺口
 
@@ -60,7 +60,7 @@
 
 新題固定使用 `math-g4s1-<original_id>-v1`，例如 `math-g4s1-tyk111-I-01-v1`。ID 寫入 curated metadata 後固定，不依排序、題包版本、顯示題號、目前學年度或 build 次數重算；碰撞直接報錯，不加 `-2` 迴避。新題沿用 `subject: "math"`、`unit: 15`，沒有需要把 grade/term 重複塞進每題進度的理由。
 
-`v1` 指作答語意版本。修正排版、錯字或解說且題意答案不變時沿用 ID；如果改數字、所問內容或判題語意，應另立 ID，不把舊 mastered 偷渡到新題。新舊題都出現於不同包時，同 ID 必須代表相同作答內容；不允許後匯入者靜默覆蓋不同題。
+`v1` 指作答語意版本。同一 stable ID 的 `type`、`text`、`options`、`answer`，以及每格 `blanks.input`／`blanks.answer` 必須逐值完全相同，連空白差異也視為不同；revision 提高不能放寬這項比較。只有 `source`、`subtopic` 與 `explanations` 可以在較高 revision 更新。題目 wording、排版文字、數字、選項或判題語意只要改變上述欄位，就不能覆蓋同 ID；須由統籌決定另立語意版本 ID 或其他 version strategy，避免把舊 mastered 偷渡到不同題。不同包出現同 ID 時亦適用相同規則，不允許後匯入者靜默覆蓋。
 
 公開 metadata 只列：app ID、practice ID、original ID、paper ID、題目／答案頁碼、concept、題型轉換、review 狀態。完整題文、答案及解說只在私用題包；不得從 metadata 或 ID 反推題文填補。
 
@@ -68,13 +68,13 @@
 
 最小包格式為 `schemaVersion`、固定 `packId: "g4-s1-math-u1"`、`revision`、`questions`、`explanations`。題目採現有 final question schema，解說採 `{questionId: text}`。包只接受已定義的 math／unit 15 與本批已支援的題型；不提供任意科目、HTML、圖片 URL 或程式碼載入。
 
-生成器使用明確輸入／輸出路徑。後續私用 curated 輸入、解說與 pack 輸出統一放在 `data/private/study/g4-s1-math-u1/`，實作時在 repo `.gitignore` 加入精確的 `/data/private/study/g4-s1-math-u1/` 規則，驗證排除後才生成私用檔。公開且不含題文／答案的追溯 metadata 放在 `data/study/g4-s1-math-u1/mapping-metadata.json`；generic 生成器放在 `scripts/`，例如 `scripts/build_private_study_pack.py`。這些路徑由 W1／W2 實作時建立，本次文件與 tracker 收尾未建立。
+生成器使用明確輸入／輸出路徑。私用 curated 輸入、解說、pack 與 QA 統一放在 `data/private/study/g4-s1-math-u1/`；repo `.gitignore` 已有精確的 `/data/private/study/g4-s1-math-u1/` 規則，builder 只允許 production 輸出到該 private root。公開且不含題文／答案的追溯 metadata 位於 `data/study/g4-s1-math-u1/mapping-metadata.json`；generic 生成器位於 `scripts/build_private_study_pack.py`，操作說明位於 `docs-dev/grade4-u1-private-pack-build.md`。W1／W2 已建立這些路徑，private files 仍不得由 Git 追蹤。
 
 原 #54 的 `learning-tasks/grade4-math-first-practice/source/private/practice-content.json` 僅作只讀來源與追溯依據；數位版整理後的輸入和產物不回寫紙本 task。紙本 task 維持已完成，不新增 learning-task；app 程式、可重建資料與一次性活動各歸原有位置。生成器及不含私用內容的 metadata 可版本控制，curated 題文、答案、解說和題包本身不可。
 
 前端家長入口使用檔案選擇器，讀取檔案後先做大小與 schema 驗證、唯一 ID、unit 隔離、答案與題型一致性、解說完整性，再一次寫入獨立 localStorage key，例如 `study:private-pack:g4-s1-math-u1`。小批文字題包使用 localStorage 足夠，暫不引入 IndexedDB。可設 128 KiB 明確上限；寫入失敗須告知「未保存」，保留前一有效包，不顯示匯入成功或承諾下次可接續。
 
-題包 key 屬同裝置、同 origin／容器，供該容器內兩個孩子共用題目內容；進度仍各依 child 分開。題包不含孩子身分，不隨切換孩子重寫。boot 先讀並驗證本機包、合併公開題庫與解說，再建立 `questionMap`。重匯同包應冪等；只有 revision 更新且相同 ID 作答內容未變，才替換舊包。未知 schema 或同 ID 異題拒收，保留原包和進度。
+題包 key 屬同裝置、同 origin／容器，供該容器內兩個孩子共用題目內容；進度仍各依 child 分開。題包不含孩子身分，不隨切換孩子重寫。boot 先讀並驗證本機包、合併公開題庫與解說，再建立 `questionMap`。重匯同包應冪等；只有 revision 提高、且同 ID 的 `type/text/options/answer/blanks` 逐值完全一致時，才替換舊包。未知 schema 或同 ID 語意欄位有任何差異時拒收，保留原包和進度。
 
 實作須為匯入文字定義安全輸出路徑：純文字先 escape，再加入程式生成的換行與填空 chip；同樣涵蓋選項、解說與回報題目區。不能只驗 JSON 外形，或只擋 `<script>`。測試用合成特殊字串驗證，public fixtures 不抄私用題。
 
@@ -174,15 +174,15 @@
 
 | 工作包 | 輸入／依賴 | 可交付範圍與完成門檻 | 建議工人 model／思考強度 |
 | --- | --- | --- | --- |
-| W0 統籌定案（已完成） | 本計畫 | 統籌已採納每裝置／容器首次匯入一次私用題包、六題首批、unit 15、現有半批接續與舊 key 不變，並建立主追蹤 #55；W1 已由 #56 啟動 | 統籌，gpt-6-astra／high |
-| W1 Study 入口、題包與進度相容 | W0 已定案；待後續指派 | 最小 STUDY_TERMS、unit 15、studyTerm fallback、家長檔案匯入、獨立本機題包、文字安全顯示、缺包不刪進度、保存失敗處理；必須用至少一個合成 U1 題在實際 app 證明「匯入 → 練習 → 關閉／重載 → 接續 → 三下進度不變」完整流程，public 舊題與 key 不變 | gpt-6-astra／high；多處狀態交界需完整推理 |
-| W2 六題私用轉換與 build | W1 凍結包契約 | `scripts/` 小型生成器、`data/study/g4-s1-math-u1/` public 追溯 metadata、精確 ignore 的 `data/private/study/g4-s1-math-u1/` curated 輸入／六題包／解說；逐題核對來源／官方答案／輸入與轉換；public build 無內容差異，重建冪等 | gpt-5.6-sol／high；需精確數值與來源核對 |
-| W3 獨立整合審查與桌面驗證 | W1、W2 | 新 context 工人只讀審查 public diff、私用輸出與測試證據；檢查六題語意、舊進度隔離、缺包再載入、payload 邊界；缺陷回原工人修，修後複驗 | gpt-6-astra／high |
-| W4 真 iPad 與家長交付 | W3 通過；統籌安排必要發布／傳檔 | 現網址的共用程式更新與私用題包分開交付；完成真機清單，記錄通過或具體阻擋；驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
+| W0 統籌定案（已完成） | 本計畫 | 已採納每裝置／容器首次匯入一次私用題包、六題首批、unit 15、現有半批接續與舊 key 不變，並建立主追蹤 #55 | 統籌，gpt-6-astra／high |
+| W1 Study 入口、題包與進度相容（已完成） | W0；[#56](https://github.com/huansbox/aiden-study/issues/56) | 已交付 STUDY_TERMS、unit 15、studyTerm fallback、家長檔案匯入、獨立本機題包、安全文字顯示、缺包不刪進度與保存失敗處理；合成題包流程、半批接續及三下隔離已驗證 | gpt-6-astra／high；多處狀態交界需完整推理 |
+| W2 六題私用轉換與 build（已完成） | W1 凍結包契約；[#57](https://github.com/huansbox/aiden-study/issues/57) | 已交付 private builder、public 追溯 metadata、精確 ignore 的 curated／六題 pack／解說／QA；六題獨立重算一致，public 內容無差異，重建冪等且 production 輸出受 private root 限制 | gpt-5.6-sol／high；需精確數值與來源核對 |
+| W3 獨立整合審查與桌面驗證（已完成） | W1、W2 | Clean-context review 已通過，無未解 finding；完整 Node／pytest、六題語意、舊進度隔離、缺包再載入、payload 邊界、desktop 真 DOM 與原生 file chooser 均有證據 | gpt-6-astra／high |
+| W4 真 iPad 與家長交付（pending） | W3 已通過；共用程式發布與 private 傳檔 | 在孩子實際使用的 iPad／容器完成首次匯入、部分作答後接續及三下隔離，記錄通過或具體阻擋；驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
 
-W1 的單題合成驗證可先送出一次錯答，讓同題留在未完成 batch，再關閉／重載確認仍能接續並答對；另外以合成三下進度比對各欄位不變。這是第一個可操作交付，不以只有 schema 或純函式測試通過作為完成；完整多題半批與真題內容驗證仍依第 7 節執行。
+W1 已用合成題包驗證答對、答錯回隊、關閉／重載接續與三下欄位不變；W3 再以正式六題 pack 驗證多題半批、最後一題答對／答錯立即重載及缺包恢復。這些 desktop 證據不取代 W4 真 iPad。
 
-各工人使用獨立工作 branch／worktree，開工先確認統籌整合後 HEAD；不得 reset 主目錄。W1 與 W2 順序執行，避免兩人同時改包契約；W3 用獨立上下文審查，不把同一實作者的自述當驗收。W1 已啟動；W2–W4 仍依表中依賴等待。
+各工人使用獨立工作 branch／worktree，且未 reset 主目錄。W1 與 W2 已按凍結契約完成；W3 使用獨立上下文審查，採納的 finding 回到原工作包修正並通過相關複驗。現在只剩 W4 依表中 gate 等待家長真機操作。
 
 後續完成第一輪孩子實測，才考慮 P10、經目標調整的 P08／P09 或下一章。P06 只有真實練習需求證明值得做集合判題時才重開。正式考試範圍到手後處理 M5b／C11，不回頭阻擋已確認 U1。
 
@@ -190,6 +190,6 @@ W1 的單題合成驗證可先送出一次錯答，讓同題留在未完成 batc
 
 統籌已在使用者授權的決策範圍內採納：**以「家長本機檔案匯入＋同容器 localStorage 保存私用題包」作為第一批送達方式，每裝置／容器首次匯入一次。** 此方案保留現有網址、既有進度與 #54 私用邊界，只新增小型前端載入功能。已接受的取捨是：進度備份不含題包，清除資料、換裝置或容器後須重匯，也不承諾完整離線啟動。不再以這項決策向家長提問；私用託管、後端或公開題文不在本次範圍。
 
-統籌同時採納六題選擇、數字 unit 15、現有半批接續與舊 key 不變；schemaVersion 不變、未送出輸入不保存的技術細節沿用本計畫。app 私用資料改以 `data/private/study/g4-s1-math-u1/` 為落點，原 #54 紙本 task 保持已完成且只讀追溯。W0 已完成，沒有需要再問家長的待定方案；W1 已由 #56 啟動，W2–W4 尚未啟動。後續實作仍應按本文件的失敗案例驗證；證據若推翻其中一項，回報統籌裁決，不靜默擴大範圍。
+統籌同時採納六題選擇、數字 unit 15、現有半批接續與舊 key 不變；schemaVersion 不變、未送出輸入不保存的技術細節沿用本計畫。app 私用資料以 `data/private/study/g4-s1-math-u1/` 為落點，原 #54 紙本 task 保持已完成且只讀追溯。W0–W3 已完成，沒有需要再問家長的待定方案；W4 只等待孩子實際 iPad／容器的操作證據。
 
-規劃階段完成：讀取 repo 規範、確認指定本地 HEAD、只讀上述程式與測試／來源 metadata、檢視私用 JSON 結構及表示限制、核算公開題庫數量。統籌收尾已把定案內容發布為主追蹤 #55，並由 #56 開始 W1；這不代表 W1 已驗收，也不代表 W2–W4、會重寫題庫的 build、真六題內容、app 發布或真 iPad 驗收已完成。
+實作與整合階段完成：W1／W2 acceptance 已由統籌接受；W3 clean-context review 對 public diff、六題語意、private 邊界、進度隔離、缺包恢復、desktop DOM 與原生 file chooser 均完成驗證，且無未解 finding。Public static data 維持 1,924 題，private pack 不進 Git。這些結果仍不代表 W4 真 iPad 或 #35／#34 已完成；#55 必須保持 open 到家長完成實際容器驗收。

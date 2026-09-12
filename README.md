@@ -4,7 +4,7 @@
 
 線上入口：<https://huansbox.github.io/aiden-study/>
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。下一個目標為 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)：沿用既有 Study 支援的題型，保留舊三下題目與進度，並驗證離開後可接續。執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成共用程式、首批六題 private pack 與 desktop 整合驗證，保留舊三下題目與進度；真 iPad／家長驗收仍待完成。執行狀態見 [`wiki/Plan.md`](wiki/Plan.md)，詳細整合方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](docs-dev/grade4-u1-study-integration-plan.md)。
 
 ## 現況
 
@@ -26,7 +26,7 @@
 docs/                 GitHub Pages 部署根目錄
   index.html          選人、child 首頁與家長視圖 hub
   registry.json       hub app registry
-  study/              1924 題題庫 app
+  study/              1,924 題公開題庫 app；私用題包由家長本機匯入
   math/               長除法與 nonogram
   spelling/           英文拼字 app
   zhuyin/             注音 app 與錄音工具
@@ -79,7 +79,7 @@ localhost 不在 Worker 的 CORS 白名單，所以 app 的同步請求在本機
 
 ## 題庫 pipeline
 
-題庫 app 目前共 1924 題：自然 1099、數學 307、社會 452、國語 66。詳細來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
+題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1 首批六題不加入 public data，而是從 ignored 路徑 `data/private/study/g4-s1-math-u1/` 建置並由家長匯入；重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
 ```bash
 # PDF 萃取範例

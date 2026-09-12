@@ -4,7 +4,7 @@
 
 ## 結論
 
-下一個執行目標是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。方案已定案：把第一批六題加入既有 Study，讓孩子在 iPad 練習，離開再回來仍能接續；先用 app 已有題型做小批驗證，舊三下題目與進度保留，四上練習不混入舊流程。
+目前執行目標仍是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。第一批六題的 Study 共用程式、private pack 與 desktop 整合 review 已完成；舊三下題目與進度保留，四上練習不混入舊流程。下一個 gate 是家長在孩子實際使用的 iPad／容器完成 W4，不是再擴充功能或題量。
 
 平台搬遷仍受 #35 與 #34 約束，但那是換網域、換圖示與清理舊站的 gate，不阻擋在現行網址新增題庫內容。注音收尾可在適合的家長／iPad 時段並行。
 
@@ -12,31 +12,32 @@
 
 ## 即時狀態
 
-- 文件與主 tracker 已由 `master@0aa77b1` push；`test`、`publish-wiki`、Pages 均成功。
-- W1 [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) 進行中：Astra／high task `01a094c0-2690-7bd1-b535-04b88bfeb230`，branch `codex/grade4-u1-w1`，worktree `82b9`。新契約文件 `docs-dev/grade4-u1-pack-contract.md` 尚待完成。
-- W2 等待 W1 契約與實作；W3 獨立 review 與 W4 真 iPad 驗收 pending。Main `master` 可正常開啟，實作在獨立 branch／worktree。
+- W1 [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) 已完成：題包契約、三下／四上入口、安全匯入、缺包保留進度、半批接續與三下隔離均已交付。
+- W2 [#57 四上 U1：六題私用題包與可重建來源](https://github.com/huansbox/aiden-study/issues/57) 已完成：六題 private pack、builder、公開追溯 metadata、精確 ignore 與操作說明均已交付；public static data 維持 1,924 題。
+- W3 clean-context 整合 review 已通過，無未解 finding；完整自動測試、六題獨立重算、desktop 真 DOM 與原生 browser file chooser 均有證據。W4 真 iPad／家長驗收 pending；這不代表 #35 或 #34 已完成。
 
 ## 已確認基線
 
 - #53 已關閉：已收集 8 份題目卷與 6 份學校官方答案，共 14 個 PDF；原卷為私用 ignored 檔案，不隨 Git clone 取得。
-- #54 已關閉：U1 紙本短練習已有 10 題孩子卷與家長答案；它是完成的按需紙本成品，尚未加入 iPad Study。
+- #54 已關閉：U1 紙本短練習已有 10 題孩子卷與家長答案，並維持完成、只讀的紙本成品；本輪六題數位 pack 由 #57 另在 private 邊界建立，不回寫該紙本 task。
 - 今年是桃子腳 115 學年度、四上數學康軒版；正式段考範圍仍未知。既有研究見 [`learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md`](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md)。
 - 跨年度或出版社版本只依題目實際概念對齊，不把舊章節序號直接當成今年範圍。
 - #11 已於 2026-07-21 關閉，不再列為 open 工作。
 
-## Open issues
+## 工作項目
 
 | Issue | 性質 | 現況 | 下一個動作 |
 |---|---|---|---|
-| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | 方案已定案；W1 進行中 | 等 #56 凍結契約並通過驗收，再安排 W2 |
-| [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Astra／high 獨立 worktree 實作中 | 等工人回報後，由統籌驗收並開 clean-context review |
+| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | Open；W1–W3 已完成 | 家長依詳細計畫完成 W4 真 iPad 完整清單，記錄結果後才關閉 |
+| [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Completed；acceptance 已由獨立 review 與 W3 接受 | 無；後續真機結果由 #55 追蹤 |
+| [#57 四上 U1：六題私用題包與可重建來源](https://github.com/huansbox/aiden-study/issues/57) | W2 private build | Completed；六題與 public/private 邊界已由 W3 接受 | 無；正式 private pack 留在 ignored 本機路徑 |
 | [#35 平台 1/9：iPad spike](https://github.com/huansbox/aiden-study/issues/35) | HITL stop-gate | Open | 在真 iPad 驗證單 origin 導航、網址參數與 localStorage 容器三個架構前提 |
 | [#34 平台 9/9：掛網域＋搬遷](https://github.com/huansbox/aiden-study/issues/34) | HITL 搬遷 | Blocked by #35 | #35 關閉後，逐容器完成備份、同步健康與進度對帳；對帳前不移除舊圖示、不清舊 repo |
 | [#20 注音 MVP 5/5 收尾](https://github.com/huansbox/aiden-study/issues/20) | 內容＋HITL | 程式已 merge；正式錄音與 iPad checklist 待完成 | 錄音、audit、真機走完兩活動 |
 | [#26 全家學習平台 PRD](https://github.com/huansbox/aiden-study/issues/26) | Umbrella | Open | #34 完成後做整體 close audit |
 | [#15 注音學習 app PRD](https://github.com/huansbox/aiden-study/issues/15) | Umbrella | Open | #20 驗收完成後關閉 |
 
-#55 是本輪主追蹤 issue；W1 已由 #56 開始，W2–W4 仍依序等待，不能因工單建立就視為已驗收。
+#55 是本輪主追蹤 issue。W1／W2 已完成並通過 W3 獨立整合驗收；#56／#57 的完成不會自動關閉 parent。#55 仍等待 W4 真 iPad 完整清單，不能用 desktop 證據取代。
 
 ## 執行順序
 
