@@ -1,6 +1,8 @@
 import copy
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import pytest
 
@@ -134,9 +136,12 @@ def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
         (lambda data: data[1]["entries"][0].update(text=" "), "為空"),
         (lambda data: data[0]["items"][0]["question"].update(unit=14), "outside the frozen contract"),
         (lambda data: data[0]["items"][1]["question"].update(type="essay"), "frozen fill-in-blank"),
+        (lambda data: data[0]["items"][1]["question"]["blanks"][0].update(input="comparison"), "valid blank|wrong input type"),
         (lambda data: data[0]["items"][0]["question"].update(answer="0"), "1-based string"),
         (lambda data: data[0]["items"][1]["question"]["blanks"][0].update(answer="01"), "normalized"),
         (lambda data: data[0].update(schemaVersion=2), "version is invalid"),
+        (lambda data: data[0].update(packId="wrong-pack"), "version is invalid"),
+        (lambda data: data[0].update(revision=0), "version is invalid"),
     ],
 )
 def test_invalid_source_fails_without_changing_previous_output(tmp_path, mutate, message):
@@ -158,6 +163,23 @@ def test_public_id_collision_fails(tmp_path):
     values[3].append({"id": EXPECTED_IDS[0]})
     with pytest.raises(PackBuildError, match="collide"):
         build_pack(*_paths(tmp_path, values))
+
+
+def test_revision_bump_cannot_replace_same_id_with_different_semantics(tmp_path):
+    values = _fixture()
+    paths = _paths(tmp_path, values)
+    output = tmp_path / "pack.json"
+    build_to_path(*paths, output)
+    previous = output.read_bytes()
+    values[0]["revision"] = 2
+    values[1]["revision"] = 2
+    values[2]["revision"] = 2
+    values[0]["items"][0]["question"]["text"] = "Different synthetic question with the same ID?"
+
+    with pytest.raises(PackBuildError, match="same ID has different"):
+        build_to_path(*_paths(tmp_path, values), output)
+
+    assert output.read_bytes() == previous
 
 
 def test_comparison_answer_requires_ascii(tmp_path):
@@ -186,6 +208,34 @@ def test_oversize_pack_fails_before_replacing_output(tmp_path):
 def test_output_inside_repo_must_be_private():
     with pytest.raises(PackBuildError, match="must stay under"):
         ensure_safe_output_path(Path(__file__).resolve().parents[1] / "docs" / "study" / "private-pack.json")
+
+
+def test_cli_bad_json_returns_nonzero_and_preserves_output(tmp_path):
+    values = _fixture()
+    paths = list(_paths(tmp_path, values))
+    paths[0].write_text("{not valid json", encoding="utf-8")
+    output = tmp_path / "pack.json"
+    output.write_bytes(b"previous valid output")
+    script = Path(__file__).resolve().parents[1] / "scripts" / "build_private_study_pack.py"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--curated", str(paths[0]),
+            "--explanations", str(paths[1]),
+            "--metadata", str(paths[2]),
+            "--public-questions", str(paths[3]),
+            "--output", str(output),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode != 0
+    assert "ERROR:" in result.stderr
+    assert output.read_bytes() == b"previous valid output"
 
 
 def test_mapping_contains_no_private_content_fields():

@@ -187,8 +187,8 @@ def build_pack(
                 raise PackBuildError(f"curated provenance does not match public mapping for {practice_id}: {key}")
         question = _validate_question(item["question"], practice_id)
         question["source"] = (
-            f"{item['paperId']} question p.{item['questionPage']} / answer p.{item['answerPage']}; "
-            f"original {item['originalId']}"
+            "data/study/g4-s1-math-u1/mapping-metadata.json "
+            f"appId={question['id']}"
         )
         by_practice[practice_id] = question
     if set(by_practice) != set(EXPECTED):
@@ -272,6 +272,71 @@ def write_pack_atomic(output_path: Path, payload: bytes) -> None:
             Path(temp_name).unlink(missing_ok=True)
 
 
+def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
+    blanks = question.get("blanks")
+    blank_semantic = (
+        tuple((blank.get("input"), blank.get("answer")) for blank in blanks)
+        if isinstance(blanks, list)
+        else None
+    )
+    return (
+        question.get("type"), question.get("text"), tuple(question.get("options", [])),
+        question.get("answer"), blank_semantic,
+    )
+
+
+def _normalized_revision_content(pack: dict[str, Any]) -> tuple[Any, ...]:
+    by_id = {question["id"]: question for question in pack["questions"]}
+    return tuple(
+        (
+            question_id,
+            _question_semantic(by_id[question_id]),
+            by_id[question_id].get("subtopic"),
+            by_id[question_id].get("source"),
+            pack["explanations"].get(question_id),
+        )
+        for question_id in EXPECTED_IDS
+    )
+
+
+def ensure_compatible_with_existing(output_path: Path, pack: dict[str, Any]) -> None:
+    """Mirror W1's conservative same-ID and revision replacement rules."""
+    output = ensure_safe_output_path(output_path)
+    if not output.exists():
+        return
+    previous = _read_json(output)
+    _require_exact_keys(
+        previous, {"schemaVersion", "packId", "revision", "questions", "explanations"},
+        "existing output",
+    )
+    if (
+        previous["schemaVersion"] != 1
+        or previous["packId"] != PACK_ID
+        or type(previous["revision"]) is not int
+        or not isinstance(previous["questions"], list)
+        or not isinstance(previous["explanations"], dict)
+    ):
+        raise PackBuildError("existing output is not a compatible private pack")
+    previous_by_id = {
+        question.get("id"): question
+        for question in previous["questions"]
+        if isinstance(question, dict)
+    }
+    if set(previous_by_id) != set(EXPECTED_IDS) or len(previous["questions"]) != len(EXPECTED_IDS):
+        raise PackBuildError("existing output does not contain the frozen six unique IDs")
+    current_by_id = {question["id"]: question for question in pack["questions"]}
+    for question_id in EXPECTED_IDS:
+        if _question_semantic(previous_by_id[question_id]) != _question_semantic(current_by_id[question_id]):
+            raise PackBuildError(f"same ID has different answer semantics: {question_id}")
+    if pack["revision"] < previous["revision"]:
+        raise PackBuildError("cannot replace an existing pack with an older revision")
+    if (
+        pack["revision"] == previous["revision"]
+        and _normalized_revision_content(pack) != _normalized_revision_content(previous)
+    ):
+        raise PackBuildError("content changes require a higher revision")
+
+
 def build_to_path(
     curated_path: Path,
     explanations_path: Path,
@@ -282,6 +347,7 @@ def build_to_path(
     """Validate everything in memory, then atomically replace the output."""
     pack = build_pack(curated_path, explanations_path, metadata_path, public_questions_path)
     payload = serialize_pack(pack)
+    ensure_compatible_with_existing(output_path, pack)
     write_pack_atomic(output_path, payload)
     return pack, payload
 
