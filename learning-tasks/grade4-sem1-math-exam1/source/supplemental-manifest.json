@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-09-12",
+  "scope": "工人C：最多三份指定補充數學卷；原卷本機忽略不入Git；不含B首批",
+  "baseline_file": "source/curriculum-comparison.md",
+  "counts": {
+    "question_papers": 3,
+    "official_answer_papers": 2,
+    "third_party_answers": 0,
+    "ai_answers": 0,
+    "pdf_files": 5,
+    "question_pages": 8,
+    "answer_pages": 5
+  },
+  "targets": [
+    {
+      "paper_id": "c-tyk-114-midterm",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "period": "第一次定期評量",
+      "subject": "數學",
+      "tcool_candidate_id": "20002932",
+      "publisher": "翰林",
+      "publisher_evidence": "tcool公開清單候選標籤，另由A研究S9校方114翰林計畫交叉支持；卷面未印出版社。",
+      "paper_face_verified": [
+        "校名／校徽",
+        "114學年度",
+        "四年級",
+        "第1學期",
+        "第1次定期評量",
+        "卷面範圍單元1–5（只適用114，不能當115公告）"
+      ],
+      "status": "downloaded_reviewed",
+      "question_status": "downloaded",
+      "answer_status": "not_found_official",
+      "answer_provenance": "官方114期中數學資料夾只列題目卷；tcool公開清單僅有站內答案表單，未視為官方答案、未取得。",
+      "source_chain": [
+        "https://www.tykjh.ntpc.edu.tw/p/426-1000-57.php",
+        "https://drive.google.com/drive/folders/1pq81U3wuXsy6T9ASjBeguX_lN1bDnzSq",
+        "https://drive.google.com/drive/folders/17LhNrCnLdsyC9-7AeCX4TyIyzUaiyg4R",
+        "https://drive.google.com/drive/folders/1PC-bZPmkC4Edrx_h2vUBbD8VJjL4oo66"
+      ],
+      "classification": "部分可用",
+      "review_counts": {
+        "core_provisional": 30,
+        "hold_scope": 3,
+        "later_scope": 12,
+        "needs_review": 4
+      },
+      "total_review_items": 49
+    },
+    {
+      "paper_id": "c-tyk-112-midterm",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "period": "第一次定期評量",
+      "subject": "數學",
+      "tcool_candidate_id": "20002683",
+      "publisher": "翰林（候選標籤，未完成112校方版本核對）",
+      "publisher_evidence": "2026-09-12 tcool公開清單grade=4 subject=數學 semester=1 period=1 publisher=翰林包含20002683；卷面未印出版社。不能將114翰林章節直接套入112。",
+      "paper_face_verified": [
+        "校名／校徽",
+        "112學年度",
+        "四年級",
+        "第1學期",
+        "第1次定期評量",
+        "卷面範圍單元1–5（只適用112）"
+      ],
+      "status": "downloaded_reviewed",
+      "question_status": "downloaded",
+      "answer_status": "downloaded_official",
+      "answer_provenance": "校方112上-1同一公開資料夾命名四年級數學期中答案卷；與題目卷題號／圖表相合的紅筆掃描版，非第三方或AI。僅核來源、頁面對應及可讀性，未逐答案驗算。",
+      "source_chain": [
+        "https://www.tykjh.ntpc.edu.tw/p/426-1000-57.php",
+        "https://drive.google.com/drive/folders/1KeiwKMqQPFukOFwEQPyNLxGvh1LhnJ3F",
+        "https://drive.google.com/drive/folders/1fwY3xUEUZd2hD7vDkZkn2cg9el6pVLJk"
+      ],
+      "classification": "部分可用",
+      "review_counts": {
+        "core_provisional": 25,
+        "hold_scope": 3,
+        "later_scope": 1,
+        "needs_review": 6
+      },
+      "total_review_items": 35
+    },
+    {
+      "paper_id": "c-anho-112-final",
+      "school": "新北市土城區安和國民小學",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "period": "第二次定期考查（期末）",
+      "subject": "數學",
+      "tcool_candidate_id": "20002110",
+      "publisher": "康軒（tcool交叉索引；校方版本表原檔未取得）",
+      "publisher_evidence": "2026-09-12 tcool公開清單grade=4 subject=數學 semester=1 period=4 publisher=康軒，20002110列安和112上期末2；同校同年度B期中20002109亦標康軒。卷面未印出版社。",
+      "paper_face_verified": [
+        "安和國民小學",
+        "112學年度",
+        "四年",
+        "第一學期",
+        "第二次定期考查"
+      ],
+      "status": "downloaded_reviewed",
+      "question_status": "downloaded",
+      "answer_status": "downloaded_official",
+      "answer_provenance": "沿B已確認的安和官方Drive，112學年度／上學期／期末考，同資料夾提供題目與解答；題目版面及題號一致，紅字答案非第三方或AI。未逐答案驗算。",
+      "source_chain": [
+        "https://drive.google.com/drive/folders/11orkSjAS9RdXMOVQkrvf39qbaDUXYWKU",
+        "https://drive.google.com/drive/folders/1BPYne3XlfBeUE-GfWphD0Pf5PuF_Cc-Y",
+        "https://drive.google.com/drive/folders/16um5BMexeGZCwH_3ASd2bJDvBzp0rJS1",
+        "https://drive.google.com/drive/folders/1C6o_lKZK7H2zwI1BEXc_Po1Gu3XQTcrR"
+      ],
+      "confirmed_M5a_items": [
+        "c-anho-112-final-II-3",
+        "c-anho-112-final-III-4",
+        "c-anho-112-final-III-5"
+      ],
+      "classification": "部分可用",
+      "review_counts": {
+        "core_provisional": 5,
+        "hold_scope": 4,
+        "later_scope": 32,
+        "needs_review": 1
+      },
+      "total_review_items": 42
+    }
+  ],
+  "files": [
+    {
+      "paper_id": "c-tyk-114-midterm",
+      "kind": "question",
+      "file": "source/papers/c_tyk_114_midterm_q.pdf",
+      "drive_file_id": "1eUvxcfpCqtAR8mBNhSbxxxg6SRUG_a5I",
+      "source_url": "https://drive.google.com/file/d/1eUvxcfpCqtAR8mBNhSbxxxg6SRUG_a5I/view",
+      "download_url": "https://drive.usercontent.google.com/download?id=1eUvxcfpCqtAR8mBNhSbxxxg6SRUG_a5I&export=download&authuser=0&confirm=t",
+      "status": "downloaded",
+      "acquired_on": "2026-09-12",
+      "sha256": "6AE9E4F2A4B97CAE1EB46B2E20362090BF5D2C35185147987C3DD7B44E8C0417",
+      "bytes": 396322,
+      "pdf_magic": "%PDF-",
+      "pages": 3,
+      "page_readability": [
+        {
+          "pdf_page": 1,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 2,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 3,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        }
+      ],
+      "duplicate_status": "SHA256未與本批或B manifest既有9檔重複；三份題目卷視讀版面／題目亦不同",
+      "render_note": "Poppler有Symbol／ArialUnicode display-font警告；逐頁視讀未見影響題意的缺字或圖形缺損。"
+    },
+    {
+      "paper_id": "c-tyk-112-midterm",
+      "kind": "question",
+      "file": "source/papers/c_tyk_112_midterm_q.pdf",
+      "drive_file_id": "1ZGhxLo5ys968cFsYPzhNtwM_rSHCu1YP",
+      "source_url": "https://drive.google.com/file/d/1ZGhxLo5ys968cFsYPzhNtwM_rSHCu1YP/view",
+      "download_url": "https://drive.usercontent.google.com/download?id=1ZGhxLo5ys968cFsYPzhNtwM_rSHCu1YP&export=download&authuser=0&confirm=t",
+      "status": "downloaded",
+      "acquired_on": "2026-09-12",
+      "sha256": "D04749DE3B8832B9196228039278FBFBDB5BB5C82BC614F01FDFCA5A968A71B5",
+      "bytes": 232536,
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_readability": [
+        {
+          "pdf_page": 1,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 2,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        }
+      ],
+      "duplicate_status": "SHA256未與本批或B manifest既有9檔重複；三份題目卷視讀版面／題目亦不同",
+      "render_note": "Poppler有Symbol／ArialUnicode display-font警告；逐頁視讀未見影響題意的缺字或圖形缺損。"
+    },
+    {
+      "paper_id": "c-tyk-112-midterm",
+      "kind": "official_answer",
+      "file": "source/papers/c_tyk_112_midterm_a.pdf",
+      "drive_file_id": "153pp_fVGiO_dKVTE7S81lnj6vpWUlf7G",
+      "source_url": "https://drive.google.com/file/d/153pp_fVGiO_dKVTE7S81lnj6vpWUlf7G/view",
+      "download_url": "https://drive.usercontent.google.com/download?id=153pp_fVGiO_dKVTE7S81lnj6vpWUlf7G&export=download&authuser=0&confirm=t",
+      "status": "downloaded",
+      "acquired_on": "2026-09-12",
+      "sha256": "66ABF785E5E853E1ACF96149A76073F8C92FC92CE933D0B6EDE5FD26CC133C5E",
+      "bytes": 2783580,
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_readability": [
+        {
+          "pdf_page": 1,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；掃描及手寫答案可辨識",
+          "text_layer": "unavailable_scan"
+        },
+        {
+          "pdf_page": 2,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；掃描及手寫答案可辨識",
+          "text_layer": "unavailable_scan"
+        }
+      ],
+      "duplicate_status": "SHA256未與本批或B manifest既有9檔重複；三份題目卷視讀版面／題目亦不同",
+      "render_note": "掃描版，以影像視讀；不靠文字層判讀。"
+    },
+    {
+      "paper_id": "c-anho-112-final",
+      "kind": "question",
+      "file": "source/papers/c_anho_112_final_q.pdf",
+      "drive_file_id": "1PF4cGFA_knlHL1QohGjXeuGjWKJLM-pD",
+      "source_url": "https://drive.google.com/file/d/1PF4cGFA_knlHL1QohGjXeuGjWKJLM-pD/view",
+      "download_url": "https://drive.usercontent.google.com/download?id=1PF4cGFA_knlHL1QohGjXeuGjWKJLM-pD&export=download&authuser=0&confirm=t",
+      "status": "downloaded",
+      "acquired_on": "2026-09-12",
+      "sha256": "D536C421E78874AFF0B0A11E8880D88DFDDED84A47DF399AA0B1C162077F72C6",
+      "bytes": 272345,
+      "pdf_magic": "%PDF-",
+      "pages": 3,
+      "page_readability": [
+        {
+          "pdf_page": 1,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 2,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 3,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        }
+      ],
+      "duplicate_status": "SHA256未與本批或B manifest既有9檔重複；三份題目卷視讀版面／題目亦不同",
+      "render_note": "Poppler有Symbol／ArialUnicode display-font警告；逐頁視讀未見影響題意的缺字或圖形缺損。"
+    },
+    {
+      "paper_id": "c-anho-112-final",
+      "kind": "official_answer",
+      "file": "source/papers/c_anho_112_final_a.pdf",
+      "drive_file_id": "1C2Z7St2Y9aZtiY1a9Zf76ljRZ2vxjUXZ",
+      "source_url": "https://drive.google.com/file/d/1C2Z7St2Y9aZtiY1a9Zf76ljRZ2vxjUXZ/view",
+      "download_url": "https://drive.usercontent.google.com/download?id=1C2Z7St2Y9aZtiY1a9Zf76ljRZ2vxjUXZ&export=download&authuser=0&confirm=t",
+      "status": "downloaded",
+      "acquired_on": "2026-09-12",
+      "sha256": "FC06ED601F19E8004C52675F012438E4EB0D05FC737DF25CA87F507D204C2006",
+      "bytes": 347451,
+      "pdf_magic": "%PDF-",
+      "pages": 3,
+      "page_readability": [
+        {
+          "pdf_page": 1,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 2,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        },
+        {
+          "pdf_page": 3,
+          "visual_review": "已逐頁視讀PNG；文字、圖形、題號完整可辨識；有文字層",
+          "text_layer": "readable"
+        }
+      ],
+      "duplicate_status": "SHA256未與本批或B manifest既有9檔重複；三份題目卷視讀版面／題目亦不同",
+      "render_note": "Poppler有Symbol／ArialUnicode display-font警告；逐頁視讀未見影響題意的缺字或圖形缺損。"
+    }
+  ],
+  "access_notes": [
+    "只查tcool公開清單，未呼叫api-exam.php、短效下載URL或答案／AI端點；未登入、建帳號或繞過額度。",
+    "校方試題庫以隱藏in-app browser查找；所有PDF直接從公開drive.usercontent下載到明確路徑，未操作Chrome或觸發Save As。",
+    "校方mobileloadmod無介面GET／POST皆404，但隱藏頁面正常顯示公開Drive，故已解決取得問題。",
+    "安和112教科書評選PDF https://web.anhoes.ntpc.edu.tw/uploads/1685353898116Y6jFVwGr.pdf 搜尋可見但原站timeout；www同路徑404。未據不完整摘要確認第四年級版本。",
+    "未下載tcool原卷，因此候選ID與官方卷僅依校名／年度／科目／考次交叉索引，未宣稱兩平台檔案位元相同。"
+  ]
+}

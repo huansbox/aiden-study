@@ -1,0 +1,1864 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-09-12",
+  "baseline": "curriculum-comparison.md；115正式範圍未公告，M1–M4及M5a為暫定核心，M5b待確認。",
+  "counting_unit": "依原卷獨立編號小題／必要子題計1個review item；同一題的多空、數字和、成對讀法／類別不按空格或配分拆算；沒有小題號的大題以1識別。題組保留context。這不是題庫配分、空格數或不同概念數。",
+  "section_codes": {
+    "I": "一",
+    "II": "二",
+    "III": "三",
+    "IV": "四",
+    "V": "五",
+    "VI": "六",
+    "VII": "七"
+  },
+  "status_definitions": {
+    "core_provisional": "依暫定範圍可用；不代表校方已公告或全題答案已核正確",
+    "hold_scope": "M5b考試週邊界，等正式範圍",
+    "later_scope": "已知後續概念；不表示今年沒有；分數數線位置另註",
+    "needs_review": "原卷／方法／位數界線或今年定位仍需核對；不列入核心"
+  },
+  "extra_concept_tags": {
+    "M6": "三角形",
+    "M7": "小數",
+    "M8": "併式／括號／四則次序",
+    "M9": "分數",
+    "M9-numberline": "分數數線，與U9相關但未完成115活動定位",
+    "M10": "統計圖",
+    "MX-multiplication": "超出M2a明列位數的乘法候選",
+    "MX-division": "超出M4a明列位數的除法候選"
+  },
+  "papers": [
+    {
+      "paper_id": "c-tyk-114-midterm",
+      "classification": "部分可用",
+      "counts": {
+        "core_provisional": 30,
+        "hold_scope": 3,
+        "later_scope": 12,
+        "needs_review": 4
+      },
+      "total_review_items": 49,
+      "items": [
+        {
+          "id": "c-tyk-114-midterm-I-1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "I",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a"
+          ],
+          "target_115_unit": "U1",
+          "reason": "一億內含零大數報讀。",
+          "retain_context": "完整敘述"
+        },
+        {
+          "id": "c-tyk-114-midterm-I-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "I",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里與公尺整數換算。",
+          "retain_context": "完整敘述"
+        },
+        {
+          "id": "c-tyk-114-midterm-I-3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "I",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "二位與三位因數可交換成三位×二位；判斷末位零，不強制三位乘數直式。",
+          "retain_context": "完整算式與零數敘述"
+        },
+        {
+          "id": "c-tyk-114-midterm-I-4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "I",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a"
+          ],
+          "target_115_unit": "U1",
+          "reason": "國字與阿拉伯數字對照。",
+          "retain_context": "完整敘述"
+        },
+        {
+          "id": "c-tyk-114-midterm-I-5",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "I",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3b"
+          ],
+          "target_115_unit": "U3",
+          "reason": "由角度區間辨認鈍角。",
+          "retain_context": "完整角度區間"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a"
+          ],
+          "target_115_unit": "U1",
+          "reason": "五位數最高位不能是零。",
+          "retain_context": "數字卡及全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9相關分數",
+          "reason": "同分母分數的剩餘量與比較，非本次M1–M5核心；可留分數進度。",
+          "retain_context": "三人分食條件及全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3a"
+          ],
+          "target_115_unit": "U3",
+          "reason": "比較角開口，線段長短不是角度大小；四圖清楚。",
+          "retain_context": "四個角圖及全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里、公尺、公分換算後比較。",
+          "retain_context": "四個長度選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-5",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "假分數的分子與分母關係。",
+          "retain_context": "分母與全部分子選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-6",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a",
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "給定乘積後增加一份；也能交換為三位×二位，不需三位乘數直式。",
+          "retain_context": "已知乘積與全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-7",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "7",
+          "pdf_page": 1,
+          "status": "needs_review",
+          "concept_tags": [
+            "M2b",
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "原式兩因數均三位；需另核整十百位值策略是否在今年活動內，不能只因末位零放行。",
+          "retain_context": "原式與四個等值候選算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-8",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "8",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a"
+          ],
+          "target_115_unit": "U1",
+          "reason": "添零後仍在一億內的大數位值與報讀。",
+          "retain_context": "原數、添零條件及全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-II-9",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "II",
+          "item": "9",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9",
+            "M9-numberline"
+          ],
+          "target_115_unit": "U9相關；數線活動位置待核",
+          "reason": "須比較假分數並定位數線；分數屬後續，不能聲稱數線活動已證實等同U9。",
+          "retain_context": "分數上下界、完整數線及全部選項"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-1.1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "1.1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "可交換為三位×二位，檢查末位零。",
+          "retain_context": "本小題完整算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-1.2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "1.2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "可交換為三位×二位，檢查末位零。",
+          "retain_context": "本小題完整算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-1.3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "1.3",
+          "pdf_page": 1,
+          "status": "needs_review",
+          "concept_tags": [
+            "M2b",
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "兩因數均三位；即使可去零簡算，仍未證實今年允許此活動深度。",
+          "retain_context": "本小題完整算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "一億內大小關係反推缺位數字。",
+          "retain_context": "不等式、方框及寫出所有答案的要求"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "假分數換帶分數。",
+          "retain_context": "完整分數"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3b",
+            "M3c"
+          ],
+          "target_115_unit": "U3",
+          "reason": "已給兩角度，合角後判斷銳鈍；兩空同一推理單位。",
+          "retain_context": "兩角條件、度數及角類別兩空"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-5",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數與假分數比較。",
+          "retain_context": "兩顆瓜的完整分數重量"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-6",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3b"
+          ],
+          "target_115_unit": "U3",
+          "reason": "秒針轉四分之一圈的基本旋轉，沒有連續雙針追趕。",
+          "retain_context": "秒數與秒針條件"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-7.1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "7.1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "千與萬化聚後比較。",
+          "retain_context": "兩邊位值敘述"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-7.2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "7.2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "國字及數字大數比較。",
+          "retain_context": "完整兩數"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-7.3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "7.3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "萬單位大數化聚後比較。",
+          "retain_context": "完整兩數"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-8.1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "8.1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里公尺二階單位換公尺。",
+          "retain_context": "公里及公尺數值"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-8.2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "8.2",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里公尺二階單位換公尺。",
+          "retain_context": "公里及公尺數值"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-8.3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "8.3",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "整千公尺換公里。",
+          "retain_context": "完整換算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-8.4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "8.4",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公尺換公里公尺二階單位；兩空合為一項。",
+          "retain_context": "同一換算式兩空"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-9",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "9",
+          "pdf_page": 2,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5a",
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "道路剩餘長度須公里加減，M5b在考試週待正式範圍。",
+          "retain_context": "全長、已修長度與要求單位"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-10",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "10",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3b"
+          ],
+          "target_115_unit": "U3",
+          "reason": "固定指針位置依指定方向轉角。",
+          "retain_context": "鐘面圖、起點與方向"
+        },
+        {
+          "id": "c-tyk-114-midterm-III-11",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "III",
+          "item": "11",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9",
+            "M9-numberline"
+          ],
+          "target_115_unit": "U9相關；數線活動位置待核",
+          "reason": "數線分數報讀；分數為後續，數線活動的今年位置未核。",
+          "retain_context": "同一完整數線與甲乙兩點；兩空合一項"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-1.1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "1.1",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "真分數讀法與分類。",
+          "retain_context": "該分數及共用全部讀法／類別連線池"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-1.2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "1.2",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "假分數讀法與分類。",
+          "retain_context": "該分數及共用全部讀法／類別連線池"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-1.3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "1.3",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數讀法與分類。",
+          "retain_context": "該分數及共用全部讀法／類別連線池"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-2.1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "2.1",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "多個分割圓的假分數表徵。",
+          "retain_context": "第1組圓圖及整個候選池"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-2.2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "2.2",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "多個分割圓的假分數表徵。",
+          "retain_context": "第2組圓圖及整個候選池"
+        },
+        {
+          "id": "c-tyk-114-midterm-IV-2.3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "IV",
+          "item": "2.3",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "多個分割圓的帶分數表徵。",
+          "retain_context": "第3組圓圖及整個候選池"
+        },
+        {
+          "id": "c-tyk-114-midterm-V-1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "V",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a"
+          ],
+          "target_115_unit": "U2",
+          "reason": "可交換為三位×二位，卷面未強制原序直式；不能只看三位因數排除。",
+          "retain_context": "原算式及計算題標題；若教師另強制原序直式須重判"
+        },
+        {
+          "id": "c-tyk-114-midterm-V-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "V",
+          "item": "2",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "兩因數均三位，交換仍不能化為M2a所列位數。",
+          "retain_context": "完整算式"
+        },
+        {
+          "id": "c-tyk-114-midterm-V-3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "V",
+          "item": "3",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3c"
+          ],
+          "target_115_unit": "U3",
+          "reason": "已給角與平角合分，不用三角形性質。",
+          "retain_context": "整幅角圖、星號與45度標記"
+        },
+        {
+          "id": "c-tyk-114-midterm-V-4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "V",
+          "item": "4",
+          "pdf_page": 2,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "二階公里加法，考試週範圍待確認。",
+          "retain_context": "完整算式及兩空"
+        },
+        {
+          "id": "c-tyk-114-midterm-VI-1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VI",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3a"
+          ],
+          "target_115_unit": "U3",
+          "reason": "畫指定45度角，頂點和起始邊清楚。",
+          "retain_context": "原頂點、起始邊及標角度要求"
+        },
+        {
+          "id": "c-tyk-114-midterm-VI-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VI",
+          "item": "2",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3a"
+          ],
+          "target_115_unit": "U3",
+          "reason": "畫指定155度角，頂點和起始邊清楚。",
+          "retain_context": "原頂點、起始邊及標角度要求"
+        },
+        {
+          "id": "c-tyk-114-midterm-VII-1",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VII",
+          "item": "1",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a"
+          ],
+          "target_115_unit": "U2",
+          "reason": "問題只問12車容量，二位×二位；人數背景不使其成除法題。",
+          "retain_context": "每車容量、全部情境及最後問句"
+        },
+        {
+          "id": "c-tyk-114-midterm-VII-2",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VII",
+          "item": "2",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a"
+          ],
+          "target_115_unit": "U2",
+          "reason": "單價三位×人數二位。",
+          "retain_context": "單價與人數"
+        },
+        {
+          "id": "c-tyk-114-midterm-VII-3",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VII",
+          "item": "3",
+          "pdf_page": 3,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "排數與每排人數都三位，超出M2a。",
+          "retain_context": "兩個數量及求總座位問句"
+        },
+        {
+          "id": "c-tyk-114-midterm-VII-4",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VII",
+          "item": "4",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "萬單位收入化聚後大數相減。",
+          "retain_context": "兩人完整收入與相差問句"
+        },
+        {
+          "id": "c-tyk-114-midterm-VII-5",
+          "paper_id": "c-tyk-114-midterm",
+          "section": "VII",
+          "item": "5",
+          "pdf_page": 3,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5a",
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公尺與公里公尺二階長度累加，M5b待確認。",
+          "retain_context": "兩段路線及要求二階單位"
+        }
+      ]
+    },
+    {
+      "paper_id": "c-tyk-112-midterm",
+      "classification": "部分可用",
+      "counts": {
+        "core_provisional": 25,
+        "hold_scope": 3,
+        "later_scope": 1,
+        "needs_review": 6
+      },
+      "total_review_items": 35,
+      "items": [
+        {
+          "id": "c-tyk-112-midterm-I-1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "乘法估算選整百數，原計算本體為三位×二位；不要求概數位數或四捨五入法。",
+          "retain_context": "原乘式、指定估乘數與全部選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M6"
+          ],
+          "target_115_unit": "U6",
+          "reason": "判斷鈍角三角形其餘角，需要三角形性質，非單純辨角。",
+          "retain_context": "三角形條件及全部選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-3",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "六位數的範圍與差。",
+          "retain_context": "最大／最小條件及選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-4",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a",
+            "M4b"
+          ],
+          "target_115_unit": "U2/U4",
+          "reason": "倍數與乘除互逆反推數量，無強制併式。",
+          "retain_context": "甲乙兩條件及全部選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-5",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a"
+          ],
+          "target_115_unit": "U4",
+          "reason": "三位÷二位的分組情境。",
+          "retain_context": "每份木板數、總數及選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-6",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5a",
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "選項要求判斷路程總和或相差，不能當純換算／比大小；保留待M5b正式範圍。",
+          "retain_context": "三天路程及全部選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-7",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "7",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a",
+            "M2b"
+          ],
+          "target_115_unit": "U2",
+          "reason": "三位單价×二位天數，可按允許順序計算。",
+          "retain_context": "天數、每日費用及選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-I-8",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "I",
+          "item": "8",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3b"
+          ],
+          "target_115_unit": "U3",
+          "reason": "鐘面固定起點、方向及旋轉角。",
+          "retain_context": "鐘面圖與全部條件／選項"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a"
+          ],
+          "target_115_unit": "U4",
+          "reason": "四位÷一位，依商位數反推首位。",
+          "retain_context": "完整被除式及三位商要求"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a",
+            "M5a"
+          ],
+          "target_115_unit": "U2/U5",
+          "reason": "公尺整數乘法後換二階單位，無須公里加減方法。",
+          "retain_context": "每圈長度、圈數及兩空"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-3",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a"
+          ],
+          "target_115_unit": "U4",
+          "reason": "四位÷二位求桶數，公斤僅單位。",
+          "retain_context": "總重及每桶重量"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-4",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3c"
+          ],
+          "target_115_unit": "U3",
+          "reason": "平角等分為三角，圖未要求三角形內角和。",
+          "retain_context": "完整平角圖與三角相等條件"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-5.1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "5.1",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "表格只是大數資料載體；比較最大最小並作差，不需統計圖方法。",
+          "retain_context": "完整國家／確診／死亡表及三空"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-5.2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "5.2",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "以大數門檻篩選表格資料。",
+          "retain_context": "完整表、死亡人數欄標與兩空"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-6",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1a",
+            "M2a"
+          ],
+          "target_115_unit": "U1/U2",
+          "reason": "位名、整數倍與差；兩線索前後相依，保留整個密碼題。",
+          "retain_context": "兩線索、已知千個位及定位板；不拆兩空"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-7.1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "7.1",
+          "pdf_page": 1,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "路線圖二階公里長度相加，M5b待確認。",
+          "retain_context": "完整五點路線圖、各段長度及指定路線"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-7.2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "7.2",
+          "pdf_page": 1,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "路線圖二階公里長度相減，M5b待確認。",
+          "retain_context": "與7.1共用完整路線圖及兩個比較目的地"
+        },
+        {
+          "id": "c-tyk-112-midterm-II-8",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "II",
+          "item": "8",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a"
+          ],
+          "target_115_unit": "U2",
+          "reason": "三位×二位直式缺位，最後數字和未要求新併式規則。",
+          "retain_context": "完整直式、ABC位置及求和問句"
+        },
+        {
+          "id": "c-tyk-112-midterm-III-1.1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "III",
+          "item": "1.1",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "M2b",
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "辨別350×490的分解法；兩因數均三位且用整百分解，需另核方法深度。",
+          "retain_context": "共用350×490與此完整分解程序"
+        },
+        {
+          "id": "c-tyk-112-midterm-III-1.2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "III",
+          "item": "1.2",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "M2b",
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "雖候選程序內有二位乘法，判斷目標仍是三位×三位等值，不能割掉原式。",
+          "retain_context": "共用350×490與此完整分解程序"
+        },
+        {
+          "id": "c-tyk-112-midterm-III-2.1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "III",
+          "item": "2.1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "道路公里標誌量感與報讀。",
+          "retain_context": "兩塊路標、①及本敘述"
+        },
+        {
+          "id": "c-tyk-112-midterm-III-2.2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "III",
+          "item": "2.2",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里標誌轉換公尺的敘述判斷。",
+          "retain_context": "兩塊路標、②及本敘述"
+        },
+        {
+          "id": "c-tyk-112-midterm-IV-1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "IV",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3a"
+          ],
+          "target_115_unit": "U3",
+          "reason": "以原頂點畫指定角。",
+          "retain_context": "黑點、起始邊與145度要求；原大題無小題號，以1固定識別"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3c"
+          ],
+          "target_115_unit": "U3",
+          "reason": "已知直角與角度合成外側大角；不依三角形性質。",
+          "retain_context": "整幅外側弧線A、直角及145度標示"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "2",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M3c"
+          ],
+          "target_115_unit": "U3",
+          "reason": "平角內已知兩角分解，無須三角形內角和。",
+          "retain_context": "完整角圖、30／50度及A位置"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-3",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "3",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a"
+          ],
+          "target_115_unit": "U2",
+          "reason": "二位×二位。",
+          "retain_context": "完整算式"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-4",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "4",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "兩因數均三位，交換亦超出M2a。",
+          "retain_context": "完整算式"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-5",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "5",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a",
+            "M4b"
+          ],
+          "target_115_unit": "U4",
+          "reason": "三位÷二位含餘數。",
+          "retain_context": "完整算式"
+        },
+        {
+          "id": "c-tyk-112-midterm-V-6",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "V",
+          "item": "6",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-division"
+          ],
+          "target_115_unit": "U4範圍外；今年位置待核",
+          "reason": "除數三位，不屬M4a。",
+          "retain_context": "完整算式"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-1",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a",
+            "M4b"
+          ],
+          "target_115_unit": "U4",
+          "reason": "三位÷二位求瓶數與餘數；毫升只作情境單位。",
+          "retain_context": "總量、每瓶量、最多瓶數及餘量問句"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-2",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "2",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "一億內人數相加。",
+          "retain_context": "兩個月份的人數與相加問句"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-3",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "3",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M2a",
+            "M5a"
+          ],
+          "target_115_unit": "U2/U5",
+          "reason": "同一路段往返可先換成公尺，再以四位×一位求兩倍並換回；未強制二階加法。",
+          "retain_context": "去程完整二階長度、原路返回及單位要求；若要求二階加法則改hold_scope"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-4",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "4",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-division"
+          ],
+          "target_115_unit": "U4範圍外；今年位置待核",
+          "reason": "三位單價作除數，超出M4a；求餘數不會改變位數界線。",
+          "retain_context": "單價、總價及張數／餘款兩問"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-5",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "5",
+          "pdf_page": 2,
+          "status": "needs_review",
+          "concept_tags": [
+            "MX-multiplication"
+          ],
+          "target_115_unit": "U2範圍外；今年位置待核",
+          "reason": "人數與單價均三位，不能藉交換律納入M2a。",
+          "retain_context": "人數、單價與總額問句"
+        },
+        {
+          "id": "c-tyk-112-midterm-VI-6",
+          "paper_id": "c-tyk-112-midterm",
+          "section": "VI",
+          "item": "6",
+          "pdf_page": 2,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M1b"
+          ],
+          "target_115_unit": "U1",
+          "reason": "一億內損失金額相差。",
+          "retain_context": "兩縣市完整金額"
+        }
+      ]
+    },
+    {
+      "paper_id": "c-anho-112-final",
+      "classification": "部分可用",
+      "counts": {
+        "core_provisional": 5,
+        "hold_scope": 4,
+        "later_scope": 32,
+        "needs_review": 1
+      },
+      "total_review_items": 42,
+      "items": [
+        {
+          "id": "c-anho-112-final-I-1",
+          "paper_id": "c-anho-112-final",
+          "section": "I",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "二位小數報讀。",
+          "retain_context": "完整小數及讀法敘述"
+        },
+        {
+          "id": "c-anho-112-final-I-2",
+          "paper_id": "c-anho-112-final",
+          "section": "I",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5a",
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里路跑剩餘量須二階減法，M5b待確認。",
+          "retain_context": "總長、已跑量、所稱剩餘量"
+        },
+        {
+          "id": "c-anho-112-final-I-3",
+          "paper_id": "c-anho-112-final",
+          "section": "I",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "真分數乘整數方法。",
+          "retain_context": "完整分子分母操作敘述"
+        },
+        {
+          "id": "c-anho-112-final-I-4",
+          "paper_id": "c-anho-112-final",
+          "section": "I",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M8"
+          ],
+          "target_115_unit": "U8",
+          "reason": "括號與先乘除後加減規則。",
+          "retain_context": "兩個算式與等值判斷"
+        },
+        {
+          "id": "c-anho-112-final-I-5",
+          "paper_id": "c-anho-112-final",
+          "section": "I",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "折線圖省略符號。",
+          "retain_context": "省略符號圖及完整敘述"
+        },
+        {
+          "id": "c-anho-112-final-II-1",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M8"
+          ],
+          "target_115_unit": "U8",
+          "reason": "要求依併式逐步計算，不能只取其中乘法算成U2。",
+          "retain_context": "原併式與兩個連續等式／空格"
+        },
+        {
+          "id": "c-anho-112-final-II-2.1",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "2.1",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數換假分數。",
+          "retain_context": "完整分數與換算要求"
+        },
+        {
+          "id": "c-anho-112-final-II-2.2",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "2.2",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "假分數換帶分數或整數。",
+          "retain_context": "完整分數與換算要求"
+        },
+        {
+          "id": "c-anho-112-final-II-3",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "整數公尺換公里公尺；直接證實舊期末可補M5a。",
+          "retain_context": "完整換算式的兩空合一項"
+        },
+        {
+          "id": "c-anho-112-final-II-4",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "百分位小數化聚。",
+          "retain_context": "小數與1／0.1／0.01三空"
+        },
+        {
+          "id": "c-anho-112-final-II-5",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "小數大小與接近程度比較。",
+          "retain_context": "目標數及四個候選數"
+        },
+        {
+          "id": "c-anho-112-final-II-6",
+          "paper_id": "c-anho-112-final",
+          "section": "II",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "假分數補足整數的分數加法。",
+          "retain_context": "完整分數及最少要求"
+        },
+        {
+          "id": "c-anho-112-final-III-1",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "1",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9相關分數",
+          "reason": "同分母分數個數與量比較，留作分數進度。",
+          "retain_context": "兩邊分數敘述"
+        },
+        {
+          "id": "c-anho-112-final-III-2",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "2",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數與假分數比較。",
+          "retain_context": "兩邊完整分數"
+        },
+        {
+          "id": "c-anho-112-final-III-3",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "3",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "小數國字／數字比較。",
+          "retain_context": "兩邊完整小數"
+        },
+        {
+          "id": "c-anho-112-final-III-4",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "4",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公尺與公里公尺二階長度比較。",
+          "retain_context": "兩邊完整長度"
+        },
+        {
+          "id": "c-anho-112-final-III-5",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "5",
+          "pdf_page": 1,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M5a"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里與公分換算後比較。",
+          "retain_context": "兩邊完整長度"
+        },
+        {
+          "id": "c-anho-112-final-III-6",
+          "paper_id": "c-anho-112-final",
+          "section": "III",
+          "item": "6",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M8"
+          ],
+          "target_115_unit": "U8",
+          "reason": "括號先算與四則次序比較。",
+          "retain_context": "兩個完整併式"
+        },
+        {
+          "id": "c-anho-112-final-IV-1.1",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "1.1",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "橫向長條圖刻度報讀。",
+          "retain_context": "飲料完整長條圖含軸名、刻度、標題"
+        },
+        {
+          "id": "c-anho-112-final-IV-1.2",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "1.2",
+          "pdf_page": 1,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "比較長條圖中指定三類產品。",
+          "retain_context": "同一完整飲料圖及三類限定"
+        },
+        {
+          "id": "c-anho-112-final-IV-2.1",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "2.1",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "長條圖最大類別及人數報讀。",
+          "retain_context": "完整寵物長條圖；名稱與人數兩空合一項"
+        },
+        {
+          "id": "c-anho-112-final-IV-2.2",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "2.2",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "長條圖最小類別及人數報讀。",
+          "retain_context": "完整寵物長條圖；名稱與人數兩空合一項"
+        },
+        {
+          "id": "c-anho-112-final-IV-2.3",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "2.3",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "長條圖相等類別報讀。",
+          "retain_context": "完整寵物長條圖及兩空"
+        },
+        {
+          "id": "c-anho-112-final-IV-2.4",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "2.4",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "由圖彙總票數推全班人數。",
+          "retain_context": "完整寵物長條圖及一人一票條件"
+        },
+        {
+          "id": "c-anho-112-final-IV-3.1",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "3.1",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "折線圖橫軸意義。",
+          "retain_context": "完整溫度折線圖含軸、刻度、標題"
+        },
+        {
+          "id": "c-anho-112-final-IV-3.2",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "3.2",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "折線圖縱軸與最小刻度。",
+          "retain_context": "完整溫度折線圖及兩空"
+        },
+        {
+          "id": "c-anho-112-final-IV-3.3",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "3.3",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "兩時刻溫度報讀。",
+          "retain_context": "完整溫度折線圖及兩時刻"
+        },
+        {
+          "id": "c-anho-112-final-IV-3.4",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "3.4",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "折線圖最高最低時刻。",
+          "retain_context": "完整溫度折線圖及兩空"
+        },
+        {
+          "id": "c-anho-112-final-IV-3.5",
+          "paper_id": "c-anho-112-final",
+          "section": "IV",
+          "item": "3.5",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M10"
+          ],
+          "target_115_unit": "U10",
+          "reason": "折線升降趨勢意義。",
+          "retain_context": "完整溫度折線圖及兩空／候選詞"
+        },
+        {
+          "id": "c-anho-112-final-V-1",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "1",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M8"
+          ],
+          "target_115_unit": "U8",
+          "reason": "要求括號併式計算，屬U8。",
+          "retain_context": "完整括號算式"
+        },
+        {
+          "id": "c-anho-112-final-V-2",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "2",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M8"
+          ],
+          "target_115_unit": "U8",
+          "reason": "要求括號內乘法先算再除，屬U8。",
+          "retain_context": "完整括號算式"
+        },
+        {
+          "id": "c-anho-112-final-V-3",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "3",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數與假分數同分母加法。",
+          "retain_context": "完整分數算式"
+        },
+        {
+          "id": "c-anho-112-final-V-4",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "4",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "帶分數同分母減法。",
+          "retain_context": "完整分數算式"
+        },
+        {
+          "id": "c-anho-112-final-V-5",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "5",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "二位小數直式加法。",
+          "retain_context": "完整算式與⑤至⑧寫直式要求"
+        },
+        {
+          "id": "c-anho-112-final-V-6",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "6",
+          "pdf_page": 2,
+          "status": "later_scope",
+          "concept_tags": [
+            "M7"
+          ],
+          "target_115_unit": "U7",
+          "reason": "小數直式減法。",
+          "retain_context": "完整算式與⑤至⑧寫直式要求"
+        },
+        {
+          "id": "c-anho-112-final-V-7",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "7",
+          "pdf_page": 2,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里公尺二階退位減法，M5b待確認。",
+          "retain_context": "完整算式、兩空與直式要求"
+        },
+        {
+          "id": "c-anho-112-final-V-8",
+          "paper_id": "c-anho-112-final",
+          "section": "V",
+          "item": "8",
+          "pdf_page": 2,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "公里公尺二階加法，M5b待確認。",
+          "retain_context": "完整算式、兩空與直式要求"
+        },
+        {
+          "id": "c-anho-112-final-VI-1",
+          "paper_id": "c-anho-112-final",
+          "section": "VI",
+          "item": "1",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a",
+            "M2a"
+          ],
+          "target_115_unit": "U4/U2",
+          "reason": "整數先分組再乘單價，可分兩步列式；題目未要求U8併式，官方示例用括號不等於作答必須如此。",
+          "retain_context": "總數、每串個數、單價與完整問句"
+        },
+        {
+          "id": "c-anho-112-final-VI-2",
+          "paper_id": "c-anho-112-final",
+          "section": "VI",
+          "item": "2",
+          "pdf_page": 3,
+          "status": "later_scope",
+          "concept_tags": [
+            "M9"
+          ],
+          "target_115_unit": "U9",
+          "reason": "分數乘整數、帶分數表示且含植樹間隔；不是單純整數乘法。",
+          "retain_context": "完整植樹圖、間距、棵數、忽略厚度及帶分數要求"
+        },
+        {
+          "id": "c-anho-112-final-VI-3",
+          "paper_id": "c-anho-112-final",
+          "section": "VI",
+          "item": "3",
+          "pdf_page": 3,
+          "status": "needs_review",
+          "concept_tags": [
+            "M5a",
+            "M7"
+          ],
+          "target_115_unit": "U7相關；作答格式待核",
+          "reason": "公尺公分重疊長度可先算整數公分；原問幾公尺且官方示例用小數，未明許二階答案，先核作答格式，不單憑示例強制小數法。",
+          "retain_context": "完整竹竿重疊圖、三個標示與幾公尺問句"
+        },
+        {
+          "id": "c-anho-112-final-VI-4",
+          "paper_id": "c-anho-112-final",
+          "section": "VI",
+          "item": "4",
+          "pdf_page": 3,
+          "status": "hold_scope",
+          "concept_tags": [
+            "M5a",
+            "M5b"
+          ],
+          "target_115_unit": "U5",
+          "reason": "三段公里與公尺換算後累加；整題需要M5b，不能僅取換算資訊計入M5a核心題數。",
+          "retain_context": "游泳、自行車、跑步全部長度與總公里問句"
+        },
+        {
+          "id": "c-anho-112-final-VI-5",
+          "paper_id": "c-anho-112-final",
+          "section": "VI",
+          "item": "5",
+          "pdf_page": 3,
+          "status": "core_provisional",
+          "concept_tags": [
+            "M4a",
+            "M1b"
+          ],
+          "target_115_unit": "U4/U1既有整數減法",
+          "reason": "總優惠先除盒數再從單價扣除，可逐步整數計算；無強制併式，官方示例不是唯一指定方法。",
+          "retain_context": "原單價、盒數、總優惠及每盒實價問句"
+        }
+      ]
+    }
+  ]
+}
