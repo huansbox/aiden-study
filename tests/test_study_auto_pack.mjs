@@ -176,3 +176,62 @@ test("background completion updates practice area without replacing parent forms
   assert.equal(e.app.activePack.questions.length,6);
   assert.match(e.node("pack-status").textContent,/題包已保存/);
 });
+
+for (const count of [1, 6]) {
+  test(`restored progress with ${count} private flags and no cache: auto-load exposes restore controls without replacing parent forms`, async () => {
+    const st = storage();
+    const net = network();
+    let e = await boot(st, "test-child", net);
+    const publicQuestion = [...e.app.map.values()].find(q => q.unit === 5);
+    const restored = {
+      ...plain(e.app.state), studyTerm: "g4-s1", subject: "math",
+      mastered: { 5: [publicQuestion.id] },
+      challenge: { 5: { batch: [publicQuestion.id] }, 15: { batch: ids } },
+      stats: { [publicQuestion.id]: { practiced: 2, correct: 1 } },
+      flagged: [
+        { questionId: publicQuestion.id, unit: 5, flaggedAt: 1 },
+        ...ids.slice(0, count).map(questionId => ({ questionId, unit: 15, flaggedAt: 2 })),
+      ],
+    };
+    await e.app.wiring.commitImport("test-child", restored);
+    const siblingKey = "study:progress:test-other";
+    st.map.set(siblingKey, JSON.stringify({ schemaVersion: 1, mastered: { 15: [ids[5]] } }));
+    const siblingBefore = st.getItem(siblingKey);
+    e = await boot(st, "test-child", net);
+    assert.equal(e.app.activePack, null);
+    assert.equal(e.app.State.getFlagged().length, 0);
+    assert.ok(!e.node("page-home").innerHTML.includes("全部還原"));
+    const before = st.getItem(progressKey);
+    e.window._startFull(15);
+    assert.equal(st.getItem(progressKey), before);
+
+    // The parent DOM must survive the automatic refresh, including restore UI.
+    const parentHtml = e.node("page-home").innerHTML;
+    e.node("backup-io").innerHTML = "existing restore confirmation";
+    e.node("import-text").value = "unfinished restore draft";
+    e.node("sync-token-input").value = "test-token";
+    e.window._saveSyncToken();
+    await flush();
+    assert.equal(e.app.activePack.questions.length, 6);
+    assert.equal(e.node("page-home").innerHTML, parentHtml);
+    assert.equal(e.node("backup-io").innerHTML, "existing restore confirmation");
+    assert.equal(e.node("import-text").value, "unfinished restore draft");
+    const flaggedHtml = e.node("study-flagged-content").innerHTML;
+    assert.match(flaggedHtml, new RegExp(`已回報題目（${count}）`));
+    assert.match(flaggedHtml, /全部還原/);
+    for (const id of ids.slice(0, count)) assert.ok(flaggedHtml.includes(`window._unflag('${id}')`));
+    if (count === 6) assert.match(e.node("study-home-content").innerHTML, /目前沒有可練習的題目/);
+
+    if (count === 1) e.window._unflag(ids[0]);
+    else e.window._unflagAll();
+    assert.equal(e.app.State.getFlagged().length, 0);
+    assert.match(e.node("page-home").innerHTML, /全部練習/);
+    e.window._startFull(15);
+    assert.equal(e.app.quiz.queue.length, 6);
+    assert.deepEqual(plain(e.app.state.mastered[5]), restored.mastered[5]);
+    assert.deepEqual(plain(e.app.state.challenge[5]), restored.challenge[5]);
+    assert.deepEqual(plain(e.app.state.stats[publicQuestion.id]), restored.stats[publicQuestion.id]);
+    assert.deepEqual(plain(e.app.state.flagged), [restored.flagged[0]]);
+    assert.equal(st.getItem(siblingKey), siblingBefore);
+  });
+}

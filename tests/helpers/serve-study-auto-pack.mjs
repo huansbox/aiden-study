@@ -21,6 +21,10 @@ const server=createServer(async(req,res)=>{
     }
     if(url.pathname==="/test-start"){
       const progress={schemaVersion:1,studyTerm:"g4-s1",semester:"final",subject:"math",mastered:{},challenge:{15:{batch:ids}},stats:{},errorBank:[],flagged:[]};
+      const flaggedCount = Number(url.searchParams.get("flags"));
+      if ([1, 6].includes(flaggedCount)) {
+        progress.flagged = ids.slice(0, flaggedCount).map(questionId => ({ questionId, unit: 15, flaggedAt: 1 }));
+      }
       res.setHeader("Content-Type","text/html; charset=utf-8");
       res.end(`<script>localStorage.clear();localStorage.setItem('study:progress:test-child',${JSON.stringify(JSON.stringify(progress))});location.replace('/study/?child=test-child');</script>`);return;
     }

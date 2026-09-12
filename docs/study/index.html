@@ -1732,15 +1732,16 @@ function renderHome(preserveParentForms = false) {
     html += '</div>';
   }
   if (preserveParentForms) {
-    // 背景題包結果只更新練習區與文字提示，不銷毀正在輸入的金鑰、備份或還原確認。
+    // 背景題包結果更新練習、已回報區與文字提示，不銷毀正在輸入的金鑰、備份或還原確認。
     document.getElementById("study-home-content").innerHTML = html;
+    document.getElementById("study-flagged-content").innerHTML = renderFlaggedSection();
     document.getElementById("pack-status").textContent = packNotice;
     document.getElementById("pack-availability").textContent = activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未載入題包。";
     if (!activePack || packNotice.startsWith("未載入")) document.getElementById("private-pack-details").open = true;
     return;
   }
   html = `<div id="study-home-content">${html}</div>`;
-  html += renderFlaggedSection();
+  html += `<div id="study-flagged-content">${renderFlaggedSection()}</div>`;
   html += renderPrivatePackSection();
   html += renderBackupSection();
   home.innerHTML = html;
