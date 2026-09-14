@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>全家學習平台</title>
 <meta name="robots" content="noindex">
 <!-- hub（票 #31）：registry.json 驅動的入口頁——小孩選人進 app、家長看全目錄與同步健康。
@@ -192,6 +193,7 @@ function renderPicker(reg) {
 }
 
 function renderHome(reg, child) {
+  document.title = `${child.name}學習`;
   const apps = homeApps(reg.apps, child.id);
   const list = apps.length
     ? apps.map((a) => `
