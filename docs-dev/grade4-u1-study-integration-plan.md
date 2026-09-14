@@ -2,7 +2,7 @@
 
 日期：2026-09-12。調查基底：`ae74bc491146c64b73c6cb914bd2d3b4ceeee272`，與當時主目錄本地 master HEAD 相同（含 #54 三個尚未 push 的 commits）。統籌已於同日採納本文件的方案基線，並建立主追蹤 [#55](https://github.com/huansbox/aiden-study/issues/55)。
 
-> 即時狀態：W1 [#56](https://github.com/huansbox/aiden-study/issues/56) 與 W2 [#57](https://github.com/huansbox/aiden-study/issues/57) 已完成，題包契約、Study 共用程式、六題 private builder 與原 manual import QA 已交付；原 W3 clean-context 整合 review 已通過。2026-09-12 最新核准方案以 [#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 取代「每容器首次傳檔」作為正常 UX；#58 code／獨立 review、Worker 與正式 KV pack 發布已完成，唯一 P2 已修正並複驗，無未解 finding。Public static data 仍為原 1,924 題；ignored 本機路徑保存 source／QA，正式 pack 位於獨立 KV。Production authenticated GET 與真 iPad／家長驗收仍屬 W4；本狀態不宣稱 iPad 已有 token，也不宣稱 #35 或 #34 已完成。
+> 即時狀態（2026-09-14）：W1 [#56](https://github.com/huansbox/aiden-study/issues/56)、W2 [#57](https://github.com/huansbox/aiden-study/issues/57)、原 W3 整合 review 與 [#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 發布已完成；#56／#57／#58 均 closed，無未解 review finding。Public static data 仍為原 1,924 題，private pack 正式內容由 KV 的獨立 content key 提供。家長已在 iPad 橫向回報設定後自動六題、重開接續、未送出輸入清空及 child 隔離通過；環境資訊尚未補齊，完整 W4 仍未結案。結果與剩餘項目集中於 [家庭端驗收紀錄](grade4-u1-ipad-acceptance.md)，不宣稱 #35／#34 通過。
 
 ## 1. 推薦結論與交付目標
 
@@ -12,7 +12,9 @@
 
 「離開再回來接續」沿用現有半批儲存：已答對題不再出現，未完成批次按保存的剩餘題目順序接續；未送出的輸入重新填寫。第一批六題自然形成一批，不改既有批次大小規則。
 
-完成標準：#58 的 Worker／KV／Study 垂直路徑、管理端部署、完整測試、獨立 review 與分階段發布先通過；之後在孩子實際使用的 iPad 容器核對或設定 family token，從原 Study 入口自動取得六題。孩子完成部分題、離開並重新開啟後能繼續同一批剩餘題；切回三下仍見原進度，另一 child 也不受影響。程式驗證與真 iPad 操作分開記錄。
+完成標準：#58 的 Worker／KV／Study 垂直路徑、管理端部署、完整測試、獨立 review 與分階段發布先通過；之後在孩子實際使用的 iPad 容器核對或設定 family token，從原 Study 入口自動取得六題。孩子完成部分題、離開並重新開啟後能繼續同一批剩餘題；切回三下的現存／合成測試進度不變，另一 child 也不受影響。程式驗證與真 iPad 操作分開記錄。
+
+2026-09-14 家長確認三下歷史進度／錯題不再追回；歷史備份找回／對帳已有 2026-07-17 放棄決策。本次該實際歷史資料對帳列不適用，不要求重新找回；這不改變程式保護現存資料、年級隔離或不清除進度的要求，也不授權任何清除操作。
 
 ## 2. 範圍與不做
 
@@ -25,7 +27,7 @@
 
 ## 3. 現有能力與實際缺口
 
-以下定位以檔案與 code 名稱為準，方便後續變更後仍能搜尋。
+本節保留實作前的調查快照與 #58 修正設計，表中缺口已由 W1／W2／#58 交付，不能當作當前待辦。以下定位以檔案與 code 名稱為準，方便追溯；目前剩餘工作以家庭端驗收紀錄為準。
 
 | 面向 | 已存在的能力／程式證據 | 本次缺口與影響 |
 | --- | --- | --- |
@@ -170,13 +172,15 @@ Study 保留 `study:private-pack:g4-s1-math-u1` 作已驗證本機 cache。boot 
 
 ### 真 iPad 最終驗收
 
+需求清單如下；2026-09-14 已回報的結果、環境未知欄位、三下歷史資料不適用與剩餘項目統一記在 [家庭端驗收紀錄](grade4-u1-ipad-acceptance.md)。本節保留完整需求，不將「已回報」擴寫成所有子情境通過。
+
 自動化與 desktop CUA 使用 `test-child`、synthetic pack、fake fetch／KV／storage；真 pack 只在 ignored 本機做唯讀驗證。不讓工人讀取孩子 token 或雲端真實進度。家長在自己實際使用容器的最終確認由統籌安排。
 
 - 先記錄 iPadOS 版本、Safari／主畫面容器、方向與 family token 是否已設定；未設定時完成既有一次家庭設定，不能假稱裝置原本已有。
 - 從原 Study 入口開啟或選四上，自動取得六題且正常流程不要求檔案／JSON；設定 token 後重試可立即生效。另驗服務失敗保留有效 cache 與清楚提示，手動 import 只作備援。
 - 四上 U1 與三下選擇清楚；首批六題題文、八位輸入、比較按鈕、確認與離開按鈕可操作且不被鍵盤遮住。
 - 作答中回 hub／切背景／關閉再重開，同容器已提交進度和半批成立；未提交輸入清空符合上述定義。
-- 三下原測試紀錄未改；切另一 child 不讀到前一 child 的四上進度。
+- 三下現存／合成測試紀錄未改；家長已放棄的歷史資料對帳列不適用，不再找回。切另一 child 不讀到前一 child 的四上進度。
 - 匯出進度不含題文；在另一測試容器先還原進度而尚未取得題包時出現明確提示，使用 family token 自動取得相同 pack 後進度恢復。
 - 網路失敗、本機不能保存的提示可理解；不把斷網後頁面仍開著的結果寫成完整離線冷啟動驗收。
 
@@ -193,7 +197,7 @@ Study 保留 `study:private-pack:g4-s1-math-u1` 作已驗證本機 cache。boot 
 | W2 六題私用轉換與 build（已完成） | W1 凍結包契約；[#57](https://github.com/huansbox/aiden-study/issues/57) | 已交付 private builder、public 追溯 metadata、精確 ignore 的 curated／六題 pack／解說／QA；六題獨立重算一致，public 內容無差異，重建冪等且 production 輸出受 private root 限制 | gpt-5.6-sol／high；需精確數值與來源核對 |
 | W3 獨立整合審查與桌面驗證（已完成） | W1、W2 | Clean-context review 已通過，無未解 finding；完整 Node／pytest、六題語意、舊進度隔離、缺包再載入、payload 邊界、desktop 真 DOM 與原生 file chooser 均有證據 | gpt-6-astra／high |
 | Auto 修正（code／review 與 Cloudflare 發布完成） | W3 歷史基線；[#58](https://github.com/huansbox/aiden-study/issues/58) | Worker 固定家庭唯讀題包、管理端安全部署工具、Study 自動取得／token 重試／cache 失敗語意、完整測試與獨立 review 已完成；唯一 flagged 還原 P2 已修正，無未解 finding。Worker 與正式 KV pack 已發布，不改六題或進度 contract | 單一修正實作票；另一 task 獨立 review 已 PASS；Actions／Pages 結果見 #58／#55 |
-| W4 真 iPad 與家長交付（pending） | #58 已整合並發布 | 在孩子實際使用的 iPad／容器核對或設定 family token，完成自動取得、部分作答後接續、三下與另一 child 隔離，記錄通過或具體阻擋；驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
+| W4 真 iPad 與家長交付（部分回報通過） | #58 已整合並發布 | 2026-09-14 家長回報四項通過；依單一驗收紀錄補齊環境與未涵蓋情境，歷史三下資料找回列不適用；完整驗收後才決定下一批／下一章 | 統籌或操作工人 gpt-5.6-sol／medium，家長提供真機操作結果 |
 
 W1 已用合成題包驗證答對、答錯回隊、關閉／重載接續與三下欄位不變；W3 再以正式六題 pack 驗證多題半批、最後一題答對／答錯立即重載及缺包恢復。這些 desktop 證據不取代 W4 真 iPad。
 
@@ -207,4 +211,4 @@ W1 已用合成題包驗證答對、答錯回隊、關閉／重載接續與三�
 
 統籌同時採納六題選擇、數字 unit 15、現有半批接續與舊 key 不變；schemaVersion 不變、未送出輸入不保存的技術細節沿用本計畫。app 私用資料以 `data/private/study/g4-s1-math-u1/` 為落點，原 #54 紙本 task 保持已完成且只讀追溯。#58 負責 auto path 的完整實作、review 與發布；完成後才進孩子實際 iPad／容器 gate。
 
-W1／W2 acceptance 已由統籌接受；原 W3 clean-context review 對 public diff、六題語意、private 邊界、進度隔離、缺包恢復、desktop DOM 與原生 file chooser 均完成驗證。#58 auto path 的完整測試與新 context review 也已通過，唯一 P2 已修正且無未解 finding；Worker 與正式 KV pack 已發布。Public static data 維持 1,924 題，private pack 不進 Git。這些結果不代表 production authenticated GET、真 iPad 或 #35／#34 已完成；#55 必須保持 open。
+W1／W2 acceptance 已由統籌接受；原 W3 clean-context review 對 public diff、六題語意、private 邊界、進度隔離、缺包恢復、desktop DOM 與原生 file chooser 均完成驗證。#58 auto path 的完整測試與新 context review 也已通過，唯一 P2 已修正且無未解 finding；Worker 與正式 KV pack 已發布。Public static data 維持 1,924 題，private pack 不進 Git。2026-09-14 家長已確認家庭設定後自動取題與三項後續操作，但這不等於真機 HTTP／hash 檢查、完整 W4 或 #35／#34 通過；#55 保持 open。

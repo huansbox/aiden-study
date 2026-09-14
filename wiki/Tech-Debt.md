@@ -2,17 +2,13 @@
 
 > 快照日期：2026-07-21。依「利息」排序：平常改 code 就會付成本的項目排前面；只有特定裝置或罕見競態才會發生的項目排後面。技術債是已知權衡，不等於立即開工。
 
+> 2026-09-14 局部更正：CI 已於 2026-07-21 完成，移至償還紀錄；其餘項目仍屬原快照，本次未重新審查，不把舊版本號或測試數當作目前狀態。
+
 ## 不是技術債
 
 - #35 iPad spike、#20 注音音檔、#34 自訂網域搬遷是尚未完成的交付，放在 [Plan](Plan)，不拿「技術債」名義延後。
 - Monorepo、GitHub Pages、family token、不做登入、app 邏輯不抽共用 framework 都是 ADR 已拍板的設計。
 - `wiring-v1.js` 載入失敗就擋站是安全行為，不是可用性 bug。
-
-## 高利息
-
-| 債 | 成本（利息） | 償還策略／條件 | 證據 |
-|---|---|---|---|
-| 測試沒有 CI（continuous integration，push 後自動驗證）gate | Repo 已有 220 個 Node.js tests 與 140 個 pytest tests，但 GitHub Actions 目前只有 Wiki 發布；每次 merge 都依賴維護者手動跑完整套件，漏跑就可能直接部署到 Pages | 在下一輪 code 開發前新增單一 GitHub Actions workflow：安裝 uv／Python、跑 pytest、以 Node.js 跑 `tests/*.mjs`；先保持簡單，不加矩陣與 coverage gate | `.github/workflows/` 只有 `publish-wiki.yml` |
 
 ## 中利息
 
@@ -37,6 +33,7 @@
 
 ## 償還紀錄
 
+- **2026-07-21**：PR #51 已加入 [Python／Node.js CI workflow](https://github.com/huansbox/aiden-study/blob/master/.github/workflows/test.yml)，push `master`、PR 與手動觸發皆可執行兩組測試。2026-09-14 依 code 與 [最近 release 的成功 run](https://github.com/huansbox/aiden-study/actions/runs/34700385626) 移除過期的「尚無 CI」債項；本次未修改 workflow。
 - **2026-07-17**：四 app 約 150～200 行重複接線抽成 `wiring-v1.js`；新增 15 個 effect-layer 測試；Study／zhuyin safe storage 收斂；fallback 定錨與 zhuyin reset 寫入失敗改為誠實回報（PR #49、#50）。
 - **2026-07-16**：同步加入 epoch 換代復原，並補 `dataNull` 守門，避免本機進度遺失時用空資料覆蓋重建後的雲端（PR #43、#48）。
 - **2026-07-15**：Math／spelling 搬入 monorepo 並接入 child store＋同步；避免跨 repo 遺忘與四套部署入口（PR #46、#47）。

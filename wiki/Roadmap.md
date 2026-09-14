@@ -1,10 +1,10 @@
 # 路線圖
 
-> 快照日期：2026-09-12。長期方向在本頁；可直接執行的順序與 gate 見 [執行中計畫](Plan)。現況仍以 code、Git 歷史與 GitHub issues 為準。HITL（human in the loop）表示需要家長在真機操作或判定，不能只靠程式端完成。
+> 快照日期：2026-09-14。長期方向在本頁；可直接執行的順序與 gate 見 [執行中計畫](Plan)。現況仍以 code、Git 歷史與 GitHub issues 為準。HITL（human in the loop）表示需要家長在真機操作或判定，不能只靠程式端完成。
 
 ## 方向
 
-Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。下一個目標是 [#55 四上數學 U1「一億以內的數」](https://github.com/huansbox/aiden-study/issues/55)；舊三下題目與進度必須保留，四上練習須有清楚邊界，不混入舊練習。
+Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。目前目標是 [#55 四上數學 U1「一億以內的數」](https://github.com/huansbox/aiden-study/issues/55) 的家庭端驗收收尾；程式保護舊三下題目與現存進度，四上練習有獨立邊界。家長已放棄找回的三下歷史紀錄不列為恢復任務。
 
 另有兩種支援路線，但只在實際需要時啟動：
 
@@ -23,6 +23,7 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 | 2026-07-11～17 | 注音程式、Cloudflare Worker 同步、hub／registry、app monorepo 整併與共用 wiring layer 上線 |
 | 2026-09-12 | #53 完成四上數學候選卷研究與收集：8 份題目卷、6 份官方答案，共 14 個私用 PDF |
 | 2026-09-12 | #54 完成四上 U1 第一份紙本短練習：10 題孩子卷與家長答案；私用衍生成品不進 Git |
+| 2026-09-12 | #56／#57／#58 完成四上入口、六題 private pack、自動家庭取題、review 與正式發布；#55 保留家庭端 W4 |
 
 ## 近期路線
 
@@ -34,7 +35,7 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 | 4 | [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34) | #35 關閉、逐容器備份與同步健康 | 新網址與新圖示完成進度對帳後，才移除舊圖示或清理舊 repo |
 | 並行 | [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20) | 家長錄音與 iPad | 14 段正式錄音入庫並完成真機驗收 |
 
-四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。方案已定案，但 W1–W4 尚未啟動。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
+四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 已有 2026-09-14 家長在 iPad 橫向的四項操作回報，完整驗收尚未結案，詳見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
 
 ## 後續方向
 
