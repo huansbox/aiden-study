@@ -4,7 +4,7 @@
 
 ## 結論
 
-目前執行目標仍是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。#56／#57／#58 已完成並關閉，六題、共用程式、自動讀取、review 與發布均完成。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空與 child 隔離通過；型號、系統版本與 Safari／主畫面 App 尚未確認，完整 W4 仍未結案。當前工作是補齊驗收紀錄與剩餘操作，不擴充功能或題量。
+目前執行目標仍是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。#56／#57／#58 已完成並關閉，六題、共用程式、自動讀取、review 與發布均完成。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空與 child 隔離通過；已確認以 AirDrop 網址直接開啟、尚未建立主畫面圖示，瀏覽器名稱、型號與系統版本未知，完整 W4 仍未結案。當前工作是補齊驗收紀錄與剩餘操作，不擴充功能或題量。
 
 本次四項結果與剩餘項目以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一狀態來源。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
 

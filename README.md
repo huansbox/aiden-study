@@ -4,7 +4,7 @@
 
 線上入口：<https://huansbox.github.io/aiden-study/>
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 的共用程式、六題 private pack、獨立 review 與正式發布已完成；[#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 已關閉，正常流程不要求家長傳檔。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空及 child 隔離通過；操作容器等環境資訊與剩餘完整驗收仍待補齊，#55 保持 open。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 的共用程式、六題 private pack、獨立 review 與正式發布已完成；[#58 家庭權限自動讀取](https://github.com/huansbox/aiden-study/issues/58) 已關閉，正常流程不要求家長傳檔。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空及 child 隔離通過；本次以 AirDrop 網址直接開啟，尚未建立主畫面圖示；瀏覽器名稱等環境資訊與剩餘完整驗收仍待補齊，#55 保持 open。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
 
 ## 現況
 
