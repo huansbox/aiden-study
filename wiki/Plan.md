@@ -4,9 +4,9 @@
 
 ## 結論
 
-目前執行目標仍是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。#56／#57／#58 已完成並關閉，六題、共用程式、自動讀取、review 與發布均完成。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空與 child 隔離通過；已確認以 AirDrop 網址直接開啟、尚未建立主畫面圖示，瀏覽器名稱、型號與系統版本未知，完整 W4 仍未結案。當前工作是補齊驗收紀錄與剩餘操作，不擴充功能或題量。
+目前執行目標仍是 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55)。#56／#57／#58 已完成並關閉，六題、共用程式、自動讀取、review 與發布均完成。2026-09-14 家長在 iPad 橫向回報家庭設定後自動六題、重開接續、未送出輸入清空、child 隔離與輸入／按鈕操作通過；已確認以 AirDrop 網址直接開啟、尚未建立主畫面圖示，瀏覽器名稱、型號與系統版本未知，完整 W4 仍未結案。當前工作是補齊驗收紀錄與剩餘操作，不擴充功能或題量。
 
-本次四項結果與剩餘項目以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一狀態來源。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
+本次五項結果與剩餘項目以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一狀態來源。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
 
 平台搬遷仍受 #35 與 #34 約束，但那是換網域、換圖示與清理舊站的 gate，不阻擋在現行網址新增題庫內容。注音收尾可在適合的家長／iPad 時段並行。
 
@@ -31,7 +31,7 @@
 
 | Issue | 性質 | 現況 | 下一個動作 |
 |---|---|---|---|
-| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | Open；已發布，W4 有四項家長回報通過 | 依單一驗收紀錄補記環境、完成剩餘項目後再結案 |
+| [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | Open；已發布，W4 有五項家長回報通過 | 依單一驗收紀錄補記環境、完成剩餘項目後再結案 |
 | [#58 Study 四上 U1：家庭權限自動讀取私用題包](https://github.com/huansbox/aiden-study/issues/58) | 單一修正實作 | Closed；code／review、Worker／pack／Pages 發布完成 | 無；家庭端後續結果由 #55 追蹤 |
 | [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Completed；acceptance 已由獨立 review 與 W3 接受 | 無；後續真機結果由 #55 追蹤 |
 | [#57 四上 U1：六題私用題包與可重建來源](https://github.com/huansbox/aiden-study/issues/57) | W2 private build | Completed；六題與 public/private 邊界已由 W3 接受 | 無；ignored 本機路徑留 source／QA，正式 pack 已部署到獨立 KV |
@@ -54,7 +54,7 @@
 
 ### B. iPad 驗收收斂
 
-1. 先讀 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)，保留四項已回報結果與三下歷史資料不適用的處置，補記尚未知的容器資訊。
+1. 先讀 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)，保留五項已回報結果與三下歷史資料不適用的處置，補記尚未知的容器資訊。
 2. 將剩餘顯示／觸控、離開路徑、另一容器缺包還原、失敗時快取／保存提示集中安排一輪；詳細完成訊號只在該紀錄維護。
 3. 逐項回填實測結果，依 #55 completion protocol 做結案核對後才擴題；不以 desktop 取代真機，也不把本次結果當成 #35／#34 通過。
 

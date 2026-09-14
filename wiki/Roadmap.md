@@ -35,7 +35,7 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 | 4 | [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34) | #35 關閉、逐容器備份與同步健康 | 新網址與新圖示完成進度對帳後，才移除舊圖示或清理舊 repo |
 | 並行 | [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20) | 家長錄音與 iPad | 14 段正式錄音入庫並完成真機驗收 |
 
-四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 已有 2026-09-14 家長在 iPad 橫向的四項操作回報，完整驗收尚未結案，詳見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
+四上 U1 的具體資料邊界、題型映射、進度策略與驗收方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 已有 2026-09-14 家長在 iPad 橫向的五項操作回報，完整驗收尚未結案，詳見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
 
 ## 後續方向
 
