@@ -1,0 +1,83 @@
+# 四上數學擴題路線圖
+
+更新：2026-09-15。基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
+
+## 結論與現況
+
+四上數學接續採「歷屆題庫依概念對齊 → 小批轉成 iPad 練習」。已發布並結案的 U1 六題保持不變；目前由 [#59](https://github.com/huansbox/aiden-study/issues/59) 進行第一個跨章批次：新增 8 個 U1～U5 數位 activity，將同一家庭 pack 從 rev1 六題追加成 rev2 十四題。
+
+#59 已立票，但截至本文件更新時，8 題仍在轉寫、逐題驗算、官方答案核對、獨立內容 review 與程式實作中。十四題 rev2 尚未正式 build、部署或發布，bytes 與 SHA256 也尚未產生；本文件不把候選、進行中工作或既有答案卷身分證據寫成已驗證成功。
+
+今年已確認為桃子腳 115 學年度四上數學康軒版；第一次定期評量的正式數學單元／頁碼範圍尚未公布。U1～U4 與 U5 的公里認識、量感、換算、比較只是在校方教學進度下的優先準備範圍；M5b 公里／公尺二階單位加減仍在考試週邊界，不假稱學校已公告會考。
+
+## 真相源與計數口徑
+
+- 課程與跨年／跨版 mapping：[課程比較](../learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md)。舊章號只用來定位，放行與否看題目實際概念。
+- B 五卷候選真相源：[question-scope-review.json](../learning-tasks/grade4-sem1-math-exam1/source/question-scope-review.json)。B 以作答欄位為「標記作答單位」，相依欄位可能屬同一數位 activity。
+- C 三卷候選真相源：[supplemental-question-review.json](../learning-tasks/grade4-sem1-math-exam1/source/supplemental-question-review.json)。C 以 review item 計數，不能與 B 相加成原題數。
+- 已納入 app 的公開集合與 provenance 真相源：[mapping-metadata.json](../data/study/g4-s1-math-u1/mapping-metadata.json)。正式題文、答案、解說、pack 與 QA 留在 ignored `data/private/study/g4-s1-math-u1/`。
+- 現行六題契約與操作基線：[pack contract](grade4-u1-pack-contract.md)、[private build guide](grade4-u1-private-pack-build.md)、[Study integration plan](grade4-u1-study-integration-plan.md)。本頁只記擴題決策，不複製完整舊 contract。
+
+數量必須分開報告：
+
+| 口徑 | 現況 | 能代表什麼 |
+| --- | ---: | --- |
+| B 標記作答單位 | 216＝已上線 6＋#59 來源單位 9＋未選 201 | 原卷中已做 scope mapping 的作答欄位；不是 216 道可直接上線題 |
+| C review items | 126＝#59 來源 item 1＋未選 125 | 另一種核題單位；不能與 B 相加 |
+| 數位 activity | #59 完成後 14＝既有 6＋新增 8 | Study 題包中的 activity 數；目前仍只有既有 6 題已發布 |
+
+B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落在暫定前五單元範圍，不表示答案已逐題驗算，也不表示可用現有 app 保真呈現。
+
+## #59 首批：進行中
+
+本批新增分布為 U1／U2／U3／U4／U5＝1／2／2／1／2；加上既有 U1 六題後，全包十四題的各章題數為 7／2／2／1／2。精確 practice ID、app ID、來源 ID、unit 與 adaptation 由 [#59](https://github.com/huansbox/aiden-study/issues/59) 凍結，實作完成後寫回公開 [mapping-metadata.json](../data/study/g4-s1-math-u1/mapping-metadata.json)，不在本頁維護第三份 ID 清單。
+
+七個 B activity 對應九個 B 作答單位：其中 U2 的整十／整百規律題把 `tyk113-II-03a`／`03b`／`03c` 三格完整保留成一個三空 activity；另有一個 C activity 對應一個 review item。兩種來源口徑繼續分開。
+
+八個 activity 只使用現有 contract 能保真表達的四選一、整數 `number`、`comparison` 與同型、順序明確的多空；不裁掉圖、直式過程、無序集合或等價表示後仍聲稱題意等效。候選頁面與官方答案可讀性已確認，正式轉寫、獨立重算、比對官方答案、機器答案與孩子解說 QA 都仍是 #59 的未完成門檻。
+
+## 擴題 contract
+
+- 沿用 `packId: g4-s1-math-u1`、`study:private-pack:g4-s1-math-u1`、`c:study:g4-s1-math-u1`、`GET /v1/packs/g4-s1-math-u1`、family token 與既有 private root；pack 與 progress `schemaVersion` 都維持 1。
+- U1～U5 使用全域 unit 15～19；原六題的 stable ID、作答語意、unit、subject、subtopic 與進度不變。rev1 六題仍可讀，rev2 以 append-only 加入 8 題。
+- 新增或更新 normalized content 必須升 revision；同 revision 比較完整實際 ID 集合，不只比較舊六題。既有 ID 不得搬 unit／subject，內容不能降版或以舊 pack 覆蓋作 rollback。
+- Public mapping row 保留既有 11 欄並新增數字 `unit`；原六題補 15，新題使用 15～19。頂層 `sourceTask`／`sourceMapping` 保留原值作為六題 legacy provenance 入口，不暗示新題來自原紙本 task。
+- Builder 以核准 mapping 的完整集合驗證 curated、questions 與 explanations 精確覆蓋；`curated.question.unit` 必須與 mapping 一致。正式內容與 QA 保持 ignored；public metadata 不含題文、選項、答案、blanks 或解說。
+- `multiple_choice` 仍為四選一；`fill_in_blank` 可有 1～9 個順序明確且同為 `number` 或同為 `comparison` 的空格。number 仍限 0 或 1～8 位無前導零非負整數，comparison 仍限 ASCII `<`、`>`、`=`。本批不新增 mixed input token／shape。128 KiB pack 上限與每批最多 10 題不變，不另設任意總題數上限。
+- Study 以 active pack ID membership 判斷 private 題，不再以 `unit === 15` 推定。已知 private unit 缺章時保留未知進度並阻擋開始／reset；不能因 active pack 存在就把六題舊包誤認為 U2～U5 可用。
+- 新 pack 只在首頁安全時點採用，作答中延後；舊 saved batch 先完成，新題進下一批。U1 的 2／6 變 2／7、6／6 變 6／7；已答對的舊題不重練，新增題與原未答對題正常待練。全新章顯示 0／2、0／2、0／1、0／2 且可開始，不誤顯示為通關。
+- 題包不進 state、backup、sync payload 或 public 題庫／解說／QA report；public static 題庫仍固定 1,924 題的 ID／unit／subject 指紋。
+
+## 後續來源與能力路線
+
+| 115 康軒章節 | Study unit | 候選現況 | 下一批重點 |
+| --- | ---: | --- | --- |
+| U1 一億以內的數 | 15 | B 核心 43 單位；既有 6 已上線，#59 再選 1 | 原紙本 P10 若採原卷「一格結果」目標可再評估；P06 集合、P08／P09 直式不硬改 |
+| U2 整數乘法 | 16 | B 純 U2 核心 35，另有跨章項；C 有核心候選及 8 個方法／位數待核 | 先做規律、比較與結果題；自行列直式、三位乘數等方法另核 |
+| U3 角度 | 17 | B 核心 41、C 核心 13，但許多依賴量角器、鐘面、角圖或作圖 | 先做可純文字保真的分類／旋轉／合成；圖形顯示與作圖另批 |
+| U4 整數除法 | 18 | B 純 U4 核心 36；C 有核心候選與 2 個三位除數待核 | 先做規則、估商、商位數與餘數結果；長除法過程另批 |
+| U5 公里 | 19 | B 純 U5 核心 20、M5b 10；C 純 U5 核心 11、M5b 10 | 先做 M5a 量感、換算、比較；M5b 等正式範圍或實際教學進度 |
+| U6 三角形 | 後續凍結 | B 後續 25、C 後續 1 | 需要圖形、分類集合、全等對應與作圖能力 |
+| U7 二位小數 | 後續凍結 | C 後續 6、作答格式待核 1 | 定義小數輸入、單位與等價表示 |
+| U8 整數四則 | 後續凍結 | C 後續 5 | 先決定只驗結果或驗併式／括號步驟 |
+| U9 分數 | 後續凍結 | C 後續 21 | 補分數／帶分數、等價判定與數線／圓圖表示 |
+| U10 統計圖 | 後續凍結 | C 後續 12 | 補受限圖表載入；報讀與繪圖作答分開處理 |
+
+B／C 的完整未選 ID、status、頁碼與 dependency／retain_context 一律回到兩份 scope JSON 查詢，不複製到本頁。各批依孩子課程進度與 app 能力選最小可保真集合；來源量多不代表答案、圖片或互動缺口已解決。
+
+## 驗證與發布順序
+
+#59 沿用現有 production `Worker.fetch`＋fake KV、Study production harness、private builder repo 外 synthetic seam、public fingerprint、backup／child／sync tests 與 isolated desktop CUA，不新增 test seam。實作完成先跑受影響測試，再跑完整 `node --test tests/*.mjs` 與 `uv run pytest`；missing-PDF skip 如實記錄。程式完成前須有一個 read-only clean-context code review，內容完成前須有獨立真題 review。
+
+發布順序固定為新版 Worker → 能同時讀 rev1／rev2 的新版 Pages → 十四題 rev2 expanded KV。正式 build 後才以 verifier 與管理端 readback 記錄 count、bytes、revision、SHA256；log 不印真題、答案、解說、family token 或孩子進度。失敗停在當階段並保留舊有效內容與進度；內容問題只以前向 revision 修正。
+
+家長已接受個人小專案不再逐項補驗 #55 的細節，本計畫不重開完整真 iPad checklist。自動測試、review、isolated Worker 驗證與 desktop CUA 仍須完成；真機後續依實際使用問題處理。
+
+## 明確不做
+
+- 不宣稱正式考試範圍已公布，不把 `core_provisional`、答案卷身分或候選頁面可讀性寫成已驗答案。
+- 不把首批十四題當成其餘四上數學已完成；其餘 B 201／C 125 與 U6～U10 仍依上方路線分批處理。
+- 不自動建立 PDF、每章 worksheet、通用 CMS、任意圖片／HTML 通道或完整互動數學技能 app。
+- 不把暫未支援的圖形、集合、直式、小數、分數與複合題永久排除。
+- 不收自然、社會，不搬舊 `aiden-math` worksheets，不做 #34／#35 網域與容器搬遷。
+- 不讀取或輸出 family token、孩子真實雲端進度、真題內容或 private QA。
