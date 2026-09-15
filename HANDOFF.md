@@ -19,4 +19,4 @@
 
 Cloudflare 的 `linshuhuan.com` zone 已確認 active，Chrome 已沿用既有 Google 登入進入正確帳戶；Wrangler OAuth 不含 DNS 權限，後續從已登入的 DNS 管理頁執行。不要讀出 family token、擴權、重設 token 或操作孩子真實進度。GitHub Pages 目前 `cname=null`。
 
-工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理與錄音在本輪之後處理；擴題由 #60 另案進行，不改變本輪網域 gate。
+工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理與錄音在本輪之後處理；#60 擴題已完成，後續依擴題路線圖另批處理，不改變本輪網域 gate。
