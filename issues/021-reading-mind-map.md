@@ -1,7 +1,7 @@
 # 021：閱讀心智圖選詞引導
 
 狀態：實作與自動驗證完成；2026-09-08 使用者核可 land 至 master，iPad 真機待試用。
-正式入口：https://huansbox.github.io/aiden-study/mind-map.html
+正式入口：https://kids.linshuhuan.com/mind-map.html
 交付分支：`master`；原工作分支 `codex/reading-mind-map`、`codex/mind-map-ipad-layout` 已合併。
 
 ## 目標與範圍
@@ -44,3 +44,9 @@
 實作完成並發布於 5f2c3ed，GitHub test 與 Pages 均成功。[使用與再製入口](../learning-tasks/reading-mind-map/README.md) 已歸檔。尚待家長以 iPad 橫向 Safari／主畫面 App 確認尺寸與觸控，由本紀錄承接，不另開項目。
 
 Housekeeping：字型研究暫存 .scratch/font-source 不再需要，發布字型與暫存 Bold 的 SHA256 相同，正式資產與授權完整保留。刪除暫存遭自動核可審查以 blocked by policy 拒絕，故未刪除、未入版控；後續可由使用者手動清理此特定目錄。
+
+## 後續回饋（2026-09-15）
+
+已收到孩子抄寫完成圖與老師批示：老師補「貢獻」主枝（品德、《資治通鑑》、破缸救友）。這是內容覆蓋的回饋，不等同 iPad 真機操作全部驗收；未補稱觸控、主畫面 App 或列印已測。舊頁面未追改。
+
+回饋已帶入 [悠閒午後新任務](../learning-tasks/leisure-afternoon/README.md)，共用做法見 [閱讀心智圖參考](../learning-tasks/shared/reading-mind-maps.md)。新文章的狀態與驗收在新任務內保存，本票不承接新文章的實作進度。

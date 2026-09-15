@@ -1,27 +1,29 @@
 # HANDOFF
 
 - Status: idle
-- Task/issue: #34 正式網域與兩個孩子入口（完成）；前置 #35 已結案
+- Task/issue: no tracker entry — 悠閒午後閱讀心智圖；任務入口 learning-tasks/leisure-afternoon/README.md，驗收 source/coverage.md
 - Branch: master
 - Updated: 2026-09-15
 
 ## Progress
 
-本輪網站端工作已進入 master：五 app 回孩子首頁、共同 manifest scope、正式 kids.linshuhuan.com、DNS only CNAME、強制 HTTPS 與舊網址 301。發布與上線紀錄為 `e827287`、`91d155e`。家長已確認 iPad 跨頁無網址列、可讀到同一標記，且 Safari 改存不影響主畫面標記；本次收尾再確認「兩個 iPad 圖示已安裝」，#34 依已確認範圍結案。證據與未測界線見 [上線紀錄](docs-dev/platform-domain-rollout.md) 及 [真機紀錄](docs-dev/platform-ipad-spike-checklist.md)。
+本 session 在獨立 worktree 完成〈悠閒午後〉五枝心智圖，使用者核可後已將 52ea58c、1b1e12c 合併 master 並發布：https://kids.linshuhuan.com/leisure-mind-map/ 。本機與部署檢查完成，工作樹無待續實作。
 
-本次不備份／還原／對帳舊進度，不清除現有資料或舊 repo。沒有使用真實家庭 token、讀寫孩子雲端進度。未追蹤的 `.scratch/font-source/` 是其他工作素材，未加入本次提交；本輪沒有仍需攜帶的暫存草稿。
+收尾記錄老師補「貢獻」的回饋、更新兩篇任務入口，並整理 learning-tasks/shared/reading-mind-maps.md。新文章的內容覆蓋與真機驗收留在自己的任務文件，不沿用舊文章的 issues/021 作進度 tracker。
 
 ## Next step
 
-接續既有 #20 注音錄音待辦：目前 14 段正式音檔缺漏，弟弟注音按開始仍顯示沒有可練習的卡。從該票及既有錄音工具接續；不要重開已完成的 #34／#35，也不追加細碎安裝驗收。其他已知後續以 tracker 與四上數學擴題路線圖為準，本次未掃描新待辦。
+家長以正式網址試用 iPad 橫向、觸控與主畫面 App，將結果記入 learning-tasks/leisure-afternoon/source/coverage.md；未實測項目仍未勾選。下次新心智圖先看共用參考與本篇段落對照，再依新文章決定主枝。
+
+若接續一般 repo 工作，上一份交接已指定的 #20 注音錄音仍可作起點；本次未重查該票，不重開已完成的 #34／#35，也未掃描新待辦。
 
 ## Validation
 
-- 發布 CI（`e827287`）：Node 286 pass；pytest 183 pass、1 skipped。`91d155e` 的 test／Pages／publish-wiki 均 success。
-- 新 HTTPS origin：兩孩子首頁與五 app 往返正確；七條舊 URL 301 保留 path／child；28 個主要資源 200 且與 Git 發布原文相符。
-- Worker 題包 GET 與測試 child 進度 PUT 的 OPTIONS 均 204，允許正式 origin 與必要 headers；未測真實授權同步閉環。
-- 家長合併功能回報完成 #35，並確認兩個正式圖示已安裝；裝置版本、v2 原始模式報告及回寫時間未另收集，不補稱已測。
-- 本次收尾重跑 `node --test tests/test_pages_domain.mjs`：1 pass；文件 diff 自查與 `git diff --check` 通過。僅更新紀錄，未重跑整套本機測試。
+- 實作時 Node.js 全套通過；Python 183 passed、1 skipped（worktree 無不入庫的期中 PDF）。發布 commit 1b1e12c 的 GitHub test 與 Pages deployment 均 success。
+- 240 種合法選法涵蓋五枝、詩中四景與喜愛自然；五步、園景選項限制、回改與重新整理還原通過。
+- 已測 1024×650、1024×768、1180×720、768×1024、390×844；無水平溢出、文字相交或連線進入文字周邊 3px 範圍。未做 iPad 真機或實際列印驗證。
+- 正式頁面、內容、manifest、字型 HTTP 200；瀏覽器確認注音載入、無 console 錯誤。舊頁面正式網域入口亦為 200。
+- 收尾 fetch --prune 後確認分支與 origin/master 內容相同；build.mjs --check 通過。此次純文件收尾做 diff 與連結檢查，不重跑已通過的整套測試。
 
 ## Blockers
 

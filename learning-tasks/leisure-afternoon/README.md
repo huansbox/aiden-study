@@ -1,7 +1,7 @@
 # 悠閒午後：閱讀心智圖
 
 - 日期：2026-09-15；對象：9 歲孩子，iPad 橫向操作。
-- 狀態：2026-09-15 使用者核可合併至 master 並發布；iPad 真機待試用。
+- 狀態：2026-09-15 已合併 master 並上線；iPad 真機待試用。
 - [正式入口](https://kids.linshuhuan.com/leisure-mind-map/)
 - 內容依使用者提供的 260915-1～3.jpeg；last.jpeg 是上次作業的老師回饋。原照片不公開入庫。
 
@@ -21,10 +21,16 @@
 
 重建：`node learning-tasks/leisure-afternoon/build.mjs`。以靜態伺服器提供 `docs/`，開啟 `/leisure-mind-map/`。完成圖可直接列印。進度獨立存於此瀏覽器，與上次心智圖及學習平台進度分開；沒有離線或跨機同步功能。
 
-參考：[上次任務](../reading-mind-map/README.md)。iPad 橫向、粗體注音與連線避字沿用其經驗，本次未改動舊作業。
+參考：[上次任務](../reading-mind-map/README.md)、[共用心智圖做法與適用界線](../shared/reading-mind-maps.md)。iPad 橫向、粗體注音與連線避字沿用其經驗，本次未改動舊作業程式。
 
 ## 驗證結果
 
 2026-09-15：240 種合法選法均保留五枝、詩中四景與喜愛自然，含中心及枝名皆為 58 字；僅在本紀錄核對，不顯示於孩子畫面。Node.js 全套通過；Python 183 passed、1 skipped（worktree 未含不入庫的期中 PDF，既有 PDF 回歸測試依設定跳過）。瀏覽器完成五步、園景兩張限制、回頭修改、重新整理還原均通過；console 無錯誤。
 
 1024×650 的五步按鈕與完成圖操作列可見；完成圖另驗 1024×768、1180×720、768×1024、390×844。文字盒無互相重疊、SVG 連線取樣未進入文字周圍 3px 範圍。iPad 真機與列印仍待家長驗證。
+
+## 發布與接續
+
+實作 `52ea58c`、發布紀錄 `1b1e12c` 已進入 master。GitHub [test](https://github.com/huansbox/aiden-study/actions/runs/34970214870) 與 [Pages deployment](https://github.com/huansbox/aiden-study/actions/runs/34970213184) 均成功；正式頁面、內容、manifest、字型均回 HTTP 200，瀏覽器確認字型載入且無錯誤。
+
+接續只需家長在正式網址試用 iPad 橫向、觸控及主畫面 App；結果回填 [本任務驗收](source/coverage.md)。未確認的真機項目維持未勾選，不另開重複 issue。若老師再次要求補重點，先回到段落對照判斷漏掉的內容，再調整該篇，避免直接增加每個分支的字數。
