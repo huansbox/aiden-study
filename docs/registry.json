@@ -1,8 +1,8 @@
 {
   "_comment": "registry＝驅動 hub 的 app 目錄（票 #31；欄位語意見 CONTEXT.md）。app 增減、上下架改這份資料；孩子實際可見內容與排序由家長後台家庭設定決定。owner＝該 app 舊存檔／預設進度歸屬的 child；audience＝首頁顯示對象（可複選；空陣列＝僅家長目錄）；order＝每 child 首頁排序（數字小在前）。不變量由 tests/test_registry_audit.mjs 釘住。",
   "children": [
-    { "id": "aiden", "name": "哥哥", "emoji": "👦" },
-    { "id": "bingpu", "name": "弟弟", "emoji": "🧒" }
+    { "id": "aiden", "name": "煦誠", "emoji": "👦" },
+    { "id": "bingpu", "name": "秉樸", "emoji": "🧒" }
   ],
   "apps": [
     {

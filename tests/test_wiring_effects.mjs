@@ -54,7 +54,7 @@ const PKEY = "zhuyin:progress:bingpu";
 const MKEY = "zhuyin:sync:bingpu";
 
 test("回首頁連結保持目前 child；舊版非連結徽章仍可顯示", () => {
-  for (const [child, label] of [["aiden", "哥哥"], ["bingpu", "弟弟"]]) {
+  for (const [child, label] of [["aiden", "煦誠"], ["bingpu", "秉樸"]]) {
     const badge = { tagName: "A", hidden: true, classList: { remove() {} } };
     const env = makeEnv({ search: `?child=${child}&k=test-token`, kidsSync: mockKidsSync(), badge });
     env.KW.createWiring(CFG).renderChildBadge();
@@ -65,7 +65,7 @@ test("回首頁連結保持目前 child；舊版非連結徽章仍可顯示", ()
   }
   const badge = { tagName: "DIV", hidden: true, classList: { remove() {} } };
   makeEnv({ badge }).KW.createWiring(CFG).renderChildBadge();
-  assert.equal(badge.textContent, "🧒 弟弟");
+  assert.equal(badge.textContent, "🧒 秉樸");
   assert.equal(badge.href, undefined, "cached 舊版 HTML 不被改成假連結");
 });
 

@@ -18,8 +18,8 @@ const {
 
 test("CHILD_INFO：兩個小孩、label/emoji 齊全；未知 child 回 fallback", () => {
   assert.deepEqual(KNOWN_CHILDREN, ["aiden", "bingpu"]);
-  assert.equal(CHILD_INFO.aiden.label, "哥哥");
-  assert.equal(CHILD_INFO.bingpu.label, "弟弟");
+  assert.equal(CHILD_INFO.aiden.label, "煦誠");
+  assert.equal(CHILD_INFO.bingpu.label, "秉樸");
   for (const c of KNOWN_CHILDREN) {
     assert.ok(CHILD_INFO[c].label && CHILD_INFO[c].emoji, `${c} 缺 label/emoji`);
   }

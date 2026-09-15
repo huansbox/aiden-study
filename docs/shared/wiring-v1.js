@@ -16,8 +16,8 @@
 // app 開機不多抓一個檔、不多背一種故障模式。兩份由 tests/test_registry_audit.mjs 釘住一致，
 // 加小孩＝改 registry＋這裡共兩處，改漏測試會叫。
 const CHILD_INFO = {
-  aiden: { label: "哥哥", emoji: "👦" },
-  bingpu: { label: "弟弟", emoji: "🧒" },
+  aiden: { label: "煦誠", emoji: "👦" },
+  bingpu: { label: "秉樸", emoji: "🧒" },
 };
 const KNOWN_CHILDREN = Object.keys(CHILD_INFO);
 
