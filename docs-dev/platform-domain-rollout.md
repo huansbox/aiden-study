@@ -34,7 +34,7 @@
 
 切換後 Worker 的題包 GET 與測試 child 進度 PUT 預檢（僅送 OPTIONS，不送 PUT）均回應 204，允許 `https://kids.linshuhuan.com`、Content-Type／Authorization 與 GET／PUT 等方法。實際授權資料路徑留待家庭正常使用；本輪不新增金鑰讀取或進度寫入。
 
-## 兩個正式入口（已上線，待家長加入 iPad 主畫面）
+## 兩個正式入口（已上線，家長已確認圖示安裝）
 
 | 圖示名稱 | 網址 |
 | --- | --- |
@@ -43,6 +43,6 @@
 
 兩個圖示各自指向孩子首頁。若新主畫面環境提示未設定家庭金鑰，由家長在該環境完成既有設定；不假設 Safari 的設定會跟著圖示帶入。
 
-安裝：在 iPad Safari 分別開啟上方網址，按「分享」→「加入主畫面」，名稱分別保留「哥哥學習」「弟弟學習」。#34 網站端已完成，保留 OPEN 追蹤家長尚未執行的兩個圖示安裝；不要求再逐項補測。舊圖示或 repo 沒有刪除。
+安裝：在 iPad Safari 分別開啟上方網址，按「分享」→「加入主畫面」，名稱分別保留「哥哥學習」「弟弟學習」。2026-09-15 家長回報「兩個 iPad 圖示已安裝」，本輪 #34 完成並結案；不要求再逐項補測。這項回報只證明安裝完成，不新增真實授權同步或逐題練習的驗收宣稱。舊圖示或 repo 沒有刪除。
 
 DNS 設定使用 `kids` 的 CNAME 指向 `huansbox.github.io`，先採 DNS only，GitHub Pages 供應 HTTPS 憑證；根據 [GitHub 自訂子網域說明](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)。

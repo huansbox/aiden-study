@@ -6,7 +6,7 @@
 
 ## 不是技術債
 
-- #35 iPad spike 已結案；#20 注音音檔、#34 兩個正式主畫面圖示安裝是尚未完成的交付，放在 [Plan](Plan)，不拿「技術債」名義延後。
+- #35 iPad spike 與 #34 正式網域／圖示安裝已結案；#20 注音音檔是尚未完成的交付，放在 [Plan](Plan)，不拿「技術債」名義延後。
 - Monorepo、GitHub Pages、family token、不做登入、app 邏輯不抽共用 framework 都是 ADR 已拍板的設計。
 - `wiring-v1.js` 載入失敗就擋站是安全行為，不是可用性 bug。
 

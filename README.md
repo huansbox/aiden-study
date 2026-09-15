@@ -18,7 +18,7 @@
 
 `docs/registry.json` 是 hub 的 app 清單真相源；app 上下架、對象與排序都從這裡調整。同步中的四個 app 共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，後端位於 `worker/`。
 
-五個 app 已提供回哥哥／弟弟首頁的連結，兩個首頁的頁面名稱分別為「哥哥學習」「弟弟學習」。自訂網域 `kids.linshuhuan.com` 已啟用 HTTPS，舊 GitHub Pages 網址會自動轉向。#35 主畫面跨頁與 Safari 儲存隔離已驗收結案；#34 網站端檢查完成，待家長把兩個入口加入 iPad 主畫面。注音內容仍待 #20 錄音。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
+五個 app 已提供回哥哥／弟弟首頁的連結，兩個首頁的頁面名稱分別為「哥哥學習」「弟弟學習」。自訂網域 `kids.linshuhuan.com` 已啟用 HTTPS，舊 GitHub Pages 網址會自動轉向。#35 主畫面跨頁與 Safari 儲存隔離已驗收結案；#34 網站端檢查完成，家長已確認兩個 iPad 主畫面圖示安裝，依本輪範圍結案。注音內容仍待 #20 錄音。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
 
 ## 專案結構
 
