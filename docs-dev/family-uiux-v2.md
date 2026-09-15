@@ -1,6 +1,6 @@
 # 家庭首頁與家長後台改版
 
-2026-09-15，本地實作與隔離測試版本，尚未發布到正式服務。
+2026-09-15 已正式發布，沿用 `https://kids.linshuhuan.com/` 與現有家庭同步服務。
 
 ## 使用方式
 
@@ -64,6 +64,17 @@ Worker 新增以下路由，全部經既有 family token 驗證：
 
 自動測試涵蓋台灣跨日、週表／單日覆蓋、隱藏範圍、設定衝突與壞資料、活動重送／跨孩子隔離／多頁讀取、離線補送、兩分鐘閒置／背景／暫停不計時，以及同一瀏覽器多分頁累計。
 
-本輪結果：Node 303 項通過；pytest 184 項通過；`git diff --check` 無錯誤。沒有執行 iPad 真機重裝、正式服務寫入或完整斷網下的網站安裝測試；本地離線驗收針對同步服務暫時不可用，並未新增 Service Worker 離線下載功能。
+本地實作結果：Node 303 項通過；pytest 184 項通過；`git diff --check` 無錯誤。沒有執行 iPad 真機重裝、真實家庭設定／進度寫入測試或完整斷網下的網站安裝測試；本地離線驗收針對同步服務暫時不可用，並未新增 Service Worker 離線下載功能。
 
-發布順序：先部署 Worker 新路由，再發布 Pages。舊進度 API 與家庭題包保持相容；回退頁面不必刪除新的設定或累計 KV。此次尚未執行正式發布。
+## 正式發布紀錄
+
+使用者確認發布並指定名字後，先部署 Worker 新路由，再發布 Pages：
+
+- 實作 commit：`df8043c`；名字調整與網站 release：`752a35af1f8f7b34c55346390ec8fc5e886d6610`，已合併至 `master`。
+- Worker version：`97401036-0054-4dcc-a119-cb39046fb1cd`，沿用原本 KV 與 TOKEN。
+- [Pages 發布](https://github.com/huansbox/aiden-study/actions/runs/34981639698) success；[CI](https://github.com/huansbox/aiden-study/actions/runs/34981641847) success，Node 303 項、pytest 183 項通過／1 項略過。
+- 正式站 23 個本次變更的頁面、程式與圖片均 HTTP 200，內容雜湊與 release 相同；舊 GitHub Pages 入口仍 301 轉向正式網址並保留 child。
+- 瀏覽器確認兩個正式首頁分別顯示「煦誠」「秉樸」與各自 LEGO 頭像；孩子畫面沒有換人或家長入口。家長後台可開啟，孩子選擇使用新名字，保留 LEGO／扁平選項與安排控制。
+- Worker 新設定／累計路由與既有 status 對未授權請求回 401，保留正確 CORS 與 no-store；設定 PUT 的 preflight 回 204。
+
+正式環境檢查採未設定家庭金鑰的瀏覽器，未寫入示範安排、示範累計或真實孩子進度；帶金鑰的完整儲存與補送流程已在前述隔離環境驗證。舊進度 API 與家庭題包保持相容；回退頁面不必刪除新的設定或累計 KV。
