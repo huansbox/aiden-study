@@ -277,7 +277,12 @@ function createWiring(cfg) {
     const el = document.getElementById("child-badge");
     if (!el) return;
     const info = childInfo(currentChild);
-    el.textContent = `${info.emoji} ${info.label}`;
+    if (el.tagName === "A") {
+      el.href = "../?child=" + encodeURIComponent(currentChild);
+      el.textContent = `← 回${info.label}首頁`;
+    } else {
+      el.textContent = `${info.emoji} ${info.label}`;
+    }
     el.classList.remove("hidden"); // 兩種藏法都解（class 與 hidden 屬性）
     el.hidden = false;
   }

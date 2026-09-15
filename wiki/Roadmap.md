@@ -1,6 +1,6 @@
 # 路線圖
 
-> 快照日期：2026-09-14。長期方向在本頁；可直接執行的順序與 gate 見 [執行中計畫](Plan)。現況仍以 code、Git 歷史與 GitHub issues 為準。HITL（human in the loop）表示需要家長在真機操作或判定，不能只靠程式端完成。
+> 快照日期：2026-09-15。長期方向在本頁；可直接執行的順序與 gate 見 [執行中計畫](Plan)。現況仍以 code、Git 歷史與 GitHub issues 為準。HITL（human in the loop）表示需要家長在真機操作或判定，不能只靠程式端完成。
 
 ## 方向
 
@@ -11,7 +11,7 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 - 「數學題型分析 → 改編紙本」用於需要短時間紙筆練習、手寫計算或特定弱點回看時；不預設每章都製作 PDF。
 - 「數學技能互動練習」用於 Study 既有題型不足以承載的單一技能；不因有舊素材就先做新 app。
 
-平台維運仍有獨立的安全主線：#35 是自訂網域搬遷前的真 iPad stop-gate，#34 仍要求備份、同步健康與進度對帳完成後才能移除舊圖示或清理舊 repo。這些限制不阻擋在現行網址替 Study 加入新題庫內容。
+目前優先定下每天使用的入口：首頁往返已發布，接著完成 #35 的 iPad 主畫面確認，再由 #34 上線正式網域與兩個孩子圖示。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；舊 repo 清理、錄音與擴題在本輪之後處理。
 
 ## 已完成里程碑
 
@@ -25,14 +25,15 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 | 2026-09-12 | #54 完成四上 U1 第一份紙本短練習：10 題孩子卷與家長答案；私用衍生成品不進 Git |
 | 2026-09-12 | #56／#57／#58 完成四上入口、六題 private pack、自動家庭取題、review 與正式發布；#55 保留家庭端 W4 |
 | 2026-09-14 | #55 依 iPad 家長操作確認與驗收取捨結案；個人小專案停止細節逐項補驗，未測情境如實記錄 |
+| 2026-09-15 | 五個 app 補齊回孩子首頁，哥哥／弟弟頁面名稱分開；測試與 Pages 發布通過 |
 
 ## 近期路線
 
 | 順序 | 工作 | 依賴 | 完成訊號 |
 |---|---|---|---|
-| 1 | 依孩子使用證據修正或擴充 U1 題量／章節 | #55 已完成；實際學習需求 | 先處理使用問題與同章缺口，再決定是否進下一章；不按章自動產紙本 |
-| 2 | [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35) | 真 iPad | 單 origin 導航、網址參數與 localStorage 容器三項都有真機紀錄 |
-| 3 | [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34) | #35 關閉、逐容器備份與同步健康 | 新網址與新圖示完成進度對帳後，才移除舊圖示或清理舊 repo |
+| 1 | [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35) | 真 iPad | 主畫面跨頁、網址參數與儲存容器符合預期 |
+| 2 | [#34 掛網域與兩個孩子圖示](https://github.com/huansbox/aiden-study/issues/34) | #35 通過、DNS 管理登入 | 正式網域、HTTPS、app／同步檢查與兩個入口完成；本次不搬舊進度 |
+| 後續 | 依孩子使用證據修正或擴充 U1 題量／章節 | #55 已完成；實際學習需求 | 先處理使用問題與同章缺口，再決定是否進下一章；不按章自動產紙本 |
 | 並行 | [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20) | 家長錄音與 iPad | 14 段正式錄音入庫並完成真機驗收 |
 
 四上 U1 的具體資料邊界、題型映射與進度策略見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 依 2026-09-14 家長確認與停止細節補驗的決定收尾，實測範圍與未測限制見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
@@ -65,7 +66,7 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 - 不把各 app 的教學邏輯抽成大型共用 framework；只共用平台基建。
 - 不加入手寫辨識、筆順驗證、Apple Pencil 壓力／傾斜或儲存筆跡。
 - 不恢復題庫「快速練習」模式。
-- 不在 #34 的備份、同步健康與進度對帳完成前刪除舊主畫面圖示或清空舊 repo。
+- 本輪不清空舊 repo；不把免除舊進度搬遷解讀為資料清除授權。
 - 不承諾每章都有紙本 PDF，也不為尚未出現的題型先建互動練習。
 - 期中自然 unit 1／2 說明與 3 題隱藏題維持 `not planned`，不因本次改方向而重開。
 
@@ -73,5 +74,5 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 
 - 沒有硬 deadline；跟著學期與孩子實際需要走。
 - 題庫先小批、先用既有題型、先驗證可接續，再擴題或擴章。
-- 自訂網域搬遷是一次性高風險操作，必須照 [#34 權威 issue／checklist](https://github.com/huansbox/aiden-study/issues/34)，不拆 gate、不跳過對帳。
+- 自訂網域上線依 [#34](https://github.com/huansbox/aiden-study/issues/34) 與最新家長決定執行；#35 真機確認保留，本次舊進度備份與對帳不適用。
 - Roadmap 只放方向與里程碑；逐項狀態以 code、GitHub issues、Git 歷史與 [Plan](Plan) 為準。

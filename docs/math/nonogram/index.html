@@ -27,6 +27,7 @@
 <body>
   <div class="container">
     <header class="header">
+      <a id="child-home" href="../../?child=aiden" style="display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none">← 回哥哥首頁</a>
       <h1 class="title">數織解謎</h1>
       <p class="subtitle">看提示塗格子，猜出隱藏的單字！</p>
     </header>
@@ -113,6 +114,13 @@
     </main>
   </div>
 
+  <script>
+    const homeLink = document.getElementById("child-home");
+    const homeChild = new URLSearchParams(location.search).get("child") || "aiden";
+    const homeLabel = homeChild === "aiden" ? "哥哥" : homeChild === "bingpu" ? "弟弟" : null;
+    homeLink.href = homeLabel ? "../../?child=" + encodeURIComponent(homeChild) : "../../";
+    homeLink.textContent = homeLabel ? `← 回${homeLabel}首頁` : "← 回學習首頁";
+  </script>
   <script type="module" src="js/app.js?v=20260604f"></script>
 </body>
 </html>

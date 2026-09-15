@@ -1,6 +1,6 @@
 # 執行中計畫
 
-> 快照日期：2026-09-14。現況來源是目前 code、Git 歷史與 [open issues](https://github.com/huansbox/aiden-study/issues)；本頁只整理已確認方向、執行順序與 gate。HITL（human in the loop）表示需要家長在真機操作或判定。
+> 快照日期：2026-09-15。現況來源是目前 code、Git 歷史與 [open issues](https://github.com/huansbox/aiden-study/issues)；本頁只整理已確認方向、執行順序與 gate。HITL（human in the loop）表示需要家長在真機操作或判定。
 
 ## 結論
 
@@ -8,7 +8,7 @@
 
 實測結果與已接受的未測範圍以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一來源；未知環境與未測情境不補寫成通過，也不再排入人工驗收。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
 
-平台搬遷仍受 #35 與 #34 約束，但那是換網域、換圖示與清理舊站的 gate，不阻擋在現行網址新增題庫內容。注音收尾可在適合的家長／iPad 時段並行。
+2026-09-15 的當前工作改為首頁往返 → #35 → 正式網域 → 兩個孩子的主畫面圖示。首頁往返已發布；家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度。#35 真機結果尚待回報，Cloudflare 已登入；詳見 [正式網域上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
 
 詳細實作方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)；本頁不重複資料 schema、題型映射與測試清單。
 
@@ -36,7 +36,7 @@
 | [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Completed；acceptance 已由獨立 review 與 W3 接受 | 無；後續真機結果由 #55 追蹤 |
 | [#57 四上 U1：六題私用題包與可重建來源](https://github.com/huansbox/aiden-study/issues/57) | W2 private build | Completed；六題與 public/private 邊界已由 W3 接受 | 無；ignored 本機路徑留 source／QA，正式 pack 已部署到獨立 KV |
 | [#35 平台 1/9：iPad spike](https://github.com/huansbox/aiden-study/issues/35) | HITL stop-gate | Open | 在真 iPad 驗證單 origin 導航、網址參數與 localStorage 容器三個架構前提 |
-| [#34 平台 9/9：掛網域＋搬遷](https://github.com/huansbox/aiden-study/issues/34) | HITL 搬遷 | Blocked by #35 | #35 關閉後，逐容器完成備份、同步健康與進度對帳；對帳前不移除舊圖示、不清舊 repo |
+| [#34 平台 9/9：掛網域＋搬遷](https://github.com/huansbox/aiden-study/issues/34) | HITL 搬遷 | 等待 #35 | 本次舊進度搬遷不適用；完成網域、HTTPS、live 路徑與同步檢查，再設兩個正式圖示 |
 | [#20 注音 MVP 5/5 收尾](https://github.com/huansbox/aiden-study/issues/20) | 內容＋HITL | 程式已 merge；正式錄音與 iPad checklist 待完成 | 錄音、audit、真機走完兩活動 |
 | [#26 全家學習平台 PRD](https://github.com/huansbox/aiden-study/issues/26) | Umbrella | Open | #34 完成後做整體 close audit |
 | [#15 注音學習 app PRD](https://github.com/huansbox/aiden-study/issues/15) | Umbrella | Open | #20 驗收完成後關閉 |
@@ -76,8 +76,8 @@
 ### E. 平台 stop-gate 與搬遷
 
 1. [#35 權威 issue／checklist](https://github.com/huansbox/aiden-study/issues/35) 必須在真 iPad 驗證 standalone 導航、`?child=/?k=` 與 localStorage 容器三項前提；任一失敗就停止 #34。
-2. [#34 權威 issue／checklist](https://github.com/huansbox/aiden-study/issues/34) 開始前，逐裝置、逐容器完成 Study、zhuyin、math、spelling 的同步健康檢查與文字備份；DNS、301、同步與真機步驟均以該 issue 為準，本頁摘要不能取代它。
-3. 新網域與新圖示完成後，逐 child、逐 app 對帳進度；通過後才刪舊圖示。
+2. [#34 權威 issue](https://github.com/huansbox/aiden-study/issues/34) 的舊資料備份／還原／對帳要求已由 2026-09-15 家長決定取消，原因是尚未正式給孩子使用。依上線紀錄完成 DNS、HTTPS、轉向與 app／同步檢查，不清除現有資料。
+3. 新網域就緒後設定「哥哥學習」「弟弟學習」兩個圖示，完成必要家庭設定；舊站整理另排後續。
 4. 清理舊 math／spelling repo 前，先確認未匯入但仍需保留的來源已安全保存，尤其是上述 `worksheets/word-problems/`。
 
 ## 完成條件
@@ -91,7 +91,7 @@
 - iPad 部分作答、離開、重返後可接續，且不混到三下練習。
 - 相關自動測試與獨立 review 已通過；家庭端驗收依 2026-09-14 家長確認與取捨完成。實測與未測分開記錄，不以歷史結果冒充本次重跑。
 
-平台搬遷完成條件維持不變：#35 與 #34 有真機證據，備份、同步健康與進度對帳完成後，才移除舊圖示或清理舊 repo。
+本輪完成條件為 #35 真機確認、正式網址與 app／同步檢查、兩個主畫面入口。舊進度搬遷不適用，舊 repo 清理不在本輪執行。
 
 ## 暫不排入
 

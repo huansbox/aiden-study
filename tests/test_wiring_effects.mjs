@@ -24,7 +24,7 @@ function makeStorage({ failKeys = null } = {}) {
 }
 
 // 沙箱：wiring-v1.js 需要的全域一次備齊（window/location/document/URLSearchParams/alert）
-function makeEnv({ search = "", storage = null, storageThrows = false, kidsSync = null } = {}) {
+function makeEnv({ search = "", storage = null, storageThrows = false, kidsSync = null, badge = null } = {}) {
   const calls = { reload: 0, replace: [], alerts: [] };
   const listeners = {};
   const win = { addEventListener: (ev, fn) => { (listeners[ev] ||= []).push(fn); } };
@@ -39,7 +39,7 @@ function makeEnv({ search = "", storage = null, storageThrows = false, kidsSync 
   const sandbox = {
     window: win,
     location: { search, reload: () => { calls.reload++; }, replace: (u) => { calls.replace.push(u); } },
-    document: { getElementById: () => null, activeElement: null },
+    document: { getElementById: (id) => id === "child-badge" ? badge : null, activeElement: null },
     URLSearchParams,
     alert: (m) => { calls.alerts.push(m); },
     console,
@@ -52,6 +52,22 @@ function makeEnv({ search = "", storage = null, storageThrows = false, kidsSync 
 const CFG = { appId: "zhuyin", schemaVersion: 1, legacyChild: "bingpu", legacyKey: "aiden_zhuyin_v1" };
 const PKEY = "zhuyin:progress:bingpu";
 const MKEY = "zhuyin:sync:bingpu";
+
+test("回首頁連結保持目前 child；舊版非連結徽章仍可顯示", () => {
+  for (const [child, label] of [["aiden", "哥哥"], ["bingpu", "弟弟"]]) {
+    const badge = { tagName: "A", hidden: true, classList: { remove() {} } };
+    const env = makeEnv({ search: `?child=${child}&k=test-token`, kidsSync: mockKidsSync(), badge });
+    env.KW.createWiring(CFG).renderChildBadge();
+    assert.equal(badge.href, `../?child=${child}`);
+    assert.equal(badge.textContent, `← 回${label}首頁`);
+    assert.equal(badge.hidden, false);
+    assert.equal(env.storage.map.size, 0, "導覽不改寫進度或身分儲存");
+  }
+  const badge = { tagName: "DIV", hidden: true, classList: { remove() {} } };
+  makeEnv({ badge }).KW.createWiring(CFG).renderChildBadge();
+  assert.equal(badge.textContent, "🧒 弟弟");
+  assert.equal(badge.href, undefined, "cached 舊版 HTML 不被改成假連結");
+});
 
 // mock sync-v1：介面對齊 bootIdentity/identityFromSearch/createSyncClient/HEALTH_TEXT
 function mockKidsSync({ client = null, token = "tok" } = {}) {
