@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ee">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="悠閒午後">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="../assets/fonts/BpmfZihiSans-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <title>悠閒午後 · 拼出閱讀心智圖</title>
+</head>
+<body>
+<header><a href="../index.html">回學習首頁</a><span>閱讀小工坊</span></header>
+<main>
+  <h1>悠閒午後 · 我的心智圖</h1>
+  <p id="font-status" class="muted" role="status">注音字型載入中。</p>
+  <div class="workspace">
+    <section id="guide" class="card" aria-label="選擇重點"></section>
+    <section class="card map-card" aria-label="我的心智圖">
+      <h2 id="map-title">五條主枝，一步一步拼</h2>
+      <div id="map" class="mind-map"></div>
+      <p id="save-status" class="muted" role="status"></p>
+    </section>
+  </div>
+  <section id="finish" class="card" hidden></section>
+  <details class="parent-note"><summary>給陪讀的大人</summary>
+    <p>先請孩子說說理由，再選短詞。園景選兩個例子；其他主枝選一組說法。每個選項都有文章依據，不計分。</p>
+    <p>五條主枝對應文章內容；杜甫詩保留四種景物。「相通」是詩句與照片的關係，「心意」是兩人表達對自然的深情。完成時可一起回看文章，確認重點都有留下。</p>
+    <p>先寫中間的原題，再往外畫五條線。圖上的每個短詞就是要抄的內容。進度只記在此瀏覽器，與上次作業分開。</p>
+  </details>
+</main>
+<script src="../mind-map-reading.js"></script>
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
