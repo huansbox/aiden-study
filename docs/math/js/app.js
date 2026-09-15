@@ -20,6 +20,7 @@ const bossBtnEl = document.getElementById('boss-btn');
 // 平台接線（#33，index.html 內建立）：child 維度存檔 facade＋同步 client。
 // store 把任何 key 映射到 math:progress:<child>，daily.js 的注入式 storage 介面因此免改。
 const PLATFORM = window.MathPlatform;
+const family = window.MathFamily;
 
 let state = null;
 let streak = 0;
@@ -34,6 +35,7 @@ const BOSS_STAGES = [
 let bossMode = null; // null | { stage, lives, totalErrors, starsEarned }
 
 function startNewProblem() {
+  family?.setActive(true);
   bossEntryEl.hidden = true;  // Reset: will be shown later if daily complete
   const { dividend, divisor } = generateProblem();
   const steps = calculateSteps(dividend, divisor);
@@ -270,6 +272,7 @@ function startBossMode() {
 }
 
 function startBossStageProblem() {
+  family?.setActive(true);
   const stageConfig = BOSS_STAGES[bossMode.stage];
   const { dividend, divisor } = generateProblem(stageConfig.digitCount, stageConfig.divisorMin);
   const steps = calculateSteps(dividend, divisor);
@@ -487,6 +490,8 @@ function showDailyComplete() {
 }
 
 function onProblemComplete() {
+  family?.setActive(false);
+  family?.record({answered:true,correct:state.errors===0});
   playComplete();
 
   if (bossMode) {
@@ -585,6 +590,8 @@ async function main() {
   if (PLATFORM.blocked) return;
   // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
   await PLATFORM.ready;
+  await family?.ready;
+  if (family && !family.allowed()) {family.block();return;}
   progress = loadProgress(PLATFORM.store, new Date().toISOString().slice(0, 10));
   // adopt（含 conflict-adopt）＝整包取遠端：存檔已被 saveData 覆蓋，重讀＋重繪表頭即可。
   // 做題中換 progress 無妨——progress 只在題目完成時讀寫（totals），LWW 由下一次存檔收斂

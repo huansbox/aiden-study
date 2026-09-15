@@ -182,7 +182,7 @@
   .child-pick label { margin-right: 12px; white-space: nowrap; }
   a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
-</head>
+<link rel="stylesheet" href="../shared/family.css"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <div id="app">
@@ -246,7 +246,7 @@
   </div>
 </div>
 <script src="../shared/sync-v1.js"></script>
-<script src="../shared/wiring-v1.js?v=20260915"></script>
+<script src="../shared/wiring-v1.js?v=20260915"></script><script src="../shared/family-core.js"></script><script src="../shared/family-client.js"></script><script src="../shared/family-app.js"></script>
 <script>
 "use strict";
 
@@ -262,6 +262,7 @@ const WIRING_CONFIG = { appId: "zhuyin", schemaVersion: 1, legacyChild: "bingpu"
 // </wiring-config>
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
+const family = window.KidsFamily?.mount("zhuyin", currentChild) || null;
 let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建立；沒同步時保持 null）
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
 function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
@@ -617,6 +618,7 @@ function initSyncClient() {
 }
 
 function showScreen(id) {
+  family?.setActive(id === "screen-card");
   for (const el of document.querySelectorAll("#app > .screen")) el.classList.add("hidden");
   document.getElementById(id).classList.remove("hidden");
 }
@@ -651,7 +653,7 @@ function startBatch() {
   app.wrongThisBatch = new Set();
   if (!app.queue.length) {
     document.getElementById("msg-text").textContent =
-      "還沒有可以練的卡——題目音檔還沒錄好。請家長先用錄音工具頁（recorder.html）錄音，放進 assets/audio/ 後再來。";
+      family ? "聲音卡片還在準備中，先回首頁吧。" : "題目音檔還沒錄好，請先用 recorder.html 錄音並放進 assets/audio/。";
     document.getElementById("msg-emoji").textContent = "🎙️"; // init 失敗路徑可能殘留 😢
     showScreen("screen-msg");
     return;
@@ -692,6 +694,7 @@ function renderTeaching(card, { label, display, replayKeys }) {
     if (tapGuarded()) return;
     app.progress.cards[card.id] = { ...zyCardState(app.progress, card.id), introduced: true };
     saveProgress();
+    family?.record({mode:card.kind === "sym" ? "listen" : "build",answered:false});
     advanceCard(true); // 教學卡不判分，看完即移出
   });
   playChain(replayKeys);
@@ -758,6 +761,7 @@ function retryFeedback(el, replayKey) {
 
 // 判分卡（聽音辨認／聽音組字）完成：記錄結果＋批推進
 function completeScored(card, firstTapCorrect) {
+  family?.record({mode:card.kind === "sym" ? "listen" : "build",answered:true,correct:firstTapCorrect});
   if (!firstTapCorrect) app.wrongThisBatch.add(card.id);
   app.progress.cards[card.id] = zyOnQuizResult(
     zyCardState(app.progress, card.id), firstTapCorrect, app.wrongThisBatch.has(card.id));
@@ -927,6 +931,9 @@ async function init() {
   // 不能讓 ready reject 把「開始練習」變成無聲死按鈕。
   try {
     wiring.renderChildBadge();
+    await family?.ready;
+    if (family && !family.allowed()) {family.block();return;}
+    if (family?.task()) app.practiceMode=family.task().mode;
     // child 維度播種：複製不搬移（aiden_zhuyin_v1 原樣保留、歸弟弟——ADR-0004）；計畫與寫入在 wiring
     const seeded = wiring.seedLegacy();
     initSyncClient();

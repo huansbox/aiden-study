@@ -9,11 +9,13 @@ export function kvStub(initial = {}) {
     async put(key, value, opts = {}) {
       store.set(key, { value, metadata: opts.metadata ?? null });
     },
-    async list({ prefix = "" } = {}) {
+    async list({ prefix = "", limit = 1000, cursor = "" } = {}) {
+      const entries=[...store.entries()].filter(([name])=>name.startsWith(prefix)&&name>cursor).sort(([a],[b])=>a<b?-1:a>b?1:0);
+      const page=entries.slice(0,limit);
       return {
-        keys: [...store.entries()]
-          .filter(([name]) => name.startsWith(prefix))
-          .map(([name, v]) => ({ name, metadata: v.metadata })),
+        keys: page.map(([name,v])=>({name,metadata:v.metadata})),
+        list_complete: entries.length<=limit,
+        cursor: page.at(-1)?.[0] || "",
       };
     },
   };

@@ -68,9 +68,16 @@ const LETTER_COLORS = ['#e8554e', '#f5a623', '#3fb55f', '#2b8fd6', '#9b59b6', '#
 const SHOW_CUSTOM = false;
 
 // ---- 狀態 ----
+const identity = window.KidsSyncV1.bootIdentity(location.search, (()=>{try{return localStorage;}catch{return null;}})(), "aiden");
+const child = identity.child || (new URLSearchParams(location.search).has("child") ? null : "aiden");
+const family = window.KidsFamily?.mount("nonogram", child) || null;
+const childStorage = {
+  getItem(key) {try {const scoped=localStorage.getItem(`${key}:${child}`);return scoped === null && child === "aiden" ? localStorage.getItem(key) : scoped;}catch{return null;}},
+  setItem(key,value) {try{localStorage.setItem(`${key}:${child}`,value);}catch{window.KidsFamily?.notifyError("這台裝置無法保存數織進度，請家長協助。");}}
+};
 let words = [];        // 題庫單字（已過濾為可玩）
-let solvedKeys = loadProgress(localStorage);
-let settings = loadSettings(localStorage); // { theme, fillMode }
+let solvedKeys = loadProgress(childStorage);
+let settings = loadSettings(childStorage); // { theme, fillMode }
 let currentIndex = -1; // 目前題目索引（-1 = 在首頁或自訂題）
 let isCustom = false;   // 目前是否在玩自訂題（不記過關、無「下一題」題庫序）
 let currentWord = '';
@@ -86,6 +93,7 @@ let drawerOpen = false;
 
 // ---- 視圖切換（首頁／遊戲／全部過關，三選一）----
 function showView(name) {
+  family?.setActive(name === 'game');
   els.home.hidden = name !== 'home';
   els.game.hidden = name !== 'game';
   els.allclear.hidden = name !== 'allclear';
@@ -504,7 +512,7 @@ els.themeSeg.addEventListener('click', (e) => {
   const btn = e.target.closest('.seg-btn');
   if (!btn) return;
   settings = { ...settings, theme: btn.dataset.theme };
-  saveSettings(localStorage, settings);
+  saveSettings(childStorage, settings);
   applySettings();
 });
 
@@ -512,7 +520,7 @@ els.fillSeg.addEventListener('click', (e) => {
   const btn = e.target.closest('.seg-btn');
   if (!btn) return;
   settings = { ...settings, fillMode: btn.dataset.fill };
-  saveSettings(localStorage, settings);
+  saveSettings(childStorage, settings);
   applySettings();
 });
 
@@ -569,14 +577,16 @@ function revealBoard(withDiff) {
 }
 
 els.checkBtn.addEventListener('click', () => {
+  if (revealed) return;
   if (checkAnswer(typed, currentWord)) {
+    family?.record({answered:true,correct:true});family?.setActive(false);
     els.hint.textContent = '🎉 答對了！過關！';
     els.hint.classList.remove('bad');
     els.hint.classList.add('ok');
     // 自訂題為臨時遊玩：不寫題庫過關紀錄（見 PRD「自訂出題為臨時遊玩」）。
     if (!isCustom) {
       solvedKeys = markSolved(solvedKeys, currentWord);
-      saveProgress(localStorage, solvedKeys);
+      saveProgress(childStorage, solvedKeys);
     }
     revealBoard(true); // 過關：上色正解 + 標出多塗/漏塗
     els.checkBtn.hidden = true;
@@ -593,6 +603,7 @@ els.checkBtn.addEventListener('click', () => {
 // ---- 看答案：揭曉正解點陣（不比對填錯），標記「已看答案」、不計過關 ----
 els.revealBtn.addEventListener('click', () => {
   if (revealed) return;
+  family?.setActive(false);
   revealBoard(false);
   els.hint.textContent = '已看答案（這題不算過關）';
   els.hint.classList.remove('ok', 'bad');
@@ -629,6 +640,9 @@ els.allclearHomeBtn.addEventListener('click', showHome);
 
 // ---- 初始化：載入題庫 → 首頁 ----
 async function init() {
+  if (!child) {showLibraryMessage('入口無法辨識，請從自己的首頁重新開啟。');return;}
+  await family?.ready;
+  if (family && !family.allowed()) {family.block();return;}
   applySettings();
   renderKeyboard(els.keyboard);
   // 自訂出題暫時隱藏（SHOW_CUSTOM）；保留 DOM 與事件，僅在開啟時才渲染其鍵盤。
@@ -648,6 +662,7 @@ async function init() {
     words = [];
   }
   showHome();
+  if (family?.task() && family.remaining() > 0 && words.length) loadPuzzle(nextUnsolvedIndex(solvedKeys, words, -1) ?? 0);
 }
 
 init();

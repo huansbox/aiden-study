@@ -16,7 +16,7 @@
 | 數織解謎 | `docs/math/nonogram/` | 哥哥 | 僅 LocalStorage |
 | 注音練習 | `docs/zhuyin/` | 弟弟 | 程式已上線並接同步；14 段正式錄音與 iPad #20 驗收待完成 |
 
-`docs/registry.json` 是 hub 的 app 清單真相源；app 上下架、對象與排序都從這裡調整。同步中的四個 app 共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，後端位於 `worker/`。
+`docs/registry.json` 定義平台可用 App。本分支新增獨立 `/parent/` 家長後台，實際顯示對象、排序、題庫學期、頭像與練習安排可從後台調整。孩子首頁、累計與永久積木徽章已完成本地版本，尚未正式發布；規則與驗證見 [UI/UX 改版說明](docs-dev/family-uiux-v2.md)。既有進度同步仍共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，新增家庭設定／累計使用 `family-*`，後端都位於 `worker/`。
 
 五個 app 已提供回哥哥／弟弟首頁的連結，兩個首頁的頁面名稱分別為「哥哥學習」「弟弟學習」。自訂網域 `kids.linshuhuan.com` 已啟用 HTTPS，舊 GitHub Pages 網址會自動轉向。#35 主畫面跨頁與 Safari 儲存隔離已驗收結案；#34 網站端檢查完成，家長已確認兩個 iPad 主畫面圖示安裝，依本輪範圍結案。注音內容仍待 #20 錄音。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
 
@@ -24,7 +24,8 @@
 
 ```text
 docs/                 GitHub Pages 部署根目錄
-  index.html          選人、child 首頁與家長視圖 hub
+  index.html          child 首頁；未指定孩子時選擇入口
+  parent/             家長設定、練習安排與維護入口
   registry.json       hub app registry
   study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，手動匯入保留為備援
   math/               長除法與 nonogram
@@ -75,7 +76,7 @@ uv run python -m http.server 8765 -d docs
 - 題庫：<http://localhost:8765/study/?child=aiden>
 - iPad spike：<http://localhost:8765/platform-ipad-spike.html?child=test-spike&k=test-spike-token>
 
-localhost 不在 Worker 的 CORS 白名單，所以 app 的同步請求在本機失敗是預期行為；同步端到端驗證要使用 live GitHub Pages origin 與拋棄式測試 child。
+localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的同步失敗是預期行為。完整本機驗證可用 `node tests/helpers/serve-family.mjs`，開啟輸出的 `/test/start`；該工具使用隔離 test-token、記憶體 KV 與合成題目，不動正式資料。`/test/controls` 可暫停／恢復隔離雲端。
 
 ## 題庫 pipeline
 

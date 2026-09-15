@@ -97,7 +97,7 @@ test("healthRows：audience 外但雲端真有資料（逃生門匯入到他 chi
 
 test("hub 掛全站 scope manifest，保留各孩子的標題", () => {
   assert.match(html, /rel="manifest" href="platform.webmanifest"/);
-  assert.ok(html.includes('document.title = `${child.name}學習`'));
+  assert.ok(readFileSync(new URL("../docs/shared/home.js", import.meta.url), "utf8").includes('document.title = `${child.name}學習`'));
 });
 
 test("hub 頁不變量：#restore= 轉送與 hashchange 防護都走 restoreForwardTarget（測的與跑的同一份）", () => {

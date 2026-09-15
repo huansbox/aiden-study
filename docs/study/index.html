@@ -512,7 +512,7 @@ body {
 .hidden { display: none !important; }
 a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
-</head>
+<link rel="stylesheet" href="../shared/family.css"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <div class="container" id="app">
@@ -523,7 +523,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/sync-v1.js"></script>
-<script src="../shared/wiring-v1.js?v=20260915"></script>
+<script src="../shared/wiring-v1.js?v=20260915"></script><script src="../shared/family-core.js"></script><script src="../shared/family-client.js"></script><script src="../shared/family-app.js"></script>
 <script src="./private-pack.js?v=20260915"></script>
 <script>
 (function() {
@@ -542,6 +542,7 @@ const WIRING_CONFIG = { appId: "study", schemaVersion: 1, legacyChild: "aiden", 
 WIRING_CONFIG.onTokenChange = () => loadPrivatePack();
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
+const family = window.KidsFamily?.mount("study", currentChild) || null;
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
 function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
 let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建立；沒同步時保持 null）
@@ -1188,6 +1189,7 @@ function shuffle(arr) {
 }
 
 function showPage(id) {
+  family?.setActive(id === "page-quiz");
   currentPage = id;
   _rewardGen++;   // 任何換頁都作廢「載入中的 reward 預載 callback」，避免它稍後把使用者硬拉回 summary
   document.querySelectorAll("#app > div").forEach(el => el.classList.add("hidden"));
@@ -1380,6 +1382,7 @@ function submitAnswer(selected) {
 
   });
   quiz.answered.push({ questionId: q.id, correct });
+  family?.record({unit:q.unit,answered:true,correct});
   renderFeedback(correct, q);
 }
 
@@ -1661,10 +1664,12 @@ function renderErrorModeButtons(visibleUnits, mode, label) {
 
 function renderHome(preserveParentForms = false) {
   applyPendingPack();
+  if (family && !family.profile().terms.includes(state.studyTerm)) State.setStudyTerm(family.profile().terms[0]);
   const home = document.getElementById("page-home");
   const { term, subjects, subjKey, subj, semKeys, sem, units } = currentScope();
-  let html = `<h1>${term.label}${subj.label}練習</h1><div class="semester-toggle">`;
+  let html = `<h1>${family ? "" : term.label}${subj.label}</h1><div class="semester-toggle">`;
   for (const [key, item] of Object.entries(STUDY_TERMS)) {
+    if (family && (!family.profile().terms.includes(key) || family.profile().terms.length === 1)) continue;
     html += `<button class="${key === state.studyTerm ? 'active' : ''}" onclick="window._setStudyTerm('${key}')">${item.label}</button>`;
   }
   html += '</div>';
@@ -1688,7 +1693,7 @@ function renderHome(preserveParentForms = false) {
   // Unit sections（無題單元不渲染；整科無題 → 空狀態）
   const missingUnits = units.filter(u => !privateUnitAvailable(u.id));
   if (missingUnits.length) {
-    html += `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}</div>`;
+    html += family ? '<div class="empty-state">題目還在準備中，先回首頁吧。</div>' : `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}</div>`;
   }
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
   if (visibleUnits.length === 0 && units.some(u => privateUnitAvailable(u.id))) {
@@ -1786,9 +1791,9 @@ function renderHome(preserveParentForms = false) {
     return;
   }
   html = `<div id="study-home-content">${html}</div>`;
-  html += `<div id="study-flagged-content">${renderFlaggedSection()}</div>`;
+  html += `<div class="family-parent-only"><div id="study-flagged-content">${renderFlaggedSection()}</div>`;
   html += renderPrivatePackSection();
-  html += renderBackupSection();
+  html += renderBackupSection() + '</div>';
   home.innerHTML = html;
   showPage("page-home");
 }
@@ -2407,6 +2412,7 @@ function finishHandwritingRemedialQuestion(q) {
     quiz.queue.push(q.id);
   }
   quiz.answered.push({ questionId: q.id, correct: false });
+  family?.record({unit:q.unit,answered:true,correct:false});
 }
 
 function completeHandwritingRemedialAttempt(q, dataUrl) {
@@ -3334,6 +3340,8 @@ async function init() {
       return;
     }
     wiring.renderChildBadge();
+    await family?.ready;
+    if (family && !family.allowed()) { family.block(); return; }
     const seeded = Storage.migrate();  // 含 child 維度播種（複製不搬移）
     initSyncClient();
     // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
@@ -3381,7 +3389,20 @@ async function init() {
 
     renderHome();
     handleRestoreHash();  // 若帶 #restore=（還原捷徑帶回）→ 二次確認後覆蓋
-    loadPrivatePack();
+    const startAssignedTask = () => {
+    const task = family?.task();
+    if (task && currentPage === "page-home" && family.remaining() > 0 && !location.hash.includes("restore=")) {
+      for (const [termId, term] of Object.entries(STUDY_TERMS)) for (const [subjectId, subject] of Object.entries(term.subjects)) for (const [semesterId, semester] of Object.entries(subject.semesters)) {
+        if (semester.units.some(unit => unit.id === task.unit)) {
+          State.setStudyTerm(termId);State.setSubject(subjectId);State.setSemester(semesterId);
+        }
+      }
+      renderHome();
+      if (questionIdsFor(task.unit).length) window._startFull(task.unit);
+    }
+    };
+    // 題包仍在背景取得，已有本機題目不必等待；只有指定任務需要題包就緒後直達。
+    loadPrivatePack().then(startAssignedTask);
   } catch (e) {
     console.error("Failed to load:", e);
     showPage("page-error");

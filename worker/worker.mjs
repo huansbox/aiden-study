@@ -11,6 +11,7 @@
 // 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
 
 import "../docs/study/private-pack.js";
+import { familyRoute } from "./family.mjs";
 
 const ALLOWED_ORIGINS = new Set([
   "https://huansbox.github.io",
@@ -73,6 +74,9 @@ async function handle(request, env, url, cors) {
 
     const parts = url.pathname.split("/").filter(Boolean);
     if (parts[0] !== "v1") return json(404, { error: "not found" }, cors);
+    if (parts[1] === "settings" || parts[1] === "activity") {
+      return await familyRoute(request,env,url,cors) || json(404,{error:"not found"},cors);
+    }
 
     // 題目只由管理端部署；不能經由 progress 或此路由寫入，status 也不列內容。
     if (parts.length === 3 && parts[1] === "packs" && parts[2] === "g4-s1-math-u1") {

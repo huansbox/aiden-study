@@ -5,11 +5,11 @@ aiden-study repo 重整後的整體——hub、registry、各學習 app 與進�
 _Avoid_: 網站、整站
 
 **hub**：
-網站根路徑的入口頁：小孩從這裡選人、進各 app；家長從這裡看全目錄。
+平台的入口：每個孩子有自己的活動首頁；未指定孩子時顯示入口選擇。家長管理與孩子練習分開。
 _Avoid_: 首頁、入口、portal
 
 **registry**：
-驅動 hub 的 app 目錄資料檔（`docs/registry.json`）——每個學習 app 一筆。app 的增減、上下架、首頁順序只改這份資料。欄位語意：owner＝該 app 舊存檔／預設進度歸屬的 child（enum：aiden|bingpu）；audience＝首頁顯示對象（可複選，空＝僅家長目錄）；order＝每 child 的首頁排序（數字小在前）；status＝active|draft|parked|retired；category＝學科|興趣。
+平台可提供的 app 目錄，每個 app 一筆；owner 指舊存檔歸屬，audience／order 指目錄預設的顯示對象／順序，status 指上下架狀態。各孩子實際看見的活動與排序由家庭設定決定。
 _Avoid_: 目錄、清單、catalog
 
 **app**：
@@ -25,8 +25,21 @@ _Avoid_: app、開發文件
 _Avoid_: 帳號、user、account
 
 **family token**：
-藏在圖示網址參數的家庭密鑰，同步服務以它驗身，取代登入帳號（見 ADR-0003）。
+全家共用的存取金鑰，用來存取學習進度、家庭題包與家長設定；它不區分家長與孩子兩種權限。
 _Avoid_: 密碼、API key
+
+**family settings（家庭設定）**：
+家長替每個孩子選擇的活動、順序、題庫學期、頭像與練習安排。
+
+**practice assignment（練習安排）**：
+家長指定孩子練哪個內容、完成多少份量的線上任務，可固定在每週某天或安排於特定日期；不限制孩子選其他活動。
+_Avoid_: learning task、家庭學習素材包
+
+**task occurrence（當日任務）**：
+一份練習安排落在特定日期的實際任務；當天進度與完成紀錄以它為單位，未完成不累積到隔天。
+
+**practice activity（練習紀錄）**：
+孩子新完成的作答、閱讀卡片與使用中的練習時間；與各 App 的熟練度、錯題和過關進度分開。
 
 **sync client**：
 接同步的 app 內嵌的共用同步腳本（`shared/sync-v<N>.js`，站內一律相對路徑引用——新舊 origin base path 不同）：開啟時 pull、進度變更後 push、離線靜默略過。平台基建，共用不複製（見 ADR-0004）。

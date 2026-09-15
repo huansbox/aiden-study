@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260604f">
-</head>
+<link rel="stylesheet" href="../../shared/family.css"></head>
 <body>
   <div class="container">
     <header class="header">
@@ -121,6 +121,6 @@
     homeLink.href = homeLabel ? "../../?child=" + encodeURIComponent(homeChild) : "../../";
     homeLink.textContent = homeLabel ? `← 回${homeLabel}首頁` : "← 回學習首頁";
   </script>
-  <script type="module" src="js/app.js?v=20260604f"></script>
+  <script src="../../shared/sync-v1.js"></script><script src="../../shared/family-core.js"></script><script src="../../shared/family-client.js"></script><script src="../../shared/family-app.js"></script><script type="module" src="js/app.js?v=20260604f"></script>
 </body>
 </html>
