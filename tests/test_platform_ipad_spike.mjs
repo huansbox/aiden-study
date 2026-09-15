@@ -70,11 +70,27 @@ test("parseSpikeRecord：拒絕損壞或不完整資料", () => {
   }
 });
 
-test("spike 頁不變量：主頁與目標頁都適合 Web Clip，且刻意不掛 manifest", () => {
+test("spike 頁不變量：兩頁使用同一份 scope manifest，保留標準同頁面導覽", () => {
   for (const html of [mainHtml, targetHtml]) {
     assert.match(html, /name="apple-mobile-web-app-capable" content="yes"/);
-    assert.doesNotMatch(html, /rel=["']manifest["']/);
+    assert.match(html, /rel="manifest" href="platform-ipad-spike.webmanifest"/);
     assert.doesNotMatch(html, /target=["']_blank["']/);
+  }
+});
+
+test("manifest 明定全站 scope，省略 start_url 避免覆寫安裝網址的 child／k", () => {
+  const manifest = JSON.parse(readFileSync(new URL("../docs/platform-ipad-spike.webmanifest", import.meta.url), "utf8"));
+  assert.equal(manifest.display, "standalone");
+  assert.equal(Object.hasOwn(manifest, "start_url"), false);
+  assert.equal(Object.hasOwn(manifest, "id"), false);
+  for (const base of ["https://example.test/aiden-study/", "https://example.test/"]) {
+    const scope = new URL(manifest.scope, base + "platform-ipad-spike.webmanifest");
+    assert.equal(scope.href, base);
+    for (const path of ["platform-ipad-spike.html", "platform-ipad-spike-target.html", "study/", "math/", "spelling/", "zhuyin/", "math/nonogram/"]) {
+      const page = new URL(path + "?child=test-spike&k=test-only", base);
+      assert.equal(page.origin, scope.origin);
+      assert.ok(page.pathname.startsWith(scope.pathname), page.href);
+    }
   }
 });
 
@@ -181,4 +197,33 @@ test("模擬 runtime：主頁建立標記 → 目標頁讀取回寫 → 主頁�
 
   main.document.getElementById("refresh-state").trigger("click");
   assert.notEqual(main.document.getElementById("target-visited").textContent, "尚未回寫");
+});
+
+test("真機失敗回歸：系統回報 standalone=true，但另一容器無標記，不得宣稱仍在 Web Clip", () => {
+  const storage = memoryStorage();
+  const search = "?child=test-spike&k=test-spike-token";
+  const main = runPage(mainScript, { storage, search, standalone: true,
+    href: `https://example.test/aiden-study/platform-ipad-spike.html${search}` });
+  main.document.getElementById("marker-id").value = "original-container-marker";
+  main.document.getElementById("save-marker").trigger("click");
+  const target = runPage(targetScript, { storage: memoryStorage(), search, standalone: true,
+    href: `https://example.test/aiden-study/platform-ipad-spike-target.html${search}` });
+  assert.equal(target.document.getElementById("navigator-value").textContent, "true");
+  assert.equal(target.document.getElementById("display-mode-value").textContent, "browser");
+  assert.doesNotMatch(target.document.getElementById("standalone-value").textContent, /仍在 Web Clip/);
+  assert.match(target.document.getElementById("navigation-result").textContent, /尚未通過.*沒有讀到原頁標記/);
+  assert.equal(target.document.getElementById("visited-value").textContent, "未回寫");
+  main.document.getElementById("refresh-state").trigger("click");
+  assert.equal(main.document.getElementById("current-marker").textContent, "original-container-marker");
+});
+
+test("目標頁回寫失敗時不顯示成功時間或通過訊息", () => {
+  const storage = memoryStorage();
+  storage.setItem(SPIKE_STORAGE_KEY, JSON.stringify({markerId: "saved-marker", createdAt: "now", targetVisitedAt: null}));
+  storage.setItem = () => { throw new DOMException("Full", "QuotaExceededError"); };
+  const target = runPage(targetScript, { storage, search: "?child=test-spike", standalone: true,
+    href: "https://example.test/platform-ipad-spike-target.html?child=test-spike" });
+  assert.match(target.document.getElementById("navigation-result").textContent, /尚未通過.*QuotaExceededError/);
+  assert.equal(target.document.getElementById("visited-value").textContent, "未回寫");
+  assert.equal(parseSpikeRecord(storage.getItem(SPIKE_STORAGE_KEY)).targetVisitedAt, null);
 });

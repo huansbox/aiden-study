@@ -1,0 +1,9 @@
+{
+  "name": "平台測試 2",
+  "short_name": "平台測試 2",
+  "lang": "zh-TW",
+  "display": "standalone",
+  "scope": "./",
+  "background_color": "#f5f7fa",
+  "theme_color": "#2767d8"
+}

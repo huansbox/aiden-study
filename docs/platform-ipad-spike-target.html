@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="平台 Spike">
+<meta name="apple-mobile-web-app-title" content="平台測試 2">
 <meta name="robots" content="noindex">
-<title>iPad 平台 Spike 目標頁</title>
-<!-- issue #35：本頁同樣刻意不掛 manifest。 -->
+<title>iPad 平台測試 2：目標頁</title>
+<!-- 同一份 manifest 宣告 scope；不覆寫安裝頁原有 query。 -->
+<link rel="manifest" href="platform-ipad-spike.webmanifest">
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; min-height: 100vh; padding: max(28px, env(safe-area-inset-top)) 16px
@@ -33,18 +34,21 @@
 </head>
 <body>
 <main>
-  <h1>同源目標頁</h1>
+  <h1>同源目標頁（測試 2）</h1>
   <p>如果這一頁仍在主畫面 Web Clip 內，且能看到上一頁建立的標記，前提 1 與前提 3 的前半段成立。</p>
   <section class="card">
     <div class="grid">
-      <div class="label">Standalone</div><div class="value" id="standalone-value">讀取中</div>
+      <div class="label">Standalone 系統回報</div><div class="value" id="standalone-value">讀取中</div>
+      <div class="label"><code>navigator.standalone</code></div><div class="value" id="navigator-value">讀取中</div>
+      <div class="label"><code>display-mode</code></div><div class="value" id="display-mode-value">讀取中</div>
       <div class="label"><code>child</code></div><div class="value" id="child-value">讀取中</div>
       <div class="label"><code>k</code> token</div><div class="value" id="token-value">讀取中</div>
       <div class="label">LocalStorage</div><div class="value" id="storage-value">讀取中</div>
       <div class="label">讀到的標記</div><div class="value" id="marker-value">讀取中</div>
       <div class="label">回寫時間</div><div class="value" id="visited-value">讀取中</div>
     </div>
-    <p class="small">token 原文不會顯示或保存。Safari 隔離仍須另開 Safari 比對，不能只看本頁判定。</p>
+    <p id="navigation-result" class="warn">尚未判讀</p>
+    <p class="small">若上方出現「完成」或瀏覽器網址列，本項就未通過，即使系統回報 Standalone 為是。token 原文不會顯示或保存；Safari 隔離須另開 Safari 比對。</p>
   </section>
   <a id="return-link" class="button" href="platform-ipad-spike.html">回主測試頁</a>
 </main>
@@ -80,17 +84,25 @@ try {
 } catch (error) {
   storage = null;
   storageError = error;
+  record = null;
 }
 
-byId("standalone-value").textContent = standalone ? "是（仍在 Web Clip）" : "否（瀏覽器分頁）";
-byId("standalone-value").className = `value ${standalone ? "ok" : "warn"}`;
+byId("standalone-value").textContent = standalone ? "是（不代表跨頁成功）" : "否";
+byId("standalone-value").className = "value";
+byId("navigator-value").textContent = navigator.standalone === true ? "true" : String(navigator.standalone ?? "未提供");
+byId("display-mode-value").textContent = mediaStandalone ? "standalone" : "browser";
 byId("child-value").textContent = params.get("child") || "未提供";
 byId("token-value").textContent = token === null ? "未提供" : `參數存在（${token.length} 字元，原文已隱藏）`;
-byId("storage-value").textContent = storage ? "可讀寫" : `不可用${storageError ? `（${storageError.name}）` : ""}`;
+byId("storage-value").textContent = storage ? (record ? "可讀寫" : "可讀取（尚無標記）") : `不可用${storageError ? `（${storageError.name}）` : ""}`;
 byId("storage-value").className = `value ${storage ? "ok" : "warn"}`;
 byId("marker-value").textContent = record ? record.markerId : "沒有讀到標記";
 byId("marker-value").className = `value ${record ? "ok" : "warn"}`;
 byId("visited-value").textContent = record ? record.targetVisitedAt : "未回寫";
+byId("navigation-result").textContent = storageError
+  ? `尚未通過：儲存讀寫失敗（${storageError.name}）。`
+  : record
+    ? "已讀到標記並回寫時間；請核對標記與原頁相同，且上方沒有瀏覽器工具列。"
+    : "尚未通過：沒有讀到原頁標記。";
 byId("return-link").href = `platform-ipad-spike.html${location.search}`;
 </script>
 </body>

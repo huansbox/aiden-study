@@ -10,7 +10,7 @@
 
 實測結果與已接受的未測範圍以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一來源；未知環境與未測情境不補寫成通過，也不再排入人工驗收。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
 
-2026-09-15 的當前工作改為首頁往返 → #35 → 正式網域 → 兩個孩子的主畫面圖示。首頁往返已發布；家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度。#35 真機結果尚待回報，Cloudflare 已登入；詳見 [正式網域上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
+2026-09-15 的當前工作改為首頁往返 → #35 → 正式網域 → 兩個孩子的主畫面圖示。首頁往返已發布；家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度。#35 首輪真機跨頁失敗，scope-v2 候選等待新圖示複驗，Cloudflare 已登入；詳見 [正式網域上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
 
 詳細實作方案見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)；本頁不重複資料 schema、題型映射與測試清單。
 

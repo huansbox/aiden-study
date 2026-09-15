@@ -1,34 +1,51 @@
 # iPad 單容器架構 spike 真機檢查表（issue #35）
 
-> 狀態：測試頁、自動測試與桌面預檢已可先完成；以下 iPad 結果尚未驗證，不得用桌面結果代替。
+> 狀態：2026-09-15 v1 真機跨頁失敗，#34 停止切換。scope-v2 已備妥，待新圖示複驗；不得用桌面結果代替。
 >
 > 目的：在搬到 `kids.linshuhuan.com` 前，確認單一主畫面 Web Clip 可以承載 hub 與同源 app，且網址身分參數與儲存容器行為符合架構前提。
 
 ## 測試網址與安全規則
 
-- Live：<https://huansbox.github.io/aiden-study/platform-ipad-spike.html?child=test-spike&k=test-spike-token>
+- Live v2：<https://huansbox.github.io/aiden-study/platform-ipad-spike.html?child=test-spike&k=test-spike-token&v=2>
 - 測試頁：`docs/platform-ipad-spike.html`
 - 同源目標頁：`docs/platform-ipad-spike-target.html`
 - 只使用上方假的 `test-spike-token`，不可貼真實 family token。
-- 兩頁都刻意不掛 manifest；本測試要驗證主畫面圖示原始 URL 的 query，不讓 `start_url` 介入。
+- v1 不掛 manifest；v2 改掛同一份 `platform-ipad-spike.webmanifest`，明定 `scope: "./"`、`display: "standalone"`，省略 `start_url`／`id`，沿用安裝頁原網址與 query。這是候選實驗，尚未套用到 hub 或正式 app。
 - 頁面只顯示 token 是否存在與字元數，不顯示或保存原文。
+
+## 2026-09-15 v1 真機結果與重新評估
+
+環境：iPad、橫向、由主畫面圖示啟動；型號與 iPadOS／Safari 版本未知。證據為對話附件「截圖 2026-09-15 下午2.35.56.jpeg」「截圖 2026-09-15 下午2.38.44.jpeg」，以及家長按「完成」回原頁後確認「目前標記」仍是一串 `spike-…`。未要求或保存真實家庭金鑰。
+
+| 項目 | 結果與證據 |
+| --- | --- |
+| 主畫面啟動、child／k 參數 | 可見成功：原頁沒有瀏覽器工具列，兩頁均有 `child=test-spike` 與 16 字元 token 提示；未另取得完整安全報告 |
+| 同 origin 導覽留在原 Web Clip | FAIL：目標頁出現「完成」、網址列與 Safari 控制項 |
+| 同一 Web Clip 跨頁共享標記 | FAIL：原頁已有標記，目標頁未讀到且未回寫；回原頁標記仍在 |
+| Safari 與 Web Clip 隔離 | 未測；先處理跨頁問題 |
+
+原頁 `navigator.standalone=true` 但 `display-mode=browser`；目標頁只用模式旗標就宣稱「仍在 Web Clip」的判讀不可靠。v2 顯示原始模式與儲存結果，無標記或回寫失敗明示未通過；有標記仍須核對無瀏覽器工具列，不自動判定真機 PASS。
+
+重新評估的最小候選：保持原本兩個孩子入口、同源頁面、網址身分與標準 `<a>` 導覽，只在測試頁明定 navigation scope，不加 click 攔截、iframe 或搬運儲存資料的 workaround。`scope` 的用途見 [Apple WWDC23](https://developer.apple.com/videos/play/wwdc2023/10120/)；省略 `start_url` 沿用 document URL，依 [W3C 規格](https://www.w3.org/TR/appmanifest/#start_url-member) 與 [WebKit parser](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/applicationmanifest/ApplicationManifestParser.cpp)。這些來源支持候選設定，不代表已證明該 iPad 的根因或修復成功。
+
+v2 需由 Safari 重新加入主畫面，命名「平台測試 2」，保留舊圖示以保留原觀察。先複驗建立標記 → 目標頁 → 返回，通過才接著比較 Safari。#34、DNS、CNAME 與正式圖示仍不放行；以下真機 checklist 留待 v2 填寫。
 
 ## 自動與桌面預檢（不算 iPad 驗收）
 
-- [x] `node --test tests/test_platform_ipad_spike.mjs` 通過（11 tests；含 inline runtime 跨頁回寫模擬）
+- [x] `node --test tests/test_platform_ipad_spike.mjs` 通過（14 tests；含真機失敗模式、回寫失敗與 manifest scope 回歸）；本輪完整 Node suite 283 pass
 - [x] 桌面瀏覽器開啟測試網址，顯示 `child = test-spike`
 - [x] 桌面瀏覽器顯示 token「參數存在」，且看不到原文
 - [x] 建立標記後前往目標頁，目標頁讀到同一標記並回寫時間
 - [x] 回主測試頁後，報告內可看到目標頁回寫時間
 - [x] 桌面預檢報告顯示 `standalone: false`；這是預期結果，不代表 iPad 失敗
 
-2026-09-15 桌面實測：1024 × 768、現行 GitHub Pages。跨頁前後標記均為 `spike-20260914235656-e2spx`，目標頁回寫時間 `2026-09-14T23:57:12.054Z`，主頁可讀回；`standalone: false`。未使用真實家庭金鑰或孩子進度。iPad 各項仍待家長回報。
+v1 桌面實測：1024 × 768、現行 GitHub Pages。跨頁前後標記均為 `spike-20260914235656-e2spx`，目標頁回寫時間 `2026-09-14T23:57:12.054Z`，主頁可讀回；`standalone: false`。v2 本機瀏覽器也已走完同一流程，標記 `scope-v2-desktop`、回寫 `2026-09-15T06:48:31.543Z` 可讀回。均未使用真實家庭金鑰或孩子進度。
 
 ## iPad 前置
 
 1. 用 iPad Safari 開啟上方 Live URL。
-2. 分享 →「加入主畫面」，名稱設為「平台 Spike」。
-3. 關閉原 Safari 分頁，從主畫面的「平台 Spike」圖示開啟。
+2. 分享 →「加入主畫面」，名稱設為「平台測試 2」。保留舊測試圖示；不以重新整理舊圖示代替安裝。
+3. 關閉原 Safari 分頁，從主畫面的「平台測試 2」圖示開啟。
 4. 記錄測試環境：
    - 日期：`____-__-__`
    - iPad 型號：`________________`
@@ -39,7 +56,7 @@
 
 - [ ] 從主畫面圖示開啟後，主頁顯示 `Standalone = 是`
 - [ ] 點「前往同源目標頁」後，頁面沒有跳出 Safari，也沒有出現 Safari 網址列
-- [ ] 目標頁顯示 `Standalone = 是（仍在 Web Clip）`
+- [ ] 目標頁系統模式已記錄，且依實際畫面確認沒有瀏覽器工具列；不只看 Standalone 值
 - [ ] 點「回主測試頁」後仍留在同一 Web Clip
 
 結果：`[ ] PASS  [ ] FAIL`

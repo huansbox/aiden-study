@@ -18,7 +18,7 @@
 
 ## 尚未完成：iPad 與網域
 
-1. #35 主畫面跨頁、網址參數與儲存隔離：已送出一輪合併操作請求，等待家長回報；原始檢查表見 [platform-ipad-spike-checklist.md](platform-ipad-spike-checklist.md)。
+1. #35 v1 已收到真機失敗證據：原頁有標記，目標頁出現瀏覽器工具列且讀不到標記。#34 停止切換；scope-v2 候選僅改測試頁，等待新圖示複驗，詳見 [真機結果與候選設定](platform-ipad-spike-checklist.md)。
 2. Cloudflare：`linshuhuan.com` zone 為 active；已沿用 Chrome 既有 Google 登入進入正確帳戶。Wrangler OAuth 不含 DNS 權限，後續使用已登入的 DNS 管理頁，不擴大 OAuth 權限或新增 token。新增 DNS 表單已填妥 `kids` → `huansbox.github.io`、DNS only、TTL 自動，尚未儲存。
 3. 正式網域候選檔：`docs/CNAME` 與 `tests/test_pages_domain.mjs` 已準備並通過單項 audit，只保留在 `codex/child-home-domain` 工作分支；不合併到發布用 master，等待 #35 結果。
 4. GitHub Pages：目前 `cname = null`，仍使用 `https://huansbox.github.io/aiden-study/`。#35 通過且 DNS 管理登入就緒前，不提交 CNAME 到發布分支、不改 DNS。
