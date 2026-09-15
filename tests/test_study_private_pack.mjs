@@ -108,7 +108,8 @@ test("scopes isolate error pool, reset and flags; unit numbers remain unique", a
   const saved = JSON.stringify(e.app.state); e.window._startFull(15); assert.equal(JSON.stringify(e.app.state),saved);
   assert.ok(e.app.Picker.forErrorPractice([5,6,7,8,9]).every(id => !ids.includes(id)));
   const units=Object.values(e.app.STUDY_TERMS).flatMap(t=>Object.values(t.subjects).flatMap(s=>Object.values(s.semesters).flatMap(s=>s.units.map(u=>u.id))));
-  assert.equal(new Set(units).size,15); assert.equal(units.length,15); assert.equal(e.app.unitNum(15),1);
+  assert.equal(new Set(units).size,19); assert.equal(units.length,19);
+  assert.deepEqual([15,16,17,18,19].map(u => e.app.unitNum(u)), [1,2,3,4,5]);
 });
 test("invalid imports and quota failures atomically retain active pack, indices and persisted progress", async () => {
   const e=await ready(); const original=e.app.activePack; const saved=e.st.getItem(packKey); const progress=e.st.getItem(key(e.child));

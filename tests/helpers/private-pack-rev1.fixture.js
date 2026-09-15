@@ -1,11 +1,9 @@
-// 四上家庭題包；保留歷史 U1 key，內容與 child 進度分開保存。
+// 私用 U1 題包契約；家庭唯讀內容與 child 進度分開保存。
 (function(root) {
   "use strict";
   const KEY = "study:private-pack:g4-s1-math-u1";
   const MAX_BYTES = 128 * 1024;
   const IDS = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(id => `math-g4s1-${id}-v1`);
-  const UNITS = [15, 16, 17, 18, 19];
-  const ID_RE = /^math-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
   const object = x => x !== null && typeof x === "object" && !Array.isArray(x);
   const text = x => typeof x === "string" && x.trim().length > 0;
   function keys(value, required) {
@@ -13,22 +11,21 @@
   }
   function semantic(q) {
     // 不自行判定文字改動是否仍是同一道題；只忽略 JSON 欄位順序。
-    // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
-    return JSON.stringify([q.subject, q.unit, q.subtopic, q.type, q.text, q.options, q.answer, q.blanks ? q.blanks.map(b => [b.input, b.answer]) : null]);
+    return JSON.stringify([q.type, q.text, q.options, q.answer, q.blanks ? q.blanks.map(b => [b.input, b.answer]) : null]);
   }
   function parse(raw, publicQuestions = [], previous = null) {
     if (typeof raw !== "string" || new TextEncoder().encode(raw).length > MAX_BYTES) throw new Error("題包超過 128 KiB 或不是文字檔。");
     let pack;
     try { pack = JSON.parse(raw); } catch { throw new Error("JSON 格式無法讀取。"); }
     if (!keys(pack, ["schemaVersion", "packId", "revision", "questions", "explanations"]) || pack.schemaVersion !== 1 || pack.packId !== "g4-s1-math-u1" || !Number.isSafeInteger(pack.revision) || pack.revision < 1) throw new Error("題包版本或欄位不支援。");
-    if (!Array.isArray(pack.questions) || !object(pack.explanations)) throw new Error("題包必須包含題目與每題解說。");
+    if (!Array.isArray(pack.questions) || pack.questions.length !== IDS.length || !keys(pack.explanations, IDS)) throw new Error("題包必須包含首批六題與每題解說。");
     const seen = new Set(publicQuestions.map(q => q.id));
     for (const q of pack.questions) {
-      if (!object(q) || typeof q.id !== "string" || !ID_RE.test(q.id) || seen.has(q.id)) throw new Error("題目 ID 不支援或重複。");
+      if (!object(q) || !IDS.includes(q.id) || seen.has(q.id)) throw new Error("題目 ID 不支援或重複。");
       seen.add(q.id);
       const fields = ["id", "subject", "unit", "type", "text", "subtopic", "source", "options", "answer"];
       if (q.type === "fill_in_blank") fields.push("blanks");
-      if (!keys(q, fields) || q.subject !== "math" || !UNITS.includes(q.unit) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
+      if (!keys(q, fields) || q.subject !== "math" || q.unit !== 15 || !["text", "subtopic", "source"].every(k => text(q[k])) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (q.type === "multiple_choice") {
         if (q.options.length !== 4 || !q.options.every(text) || !/^[1-4]$/.test(q.answer) || typeof q.answer !== "string") throw new Error("選擇題需四個選項與 1–4 字串答案。");
@@ -40,15 +37,14 @@
         }
       } else throw new Error("此題型尚未支援。");
       const old = previous && previous.questions.find(p => p.id === q.id);
-      if (old && semantic(old) !== semantic(q)) throw new Error("相同 ID 的作答內容或章節分類已改變，未替換原題包。");
+      if (old && semantic(old) !== semantic(q)) throw new Error("相同 ID 的作答內容已改變，未替換原題包。");
     }
-    const questionIds = pack.questions.map(q => q.id);
-    if (!IDS.every(id => questionIds.includes(id)) || !keys(pack.explanations, questionIds)) throw new Error("題包必須保留首批六題，每題各有一份解說。");
     if (previous) {
       if (pack.revision < previous.revision) throw new Error("不能匯入較舊版本。");
-      if (previous.questions.some(q => !questionIds.includes(q.id))) throw new Error("新版題包不能移除既有題目，原題包與進度保留。");
-      const normalized = p => JSON.stringify([...p.questions].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
-        .map(q => [q.id, semantic(q), q.source, p.explanations[q.id]]));
+      const normalized = p => JSON.stringify(IDS.map(id => {
+        const q = p.questions.find(q => q.id === id);
+        return [id, semantic(q), q.subtopic, q.source, p.explanations[id]];
+      }));
       if (pack.revision === previous.revision && normalized(pack) !== normalized(previous)) throw new Error("內容更新必須提高 revision。");
     }
     return pack;
@@ -102,5 +98,5 @@
       catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
     } finally { reader.cancel().catch(() => {}); }
   }
-  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, UNITS, parse, save, fetchRemote };
+  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, parse, save, fetchRemote };
 })(globalThis);

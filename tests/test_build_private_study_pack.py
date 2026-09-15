@@ -62,7 +62,7 @@ def _fixture():
             "questionPage": 1,
             "answerPage": 2,
             "concept": "M1a Synthetic",
-            "adaptation": source_adaptation,
+                "adaptation": source_adaptation,
             "verification": "synthetic_only",
             "question": question,
         })
@@ -73,6 +73,7 @@ def _fixture():
             "paperId": paper_id,
             "questionPage": 1,
             "answerPage": 2,
+            "unit": 15,
             "concept": "M1a Synthetic",
             "contextPolicy": "Synthetic context only",
             "digitalAdaptation": adaptation,
@@ -130,7 +131,7 @@ def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
 @pytest.mark.parametrize(
     ("mutate", "message"),
     [
-        (lambda data: data[0]["items"].pop(), "exactly the frozen six"),
+        (lambda data: data[0]["items"].pop(), "exactly the approved mapping"),
         (lambda data: data[0]["items"].append(copy.deepcopy(data[0]["items"][0])), "duplicate curated"),
         (lambda data: data[1]["entries"].pop(), "缺少"),
         (lambda data: data[1]["entries"][0].update(text=" "), "為空"),
@@ -323,5 +324,105 @@ def test_mapping_contains_no_private_content_fields():
     )
     forbidden = {"text", "prompt", "options", "answer", "blanks", "explanation", "explanations"}
     assert set(metadata) == {"schemaVersion", "packId", "revision", "sourceTask", "sourceMapping", "items"}
-    assert len(metadata["items"]) == 6
+    assert set(EXPECTED_IDS).issubset({item["appId"] for item in metadata["items"]})
     assert all(not (set(item) & forbidden) for item in metadata["items"])
+
+
+def _expanded_fixture():
+    values = _fixture()
+    for document in values[:3]:
+        document["revision"] = 2
+    additions = [
+        ("U1-N001", "tyk113-I-03", 15, "multiple_choice", 0),
+        ("U2-N001", "tyk113-II-03", 16, "number", 3),
+        ("U2-N002", "tyk113-V-02", 16, "comparison", 1),
+        ("U3-N001", "tyk113-I-02", 17, "multiple_choice", 0),
+        ("U3-N002", "tyk113-II-04", 17, "number", 1),
+        ("U4-N001", "tyk113-I-04", 18, "multiple_choice", 0),
+        ("U5-N001", "tyk113-V-03", 19, "comparison", 1),
+        ("U5-N002", "c-anho-112-final-II-3", 19, "number", 2),
+    ]
+    for practice, original, unit, input_type, count in additions:
+        app_id = f"math-g4s1-{original}-v1"
+        item = copy.deepcopy(values[0]["items"][0 if count == 0 else 1])
+        item.update(practiceId=practice, originalId=original, paperId="synthetic-new-paper")
+        question = item["question"]
+        question.update(id=app_id, unit=unit, subtopic=f"Synthetic unit {unit}")
+        if count:
+            question["text"] = "Synthetic ordered blanks: " + " ".join(f"（{'１２３４５６７８９'[i]}）" for i in range(count))
+            question["blanks"] = [{"input": input_type, "answer": "<" if input_type == "comparison" else str(20 + i)} for i in range(count)]
+        mapping = copy.deepcopy(values[2]["items"][0 if count == 0 else 1])
+        mapping.update(appId=app_id, practiceId=practice, originalId=original, paperId=item["paperId"], unit=unit,
+                       digitalAdaptation="multiple_choice" if count == 0 else f"fill_in_blank:{input_type}")
+        values[0]["items"].append(item)
+        values[2]["items"].append(mapping)
+        values[1]["entries"].append({"id": app_id, "text": f"Synthetic explanation for {practice}。"})
+    return values
+
+
+def test_expanded_build_upgrades_six_question_output_and_passes_production_js(tmp_path):
+    output = tmp_path / "pack.json"
+    old, _ = private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, _fixture()), output, test_output_root=tmp_path)
+    values = _expanded_fixture()
+    pack, payload = private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert len(pack["questions"]) == 14
+    assert [sum(q["unit"] == unit for q in pack["questions"]) for unit in range(15, 20)] == [7, 2, 2, 1, 2]
+    assert pack["questions"][:6] == old["questions"]
+    assert [len(q["blanks"]) for q in pack["questions"] if q["id"].endswith(("tyk113-II-03-v1", "c-anho-112-final-II-3-v1"))] == [3, 2]
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');const p=StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));console.log(p.questions.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "14"
+    for doc, list_key in [(values[0], "items"), (values[1], "entries"), (values[2], "items")]:
+        doc[list_key].reverse()
+    _, reordered = private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert reordered == payload
+
+
+@pytest.mark.parametrize("mutate, message", [
+    (lambda v: v[0]["items"].pop(), "approved mapping"),
+    (lambda v: v[1]["entries"].pop(), "缺少"),
+    (lambda v: v[2]["items"][-1].update(unit=20), "unit"),
+    (lambda v: v[0]["items"][-1]["question"].update(unit=18), "unit"),
+    (lambda v: v[2]["items"][-1].update(appId=EXPECTED_IDS[0]), "duplicate"),
+    (lambda v: v[2]["items"][-1].update(digitalAdaptation="fill_in_blank:number+comparison"), "unsupported"),
+    (lambda v: v[0]["items"][-1]["question"].update(text="missing numbered markers"), "marker"),
+    (lambda v: v[0]["items"][-1]["question"]["blanks"].extend([{"input": "number", "answer": "1"}] * 8), "1-9"),
+    (lambda v: v[3].append({"id": "math-g4s1-tyk113-II-03-v1"}), "collide"),
+])
+def test_invalid_expanded_mapping_or_source_fails_without_replacing_pack(tmp_path, mutate, message):
+    output = tmp_path / "pack.json"
+    private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, _fixture()), output, test_output_root=tmp_path)
+    before = output.read_bytes()
+    values = _expanded_fixture(); mutate(values)
+    with pytest.raises(PackBuildError, match=message):
+        private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert output.read_bytes() == before
+
+
+@pytest.mark.parametrize("change", ["same_revision_add", "same_revision_explanation", "remove", "move_unit", "subtopic", "answer", "downgrade"])
+def test_expanded_previous_output_checks_full_id_set_and_immutable_progress_semantics(tmp_path, change):
+    output = tmp_path / "pack.json"
+    original = _fixture() if change == "same_revision_add" else _expanded_fixture()
+    private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, original), output, test_output_root=tmp_path)
+    before = output.read_bytes()
+    values = _expanded_fixture()
+    if change == "same_revision_add":
+        for document in values[:3]: document["revision"] = 1
+    elif change == "same_revision_explanation":
+        values[1]["entries"][-1]["text"] += "changed"
+    elif change == "downgrade":
+        for document in values[:3]: document["revision"] = 1
+    else:
+        for document in values[:3]: document["revision"] = 3
+        if change == "remove":
+            values[0]["items"].pop(); values[1]["entries"].pop(); values[2]["items"].pop()
+        elif change == "move_unit":
+            values[0]["items"][-1]["question"]["unit"] = 18; values[2]["items"][-1]["unit"] = 18
+        elif change == "subtopic":
+            values[0]["items"][0]["question"]["subtopic"] += "changed"
+        elif change == "answer":
+            values[0]["items"][-1]["question"]["blanks"][1]["answer"] = "123"
+    with pytest.raises(PackBuildError, match="revision|remove|same ID"):
+        private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert output.read_bytes() == before

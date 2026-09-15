@@ -8,3 +8,30 @@ export function syntheticPack() {
           blanks: [{ input: i === 4 ? "comparison" : "number", answer: i === 4 ? ">" : i === 1 ? "12345678" : String(i + 1) }] })
     })), explanations: Object.fromEntries(ids.map((id, i) => [id, `合成解說 ${i + 1}：依題目指定的數字作答。`])) };
 }
+
+// #59 activity IDs and shapes only; all text/answers below are invented.
+export const additions = [
+  ["U1-N001", "tyk113-I-03", 15, "multiple_choice", 0],
+  ["U2-N001", "tyk113-II-03", 16, "number", 3],
+  ["U2-N002", "tyk113-V-02", 16, "comparison", 1],
+  ["U3-N001", "tyk113-I-02", 17, "multiple_choice", 0],
+  ["U3-N002", "tyk113-II-04", 17, "number", 1],
+  ["U4-N001", "tyk113-I-04", 18, "multiple_choice", 0],
+  ["U5-N001", "tyk113-V-03", 19, "comparison", 1],
+  ["U5-N002", "c-anho-112-final-II-3", 19, "number", 2],
+];
+export const addedIds = additions.map(([, original]) => `math-g4s1-${original}-v1`);
+export function expandedSyntheticPack() {
+  const pack = syntheticPack();
+  pack.revision = 2;
+  additions.forEach(([, original, unit, input, count], index) => {
+    const id = addedIds[index];
+    const common = { id, subject: "math", unit, subtopic: `合成單元 ${unit - 14}`, source: "synthetic expansion only" };
+    const blanks = Array.from({ length: count }, (_, i) => ({ input, answer: input === "comparison" ? "<" : String(20 + index + i) }));
+    pack.questions.push({ ...common, ...(input === "multiple_choice"
+      ? { type: "multiple_choice", text: `合成單元 ${unit - 14}：哪個數字最大？`, options: ["3", "8", "5", "1"], answer: "2" }
+      : { type: "fill_in_blank", text: `合成單元 ${unit - 14}：` + blanks.map((b, i) => `請填 ${b.answer}：（${"１２３４５６７８９"[i]}）`).join("；"), options: [], answer: "", blanks }) });
+    pack.explanations[id] = `新增合成解說 ${index + 1}：依指定內容逐格作答。`;
+  });
+  return pack;
+}

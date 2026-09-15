@@ -1,6 +1,6 @@
-# 四上 U1 私用題包契約（W1）
+# 四上數學私用題包契約（歷史 U1 識別碼）
 
-2026-09-12；對應主 #55、W1 #56。實際 validator 為 `docs/study/private-pack.js`，W2 生成器須產出能通過它的 JSON。本文件與合成 fixture 均不含原卷題文、答案或解說。
+2026-09-15 更新；原六題基線來自已結案 #55／#56，#59 追加 U1～U5 文字題。實際 validator 為 `docs/study/private-pack.js`，private builder 須產出能通過它的 JSON。本文件與合成 fixture 均不含原卷題文、答案或解說。文末 2026-09-12 QA 為歷史證據，不代表 #59 已發布。
 
 ## JSON 格式
 
@@ -9,10 +9,10 @@
 | 欄位 | 型別／限制 |
 | --- | --- |
 | `schemaVersion` | number，固定 `1` |
-| `packId` | string，固定 `g4-s1-math-u1` |
+| `packId` | string，固定 `g4-s1-math-u1`；保留歷史 ID，不以此決定章節 |
 | `revision` | 正整數，且為 JavaScript safe integer；初版 `1` |
-| `questions` | array，恰好下列六個 ID 各一題，順序可變 |
-| `explanations` | object，key 恰好為六題 ID；每個 value 都是非空白 string |
+| `questions` | array，包含下列六個必要 ID，可追加新題，順序可變；不另设任意總題數上限 |
+| `explanations` | object，key 恰好為本包所有題目 ID；每個 value 都是非空白 string |
 
 | 紙本定位 | 固定 ID | W2 已核准轉換 |
 | --- | --- | --- |
@@ -27,9 +27,9 @@
 
 | 欄位 | 型別／限制 |
 | --- | --- |
-| `id` | 上表其中一個 ID；不可重複，也不可撞到 public 題目 |
+| `id` | stable ID，符合 `^math-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$`；不可重複或撞到 public 題目；原六題不可改名 |
 | `subject` | string，固定 `math` |
-| `unit` | number，固定 `15`；畫面顯示課本第 1 單元 |
+| `unit` | number，`15`～`19` 對應 U1～U5；原六題必須維持 `15` |
 | `type` | string，`multiple_choice` 或 `fill_in_blank` |
 | `text` | 非空白 string；題幹為純文字，不混入選項文字供前端猜切 |
 | `subtopic` | 非空白 string；例如概念名稱 |
@@ -44,9 +44,9 @@
 | `input` | string，`number` 或 `comparison` |
 | `answer` | string；number 用 `0` 或不含前導零的 1～8 位整數，例如 `"12345678"`；comparison 用 ASCII `">"`、`"<"`、`"="` |
 
-題幹須包含每格對應的全形標記：`（１）`、`（２）`……。既有畫面將標記替換為可點選的空格 chip。答案不接受逗號、單位、小數、負號、全形數字、九位數或多解集合；例如 `"12,345,678"` 與 `"＞"` 都拒收。首批 W2 每個填空題只有一格，validator 保留既有逐格輸入能力。
+題幹須包含每格對應的全形標記：`（１）`、`（２）`……。既有畫面將標記替換為可點選的空格 chip。答案不接受逗號、單位、小數、負號、全形數字、九位數或多解集合；例如 `"12,345,678"` 與 `"＞"` 都拒收。#59 builder 支援 1～9 格同型 number 或 comparison，包含三格與兩格題；全部空格正確才算整題正確，不將順序明確的多空當成無序集合。原 W2 每個填空題仍只有一格。
 
-合成單題範例（完整包仍需六題及六份解說）：
+合成單題範例（完整包仍需六題基線及全包每題的解說）：
 
 ```json
 {
@@ -65,9 +65,9 @@
 
 ## 更新與失敗語意
 
-- 同一 `revision` 重匯同內容是冪等操作；題目順序、JSON 欄位順序、JSON 格式縮排不影響相等判斷，也不重置進度。
-- 提高 `revision` 才可更新 `source`、`subtopic`、`explanations`。較舊版本拒收。
-- 已載入包中相同 ID 的 `type`、`text`、`options`、`answer` 與每格的 `input/answer` 必須精確相同。連題幹中的空白、錯字變更都不自動推定語意相同；目前無強制覆寫入口。若需修題，由統籌另依來源核對決定版本策略，不能只換 revision 偷渡。
+- 同一 `revision` 重匯同內容是冪等操作；比較會按 ID 排序，包含完整實際 ID 集合及 normalized content。題目順序、JSON 欄位順序、JSON 格式縮排不影響相等判斷，也不重置進度。同 revision 新增／刪除／更新內容皆拒收。
+- 題目只能追加：新包必須包含上一有效包全部 ID。新增題或更新 `source`、`explanations` 必須提高 `revision`；較舊版本拒收。原六題 source 字串在 #59 保持原樣。
+- 已載入包中相同 ID 的 `subject`、`unit`、`subtopic`、`type`、`text`、`options`、`answer` 與每格的 `input/answer` 必須精確相同。unit/subtopic 是進度及半批索引，不視為可任意更改的標籤。连題幹中的空白、錯字變更都不自動推定語意相同；目前無強制覆寫入口。若需修題，由統籌另依來源核對決定版本策略，不能只換 revision 偷渡。
 - 未載入／換容器時只能驗證這份包本身，沒有跨裝置歷史內容 registry；W2 仍須負責 stable ID 的內容一致性。合成包只用於測試容器，不要先匯進實際孩子容器後再換真包，因為合成與真題同 ID 但內容不同。
 - 每次寫入前重新讀取同容器儲存 key 的最新題包，核對 ID 內容與 revision；另一分頁匯入或升版後，本頁的舊記憶體快照不能用來覆寫異題或降版。仍保留本頁已載入內容的相容核對；兩者都通過才保存。
 - 最新持久包若無法讀取、是空字串、JSON 損毀或不支援版本，拒絕覆寫並保留原資料；不把它當成「尚未匯入」。目前沒有自動修復或強制清除入口，須由家長保留原檔後另行處理。
@@ -84,9 +84,19 @@
 
 進度仍為 `study:progress:<child>`，同步仍是 `study:sync:<child>`；`appId: study`、`schemaVersion: 1`、legacy key／歸屬不變。新增單一選擇欄位 `studyTerm`：`g3-s2` 或 `g4-s1`，缺省三下；原 `semester` 仍保留 `mid/final` 的意義。
 
-題包不進 state、進度匯出、備份、同步 payload 或 public 題庫／解說／報告。私用題目的 GitHub 預填回報只帶 stable ID、packId、revision 與「家長標記題目有問題」；不送出 `source` 等任意匯入文字。舊公開題仍沿用原回報內容。
+題包不進 state、進度匯出、備份、同步 payload 或 public 題庫／解說／報告。題目是否私用由 active pack ID membership 判定，不再由 unit 15 推定。U1～U5 的私用題幹、選項皆先 escape，解說使用 textContent。GitHub full／compact／ids-only 預填回報只帶 stable ID 及適用的 packId／revision／固定提示；不送出 `source` 等任意匯入文字。舊公開題仍沿用原回報內容。
 
-缺包時顯示「尚未載入家庭題包」與可重試／家庭設定提示，保留所有未載入題的 mastered、challenge、stats、errorBank、flagged，禁止四上開始／重置。載入有效包後，使用原 ID 恢復已答對計數與剩餘批次。每次送出只保存一次完整 stats／mastered／queue，失敗顯示持續警示；未送出的輸入與畫面回饋仍不保存。
+已知 private units 為 15～19；每章只有 active pack 實際含該章題目時才可開始／重置。缺包或六題舊包尚無新章時，顯示缺章提示並保留所有未載入題的 mastered、challenge、stats、errorBank、flagged。已載入但全被 flagged 的章仍可還原題目。首頁與家長區顯示實際各章／全包題數和版本，不把缺章當作 0 題通關。
+
+#59 核准目標為六題 rev1 → 十四題 rev2，U1～U5 共 7／2／2／1／2 活動。原 U1 2／6 → 2／7，6／6 → 6／7；已完成的原題保持完成，未答對的原題仍可練。原 saved batch 先完成，新題下一批才出現，單批仍最多十題。每次送出只保存一次完整 stats／mastered／queue，失敗顯示持續警示；未送出的輸入與畫面回饋仍不保存。
+
+pack schemaVersion 1 保留不表示舊 client 可讀十四題。新版 validator 同時接受六題舊 cache 與擴包；舊常駐 client 收到擴包會拒收並保留原有效內容與進度。另一新版分頁寫入擴包後，舊版冷啟動可能暫無可用包，需重新載入新版前端，不清除 cache 或重設家庭金鑰。發布順序為新版 Worker → 新版 Pages → 核准 expanded KV，詳見 private-pack-build。
+
+## #59 合成驗證入口
+
+保留 `syntheticPack()` 作為六題 rev1 factory，另用 `expandedSyntheticPack()` 表示十四題 rev2。`tests/test_study_math_expansion.mjs` 執行真 app／Worker 的升版、按章計數、缺章進度保存、reset、跨 child、完整 ID revision、私用回報及半批行為；`tests/test_build_private_study_pack.py` 包含 Python expanded build → production JS validator。不得將這些合成答案混進正式題包。
+
+隔離瀏覽器預檢：`node tests/helpers/serve-study-auto-pack.mjs 8778`，開 `/test-start?scenario=upgrade`，只在這個 loopback origin 初始化合成六題、兩題已完成、fake token。頁面「發布合成十四題」控制只改記憶體 fake KV；不讀正式題目或孩子資料。此路徑會清空該測試 origin 的 localStorage，禁止用在家庭正式容器。既有 `/test-start` 六題首次設定流程保留。
 
 ## 合成驗證與 W2 使用方式
 

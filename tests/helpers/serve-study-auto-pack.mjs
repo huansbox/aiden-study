@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { syntheticPack, ids } from "./synthetic-study-pack.mjs";
+import { syntheticPack, expandedSyntheticPack, ids } from "./synthetic-study-pack.mjs";
 
 const root=resolve(fileURLToPath(new URL("../../docs/",import.meta.url)));
 const port=Number(process.argv[2] || 8778);
@@ -17,16 +17,21 @@ const server=createServer(async(req,res)=>{
     const url=new URL(req.url,endpoint);
     if(url.pathname==="/test-control"){
       failed=url.searchParams.get("mode")==="failed";
+      if (url.searchParams.get("mode") === "expanded") await KV.put("c:study:g4-s1-math-u1", JSON.stringify(expandedSyntheticPack()));
       res.writeHead(302,{Location:"/study/?child=test-child"});res.end();return;
     }
     if(url.pathname==="/test-start"){
+      const upgrade = url.searchParams.get("scenario") === "upgrade";
+      failed = false;
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(syntheticPack()));
       const progress={schemaVersion:1,studyTerm:"g4-s1",semester:"final",subject:"math",mastered:{},challenge:{15:{batch:ids}},stats:{},errorBank:[],flagged:[]};
+      if (upgrade) { progress.mastered[15] = ids.slice(0,2); progress.challenge[15].batch = ids.slice(2); }
       const flaggedCount = Number(url.searchParams.get("flags"));
       if ([1, 6].includes(flaggedCount)) {
         progress.flagged = ids.slice(0, flaggedCount).map(questionId => ({ questionId, unit: 15, flaggedAt: 1 }));
       }
       res.setHeader("Content-Type","text/html; charset=utf-8");
-      res.end(`<script>localStorage.clear();localStorage.setItem('study:progress:test-child',${JSON.stringify(JSON.stringify(progress))});location.replace('/study/?child=test-child');</script>`);return;
+      res.end(`<script>localStorage.clear();localStorage.setItem('study:progress:test-child',${JSON.stringify(JSON.stringify(progress))});${upgrade ? `localStorage.setItem('kids_sync_token','test-token');localStorage.setItem('study:private-pack:g4-s1-math-u1',${JSON.stringify(JSON.stringify(syntheticPack()))});` : ""}location.replace('/study/?child=test-child');</script>`);return;
     }
     if(url.pathname.startsWith("/v1/")){
       if(failed && url.pathname.includes("/packs/")){res.writeHead(503);res.end();return;}
@@ -40,7 +45,7 @@ const server=createServer(async(req,res)=>{
     let bytes=await readFile(path);
     if(path.endsWith("sync-v1.js")) bytes=Buffer.from(bytes.toString().replace('"https://aiden-kids-sync.huansbox.workers.dev"',JSON.stringify(endpoint)));
     if(path===resolve(root,"study/index.html")){
-      const controls=`<aside>隔離 synthetic 測試：<a href="/test-control?mode=failed">服務失敗</a> | <a href="/test-control?mode=ok">服務恢復</a></aside>`;
+      const controls=`<aside>隔離 synthetic 測試：<a href="/test-control?mode=failed">服務失敗</a> | <a href="/test-control?mode=ok">服務恢復</a> | <a href="/test-control?mode=expanded">發布合成十四題</a></aside>`;
       bytes=Buffer.from(bytes.toString().replace("<body>",`<body>${controls}`));
     }
     const mime={".html":"text/html; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"};

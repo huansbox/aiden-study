@@ -1,4 +1,4 @@
-"""Build the private Grade 4 semester 1 math U1 Study pack.
+"""Build the private Grade 4 semester 1 math Study pack (legacy U1 key).
 
 The production inputs and output live under the precisely ignored
 ``data/private/study/g4-s1-math-u1`` directory.  Public source mapping is
@@ -28,6 +28,10 @@ PUBLIC_METADATA = ROOT / "data" / "study" / "g4-s1-math-u1" / "mapping-metadata.
 PUBLIC_QUESTIONS = ROOT / "docs" / "study" / "questions.json"
 PACK_ID = "g4-s1-math-u1"
 MAX_BYTES = 128 * 1024
+# The six original IDs are a required baseline, not the complete current set.
+UNITS = {15, 16, 17, 18, 19}
+ID_RE = re.compile(r"math-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
     "U1-P02": ("math-g4s1-tyk113-II-11a-v1", "tyk113-II-11a", "fill_in_blank:number"),
@@ -85,39 +89,48 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         raise PackBuildError("mapping metadata items must be an array")
 
     by_practice: dict[str, dict[str, Any]] = {}
+    seen_ids: set[str] = set()
     fields = {
         "appId", "practiceId", "originalId", "paperId", "questionPage", "answerPage",
-        "concept", "contextPolicy", "digitalAdaptation", "sourceAdaptation", "reviewStatus",
+        "concept", "contextPolicy", "digitalAdaptation", "sourceAdaptation", "reviewStatus", "unit",
     }
     for index, item in enumerate(metadata["items"]):
         _require_exact_keys(item, fields, f"mapping item {index}")
         practice_id = _require_nonempty(item["practiceId"], f"mapping item {index} practiceId")
         if practice_id in by_practice:
             raise PackBuildError(f"duplicate mapping practiceId: {practice_id}")
-        if practice_id not in EXPECTED:
-            raise PackBuildError(f"unexpected mapping practiceId: {practice_id}")
-        expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
-        if item["appId"] != expected_id or item["originalId"] != expected_original:
-            raise PackBuildError(f"mapping IDs do not match the frozen contract for {practice_id}")
-        if item["digitalAdaptation"] != expected_adaptation:
-            raise PackBuildError(f"mapping digital adaptation is wrong for {practice_id}")
-        for key in ("paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
+        _require_nonempty(item["appId"], f"mapping {practice_id} appId")
+        app_id = item["appId"]
+        if not ID_RE.fullmatch(app_id) or app_id in seen_ids:
+            raise PackBuildError(f"mapping appId is invalid or duplicate for {practice_id}")
+        seen_ids.add(app_id)
+        if type(item["unit"]) is not int or item["unit"] not in UNITS:
+            raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS:
+            raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
+        if practice_id in EXPECTED:
+            expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
+            if item["appId"] != expected_id or item["originalId"] != expected_original or item["unit"] != 15:
+                raise PackBuildError(f"mapping IDs or unit do not match the frozen baseline for {practice_id}")
+            if item["digitalAdaptation"] != expected_adaptation:
+                raise PackBuildError(f"mapping digital adaptation is wrong for {practice_id}")
+        for key in ("originalId", "paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
             _require_nonempty(item[key], f"mapping {practice_id} {key}")
         for key in ("questionPage", "answerPage"):
             if type(item[key]) is not int or item[key] < 1:
                 raise PackBuildError(f"mapping {practice_id} {key} must be a positive integer")
         by_practice[practice_id] = item
-    if set(by_practice) != set(EXPECTED):
-        raise PackBuildError("mapping metadata must contain exactly the frozen six practice IDs")
+    if not set(EXPECTED).issubset(by_practice):
+        raise PackBuildError("mapping metadata must retain the frozen six practice IDs")
     return by_practice
 
 
-def _validate_question(question: Any, practice_id: str) -> dict[str, Any]:
-    expected_id, _, adaptation = EXPECTED[practice_id]
+def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any]) -> dict[str, Any]:
+    expected_id, adaptation = mapping["appId"], mapping["digitalAdaptation"]
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
     expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set())
     _require_exact_keys(question, expected_fields, f"question {practice_id}")
-    if question["id"] != expected_id or question["subject"] != "math" or type(question["unit"]) is not int or question["unit"] != 15:
+    if question["id"] != expected_id or question["subject"] != "math" or type(question["unit"]) is not int or question["unit"] != mapping["unit"]:
         raise PackBuildError(f"question {practice_id} ID, subject, or unit is outside the frozen contract")
     _require_nonempty(question["text"], f"question {practice_id} text")
     _require_nonempty(question["subtopic"], f"question {practice_id} subtopic")
@@ -138,18 +151,19 @@ def _validate_question(question: Any, practice_id: str) -> dict[str, Any]:
         blanks = question.get("blanks")
         # The shared validator is intentionally broader; the checks below adapt it
         # to the stricter private-pack contract.
-        if not validate_blanks(blanks) or not isinstance(blanks, list) or len(blanks) != 1:
-            raise PackBuildError(f"question {practice_id} must contain one valid blank")
-        blank = blanks[0]
-        _require_exact_keys(blank, {"input", "answer"}, f"question {practice_id} blank")
-        if blank["input"] != input_type:
-            raise PackBuildError(f"question {practice_id} uses the wrong input type")
-        if input_type == "number" and not re.fullmatch(r"0|[1-9][0-9]{0,7}", blank["answer"]):
-            raise PackBuildError(f"question {practice_id} number answer must be a normalized 1-8 digit integer")
-        if input_type == "comparison" and blank["answer"] not in {">", "<", "="}:
-            raise PackBuildError(f"question {practice_id} comparison answer must use ASCII >, <, or =")
-        if "（１）" not in question["text"]:
-            raise PackBuildError(f"question {practice_id} is missing the full-width blank marker （１）")
+        if not validate_blanks(blanks) or not 1 <= len(blanks) <= 9:
+            raise PackBuildError(f"question {practice_id} must contain 1-9 valid blanks")
+        for index, blank in enumerate(blanks):
+            _require_exact_keys(blank, {"input", "answer"}, f"question {practice_id} blank {index}")
+            if blank["input"] != input_type:
+                raise PackBuildError(f"question {practice_id} uses the wrong input type")
+            if input_type == "number" and not re.fullmatch(r"0|[1-9][0-9]{0,7}", blank["answer"]):
+                raise PackBuildError(f"question {practice_id} number answer must be a normalized 1-8 digit integer")
+            if input_type == "comparison" and blank["answer"] not in {">", "<", "="}:
+                raise PackBuildError(f"question {practice_id} comparison answer must use ASCII >, <, or =")
+            marker = f"（{'１２３４５６７８９'[index]}）"
+            if marker not in question["text"]:
+                raise PackBuildError(f"question {practice_id} is missing the full-width blank marker {marker}")
     return dict(question)
 
 
@@ -175,7 +189,7 @@ def build_pack(
         practice_id = _require_nonempty(item["practiceId"], f"curated item {index} practiceId")
         if practice_id in by_practice:
             raise PackBuildError(f"duplicate curated practiceId: {practice_id}")
-        if practice_id not in EXPECTED:
+        if practice_id not in metadata:
             raise PackBuildError(f"unexpected curated practiceId: {practice_id}")
         public_item = metadata[practice_id]
         for key, public_key in (
@@ -186,14 +200,17 @@ def build_pack(
         ):
             if item[key] != public_item[public_key]:
                 raise PackBuildError(f"curated provenance does not match public mapping for {practice_id}: {key}")
-        question = _validate_question(item["question"], practice_id)
+        question = _validate_question(item["question"], practice_id, public_item)
         question["source"] = (
             "data/study/g4-s1-math-u1/mapping-metadata.json "
             f"appId={question['id']}"
         )
         by_practice[practice_id] = question
-    if set(by_practice) != set(EXPECTED):
-        raise PackBuildError("curated source must contain exactly the frozen six practice IDs")
+    if set(by_practice) != set(metadata):
+        raise PackBuildError("curated source must contain exactly the approved mapping practice IDs")
+    # Stable output regardless of source ordering; legacy baseline keeps its order.
+    practice_order = [*EXPECTED, *sorted(set(metadata) - set(EXPECTED))]
+    expected_ids = [metadata[practice_id]["appId"] for practice_id in practice_order]
 
     explanation_source = _read_json(explanations_path)
     _require_exact_keys(explanation_source, {"schemaVersion", "packId", "revision", "entries"}, "explanation source")
@@ -207,7 +224,7 @@ def build_pack(
     entries = explanation_source["entries"]
     for index, entry in enumerate(entries):
         _require_exact_keys(entry, {"id", "text"}, f"explanation entry {index}")
-    explanation_problems = validate_entries(entries, set(EXPECTED_IDS))
+    explanation_problems = validate_entries(entries, set(expected_ids))
     if explanation_problems:
         raise PackBuildError("invalid explanations: " + "; ".join(explanation_problems))
     explanations = merge_entries(entries)
@@ -218,7 +235,7 @@ def build_pack(
     public_ids = [question.get("id") for question in public_questions if isinstance(question, dict)]
     if len(public_ids) != len(set(public_ids)):
         raise PackBuildError("public questions contain duplicate IDs")
-    collisions = sorted(set(public_ids) & set(EXPECTED_IDS))
+    collisions = sorted(set(public_ids) & set(expected_ids))
     if collisions:
         raise PackBuildError("private IDs collide with public questions: " + ", ".join(collisions))
 
@@ -226,8 +243,8 @@ def build_pack(
         "schemaVersion": 1,
         "packId": PACK_ID,
         "revision": revision,
-        "questions": [by_practice[practice_id] for practice_id in EXPECTED],
-        "explanations": {question_id: explanations[question_id] for question_id in EXPECTED_IDS},
+        "questions": [by_practice[practice_id] for practice_id in practice_order],
+        "explanations": {question_id: explanations[question_id] for question_id in expected_ids},
     }
 
 
@@ -297,6 +314,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         else None
     )
     return (
+        question.get("subject"), question.get("unit"), question.get("subtopic"),
         question.get("type"), question.get("text"), tuple(question.get("options", [])),
         question.get("answer"), blank_semantic,
     )
@@ -312,7 +330,7 @@ def _normalized_revision_content(pack: dict[str, Any]) -> tuple[Any, ...]:
             by_id[question_id].get("source"),
             pack["explanations"].get(question_id),
         )
-        for question_id in EXPECTED_IDS
+        for question_id in sorted(by_id)
     )
 
 
@@ -335,19 +353,43 @@ def ensure_compatible_with_existing(
         previous["schemaVersion"] != 1
         or previous["packId"] != PACK_ID
         or type(previous["revision"]) is not int
+        or not 1 <= previous["revision"] <= 9_007_199_254_740_991
         or not isinstance(previous["questions"], list)
         or not isinstance(previous["explanations"], dict)
     ):
         raise PackBuildError("existing output is not a compatible private pack")
-    previous_by_id = {
-        question.get("id"): question
-        for question in previous["questions"]
-        if isinstance(question, dict)
-    }
-    if set(previous_by_id) != set(EXPECTED_IDS) or len(previous["questions"]) != len(EXPECTED_IDS):
-        raise PackBuildError("existing output does not contain the frozen six unique IDs")
+    previous_by_id = {}
+    for question in previous["questions"]:
+        if not isinstance(question, dict) or not isinstance(question.get("id"), str):
+            raise PackBuildError("existing output has an invalid question ID")
+        previous_by_id[question["id"]] = question
+    if not set(EXPECTED_IDS).issubset(previous_by_id) or len(previous["questions"]) != len(previous_by_id):
+        raise PackBuildError("existing output does not retain the frozen six unique IDs")
+    if set(previous["explanations"]) != set(previous_by_id):
+        raise PackBuildError("existing output explanations do not match its IDs")
+    for question_id, question in previous_by_id.items():
+        if not isinstance(question_id, str) or not ID_RE.fullmatch(question_id):
+            raise PackBuildError("existing output has an invalid question ID")
+        if type(question.get("unit")) is not int or question["unit"] not in UNITS or (question_id in EXPECTED_IDS and question["unit"] != 15):
+            raise PackBuildError("existing output has an invalid unit")
+        _require_nonempty(question.get("source"), "existing question source")
+        _require_nonempty(previous["explanations"][question_id], "existing question explanation")
+        adaptation = question.get("type")
+        if adaptation == "fill_in_blank":
+            blanks = question.get("blanks")
+            if not isinstance(blanks, list) or not blanks or not isinstance(blanks[0], dict):
+                raise PackBuildError("existing output has invalid blanks")
+            adaptation += ":" + str(blanks[0].get("input"))
+        if not isinstance(adaptation, str) or adaptation not in ADAPTATIONS:
+            raise PackBuildError("existing output has an unsupported adaptation")
+        _validate_question(
+            {k: v for k, v in question.items() if k != "source"}, question_id,
+            {"appId": question_id, "unit": question["unit"], "digitalAdaptation": adaptation},
+        )
     current_by_id = {question["id"]: question for question in pack["questions"]}
-    for question_id in EXPECTED_IDS:
+    if not set(previous_by_id).issubset(current_by_id):
+        raise PackBuildError("cannot remove existing question IDs")
+    for question_id in previous_by_id:
         if _question_semantic(previous_by_id[question_id]) != _question_semantic(current_by_id[question_id]):
             raise PackBuildError(f"same ID has different answer semantics: {question_id}")
     if pack["revision"] < previous["revision"]:

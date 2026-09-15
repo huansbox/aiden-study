@@ -523,7 +523,7 @@ body {
 
 <script src="../shared/sync-v1.js"></script>
 <script src="../shared/wiring-v1.js?v=20260912"></script>
-<script src="./private-pack.js?v=20260912"></script>
+<script src="./private-pack.js?v=20260915"></script>
 <script>
 (function() {
 "use strict";
@@ -951,7 +951,8 @@ const State = {
     Storage.save(state);
   },
   resetChallenge(key) {
-    if (key === "15" && !activePack) return;
+    const unit = Number(String(key).replace(/^handwriting:/, "").split("/")[0]);
+    if (!privateUnitAvailable(unit)) return;
     state.challenge[key] = null; // 未開始
     Storage.save(state);
   },
@@ -965,7 +966,7 @@ const State = {
     Storage.save(state);
   },
   resetMastered(unit, subtopic = null, mode = null) {
-    if (unit === 15 && !activePack) return;
+    if (!privateUnitAvailable(unit)) return;
     const u = String(unit);
     if (!state.mastered[u]) return;
     const modes = masteredModesFromEntry(state.mastered[u]);
@@ -1030,6 +1031,7 @@ function questionIdsFor(unit, subtopic) {
 let publicQuestions = [];
 let publicExplanations = {};
 let activePack = null;
+let privateQuestionIds = new Set();
 let packNotice = "";
 let packCacheNotice = "";
 let pendingPackRaw = null;
@@ -1091,6 +1093,7 @@ window._openFamilySettings = () => {
 };
 let allQuestions = [];
 function rebuildQuestionIndices() {
+  privateQuestionIds = new Set(activePack ? activePack.questions.map(q => q.id) : []);
   allQuestions = [...publicQuestions, ...(activePack ? activePack.questions : [])];
   explanations = { ...publicExplanations, ...(activePack ? activePack.explanations : {}) };
   questionMap = new Map(allQuestions.map(q => [q.id, q]));
@@ -1114,7 +1117,13 @@ function importPrivatePack(raw) {
 function canPracticeUnits(unit) {
   const requested = Array.isArray(unit) ? unit : [unit];
   const allowed = currentScope().units.map(u => u.id);
-  return requested.length > 0 && requested.every(id => allowed.includes(id) && (id !== 15 || activePack));
+  return requested.length > 0 && requested.every(id => allowed.includes(id) && privateUnitAvailable(id));
+}
+function privateUnitAvailable(unit) {
+  return !StudyPrivatePack.UNITS.includes(unit) || !!activePack?.questions.some(q => q.unit === unit);
+}
+function isPrivateQuestion(q) {
+  return privateQuestionIds.has(q.id);
 }
 let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
@@ -1468,7 +1477,11 @@ const STUDY_TERMS = {
   "g3-s2": { grade: 3, term: 2, label: "三下", subjects: SUBJECTS },
   "g4-s1": { grade: 4, term: 1, label: "四上", subjects: {
     math: { label: "數學", semesters: { final: { label: "", units: [
-      { id: 15, num: 1, name: "第 1 單元：一億以內的數" }
+      { id: 15, num: 1, name: "第 1 單元：一億以內的數" },
+      { id: 16, num: 2, name: "第 2 單元：整數的乘法" },
+      { id: 17, num: 3, name: "第 3 單元：角度" },
+      { id: 18, num: 4, name: "第 4 單元：整數的除法" },
+      { id: 19, num: 5, name: "第 5 單元：公里" }
     ] } } }
   } }
 };
@@ -1508,7 +1521,7 @@ function renderFlaggedSection() {
     <details class="flagged-section">
       <summary>已回報題目（${flagged.length}）</summary>
       ${rows}
-      ${activePack && flagged.some(f => f.unit === 15) ? '<p class="backup-hint">私用題目不公開，GitHub 回報只附題號與題包版本。</p>' : ""}
+      ${flagged.some(f => privateQuestionIds.has(f.questionId)) ? '<p class="backup-hint">私用題目不公開，GitHub 回報只附題號與題包版本。</p>' : ""}
       <div class="flagged-actions">
         <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
         <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
@@ -1518,11 +1531,19 @@ function renderFlaggedSection() {
 
 // 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔＋雲端同步狀態（家長用）
 // （iPad 主畫面 App 的儲存可能被 iOS 清掉；雲端同步為主載體，手動備份為備援）
+function packAvailabilityText() {
+  if (!activePack) return "這個容器尚未載入題包。";
+  const counts = StudyPrivatePack.UNITS.map(unit => {
+    const count = activePack.questions.filter(q => q.unit === unit).length;
+    return count ? `第 ${unitNum(unit)} 單元 ${count} 題` : `第 ${unitNum(unit)} 單元尚未載入`;
+  });
+  return `本機已有四上數學 ${activePack.questions.length} 題，版本 ${activePack.revision}。${counts.join("；")}。`;
+}
 function renderPrivatePackSection() {
   return `<details class="flagged-section" id="private-pack-details" ${packNotice ? "open" : ""}>
     <summary>家長：四上家庭題包</summary>
     <div class="backup-body">
-      <p class="backup-hint" id="pack-availability">${activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未載入題包。"}</p>
+      <p class="backup-hint" id="pack-availability">${packAvailabilityText()}</p>
       <p class="backup-hint">開啟 Study 或選四上時會用家庭金鑰自動取得。題包供同容器的孩子共用，作答進度仍各自保存。</p>
       <p class="backup-msg" role="status" id="pack-status">${escapeHtml(packNotice)}</p>
       ${packCacheNotice ? `<p class="backup-msg">${escapeHtml(packCacheNotice)}</p>` : ""}
@@ -1643,11 +1664,13 @@ function renderHome(preserveParentForms = false) {
   }
 
   // Unit sections（無題單元不渲染；整科無題 → 空狀態）
+  const missingUnits = units.filter(u => !privateUnitAvailable(u.id));
+  if (missingUnits.length) {
+    html += `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}</div>`;
+  }
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
-  if (visibleUnits.length === 0) {
-    html += state.studyTerm === "g4-s1" && !activePack
-      ? `<div class="empty-state">第 1 單元：一億以內的數<br>尚未載入家庭題包。已有進度保留，載入後即可接續。<br>${escapeHtml(packNotice)}</div>`
-      : '<div class="empty-state">目前沒有可練習的題目；已回報題目可在下方還原。</div>';
+  if (visibleUnits.length === 0 && units.some(u => privateUnitAvailable(u.id))) {
+    html += '<div class="empty-state">目前沒有可練習的題目；已回報題目可在下方還原。</div>';
   }
   for (const u of visibleUnits) {
     const totalInUnit = questionIdsFor(u.id).length;
@@ -1736,7 +1759,7 @@ function renderHome(preserveParentForms = false) {
     document.getElementById("study-home-content").innerHTML = html;
     document.getElementById("study-flagged-content").innerHTML = renderFlaggedSection();
     document.getElementById("pack-status").textContent = packNotice;
-    document.getElementById("pack-availability").textContent = activePack ? `本機已有四上 U1 六題，版本 ${activePack.revision}。` : "這個容器尚未載入題包。";
+    document.getElementById("pack-availability").textContent = packAvailabilityText();
     if (!activePack || packNotice.startsWith("未載入")) document.getElementById("private-pack-details").open = true;
     return;
   }
@@ -2070,7 +2093,7 @@ function buildReportUrl() {
   const title = `題目回報：${qs.length} 題（${today}）`;
 
   const full = qs.map(q => {
-    if (q.unit === 15) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容不公開）`;
+    if (isPrivateQuestion(q)) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容不公開）`;
     let s = `### ${q.id}\n`;
     s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
@@ -2082,7 +2105,7 @@ function buildReportUrl() {
     s += `- 來源：${q.source}`;
     return s;
   }).join("\n\n");
-  const compact = qs.map(q => q.unit === 15 ? `- ${q.id} (${activePack.packId} revision ${activePack.revision})` : `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const compact = qs.map(q => isPrivateQuestion(q) ? `- ${q.id} (${activePack.packId} revision ${activePack.revision})` : `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
   const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
 
   // 題數多時逐級降格，避免超出 URL 長度上限
@@ -2523,8 +2546,8 @@ function renderQuiz() {
   else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
 
   // Question text: remove option markers for MC
-  let displayText = q.unit === 15 ? escapeHtml(q.text).replace(/\n/g, "<br>") : q.text;
-  if (q.unit !== 15 && !isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
+  let displayText = isPrivateQuestion(q) ? escapeHtml(q.text).replace(/\n/g, "<br>") : q.text;
+  if (!isPrivateQuestion(q) && !isTF && !isFill && !isVc && !isChinese && q.options.length > 0) {
     const optStart = displayText.search(/[○①]\s*[1-5１-５]?/);
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
@@ -2604,7 +2627,7 @@ function renderQuiz() {
     }
     const optionsHtml = options.map(opt =>
       `<button class="opt-btn" data-value="${opt.value}">
-        <span class="opt-label">${opt.label}</span><span>${q.unit === 15 ? escapeHtml(opt.text) : opt.text}</span>
+        <span class="opt-label">${opt.label}</span><span>${isPrivateQuestion(q) ? escapeHtml(opt.text) : opt.text}</span>
       </button>`
     ).join("");
     answerHtml = `<div class="options" id="q-options">${optionsHtml}</div>`;
