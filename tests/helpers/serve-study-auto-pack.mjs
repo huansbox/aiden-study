@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { syntheticPack, expandedSyntheticPack, ids } from "./synthetic-study-pack.mjs";
+import { syntheticPack, expandedSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
 
 const root=resolve(fileURLToPath(new URL("../../docs/",import.meta.url)));
 const port=Number(process.argv[2] || 8778);
@@ -21,11 +21,13 @@ const server=createServer(async(req,res)=>{
       res.writeHead(302,{Location:"/study/?child=test-child"});res.end();return;
     }
     if(url.pathname==="/test-start"){
-      const upgrade = url.searchParams.get("scenario") === "upgrade";
+      const partialReset = url.searchParams.get("scenario") === "partial-cache-reset";
+      const upgrade = url.searchParams.get("scenario") === "upgrade" || partialReset;
       failed = false;
       await KV.put("c:study:g4-s1-math-u1", JSON.stringify(syntheticPack()));
       const progress={schemaVersion:1,studyTerm:"g4-s1",semester:"final",subject:"math",mastered:{},challenge:{15:{batch:ids}},stats:{},errorBank:[],flagged:[]};
       if (upgrade) { progress.mastered[15] = ids.slice(0,2); progress.challenge[15].batch = ids.slice(2); }
+      if (partialReset) { progress.mastered[15] = [...ids, addedIds[0]]; progress.challenge[15] = { batch: [ids[0], addedIds[0]], queue: [addedIds[0]] }; }
       const flaggedCount = Number(url.searchParams.get("flags"));
       if ([1, 6].includes(flaggedCount)) {
         progress.flagged = ids.slice(0, flaggedCount).map(questionId => ({ questionId, unit: 15, flaggedAt: 1 }));
