@@ -1,6 +1,6 @@
 # iPad 單容器架構 spike 真機檢查表（issue #35）
 
-> 狀態：2026-09-15 v1 真機跨頁失敗，#34 停止切換。scope-v2 已備妥，待新圖示複驗；不得用桌面結果代替。
+> 狀態：2026-09-15 scope-v2 真機跨頁與標記讀取通過；Safari 儲存隔離待家長最後一次比對。#34 尚未切換網域。
 >
 > 目的：在搬到 `kids.linshuhuan.com` 前，確認單一主畫面 Web Clip 可以承載 hub 與同源 app，且網址身分參數與儲存容器行為符合架構前提。
 
@@ -10,7 +10,7 @@
 - 測試頁：`docs/platform-ipad-spike.html`
 - 同源目標頁：`docs/platform-ipad-spike-target.html`
 - 只使用上方假的 `test-spike-token`，不可貼真實 family token。
-- v1 不掛 manifest；v2 改掛同一份 `platform-ipad-spike.webmanifest`，明定 `scope: "./"`、`display: "standalone"`，省略 `start_url`／`id`，沿用安裝頁原網址與 query。這是候選實驗，尚未套用到 hub 或正式 app。
+- v1 不掛 manifest；v2 改掛同一份 `platform-ipad-spike.webmanifest`，明定 `scope: "./"`、`display: "standalone"`，省略 `start_url`／`id`，沿用安裝頁原網址與 query。真機跨頁通過後，hub 與五個 app 採用同等設定的 `platform.webmanifest`。
 - 頁面只顯示 token 是否存在與字元數，不顯示或保存原文。
 
 ## 2026-09-15 v1 真機結果與重新評估
@@ -29,6 +29,14 @@
 重新評估的最小候選：保持原本兩個孩子入口、同源頁面、網址身分與標準 `<a>` 導覽，只在測試頁明定 navigation scope，不加 click 攔截、iframe 或搬運儲存資料的 workaround。`scope` 的用途見 [Apple WWDC23](https://developer.apple.com/videos/play/wwdc2023/10120/)；省略 `start_url` 沿用 document URL，依 [W3C 規格](https://www.w3.org/TR/appmanifest/#start_url-member) 與 [WebKit parser](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/applicationmanifest/ApplicationManifestParser.cpp)。這些來源支持候選設定，不代表已證明該 iPad 的根因或修復成功。
 
 v2 需由 Safari 重新加入主畫面，命名「平台測試 2」，保留舊圖示以保留原觀察。先複驗建立標記 → 目標頁 → 返回，通過才接著比較 Safari。#34、DNS、CNAME 與正式圖示仍不放行；以下真機 checklist 留待 v2 填寫。
+
+## scope-v2 真機複驗與平台採用
+
+家長依「Safari 重新加入平台測試 2 → 建立標記 → 前往同源目標頁」步驟，明確回報：**「沒有網址列，而且讀得到同一串標記」**。因此本次同源跨頁與標記讀取通過。尚未另取得 v2 的完整參數／回寫報告，不將其記成新增證據；Safari 隔離仍待比對。
+
+最後一次比對已送出：在 Safari 開同一 v2 URL，手動把標記設為 `Safari測試` 並儲存，回主畫面「平台測試 2」重新讀取，確認原 `spike-…` 不被覆寫。比對完成前不關閉 #35、不切換 #34。
+
+平台採用相同 scope：首頁與五個 app 共用 `platform.webmanifest`，全部相對路徑指回站根；省略 `start_url`／`id` 保留孩子網址，省略固定名稱以沿用各頁標題。原有獨立 app manifest 檔仍保留，現行頁面不再引用。完整 Node 285 pass，桌面已走完兩種部署前綴下的五 app 首頁往返（共十條流程），網址、孩子、標題與 manifest 解析位置正確；不當作正式主畫面圖示的真機驗收。
 
 ## 自動與桌面預檢（不算 iPad 驗收）
 
@@ -55,7 +63,7 @@ v1 桌面實測：1024 × 768、現行 GitHub Pages。跨頁前後標記均為 `
 ## 前提 1：同源導覽留在 standalone
 
 - [ ] 從主畫面圖示開啟後，主頁顯示 `Standalone = 是`
-- [ ] 點「前往同源目標頁」後，頁面沒有跳出 Safari，也沒有出現 Safari 網址列
+- [x] 點「前往同源目標頁」後，頁面沒有跳出 Safari，也沒有出現 Safari 網址列
 - [ ] 目標頁系統模式已記錄，且依實際畫面確認沒有瀏覽器工具列；不只看 Standalone 值
 - [ ] 點「回主測試頁」後仍留在同一 Web Clip
 
@@ -81,7 +89,7 @@ v1 桌面實測：1024 × 768、現行 GitHub Pages。跨頁前後標記均為 `
 1. 在 Web Clip 主頁按「建立／覆蓋標記」，記下標記：`________________`
 2. 前往同源目標頁，再回主頁。
 
-- [ ] 目標頁讀到完全相同的標記
+- [x] 目標頁讀到完全相同的標記
 - [ ] 主頁顯示目標頁回寫時間
 
 ### 3B. Web Clip 與 Safari 隔離

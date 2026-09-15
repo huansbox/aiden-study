@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="platform.webmanifest">
 <title>全家學習平台</title>
 <meta name="robots" content="noindex">
 <!-- hub（票 #31）：registry.json 驅動的入口頁——小孩選人進 app、家長看全目錄與同步健康。
-     hub 不掛 manifest（web app manifest 的 start_url 會吃掉圖示網址參數，spec 明文）。
+     #35 真機修正：manifest 明定全站 scope，省略 start_url／id，保留圖示的 child／k query。
+     name／short_name 也不固定，兩個首頁沿用各自 document.title 作為圖示預設名稱。
      站內連結一律相對路徑：GH Pages 專案頁（/aiden-study/）與自訂網域（/）兩邊都要對。 -->
 <style>
   :root { --primary: #2d6cdf; --ink: #2c3542; --muted: #7a8494; --card: #ffffff; }

@@ -2,7 +2,7 @@
 
 - Status: in_progress
 - Task/issue: #34 正式網域與兩個孩子入口；前置 #35 iPad 主畫面檢查
-- Branch: codex/ipad-scope-spike（CNAME 候選另留 codex/child-home-domain）
+- Branch: codex/platform-home-scope（CNAME 候選另留 codex/child-home-domain）
 - Updated: 2026-09-15
 
 ## Progress
@@ -17,7 +17,7 @@
 
 2026-09-15 #35 v1 真機 FAIL：主畫面原頁有標記，目標頁出現「完成」與網址列、未讀到標記；家長回原頁確認標記仍在。兩頁 child／k 參數可見保留。正式網域停止切換，Safari 隔離尚未測。
 
-scope-v2 候選只改測試頁：明定 manifest scope、省略 start_url 以保留 query，修正 standalone 旗標的過度判讀與回寫錯誤提示。完整 Node 283 pass；桌面往返已讀回同一標記與回寫時間。由 Safari 重新加入「平台測試 2」後先複驗跨頁，通過才比較 Safari；詳見 [#35 真機紀錄](docs-dev/platform-ipad-spike-checklist.md)。hub 與正式 app 尚未套用候選設定。
+scope-v2 已由家長確認「沒有網址列，而且讀得到同一串標記」。首頁與五個 app 已採同一全站 scope、省略 start_url／id 保留孩子網址與身分；完整 Node 285 pass，桌面十條首頁往返通過。Safari 儲存隔離的最後一次比對已送出，待回覆原標記仍保留後才能關閉 #35；詳見 [#35 真機紀錄](docs-dev/platform-ipad-spike-checklist.md)。
 
 Cloudflare 的 `linshuhuan.com` zone 已確認 active，Chrome 已沿用既有 Google 登入進入正確帳戶；Wrangler OAuth 不含 DNS 權限，後續從已登入的 DNS 管理頁執行。不要讀出 family token、擴權、重設 token 或操作孩子真實進度。GitHub Pages 目前 `cname=null`。
 

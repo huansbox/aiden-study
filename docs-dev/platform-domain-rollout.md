@@ -12,17 +12,19 @@
 
 - Release：`5a1e8f68d3dfacc1e405de36eb1a174327eeaf1b`，已發布到現行 GitHub Pages。
 - Study、長除法、英文拼字、注音將既有身分徽章改成「回哥哥／弟弟首頁」連結；數織補上相同用途的連結。返回時保留 `child`，不把 family token 放入返回連結。
-- 哥哥與弟弟首頁的頁面名稱分別為「哥哥學習」「弟弟學習」；hub 保持不掛 manifest，加入主畫面 Web App 所需的 Apple meta。
+- 哥哥與弟弟首頁的頁面名稱分別為「哥哥學習」「弟弟學習」。初版只加 Apple meta；經 #35 真機複驗後，首頁與五個 app 已共用 `platform.webmanifest` 的全站 scope，省略 `start_url`／`id` 保留孩子網址與身分。
 - 本機 Node 267 tests、pytest 167 tests 通過。此為本輪實際結果；[CI](https://github.com/huansbox/aiden-study/actions/runs/34910543706) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/34910542411) 均 success。
 - 桌面瀏覽器以 1024 × 768 檢查五個 app 的首頁往返；分別使用 `/aiden-study/` 與 `/` 根路徑，返回網址與 child 正確，五個畫面的連結均可操作。這是桌面預檢，不是 iPad 主畫面結果。另已確認現行線上首頁、五 app HTML 與共享 wiring 共七個檔案均回應 HTTP 200，內容與本次發布相符。
 
 ## 尚未完成：iPad 與網域
 
-1. #35 v1 已收到真機失敗證據：原頁有標記，目標頁出現瀏覽器工具列且讀不到標記。#34 停止切換；scope-v2 候選僅改測試頁，等待新圖示複驗，詳見 [真機結果與候選設定](platform-ipad-spike-checklist.md)。
+1. #35 scope-v2 已由家長確認「沒有網址列，而且讀得到同一串標記」。Safari 儲存隔離待最後一次比對；平台已採用相同 scope，完整 Node 285 pass、桌面十條首頁往返通過，詳見 [真機結果與平台設定](platform-ipad-spike-checklist.md)。
 2. Cloudflare：`linshuhuan.com` zone 為 active；已沿用 Chrome 既有 Google 登入進入正確帳戶。Wrangler OAuth 不含 DNS 權限，後續使用已登入的 DNS 管理頁，不擴大 OAuth 權限或新增 token。新增 DNS 表單已填妥 `kids` → `huansbox.github.io`、DNS only、TTL 自動，尚未儲存。
 3. 正式網域候選檔：`docs/CNAME` 與 `tests/test_pages_domain.mjs` 已準備並通過單項 audit，只保留在 `codex/child-home-domain` 工作分支；不合併到發布用 master，等待 #35 結果。
 4. GitHub Pages：目前 `cname = null`，仍使用 `https://huansbox.github.io/aiden-study/`。#35 通過且 DNS 管理登入就緒前，不提交 CNAME 到發布分支、不改 DNS。
 5. 正式上線後檢查 HTTPS、舊網址轉向保留 path／child、各 app 資產及同步服務的允許來源，再建立兩個主畫面圖示。尚未完成的 live 檢查不記成通過。
+
+同步服務已預檢：正式 Worker 對 `Origin: https://kids.linshuhuan.com` 的題包 OPTIONS 回應 204，允許該 origin 與 Authorization header；未使用真實金鑰或讀取孩子資料。這只證明新來源已允許，不代替新網域上線後的連線驗證。
 
 ## 正式入口規劃（尚未上線）
 

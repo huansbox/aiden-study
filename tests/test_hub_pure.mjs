@@ -95,8 +95,9 @@ test("healthRows：audience 外但雲端真有資料（逃生門匯入到他 chi
     [["study", "aiden"], ["zhuyin", "bingpu"]], "status 讀不到也不炸");
 });
 
-test("hub 頁不變量：不掛 manifest（start_url 會吃掉圖示網址參數）", () => {
-  assert.ok(!/rel=["']manifest["']/.test(html), "hub 不得掛 web app manifest");
+test("hub 掛全站 scope manifest，保留各孩子的標題", () => {
+  assert.match(html, /rel="manifest" href="platform.webmanifest"/);
+  assert.ok(html.includes('document.title = `${child.name}學習`'));
 });
 
 test("hub 頁不變量：#restore= 轉送與 hashchange 防護都走 restoreForwardTarget（測的與跑的同一份）", () => {
