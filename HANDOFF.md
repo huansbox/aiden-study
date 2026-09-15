@@ -7,13 +7,13 @@
 
 ## Progress
 
-本 session 在獨立 worktree 完成〈悠閒午後〉五枝心智圖，使用者核可後已將 52ea58c、1b1e12c 合併 master 並發布：https://kids.linshuhuan.com/leisure-mind-map/ 。本機與部署檢查完成，工作樹無待續實作。
+本 session 在獨立 worktree 完成〈悠閒午後〉五枝心智圖，使用者核可後已將 52ea58c、1b1e12c 合併 master 並發布：https://kids.linshuhuan.com/leisure-mind-map/ 。本機與部署檢查完成，此心智圖無待續實作。
 
 收尾記錄老師補「貢獻」的回饋、更新兩篇任務入口，並整理 learning-tasks/shared/reading-mind-maps.md。新文章的內容覆蓋與真機驗收留在自己的任務文件，不沿用舊文章的 issues/021 作進度 tracker。
 
 ## Next step
 
-家長以正式網址試用 iPad 橫向、觸控與主畫面 App，將結果記入 learning-tasks/leisure-afternoon/source/coverage.md；未實測項目仍未勾選。下次新心智圖先看共用參考與本篇段落對照，再依新文章決定主枝。
+本心智圖無後續待辦：2026-09-15 使用者決定略過額外驗收，孩子可直接使用。已查看本任務段落對照與驗收紀錄，略過項目不當作已測通過。下次新心智圖再依新文章決定主枝。
 
 若接續一般 repo 工作，上一份交接已指定的 #20 注音錄音仍可作起點；本次未重查該票，不重開已完成的 #34／#35，也未掃描新待辦。
 
