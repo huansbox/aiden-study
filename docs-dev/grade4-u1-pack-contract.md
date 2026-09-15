@@ -90,6 +90,8 @@
 
 #59 核准目標為六題 rev1 → 十四題 rev2，U1～U5 共 7／2／2／1／2 活動。原 U1 2／6 → 2／7，6／6 → 6／7；已完成的原題保持完成，未答對的原題仍可練。原 saved batch 先完成，新題下一批才出現，單批仍最多十題。每次送出只保存一次完整 stats／mastered／queue，失敗顯示持續警示；未送出的輸入與畫面回饋仍不保存。
 
+同章也可能只載入舊題子集：例如六題 cache 已收到七題進度。按「全部練習」重練或「重置進度」，只清除當前已載入且屬目標 unit/subtopic 的 mastery；未載入 ID 保留。saveBatch 保持可見 runtime queue 的順序，再將持久 batch 中未載入／不屬目標範圍的 ID 按原相對順序留在後方；clear/reset 同樣只清可見目標 ID。無題文的 ID 不進 quiz，擴包到達後可再接續。legacy queue 的未知 ID 也保留，仍沿用不保證舊 queue 排序的語意；不新增 state 欄位。完整題包可用時的半批與重置行為不變。
+
 pack schemaVersion 1 保留不表示舊 client 可讀十四題。新版 validator 同時接受六題舊 cache 與擴包；舊常駐 client 收到擴包會拒收並保留原有效內容與進度。另一新版分頁寫入擴包後，舊版冷啟動可能暫無可用包，需重新載入新版前端，不清除 cache 或重設家庭金鑰。發布順序為新版 Worker → 新版 Pages → 核准 expanded KV，詳見 private-pack-build。
 
 ## #59 合成驗證入口

@@ -269,3 +269,68 @@ test("additional valid activities have no arbitrary total count cap and each new
   assert.ok(e.app.quiz.queue.length > 0 && e.app.quiz.queue.length <= 10);
   assert.equal(e.app.activePack.questions.length, 38);
 });
+
+test("rev1 same-chapter resets only visible mastery and retain unknown saved work through actual home actions", async () => {
+  const publicQ = publicQuestions.find(q => q.unit === 5);
+  for (const action of ["_startFull", "_resetChallenge"]) {
+    for (const savedFormat of ["batch", "queue"]) {
+      let e = await ready();
+      const futureId = addedIds[0];
+      const synced = { ...plain(e.app.state), mastered: { 15: [...ids, futureId], 5: [publicQ.id] },
+        challenge: { 15: { [savedFormat]: [ids[0], futureId] }, 5: { batch: [publicQ.id] } },
+        stats: { [futureId]: { practiced: 1, correct: 1 } },
+        errorBank: [{ questionId: futureId, unit: 15 }], flagged: [] };
+      e.syncConfig.saveData(synced); e.syncConfig.onAdopt(synced);
+      assert.equal(e.app.State.isCleared(15), true); // Old cache only sees 6/6.
+      e.window[action](15);
+      assert.equal(e.app.State.doneCount(15), 0); // User's requested old-question reset works.
+      assert.equal(e.app.State.getMasteredSet(15).has(futureId), true);
+      assert.ok(e.app.state.challenge[15][savedFormat].includes(futureId));
+      assert.deepEqual(plain(e.app.state.mastered[5]), synced.mastered[5]);
+      assert.deepEqual(plain(e.app.state.challenge[5]), synced.challenge[5]);
+      e = await boot(e.st);
+      assert.equal(e.app.State.getMasteredSet(15).has(futureId), true);
+      assert.ok(e.app.state.challenge[15][savedFormat].includes(futureId));
+      e.app.importPrivatePack(JSON.stringify(expandedSyntheticPack()));
+      assert.equal(e.app.State.doneCount(15), 1);
+      assert.ok(!plain(e.app.Picker.nextBatch(15)).includes(futureId));
+      assert.deepEqual(plain(e.app.state.stats[futureId]), synced.stats[futureId]);
+      assert.deepEqual(plain(e.app.state.errorBank), synced.errorBank);
+    }
+  }
+});
+
+test("rev1 partial batch retains unavailable U1 activity across start, wrong recycle, skip, finish and clear", async () => {
+  let e = await ready();
+  const futureId = addedIds[0];
+  const synced = { ...plain(e.app.state), mastered: { 15: ids.slice(0,2) },
+    challenge: { 15: { batch: [ids[2], futureId, ...ids.slice(3)] } } };
+  e.syncConfig.saveData(synced); e.syncConfig.onAdopt(synced);
+  e.window._startFull(15);
+  assert.deepEqual(plain(e.app.quiz.queue), ids.slice(2));
+  assert.deepEqual(plain(e.app.state.challenge[15].batch), [...ids.slice(2), futureId]);
+  e.app.submitAnswer(["999"]); e.app.advance();
+  assert.deepEqual(plain(e.app.state.challenge[15].batch), [ids[3], ids[4], ids[5], ids[2], futureId]);
+  e.app.skipCurrentQuestion();
+  assert.ok(e.app.state.challenge[15].batch.includes(futureId));
+  while (e.app.quiz.queue.length) {
+    e.app.submitAnswer(answer(e.app.map.get(e.app.quiz.queue[0])));
+    e.app.advance(); // Includes finishBatch -> clearBatch.
+  }
+  assert.deepEqual(plain(e.app.state.challenge[15].batch), [futureId]);
+  e = await boot(e.st);
+  e.app.importPrivatePack(JSON.stringify(expandedSyntheticPack()));
+  e.window._startFull(15);
+  assert.deepEqual(plain(e.app.quiz.queue), [futureId]);
+});
+
+test("private subtopic reset preserves loaded IDs outside its target as well as unavailable IDs", async () => {
+  const p = syntheticPack(); p.questions[0].subtopic = "另一概念";
+  const e = await ready(p), futureId = addedIds[0], group = "15/合成位值";
+  const synced = { ...plain(e.app.state), mastered: { 15: [...ids, futureId] },
+    challenge: { [group]: { batch: [ids[0], ids[1], futureId] } } };
+  e.syncConfig.saveData(synced); e.syncConfig.onAdopt(synced);
+  e.window._resetChallenge(15, "合成位值");
+  assert.deepEqual([...e.app.State.getMasteredSet(15)], [ids[0], futureId]);
+  assert.deepEqual(plain(e.app.state.challenge[group].batch), [ids[0], futureId]);
+});

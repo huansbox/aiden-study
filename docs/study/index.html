@@ -944,17 +944,17 @@ const State = {
     return ch && Array.isArray(ch.batch) ? ch.batch : null;
   },
   saveBatch(key, batch) {
-    state.challenge[key] = { batch: [...batch] };
+    state.challenge[key] = updatedChallenge(key, batch);
     Storage.save(state);
   },
   clearBatch(key) {
-    state.challenge[key] = null; // 本批完成 → 無進行中批次
+    state.challenge[key] = updatedChallenge(key); // 只完成可見批次；缺文 ID 留待取得後接續。
     Storage.save(state);
   },
   resetChallenge(key) {
     const unit = Number(String(key).replace(/^handwriting:/, "").split("/")[0]);
     if (!privateUnitAvailable(unit)) return;
-    state.challenge[key] = null; // 未開始
+    state.challenge[key] = updatedChallenge(key); // 重置目前可見範圍，不刪缺文進度。
     Storage.save(state);
   },
 
@@ -973,11 +973,11 @@ const State = {
     const modes = masteredModesFromEntry(state.mastered[u]);
     const targetModes = mode ? [normalizePracticeMode(mode)] : Object.keys(modes);
     if (targetModes.length === 0) return;
-    if (subtopic) {
+    if (subtopic || StudyPrivatePack.UNITS.includes(unit)) {
       for (const m of targetModes) {
         modes[m] = (modes[m] || []).filter(id => {
           const q = questionMap.get(id);
-          return !q || q.subtopic !== subtopic;
+          return !q || q.unit !== unit || (subtopic && q.subtopic !== subtopic);
         });
       }
     } else {
@@ -1017,6 +1017,27 @@ const State = {
 // challenge 複合鍵：choice 沿用舊鍵；handwriting 用前綴，避免批次狀態互撞
 function challengeKey(unit, subtopic, mode = DEFAULT_PRACTICE_MODE) {
   return modeChallengeKey(unit, subtopic, mode);
+}
+
+// 私用題包可能只載入同章的舊子集。runtime 不塞無題文的 ID，持久批次仍須保留。
+function updatedChallenge(key, nextBatch = null) {
+  const base = String(key).replace(/^handwriting:/, "");
+  const slash = base.indexOf("/");
+  const unit = Number(slash < 0 ? base : base.slice(0, slash));
+  if (!StudyPrivatePack.UNITS.includes(unit)) return nextBatch === null ? null : { batch: [...nextBatch] };
+  const subtopic = slash < 0 ? null : base.slice(slash + 1);
+  const keep = id => {
+    const q = questionMap.get(id);
+    return !q || q.unit !== unit || (subtopic && q.subtopic !== subtopic);
+  };
+  const previous = state.challenge[key];
+  const pending = Array.isArray(previous?.batch) ? previous.batch.filter(keep) : [];
+  const batch = nextBatch === null ? pending : [...nextBatch, ...pending.filter(id => !nextBatch.includes(id))];
+  // legacy queue 仍不保證接續順序，但其缺文 ID 不因新版 cache 尚未取得而消失。
+  const queue = Array.isArray(previous?.queue) ? previous.queue.filter(keep) : [];
+  return batch.length || queue.length || nextBatch !== null
+    ? { ...(batch.length || nextBatch !== null ? { batch } : {}), ...(queue.length ? { queue } : {}) }
+    : null;
 }
 
 // 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
