@@ -2,8 +2,8 @@
 
 Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。根路徑是由 `registry`（驅動首頁內容的設定檔）控制的 hub（選人與 app 入口頁）：孩子先確認身分，再進入自己的學習 app；家長可從同一處查看完整 app 目錄與同步健康狀態。
 
-- 現行正式網址：<https://huansbox.github.io/aiden-study/>
-- 規劃中的固定網址：`https://kids.linshuhuan.com/`，尚待 [#35 iPad spike](https://github.com/huansbox/aiden-study/issues/35) 與 [#34 搬遷](https://github.com/huansbox/aiden-study/issues/34) 完成
+- 現行正式網址：<https://kids.linshuhuan.com/>；舊 GitHub Pages 網址 301 轉向並保留 path／child
+- 孩子入口：[哥哥學習](https://kids.linshuhuan.com/?child=aiden)／[弟弟學習](https://kids.linshuhuan.com/?child=bingpu)；待家長分別加入 iPad 主畫面
 - 託管：GitHub Pages，來源為 `master` branch 的 `docs/`
 - 使用者：哥哥 `aiden`、弟弟 `bingpu`；不做登入帳號
 
@@ -40,7 +40,7 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 - **進度跟 child 走**：study、zhuyin、math、spelling 的本機 key 都帶 child 維度，並同步到 Cloudflare KV；family token 只存裝置、Cloudflare secret 與 1Password，不進 Git。
 - **平台基建共用、app 邏輯獨立**：同步協定與 wiring layer 共用；各 app 的教學流程維持簡單、各自演進。
 - **家庭學習任務有獨立入口**：一次性活動的分類、建立、索引與共用規則以 `learning-tasks/README.md` 為準。
-- **站內連結使用相對路徑**：目前 GitHub project site 與未來自訂網域的 base path 不同，絕對路徑會在搬遷時失效。
+- **站內連結使用相對路徑**：GitHub project site 與正式自訂網域的 base path 不同，絕對路徑會在搬遷時失效。
 - **iPad 儲存不能只信 localStorage**：Safari 與主畫面 App 是不同容器，且 iOS 可能清除長期未使用的資料；雲端同步是主要保護，文字匯出／匯入是逃生門。
 
 ## 目前階段
@@ -49,11 +49,11 @@ Aiden Study 是給家中兩個孩子在 iPad 上使用的靜態學習平台。�
 
 平台維運剩餘工作集中在：
 
-1. [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35)：驗證 standalone 導航、網址參數與 localStorage 容器三個架構前提。
+1. [#34 掛網域與兩個圖示](https://github.com/huansbox/aiden-study/issues/34)：正式 HTTPS 與網站端檢查完成，待家長把哥哥／弟弟入口加入主畫面。
 2. [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20)：錄製 14 段音檔並完成 iPad checklist。
-3. [#34 掛網域與搬遷](https://github.com/huansbox/aiden-study/issues/34)：通過 flip-gate 後才設定自訂網域、安裝新圖示、對帳進度與清理舊站。
+3. 舊站整理另批處理，先保全仍有價值的來源；本輪未刪除圖示或 repo。
 
-#35 是 #34 的真機 stop-gate；#34 完成備份、同步健康與進度對帳前，不移除舊圖示或清理舊 repo。這些限制不阻擋在現行網址新增 Study 題庫。#11 已關閉，不再列為 open 工作。
+#35 已於 2026-09-15 依家長合併功能回報結案。家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；此取捨不授權清除現有資料。完整實測範圍與未測項目見 [正式網域上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。#11 已關閉，不再列為 open 工作。
 
 ## Wiki 導覽
 

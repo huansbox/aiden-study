@@ -2,7 +2,7 @@
 
 - Status: in_progress
 - Task/issue: #34 正式網域與兩個孩子入口；前置 #35 iPad 主畫面檢查
-- Branch: codex/platform-home-scope（CNAME 候選另留 codex/child-home-domain）
+- Branch: codex/launch-family-domain
 - Updated: 2026-09-15
 
 ## Progress
@@ -15,10 +15,8 @@
 
 ## Next step
 
-2026-09-15 #35 v1 真機 FAIL：主畫面原頁有標記，目標頁出現「完成」與網址列、未讀到標記；家長回原頁確認標記仍在。兩頁 child／k 參數可見保留。正式網域停止切換，Safari 隔離尚未測。
+#35 已於 2026-09-15 結案。v1 跨頁 FAIL 歷史保留；v2 家長確認跨頁沒有網址列、讀到同一標記，Safari 改存後主畫面 App 仍保留原 `spike-…`。型號／系統版本、v2 原始模式報告及回寫時間未收集，不追加細碎補驗。
 
-scope-v2 已由家長確認「沒有網址列，而且讀得到同一串標記」。首頁與五個 app 已採同一全站 scope、省略 start_url／id 保留孩子網址與身分；完整 Node 285 pass，桌面十條首頁往返通過。Safari 儲存隔離的最後一次比對已送出，待回覆原標記仍保留後才能關閉 #35；詳見 [#35 真機紀錄](docs-dev/platform-ipad-spike-checklist.md)。
+`e827287` 已發布 CNAME 與驗收紀錄，GitHub Pages 綁定 `kids.linshuhuan.com`；Cloudflare 已儲存 DNS only CNAME，公共 DNS 解析正確。CI 與 Pages success。HTTPS 憑證已 approved，強制 HTTPS 已啟用。七條舊址 301 保留 path／child；28 個資源 200 且符合發布內容；兩孩子首頁與五 app 往返、Worker OPTIONS 通過。CI Node 286 pass，pytest 183 pass／1 skipped。
 
-Cloudflare 的 `linshuhuan.com` zone 已確認 active，Chrome 已沿用既有 Google 登入進入正確帳戶；Wrangler OAuth 不含 DNS 權限，後續從已登入的 DNS 管理頁執行。不要讀出 family token、擴權、重設 token 或操作孩子真實進度。GitHub Pages 目前 `cname=null`。
-
-工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理與錄音在本輪之後處理；#60 擴題已完成，後續依擴題路線圖另批處理，不改變本輪網域 gate。
+不要讀出 family token 或操作孩子真實進度。本次不做舊進度備份／還原／對帳，不清理舊圖示或舊 repo。正式哥哥／弟弟圖示尚待家長在 iPad Safari 加入主畫面，#34 保持 OPEN；未執行的使用者操作不可記為完成。正式網址為 https://kids.linshuhuan.com/?child=aiden 與 https://kids.linshuhuan.com/?child=bingpu。注音按開始仍顯示缺錄音，屬既有 #20 待辦；未聲稱注音內容或真實授權同步閉環已驗收。#60 三十題 rev3 的後續擴題依既有路線圖另批處理。

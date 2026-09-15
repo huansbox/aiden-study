@@ -16,23 +16,33 @@
 - 本機 Node 267 tests、pytest 167 tests 通過。此為本輪實際結果；[CI](https://github.com/huansbox/aiden-study/actions/runs/34910543706) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/34910542411) 均 success。
 - 桌面瀏覽器以 1024 × 768 檢查五個 app 的首頁往返；分別使用 `/aiden-study/` 與 `/` 根路徑，返回網址與 child 正確，五個畫面的連結均可操作。這是桌面預檢，不是 iPad 主畫面結果。另已確認現行線上首頁、五 app HTML 與共享 wiring 共七個檔案均回應 HTTP 200，內容與本次發布相符。
 
-## 尚未完成：iPad 與網域
+## 正式網域切換紀錄
 
-1. #35 scope-v2 已由家長確認「沒有網址列，而且讀得到同一串標記」。Safari 儲存隔離待最後一次比對；平台已採用相同 scope，完整 Node 285 pass、桌面十條首頁往返通過，詳見 [真機結果與平台設定](platform-ipad-spike-checklist.md)。
-2. Cloudflare：`linshuhuan.com` zone 為 active；已沿用 Chrome 既有 Google 登入進入正確帳戶。Wrangler OAuth 不含 DNS 權限，後續使用已登入的 DNS 管理頁，不擴大 OAuth 權限或新增 token。新增 DNS 表單已填妥 `kids` → `huansbox.github.io`、DNS only、TTL 自動，尚未儲存。
-3. 正式網域候選檔：`docs/CNAME` 與 `tests/test_pages_domain.mjs` 已準備並通過單項 audit，只保留在 `codex/child-home-domain` 工作分支；不合併到發布用 master，等待 #35 結果。
-4. GitHub Pages：目前 `cname = null`，仍使用 `https://huansbox.github.io/aiden-study/`。#35 通過且 DNS 管理登入就緒前，不提交 CNAME 到發布分支、不改 DNS。
-5. 正式上線後檢查 HTTPS、舊網址轉向保留 path／child、各 app 資產及同步服務的允許來源，再建立兩個主畫面圖示。尚未完成的 live 檢查不記成通過。
+- #35 已結案：v2 同源跨頁沒有網址列、讀到同一標記；Safari 改存 `Safari測試` 後，家長回主畫面讀到原 `spike-…`，儲存隔離通過。詳見 [真機紀錄](platform-ipad-spike-checklist.md)。平台採用共同 scope 的 release 為 `cbdfcea`；Node 285 pass、桌面十條往返通過。
+- 2026-09-15 15:16（Asia/Taipei），`docs/CNAME` 與 audit 已合併發布；CNAME commit 為 `7cd19f8`，驗收文件 commit 為 `e827287`。GitHub Pages API 已讀回 `cname=kids.linshuhuan.com`，來源維持 `master:/docs`。
+- 確認 GitHub 已綁定網域後，才儲存 Cloudflare `kids` CNAME → `huansbox.github.io`，DNS only、TTL 自動。管理頁顯示記錄已建立，公共解析器 1.1.1.1 亦讀到相同 CNAME（TTL 300）。其他 DNS 記錄未修改；沒有新增 token 或擴權。
+- [CI](https://github.com/huansbox/aiden-study/actions/runs/34940848632) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/34940847794) success；CI Node 286 pass、pytest 183 pass／1 skipped；CNAME audit 本機 1 pass。
+- 15:18 HTTPS 憑證已 approved，HTTPS 首頁回應 200；已啟用 `https_enforced=true` 並讀回確認。GitHub 負責憑證更新，Cloudflare 保持 DNS only。
 
-同步服務已預檢：正式 Worker 對 `Origin: https://kids.linshuhuan.com` 的題包 OPTIONS 回應 204，允許該 origin 與 Authorization header；未使用真實金鑰或讀取孩子資料。這只證明新來源已允許，不代替新網域上線後的連線驗證。
+## 正式網址驗證結果
 
-## 正式入口規劃（尚未上線）
+- 哥哥／弟弟首頁與五個 app，共七條舊 GitHub Pages URL 均 server-side 301 到正式網域，保留 path 與 child query。HTTP 入口亦 301 到相同網址的 HTTPS。
+- 28 個主要 HTML、manifest、JavaScript、CSS、公開題庫／說明／registry／注音內容、數織題庫與模組及一張獎勵圖，均 HTTP 200，內容與 `e827287` Git blob 完全相符。公開題庫仍為 1,924 題。比對基準使用 Git 的 LF 原文，避免 Windows 工作目錄 CRLF 造成假差異。
+- 新 HTTPS origin 的瀏覽器實際走完哥哥四個 app 與弟弟注音的首頁往返，child 正確；首頁標題分別為「哥哥學習」「弟弟學習」。題庫顯示學科與題數、長除法顯示題目、拼字顯示單字卡、數織開出第一題，均正常。
+- 注音首頁與返回連結正常，但按「開始練習」顯示尚未錄好音檔，這是既有 #20 的 14 段錄音待辦，不列為網域故障，也不宣稱注音內容已可練習。
+- 四上 private pack 在乾淨瀏覽器顯示「尚未設定家庭金鑰」，符合預期；未使用真實 token、未讀寫孩子雲端進度，不將此輪標成真實授權的同步閉環驗收。
 
-| 圖示名稱 | 預定網址 |
+切換後 Worker 的題包 GET 與測試 child 進度 PUT 預檢（僅送 OPTIONS，不送 PUT）均回應 204，允許 `https://kids.linshuhuan.com`、Content-Type／Authorization 與 GET／PUT 等方法。實際授權資料路徑留待家庭正常使用；本輪不新增金鑰讀取或進度寫入。
+
+## 兩個正式入口（已上線，待家長加入 iPad 主畫面）
+
+| 圖示名稱 | 網址 |
 | --- | --- |
 | 哥哥學習 | `https://kids.linshuhuan.com/?child=aiden` |
 | 弟弟學習 | `https://kids.linshuhuan.com/?child=bingpu` |
 
 兩個圖示各自指向孩子首頁。若新主畫面環境提示未設定家庭金鑰，由家長在該環境完成既有設定；不假設 Safari 的設定會跟著圖示帶入。
 
-DNS 設定將使用 `kids` 的 CNAME 指向 `huansbox.github.io`，先採 DNS only，GitHub Pages 供應 HTTPS 憑證；根據 [GitHub 自訂子網域說明](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)。
+安裝：在 iPad Safari 分別開啟上方網址，按「分享」→「加入主畫面」，名稱分別保留「哥哥學習」「弟弟學習」。#34 網站端已完成，保留 OPEN 追蹤家長尚未執行的兩個圖示安裝；不要求再逐項補測。舊圖示或 repo 沒有刪除。
+
+DNS 設定使用 `kids` 的 CNAME 指向 `huansbox.github.io`，先採 DNS only，GitHub Pages 供應 HTTPS 憑證；根據 [GitHub 自訂子網域說明](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)。

@@ -116,8 +116,8 @@ uv run python scripts/build_questions.py
 ### GitHub Pages
 
 - `master` 的 `docs/` 是 production source；push 後通常一至數分鐘上線。
-- 目前正式網址是 <https://huansbox.github.io/aiden-study/>。
-- `kids.linshuhuan.com` 尚未啟用；`docs/CNAME` 只能在 [#34 搬遷 checklist](https://github.com/huansbox/aiden-study/issues/34) 執行時加入，不能先行切換 origin。
+- 2026-09-15 起正式網址是 <https://kids.linshuhuan.com/>；舊 GitHub Pages URL 以 301 轉向並保留 path／child。
+- `docs/CNAME` 已啟用；Cloudflare `kids` CNAME 指向 `huansbox.github.io`，DNS only、TTL 自動。GitHub Pages 管理 HTTPS 憑證，強制 HTTPS 已開啟；設定與驗證見 [上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
 - 上線後從 hub、每個 active app 與其相對路徑資產各走一次 smoke test。
 
 ### GitHub Wiki
@@ -128,9 +128,9 @@ uv run python scripts/build_questions.py
 
 SOP（standard operating procedure）指每次都照同一順序執行的標準操作流程。
 
-- Hub 圖示的網址會帶 `?child=...&k=...`；family token 從 1Password 取得，不從文件複製。
+- 用正式 `?child=aiden`／`?child=bingpu` 網址在 Safari「分享」→「加入主畫面」，分別命名哥哥學習／弟弟學習。平台共用 manifest scope，省略 start_url／id，保留孩子網址。需要家庭設定時，由家長使用 1Password 的 token；不要把真 token 寫進文件。
 - Safari 與「加入主畫面」的 standalone App 是不同 localStorage 容器；同一份進度不能假設兩邊互通。
-- 雲端同步是主要保護；每個裝置／容器在搬遷前仍要做一次文字匯出作為備援。
+- 雲端同步是主要保護；已正式使用後，跨裝置／容器搬遷應先文字匯出備援。2026-09-15 本次上線因尚未給孩子正式使用，家長已免除舊進度備份／還原／對帳。
 - Study 的備忘錄捷徑經 `#restore=` 進 Safari；standalone 無法直接收到。現行後備是複製備忘錄內容，貼到 app 匯入框。
 - 刪除舊主畫面圖示前，必須先在新容器 pull 或匯入並完成題數／mastered 對帳。
 
