@@ -4,14 +4,14 @@
 
 ## 方向
 
-Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。[#55 四上數學 U1「一億以內的數」](https://github.com/huansbox/aiden-study/issues/55) 第一小批已交付，後續依孩子實際使用與學校進度決定擴充；程式保護舊三下題目與現存進度，四上練習有獨立邊界。家長已放棄找回的三下歷史紀錄不列為恢復任務。
+Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把已核過來源、答案與概念範圍的歷屆題，小批加入既有 Study，讓孩子能在 iPad 作答、離開後再接續。[#55 四上數學 U1「一億以內的數」](https://github.com/huansbox/aiden-study/issues/55) 第一小批已交付，[#59](https://github.com/huansbox/aiden-study/issues/59) 已把正式題包擴為 U1～U5 共十四題 rev2；[#60](https://github.com/huansbox/aiden-study/issues/60) 已沿用相同 runtime，完成 fresh review、正式發布與 private archive，把題包擴為三十題 rev3，U1～U5 為 9／6／2／7／6。三十題未做真 iPad 實測；下一步為已採納但尚未實作的 U3 `angle-v1`，其餘未轉入題目與章節仍待做。程式保護舊三下題目與現存進度，四上練習有獨立邊界。家長已放棄找回的三下歷史紀錄不列為恢復任務。
 
 另有兩種支援路線，但只在實際需要時啟動：
 
 - 「數學題型分析 → 改編紙本」用於需要短時間紙筆練習、手寫計算或特定弱點回看時；不預設每章都製作 PDF。
 - 「數學技能互動練習」用於 Study 既有題型不足以承載的單一技能；不因有舊素材就先做新 app。
 
-目前優先定下每天使用的入口：首頁往返已發布，接著完成 #35 的 iPad 主畫面確認，再由 #34 上線正式網域與兩個孩子圖示。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；舊 repo 清理、錄音與擴題在本輪之後處理。
+目前優先定下每天使用的入口：首頁往返已發布，接著完成 #35 的 iPad 主畫面確認，再由 #34 上線正式網域與兩個孩子圖示。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；舊 repo 清理與錄音在本輪之後處理，擴題由 #60 另案進行，不改變網域 gate。
 
 ## 已完成里程碑
 
@@ -26,6 +26,8 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 | 2026-09-12 | #56／#57／#58 完成四上入口、六題 private pack、自動家庭取題、review 與正式發布；#55 保留家庭端 W4 |
 | 2026-09-14 | #55 依 iPad 家長操作確認與驗收取捨結案；個人小專案停止細節逐項補驗，未測情境如實記錄 |
 | 2026-09-15 | 五個 app 補齊回孩子首頁，哥哥／弟弟頁面名稱分開；測試與 Pages 發布通過 |
+| 2026-09-15 | #59 完成 U1～U5 十四題 rev2 的 review、正式發布與結案 |
+| 2026-09-15 | #60 完成 U1～U5 三十題 rev3 的 fresh review、正式發布與 canonical private archive；未做三十題真 iPad 實測 |
 
 ## 近期路線
 
@@ -33,16 +35,16 @@ Aiden Study 的學習內容主軸改為「歷屆題庫 → iPad 練習」：把�
 |---|---|---|---|
 | 1 | [#35 iPad 真機 spike](https://github.com/huansbox/aiden-study/issues/35) | 真 iPad | 主畫面跨頁、網址參數與儲存容器符合預期 |
 | 2 | [#34 掛網域與兩個孩子圖示](https://github.com/huansbox/aiden-study/issues/34) | #35 通過、DNS 管理登入 | 正式網域、HTTPS、app／同步檢查與兩個入口完成；本次不搬舊進度 |
-| 後續 | 依孩子使用證據修正或擴充 U1 題量／章節 | #55 已完成；實際學習需求 | 先處理使用問題與同章缺口，再決定是否進下一章；不按章自動產紙本 |
+| 後續 | U3 `angle-v1` 靜態標註角圖 | #60 三十題 rev3 已完成；逐圖重建與第二人 QA | 先核四個內容候選，驗證畫布後才另批實作；不新增 app 或互動量角器 |
 | 並行 | [#20 注音 MVP 收尾](https://github.com/huansbox/aiden-study/issues/20) | 家長錄音與 iPad | 14 段正式錄音入庫並完成真機驗收 |
 
-四上 U1 的具體資料邊界、題型映射與進度策略見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 依 2026-09-14 家長確認與停止細節補驗的決定收尾，實測範圍與未測限制見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。今年桃子腳 115 康軒正式段考範圍仍未知；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
+四上 U1 的具體資料邊界、題型映射與進度策略見 [`docs-dev/grade4-u1-study-integration-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-study-integration-plan.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-math-expansion-plan.md)。W1–W3 與 #58 自動取題發布已完成；W4 依 2026-09-14 家長確認與停止細節補驗的決定收尾，實測範圍與未測限制見 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md)。目前尚未取得桃子腳 115 康軒正式段考範圍；跨年度、跨版本題目一律依概念對齊，不依舊單元序號直接搬入。
 
 ## 後續方向
 
 ### 題庫內容
 
-- U1 小批驗證後，以孩子實際使用與學校進度決定擴題或進下一章。
+- 三十題 rev3 發布後，以孩子實際使用、學校進度及每批正式 review 決定後續擴題；下一步為已採納但尚未實作的 U3 `angle-v1`，其餘未轉入章節仍待分批處理。
 - 自然、社會同為康軒版，日後按需要沿用「來源查證 → 概念對齊 → 小批驗收」流程；本輪只規劃四上數學。
 - 社會看圖題與其他既有 backlog 不為題數本身擴張。
 - 正式考試範圍公布後，再回頭校準段考候選題；不把教學計畫推定寫成學校公告。

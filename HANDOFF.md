@@ -11,7 +11,7 @@
 
 `5a1e8f68d3dfacc1e405de36eb1a174327eeaf1b` 已發布：五個 app 補齊回孩子首頁，保留 child；兩個 hub 頁面名稱分別為「哥哥學習」「弟弟學習」，補上主畫面 Web App meta。Node 267、pytest 167 pass；CI 與 Pages success。桌面 1024 × 768 已走完五 app 在 `/aiden-study/` 與 `/` 下的往返，並檢查連結版面。
 
-結果、家長取捨、網域設定與未完成事項集中在 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。#55 四上 U1 已於 2026-09-14 結案，原證據見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)，不重開。
+結果、家長取捨、網域設定與未完成事項集中在 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。#55 四上 U1 已於 2026-09-14 結案，原證據見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)，不重開。#59 已把正式題包擴為 U1～U5 共十四題 rev2 並結案；#60 已沿用相同 runtime，完成 fresh review、正式發布與 private archive，把題包擴為三十題 rev3，U1～U5 為 9／6／2／7／6。這三十題未做真 iPad 實測；下一步為 U3 `angle-v1`，其餘未轉入題目與章節仍待做，詳見 [四上數學擴題路線圖](docs-dev/grade4-math-expansion-plan.md)。
 
 ## Next step
 
@@ -19,4 +19,4 @@
 
 Cloudflare 的 `linshuhuan.com` zone 已確認 active，Chrome 已沿用既有 Google 登入進入正確帳戶；Wrangler OAuth 不含 DNS 權限，後續從已登入的 DNS 管理頁執行。不要讀出 family token、擴權、重設 token 或操作孩子真實進度。GitHub Pages 目前 `cname=null`。
 
-工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理、錄音與擴題在本輪之後處理。
+工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理與錄音在本輪之後處理；擴題由 #60 另案進行，不改變本輪網域 gate。

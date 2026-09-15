@@ -6,6 +6,8 @@
 
 [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 依 2026-09-14 家長確認結案。#56／#57／#58 已完成並關閉，六題、共用程式、自動讀取、review 與發布均完成；家長在 iPad 橫向確認自動取題、接續、未送出輸入清空、child 隔離與基本控制，另確認切背景返回及八位數編輯。家長決定個人小專案不再逐項驗證細節，本輪驗收紀錄與文件收斂完成。
 
+[#59 四上數學 U1～U5 擴題](https://github.com/huansbox/aiden-study/issues/59) 已完成 review、正式發布並結案。[#60](https://github.com/huansbox/aiden-study/issues/60) 已沿用相同 runtime，完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為三十題 rev3，U1～U5 分布為 9／6／2／7／6。這三十題未做真 iPad 實測；下一步為已採納但尚未實作的 U3 `angle-v1`，其餘未轉入題目與章節仍待做。詳細狀態見 [四上數學擴題路線圖](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-math-expansion-plan.md)。
+
 實測結果與已接受的未測範圍以 [家庭端驗收紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-ipad-acceptance.md) 為單一來源；未知環境與未測情境不補寫成通過，也不再排入人工驗收。三下歷史進度／錯題已由家長確認不再追回，歷史資料對帳列不適用；保護現存資料與 synthetic data 年級隔離的要求仍保留。
 
 2026-09-15 的當前工作改為首頁往返 → #35 → 正式網域 → 兩個孩子的主畫面圖示。首頁往返已發布；家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度。#35 真機結果尚待回報，Cloudflare 已登入；詳見 [正式網域上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
@@ -23,7 +25,7 @@
 
 - #53 已關閉：已收集 8 份題目卷與 6 份學校官方答案，共 14 個 PDF；原卷為私用 ignored 檔案，不隨 Git clone 取得。
 - #54 已關閉：U1 紙本短練習已有 10 題孩子卷與家長答案，並維持完成、只讀的紙本成品；本輪六題數位 pack 由 #57 另在 private 邊界建立，不回寫該紙本 task。
-- 今年是桃子腳 115 學年度、四上數學康軒版；正式段考範圍仍未知。既有研究見 [`learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md`](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md)。
+- 今年是桃子腳 115 學年度、四上數學康軒版；目前尚未取得正式段考範圍。既有研究見 [`learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md`](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/grade4-sem1-math-exam1/source/curriculum-comparison.md)。
 - 跨年度或出版社版本只依題目實際概念對齊，不把舊章節序號直接當成今年範圍。
 - #11 已於 2026-07-21 關閉，不再列為 open 工作。
 
@@ -32,6 +34,8 @@
 | Issue | 性質 | 現況 | 下一個動作 |
 |---|---|---|---|
 | [#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) | 學習內容＋app＋HITL | Closed；已發布，依家長確認與驗收取捨結案 | 後續按實際使用問題修正，不再補驗細節 |
+| [#59 四上數學 U1～U5 擴題](https://github.com/huansbox/aiden-study/issues/59) | 學習內容＋app 相容 | Closed；十四題 rev2 已 review、發布並結案 | 無；正式基線由 #60 向前擴充，不改寫既有十四題 |
+| [#60 四上數學 rev3 擴題](https://github.com/huansbox/aiden-study/issues/60) | 學習內容 | 完成；三十題 rev3 已發布，fresh review、KV readback 與 private archive 通過 | 補齊 tracker closure evidence；後續轉入 U3 `angle-v1` 另批工作 |
 | [#58 Study 四上 U1：家庭權限自動讀取私用題包](https://github.com/huansbox/aiden-study/issues/58) | 單一修正實作 | Closed；code／review、Worker／pack／Pages 發布完成 | 無；家庭端後續結果由 #55 追蹤 |
 | [#56 Study 四上入口、私用題包載入與進度相容](https://github.com/huansbox/aiden-study/issues/56) | W1 app 實作 | Completed；acceptance 已由獨立 review 與 W3 接受 | 無；後續真機結果由 #55 追蹤 |
 | [#57 四上 U1：六題私用題包與可重建來源](https://github.com/huansbox/aiden-study/issues/57) | W2 private build | Completed；六題與 public/private 邊界已由 W3 接受 | 無；ignored 本機路徑留 source／QA，正式 pack 已部署到獨立 KV |
