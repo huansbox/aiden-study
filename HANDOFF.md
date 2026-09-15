@@ -1,40 +1,22 @@
 # HANDOFF
 
-- Status: completed
-- Task/issue: https://github.com/huansbox/aiden-study/issues/55（四上數學 U1：歷屆題庫接入 iPad 練習）
-- Branch: master
-- Implementation: #56／#57／#58 已完成並關閉；W4 依家長確認收尾，未測細節不再補驗
-- Updated: 2026-09-14
+- Status: in_progress
+- Task/issue: #34 正式網域與兩個孩子入口；前置 #35 iPad 主畫面檢查
+- Branch: codex/child-home-domain
+- Updated: 2026-09-15
 
 ## Progress
 
-Study 的三下／四上入口、首批六題 private pack、safe loading、缺包保留進度與半批接續已交付。#58 的家庭權限自動讀取、獨立 review、Worker／正式 KV pack／Pages 發布均完成；正常流程不要求家長傳檔，manual import 留作備援。公開題庫仍為 1,924 題。
+家長要求依序完成首頁往返、主畫面檢查、正式網域與兩個捷徑，做到 e2e。家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；不清除現有資料。後續以實際使用為準，不再拆成細碎的按鈕驗收。
 
-2026-09-14 家長已回報：設定家庭金鑰後自動載入六題、重開及切背景返回後保留進度並可接續、未送出輸入清空、哥哥／弟弟進度隔離、輸入與確認／離開按鈕操作正常，八位數顯示與刪除補回可操作。環境為 **iPad、橫向**；由 iPhone 透過 AirDrop 傳網址至 iPad 後直接開啟，尚未建立主畫面圖示；瀏覽器名稱、型號與 iPadOS 版本未知。證據來自家長回報。
+`5a1e8f68d3dfacc1e405de36eb1a174327eeaf1b` 已發布：五個 app 補齊回孩子首頁，保留 child；兩個 hub 頁面名稱分別為「哥哥學習」「弟弟學習」，補上主畫面 Web App meta。Node 267、pytest 167 pass；CI 與 Pages success。桌面 1024 × 768 已走完五 app 在 `/aiden-study/` 與 `/` 下的往返，並檢查連結版面。
 
-三下歷史進度／錯題由家長確認不再追回，該實際歷史資料對帳標為不適用；2026-07-17 已有放棄舊備份找回／對帳的決策。這不授權清除現有資料，也不取消 synthetic data 的年級隔離回歸或 #34 現有資料備份。
-
-家長明確表示這是個人小專案，諸如此類細節不再一一驗證。#55 依目前回報、既有測試與 review 結案；未知環境、未逐項測試的版面／離開路徑／另一容器還原／故障提示保留為未測，不再要求補驗。結果與取捨集中在 [`docs-dev/grade4-u1-ipad-acceptance.md`](docs-dev/grade4-u1-ipad-acceptance.md)。
+結果、家長取捨、網域設定與未完成事項集中在 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。#55 四上 U1 已於 2026-09-14 結案，原證據見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)，不重開。
 
 ## Next step
 
-本輪「驗收紀錄與文件收斂」完成，沒有待家長逐項確認的小檢查。後續依孩子實際使用問題修正；擴題或其他平台工作另依需求啟動。
+等待家長一次回報 #35 主畫面跨頁、child／token 參數與 Safari 儲存隔離的結果。已在對話送出合併操作步驟；不能用桌面預檢代替，也不重複要求做題目細節。
 
-#35 仍是 #34 自訂網域搬遷的真 iPad stop-gate；本次 Study 回報不取代其三前提。#34 的逐容器備份、同步健康與有效進度對帳完成前，不移除舊圖示或清理舊 repo。
+Cloudflare 的 `linshuhuan.com` zone 已確認 active，Chrome 已沿用既有 Google 登入進入正確帳戶；Wrangler OAuth 不含 DNS 權限，後續從已登入的 DNS 管理頁執行。不要讀出 family token、擴權、重設 token 或操作孩子真實進度。GitHub Pages 目前 `cname=null`。
 
-## Release 與既有驗證
-
-- 2026-09-12 release：`af427c70dbcea7e59dedc90bac53db4effa47d72`。該版 [test](https://github.com/huansbox/aiden-study/actions/runs/34700385626)、[publish-wiki](https://github.com/huansbox/aiden-study/actions/runs/34700385605) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/34700384937) 均 success；詳見 [#55 發布紀錄](https://github.com/huansbox/aiden-study/issues/55#issuecomment-5646646569)。
-- W1／W2 acceptance 與原 W3 整合 review 已通過；六題獨立重算、public 題庫不變、private 邊界、desktop DOM 與 manual file chooser 均有歷史證據。
-- #58 clean-context review 最終 PASS；唯一 flagged 還原 P2 已修正並複驗。作者當時完整驗證為 Node 264 pass、pytest 166 pass／1 個既有 missing-PDF skip；reviewer 完整 Node 264 pass 與修正相關 28 pass。這些是 2026-09-12 結果，不冒充本次重跑。
-- Reviewer 的 production harness／desktop CUA 已覆蓋自動六題、半批 reload、503 保留 cache／state、家長草稿，以及無 cache＋flagged 後的還原控制；真 iPad 回報範圍另見驗收紀錄。
-- 2026-09-14 結案比對：`docs/`、`worker/`、`scripts/`、`tests/` 與 #58 reviewed code `3f7a48dc30864510ccffd0e673471f008580973c` 無差異；沿用已通過的 W3／#58 review，不因文件收尾重跑程式審查。
-- 當時 live 無 token／fake token GET 為 401，OPTIONS 為 204；positive 200／no-store／exact hash 有 production Worker＋正式 pack＋fake token 的隔離測試證據。本次家長確認正式家庭設定後自動取題成功，但未新增真機 HTTP／hash 檢查。
-
-私用來源與 QA 保存在 ignored 路徑 `data/private/study/g4-s1-math-u1/`，正式 pack 位於 KV 的獨立 content key `c:study:g4-s1-math-u1`；不進 Git、public build、進度備份或同步 payload。正式 pack 為 4,102 bytes，SHA256 `695DEC01844F5D136C2BE353F98BD0F7EDD017F13A82DA70184CBDAA06EA77D0`。
-
-2026-09-12 發布的 Worker version 為 `239acf2e-0a30-4c8b-abcc-dd728a589508`，rollback version 為 `84449a7f-f48d-447a-9ba5-4a13f216b6d0`；部署時 immediate 與 72 秒後 readback 均一致。本次文件整理沒有重部署或重新讀取 Worker／KV。
-
-## Blockers
-
-本輪無 blocker。未測細節已依家長決定接受，不列為待辦；#35／#34 屬另案搬遷工作。
+工作分支已備妥 `docs/CNAME` 與通過的 `tests/test_pages_domain.mjs`，尚未合併發布；Cloudflare 新增記錄表單亦已填妥但未儲存。#35 通過後，合併 CNAME、儲存 DNS，完成 HTTPS 與 live e2e，再建立兩個正式入口。舊 repo 清理、錄音與擴題在本輪之後處理。

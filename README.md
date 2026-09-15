@@ -18,7 +18,7 @@
 
 `docs/registry.json` 是 hub 的 app 清單真相源；app 上下架、對象與排序都從這裡調整。同步中的四個 app 共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，後端位於 `worker/`。
 
-自訂網域 `kids.linshuhuan.com` 的搬遷是 issue #34，必須先完成 issue #35 的 iPad 單容器真機 spike。測試頁與未勾選的真機步驟見 [`docs-dev/platform-ipad-spike-checklist.md`](docs-dev/platform-ipad-spike-checklist.md)。這項 gate 限制換網域、換圖示與清理舊站，不阻擋現行網址新增題庫內容。
+五個 app 已提供回哥哥／弟弟首頁的連結，兩個首頁的頁面名稱分別為「哥哥學習」「弟弟學習」。自訂網域 `kids.linshuhuan.com` 尚未上線，#34 仍等待 #35 的 iPad 主畫面檢查；Cloudflare 已登入，尚未修改 DNS。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
 
 ## 專案結構
 
