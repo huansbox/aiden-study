@@ -1,7 +1,8 @@
 # 悠閒午後：閱讀心智圖
 
 - 日期：2026-09-15；對象：9 歲孩子，iPad 橫向操作。
-- 狀態：實作與本機驗證完成；獨立 worktree `codex/reading-leisure-afternoon`，尚未發布。
+- 狀態：2026-09-15 使用者核可合併至 master 並發布；iPad 真機待試用。
+- [正式入口](https://kids.linshuhuan.com/leisure-mind-map/)
 - 內容依使用者提供的 260915-1～3.jpeg；last.jpeg 是上次作業的老師回饋。原照片不公開入庫。
 
 ## 使用與設計
