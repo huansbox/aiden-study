@@ -1,14 +1,14 @@
 # 四上數學擴題路線圖
 
-更新：2026-09-15。基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
+更新：2026-09-15。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) code／content review 與正式 build 已通過，待發布；[#60](https://github.com/huansbox/aiden-study/issues/60) 在獨立 worktree 進行本機內容工作。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
 
 ## 結論與現況
 
 四上數學接續採「歷屆題庫依概念對齊 → 小批轉成 iPad 練習」。已發布並結案的 U1 六題保持不變；目前由 [#59](https://github.com/huansbox/aiden-study/issues/59) 進行第一個跨章批次：新增 8 個 U1～U5 數位 activity，將同一家庭 pack 從 rev1 六題追加成 rev2 十四題。
 
-#59 已立票，但截至本文件更新時，8 題仍在轉寫、逐題驗算、官方答案核對、獨立內容 review 與程式實作中。十四題 rev2 尚未正式 build、部署或發布，bytes 與 SHA256 也尚未產生；本文件不把候選、進行中工作或既有答案卷身分證據寫成已驗證成功。
+#59 的八題正式 curation 與 fresh content review 已 PASS、零 finding：逐題解題與官方答案、machine answers、解說一致，完整上下文、選項、空格、單位與原作答目標保留；原六題 curated／explanations 與 baseline 相同。十四題 rev2 正式 pack build 為 10,277 bytes、SHA256 `5EBBD603224F9436929236ABC824043F323DA4B0DF7CC3448ABA1A9939BBBFDE`。程式作者回報 Node 277 pass、pytest 183 pass／1 個既有 missing-PDF skip，以及跨章、升版、半批、503 與草稿保留 CUA 通過。Review 採納的未知 ID reset P2 已由 `812d9069c268fbe4372a634d750b18479d5126c1` 修正；fresh code reviewer 對該 exact commit 複驗 PASS、零剩餘 finding，獨立 Node 59／59 與 production harness 12 個 lifecycle cases 全部通過，涵蓋三種實際 handler 的 batch／legacy／兩者並存、多個未知 ID 相對順序、save／reinit／finish／upgrade、完整 pack 半批與 subtopic。這些是本機 build／review／作者 QA 證據，十四題 rev2 尚未部署或發布。
 
-今年已確認為桃子腳 115 學年度四上數學康軒版；第一次定期評量的正式數學單元／頁碼範圍尚未公布。U1～U4 與 U5 的公里認識、量感、換算、比較只是在校方教學進度下的優先準備範圍；M5b 公里／公尺二階單位加減仍在考試週邊界，不假稱學校已公告會考。
+今年已確認為桃子腳 115 學年度四上數學康軒版；目前尚未取得第一次定期評量的正式數學單元／頁碼範圍。U1～U4 與 U5 的公里認識、量感、換算、比較只是在校方教學進度下的優先準備範圍；M5b 公里／公尺二階單位加減仍在考試週邊界，不假稱學校已公告會考。
 
 ## 真相源與計數口徑
 
@@ -34,7 +34,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 
 七個 B activity 對應九個 B 作答單位：其中 U2 的整十／整百規律題把 `tyk113-II-03a`／`03b`／`03c` 三格完整保留成一個三空 activity；另有一個 C activity 對應一個 review item。兩種來源口徑繼續分開。
 
-八個 activity 只使用現有 contract 能保真表達的四選一、整數 `number`、`comparison` 與同型、順序明確的多空；不裁掉圖、直式過程、無序集合或等價表示後仍聲稱題意等效。候選頁面與官方答案可讀性已確認，正式轉寫、獨立重算、比對官方答案、機器答案與孩子解說 QA 都仍是 #59 的未完成門檻。
+八個 activity 只使用現有 contract 能保真表達的四選一、整數 `number`、`comparison` 與同型、順序明確的多空；不裁掉圖、直式過程、無序集合或等價表示後仍聲稱題意等效。正式轉寫、獨立重算、官方答案比對、機器答案、孩子解說、fresh content review 與 fresh code review 已通過；正式發布仍未完成。
 
 ## 擴題 contract
 
@@ -45,6 +45,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 - Builder 以核准 mapping 的完整集合驗證 curated、questions 與 explanations 精確覆蓋；`curated.question.unit` 必須與 mapping 一致。正式內容與 QA 保持 ignored；public metadata 不含題文、選項、答案、blanks 或解說。
 - `multiple_choice` 仍為四選一；`fill_in_blank` 可有 1～9 個順序明確且同為 `number` 或同為 `comparison` 的空格。number 仍限 0 或 1～8 位無前導零非負整數，comparison 仍限 ASCII `<`、`>`、`=`。本批不新增 mixed input token／shape。128 KiB pack 上限與每批最多 10 題不變，不另設任意總題數上限。
 - Study 以 active pack ID membership 判斷 private 題，不再以 `unit === 15` 推定。已知 private unit 缺章時保留未知進度並阻擋開始／reset；不能因 active pack 存在就把六題舊包誤認為 U2～U5 可用。
+- 舊 cache 在同章只載入部分題、持久 batch 仍有未知 ID 時，只練已載入題並依原相對順序把未知 ID 保留在可見 queue 後；save／clear／reset 只更新已載入的目標題，擴包後未知項可接續，legacy queue 仍沿用既有不保證順序語意，不新增 state 欄位。
 - 新 pack 只在首頁安全時點採用，作答中延後；舊 saved batch 先完成，新題進下一批。U1 的 2／6 變 2／7、6／6 變 6／7；已答對的舊題不重練，新增題與原未答對題正常待練。全新章顯示 0／2、0／2、0／1、0／2 且可開始，不誤顯示為通關。
 - 題包不進 state、backup、sync payload 或 public 題庫／解說／QA report；public static 題庫仍固定 1,924 題的 ID／unit／subject 指紋。
 
@@ -67,11 +68,13 @@ B／C 的完整未選 ID、status、頁碼與 dependency／retain_context 一律
 
 ## 驗證與發布順序
 
-#59 沿用現有 production `Worker.fetch`＋fake KV、Study production harness、private builder repo 外 synthetic seam、public fingerprint、backup／child／sync tests 與 isolated desktop CUA，不新增 test seam。實作完成先跑受影響測試，再跑完整 `node --test tests/*.mjs` 與 `uv run pytest`；missing-PDF skip 如實記錄。程式完成前須有一個 read-only clean-context code review，內容完成前須有獨立真題 review。
+#59 沿用現有 production `Worker.fetch`＋fake KV、Study production harness、private builder repo 外 synthetic seam、public fingerprint、backup／child／sync tests 與 isolated desktop CUA，不新增 test seam。作者測試、fresh content review 與 fresh code review 已有上述通過結果；missing-PDF skip 如實記錄，不算本批內容驗收。
 
 發布順序固定為新版 Worker → 能同時讀 rev1／rev2 的新版 Pages → 十四題 rev2 expanded KV。正式 build 後才以 verifier 與管理端 readback 記錄 count、bytes、revision、SHA256；log 不印真題、答案、解說、family token 或孩子進度。失敗停在當階段並保留舊有效內容與進度；內容問題只以前向 revision 修正。
 
-家長已接受個人小專案不再逐項補驗 #55 的細節，本計畫不重開完整真 iPad checklist。自動測試、review、isolated Worker 驗證與 desktop CUA 仍須完成；真機後續依實際使用問題處理。
+後續 [#60](https://github.com/huansbox/aiden-study/issues/60) 已立票，依 #59 已驗證的十四題 rev2 baseline 在獨立 worktree 進行 rev3 本機轉寫／核題／curation／review／build；只有正式 rev3 pack 發布必須等 #59 完整上線並結案。#60 不擴大 #59 的十四題 scope。
+
+家長已接受個人小專案不再逐項補驗 #55 的細節，本計畫不重開完整真 iPad checklist。自動測試、review、isolated Worker 驗證與 desktop CUA 已有上述證據；正式發布仍待執行，真機後續依實際使用問題處理。
 
 ## 明確不做
 
@@ -80,4 +83,4 @@ B／C 的完整未選 ID、status、頁碼與 dependency／retain_context 一律
 - 不自動建立 PDF、每章 worksheet、通用 CMS、任意圖片／HTML 通道或完整互動數學技能 app。
 - 不把暫未支援的圖形、集合、直式、小數、分數與複合題永久排除。
 - 不收自然、社會，不搬舊 `aiden-math` worksheets，不做 #34／#35 網域與容器搬遷。
-- 不讀取或輸出 family token、孩子真實雲端進度、真題內容或 private QA。
+- 不讀取家庭 token 或孩子真實雲端進度；真題與 QA 只在 ignored 本地授權核對，不公開輸出。
