@@ -101,3 +101,10 @@ Worker 新增以下路由，全部經既有 family token 驗證：
 - 獨立 code review 的兩項修正：站內文章保留部署前綴；遠端進度同步保留目前科目入口。均加入回歸測試。
 
 本地驗證：Node 322 項通過、pytest 184 項通過；心智圖 source／部署成品一致，git diff 檢查通過。
+
+
+本次正式發布：
+
+- 實作 commit `afbee544eafe24df976150e93e3700f27f922d53`；Worker version `ca8e64a1-725b-4da2-8c38-8f3324cd1ab3`。
+- [CI](https://github.com/huansbox/aiden-study/actions/runs/35061099903) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/35061099193) success；正式站 15 個變更頁面／資源內容與實作 commit 完全相同。
+- 正式站已連接的 Chrome 確認煦誠首頁為數學、悠閒午後心智圖、國字筆順，保留家長原本只開數學的設定；後台新欄位正常讀取雲端。未在正式站建立測試安排或作答。
