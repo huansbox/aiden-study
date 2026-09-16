@@ -32,8 +32,9 @@
     "git_ignore_verified": true
   },
   "content_checks": {
-    "speaker_coverage": "not_verified",
-    "transcript_alignment": "not_verified",
+    "speaker_coverage": "both_sides_found_in_five_samples_full_coverage_unverified",
+    "transcript_alignment": "coarse_sample_review_complete_precise_word_alignment_unverified",
+    "audio_validation_report": "audio-validation.json",
     "pronunciation_analysis": "not_performed",
     "uploaded_to_transcription_service": false
   }
