@@ -174,7 +174,8 @@
     if (auth) await auth.refresh();
     await refresh();
   }
-  fetch("registry.json")
+  const release = document.querySelector?.('meta[name="kids-home-release"]')?.content;
+  fetch("registry.json" + (release ? "?v=" + release : ""), { cache: "no-store" })
     .then((r) => {
       if (!r.ok) throw Error();
       return r.json();
