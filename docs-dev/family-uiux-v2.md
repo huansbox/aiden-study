@@ -128,3 +128,5 @@ Worker 新增以下路由，全部經既有 family token 驗證：
 - 真實頁面腳本、auth、family client 與 Worker 的整合測試另涵蓋 401 重新連接、晚回應、損壞回應，以及切孩子／重讀／儲存的顯示歸屬。
 - 獨立 review 修正一項問題：區塊內開啟重新連接後切換孩子，舊表單可能留在畫面；現以獨立全頁登入容器避免錯位，並驗證有／無未存草稿兩條路徑。複核無剩餘 findings。
 - 每週心智圖製作與替換入口流程已固定；#26 九個子票完成，父票已結案；#15 舊 PRD 加上現況並保留歷史原文。注音正式音檔仍由 #20 承接，不以 MBP 候選完成當成已可正式使用。
+
+本次正式發布：實作 commit `1d6cd0306f1f4e7e82dfe8c80f1b6620c6884bf9`；[CI](https://github.com/huansbox/aiden-study/actions/runs/35066797107) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/35066796344) success。正式站 9 個變更頁面／資源與 release 完全相同，已連接的 Chrome 家長後台可查到煦誠題庫的真實雲端接收時間，保留原本只開題庫的設定。正式環境僅唯讀，未改家庭設定或孩子進度；Worker 未變更、不需重新部署。

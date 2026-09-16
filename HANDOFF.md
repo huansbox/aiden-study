@@ -1,30 +1,33 @@
 # HANDOFF
 
-- Status: idle
-- Task/issue: no tracker entry — 悠閒午後閱讀心智圖；任務入口 learning-tasks/leisure-afternoon/README.md，驗收 source/coverage.md
-- Branch: master
-- Updated: 2026-09-15
+- Status: completed
+- Task/issue: #62 — 家長操作收尾：同步狀態、每週心智圖流程與舊 tracker 整理
+- Branch: master（整合 codex/parent-operations）
+- Updated: 2026-09-16
 
 ## Progress
 
-本 session 在獨立 worktree 完成〈悠閒午後〉五枝心智圖，使用者核可後已將 52ea58c、1b1e12c 合併 master 並發布：https://kids.linshuhuan.com/leisure-mind-map/ 。本機與部署檢查完成，此心智圖無待續實作。
+#62 已整合並發布，實作 commit `1d6cd0306f1f4e7e82dfe8c80f1b6620c6884bf9`。家長後台新增目前孩子的 App 雲端進度接收時間、無紀錄、本機／外站限制與重新查詢；連線失效、服務失敗、舊資料明示。查詢保留未存輸入，慢回應不覆蓋新結果。詳見 [操作與正式發布證據](docs-dev/family-uiux-v2.md#2026-09-16-家長操作收尾驗證62)。Worker 未變更。
 
-收尾記錄老師補「貢獻」的回饋、更新兩篇任務入口，並整理 learning-tasks/shared/reading-mind-maps.md。新文章的內容覆蓋與真機驗收留在自己的任務文件，不沿用舊文章的 issues/021 作進度 tracker。
+每週新文章依 [心智圖流程](learning-tasks/shared/reading-mind-maps.md#每週交付素材) 處理：家長提供全文或清晰照片，老師要求有的話附上；製作、檢查、依授權發布後替換目前入口。不新增孩子可見歷史列表、CMS 或排程。
+
+#26 的九個子票 #27–#35 全完成，父票已結案；#15 加上現況，原始 PRD 保留。#15／#20 仍開啟追蹤正式注音音檔。
+
+MacBook Pro 的「補齊注音第一圈音檔」已交付 [隔離候選包](https://github.com/huansbox/aiden-study/tree/codex/zhuyin-audio-candidates/docs-dev/zhuyin-audio-candidates)，分支 `codex/zhuyin-audio-candidates`，內容 commit `833318c`、文案收尾 `caea285`。含 14 段機器候選、集中試聽、可重建來源與嚴格音檔審計；仍留在獨立分支，未合併或部署。候選可播不等於發音獲採用，既有全親錄及先前否決 TTS 的決定仍有效。
 
 ## Next step
 
-本心智圖無後續待辦：2026-09-15 使用者決定略過額外驗收，孩子可直接使用。已查看本任務段落對照與驗收紀錄，略過項目不當作已測通過。下次新心智圖再依新文章決定主枝。
+1. 注音 #20：沿用 [正式錄音工具](https://kids.linshuhuan.com/zhuyin/recorder.html)，集中交付 14 段親錄原檔；收到後整理格式、驗音、入庫並確認實際發聲。正式目錄仍缺 14/14，不能因候選通過技術審計而關票。
+2. 收到本週新文章時按固定流程製作；目前煦誠首頁仍為〈悠閒午後〉，未虛構下一篇。
 
-若接續一般 repo 工作，上一份交接已指定的 #20 注音錄音仍可作起點；本次未重查該票，不重開已完成的 #34／#35，也未掃描新待辦。
+## Decisions and validation
 
-## Validation
-
-- 實作時 Node.js 全套通過；Python 183 passed、1 skipped（worktree 無不入庫的期中 PDF）。發布 commit 1b1e12c 的 GitHub test 與 Pages deployment 均 success。
-- 240 種合法選法涵蓋五枝、詩中四景與喜愛自然；五步、園景選項限制、回改與重新整理還原通過。
-- 已測 1024×650、1024×768、1180×720、768×1024、390×844；無水平溢出、文字相交或連線進入文字周邊 3px 範圍。未做 iPad 真機或實際列印驗證。
-- 正式頁面、內容、manifest、字型 HTTP 200；瀏覽器確認注音載入、無 console 錯誤。舊頁面正式網域入口亦為 200。
-- 收尾 fetch --prune 後確認分支與 origin/master 內容相同；build.mjs --check 通過。此次純文件收尾做 diff 與連結檢查，不重跑已通過的整套測試。
+- 不搬舊三年級進度、不清除既有資料；已免除的細碎真機 checklist 不再列 blocker，未做項目不記成通過。#34／#35／#61 不重開。
+- 本輪 Node 328、pytest 184 全通過；隔離瀏覽器確認孩子分離、空紀錄、本機／外站、未存欄位保留、503 舊資料與恢復；390×844 手機與 1112×834 iPad 橫向尺寸無溢出。
+- 獨立 review 修復 401 區塊內登入後切孩子可能留下錯誤表單；真實 auth／Worker 整合回歸驗證有／無草稿分支與正確寫入對象，複核無剩餘 finding。另修正測試以實際更新事件等待，避免固定 event-loop 次數造成不穩定。
+- [CI](https://github.com/huansbox/aiden-study/actions/runs/35066797107)、[Pages](https://github.com/huansbox/aiden-study/actions/runs/35066796344) success；正式站 9 個資源與 release 相同，Chrome 後台可讀真實進度 metadata。未寫正式家庭設定／進度。
+- #15／#26 body 已讀回逐字核對，歷史原文保留。MBP 音檔與應用程式測試是隔離候選驗證，不冒充正式音檔或 iPad 真機完成。
 
 ## Blockers
 
-None
+#62 無阻擋項；注音 #20 仍待可採用的親錄音檔，屬獨立後續工作。
