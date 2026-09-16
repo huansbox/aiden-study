@@ -233,7 +233,7 @@ function createWiring(cfg) {
       scriptLoaded: true,
       info: childInfo(currentChild),
       meta: readSyncMeta(currentChild),
-      token: getToken(),
+      token: window.KidsAuth ? window.KidsAuth.state.status === "connected" : getToken(),
       healthText: KidsSync.HEALTH_TEXT,
       btnClass,
       msgClass,
@@ -251,7 +251,7 @@ function createWiring(cfg) {
     if (block) block.innerHTML = syncStatusHtml();
   }
   // 健康燈按鈕的全域 handler（共用 HTML 以 onclick 引用，故掛 window；每 app 一份 wiring、不互撞）
-  window._saveSyncToken = () => {
+  window._saveSyncToken = async () => {
     const input = document.getElementById("sync-token-input");
     const msg = document.getElementById("sync-msg");
     const v = ((input && input.value) || "").trim();
@@ -259,7 +259,8 @@ function createWiring(cfg) {
       if (msg) msg.textContent = "請先貼上金鑰";
       return;
     }
-    identity.setToken(v); // 本 session 立即生效（蓋過網址殘留的舊 ?k=）＋持久化
+    try { if (window.KidsAuth) await identity.setToken(v); else identity.setToken(v); }
+    catch (e) { if (msg) msg.textContent = e.message; return; }
     if (input) { input.value = ""; input.blur(); } // 清空＋失焦，健康燈輪到時才刷得動
     refreshSyncStatus(); // 先重繪，回饋才寫得進新節點（反過來會在同 tick 被重繪銷毀、從未上畫）
     const saved = document.getElementById("sync-msg");

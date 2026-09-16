@@ -34,7 +34,7 @@ createServer(async (req, res) => {
       res.end();
       return;
     }
-    if (url.pathname.startsWith("/v1/")) {
+    if (url.pathname.startsWith("/v1/") || url.pathname.startsWith("/api/")) {
       if (offline) {
         res.writeHead(503, { "Content-Type": "application/json" });
         res.end('{"error":"測試雲端暫停"}');
@@ -49,7 +49,7 @@ createServer(async (req, res) => {
           headers: req.headers,
           ...(body.length ? { body } : {}),
         }),
-        { TOKEN: "test-token", KV },
+        { TOKEN: "test-token", KV, LOCAL_DEV:true },
       );
       res.writeHead(response.status, Object.fromEntries(response.headers));
       res.end(Buffer.from(await response.arrayBuffer()));

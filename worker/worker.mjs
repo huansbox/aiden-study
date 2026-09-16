@@ -12,6 +12,7 @@
 
 import "../docs/study/private-pack.js";
 import { familyRoute } from "./family.mjs";
+import { authorizeSession } from "./session.mjs";
 
 const ALLOWED_ORIGINS = new Set([
   "https://huansbox.github.io",
@@ -61,6 +62,12 @@ export default {
     // 未捕捉例外會讓 runtime 回不帶 CORS header 的錯誤頁，瀏覽器端會誤判成離線——
     // KV 拋錯（429、值超限）必須以帶 CORS 的 500 回，client 才分得出 data-error vs offline
     try {
+      if (url.pathname.startsWith("/api/")) {
+        url.pathname = url.pathname.slice(4);
+        const denied = await authorizeSession(request, env, url);
+        if (denied) return denied;
+        return await handle(request, env, url, cors, true);
+      }
       return await handle(request, env, url, cors);
     } catch {
       return json(500, { error: "internal" }, cors);
@@ -68,9 +75,9 @@ export default {
   },
 };
 
-async function handle(request, env, url, cors) {
+async function handle(request, env, url, cors, sessionAuthorized = false) {
     const token = tokenFrom(request, url);
-    if (!token || token !== env.TOKEN) return json(401, { error: "bad token" }, cors);
+    if (!sessionAuthorized && (!token || token !== env.TOKEN)) return json(401, { error: "bad token" }, cors);
 
     const parts = url.pathname.split("/").filter(Boolean);
     if (parts[0] !== "v1") return json(404, { error: "not found" }, cors);

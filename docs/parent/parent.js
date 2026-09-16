@@ -1,4 +1,5 @@
 (() => {
+  const auth = window.KidsAuth;
   const F = window.KidsFamily,
     C = F.core,
     root = document.getElementById("parent");
@@ -60,6 +61,7 @@
     saving = false,
     writeId = null,
     status = "",
+    settingsAvailable = false,
     taskApp = "study";
   const p = () => config.children[child];
   const list = () =>
@@ -97,7 +99,27 @@
         .filter(Boolean),
       ...activeApps.filter((a) => !profile.apps.includes(a.id)),
     ];
-    root.innerHTML = `<section class="family-panel"><details ${F.getToken() ? "" : "open"}><summary>家庭金鑰：${F.getToken() ? "已設定" : "尚未設定"}</summary><form id="key-form" class="family-row" style="margin-top:12px"><label class="family-field">輸入家庭金鑰<input id="family-key" type="password" autocomplete="off" required></label><button>儲存並連線</button></form><p class="muted">同一台裝置設定一次即可。金鑰不會顯示在畫面上。</p></details></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動與排序</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label>${profile.apps.includes(a.id) ? `<button data-move="${a.id}" data-offset="-1" aria-label="${names[a.id]}上移" ${profile.apps.indexOf(a.id) === 0 ? "disabled" : ""}>↑</button><button data-move="${a.id}" data-offset="1" aria-label="${names[a.id]}下移" ${profile.apps.indexOf(a.id) === profile.apps.length - 1 ? "disabled" : ""}>↓</button>` : ""}</div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section><section class="family-panel family-stack"><h2>安排練習</h2><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
+    if (
+      auth &&
+      auth.state.status !== "connected" &&
+      !(auth.state.status === "offline" && F.cachedSettings().available)
+    ) {
+      if (!root.querySelector("#connect-family"))
+        auth.renderConnection(root, async () => {
+          if (dirty) {
+            status = "已重新連接，調整尚未儲存。";
+            render();
+          } else await load();
+        });
+      return;
+    }
+    if (auth && !settingsAvailable) {
+      root.innerHTML =
+        '<section class="family-panel"><p role="status">尚未取得家庭設定，請稍後重試。</p><button id="settings-retry">重試</button></section>';
+      root.querySelector("#settings-retry").addEventListener("click", load);
+      return;
+    }
+    root.innerHTML = `<section class="family-panel"><p>此入口已記住家庭連線。Safari 與主畫面圖示可能需要各連接一次。</p><button id="disconnect" type="button">中斷此入口連線</button></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動與排序</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label>${profile.apps.includes(a.id) ? `<button data-move="${a.id}" data-offset="-1" aria-label="${names[a.id]}上移" ${profile.apps.indexOf(a.id) === 0 ? "disabled" : ""}>↑</button><button data-move="${a.id}" data-offset="1" aria-label="${names[a.id]}下移" ${profile.apps.indexOf(a.id) === profile.apps.length - 1 ? "disabled" : ""}>↓</button>` : ""}</div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section><section class="family-panel family-stack"><h2>安排練習</h2><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
       list()
         .map(
           (t, i) =>
@@ -117,6 +139,7 @@
     renderStats();
   }
   function renderStats() {
+    if (!document.getElementById("parent-stats")) return;
     const s = F.summary(child);
     document.getElementById("parent-stats").innerHTML =
       `<p>${s.total.answered} 題 · ${Math.floor(s.total.seconds / 60)} 分鐘 · ${s.finishedTasks} 個任務</p><p class="muted">今天 ${s.today.answered} 題 · ${Math.floor(s.today.seconds / 60)} 分鐘</p>`;
@@ -233,14 +256,16 @@
         document.getElementById("save-status").textContent = e.message;
       }
     };
-    document.getElementById("key-form").onsubmit = async (e) => {
-      e.preventDefault();
-      identity.setToken(document.getElementById("family-key").value.trim());
-      document.getElementById("family-key").value = "";
-      const url = new URL(location.href);
-      url.searchParams.delete("k");
-      history.replaceState(null, "", url);
-      await load();
+    document.getElementById("disconnect").onclick = async () => {
+      if (dirty && !confirm("尚有未儲存的調整，仍要中斷這個入口的連線？"))
+        return;
+      try {
+        await auth.disconnect();
+        dirty = false;
+        render();
+      } catch (e) {
+        document.getElementById("save-status").textContent = e.message;
+      }
     };
     document.getElementById("save").onclick = save;
     document.getElementById("reload").onclick = () => {
@@ -277,8 +302,10 @@
     root
       .querySelectorAll("button,input,select")
       .forEach((el) => (el.disabled = true));
-    document.getElementById("save-status").textContent = "讀取中⋯";
+    const saveStatus = document.getElementById("save-status");
+    if (saveStatus) saveStatus.textContent = "讀取中⋯";
     const result = await F.settings();
+    settingsAvailable = result.available;
     if (result.offline) {
       status = "目前使用已存設定。" + result.error;
     } else {
@@ -303,10 +330,12 @@
       if (!r.ok) throw Error();
       return r.json();
     })
-    .then((value) => {
+    .then(async (value) => {
       reg = value;
+      if (auth) await auth.ready;
       const cache = F.cachedSettings();
       config = cache.data;
+      settingsAvailable = cache.available;
       rev = cache.rev;
       render();
       load();

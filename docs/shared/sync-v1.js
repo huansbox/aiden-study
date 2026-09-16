@@ -141,6 +141,9 @@ function resolveToken(urlToken, storedToken) {
 // setToken＝家長貼新金鑰：本 session 立即生效（蓋過網址上殘留的舊 ?k=），並持久化。
 function bootIdentity(search, storage) {
   const parsed = identityFromSearch(search);
+  if (typeof window !== "undefined" && window.KidsAuth) {
+    return {child:parsed.child, getToken:() => null, setToken:(v) => window.KidsAuth.connect(v)};
+  }
   let sessionToken = parsed.token;
   if (sessionToken && storage) {
     try { storage.setItem(TOKEN_STORAGE_KEY, sessionToken); } catch {}
@@ -173,6 +176,7 @@ function bootIdentity(search, storage) {
 //   onHealth(status)?  健康狀態更新通知（HEALTH_TEXT 的 key 字串；家長區刷新）
 //   fetchImpl? / beaconImpl? / uuid? / now? / debounceMs? / timeoutMs?  可注入（測試／調校）
 function createSyncClient(opts) {
+  const auth = typeof window !== "undefined" ? window.KidsAuth : null;
   const endpoint = String(opts.endpoint || DEFAULT_ENDPOINT).replace(/\/+$/, "");
   const { child, app, schemaVersion, getToken, loadData, saveData, loadMeta, saveMeta } = opts;
   const onAdopt = opts.onAdopt || (() => {});
@@ -216,6 +220,7 @@ function createSyncClient(opts) {
   }
 
   function keyUrl(token) {
+    if (auth) return `${auth.endpoint}/v1/progress/${child}/${app}`;
     return `${endpoint}/v1/progress/${child}/${app}?k=${encodeURIComponent(token)}`;
   }
 
@@ -223,7 +228,7 @@ function createSyncClient(opts) {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
-      return await fetchImpl(u, { ...init, signal: ctrl.signal });
+      return await (auth ? auth.fetch(u, { ...init, signal: ctrl.signal }) : fetchImpl(u, { ...init, signal: ctrl.signal }));
     } finally {
       clearTimeout(t);
     }
@@ -274,8 +279,9 @@ function createSyncClient(opts) {
   // 任何一輪，含 reload 後 boot）才完成定錨：syncedRev＝當下遠端 rev → decideSync 走 push、以 LWW
   // 最新寫入身分勝出。持久化標記讓 busy 併發、reload 殺佇列、定錨 GET 失敗三種路徑都不會弄丟定錨。
   async function syncRound() {
+    if (auth) await auth.ready;
     const token = getToken();
-    if (!token) {
+    if (!auth && !token) {
       setHealth("no-token"); // 無 token＝設定問題，非離線（家長區顯示異常）
       return { action: "no-token", putRejected: false };
     }
@@ -425,7 +431,7 @@ function createSyncClient(opts) {
     const m = meta();
     if (!m.dirty) return false;
     const token = getToken();
-    if (!token) return false;
+    if (auth ? !auth.canAttempt() : !token) return false;
     const writeId = m.pendingWriteId || uuid();
     const body = JSON.stringify({ rev: m.syncedRev, data: loadData(), writeId });
     patchMeta({ lastWriteId: writeId, pendingWriteId: writeId });

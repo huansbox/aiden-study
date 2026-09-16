@@ -1,9 +1,11 @@
 /* 家庭設定與各 App 共用的練習紀錄；不改寫各 App 原有進度。 */
 (() => {
   const core = window.KidsFamilyCore;
+  const auth = window.KidsAuth;
   if (!core) return;
   const base = new URL("../", document.currentScript.src);
   const endpoint =
+    auth?.endpoint ||
     window.KidsSyncV1?.DEFAULT_ENDPOINT ||
     "https://aiden-kids-sync.huansbox.workers.dev";
   const storage = (() => {
@@ -49,15 +51,16 @@
     el.textContent = message;
   }
   async function request(path, init = {}) {
+    if (auth) await auth.ready;
     const token = getToken();
-    if (!token) throw Error("請先設定家庭金鑰");
+    if (!auth && !token) throw Error("請先設定家庭金鑰");
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 6000);
     try {
-      const response = await fetch(endpoint + path, {
+      const response = await (auth ? auth.fetch : fetch)(endpoint + path, {
         ...init,
         headers: {
-          Authorization: "Bearer " + token,
+          ...(!auth ? { Authorization: "Bearer " + token } : {}),
           "Content-Type": "application/json",
           ...init.headers,
         },
@@ -67,7 +70,9 @@
       if (!response.ok) {
         const error = Error(
           response.status === 401
-            ? "家庭金鑰不正確"
+            ? auth
+              ? "家庭連線已失效，請家長重新連接。"
+              : "家庭金鑰不正確"
             : body.error || "連線未完成，請稍後再試",
         );
         error.status = response.status;
@@ -82,9 +87,13 @@
     const cache = read("family:settings");
     try {
       if (cache && Number.isInteger(cache.rev))
-        return { ...cache, data: core.validateSettings(cache.data) };
+        return {
+          ...cache,
+          data: core.validateSettings(cache.data),
+          available: true,
+        };
     } catch {}
-    return { rev: 0, data: core.defaults() };
+    return { rev: 0, data: core.defaults(), available: false };
   }
   async function settings() {
     const cached = cachedSettings();
@@ -95,9 +104,17 @@
       result.data = core.validateSettings(result.data);
       if (result.rev < cached.rev) return { ...cached, offline: false };
       write("family:settings", result);
-      return { ...result, offline: false };
+      return { ...result, offline: false, available: true };
     } catch (error) {
-      return { ...cached, offline: true, error: error.message };
+      return {
+        ...cached,
+        offline: true,
+        status: error.status,
+        error:
+          error.status === 401
+            ? error.message
+            : "尚未取得最新設定，暫時使用上次設定。",
+      };
     }
   }
   async function saveSettings(data, rev, writeId = uuid()) {
@@ -254,7 +271,8 @@
     } catch {
       stream = core.emptyStream();
     }
-    let config = cachedSettings().data;
+    let settingsState = cachedSettings(),
+      config = settingsState.data;
     let currentTask = null,
       active = false,
       lastInput = performance.now(),
@@ -290,7 +308,8 @@
         }, 1500);
     }
     async function flush() {
-      if (!dirty || pushing || !getToken()) return;
+      if (!dirty || pushing || (auth ? !auth.canAttempt() : !getToken()))
+        return;
       pushing = true;
       const snapshot = JSON.stringify(stream);
       dirty = false;
@@ -309,10 +328,14 @@
       }
     }
     function beacon() {
-      if ((dirty || pushing) && getToken() && navigator.sendBeacon) {
+      if (
+        (dirty || pushing) &&
+        (auth ? auth.canAttempt() : getToken()) &&
+        navigator.sendBeacon
+      ) {
         // Safari 在背景可能立即凍結；text/plain 不需預檢，重送由 stream 合併去重。
         navigator.sendBeacon(
-          `${endpoint}/v1/activity/${child}/${app}/${device}?k=${encodeURIComponent(getToken())}`,
+          `${endpoint}/v1/activity/${child}/${app}/${device}${auth ? "" : "?k=" + encodeURIComponent(getToken())}`,
           new Blob([JSON.stringify(stream)], { type: "text/plain" }),
         );
       }
@@ -394,6 +417,7 @@
     }
     const ready = Promise.all([settings(), activity(child)]).then(
       ([result]) => {
+        settingsState = result;
         config = result.data;
         const day = search.get("day");
         if (day === core.dateKey())
@@ -409,6 +433,7 @@
     );
     const context = {
       ready,
+      hasSettings: () => settingsState.available,
       profile,
       record,
       setActive,

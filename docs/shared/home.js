@@ -1,6 +1,7 @@
 (() => {
   const F = window.KidsFamily,
     root = document.getElementById("hub");
+  const auth = window.KidsAuth;
   if (!F || !window.KidsSyncV1) {
     root.textContent = "頁面載入不完整，請重新整理。";
     return;
@@ -46,7 +47,8 @@
   };
   let reg,
     child,
-    config = F.cachedSettings().data,
+    settingsState = F.cachedSettings(),
+    config = settingsState.data,
     view = "home",
     loading = false;
   const profile = () => config.children[child.id];
@@ -101,6 +103,29 @@
     );
   }
   function render() {
+    if (
+      auth &&
+      child &&
+      auth.state.status === "connected" &&
+      !settingsState.available
+    ) {
+      root.innerHTML = settingsState.offline
+        ? '<section class="family-panel"><p role="status">尚未取得家庭設定，請稍後重試。</p><button id="settings-retry">重試</button></section>'
+        : '<p role="status">正在讀取家庭設定⋯</p>';
+      root.querySelector("#settings-retry")?.addEventListener("click", recover);
+      return;
+    }
+    if (
+      auth &&
+      child &&
+      (auth.state.status === "required" ||
+        (!settingsState.available && auth.state.status !== "connected"))
+    ) {
+      document.title = `${child.name}學習`;
+      if (!root.querySelector("#connect-family"))
+        auth.renderConnection(root, refresh);
+      return;
+    }
     if (!child) {
       root.innerHTML = `<h1>選擇入口</h1><div class="family-grid" style="margin-top:28px">${reg.children.map((c) => `<a class="family-tile" href="?child=${c.id}"><img class="family-avatar" src="${F.avatar(c.id, config.children[c.id].avatar)}" alt=""><strong>${esc(c.name)}</strong></a>`).join("")}</div><footer class="family-footer"><a href="parent/">家長後台</a></footer>`;
       return;
@@ -114,6 +139,17 @@
     }
     icon.href = F.avatar(child.id, profile().avatar);
     root.innerHTML = view === "stats" ? stats() : home();
+    if (settingsState.offline) {
+      const notice = document.createElement("p");
+      notice.className = "family-connection-notice";
+      notice.setAttribute("role", "status");
+      notice.textContent = settingsState.error + " ";
+      const retry = document.createElement("button");
+      retry.textContent = "重試";
+      retry.onclick = recover;
+      notice.append(retry);
+      root.prepend(notice);
+    }
     root.querySelectorAll("[data-view]").forEach((b) =>
       b.addEventListener("click", () => {
         view = b.dataset.view;
@@ -123,38 +159,52 @@
     );
   }
   async function refresh() {
-    if (loading) return;
+    if (loading || !reg) return;
     loading = true;
     try {
-      const [settings] = await Promise.all([
-        F.settings(),
-        child ? F.activity(child.id) : Promise.resolve(),
-      ]);
-      config = settings.data;
+      settingsState = await F.settings();
+      config = settingsState.data;
       render();
+      if (child && (!auth || auth.state.status === "connected"))
+        F.activity(child.id).then(() => {
+          if (!root.querySelector("#connect-family")) render();
+        });
     } finally {
       loading = false;
     }
+  }
+  async function recover() {
+    if (!reg) return;
+    if (auth) await auth.refresh();
+    await refresh();
   }
   fetch("registry.json")
     .then((r) => {
       if (!r.ok) throw Error();
       return r.json();
     })
-    .then((value) => {
+    .then(async (value) => {
       reg = value;
       child = reg.children.find((c) => c.id === identity.child);
+      if (auth) await auth.ready;
       render();
       refresh();
     })
     .catch(() => {
       root.textContent = "頁面載入不完整，請重新整理。";
     });
-  window.addEventListener("online", refresh);
+  window.addEventListener("online", recover);
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted && reg) refresh();
+    if (event.persisted && reg) recover();
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && reg) refresh();
+    if (document.visibilityState === "visible" && reg) recover();
   });
+  setInterval(() => {
+    if (
+      document.visibilityState === "visible" &&
+      !root.querySelector("#connect-family")
+    )
+      refresh();
+  }, 30000);
 })();

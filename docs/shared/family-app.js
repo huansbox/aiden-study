@@ -24,7 +24,9 @@
         ? `${Math.min(context.summary().tasks[task.occurrence] || 0, task.quantity)} / ${task.quantity}`
         : "";
     };
-    context.allowed = () => context.profile().apps.includes(app);
+    context.allowed = () =>
+      (!window.KidsAuth || context.hasSettings()) &&
+      context.profile().apps.includes(app);
     context.block = () => {
       document
         .querySelectorAll("body > :not(.family-appbar):not(script)")
@@ -32,6 +34,15 @@
       hint.textContent = "這項活動目前未開放";
     };
     context.ready.then(() => {
+      const auth = window.KidsAuth;
+      if (
+        auth &&
+        (auth.state.status === "required" || !context.hasSettings())
+      ) {
+        context.block();
+        location.replace(F.homeHref(child));
+        return;
+      }
       const img = document.createElement("img");
       img.src = F.avatar(
         F.core.CHILDREN.includes(child)
@@ -46,6 +57,12 @@
       update();
     });
     window.addEventListener("kids:activity", update);
+    window.addEventListener("kids:connection", () => {
+      if (window.KidsAuth?.state.status === "required")
+        F.notifyError(
+          "家庭連線已失效，請回首頁讓家長重新連接。練習紀錄仍保留在這裡。",
+        );
+    });
     return context;
   };
 })();

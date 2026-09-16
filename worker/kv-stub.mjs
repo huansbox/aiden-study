@@ -9,6 +9,7 @@ export function kvStub(initial = {}) {
     async put(key, value, opts = {}) {
       store.set(key, { value, metadata: opts.metadata ?? null });
     },
+    async delete(key) { store.delete(key); },
     async list({ prefix = "", limit = 1000, cursor = "" } = {}) {
       const entries=[...store.entries()].filter(([name])=>name.startsWith(prefix)&&name>cursor).sort(([a],[b])=>a<b?-1:a>b?1:0);
       const page=entries.slice(0,limit);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<meta name="referrer" content="no-referrer">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <!-- 加到主畫面後以 app 形式（standalone）開啟，無瀏覽器網址列 -->
@@ -522,7 +523,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
   <div id="page-error" class="error-msg hidden"><p>題庫載入失敗，請重新整理頁面。</p></div>
 </div>
 
-<script src="../shared/sync-v1.js"></script>
+<script src="../shared/device-auth.js"></script><script src="../shared/sync-v1.js"></script>
 <script src="../shared/wiring-v1.js?v=20260915"></script><script src="../shared/family-core.js"></script><script src="../shared/family-client.js"></script><script src="../shared/family-app.js"></script>
 <script src="./private-pack.js?v=20260915"></script>
 <script>
@@ -1077,9 +1078,9 @@ async function loadPrivatePack() {
   packController = controller;
   let timer;
   const token = wiring.getToken();
-  packNotice = token ? "正在取得家庭題包；已有本機題包仍可練習。" : "尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。";
+  packNotice = token || window.KidsAuth ? "正在取得家庭題包；已有本機題包仍可練習。" : "尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。";
   if (currentPage === "page-home") renderHome(true);
-  if (!token) { packController = null; return; }
+  if (!token && !window.KidsAuth) { packController = null; return; }
   try {
     // 包含 body 讀取的整輪期限；不 await 此函式即可繼續使用本機／三下。
     const timeout = new Promise((_, reject) => {

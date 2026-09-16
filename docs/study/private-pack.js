@@ -70,14 +70,16 @@
     return pack;
   }
   async function fetchRemote(endpoint, token, signal) {
-    if (!token) throw new Error("尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。");
+    const auth = root.KidsAuth;
+    if (auth) await auth.ready;
+    if (!auth && !token) throw new Error("尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。");
     let response;
     try {
-      response = await fetch(`${endpoint.replace(/\/+$/, "")}/v1/packs/g4-s1-math-u1`, {
-        method: "GET", headers: { Authorization: `Bearer ${token}` }, cache: "no-store", signal,
+      response = await (auth ? auth.fetch : fetch)(`${(auth?.endpoint || endpoint).replace(/\/+$/, "")}/v1/packs/g4-s1-math-u1`, {
+        method: "GET", headers: auth ? {} : { Authorization: `Bearer ${token}` }, cache: "no-store", signal,
       });
     } catch { throw new Error("無法連線取得題包，請檢查網路後重試。"); }
-    if (response.status === 401) throw new Error("家庭金鑰不正確。請在家庭設定重新輸入。");
+    if (response.status === 401) throw new Error(auth ? "家庭連線已失效，請回首頁讓家長重新連接。" : "家庭金鑰不正確。請在家庭設定重新輸入。");
     if (response.status === 404) throw new Error("家庭題包尚未發布，請家長確認部署後重試。");
     if (!response.ok) throw new Error("題包服務異常，請稍後重試或請家長檢查服務。");
     if (Number(response.headers.get("Content-Length")) > MAX_BYTES) throw new Error("題包超過 128 KiB，未載入。");

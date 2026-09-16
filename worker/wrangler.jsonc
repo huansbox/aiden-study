@@ -8,6 +8,8 @@
   "name": "aiden-kids-sync",
   "main": "worker.mjs",
   "compatibility_date": "2026-07-01",
+  "workers_dev": true,
+  "routes": [{ "pattern": "kids.linshuhuan.com/api/*", "zone_name": "linshuhuan.com" }],
   "kv_namespaces": [
     {
       "binding": "KV",
