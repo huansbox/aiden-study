@@ -63,6 +63,18 @@
     status = "",
     settingsAvailable = false,
     taskApp = "study";
+  const sync = { phase: "idle", snapshot: null, checkedAt: null, requestId: 0 };
+  const syncTime = (value) =>
+    new Intl.DateTimeFormat("zh-TW", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(new Date(value));
   const p = () => config.children[child];
   const list = () =>
     schedule === "weekly" ? p().weekly[day] || [] : p().overrides[date] || [];
@@ -104,13 +116,16 @@
       auth.state.status !== "connected" &&
       !(auth.state.status === "offline" && F.cachedSettings().available)
     ) {
-      if (!root.querySelector("#connect-family"))
-        auth.renderConnection(root, async () => {
+      if (!root.querySelector("#parent-connection")) {
+        root.innerHTML = '<div id="parent-connection"></div>';
+        auth.renderConnection(root.querySelector("#parent-connection"), async () => {
           if (dirty) {
             status = "已重新連接，調整尚未儲存。";
             render();
+            refreshSync();
           } else await load();
         });
+      }
       return;
     }
     if (auth && !settingsAvailable) {
@@ -137,6 +152,119 @@
       )}</div></section><div class="savebar"><button id="save" class="primary" ${saving ? "disabled" : ""}>${saving ? "儲存中⋯" : "儲存全部設定"}</button><button id="reload" ${saving ? "disabled" : ""}>重新讀取</button><span id="save-status" role="status">${esc(status)}</span></div>`;
     bind();
     renderStats();
+    let syncPanel = document.getElementById("parent-sync");
+    if (!syncPanel) {
+      syncPanel = document.createElement("section");
+      syncPanel.id = "parent-sync";
+      syncPanel.className = "family-panel family-stack";
+      document.getElementById("parent-stats").closest("section").before(syncPanel);
+    }
+    renderSync();
+  }
+  function syncSnapshot(body) {
+    if (!body || !Array.isArray(body.keys)) throw Error("invalid status");
+    const records = new Map();
+    for (const record of body.keys) {
+      if (
+        !record ||
+        typeof record.child !== "string" ||
+        typeof record.app !== "string"
+      )
+        throw Error("invalid status");
+      // 只使用已知孩子與 App 的進度 metadata；累計串流不代表完整存檔。
+      if (!C.CHILDREN.includes(record.child) || !C.APPS.includes(record.app))
+        continue;
+      const key = record.child + ":" + record.app;
+      if (
+        records.has(key) ||
+        !(
+          record.rev === null ||
+          (Number.isSafeInteger(record.rev) && record.rev >= 0)
+        ) ||
+        !(
+          record.lastWrite === null ||
+          (typeof record.lastWrite === "string" &&
+            Number.isFinite(Date.parse(record.lastWrite)) &&
+            new Date(record.lastWrite).toISOString() === record.lastWrite)
+        )
+      )
+        throw Error("invalid status");
+      records.set(key, { lastWrite: record.lastWrite });
+    }
+    return records;
+  }
+  function renderSync() {
+    const panel = document.getElementById("parent-sync");
+    if (!panel) return;
+    const apps = p().apps
+      .map((id) => reg.apps.find((a) => a.id === id && a.status === "active"))
+      .filter(Boolean);
+    const message = {
+      idle: "尚未查詢雲端進度。",
+      loading: "查詢中⋯",
+      ready: "查詢完成。",
+      offline: "目前無法連線，請確認網路後重新查詢。",
+      error: "同步狀態服務暫時無法使用，請稍後重新查詢。",
+      invalid: "同步狀態回應不完整，請稍後重新查詢。",
+      required: "家庭連線已失效，請重新連接後再查詢。",
+    }[sync.phase];
+    panel.innerHTML = `<h2>${esc(reg.children.find((c) => c.id === child).name)}的進度同步</h2>
+      <p class="muted">這是雲端收到 App 進度的時間；其他裝置仍可能有尚未上傳的資料。</p>
+      <p class="muted">依目前勾選的首頁活動顯示${dirty ? "（含尚未儲存的調整）" : ""}；以下時間皆為臺灣時間。</p>
+      <div class="family-row"><button id="sync-refresh" type="button" ${sync.phase === "loading" || saving ? "disabled" : ""}>重新查詢</button>${sync.phase === "required" && auth ? '<button id="sync-reconnect" type="button">重新連接家庭</button>' : ""}<p id="sync-status" role="status">${esc(message)}</p></div>
+      ${sync.checkedAt ? `<p class="muted">${sync.phase === "ready" ? "最近查詢" : "上次查詢"}：${esc(syncTime(sync.checkedAt))}${sync.phase === "ready" ? "" : "（舊資料，尚未更新）"}</p>` : ""}
+      <dl class="family-sync-list">${apps.map((app) => {
+        const record = sync.snapshot?.get(child + ":" + app.id);
+        const detail = app.sync !== true
+          ? app.url
+            ? "外部網站，進度未納入同步。"
+            : app.id === "nonogram"
+              ? "原有過關進度僅存在本機；新累計另行同步。"
+              : "進度僅存在本機。"
+          : !sync.snapshot
+            ? "尚未取得雲端紀錄"
+            : !record
+              ? "尚無雲端進度紀錄"
+              : record.lastWrite === null
+                ? "已有雲端紀錄，接收時間不明"
+                : "雲端收到進度：" + syncTime(record.lastWrite);
+        return `<div data-sync-app="${esc(app.id)}"><dt>${esc(names[app.id] || app.name)}</dt><dd>${esc(detail)}</dd></div>`;
+      }).join("")}</dl>${apps.length ? "" : '<p class="muted">目前未開放首頁活動。</p>'}<div id="sync-connect"></div>`;
+    panel.querySelector("#sync-refresh").onclick = refreshSync;
+    panel.querySelector("#sync-reconnect")?.addEventListener("click", () => {
+      auth.renderConnection(panel.querySelector("#sync-connect"), refreshSync);
+    });
+  }
+  async function refreshSync() {
+    if (!document.getElementById("parent-sync")) return;
+    const requestId = ++sync.requestId;
+    sync.phase = "loading";
+    renderSync();
+    try {
+      const body = await F.request("/v1/status");
+      if (requestId !== sync.requestId) return;
+      try {
+        sync.snapshot = syncSnapshot(body);
+      } catch {
+        sync.phase = "invalid";
+        return;
+      }
+      sync.checkedAt = new Date().toISOString();
+      sync.phase = "ready";
+    } catch (error) {
+      if (requestId !== sync.requestId) return;
+      sync.phase =
+        error.status === 401
+          ? "required"
+          : error.status
+            ? "error"
+            : error.name === "SyntaxError"
+              ? "invalid"
+              : "offline";
+    } finally {
+      // 只更新這一區，保留表單焦點與尚未加入安排的輸入。
+      if (requestId === sync.requestId) renderSync();
+    }
   }
   function homeSettings() {
     const entries = C.homeEntries(config, child, reg),
@@ -176,6 +304,7 @@
         (b.onclick = () => {
           child = b.dataset.child;
           render();
+          refreshSync();
           F.activity(child).then(renderStats);
         }),
     );
@@ -350,6 +479,9 @@
         return;
       try {
         await auth.disconnect();
+        ++sync.requestId;
+        sync.snapshot = sync.checkedAt = null;
+        sync.phase = "idle";
         dirty = false;
         render();
       } catch (e) {
@@ -385,6 +517,7 @@
     } finally {
       saving = false;
       render();
+      refreshSync();
     }
   }
   async function load() {
@@ -405,6 +538,7 @@
       status = "已讀取雲端設定";
     }
     render();
+    refreshSync();
     await F.activity(child);
     renderStats();
   }

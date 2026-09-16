@@ -822,6 +822,27 @@
   overflow-wrap: anywhere;
   max-width: 100%;
 }
+.family-sync-list {
+  margin: 0;
+}
+.family-sync-list > div {
+  padding: 12px 0;
+  border-bottom: 1px solid #cecac3;
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, 3fr);
+  gap: 8px 20px;
+}
+.family-sync-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  font-weight: 600;
+}
+@media (max-width: 600px) {
+  .family-sync-list > div {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 600px) {
   .activity-heading {
     padding: 20px;

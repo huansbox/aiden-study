@@ -2,6 +2,8 @@
 
 更新：2026-09-15。追蹤：[#34](https://github.com/huansbox/aiden-study/issues/34)、[#35](https://github.com/huansbox/aiden-study/issues/35)。
 
+> 本文保存首次搬遷紀錄。2026-09-16 後的現行機制請看 [入口連線](device-connection.md) 與 [家庭首頁／家長後台](family-uiux-v2.md)：Cloudflare 已啟用 proxy，家長首次連接後記住入口，活動與排序由後台調整。下方 DNS only、帶金鑰圖示與原始顯示名稱是當時狀態，不是重新設定指引。
+
 ## 本次範圍與家長決定
 
 依序完成各 app 回孩子首頁、iPad 主畫面檢查、`kids.linshuhuan.com` 上線，以及哥哥／弟弟兩個正式捷徑。
