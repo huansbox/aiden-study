@@ -119,7 +119,7 @@
       root.querySelector("#settings-retry").addEventListener("click", load);
       return;
     }
-    root.innerHTML = `<section class="family-panel"><p>此入口已記住家庭連線。Safari 與主畫面圖示可能需要各連接一次。</p><button id="disconnect" type="button">中斷此入口連線</button></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動與排序</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label>${profile.apps.includes(a.id) ? `<button data-move="${a.id}" data-offset="-1" aria-label="${names[a.id]}上移" ${profile.apps.indexOf(a.id) === 0 ? "disabled" : ""}>↑</button><button data-move="${a.id}" data-offset="1" aria-label="${names[a.id]}下移" ${profile.apps.indexOf(a.id) === profile.apps.length - 1 ? "disabled" : ""}>↓</button>` : ""}</div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section><section class="family-panel family-stack"><h2>安排練習</h2><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
+    root.innerHTML = `<section class="family-panel"><p>此入口已記住家庭連線。Safari 與主畫面圖示可能需要各連接一次。</p><button id="disconnect" type="button">中斷此入口連線</button></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label></div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section>${homeSettings()}<section class="family-panel family-stack"><h2>安排練習（選填）</h2><p class="muted">不安排也可以直接練習。有安排時，進度會顯示在該活動卡內。</p><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
       list()
         .map(
           (t, i) =>
@@ -137,6 +137,32 @@
       )}</div></section><div class="savebar"><button id="save" class="primary" ${saving ? "disabled" : ""}>${saving ? "儲存中⋯" : "儲存全部設定"}</button><button id="reload" ${saving ? "disabled" : ""}>重新讀取</button><span id="save-status" role="status">${esc(status)}</span></div>`;
     bind();
     renderStats();
+  }
+  function homeSettings() {
+    const entries = C.homeEntries(config, child, reg),
+      map = p().mindMap;
+    return `<section class="family-panel family-stack"><h2>目前心智圖</h2>
+      <label><input id="map-enabled" type="checkbox" ${map.enabled ? "checked" : ""}> 顯示在 ${esc(reg.children.find((c) => c.id === child).name)} 首頁</label>
+      <label class="family-field">文章名稱<input id="map-title" maxlength="60" value="${esc(map.title)}"></label>
+      <label class="family-field">文章網址<input id="map-url" value="${esc(map.url)}" placeholder="/leisure-mind-map/"></label>
+      <p class="muted">每週替換這兩欄即可；孩子只看到目前文章。新文章內容仍需先製作。</p>
+    </section><section class="family-panel family-stack"><h2>常用網站</h2><p class="muted">兩個孩子共用這份清單，可分別勾選顯示對象。外站另開視窗，使用時間與作答不納入累計。</p>
+      ${config.websites
+        .map(
+          (
+            site,
+          ) => `<fieldset class="website-editor"><legend>${esc(site.title || "新網站")}</legend>
+        <label class="family-field">網站名稱<input data-site="${site.id}" data-field="title" maxlength="60" value="${esc(site.title)}"></label>
+        <label class="family-field">網站網址<input data-site="${site.id}" data-field="url" inputmode="url" value="${esc(site.url)}" placeholder="https://"></label>
+        <div class="family-row">${reg.children.map((c) => `<label><input type="checkbox" data-site-child="${site.id}" data-audience="${c.id}" ${site.children.includes(c.id) ? "checked" : ""}> ${esc(c.name)}</label>`).join("")}<button data-delete-site="${site.id}">移除網站</button></div>
+      </fieldset>`,
+        )
+        .join(
+          "",
+        )}<button id="add-site" ${config.websites.length >= 30 ? "disabled" : ""}>新增網站</button>
+    </section><section class="family-panel"><h2>首頁排序</h2><p class="muted">以下就是目前孩子首頁的卡片；科目依開放學期顯示。</p>
+      ${entries.map((entry, i) => `<div class="app-row"><span style="flex:1">${esc(entry.title)}</span><button data-move="${esc(entry.id)}" data-offset="-1" aria-label="${esc(entry.title)}上移" ${i === 0 ? "disabled" : ""}>↑</button><button data-move="${esc(entry.id)}" data-offset="1" aria-label="${esc(entry.title)}下移" ${i === entries.length - 1 ? "disabled" : ""}>↓</button></div>`).join("") || '<p class="muted">沒有顯示中的活動。</p>'}
+    </section>`;
   }
   function renderStats() {
     if (!document.getElementById("parent-stats")) return;
@@ -173,13 +199,76 @@
     root.querySelectorAll("[data-move]").forEach(
       (b) =>
         (b.onclick = () => {
-          const i = p().apps.indexOf(b.dataset.move),
+          const order = C.homeEntries(config, child, reg).map(
+            (entry) => entry.id,
+          );
+          const i = order.indexOf(b.dataset.move),
             j = i + Number(b.dataset.offset);
-          [p().apps[i], p().apps[j]] = [p().apps[j], p().apps[i]];
+          [order[i], order[j]] = [order[j], order[i]];
+          p().homeOrder = [
+            ...order,
+            ...p().homeOrder.filter((id) => !order.includes(id)),
+          ];
           change();
           render();
         }),
     );
+    document.getElementById("map-enabled").onchange = (e) => {
+      p().mindMap.enabled = e.target.checked;
+      change();
+      render();
+    };
+    for (const field of ["title", "url"])
+      document.getElementById("map-" + field).oninput = (e) => {
+        p().mindMap[field] = e.target.value;
+        change();
+      };
+    root.querySelectorAll("[data-site]").forEach((input) => {
+      input.oninput = () => {
+        config.websites.find((s) => s.id === input.dataset.site)[
+          input.dataset.field
+        ] = input.value;
+        change();
+      };
+    });
+    root.querySelectorAll("[data-site-child]").forEach((input) => {
+      input.onchange = () => {
+        const site = config.websites.find(
+            (s) => s.id === input.dataset.siteChild,
+          ),
+          audience = input.dataset.audience;
+        site.children = input.checked
+          ? [...site.children, audience]
+          : site.children.filter((c) => c !== audience);
+        change();
+        render();
+      };
+    });
+    root.querySelectorAll("[data-delete-site]").forEach((button) => {
+      button.onclick = () => {
+        const id = button.dataset.deleteSite;
+        config.websites = config.websites.filter((s) => s.id !== id);
+        for (const c of C.CHILDREN)
+          config.children[c].homeOrder = config.children[c].homeOrder.filter(
+            (key) => key !== "website:" + id,
+          );
+        change();
+        render();
+      };
+    });
+    document.getElementById("add-site").onclick = () => {
+      config.websites.push({
+        id: crypto.randomUUID(),
+        title: "",
+        url: "",
+        children: [child],
+      });
+      change();
+      render();
+      [...root.querySelectorAll('[data-site][data-field="title"]')]
+        .at(-1)
+        ?.focus();
+    };
     root.querySelectorAll("[data-term]").forEach(
       (b) =>
         (b.onchange = () => {

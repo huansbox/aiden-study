@@ -253,3 +253,32 @@ test("public bank still contains exactly original 1924 IDs/unit/subject mapping 
   const manifest=JSON.parse(readFileSync(new URL("../docs/study/manifest.json",import.meta.url),"utf8"));
   assert.equal(manifest.name,"課業練習");assert.equal(manifest.start_url,".");
 });
+
+const familyFor = terms => ({ setActive() {}, ready: Promise.resolve(), allowed: () => true, profile: () => ({ terms }), task: () => null });
+test("科目入口覆蓋上次選擇但保留進度，隱藏學期不能由網址開啟", async () => {
+  const st = storage(); st.map.set(key("aiden"), JSON.stringify(oldProgress()));
+  const before=oldPart(oldProgress());
+  const science=await boot(st,"aiden",{search:"?child=aiden&subject=science&term=g3-s2",family:familyFor(["g3-s2","g4-s1"])});
+  assert.equal(science.app.currentScope().subjKey,"science");
+  assert.equal(science.app.state.studyTerm,"g3-s2");
+  assert.doesNotMatch(science.node("page-home").innerHTML, /_setSubject|_setStudyTerm\('g4-s1'\)/);
+  assert.deepEqual(oldPart(science.app.state),before);
+  science.syncConfig.onAdopt({ ...science.app.state, studyTerm: "g4-s1", subject: "math" });
+  assert.equal(science.app.currentScope().subjKey,"science");
+  assert.equal(science.app.state.studyTerm,"g3-s2");
+  const math=await boot(st,"aiden",{search:"?child=aiden&subject=math&term=g4-s1",family:familyFor(["g4-s1"])});
+  assert.equal(math.app.currentScope().subjKey,"math");assert.equal(math.app.state.studyTerm,"g4-s1");
+  assert.deepEqual(oldPart(math.app.state),before);
+  const hidden=await boot(st,"aiden",{search:"?child=aiden&subject=science&term=g3-s2",family:familyFor(["g4-s1"])});
+  assert.equal(hidden.app.state.studyTerm,"g4-s1");assert.equal(hidden.app.currentScope().subjKey,"math");
+});
+test("首頁科目清單與真實 Study 學期內容相符", async () => {
+  await import("../docs/shared/family-core.js");
+  const e=await boot();
+  for (const [termId,term] of Object.entries(e.app.STUDY_TERMS)) {
+    const expected=Object.entries(globalThis.KidsFamilyCore.SUBJECTS).filter(([,v])=>v.terms.includes(termId)).map(([id])=>id).sort();
+    assert.deepEqual(Object.keys(term.subjects).sort(),expected);
+    for (const [subjectId,subject] of Object.entries(term.subjects)) for (const sem of Object.values(subject.semesters)) for (const unit of sem.units)
+      assert.equal(globalThis.KidsFamilyCore.taskEntryId({app:"study",unit:unit.id}),"study:"+subjectId);
+  }
+});

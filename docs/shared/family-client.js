@@ -231,6 +231,21 @@
   function homeHref(child) {
     return new URL("?child=" + encodeURIComponent(child), base).href;
   }
+  function entryHref(entry, child) {
+    const target =
+      entry.internal && entry.url.startsWith("/")
+        ? entry.url.slice(1)
+        : entry.path || entry.url;
+    const url = new URL(target, base);
+    if (entry.path || (entry.internal && url.origin === base.origin)) {
+      url.searchParams.set("child", child);
+      if (entry.subject) {
+        url.searchParams.set("subject", entry.subject);
+        url.searchParams.set("term", entry.term);
+      }
+    }
+    return url.href;
+  }
   function taskHref(task, child, registry) {
     const app = registry.apps.find((a) => a.id === task.app);
     const url = new URL(app.path, base);
@@ -517,6 +532,7 @@
     summary,
     avatar,
     homeHref,
+    entryHref,
     taskHref,
     attach,
     read,

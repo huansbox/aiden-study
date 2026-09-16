@@ -513,7 +513,7 @@ body {
 .hidden { display: none !important; }
 a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
-<link rel="stylesheet" href="../shared/family.css?v=20260916-session"></head>
+<link rel="stylesheet" href="../shared/family.css?v=20260916-home"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <div class="container" id="app">
@@ -524,7 +524,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260916-session"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js"></script><script src="../shared/family-client.js?v=20260916-session"></script><script src="../shared/family-app.js?v=20260916-session"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260916-home"></script><script src="../shared/family-client.js?v=20260916-home"></script><script src="../shared/family-app.js?v=20260916-session"></script>
 <script src="./private-pack.js?v=20260916-session"></script>
 <script>
 (function() {
@@ -1663,13 +1663,35 @@ function renderErrorModeButtons(visibleUnits, mode, label) {
   return html;
 }
 
+let entrySubject = null;
+function applySubjectEntry() {
+  const params = new URLSearchParams(location.search), subject = params.get("subject");
+  const terms = Object.keys(STUDY_TERMS).filter(key =>
+    (!family || family.profile().terms.includes(key)) && Object.hasOwn(STUDY_TERMS[key].subjects, subject));
+  if (!terms.length || family?.task()) return;
+  entrySubject = subject;
+  const term = terms.includes(params.get("term")) ? params.get("term") : terms[0];
+  // 入口只選擇顯示範圍；不改寫作答、錯題或通關紀錄。
+  state.studyTerm = term;
+  state.subject = subject;
+}
 function renderHome(preserveParentForms = false) {
   applyPendingPack();
   if (family && !family.profile().terms.includes(state.studyTerm)) State.setStudyTerm(family.profile().terms[0]);
+  if (entrySubject) {
+    const terms = Object.keys(STUDY_TERMS).filter(key =>
+      (!family || family.profile().terms.includes(key)) && Object.hasOwn(STUDY_TERMS[key].subjects, entrySubject));
+    if (!terms.length) entrySubject = null;
+    else {
+      if (!terms.includes(state.studyTerm)) state.studyTerm = terms[0];
+      state.subject = entrySubject;
+    }
+  }
   const home = document.getElementById("page-home");
   const { term, subjects, subjKey, subj, semKeys, sem, units } = currentScope();
   let html = `<h1>${family ? "" : term.label}${subj.label}</h1><div class="semester-toggle">`;
   for (const [key, item] of Object.entries(STUDY_TERMS)) {
+    if (entrySubject && !Object.hasOwn(item.subjects, entrySubject)) continue;
     if (family && (!family.profile().terms.includes(key) || family.profile().terms.length === 1)) continue;
     html += `<button class="${key === state.studyTerm ? 'active' : ''}" onclick="window._setStudyTerm('${key}')">${item.label}</button>`;
   }
@@ -1678,6 +1700,7 @@ function renderHome(preserveParentForms = false) {
   // 科目切換
   html += '<div class="subject-toggle">';
   for (const key of Object.keys(subjects)) {
+    if (entrySubject) continue;
     html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${subjects[key].label}</button>`;
   }
   html += '</div>';
@@ -3355,6 +3378,7 @@ async function init() {
     if (sync) { try { await sync.boot(); } catch {} }
     const saved = Storage.load();
     State.init(saved);
+    applySubjectEntry();
 
     const resp = await questionsPromise;
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);

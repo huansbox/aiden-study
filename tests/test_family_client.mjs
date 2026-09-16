@@ -11,6 +11,7 @@ function harness({
   env = { TOKEN: "test-token", KV: kvStub() },
   search = "?child=aiden",
   offline = false,
+  base = "https://kids.linshuhuan.com/",
 } = {}) {
   const windows = new Map(),
     docs = new Map(),
@@ -37,7 +38,7 @@ function harness({
   });
   const document = {
     currentScript: {
-      src: "https://kids.linshuhuan.com/shared/family-client.js",
+      src: base + "shared/family-client.js",
     },
     visibilityState: "visible",
     getElementById: () => null,
@@ -183,4 +184,48 @@ test("同一瀏覽器同時開兩頁也各自保留作答", async () => {
   await Promise.all([first.flush(), second.flush()]);
   await h.F.activity("aiden");
   assert.equal(h.F.summary("aiden").total.answered, 2);
+});
+
+test("科目入口帶正確範圍，內部心智圖保留孩子，外站不帶家庭參數；新設定離線可讀", async () => {
+  const h = harness(),
+    { F, C } = h;
+  const settings = C.defaults();
+  settings.children.aiden.homeOrder = ["website:stroke"];
+  await F.saveSettings(settings, 0, "home-fields");
+  h.setOffline(true);
+  const cached = await F.settings();
+  assert.equal(cached.offline, true);
+  assert.equal(cached.data.children.aiden.homeOrder[0], "website:stroke");
+  const registry = {
+    apps: [{ id: "study", status: "active", path: "study/" }],
+  };
+  const entries = C.homeEntries(cached.data, "aiden", registry);
+  const math = new URL(
+    F.entryHref(
+      entries.find((e) => e.id === "study:math"),
+      "aiden",
+    ),
+  );
+  assert.equal(math.searchParams.get("subject"), "math");
+  assert.equal(math.searchParams.get("term"), "g4-s1");
+  assert.equal(math.searchParams.get("child"), "aiden");
+  assert.equal(
+    F.entryHref(
+      entries.find((e) => e.id === "mind-map"),
+      "aiden",
+    ),
+    "https://kids.linshuhuan.com/leisure-mind-map/?child=aiden",
+  );
+  assert.equal(
+    F.entryHref(entries[0], "aiden"),
+    "https://stroke.gh.miniasp.com/",
+  );
+});
+
+test("站內文章路徑沿用部署前綴", () => {
+  const { F } = harness({ base: "https://huansbox.github.io/aiden-study/" });
+  assert.equal(
+    F.entryHref({ internal: true, url: "/leisure-mind-map/" }, "aiden"),
+    "https://huansbox.github.io/aiden-study/leisure-mind-map/?child=aiden",
+  );
 });

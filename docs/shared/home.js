@@ -37,14 +37,6 @@
     zhuyin: "注音",
     "animal-fight": "動物守護者",
   };
-  const marks = {
-    study: "＋−",
-    math: "÷",
-    spelling: "Aa",
-    nonogram: "▦",
-    zhuyin: "ㄅㄆ",
-    "animal-fight": "足",
-  };
   let reg,
     child,
     settingsState = F.cachedSettings(),
@@ -53,8 +45,6 @@
     loading = false;
   const profile = () => config.children[child.id];
   const minutes = (n) => Math.floor(n / 60);
-  const appURL = (app) =>
-    app.path ? new URL(app.path + "?child=" + child.id, F.base).href : app.url;
   function header() {
     const s = F.summary(child.id);
     return `<header class="family-header"><div class="family-person"><img class="family-avatar" src="${F.avatar(child.id, profile().avatar)}" alt=""><h1>${esc(child.name)}</h1></div><button class="family-stats-link" data-view="stats">今天 ${s.today.answered} 題 · ${minutes(s.today.seconds)} 分鐘<br>查看累計 →</button></header>`;
@@ -73,33 +63,39 @@
   }
   function home() {
     const s = F.summary(child.id),
-      apps = profile()
-        .apps.map((id) =>
-          reg.apps.find((a) => a.id === id && a.status === "active"),
-        )
-        .filter(Boolean);
-    const tasks = C.todayTasks(profile()),
-      first = tasks.find((t) => !s.done[t.occurrence]);
-    const firstApp = first ? apps.find((a) => a.id === first.app) : apps[0];
-    let hero = "";
-    if (firstApp) {
-      const label =
-        firstApp.id === "study" &&
-        (first?.unit >= 15 ||
-          (!first &&
-            profile().terms.length === 1 &&
-            profile().terms[0] === "g4-s1"))
-          ? "數學"
-          : names[firstApp.id];
-      hero = `<section class="family-hero"><div><h2>${esc(label)}</h2>${first ? `<p>${esc(C.taskLabel(first))}</p>` : '<div style="height:22px"></div>'}<a class="button primary" href="${esc(first ? F.taskHref(first, child.id, reg) : appURL(firstApp))}">${first ? "開始任務" : "開始練習"} →</a></div><span class="family-mark" aria-hidden="true">${marks[firstApp.id]}</span></section>`;
-    }
+      tasks = C.todayTasks(profile());
+    const entries = C.homeEntries(config, child.id, reg);
+    const cards = entries
+      .map((entry) => {
+        const assigned = tasks.filter((t) => C.taskEntryId(t) === entry.id);
+        const href = F.entryHref(entry, child.id);
+        const external = new URL(href).origin !== F.base.origin;
+        const target = external
+          ? ' target="_blank" rel="noopener noreferrer"'
+          : "";
+        return `<article class="family-activity" data-entry="${esc(entry.id)}">
+        <a class="activity-heading" href="${esc(href)}"${target}><div><h2>${esc(entry.title)}</h2>${entry.subtitle ? `<p>${esc(entry.subtitle)}</p>` : ""}</div><span class="symbol" aria-hidden="true">${esc(entry.mark)}</span></a>
+        ${
+          assigned.length
+            ? `<div class="activity-tasks">${assigned
+                .map((t) => {
+                  const done = Boolean(s.done[t.occurrence]);
+                  const label = `<strong>${esc(C.taskLabel(t))}</strong><span>${done ? "已完成" : `${Math.min(s.tasks[t.occurrence] || 0, t.quantity)} / ${t.quantity} →`}</span>`;
+                  return done
+                    ? `<div class="activity-task completed">${label}</div>`
+                    : `<a class="activity-task" href="${esc(F.taskHref(t, child.id, reg))}">${label}</a>`;
+                })
+                .join(
+                  "",
+                )}</div><a class="activity-free" href="${esc(href)}"${target}>自由練習 →</a>`
+            : ""
+        }
+      </article>`;
+      })
+      .join("");
     return (
       header() +
-      hero +
-      (tasks.length
-        ? `<div class="family-tasks">${tasks.map((t) => `<a class="family-task" href="${esc(F.taskHref(t, child.id, reg))}"><strong>${esc(names[t.app])}　${esc(C.taskLabel(t))}</strong><span class="count">${s.done[t.occurrence] ? "已完成" : `${Math.min(s.tasks[t.occurrence] || 0, t.quantity)} / ${t.quantity}`} →</span></a>`).join("")}</div>`
-        : "") +
-      `<div class="family-grid">${apps.map((a) => `<a class="family-tile" href="${esc(appURL(a))}"><strong>${esc(names[a.id])}</strong><span class="symbol" aria-hidden="true">${marks[a.id]}</span></a>`).join("")}</div>${!apps.length ? '<p class="family-panel">今天先休息。</p>' : ""}<footer class="family-footer"><span>累計 ${s.total.answered} 題</span><button data-view="stats">積木收藏 →</button></footer>`
+      `<div class="family-grid activity-grid">${cards}</div>${!entries.length ? '<p class="family-panel">今天先休息。</p>' : ""}<footer class="family-footer"><span>累計 ${s.total.answered} 題</span><button data-view="stats">積木收藏 →</button></footer>`
     );
   }
   function render() {

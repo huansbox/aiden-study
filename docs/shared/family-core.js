@@ -10,6 +10,24 @@
     "animal-fight",
   ];
   const TERMS = ["g3-s2", "g4-s1"];
+  const SUBJECTS = {
+    math: { title: "數學", mark: "＋−", terms: ["g4-s1", "g3-s2"] },
+    social: { title: "社會", mark: "世", terms: ["g3-s2"] },
+    science: { title: "自然", mark: "葉", terms: ["g3-s2"] },
+    chinese: { title: "國語", mark: "文", terms: ["g3-s2"] },
+  };
+  const APP_LABELS = {
+    math: ["長除法", "÷"],
+    spelling: ["英文", "Aa"],
+    nonogram: ["數織", "▦"],
+    zhuyin: ["注音", "ㄅㄆ"],
+    "animal-fight": ["動物守護者", "足"],
+  };
+  const defaultMindMap = (child) => ({
+    enabled: child === "aiden",
+    title: "悠閒午後",
+    url: "/leisure-mind-map/",
+  });
   const idRE = /^[a-z0-9-]{1,64}$/;
   const dateRE = /^\d{4}-\d{2}-\d{2}$/;
   const occurrenceRE = /^[a-z0-9-]{1,64}@\d{4}-\d{2}-\d{2}$/;
@@ -34,6 +52,14 @@
   function defaults() {
     return {
       version: 1,
+      websites: [
+        {
+          id: "stroke",
+          title: "國字筆順",
+          url: "https://stroke.gh.miniasp.com/",
+          children: [...CHILDREN],
+        },
+      ],
       children: Object.fromEntries(
         CHILDREN.map((child) => [
           child,
@@ -44,6 +70,8 @@
                 : ["zhuyin"],
             terms: child === "aiden" ? ["g4-s1"] : ["g3-s2"],
             avatar: "lego",
+            mindMap: defaultMindMap(child),
+            homeOrder: [],
             weekly: {},
             overrides: {},
           },
@@ -86,7 +114,36 @@
   function validateSettings(value) {
     if (!value || value.version !== 1 || !value.children)
       throw Error("不支援的家庭設定版本");
-    const result = { version: 1, children: {} };
+    const websites = Object.hasOwn(value, "websites")
+      ? value.websites
+      : defaults().websites;
+    if (!Array.isArray(websites) || websites.length > 30)
+      throw Error("常用網站最多 30 個");
+    const result = {
+      version: 1,
+      children: {},
+      websites: websites.map((site) => {
+        if (
+          !site ||
+          typeof site.id !== "string" ||
+          !idRE.test(site.id) ||
+          !Array.isArray(site.children) ||
+          site.children.some((c) => !CHILDREN.includes(c)) ||
+          new Set(site.children).size !== site.children.length
+        )
+          throw Error("網站設定不正確");
+        return {
+          id: site.id,
+          title: linkTitle(site.title),
+          url: linkURL(site.url),
+          children: [...site.children],
+        };
+      }),
+    };
+    if (
+      new Set(result.websites.map((s) => s.id)).size !== result.websites.length
+    )
+      throw Error("網站識別重複");
     for (const child of CHILDREN) {
       const p = value.children[child];
       if (
@@ -129,11 +186,147 @@
         apps: [...p.apps],
         terms: [...p.terms],
         avatar: p.avatar,
+        mindMap: validateMindMap(
+          Object.hasOwn(p, "mindMap") ? p.mindMap : defaultMindMap(child),
+        ),
+        homeOrder: validateOrder(
+          Object.hasOwn(p, "homeOrder") ? p.homeOrder : [],
+        ),
         weekly,
         overrides,
       };
     }
     return result;
+  }
+  function linkTitle(value) {
+    if (typeof value !== "string" || !value.trim() || value.trim().length > 60)
+      throw Error("名稱請填 1 到 60 個字");
+    return value.trim();
+  }
+  function linkURL(value, internal = false) {
+    if (typeof value !== "string" || !value.trim() || value.length > 2048)
+      throw Error("請填寫有效網址");
+    value = value.trim();
+    if (/[\u0000-\u0020\\]/.test(value)) throw Error("網址不能含空白或反斜線");
+    const relative =
+      internal && value.startsWith("/") && !value.startsWith("//");
+    let url;
+    try {
+      url = new URL(
+        value,
+        relative ? "https://kids.linshuhuan.com" : undefined,
+      );
+    } catch {
+      throw Error("請填完整 https 網址，站內文章也可填 / 開頭的路徑");
+    }
+    if (url.protocol !== "https:" || url.username || url.password)
+      throw Error("網址需使用 https，且不能包含帳號密碼");
+    if (["k", "token"].some((key) => url.searchParams.has(key)))
+      throw Error("請移除網址中的金鑰參數");
+    return relative ? url.pathname + url.search + url.hash : url.href;
+  }
+  function validateMindMap(value) {
+    if (!value || typeof value.enabled !== "boolean")
+      throw Error("心智圖設定不正確");
+    return {
+      enabled: value.enabled,
+      title: linkTitle(value.title),
+      url: linkURL(value.url, true),
+    };
+  }
+  function validateOrder(value) {
+    if (
+      !Array.isArray(value) ||
+      value.length > 128 ||
+      value.some(
+        (id) =>
+          typeof id !== "string" ||
+          !/^[a-z0-9-]+(?::[a-z0-9-]+)?$/.test(id) ||
+          id.length > 80,
+      ) ||
+      new Set(value).size !== value.length
+    )
+      throw Error("首頁排序不正確");
+    return [...value];
+  }
+  // 舊版客戶端不認識新增欄位；只在未送出欄位時保留雲端值。
+  function preserveHomeFields(incoming, current) {
+    const result = clone(incoming);
+    if (!Object.hasOwn(result, "websites")) result.websites = current.websites;
+    for (const child of CHILDREN) {
+      const profile = result.children?.[child];
+      if (!profile) continue;
+      for (const key of ["mindMap", "homeOrder"])
+        if (!Object.hasOwn(profile, key))
+          profile[key] = current.children[child][key];
+    }
+    return result;
+  }
+  function taskEntryId(task) {
+    if (task.app !== "study") return task.app;
+    const subject =
+      task.unit >= 15 || (task.unit >= 5 && task.unit <= 9)
+        ? "math"
+        : task.unit <= 4
+          ? "science"
+          : task.unit <= 12
+            ? "social"
+            : "chinese";
+    return "study:" + subject;
+  }
+  function homeEntries(settings, child, registry) {
+    const profile = settings.children[child],
+      entries = [];
+    for (const id of profile.apps) {
+      const app = registry.apps.find(
+        (a) => a.id === id && a.status === "active",
+      );
+      if (!app) continue;
+      if (id === "study") {
+        for (const [subject, meta] of Object.entries(SUBJECTS)) {
+          const term = meta.terms.find((t) => profile.terms.includes(t));
+          if (term)
+            entries.push({
+              id: "study:" + subject,
+              app: id,
+              ...meta,
+              subject,
+              term,
+              path: app.path,
+            });
+        }
+      } else
+        entries.push({
+          id,
+          app: id,
+          title: APP_LABELS[id][0],
+          mark: APP_LABELS[id][1],
+          path: app.path,
+          url: app.url,
+        });
+    }
+    if (profile.mindMap.enabled)
+      entries.push({
+        id: "mind-map",
+        title: "心智圖",
+        subtitle: profile.mindMap.title,
+        mark: "枝",
+        url: profile.mindMap.url,
+        internal: true,
+      });
+    for (const site of settings.websites)
+      if (site.children.includes(child))
+        entries.push({
+          id: "website:" + site.id,
+          title: site.title,
+          mark: "↗",
+          url: site.url,
+        });
+    const rank = (id) => {
+      const i = profile.homeOrder.indexOf(id);
+      return i < 0 ? Infinity : i;
+    };
+    return entries.sort((a, b) => rank(a.id) - rank(b.id));
   }
   const taskTerm = (task) =>
     task.app === "study" ? (task.unit >= 15 ? "g4-s1" : "g3-s2") : null;
@@ -151,7 +344,7 @@
   }
   function taskLabel(task) {
     if (task.app === "study")
-      return `第 ${task.unit >= 15 ? task.unit - 14 : task.unit} 單元 · ${task.quantity} 題`;
+      return `第 ${task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
     if (task.app === "spelling")
       return `第 ${task.batch + 1} 組 · ${task.quantity} 個字`;
     if (task.app === "zhuyin")
@@ -330,6 +523,10 @@
     defaults,
     validateTask,
     validateSettings,
+    preserveHomeFields,
+    homeEntries,
+    taskEntryId,
+    SUBJECTS,
     taskTerm,
     availableTask,
     todayTasks,

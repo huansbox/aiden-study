@@ -25,13 +25,15 @@ export async function familyRoute(request, env, url, cors) {
     const current = await read(env.KV, key, { rev: 0, data: core.defaults() });
     if (!Number.isInteger(current.rev) || current.rev < 0)
       throw Error("invalid stored settings revision");
-    core.validateSettings(current.data);
+    current.data = core.validateSettings(current.data);
     if (request.method === "GET") return reply(200, current, cors);
     if (request.method !== "PUT") return reply(405, { error: "method" }, cors);
     let body, data;
     try {
       body = await bodyOf(request);
-      data = core.validateSettings(body.data);
+      data = core.validateSettings(
+        core.preserveHomeFields(body.data, current.data),
+      );
       if (
         !Number.isInteger(body.rev) ||
         body.rev < 0 ||

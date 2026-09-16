@@ -165,3 +165,144 @@ test("累積超過一頁的練習仍能完整讀取，單次最多 200 串流", 
     205,
   );
 });
+
+const registry = {
+  apps: C.APPS.map((id) => ({ id, status: "active", path: id + "/" })),
+};
+test("首頁依學期拆科、每科一張；網站對象與排序、心智圖隱藏", () => {
+  const settings = C.defaults(),
+    p = settings.children.aiden;
+  assert.deepEqual(
+    C.homeEntries(settings, "aiden", registry).map((e) => e.id),
+    [
+      "study:math",
+      "spelling",
+      "math",
+      "nonogram",
+      "mind-map",
+      "website:stroke",
+    ],
+  );
+  p.terms = ["g3-s2", "g4-s1"];
+  p.homeOrder = ["website:stroke", "study:social"];
+  const entries = C.homeEntries(settings, "aiden", registry);
+  assert.deepEqual(
+    entries.slice(0, 2).map((e) => e.id),
+    ["website:stroke", "study:social"],
+  );
+  assert.equal(entries.filter((e) => e.id === "study:math").length, 1);
+  assert.equal(entries.find((e) => e.id === "study:math").term, "g4-s1");
+  assert.equal(
+    C.taskLabel({ app: "study", unit: 10, quantity: 5 }),
+    "第 4 單元 · 5 題",
+  );
+  for (const [unit, subject] of [
+    [1, "science"],
+    [4, "science"],
+    [5, "math"],
+    [9, "math"],
+    [10, "social"],
+    [12, "social"],
+    [13, "chinese"],
+    [14, "chinese"],
+    [15, "math"],
+    [19, "math"],
+  ])
+    assert.equal(C.taskEntryId({ app: "study", unit }), "study:" + subject);
+  settings.websites[0].children = ["bingpu"];
+  p.mindMap.enabled = false;
+  assert.ok(
+    !C.homeEntries(settings, "aiden", registry).some(
+      (e) => e.id === "website:stroke" || e.id === "mind-map",
+    ),
+  );
+  assert.ok(
+    C.homeEntries(settings, "bingpu", registry).some(
+      (e) => e.id === "website:stroke",
+    ),
+  );
+});
+test("網站網址驗證與名稱保存；空清單不回填預設", () => {
+  for (const url of [
+    "javascript:alert(1)",
+    "data:text/html,hi",
+    "http://example.com/",
+    "https://u:p@example.com/",
+    "//example.com/",
+    "https://example.com/?k=secret",
+    "https://example.com/ a",
+  ]) {
+    const settings = C.defaults();
+    settings.websites[0].url = url;
+    assert.throws(() => C.validateSettings(settings), url);
+  }
+  const settings = C.defaults();
+  settings.websites[0].title = "<img src=x onerror=alert(1)>";
+  assert.equal(
+    C.validateSettings(settings).websites[0].title,
+    settings.websites[0].title,
+  );
+  settings.websites = [];
+  settings.children.aiden.homeOrder = [];
+  settings.children.aiden.mindMap.enabled = false;
+  assert.deepEqual(C.validateSettings(settings), settings);
+});
+test("舊客戶端改設定保留新欄位；新客戶端可真正移除網站與停用心智圖", async () => {
+  const e = env(),
+    settings = C.defaults();
+  settings.websites = [
+    {
+      id: "reading",
+      title: "閱讀",
+      url: "https://example.com/",
+      children: ["aiden"],
+    },
+  ];
+  settings.children.aiden.mindMap.title = "下週文章";
+  settings.children.aiden.homeOrder = ["website:reading", "study:math"];
+  await req(e, "settings", "PUT", {
+    data: settings,
+    rev: 0,
+    writeId: "new-client",
+  });
+  const old = structuredClone(settings);
+  delete old.websites;
+  for (const p of Object.values(old.children)) {
+    delete p.mindMap;
+    delete p.homeOrder;
+  }
+  old.children.aiden.avatar = "flat";
+  const saved = await (
+    await req(e, "settings", "PUT", {
+      data: old,
+      rev: 1,
+      writeId: "old-client",
+    })
+  ).json();
+  assert.deepEqual(saved.data.websites, settings.websites);
+  assert.deepEqual(
+    saved.data.children.aiden.mindMap,
+    settings.children.aiden.mindMap,
+  );
+  assert.deepEqual(
+    saved.data.children.aiden.homeOrder,
+    settings.children.aiden.homeOrder,
+  );
+  assert.equal(saved.data.children.aiden.avatar, "flat");
+  saved.data.websites = [];
+  saved.data.children.aiden.mindMap.enabled = false;
+  const removed = await (
+    await req(e, "settings", "PUT", {
+      data: saved.data,
+      rev: 2,
+      writeId: "remove",
+    })
+  ).json();
+  assert.deepEqual(removed.data.websites, []);
+  assert.equal(removed.data.children.aiden.mindMap.enabled, false);
+  // 舊雲端資料第一次 GET 也補齊設定，不必另寫一次遷移。
+  await e.KV.put("c:family:settings", JSON.stringify({ rev: 4, data: old }));
+  const upgraded = await (await req(e, "settings")).json();
+  assert.equal(upgraded.rev, 4);
+  assert.equal(upgraded.data.websites[0].id, "stroke");
+});
