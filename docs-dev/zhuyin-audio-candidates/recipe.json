@@ -1,0 +1,35 @@
+{
+  "status": "candidate-unreviewed",
+  "voice": "Meijia",
+  "locale": "zh_TW",
+  "rate": 150,
+  "sources": {
+    "a": "啊",
+    "ba1": "八",
+    "ba2": "拔",
+    "ba3": "把",
+    "ba4": "爸",
+    "ma1": "媽",
+    "ma2": "麻",
+    "ma3": "馬",
+    "ma4": "罵",
+    "baba": "爸爸",
+    "mama": "媽媽"
+  },
+  "items": [
+    { "key": "sym-b", "target": "ㄅ", "kind": "symbol", "source": "ba1", "start": 0, "end": 0.028, "review": "最高優先：只取「八」開頭 28 ms 的爆破片段；可能太短而難辨，不能當作已合格本音。確認沒有 ㄚ／ㄛ 尾音、沒有過度送氣；不清楚就親錄替換。" },
+    { "key": "sym-m", "target": "ㄇ", "kind": "symbol", "source": "ma1", "start": 0.005, "end": 0.060, "review": "最高優先：只取「媽」開頭鼻音 55 ms；確認是閉唇 /m/、無 ㄚ／ㄛ 尾音，而且長度足以辨認；不清楚就親錄替換。" },
+    { "key": "sym-a", "target": "ㄚ", "kind": "symbol", "source": "a", "review": "確認單獨 ㄚ 為平穩一聲，沒有語助詞的升降語氣。" },
+    { "key": "syl-ba1", "target": "ㄅㄚ", "kind": "syllable", "source": "ba1", "review": "確認一聲平穩，ㄅ 不過度送氣；不要把載體「八」當成教材文字。" },
+    { "key": "syl-ba2", "target": "ㄅㄚˊ", "kind": "syllable", "source": "ba2", "review": "與 ㄅㄚˇ 對照：二聲應清楚上升。" },
+    { "key": "syl-ba3", "target": "ㄅㄚˇ", "kind": "syllable", "source": "ba3", "review": "重點確認：三聲的低降／回升是否清楚，是否短到容易誤聽成二聲；必要時親錄完整教學三聲。" },
+    { "key": "syl-ba4", "target": "ㄅㄚˋ", "kind": "syllable", "source": "ba4", "review": "確認四聲明確下降。" },
+    { "key": "word-baba", "target": "爸爸", "kind": "word", "source": "baba", "review": "最高優先：先前家長已否決 TTS 爸爸。確認這次是否仍不自然、第二字是否符合家庭平常語氣；尚未推翻既有決策。" },
+    { "key": "syl-ma1", "target": "ㄇㄚ", "kind": "syllable", "source": "ma1", "review": "確認一聲平穩，鼻音起頭清楚。" },
+    { "key": "word-mama", "target": "媽媽", "kind": "word", "source": "mama", "review": "最高優先：先前家長已否決 TTS 媽媽。確認這次是否仍不自然、第二字是否符合家庭平常語氣；尚未推翻既有決策。" },
+    { "key": "syl-ma2", "target": "ㄇㄚˊ", "kind": "syllable", "source": "ma2", "review": "與 ㄇㄚˇ 對照：二聲應清楚上升。" },
+    { "key": "syl-ma3", "target": "ㄇㄚˇ", "kind": "syllable", "source": "ma3", "review": "重點確認：三聲是否有足夠長度呈現低降／回升，與二聲能否分辨。" },
+    { "key": "word-ma", "target": "馬", "kind": "word", "source": "ma3", "review": "與 syl-ma3 共用原始「馬」；確認孤立詞語氣自然。" },
+    { "key": "syl-ma4", "target": "ㄇㄚˋ", "kind": "syllable", "source": "ma4", "review": "確認四聲明確下降；載體「罵」只用於取得讀音，不是教學詞卡。" }
+  ]
+}

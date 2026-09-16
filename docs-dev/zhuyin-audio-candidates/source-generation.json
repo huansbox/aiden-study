@@ -1,0 +1,55 @@
+{
+  "macOS": "26.6.2",
+  "macOSBuild": "25G83",
+  "engine": "/usr/bin/say",
+  "voice": "Meijia",
+  "locale": "zh_TW",
+  "rate": 150,
+  "note": "機器合成，非家長錄音。單字實測 -r 110 與 150 長度相同；沒有額外伸縮或改調。",
+  "sources": {
+    "a": {
+      "text": "啊",
+      "sha256": "1fb819be51040e8ca55087b5813d2c0bcc11b96d06e4898d961959feb383c0d8"
+    },
+    "ba1": {
+      "text": "八",
+      "sha256": "0aba18e4223f8a8d70c89a0e26da6feed495265471838dac48d8082028e005a0"
+    },
+    "ba2": {
+      "text": "拔",
+      "sha256": "eaab597fc9b182c1dc72baf48b3f0f09be1e977291852ad762ef71178776eb67"
+    },
+    "ba3": {
+      "text": "把",
+      "sha256": "6274c88164033b21b0eade2066b94fe4e9e553f663d17667bda052a77c1a004c"
+    },
+    "ba4": {
+      "text": "爸",
+      "sha256": "8a8e7195c186ae81c8a28e627906c33a543841c3b2b32808436a405665f27777"
+    },
+    "ma1": {
+      "text": "媽",
+      "sha256": "cafdcfd1591c3e7052e6fca4a37321f51a916e4910d98d31f8d3ead05a8003c1"
+    },
+    "ma2": {
+      "text": "麻",
+      "sha256": "a5d4b3b4c4c361664755c7a0eb08198232823ba870dd9ad5268ba88d8b736889"
+    },
+    "ma3": {
+      "text": "馬",
+      "sha256": "6110e4f3f39b8797ca72efc61934b0b285f654875e2fc9b439960a248048f5ed"
+    },
+    "ma4": {
+      "text": "罵",
+      "sha256": "771c97ac1a18decde221b6797fb93133f8eef9a79d81a1d28853e4bc43fbb6a3"
+    },
+    "baba": {
+      "text": "爸爸",
+      "sha256": "76d22d975bd8cf8263a598b335acd7c784895baf2a1a71b35d7507686aa501ac"
+    },
+    "mama": {
+      "text": "媽媽",
+      "sha256": "1204b2cd64a0393d1e32aa02d4f63bd81bafe994180731d512e6c11d87ed2af5"
+    }
+  }
+}

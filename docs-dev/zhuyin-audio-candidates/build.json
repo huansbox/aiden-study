@@ -1,0 +1,161 @@
+{
+  "status": "candidate-unreviewed",
+  "contentSha256": "adfe4b904ecd346e04b53a6450486ab398cdbd1ef3da1990e733b21ad8848cdf",
+  "recipeSha256": "805c0426bf285225d41c4c76eaf04b7bd0419d69e3b5db57aaee694187738e9c",
+  "scriptSha256": "e88d0e9075dac02a652479edab757d3300024c2818820d8389ccaacc6a22d455",
+  "ffmpeg": "ffmpeg version 8.1.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "encoding": {
+    "codec": "AAC-LC",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "processing": {
+    "targetPeakDbfs": -6,
+    "leadingPadSeconds": 0.08,
+    "trailingPadSeconds": 0.15,
+    "note": "保留原音高與時長；符號裁切末端淡出 2 ms，其餘 6 ms；不消除聲母、不產生假音。"
+  },
+  "items": [
+    {
+      "key": "sym-b",
+      "source": "source/ba1.wav",
+      "sourceSha256": "0aba18e4223f8a8d70c89a0e26da6feed495265471838dac48d8082028e005a0",
+      "startSeconds": 0,
+      "endSeconds": 0.028,
+      "gainDb": -0.77,
+      "file": "audio/sym-b.m4a",
+      "sha256": "76085a836cd567d73f6ee24dbe2f5b4398e4f29d763e12cf9dc256e099072e87"
+    },
+    {
+      "key": "sym-m",
+      "source": "source/ma1.wav",
+      "sourceSha256": "cafdcfd1591c3e7052e6fca4a37321f51a916e4910d98d31f8d3ead05a8003c1",
+      "startSeconds": 0.005,
+      "endSeconds": 0.06,
+      "gainDb": -2.41,
+      "file": "audio/sym-m.m4a",
+      "sha256": "0206dc1956007073439edbbe515a9a464a5cd6c828600dd9168ab5b3eb285412"
+    },
+    {
+      "key": "sym-a",
+      "source": "source/a.wav",
+      "sourceSha256": "1fb819be51040e8ca55087b5813d2c0bcc11b96d06e4898d961959feb383c0d8",
+      "startSeconds": 0,
+      "endSeconds": 0.320408,
+      "gainDb": -4.46,
+      "file": "audio/sym-a.m4a",
+      "sha256": "8a218e6139dc6e2c24f118a46f3f0d38bad6b1ec5fd62990479b85ca5a3dda9f"
+    },
+    {
+      "key": "syl-ba1",
+      "source": "source/ba1.wav",
+      "sourceSha256": "0aba18e4223f8a8d70c89a0e26da6feed495265471838dac48d8082028e005a0",
+      "startSeconds": 0,
+      "endSeconds": 0.268209,
+      "gainDb": -3.86,
+      "file": "audio/syl-ba1.m4a",
+      "sha256": "a3f4f441fc3d8917d478a84f042287cc528e58e0f758b7e579ddc651c0233640"
+    },
+    {
+      "key": "syl-ba2",
+      "source": "source/ba2.wav",
+      "sourceSha256": "eaab597fc9b182c1dc72baf48b3f0f09be1e977291852ad762ef71178776eb67",
+      "startSeconds": 0,
+      "endSeconds": 0.314649,
+      "gainDb": -4.23,
+      "file": "audio/syl-ba2.m4a",
+      "sha256": "7a74aa4a138f3e6770e57764f1fc72584f79e9792997fd7e840711d478cdd6a9"
+    },
+    {
+      "key": "syl-ba3",
+      "source": "source/ba3.wav",
+      "sourceSha256": "6274c88164033b21b0eade2066b94fe4e9e553f663d17667bda052a77c1a004c",
+      "startSeconds": 0,
+      "endSeconds": 0.268209,
+      "gainDb": -4.27,
+      "file": "audio/syl-ba3.m4a",
+      "sha256": "65be5467f9945ba0102eaf97f03923449e8dce3abd32db7fa0c2861f21234966"
+    },
+    {
+      "key": "syl-ba4",
+      "source": "source/ba4.wav",
+      "sourceSha256": "8a8e7195c186ae81c8a28e627906c33a543841c3b2b32808436a405665f27777",
+      "startSeconds": 0,
+      "endSeconds": 0.268209,
+      "gainDb": -4.54,
+      "file": "audio/syl-ba4.m4a",
+      "sha256": "02a38a66e7fcc5056cdfa68a0af06f3d1526cbc8111508aecaf343b278ba9ef1"
+    },
+    {
+      "key": "word-baba",
+      "source": "source/baba.wav",
+      "sourceSha256": "76d22d975bd8cf8263a598b335acd7c784895baf2a1a71b35d7507686aa501ac",
+      "startSeconds": 0,
+      "endSeconds": 0.442358,
+      "gainDb": -3.2,
+      "file": "audio/word-baba.m4a",
+      "sha256": "142d78bca16e9af053bd78a30185ff29e562b570e8c930fc1f9ba65d25b84211"
+    },
+    {
+      "key": "syl-ma1",
+      "source": "source/ma1.wav",
+      "sourceSha256": "cafdcfd1591c3e7052e6fca4a37321f51a916e4910d98d31f8d3ead05a8003c1",
+      "startSeconds": 0,
+      "endSeconds": 0.297506,
+      "gainDb": -2.41,
+      "file": "audio/syl-ma1.m4a",
+      "sha256": "ab6fe76d0366dc96945757805c9ab2fc407722d35a4ca7ec29e1bd4104b6952c"
+    },
+    {
+      "key": "word-mama",
+      "source": "source/mama.wav",
+      "sourceSha256": "1204b2cd64a0393d1e32aa02d4f63bd81bafe994180731d512e6c11d87ed2af5",
+      "startSeconds": 0,
+      "endSeconds": 0.529705,
+      "gainDb": -3.14,
+      "file": "audio/word-mama.m4a",
+      "sha256": "971f61c93abe7ebf87e8d3238de37609f0dcdd89ac332ee087a3a7dc0e17f5ae"
+    },
+    {
+      "key": "syl-ma2",
+      "source": "source/ma2.wav",
+      "sourceSha256": "a5d4b3b4c4c361664755c7a0eb08198232823ba870dd9ad5268ba88d8b736889",
+      "startSeconds": 0,
+      "endSeconds": 0.343175,
+      "gainDb": -4.17,
+      "file": "audio/syl-ma2.m4a",
+      "sha256": "39ec6e39e9b580297a5fa7ee6c626a02787e45001e4c08f4dbdaf6d83ef39a8f"
+    },
+    {
+      "key": "syl-ma3",
+      "source": "source/ma3.wav",
+      "sourceSha256": "6110e4f3f39b8797ca72efc61934b0b285f654875e2fc9b439960a248048f5ed",
+      "startSeconds": 0,
+      "endSeconds": 0.285034,
+      "gainDb": -3.55,
+      "file": "audio/syl-ma3.m4a",
+      "sha256": "f63d1fb01a8283a79eb14a54a3c57a4cc86ae612f99aa297942b80f10a2c9904"
+    },
+    {
+      "key": "word-ma",
+      "source": "source/ma3.wav",
+      "sourceSha256": "6110e4f3f39b8797ca72efc61934b0b285f654875e2fc9b439960a248048f5ed",
+      "startSeconds": 0,
+      "endSeconds": 0.285034,
+      "gainDb": -3.55,
+      "file": "audio/word-ma.m4a",
+      "sha256": "f63d1fb01a8283a79eb14a54a3c57a4cc86ae612f99aa297942b80f10a2c9904"
+    },
+    {
+      "key": "syl-ma4",
+      "source": "source/ma4.wav",
+      "sourceSha256": "771c97ac1a18decde221b6797fb93133f8eef9a79d81a1d28853e4bc43fbb6a3",
+      "startSeconds": 0,
+      "endSeconds": 0.285896,
+      "gainDb": -2.27,
+      "file": "audio/syl-ma4.m4a",
+      "sha256": "b3196db7e980a940593152f254b5b2d39ebdb44aeadcf70ce20f6ed40769deda"
+    }
+  ]
+}

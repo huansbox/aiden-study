@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>注音音檔候選試聽</title>
+<style>
+  body { max-width: 860px; margin: 32px auto; padding: 0 20px 40px; font-family: -apple-system, "PingFang TC", sans-serif; color: #203238; background: #f5f7f7; line-height: 1.7; }
+  h1 { font-size: 1.7rem; margin-bottom: 8px; }
+  h2 { font-size: 1.2rem; }
+  .notice { padding: 16px 20px; border-left: 5px solid #a75d18; background: #fff1d9; }
+  .toolbar { position: sticky; top: 0; background: #f5f7f7; padding: 12px 0; z-index: 1; border-bottom: 1px solid #ccd6d8; }
+  button { font: inherit; padding: 10px 16px; margin: 4px; cursor: pointer; border: 1px solid #8aabad; border-radius: 8px; background: white; color: #16494a; min-height: 44px; }
+  button:first-child { background: #16494a; color: white; }
+  button:disabled { opacity: .5; cursor: default; }
+  .card { padding: 16px 20px; margin: 12px 0; background: white; border: 1px solid #dce3e4; border-radius: 12px; }
+  .card.playing { border: 2px solid #1b7371; }
+  .target { font-size: 1.8rem; margin-right: 16px; }
+  code, small { color: #536770; overflow-wrap: anywhere; }
+  audio { width: min(100%, 360px); display: block; margin: 8px 0; }
+  summary { cursor: pointer; }
+  #status { min-height: 28px; font-weight: 600; }
+  a { color: #145f62; }
+</style>
+<h1>注音音檔候選試聽</h1>
+<p class="notice"><strong>14 段機器候選，全部尚未人工驗音。</strong><br>
+既有決策仍是全親錄；本頁不接入孩子的正式練習。技術檢查通過不代表發音合格，也不代表 iPad 真機通過。</p>
+<p>先按「全部試聽」集中聽一輪。優先聽 ㄅ／ㄇ 是否清楚且沒有多出的韻母，再比較二、三聲，最後確認爸爸／媽媽的自然語氣。</p>
+<div class="toolbar">
+  <div id="actions">
+    <button id="all" disabled>全部試聽（14 段）</button>
+    <button id="tones" disabled>比較四聲</button>
+    <button id="blend" disabled>聽分段示範</button>
+    <button id="stop" disabled>停止</button>
+  </div>
+  <div id="status" role="status" aria-live="polite">載入清單中…</div>
+  <audio id="sequence" controls preload="none" aria-label="連播播放器"></audio>
+</div>
+<div id="list"></div>
+<h2>一次補齊親錄的最短步驟</h2>
+<p>使用 iPhone／iPad／Mac 的 Safari 開啟 <a href="../../docs/zhuyin/recorder.html">現有錄音工具</a>，依序錄完 14 段，每段試聽後下載，將 14 個原檔一起交回。檔名已自動命名，不用改名。ㄅ 只發短促開頭、ㄇ 閉唇哼一下，兩者都不加 ㄛ。</p>
+<p>如果決定採用任何機器候選，請一次回覆可接受的檔名；其餘維持親錄。此頁不儲存勾選、不改學習進度。<a href="README.md">來源、再製與限制</a></p>
+<script>
+(async () => {
+  const player = document.querySelector('#sequence');
+  const status = document.querySelector('#status');
+  const cards = new Map();
+  let queue = [], timer = null, sequenceActive = false;
+  function stop() {
+    clearTimeout(timer); timer = null; queue = []; sequenceActive = false;
+    document.querySelectorAll('audio').forEach(a => a.pause());
+    cards.forEach(card => card.classList.remove('playing'));
+  }
+  function showError() {
+    stop();
+    status.textContent = '播放失敗。請點播放器重試；仍無聲時檢查音量與音檔網址。';
+  }
+  async function next() {
+    if (!sequenceActive) return;
+    cards.forEach(card => card.classList.remove('playing'));
+    const key = queue.shift();
+    if (!key) { sequenceActive = false; status.textContent = '試聽結束；所有發音仍待人工確認。'; return; }
+    const card = cards.get(key);
+    card.classList.add('playing');
+    status.textContent = `正在播放：${card.dataset.target}（${key}）`;
+    player.src = `audio/${key}.m4a`;
+    try { await player.play(); } catch { showError(); }
+  }
+  function play(keys) { stop(); queue = [...keys]; sequenceActive = true; next(); }
+  player.addEventListener('ended', () => { if (sequenceActive) timer = setTimeout(next, 650); });
+  player.addEventListener('error', showError);
+  document.querySelector('#stop').onclick = () => { stop(); status.textContent = '已停止。'; };
+  try {
+    const response = await fetch('recipe.json');
+    if (!response.ok) throw new Error(response.status);
+    const recipe = await response.json();
+    for (const item of recipe.items) {
+      const card = document.createElement('section');
+      card.className = 'card'; card.dataset.key = item.key; card.dataset.target = item.target;
+      const title = document.createElement('strong'); title.className = 'target'; title.textContent = item.target;
+      const name = document.createElement('code'); name.textContent = item.key + '.m4a';
+      const note = document.createElement('p'); note.textContent = item.review;
+      const clip = document.createElement('audio'); clip.controls = true; clip.preload = 'none';
+      clip.src = `audio/${item.key}.m4a`; clip.setAttribute('aria-label', `${item.target}候選`);
+      clip.addEventListener('play', () => {
+        clearTimeout(timer); queue = []; sequenceActive = false;
+        document.querySelectorAll('audio').forEach(a => { if (a !== clip) a.pause(); });
+        cards.forEach(c => c.classList.remove('playing')); card.classList.add('playing');
+        status.textContent = `單段試聽：${item.target}（${item.key}）`;
+      });
+      clip.addEventListener('error', showError);
+      const detail = document.createElement('details');
+      const summary = document.createElement('summary'); summary.textContent = '查看原始合成音';
+      const source = document.createElement('audio'); source.controls = true; source.preload = 'none';
+      source.src = `source/${item.source}.wav`; source.setAttribute('aria-label', `${item.key}來源`);
+      source.addEventListener('play', () => {
+        clearTimeout(timer); queue = []; sequenceActive = false;
+        document.querySelectorAll('audio').forEach(a => { if (a !== source) a.pause(); });
+        status.textContent = `原始載體：${recipe.sources[item.source]}，不是符號候選成品。`;
+      });
+      const description = document.createElement('small');
+      description.textContent = `Meijia zh_TW，輸入「${recipe.sources[item.source]}」` +
+        (item.end ? `；成品只取 ${item.start}–${item.end} 秒。` : '；保留完整讀音。');
+      detail.append(summary, description, source); card.append(title, name, note, clip, detail);
+      cards.set(item.key, card); document.querySelector('#list').append(card);
+    }
+    document.querySelector('#all').onclick = () => play(recipe.items.map(i => i.key));
+    document.querySelector('#tones').onclick = () => play(['syl-ba1','syl-ba2','syl-ba3','syl-ba4','syl-ma1','syl-ma2','syl-ma3','syl-ma4']);
+    document.querySelector('#blend').onclick = () => play(['sym-b','sym-a','syl-ba4','word-baba','sym-m','sym-a','syl-ma1','word-mama']);
+    document.querySelectorAll('#actions button').forEach(b => b.disabled = false);
+    status.textContent = `已載入 ${recipe.items.length} 段；按播放開始試聽。`;
+  } catch {
+    status.textContent = '讀不到候選清單。請依 README 使用 localhost 網址開啟，不要直接雙擊本機檔案。';
+  }
+})();
+</script>
+</html>
