@@ -2,15 +2,15 @@
 
 這裡有對應 `docs/zhuyin/content.json` 的 **14 段可重建機器候選**，供家長集中試聽。**不是親錄成品，不代表發音正確，也不代表 #20 完成。** 正式 `docs/zhuyin/assets/audio/` 仍缺 14/14，這批檔案不會由 app 載入。
 
-基準：`origin/master` 的 `a0f81e8`；製作日期 2026-09-16。依 [#15 拍板紀錄](https://github.com/huansbox/aiden-study/issues/15#issuecomment-4937229445) 的既定方向維持全親錄；TTS 單獨符號與爸爸／媽媽先前已被否決。此次候選只完成最新授權的試聽交付，沒有推翻原決策。[#20](https://github.com/huansbox/aiden-study/issues/20) 仍需親錄入庫與 iPad 驗收。
+基準：`origin/master` 的 `a0f81e8`；製作日期 2026-09-16。依 [#15 拍板紀錄](https://github.com/huansbox/aiden-study/issues/15#issuecomment-4937229445) 的既定方向維持全親錄；TTS 單獨符號與爸爸／媽媽先前已被否決。此次候選只完成最新授權的試聽交付，沒有推翻原決策。[#20](https://github.com/huansbox/aiden-study/issues/20) 的正式待辦是依全親錄取得可採用音檔、入庫並確認實際發聲。使用者已免除逐項 iPad checklist，不將它列為完成關卡。
 
 ## 家長只需集中處理一次
 
 1. 開啟本目錄的 [試聽頁](index.html)，按「全部試聽」；也可按「比較四聲」「聽分段示範」。全部連播約 17 秒，每段都有待確認重點與原始音供對照。
-2. **沿用全親錄即可**：用 Safari 開啟 [既有 recorder](../../docs/zhuyin/recorder.html)，依序錄 14 段，每段試聽後下載，14 個原檔一起交回，不必改名。ㄅ 是短促開頭；ㄇ 是閉唇鼻音；都不加 ㄛ。這是完成既有決策的最短路徑。
-3. 若家長明確決定採用部分機器候選，一次提供可接受的檔名，其餘親錄替換。接受候選只代表該發音獲確認，iPad checklist 仍要另外完成。
+2. **沿用全親錄即可**：用 Safari 開啟 [既有 recorder](https://kids.linshuhuan.com/zhuyin/recorder.html)，依序錄 14 段，每段試聽後下載，14 個原檔一起交回，不必改名。ㄅ 是短促開頭；ㄇ 是閉唇鼻音；都不加 ㄛ。這是完成既有決策的最短路徑。
+3. 若家長明確決定採用部分機器候選，一次提供可接受的檔名，其餘親錄替換。採用的音檔入庫後，確認實際發聲即可，不要求逐項 iPad checklist。
 
-本頁不收集錄音、不儲存審核結果、不讀寫學習進度或家庭金鑰。正式站的 [錄音工具](https://huansbox.github.io/aiden-study/zhuyin/recorder.html) 也可直接使用；候選試聽頁尚未部署。
+本頁不收集錄音、不儲存審核結果、不讀寫學習進度或家庭金鑰。正式站的 [錄音工具](https://kids.linshuhuan.com/zhuyin/recorder.html) 可直接使用；候選試聽頁尚未部署。
 
 ## 最需要確認的發音
 
@@ -69,6 +69,6 @@ uv run python scripts/zhuyin_audio.py audit --audio-dir docs/zhuyin/assets/audio
 - Node 全量 **324 passed**；Python **183 passed、1 skipped**。候選新增 2 項測試驗來源／產物／審計一致與真實 content 的題池、四聲、分段、詞卡音檔映射。
 - 桌面 Chromium：試聽頁 14 段都收到真實 `ended`、停止能取消連播、390 px 寬無水平溢出、無 JavaScript 錯誤。
 - 本機注音 app：以 `?child=bingpu&parent=1` 維護入口，在**全新拋棄式 browser context** 中把音檔請求導向候選，外部網路全部阻擋。14 段音效自檢實播結束；聽音辨認答錯→答對；組字聲符→韻符→四聲、答錯→答對、爸爸詞卡聲音可播。測試進度只存在該臨時 context，結束即丟棄。
-- **未完成**：家長發音認可、親錄 14 段入庫、正式站 live 驗收、iPad 真機 checklist。既有正式檔案、同步設定與家庭進度都未修改。
+- **正式待辦**：依全親錄取得可採用的 14 段音檔、入庫並確認實際發聲。本次未做正式站 live 或 iPad 真機驗證，不能聲稱通過；逐項 iPad checklist 已由使用者免除。既有正式檔案、同步設定與家庭進度都未修改。
 
-整合時可先合併這個隔離候選包，但不要直接複製 `audio/` 到正式目錄，不要勾掉 #20 或 iPad 驗收項目。正式採用須有家長親錄或明確接受候選的決定。
+候選保持獨立，不直接複製 `audio/` 到正式目錄，也不以候選交付宣告 #20 完成。正式採用須有家長親錄或明確接受候選的決定，入庫後確認實際發聲。
