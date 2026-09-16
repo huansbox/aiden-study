@@ -1,6 +1,6 @@
 # 家長首次連接與記住入口
 
-2026-09-16 實作於 `codex/device-session`，正式站尚未切換。
+2026-09-16 已合併至 `master` 並正式發布。
 
 ## 家庭操作
 
@@ -28,8 +28,8 @@ Safari 與主畫面 Web Clip 各自儲存資料；新入口若沒有登入 Cooki
 此次需要正式部署 Worker、Pages，以及將既有 `kids.linshuhuan.com` CNAME 啟用 Cloudflare proxy，才能把 `/api/*` 分流到 Worker。不搬動 GitHub Pages 內容、不改 child 網址或家庭金鑰。
 
 1. 確認 `kids` CNAME 仍指向 `huansbox.github.io`，TLS 必須端到端 HTTPS；不為本功能降低 SSL 模式。
-2. 啟用該 CNAME 的 proxy。套用 `worker/wrangler.jsonc` 的精確 route `kids.linshuhuan.com/api/*`，`workers_dev: true` 保留舊入口。
-3. 先部署 Worker，確認正式 `/api/v1/session` 無 Cookie 回 401、錯誤 Origin 的 POST 回 403，且不被 Pages HTML／redirect 取代。
+2. 先部署 Worker，套用 `worker/wrangler.jsonc` 的精確 route `kids.linshuhuan.com/api/*`，`workers_dev: true` 保留舊入口。
+3. 啟用該 CNAME 的 proxy，確認正式 `/api/v1/session` 無 Cookie 回 401、錯誤 Origin 的 POST 回 403，且不被 Pages HTML／redirect 取代。
 4. 再發布前端；以測試資料完成 Cookie 登入、重開與正常資料請求，正式家庭金鑰由家長在圖示內輸入，不寫入測試記錄。
 5. 若新登入服務出問題，保留 Cookie 與 `s:` 資料以便修復；不要直接回退不認 Cookie 的前端，因已轉移入口的舊 localStorage 金鑰已清除。若必須完整回退，舊帶金鑰圖示仍可啟動，乾淨網址的入口需要重新輸入家庭金鑰。
 
@@ -43,8 +43,19 @@ Safari 與主畫面 Web Clip 各自儲存資料；新入口若沒有登入 Cooki
 
 `node tests/helpers/serve-family.mjs 8790` 提供隔離瀏覽器驗證，只用 `test-token`、記憶體 KV 與 synthetic 題包。這不等於 iPad 真機驗收或正式環境登入驗收。
 
-已在瀏覽器完成：舊本機金鑰自動轉移、登出後出現首次連接畫面、錯誤金鑰提示、正確連接後進首頁、重開仍保持登入、另一端修改活動後前景首頁自動只顯示題庫、Cookie 取得家庭題包、服務暫停時保留已取得的活動、恢復後重新連線，以及家長調整中登入失效、重新連接後保留原本修改並成功儲存。新前端尚未接到正式服務，不使用或記錄真實家庭金鑰。
+本機已在瀏覽器完成：舊本機金鑰自動轉移、登出後出現首次連接畫面、錯誤金鑰提示、正確連接後進首頁、重開仍保持登入、另一端修改活動後前景首頁自動只顯示題庫、Cookie 取得家庭題包、服務暫停時保留已取得的活動、恢復後重新連線，以及家長調整中登入失效、重新連接後保留原本修改並成功儲存。測試資料與正式家庭資料隔離，不記錄真實家庭金鑰。
 
-本地測試：Node 315 項通過、pytest 184 項通過；Worker dry-run 打包成功，`git diff --check` 通過。DNS 唯讀查詢確認 `kids` 仍為指向 GitHub Pages 的 CNAME；目前 CLI OAuth 無法讀取 zone 設定（403），正式部署前需在 Cloudflare 確認 proxy／TLS。
+本地測試：Node 315 項通過、pytest 184 項通過；Worker dry-run 打包成功，`git diff --check` 通過。
+
+## 正式發布紀錄
+
+- 實作 commit：`ebff26e`；資源版本修正：`8f7559e`。七個入口的本次異動 JS／CSS 帶 `v=20260916-session`，避免新 HTML 混用瀏覽器快取中的舊金鑰流程。
+- Worker version：`bae214db-4ed3-4ca3-9237-617d7ed9081b`。家庭 TOKEN、KV 與既有資料保持原值。
+- 透過已登入的 Cloudflare 管理頁確認並啟用 `kids` CNAME 的 proxy，目標仍是 `huansbox.github.io`；沿用原本 SSL/TLS「完整」模式。先前 CLI 讀 zone 的 403 未阻擋本次 Wrangler 發布與管理頁設定。
+- 正式 API 未登入 GET 回 401、缺少 Origin 的 POST 回 403、同源錯誤金鑰回 401 且不發 Cookie；回應為 JSON 與 `Cache-Control: no-store`。根首頁 HTTPS 200；舊 Worker API 仍要求既有金鑰。
+- GitHub Actions：實作版 [test](https://github.com/huansbox/aiden-study/actions/runs/35057559379) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/35057558897) 成功；資源版本修正版 [test](https://github.com/huansbox/aiden-study/actions/runs/35057628989) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/35057628586) 也成功。
+- 正式站 7 個入口 HTML 與 9 個相關 JS／CSS 全部 HTTPS 200，內容與 `8f7559e` Git blob 相符。
+- Chrome 沿用原本已保存的家庭金鑰自動連接，未手動重新輸入；乾淨 child 網址重開後仍可用。家長後台顯示「此入口已記住家庭連線」與「已讀取雲端設定」。煦誠首頁顯示題庫／長除法／數織，符合當時雲端 rev 5；正式檢查未修改安排或作答。
+- iPad 真機重新加入乾淨網址由家長接續操作；本次桌面驗證不宣稱已完成 iPad Cookie 保存驗收。Safari 若提示首次連接，先連接再加入主畫面；從新圖示開啟若再次提示，就在該入口再連接一次。
 
 參考：[WebKit 的安裝與儲存隔離](https://webkit.org/blog/14787/webkit-features-in-safari-17-2/)、[OWASP session guidance](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)、[Cloudflare Routes](https://developers.cloudflare.com/workers/configuration/routing/routes/)。
