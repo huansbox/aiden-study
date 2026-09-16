@@ -197,6 +197,7 @@ test("科目入口帶正確範圍，內部心智圖保留孩子，外站不帶�
   assert.equal(cached.offline, true);
   assert.equal(cached.data.children.aiden.homeOrder[0], "website:stroke");
   const registry = {
+    mindMaps: [{ id: "latest", title: "悠閒午後", date: "2026-09-15", path: "leisure-mind-map/" }],
     apps: [{ id: "study", status: "active", path: "study/" }],
   };
   const entries = C.homeEntries(cached.data, "aiden", registry);

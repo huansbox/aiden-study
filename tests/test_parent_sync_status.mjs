@@ -153,6 +153,18 @@ const progress = (child, app, date = "2026-09-15T18:05:06.000Z") => ({
 });
 const record = (child, app, date) => ({ child, app, rev: 3, lastWrite: date });
 
+test("家長心智圖顯示最新索引文章，僅控制顯示、不再編輯舊篇名網址", async () => {
+  const registry = JSON.parse(source("registry.json"));
+  registry.mindMaps.unshift({ id: "older", title: "較舊文章", date: "2026-08-01", path: "old/" });
+  registry.mindMaps.push({ id: "newer", title: "本週新文章", date: "2026-09-22", path: "new/" });
+  const h = await page({ registry });
+  await h.ready();
+  assert.match(h.root.innerHTML, /最新文章：本週新文章/);
+  assert.equal(h.root.querySelector("#map-title"), null);
+  assert.equal(h.root.querySelector("#map-url"), null);
+  assert.equal(h.root.querySelector("#map-enabled").checked, true);
+});
+
 test("真實頁面透過 Cookie 查詢 Worker metadata，依孩子與已開放 App 顯示臺灣時間及本機限制", async () => {
   const h = await page({ initial: {
     ...progress("aiden", "study"),
@@ -181,9 +193,9 @@ test("真實頁面透過 Cookie 查詢 Worker metadata，依孩子與已開放 A
 test("查詢中與失敗保留舊資料並明示過期，401 可在區塊內重新連接且不弄丟未存輸入", async () => {
   const h = await page({ initial: progress("aiden", "study") });
   await h.ready();
-  const title = h.root.querySelector("#map-title");
+  const title = h.root.querySelector('[data-site="stroke"][data-field="title"]');
   const quantity = h.root.querySelector("#task-quantity");
-  title.value = "尚未儲存的文章";
+  title.value = "尚未儲存的網站";
   title.fire("input");
   quantity.value = "17";
   let release;
@@ -208,9 +220,9 @@ test("查詢中與失敗保留舊資料並明示過期，401 可在區塊內重�
   key.value = "test-token";
   h.root.querySelector("#connect-family").fire("submit");
   await until(() => h.status() === "查詢完成。");
-  assert.equal(h.root.querySelector("#map-title"), title);
+  assert.equal(h.root.querySelector('[data-site="stroke"][data-field="title"]'), title);
   assert.equal(h.root.querySelector("#task-quantity"), quantity);
-  assert.equal(title.value, "尚未儲存的文章");
+  assert.equal(title.value, "尚未儲存的網站");
   assert.equal(quantity.value, "17");
   assert.equal(h.root.querySelector("#save-status").textContent, "尚未儲存");
 });
@@ -231,9 +243,9 @@ test("首次查詢失敗不冒充空紀錄，合法空結果與缺少時間的�
 test("401 的區塊登入表單不攔住切孩子；重新登入後表單與寫入歸屬一致", async () => {
   const h = await page();
   await h.ready();
-  const aidenTitle = h.root.querySelector("#map-title");
-  aidenTitle.value = "哥哥尚未儲存的文章";
-  aidenTitle.fire("input");
+  const aidenMap = h.root.querySelector("#map-enabled");
+  aidenMap.checked = false;
+  aidenMap.fire("change");
   h.jar.cookie = "";
   await h.refresh();
   h.root.querySelector("#sync-reconnect").fire("click");
@@ -241,7 +253,7 @@ test("401 的區塊登入表單不攔住切孩子；重新登入後表單與寫�
   h.root.querySelector('[data-child="bingpu"]').fire("click");
   const connection = h.root.querySelector("#parent-connection");
   assert.ok(connection, "切孩子後應進入全頁登入，不可留下另一個孩子的表單");
-  assert.equal(h.root.querySelector("#map-title"), null);
+  assert.equal(h.root.querySelector("#map-enabled"), null);
   assert.equal(h.panel(), null);
   connection.querySelector("[name=key]").value = "test-token";
   connection.querySelector("#connect-family").fire("submit");
@@ -249,15 +261,15 @@ test("401 的區塊登入表單不攔住切孩子；重新登入後表單與寫�
   assert.match(h.panel().innerHTML, /秉樸的進度同步/);
   assert.equal(h.root.querySelector('[data-app="zhuyin"]').checked, true);
   assert.equal(h.root.querySelector('[data-app="study"]').checked, false);
-  const bingpuTitle = h.root.querySelector("#map-title");
-  assert.notEqual(bingpuTitle, aidenTitle);
-  bingpuTitle.value = "弟弟的文章";
-  bingpuTitle.fire("input");
+  const bingpuMap = h.root.querySelector("#map-enabled");
+  assert.notEqual(bingpuMap, aidenMap);
+  bingpuMap.checked = true;
+  bingpuMap.fire("change");
   await h.root.querySelector("#save").fire("click");
   await h.ready();
   const saved = JSON.parse(await h.env.KV.get("c:family:settings")).data;
-  assert.equal(saved.children.bingpu.mindMap.title, "弟弟的文章");
-  assert.equal(saved.children.aiden.mindMap.title, "哥哥尚未儲存的文章");
+  assert.equal(saved.children.bingpu.mindMap.enabled, true);
+  assert.equal(saved.children.aiden.mindMap.enabled, false);
 });
 
 test("較晚回來的舊查詢不覆蓋新孩子的結果；重新讀取與儲存設定後範圍相符", async () => {

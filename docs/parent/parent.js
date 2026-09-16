@@ -268,12 +268,12 @@
   }
   function homeSettings() {
     const entries = C.homeEntries(config, child, reg),
-      map = p().mindMap;
-    return `<section class="family-panel family-stack"><h2>目前心智圖</h2>
+      map = p().mindMap,
+      latest = C.mindMapArticles(reg)[0];
+    return `<section class="family-panel family-stack"><h2>心智圖</h2>
       <label><input id="map-enabled" type="checkbox" ${map.enabled ? "checked" : ""}> 顯示在 ${esc(reg.children.find((c) => c.id === child).name)} 首頁</label>
-      <label class="family-field">文章名稱<input id="map-title" maxlength="60" value="${esc(map.title)}"></label>
-      <label class="family-field">文章網址<input id="map-url" value="${esc(map.url)}" placeholder="/leisure-mind-map/"></label>
-      <p class="muted">每週替換這兩欄即可；孩子只看到目前文章。新文章內容仍需先製作。</p>
+      <p>${latest ? `最新文章：${esc(latest.title)}` : "尚無文章"}</p>
+      <p class="muted">新文章上線後自動更新。孩子可從「過去文章」選舊篇，不會改變首頁預設。新文章內容仍需先製作。</p>
     </section><section class="family-panel family-stack"><h2>常用網站</h2><p class="muted">兩個孩子共用這份清單，可分別勾選顯示對象。外站另開視窗，使用時間與作答不納入累計。</p>
       ${config.websites
         .map(
@@ -347,11 +347,6 @@
       change();
       render();
     };
-    for (const field of ["title", "url"])
-      document.getElementById("map-" + field).oninput = (e) => {
-        p().mindMap[field] = e.target.value;
-        change();
-      };
     root.querySelectorAll("[data-site]").forEach((input) => {
       input.oninput = () => {
         config.websites.find((s) => s.id === input.dataset.site)[
@@ -548,7 +543,7 @@
       e.returnValue = "";
     }
   });
-  fetch("../registry.json")
+  fetch("../registry.json", { cache: "no-store" })
     .then((r) => {
       if (!r.ok) throw Error();
       return r.json();

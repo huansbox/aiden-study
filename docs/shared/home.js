@@ -74,7 +74,8 @@
           ? ' target="_blank" rel="noopener noreferrer"'
           : "";
         return `<article class="family-activity" data-entry="${esc(entry.id)}">
-        <a class="activity-heading" href="${esc(href)}"${target}><div><h2>${esc(entry.title)}</h2>${entry.subtitle ? `<p>${esc(entry.subtitle)}</p>` : ""}</div><span class="symbol" aria-hidden="true">${esc(entry.mark)}</span></a>
+        <a class="activity-heading" href="${esc(href)}"${target}><h2>${esc(entry.title)}</h2>${entry.mark ? `<span class="symbol" aria-hidden="true">${esc(entry.mark)}</span>` : ""}</a>
+        ${entry.id === "mind-map" ? '<button class="activity-history" data-view="mind-maps">過去文章</button>' : ""}
         ${
           assigned.length
             ? `<div class="activity-tasks">${assigned
@@ -97,6 +98,12 @@
       header() +
       `<div class="family-grid activity-grid">${cards}</div>${!entries.length ? '<p class="family-panel">今天先休息。</p>' : ""}<footer class="family-footer"><span>累計 ${s.total.answered} 題</span><button data-view="stats">積木收藏 →</button></footer>`
     );
+  }
+  function mindMapHistory() {
+    const articles = C.mindMapArticles(reg).slice(1);
+    return `<div class="family-row"><button data-view="home">← 首頁</button><h1>過去文章</h1></div><div class="family-articles">${
+      articles.map((article) => `<a class="family-article" href="${esc(F.entryHref(article, child.id))}"><strong>${esc(article.title)}</strong><time datetime="${esc(article.date)}">${esc(article.date.replaceAll("-", "/"))}</time></a>`).join("") || '<p class="family-panel">還沒有過去文章。</p>'
+    }</div>`;
   }
   function render() {
     if (
@@ -134,7 +141,8 @@
       document.head.appendChild(icon);
     }
     icon.href = F.avatar(child.id, profile().avatar);
-    root.innerHTML = view === "stats" ? stats() : home();
+    if (view === "mind-maps" && !profile().mindMap.enabled) view = "home";
+    root.innerHTML = view === "stats" ? stats() : view === "mind-maps" ? mindMapHistory() : home();
     if (settingsState.offline) {
       const notice = document.createElement("p");
       notice.className = "family-connection-notice";

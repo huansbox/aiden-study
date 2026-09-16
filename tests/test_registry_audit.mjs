@@ -21,6 +21,22 @@ const { STATUS_ORDER: STATUS } = new Function(hubBlk[1] + "\nreturn { STATUS_ORD
 const CATEGORY = ["學科", "興趣"];
 const childIds = (reg.children || []).map((c) => c.id);
 
+test("閱讀文章索引：名稱、日期、識別唯一，站內成品與回孩子首頁腳本存在", () => {
+  assert.ok(Array.isArray(reg.mindMaps) && reg.mindMaps.length > 0);
+  assert.equal(new Set(reg.mindMaps.map((a) => a.id)).size, reg.mindMaps.length);
+  assert.equal(new Set(reg.mindMaps.map((a) => a.path)).size, reg.mindMaps.length);
+  for (const article of reg.mindMaps) {
+    assert.match(article.id, /^[a-z0-9-]+$/);
+    assert.ok(typeof article.title === "string" && article.title.trim());
+    assert.match(article.date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(new Date(article.date).toISOString().slice(0, 10), article.date);
+    assert.match(article.path, /^[a-z0-9-]+(?:\/[a-z0-9-]+)*(?:\/|\.html)$/);
+    const file = new URL("../docs/" + article.path + (article.path.endsWith("/") ? "index.html" : ""), import.meta.url);
+    assert.ok(existsSync(file), article.path);
+    assert.match(readFileSync(file, "utf8"), /shared\/task-home\.js/);
+  }
+});
+
 test("children：非空、id 唯一且合 key 格式、name/emoji 齊全", () => {
   const errs = [];
   if (!Array.isArray(reg.children) || reg.children.length === 0) errs.push("children 為空");

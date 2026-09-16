@@ -1,8 +1,12 @@
 {
-  "_comment": "registry＝驅動 hub 的 app 目錄（票 #31；欄位語意見 CONTEXT.md）。app 增減、上下架改這份資料；孩子實際可見內容與排序由家長後台家庭設定決定。owner＝該 app 舊存檔／預設進度歸屬的 child；audience＝首頁顯示對象（可複選；空陣列＝僅家長目錄）；order＝每 child 首頁排序（數字小在前）。不變量由 tests/test_registry_audit.mjs 釘住。",
+  "_comment": "registry＝驅動 hub 的 app 目錄（票 #31；欄位語意見 CONTEXT.md）。app 增減、上下架改這份資料；mindMaps 為獨立的已發布文章索引，依 date 選最新篇，不算 app；孩子實際可見內容與排序由家長後台家庭設定決定。owner＝該 app 舊存檔／預設進度歸屬的 child；audience＝首頁顯示對象（可複選；空陣列＝僅家長目錄）；order＝每 child 首頁排序（數字小在前）。不變量由 tests/test_registry_audit.mjs 釘住。",
   "children": [
     { "id": "aiden", "name": "煦誠", "emoji": "👦" },
     { "id": "bingpu", "name": "秉樸", "emoji": "🧒" }
+  ],
+  "mindMaps": [
+    { "id": "leisure-afternoon", "title": "悠閒午後", "date": "2026-09-15", "path": "leisure-mind-map/" },
+    { "id": "early-summer", "title": "初夏雜記", "date": "2026-09-08", "path": "mind-map.html" }
   ],
   "apps": [
     {

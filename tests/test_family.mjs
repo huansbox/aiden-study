@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import "../docs/shared/family-core.js";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
@@ -167,8 +168,33 @@ test("累積超過一頁的練習仍能完整讀取，單次最多 200 串流", 
 });
 
 const registry = {
+  mindMaps: JSON.parse(readFileSync(new URL("../docs/registry.json", import.meta.url), "utf8")).mindMaps,
   apps: C.APPS.map((id) => ({ id, status: "active", path: id + "/" })),
 };
+test("心智圖依日期開最新文章；不受舊設定或目錄順序影響，且不改寫來源與設定", () => {
+  const settings = C.defaults();
+  settings.children.aiden.mindMap = { enabled: true, title: "舊文章", url: "/mind-map.html" };
+  const catalog = { ...registry, mindMaps: [
+    { id: "old", title: "舊篇", date: "2026-09-08", path: "old/" },
+    { id: "new", title: "新篇", date: "2026-09-22", path: "new/" },
+    { id: "last-week", title: "上週", date: "2026-09-15", path: "last-week/" },
+  ] };
+  const before = structuredClone({ settings, catalog });
+  const entry = C.homeEntries(settings, "aiden", catalog).find((e) => e.id === "mind-map");
+  assert.equal(entry.path, "new/");
+  assert.equal(entry.title, "心智圖");
+  assert.equal(entry.subtitle, undefined);
+  assert.equal(entry.mark, undefined);
+  assert.deepEqual(C.mindMapArticles(catalog).slice(1).map((a) => a.id), ["last-week", "old"]);
+  assert.deepEqual({ settings, catalog }, before);
+  settings.children.aiden.mindMap.enabled = false;
+  assert.ok(!C.homeEntries(settings, "aiden", catalog).some((e) => e.id === "mind-map"));
+});
+test("只有一篇或沒有文章時，過去文章清單為空", () => {
+  assert.deepEqual(C.mindMapArticles({ mindMaps: registry.mindMaps.slice(0, 1) }).slice(1), []);
+  assert.deepEqual(C.mindMapArticles({}), []);
+  assert.ok(!C.homeEntries(C.defaults(), "aiden", { ...registry, mindMaps: [] }).some((e) => e.id === "mind-map"));
+});
 test("首頁依學期拆科、每科一張；網站對象與排序、心智圖隱藏", () => {
   const settings = C.defaults(),
     p = settings.children.aiden;

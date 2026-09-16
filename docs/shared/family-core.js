@@ -23,6 +23,7 @@
     zhuyin: ["注音", "ㄅㄆ"],
     "animal-fight": ["動物守護者", "足"],
   };
+  // title/url 保留與既有 Worker 相容；新版入口由文章索引決定。
   const defaultMindMap = (child) => ({
     enabled: child === "aiden",
     title: "悠閒午後",
@@ -305,14 +306,12 @@
           url: app.url,
         });
     }
-    if (profile.mindMap.enabled)
+    const latest = mindMapArticles(registry)[0];
+    if (profile.mindMap.enabled && latest)
       entries.push({
         id: "mind-map",
         title: "心智圖",
-        subtitle: profile.mindMap.title,
-        mark: "枝",
-        url: profile.mindMap.url,
-        internal: true,
+        path: latest.path,
       });
     for (const site of settings.websites)
       if (site.children.includes(child))
@@ -327,6 +326,11 @@
       return i < 0 ? Infinity : i;
     };
     return entries.sort((a, b) => rank(a.id) - rank(b.id));
+  }
+  function mindMapArticles(registry) {
+    return [...(registry.mindMaps || [])].sort((a, b) =>
+      b.date.localeCompare(a.date),
+    );
   }
   const taskTerm = (task) =>
     task.app === "study" ? (task.unit >= 15 ? "g4-s1" : "g3-s2") : null;
@@ -525,6 +529,7 @@
     validateSettings,
     preserveHomeFields,
     homeEntries,
+    mindMapArticles,
     taskEntryId,
     SUBJECTS,
     taskTerm,
