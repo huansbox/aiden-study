@@ -1,6 +1,6 @@
 # Native Camp Review
 
-追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)。工作分支：`codex/nativecamp-audio-review`。
+追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)、[口說句型提示 #72](https://github.com/huansbox/aiden-study/issues/72)。工作分支：`codex/nativecamp-audio-review`。
 
 ## 使用方式與範圍
 
@@ -9,6 +9,8 @@
 首堂 `2026-09-15` 題組含 is/are、odd/even、too many 三個概念，各有三題 Try it 及三題 Say it，共 18 個原創變體。它們是可用題目，不是要求一次全部完成的份量。Try it 依表現約6–9題；Say it 每回一概念，通常2–3題，完成後自行決定是否繼續。
 
 先獨立回答，再核對答案。內容提示標為 With help；重聽問題不算提示。Say it 的 Got it／With help／Not yet 評的是揭曉前表現。提示與揭曉狀態持久保存，重新整理不會把受助回答變成獨立成功。自主答對不能抵掉口說。
+
+Say it 的預設作答要求以醒目句型呈現：is/are 用 `There …`，odd/even 用 `___ is ___.`，too many 用 `… too many …`；孩子端與家長預覽都放在題目下方，採相同字級及深色。這些是題目原本要求的視覺引導，不是輸入欄位。提問語音仍保留 Start with There／Say the number, too 等原句。Try it 練選詞判斷，Say it 練完整句子；家長額外給答案字詞仍記 With help。
 
 ## 跨次複習與結果
 
@@ -91,3 +93,10 @@ node tests/helpers/serve-family.mjs 8789
 - 預覽操作前後，家長摘要的首次作答、口說評級與活動累計一致。原有兩模式 Done 及隔日複習狀態保留，未清除紀錄或重啟8791服務。
 - 獨立唯讀 review 完成，沒有未解決 finding；額外重現延遲 unlock 失敗不會中斷新播放。整合時補上背景慢速 boot 的播放門檻及回歸測試。
 - 本輪未修改 Python、題庫或既有音檔；iPad 真機、人工音質驗收與正式部署維持未完成界線。
+
+## 2026-09-17 口說句型提示驗收（#72）
+
+- 全套 Node 測試398項通過，獨立唯讀 code review 無未解決 finding。沿用既有呈現測試，不為純字級變更新增單元測試。
+- 與修改前版本比對，題包只有九題 Say it 的 instruction 改變；Try it、答案、可接受答案與其餘欄位相同。透過 uv 檢查 Python 的 build_lesson 輸出與題包一致，35份語音工作文字及35個既有 MP3 逐項相同，未重新產生音檔。
+- 家長預覽實際切換三種句型提示。桌面題目與提示皆33.6px，390px窄版皆27.2px，均為深色 #223b37；窄版無水平溢出，提示為靜態文字。孩子端與預覽共用同一組樣式，瀏覽器未記錄 console error／warning。
+- 驗收只操作不計分預覽，未清除學習紀錄或重啟8791；音訊、進度及複習流程均未修改。窄版為桌面瀏覽器尺寸模擬，尚未做 iPad 真機驗收或正式部署。

@@ -109,7 +109,7 @@
         {
           "id": "is-are-say-1",
           "prompt": "What can you see?",
-          "instruction": "Start with There.",
+          "instruction": "There …",
           "scene": {
             "kind": "dogs",
             "count": 1
@@ -126,7 +126,7 @@
         {
           "id": "is-are-say-2",
           "prompt": "How many trees can you see?",
-          "instruction": "Start with There.",
+          "instruction": "There …",
           "scene": {
             "kind": "trees",
             "count": 4
@@ -143,7 +143,7 @@
         {
           "id": "is-are-say-3",
           "prompt": "What can you see?",
-          "instruction": "Start with There.",
+          "instruction": "There …",
           "scene": {
             "kind": "cats",
             "count": 2
@@ -249,7 +249,7 @@
         {
           "id": "odd-even-say-1",
           "prompt": "Is the number of dogs odd or even?",
-          "instruction": "Say the number, too.",
+          "instruction": "___ is ___.",
           "scene": {
             "kind": "dogs",
             "count": 4
@@ -267,7 +267,7 @@
         {
           "id": "odd-even-say-2",
           "prompt": "Is 7 odd or even?",
-          "instruction": "Say the number, too.",
+          "instruction": "___ is ___.",
           "scene": {
             "kind": "numbers",
             "number": 7
@@ -284,7 +284,7 @@
         {
           "id": "odd-even-say-3",
           "prompt": "Is the number of books odd or even?",
-          "instruction": "Say the number, too.",
+          "instruction": "___ is ___.",
           "scene": {
             "kind": "books",
             "count": 6
@@ -414,7 +414,7 @@
         {
           "id": "too-many-say-1",
           "prompt": "Tell me about your toys.",
-          "instruction": "Use too many in a sentence.",
+          "instruction": "… too many …",
           "scene": {
             "kind": "toys",
             "count": 7,
@@ -433,7 +433,7 @@
         {
           "id": "too-many-say-2",
           "prompt": "What is the problem with the books?",
-          "instruction": "Use too many in a sentence.",
+          "instruction": "… too many …",
           "scene": {
             "kind": "books",
             "count": 8,
@@ -452,7 +452,7 @@
         {
           "id": "too-many-say-3",
           "prompt": "Do you think that Tanya has too many hats?",
-          "instruction": "Use a full sentence about the hats.",
+          "instruction": "… too many …",
           "scene": {
             "kind": "hats",
             "count": 8,
