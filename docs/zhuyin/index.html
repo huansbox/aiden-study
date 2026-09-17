@@ -81,10 +81,10 @@
   }
   .slot.filled { border-style: solid; border-color: #43a047; background: #e9f8ec; }
   .slot-tone {
-    width: min(8vw, 48px); height: min(8vw, 48px);
+    width: min(12vw, 68px); height: min(12vw, 68px);
     display: flex; align-items: center; justify-content: center;
     border: 3px dashed #d8c9ae; border-radius: 50%;
-    font-size: min(8vw, 44px); font-weight: 700; color: #334; background: #fffdf8;
+    font-size: min(15vw, 84px); line-height: 1; font-weight: 800; color: #334; background: #fffdf8;
   }
   .slot-tone.filled { border-style: solid; border-color: #43a047; background: #e9f8ec; }
   .tones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -110,10 +110,16 @@
   }
   .intro-card.multi { font-size: min(19vw, 100px); }
   /* 聲符在上、韻符在下；二三四聲置右側，一聲留白。 */
-  .zy-syllable { display: inline-grid; grid-template-columns: 1em .5em; align-items: center; vertical-align: middle; line-height: 1; }
+  .zy-syllable { display: inline-grid; grid-template-columns: 1em .8em; align-items: center; column-gap: .08em; vertical-align: middle; line-height: 1; }
   .zy-symbols { display: flex; flex-direction: column; }
   .zy-symbols > span { display: block; height: 1em; }
-  .zy-tone { font-size: .65em; }
+  .zy-tone { font-size: 1.3em; display: flex; align-items: center; justify-content: center; height: .75em; }
+  .tone-mark { display: inline-block; transform: translateY(.22em); }
+  .voice-playing [data-voice-part] { opacity: .38; }
+  .voice-playing [data-voice-part].voice-focus, .voice-focus {
+    opacity: 1; color: #813900; background: #ffe099;
+    border-radius: 10px; box-shadow: 0 0 0 4px #f0b429;
+  }
   .btn-next {
     font-size: 2.2rem; color: #fff; background: #43a047; border: none; border-radius: 50px;
     padding: 16px 56px; cursor: pointer; box-shadow: 0 5px 0 #2e7031;
@@ -499,39 +505,73 @@ function unlockAudio() {
   } catch (e) { /* 解鎖失敗照常進流程，首播仍在手勢鏈內 */ }
   getAudioContext();
 }
-// 連播鏈：一段 ended → 間隔 350ms → 播下一段（示範卡「ㄇ⋯ㄚ⋯ㄇㄚ」、慢慢聽、聲調對比用）。
-// 新的 playChain/playVoice 會取消未播完的鏈；缺檔段先過濾（story 27 靜默降級）。
-let chainKeys = [];
-let chainTimer = null;
-voice.addEventListener("ended", () => {
-  // 過期 ended 防護：舊段自然播完的 ended 可能已排入事件佇列、新播放才啟動——
-  // 派發時若元素已換 src 開新播放（voice.ended 為 false），不得推進新鏈。
-  if (!voice.ended || !chainKeys.length) return;
-  chainTimer = setTimeout(() => {
-    chainTimer = null;
-    const k = chainKeys.shift();
-    if (k) playNow(k);
-  }, 350);
+// <zhuyin-voice-player>
+// 以真正的 playing/ended 帶視覺提示；350ms 只用於片段間停頓，不猜發音時間。
+function createZhuyinVoicePlayer(audio, { urlFor, hasAudio, delay = setTimeout, cancelDelay = clearTimeout }) {
+  let queue = [], cue = () => {}, done = null, finish = null;
+  let serial = 0, gap = null, watchdog = null, key = null;
+  function stop() {
+    serial++;
+    cancelDelay(gap); cancelDelay(watchdog);
+    gap = watchdog = null;
+    queue = []; key = null; finish = done = null;
+    audio.pause();
+    cue(null); cue = () => {};
+  }
+  function next() {
+    if (!queue.length) {
+      const callback = done;
+      done = null;
+      cue(null); cue = () => {};
+      callback?.();
+      return;
+    }
+    key = queue.shift();
+    const ticket = ++serial;
+    let finished = false;
+    finish = () => {
+      if (ticket !== serial || finished) return;
+      finished = true;
+      cancelDelay(watchdog); watchdog = null;
+      key = null;
+      audio.pause();
+      cue(null);
+      if (queue.length) gap = delay(() => { gap = null; next(); }, 350);
+      else next();
+    };
+    const complete = finish;
+    // 網路卡住或播放被拒絕仍能繼續作答，不會困在等待語音的步驟。
+    watchdog = delay(complete, 8000);
+    try {
+      audio.src = urlFor(key);
+      audio.play()?.catch(complete);
+    } catch { complete(); }
+  }
+  audio.addEventListener("playing", () => {
+    if (key && !audio.paused && !audio.ended && audio.currentSrc === audio.src) cue(key);
+  });
+  audio.addEventListener("ended", () => { if (audio.ended) finish?.(); });
+  audio.addEventListener("error", () => { if (audio.error) finish?.(); });
+  audio.addEventListener("pause", () => { if (audio.paused) cue(null); });
+  audio.addEventListener("waiting", () => { if (audio.readyState < 3) cue(null); });
+  return {
+    stop,
+    play(keys, { onCue = () => {}, onDone = null } = {}) {
+      stop();
+      queue = (keys || []).filter((k) => k && hasAudio(k));
+      cue = onCue; done = onDone;
+      next();
+    },
+  };
+}
+// </zhuyin-voice-player>
+const voicePlayer = createZhuyinVoicePlayer(voice, {
+  urlFor: (key) => app.audioDir + key + app.audioExt,
+  hasAudio: (key) => app.hasAudio.has(key),
 });
-function playNow(key) {
-  try {
-    voice.src = app.audioDir + key + app.audioExt;
-    const p = voice.play();
-    if (p && typeof p.catch === "function") p.catch(() => {});
-  } catch (e) { /* 播不出來不擋作答 */ }
-}
-function stopChain() {
-  chainKeys = [];
-  if (chainTimer) { clearTimeout(chainTimer); chainTimer = null; }
-}
-function playChain(keys) {
-  stopChain();
-  const usable = (keys || []).filter((k) => k && app.hasAudio.has(k));
-  if (!usable.length) return; // 全缺檔靜默略過（story 27）
-  chainKeys = usable.slice(1);
-  playNow(usable[0]);
-}
-function playVoice(key) { playChain([key]); }
+function stopChain() { voicePlayer.stop(); }
+function playChain(keys, options) { voicePlayer.play(keys, options); }
+function playVoice(key, options) { playChain([key], options); }
 
 // ════════════════════════════════════════════════════
 // 批末獎勵：MVP 借用哥哥版 __generic__ 通用池（../shared/rewards.json＋../shared/rewards/）。
@@ -696,7 +736,26 @@ function tapGuarded() { return performance.now() - app.shownAt < TAP_GUARD_MS; }
 // 介紹卡（符號首次）／示範卡（音節首次）共用骨架：不判分，大字卡＋播音；點卡重聽、按 ➜ 進下一題
 function syllableHtml(y, tone = y.tone) {
   const mark = TONE_MARK[tone] || "";
-  return `<span class="zy-syllable" aria-label="${y.onset}${y.rime}${mark}"><span class="zy-symbols" aria-hidden="true"><span>${y.onset}</span><span>${y.rime}</span></span><span class="zy-tone" aria-hidden="true">${mark}</span></span>`;
+  return `<span class="zy-syllable" aria-label="${y.onset}${y.rime}${mark}"><span class="zy-symbols" aria-hidden="true"><span data-voice-part="onset">${y.onset}</span><span data-voice-part="rime">${y.rime}</span></span><span class="zy-tone" data-voice-part="tone" aria-hidden="true"><span class="tone-mark">${mark}</span></span></span>`;
+}
+
+function setVoiceFocus(root, elements = []) {
+  document.querySelectorAll(".voice-playing, .voice-focus").forEach((el) => el.classList.remove("voice-playing", "voice-focus"));
+  if (!root?.isConnected || !elements.length) return;
+  root.classList.add("voice-playing");
+  elements.forEach((el) => el.classList.add("voice-focus"));
+}
+function syllableCue(root, y) {
+  return (key) => {
+    if (!key) { setVoiceFocus(null); return; }
+    const part = (name) => root?.querySelector(`[data-voice-part="${name}"]`);
+    let names = [];
+    if (key === app.symbolAudio[y.onset]) names = ["onset"];
+    else if (key === app.symbolAudio[y.rime]) names = ["rime"];
+    else if (key === y.audio) names = part("tone")?.textContent.trim() ? ["tone"] : ["onset", "rime"];
+    // 組字格只強調已填入的符號，重播題目不會提前揭露答案。
+    setVoiceFocus(root, names.map(part).filter((el) => el?.textContent.trim()));
+  };
 }
 
 function renderTeaching(card, { label, display, replayKeys }) {
@@ -706,7 +765,9 @@ function renderTeaching(card, { label, display, replayKeys }) {
     <div class="intro-label">${label}</div>
     <div class="intro-card${multi}" id="intro-card">${display}</div>
     <button class="btn-next" id="btn-intro-next">➜</button>`;
-  document.getElementById("intro-card").addEventListener("click", () => playChain(replayKeys));
+  const intro = document.getElementById("intro-card");
+  const onCue = card.kind === "syl" ? syllableCue(intro, card.syl) : (key) => setVoiceFocus(intro, key ? [intro] : []);
+  intro.addEventListener("click", () => playChain(replayKeys, { onCue }));
   document.getElementById("btn-intro-next").addEventListener("click", () => {
     if (tapGuarded()) return;
     app.progress.cards[card.id] = { ...zyCardState(app.progress, card.id), introduced: true };
@@ -714,7 +775,7 @@ function renderTeaching(card, { label, display, replayKeys }) {
     family?.record({mode:card.kind === "sym" ? "listen" : "build",answered:false});
     advanceCard(true); // 教學卡不判分，看完即移出
   });
-  playChain(replayKeys);
+  playChain(replayKeys, { onCue });
 }
 
 function renderIntro(card) {
@@ -800,15 +861,16 @@ function renderBuild(card) {
       <button class="btn-slow" id="btn-slow">🐢 慢慢聽</button>
     </div>
     <div class="build-workspace"><div class="build-slots">
-      <span class="slot" id="slot-onset"></span><span class="slot" id="slot-rime"></span><span class="slot-tone" id="slot-tone"></span>
+      <span class="slot" id="slot-onset" data-voice-part="onset"></span><span class="slot" id="slot-rime" data-voice-part="rime"></span><span class="slot-tone" id="slot-tone" data-voice-part="tone"></span>
     </div>
     <div id="build-area"></div></div>`;
-  document.getElementById("btn-replay").addEventListener("click", () => playVoice(y.audio));
+  const onCue = syllableCue(area.querySelector(".build-slots"), y);
+  document.getElementById("btn-replay").addEventListener("click", () => playVoice(y.audio, { onCue }));
   document.getElementById("btn-slow").addEventListener("click", () =>
-    playChain(zyDemoChain(y, app.symbolAudio, has)));
+    playChain(zyDemoChain(y, app.symbolAudio, has), { onCue }));
   renderBuildStep(card);
   const demo = zyDemoChain(y, app.symbolAudio, has);
-  playChain(demo.length > 1 ? [y.audio, ...demo] : [y.audio]); // 完整音節＋（真有分段素材時）接一次分段慢速
+  playChain(demo.length > 1 ? [y.audio, ...demo] : [y.audio], { onCue }); // 完整音節＋（真有分段素材時）接一次分段慢速
 }
 
 function renderBuildStep(card) {
@@ -859,23 +921,34 @@ function onBuildPick(card, target, el) {
   slot.textContent = g;
   slot.classList.add("filled");
   el.classList.add("right");
-  playVoice(app.symbolAudio[g]);
+  playVoice(app.symbolAudio[g], { onCue: syllableCue(slot.parentElement, y) });
   app.stepLock = true; // 換步空窗不吃點擊（解鎖繫在 stepTimer，clearTimers 會一併重置）
   app.stepTimer = setTimeout(() => { app.stepTimer = null; renderBuildStep(card); }, 800);
 }
 
 function onTonePick(card, el) {
+  clearTimers(); // 新選擇取消上次延遲重播，避免打斷本次語音與播完換題。
   const y = card.syl;
   const tone = Number(el.dataset.tone);
   const toneKey = el.dataset.k || null;
+  const selectedCue = syllableCue(el, { ...y, tone, audio: toneKey });
   if (el.classList.contains("dim")) { // 已淘汰的鈕保留「點聽」：只播該調音、不再判分（票面：每顆恆可點聽）
-    if (toneKey) playVoice(toneKey);
+    if (toneKey) playVoice(toneKey, { onCue: selectedCue });
     return;
   }
   const r = zyBuildStep(app.buildState, tone === y.tone);
   app.buildState = { phase: r.phase, hadWrong: r.hadWrong };
   if (r.effect === "retry") {
-    if (toneKey) { el.classList.add("dim"); playChain([toneKey, y.audio]); } // 聽你點的→聽題目，直接對比
+    if (toneKey) {
+      el.classList.add("dim");
+      playChain([toneKey, y.audio], { onCue: (key) => {
+        if (key === toneKey) selectedCue(key);
+        else {
+          const replay = document.getElementById("btn-replay");
+          setVoiceFocus(replay, key ? [replay] : []);
+        }
+      } }); // 聽你點的→聽題目；第二段只亮重播鈕，不提示哪顆是正解。
+    }
     else retryFeedback(el, y.audio); // 該調缺音檔：與其他答錯路徑一致（中性音效＋延遲重播）
     return;
   }
@@ -888,15 +961,16 @@ function onTonePick(card, el) {
     if (other !== el) other.classList.add("faded");
   }
   const slotTone = document.getElementById("slot-tone");
-  slotTone.textContent = TONE_MARK[y.tone]; // 一聲無記號，與聲調鈕呈現一致（filled 綠底已標示完成）
+  slotTone.innerHTML = `<span class="tone-mark">${TONE_MARK[y.tone]}</span>`; // 一聲留白
   slotTone.classList.add("filled");
-  playVoice(y.audio);
-  app.replayTimer = setTimeout(() => playSound("correct"), 400);
-  // 有詞連結→先跳真實詞卡（北極星時刻）再推進；沒有→一般答對回饋直接推進
-  app.advanceTimer = setTimeout(() => {
-    if (y.word) renderWordCard(card, !r.hadWrong);
-    else completeScored(card, !r.hadWrong);
-  }, 1500);
+  playVoice(y.audio, { onCue: selectedCue, onDone: () => {
+    playSound("correct");
+    // 聽完才換題或進詞卡，慢速網路也不會把聲調音腰斬。
+    app.advanceTimer = setTimeout(() => {
+      if (y.word) renderWordCard(card, !r.hadWrong);
+      else completeScored(card, !r.hadWrong);
+    }, 700);
+  } });
 }
 
 // 真實詞卡：emoji 大圖＋詞語音（「馬！」）；詞語音缺檔只顯圖（story 7、8）
