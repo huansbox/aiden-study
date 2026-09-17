@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import "../docs/nativecamp/core.js";
+import "../docs/nativecamp/question-view.js";
 const C = globalThis.NativeCampCore;
 const day = "2026-09-17", tomorrow = "2026-09-18";
 export function testLesson() {
@@ -9,6 +10,30 @@ export function testLesson() {
     say: [1, 2, 3].map((n) => ({ id: `${id}-say-${n}`, prompt: "What can you see?", instruction: "Start with There.", scene: { kind: "cats", count: n }, answerText: "There is a cat.", accepted: ["There is one cat."], audio: { question: "audio/question.mp3", answer: "audio/answer.mp3" } })) })) };
 }
 const lesson = testLesson();
+test("word and family scenes validate their required short text and render literal text without leaking hidden answers", () => {
+  for (const scene of [
+    { kind: "word-card", text: "I am eight years old.", heading: "Make it short." },
+    { kind: "family-link", relation: "Mum's brother", name: "Tom", pronoun: "He" },
+  ]) {
+    const copy = testLesson(); copy.concepts[0].try[0].scene = scene;
+    assert.equal(C.validateLesson(copy), copy);
+    const html = globalThis.NativeCampQuestionView.sceneHtml(scene);
+    assert.ok(html.includes(scene.kind));
+    assert.doesNotMatch(html, /uncle|I'm|scene-number|scene-grid/);
+  }
+  const escaped = globalThis.NativeCampQuestionView.sceneHtml({ kind: "word-card", text: '<img src=x onerror="bad()">', heading: "<b>Short</b>" });
+  assert.doesNotMatch(escaped, /<img|<b>/);
+  assert.match(escaped, /&lt;img/);
+  for (const scene of [
+    { kind: "word-card", text: "" }, { kind: "word-card", text: "x".repeat(161) },
+    { kind: "family-link", relation: "Mum's brother" },
+    { kind: "family-link", relation: "x".repeat(101), name: "Tom" },
+    { kind: "family-link", relation: "Mum's brother", name: "Tom", pronoun: {} },
+  ]) {
+    const copy = testLesson(); copy.concepts[0].try[0].scene = scene;
+    assert.throws(() => C.validateLesson(copy));
+  }
+});
 function answer(progress, concept = "is-are", correct = true, date = day) {
   const next = C.nextQuestion(progress, lesson, "try", date, concept);
   assert.ok(next, "A question must be ready.");

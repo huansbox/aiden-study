@@ -2,12 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import "../docs/nativecamp/core.js";
+import "../docs/nativecamp/catalog.js";
 import "../docs/nativecamp/question-view.js";
 import "../docs/nativecamp/audio.js";
 import "../docs/nativecamp/app.js";
 const C = globalThis.NativeCampCore, A = globalThis.NativeCampApp;
 const originalLesson = JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/2026-09-15.json", import.meta.url), "utf8"));
 const date = "2026-09-17";
+const catalog = globalThis.NativeCampCatalog.validateCatalog(JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/catalog.json", import.meta.url), "utf8")));
 // Replace only the DOM/media boundary. The real renderer, event controller, lesson,
 // answer checks, schedule, and persisted data are exercised together.
 class Root {
@@ -31,7 +33,7 @@ class Events {
   removeEventListener(name) { this.handlers.delete(name); }
   emit(name) { this.handlers.get(name)?.(); }
 }
-function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
+function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), catalog = [], child = "aiden", failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
   const root = new Root(), activities = [], media = [], plays = [], roundFinishes = [], eventTarget = new Events(), documentTarget = new Events();
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
@@ -42,7 +44,7 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
     async syncNow() { app?.onChange({ type: "status" }); },
     async privateAudio(id, options) { privateRequests++; return loadPrivate ? loadPrivate(id, options) : "blob:teacher-audio-" + privateRequests; },
   };
-  app = A.mount({ root, lesson, bridge, date: () => practiceDate, eventTarget, documentTarget,
+  app = A.mount({ root, lesson, bridge, catalog, child, date: () => practiceDate, eventTarget, documentTarget,
     makeAudioController: (options) => globalThis.NativeCampAudio.create({ ...options, makeContext }), makeAudio: () => {
     const audio = { src: "", paused: true, async play() { plays.push(this.src); if (failAudio) throw Error("Media unavailable"); this.paused = false; }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
@@ -66,6 +68,23 @@ function effectClock() {
   };
   return { notes, makeContext: () => context, finish() { notes.at(-1)?.onended?.(); } };
 }
+test("newest lesson home exposes an older due review and returning from practice keeps the selected lesson", async () => {
+  const concept = originalLesson.concepts[0]; let progress = C.createProgress();
+  for (const q of concept.try.slice(0, 2)) progress = C.submitTry(progress, originalLesson, date, concept.id, q.id, q.answer).progress;
+  const h = harness({ lesson: { ...structuredClone(originalLesson), id: "2026-09-16", date: "2026-09-16" }, catalog, child: "bingpu", progress, practiceDate: "2026-09-18" });
+  const before = structuredClone(h.progress.lessons[originalLesson.id]);
+  assert.match(h.root.innerHTML, /lesson=2026-09-15[^>]*>.*?Silvana.*?Review ready/);
+  assert.match(h.root.innerHTML, /child=bingpu&amp;lesson=2026-09-16" aria-current="page"/);
+  assert.doesNotMatch(h.root.innerHTML, /[\u3400-\u9fff]|\p{Extended_Pictographic}/u);
+  await h.app.handle("start-try");
+  assert.doesNotMatch(h.root.innerHTML, /aria-label="Lessons"/, "Lesson navigation cannot interrupt a question by accident.");
+  await h.app.handle("pick", { choice: "is" }); await h.app.handle("check");
+  await h.app.handle("home");
+  assert.deepEqual(h.progress.lessons[originalLesson.id], before);
+  assert.equal(h.progress.lessons["2026-09-16"].try[concept.id].initial.length, 1);
+  assert.match(h.root.innerHTML, /child=bingpu&amp;lesson=2026-09-16" aria-current="page"/);
+  h.app.destroy();
+});
 test("real lesson opens; Listen and status-only notifications preserve selection and never record an answer", async () => {
   const h = harness();
   assert.equal(h.active, false);

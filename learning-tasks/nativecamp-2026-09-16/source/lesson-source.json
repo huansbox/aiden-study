@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-16",
+  "date": "2026-09-16",
+  "title": "Family and words",
+  "concepts": [
+    {
+      "id": "family-roles",
+      "title": "My family",
+      "try": [
+        {
+          "id": "family-roles-try-1",
+          "prompt": "Tom is my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Mum's brother",
+            "name": "Tom",
+            "pronoun": "He"
+          },
+          "answerText": "Tom is my uncle.",
+          "spokenQuestion": "Tom is my mum's brother. Who is Tom? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "uncle"
+            },
+            {
+              "id": "c1",
+              "text": "cousin"
+            },
+            {
+              "id": "c2",
+              "text": "aunt"
+            }
+          ],
+          "answer": "c0",
+          "explanation": "Your mum's brother is your uncle."
+        },
+        {
+          "id": "family-roles-try-2",
+          "prompt": "Ann is my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Dad's sister",
+            "name": "Ann",
+            "pronoun": "She"
+          },
+          "answerText": "Ann is my aunt.",
+          "spokenQuestion": "Ann is my dad's sister. Who is Ann? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "cousin"
+            },
+            {
+              "id": "c1",
+              "text": "aunt"
+            },
+            {
+              "id": "c2",
+              "text": "uncle"
+            }
+          ],
+          "answer": "c1",
+          "explanation": "Your dad's sister is your aunt."
+        },
+        {
+          "id": "family-roles-try-3",
+          "prompt": "Sam is my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Aunt's son",
+            "name": "Sam",
+            "pronoun": "He"
+          },
+          "answerText": "Sam is my cousin.",
+          "spokenQuestion": "Sam is my aunt's son. Who is Sam? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "brother"
+            },
+            {
+              "id": "c1",
+              "text": "uncle"
+            },
+            {
+              "id": "c2",
+              "text": "cousin"
+            }
+          ],
+          "answer": "c2",
+          "explanation": "Your aunt's son is your cousin."
+        }
+      ],
+      "say": [
+        {
+          "id": "family-roles-say-1",
+          "prompt": "Who is Ben?",
+          "instruction": "He is my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Dad's brother",
+            "name": "Ben",
+            "pronoun": "He"
+          },
+          "answerText": "He is my uncle.",
+          "spokenQuestion": "Ben is my dad's brother. Who is Ben? Say a full sentence.",
+          "accepted": [
+            "He's my uncle.",
+            "Ben is my uncle."
+          ]
+        },
+        {
+          "id": "family-roles-say-2",
+          "prompt": "Who is Sue?",
+          "instruction": "She is my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Mum's sister",
+            "name": "Sue",
+            "pronoun": "She"
+          },
+          "answerText": "She is my aunt.",
+          "spokenQuestion": "Sue is my mum's sister. Who is Sue? Say a full sentence.",
+          "accepted": [
+            "She's my aunt.",
+            "Sue is my aunt."
+          ]
+        },
+        {
+          "id": "family-roles-say-3",
+          "prompt": "Who is Kim?",
+          "instruction": "She is my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Uncle's daughter",
+            "name": "Kim",
+            "pronoun": "She"
+          },
+          "answerText": "She is my cousin.",
+          "spokenQuestion": "Kim is my uncle's daughter. Who is Kim? Say a full sentence.",
+          "accepted": [
+            "She's my cousin.",
+            "Kim is my cousin."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "short-forms",
+      "title": "Make it short",
+      "try": [
+        {
+          "id": "short-forms-try-1",
+          "prompt": "___ eight years old.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I am eight years old.",
+            "heading": "Make it short."
+          },
+          "answerText": "I'm eight years old.",
+          "spokenQuestion": "I am eight years old. Make it short. Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "He's"
+            },
+            {
+              "id": "c1",
+              "text": "I'm"
+            }
+          ],
+          "answer": "c1",
+          "explanation": "I'm means I am."
+        },
+        {
+          "id": "short-forms-try-2",
+          "prompt": "___ my friend.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "He is my friend.",
+            "heading": "Make it short."
+          },
+          "answerText": "He's my friend.",
+          "spokenQuestion": "He is my friend. Make it short. Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "He's"
+            },
+            {
+              "id": "c1",
+              "text": "His"
+            }
+          ],
+          "answer": "c0",
+          "explanation": "He's means he is."
+        },
+        {
+          "id": "short-forms-try-3",
+          "prompt": "Make it short.",
+          "instruction": "Tap the words.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I am nine years old.",
+            "heading": "Long form"
+          },
+          "answerText": "I'm nine years old.",
+          "spokenQuestion": "I am nine years old. Make it short. Tap the words.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w2",
+              "text": "years"
+            },
+            {
+              "id": "w0",
+              "text": "I'm"
+            },
+            {
+              "id": "w3",
+              "text": "old"
+            },
+            {
+              "id": "w1",
+              "text": "nine"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "I'm means I am."
+        }
+      ],
+      "say": [
+        {
+          "id": "short-forms-say-1",
+          "prompt": "Make it short.",
+          "instruction": "___ seven years old.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I am seven years old.",
+            "heading": "Long form"
+          },
+          "answerText": "I'm seven years old.",
+          "spokenQuestion": "I am seven years old. Make it short. Say the whole sentence.",
+          "accepted": [
+            "I'm 7 years old."
+          ]
+        },
+        {
+          "id": "short-forms-say-2",
+          "prompt": "Make it short.",
+          "instruction": "___ my brother.",
+          "scene": {
+            "kind": "word-card",
+            "text": "He is my brother.",
+            "heading": "Long form"
+          },
+          "answerText": "He's my brother.",
+          "spokenQuestion": "He is my brother. Make it short. Say the whole sentence.",
+          "accepted": [
+            "He's my brother"
+          ]
+        },
+        {
+          "id": "short-forms-say-3",
+          "prompt": "Make it short.",
+          "instruction": "___ six years old.",
+          "scene": {
+            "kind": "word-card",
+            "text": "He is six years old.",
+            "heading": "Long form"
+          },
+          "answerText": "He's six years old.",
+          "spokenQuestion": "He is six years old. Make it short. Say the whole sentence.",
+          "accepted": [
+            "He's 6 years old."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opposites",
+      "title": "Opposites",
+      "try": [
+        {
+          "id": "opposites-try-1",
+          "prompt": "Pick the opposite.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "old",
+            "heading": "Opposite"
+          },
+          "answerText": "Young is the opposite of old.",
+          "spokenQuestion": "Old. Pick the opposite.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "cold"
+            },
+            {
+              "id": "c1",
+              "text": "young"
+            },
+            {
+              "id": "c2",
+              "text": "big"
+            }
+          ],
+          "answer": "c1",
+          "explanation": "Old and young are opposites."
+        },
+        {
+          "id": "opposites-try-2",
+          "prompt": "Pick the opposite.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "hot",
+            "heading": "Opposite"
+          },
+          "answerText": "Cold is the opposite of hot.",
+          "spokenQuestion": "Hot. Pick the opposite.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "cold"
+            },
+            {
+              "id": "c1",
+              "text": "small"
+            },
+            {
+              "id": "c2",
+              "text": "old"
+            }
+          ],
+          "answer": "c0",
+          "explanation": "Hot and cold are opposites."
+        },
+        {
+          "id": "opposites-try-3",
+          "prompt": "Pick the opposite.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "small",
+            "heading": "Opposite"
+          },
+          "answerText": "Big is the opposite of small.",
+          "spokenQuestion": "Small. Pick the opposite.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "young"
+            },
+            {
+              "id": "c1",
+              "text": "cold"
+            },
+            {
+              "id": "c2",
+              "text": "big"
+            }
+          ],
+          "answer": "c2",
+          "explanation": "Big and small are opposites."
+        }
+      ],
+      "say": [
+        {
+          "id": "opposites-say-1",
+          "prompt": "What is the opposite?",
+          "instruction": "___ is the opposite.",
+          "scene": {
+            "kind": "word-card",
+            "text": "young",
+            "heading": "Opposite"
+          },
+          "answerText": "Old is the opposite.",
+          "spokenQuestion": "Young. What is the opposite? Say a full sentence.",
+          "accepted": [
+            "Old is the opposite of young.",
+            "The opposite is old."
+          ]
+        },
+        {
+          "id": "opposites-say-2",
+          "prompt": "What is the opposite?",
+          "instruction": "___ is the opposite.",
+          "scene": {
+            "kind": "word-card",
+            "text": "cold",
+            "heading": "Opposite"
+          },
+          "answerText": "Hot is the opposite.",
+          "spokenQuestion": "Cold. What is the opposite? Say a full sentence.",
+          "accepted": [
+            "Hot is the opposite of cold.",
+            "The opposite is hot."
+          ]
+        },
+        {
+          "id": "opposites-say-3",
+          "prompt": "What is the opposite?",
+          "instruction": "___ is the opposite.",
+          "scene": {
+            "kind": "word-card",
+            "text": "big",
+            "heading": "Opposite"
+          },
+          "answerText": "Small is the opposite.",
+          "spokenQuestion": "Big. What is the opposite? Say a full sentence.",
+          "accepted": [
+            "Small is the opposite of big.",
+            "The opposite is small."
+          ]
+        }
+      ]
+    }
+  ]
+}

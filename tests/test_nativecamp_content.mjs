@@ -105,7 +105,9 @@ test('all spoken questions and answers resolve to verified files without cloze o
   }
   assert.equal(privateCount, 1);
   assert.equal(references.size, 35);
-  assert.deepEqual(readdirSync(new URL('audio/', app)).sort(), [...references].map(ref => ref.slice(6)).sort());
+  // New lessons have date-prefixed files; keep the original lesson's 35-file audit.
+  const originalFiles = readdirSync(new URL('audio/', app)).filter(name => !/^\d{4}-\d{2}-\d{2}-/.test(name));
+  assert.deepEqual(originalFiles.sort(), [...references].map(ref => ref.slice(6)).sort());
   const text = JSON.stringify(lesson);
   assert.ok(!/[\u3400-\u9fff]|\p{Extended_Pictographic}/u.test(text));
   assert.ok(!/https?:|signature=|base64|source\/private|\.webm/.test(text));

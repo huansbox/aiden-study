@@ -17,7 +17,9 @@
 
 | 任務 | 狀態 | 日期 | 對象 | 情境與玩法 | 可重用經驗／素材 |
 | --- | --- | --- | --- | --- | --- |
-| [Native Camp 回放複習試作](nativecamp-review-pilot/) | 紙本已完成；互動版已上線，待孩子實測 | 2026-09-16～17 | 兒童英語課程；家長協助 | 紙本口說；另供 app 的自主題、口說與跨日複習 | [分聲道核對與逐字稿誤標](nativecamp-review-pilot/source/evidence-review.md)；[互動版與音訊](../docs-dev/nativecamp-review.md)；[製作SOP／模板](nativecamp-review-pilot/lesson-sop.md)；私人音檔不進 Git |
+| [Native Camp 2026-09-16 Edon](nativecamp-2026-09-16/) | 已完成 | 2026-09-16 | 兒童英語；家長陪同口說 | 來源核對、自主題、口說與跨日複習 | 沿用首堂 SOP，驗證多課接入與較慢語音 |
+| [Native Camp 2026-09-14 Edon](nativecamp-2026-09-14/) | 已完成 | 2026-09-14 | 兒童英語；家長陪同口說 | 來源核對、自主題、口說與跨日複習 | 沿用首堂 SOP，保留各堂來源與進度 |
+| [Native Camp 回放複習試作](nativecamp-review-pilot/) | 已完成；孩子已使用，家長回饋已記錄 | 2026-09-16～17 | 兒童英語課程；家長協助 | 紙本口說；另供 app 的自主題、口說與跨日複習 | [分聲道核對與逐字稿誤標](nativecamp-review-pilot/source/evidence-review.md)；[互動版與音訊](../docs-dev/nativecamp-review.md)；[製作SOP／模板](nativecamp-review-pilot/lesson-sop.md)；私人音檔不進 Git |
 | [悠閒午後閱讀心智圖](leisure-afternoon/) | 已完成（已上線，可直接使用） | 2026-09-15 | 9 歲；成人可陪讀 | 五枝放射圖、各段重點保留、iPad 選詞 | 老師回饋、詩景成組、詩與攝影的關係 |
 | [四上數學第一份短練習](grade4-math-first-practice/) | 已完成（時間待孩子實測） | 2026-09-12 | 9 歲；四年級 | U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對 | 題目來源映射、逐題驗算、孩子／家長分卷格式 |
 | [四上第一次段考數學候選卷](grade4-sem1-math-exam1/) | 已完成（依暫定範圍；正式範圍待確認） | 2026-09-12 | 9 歲；四年級 | 桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷 | 來源 manifest、公開原卷無介面下載、PDF 與答案身分驗證；原卷只存本機 |

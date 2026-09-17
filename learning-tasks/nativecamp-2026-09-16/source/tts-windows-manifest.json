@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-09-17T14:00:04.252045+00:00",
+  "engine": "windows",
+  "scope": "Synthetic demonstration text only; not teacher or child recordings",
+  "samples": [
+    {
+      "sampleId": "odd-even",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -1,
+      "file": "assets/tts-comparison/windows-zira-rate-1-odd-even.mp3",
+      "text": "Is seven odd or even? Say the number too.",
+      "bytes": 29434,
+      "sha256": "a4f0482176e36e6a8992a536cb36453f4d2007a4560740bdb1af2a456ccdbe61",
+      "durationSeconds": 4.414694,
+      "wordsPerMinuteIncludingPauses": 122.32,
+      "meanVolumeDb": -21.0,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.39494,
+          "durationSeconds": 0.96805
+        },
+        {
+          "endSeconds": 4.36408,
+          "durationSeconds": 0.833265
+        }
+      ]
+    },
+    {
+      "sampleId": "four-trees",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -1,
+      "file": "assets/tts-comparison/windows-zira-rate-1-four-trees.mp3",
+      "text": "There are four trees.",
+      "bytes": 14777,
+      "sha256": "2ad7e991d8f95eacffff0c56608f4c7d0d81d8472a9f7c5f885107ccc4647231",
+      "durationSeconds": 2.142041,
+      "wordsPerMinuteIncludingPauses": 112.04,
+      "meanVolumeDb": -21.8,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.11424,
+          "durationSeconds": 0.848639
+        }
+      ]
+    },
+    {
+      "sampleId": "too-many",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -1,
+      "file": "assets/tts-comparison/windows-zira-rate-1-too-many.mp3",
+      "text": "There are too many books.",
+      "bytes": 16526,
+      "sha256": "a03114a6b3a8e4b5720384fad7d1d75cd73a3835dda5feb687eb3bfbf286d57d",
+      "durationSeconds": 2.35102,
+      "wordsPerMinuteIncludingPauses": 127.6,
+      "meanVolumeDb": -21.2,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.31923,
+          "durationSeconds": 0.840862
+        }
+      ]
+    },
+    {
+      "sampleId": "odd-even-comma-control",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -1,
+      "file": "assets/tts-comparison/windows-zira-rate-1-odd-even-comma-control.mp3",
+      "text": "Is seven odd or even? Say the number, too.",
+      "bytes": 32430,
+      "sha256": "d6a8a84f44eb93132e16579bb7a3813674b097171a468c2ff9645e486e20f86e",
+      "durationSeconds": 4.937143,
+      "wordsPerMinuteIncludingPauses": 109.37,
+      "meanVolumeDb": -21.6,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.39494,
+          "durationSeconds": 0.96805
+        },
+        {
+          "endSeconds": 3.73467,
+          "durationSeconds": 0.474921
+        },
+        {
+          "endSeconds": 4.90902,
+          "durationSeconds": 0.839864
+        }
+      ]
+    },
+    {
+      "sampleId": "odd-even",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -2,
+      "file": "assets/tts-comparison/windows-zira-rate-2-odd-even.mp3",
+      "text": "Is seven odd or even? Say the number too.",
+      "bytes": 32736,
+      "sha256": "e2b6a3b65cf5212764d7dc0f208885166febfe743366aaa1fc3e75444c6db4a2",
+      "durationSeconds": 4.91102,
+      "wordsPerMinuteIncludingPauses": 109.96,
+      "meanVolumeDb": -21.0,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.67755,
+          "durationSeconds": 1.08129
+        },
+        {
+          "endSeconds": 4.86898,
+          "durationSeconds": 0.935374
+        }
+      ]
+    },
+    {
+      "sampleId": "four-trees",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -2,
+      "file": "assets/tts-comparison/windows-zira-rate-2-four-trees.mp3",
+      "text": "There are four trees.",
+      "bytes": 15660,
+      "sha256": "b6d9816145401e191b5cd95eb78e17ed58f3e8665e531cbb1479dcffd731ccc9",
+      "durationSeconds": 2.377143,
+      "wordsPerMinuteIncludingPauses": 100.96,
+      "meanVolumeDb": -21.7,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 0.155646,
+          "durationSeconds": 0.155646
+        },
+        {
+          "endSeconds": 2.34426,
+          "durationSeconds": 0.935714
+        }
+      ]
+    },
+    {
+      "sampleId": "too-many",
+      "engine": "Windows SAPI",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "rate": -2,
+      "file": "assets/tts-comparison/windows-zira-rate-2-too-many.mp3",
+      "text": "There are too many books.",
+      "bytes": 17742,
+      "sha256": "bd099a31a7859d80eb4320efad0626845a4814b65573215cdc9149a7d11cf2c9",
+      "durationSeconds": 2.612245,
+      "wordsPerMinuteIncludingPauses": 114.84,
+      "meanVolumeDb": -21.1,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.57914,
+          "durationSeconds": 0.939116
+        }
+      ]
+    }
+  ],
+  "humanListening": "not performed",
+  "iPadPlayback": "not performed",
+  "apiRequestCount": 0
+}

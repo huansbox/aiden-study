@@ -9,8 +9,8 @@
     const child = new URLSearchParams(search).get("child") || "aiden";
     return /^(aiden|bingpu|test-[a-z0-9-]{1,25})$/.test(child) ? child : "aiden";
   }
-  const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
-  function mount({ root, lesson, child = "aiden", auth = global.KidsAuth, makeAudio = () => new Audio(),
+  const parentHref = (child, lessonId) => `../parent/?child=${encodeURIComponent(child)}${lessonId ? `&lesson=${encodeURIComponent(lessonId)}` : ""}`;
+  function mount({ root, lesson, child = "aiden", catalog = [], auth = global.KidsAuth, makeAudio = () => new Audio(),
     makeContext, createObjectURL = (blob) => URL.createObjectURL(blob), revokeObjectURL = (url) => URL.revokeObjectURL(url) }) {
     C.validateLesson(lesson);
     let mode = "try", concept = lesson.concepts[0], questionIndex = 0;
@@ -24,7 +24,7 @@
     }
     function reset() { stopAudio(); selection = null; words = []; revealed = false; result = null; error = ""; }
     function heading() {
-      return `<header class="preview-heading"><div><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Preview questions <span class="pill">Preview</span></h1><p class="preview-note">Nothing is saved. This does not change your child's practice.</p></div><a class="nav-link" href="${escape(parentHref(child))}">${icon("arrow-left")}Back to parent</a></header>`;
+      return `<header class="preview-heading"><div><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Preview questions <span class="pill">Preview</span></h1><p class="preview-note">Nothing is saved. This does not change your child's practice.</p></div><a class="nav-link" href="${escape(parentHref(child, lesson.id))}">${icon("arrow-left")}Back to parent</a></header>${global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, page: "preview.html" }) || ""}`;
     }
     function render() {
       if (destroyed) return;
@@ -118,20 +118,14 @@
     mounted?.destroy(); mounted = null;
     root.innerHTML = `<section class="loading-card" aria-live="polite"><p class="eyebrow">PREVIEW</p><h1>Loading questions...</h1><a class="nav-link" href="${escape(parentHref(child))}">${icon("arrow-left")}Back to parent</a></section>`;
     try {
-      if (!C || !V || !global.NativeCampAudio || !auth) throw Error("The page did not finish loading. Please try again.");
+      if (!C || !V || !global.NativeCampAudio || !global.NativeCampCatalog || !auth) throw Error("The page did not finish loading. Please try again.");
       await auth.ready;
       await auth.refresh();
       if (sequence !== bootSequence) return null;
       if (auth.state.status === "required") throw Error("Connect your family from the parent page, then try again.");
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
-      let response;
-      try { response = await fetchImpl("lessons/2026-09-15.json", { cache: "no-cache", signal: controller.signal }); }
-      finally { clearTimeout(timeout); }
-      if (!response.ok) throw Error("The questions could not be loaded. Please try again.");
-      const lesson = C.validateLesson(await response.json());
+      const { lesson, catalog } = await global.NativeCampCatalog.load({ fetchImpl, search });
       if (sequence !== bootSequence) return null;
-      mounted = mount({ root, lesson, child, auth, ...options });
+      mounted = mount({ ...options, root, lesson, catalog, child, auth });
     } catch (error) {
       if (sequence !== bootSequence) return null;
       const message = auth?.state.status === "required" ? "Connect your family from the parent page, then try again." : "The preview could not be loaded. Please try again.";

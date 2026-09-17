@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-14",
+  "voice": {
+    "engine": "Windows SAPI",
+    "name": "Microsoft Zira Desktop - English (United States)",
+    "rate": -2,
+    "localOnly": true,
+    "voiceCloning": false
+  },
+  "speechJobsSha256": "0cbc524ddb07d0172c50e69628e9c41f9ffeb01aeb7edf84d04d1e1aa273067d",
+  "tts": [
+    {
+      "file": "audio/2026-09-14-grandparents-try-1-q.mp3",
+      "text": "May is my mum's mum. Who is May? Pick one.",
+      "bytes": 36032,
+      "sha256": "5d2d51f6c9e24c4da7dfb290e9858d04f0a02669427d94aa49617d9e703d2ee3",
+      "durationSeconds": 6.034286,
+      "codec": "mp3",
+      "rmsDbfs": -21.72,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-try-1-a.mp3",
+      "text": "May is my grandmother.",
+      "bytes": 17430,
+      "sha256": "718981306d4042b61fe5d3ba35419b35f6c2f726f8f2cf3424d81ea504da5721",
+      "durationSeconds": 2.586122,
+      "codec": "mp3",
+      "rmsDbfs": -19.94,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-try-2-q.mp3",
+      "text": "Dan is my dad's dad. Who is Dan? Pick one.",
+      "bytes": 38556,
+      "sha256": "8ba8f3df0cc36042f6f9b7e079858231cc892c5227d3f1d58881e85fa4505252",
+      "durationSeconds": 6.321633,
+      "codec": "mp3",
+      "rmsDbfs": -22.03,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-try-2-a.mp3",
+      "text": "Dan is my grandfather.",
+      "bytes": 18262,
+      "sha256": "e8a5bea1ee0c50ab5daf7c5e3652e5c57a8e5a566ab97707e65a205a1d100b8e",
+      "durationSeconds": 2.690612,
+      "codec": "mp3",
+      "rmsDbfs": -20.01,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-try-3-q.mp3",
+      "text": "May and Ben are my mum's mum and dad. Who are they? Pick one.",
+      "bytes": 43237,
+      "sha256": "b5c5502292eaef5ad3c82d0a99295c09c58566a1e3076ac6f0f9b528411ea704",
+      "durationSeconds": 6.974694,
+      "codec": "mp3",
+      "rmsDbfs": -20.86,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-try-3-a.mp3",
+      "text": "May and Ben are my grandparents.",
+      "bytes": 23786,
+      "sha256": "0a7c1b67bf5f5f07d500c23f7d03786cb962f7a33604480f50a6938c75e6ecf8",
+      "durationSeconds": 3.317551,
+      "codec": "mp3",
+      "rmsDbfs": -20.1,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-1-q.mp3",
+      "text": "Sue is my dad's mum. Who is Sue? Say a full sentence.",
+      "bytes": 46592,
+      "sha256": "8d350f5c0e1ca6f5147acce8dedfc733ac9c5e4130f5d07fc4b70d78f90507d7",
+      "durationSeconds": 7.053061,
+      "codec": "mp3",
+      "rmsDbfs": -21.94,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-1-a.mp3",
+      "text": "She is my grandmother.",
+      "bytes": 18136,
+      "sha256": "1d1743ed1c05af72e0682a1c5c459af33ed523c17fa1d64a9fb12e5fe63ee646",
+      "durationSeconds": 2.612245,
+      "codec": "mp3",
+      "rmsDbfs": -20.07,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-2-q.mp3",
+      "text": "Tom is my mum's dad. Who is Tom? Say a full sentence.",
+      "bytes": 47472,
+      "sha256": "5cec7af36dd5f3af81c3cae8b03c3f4d2626ce4e83e093a0b61e980630da4bc3",
+      "durationSeconds": 7.183673,
+      "codec": "mp3",
+      "rmsDbfs": -21.45,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-2-a.mp3",
+      "text": "He is my grandfather.",
+      "bytes": 17640,
+      "sha256": "bf1411b4f8414ad8a787f64133dbb898d26beec94c459d5d28502c83549989d1",
+      "durationSeconds": 2.586122,
+      "codec": "mp3",
+      "rmsDbfs": -20.65,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-3-q.mp3",
+      "text": "Ann and Dan are my dad's mum and dad. Who are they? Say a full sentence.",
+      "bytes": 53334,
+      "sha256": "b40eef7067d0ed672793d0aa5cbd80cd2a4bb5d795cbacb064af86ff72ba48c1",
+      "durationSeconds": 7.915102,
+      "codec": "mp3",
+      "rmsDbfs": -20.71,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-3-a.mp3",
+      "text": "They are my grandparents.",
+      "bytes": 19155,
+      "sha256": "4a55b8125e67ed0d4d4fcb64a3e122cb1a7362a29f5552fbf8376b07ce736df9",
+      "durationSeconds": 2.716735,
+      "codec": "mp3",
+      "rmsDbfs": -20.88,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-1-q.mp3",
+      "text": "My house has a red door. It has three bedrooms. What is it about? Pick one.",
+      "bytes": 59780,
+      "sha256": "a0bc0e213ae2d484310eeb6cc5c8b1d00520e2835264ace4d75e950471b8328d",
+      "durationSeconds": 9.247347,
+      "codec": "mp3",
+      "rmsDbfs": -22.11,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-1-a.mp3",
+      "text": "It is about a house.",
+      "bytes": 15507,
+      "sha256": "b17e18c26e8aa89a86242fa9c90d7dcebbc7c478a1c14e78e5be8617755a6d80",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -22.6,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-2-q.mp3",
+      "text": "I have a toy car and a toy train. I play with them every day. What is it about? Pick one.",
+      "bytes": 63732,
+      "sha256": "1deb05b9cd1fb391cc8fbc358e91c9c83c3663366b71e8e7cb16022a4293054c",
+      "durationSeconds": 9.717551,
+      "codec": "mp3",
+      "rmsDbfs": -21.79,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-2-a.mp3",
+      "text": "It is about toys.",
+      "bytes": 15744,
+      "sha256": "699289b900c362213e13899f7aefc9caf14eb085d9666ff676c10e63e731b333",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -23.64,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-3-q.mp3",
+      "text": "My mum and dad and I eat together. We help each other. What is it about? Pick one.",
+      "bytes": 60738,
+      "sha256": "528310edd5bd59266f4bb18db8fcd0c2c76b315bda539c01022e487fe72d0b64",
+      "durationSeconds": 9.430204,
+      "codec": "mp3",
+      "rmsDbfs": -21.38,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-3-a.mp3",
+      "text": "It is about a family.",
+      "bytes": 15321,
+      "sha256": "7cabb1ea8f51490d2099eb2d100307f1412ad7912a1eaa646b4679f3067075dd",
+      "durationSeconds": 2.403265,
+      "codec": "mp3",
+      "rmsDbfs": -22.29,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-1-q.mp3",
+      "text": "Our house has a blue door. We sleep and eat in it. What is it about? Say a full sentence.",
+      "bytes": 64309,
+      "sha256": "93ea2cbf672619dbec267956097689487cdacd5bcaad7185ad54ce1e7e4de5aa",
+      "durationSeconds": 9.769796,
+      "codec": "mp3",
+      "rmsDbfs": -21.81,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-1-a.mp3",
+      "text": "It is about a house.",
+      "bytes": 15507,
+      "sha256": "b17e18c26e8aa89a86242fa9c90d7dcebbc7c478a1c14e78e5be8617755a6d80",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -22.6,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-2-q.mp3",
+      "text": "My toy plane is blue. I play with my toy cars too. What is it about? Say a full sentence.",
+      "bytes": 69987,
+      "sha256": "56d601229bb34f94bbfb86290d5f73a79f7ec10adc4e513896ea515d64a9e30a",
+      "durationSeconds": 10.396735,
+      "codec": "mp3",
+      "rmsDbfs": -21.76,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-2-a.mp3",
+      "text": "It is about toys.",
+      "bytes": 15744,
+      "sha256": "699289b900c362213e13899f7aefc9caf14eb085d9666ff676c10e63e731b333",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -23.64,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-3-q.mp3",
+      "text": "My brother and I live with our mum and dad. We love each other. What is it about? Say a full sentence.",
+      "bytes": 68631,
+      "sha256": "ee82f6623bb8299004685192980477d9dab8e513d292a8a807a40d42810eff0b",
+      "durationSeconds": 10.370612,
+      "codec": "mp3",
+      "rmsDbfs": -21.24,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-3-a.mp3",
+      "text": "It is about a family.",
+      "bytes": 15321,
+      "sha256": "7cabb1ea8f51490d2099eb2d100307f1412ad7912a1eaa646b4679f3067075dd",
+      "durationSeconds": 2.403265,
+      "codec": "mp3",
+      "rmsDbfs": -22.29,
+      "decode": "passed"
+    }
+  ],
+  "limits": {
+    "humanListening": "not performed",
+    "iPadPlayback": "not performed",
+    "pronunciationAssessment": "not performed"
+  }
+}

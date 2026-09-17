@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-16",
+  "voice": {
+    "engine": "Windows SAPI",
+    "name": "Microsoft Zira Desktop - English (United States)",
+    "rate": -2,
+    "localOnly": true,
+    "voiceCloning": false
+  },
+  "speechJobsSha256": "043f91e8f9c26cca415c57d60de9b6cc8bc11182f694531daf39f263f9f5d3f8",
+  "tts": [
+    {
+      "file": "audio/2026-09-16-family-roles-try-1-q.mp3",
+      "text": "Tom is my mum's brother. Who is Tom? Pick one.",
+      "bytes": 41143,
+      "sha256": "fdc512843c0581624c395d0572b9e1875ffa9df73e09567bbbeebf8ca8fda8ae",
+      "durationSeconds": 6.426122,
+      "codec": "mp3",
+      "rmsDbfs": -21.58,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-try-1-a.mp3",
+      "text": "Tom is my uncle.",
+      "bytes": 15424,
+      "sha256": "cf519cdf271407908ac970ef9327d651468f1975fd587dd6559400acc7fbccca",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -20.71,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-try-2-q.mp3",
+      "text": "Ann is my dad's sister. Who is Ann? Pick one.",
+      "bytes": 38926,
+      "sha256": "5195d1eafba7e37ce31cfe2bf3059cf2d9559a87287e9430e87c5815f8e65e50",
+      "durationSeconds": 6.321633,
+      "codec": "mp3",
+      "rmsDbfs": -22.52,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-try-2-a.mp3",
+      "text": "Ann is my aunt.",
+      "bytes": 14176,
+      "sha256": "36c5bc1453dda99c4c8bc7f0193538bb823ba7b5f20aab380f3060f55cab9548",
+      "durationSeconds": 2.246531,
+      "codec": "mp3",
+      "rmsDbfs": -21.05,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-try-3-q.mp3",
+      "text": "Sam is my aunt's son. Who is Sam? Pick one.",
+      "bytes": 40096,
+      "sha256": "d5b8a97536d227a6bac66d3587043c885e8db62c41ca1d5598868c36d89add24",
+      "durationSeconds": 6.50449,
+      "codec": "mp3",
+      "rmsDbfs": -22.42,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-try-3-a.mp3",
+      "text": "Sam is my cousin.",
+      "bytes": 16783,
+      "sha256": "9bbd5dc5909192a8dc0701e7cefc32a310dfa194be562ed0caa8c4905cfd5170",
+      "durationSeconds": 2.56,
+      "codec": "mp3",
+      "rmsDbfs": -21.68,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-1-q.mp3",
+      "text": "Ben is my dad's brother. Who is Ben? Say a full sentence.",
+      "bytes": 45593,
+      "sha256": "ef969a2fd8cb0052fa47dd0054e973ddd93de8547b6d6d7623d7535d2d38ec6c",
+      "durationSeconds": 7.131429,
+      "codec": "mp3",
+      "rmsDbfs": -21.84,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-1-a.mp3",
+      "text": "He is my uncle.",
+      "bytes": 14646,
+      "sha256": "b6ada7471ae53e0d6efbb7bfaa64c7a9ab8541b9bb9ea3f970014401817ca43f",
+      "durationSeconds": 2.272653,
+      "codec": "mp3",
+      "rmsDbfs": -21.65,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-2-q.mp3",
+      "text": "Sue is my mum's sister. Who is Sue? Say a full sentence.",
+      "bytes": 48188,
+      "sha256": "1f17e02a7526e190307833b35401de49e4eecc238a9eda5c3e5489a1e646af8e",
+      "durationSeconds": 7.183673,
+      "codec": "mp3",
+      "rmsDbfs": -21.81,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-2-a.mp3",
+      "text": "She is my aunt.",
+      "bytes": 15295,
+      "sha256": "294c56f8f3ef5b0455a6d821341e7ebd56c3301f35aa9caebf49cb2381e99698",
+      "durationSeconds": 2.324898,
+      "codec": "mp3",
+      "rmsDbfs": -21.46,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-3-q.mp3",
+      "text": "Kim is my uncle's daughter. Who is Kim? Say a full sentence.",
+      "bytes": 47733,
+      "sha256": "941eb88cf7f13965f059fa02f1913d1dfa022528e05ba8441a0d672cf7ab216d",
+      "durationSeconds": 7.288163,
+      "codec": "mp3",
+      "rmsDbfs": -21.88,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-3-a.mp3",
+      "text": "She is my cousin.",
+      "bytes": 15818,
+      "sha256": "ddae7f24e5e902d6ab65c89aab8dcc80830969a98a52b9d967872e6392ccda75",
+      "durationSeconds": 2.403265,
+      "codec": "mp3",
+      "rmsDbfs": -21.88,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-1-q.mp3",
+      "text": "I am eight years old. Make it short. Pick one.",
+      "bytes": 39444,
+      "sha256": "c0fc01b6ecae93c6f89f4feef6bb0732535d55076f1d193fb0e61c4d5ee28989",
+      "durationSeconds": 6.321633,
+      "codec": "mp3",
+      "rmsDbfs": -22.18,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-1-a.mp3",
+      "text": "I'm eight years old.",
+      "bytes": 15242,
+      "sha256": "49b871bc2937ea7780f5789a22c843a3cc0c58ff60e8fe46c4a1d2818ed236f0",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -21.05,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-2-q.mp3",
+      "text": "He is my friend. Make it short. Pick one.",
+      "bytes": 37339,
+      "sha256": "afd162371f74e6538d68780b0ba084620408e2e499886a7274c66ab56fc8ac53",
+      "durationSeconds": 6.086531,
+      "codec": "mp3",
+      "rmsDbfs": -22.75,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-2-a.mp3",
+      "text": "He's my friend.",
+      "bytes": 13707,
+      "sha256": "87d2750a95e2a11979b4b8d8b9edddf05d6162cac204f47f4307cf27b01af1db",
+      "durationSeconds": 2.168163,
+      "codec": "mp3",
+      "rmsDbfs": -22.12,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-3-q.mp3",
+      "text": "I am nine years old. Make it short. Tap the words.",
+      "bytes": 44792,
+      "sha256": "52607a49896435d3fb5f3890a8464537d73033153a2f26c0fdc8eec65883ff64",
+      "durationSeconds": 6.817959,
+      "codec": "mp3",
+      "rmsDbfs": -21.24,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-3-a.mp3",
+      "text": "I'm nine years old.",
+      "bytes": 16573,
+      "sha256": "6ceb01df989c64322a90022810784a834f009b5957270c0bdd907f15ae99d1a1",
+      "durationSeconds": 2.45551,
+      "codec": "mp3",
+      "rmsDbfs": -19.65,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-1-q.mp3",
+      "text": "I am seven years old. Make it short. Say the whole sentence.",
+      "bytes": 50005,
+      "sha256": "bb90ad3728eb7e661fd9b27ff9c98329af95463b08b6106771ec0d196b4dc6f8",
+      "durationSeconds": 7.418776,
+      "codec": "mp3",
+      "rmsDbfs": -21.29,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-1-a.mp3",
+      "text": "I'm seven years old.",
+      "bytes": 17590,
+      "sha256": "c5b75833b2ceeb60ba1f9e497257eb32472f8d989bb5fe8c9ed429e28dde3b0c",
+      "durationSeconds": 2.533878,
+      "codec": "mp3",
+      "rmsDbfs": -20.48,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-2-q.mp3",
+      "text": "He is my brother. Make it short. Say the whole sentence.",
+      "bytes": 46647,
+      "sha256": "44c8ca2d5f7875c7bba33f4963fe37a37d399ee5b30254a67e65d42602a13d52",
+      "durationSeconds": 7.000816,
+      "codec": "mp3",
+      "rmsDbfs": -21.88,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-2-a.mp3",
+      "text": "He's my brother.",
+      "bytes": 13840,
+      "sha256": "7c8cc7e2b584c80e74e7af6515b7f4dd4de6df795ee17728334f4c267b766fd1",
+      "durationSeconds": 2.142041,
+      "codec": "mp3",
+      "rmsDbfs": -21.77,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-3-q.mp3",
+      "text": "He is six years old. Make it short. Say the whole sentence.",
+      "bytes": 49771,
+      "sha256": "d8e64d72278e5c306b7c4daf32b26bddcde2967da86894044a3342ebb6a0f73d",
+      "durationSeconds": 7.340408,
+      "codec": "mp3",
+      "rmsDbfs": -22.07,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-3-a.mp3",
+      "text": "He's six years old.",
+      "bytes": 17937,
+      "sha256": "b34c727bd0b48277fff811a28437e0ee5caec6a552ee5f9a22c2f80fd3f9f6cd",
+      "durationSeconds": 2.507755,
+      "codec": "mp3",
+      "rmsDbfs": -22.44,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-1-q.mp3",
+      "text": "Old. Pick the opposite.",
+      "bytes": 21617,
+      "sha256": "4ada4d80acdc9cbe31a975c472571ca13df3946f7ad1f2023f030cc6a9e8cb59",
+      "durationSeconds": 3.657143,
+      "codec": "mp3",
+      "rmsDbfs": -24.16,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-1-a.mp3",
+      "text": "Young is the opposite of old.",
+      "bytes": 19198,
+      "sha256": "352b1619b2ef0fd0f9cdb395b4042f92f5f957e2b1c1c7907fbac25df35a5887",
+      "durationSeconds": 2.821224,
+      "codec": "mp3",
+      "rmsDbfs": -21.54,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-2-q.mp3",
+      "text": "Hot. Pick the opposite.",
+      "bytes": 22005,
+      "sha256": "19badbe7d088f66d994c28d542e00498652090a01b9c81712f2c35609c2472fe",
+      "durationSeconds": 3.73551,
+      "codec": "mp3",
+      "rmsDbfs": -23.88,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-2-a.mp3",
+      "text": "Cold is the opposite of hot.",
+      "bytes": 20501,
+      "sha256": "f8d511659b4f2e6d5d40793eb08e377f1b6a444f174458f950923c0210028336",
+      "durationSeconds": 3.004082,
+      "codec": "mp3",
+      "rmsDbfs": -21.09,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-3-q.mp3",
+      "text": "Small. Pick the opposite.",
+      "bytes": 24117,
+      "sha256": "dd0d9c49fbd6a8a66152593ee9f5a1876e4eed6f4dded5d4fa6c92b05c642282",
+      "durationSeconds": 3.94449,
+      "codec": "mp3",
+      "rmsDbfs": -23.82,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-3-a.mp3",
+      "text": "Big is the opposite of small.",
+      "bytes": 20038,
+      "sha256": "0994131649b2b67b591278da0c8b3e80ffa6274463140e20573b9a5d4566c443",
+      "durationSeconds": 2.899592,
+      "codec": "mp3",
+      "rmsDbfs": -21.41,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-1-q.mp3",
+      "text": "Young. What is the opposite? Say a full sentence.",
+      "bytes": 41826,
+      "sha256": "b1ea26534d75fd7906b7bf04192fc4f7cbb6acc6186e20b37da710a9ce5c1364",
+      "durationSeconds": 6.478367,
+      "codec": "mp3",
+      "rmsDbfs": -23.04,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-1-a.mp3",
+      "text": "Old is the opposite.",
+      "bytes": 15376,
+      "sha256": "cbd2c05503ec77b243fbb4b9272d4454889c6ab0de641e078766636fbf8696eb",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -22.3,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-2-q.mp3",
+      "text": "Cold. What is the opposite? Say a full sentence.",
+      "bytes": 40545,
+      "sha256": "020e8810ae4a5f91401c3c2e53a2ca892931592f2d47bf44da964e652c6bfa9d",
+      "durationSeconds": 6.426122,
+      "codec": "mp3",
+      "rmsDbfs": -23.18,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-2-a.mp3",
+      "text": "Hot is the opposite.",
+      "bytes": 15191,
+      "sha256": "a39f5d8aa9d953fdb89d85b5988493513811190e5fa4c488eef99c94b4702cfd",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -22.33,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-3-q.mp3",
+      "text": "Big. What is the opposite? Say a full sentence.",
+      "bytes": 39551,
+      "sha256": "2813963ce63964dd59c08fdac1a40feeac74f14552506f353a46ae8c7f8f48fb",
+      "durationSeconds": 6.426122,
+      "codec": "mp3",
+      "rmsDbfs": -23.05,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-3-a.mp3",
+      "text": "Small is the opposite.",
+      "bytes": 17173,
+      "sha256": "38652ba7555402bb5c259f99c5177746ba53d085599d4a9fd225c8078c69599b",
+      "durationSeconds": 2.612245,
+      "codec": "mp3",
+      "rmsDbfs": -21.83,
+      "decode": "passed"
+    }
+  ],
+  "limits": {
+    "humanListening": "not performed",
+    "iPadPlayback": "not performed",
+    "pronunciationAssessment": "not performed"
+  }
+}

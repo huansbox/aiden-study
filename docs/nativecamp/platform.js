@@ -34,6 +34,17 @@
     const raw = wiring.safeGet(key);
     try { progress = raw === null ? core.createProgress() : core.validateProgress(JSON.parse(raw)); }
     catch { throw Error("Saved practice could not be read. Ask a parent for help before continuing."); }
+    // A different lesson page shares this child's storage, including when this
+    // page returns from the back/forward cache without a remote sync adoption.
+    const readLocal = () => {
+      const saved = wiring.safeGet(key);
+      try { return saved === null ? core.createProgress() : core.validateProgress(JSON.parse(saved)); }
+      catch { throw Error("Saved practice could not be read. Reload before continuing."); }
+    };
+    const refreshLocal = () => {
+      try { progress = readLocal(); }
+      catch (error) { localError = error.message; }
+    };
     const changed = () => onChange({ type: "status" });
     sync = wiring.initSync({
       validateData: core.validateProgress,
@@ -47,6 +58,12 @@
     });
     if (!sync) throw Error("Sync did not load. Please reload.");
     await sync.syncNow();
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) { refreshLocal(); onChange({ type: "progress" }); }
+    });
+    window.addEventListener("storage", (event) => {
+      if (event.key === key || event.key === null) { refreshLocal(); onChange({ type: "progress" }); }
+    });
     wiring.attachPageshowGuard();
     activityContext.setActive(false);
     const audioURLs = new Map();
@@ -64,12 +81,21 @@
     window.addEventListener("online", () => { syncNow().catch(changed); });
     return {
       homeHref: family.homeHref(child),
-      getProgress: () => core.validateProgress(JSON.parse(JSON.stringify(progress))),
+      getProgress() {
+        refreshLocal();
+        return core.validateProgress(JSON.parse(JSON.stringify(progress)));
+      },
       saveProgress(data, activity) {
         if (auth.state.status === "required")
           throw Error("Ask a parent to reconnect from Home before continuing.");
         if (sync.meta().health === "schema-block" || localError)
           throw Error(localError || HEALTH["schema-block"]);
+        const latest = readLocal();
+        if (JSON.stringify(latest) !== JSON.stringify(progress)) {
+          progress = latest;
+          onChange({ type: "progress" });
+          throw Error("Your saved practice changed. Please try this question again.");
+        }
         const next = core.validateProgress(data), serialized = JSON.stringify(next);
         if (serialized === JSON.stringify(progress)) return;
         if (!wiring.safeSet(key, serialized))

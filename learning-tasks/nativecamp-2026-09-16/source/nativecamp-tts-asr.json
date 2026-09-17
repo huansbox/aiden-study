@@ -1,0 +1,39 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-16-family-roles-try-1-q.mp3",
+      "expectedText": "Tom is my mum's brother. Who is Tom? Pick one.",
+      "recognizedText": "Tom is my mum's brother. Who is Tom? Pick one."
+    },
+    {
+      "file": "audio/2026-09-16-family-roles-say-3-a.mp3",
+      "expectedText": "She is my cousin.",
+      "recognizedText": "She is my cousin."
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-try-1-q.mp3",
+      "expectedText": "I am eight years old. Make it short. Pick one.",
+      "recognizedText": "I am eight years old make it short pick one"
+    },
+    {
+      "file": "audio/2026-09-16-short-forms-say-3-a.mp3",
+      "expectedText": "He's six years old.",
+      "recognizedText": "He's six years old."
+    },
+    {
+      "file": "audio/2026-09-16-opposites-try-1-q.mp3",
+      "expectedText": "Old. Pick the opposite.",
+      "recognizedText": "Old. Pick the opposite."
+    },
+    {
+      "file": "audio/2026-09-16-opposites-say-3-a.mp3",
+      "expectedText": "Small is the opposite.",
+      "recognizedText": "Small is the opposite."
+    }
+  ]
+}

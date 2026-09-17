@@ -342,9 +342,15 @@ function createSyncClient(opts) {
     if (action.type === "reseed") patchMeta({ reseedAt: now() }); // 雲端資料曾遺失：記健康事件，不全靜默
     const writeId = m.pendingWriteId || uuid(); // 僅重送同一筆未確認寫入時重用
     const seqAtStart = dirtySeq;
-    patchMeta({ lastWriteId: writeId, pendingWriteId: writeId }); // 先落地：response 遺失時下輪重用同 writeId（冪等）
+    const sentMeta = patchMeta({ lastWriteId: writeId, pendingWriteId: writeId }); // 先落地：response 遺失時下輪重用同 writeId（冪等）
     const payload = loadData();
     const res = await putRemote(token, { rev: remote.rev, data: payload, writeId });
+
+    // 多頁共用同一份 meta。PUT 等待期間若另一頁已同步／重新播種／開始新寫入，
+    // 舊頁不再擁有這筆結果，連 pending write 與健康狀態也不得覆蓋回去。
+    const currentMeta = meta();
+    if (currentMeta.syncedRev !== sentMeta.syncedRev || currentMeta.syncedEpoch !== sentMeta.syncedEpoch ||
+        currentMeta.lastWriteId !== writeId || (currentMeta.pendingWriteId && currentMeta.pendingWriteId !== writeId)) return out;
 
     if (res.threw) {
       setHealth("offline"); // pendingWriteId 保留：這筆可能已落地，重送必須同 writeId
@@ -357,7 +363,8 @@ function createSyncClient(opts) {
         // 換代 push 後若不更新此值，下一輪會再次判為換代 → 無限重推
         syncedEpoch: typeof res.body.epoch === "string" ? res.body.epoch : null,
         pendingWriteId: null,
-        dirty: dirtySeq !== seqAtStart, // PUT 在途期間又有新變更 → 留 dirty 給下一輪
+        // markDirty／markImported 會清 pendingWriteId；這個持久訊號也涵蓋另一頁的新變更。
+        dirty: dirtySeq !== seqAtStart || currentMeta.pendingWriteId !== writeId,
         lastSyncAt: now(),
       });
       setHealth("ok");

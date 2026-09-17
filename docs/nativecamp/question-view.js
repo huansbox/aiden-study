@@ -5,6 +5,8 @@
   function icon(name) { return `<svg class="icon " aria-hidden="true"><use href="icons.svg#${name}"></use></svg>`; }
   function button(action, label, style, attrs) { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${label}</button>`; }
   function sceneHtml(scene) {
+    if (scene.kind === "word-card") return `<div class="scene word-card">${scene.heading ? `<p class="scene-heading">${escape(scene.heading)}</p>` : ""}<p class="scene-word">${escape(scene.text)}</p></div>`;
+    if (scene.kind === "family-link") return `<div class="scene family-link">${scene.heading ? `<p class="scene-heading">${escape(scene.heading)}</p>` : ""}<div class="family-relation">${escape(scene.relation)}</div>${icon("arrow-right")}<div class="family-person"><strong>${escape(scene.name)}</strong>${scene.pronoun ? `<span>${escape(scene.pronoun)}</span>` : ""}</div></div>`;
     const pictures = { cats: "cat", dogs: "dog", trees: "tree-pine", books: "book-open", toys: "toy-brick" };
     const hat = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18c4-3 14-3 18 0M6 16l2-10h8l2 10M7 13h10M3 18c1 4 17 4 18 0"/></svg>';
     const count = scene.count ?? 0;

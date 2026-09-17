@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-14",
+  "date": "2026-09-14",
+  "title": "Family and stories",
+  "concepts": [
+    {
+      "id": "grandparents",
+      "title": "My grandparents",
+      "try": [
+        {
+          "id": "grandparents-try-1",
+          "prompt": "May is my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Mum's mum",
+            "name": "May",
+            "pronoun": "She"
+          },
+          "answerText": "May is my grandmother.",
+          "spokenQuestion": "May is my mum's mum. Who is May? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "grandmother"
+            },
+            {
+              "id": "c1",
+              "text": "sister"
+            },
+            {
+              "id": "c2",
+              "text": "grandfather"
+            }
+          ],
+          "answer": "c0",
+          "explanation": "Your mum's mum is your grandmother."
+        },
+        {
+          "id": "grandparents-try-2",
+          "prompt": "Dan is my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Dad's dad",
+            "name": "Dan",
+            "pronoun": "He"
+          },
+          "answerText": "Dan is my grandfather.",
+          "spokenQuestion": "Dan is my dad's dad. Who is Dan? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "brother"
+            },
+            {
+              "id": "c1",
+              "text": "grandmother"
+            },
+            {
+              "id": "c2",
+              "text": "grandfather"
+            }
+          ],
+          "answer": "c2",
+          "explanation": "Your dad's dad is your grandfather."
+        },
+        {
+          "id": "grandparents-try-3",
+          "prompt": "May and Ben are my ___.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Mum's mum and dad",
+            "name": "May and Ben",
+            "pronoun": "They"
+          },
+          "answerText": "May and Ben are my grandparents.",
+          "spokenQuestion": "May and Ben are my mum's mum and dad. Who are they? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "parents"
+            },
+            {
+              "id": "c1",
+              "text": "grandparents"
+            },
+            {
+              "id": "c2",
+              "text": "friends"
+            }
+          ],
+          "answer": "c1",
+          "explanation": "Your grandmother and grandfather are your grandparents."
+        }
+      ],
+      "say": [
+        {
+          "id": "grandparents-say-1",
+          "prompt": "Who is Sue?",
+          "instruction": "She is my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Dad's mum",
+            "name": "Sue",
+            "pronoun": "She"
+          },
+          "answerText": "She is my grandmother.",
+          "spokenQuestion": "Sue is my dad's mum. Who is Sue? Say a full sentence.",
+          "accepted": [
+            "She's my grandmother.",
+            "Sue is my grandmother.",
+            "She is my grandma.",
+            "She's my grandma."
+          ]
+        },
+        {
+          "id": "grandparents-say-2",
+          "prompt": "Who is Tom?",
+          "instruction": "He is my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Mum's dad",
+            "name": "Tom",
+            "pronoun": "He"
+          },
+          "answerText": "He is my grandfather.",
+          "spokenQuestion": "Tom is my mum's dad. Who is Tom? Say a full sentence.",
+          "accepted": [
+            "He's my grandfather.",
+            "Tom is my grandfather.",
+            "He is my grandpa.",
+            "He's my grandpa."
+          ]
+        },
+        {
+          "id": "grandparents-say-3",
+          "prompt": "Who are Ann and Dan?",
+          "instruction": "They are my ___.",
+          "scene": {
+            "kind": "family-link",
+            "relation": "Dad's mum and dad",
+            "name": "Ann and Dan",
+            "pronoun": "They"
+          },
+          "answerText": "They are my grandparents.",
+          "spokenQuestion": "Ann and Dan are my dad's mum and dad. Who are they? Say a full sentence.",
+          "accepted": [
+            "They're my grandparents.",
+            "Ann and Dan are my grandparents.",
+            "They are my grandma and grandpa."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "story-topic",
+      "title": "What is it about?",
+      "try": [
+        {
+          "id": "story-topic-try-1",
+          "prompt": "What is it about?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "My house has a red door. It has three bedrooms.",
+            "heading": "Read."
+          },
+          "answerText": "It is about a house.",
+          "spokenQuestion": "My house has a red door. It has three bedrooms. What is it about? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "toys"
+            },
+            {
+              "id": "c1",
+              "text": "a house"
+            },
+            {
+              "id": "c2",
+              "text": "friends"
+            }
+          ],
+          "answer": "c1",
+          "explanation": "The sentences tell us about a house."
+        },
+        {
+          "id": "story-topic-try-2",
+          "prompt": "What is it about?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I have a toy car and a toy train. I play with them every day.",
+            "heading": "Read."
+          },
+          "answerText": "It is about toys.",
+          "spokenQuestion": "I have a toy car and a toy train. I play with them every day. What is it about? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "toys"
+            },
+            {
+              "id": "c1",
+              "text": "food"
+            },
+            {
+              "id": "c2",
+              "text": "a house"
+            }
+          ],
+          "answer": "c0",
+          "explanation": "The car and train are toys."
+        },
+        {
+          "id": "story-topic-try-3",
+          "prompt": "What is it about?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "word-card",
+            "text": "My mum, dad and I eat together. We help each other.",
+            "heading": "Read."
+          },
+          "answerText": "It is about a family.",
+          "spokenQuestion": "My mum and dad and I eat together. We help each other. What is it about? Pick one.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c0",
+              "text": "toys"
+            },
+            {
+              "id": "c1",
+              "text": "a house"
+            },
+            {
+              "id": "c2",
+              "text": "a family"
+            }
+          ],
+          "answer": "c2",
+          "explanation": "Mum, dad and a child are a family."
+        }
+      ],
+      "say": [
+        {
+          "id": "story-topic-say-1",
+          "prompt": "What is it about?",
+          "instruction": "It is about ___.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Our house has a blue door. We sleep and eat in it.",
+            "heading": "Read."
+          },
+          "answerText": "It is about a house.",
+          "spokenQuestion": "Our house has a blue door. We sleep and eat in it. What is it about? Say a full sentence.",
+          "accepted": [
+            "It's about a house.",
+            "It is about our house.",
+            "It's about our house."
+          ]
+        },
+        {
+          "id": "story-topic-say-2",
+          "prompt": "What is it about?",
+          "instruction": "It is about ___.",
+          "scene": {
+            "kind": "word-card",
+            "text": "My toy plane is blue. I play with my toy cars too.",
+            "heading": "Read."
+          },
+          "answerText": "It is about toys.",
+          "spokenQuestion": "My toy plane is blue. I play with my toy cars too. What is it about? Say a full sentence.",
+          "accepted": [
+            "It's about toys.",
+            "It is about my toys.",
+            "It's about my toys."
+          ]
+        },
+        {
+          "id": "story-topic-say-3",
+          "prompt": "What is it about?",
+          "instruction": "It is about ___.",
+          "scene": {
+            "kind": "word-card",
+            "text": "My brother and I live with our mum and dad. We love each other.",
+            "heading": "Read."
+          },
+          "answerText": "It is about a family.",
+          "spokenQuestion": "My brother and I live with our mum and dad. We love each other. What is it about? Say a full sentence.",
+          "accepted": [
+            "It's about a family.",
+            "It is about my family.",
+            "It's about my family.",
+            "It is about our family."
+          ]
+        }
+      ]
+    }
+  ]
+}
