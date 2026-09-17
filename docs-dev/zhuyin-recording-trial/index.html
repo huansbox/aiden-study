@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>先試錄三個音</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1f5f3;color:#203a35;font-family:-apple-system,"PingFang TC",sans-serif;line-height:1.7}main{max-width:700px;margin:32px auto;padding:0 20px}h1{font-size:1.4rem;margin:0}p{margin:8px 0 16px}.intro{color:#526960}.panel{background:white;border:1px solid #d5e2db;border-radius:24px;padding:28px;text-align:center}.progress{font-size:1rem;color:#526960}#glyph{font-size:7rem;line-height:1.3;font-weight:600;margin:8px 0}#hint{min-height:58px}.buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}button{font:inherit;border-radius:14px;border:1px solid #a3b9ac;background:white;color:#203a35;padding:12px 20px;cursor:pointer;min-height:48px}#record,#stop{font-weight:600;font-size:1.2rem;min-width:200px;color:white;border:0;background:#216550}#stop{background:#ab3c32}button:disabled{opacity:.45;cursor:default}[hidden]{display:none!important}.meter{height:8px;background:#e6eeea;border-radius:8px;overflow:hidden;max-width:280px;margin:16px auto}#level{height:100%;width:0;background:#329375}#status{min-height:30px;font-weight:500}#status.error{color:#a52e25}#takes{padding:0;list-style:none}.take{margin:12px 0;padding:16px;background:white;border-radius:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}.take strong{font-size:1.7rem}.take audio{max-width:100%;width:280px;height:40px}.take button{margin-left:auto}.note{font-size:.9rem;color:#526960}.done{font-size:1.5rem;font-weight:600;margin:24px 0}@media(max-width:500px){main{margin:20px auto}.panel{padding:20px}#glyph{font-size:6rem}.take audio{width:100%}}
+</style>
+<main>
+<h1>先試錄三個音</h1>
+<p class="intro">開始錄音 → 看提示說話 → 停止錄音。<br>每段自動存到這台 Mac，不用下載或改檔名。</p>
+<section class="panel">
+  <div class="progress" id="progress">正在準備…</div>
+  <div id="prompt"><div>請唸</div><div id="glyph">ㄅ</div><p id="hint"></p></div>
+  <div id="done" hidden><p class="done">三段都存好了</p><p>回到對話告訴我「錄好了」，我來檢查。<br>想先聽聽看，可以用下方播放器。</p></div>
+  <div class="meter" id="meter" hidden><div id="level"></div></div>
+  <div id="status" role="status" aria-live="polite">正在連接錄音保存工具…</div>
+  <div class="buttons">
+    <button id="record" disabled>開始錄音</button>
+    <button id="stop" hidden>停止錄音</button>
+    <button id="retry" hidden>重試保存</button>
+  </div>
+</section>
+<p class="note">第一次按開始時，請允許麥克風。按下後稍等畫面顯示「錄音中」再說話；唸完稍停一下，再按停止。錄音最長 30 秒會自動停止。</p>
+<h2 style="font-size:1.1rem">已保存的錄音</h2>
+<ul id="takes"></ul>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let items=[],takes=[],current=0,recorder=null,stream=null,context=null,frame=null,timer=null;
+let busy=false,pending=null,recordError=false;
+const latest=key=>takes.filter(t=>t.key===key).at(-1);
+function message(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
+function mimeType(){return ['audio/mp4;codecs=mp4a.40.2','audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'].find(t=>MediaRecorder.isTypeSupported(t));}
+function render(){
+  const count=items.filter(i=>latest(i.key)).length;
+  $('progress').textContent=`已保存 ${count} / ${items.length} 段`;
+  const complete=current>=items.length;
+  $('prompt').hidden=complete;$('done').hidden=!complete;
+  $('record').hidden=complete||!!recorder;$('record').disabled=busy||!!pending;
+  $('stop').hidden=!recorder;$('stop').disabled=busy;
+  $('retry').hidden=!pending;$('retry').disabled=busy;
+  if(!complete){$('glyph').textContent=items[current].glyph;$('hint').textContent=items[current].hint;}
+  $('takes').replaceChildren();
+  for(const item of items){
+    const take=latest(item.key);if(!take)continue;
+    const row=document.createElement('li');row.className='take';
+    const name=document.createElement('strong');name.textContent=item.glyph;
+    const audio=document.createElement('audio');audio.controls=true;audio.preload='none';audio.src=`/audio/${take.id}`;audio.setAttribute('aria-label',`${item.glyph}錄音`);
+    audio.onplay=()=>document.querySelectorAll('audio').forEach(a=>{if(a!==audio)a.pause();});
+    const redo=document.createElement('button');redo.textContent='重錄';redo.disabled=busy||!!recorder||!!pending;
+    redo.onclick=()=>{current=items.indexOf(item);message('按開始錄音，重新錄這一段；前一次也會保留。');render();scrollTo({top:0,behavior:'smooth'});};
+    row.append(name,audio,redo);$('takes').append(row);
+  }
+}
+function cleanup(){
+  clearInterval(timer);cancelAnimationFrame(frame);stream?.getTracks().forEach(t=>t.stop());stream=null;
+  if(context){context.close().catch(()=>{});context=null;}$('meter').hidden=true;
+}
+async function save(){
+  busy=true;render();message('正在自動保存，請稍等…');
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),45000);
+  try{
+    const response=await fetch(`/api/record/${pending.key}`,{method:'POST',headers:{'Content-Type':pending.blob.type},body:pending.blob,signal:controller.signal});
+    const result=await response.json();if(!response.ok)throw new Error(result.error);
+    takes.push(result);pending=null;
+    const next=items.findIndex(i=>!latest(i.key));current=next<0?items.length:next;
+    message(current===items.length?'錄音已自動保存。':'上一段已保存。準備好就按開始，錄下一個音。');
+  }catch(e){message('還沒確認存好，錄音仍保留在此頁。請按「重試保存」，先不要關閉頁面。',true);}
+  finally{clearTimeout(timeout);busy=false;render();}
+}
+$('record').onclick=async()=>{
+  if(busy||recorder||pending)return;
+  busy=true;render();message('正在開啟麥克風，若出現詢問請按允許…');
+  document.querySelectorAll('audio').forEach(a=>a.pause());
+  try{
+    if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error('請使用這台 Mac 的 Safari 或 Chrome 開啟本頁。');
+    const mime=mimeType();if(!mime)throw new Error('這個瀏覽器無法錄音，請改用 Safari 或 Chrome。');
+    stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const chunks=[];const key=items[current].key;recordError=false;
+    recorder=new MediaRecorder(stream,{mimeType:mime});
+    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+    recorder.onerror=()=>{recordError=true;cleanup();message('錄音中斷，請再按開始重錄。',true);};
+    recorder.onstop=async()=>{
+      const type=recorder.mimeType;recorder=null;cleanup();busy=false;
+      const blob=new Blob(chunks,{type});
+      if(recordError||!blob.size){message('沒有收到完整錄音，請再錄一次。',true);render();return;}
+      pending={key,blob};await save();
+    };
+    recorder.start();busy=false;render();
+    message('錄音中，現在請說話。');
+    const started=Date.now();timer=setInterval(()=>{
+      const elapsed=Math.floor((Date.now()-started)/1000);
+      message(`錄音中 ${elapsed} 秒 — 唸完請按停止。`);
+      if(elapsed>=30)$('stop').click();
+    },250);
+    try{
+      context=new AudioContext();context.resume().catch(()=>{});
+      const analyser=context.createAnalyser();analyser.fftSize=512;
+      context.createMediaStreamSource(stream).connect(analyser);
+      const samples=new Uint8Array(analyser.fftSize);$('meter').hidden=false;
+      const meter=()=>{analyser.getByteTimeDomainData(samples);const rms=Math.sqrt(samples.reduce((s,v)=>s+((v-128)/128)**2,0)/samples.length);$('level').style.width=`${Math.min(100,rms*500)}%`;frame=requestAnimationFrame(meter);};meter();
+    }catch{/* 音量提示失敗不影響錄音。 */}
+  }catch(e){cleanup();recorder=null;busy=false;message(e.name==='NotAllowedError'?'麥克風未獲允許。請在瀏覽器允許麥克風，再按開始。':e.name==='NotFoundError'?'找不到麥克風，請確認已接上或啟用。':e.message,true);render();}
+};
+$('stop').onclick=()=>{if(!recorder||recorder.state!=='recording'||busy)return;busy=true;clearInterval(timer);render();message('錄音結束，正在整理…');recorder.stop();};
+$('retry').onclick=()=>{if(pending&&!busy)save();};
+window.addEventListener('beforeunload',event=>{if(recorder||pending||busy){event.preventDefault();event.returnValue='';}});
+(async()=>{
+  try{const response=await fetch('/api/status');if(!response.ok)throw new Error();const data=await response.json();items=data.items;takes=data.takes;const next=items.findIndex(i=>!latest(i.key));current=next<0?items.length:next;message(current===items.length?'已找回保存的三段錄音。':'準備好就按開始錄音。');render();}
+  catch{message('保存工具尚未連上。請回對話讓我處理。',true);}
+})();
+</script>
+</html>
