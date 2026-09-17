@@ -357,12 +357,17 @@
       return `${{ all: "混合", listen: "認符號", build: "拼音節" }[task.mode]} · ${task.quantity} 張卡`;
     return `${task.quantity} 題`;
   }
-  function emptyStream() {
-    return { version: 1, days: {}, tasks: {}, done: {} };
+  function activityGeneration(value = 0) {
+    if (!Number.isSafeInteger(value) || value < 0)
+      throw Error("統計重置版本不正確");
+    return value;
+  }
+  function emptyStream(generation = 0) {
+    return { version: 1, ...(generation ? { generation } : {}), days: {}, tasks: {}, done: {} };
   }
   function validateStream(value) {
     if (!value || value.version !== 1) throw Error("統計版本不正確");
-    const result = emptyStream();
+    const result = emptyStream(activityGeneration(value.generation));
     for (const key of ["days", "tasks", "done"]) {
       if (
         !value[key] ||
@@ -407,6 +412,9 @@
     return result;
   }
   function mergeStreams(a, b) {
+    // 重置前後的數字不能取最大值合併，否則舊裝置會把已清空的成果加回來。
+    const ag = activityGeneration(a.generation), bg = activityGeneration(b.generation);
+    if (ag !== bg) return clone(ag > bg ? a : b);
     const result = clone(a);
     for (const [day, v] of Object.entries(b.days)) {
       const prev = result.days[day] || {
@@ -539,6 +547,7 @@
     todayTasks,
     taskLabel,
     emptyStream,
+    activityGeneration,
     validateStream,
     mergeStreams,
     summarize,

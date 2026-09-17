@@ -76,6 +76,7 @@
             : body.error || "連線未完成，請稍後再試",
         );
         error.status = response.status;
+        error.generation = body.generation;
         throw error;
       }
       return body;
@@ -137,6 +138,17 @@
       storage.removeItem(key);
     } catch {}
   }
+  const generationKey = (child) => "family:generation:" + child;
+  const generationOf = (data) => core.activityGeneration(data?.generation);
+  const generationFor = (child) => core.activityGeneration(read(generationKey(child), 0));
+  function adoptGeneration(child, value) {
+    const next = core.activityGeneration(value);
+    if (next > generationFor(child)) {
+      write(generationKey(child), next);
+      write("family:remote:" + child, []);
+    }
+    return generationFor(child);
+  }
   function localStreams(child) {
     const streams = [];
     try {
@@ -145,7 +157,9 @@
         if (!key.startsWith(`family:stream:${child}:`)) continue;
         const [, , , app, device] = key.split(":");
         try {
-          streams.push({ app, device, data: core.validateStream(read(key)) });
+          const data = core.validateStream(read(key));
+          if (generationOf(data) === generationFor(child))
+            streams.push({ app, device, data });
         } catch {}
       }
     } catch {}
@@ -177,12 +191,39 @@
   }
   function cachedStreams(child) {
     const value = read("family:remote:" + child, []);
-    return Array.isArray(value) ? value : [];
+    return Array.isArray(value) ? value.filter((s) => {
+      try { return generationOf(s.data) === generationFor(child); }
+      catch { return false; }
+    }) : [];
   }
   async function activity(child) {
     let remote = cachedStreams(child),
-      error = null;
+      error = null, generation = generationFor(child);
     try {
+      // 先確認重置世代，再補送離線紀錄；不把舊 iPad 的資料改標成新世代。
+      let cursor = null;
+      const seen = new Set();
+      do {
+        const result = await request(
+          "/v1/activity/" +
+            child +
+            (cursor ? "?generation=" + generation + "&cursor=" + encodeURIComponent(cursor) : ""),
+        );
+        if (
+          !Array.isArray(result.streams) ||
+          (result.nextCursor && typeof result.nextCursor !== "string")
+        )
+          throw Error("統計資料不完整");
+        const received = core.activityGeneration(result.generation);
+        adoptGeneration(child, received);
+        if (received !== generationFor(child)) throw Error("等待最新累計資料");
+        if (generation !== received) remote = cachedStreams(child);
+        generation = received;
+        remote = mergeLists(remote, result.streams);
+        cursor = result.nextCursor;
+        if (cursor && seen.has(cursor)) throw Error("統計分頁無法繼續");
+        seen.add(cursor);
+      } while (cursor);
       // 回首頁也補送離線練習；不要求孩子重新進入原 App。
       for (const stream of localStreams(child)) {
         const pending = pendingKey(child, stream.app, stream.device);
@@ -193,31 +234,19 @@
           `/v1/activity/${child}/${stream.app}/${stream.device}`,
           { method: "PUT", body: snapshot },
         );
+        if (core.activityGeneration(sent.generation) !== generation ||
+            generation !== generationFor(child)) throw Error("等待最新累計資料");
         remote = mergeLists(remote, [{ ...stream, data: sent.data }]);
         if (JSON.stringify(read(key)) === snapshot) remove(pending);
       }
-      let cursor = null;
-      const seen = new Set();
-      do {
-        const result = await request(
-          "/v1/activity/" +
-            child +
-            (cursor ? "?cursor=" + encodeURIComponent(cursor) : ""),
-        );
-        if (
-          !Array.isArray(result.streams) ||
-          (result.nextCursor && typeof result.nextCursor !== "string")
-        )
-          throw Error("統計資料不完整");
-        remote = mergeLists(remote, result.streams);
-        cursor = result.nextCursor;
-        if (cursor && seen.has(cursor)) throw Error("統計分頁無法繼續");
-        seen.add(cursor);
-      } while (cursor);
+      if (generation !== generationFor(child)) throw Error("等待最新累計資料");
       write("family:remote:" + child, remote);
     } catch (e) {
+      if (e.status === 409 && e.generation !== undefined)
+        adoptGeneration(child, e.generation);
       error = e.message;
     }
+    if (generation !== generationFor(child)) remote = cachedStreams(child);
     return { streams: mergeLists(remote, localStreams(child)), error };
   }
   function summary(child) {
@@ -304,6 +333,19 @@
     let pendingTaskReward = false,
       dismissReward = null;
     const pendingBadges = new Map();
+    function refreshGeneration() {
+      const generation = generationFor(child);
+      if (generationOf(stream) === generation) return;
+      stream = core.emptyStream(generation);
+      dirty = false;
+      fraction = 0;
+      lastTick = lastInput = performance.now();
+      pendingTaskReward = false;
+      pendingBadges.clear();
+      dismissReward?.();
+      dismissReward = null;
+      remove(pendingKey(child, app, device));
+    }
     const search = new URLSearchParams(location.search);
     function profile() {
       return (
@@ -312,6 +354,7 @@
       );
     }
     function allSummary() {
+      refreshGeneration();
       return core.summarize(
         mergeLists(cachedStreams(child), localStreams(child), [
           { app, device, data: stream },
@@ -331,26 +374,35 @@
         }, 1500);
     }
     async function flush() {
+      refreshGeneration();
       if (!dirty || pushing || (auth ? !auth.canAttempt() : !getToken()))
         return;
       pushing = true;
       const snapshot = JSON.stringify(stream);
+      const generation = generationOf(stream);
       dirty = false;
       try {
         const result = await request(`/v1/activity/${child}/${app}/${device}`, {
           method: "PUT",
           body: snapshot,
         });
+        adoptGeneration(child, result.generation);
+        refreshGeneration();
+        if (generation !== generationFor(child)) return;
         stream = core.mergeStreams(stream, core.validateStream(result.data));
         write(key, stream);
         if (!dirty) remove(pendingKey(child, app, device));
-      } catch {
-        dirty = true;
+      } catch (error) {
+        if (error.status === 409 && error.generation !== undefined)
+          adoptGeneration(child, error.generation);
+        refreshGeneration();
+        if (generation === generationFor(child)) dirty = true;
       } finally {
         pushing = false;
       }
     }
     function beacon() {
+      refreshGeneration();
       if (
         (dirty || pushing) &&
         (auth ? auth.canAttempt() : getToken()) &&
@@ -364,6 +416,7 @@
       }
     }
     function tick() {
+      refreshGeneration();
       const now = performance.now();
       if (active && document.visibilityState !== "hidden") {
         fraction +=
@@ -504,6 +557,7 @@
       flush();
     }, 15000);
     document.addEventListener("visibilitychange", () => {
+      refreshGeneration();
       // hidden 事件到達時仍須結清進入背景前的一小段；以事件時點截止。
       if (document.visibilityState === "hidden") {
         const wasActive = active;

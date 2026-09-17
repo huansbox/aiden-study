@@ -103,6 +103,41 @@ test("活動重送、舊快照不翻倍、不倒退，跨孩子隔離", async ()
     404,
   );
 });
+
+test("重置隔離所有 App、任務與徽章；拒絕舊版 PUT / beacon，不影響另一個孩子", async () => {
+  const e = env();
+  for (const app of ["zhuyin", "math", "nativecamp"])
+    await req(e, `activity/bingpu/${app}/old`, "PUT", stream(50, 600));
+  await req(e, "activity/aiden/study/keep", "PUT", stream(10, 300));
+  await e.KV.put("c:activity-generation:bingpu", "1");
+  const reset = await (await req(e, "activity/bingpu")).json();
+  assert.equal(reset.generation, 1);
+  assert.equal(C.summarize(reset.streams).total.seconds, 0);
+  assert.equal(C.summarize(reset.streams).finishedTasks, 0);
+  assert.deepEqual(C.earnedBadges(C.summarize(reset.streams)), []);
+  for (const method of ["PUT", "POST"]) {
+    const rejected = await req(e, "activity/bingpu/zhuyin/old", method, stream(99));
+    assert.equal(rejected.status, 409);
+    assert.equal((await rejected.json()).generation, 1);
+  }
+  assert.equal((await req(e, "activity/bingpu?generation=0&cursor=old")).status, 409);
+  const fresh = { ...stream(1, 5), generation: 1 };
+  for (let i = 0; i < 2; i++)
+    assert.equal((await req(e, "activity/bingpu/zhuyin/old", "PUT", fresh)).status, 200);
+  assert.equal(C.summarize((await (await req(e, "activity/bingpu")).json()).streams).total.answered, 1);
+  assert.equal(C.summarize((await (await req(e, "activity/aiden")).json()).streams).total.answered, 10);
+  await e.KV.put("c:activity-generation:bingpu", "2");
+  assert.equal((await req(e, "activity/bingpu/zhuyin/old", "PUT", fresh)).status, 409);
+  assert.equal((await (await req(e, "activity/bingpu")).json()).streams.length, 0);
+});
+
+test("統計世代只接受非負安全整數；合併不得把舊數字加回新世代", () => {
+  for (const generation of [-1, null, "1", 1.5, Number.MAX_SAFE_INTEGER + 1])
+    assert.throws(() => C.validateStream({ ...stream(), generation }));
+  const fresh = C.emptyStream(1), old = stream(100, 999);
+  assert.deepEqual(C.mergeStreams(old, fresh), fresh);
+  assert.deepEqual(C.mergeStreams(fresh, old), fresh);
+});
 test("不同寫入串流相加；閱讀卡不算作答、時間不發成就，任務徽章永久", () => {
   const a = stream(2, 800),
     b = stream(3, 1000);

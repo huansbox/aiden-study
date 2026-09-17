@@ -69,11 +69,21 @@ export async function familyRoute(request, env, url, cors) {
     !/^test-[a-z0-9-]{1,25}$/.test(child || "")
   )
     return reply(404, { error: "child" }, cors);
+  const generation = core.activityGeneration(
+    await read(env.KV, `c:activity-generation:${child}`, 0),
+  );
+  // 第 0 代沿用原 key；重置只換目前世代，舊裝置延遲送出的資料仍留在舊區。
+  const prefix = `${generation ? "m" + generation : "m"}:${child}:`;
+  const resetReply = () => reply(409, {
+    error: "累計已重置，請重新讀取。", generation,
+  }, cors);
   if (parts.length === 3 && request.method === "GET") {
+    if (url.searchParams.has("generation") &&
+        url.searchParams.get("generation") !== String(generation)) return resetReply();
     const streams = [];
     const cursor = url.searchParams.get("cursor");
     const list = await env.KV.list({
-      prefix: `m:${child}:`,
+      prefix,
       limit: 200,
       ...(cursor ? { cursor } : {}),
     });
@@ -90,6 +100,7 @@ export async function familyRoute(request, env, url, cors) {
     return reply(
       200,
       {
+        generation,
         streams,
         nextCursor: list.list_complete === false ? list.cursor : null,
       },
@@ -108,11 +119,12 @@ export async function familyRoute(request, env, url, cors) {
   } catch (e) {
     return reply(400, { error: e.message }, cors);
   }
-  const key = `m:${child}:${app}:${device}`;
+  if (core.activityGeneration(incoming.generation) !== generation) return resetReply();
+  const key = `${prefix}${app}:${device}`;
   const current = core.validateStream(
-    await read(env.KV, key, core.emptyStream()),
+    await read(env.KV, key, core.emptyStream(generation)),
   );
   const data = core.mergeStreams(current, incoming);
   await env.KV.put(key, JSON.stringify(data));
-  return reply(200, { data }, cors);
+  return reply(200, { data, generation }, cors);
 }
