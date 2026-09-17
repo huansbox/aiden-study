@@ -33,6 +33,6 @@
 
 ## 發布與尚未驗證
 
-發布沿用master的GitHub Pages。合併commit、CI、Pages及正式資源hash核對結果記在本次PR的發布紀錄；以該紀錄確認上線，不用本機測試代替。兩堂正式入口見各task README。
+發布沿用master的GitHub Pages。合併commit、CI、Pages及正式資源hash核對結果記在 [PR #76](https://github.com/huansbox/aiden-study/pull/76) 的發布紀錄；以該紀錄確認上線，不用本機測試代替。兩堂正式入口見各task README。
 
 尚未完成：新兩堂孩子使用回饋、iPad真機、全部音檔的人耳自然度評估、Mac語音比較。這些不冒充為已通過，也不推定慢版已改善學習成效。
