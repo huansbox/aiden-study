@@ -19,7 +19,7 @@
 | 英文拼字 | [docs/spelling/](docs/spelling/) | LocalStorage + Worker 同步 |
 | Native Camp Review | [docs/nativecamp/](docs/nativecamp/) | 自主題、口說與跨日複習；LocalStorage + Worker 同步 |
 | 數織解謎 | [docs/math/nonogram/](docs/math/nonogram/) | 原有過關進度僅 LocalStorage；新累計另行同步 |
-| 注音練習 | [docs/zhuyin/](docs/zhuyin/) | LocalStorage + Worker 同步 |
+| 注音練習 | [docs/zhuyin/](docs/zhuyin/)；[現況與交接](docs-dev/zhuyin-handoff.md) | LocalStorage + Worker 同步 |
 | 動物守護者 | [animal-fight](https://huansbox.github.io/animal-fight/) | 外部 App，未接平台同步 |
 | 英文閱讀 | [aiden-english](https://huansbox.github.io/aiden-english/) | 外部 App，未接平台同步 |
 | 隕石數學防衛隊 | [99-meteor](https://huansbox.github.io/99-meteor/) | 外部 App，未接平台同步 |
