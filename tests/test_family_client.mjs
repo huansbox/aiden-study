@@ -12,6 +12,7 @@ function harness({
   search = "?child=aiden",
   offline = false,
   base = "https://kids.linshuhuan.com/",
+  intercept = null,
 } = {}) {
   const windows = new Map(),
     docs = new Map(),
@@ -79,7 +80,8 @@ function harness({
     dispatchEvent: (event) => windows.get(event.type)?.(),
     fetch: async (url, init = {}) => {
       if (offline) throw Error("offline");
-      return worker.fetch(new Request(url, init), env);
+      const send = () => worker.fetch(new Request(url, init), env);
+      return intercept ? intercept(url, init, send) : send();
     },
   });
   ctx.window = ctx;
@@ -294,4 +296,109 @@ test("站內文章路徑沿用部署前綴", () => {
     F.entryHref({ internal: true, url: "/leisure-mind-map/" }, "aiden"),
     "https://huansbox.github.io/aiden-study/leisure-mind-map/?child=aiden",
   );
+});
+
+test("重置後首頁捨棄 Safari / Web Clip 舊快取與離線待送資料，保留另一個孩子", async () => {
+  const h = harness({ offline: true }), day = h.C.dateKey();
+  const config = h.C.defaults();
+  config.children.bingpu.overrides[day] = [{ id: 'reset', app: 'zhuyin', mode: 'all', quantity: 1 }];
+  h.F.write('family:settings', { rev: 1, data: config });
+  const parent = harness({ offline: true, env: h.env, storageMap: h.storageMap,
+    search: `?child=bingpu&task=reset&day=${day}` });
+  const app = parent.F.attach('zhuyin', 'bingpu');
+  await app.ready;
+  for (let i = 0; i < 10; i++) app.record({ mode: 'listen', answered: true, correct: true });
+  app.setActive(true);
+  parent.time(60000);
+  assert.equal(app.summary().finishedTasks, 1);
+  assert.equal(app.summary().total.seconds, 60);
+  // 獨立容器各自帶著同一份舊資料；同步時都必須拋棄，不能重新標成第 1 代。
+  const clips = [new Map(h.storageMap), new Map(h.storageMap)];
+  const older = h.F.attach('math', 'aiden');
+  await older.ready;
+  older.record({ answered: true, correct: true });
+  await h.env.KV.put('c:activity-generation:bingpu', '1');
+  for (const storageMap of [...clips, h.storageMap]) {
+    const home = harness({ env: h.env, storageMap });
+    assert.equal((await home.F.activity('bingpu')).error, null);
+    const zero = home.F.summary('bingpu');
+    assert.equal(zero.total.answered, 0);
+    assert.equal(zero.total.seconds, 0);
+    assert.equal(zero.finishedTasks, 0);
+    assert.equal(home.C.earnedBadges(zero).length, 0);
+  }
+  assert.equal(h.F.summary('aiden').total.answered, 1);
+  assert.equal(app.summary().total.answered, 0, '已開啟的 App 也捨棄記憶體舊快照');
+  app.finishRound();
+  assert.equal(parent.rewards().length, 0, '取消重置前尚未顯示的徽章');
+  parent.setOffline(false);
+  app.record({ mode: 'listen', answered: true, correct: true });
+  await app.flush();
+  const fresh = harness({ env: h.env });
+  await fresh.F.activity('bingpu');
+  assert.equal(fresh.F.summary('bingpu').total.answered, 1);
+  assert.equal(fresh.F.summary('bingpu').total.seconds, 0);
+  assert.equal(fresh.F.summary('bingpu').finishedTasks, 1);
+});
+
+test("練習中遇到重置回應會清空本頁與待顯示成就，新作答和 beacon 帶新世代", async () => {
+  const h = harness(), app = h.F.attach('zhuyin', 'bingpu');
+  await app.ready;
+  for (let i = 0; i < 10; i++) app.record({ answered: true, correct: true });
+  await h.env.KV.put('c:activity-generation:bingpu', '1');
+  await app.flush();
+  assert.equal(app.summary().total.answered, 0);
+  app.finishRound();
+  assert.equal(h.rewards().length, 0);
+  app.record({ answered: true, correct: true });
+  h.event('pagehide');
+  assert.equal(JSON.parse(await h.beacons.at(-1).body.text()).generation, 1);
+  await app.flush();
+  const another = harness({ env: h.env });
+  await another.F.activity('bingpu');
+  assert.equal(another.F.summary('bingpu').total.answered, 1);
+});
+
+test("已接受重置的裝置不受延遲舊 GET 影響，之後仍可繼續新累計", async () => {
+  let stale = false;
+  const h = harness({ intercept: (url, init, send) => stale && !init.method && url.endsWith('/activity/bingpu')
+    ? new Response(JSON.stringify({ generation: 0, streams: [], nextCursor: null })) : send() });
+  await h.env.KV.put('c:activity-generation:bingpu', '1');
+  await h.F.activity('bingpu');
+  const app = h.F.attach('zhuyin', 'bingpu');
+  await app.ready;
+  app.record({ answered: true, correct: true });
+  await app.flush();
+  stale = true;
+  assert.ok((await h.F.activity('bingpu')).error);
+  assert.equal(h.F.summary('bingpu').total.answered, 1);
+  assert.equal(h.F.read('family:generation:bingpu'), 1);
+});
+
+test("舊 PUT 晚到不得復活資料或覆蓋重置後的新作答", async () => {
+  let release, hold = false;
+  const h = harness({ intercept: async (url, init, send) => {
+    const response = await send();
+    if (hold && init.method === 'PUT') {
+      hold = false;
+      await new Promise(resolve => { release = resolve; });
+    }
+    return response;
+  } });
+  const app = h.F.attach('zhuyin', 'bingpu');
+  await app.ready;
+  app.record({ answered: true, correct: true });
+  hold = true;
+  const oldFlush = app.flush();
+  await new Promise(setImmediate);
+  await h.env.KV.put('c:activity-generation:bingpu', '1');
+  await h.F.activity('bingpu');
+  app.record({ answered: true, correct: false });
+  release();
+  await oldFlush;
+  await app.flush();
+  const home = harness({ env: h.env });
+  await home.F.activity('bingpu');
+  assert.equal(home.F.summary('bingpu').total.answered, 1);
+  assert.equal(home.F.summary('bingpu').total.correct, 0);
 });
