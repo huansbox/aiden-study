@@ -10,7 +10,7 @@
 
 先獨立回答，再核對答案。內容提示標為 With help；重聽問題不算提示。Say it 的 Got it／With help／Not yet 評的是揭曉前表現。提示與揭曉狀態持久保存，重新整理不會把受助回答變成獨立成功。自主答對不能抵掉口說。
 
-Say it 的預設作答要求以醒目句型呈現：is/are 用 `There …`，odd/even 用 `___ is ___.`，too many 用 `… too many …`；孩子端與家長預覽都放在題目下方，採相同字級及深色。這些是題目原本要求的視覺引導，不是輸入欄位。提問語音仍保留 Start with There／Say the number, too 等原句。Try it 練選詞判斷，Say it 練完整句子；家長額外給答案字詞仍記 With help。
+Say it 的預設作答要求以醒目句型呈現：is/are 用 `There …`，odd/even 用 `___ is ___.`，too many 用 `… too many …`；孩子端與家長預覽都放在圖片／問題下方的作答區、Show answer 上方，採與題目相同字級及深色，取代通用的先回答說明。揭曉後保留一份句型提示供對照。這些是題目原本要求的視覺引導，不是輸入欄位。提問語音仍保留 Start with There／Say the number, too 等原句。Try it 練選詞判斷，Say it 練完整句子；家長額外給答案字詞仍記 With help。
 
 ## 跨次複習與結果
 
@@ -100,3 +100,8 @@ node tests/helpers/serve-family.mjs 8789
 - 與修改前版本比對，題包只有九題 Say it 的 instruction 改變；Try it、答案、可接受答案與其餘欄位相同。透過 uv 檢查 Python 的 build_lesson 輸出與題包一致，35份語音工作文字及35個既有 MP3 逐項相同，未重新產生音檔。
 - 家長預覽實際切換三種句型提示。桌面題目與提示皆33.6px，390px窄版皆27.2px，均為深色 #223b37；窄版無水平溢出，提示為靜態文字。孩子端與預覽共用同一組樣式，瀏覽器未記錄 console error／warning。
 - 驗收只操作不計分預覽，未清除學習紀錄或重啟8791；音訊、進度及複習流程均未修改。窄版為桌面瀏覽器尺寸模擬，尚未做 iPad 真機驗收或正式部署。
+
+### 作答區位置調整
+
+- 依後續確認，三種句型統一移到作答區，取代孩子端 Say your answer first／預覽 Say an answer, then reveal the example；題目區不再重複提示。揭曉前位於 Show answer 上方，揭曉後仍保留一份提示。
+- 既有 Node 398項通過；獨立唯讀 review 另以記憶體 mount 驗證孩子端三概念及預覽九題的揭曉前後共24種呈現，無 finding。瀏覽器確認三種提示、桌面及390px窄版，字級／深色維持，無水平溢出；只操作不計分預覽。
