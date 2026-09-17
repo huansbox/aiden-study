@@ -10,7 +10,7 @@
   function mount({ root, lesson, bridge, date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
     C.validateLesson(lesson);
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
-    let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false;
+    let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false, roundOpen = false;
     let lastProgress = JSON.stringify(bridge.getProgress());
     const summary = () => C.summarizeLesson(bridge.getProgress(), lesson, date());
     const current = () => mode ? C.nextQuestion(bridge.getProgress(), lesson, mode, date(), mode === "say" ? conceptId : null) : null;
@@ -115,8 +115,15 @@
     function render() {
       const page = view === "home" ? homeHtml() : view === "progress" ? progressHtml() : view === "practice" ? practiceHtml() : roundHtml();
       root.innerHTML = header() + (error ? `<p class="error" role="alert">${escape(error)}</p>` : "") + page;
-      bridge.setActive?.(view === "practice" && canPlay());
+      updateActivity();
       if (busy) root.querySelectorAll("button").forEach((element) => { element.disabled = true; });
+    }
+    function updateActivity() {
+      bridge.setActive?.(view === "practice" && canPlay());
+      if (view === "round" && roundOpen && canPlay()) {
+        roundOpen = false;
+        bridge.finishRound();
+      }
     }
     async function persist(progress, activity) {
       busy = true;
@@ -138,13 +145,13 @@
         if (action === "sync") { await bridge.syncNow(); updateStatus(); return; }
         if (action === "home" || action === "progress" || action === "choose-say") {
           if (action === "progress" && !["try", "say"].includes(data.mode)) return;
-          stopAudio(); feedback = null;
+          stopAudio(); feedback = null; roundOpen = false;
           if (action !== "home") { mode = action === "choose-say" ? "say" : data.mode; conceptId = null; }
           view = action === "home" ? "home" : "progress"; render(); return;
         }
         if (action === "start-try" || action === "start-say") {
           mode = action === "start-try" ? "try" : "say"; conceptId = mode === "say" ? data.concept : null;
-          view = "practice"; resetQuestion(); if (!current()) view = "round"; render(); await play("question"); return;
+          view = "practice"; resetQuestion(); roundOpen = Boolean(current()); if (!current()) view = "round"; render(); await play("question"); return;
         }
         if (view !== "practice") return;
         if (!feedback && lastKey !== questionKey(current())) { resetQuestion(); error = "Your saved practice changed. Please try this question."; render(); await play("question"); return; }
@@ -196,7 +203,7 @@
       void handle(element.dataset.action, element.dataset);
     };
     const leave = () => { suspended = true; stopAudio(); bridge.setActive?.(false); };
-    const visible = () => { suspended = documentTarget?.visibilityState === "hidden"; if (suspended) leave(); else bridge.setActive?.(view === "practice"); };
+    const visible = () => { suspended = documentTarget?.visibilityState === "hidden"; if (suspended) leave(); else updateActivity(); };
     root.addEventListener("click", clicked);
     eventTarget.addEventListener?.("pagehide", leave);
     eventTarget.addEventListener?.("pageshow", visible);

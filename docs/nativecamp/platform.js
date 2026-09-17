@@ -81,6 +81,7 @@
       },
       syncNow,
       setActive: (value) => activityContext.setActive(value),
+      finishRound: () => activityContext.finishRound(),
       status() {
         if (localError) return localError;
         if (auth.state.status === "required") return HEALTH["auth-error"];

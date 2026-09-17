@@ -120,12 +120,8 @@ test("孤兒檔（有檔無 key）＝零", () => {
   assert.deepEqual(collectOrphans(keys, files, content.audio.ext), []);
 });
 
-test("缺檔（有 key 無檔）＝警告列表、不 fail", () => {
-  const missing = collectMissing(keys, files, content.audio.ext);
-  if (missing.length) {
-    console.warn(`⚠ 缺音檔 ${missing.length}/${keys.length}（家長錄音完成前屬預期；歸零驗收在 #20）：`);
-    for (const k of missing) console.warn(`  - ${k}${content.audio.ext}`);
-  }
+test("正式親錄缺檔（有 key 無檔）＝零", () => {
+  assert.deepEqual(collectMissing(keys, files, content.audio.ext), []);
 });
 
 // ── 審計函式本身的行為（餵壞資料，證明每類錯誤真的會被抓、且聚合不 fail-fast）──

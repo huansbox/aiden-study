@@ -1,0 +1,2 @@
+# The recording build hashes the exact recipe bytes across Windows and macOS.
+docs-dev/zhuyin-parent-audio/recipe.json text eol=lf

@@ -76,7 +76,7 @@ node tests/helpers/serve-family.mjs 8789
 - clean-context code／integration review 找到並修正：離頁撤銷音檔後重播快取失效、外部進度接受矛盾完成／提示狀態。補回歸測試，複查無未解決 finding。另把計數用的樹木圖示改為單棵，避免每個圖示含兩棵造成誤判。
 - 最後整合修正「See my progress」直接開摘要，並更新新 app／家長入口的 shared script 版本，避免混用舊快取；首頁資源版本亦已重建。瀏覽器未記錄 console error／warning。
 
-目前交付工作分支與本機隔離預覽。尚未正式發布；正式 Worker 尚未載入老師片段。老師原音、人耳音質與孩子難度／完成時間仍待家庭實測。
+上述分支驗收時交付工作分支與本機隔離預覽，當時尚未正式發布或載入正式老師片段。後續發布結果以文末與 PR #68 的發布紀錄為準；人耳音質與孩子難度／完成時間仍待家庭實測。
 
 ## 2026-09-17 介面精簡與預覽驗收（#69）
 
@@ -105,3 +105,11 @@ node tests/helpers/serve-family.mjs 8789
 
 - 依後續確認，三種句型統一移到作答區，取代孩子端 Say your answer first／預覽 Say an answer, then reveal the example；題目區不再重複提示。揭曉前位於 Show answer 上方，揭曉後仍保留一份提示。
 - 既有 Node 398項通過；獨立唯讀 review 另以記憶體 mount 驗證孩子端三概念及預覽九題的揭曉前後共24種呈現，無 finding。瀏覽器確認三種提示、桌面及390px窄版，字級／深色維持，無水平溢出；只操作不計分預覽。
+
+## 正式發布整合
+
+2026-09-17 使用者授權正式部署。整合主線的注音錄音／聲調提示與回合獎勵規則；Native Camp 仍即時記錄成果，Try it 最後 Continue 或 Say it 單概念結束頁才透過 finishRound 顯示英文獎勵。單題回饋、離開或切背景不算完成；背景存檔完成時延後至可見的結束頁。同步更新各 App 的共用資源版本，避免家長開啟 Native Camp 後，舊 family-core 快取拒收新設定。
+
+發布順序為新版 Worker、私人音訊 KV、PR 合併與 GitHub Pages。沿用既有 Worker、KV、家庭授權與 API route；只新增 `c:nativecamp:audio:2026-09-15-hats-question`，不變更孩子進度或自動調整家長的活動設定。原音為43061 bytes、SHA256 `ae47f7a4e99ae39f25c6df3a32d977cdf48336bff5bc3b3d517f102cb9625c18`；部署從 ignored 原音包取該 id 的內層物件作為 value。
+
+整合後本機 Node 409項、pytest 184項通過，Worker dry-run 成功。正式 Worker version、Pages commit 與外部驗證結果記於 PR #68 的發布紀錄，不能以 dry-run 或本機結果代表上線成功。正式使用時由家長後台開啟 Native Camp Review；部署不會重設或補造家庭設定。

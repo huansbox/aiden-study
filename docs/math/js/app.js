@@ -338,7 +338,7 @@ function onBossProblemComplete() {
   updateTotalStars();
 
   if (bossMode.stage < BOSS_STAGES.length - 1) {
-    showBossStageClear(bossMode.stage, stageConfig.reward);
+    hintEl.textContent = `第${bossMode.stage + 1}關完成`;
     bossMode.stage++;
     setTimeout(() => {
       startBossStageProblem();
@@ -355,30 +355,8 @@ function onBossProblemComplete() {
   }
 }
 
-function showBossStageClear(stageIndex, reward) {
-  const overlay = document.createElement('div');
-  overlay.className = 'celebration';
-
-  const content = document.createElement('div');
-  content.className = 'celebration-content';
-
-  const title = document.createElement('div');
-  title.className = 'celebration-stars';
-  title.textContent = `第${stageIndex + 1}關 通過！`;
-
-  const sub = document.createElement('div');
-  sub.className = 'celebration-text';
-  sub.textContent = `+${reward}⭐`;
-
-  content.appendChild(title);
-  content.appendChild(sub);
-  overlay.appendChild(content);
-  document.body.appendChild(overlay);
-
-  setTimeout(() => overlay.remove(), 2000);
-}
-
 function showBossVictory(totalStars, perfectBonus) {
+  family?.finishRound();
   const overlay = document.createElement('div');
   overlay.className = 'fireworks-overlay';
 
@@ -406,6 +384,7 @@ function showBossVictory(totalStars, perfectBonus) {
 }
 
 function showBossDefeat() {
+  family?.finishRound();
   const overlay = document.createElement('div');
   overlay.className = 'celebration';
 
@@ -498,6 +477,8 @@ function onProblemComplete() {
     onBossProblemComplete();
     return;
   }
+
+  family?.finishRound();
 
   const stars = getStars(state.errors);
   streak++;

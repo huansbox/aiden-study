@@ -32,12 +32,13 @@ class Events {
   emit(name) { this.handlers.get(name)?.(); }
 }
 function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
-  const root = new Root(), activities = [], media = [], plays = [], eventTarget = new Events(), documentTarget = new Events();
+  const root = new Root(), activities = [], media = [], plays = [], roundFinishes = [], eventTarget = new Events(), documentTarget = new Events();
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
     homeHref: "../?child=aiden", status: () => "Saved on this device.", getProgress: () => saved,
     async saveProgress(value, activity) { await beforeSave?.(); saved = C.validateProgress(value); saves++; if (activity) activities.push(activity); app?.onChange({ type: "status" }); },
     setActive(value) { active = value; },
+    finishRound() { roundFinishes.push(root.innerHTML); active = false; },
     async syncNow() { app?.onChange({ type: "status" }); },
     async privateAudio(id, options) { privateRequests++; return loadPrivate ? loadPrivate(id, options) : "blob:teacher-audio-" + privateRequests; },
   };
@@ -46,7 +47,7 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
     const audio = { src: "", paused: true, async play() { plays.push(this.src); if (failAudio) throw Error("Media unavailable"); this.paused = false; }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
   } });
-  return { app, root, lesson, activities, media, plays, bridge, eventTarget, documentTarget,
+  return { app, root, lesson, activities, media, plays, roundFinishes, bridge, eventTarget, documentTarget,
     get progress() { return saved; }, get saves() { return saves; }, get active() { return active; }, get privateRequests() { return privateRequests; },
     adopt(value) { saved = C.validateProgress(value); app.onChange({ type: "progress" }); },
   };
@@ -84,6 +85,7 @@ test("real lesson opens; Listen and status-only notifications preserve selection
   assert.deepEqual(h.activities, []);
   await h.app.handle("check");
   assert.equal(h.saves, 1);
+  assert.equal(h.roundFinishes.length, 0, "Recording a single answer must not show round rewards.");
   assert.deepEqual(h.activities, [{ answered: true, correct: true }]);
   assert.equal(h.media[0].src, h.lesson.concepts[0].try[0].audio.answer);
   assert.equal(h.media[0].paused, false);
@@ -226,16 +228,22 @@ test("Say it Got it precedes the next question, and the last rating plays only e
   assert.ok(h.root.innerHTML.includes(second.prompt));
   assert.deepEqual(h.plays, [first.audio.question, first.audio.answer]);
   assert.equal(clock.notes.length, 3);
+  assert.equal(h.roundFinishes.length, 0);
   clock.finish(); await firstRating;
   assert.equal(h.plays.at(-1), second.audio.question);
   await h.app.handle("reveal");
   const lastRating = h.app.handle("rate", { rating: "gotIt" });
   await settle();
   assert.match(h.root.innerHTML, /Done for now/);
+  assert.equal(h.roundFinishes.length, 1);
+  assert.match(h.roundFinishes[0], /Done for now/, "The result screen must exist before rewards are shown.");
   assert.equal(clock.notes.length, 6);
   clock.finish(); await lastRating;
   assert.deepEqual(h.plays, [first.audio.question, first.audio.answer, second.audio.question, second.audio.answer]);
   assert.equal(h.saves, 4, "Reveal and rating each persist once; playing audio never writes progress.");
+  h.eventTarget.emit("pageshow");
+  await h.app.handle("sync");
+  assert.equal(h.roundFinishes.length, 1, "Revisiting the same result screen must not finish the round twice.");
   h.app.destroy();
 });
 test("Say it With help and Not yet advance without a correct-answer sound", async () => {
@@ -261,6 +269,7 @@ test("leaving during encouragement cancels the following answer and stops every 
   assert.equal(h.plays.length, 1);
   assert.ok(clock.notes.every((note) => note.disconnected));
   assert.equal(h.active, false);
+  assert.equal(h.roundFinishes.length, 0, "Returning home partway through practice is not a completed round.");
   assert.match(h.root.innerHTML, /Choose a practice mode/);
   h.app.destroy();
 });
@@ -300,6 +309,7 @@ test("pagehide cancels private question loading, and returning permits a fresh L
   resolveOld("blob:old-question"); await start;
   assert.deepEqual(h.plays, []);
   assert.equal(h.active, false);
+  assert.equal(h.roundFinishes.length, 0, "Leaving the page is not a round completion.");
   h.eventTarget.emit("pageshow");
   await h.app.handle("question-audio");
   assert.deepEqual(h.plays, ["blob:current-question"]);
@@ -307,6 +317,48 @@ test("pagehide cancels private question loading, and returning permits a fresh L
   assert.equal(h.eventTarget.handlers.size, 0);
   assert.equal(h.documentTarget.handlers.size, 0);
   assert.equal(h.media[0].paused, true);
+});
+test("Try it finishes the round only after Continue leaves its last initial or review feedback", async () => {
+  for (const [progress, practiceDate] of [[C.createProgress(), date], [completedProgress(["try"]), "2026-09-18"]]) {
+    const h = harness({ progress, practiceDate });
+    await h.app.handle("start-try");
+    let next;
+    while ((next = C.nextQuestion(h.progress, h.lesson, "try", practiceDate))) {
+      if (next.question.type === "choice") await h.app.handle("pick", { choice: next.question.answer });
+      else for (const word of next.question.acceptedOrders[0]) await h.app.handle("add-word", { word });
+      await h.app.handle("check");
+      assert.equal(h.roundFinishes.length, 0, "Even the last answer's feedback remains part of practice.");
+      h.documentTarget.visibilityState = "hidden"; h.documentTarget.emit("visibilitychange");
+      h.documentTarget.visibilityState = "visible"; h.documentTarget.emit("visibilitychange");
+      assert.equal(h.roundFinishes.length, 0, "Pausing and resuming does not finish a round.");
+      await h.app.handle("next");
+    }
+    assert.equal(h.roundFinishes.length, 1);
+    assert.match(h.roundFinishes[0], /Done for now/);
+    await h.app.handle("sync");
+    assert.equal(h.roundFinishes.length, 1);
+    h.app.destroy();
+  }
+});
+test("a last Say it rating saved in the background defers rewards until its result screen is visible", async () => {
+  let delaySave = false, finishSave;
+  const h = harness({ beforeSave: () => delaySave ? new Promise((resolve) => { finishSave = resolve; }) : undefined });
+  await h.app.handle("start-say", { concept: "is-are" });
+  await h.app.handle("reveal");
+  await h.app.handle("rate", { rating: "gotIt" });
+  await h.app.handle("reveal");
+  delaySave = true;
+  const lastRating = h.app.handle("rate", { rating: "gotIt" });
+  await settle();
+  h.documentTarget.visibilityState = "hidden"; h.documentTarget.emit("visibilitychange");
+  finishSave(); await lastRating;
+  assert.match(h.root.innerHTML, /Done for now/);
+  assert.equal(h.roundFinishes.length, 0);
+  h.documentTarget.visibilityState = "visible"; h.documentTarget.emit("visibilitychange");
+  assert.equal(h.roundFinishes.length, 1);
+  h.documentTarget.emit("visibilitychange");
+  assert.equal(h.roundFinishes.length, 1);
+  h.app.destroy();
 });
 function completedProgress(modes = ["try", "say"]) {
   let progress = C.createProgress();

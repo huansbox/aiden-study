@@ -32,13 +32,15 @@ function environment() {
   } }) };
 }
 async function browser(env, { child = "aiden", storage = new Map(), offline = false } = {}) {
-  const cookie = await login(env), listeners = new Map(), calls = [];
+  const cookie = await login(env), listeners = new Map(), calls = [], shown = [];
   const localStorage = {
     get length() { return storage.size; }, key: (i) => [...storage.keys()][i],
     getItem: (key) => storage.get(key) ?? null,
     setItem: (key, value) => storage.set(key, String(value)), removeItem: (key) => storage.delete(key),
   };
-  const element = () => ({ append() {}, appendChild() {}, remove() {}, setAttribute() {},
+  const element = () => ({ children: [], removed: false,
+    append(...children) { this.children.push(...children); }, appendChild(child) { shown.push(child); },
+    remove() { this.removed = true; }, setAttribute() {},
     addEventListener() {}, classList: { add() {} } });
   const document = { currentScript: { src: origin + "/shared/family-client.js" }, visibilityState: "visible",
     getElementById: () => null, createElement: element, body: element(), addEventListener() {} };
@@ -66,6 +68,7 @@ async function browser(env, { child = "aiden", storage = new Map(), offline = fa
   vm.runInContext(readFileSync(new URL("../docs/nativecamp/platform.js", import.meta.url), "utf8"), context);
   const notices = [], bridge = await context.NativeCampPlatform.boot(lesson, (event) => notices.push(event.type));
   return { bridge, storage, cookie, calls, notices, context,
+    rewards: () => shown.filter((node) => node.id === "family-reward" && !node.removed),
     setOffline(value) { offline = value; }, event(name) { context.dispatchEvent({ type: name }); } };
 }
 function firstRounds(bridge) {
@@ -127,6 +130,30 @@ test("offline edits survive reload and upload on reconnect; other child remains 
   const b = await browser(env);
   assert.ok(C.summarizeLesson(b.bridge.getProgress(), lesson, date).try.done);
   assert.equal(await env.KV.get("p:bingpu:nativecamp"), null);
+});
+test("Native Camp records activity immediately and exposes rewards only through finishRound", async () => {
+  const a = await browser(environment());
+  a.bridge.setActive(true);
+  for (const practiceDate of [date, "2026-09-18"]) {
+    let next;
+    while ((next = C.nextQuestion(a.bridge.getProgress(), lesson, "try", practiceDate))) {
+      const result = C.submitTry(a.bridge.getProgress(), lesson, practiceDate, next.concept.id, next.question.id, "no");
+      a.bridge.saveProgress(result.progress, { answered: true, correct: false });
+    }
+  }
+  assert.equal(a.context.KidsFamily.summary("aiden").total.answered, 12);
+  assert.equal(a.rewards().length, 0);
+  a.bridge.setActive(false);
+  assert.equal(a.rewards().length, 0, "Pausing does not publish pending badges.");
+  a.bridge.finishRound();
+  assert.equal(a.rewards().length, 1);
+  const label = a.rewards()[0].children.find((node) => node.textContent)?.textContent;
+  assert.match(label, /New badge/);
+  assert.doesNotMatch(label, /[\u3400-\u9FFF]/);
+  a.bridge.finishRound();
+  assert.equal(a.rewards().length, 1);
+  a.bridge.setActive(true);
+  assert.equal(a.rewards().length, 0, "Beginning another round clears the previous reward.");
 });
 test("malformed remote progress cannot replace local data or advance its sync revision", async () => {
   const env = environment(), a = await browser(env);
