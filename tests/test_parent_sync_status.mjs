@@ -86,7 +86,7 @@ class Element {
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
 }
 
-async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")) } = {}) {
+async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child } = {}) {
   const root = new Element();
   root.id = "parent";
   const storage = new Map();
@@ -100,7 +100,8 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     get length() { return storage.size; },
     key: (index) => [...storage.keys()][index],
   };
-  const location = { href: origin + "/parent/?k=test-token", search: "?k=test-token" };
+  const search = "?k=test-token" + (child ? "&child=" + encodeURIComponent(child) : "");
+  const location = { href: origin + "/parent/" + search, search };
   const document = {
     currentScript: {},
     visibilityState: "visible",
@@ -169,6 +170,7 @@ test("Native Camp family summary reads authenticated first results, keeps modes 
   const h = await page({ initial: { "p:aiden:nativecamp": { value: JSON.stringify({ rev: 2, epoch: "same", data }) } } });
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
   const panel = h.root.querySelector("#nativecamp-summary");
+  assert.match(panel.innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden"/);
   assert.match(panel.innerHTML, /Try it · In progress/);
   assert.match(panel.innerHTML, /Say it · In progress/);
   assert.match(panel.innerHTML, /Independent/);
@@ -178,6 +180,7 @@ test("Native Camp family summary reads authenticated first results, keeps modes 
   await h.root.querySelector('[data-child="bingpu"]').fire("click");
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("No practice has been saved"));
   assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Try it ·/);
+  assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=bingpu"/);
 });
 
 test("Native Camp summary hides stale or malformed remote data rather than presenting success", async () => {
@@ -188,8 +191,20 @@ test("Native Camp summary hides stale or malformed remote data rather than prese
     await h.env.KV.put("p:aiden:nativecamp", JSON.stringify(body));
     await h.root.querySelector("#nativecamp-summary").querySelector("button").fire("click");
     assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /No results are shown/);
+    assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden"/);
     assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Read from family storage|Try it ·/);
   }
+});
+
+test("returning from preview preserves the selected child and maintenance opens a non-writing preview", async () => {
+  const h = await page({ child: "bingpu" });
+  await h.ready();
+  await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("No practice has been saved"));
+  assert.equal(h.root.querySelector('[data-child="bingpu"]').attrs["aria-pressed"], "true");
+  assert.equal(h.root.querySelector('[data-child="aiden"]').attrs["aria-pressed"], "false");
+  assert.match(h.root.innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=bingpu">Native Camp · Preview questions/);
+  assert.doesNotMatch(h.root.innerHTML, /href="\.\.\/nativecamp\/\?child=bingpu&parent=1"/);
+  assert.match(h.root.innerHTML, /href="\.\.\/study\/\?child=bingpu&parent=1"/);
 });
 
 test("家長心智圖顯示最新索引文章，僅控制顯示、不再編輯舊篇名網址", async () => {

@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import "../docs/nativecamp/core.js";
+import "../docs/nativecamp/question-view.js";
 import "../docs/nativecamp/app.js";
 const C = globalThis.NativeCampCore, A = globalThis.NativeCampApp;
 const originalLesson = JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/2026-09-15.json", import.meta.url), "utf8"));
@@ -23,7 +24,7 @@ class Root {
   addEventListener(name, handler) { this.events.set(name, handler); }
   removeEventListener(name) { this.events.delete(name); }
 }
-function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false } = {}) {
+function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false, practiceDate = date } = {}) {
   const root = new Root(), activities = [], media = [];
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
@@ -33,7 +34,7 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
     async syncNow() { app?.onChange({ type: "status" }); },
     async privateAudio() { privateRequests++; return "blob:teacher-audio-" + privateRequests; },
   };
-  app = A.mount({ root, lesson, bridge, date: () => date, makeAudio: () => {
+  app = A.mount({ root, lesson, bridge, date: () => practiceDate, makeAudio: () => {
     const audio = { src: "", paused: false, async play() { if (failAudio) throw Error("Media unavailable"); }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
   } });
@@ -77,6 +78,7 @@ test("Say it hides answer text and media until reveal; rating refers to the firs
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.concepts[0].attempted, 0);
   await h.app.handle("reveal");
   assert.ok(h.root.innerHTML.includes(question.answerText));
+  assert.match(h.root.innerHTML, /Before showing the answer\./);
   assert.match(h.root.innerHTML, /data-action="answer-audio"/);
   await h.app.handle("answer-audio");
   assert.equal(h.media[0].src, question.audio.answer);
@@ -164,20 +166,81 @@ test("audio failure is retryable without an attempt, and private audio is reques
   assert.equal(h.active, false);
   assert.equal(h.media[1].paused, true);
 });
-test("finished Try it opens its progress summary from the home card", async () => {
+function completedProgress(modes = ["try", "say"]) {
   let progress = C.createProgress();
-  for (const concept of originalLesson.concepts) {
-    for (const question of concept.try.slice(0, 2)) {
-      progress = C.submitTry(progress, originalLesson, date, concept.id, question.id,
-        question.type === "choice" ? question.answer : question.acceptedOrders[0]).progress;
+  for (const mode of modes) {
+    for (const concept of originalLesson.concepts) {
+      for (const question of concept[mode].slice(0, 2)) {
+        if (mode === "try") progress = C.submitTry(progress, originalLesson, date, concept.id, question.id,
+          question.type === "choice" ? question.answer : question.acceptedOrders[0]).progress;
+        else {
+          progress = C.markPending(progress, originalLesson, "say", date, concept.id, question.id, "reveal");
+          progress = C.submitSay(progress, originalLesson, date, concept.id, question.id, "gotIt").progress;
+        }
+      }
     }
   }
-  const h = harness({ progress });
-  const card = h.root.innerHTML.match(/<article class="mode-card try">([\s\S]*?)<\/article>/)[1];
-  const action = card.match(/data-action="([^"]+)"/)[1];
-  assert.match(card, /See my progress/);
-  await h.app.handle(action);
-  assert.match(h.root.innerHTML, /<h1>See the first answers\.<\/h1>/);
+  return progress;
+}
+function homeCard(h, mode) {
+  const html = h.root.innerHTML.match(new RegExp(`<article class="mode-card ${mode}">([\\s\\S]*?)<\\/article>`))[1];
+  return { html, action: html.match(/data-action="([^"]+)"/)[1], mode: html.match(/data-mode="([^"]+)"/)[1] };
+}
+test("both finished modes open only their own concept progress without changing saved dates or totals", async () => {
+  const progress = completedProgress(), h = harness({ progress });
+  const before = JSON.stringify(h.progress);
+  for (const mode of ["try", "say"]) {
+    await h.app.handle("home");
+    const card = homeCard(h, mode);
+    assert.match(card.html, /See my progress/);
+    await h.app.handle(card.action, { mode: card.mode });
+    assert.match(h.root.innerHTML, new RegExp(`<h1 class="progress-title">${mode === "try" ? "Try it" : "Say it"}</h1>`));
+    assert.doesNotMatch(h.root.innerHTML, mode === "try" ? /Say it/ : /Try it/);
+    assert.equal((h.root.innerHTML.match(/class="concept-card"/g) || []).length, 3);
+    assert.equal((h.root.innerHTML.match(/Review tomorrow/g) || []).length, 3);
+    assert.equal((h.root.innerHTML.match(/class="pill done"/g) || []).length, 3);
+    assert.doesNotMatch(h.root.innerHTML, /Parent summary|PARENT SUMMARY|First answers|Independent|Incorrect|Got it|With help|Not yet|data-action="start-try"|data-action="start-say"/);
+  }
+  assert.equal(JSON.stringify(h.progress), before);
   assert.equal(h.saves, 0);
   assert.equal(h.active, false);
+});
+test("Try it Done does not complete Say it; the simple home and all child screens have no parent-summary entry", async () => {
+  const h = harness({ progress: completedProgress(["try"]) });
+  assert.ok(h.root.innerHTML.includes(originalLesson.title));
+  assert.doesNotMatch(h.root.innerHTML, /class="hero"|class="concept-tags"|A LITTLE PRACTICE|Your English lesson|Tap, choose|grown-up helps/);
+  assert.match(homeCard(h, "try").html, /Done/);
+  assert.doesNotMatch(homeCard(h, "say").html, /Done/);
+  await h.app.handle("choose-say");
+  assert.equal((h.root.innerHTML.match(/Not started/g) || []).length, 3);
+  assert.doesNotMatch(h.root.innerHTML, /class="pill done"/);
+  const screens = [h.root.innerHTML];
+  await h.app.handle("start-say", { concept: "is-are" }); screens.push(h.root.innerHTML);
+  await h.app.handle("reveal"); screens.push(h.root.innerHTML);
+  await h.app.handle("rate", { rating: "gotIt" });
+  await h.app.handle("reveal");
+  await h.app.handle("rate", { rating: "gotIt" }); screens.push(h.root.innerHTML);
+  assert.match(h.root.innerHTML, /Done for now\./);
+  assert.match(h.root.innerHTML, /Choose another idea/);
+  for (const screen of screens) assert.doesNotMatch(screen, /Parent summary|PARENT SUMMARY|data-action="summary"/);
+  assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.done, false);
+  assert.equal(C.summarizeLesson(h.progress, h.lesson, date).try.done, true);
+});
+test("due reviews keep the original Try it schedule and Say it concept choice", async () => {
+  const progress = completedProgress();
+  const h = harness({ progress, practiceDate: "2026-09-18" });
+  const tryCard = homeCard(h, "try");
+  assert.match(tryCard.html, /Review now/);
+  await h.app.handle(tryCard.action, { mode: tryCard.mode });
+  assert.ok(h.root.innerHTML.includes(originalLesson.concepts[0].try[2].prompt));
+  assert.match(h.root.innerHTML, /One short review/);
+  await h.app.handle("home");
+  const sayCard = homeCard(h, "say");
+  await h.app.handle(sayCard.action, { mode: sayCard.mode });
+  assert.equal((h.root.innerHTML.match(/data-action="start-say"/g) || []).length, 3);
+  assert.equal((h.root.innerHTML.match(/Review ready/g) || []).length, 3);
+  await h.app.handle("start-say", { concept: "too-many" });
+  assert.ok(h.root.innerHTML.includes(originalLesson.concepts[2].say[2].prompt));
+  assert.match(h.root.innerHTML, /One short review/);
+  assert.equal(h.saves, 0);
 });
