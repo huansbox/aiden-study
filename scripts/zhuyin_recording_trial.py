@@ -10,7 +10,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,7 +123,8 @@ def main():
                     ident = f'{datetime.now():%Y%m%d-%H%M%S-%f}-{key}-{uuid4().hex[:8]}'
                     take = {"id": ident, "key": key, "duration": round(duration, 3),
                             "recordedAt": datetime.now().astimezone().isoformat(),
-                            "original": original.name, "mime": mime}
+                            "original": original.name, "mime": mime,
+                            "inputLabel": unquote(self.headers.get("X-Recording-Device", ""))[:200]}
                     (work / "take.json").write_text(json.dumps(take, ensure_ascii=False, indent=2) + "\n")
                     work.rename(output / ident)
                     return self.respond(201, take)
