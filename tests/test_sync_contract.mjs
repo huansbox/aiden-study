@@ -331,3 +331,89 @@ test("flushBeacon：beacon 後永不清 dirty；下輪 GET 認出 own-write → 
   assert.equal(store.meta.syncedRev, 4);
   assert.equal(!!store.meta.dirty, false);
 });
+
+function sharedClient(store, env, prefix, afterPut = async () => {}) {
+  let sequence = 0;
+  return createSyncClient({
+    endpoint: BASE, child: CHILD, app: APP, schemaVersion: 1, getToken: () => TOKEN,
+    loadData: () => store.data, saveData: (data) => { store.data = data; },
+    loadMeta: () => store.meta, saveMeta: (meta) => { store.meta = meta; },
+    uuid: () => `${prefix}-${++sequence}`, now: () => 1000, debounceMs: 0,
+    fetchImpl: async (url, init = {}) => {
+      const response = await worker.fetch(new Request(url, { method: init.method || "GET", body: init.body }), env);
+      if (init.method === "PUT") await afterPut(response);
+      return response;
+    },
+  });
+}
+const deferred = () => {
+  let resolve;
+  const promise = new Promise((done) => { resolve = done; });
+  return { promise, resolve };
+};
+
+test("PUT 在途期間同頁或另一頁新增進度，較早的成功回應不得誤清 dirty", async () => {
+  for (const samePage of [false, true]) {
+    const env = makeEnv({}), store = { data: { mastered: ["q1"] }, meta: { syncedRev: 0, dirty: true } };
+    const reached = deferred(), release = deferred(); let held = false;
+    const a = sharedClient(store, env, "a", async () => { if (!held) { held = true; reached.resolve(); await release.promise; } });
+    const b = samePage ? a : sharedClient(store, env, "b");
+    const pending = a.syncNow();
+    try {
+      await reached.promise;
+      store.data = { mastered: ["q1", "q2"] }; b.markDirty();
+      release.resolve(); await pending;
+      assert.equal(store.meta.dirty, true, "共享 storage 的新作答尚未上傳，不得顯示已同步");
+      await b.syncNow();
+      assert.deepEqual((await readServer(env)).data, store.data);
+      assert.equal(store.meta.dirty, false);
+    } finally { release.resolve(); await pending; }
+  }
+});
+
+test("尚未前進 revision 時，舊頁的 PUT 成功回應也不清掉他頁在途 writeId", async () => {
+  const env = makeEnv({}), store = { data: { mastered: ["q1"] }, meta: { syncedRev: 0, dirty: true } };
+  const reachedA = deferred(), releaseA = deferred(), reachedB = deferred(), releaseB = deferred();
+  const a = sharedClient(store, env, "a", async () => { reachedA.resolve(); await releaseA.promise; });
+  const b = sharedClient(store, env, "b", async () => {
+    reachedB.resolve(); await releaseB.promise;
+  });
+  const pendingA = a.syncNow(); let pendingB;
+  try {
+    await reachedA.promise;
+    store.data = { mastered: ["q1", "q2"] }; b.markDirty();
+    pendingB = b.syncNow(); await reachedB.promise;
+    const beforeAck = structuredClone(store.meta);
+    assert.equal(beforeAck.syncedRev, 0, "兩頁尚未收到 ACK，需用 writeId 識別最新在途寫入");
+    assert.equal(beforeAck.pendingWriteId, "b-1");
+    releaseA.resolve(); await pendingA;
+    assert.deepEqual(store.meta, beforeAck, "舊 ACK 不得覆蓋新頁的 revision、pending write 或健康狀態");
+    releaseB.resolve(); await pendingB;
+    assert.equal(store.meta.syncedRev, 2);
+    assert.equal(store.meta.dirty, false);
+    assert.deepEqual((await readServer(env)).data, { mastered: ["q1", "q2"] });
+  } finally { releaseA.resolve(); releaseB.resolve(); await pendingA; await pendingB; }
+});
+
+test("舊頁延後收到舊世代 ACK，不能覆蓋另一頁已重新播種的新世代", async () => {
+  const env = makeEnv({ server: { rev: 1, data: { mastered: ["q1"] }, writeId: "seed", epoch: "old-epoch" } });
+  const store = { data: { mastered: ["q1", "q2"] }, meta: { syncedRev: 1, syncedEpoch: "old-epoch", dirty: true } };
+  const reached = deferred(), release = deferred();
+  const a = sharedClient(store, env, "a", async () => { reached.resolve(); await release.promise; });
+  const b = sharedClient(store, env, "b");
+  const pending = a.syncNow();
+  try {
+    await reached.promise;
+    await b.syncNow();
+    await env.KV.delete(KV_KEY);
+    store.data = { mastered: ["q1", "q2", "q3"] }; b.markDirty();
+    await b.syncNow();
+    assert.equal(store.meta.syncedRev, 1, "新世代從 rev 1 重新開始，與舊 PUT 起點數字相同");
+    assert.notEqual(store.meta.syncedEpoch, "old-epoch");
+    const current = structuredClone(store.meta);
+    release.resolve(); await pending;
+    assert.deepEqual(store.meta, current);
+    await b.syncNow();
+    assert.deepEqual((await readServer(env)).data, { mastered: ["q1", "q2", "q3"] });
+  } finally { release.resolve(); await pending; }
+});
