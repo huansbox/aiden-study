@@ -1,6 +1,6 @@
 # Native Camp 課後複習製作 SOP
 
-適用對象：已有一些英文基礎、由家長陪同的小孩。以已發布的 `2026-09-15` 課程為第一份基準，整理本次確認的設計標準；不代表已驗證長期學習成效。下一堂先使用這份文件，第二個不同任務實際重用後，再依[任務庫規則](../README.md)評估移入 shared。
+適用對象：已有一些英文基礎、由家長陪同的小孩。以已發布的 `2026-09-15` 課程為第一份基準，並由 `2026-09-14`、`2026-09-16` 兩堂Edon課程重用；不代表已驗證長期學習成效。SOP與模板沿用本入口，兩堂實際共用的建置／音訊核對工具放在 [shared/nativecamp](../shared/nativecamp/)。
 
 ## 下次怎麼開始
 
@@ -74,7 +74,7 @@ Show answer 自動念口說示範；家長選 Got it 後播鼓勵音，再接下
 ## 4. 製作與驗證音訊
 
 - 原音適合時，取老師一句完整、連續且對得上新情境的提問；不逐字拼接，不夾入孩子回答、答案提示或不必要私人內容。不合用就使用一般英文 TTS，無須為了原音改扭題目。
-- 本堂採本機 Windows SAPI 的 Microsoft Zira Desktop、rate -1，預製 MP3；這是可重現基準，不保證每個新課都已有相同音色環境。更換引擎／音色要記錄與重驗，不做聲音複製。
+- 9/15採本機 Windows SAPI 的 Microsoft Zira Desktop、rate -1；家長反映偏快後，9/14與9/16的新課採rate -2預製MP3。這不是通用語速單位，其他引擎應用同句比較。語音指示少用不必要的逗號；先檢查停頓，再調速度。OpenAI試聽、製作參數與驗證界線見[語音比較](../nativecamp-2026-09-16/source/tts-comparison.md)。更換引擎／音色要記錄與重驗，不做聲音複製。
 - 每題都要有問題與答案音訊；每次進題自動播放一次，保留 Listen。切題、離頁、進背景取消舊播放；瀏覽器阻擋時可重聽並繼續作答。
 - manifest 留製作逐字稿、來源類型、檔名／private ID、bytes、SHA256、duration、codec及解碼結果；原音另記來源hash、聲道與起訖。
 - 每個音檔完整解碼、檢查靜音／截斷，核對關鍵單字、數量與答案；ASR抽查、人耳驗聽、桌面播放、iPad播放分開記錄結果，不互相冒充。
@@ -90,10 +90,10 @@ Show answer 自動念口說示範；家長選 Got it 後播鼓勵音，再接下
 | Concept／question | ID以小寫英文或數字起頭，其後可含連字號，最長80字元；同一題包內concept／question ID不得重複。已發布ID不得換成另一種題意／答案，也不任意重排已作答課的三題順序，以免影響待複習題。 |
 | 音檔 | 跨課檔名加lesson ID，例如 `audio/2026-09-22-is-are-try-1-q.mp3`；原音private ID也加lesson ID。不能覆寫本堂同名檔。 |
 | 題目數 | validator接受1–30個concept，但目前排程只取每concept／mode的前3題。製作標準是各3題，不靠第4題增加練習量。 |
-| 題型／畫面 | Try支援choice/order；scene支援cats/dogs/trees/books/toys/numbers/hats。新增情境類型或題型須另做renderer、validator與驗證，不假裝填新值就能顯示。 |
-| 讀取入口 | `docs/nativecamp/app.js`、`preview.js`、`docs/parent/nativecamp.js` 目前都固定讀取 `2026-09-15.json`。新增JSON不會自動出現在App。下一堂上線須把三個入口接到一致的新課載入機制，並確保舊課仍能查看及完成到期複習；本SOP未實作選課／多課管理。 |
-| 進度 | core以 `lessons[lessonId]` 分課存放且保留其他課資料；這不等於已具備多課入口。不能清空進度、覆蓋舊課ID或只切三個硬編碼路徑就宣稱接入完成。 |
-| 既有builder／audit | 本堂Python builder硬編碼題包日期、原錄音、裁切及輸出路徑；內容audit也綁本堂題目／manifest，且要求整個audio目錄只有本堂35檔。它們是參考實作，不是通用工具。新課另建或明確改成可指定輸出後才執行；調整audit為分課檢查時仍保留本堂保護，不能刪掉舊檢查來過關。 |
+| 題型／畫面 | Try支援choice/order；scene支援cats/dogs/trees/books/toys/numbers/hats，以及word-card（短文／詞句）與family-link（已知親屬關係與人名）。新增情境類型或題型須另做renderer、validator與驗證。 |
+| 讀取入口 | 三個入口共用 `docs/nativecamp/lessons/catalog.json`，登記id/date/teacher，預設最新日期；網址 `?lesson=<id>` 可指定課。新增題包後需登記catalog並核對孩子、preview、家長摘要三者一致。舊課保留可選入口及Review ready提示；沒有跨課混合排程。 |
+| 進度 | core以 `lessons[lessonId]` 分課存放且保留其他課資料；選課不寫入學習紀錄。不能清空進度、覆蓋舊課ID或重排已作答課的題序。 |
+| 既有builder／audit | 9/15的Python builder仍是專用參考，不用它重建新課。9/14與9/16以各堂 `source/lesson-source.json` 為真相源，共用 `shared/nativecamp/build_lesson.py` 產生題包與speech jobs。audit按課程manifest檢查，仍保護9/15的35個既有TTS，不能刪掉舊檢查來過關。 |
 
 新來源目錄先設 `.gitignore` 排除 `assets/audio/` 與 `source/private/`。模板和證據不得放家庭token、私人存取網址或完整逐字稿；需要原始內容時用相對路徑指向ignored檔案。
 

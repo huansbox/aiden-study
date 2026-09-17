@@ -86,7 +86,7 @@ class Element {
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
 }
 
-async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child } = {}) {
+async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15" } = {}) {
   const root = new Element();
   root.id = "parent";
   const storage = new Map();
@@ -100,7 +100,7 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     get length() { return storage.size; },
     key: (index) => [...storage.keys()][index],
   };
-  const search = "?k=test-token" + (child ? "&child=" + encodeURIComponent(child) : "");
+  const search = "?k=test-token" + (child ? "&child=" + encodeURIComponent(child) : "") + (lessonId ? "&lesson=" + encodeURIComponent(lessonId) : "");
   const location = { href: origin + "/parent/" + search, search };
   const document = {
     currentScript: {},
@@ -120,8 +120,13 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     fetch: async (input, init = {}) => {
       const url = new URL(input, location.href);
       if (url.pathname === "/registry.json") return json(registry);
-      if (url.pathname === "/nativecamp/lessons/2026-09-15.json")
-        return json(JSON.parse(source("nativecamp/lessons/2026-09-15.json")));
+      if (url.pathname === "/nativecamp/lessons/catalog.json") return json(JSON.parse(source("nativecamp/lessons/catalog.json")));
+      if (/^\/nativecamp\/lessons\/2026-09-(14|15|16)\.json$/.test(url.pathname)) {
+        // Keep this integration fixture independent of new lesson authoring.
+        const lesson = JSON.parse(source("nativecamp/lessons/2026-09-15.json"));
+        lesson.id = lesson.date = url.pathname.split("/").at(-1).slice(0, -5);
+        return json(lesson);
+      }
       assert.equal(url.origin, origin, "不得連線正式服務");
       const headers = new Headers(init.headers);
       headers.set("Origin", origin);
@@ -170,7 +175,7 @@ test("Native Camp family summary reads authenticated first results, keeps modes 
   const h = await page({ initial: { "p:aiden:nativecamp": { value: JSON.stringify({ rev: 2, epoch: "same", data }) } } });
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
   const panel = h.root.querySelector("#nativecamp-summary");
-  assert.match(panel.innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden"/);
+  assert.match(panel.innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden&amp;lesson=2026-09-15"/);
   assert.match(panel.innerHTML, /Try it · In progress/);
   assert.match(panel.innerHTML, /Say it · In progress/);
   assert.match(panel.innerHTML, /Independent/);
@@ -180,7 +185,7 @@ test("Native Camp family summary reads authenticated first results, keeps modes 
   await h.root.querySelector('[data-child="bingpu"]').fire("click");
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("No practice has been saved"));
   assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Try it ·/);
-  assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=bingpu"/);
+  assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=bingpu&amp;lesson=2026-09-15"/);
 });
 
 test("Native Camp summary hides stale or malformed remote data rather than presenting success", async () => {
@@ -189,11 +194,36 @@ test("Native Camp summary hides stale or malformed remote data rather than prese
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
   for (const body of [{ rev: 2, epoch: "same", data }, { rev: 0, data: null }, { rev: 4, epoch: "same", data: {} }]) {
     await h.env.KV.put("p:aiden:nativecamp", JSON.stringify(body));
-    await h.root.querySelector("#nativecamp-summary").querySelector("button").fire("click");
+    await h.root.querySelector("#nativecamp-summary").querySelector("[data-nativecamp-refresh]").fire("click");
     assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /No results are shown/);
-    assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden"/);
+    assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=aiden&amp;lesson=2026-09-15"/);
     assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Read from family storage|Try it ·/);
   }
+});
+
+test("Native Camp defaults to latest, switches summary and preview together, and preserves unsaved parent settings", async () => {
+  const C = globalThis.NativeCampCore, lesson = JSON.parse(source("nativecamp/lessons/2026-09-15.json"));
+  const concept = lesson.concepts[0]; let data = C.createProgress();
+  for (const q of concept.try.slice(0, 2)) data = C.submitTry(data, lesson, "2026-09-15", concept.id, q.id, q.answer).progress;
+  const h = await page({ lessonId: null, child: "bingpu", initial: { "p:bingpu:nativecamp": { value: JSON.stringify({ rev: 1, data }) } } });
+  await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
+  const panel = h.root.querySelector("#nativecamp-summary");
+  assert.match(panel.innerHTML, /data-lesson="2026-09-16" aria-pressed="true"/);
+  assert.match(panel.innerHTML, /child=bingpu&amp;lesson=2026-09-16/);
+  assert.match(panel.innerHTML, /No practice has been saved for this lesson/);
+  assert.match(panel.innerHTML, /Review ready/);
+  const settingsInput = h.root.querySelector('[data-site="stroke"][data-field="title"]');
+  settingsInput.value = "Keep this unsaved edit"; settingsInput.fire("input");
+  const saved = await h.env.KV.get("p:bingpu:nativecamp");
+  await panel.querySelector('[data-lesson="2026-09-15"]').fire("click");
+  assert.match(panel.innerHTML, /data-lesson="2026-09-15" aria-pressed="true"/);
+  assert.match(panel.innerHTML, /child=bingpu&amp;lesson=2026-09-15/);
+  assert.match(panel.innerHTML, /Try it ·/);
+  assert.equal(h.context.location.search, "?child=bingpu&lesson=2026-09-15");
+  assert.equal(h.root.querySelector('[data-site="stroke"][data-field="title"]'), settingsInput);
+  assert.equal(settingsInput.value, "Keep this unsaved edit");
+  assert.equal(await h.env.KV.get("p:bingpu:nativecamp"), saved);
+  assert.ok(h.requests.filter((r) => r.path === "/api/v1/progress/bingpu/nativecamp").every((r) => !r.init.method || r.init.method === "GET"));
 });
 
 test("returning from preview preserves the selected child and maintenance opens a non-writing preview", async () => {

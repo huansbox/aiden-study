@@ -1,16 +1,20 @@
 # Native Camp 回放複習試作
 
-狀態：**已完成（單堂複習試作；時間與難度待孩子實測）**。任務日期：2026-09-16。
+狀態：**已完成（孩子已使用；家長回饋與語音調整需求已記錄）**。任務日期：2026-09-16。
 
 以 2026-09-15 的一堂 Native Camp 課程為樣本，已完成音檔下載、本機分聲道轉錄抽樣、教材與逐字稿核對，以及可列印的口說複習。後續互動版放在 `docs/nativecamp/`，本任務仍保存來源核對、原始素材與重建流程；互動版狀態與驗證見 [Native Camp Review](../../docs-dev/nativecamp-review.md)。
 
 ## 下一堂課的製作入口
 
+已處理課程識別：**2026-09-15（二）19:30，Silvana**（Asia/Taipei）。回查[課程記錄](https://nativecamp.net/zh-tw/lesson-history)及[老師公開頁](https://nativecamp.net/zh-tw/waiting/detail/44327)。Lesson ID維持 `2026-09-15`。
+
+家庭回饋（2026-09-17）：孩子已使用，家長表示效果不錯；TTS語速偏快，`Say the number, too.` 的停頓不自然，下一階段比較較慢語速與其他語音來源。尚無量化難度或長期成效資料。
+
 - [製作 SOP](lesson-sop.md)：沿用本堂的題型、句型提示、音訊、評級、跨日確認、驗收與發布標準。
 - [單堂設計模板](templates/lesson-brief.md)：複製到新課來源目錄後填寫，含證據、六題／概念、逐題語音及交付檢查。
 - [本堂填寫範例](lesson-example-2026-09-15.md)：已發布18題的設計摘要與具體欄位示範。
 
-互動版已於2026-09-17正式發布，相關issues已結案、PR #68已合併。現在可用[正式預覽](https://kids.linshuhuan.com/nativecamp/preview.html?child=aiden)檢查題目。下一堂的課程選擇／載入尚須接入，不能只複製JSON就上線；本堂資料與進度需保留。家庭實測依SOP回填，不把未測項目記為完成。
+互動版已於2026-09-17正式發布，相關issues已結案、PR #68已合併。可用[本堂正式預覽](https://kids.linshuhuan.com/nativecamp/preview.html?child=aiden&lesson=2026-09-15)檢查題目。後續多課入口共用課程清單，本堂資料與進度保留；新課接入方式見SOP。家庭實測依SOP回填，不把未測項目記為完成。
 
 ## 先開啟這兩份成品
 

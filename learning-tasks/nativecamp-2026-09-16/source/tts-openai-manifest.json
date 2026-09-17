@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-09-17T14:05:43.812508+00:00",
+  "engine": "import-playground",
+  "scope": "Synthetic demonstration text only; not teacher or child recordings",
+  "samples": [
+    {
+      "sampleId": "odd-even",
+      "engine": "OpenAI Audio Playground",
+      "voice": "marin",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-marin-odd-even.mp3",
+      "text": "Is seven odd or even? Say the number too.",
+      "bytes": 80256,
+      "sha256": "2861e18271012cae27952c32230979f17ce9eb4ede469fe41eb6130ae2921cab",
+      "durationSeconds": 5.016,
+      "wordsPerMinuteIncludingPauses": 107.66,
+      "meanVolumeDb": -23.6,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.29096,
+          "durationSeconds": 0.452917
+        },
+        {
+          "endSeconds": 5.016,
+          "durationSeconds": 1.78329
+        }
+      ]
+    },
+    {
+      "sampleId": "four-trees",
+      "engine": "OpenAI Audio Playground",
+      "voice": "marin",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-marin-four-trees.mp3",
+      "text": "There are four trees.",
+      "bytes": 37632,
+      "sha256": "5581f0849271882993f2a145ca12f748b5493207faaf748b354d4ff430f4b9e8",
+      "durationSeconds": 2.352,
+      "wordsPerMinuteIncludingPauses": 102.04,
+      "meanVolumeDb": -22.7,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.352,
+          "durationSeconds": 0.584417
+        }
+      ]
+    },
+    {
+      "sampleId": "too-many",
+      "engine": "OpenAI Audio Playground",
+      "voice": "marin",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-marin-too-many.mp3",
+      "text": "There are too many books.",
+      "bytes": 38400,
+      "sha256": "fe09a3ad5c9fc4cdf20f12ab4d6cbb64c322ab108bb14caa4b3db98b8be8bae2",
+      "durationSeconds": 2.4,
+      "wordsPerMinuteIncludingPauses": 125.0,
+      "meanVolumeDb": -22.1,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.4,
+          "durationSeconds": 0.637458
+        }
+      ]
+    },
+    {
+      "sampleId": "odd-even",
+      "engine": "OpenAI Audio Playground",
+      "voice": "cedar",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-cedar-odd-even.mp3",
+      "text": "Is seven odd or even? Say the number too.",
+      "bytes": 58368,
+      "sha256": "db5786daba985b4fa61a91e5f7eaa50292d374b4c92a1442a8cfcf41c2fed0e9",
+      "durationSeconds": 3.648,
+      "wordsPerMinuteIncludingPauses": 148.03,
+      "meanVolumeDb": -23.6,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.27113,
+          "durationSeconds": 0.362833
+        },
+        {
+          "endSeconds": 3.648,
+          "durationSeconds": 0.443125
+        }
+      ]
+    },
+    {
+      "sampleId": "four-trees",
+      "engine": "OpenAI Audio Playground",
+      "voice": "cedar",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-cedar-four-trees.mp3",
+      "text": "There are four trees.",
+      "bytes": 38400,
+      "sha256": "477b1b9256d2ee4c4b88d68b823dd58b9d552d1a694f46ee49a1cabcfcbaaf7a",
+      "durationSeconds": 2.4,
+      "wordsPerMinuteIncludingPauses": 100.0,
+      "meanVolumeDb": -23.6,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 2.4,
+          "durationSeconds": 0.825458
+        }
+      ]
+    },
+    {
+      "sampleId": "too-many",
+      "engine": "OpenAI Audio Playground",
+      "voice": "cedar",
+      "model": "gpt-4o-mini-tts",
+      "speed": 1,
+      "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+      "file": "assets/tts-comparison/openai-cedar-too-many.mp3",
+      "text": "There are too many books.",
+      "bytes": 30720,
+      "sha256": "c46c12cbfb2f27e4198a93614b9a287d77d720476ae57e070f49768bcb3b9602",
+      "durationSeconds": 1.92,
+      "wordsPerMinuteIncludingPauses": 156.25,
+      "meanVolumeDb": -21.3,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "24000",
+          "channels": 1
+        }
+      ],
+      "decoded": true,
+      "silencesAtMinus35DbMin150Ms": [
+        {
+          "endSeconds": 1.92,
+          "durationSeconds": 0.383125
+        }
+      ]
+    }
+  ],
+  "humanListening": "not performed",
+  "iPadPlayback": "not performed",
+  "apiRequestCount": 0,
+  "playgroundGenerationCount": 6
+}

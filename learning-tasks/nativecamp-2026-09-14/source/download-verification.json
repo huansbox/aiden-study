@@ -1,0 +1,13 @@
+{
+  "lessonDate": "2026-09-14",
+  "relative_file": "../assets/audio/2026-09-14-1930-lesson.webm",
+  "bytes": 11825535,
+  "sha256": "fbfa899e15fdbe44f84ce91bba3bcf8564915033b0d3caafd3a66be6bb08d8e5",
+  "durationSeconds": 1530.044,
+  "codec": "opus",
+  "sampleRate": 48000,
+  "channels": 2,
+  "fullDecode": "passed",
+  "decodeTimestampFilter": "asetpts=N/SR/TB",
+  "audioUploaded": false
+}

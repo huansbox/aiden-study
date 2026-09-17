@@ -2,7 +2,21 @@
 
 追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)、[口說句型提示 #72](https://github.com/huansbox/aiden-study/issues/72)均已結案；原工作分支 `codex/nativecamp-audio-review` 已由PR #68合併並發布。
 
-下一堂製作從[課後複習 SOP](../learning-tasks/nativecamp-review-pilot/lesson-sop.md)、[設計模板](../learning-tasks/nativecamp-review-pilot/templates/lesson-brief.md)與[本堂範例](../learning-tasks/nativecamp-review-pilot/lesson-example-2026-09-15.md)開始。本文件保留已實作行為與發布證據；SOP不代表多課選擇功能已完成。
+下一堂製作從[課後複習 SOP](../learning-tasks/nativecamp-review-pilot/lesson-sop.md)、[設計模板](../learning-tasks/nativecamp-review-pilot/templates/lesson-brief.md)與[首堂範例](../learning-tasks/nativecamp-review-pilot/lesson-example-2026-09-15.md)開始。現已接入共用課程清單；新課仍須完成來源、題包、音訊與三入口驗收，不能只新增JSON就宣稱上線。
+
+## 多課入口與本次新增課程
+
+| 課程（Asia/Taipei） | 老師 | 內容來源與題量 |
+| --- | --- | --- |
+| 2026-09-16 19:30 | Edon | [親屬關係、縮寫、相反詞](../learning-tasks/nativecamp-2026-09-16/)；18題、36個較慢TTS |
+| 2026-09-15 19:30 | Silvana | [首堂](../learning-tasks/nativecamp-review-pilot/)；18題及既有進度保留 |
+| 2026-09-14 19:30 | Edon | [祖父母、短文主題](../learning-tasks/nativecamp-2026-09-14/)；12題、24個較慢TTS |
+
+孩子、Preview與家長摘要共用 `lessons/catalog.json`，預設最新課；`?lesson=<id>` 可指定課程，仍保留 `child`。孩子首頁的舊課到期時顯示Review ready，每堂沿用自己的排程，不混合出題。家長切課不重建其他設定表單，Preview不寫入練習紀錄。
+
+新增 `family-link` 關係卡及 `word-card` 短句卡；公開題目皆為原創變體，不使用孩子私人資料或完整課本頁。兩堂原音與逐字稿留在ignored路徑，下載驗證及本機分聲道抽查見各堂來源文件。
+
+語速改採Zira rate -2的範圍是兩堂新課；9/15音檔不在本次覆寫範圍。[語音比較報告與試聽](../learning-tasks/nativecamp-2026-09-16/source/tts-comparison.md)保存原速／慢速及OpenAI Marin／Cedar的實測；Mac本輪沒有可用連線，未測。
 
 ## 使用方式與範圍
 

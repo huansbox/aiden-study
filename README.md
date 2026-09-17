@@ -31,6 +31,8 @@
 | 任務 | 找得到什麼 |
 | --- | --- |
 | [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 單堂分析、紙本練習與 Review App 的可重建來源；[互動版使用與驗收](docs-dev/nativecamp-review.md)；[下堂製作SOP／模板](learning-tasks/nativecamp-review-pilot/lesson-sop.md) |
+| [Native Camp：Edon 家庭與詞句](learning-tasks/nativecamp-2026-09-16/) | 親屬關係、縮寫、相反詞；較慢語音與OpenAI試聽比較 |
+| [Native Camp：Edon 家庭與主題](learning-tasks/nativecamp-2026-09-14/) | 祖父母詞彙、短文主題與完整句回答 |
 | [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 十張動物園／火車探險卡、可列印 PDF、設計經驗 |
 | [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | 〈初夏雜記〉互動頁、老師回饋、舊來源位置說明 |
 | [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 新篇互動頁、可編輯來源、產生部署檔的方法 |

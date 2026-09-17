@@ -1,0 +1,44 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "samples": [
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-1-odd-even.mp3",
+      "expectedText": "Is seven odd or even? Say the number too.",
+      "recognizedText": "Is 7 odd or even? Say the number 2."
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-1-four-trees.mp3",
+      "expectedText": "There are four trees.",
+      "recognizedText": "There are four trees."
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-1-too-many.mp3",
+      "expectedText": "There are too many books.",
+      "recognizedText": "There are too many books."
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-1-odd-even-comma-control.mp3",
+      "expectedText": "Is seven odd or even? Say the number, too.",
+      "recognizedText": "is seven odd or even say the number two"
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-2-odd-even.mp3",
+      "expectedText": "Is seven odd or even? Say the number too.",
+      "recognizedText": "Is seven odd or even say the number two"
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-2-four-trees.mp3",
+      "expectedText": "There are four trees.",
+      "recognizedText": "There are four trees."
+    },
+    {
+      "file": "assets/tts-comparison/windows-zira-rate-2-too-many.mp3",
+      "expectedText": "There are too many books.",
+      "recognizedText": "There are too many books."
+    }
+  ]
+}

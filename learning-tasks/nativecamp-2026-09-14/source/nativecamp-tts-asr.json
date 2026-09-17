@@ -1,0 +1,29 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-14-grandparents-try-1-q.mp3",
+      "expectedText": "May is my mum's mum. Who is May? Pick one.",
+      "recognizedText": "May is my mum's mum. Who is May? Pick one."
+    },
+    {
+      "file": "audio/2026-09-14-grandparents-say-3-a.mp3",
+      "expectedText": "They are my grandparents.",
+      "recognizedText": "They are my grandparents."
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-try-1-q.mp3",
+      "expectedText": "My house has a red door. It has three bedrooms. What is it about? Pick one.",
+      "recognizedText": "My house has a red door. It has three bedrooms. What is it about? Pick one."
+    },
+    {
+      "file": "audio/2026-09-14-story-topic-say-3-a.mp3",
+      "expectedText": "It is about a family.",
+      "recognizedText": "It is about a family."
+    }
+  ]
+}

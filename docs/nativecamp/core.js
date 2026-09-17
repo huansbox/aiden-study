@@ -84,7 +84,13 @@
         for (const q of concept[mode]) {
           addId(q.id);
           requireValue(text(q.prompt) && text(q.instruction) && text(q.answerText), "This question is incomplete.");
-          requireValue(object(q.scene) && ["cats", "dogs", "trees", "books", "toys", "numbers", "hats"].includes(q.scene.kind), "This picture could not be opened.");
+          requireValue(object(q.scene) && ["cats", "dogs", "trees", "books", "toys", "numbers", "hats", "word-card", "family-link"].includes(q.scene.kind), "This picture could not be opened.");
+          if (["word-card", "family-link"].includes(q.scene.kind)) {
+            const shortText = (value, max) => text(value) && value.length <= max;
+            requireValue(q.scene.heading === undefined || shortText(q.scene.heading, 100), "This picture needs a short heading.");
+            if (q.scene.kind === "word-card") requireValue(shortText(q.scene.text, 160), "This word card needs text.");
+            else requireValue(shortText(q.scene.relation, 100) && shortText(q.scene.name, 40) && (q.scene.pronoun === undefined || shortText(q.scene.pronoun, 12)), "This family picture needs a relation and name.");
+          }
           requireValue(q.scene.count === undefined || Number.isInteger(q.scene.count) && q.scene.count >= 0 && q.scene.count <= 30, "This picture has an invalid count.");
           requireValue(q.scene.number === undefined || Number.isInteger(q.scene.number) && q.scene.number >= 0 && q.scene.number <= 10000, "This number is not valid.");
           requireValue(object(q.audio) && audio(q.audio.question) && audio(q.audio.answer), "This question needs its recordings.");

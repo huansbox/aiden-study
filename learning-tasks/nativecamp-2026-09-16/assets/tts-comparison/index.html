@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice samples</title>
+<style>
+  :root { color-scheme: light; font: 17px/1.5 system-ui, sans-serif; color: #20313e; background: #f4f7fa; }
+  body { max-width: 1050px; margin: 2rem auto; padding: 0 1rem 3rem; }
+  h1 { margin-bottom: .25rem; } h2 { font-size: 1.2rem; margin: 0 0 1rem; }
+  p { margin-top: 0; } section { background: white; border: 1px solid #dbe4ec; border-radius: 12px; padding: 1.25rem; margin: 1.25rem 0; }
+  .voices { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+  label { display: block; font-weight: 650; } audio { width: 100%; margin-top: .4rem; }
+  .note { font-size: .9rem; color: #435665; } details { margin-top: 2rem; }
+</style>
+<h1>Voice samples</h1>
+<p class="note">All voices are computer-generated. These are samples, not your teacher's voice.</p>
+<section>
+  <h2>Is seven odd or even? Say the number too.</h2>
+  <div class="voices">
+    <div><label for="old-1">Windows — previous speed</label><audio id="old-1" controls preload="none" src="windows-zira-rate-1-odd-even.mp3"></audio></div>
+    <div><label for="slow-1">Windows — slower</label><audio id="slow-1" controls preload="none" src="windows-zira-rate-2-odd-even.mp3"></audio></div>
+    <div><label for="marin-1">OpenAI — Marin</label><audio id="marin-1" controls preload="none" src="openai-marin-odd-even.mp3"></audio></div>
+    <div><label for="cedar-1">OpenAI — Cedar</label><audio id="cedar-1" controls preload="none" src="openai-cedar-odd-even.mp3"></audio></div>
+  </div>
+</section>
+<section>
+  <h2>There are four trees.</h2>
+  <div class="voices">
+    <div><label for="old-2">Windows — previous speed</label><audio id="old-2" controls preload="none" src="windows-zira-rate-1-four-trees.mp3"></audio></div>
+    <div><label for="slow-2">Windows — slower</label><audio id="slow-2" controls preload="none" src="windows-zira-rate-2-four-trees.mp3"></audio></div>
+    <div><label for="marin-2">OpenAI — Marin</label><audio id="marin-2" controls preload="none" src="openai-marin-four-trees.mp3"></audio></div>
+    <div><label for="cedar-2">OpenAI — Cedar</label><audio id="cedar-2" controls preload="none" src="openai-cedar-four-trees.mp3"></audio></div>
+  </div>
+</section>
+<section>
+  <h2>There are too many books.</h2>
+  <div class="voices">
+    <div><label for="old-3">Windows — previous speed</label><audio id="old-3" controls preload="none" src="windows-zira-rate-1-too-many.mp3"></audio></div>
+    <div><label for="slow-3">Windows — slower</label><audio id="slow-3" controls preload="none" src="windows-zira-rate-2-too-many.mp3"></audio></div>
+    <div><label for="marin-3">OpenAI — Marin</label><audio id="marin-3" controls preload="none" src="openai-marin-too-many.mp3"></audio></div>
+    <div><label for="cedar-3">OpenAI — Cedar</label><audio id="cedar-3" controls preload="none" src="openai-cedar-too-many.mp3"></audio></div>
+  </div>
+</section>
+<details>
+  <summary>Compare the comma</summary>
+  <p class="note">Same Windows voice and previous speed. This version says “Say the number, too.” Compare it with the first Windows sample above.</p>
+  <audio controls preload="none" aria-label="Windows with the comma before too" src="windows-zira-rate-1-odd-even-comma-control.mp3"></audio>
+</details>
+</html>

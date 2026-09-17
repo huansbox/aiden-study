@@ -6,6 +6,7 @@ import "../docs/nativecamp/core.js";
 const C = globalThis.NativeCampCore;
 const source = (path) => readFileSync(new URL("../docs/nativecamp/" + path, import.meta.url), "utf8");
 const lesson = JSON.parse(source("lessons/2026-09-15.json"));
+const catalog = { schemaVersion: 1, lessons: [{ id: lesson.id, date: lesson.date, teacher: "Silvana" }] };
 class Root {
   constructor() { this.html = ""; this.events = new Map(); this.nodes = new Map(); this.listenerCounts = new Map(); }
   set innerHTML(html) { this.html = html; this.nodes.clear(); }
@@ -36,6 +37,7 @@ function harness({ child = "bingpu", audioFailure = false, privateFetch, mount =
     setTimeout: () => 1, clearTimeout() {},
     addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: (name) => listeners.delete(name) });
   context.window = context;
+  vm.runInContext(source("catalog.js"), context);
   for (const name of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "nativecampWiring", "NativeCampPlatform"])
     Object.defineProperty(context, name, { get() { storageTouches++; throw Error("Preview must not access " + name); } });
   vm.runInContext(source("question-view.js"), context);
@@ -65,10 +67,10 @@ function harness({ child = "bingpu", audioFailure = false, privateFetch, mount =
     hide() { document.visibilityState = "hidden"; listeners.get("visibilitychange")?.(); },
     show() { document.visibilityState = "visible"; listeners.get("visibilitychange")?.(); },
     async load({ fail = false, search = `?child=${child}` } = {}) {
-      return preview.boot({ ...options, search, fetchImpl: async (_path, init) => {
+      return preview.boot({ ...options, search, fetchImpl: async (path, init) => {
         requests.push({ path: "lesson", method: init.method || "GET" });
         if (fail) { readFailures++; throw Error("offline"); }
-        return new Response(JSON.stringify(lesson), { headers: { "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(path.endsWith("catalog.json") ? catalog : lesson), { headers: { "Content-Type": "application/json" } });
       } });
     },
   };
@@ -171,7 +173,7 @@ test("mounting in a hidden page or finishing a slow boot after hiding stays sile
     if (delayedBoot) {
       let respond;
       const pending = h.preview.boot({ ...h.options, search: "?child=bingpu",
-        fetchImpl: () => new Promise((resolve) => { respond = resolve; }) });
+        fetchImpl: (path) => path.endsWith("catalog.json") ? Promise.resolve(new Response(JSON.stringify(catalog))) : new Promise((resolve) => { respond = resolve; }) });
       await settle();
       h.hide();
       respond(new Response(JSON.stringify(lesson), { headers: { "Content-Type": "application/json" } }));
@@ -273,13 +275,26 @@ test("loading or auth failure is readable and retry recovers without touching pr
 });
 test("preview HTML loads no progress, wiring or family activity runtime", () => {
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/device-auth.js", "core.js", "question-view.js", "audio.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/device-auth.js", "core.js", "catalog.js", "question-view.js", "audio.js", "preview.js"]);
+});
+
+test("preview loads the requested lesson and keeps both child and lesson in its return and selection links", async () => {
+  const h = harness({ mount: false });
+  const selected = { ...structuredClone(lesson), id: "2026-09-14", date: "2026-09-14", title: "Older lesson" };
+  const list = { schemaVersion: 1, lessons: [...catalog.lessons, { id: selected.id, date: selected.date, teacher: "Edon" }] };
+  const app = await h.preview.boot({ ...h.options, search: "?child=bingpu&lesson=2026-09-14", fetchImpl: async (path) => new Response(JSON.stringify(path.endsWith("catalog.json") ? list : selected)) });
+  assert.ok(app);
+  assert.match(h.root.innerHTML, /Older lesson/);
+  assert.match(h.root.innerHTML, /\.\.\/parent\/\?child=bingpu&amp;lesson=2026-09-14/);
+  assert.match(h.root.innerHTML, /preview.html\?child=bingpu&amp;lesson=2026-09-14" aria-current="page"/);
+  assert.equal(h.storageTouches, 0);
+  app.destroy();
 });
 test("overlapping preview retries cannot mount two controllers or replace a newer success", async () => {
   for (const staleFails of [false, true]) {
     const h = harness({ mount: false }), pending = [];
     await h.load({ fail: true });
-    const options = { ...h.options, search: "?child=bingpu", fetchImpl: () => new Promise((resolve) => pending.push(resolve)) };
+    const options = { ...h.options, search: "?child=bingpu", fetchImpl: (path) => path.endsWith("catalog.json") ? Promise.resolve(new Response(JSON.stringify(catalog))) : new Promise((resolve) => pending.push(resolve)) };
     const older = h.preview.boot(options);
     await new Promise((resolve) => setImmediate(resolve));
     const newer = h.preview.boot(options);

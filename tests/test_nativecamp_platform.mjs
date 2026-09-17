@@ -32,7 +32,7 @@ function environment() {
   } }) };
 }
 async function browser(env, { child = "aiden", storage = new Map(), offline = false } = {}) {
-  const cookie = await login(env), listeners = new Map(), calls = [], shown = [];
+  const cookie = await login(env), listeners = new Map(), calls = [], shown = [], pendingRequests = new Set();
   const localStorage = {
     get length() { return storage.size; }, key: (i) => [...storage.keys()][i],
     getItem: (key) => storage.get(key) ?? null,
@@ -51,7 +51,9 @@ async function browser(env, { child = "aiden", storage = new Map(), offline = fa
       if (offline) throw Error("offline");
       const url = String(target).startsWith("/v1/") ? auth.endpoint + target : String(target);
       calls.push({ url, method: init.method || "GET" });
-      return worker.fetch(new Request(url, { ...init, headers: { Origin: origin, Cookie: cookie, ...init.headers } }), env);
+      const pending = worker.fetch(new Request(url, { ...init, headers: { Origin: origin, Cookie: cookie, ...init.headers } }), env);
+      pendingRequests.add(pending);
+      try { return await pending; } finally { pendingRequests.delete(pending); }
     },
   };
   const context = vm.createContext({ document, location: { search: `?child=${child}`, reload() {} },
@@ -68,6 +70,13 @@ async function browser(env, { child = "aiden", storage = new Map(), offline = fa
   vm.runInContext(readFileSync(new URL("../docs/nativecamp/platform.js", import.meta.url), "utf8"), context);
   const notices = [], bridge = await context.NativeCampPlatform.boot(lesson, (event) => notices.push(event.type));
   return { bridge, storage, cookie, calls, notices, context,
+    async settleRequests() {
+      await new Promise((resolve) => setImmediate(resolve));
+      while (pendingRequests.size) {
+        await Promise.all([...pendingRequests]);
+        await new Promise((resolve) => setImmediate(resolve));
+      }
+    },
     rewards: () => shown.filter((node) => node.id === "family-reward" && !node.removed),
     setOffline(value) { offline = value; }, event(name) { context.dispatchEvent({ type: name }); } };
 }
@@ -131,6 +140,29 @@ test("offline edits survive reload and upload on reconnect; other child remains 
   assert.ok(C.summarizeLesson(b.bridge.getProgress(), lesson, date).try.done);
   assert.equal(await env.KV.get("p:bingpu:nativecamp"), null);
 });
+
+test("adding another lesson and reviewing the original preserve both lessons across independent devices", async () => {
+  const env = environment(), first = await browser(env);
+  firstRounds(first.bridge);
+  const originalState = JSON.parse(JSON.stringify(first.bridge.getProgress().lessons[lesson.id]));
+  const newer = { ...structuredClone(lesson), id: "2026-09-16", date: "2026-09-16" };
+  const added = C.submitTry(first.bridge.getProgress(), newer, date, "is-are", "is-are-try-1", "no");
+  first.bridge.saveProgress(added.progress, { answered: true, correct: false });
+  await first.bridge.syncNow();
+  const second = await browser(env), restored = second.bridge.getProgress();
+  assert.deepEqual(JSON.parse(JSON.stringify(restored.lessons[lesson.id])), originalState);
+  assert.equal(restored.lessons[newer.id].try["is-are"].initial[0].outcome, "incorrect");
+  const due = C.nextQuestion(restored, lesson, "try", "2026-09-18", "is-are");
+  assert.equal(due.phase, "deferred");
+  const reviewed = C.submitTry(restored, lesson, "2026-09-18", "is-are", due.question.id, "yes");
+  second.bridge.saveProgress(reviewed.progress, { answered: true, correct: true });
+  await second.bridge.syncNow(); await first.bridge.syncNow();
+  const final = first.bridge.getProgress();
+  assert.equal(final.lessons[lesson.id].try["is-are"].initial.length, 3);
+  assert.equal(final.lessons[lesson.id].try["is-are"].dueOn, null);
+  assert.deepEqual(JSON.parse(JSON.stringify(final.lessons[newer.id])), JSON.parse(JSON.stringify(restored.lessons[newer.id])));
+  assert.equal(await env.KV.get("p:bingpu:nativecamp"), null);
+});
 test("Native Camp records activity immediately and exposes rewards only through finishRound", async () => {
   const a = await browser(environment());
   a.bridge.setActive(true);
@@ -154,6 +186,40 @@ test("Native Camp records activity immediately and exposes rewards only through 
   assert.equal(a.rewards().length, 1);
   a.bridge.setActive(true);
   assert.equal(a.rewards().length, 0, "Beginning another round clears the previous reward.");
+});
+
+test("returning to a cached lesson page preserves another lesson saved in shared device storage", async () => {
+  const env = environment(), storage = new Map();
+  const first = await browser(env, { storage }), second = await browser(env, { storage });
+  const newer = { ...structuredClone(lesson), id: "2026-09-16", date: "2026-09-16" };
+  const added = C.submitTry(second.bridge.getProgress(), newer, date, "is-are", "is-are-try-1", "no");
+  second.bridge.saveProgress(added.progress, { answered: true, correct: false });
+  await second.bridge.syncNow();
+  first.context.dispatchEvent({ type: "pageshow", persisted: true });
+  await first.settleRequests();
+  await first.bridge.syncNow();
+  assert.ok(first.bridge.getProgress().lessons[newer.id]);
+  const resumed = C.submitTry(first.bridge.getProgress(), lesson, date, "is-are", "is-are-try-1", "yes");
+  assert.equal(resumed.recorded, true);
+  first.bridge.saveProgress(resumed.progress, { answered: true, correct: true });
+  assert.deepEqual(Object.keys(JSON.parse(storage.get("nativecamp:progress:aiden")).lessons).sort(), [lesson.id, newer.id], "local save contains both lessons");
+  await first.bridge.syncNow();
+  const remote = JSON.parse(await env.KV.get("p:aiden:nativecamp")).data;
+  assert.deepEqual(Object.keys(remote.lessons).sort(), [lesson.id, newer.id]);
+  assert.deepEqual(remote.lessons[newer.id], JSON.parse(JSON.stringify(added.progress.lessons[newer.id])));
+});
+
+test("a stale page cannot save over a lesson changed after its last progress read", async () => {
+  const env = environment(), storage = new Map();
+  const first = await browser(env, { storage }), second = await browser(env, { storage });
+  const stale = C.submitTry(first.bridge.getProgress(), lesson, date, "is-are", "is-are-try-1", "yes");
+  const newer = { ...structuredClone(lesson), id: "2026-09-16", date: "2026-09-16" };
+  const added = C.submitTry(second.bridge.getProgress(), newer, date, "is-are", "is-are-try-1", "no");
+  second.bridge.saveProgress(added.progress);
+  const saved = storage.get("nativecamp:progress:aiden");
+  assert.throws(() => first.bridge.saveProgress(stale.progress), /saved practice changed/);
+  assert.equal(storage.get("nativecamp:progress:aiden"), saved);
+  assert.ok(first.bridge.getProgress().lessons[newer.id]);
 });
 test("malformed remote progress cannot replace local data or advance its sync revision", async () => {
   const env = environment(), a = await browser(env);
@@ -267,4 +333,35 @@ test("leaving a question aborts its private audio load and never caches a late r
   assert.equal(newRequests, 1, "Cancelled results must not enter the cache.");
   await assert.rejects(a.bridge.privateAudio("cancelled-teacher", { signal: controller.signal }), /cancelled/);
   a.event("pagehide");
+});
+
+test("an earlier lesson page's delayed sync acknowledgement cannot erase a later page's new lesson", async () => {
+  const env = environment(), storage = new Map(), a = await browser(env, { storage });
+  const fetch = a.context.KidsAuth.fetch;
+  let entered, release;
+  const reached = new Promise((resolve) => { entered = resolve; });
+  const gate = new Promise((resolve) => { release = resolve; });
+  a.context.KidsAuth.fetch = async (path, init = {}) => {
+    const response = await fetch(path, init);
+    if (String(path).endsWith("/nativecamp") && init.method === "PUT") { entered(); await gate; }
+    return response;
+  };
+  const first = C.submitTry(a.bridge.getProgress(), lesson, date, "is-are", "is-are-try-1", "yes");
+  a.bridge.saveProgress(first.progress);
+  const pending = a.bridge.syncNow();
+  try {
+    await reached;
+    const b = await browser(env, { storage });
+    const newer = { ...structuredClone(lesson), id: "2026-09-16", date: "2026-09-16" };
+    const added = C.submitTry(b.bridge.getProgress(), newer, date, "is-are", "is-are-try-1", "no");
+    b.bridge.saveProgress(added.progress);
+    const beforeAck = storage.get("nativecamp:sync:aiden");
+    release(); await pending;
+    assert.equal(storage.get("nativecamp:sync:aiden"), beforeAck, "A superseded response must not clear the later page's dirty flag or revise its metadata.");
+    await b.bridge.syncNow();
+    const remote = JSON.parse(await env.KV.get("p:aiden:nativecamp"));
+    assert.equal(remote.data.lessons[newer.id].try["is-are"].initial[0].outcome, "incorrect");
+    assert.equal(remote.data.lessons[lesson.id].try["is-are"].initial[0].outcome, "independent");
+    assert.deepEqual(JSON.parse(JSON.stringify(b.bridge.getProgress())), remote.data);
+  } finally { release(); await pending; }
 });

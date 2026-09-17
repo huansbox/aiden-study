@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "method": "OpenAI Platform Audio Playground normal browser UI",
+  "url": "https://platform.openai.com/audio/tts",
+  "model": "gpt-4o-mini-tts",
+  "format": "mp3",
+  "speed": 1,
+  "instructions": "Speak in clear, natural American English for a young English learner. Use a calm, patient teacher's tone, about 135 words per minute. Keep words connected naturally, with only a short pause between sentences. In 'Say the number too', connect 'too' to the phrase without an extra pause. Read exactly the supplied text. Do not add words, music, or sound effects.",
+  "generations": [
+    {
+      "text": "Is seven odd or even? Say the number too.",
+      "sampleId": "odd-even",
+      "status": "downloaded",
+      "voice": "marin"
+    },
+    {
+      "text": "There are four trees.",
+      "sampleId": "four-trees",
+      "status": "downloaded",
+      "voice": "marin"
+    },
+    {
+      "text": "There are too many books.",
+      "sampleId": "too-many",
+      "status": "downloaded",
+      "voice": "marin"
+    },
+    {
+      "text": "Is seven odd or even? Say the number too.",
+      "sampleId": "odd-even",
+      "status": "downloaded",
+      "voice": "cedar"
+    },
+    {
+      "text": "There are four trees.",
+      "sampleId": "four-trees",
+      "status": "downloaded",
+      "voice": "cedar"
+    },
+    {
+      "text": "There are too many books.",
+      "sampleId": "too-many",
+      "status": "downloaded",
+      "voice": "cedar"
+    }
+  ],
+  "apiKeyCreated": false,
+  "humanListening": false,
+  "confirmedChargeUsd": null
+}

@@ -7,7 +7,7 @@
   function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
   const dateLabel = (date) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
   const modeLabel = (mode) => mode === "try" ? "Try it" : "Say it";
-  function mount({ root, lesson, bridge, date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
+  function mount({ root, lesson, bridge, catalog = [], child = "aiden", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
     C.validateLesson(lesson);
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
     let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false, roundOpen = false;
@@ -70,7 +70,8 @@
     }
     function homeHtml() {
       const result = summary();
-      return `<div class="lesson-heading">${icon("calendar-days")}<div><p>${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div><section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>${footer()}`;
+      const lessons = global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date() }) || "";
+      return `${lessons}<div class="lesson-heading">${icon("calendar-days")}<div><p>${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div><section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>${footer()}`;
     }
     function progressHtml() {
       const result = summary()[mode];
@@ -219,12 +220,10 @@
     const root = document.getElementById("nativecamp");
     let app;
     try {
-      if (!C || !Q || !global.NativeCampAudio || !global.NativeCampPlatform) throw Error("This page did not finish loading. Please reload.");
-      const response = await fetch("lessons/2026-09-15.json", { cache: "no-cache" });
-      if (!response.ok) throw Error("Your lesson could not be loaded. Please try again.");
-      const lesson = C.validateLesson(await response.json());
+      if (!C || !Q || !global.NativeCampAudio || !global.NativeCampPlatform || !global.NativeCampCatalog) throw Error("This page did not finish loading. Please reload.");
+      const { lesson, catalog } = await global.NativeCampCatalog.load();
       const bridge = await global.NativeCampPlatform.boot(lesson, (event) => app?.onChange(event));
-      app = mount({ root, lesson, bridge });
+      app = mount({ root, lesson, bridge, catalog, child: global.NativeCampCatalog.childFrom(location.search) });
       global.addEventListener("pagehide", () => bridge.setActive?.(false));
     } catch (error) {
       root.innerHTML = `<section class="loading-card"><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Let's try again.</h1><p class="error" role="alert">${escape(error?.message || "This page could not be opened.")}</p>${button("reload", "Try again", "primary", "rotate-ccw")} <a class="nav-link" href="../">${icon("house")}My home</a></section>`;
