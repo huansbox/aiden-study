@@ -1,14 +1,14 @@
-# 注音 MVP iPad 真機驗收 checklist（issue #20）
+# 注音 MVP 收尾與 iPad 驗證紀錄（issue #20）
 
-> 手動驗證真相源（比照備忘錄捷徑配方文件的定位）。全部打勾＋錄音入庫（缺檔審計＝0）後，#20 才算收尾。
-> App＝ https://huansbox.github.io/aiden-study/zhuyin/ ；錄音工具頁＝ https://huansbox.github.io/aiden-study/zhuyin/recorder.html
+> 2026-09-17：親錄音檔已齊備且經使用者試聽接受。使用者先前已免除逐項 iPad checklist；下方保留未執行項目供日後有實際問題時參考，不列為收尾 gate，也不補勾成通過。
+> App＝ https://kids.linshuhuan.com/zhuyin/ ；錄音工具頁＝ https://kids.linshuhuan.com/zhuyin/recorder.html
 
 ## 前置：錄音入庫
 
-- [ ] recorder.html 錄完 14 段、檔案放進 `docs/zhuyin/assets/audio/` commit
-- [ ] `node --test tests/test_zhuyin_content.mjs`：缺檔警告＝0、孤兒＝0
+- [x] 使用者以 MBP 麥克風完成 14 段親錄，正式檔案放進 `docs/zhuyin/assets/audio/`；原音與接受紀錄保存於 [親錄交付](zhuyin-parent-audio/README.md)。
+- [x] `node --test tests/test_zhuyin_content.mjs`：缺檔＝0、孤兒＝0；缺檔已由 warning 改為測試失敗。
 
-## iPad Safari 真機（約 5 分鐘）
+## 歷史 iPad Safari 檢查項目（未執行，已免除）
 
 - [ ] **音訊解鎖**：按一次「開始練習」後，整批題目聲音全自動播（介紹卡、題目音、答對答錯回饋、示範連播、詞卡詞語音），全程不需再點任何播放鈕
 - [ ] **聽音辨認**：答錯→中性音效、錯卡變灰、題目自動重播、續選到對
@@ -25,3 +25,12 @@
 - 練習範圍選擇只在本次開啟有效（重開 app 回到「混合」）
 - 「只拼音節」在符號都還沒學過時會顯示「還沒有可以練的卡」——先用混合或只認符號讓符號進場
 - 缺音檔的卡不入批；全缺時顯示請家長錄音的訊息
+
+
+## 本次完成的驗證
+
+- 使用者集中試聽全部整理後親錄，明確回覆「sounds ok」；接受紀錄對應 MBP commit `528b7a5`，接受記錄 commit `ef2a24c`。正式交付逐檔維持該版本，不採 TTS、不重新編碼。
+- MBP：14 段實播至 ended；app 自檢、聽音辨認錯→對、聲韻四聲錯→對與爸爸詞卡實播通過。完整來源與技術限制見親錄交付 README。
+- Windows：重跑來源／成品 hash、格式、缺檔與孤兒審計；確認原音可重建，正式交付保持使用者已接受的 MBP bytes。修正 Windows recipe 換行差異與 UTF-8 讀寫。
+- 整合後 Node 341 項通過；pytest 183 項通過、1 項略過。隔離本機孩子入口正常進入注音介紹卡，家長自檢顯示全部 14 段齊備並啟動連播。
+- 家長區、匯出匯入與重置功能早已由 PR #25 交付，既有 live smoke 見 [#20 歷史紀錄](https://github.com/huansbox/aiden-study/issues/20#issuecomment-4941686896)。本次只補已接受的音檔與管線，不改學習存檔或登入方式。

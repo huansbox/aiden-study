@@ -14,13 +14,13 @@
 | 長除法練習 | `docs/math/` | 哥哥 | LocalStorage + Worker 同步 |
 | 英文拼字 | `docs/spelling/` | 哥哥 | LocalStorage + Worker 同步 |
 | 數織解謎 | `docs/math/nonogram/` | 哥哥 | 僅 LocalStorage |
-| 注音練習 | `docs/zhuyin/` | 弟弟 | 程式已上線並接同步；14 段正式錄音與 iPad #20 驗收待完成 |
+| 注音練習 | `docs/zhuyin/` | 弟弟 | MVP 已交付並接同步；14 段親錄已由家長試聽接受，收尾見 #20 |
 
 `docs/registry.json` 定義平台可用 App。獨立 `/parent/` 家長後台已於 2026-09-15 正式發布，實際顯示對象、排序、題庫學期、頭像與練習安排可從後台調整。新版孩子首頁、累計與永久積木徽章已上線，預設 LEGO 頭像，指定的扁平版保留供替換；規則與驗證見 [UI/UX 改版說明](docs-dev/family-uiux-v2.md)。既有進度同步仍共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，新增家庭設定／累計使用 `family-*`，後端都位於 `worker/`。
 
 2026-09-16「家長首次連接、記住入口」已正式發布。此版將家庭金鑰換成 HttpOnly Cookie、保留帶金鑰舊圖示的自動轉移，並新增首頁前景更新及失敗提示。`kids.linshuhuan.com` 已啟用 Cloudflare proxy，僅 `/api/*` 交由 Worker，其餘頁面仍由 GitHub Pages 提供；步驟與驗證見 [入口連線說明](docs-dev/device-connection.md)。
 
-五個 app 已提供回孩子首頁的連結，兩個首頁的頁面名稱分別為「煦誠學習」「秉樸學習」，沿用原本的 child 網址。自訂網域 `kids.linshuhuan.com` 已啟用 HTTPS，舊 GitHub Pages 網址會自動轉向。#35 主畫面跨頁與 Safari 儲存隔離已驗收結案；#34 網站端檢查完成，家長已確認兩個 iPad 主畫面圖示安裝，依本輪範圍結案。注音內容仍待 #20 錄音。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
+五個 app 已提供回孩子首頁的連結，兩個首頁的頁面名稱分別為「煦誠學習」「秉樸學習」，沿用原本的 child 網址。自訂網域 `kids.linshuhuan.com` 已啟用 HTTPS，舊 GitHub Pages 網址會自動轉向。#35 主畫面跨頁與 Safari 儲存隔離已驗收結案；#34 網站端檢查完成，家長已確認兩個 iPad 主畫面圖示安裝，依本輪範圍結案。注音 14 段正式親錄已補齊並獲家長接受，沿用已免除逐項 iPad checklist 的決定；見 [收尾紀錄](docs-dev/zhuyin-mvp-ipad-checklist.md)。2026-09-15 家長確認尚未正式給孩子使用，本次不備份／還原／對帳舊進度；詳見 [正式網域上線紀錄](docs-dev/platform-domain-rollout.md)。
 
 ## 專案結構
 
@@ -66,7 +66,7 @@ uv run pytest
 node --test "tests/*.mjs"
 ```
 
-測試數量會隨功能與資料更新；執行工作時以當次命令的實際輸出為準，不把舊快照數字當成目前結果。注音正式錄音完成前，相關 audit 仍可能列出缺少的 `.m4a`。
+測試數量會隨功能與資料更新；執行工作時以當次命令的實際輸出為準，不把舊快照數字當成目前結果。注音正式親錄已齊備；缺少 `.m4a` 現在會使測試失敗，避免發布後再出現缺音。
 
 ## 本機啟動
 
