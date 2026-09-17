@@ -1,5 +1,7 @@
 # Aiden Study 全家學習平台 monorepo
 
+- 找既有作品先看 `README.md` 的「作品總覽」；主線外作品回查其 PR／分支，不能只憑目前 checkout 判定作品不存在。
+- 下方長篇平台實作紀錄包含歷史快照，不作為目前待辦或驗收狀態。現況回查 code／Git、對應 issue／PR 與 `README.md`；跨裝置工作先確認分支與遠端，不覆蓋他處正在開發的內容。
 - 詞彙表見 `CONTEXT.md`；涉及架構的改動先查 `docs-dev/adr/`（本 repo `docs/` 是部署目錄，ADR 放 docs-dev）
 - 規劃、建立或歸檔家庭學習活動前，先讀並遵循 `learning-tasks/README.md`；該檔是 task／app／shared 分類、資料夾規格與索引維護的唯一真相源（ADR-0007）。
 - **目前驗證 gate**：GitHub Actions `.github/workflows/test.yml` 在 push master、PR 與手動觸發時分別跑 `uv run pytest` 與 `node --test tests/*.mjs`；本機同樣跑這兩條。現況＝pytest 140 passed＋1 skipped、Node.js 231 passed（含 #35 spike 11 例）。
