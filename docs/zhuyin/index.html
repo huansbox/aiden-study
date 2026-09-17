@@ -67,7 +67,12 @@
   }
   .btn-slow:active { transform: translateY(3px); box-shadow: 0 1px 0 #5f9c5f; }
   .btn-slow:disabled { opacity: 0.45; pointer-events: none; }
-  .build-slots { display: flex; align-items: flex-start; gap: 10px; }
+  .build-workspace { display: flex; align-items: center; gap: 24px; width: 100%; }
+  #build-area { flex: 1; min-width: 0; }
+  .build-slots { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; align-items: center; gap: 10px; }
+  #slot-onset { grid-column: 1; grid-row: 1; }
+  #slot-rime { grid-column: 1; grid-row: 2; }
+  #slot-tone { grid-column: 2; grid-row: 1 / 3; }
   .slot {
     width: min(20vw, 110px); height: min(20vw, 110px);
     display: flex; align-items: center; justify-content: center;
@@ -76,16 +81,17 @@
   }
   .slot.filled { border-style: solid; border-color: #43a047; background: #e9f8ec; }
   .slot-tone {
-    width: min(10vw, 56px); height: min(10vw, 56px); margin-top: -6px;
+    width: min(8vw, 48px); height: min(8vw, 48px);
     display: flex; align-items: center; justify-content: center;
     border: 3px dashed #d8c9ae; border-radius: 50%;
     font-size: min(8vw, 44px); font-weight: 700; color: #334; background: #fffdf8;
   }
   .slot-tone.filled { border-style: solid; border-color: #43a047; background: #e9f8ec; }
+  .tones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .tone-btn {
-    min-width: min(38vw, 220px); padding: 18px 12px;
+    min-width: 0; padding: 14px 8px;
     background: #fff; border: 4px solid #d8c9ae; border-radius: 20px;
-    font-size: min(11vw, 58px); font-weight: 700; color: #334;
+    font-size: min(10vw, 58px); font-weight: 700; color: #334;
     cursor: pointer; box-shadow: 0 5px 0 #d8c9ae; font-family: inherit;
   }
   .tone-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #d8c9ae; }
@@ -102,7 +108,12 @@
     font-size: min(42vw, 220px); font-weight: 800; color: #b8862f;
     cursor: pointer; box-shadow: 0 6px 0 #d9a325; animation: zyPop 0.6s;
   }
-  .intro-card.multi { font-size: min(19vw, 100px); } /* 音節示範卡 2–3 字（含調號）不溢出 */
+  .intro-card.multi { font-size: min(19vw, 100px); }
+  /* 聲符在上、韻符在下；二三四聲置右側，一聲留白。 */
+  .zy-syllable { display: inline-grid; grid-template-columns: 1em .5em; align-items: center; vertical-align: middle; line-height: 1; }
+  .zy-symbols { display: flex; flex-direction: column; }
+  .zy-symbols > span { display: block; height: 1em; }
+  .zy-tone { font-size: .65em; }
   .btn-next {
     font-size: 2.2rem; color: #fff; background: #43a047; border: none; border-radius: 50px;
     padding: 16px 56px; cursor: pointer; box-shadow: 0 5px 0 #2e7031;
@@ -247,7 +258,7 @@
   </div>
 </div>
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260916-session"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260916-articles"></script><script src="../shared/family-client.js?v=20260916-home"></script><script src="../shared/family-app.js?v=20260916-session"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260916-articles"></script><script src="../shared/family-client.js?v=20260917-round"></script><script src="../shared/family-app.js?v=20260916-session"></script>
 <script>
 "use strict";
 
@@ -683,9 +694,14 @@ function renderCard() {
 function tapGuarded() { return performance.now() - app.shownAt < TAP_GUARD_MS; }
 
 // 介紹卡（符號首次）／示範卡（音節首次）共用骨架：不判分，大字卡＋播音；點卡重聽、按 ➜ 進下一題
+function syllableHtml(y, tone = y.tone) {
+  const mark = TONE_MARK[tone] || "";
+  return `<span class="zy-syllable" aria-label="${y.onset}${y.rime}${mark}"><span class="zy-symbols" aria-hidden="true"><span>${y.onset}</span><span>${y.rime}</span></span><span class="zy-tone" aria-hidden="true">${mark}</span></span>`;
+}
+
 function renderTeaching(card, { label, display, replayKeys }) {
   const area = document.getElementById("card-area");
-  const multi = display.length > 1 ? " multi" : ""; // 音節示範卡 2–3 字，需縮字才不溢出
+  const multi = card.kind === "syl" ? " multi" : "";
   area.innerHTML = `
     <div class="intro-label">${label}</div>
     <div class="intro-card${multi}" id="intro-card">${display}</div>
@@ -714,7 +730,7 @@ function renderDemo(card) {
   const y = card.syl;
   renderTeaching(card, {
     label: "新的拼音！聽聽看",
-    display: y.onset + y.rime + TONE_MARK[y.tone],
+    display: syllableHtml(y),
     replayKeys: zyDemoChain(y, app.symbolAudio, (k) => app.hasAudio.has(k)),
   });
 }
@@ -783,10 +799,10 @@ function renderBuild(card) {
       <button class="btn-replay" id="btn-replay">🔊</button>
       <button class="btn-slow" id="btn-slow">🐢 慢慢聽</button>
     </div>
-    <div class="build-slots">
+    <div class="build-workspace"><div class="build-slots">
       <span class="slot" id="slot-onset"></span><span class="slot" id="slot-rime"></span><span class="slot-tone" id="slot-tone"></span>
     </div>
-    <div id="build-area"></div>`;
+    <div id="build-area"></div></div>`;
   document.getElementById("btn-replay").addEventListener("click", () => playVoice(y.audio));
   document.getElementById("btn-slow").addEventListener("click", () =>
     playChain(zyDemoChain(y, app.symbolAudio, has)));
@@ -817,7 +833,7 @@ function renderBuildStep(card) {
     const opts = zyToneOptions(y, app.syllables, (k) => app.hasAudio.has(k));
     buildArea.innerHTML = `<div class="choices tones">${
       opts.map((o) => `<button class="tone-btn" data-tone="${o.tone}" data-k="${o.audio || ""}">${
-        y.onset + y.rime + (TONE_MARK[o.tone] || "")
+        syllableHtml(y, o.tone)
       }</button>`).join("")
     }</div>`;
     buildArea.querySelector(".tones").addEventListener("click", (ev) => {
@@ -913,6 +929,7 @@ function finishBatch() {
   document.getElementById("break-reward").innerHTML = rewardRevealHtml(path); // null→空＝靜默無獎圖
   if (path) new Image().src = path; // 預載：點獎杯揭曉時圖多半已就緒
   showScreen("screen-break");
+  family?.finishRound();
   playSound("complete");
 }
 
@@ -1026,7 +1043,7 @@ function renderParent() {
     rows.push(`<tr><td>${label}</td><td>${kind}</td>${status}<td>${st.correct}／${st.practiced}</td></tr>`);
   };
   for (const g of app.entryOrder) row(g, "符號", zyCardState(app.progress, zyCardId(g)));
-  for (const y of app.syllables) row(y.onset + y.rime + TONE_MARK[y.tone], "音節", zyCardState(app.progress, zySylId(y)));
+  for (const y of app.syllables) row(syllableHtml(y), "音節", zyCardState(app.progress, zySylId(y)));
   document.getElementById("parent-overview").innerHTML =
     "<tr><th>卡</th><th>類型</th><th>狀態</th><th>答對／作答</th></tr>" + rows.join("");
 }

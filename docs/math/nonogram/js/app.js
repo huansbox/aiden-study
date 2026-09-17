@@ -593,6 +593,7 @@ els.checkBtn.addEventListener('click', () => {
     els.revealBtn.hidden = true;
     els.replayBtn.hidden = false;
     els.nextBtn.hidden = isCustom; // 自訂題無題庫「下一題」序，僅留重玩／回題庫
+    family?.finishRound();
   } else {
     els.hint.textContent = '再試試 💪';
     els.hint.classList.remove('ok');

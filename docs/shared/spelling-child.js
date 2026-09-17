@@ -97,6 +97,7 @@ window.KidsSpellingChild = ({
       index =
         (index + 1) % Math.min(batchSize, words.length - batch * batchSize);
       render();
+      if (roundDone) family.finishRound();
     });
   }
   function restart() {

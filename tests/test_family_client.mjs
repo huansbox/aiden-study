@@ -28,10 +28,13 @@ function harness({
     setItem: (k, v) => storageMap.set(k, String(v)),
     removeItem: (k) => storageMap.delete(k),
   };
+  const shown = [];
   const element = () => ({
-    append() {},
-    appendChild() {},
-    remove() {},
+    children: [],
+    removed: false,
+    append(...children) { this.children.push(...children); },
+    appendChild(child) { shown.push(child); },
+    remove() { this.removed = true; },
     setAttribute() {},
     addEventListener() {},
     classList: { add() {} },
@@ -88,6 +91,7 @@ function harness({
     env,
     storageMap,
     beacons,
+    rewards: () => shown.filter((el) => el.id === "family-reward" && !el.removed),
     setOffline: (value) => {
       offline = value;
     },
@@ -102,6 +106,63 @@ function harness({
     event: (name) => windows.get(name)?.(),
   };
 }
+test("達標立即存檔但回合結束才合併通知；暫停與背景不觸發，新回合收掉提示", async () => {
+  const h = harness(), data = h.C.defaults(), day = h.C.dateKey();
+  data.children.bingpu.overrides[day] = [
+    { id: "round", app: "zhuyin", mode: "all", quantity: 1 },
+  ];
+  await h.F.saveSettings(data, 0, "reward-timing");
+  const child = harness({ env: h.env, search: `?child=bingpu&task=round&day=${day}` });
+  const app = child.F.attach("zhuyin", "bingpu");
+  await app.ready;
+  app.setActive(true);
+  child.setOffline(true);
+  assert.equal(app.record({ mode: "listen", answered: true, correct: true }).taskDone, true);
+  assert.equal(app.summary().finishedTasks, 1);
+  for (let i = 1; i < 10; i++) app.record({ mode: "build", answered: true, correct: true });
+  app.setActive(false); // 單題回饋或暫停仍不是批末
+  child.visibility("hidden");
+  child.visibility("visible");
+  await new Promise(setImmediate); // 等回前景觸發的離線送出失敗結束，再模擬恢復網路
+  assert.equal(child.rewards().length, 0);
+  app.finishRound();
+  assert.equal(child.rewards().length, 1);
+  const label = child.rewards()[0].children.find((el) => el.textContent)?.textContent;
+  assert.match(label, /任務完成/);
+  assert.match(label, /第一個任務/);
+  assert.match(label, /第一塊積木/);
+  app.finishRound();
+  assert.equal(child.rewards().length, 1, "重複結算不重複彈出");
+  app.setActive(true);
+  assert.equal(child.rewards().length, 0, "下一批不帶著上一批提示");
+  app.record({ mode: "listen", answered: false });
+  app.finishRound();
+  assert.equal(child.rewards().length, 0, "已取得的成就不再彈出");
+  child.setOffline(false);
+  await app.flush();
+  const another = harness({ env: h.env });
+  await another.F.activity("bingpu");
+  assert.equal(another.F.summary("bingpu").total.answered, 10);
+  assert.equal(another.F.summary("bingpu").finishedTasks, 1);
+});
+test("所有站內正式 App 的普通徽章一律等明確回合結束，重開也保留累計", async () => {
+  const registry = JSON.parse(readFileSync(new URL("../docs/registry.json", import.meta.url), "utf8"));
+  for (const { id } of registry.apps.filter((app) => app.path && app.status === "active")) {
+    const h = harness(), app = h.F.attach(id, "aiden");
+    await app.ready;
+    app.setActive(true);
+    for (let i = 0; i < 10; i++) app.record({ answered: true, correct: true });
+    assert.equal(h.rewards().length, 0, id);
+    app.finishRound();
+    assert.equal(h.rewards().length, 1, id);
+    app.setActive(true);
+    const reopened = h.F.attach(id, "aiden");
+    await reopened.ready;
+    reopened.finishRound();
+    assert.equal(h.rewards().length, 0, id);
+    assert.equal(reopened.summary().total.answered, 10, id);
+  }
+});
 test("作答與閱讀分開、同任務跨 App 不計、任務只完成一次", async () => {
   const h = harness(),
     data = h.C.defaults(),

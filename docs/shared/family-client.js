@@ -273,7 +273,11 @@
     close.addEventListener("click", () => el.remove());
     el.append(brick, text, link, close);
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 7000);
+    const timer = setTimeout(() => el.remove(), 7000);
+    return () => {
+      clearTimeout(timer);
+      el.remove();
+    };
   }
   function attach(app, child) {
     if (!core.APPS.includes(app) || !child) return null;
@@ -296,6 +300,9 @@
       dirty = false,
       pushing = false,
       pushTimer = null;
+    let pendingTaskReward = false,
+      dismissReward = null;
+    const pendingBadges = new Map();
     const search = new URLSearchParams(location.search);
     function profile() {
       return (
@@ -382,7 +389,25 @@
     function setActive(value) {
       tick();
       active = !!value;
+      // 下一回合開始時收掉上一回合提示；暫停、切背景都不算完成回合。
+      if (active) {
+        dismissReward?.();
+        dismissReward = null;
+      }
       lastInput = lastTick = performance.now();
+    }
+    function finishRound() {
+      setActive(false);
+      const labels = [];
+      if (pendingTaskReward) labels.push("任務完成");
+      if (pendingBadges.size)
+        labels.push("新徽章：" + [...pendingBadges.values()].join("、"));
+      pendingTaskReward = false;
+      pendingBadges.clear();
+      if (labels.length) {
+        dismissReward?.();
+        dismissReward = showReward(labels.join("・"), child);
+      }
     }
     function matches(details) {
       if (!currentTask || currentTask.date !== core.dateKey()) return false;
@@ -421,12 +446,11 @@
       if (justDone) {
         stream.done[currentTask.occurrence] = 1;
         next = allSummary();
-        showReward("任務完成", child);
+        pendingTaskReward = true;
       }
       const previous = new Set(core.earnedBadges(before).map((b) => b.id));
       const earned = core.earnedBadges(next).filter((b) => !previous.has(b.id));
-      if (earned.length && !justDone)
-        showReward("新徽章：" + earned.at(-1).label, child);
+      for (const badge of earned) pendingBadges.set(badge.id, badge.label);
       persist();
       return { taskDone: justDone, summary: next };
     }
@@ -452,6 +476,7 @@
       profile,
       record,
       setActive,
+      finishRound,
       flush,
       summary: allSummary,
       task: () => currentTask,

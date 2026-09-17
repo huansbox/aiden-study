@@ -141,7 +141,7 @@
             `<div class="app-row"><span style="flex:1">${esc(names[t.app])} · ${esc(C.taskLabel(t))}${!C.availableTask(t, profile) ? " <small>已隱藏，不會派發</small>" : ""}</span><button data-remove="${i}" aria-label="移除第 ${i + 1} 項任務">移除</button></div>`,
         )
         .join("") || '<p class="muted">這份安排沒有任務。</p>'
-    }</div><div id="task-fields" class="family-stack">${taskFields()}</div><p class="muted">以完成練習量計算，不要求全對。孩子仍可自由選其他活動。跨日不累積欠交。</p></section><section class="family-panel"><h2>累計紀錄</h2><div id="parent-stats">讀取中⋯</div><p class="muted">分鐘是頁面使用中的估計值；進入背景、停留超過兩分鐘未操作不計。新累計從改版後開始，既有 App 進度另行保留。</p></section><section class="family-panel"><h2>內容與維護</h2><p>注音正式錄音仍待補齊，準備完成前部分卡片無法開始。</p><div class="family-row" style="margin-top:16px">${reg.apps
+    }</div><div id="task-fields" class="family-stack">${taskFields()}</div><p class="muted">以完成練習量計算，不要求全對。孩子仍可自由選其他活動。跨日不累積欠交。</p></section><section class="family-panel"><h2>累計紀錄</h2><div id="parent-stats">讀取中⋯</div><p class="muted">分鐘是頁面使用中的估計值；進入背景、停留超過兩分鐘未操作不計。新累計從改版後開始，既有 App 進度另行保留。</p></section><section class="family-panel"><h2>內容與維護</h2><div class="family-row" style="margin-top:16px">${reg.apps
       .filter((a) => a.path && a.id !== "nonogram")
       .map(
         (a) =>
