@@ -2,13 +2,15 @@
 
 日期：2026-09-17。適用題組：`docs/nativecamp/lessons/2026-09-15.json`。
 
+本檔記錄音訊製作階段的驗證；後續正式發布結果見[互動版說明](../../../docs-dev/nativecamp-review.md#2026-09-17-正式發布結果)。下一堂請先讀[製作SOP](../lesson-sop.md)，不要直接重跑本堂builder覆寫產物。
+
 ## 題組與語音來源
 
 首堂有 is/are、odd/even、too many 三個概念，各含三題 Try it 與三題 Say it，共18題。Try it 含兩題點字排列；其餘以固定選項作答。所有情境由本次原創，並依既有 [evidence-review.md](evidence-review.md) 的概念判讀設計，沒有複製教材頁。
 
 - is/are 的圖上數量與單複數一致；一隻動物接受 `a` 與 `one`。
 - odd/even 以圖上數量或數字決定答案，包含奇數與偶數，不沿用單一數字。
-- too many 每題均標示箱子或架子的可容納數量，圖上物品多於容量；判斷不依賴「看起來很多」。兩個開放口說提示明列 `Use too many in a sentence.`，讓家長依明確任務評級。
+- too many 每題均標示箱子或架子的可容納數量，圖上物品多於容量；判斷不依賴「看起來很多」。前兩題口說語音保留 `Use too many in a sentence.`，畫面統一顯示作答區句型 `… too many …`，讓家長依明確任務評級。
 - 選詞問題的 Listen 不念填入答案後的完整句；排列題只念情境與操作，不念排列結果。
 
 一般英文使用本機 Windows SAPI 的 `Microsoft Zira Desktop - English (United States)`，rate 為 -1；35個 TTS MP3 全部預製，沒有 runtime TTS、外部語音服務或聲音複製。公開音訊資料夾只含這35個生成檔。

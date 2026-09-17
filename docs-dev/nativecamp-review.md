@@ -1,6 +1,8 @@
 # Native Camp Review
 
-追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)、[口說句型提示 #72](https://github.com/huansbox/aiden-study/issues/72)。工作分支：`codex/nativecamp-audio-review`。
+追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)、[口說句型提示 #72](https://github.com/huansbox/aiden-study/issues/72)均已結案；原工作分支 `codex/nativecamp-audio-review` 已由PR #68合併並發布。
+
+下一堂製作從[課後複習 SOP](../learning-tasks/nativecamp-review-pilot/lesson-sop.md)、[設計模板](../learning-tasks/nativecamp-review-pilot/templates/lesson-brief.md)與[本堂範例](../learning-tasks/nativecamp-review-pilot/lesson-example-2026-09-15.md)開始。本文件保留已實作行為與發布證據；SOP不代表多課選擇功能已完成。
 
 ## 使用方式與範圍
 
