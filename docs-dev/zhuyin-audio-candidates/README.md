@@ -1,6 +1,8 @@
-# 注音 #20 音檔候選（尚未驗音）
+# 注音 #20 音檔候選（歷史候選，未採用）
 
-這裡有對應 `docs/zhuyin/content.json` 的 **14 段可重建機器候選**，供家長集中試聽。**不是親錄成品，不代表發音正確，也不代表 #20 完成。** 正式 `docs/zhuyin/assets/audio/` 仍缺 14/14，這批檔案不會由 app 載入。
+> 2026-09-17：家長已完成 14 段 MBP 親錄，整理結果見 [親錄音檔包](../zhuyin-parent-audio/)。以下候選仍獨立保存，未接入 app；缺檔與測試數字記錄候選初次交付時的狀態。
+
+這裡有對應 `docs/zhuyin/content.json` 的 **14 段可重建機器候選**，供家長集中試聽。**不是親錄成品，不代表發音正確，也不代表 #20 完成。** 候選初次交付時，正式 `docs/zhuyin/assets/audio/` 缺 14/14；目前已由親錄補齊，這批機器候選不會由 app 載入。
 
 基準：`origin/master` 的 `a0f81e8`；製作日期 2026-09-16。依 [#15 拍板紀錄](https://github.com/huansbox/aiden-study/issues/15#issuecomment-4937229445) 的既定方向維持全親錄；TTS 單獨符號與爸爸／媽媽先前已被否決。此次候選只完成最新授權的試聽交付，沒有推翻原決策。[#20](https://github.com/huansbox/aiden-study/issues/20) 的正式待辦是依全親錄取得可採用音檔、入庫並確認實際發聲。使用者已免除逐項 iPad checklist，不將它列為完成關卡。
 
@@ -53,7 +55,7 @@ node --test tests/test_zhuyin_audio_candidates.mjs tests/test_zhuyin_content.mjs
 # 開啟集中試聽：瀏覽 http://127.0.0.1:8766/docs-dev/zhuyin-audio-candidates/
 uv run python -m http.server 8766 --bind 127.0.0.1
 
-# 檢查正式目錄：目前會 exit 1，列出缺 14 段
+# 檢查正式目錄：目前由親錄補齊後應為 exit 0
 uv run python scripts/zhuyin_audio.py audit --audio-dir docs/zhuyin/assets/audio
 ```
 

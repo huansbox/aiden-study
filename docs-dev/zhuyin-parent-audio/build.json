@@ -1,0 +1,345 @@
+{
+  "source": "parent-recorded",
+  "pronunciationReviewed": false,
+  "iPadVerified": false,
+  "recipeSha256": "406924899a4a0179a2190acbe49e1925f17590edaf42c912cedb0a2de2a793b4",
+  "processing": "只裁掉頭尾等待；末端 5 ms 淡出；峰值 -6 dBFS；不改音高、語速或聲調。",
+  "items": [
+    {
+      "key": "sym-b",
+      "sourceSha256": "0ed4a10c8e5d160740ad07d010f2db2e7497c0a9b101898e37db6afdc80eb2c9",
+      "sha256": "2a70639c01c4275252ef0a934c7f12d1ea18e1485b2ed90af858b0be4469e6bd",
+      "gainDb": -5.65,
+      "originalMetrics": {
+        "durationSeconds": 1.8547,
+        "peakDbfs": -0.35,
+        "rmsDbfs": -22.88,
+        "activeSeconds": 0.3791,
+        "leadingSilenceSeconds": 0.4939,
+        "trailingSilenceSeconds": 0.0538,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.5573,
+        "peakDbfs": -6.01,
+        "rmsDbfs": -23.34,
+        "activeSeconds": 0.3592,
+        "leadingSilenceSeconds": 0.0798,
+        "trailingSilenceSeconds": 0.1183,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "sym-m",
+      "sourceSha256": "45934faf29cbfd648094ac78542a6762bb75cebba2d86432dcf5ca45df357225",
+      "sha256": "9f1ae52c4b273a9afff56670b86e6399e0f18b69811f2a6d9279808626a86637",
+      "gainDb": -4.02,
+      "originalMetrics": {
+        "durationSeconds": 2.472,
+        "peakDbfs": -1.98,
+        "rmsDbfs": -22.21,
+        "activeSeconds": 0.5138,
+        "leadingSilenceSeconds": 0.8431,
+        "trailingSilenceSeconds": 1.1151,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.7198,
+        "peakDbfs": -6.06,
+        "rmsDbfs": -20.91,
+        "activeSeconds": 0.5039,
+        "leadingSilenceSeconds": 0.0848,
+        "trailingSilenceSeconds": 0.1312,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "sym-a",
+      "sourceSha256": "8fa802107b62c639927d759dce56a4b756d1e730ef7b4c35be77f3c2556335eb",
+      "sha256": "3c72c78e08724ad55af17dc2bb4bc76d75e7d90bdf849b1ab7caba44be96fbf2",
+      "gainDb": -5.52,
+      "originalMetrics": {
+        "durationSeconds": 2.5573,
+        "peakDbfs": -0.48,
+        "rmsDbfs": -24.26,
+        "activeSeconds": 0.4141,
+        "leadingSilenceSeconds": 1.2023,
+        "trailingSilenceSeconds": 0.941,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.6037,
+        "peakDbfs": -6.18,
+        "rmsDbfs": -23.58,
+        "activeSeconds": 0.4091,
+        "leadingSilenceSeconds": 0.0748,
+        "trailingSilenceSeconds": 0.1198,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ba1",
+      "sourceSha256": "51f022754e5d17b3be2489a15727ffe7248388bdcc50a25303d82cee0b4d4386",
+      "sha256": "fdfea9b1f58f8a264703cd1932c0e2cd3f455c2252881cf25e0a9dd26ad2292e",
+      "gainDb": -6.0,
+      "originalMetrics": {
+        "durationSeconds": 1.62,
+        "peakDbfs": -0.0,
+        "rmsDbfs": -22.34,
+        "activeSeconds": 0.3243,
+        "leadingSilenceSeconds": 0.2943,
+        "trailingSilenceSeconds": 0.6572,
+        "clippedSamples": 2
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.5108,
+        "peakDbfs": -6.05,
+        "rmsDbfs": -23.41,
+        "activeSeconds": 0.3093,
+        "leadingSilenceSeconds": 0.0848,
+        "trailingSilenceSeconds": 0.1167,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ba2",
+      "sourceSha256": "2adacbf7b2a2c6f537f2418f30c619c4402c8a829410d15889755d0226e94b00",
+      "sha256": "a4e8c578c34ee17cf9e93be01463f231b1fd4d7071a352a7c12afdd22c17072d",
+      "gainDb": -5.28,
+      "originalMetrics": {
+        "durationSeconds": 1.812,
+        "peakDbfs": -0.72,
+        "rmsDbfs": -26.84,
+        "activeSeconds": 0.4689,
+        "leadingSilenceSeconds": 0.6735,
+        "trailingSilenceSeconds": 0.6646,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.6734,
+        "peakDbfs": -6.01,
+        "rmsDbfs": -27.84,
+        "activeSeconds": 0.454,
+        "leadingSilenceSeconds": 0.0848,
+        "trailingSilenceSeconds": 0.1346,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ba3",
+      "sourceSha256": "89a94e6b8eb0b217b044bece2542638f6ea3455ddb7ec13c75c06581178f27be",
+      "sha256": "98fd4fdb078e5bdfa2f1b5920795a440c8b0f9d798cda271102d1b2199daf73f",
+      "gainDb": -5.1,
+      "originalMetrics": {
+        "durationSeconds": 2.26,
+        "peakDbfs": -0.9,
+        "rmsDbfs": -29.0,
+        "activeSeconds": 0.2544,
+        "leadingSilenceSeconds": 0.9379,
+        "trailingSilenceSeconds": 1.0577,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.4644,
+        "peakDbfs": -6.07,
+        "rmsDbfs": -27.28,
+        "activeSeconds": 0.2444,
+        "leadingSilenceSeconds": 0.0798,
+        "trailingSilenceSeconds": 0.1202,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ba4",
+      "sourceSha256": "a293b99d1d4f1bee04e6b63f73deba05952d1216c5afca1c11c9d3e261c06941",
+      "sha256": "309d157cc22cb05f500ed12d44ed586a594ed2eb2d33a31fe886dba2a01ec530",
+      "gainDb": -5.64,
+      "originalMetrics": {
+        "durationSeconds": 2.2813,
+        "peakDbfs": -0.36,
+        "rmsDbfs": -27.11,
+        "activeSeconds": 0.1846,
+        "leadingSilenceSeconds": 0.9478,
+        "trailingSilenceSeconds": 1.1489,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.3715,
+        "peakDbfs": -6.03,
+        "rmsDbfs": -24.83,
+        "activeSeconds": 0.1746,
+        "leadingSilenceSeconds": 0.0798,
+        "trailingSilenceSeconds": 0.1121,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "word-baba",
+      "sourceSha256": "f8d67f675ee446ec8501d1834bc62662beab3fb3e488b700797e83bb12c986ae",
+      "sha256": "da6ad62499454739492360392cb01b1fb17be1c2d103f1c5adc1fa329dd41286",
+      "gainDb": -4.57,
+      "originalMetrics": {
+        "durationSeconds": 1.9827,
+        "peakDbfs": -1.43,
+        "rmsDbfs": -27.98,
+        "activeSeconds": 0.2794,
+        "leadingSilenceSeconds": 1.0227,
+        "trailingSilenceSeconds": 0.6008,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.5805,
+        "peakDbfs": -6.01,
+        "rmsDbfs": -27.23,
+        "activeSeconds": 0.2494,
+        "leadingSilenceSeconds": 0.0798,
+        "trailingSilenceSeconds": 0.1465,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ma1",
+      "sourceSha256": "af3c08328c88e8ca342f315fa030e94ca656689e4b664c100b18b3873d4bb799",
+      "sha256": "ae15fef433075e1953c9207b00043a3832ffebd1bee5fd1bd6a20be3ba9d6fd8",
+      "gainDb": 3.67,
+      "originalMetrics": {
+        "durationSeconds": 1.9613,
+        "peakDbfs": -9.67,
+        "rmsDbfs": -30.08,
+        "activeSeconds": 0.4839,
+        "leadingSilenceSeconds": 0.883,
+        "trailingSilenceSeconds": 0.5944,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.6734,
+        "peakDbfs": -6.0,
+        "rmsDbfs": -21.78,
+        "activeSeconds": 0.4989,
+        "leadingSilenceSeconds": 0.0698,
+        "trailingSilenceSeconds": 0.1047,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "word-mama",
+      "sourceSha256": "786b30a44ca90cd43d643f4ec58575494596f53b81eab8d12051a76f82d07808",
+      "sha256": "9c24c5ebeb1b654783c7540f1ded8a567193e1452828e60fb4ade360352bdd04",
+      "gainDb": 3.51,
+      "originalMetrics": {
+        "durationSeconds": 2.196,
+        "peakDbfs": -9.51,
+        "rmsDbfs": -30.38,
+        "activeSeconds": 0.424,
+        "leadingSilenceSeconds": 0.6036,
+        "trailingSilenceSeconds": 1.1633,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.6269,
+        "peakDbfs": -6.06,
+        "rmsDbfs": -21.45,
+        "activeSeconds": 0.439,
+        "leadingSilenceSeconds": 0.0748,
+        "trailingSilenceSeconds": 0.1081,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ma2",
+      "sourceSha256": "bd8aae18d26f60a357ab961907ed3290ea3d75bde33567f3afcb1cf3fa920d85",
+      "sha256": "da17e1e4b4dc7c394d229538d3b597245b4df99525ba17b0c89f510424b4fa1f",
+      "gainDb": 10.23,
+      "originalMetrics": {
+        "durationSeconds": 2.3027,
+        "peakDbfs": -16.23,
+        "rmsDbfs": -37.18,
+        "activeSeconds": 0.5787,
+        "leadingSilenceSeconds": 0.8032,
+        "trailingSilenceSeconds": 0.9208,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.7663,
+        "peakDbfs": -6.01,
+        "rmsDbfs": -22.18,
+        "activeSeconds": 0.5986,
+        "leadingSilenceSeconds": 0.0698,
+        "trailingSilenceSeconds": 0.0978,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ma3",
+      "sourceSha256": "846e013be5f6089e0eb66a408919e7a0bad4933fa004a2c9745270c726ed7766",
+      "sha256": "319ba0a1f935b9d846f28c237806d331503229313533cd1aad783b9b10d8b1f6",
+      "gainDb": 7.94,
+      "originalMetrics": {
+        "durationSeconds": 2.0893,
+        "peakDbfs": -13.94,
+        "rmsDbfs": -37.31,
+        "activeSeconds": 0.3392,
+        "leadingSilenceSeconds": 0.7583,
+        "trailingSilenceSeconds": 0.9719,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.5573,
+        "peakDbfs": -6.02,
+        "rmsDbfs": -23.64,
+        "activeSeconds": 0.4141,
+        "leadingSilenceSeconds": 0.0748,
+        "trailingSilenceSeconds": 0.0235,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "word-ma",
+      "sourceSha256": "870973041b43d6e9332a0bab73d7a855d67ad497ec161f328bfd5107bf492850",
+      "sha256": "28b3366cf55c913a1081660d4e93c9e13e3a231325c4948eda418f643cb9077b",
+      "gainDb": 8.4,
+      "originalMetrics": {
+        "durationSeconds": 2.004,
+        "peakDbfs": -14.4,
+        "rmsDbfs": -39.1,
+        "activeSeconds": 0.3293,
+        "leadingSilenceSeconds": 0.7583,
+        "trailingSilenceSeconds": 0.8766,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.5573,
+        "peakDbfs": -6.02,
+        "rmsDbfs": -25.16,
+        "activeSeconds": 0.3991,
+        "leadingSilenceSeconds": 0.0649,
+        "trailingSilenceSeconds": 0.0784,
+        "clippedSamples": 0
+      }
+    },
+    {
+      "key": "syl-ma4",
+      "sourceSha256": "5bca58ce8ec4403d87dcccc08d926e24d0bc069b3651cc4c5d150b8d834948e9",
+      "sha256": "d76e7394ab384fe8aaa43ea0c494ac0537711d8f893396d24f61f623cf0bb307",
+      "gainDb": 0.25,
+      "originalMetrics": {
+        "durationSeconds": 2.1533,
+        "peakDbfs": -6.25,
+        "rmsDbfs": -31.1,
+        "activeSeconds": 0.2993,
+        "leadingSilenceSeconds": 0.898,
+        "trailingSilenceSeconds": 0.9461,
+        "clippedSamples": 0
+      },
+      "outputMetrics": {
+        "durationSeconds": 0.4876,
+        "peakDbfs": -6.05,
+        "rmsDbfs": -24.41,
+        "activeSeconds": 0.3143,
+        "leadingSilenceSeconds": 0.0748,
+        "trailingSilenceSeconds": 0.0885,
+        "clippedSamples": 0
+      }
+    }
+  ]
+}

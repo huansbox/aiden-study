@@ -1,0 +1,165 @@
+{
+  "scope": "docs/zhuyin/assets/audio",
+  "pronunciationReviewed": false,
+  "iPadVerified": false,
+  "threshold": "5 ms RMS > -45 dBFS 視為有聲；僅驗訊號，不驗發音。",
+  "missing": [],
+  "orphans": [],
+  "items": [
+    {
+      "key": "sym-b",
+      "sha256": "2a70639c01c4275252ef0a934c7f12d1ea18e1485b2ed90af858b0be4469e6bd",
+      "durationSeconds": 0.5573,
+      "peakDbfs": -6.01,
+      "rmsDbfs": -23.34,
+      "activeSeconds": 0.3592,
+      "leadingSilenceSeconds": 0.0798,
+      "trailingSilenceSeconds": 0.1183,
+      "clippedSamples": 0
+    },
+    {
+      "key": "sym-m",
+      "sha256": "9f1ae52c4b273a9afff56670b86e6399e0f18b69811f2a6d9279808626a86637",
+      "durationSeconds": 0.7198,
+      "peakDbfs": -6.06,
+      "rmsDbfs": -20.91,
+      "activeSeconds": 0.5039,
+      "leadingSilenceSeconds": 0.0848,
+      "trailingSilenceSeconds": 0.1312,
+      "clippedSamples": 0
+    },
+    {
+      "key": "sym-a",
+      "sha256": "3c72c78e08724ad55af17dc2bb4bc76d75e7d90bdf849b1ab7caba44be96fbf2",
+      "durationSeconds": 0.6037,
+      "peakDbfs": -6.18,
+      "rmsDbfs": -23.58,
+      "activeSeconds": 0.4091,
+      "leadingSilenceSeconds": 0.0748,
+      "trailingSilenceSeconds": 0.1198,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ba1",
+      "sha256": "fdfea9b1f58f8a264703cd1932c0e2cd3f455c2252881cf25e0a9dd26ad2292e",
+      "durationSeconds": 0.5108,
+      "peakDbfs": -6.05,
+      "rmsDbfs": -23.41,
+      "activeSeconds": 0.3093,
+      "leadingSilenceSeconds": 0.0848,
+      "trailingSilenceSeconds": 0.1167,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ba2",
+      "sha256": "a4e8c578c34ee17cf9e93be01463f231b1fd4d7071a352a7c12afdd22c17072d",
+      "durationSeconds": 0.6734,
+      "peakDbfs": -6.01,
+      "rmsDbfs": -27.84,
+      "activeSeconds": 0.454,
+      "leadingSilenceSeconds": 0.0848,
+      "trailingSilenceSeconds": 0.1346,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ba3",
+      "sha256": "98fd4fdb078e5bdfa2f1b5920795a440c8b0f9d798cda271102d1b2199daf73f",
+      "durationSeconds": 0.4644,
+      "peakDbfs": -6.07,
+      "rmsDbfs": -27.28,
+      "activeSeconds": 0.2444,
+      "leadingSilenceSeconds": 0.0798,
+      "trailingSilenceSeconds": 0.1202,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ba4",
+      "sha256": "309d157cc22cb05f500ed12d44ed586a594ed2eb2d33a31fe886dba2a01ec530",
+      "durationSeconds": 0.3715,
+      "peakDbfs": -6.03,
+      "rmsDbfs": -24.83,
+      "activeSeconds": 0.1746,
+      "leadingSilenceSeconds": 0.0798,
+      "trailingSilenceSeconds": 0.1121,
+      "clippedSamples": 0
+    },
+    {
+      "key": "word-baba",
+      "sha256": "da6ad62499454739492360392cb01b1fb17be1c2d103f1c5adc1fa329dd41286",
+      "durationSeconds": 0.5805,
+      "peakDbfs": -6.01,
+      "rmsDbfs": -27.23,
+      "activeSeconds": 0.2494,
+      "leadingSilenceSeconds": 0.0798,
+      "trailingSilenceSeconds": 0.1465,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ma1",
+      "sha256": "ae15fef433075e1953c9207b00043a3832ffebd1bee5fd1bd6a20be3ba9d6fd8",
+      "durationSeconds": 0.6734,
+      "peakDbfs": -6.0,
+      "rmsDbfs": -21.78,
+      "activeSeconds": 0.4989,
+      "leadingSilenceSeconds": 0.0698,
+      "trailingSilenceSeconds": 0.1047,
+      "clippedSamples": 0
+    },
+    {
+      "key": "word-mama",
+      "sha256": "9c24c5ebeb1b654783c7540f1ded8a567193e1452828e60fb4ade360352bdd04",
+      "durationSeconds": 0.6269,
+      "peakDbfs": -6.06,
+      "rmsDbfs": -21.45,
+      "activeSeconds": 0.439,
+      "leadingSilenceSeconds": 0.0748,
+      "trailingSilenceSeconds": 0.1081,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ma2",
+      "sha256": "da17e1e4b4dc7c394d229538d3b597245b4df99525ba17b0c89f510424b4fa1f",
+      "durationSeconds": 0.7663,
+      "peakDbfs": -6.01,
+      "rmsDbfs": -22.18,
+      "activeSeconds": 0.5986,
+      "leadingSilenceSeconds": 0.0698,
+      "trailingSilenceSeconds": 0.0978,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ma3",
+      "sha256": "319ba0a1f935b9d846f28c237806d331503229313533cd1aad783b9b10d8b1f6",
+      "durationSeconds": 0.5573,
+      "peakDbfs": -6.02,
+      "rmsDbfs": -23.64,
+      "activeSeconds": 0.4141,
+      "leadingSilenceSeconds": 0.0748,
+      "trailingSilenceSeconds": 0.0235,
+      "clippedSamples": 0
+    },
+    {
+      "key": "word-ma",
+      "sha256": "28b3366cf55c913a1081660d4e93c9e13e3a231325c4948eda418f643cb9077b",
+      "durationSeconds": 0.5573,
+      "peakDbfs": -6.02,
+      "rmsDbfs": -25.16,
+      "activeSeconds": 0.3991,
+      "leadingSilenceSeconds": 0.0649,
+      "trailingSilenceSeconds": 0.0784,
+      "clippedSamples": 0
+    },
+    {
+      "key": "syl-ma4",
+      "sha256": "d76e7394ab384fe8aaa43ea0c494ac0537711d8f893396d24f61f623cf0bb307",
+      "durationSeconds": 0.4876,
+      "peakDbfs": -6.05,
+      "rmsDbfs": -24.41,
+      "activeSeconds": 0.3143,
+      "leadingSilenceSeconds": 0.0748,
+      "trailingSilenceSeconds": 0.0885,
+      "clippedSamples": 0
+    }
+  ],
+  "errors": []
+}
