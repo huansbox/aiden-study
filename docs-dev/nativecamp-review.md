@@ -113,3 +113,11 @@ node tests/helpers/serve-family.mjs 8789
 發布順序為新版 Worker、私人音訊 KV、PR 合併與 GitHub Pages。沿用既有 Worker、KV、家庭授權與 API route；只新增 `c:nativecamp:audio:2026-09-15-hats-question`，不變更孩子進度或自動調整家長的活動設定。原音為43061 bytes、SHA256 `ae47f7a4e99ae39f25c6df3a32d977cdf48336bff5bc3b3d517f102cb9625c18`；部署從 ignored 原音包取該 id 的內層物件作為 value。
 
 整合後本機 Node 409項、pytest 184項通過，Worker dry-run 成功。正式 Worker version、Pages commit 與外部驗證結果記於 PR #68 的發布紀錄，不能以 dry-run 或本機結果代表上線成功。正式使用時由家長後台開啟 Native Camp Review；部署不會重設或補造家庭設定。
+
+### 2026-09-17 正式發布結果
+
+- [PR #68](https://github.com/huansbox/aiden-study/pull/68) 已合併，正式程式 commit `6b8f585772c25822c02111196d49cf4664a52b4d`；[Pages](https://github.com/huansbox/aiden-study/actions/runs/35204662470) 與 [master Node／Python CI](https://github.com/huansbox/aiden-study/actions/runs/35204662998) 成功。整合版經獨立唯讀 review，無發布阻擋項目。
+- Worker version `32032b2d-2007-43fa-bccf-584b33d8e006`。只新增前述單一原音 KV key，正式回讀43061 bytes與SHA256一致；TOKEN、既有KV資料及routes未改。
+- 正式站54個HTML／JS／CSS／JSON／TTS資源皆HTTPS 200，內容與發布來源相符；未登入的原音GET回401。Chrome沿用家庭連線，正式預覽的老師題成功進入Playing，三種句型提示皆可見。這是播放功能驗證，不是人工音質判定。
+- 家長後台已顯示Native Camp開關、預覽入口與獨立摘要。發布時煦誠的活動尚未勾選，孩子入口依設定提示由家長開啟；本次未修改首頁活動、安排或作答紀錄。正式[預覽](https://kids.linshuhuan.com/nativecamp/preview.html?child=aiden)與[家長後台](https://kids.linshuhuan.com/parent/?child=aiden)可使用。
+- iPad真機、孩子難度／完成時間與人工驗聽仍待家庭實測。
