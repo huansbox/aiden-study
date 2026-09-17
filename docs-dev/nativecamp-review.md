@@ -1,6 +1,6 @@
 # Native Camp Review
 
-追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)。工作分支：`codex/nativecamp-audio-review`。
+追蹤：[主規格 #64](https://github.com/huansbox/aiden-study/issues/64)、[自主練習 #65](https://github.com/huansbox/aiden-study/issues/65)、[口說與音訊 #66](https://github.com/huansbox/aiden-study/issues/66)、[平台整合 #67](https://github.com/huansbox/aiden-study/issues/67)、[介面精簡與家長預覽 #69](https://github.com/huansbox/aiden-study/issues/69)、[自動播放與音效 #70](https://github.com/huansbox/aiden-study/issues/70)。工作分支：`codex/nativecamp-audio-review`。
 
 ## 使用方式與範圍
 
@@ -37,6 +37,12 @@
 老師原音為一段完整連續提問，未逐字拼接。來源是已下載錄音的老師聲道，切點經短段本機 ASR 核對；ASR 不等於人工聽辨或發音認證。老師片段透過家庭授權的 `GET /v1/nativecamp-audio/<id>` 讀取，沒有放在 public docs；答案聲音只在揭曉後開放播放。
 
 private 音訊的 KV key 是 `c:nativecamp:audio:<id>`，JSON value 為 `{contentType:"audio/mpeg",base64:"..."}`。它與 progress key 分離；進度不含錄音、登入網址或逐字稿。正式音訊供應需由管理端另行提供私人包，產生包不等於已部署。
+
+孩子練習與家長預覽每次進入題目時自動播放問題一次；選字、排列與同步狀態更新不重播。Try it 答對先播放沿用題庫／注音的短鼓勵音，再念完整答案；答錯以柔和提示音接答案示範，自願訂正仍不改第一次紀錄。播放完成不自動前進，保留 Continue。
+
+Say it 在 Show answer 後自動念示範答案；家長選 Got it 才播鼓勵音效，沿用評級後前進，下一題聲音排在鼓勵之後，最後一題只播鼓勵。其他評級不播答對音效。音訊由共用 `audio.js` 管理，重用同一個語音播放器；換題、離頁或進入背景會取消舊語音／音效及私人音檔載入。背景頁面完成載入也不自動發聲。
+
+瀏覽器可能阻擋尚未互動頁面的有聲自動播放。頁面保留 Listen／重試，首次操作啟用聲音；失敗不阻擋作答，也不算提示。返回可見頁面不擅自重播。桌面測試不代表所有 iPad Safari 的播放政策均已驗證。
 
 ## 本機重建與隔離驗證
 
@@ -77,3 +83,11 @@ node tests/helpers/serve-family.mjs 8789
 - 家長預覽實際操作選擇、排列／撤回、揭曉、TTS 與授權老師原音；操作後返回後台，首次作答、口說評級及活動累計與操作前一致。未清除測試紀錄或重啟本機伺服器。
 - fresh code review 找到快速重試可能重複掛載預覽、導致一次點擊播放兩份聲音；已加入載入序號隔離過期回應及回歸測試。獨立複查成功／失敗交錯情境後，沒有未解決 finding。
 - 桌面畫面與預覽版面檢查通過，瀏覽器未記錄 console error／warning。這次沒有新增 iPad 真機或人工音質驗收；Python 來源未改，本機不重複 pytest，PR CI 仍執行兩套檢查。
+
+## 2026-09-17 自動播放與音效驗收（#70）
+
+- 全套 Node 測試398項通過；涵蓋音效先於答案、Got it 接下一題、播放取消、晚回原音釋放、瀏覽器阻擋後可重試、隱藏後才完成載入／存檔，以及首次紀錄不變。
+- 瀏覽器預覽實測：初次自動播放被阻擋時仍可操作，點選題目後成功進入 Playing；答對／答錯自動播放答案，Say it 揭曉自動播放示範，老師原音可隨題目自動播放。保留手動重聽，沒有自動跳題。播放序列的確切先後另由可控制音訊事件的測試驗證，不以畫面狀態宣稱人耳驗聽。
+- 預覽操作前後，家長摘要的首次作答、口說評級與活動累計一致。原有兩模式 Done 及隔日複習狀態保留，未清除紀錄或重啟8791服務。
+- 獨立唯讀 review 完成，沒有未解決 finding；額外重現延遲 unlock 失敗不會中斷新播放。整合時補上背景慢速 boot 的播放門檻及回歸測試。
+- 本輪未修改 Python、題庫或既有音檔；iPad 真機、人工音質驗收與正式部署維持未完成界線。

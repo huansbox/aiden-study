@@ -11,21 +11,16 @@
   }
   const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
   function mount({ root, lesson, child = "aiden", auth = global.KidsAuth, makeAudio = () => new Audio(),
-    createObjectURL = (blob) => URL.createObjectURL(blob), revokeObjectURL = (url) => URL.revokeObjectURL(url) }) {
+    makeContext, createObjectURL = (blob) => URL.createObjectURL(blob), revokeObjectURL = (url) => URL.revokeObjectURL(url) }) {
     C.validateLesson(lesson);
     let mode = "try", concept = lesson.concepts[0], questionIndex = 0;
     let selection = null, words = [], revealed = false, result = null, error = "", audioMessage = "", lastAudio = "question";
-    let activeAudio = null, privateURL = null, pendingAudio = null, audioEpoch = 0, destroyed = false;
+    let destroyed = false;
+    const audio = global.NativeCampAudio.create({ makeAudio, makeContext, resolveSource, onStatus: audioStatus });
     const question = () => concept[mode][questionIndex];
     const canCheck = () => question().type === "choice" ? selection !== null : words.length === question().tokens.length;
     function stopAudio() {
-      audioEpoch++;
-      pendingAudio?.abort(); pendingAudio = null;
-      if (activeAudio) { activeAudio.pause(); activeAudio.removeAttribute?.("src"); activeAudio.load?.(); activeAudio = null; }
-      if (privateURL) { revokeObjectURL(privateURL); privateURL = null; }
-      audioMessage = "";
-      const target = root.querySelector("#preview-audio-message");
-      if (target) target.textContent = "";
+      audio.stop(); audioStatus("");
     }
     function reset() { stopAudio(); selection = null; words = []; revealed = false; result = null; error = ""; }
     function heading() {
@@ -42,83 +37,75 @@
       root.innerHTML = `${heading()}<p class="preview-lesson">${escape(lesson.date)} · <strong>${escape(lesson.title)}</strong></p><nav class="preview-controls" aria-label="Choose a question"><fieldset><legend>Mode</legend><div class="preview-options">${modeButtons}</div></fieldset><fieldset><legend>Concept</legend><div class="preview-options">${concepts}</div></fieldset><fieldset><legend>Question</legend><div class="preview-options">${questions}</div></fieldset></nav><section class="question-card"><p class="preview-question-label">${mode === "try" ? "Try it" : "Say it"} · ${escape(concept.title)} · ${questionIndex + 1} of ${concept[mode].length}</p><div class="question-layout">${V.sceneHtml(q.scene)}<div class="question-content">${button("question-audio", "Listen", "listen-button", "", "volume-2")}<h2>${escape(q.prompt)}</h2><p class="instruction">${escape(q.instruction)}</p></div></div>${answers}${result !== null ? `<p class="preview-result" role="status">${result ? "That matches." : "Look at the example, then try again."}</p>` : ""}<div class="preview-actions">${!revealed ? button("reveal", "Show answer", "secondary", "", "arrow-right") : ""}${mode === "try" ? button("check", "Check", "primary", canCheck() ? "" : "disabled", "check") : ""}</div>${solution}${error ? `<p class="error" role="alert">${escape(error)}</p>` : ""}<p class="audio-status" id="preview-audio-message" role="status">${escape(audioMessage)}</p>${audioMessage.startsWith("Could not") ? button("retry-audio", "Try the sound again", "text-button", "", "rotate-ccw") : ""}</section><p class="preview-footer">All ${lesson.concepts.reduce((total, item) => total + item.try.length + item.say.length, 0)} questions are available here, including questions saved for another day.</p>`;
     }
     function audioStatus(message) {
+      if (destroyed) return;
+      const hadRetry = audioMessage.startsWith("Could not");
       audioMessage = message;
+      if (hadRetry !== message.startsWith("Could not")) { render(); return; }
       const target = root.querySelector("#preview-audio-message");
       if (target) target.textContent = message;
     }
-    async function play(kind) {
-      if (kind === "answer" && !revealed) return;
-      stopAudio();
-      const epoch = audioEpoch, source = question().audio[kind];
-      lastAudio = kind;
-      audioStatus("Loading sound...");
-      let objectURL = null;
+    async function resolveSource(source, { signal }) {
+      if (typeof source === "string") return source;
+      const controller = new AbortController(), cancel = () => controller.abort();
+      signal.addEventListener("abort", cancel, { once: true });
+      if (signal.aborted) cancel();
+      const timeout = setTimeout(cancel, 12000);
       try {
-        let url = source;
-        if (typeof source !== "string") {
-          const controller = new AbortController(); pendingAudio = controller;
-          const timeout = setTimeout(() => controller.abort(), 12000);
-          try {
-            const response = await auth.fetch(`/v1/nativecamp-audio/${source.private}`, { signal: controller.signal });
-            if (!response.ok || response.headers.get("Content-Type") !== "audio/mpeg") throw Error();
-            const blob = await response.blob();
-            if (blob.size < 4 || blob.size > 2097152) throw Error();
-            objectURL = createObjectURL(blob); url = objectURL;
-          } finally { clearTimeout(timeout); if (pendingAudio === controller) pendingAudio = null; }
-        }
-        if (destroyed || epoch !== audioEpoch) { if (objectURL) revokeObjectURL(objectURL); return; }
-        privateURL = objectURL;
-        const audio = makeAudio(); activeAudio = audio;
-        audio.src = url;
-        const failed = () => {
-          if (destroyed || epoch !== audioEpoch) return;
-          stopAudio(); audioMessage = "Could not play this sound. Check your family connection and try again."; render();
-        };
-        audio.onerror = failed;
-        audio.onended = () => { if (epoch === audioEpoch) { stopAudio(); audioStatus(""); } };
-        await audio.play();
-        if (!destroyed && epoch === audioEpoch) audioStatus("Playing...");
-      } catch {
-        if (destroyed || epoch !== audioEpoch) return;
-        stopAudio(); audioMessage = "Could not play this sound. Check your family connection and try again."; render();
+        const response = await auth.fetch(`/v1/nativecamp-audio/${source.private}`, { signal: controller.signal });
+        if (!response.ok || response.headers.get("Content-Type") !== "audio/mpeg") throw Error();
+        const blob = await response.blob();
+        if (blob.size < 4 || blob.size > 2097152) throw Error();
+        const url = createObjectURL(blob);
+        return { url, release: () => revokeObjectURL(url) };
+      } finally {
+        clearTimeout(timeout); signal.removeEventListener("abort", cancel);
       }
+    }
+    async function play(kind, effect) {
+      if (destroyed || global.document?.visibilityState === "hidden") return;
+      if (kind === "answer" && !revealed) return;
+      lastAudio = kind;
+      await audio.play(question().audio[kind], { effect });
     }
     async function handle(action, data = {}) {
       if (destroyed) return;
       try {
-        const q = question();
+        const q = question(); let nextSound = null, effect;
         if (["question-audio", "answer-audio", "retry-audio"].includes(action)) {
           await play(action === "retry-audio" ? lastAudio : action === "answer-audio" ? "answer" : "question"); return;
         }
-        if (action === "mode" && ["try", "say"].includes(data.mode)) { reset(); mode = data.mode; questionIndex = 0; }
+        if (action === "mode" && ["try", "say"].includes(data.mode)) { reset(); mode = data.mode; questionIndex = 0; nextSound = "question"; }
         else if (action === "concept") {
           const next = lesson.concepts.find((item) => item.id === data.concept);
           if (!next) return;
-          reset(); concept = next; questionIndex = 0;
+          reset(); concept = next; questionIndex = 0; nextSound = "question";
         } else if (action === "question") {
           const index = concept[mode].findIndex((item) => item.id === data.question);
           if (index < 0) return;
-          reset(); questionIndex = index;
+          reset(); questionIndex = index; nextSound = "question";
         } else if (action === "pick" && mode === "try" && q.choices?.some((item) => item.id === data.choice)) { selection = data.choice; result = null; }
         else if (action === "add-word" && mode === "try" && q.tokens?.some((item) => item.id === data.word) && !words.includes(data.word)) { words.push(data.word); result = null; }
         else if (action === "remove-word" && mode === "try") { words = words.filter((word) => word !== data.word); result = null; }
-        else if (action === "check" && mode === "try" && canCheck()) { stopAudio(); result = C.checkAnswer(q, q.type === "choice" ? selection : words); revealed = true; }
-        else if (action === "reveal") { stopAudio(); revealed = true; }
+        else if (action === "check" && mode === "try" && canCheck()) { result = C.checkAnswer(q, q.type === "choice" ? selection : words); revealed = true; nextSound = "answer"; effect = result ? "correct" : "neutral"; }
+        else if (action === "reveal") { revealed = true; nextSound = "answer"; }
         else return;
         error = ""; render();
+        if (nextSound === "question") void play(nextSound);
+        else if (nextSound) await play(nextSound, effect);
       } catch { error = "This answer could not be checked. Choose the question again and retry."; render(); }
     }
     const clicked = (event) => {
       const target = event.target.closest?.("button[data-action]");
-      if (target && !target.disabled) void handle(target.dataset.action, target.dataset);
+      if (target && !target.disabled) { audio.unlock(); void handle(target.dataset.action, target.dataset); }
     };
     const hidden = () => { if (global.document?.visibilityState === "hidden") { stopAudio(); audioStatus(""); } };
     root.addEventListener("click", clicked);
     global.addEventListener?.("pagehide", stopAudio);
     global.document?.addEventListener("visibilitychange", hidden);
     render();
+    void play("question");
     return { handle, stopAudio, destroy() {
-      stopAudio(); destroyed = true; root.removeEventListener("click", clicked);
+      destroyed = true; audio.destroy(); root.removeEventListener("click", clicked);
       global.removeEventListener?.("pagehide", stopAudio);
       global.document?.removeEventListener("visibilitychange", hidden);
     } };
@@ -131,7 +118,7 @@
     mounted?.destroy(); mounted = null;
     root.innerHTML = `<section class="loading-card" aria-live="polite"><p class="eyebrow">PREVIEW</p><h1>Loading questions...</h1><a class="nav-link" href="${escape(parentHref(child))}">${icon("arrow-left")}Back to parent</a></section>`;
     try {
-      if (!C || !V || !auth) throw Error("The page did not finish loading. Please try again.");
+      if (!C || !V || !global.NativeCampAudio || !auth) throw Error("The page did not finish loading. Please try again.");
       await auth.ready;
       await auth.refresh();
       if (sequence !== bootSequence) return null;

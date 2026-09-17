@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import "../docs/nativecamp/core.js";
 import "../docs/nativecamp/question-view.js";
+import "../docs/nativecamp/audio.js";
 import "../docs/nativecamp/app.js";
 const C = globalThis.NativeCampCore, A = globalThis.NativeCampApp;
 const originalLesson = JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/2026-09-15.json", import.meta.url), "utf8"));
@@ -24,34 +25,57 @@ class Root {
   addEventListener(name, handler) { this.events.set(name, handler); }
   removeEventListener(name) { this.events.delete(name); }
 }
-function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false, practiceDate = date } = {}) {
-  const root = new Root(), activities = [], media = [];
+class Events {
+  constructor() { this.handlers = new Map(); this.visibilityState = "visible"; }
+  addEventListener(name, handler) { this.handlers.set(name, handler); }
+  removeEventListener(name) { this.handlers.delete(name); }
+  emit(name) { this.handlers.get(name)?.(); }
+}
+function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
+  const root = new Root(), activities = [], media = [], plays = [], eventTarget = new Events(), documentTarget = new Events();
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
     homeHref: "../?child=aiden", status: () => "Saved on this device.", getProgress: () => saved,
-    async saveProgress(value, activity) { saved = C.validateProgress(value); saves++; if (activity) activities.push(activity); app?.onChange({ type: "status" }); },
+    async saveProgress(value, activity) { await beforeSave?.(); saved = C.validateProgress(value); saves++; if (activity) activities.push(activity); app?.onChange({ type: "status" }); },
     setActive(value) { active = value; },
     async syncNow() { app?.onChange({ type: "status" }); },
-    async privateAudio() { privateRequests++; return "blob:teacher-audio-" + privateRequests; },
+    async privateAudio(id, options) { privateRequests++; return loadPrivate ? loadPrivate(id, options) : "blob:teacher-audio-" + privateRequests; },
   };
-  app = A.mount({ root, lesson, bridge, date: () => practiceDate, makeAudio: () => {
-    const audio = { src: "", paused: false, async play() { if (failAudio) throw Error("Media unavailable"); }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
+  app = A.mount({ root, lesson, bridge, date: () => practiceDate, eventTarget, documentTarget,
+    makeAudioController: (options) => globalThis.NativeCampAudio.create({ ...options, makeContext }), makeAudio: () => {
+    const audio = { src: "", paused: true, async play() { plays.push(this.src); if (failAudio) throw Error("Media unavailable"); this.paused = false; }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
   } });
-  return { app, root, lesson, activities, media, bridge,
+  return { app, root, lesson, activities, media, plays, bridge, eventTarget, documentTarget,
     get progress() { return saved; }, get saves() { return saves; }, get active() { return active; }, get privateRequests() { return privateRequests; },
     adopt(value) { saved = C.validateProgress(value); app.onChange({ type: "progress" }); },
   };
+}
+const settle = () => new Promise((resolve) => setImmediate(resolve));
+function effectClock() {
+  const notes = [];
+  const context = {
+    state: "running", currentTime: 0, destination: {},
+    createOscillator() {
+      const note = { frequency: { setValueAtTime(value) { note.pitch = value; } }, connect() {}, start() {}, stop() {}, disconnect() { note.disconnected = true; } };
+      notes.push(note); return note;
+    },
+    createGain() { return { gain: { setValueAtTime() {}, exponentialRampToValueAtTime() {} }, connect() {}, disconnect() {} }; },
+    close() {},
+  };
+  return { notes, makeContext: () => context, finish() { notes.at(-1)?.onended?.(); } };
 }
 test("real lesson opens; Listen and status-only notifications preserve selection and never record an answer", async () => {
   const h = harness();
   assert.equal(h.active, false);
   await h.app.handle("start-try");
   assert.equal(h.active, true);
+  assert.deepEqual(h.plays, [h.lesson.concepts[0].try[0].audio.question]);
   await h.app.handle("pick", { choice: "is" });
   assert.match(h.root.innerHTML, /data-choice="is" aria-pressed="true"/);
   await h.app.handle("question-audio");
   assert.equal(h.media.length, 1);
+  assert.equal(h.plays.length, 2, "Only entering the question and explicit Listen play the prompt.");
   const rendered = h.root.renders;
   await h.bridge.syncNow();
   assert.equal(h.root.renders, rendered);
@@ -61,7 +85,8 @@ test("real lesson opens; Listen and status-only notifications preserve selection
   await h.app.handle("check");
   assert.equal(h.saves, 1);
   assert.deepEqual(h.activities, [{ answered: true, correct: true }]);
-  assert.equal(h.media[0].paused, true);
+  assert.equal(h.media[0].src, h.lesson.concepts[0].try[0].audio.answer);
+  assert.equal(h.media[0].paused, false);
   await h.app.handle("check");
   assert.equal(h.saves, 1, "Repeated Check cannot score the first answer twice.");
 });
@@ -72,11 +97,12 @@ test("Say it hides answer text and media until reveal; rating refers to the firs
   assert.doesNotMatch(h.root.innerHTML, new RegExp(question.answerText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.doesNotMatch(h.root.innerHTML, /data-action="answer-audio"|data-rating=/);
   await h.app.handle("answer-audio");
-  assert.equal(h.media.length, 0);
+  assert.deepEqual(h.plays, [question.audio.question], "The hidden answer cannot play; the question plays automatically.");
   await h.app.handle("rate", { rating: "gotIt" });
   assert.equal(h.activities.length, 0);
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.concepts[0].attempted, 0);
   await h.app.handle("reveal");
+  assert.deepEqual(h.plays, [question.audio.question, question.audio.answer]);
   assert.ok(h.root.innerHTML.includes(question.answerText));
   assert.match(h.root.innerHTML, /Before showing the answer\./);
   assert.match(h.root.innerHTML, /data-action="answer-audio"/);
@@ -85,7 +111,7 @@ test("Say it hides answer text and media until reveal; rating refers to the firs
   await h.app.handle("rate", { rating: "gotIt" });
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.concepts[0].gotIt, 1);
   assert.deepEqual(h.activities, [{ answered: false }]);
-  assert.equal(h.media[0].paused, true);
+  assert.equal(h.media[0].src, h.lesson.concepts[0].say[1].audio.question);
 });
 test("Say it hint survives remount, disables Got it, and counts With help without an automatic speech score", async () => {
   const first = harness();
@@ -133,6 +159,7 @@ test("word cards can be removed before Check, and a status update preserves thei
   const before = h.root.innerHTML;
   await h.bridge.syncNow();
   assert.equal(h.root.innerHTML, before);
+  assert.equal(h.plays.length, 1, "Picking and removing words or a status notification must not restart the prompt.");
   assert.equal(h.saves, 0);
 });
 test("remote adopted progress replaces a stale question and its unsent answer without writing back", async () => {
@@ -147,24 +174,139 @@ test("remote adopted progress replaces a stale question and its unsent answer wi
   assert.equal(h.saves, 0, "The previous choice must not become the new question's answer.");
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).try.concepts[0].attempted, 1);
 });
-test("audio failure is retryable without an attempt, and private audio is requested only on Listen", async () => {
+test("failed question autoplay is retryable without an attempt, including an authorized private recording", async () => {
   const lesson = structuredClone(originalLesson);
   lesson.concepts[0].say[0].audio.question = { private: "teacher-question" };
   const h = harness({ lesson, failAudio: true });
   await h.app.handle("start-say", { concept: "is-are" });
-  assert.equal(h.privateRequests, 0);
-  await h.app.handle("question-audio");
   assert.equal(h.privateRequests, 1);
-  assert.match(h.root.innerHTML, /Could not play the sound/);
+  await h.app.handle("question-audio");
+  assert.equal(h.privateRequests, 2);
+  assert.match(h.root.innerHTML, /Could not play/);
   assert.match(h.root.innerHTML, /data-action="retry-audio"/);
   await h.app.handle("retry-audio");
-  assert.equal(h.media.length, 2);
-  assert.equal(h.privateRequests, 2, "The bridge owns Blob URLs; retry reacquires a valid URL after a bfcache return.");
-  assert.equal(h.media[1].src, "blob:teacher-audio-2");
+  assert.equal(h.media.length, 1);
+  assert.equal(h.privateRequests, 3, "The bridge owns Blob URLs; retry reacquires a valid URL after a bfcache return.");
+  assert.equal(h.media[0].src, "blob:teacher-audio-3");
   assert.equal(h.saves, 0);
   await h.app.handle("home");
   assert.equal(h.active, false);
-  assert.equal(h.media[1].paused, true);
+  assert.equal(h.media[0].paused, true);
+});
+test("Try it plays feedback before the complete answer for independent, helped, and wrong first answers", async () => {
+  for (const outcome of ["independent", "helped", "incorrect"]) {
+    const clock = effectClock(), h = harness({ makeContext: clock.makeContext });
+    const first = h.lesson.concepts[0].try[0], second = h.lesson.concepts[0].try[1];
+    await h.app.handle("start-try");
+    if (outcome === "helped") await h.app.handle("help");
+    await h.app.handle("pick", { choice: outcome === "incorrect" ? "are" : "is" });
+    const checked = h.app.handle("check");
+    await settle();
+    assert.ok(h.root.innerHTML.includes(first.answerText), "The answer is visible while the short feedback plays.");
+    assert.deepEqual(h.plays, [first.audio.question]);
+    assert.equal(clock.notes[0].pitch, outcome === "incorrect" ? 246.94 : 523.25);
+    clock.finish(); await checked;
+    assert.deepEqual(h.plays, [first.audio.question, first.audio.answer]);
+    assert.equal(h.progress.lessons[h.lesson.id].try["is-are"].initial[0].outcome, outcome);
+    h.media[0].onended();
+    assert.match(h.root.innerHTML, /data-action="next"/);
+    assert.equal(h.plays.length, 2, "Finishing the spoken answer must not advance the question.");
+    await h.app.handle("next");
+    assert.equal(h.plays.at(-1), second.audio.question);
+    h.app.destroy();
+  }
+});
+test("Say it Got it precedes the next question, and the last rating plays only encouragement", async () => {
+  const clock = effectClock(), h = harness({ makeContext: clock.makeContext });
+  const [first, second] = h.lesson.concepts[0].say;
+  await h.app.handle("start-say", { concept: "is-are" });
+  await h.app.handle("reveal");
+  const firstRating = h.app.handle("rate", { rating: "gotIt" });
+  await settle();
+  assert.ok(h.root.innerHTML.includes(second.prompt));
+  assert.deepEqual(h.plays, [first.audio.question, first.audio.answer]);
+  assert.equal(clock.notes.length, 3);
+  clock.finish(); await firstRating;
+  assert.equal(h.plays.at(-1), second.audio.question);
+  await h.app.handle("reveal");
+  const lastRating = h.app.handle("rate", { rating: "gotIt" });
+  await settle();
+  assert.match(h.root.innerHTML, /Done for now/);
+  assert.equal(clock.notes.length, 6);
+  clock.finish(); await lastRating;
+  assert.deepEqual(h.plays, [first.audio.question, first.audio.answer, second.audio.question, second.audio.answer]);
+  assert.equal(h.saves, 4, "Reveal and rating each persist once; playing audio never writes progress.");
+  h.app.destroy();
+});
+test("Say it With help and Not yet advance without a correct-answer sound", async () => {
+  for (const rating of ["withHelp", "notYet"]) {
+    const clock = effectClock(), h = harness({ makeContext: clock.makeContext });
+    await h.app.handle("start-say", { concept: "is-are" });
+    await h.app.handle("reveal");
+    await h.app.handle("rate", { rating });
+    assert.equal(clock.notes.length, 0);
+    assert.equal(h.plays.at(-1), h.lesson.concepts[0].say[1].audio.question);
+    h.app.destroy();
+  }
+});
+test("leaving during encouragement cancels the following answer and stops every effect note", async () => {
+  const clock = effectClock(), h = harness({ makeContext: clock.makeContext });
+  await h.app.handle("start-try");
+  await h.app.handle("pick", { choice: "is" });
+  const check = h.app.handle("check");
+  await settle();
+  assert.equal(clock.notes.length, 3);
+  await h.app.handle("home");
+  await check;
+  assert.equal(h.plays.length, 1);
+  assert.ok(clock.notes.every((note) => note.disconnected));
+  assert.equal(h.active, false);
+  assert.match(h.root.innerHTML, /Choose a practice mode/);
+  h.app.destroy();
+});
+test("a save completed after hiding the page cannot revive feedback audio", async () => {
+  let finishSave;
+  const h = harness({ beforeSave: () => new Promise((resolve) => { finishSave = resolve; }) });
+  await h.app.handle("start-try");
+  await h.app.handle("pick", { choice: "is" });
+  const check = h.app.handle("check");
+  await settle();
+  h.documentTarget.visibilityState = "hidden";
+  h.documentTarget.emit("visibilitychange");
+  finishSave(); await check;
+  assert.equal(h.saves, 1);
+  assert.equal(h.plays.length, 1);
+  assert.equal(h.active, false);
+  assert.match(h.root.innerHTML, /data-action="next"/);
+  h.documentTarget.visibilityState = "visible";
+  h.documentTarget.emit("visibilitychange");
+  assert.equal(h.plays.length, 1, "Returning to the page does not unexpectedly repeat audio.");
+  await h.app.handle("answer-audio");
+  assert.equal(h.plays.at(-1), h.lesson.concepts[0].try[0].audio.answer);
+  h.app.destroy();
+});
+test("pagehide cancels private question loading, and returning permits a fresh Listen", async () => {
+  let resolveOld, signal, request = 0;
+  const lesson = structuredClone(originalLesson);
+  lesson.concepts[0].say[0].audio.question = { private: "teacher-question" };
+  const h = harness({ lesson, loadPrivate: (_id, options) => {
+    if (++request === 1) { signal = options.signal; return new Promise((resolve) => { resolveOld = resolve; }); }
+    return "blob:current-question";
+  } });
+  const start = h.app.handle("start-say", { concept: "is-are" });
+  await settle();
+  h.eventTarget.emit("pagehide");
+  assert.equal(signal.aborted, true);
+  resolveOld("blob:old-question"); await start;
+  assert.deepEqual(h.plays, []);
+  assert.equal(h.active, false);
+  h.eventTarget.emit("pageshow");
+  await h.app.handle("question-audio");
+  assert.deepEqual(h.plays, ["blob:current-question"]);
+  h.app.destroy();
+  assert.equal(h.eventTarget.handlers.size, 0);
+  assert.equal(h.documentTarget.handlers.size, 0);
+  assert.equal(h.media[0].paused, true);
 });
 function completedProgress(modes = ["try", "say"]) {
   let progress = C.createProgress();

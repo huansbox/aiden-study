@@ -7,17 +7,28 @@
   function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
   const dateLabel = (date) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
   const modeLabel = (mode) => mode === "try" ? "Try it" : "Say it";
-  function mount({ root, lesson, bridge, date = () => C.today(), makeAudio = () => new Audio() }) {
+  function mount({ root, lesson, bridge, date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
     C.validateLesson(lesson);
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
-    let busy = false, error = "", audioMessage = "", activeAudio = null, audioEpoch = 0, lastAudio = "question", lastKey = null;
+    let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false;
     let lastProgress = JSON.stringify(bridge.getProgress());
     const summary = () => C.summarizeLesson(bridge.getProgress(), lesson, date());
     const current = () => mode ? C.nextQuestion(bridge.getProgress(), lesson, mode, date(), mode === "say" ? conceptId : null) : null;
     const questionKey = (q) => q ? `${q.concept.id}/${q.phase}/${q.question.id}` : null;
+    const canPlay = () => !destroyed && !suspended && documentTarget?.visibilityState !== "hidden";
+    const audio = makeAudioController({
+      makeAudio,
+      resolveSource: (resource, { signal }) => typeof resource === "string" ? resource : bridge.privateAudio(resource.private, { signal }),
+      onStatus(message) {
+        if (destroyed) return;
+        const retryChanged = audioMessage.startsWith("Could not") !== message.startsWith("Could not");
+        audioMessage = message;
+        if (retryChanged) render(); else updateAudioStatus();
+      },
+    });
     function stopAudio() {
       audioEpoch++;
-      if (activeAudio) { activeAudio.pause(); activeAudio.removeAttribute?.("src"); activeAudio.load?.(); activeAudio = null; }
+      audio.stop();
       audioMessage = "";
     }
     function resetQuestion() { stopAudio(); selection = null; words = []; feedback = null; correcting = false; correctionChecked = false; error = ""; lastKey = questionKey(current()); }
@@ -27,18 +38,22 @@
     }
     function updateAudioStatus() { const target = root.querySelector("#audio-message"); if (target) target.textContent = audioMessage; }
     function onChange(event = {}) {
+      if (destroyed) return;
       updateStatus();
       const fresh = JSON.stringify(bridge.getProgress());
       if (fresh === lastProgress) return;
       lastProgress = fresh;
       if (busy) return;
+      let enteredQuestion = false;
       if (view === "practice" && questionKey(current()) !== lastKey) {
         resetQuestion();
         error = "Your saved practice changed. Here is your next question.";
         if (!current()) view = "round";
+        else enteredQuestion = true;
       }
       // A status update must never replace selected words or interrupt a recording.
       render();
+      if (enteredQuestion) void play("question");
     }
     function header() {
       return `<header class="topbar"><div class="brand"><span class="brand-icon">${icon("book-open")}</span><span>NATIVE CAMP<br>REVIEW</span></div>${view === "home" ? `<a class="nav-link" href="${escape(bridge.homeHref)}">${icon("house")}My home</a>` : button("home", "My lesson", "nav-link", "arrow-left")}</header>`;
@@ -100,7 +115,7 @@
     function render() {
       const page = view === "home" ? homeHtml() : view === "progress" ? progressHtml() : view === "practice" ? practiceHtml() : roundHtml();
       root.innerHTML = header() + (error ? `<p class="error" role="alert">${escape(error)}</p>` : "") + page;
-      bridge.setActive?.(view === "practice");
+      bridge.setActive?.(view === "practice" && canPlay());
       if (busy) root.querySelectorAll("button").forEach((element) => { element.disabled = true; });
     }
     async function persist(progress, activity) {
@@ -109,31 +124,16 @@
       try { await bridge.saveProgress(progress, activity); lastProgress = JSON.stringify(bridge.getProgress()); }
       finally { busy = false; }
     }
-    async function play(kind) {
+    async function play(kind, options) {
       const next = feedback?.next ?? current();
-      if (!next || kind === "answer" && !feedback && !(mode === "say" && next.pending?.revealed)) return;
-      stopAudio(); lastAudio = kind;
-      const epoch = audioEpoch;
-      const resource = next.question.audio[kind];
-      audioMessage = "Getting the sound ready..."; updateAudioStatus();
-      try {
-        let source;
-        if (typeof resource === "string") source = resource;
-        else source = await bridge.privateAudio(resource.private);
-        if (epoch !== audioEpoch) return;
-        const player = makeAudio();
-        activeAudio = player;
-        player.src = source;
-        player.onended = () => { if (activeAudio === player) { audioMessage = "You can listen again."; updateAudioStatus(); } };
-        player.onerror = () => { if (activeAudio === player) { audioMessage = "Could not play the sound. Please try again."; render(); } };
-        await player.play();
-        if (epoch !== audioEpoch) { player.pause(); return; }
-        audioMessage = "Listening..."; updateAudioStatus();
-      } catch { if (epoch === audioEpoch) { audioMessage = "Could not play the sound. Please try again."; render(); } }
+      if (!canPlay() || view !== "practice" || !next || kind === "answer" && !feedback && !(mode === "say" && next.pending?.revealed)) return;
+      lastAudio = kind;
+      await audio.play(next.question.audio[kind], options);
     }
     async function handle(action, data = {}) {
-      if (busy) return;
+      if (busy || destroyed) return;
       error = "";
+      let nextSound = null;
       try {
         if (action === "sync") { await bridge.syncNow(); updateStatus(); return; }
         if (action === "home" || action === "progress" || action === "choose-say") {
@@ -144,10 +144,10 @@
         }
         if (action === "start-try" || action === "start-say") {
           mode = action === "start-try" ? "try" : "say"; conceptId = mode === "say" ? data.concept : null;
-          view = "practice"; resetQuestion(); if (!current()) view = "round"; render(); return;
+          view = "practice"; resetQuestion(); if (!current()) view = "round"; render(); await play("question"); return;
         }
         if (view !== "practice") return;
-        if (!feedback && lastKey !== questionKey(current())) { resetQuestion(); error = "Your saved practice changed. Please try this question."; render(); return; }
+        if (!feedback && lastKey !== questionKey(current())) { resetQuestion(); error = "Your saved practice changed. Please try this question."; render(); await play("question"); return; }
         const next = feedback?.next ?? current();
         if (!next) { view = "round"; render(); return; }
         const q = next.question;
@@ -157,36 +157,62 @@
         else if (action === "remove-word") words = words.filter((word) => word !== data.word);
         else if ((action === "help" || action === "reveal") && !feedback) {
           stopAudio();
+          const epoch = audioEpoch;
           await persist(C.markPending(bridge.getProgress(), lesson, mode, date(), next.concept.id, q.id, action === "help" ? "help" : "reveal"));
+          if (action === "reveal" && epoch === audioEpoch) nextSound = () => play("answer");
         } else if (action === "check" && mode === "try" && !feedback) {
           const result = C.submitTry(bridge.getProgress(), lesson, date(), next.concept.id, q.id, q.type === "choice" ? selection : words);
           if (result.recorded) {
-            stopAudio(); await persist(result.progress, { answered: true, correct: result.outcome === "independent" });
+            stopAudio(); const epoch = audioEpoch;
+            await persist(result.progress, { answered: true, correct: result.outcome === "independent" });
             feedback = { next, question: q, outcome: result.outcome };
+            if (epoch === audioEpoch) nextSound = () => play("answer", { effect: result.outcome === "incorrect" ? "neutral" : "correct" });
           } else resetQuestion();
         } else if (action === "rate" && mode === "say" && !feedback) {
           const result = C.submitSay(bridge.getProgress(), lesson, date(), next.concept.id, q.id, data.rating);
-          if (result.recorded) { stopAudio(); await persist(result.progress, { answered: false }); resetQuestion(); if (!current()) view = "round"; }
-        } else if (action === "next" && feedback) { resetQuestion(); if (!current()) view = "round"; }
-        else if (action === "correct" && feedback) { correcting = true; selection = null; words = []; correctionChecked = false; }
-        else if (action === "check-correction" && feedback && correcting) { correctionChecked = C.checkAnswer(q, q.type === "choice" ? selection : words); if (!correctionChecked) error = "Look at the example and try once more, or continue."; }
+          if (result.recorded) {
+            stopAudio(); const epoch = audioEpoch;
+            await persist(result.progress, { answered: false });
+            const audible = epoch === audioEpoch && canPlay();
+            resetQuestion(); if (!current()) view = "round";
+            if (audible) nextSound = view === "practice" ? () => play("question", data.rating === "gotIt" ? { effect: "correct" } : undefined) : data.rating === "gotIt" ? () => audio.playEffect("correct") : null;
+          }
+        } else if (action === "next" && feedback) { resetQuestion(); if (!current()) view = "round"; else nextSound = () => play("question"); }
+        else if (action === "correct" && feedback) { stopAudio(); correcting = true; selection = null; words = []; correctionChecked = false; }
+        else if (action === "check-correction" && feedback && correcting) {
+          correctionChecked = C.checkAnswer(q, q.type === "choice" ? selection : words);
+          if (!correctionChecked) error = "Look at the example and try once more, or continue.";
+          nextSound = () => play("answer", { effect: correctionChecked ? "correct" : "neutral" });
+        }
+        if (destroyed) return;
         render();
-      } catch (caught) { error = caught?.message || "Something went wrong. Please try again."; render(); }
+        if (nextSound && canPlay()) await nextSound();
+      } catch (caught) { if (!destroyed) { error = caught?.message || "Something went wrong. Please try again."; render(); } }
     }
     const clicked = (event) => {
       const element = event.target.closest?.("button[data-action]");
       if (!element || element.disabled) return;
+      audio.unlock();
       void handle(element.dataset.action, element.dataset);
     };
+    const leave = () => { suspended = true; stopAudio(); bridge.setActive?.(false); };
+    const visible = () => { suspended = documentTarget?.visibilityState === "hidden"; if (suspended) leave(); else bridge.setActive?.(view === "practice"); };
     root.addEventListener("click", clicked);
+    eventTarget.addEventListener?.("pagehide", leave);
+    eventTarget.addEventListener?.("pageshow", visible);
+    documentTarget?.addEventListener?.("visibilitychange", visible);
     render();
-    return { onChange, handle, destroy() { stopAudio(); bridge.setActive?.(false); root.removeEventListener("click", clicked); } };
+    return { onChange, handle, destroy() {
+      destroyed = true; stopAudio(); audio.destroy(); bridge.setActive?.(false); root.removeEventListener("click", clicked);
+      eventTarget.removeEventListener?.("pagehide", leave); eventTarget.removeEventListener?.("pageshow", visible);
+      documentTarget?.removeEventListener?.("visibilitychange", visible);
+    } };
   }
   async function boot() {
     const root = document.getElementById("nativecamp");
     let app;
     try {
-      if (!C || !Q || !global.NativeCampPlatform) throw Error("This page did not finish loading. Please reload.");
+      if (!C || !Q || !global.NativeCampAudio || !global.NativeCampPlatform) throw Error("This page did not finish loading. Please reload.");
       const response = await fetch("lessons/2026-09-15.json", { cache: "no-cache" });
       if (!response.ok) throw Error("Your lesson could not be loaded. Please try again.");
       const lesson = C.validateLesson(await response.json());

@@ -216,3 +216,28 @@ test("parent summary rejects malformed data and keeps both rating categories sep
   assert.match(html, /Independent/); assert.match(html, /Not yet/);
   assert.doesNotMatch(html, /[\u3400-\u9FFF]|%|total score/i);
 });
+
+test("leaving a question aborts its private audio load and never caches a late response", async () => {
+  const a = await browser(environment());
+  const controller = new AbortController();
+  let deliver, observedSignal;
+  a.context.KidsAuth.fetch = async (path, { signal }) => {
+    observedSignal = signal;
+    return new Promise((resolve) => { deliver = resolve; });
+  };
+  const load = a.bridge.privateAudio("cancelled-teacher", { signal: controller.signal });
+  controller.abort();
+  assert.equal(observedSignal.aborted, true);
+  deliver(new Response(new Uint8Array([73, 68, 51, 4]), { headers: { "Content-Type": "audio/mpeg" } }));
+  await assert.rejects(load, /recording could not play/);
+  let newRequests = 0;
+  a.context.KidsAuth.fetch = async () => {
+    newRequests++;
+    return new Response(new Uint8Array([73, 68, 51, 4]), { headers: { "Content-Type": "audio/mpeg" } });
+  };
+  const url = await a.bridge.privateAudio("cancelled-teacher");
+  assert.match(url, /^blob:/);
+  assert.equal(newRequests, 1, "Cancelled results must not enter the cache.");
+  await assert.rejects(a.bridge.privateAudio("cancelled-teacher", { signal: controller.signal }), /cancelled/);
+  a.event("pagehide");
+});

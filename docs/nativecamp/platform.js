@@ -88,25 +88,29 @@
         if (meta.dirty && meta.health === "ok") return "Saved on this device. Syncing with your family...";
         return HEALTH[meta.health] || "Connecting to your family...";
       },
-      async privateAudio(id) {
+      async privateAudio(id, { signal } = {}) {
         if (!/^[a-z0-9-]{1,80}$/.test(id)) throw Error("This recording is not available.");
         if (auth.state.status === "required")
           throw Error("Ask a parent to reconnect from Home, then try Listen again.");
+        if (signal?.aborted) throw Error("Playback was cancelled.");
         if (audioURLs.has(id)) return audioURLs.get(id);
         const controller = new AbortController();
+        const abort = () => controller.abort();
+        signal?.addEventListener("abort", abort, { once: true });
         const timer = setTimeout(() => controller.abort(), 12000);
         try {
           const response = await auth.fetch(`/v1/nativecamp-audio/${id}`, { signal: controller.signal });
           if (!response.ok || response.headers.get("Content-Type") !== "audio/mpeg")
             throw Error();
           const blob = await response.blob();
+          if (controller.signal.aborted) throw Error("Playback was cancelled.");
           if (blob.size < 4 || blob.size > 2097152) throw Error();
           const url = URL.createObjectURL(blob);
           audioURLs.set(id, url);
           return url;
         } catch {
           throw Error("This recording could not play. Check your family connection and try Listen again.");
-        } finally { clearTimeout(timer); }
+        } finally { clearTimeout(timer); signal?.removeEventListener("abort", abort); }
       },
     };
   }
