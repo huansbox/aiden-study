@@ -34,3 +34,7 @@
 - Windows：重跑來源／成品 hash、格式、缺檔與孤兒審計；確認原音可重建，正式交付保持使用者已接受的 MBP bytes。修正 Windows recipe 換行差異與 UTF-8 讀寫。
 - 整合後 Node 341 項通過；pytest 183 項通過、1 項略過。隔離本機孩子入口正常進入注音介紹卡，家長自檢顯示全部 14 段齊備並啟動連播。
 - 家長區、匯出匯入與重置功能早已由 PR #25 交付，既有 live smoke 見 [#20 歷史紀錄](https://github.com/huansbox/aiden-study/issues/20#issuecomment-4941686896)。本次只補已接受的音檔與管線，不改學習存檔或登入方式。
+
+## 正式發布（2026-09-17）
+
+整合 commit `87b76aa4c0fa59ca77cd3f2b8b4d76064fcebcd0`。[CI](https://github.com/huansbox/aiden-study/actions/runs/35195198427) 與 [Pages](https://github.com/huansbox/aiden-study/actions/runs/35195197741) 均 success；正式站 14 段 HEAD／GET 均 200，142,594 bytes，逐檔 hash 與使用者接受版本一致。
