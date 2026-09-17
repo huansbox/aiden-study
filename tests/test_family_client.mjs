@@ -155,6 +155,10 @@ test("所有站內正式 App 的普通徽章一律等明確回合結束，重開
     assert.equal(h.rewards().length, 0, id);
     app.finishRound();
     assert.equal(h.rewards().length, 1, id);
+    if (id === "nativecamp") {
+      const labels = h.rewards()[0].children.map((el) => el.textContent).filter(Boolean);
+      assert.deepEqual(labels, ["New badge", "Home", "Continue"]);
+    }
     app.setActive(true);
     const reopened = h.F.attach(id, "aiden");
     await reopened.ready;

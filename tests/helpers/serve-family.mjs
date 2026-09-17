@@ -12,6 +12,14 @@ const port = Number(process.argv[2] || 8788),
 const KV = kvStub({
   "c:study:g4-s1-math-u1": { value: JSON.stringify(expandedSyntheticPack()) },
 });
+// Explicit local-only opt-in. Default E2E never reads private recordings.
+if (process.env.NATIVE_CAMP_AUDIO_PACK) {
+  const pack = JSON.parse(await readFile(resolve(process.env.NATIVE_CAMP_AUDIO_PACK), "utf8"));
+  for (const [id, value] of Object.entries(pack)) {
+    if (!/^[a-z0-9-]{1,80}$/.test(id)) throw Error("Invalid Native Camp audio id");
+    await KV.put(`c:nativecamp:audio:${id}`, JSON.stringify(value));
+  }
+}
 let offline = false;
 let release = null;
 createServer(async (req, res) => {
@@ -102,6 +110,7 @@ createServer(async (req, res) => {
       ".json": "application/json",
       ".png": "image/png",
       ".svg": "image/svg+xml",
+      ".mp3": "audio/mpeg",
       ".webmanifest": "application/manifest+json",
       ".txt": "text/plain; charset=utf-8",
     };

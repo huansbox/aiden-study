@@ -8,6 +8,7 @@
     "nonogram",
     "zhuyin",
     "animal-fight",
+    "nativecamp",
   ];
   const TERMS = ["g3-s2", "g4-s1"];
   const SUBJECTS = {
@@ -22,6 +23,7 @@
     nonogram: ["數織", "▦"],
     zhuyin: ["注音", "ㄅㄆ"],
     "animal-fight": ["動物守護者", "足"],
+    nativecamp: ["Native Camp Review", "Aa"],
   };
   // title/url 保留與既有 Worker 相容；新版入口由文章索引決定。
   const defaultMindMap = (child) => ({

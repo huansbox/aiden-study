@@ -194,6 +194,7 @@ function createWiring(cfg) {
       saveMeta: (m) => { safeSet(store.syncMetaKey(child), JSON.stringify(m)); },
       onAdopt: hooks.onAdopt,
       onHealth: hooks.onHealth,
+      validateData: hooks.validateData,
     });
   }
 
@@ -204,6 +205,7 @@ function createWiring(cfg) {
     sync = makeSyncClient(currentChild, {
       onAdopt: hooks.onAdopt,
       onHealth: hooks.onHealth || (() => refreshSyncStatus()),
+      validateData: hooks.validateData,
     });
     if (sync) sync.attachLifecycle(window, document);
     return sync;

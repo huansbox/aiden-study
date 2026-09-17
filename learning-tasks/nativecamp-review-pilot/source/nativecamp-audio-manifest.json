@@ -1,0 +1,392 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-15",
+  "voice": {
+    "engine": "Windows SAPI",
+    "name": "Microsoft Zira Desktop - English (United States)",
+    "rate": -1,
+    "localOnly": true,
+    "voiceCloning": false
+  },
+  "sources": {
+    "is-are": "Original counts scenes; lesson review evidence 17:25–20:25",
+    "odd-even": "Original counting scenes; verified lesson vocabulary on printed page 88",
+    "too-many": "Original capacity scenes; lesson review evidence 21:05–23:00"
+  },
+  "tts": [
+    {
+      "file": "audio/is-are-try-1-q.mp3",
+      "text": "Look at the cat. Pick is or are.",
+      "bytes": 22528,
+      "sha256": "c84dc4e45d632aa6e782e1859b7506ddee4cf87ebe5f1bb053dc60e6f1e0571e",
+      "durationSeconds": 3.73551,
+      "codec": "mp3",
+      "rmsDbfs": -24.12,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-try-1-a.mp3",
+      "text": "There is a cat.",
+      "bytes": 11679,
+      "sha256": "584cce1237ce02c7b5183ae8f37af82f1732af6556ad96d769d0b91873777e9f",
+      "durationSeconds": 1.854694,
+      "codec": "mp3",
+      "rmsDbfs": -23.61,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-try-2-q.mp3",
+      "text": "Look at the dogs. Pick is or are.",
+      "bytes": 24485,
+      "sha256": "62cb28ce53129e11e3f6c21c3331aa7f79f6f7ebee56919ed7478843f6e16a89",
+      "durationSeconds": 3.84,
+      "codec": "mp3",
+      "rmsDbfs": -23.86,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-try-2-a.mp3",
+      "text": "There are two dogs.",
+      "bytes": 14783,
+      "sha256": "7b678c1d71c119e64d9328e0b8cf16b2ee4186df70f8a83df7e9ae708add6805",
+      "durationSeconds": 2.115918,
+      "codec": "mp3",
+      "rmsDbfs": -21.8,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-try-3-q.mp3",
+      "text": "Tell me about the trees. Tap the words to make a sentence.",
+      "bytes": 36675,
+      "sha256": "74001a736efd04f3a6682c5621ce054679127c7f8f19bb52c778cb9067a783c7",
+      "durationSeconds": 5.250612,
+      "codec": "mp3",
+      "rmsDbfs": -21.23,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-try-3-a.mp3",
+      "text": "There are three trees.",
+      "bytes": 14755,
+      "sha256": "acec98f49e37a5532c30c83855181717b83aacb6f89d2370dd4b8c760e52d091",
+      "durationSeconds": 2.142041,
+      "codec": "mp3",
+      "rmsDbfs": -21.31,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-1-q.mp3",
+      "text": "What can you see? Start with there.",
+      "bytes": 24695,
+      "sha256": "daa33357fcb4118bf717a4671ac8c4c05926830cc35c9da2480dee42722eb495",
+      "durationSeconds": 3.866122,
+      "codec": "mp3",
+      "rmsDbfs": -22.34,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-1-a.mp3",
+      "text": "There is a dog.",
+      "bytes": 11784,
+      "sha256": "969155d7a139082625f92094f4910f1406d8e46d11da310bb0fdb37a0f801bf0",
+      "durationSeconds": 1.828571,
+      "codec": "mp3",
+      "rmsDbfs": -23.16,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-2-q.mp3",
+      "text": "How many trees can you see? Start with there.",
+      "bytes": 30062,
+      "sha256": "595b96ddbf64281d3d3233511e2b443dd25e75f6340e2632ec1699022eb1606d",
+      "durationSeconds": 4.466939,
+      "codec": "mp3",
+      "rmsDbfs": -20.65,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-2-a.mp3",
+      "text": "There are four trees.",
+      "bytes": 14777,
+      "sha256": "2ad7e991d8f95eacffff0c56608f4c7d0d81d8472a9f7c5f885107ccc4647231",
+      "durationSeconds": 2.142041,
+      "codec": "mp3",
+      "rmsDbfs": -21.85,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-3-q.mp3",
+      "text": "What can you see? Start with there.",
+      "bytes": 24695,
+      "sha256": "daa33357fcb4118bf717a4671ac8c4c05926830cc35c9da2480dee42722eb495",
+      "durationSeconds": 3.866122,
+      "codec": "mp3",
+      "rmsDbfs": -22.34,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/is-are-say-3-a.mp3",
+      "text": "There are two cats.",
+      "bytes": 14653,
+      "sha256": "f9435520c9d8860318aba13fabd126201864bee448855fc3bbf3e66ebfdccaf7",
+      "durationSeconds": 2.142041,
+      "codec": "mp3",
+      "rmsDbfs": -22.74,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-1-q.mp3",
+      "text": "Is five odd or even? Pick one.",
+      "bytes": 23799,
+      "sha256": "a3661647a869de07908ebcfbd62cdd3a98a8aab2a269e75e9fb1724e9ffed5ed",
+      "durationSeconds": 3.918367,
+      "codec": "mp3",
+      "rmsDbfs": -22.13,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-1-a.mp3",
+      "text": "Five is an odd number.",
+      "bytes": 15740,
+      "sha256": "4a41c05c93b304f1afb34dd857cd507410e1ee145f3eca7332cb97247fdc2109",
+      "durationSeconds": 2.298776,
+      "codec": "mp3",
+      "rmsDbfs": -20.76,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-2-q.mp3",
+      "text": "Count the toys. Is the number odd or even? Pick one.",
+      "bytes": 36927,
+      "sha256": "cfdec1a8c99eda6176c0f06e96eff5bc58aaac86953697c5be73e38a2627dda9",
+      "durationSeconds": 5.903673,
+      "codec": "mp3",
+      "rmsDbfs": -22.53,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-2-a.mp3",
+      "text": "Six is an even number.",
+      "bytes": 16869,
+      "sha256": "4ab90608716109d2d1172fc36c75f733fc1b643fc4baf117115ff8e90ee1797b",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -20.97,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-3-q.mp3",
+      "text": "Count the books. Is the number odd or even? Pick one.",
+      "bytes": 36270,
+      "sha256": "be2435907668c47d6df9eb7081d09beb1adddfd26c57c5dc8bbe7789228ffb17",
+      "durationSeconds": 5.851429,
+      "codec": "mp3",
+      "rmsDbfs": -22.64,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-try-3-a.mp3",
+      "text": "Nine is an odd number.",
+      "bytes": 15060,
+      "sha256": "8243f5f1146ee49cc3a141fb33d3087378f751b3692a370fc1d362eecfa12851",
+      "durationSeconds": 2.246531,
+      "codec": "mp3",
+      "rmsDbfs": -20.3,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-1-q.mp3",
+      "text": "Count the dogs. Is the number odd or even? Say the number, too.",
+      "bytes": 45913,
+      "sha256": "ad4e2d055e86c06ac5c227037339bf1a0c312966a9f695d51009eeb07269473d",
+      "durationSeconds": 6.948571,
+      "codec": "mp3",
+      "rmsDbfs": -21.85,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-1-a.mp3",
+      "text": "Four is an even number.",
+      "bytes": 16160,
+      "sha256": "7d8ac0f6babe4883ec674ba29c1c3511e059bf3ec25ead28e0d41bd3af649433",
+      "durationSeconds": 2.272653,
+      "codec": "mp3",
+      "rmsDbfs": -20.35,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-2-q.mp3",
+      "text": "Is seven odd or even? Say the number, too.",
+      "bytes": 32430,
+      "sha256": "d6a8a84f44eb93132e16579bb7a3813674b097171a468c2ff9645e486e20f86e",
+      "durationSeconds": 4.937143,
+      "codec": "mp3",
+      "rmsDbfs": -21.6,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-2-a.mp3",
+      "text": "Seven is an odd number.",
+      "bytes": 17153,
+      "sha256": "47be3e9573c1553ad928cb86aa88c17f9115dcae6e42ca0aaa4f067a08a91b3d",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -21.27,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-3-q.mp3",
+      "text": "Count the books. Is the number odd or even? Say the number, too.",
+      "bytes": 44425,
+      "sha256": "954704de472174e890b01310b1179e9f285f44724dceb361f1cfb1a5c44adaba",
+      "durationSeconds": 6.896327,
+      "codec": "mp3",
+      "rmsDbfs": -22.08,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/odd-even-say-3-a.mp3",
+      "text": "Six is an even number.",
+      "bytes": 16869,
+      "sha256": "4ab90608716109d2d1172fc36c75f733fc1b643fc4baf117115ff8e90ee1797b",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -20.97,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-1-q.mp3",
+      "text": "This shelf has room for three books. Look at the books. Pick many or much.",
+      "bytes": 47914,
+      "sha256": "5e09480c1567142a613e839a5215c4d72b901fec836239514078426d6f0c743a",
+      "durationSeconds": 7.105306,
+      "codec": "mp3",
+      "rmsDbfs": -21.75,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-1-a.mp3",
+      "text": "I have too many books.",
+      "bytes": 15658,
+      "sha256": "1deb2d8e44f5c0d5551ef6de19d4eb498e6e75973944216014faf392e435735b",
+      "durationSeconds": 2.377143,
+      "codec": "mp3",
+      "rmsDbfs": -21.0,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-2-q.mp3",
+      "text": "This shelf has room for two hats. Look at the hats. Pick many or much.",
+      "bytes": 49873,
+      "sha256": "3186c266e99ec3075c2d3eb95e7cf49ec2f5ee23110b3a8b4bc17ba7d5f47205",
+      "durationSeconds": 7.288163,
+      "codec": "mp3",
+      "rmsDbfs": -21.65,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-2-a.mp3",
+      "text": "There are too many hats.",
+      "bytes": 17125,
+      "sha256": "481361a71605d2df2204f1ed6cbe5e69925ee5ace9396eacd61b8b6c3a38ba0c",
+      "durationSeconds": 2.429388,
+      "codec": "mp3",
+      "rmsDbfs": -20.84,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-3-q.mp3",
+      "text": "This box has room for three toys. Tell me about your toys. Tap the words to make a sentence.",
+      "bytes": 59925,
+      "sha256": "be8dee0dbd02bd797ba322724f7c97fcaf2a9a4eb918b359aee739af2cdfbab2",
+      "durationSeconds": 8.437551,
+      "codec": "mp3",
+      "rmsDbfs": -21.25,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-try-3-a.mp3",
+      "text": "I have too many toys.",
+      "bytes": 16601,
+      "sha256": "d04d593b91ffb840935277b548a59658027004bec1949c81676bc36d5c8ce6aa",
+      "durationSeconds": 2.403265,
+      "codec": "mp3",
+      "rmsDbfs": -20.96,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-say-1-q.mp3",
+      "text": "This box has room for three toys. Tell me about your toys. Use too many in a sentence.",
+      "bytes": 57944,
+      "sha256": "6534dade3ecef222b34cf1aae5b80f4616d2498d09302ab120d4d020313c96de",
+      "durationSeconds": 8.228571,
+      "codec": "mp3",
+      "rmsDbfs": -20.85,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-say-1-a.mp3",
+      "text": "I have too many toys.",
+      "bytes": 16601,
+      "sha256": "d04d593b91ffb840935277b548a59658027004bec1949c81676bc36d5c8ce6aa",
+      "durationSeconds": 2.403265,
+      "codec": "mp3",
+      "rmsDbfs": -20.96,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-say-2-q.mp3",
+      "text": "This shelf has room for four books. What is the problem with the books? Use too many in a sentence.",
+      "bytes": 61342,
+      "sha256": "869d89cec70d87c6df7a9d4022ade291bfd5dc1782119c6a4fc8006f0746fafd",
+      "durationSeconds": 8.463673,
+      "codec": "mp3",
+      "rmsDbfs": -21.28,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-say-2-a.mp3",
+      "text": "There are too many books.",
+      "bytes": 16526,
+      "sha256": "a03114a6b3a8e4b5720384fad7d1d75cd73a3835dda5feb687eb3bfbf286d57d",
+      "durationSeconds": 2.35102,
+      "codec": "mp3",
+      "rmsDbfs": -21.16,
+      "decode": "passed"
+    },
+    {
+      "file": "audio/too-many-say-3-a.mp3",
+      "text": "Yes, she has too many hats.",
+      "bytes": 23943,
+      "sha256": "33ec0ba2925bcad35aba394a2d99326e78a64c192a7efb7dcca2bb2391734045",
+      "durationSeconds": 3.500408,
+      "codec": "mp3",
+      "rmsDbfs": -21.39,
+      "decode": "passed"
+    }
+  ],
+  "limits": {
+    "humanListening": "not performed",
+    "iPadPlayback": "not performed",
+    "pronunciationAssessment": "not performed",
+    "productionDeployment": "not performed"
+  },
+  "teacher": [
+    {
+      "id": "2026-09-15-hats-question",
+      "sourceSha256": "208a1e0dea16430d1acd609409cc64f3edd4d52a81981192a7baaec989189434",
+      "channel": 0,
+      "startSeconds": 1300.23,
+      "endSeconds": 1304.1,
+      "edited": "single continuous left-channel excerpt; no word splicing",
+      "localClip": "source/private/2026-09-15-hats-question.mp3",
+      "pack": "source/private/nativecamp-audio-kv.json",
+      "bytes": 43061,
+      "sha256": "ae47f7a4e99ae39f25c6df3a32d977cdf48336bff5bc3b3d517f102cb9625c18",
+      "durationSeconds": 3.918367,
+      "codec": "mp3",
+      "rmsDbfs": -18.25,
+      "decode": "passed"
+    }
+  ]
+}

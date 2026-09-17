@@ -254,7 +254,7 @@
     url.searchParams.set("day", task.date);
     return url.href;
   }
-  function showReward(label, child) {
+  function showReward(label, child, english = false) {
     document.getElementById("family-reward")?.remove();
     const el = document.createElement("div");
     el.id = "family-reward";
@@ -267,9 +267,9 @@
     text.textContent = label;
     const link = document.createElement("a");
     link.href = homeHref(child);
-    link.textContent = "回首頁";
+    link.textContent = english ? "Home" : "回首頁";
     const close = document.createElement("button");
-    close.textContent = "繼續";
+    close.textContent = english ? "Continue" : "繼續";
     close.addEventListener("click", () => el.remove());
     el.append(brick, text, link, close);
     document.body.appendChild(el);
@@ -281,6 +281,7 @@
   }
   function attach(app, child) {
     if (!core.APPS.includes(app) || !child) return null;
+    const english = app === "nativecamp";
     // 每次開啟有獨立寫入串流，兩個分頁同時練習不會互相覆蓋累計。
     const device = uuid();
     const key = localKey(child, app, device);
@@ -319,7 +320,7 @@
     }
     function persist() {
       if (!write(key, stream))
-        notifyError("這台裝置無法保存新的練習紀錄，請家長協助。");
+        notifyError(english ? "This device could not save your practice. Please ask a parent for help." : "這台裝置無法保存新的練習紀錄，請家長協助。");
       dirty = true;
       write(pendingKey(child, app, device), true);
       window.dispatchEvent(new CustomEvent("kids:activity"));
@@ -399,14 +400,14 @@
     function finishRound() {
       setActive(false);
       const labels = [];
-      if (pendingTaskReward) labels.push("任務完成");
+      if (pendingTaskReward) labels.push(english ? "Practice complete" : "任務完成");
       if (pendingBadges.size)
-        labels.push("新徽章：" + [...pendingBadges.values()].join("、"));
+        labels.push(english ? "New badge" : "新徽章：" + [...pendingBadges.values()].join("、"));
       pendingTaskReward = false;
       pendingBadges.clear();
       if (labels.length) {
         dismissReward?.();
-        dismissReward = showReward(labels.join("・"), child);
+        dismissReward = showReward(labels.join(english ? " · " : "・"), child, english);
       }
     }
     function matches(details) {

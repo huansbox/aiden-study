@@ -17,6 +17,7 @@
 | 題庫練習 | [docs/study/](docs/study/) | LocalStorage + Worker 同步 |
 | 長除法練習 | [docs/math/](docs/math/) | LocalStorage + Worker 同步 |
 | 英文拼字 | [docs/spelling/](docs/spelling/) | LocalStorage + Worker 同步 |
+| Native Camp Review | [docs/nativecamp/](docs/nativecamp/) | 自主題、口說與跨日複習；LocalStorage + Worker 同步 |
 | 數織解謎 | [docs/math/nonogram/](docs/math/nonogram/) | 原有過關進度僅 LocalStorage；新累計另行同步 |
 | 注音練習 | [docs/zhuyin/](docs/zhuyin/) | LocalStorage + Worker 同步 |
 | 動物守護者 | [animal-fight](https://huansbox.github.io/animal-fight/) | 外部 App，未接平台同步 |
@@ -29,6 +30,7 @@
 
 | 任務 | 找得到什麼 |
 | --- | --- |
+| [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 單堂分析、紙本練習與 Review App 的可重建來源；[互動版使用與驗收](docs-dev/nativecamp-review.md) |
 | [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 十張動物園／火車探險卡、可列印 PDF、設計經驗 |
 | [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | 〈初夏雜記〉互動頁、老師回饋、舊來源位置說明 |
 | [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 新篇互動頁、可編輯來源、產生部署檔的方法 |
@@ -44,7 +46,6 @@
 | 作品 | 來源與追蹤 | 已有成果入口 |
 | --- | --- | --- |
 | 怎麼和 AI 一起做出探險卡 | [協作故事任務來源](https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase) | [Cloudflare Pages 故事網站](https://ai-zoo-cards-story.pages.dev/)；網站已發布不代表來源已合併 |
-| Native Camp 回放複習／Review App | [單堂任務來源](https://github.com/huansbox/aiden-study/tree/codex/nativecamp-audio-review/learning-tasks/nativecamp-review-pilot)、[App 來源](https://github.com/huansbox/aiden-study/tree/codex/nativecamp-audio-review/docs/nativecamp)、[PR #68](https://github.com/huansbox/aiden-study/pull/68) | 紙本與互動版分開驗收；使用與重建見分支內 README，合併／正式發布以 PR 紀錄為準 |
 
 App 已上線與「這次新增題目已完成」是不同狀態。跨裝置同時開發時，先查遠端與對應工作紀錄；無法取得另一台電腦未提交的內容時明示未知，不以本機舊版本推定，也不自行搬動或合併其工作。
 
@@ -68,6 +69,7 @@ docs/                 GitHub Pages 部署根目錄
   study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，手動匯入保留為備援
   math/               長除法與 nonogram
   spelling/           英文拼字 app
+  nativecamp/          全英文課後複習；首次表現、口說與跨日確認
   zhuyin/             注音 app 與錄音工具
   shared/             同步、接線與獎勵共用資源
 worker/               Cloudflare Worker 同步 API 與固定家庭唯讀題包端點

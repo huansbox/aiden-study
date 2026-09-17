@@ -1,0 +1,106 @@
+{
+  "verified_on": "2026-09-16",
+  "source_sha256": "208a1e0dea16430d1acd609409cc64f3edd4d52a81981192a7baaec989189434",
+  "method": "local ASR on each stereo channel",
+  "engine": "faster-whisper",
+  "engine_version": "1.2.1",
+  "model": "small.en",
+  "device": "cpu",
+  "compute_type": "int8",
+  "offline_model_run": true,
+  "audio_uploaded": false,
+  "sample_count": 5,
+  "sampled_seconds": 385,
+  "recording_seconds": 1504.625,
+  "full_recording_speech_coverage_verified": false,
+  "pronunciation_assessed": false,
+  "precise_word_alignment_verified": false,
+  "channel_roles": "In sampled dialogue only: 0 teacher side, 1 learner side; inferred from content, not voice identification",
+  "samples": [
+    {
+      "name": "opening",
+      "start_seconds": 0,
+      "end_seconds": 90,
+      "decoded_duration_seconds": 90.0125,
+      "channel_correlation": 0.0014712414818947707,
+      "channels_identical": false,
+      "rms_per_channel": [
+        1995.73367671417,
+        826.871519991369
+      ],
+      "segment_count_per_channel": [
+        9,
+        10
+      ],
+      "transcription_seconds": 9.43
+    },
+    {
+      "name": "topic",
+      "start_seconds": 950,
+      "end_seconds": 1015,
+      "decoded_duration_seconds": 65.0,
+      "channel_correlation": 0.0002449010596003294,
+      "channels_identical": false,
+      "rms_per_channel": [
+        2458.0467764881623,
+        748.7633069088502
+      ],
+      "segment_count_per_channel": [
+        7,
+        1
+      ],
+      "transcription_seconds": 6.7
+    },
+    {
+      "name": "class_size",
+      "start_seconds": 1045,
+      "end_seconds": 1130,
+      "decoded_duration_seconds": 85.0,
+      "channel_correlation": -0.0006223090449725918,
+      "channels_identical": false,
+      "rms_per_channel": [
+        2990.069065423317,
+        683.5959455400708
+      ],
+      "segment_count_per_channel": [
+        12,
+        6
+      ],
+      "transcription_seconds": 9.07
+    },
+    {
+      "name": "transfer",
+      "start_seconds": 1195,
+      "end_seconds": 1225,
+      "decoded_duration_seconds": 30.0,
+      "channel_correlation": -0.00012165877198443901,
+      "channels_identical": false,
+      "rms_per_channel": [
+        2078.85130707241,
+        646.597353181767
+      ],
+      "segment_count_per_channel": [
+        5,
+        2
+      ],
+      "transcription_seconds": 3.65
+    },
+    {
+      "name": "hats_and_toys",
+      "start_seconds": 1265,
+      "end_seconds": 1380,
+      "decoded_duration_seconds": 115.0,
+      "channel_correlation": -0.0003386938333844414,
+      "channels_identical": false,
+      "rms_per_channel": [
+        2720.9274975837943,
+        757.6253752339408
+      ],
+      "segment_count_per_channel": [
+        10,
+        6
+      ],
+      "transcription_seconds": 10.33
+    }
+  ]
+}

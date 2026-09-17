@@ -240,7 +240,15 @@ function createSyncClient(opts) {
       let jsonOk = true;
       let body;
       try { body = await res.json(); } catch { jsonOk = false; }
-      return classifyRemote({ threw: false, status: res.status, jsonOk, body });
+      const remote = classifyRemote({ threw: false, status: res.status, jsonOk, body });
+      // Optional app schema check before an adopted payload can replace local storage.
+      // A newer schema still follows the existing schema-block decision.
+      if (remote.kind === "ok" && (remote.data !== null || remote.rev !== 0) && opts.validateData &&
+          !(Number.isFinite(remote.schemaVersion) && remote.schemaVersion > schemaVersion)) {
+        try { opts.validateData(remote.data); }
+        catch { return { kind: "bad-payload" }; }
+      }
+      return remote;
     } catch {
       return classifyRemote({ threw: true });
     }

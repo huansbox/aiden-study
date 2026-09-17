@@ -10,6 +10,18 @@
   ],
   "apps": [
     {
+      "id": "nativecamp",
+      "name": "Native Camp Review",
+      "emoji": "Aa",
+      "path": "nativecamp/",
+      "audience": ["aiden"],
+      "category": "學科",
+      "status": "active",
+      "sync": true,
+      "owner": "aiden",
+      "order": { "aiden": 5 }
+    },
+    {
       "id": "study",
       "name": "題庫練習",
       "emoji": "📚",

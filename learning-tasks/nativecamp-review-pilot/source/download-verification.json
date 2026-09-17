@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-09-16",
+  "lesson_date": "2026-09-15",
+  "lesson_time_local": "19:30",
+  "timezone": "Asia/Taipei",
+  "relative_file": "../assets/audio/2026-09-15-1930-lesson.webm",
+  "download_method": "Chrome native media controls: Download",
+  "source_link_type": "temporary_signed_https_url_not_persisted",
+  "size_bytes": 11152631,
+  "sha256": "208a1e0dea16430d1acd609409cc64f3edd4d52a81981192a7baaec989189434",
+  "format_name": "matroska,webm",
+  "duration_seconds": 1504.625,
+  "website_display_duration": "25:04",
+  "streams": [
+    {
+      "index": 0,
+      "codec_type": "audio",
+      "codec_name": "opus",
+      "sample_rate_hz": 48000,
+      "channels": 2,
+      "channel_layout": "stereo"
+    }
+  ],
+  "validation": {
+    "full_audio_decode": "passed",
+    "decoder": "ffmpeg",
+    "fail_on_decode_error": true,
+    "exit_code": 0,
+    "error_output": "",
+    "website_duration_matches_within_one_second": true,
+    "git_ignore_verified": true
+  },
+  "content_checks": {
+    "speaker_coverage": "both_sides_found_in_five_samples_full_coverage_unverified",
+    "transcript_alignment": "coarse_sample_review_complete_precise_word_alignment_unverified",
+    "audio_validation_report": "audio-validation.json",
+    "pronunciation_analysis": "not_performed",
+    "uploaded_to_transcription_service": false
+  }
+}

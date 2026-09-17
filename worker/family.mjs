@@ -98,7 +98,7 @@ export async function familyRoute(request, env, url, cors) {
   }
   if (parts.length !== 5) return reply(404, { error: "not found" }, cors);
   const [, , , app, device] = parts;
-  if (!core.APPS.slice(0, 5).includes(app) || !core.idRE.test(device))
+  if ((!core.APPS.slice(0, 5).includes(app) && app !== "nativecamp") || !core.idRE.test(device))
     return reply(404, { error: "stream" }, cors);
   if (!["PUT", "POST"].includes(request.method))
     return reply(405, { error: "method" }, cors);

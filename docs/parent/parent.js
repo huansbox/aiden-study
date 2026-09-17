@@ -27,6 +27,7 @@
     nonogram: "數織解謎",
     zhuyin: "注音",
     "animal-fight": "動物守護者",
+    nativecamp: "Native Camp Review",
   };
   const days = ["日", "一", "二", "三", "四", "五", "六"];
   const unitNames = {
@@ -53,7 +54,7 @@
   let config = C.defaults(),
     rev = 0,
     reg,
-    child = "aiden",
+    child = C.CHILDREN.includes(new URLSearchParams(location.search).get("child")) ? new URLSearchParams(location.search).get("child") : "aiden",
     schedule = "weekly",
     day = "1",
     date = C.dateKey(),
@@ -145,7 +146,9 @@
       .filter((a) => a.path && a.id !== "nonogram")
       .map(
         (a) =>
-          `<a class="button" href="../${a.path}?child=${child}&parent=1">${esc(names[a.id])}維護</a>`,
+          a.id === "nativecamp"
+            ? `<a class="button" href="../nativecamp/preview.html?child=${child}">Native Camp · Preview questions</a>`
+            : `<a class="button" href="../${a.path}?child=${child}&parent=1">${esc(names[a.id])}維護</a>`,
       )
       .join(
         "",
@@ -160,6 +163,7 @@
       document.getElementById("parent-stats").closest("section").before(syncPanel);
     }
     renderSync();
+    window.NativeCampParent?.mount(root, child);
   }
   function syncSnapshot(body) {
     if (!body || !Array.isArray(body.keys)) throw Error("invalid status");

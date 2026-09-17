@@ -1,0 +1,60 @@
+{
+  "title": "數一數，說完整",
+  "lesson_date": "2026-09-15",
+  "duration_minutes": "5-10",
+  "warmup": {
+    "question": "Is 9 odd or even?",
+    "answer": "Nine is an odd number.",
+    "note": "暖身說 odd 就可以，不花時間反覆數數。"
+  },
+  "activities": [
+    {
+      "id": "counts",
+      "title": "公園裡有幾棵樹？",
+      "question": "How many trees are in the park?",
+      "scene": "trees",
+      "tree_count": 5,
+      "instruction": "數一數，再用一句完整英文回答。",
+      "target": "There are + 數量 + 複數名詞 + 地點。",
+      "answer": "There are five trees in the park.",
+      "accepted": "I can see five trees. 也正確；再邀請他用 There are 說一次。",
+      "hint": "只提示 There are...；還卡住才示範完整句。",
+      "transfer": "換成桌上的三枝鉛筆：There are three pencils on the table.",
+      "evidence": "課堂 17:35-18:25；另核對 19:55-20:25 的提示。"
+    },
+    {
+      "id": "topic",
+      "title": "看標題，猜主題",
+      "question": "What do you think the text is about?",
+      "scene": "heading",
+      "heading": "Counting Our Toys",
+      "instruction": "只看標題，說說你猜文章會介紹什麼。",
+      "target": "I think it's about + 主題。",
+      "answer": "I think it's about counting toys.",
+      "accepted": "I think it's about toys. 或 It's about counting toys. 都可接受。",
+      "hint": "先提示 I think it's about...；合理的主題預測都可以。",
+      "transfer": "把標題換成 Counting Our Books，再猜一次主題。",
+      "evidence": "課堂 15:50-16:55；教材實際第 89 頁的閱讀策略。"
+    },
+    {
+      "id": "too_many",
+      "title": "玩具太多，箱子蓋不起來",
+      "question": "Tell me about your toys.",
+      "scene": "toys",
+      "instruction": "假裝這是你的玩具箱，說出「我有太多玩具了」。",
+      "target": "I have too many + 複數名詞。",
+      "answer": "I have too many toys.",
+      "accepted": "There are too many toys in the box. 也可接受。",
+      "hint": "先提示 I have...；需要時再給 too many toys。",
+      "transfer": "換成書或帽子：I have too many books / hats.",
+      "evidence": "課堂 21:45-22:25；老師在對話中示範 too many toys。"
+    }
+  ],
+  "material": {
+    "title": "Oxford Discover 1, Student Book",
+    "printed_pages": "86-89",
+    "viewer_page_offset": 2,
+    "url": "https://cec.com.vn/book/dis1/index.html",
+    "use": "僅核對本堂教材；題目情境、圖形與版面為本次原創，未重製教材頁。"
+  }
+}
