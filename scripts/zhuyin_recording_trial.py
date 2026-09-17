@@ -1,6 +1,6 @@
-"""Local three-clip recording trial. Never writes production assets or progress.
+"""Local recording with autosave. Never writes production assets or progress.
 
-uv run python scripts/zhuyin_recording_trial.py
+uv run python scripts/zhuyin_recording_trial.py --scope all
 """
 import argparse
 import json
@@ -15,8 +15,30 @@ from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "docs-dev/zhuyin-recording-trial/index.html"
-SYMBOLS = json.loads((ROOT / "docs/zhuyin/content.json").read_text())["symbols"][:3]
-ITEMS = [{"key": s["audio"], "glyph": s["glyph"], "hint": s["recordHint"]} for s in SYMBOLS]
+CONTENT = json.loads((ROOT / "docs/zhuyin/content.json").read_text())
+SYMBOL_ITEMS = [{"key": s["audio"], "glyph": s["glyph"], "hint": s["recordHint"]}
+                for s in CONTENT["symbols"]]
+TONE_MARKS = {1: "", 2: "ˊ", 3: "ˇ", 4: "ˋ"}
+TONE_HINTS = {1: "一聲，平平的", 2: "二聲，往上揚", 3: "三聲，先降再升", 4: "四聲，往下降"}
+CARRIERS = {"ㄅ": {1: "八", 2: "拔", 3: "把", 4: "爸"},
+            "ㄇ": {1: "媽", 2: "麻", 3: "馬", 4: "罵"}}
+
+
+def recording_items(scope):
+    items = list(SYMBOL_ITEMS)
+    if scope == "trial":
+        return items[:3]
+    for syllable in CONTENT["syllables"]:
+        tone = syllable["tone"]
+        carrier = CARRIERS.get(syllable["onset"], {}).get(tone)
+        example = f"像「{carrier}」的讀音。" if carrier and syllable["rime"] == "ㄚ" else ""
+        items.append({"key": syllable["audio"],
+                      "glyph": syllable["onset"] + syllable["rime"] + TONE_MARKS[tone],
+                      "hint": f"{example}{TONE_HINTS[tone]}。只唸這個音一次，不用唸提示文字。"})
+        if word := syllable.get("word"):
+            items.append({"key": word["audio"], "glyph": word["text"],
+                          "hint": f"自然地唸一次「{word['text']}」，像平常說話，不用刻意放慢。"})
+    return items
 MIME_EXT = {"audio/mp4": ".m4a", "audio/webm": ".webm", "audio/ogg": ".ogg"}
 MAX_BYTES = 8 * 1024 * 1024
 
@@ -24,6 +46,7 @@ MAX_BYTES = 8 * 1024 * 1024
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8767)
+    parser.add_argument("--scope", choices=["trial", "all"], default="trial")
     parser.add_argument("--output", type=Path,
                         default=Path.home() / "Downloads/aiden-zhuyin-recording-trial")
     args = parser.parse_args()
@@ -33,7 +56,8 @@ def main():
     output = args.output.expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
     origin = f"http://127.0.0.1:{args.port}"
-    keys = {i["key"] for i in ITEMS}
+    items = recording_items(args.scope)
+    keys = {i["key"] for i in items}
 
     def recordings():
         # Only fully saved takes have metadata; interrupted uploads stay out of the list.
@@ -72,7 +96,7 @@ def main():
                 if path == "/":
                     return self.respond(200, PAGE.read_bytes(), "text/html; charset=utf-8")
                 if path == "/api/status":
-                    return self.respond(200, {"items": ITEMS, "takes": recordings()})
+                    return self.respond(200, {"items": items, "takes": recordings()})
                 for take in recordings():
                     if path == f'/audio/{take["id"]}':
                         return self.respond(200, (output / take["id"] / "audio.m4a").read_bytes(), "audio/mp4")
@@ -85,7 +109,7 @@ def main():
                 return self.respond(403, {"error": "請從本機試錄頁操作。"})
             key = urlsplit(self.path).path.removeprefix("/api/record/")
             if self.path != f"/api/record/{key}" or key not in keys:
-                return self.respond(404, {"error": "不在本次三段試錄清單內。"})
+                return self.respond(404, {"error": "不在本次錄音清單內。"})
             mime = self.headers.get("Content-Type", "").split(";")[0].strip()
             try:
                 size = int(self.headers.get("Content-Length", "0"))
@@ -132,7 +156,7 @@ def main():
                 return self.respond(422, {"error": "未能保存這段錄音。可按重試保存；若仍失敗，回對話讓我檢查。"})
 
     server = HTTPServer(("127.0.0.1", args.port), Handler)
-    print(f"三段試錄：{origin}\n錄音保存：{output}", flush=True)
+    print(f"錄音清單共 {len(items)} 段：{origin}\n錄音保存：{output}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
