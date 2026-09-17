@@ -1,0 +1,477 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-15",
+  "date": "2026-09-15",
+  "title": "Counting and talking",
+  "concepts": [
+    {
+      "id": "is-are",
+      "title": "Is or are",
+      "try": [
+        {
+          "id": "is-are-try-1",
+          "prompt": "There ___ a cat.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "cats",
+            "count": 1
+          },
+          "answerText": "There is a cat.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "is",
+              "text": "is"
+            },
+            {
+              "id": "are",
+              "text": "are"
+            }
+          ],
+          "answer": "is",
+          "explanation": "Use is for one cat.",
+          "audio": {
+            "question": "audio/is-are-try-1-q.mp3",
+            "answer": "audio/is-are-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "is-are-try-2",
+          "prompt": "There ___ two dogs.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "dogs",
+            "count": 2
+          },
+          "answerText": "There are two dogs.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "is",
+              "text": "is"
+            },
+            {
+              "id": "are",
+              "text": "are"
+            }
+          ],
+          "answer": "are",
+          "explanation": "Use are for two dogs.",
+          "audio": {
+            "question": "audio/is-are-try-2-q.mp3",
+            "answer": "audio/is-are-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "is-are-try-3",
+          "prompt": "Tell me about the trees.",
+          "instruction": "Tap the words to make a sentence.",
+          "scene": {
+            "kind": "trees",
+            "count": 3
+          },
+          "answerText": "There are three trees.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w3",
+              "text": "three"
+            },
+            {
+              "id": "w1",
+              "text": "There"
+            },
+            {
+              "id": "w4",
+              "text": "trees"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "Use are for more than one tree.",
+          "audio": {
+            "question": "audio/is-are-try-3-q.mp3",
+            "answer": "audio/is-are-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "is-are-say-1",
+          "prompt": "What can you see?",
+          "instruction": "Start with There.",
+          "scene": {
+            "kind": "dogs",
+            "count": 1
+          },
+          "answerText": "There is a dog.",
+          "accepted": [
+            "There is one dog."
+          ],
+          "audio": {
+            "question": "audio/is-are-say-1-q.mp3",
+            "answer": "audio/is-are-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "is-are-say-2",
+          "prompt": "How many trees can you see?",
+          "instruction": "Start with There.",
+          "scene": {
+            "kind": "trees",
+            "count": 4
+          },
+          "answerText": "There are four trees.",
+          "accepted": [
+            "There are 4 trees."
+          ],
+          "audio": {
+            "question": "audio/is-are-say-2-q.mp3",
+            "answer": "audio/is-are-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "is-are-say-3",
+          "prompt": "What can you see?",
+          "instruction": "Start with There.",
+          "scene": {
+            "kind": "cats",
+            "count": 2
+          },
+          "answerText": "There are two cats.",
+          "accepted": [
+            "There are 2 cats."
+          ],
+          "audio": {
+            "question": "audio/is-are-say-3-q.mp3",
+            "answer": "audio/is-are-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "odd-even",
+      "title": "Odd or even",
+      "try": [
+        {
+          "id": "odd-even-try-1",
+          "prompt": "Is 5 odd or even?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "numbers",
+            "number": 5
+          },
+          "answerText": "Five is an odd number.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "odd",
+              "text": "odd"
+            },
+            {
+              "id": "even",
+              "text": "even"
+            }
+          ],
+          "answer": "odd",
+          "explanation": "Make pairs. An odd number has one left over.",
+          "audio": {
+            "question": "audio/odd-even-try-1-q.mp3",
+            "answer": "audio/odd-even-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "odd-even-try-2",
+          "prompt": "Is the number of toys odd or even?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "toys",
+            "count": 6
+          },
+          "answerText": "Six is an even number.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "odd",
+              "text": "odd"
+            },
+            {
+              "id": "even",
+              "text": "even"
+            }
+          ],
+          "answer": "even",
+          "explanation": "Make pairs. An even number has none left over.",
+          "audio": {
+            "question": "audio/odd-even-try-2-q.mp3",
+            "answer": "audio/odd-even-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "odd-even-try-3",
+          "prompt": "Is the number of books odd or even?",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "books",
+            "count": 9
+          },
+          "answerText": "Nine is an odd number.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "odd",
+              "text": "odd"
+            },
+            {
+              "id": "even",
+              "text": "even"
+            }
+          ],
+          "answer": "odd",
+          "explanation": "Make pairs. An odd number has one left over.",
+          "audio": {
+            "question": "audio/odd-even-try-3-q.mp3",
+            "answer": "audio/odd-even-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "odd-even-say-1",
+          "prompt": "Is the number of dogs odd or even?",
+          "instruction": "Say the number, too.",
+          "scene": {
+            "kind": "dogs",
+            "count": 4
+          },
+          "answerText": "Four is an even number.",
+          "accepted": [
+            "Four is even.",
+            "There are four dogs. Four is even."
+          ],
+          "audio": {
+            "question": "audio/odd-even-say-1-q.mp3",
+            "answer": "audio/odd-even-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "odd-even-say-2",
+          "prompt": "Is 7 odd or even?",
+          "instruction": "Say the number, too.",
+          "scene": {
+            "kind": "numbers",
+            "number": 7
+          },
+          "answerText": "Seven is an odd number.",
+          "accepted": [
+            "Seven is odd."
+          ],
+          "audio": {
+            "question": "audio/odd-even-say-2-q.mp3",
+            "answer": "audio/odd-even-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "odd-even-say-3",
+          "prompt": "Is the number of books odd or even?",
+          "instruction": "Say the number, too.",
+          "scene": {
+            "kind": "books",
+            "count": 6
+          },
+          "answerText": "Six is an even number.",
+          "accepted": [
+            "Six is even.",
+            "There are six books. Six is even."
+          ],
+          "audio": {
+            "question": "audio/odd-even-say-3-q.mp3",
+            "answer": "audio/odd-even-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "too-many",
+      "title": "Too many",
+      "try": [
+        {
+          "id": "too-many-try-1",
+          "prompt": "I have too ___ books.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "books",
+            "count": 7,
+            "heading": "This shelf has room for 3 books."
+          },
+          "answerText": "I have too many books.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "many",
+              "text": "many"
+            },
+            {
+              "id": "much",
+              "text": "much"
+            }
+          ],
+          "answer": "many",
+          "explanation": "You can count books. Use many with books.",
+          "audio": {
+            "question": "audio/too-many-try-1-q.mp3",
+            "answer": "audio/too-many-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "too-many-try-2",
+          "prompt": "There are too ___ hats.",
+          "instruction": "Pick one.",
+          "scene": {
+            "kind": "hats",
+            "count": 6,
+            "heading": "This shelf has room for 2 hats."
+          },
+          "answerText": "There are too many hats.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "many",
+              "text": "many"
+            },
+            {
+              "id": "much",
+              "text": "much"
+            }
+          ],
+          "answer": "many",
+          "explanation": "You can count hats. Use many with hats.",
+          "audio": {
+            "question": "audio/too-many-try-2-q.mp3",
+            "answer": "audio/too-many-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "too-many-try-3",
+          "prompt": "Tell me about your toys.",
+          "instruction": "Tap the words to make a sentence.",
+          "scene": {
+            "kind": "toys",
+            "count": 8,
+            "heading": "This box has room for 3 toys."
+          },
+          "answerText": "I have too many toys.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w5",
+              "text": "toys"
+            },
+            {
+              "id": "w3",
+              "text": "too"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w4",
+              "text": "many"
+            },
+            {
+              "id": "w2",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "There are more toys than the box can hold. Start with I have.",
+          "audio": {
+            "question": "audio/too-many-try-3-q.mp3",
+            "answer": "audio/too-many-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "too-many-say-1",
+          "prompt": "Tell me about your toys.",
+          "instruction": "Use too many in a sentence.",
+          "scene": {
+            "kind": "toys",
+            "count": 7,
+            "heading": "This box has room for 3 toys."
+          },
+          "answerText": "I have too many toys.",
+          "accepted": [
+            "There are too many toys.",
+            "There are too many toys in the box."
+          ],
+          "audio": {
+            "question": "audio/too-many-say-1-q.mp3",
+            "answer": "audio/too-many-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "too-many-say-2",
+          "prompt": "What is the problem with the books?",
+          "instruction": "Use too many in a sentence.",
+          "scene": {
+            "kind": "books",
+            "count": 8,
+            "heading": "This shelf has room for 4 books."
+          },
+          "answerText": "There are too many books.",
+          "accepted": [
+            "I have too many books.",
+            "There are too many books for the shelf."
+          ],
+          "audio": {
+            "question": "audio/too-many-say-2-q.mp3",
+            "answer": "audio/too-many-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "too-many-say-3",
+          "prompt": "Do you think that Tanya has too many hats?",
+          "instruction": "Use a full sentence about the hats.",
+          "scene": {
+            "kind": "hats",
+            "count": 8,
+            "heading": "Tanya's shelf has room for 3 hats."
+          },
+          "answerText": "Yes, she has too many hats.",
+          "accepted": [
+            "Tanya has too many hats.",
+            "Yes, Tanya has too many hats.",
+            "There are too many hats for the shelf."
+          ],
+          "audio": {
+            "question": {
+              "private": "2026-09-15-hats-question"
+            },
+            "answer": "audio/too-many-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

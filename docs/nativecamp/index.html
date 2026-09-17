@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#f5f3eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Native Camp Review">
+  <link rel="manifest" href="../platform.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <title>Native Camp Review</title>
+</head>
+<body>
+  <main id="nativecamp" class="app-shell"><section class="loading-card" aria-live="polite"><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Getting your lesson ready...</h1></section></main>
+  <noscript>Please turn on JavaScript to open your lesson.</noscript>
+  <script src="../shared/device-auth.js?v=20260916-session"></script>
+  <script src="../shared/sync-v1.js?v=20260917-nativecamp"></script>
+  <script src="../shared/wiring-v1.js?v=20260917-nativecamp"></script>
+  <script src="../shared/family-core.js?v=20260917-nativecamp"></script>
+  <script src="../shared/family-client.js?v=20260917-nativecamp"></script>
+  <script>
+    // <wiring-config>
+    const WIRING_CONFIG = { appId: "nativecamp", schemaVersion: 1, legacyChild: "aiden", legacyKey: null };
+    // </wiring-config>
+    if (window.KidsWiringV1) window.nativecampWiring = window.KidsWiringV1.createWiring(WIRING_CONFIG);
+  </script>
+  <script src="core.js"></script>
+  <script src="platform.js"></script>
+  <script src="app.js"></script>
+  <script>window.NativeCampApp.boot();</script>
+</body>
+</html>

@@ -4,6 +4,7 @@ import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
+import "../docs/nativecamp/core.js";
 
 const source = (path) => readFileSync(new URL("../docs/" + path, import.meta.url), "utf8");
 const origin = "http://127.0.0.1:8788";
@@ -81,6 +82,7 @@ class Element {
   fire(type) { return (this["on" + type] || this.events.get(type))?.({ target: this, preventDefault() {} }); }
   closest() { return this; }
   before(element) { element.parent = this.parent; this.parent.children.splice(this.parent.children.indexOf(this), 0, element); changed(); }
+  appendChild(element) { element.parent = this; this.children.push(element); changed(); return element; }
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
 }
 
@@ -117,6 +119,8 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     fetch: async (input, init = {}) => {
       const url = new URL(input, location.href);
       if (url.pathname === "/registry.json") return json(registry);
+      if (url.pathname === "/nativecamp/lessons/2026-09-15.json")
+        return json(JSON.parse(source("nativecamp/lessons/2026-09-15.json")));
       assert.equal(url.origin, origin, "不得連線正式服務");
       const headers = new Headers(init.headers);
       headers.set("Origin", origin);
@@ -152,6 +156,41 @@ const progress = (child, app, date = "2026-09-15T18:05:06.000Z") => ({
   ["p:" + child + ":" + app]: { value: JSON.stringify({ rev: 3, data: {} }), metadata: { rev: 3, updatedAt: date } },
 });
 const record = (child, app, date) => ({ child, app, rev: 3, lastWrite: date });
+
+test("Native Camp family summary reads authenticated first results, keeps modes and children separate", async () => {
+  const C = globalThis.NativeCampCore;
+  const lesson = JSON.parse(source("nativecamp/lessons/2026-09-15.json"));
+  const concept = lesson.concepts[0], question = concept.try[0], spoken = concept.say[0];
+  let data = C.createProgress();
+  const wrong = question.choices.find((option) => option.id !== question.answer).id;
+  data = C.submitTry(data, lesson, "2026-09-17", concept.id, question.id, wrong).progress;
+  data = C.markPending(data, lesson, "say", "2026-09-17", concept.id, spoken.id, "reveal");
+  data = C.submitSay(data, lesson, "2026-09-17", concept.id, spoken.id, "withHelp").progress;
+  const h = await page({ initial: { "p:aiden:nativecamp": { value: JSON.stringify({ rev: 2, epoch: "same", data }) } } });
+  await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
+  const panel = h.root.querySelector("#nativecamp-summary");
+  assert.match(panel.innerHTML, /Try it · In progress/);
+  assert.match(panel.innerHTML, /Say it · In progress/);
+  assert.match(panel.innerHTML, /Independent/);
+  assert.match(panel.innerHTML, /Not yet/);
+  assert.doesNotMatch(panel.innerHTML, /[\u3400-\u9FFF]/);
+  assert.ok(h.requests.some((request) => request.path === "/api/v1/progress/aiden/nativecamp"));
+  await h.root.querySelector('[data-child="bingpu"]').fire("click");
+  await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("No practice has been saved"));
+  assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Try it ·/);
+});
+
+test("Native Camp summary hides stale or malformed remote data rather than presenting success", async () => {
+  const data = globalThis.NativeCampCore.createProgress();
+  const h = await page({ initial: { "p:aiden:nativecamp": { value: JSON.stringify({ rev: 3, epoch: "same", data }) } } });
+  await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
+  for (const body of [{ rev: 2, epoch: "same", data }, { rev: 0, data: null }, { rev: 4, epoch: "same", data: {} }]) {
+    await h.env.KV.put("p:aiden:nativecamp", JSON.stringify(body));
+    await h.root.querySelector("#nativecamp-summary").querySelector("button").fire("click");
+    assert.match(h.root.querySelector("#nativecamp-summary").innerHTML, /No results are shown/);
+    assert.doesNotMatch(h.root.querySelector("#nativecamp-summary").innerHTML, /Read from family storage|Try it ·/);
+  }
+});
 
 test("家長心智圖顯示最新索引文章，僅控制顯示、不再編輯舊篇名網址", async () => {
   const registry = JSON.parse(source("registry.json"));

@@ -85,6 +85,31 @@ async function handle(request, env, url, cors, sessionAuthorized = false) {
       return await familyRoute(request,env,url,cors) || json(404,{error:"not found"},cors);
     }
 
+    // Teacher audio is provisioned privately, never bundled with the public site.
+    if (parts.length === 3 && parts[1] === "nativecamp-audio") {
+      if (request.method !== "GET") return json(405, { error: "method" }, cors);
+      if (!/^[a-z0-9-]{1,80}$/.test(parts[2])) return json(404, { error: "audio id" }, cors);
+      const raw = await env.KV.get(`c:nativecamp:audio:${parts[2]}`);
+      if (raw === null) return json(404, { error: "audio missing" }, cors);
+      try {
+        if (typeof raw !== "string" || raw.length > 2800000) throw Error();
+        const value = JSON.parse(raw);
+        if (value.contentType !== "audio/mpeg" || typeof value.base64 !== "string" ||
+            !value.base64.length || value.base64.length % 4 !== 0 ||
+            !/^[A-Za-z0-9+/]*={0,2}$/.test(value.base64)) throw Error();
+        const bytes = Uint8Array.from(atob(value.base64), (char) => char.charCodeAt(0));
+        if (bytes.length < 4 || bytes.length > 2097152 ||
+            !((bytes[0] === 73 && bytes[1] === 68 && bytes[2] === 51) ||
+              (bytes[0] === 255 && (bytes[1] & 224) === 224))) throw Error();
+        return new Response(bytes, { headers: {
+          "Content-Type": "audio/mpeg", "Content-Length": String(bytes.length),
+          "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", ...cors,
+        } });
+      } catch {
+        return json(500, { error: "invalid audio" }, cors);
+      }
+    }
+
     // 題目只由管理端部署；不能經由 progress 或此路由寫入，status 也不列內容。
     if (parts.length === 3 && parts[1] === "packs" && parts[2] === "g4-s1-math-u1") {
       if (request.method !== "GET") return json(405, { error: "method" }, cors);

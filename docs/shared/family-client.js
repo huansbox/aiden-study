@@ -254,7 +254,7 @@
     url.searchParams.set("day", task.date);
     return url.href;
   }
-  function showReward(label, child) {
+  function showReward(label, child, english = false) {
     document.getElementById("family-reward")?.remove();
     const el = document.createElement("div");
     el.id = "family-reward";
@@ -267,9 +267,9 @@
     text.textContent = label;
     const link = document.createElement("a");
     link.href = homeHref(child);
-    link.textContent = "回首頁";
+    link.textContent = english ? "Home" : "回首頁";
     const close = document.createElement("button");
-    close.textContent = "繼續";
+    close.textContent = english ? "Continue" : "繼續";
     close.addEventListener("click", () => el.remove());
     el.append(brick, text, link, close);
     document.body.appendChild(el);
@@ -277,6 +277,7 @@
   }
   function attach(app, child) {
     if (!core.APPS.includes(app) || !child) return null;
+    const english = app === "nativecamp";
     // 每次開啟有獨立寫入串流，兩個分頁同時練習不會互相覆蓋累計。
     const device = uuid();
     const key = localKey(child, app, device);
@@ -312,7 +313,7 @@
     }
     function persist() {
       if (!write(key, stream))
-        notifyError("這台裝置無法保存新的練習紀錄，請家長協助。");
+        notifyError(english ? "This device could not save your practice. Please ask a parent for help." : "這台裝置無法保存新的練習紀錄，請家長協助。");
       dirty = true;
       write(pendingKey(child, app, device), true);
       window.dispatchEvent(new CustomEvent("kids:activity"));
@@ -421,12 +422,12 @@
       if (justDone) {
         stream.done[currentTask.occurrence] = 1;
         next = allSummary();
-        showReward("任務完成", child);
+        showReward(english ? "Practice complete" : "任務完成", child, english);
       }
       const previous = new Set(core.earnedBadges(before).map((b) => b.id));
       const earned = core.earnedBadges(next).filter((b) => !previous.has(b.id));
       if (earned.length && !justDone)
-        showReward("新徽章：" + earned.at(-1).label, child);
+        showReward(english ? "New badge" : "新徽章：" + earned.at(-1).label, child, english);
       persist();
       return { taskDone: justDone, summary: next };
     }

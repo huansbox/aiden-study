@@ -2,7 +2,7 @@
 
 狀態：**已完成（單堂複習試作；時間與難度待孩子實測）**。任務日期：2026-09-16。
 
-以 2026-09-15 的一堂 Native Camp 課程為樣本，已完成音檔下載、本機分聲道轉錄抽樣、教材與逐字稿核對，以及可列印的口說複習。這是單堂課的學習任務試作，目前不建立長期 app。
+以 2026-09-15 的一堂 Native Camp 課程為樣本，已完成音檔下載、本機分聲道轉錄抽樣、教材與逐字稿核對，以及可列印的口說複習。後續互動版放在 `docs/nativecamp/`，本任務仍保存來源核對、原始素材與重建流程；互動版狀態與驗證見 [Native Camp Review](../../docs-dev/nativecamp-review.md)。
 
 ## 先開啟這兩份成品
 
@@ -30,6 +30,7 @@
 - [下載驗證資料](source/download-verification.json)：格式、長度、大小、SHA256 與驗證界線。
 - [音訊與內容核對](source/evidence-review.md)／[抽樣驗證摘要](source/audio-validation.json)：分聲道結果、逐字稿誤標、教材頁碼與判讀限制。
 - [題目內容](source/review-content.json)：題目、提示、可接受答案、來源時間與教材對照。
+- [互動版題組與音訊驗證](source/nativecamp-audio-qa.md)：18題原創變體、35個預製 TTS、1段私用老師提問，以及再製方法。
 
 本次實測可透過 Chrome 的原生媒體選單「下載」取得音檔。瀏覽器工具的 `downloadMedia()` 在這次環境中只開啟了媒體頁，必須以實際檔案落地與解碼結果判斷成功。
 

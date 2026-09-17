@@ -13,6 +13,7 @@
 | 題庫練習 | `docs/study/` | 哥哥 | LocalStorage + Worker 同步 |
 | 長除法練習 | `docs/math/` | 哥哥 | LocalStorage + Worker 同步 |
 | 英文拼字 | `docs/spelling/` | 哥哥 | LocalStorage + Worker 同步 |
+| Native Camp Review | `docs/nativecamp/` | 哥哥；家長陪同口說 | 分支試作；自主題、口說與跨日複習，同步已接；待正式發布與孩子實測 |
 | 數織解謎 | `docs/math/nonogram/` | 哥哥 | 僅 LocalStorage |
 | 注音練習 | `docs/zhuyin/` | 弟弟 | 程式已上線並接同步；14 段正式錄音與 iPad #20 驗收待完成 |
 
@@ -32,6 +33,7 @@ docs/                 GitHub Pages 部署根目錄
   study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，手動匯入保留為備援
   math/               長除法與 nonogram
   spelling/           英文拼字 app
+  nativecamp/          全英文課後複習；首次表現、口說與跨日確認
   zhuyin/             注音 app 與錄音工具
   shared/             同步、接線與獎勵共用資源
 worker/               Cloudflare Worker 同步 API 與固定家庭唯讀題包端點

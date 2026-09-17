@@ -27,6 +27,7 @@
     nonogram: "數織解謎",
     zhuyin: "注音",
     "animal-fight": "動物守護者",
+    nativecamp: "Native Camp Review",
   };
   const days = ["日", "一", "二", "三", "四", "五", "六"];
   const unitNames = {
@@ -160,6 +161,7 @@
       document.getElementById("parent-stats").closest("section").before(syncPanel);
     }
     renderSync();
+    window.NativeCampParent?.mount(root, child);
   }
   function syncSnapshot(body) {
     if (!body || !Array.isArray(body.keys)) throw Error("invalid status");
