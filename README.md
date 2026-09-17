@@ -4,17 +4,53 @@
 
 線上入口：<https://kids.linshuhuan.com/>（[煦誠學習](https://kids.linshuhuan.com/?child=aiden)／[秉樸學習](https://kids.linshuhuan.com/?child=bingpu)／[家長後台](https://kids.linshuhuan.com/parent/)）
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成最初六題 private pack、家庭權限自動讀取、獨立 review 與正式發布；[#59](https://github.com/huansbox/aiden-study/issues/59) 再把正式題包擴為 U1～U5 共十四題 rev2 並已結案。[#60](https://github.com/huansbox/aiden-study/issues/60) 已沿用相同 runtime，完成 fresh review、正式發布與 private archive，把題包擴為三十題 rev3，U1～U5 分布為 9／6／2／7／6；正常流程不要求家長傳檔。2026-09-14 的 iPad 操作確認只涵蓋先前 #55 六題流程，不代表三十題已完成真機實測；下一步依已採納的 U3 `angle-v1` 能力路線另批處理，其餘未轉入題目與章節仍待做。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
+## 作品總覽
 
-## 現況
+從這裡找 App、一次性任務與主線外作品。這是一份查找入口：App 登記與上下架以 [registry](docs/registry.json) 為準；任務狀態、日期與歸檔規則以 [任務索引](learning-tasks/README.md) 為準；製作中的最新進度回查該工作的 issue／PR，不從本頁推定。
 
-| App | 路徑 | 對象 | 進度 |
-| --- | --- | --- | --- |
-| 題庫練習 | `docs/study/` | 哥哥 | LocalStorage + Worker 同步 |
-| 長除法練習 | `docs/math/` | 哥哥 | LocalStorage + Worker 同步 |
-| 英文拼字 | `docs/spelling/` | 哥哥 | LocalStorage + Worker 同步 |
-| 數織解謎 | `docs/math/nonogram/` | 哥哥 | 僅 LocalStorage |
-| 注音練習 | `docs/zhuyin/` | 弟弟 | MVP 已交付並接同步；14 段親錄已由家長試聽接受，收尾見 #20 |
+### App
+
+包含 registry 中的站內與外部 App，不只列孩子目前看得見的活動。以下是作品／來源入口，不表示每個 App 都已啟用；孩子實際可見內容由家長設定決定。
+
+| App | 來源或外部入口 | 進度保存方式 |
+| --- | --- | --- |
+| 題庫練習 | [docs/study/](docs/study/) | LocalStorage + Worker 同步 |
+| 長除法練習 | [docs/math/](docs/math/) | LocalStorage + Worker 同步 |
+| 英文拼字 | [docs/spelling/](docs/spelling/) | LocalStorage + Worker 同步 |
+| 數織解謎 | [docs/math/nonogram/](docs/math/nonogram/) | 原有過關進度僅 LocalStorage；新累計另行同步 |
+| 注音練習 | [docs/zhuyin/](docs/zhuyin/) | LocalStorage + Worker 同步 |
+| 動物守護者 | [animal-fight](https://huansbox.github.io/animal-fight/) | 外部 App，未接平台同步 |
+| 英文閱讀 | [aiden-english](https://huansbox.github.io/aiden-english/) | 外部 App，未接平台同步 |
+| 隕石數學防衛隊 | [99-meteor](https://huansbox.github.io/99-meteor/) | 外部 App，未接平台同步 |
+
+### 學習任務與共用經驗
+
+每份作品在下表只列一次；有網頁版本仍可屬於一次性任務。詳細狀態、活動日期與對象只在 [任務索引](learning-tasks/README.md#任務索引) 維護，成品與再製方式見各任務 README。
+
+| 任務 | 找得到什麼 |
+| --- | --- |
+| [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 十張動物園／火車探險卡、可列印 PDF、設計經驗 |
+| [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | 〈初夏雜記〉互動頁、老師回饋、舊來源位置說明 |
+| [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 新篇互動頁、可編輯來源、產生部署檔的方法 |
+| [四上第一次段考數學候選卷](learning-tasks/grade4-sem1-math-exam1/) | 原卷來源、範圍核對與來源映射；原卷僅本機保存 |
+| [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | 孩子卷／家長卷的再製方式；私用 PDF 僅本機保存 |
+
+可跨任務沿用的內容從 [shared 索引](learning-tasks/shared/README.md) 找；例如 [兒童閱讀心智圖](learning-tasks/shared/reading-mind-maps.md)。這些是經驗或資源，不另外計為一份學習作品。
+
+### 主線外作品入口
+
+下列作品的來源仍有獨立工作分支，不能只搜尋目前 checkout 判定是否存在。最新工作狀態以連結中的 PR／分支為準；合併後將來源入口改成本 repo 的相對連結，不另複製一份作品。查核基準為 2026-09-17，後續整合狀態須回查 Git。
+
+| 作品 | 來源與追蹤 | 已有成果入口 |
+| --- | --- | --- |
+| 怎麼和 AI 一起做出探險卡 | [協作故事任務來源](https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase) | [Cloudflare Pages 故事網站](https://ai-zoo-cards-story.pages.dev/)；網站已發布不代表來源已合併 |
+| Native Camp 回放複習／Review App | [單堂任務來源](https://github.com/huansbox/aiden-study/tree/codex/nativecamp-audio-review/learning-tasks/nativecamp-review-pilot)、[App 來源](https://github.com/huansbox/aiden-study/tree/codex/nativecamp-audio-review/docs/nativecamp)、[PR #68](https://github.com/huansbox/aiden-study/pull/68) | 紙本與互動版分開驗收；使用與重建見分支內 README，合併／正式發布以 PR 紀錄為準 |
+
+App 已上線與「這次新增題目已完成」是不同狀態。跨裝置同時開發時，先查遠端與對應工作紀錄；無法取得另一台電腦未提交的內容時明示未知，不以本機舊版本推定，也不自行搬動或合併其工作。
+
+目前家長後台提供家庭設定與練習管理，尚未呈現這份跨 App／任務的完整總覽。這是展示入口缺口，不代表動物園等任務未歸檔；第一階段整理範圍與查核見 [#71](https://github.com/huansbox/aiden-study/issues/71)。
+
+## 平台現況
 
 `docs/registry.json` 定義平台可用 App。獨立 `/parent/` 家長後台已於 2026-09-15 正式發布，實際顯示對象、排序、題庫學期、頭像與練習安排可從後台調整。新版孩子首頁、累計與永久積木徽章已上線，預設 LEGO 頭像，指定的扁平版保留供替換；規則與驗證見 [UI/UX 改版說明](docs-dev/family-uiux-v2.md)。既有進度同步仍共用 `docs/shared/sync-v1.js` 與 `docs/shared/wiring-v1.js`，新增家庭設定／累計使用 `family-*`，後端都位於 `worker/`。
 
@@ -42,10 +78,6 @@ docs-dev/             ADR、設計稿與人工驗收文件
 learning-tasks/       一次性家庭學習任務、可重建成品與重用經驗
 wiki/                 GitHub Wiki 的版本控制真相源
 ```
-
-### 家庭學習任務與素材
-
-紙本練習、場館、旅行與其他一次性學習活動的索引、歸檔規則及共用素材入口見 [`learning-tasks/README.md`](learning-tasks/README.md)。其中四上 U1 第一份紙本短練習已完成，但只在實際需要時製作後續紙本，不按章自動產生 PDF。
 
 ## 開發環境
 
@@ -81,6 +113,10 @@ uv run python -m http.server 8765 -d docs
 localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的同步失敗是預期行為。完整本機驗證可用 `node tests/helpers/serve-family.mjs`，開啟輸出的 `/test/start`；該工具使用隔離 test-token、記憶體 KV 與合成題目，不動正式資料。`/test/controls` 可暫停／恢復隔離雲端。
 
 ## 題庫 pipeline
+
+紙本練習只在孩子實際需要時製作，沿用 [四上第一份短練習](learning-tasks/grade4-math-first-practice/) 的來源與再製方式，不按章自動產生 PDF。
+
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成最初六題 private pack、家庭權限自動讀取、獨立 review 與正式發布；[#59](https://github.com/huansbox/aiden-study/issues/59) 再把正式題包擴為 U1～U5 共十四題 rev2 並已結案。[#60](https://github.com/huansbox/aiden-study/issues/60) 已沿用相同 runtime，完成 fresh review、正式發布與 private archive，把題包擴為三十題 rev3，U1～U5 分布為 9／6／2／7／6；正常流程不要求家長傳檔。2026-09-14 的 iPad 操作確認只涵蓋先前 #55 六題流程，不代表三十題已完成真機實測；下一步依已採納的 U3 `angle-v1` 能力路線另批處理，其餘未轉入題目與章節仍待做。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
 
 題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1～U5 三十題 rev3 不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，已驗證的正式 pack 則部署在獨立 Cloudflare KV，由 Study 以 family token 自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 

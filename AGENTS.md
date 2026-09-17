@@ -1,5 +1,9 @@
 # Aiden Study repo guidance
 
+## 文件入口
+
+- 找既有作品先看 `README.md` 的「作品總覽」；主線外作品回查其 PR／分支，不把目前 checkout 當成全部成果。跨裝置工作前先確認分支與遠端，保留他處正在開發的內容。
+
 ## 家庭學習任務
 
 - 規劃、建立或歸檔家庭學習活動前，先讀並遵循 `learning-tasks/README.md`；該檔是 task／app／shared 分類、資料夾規格與索引維護的唯一真相源。
