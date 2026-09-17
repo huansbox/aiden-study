@@ -2,6 +2,8 @@
 
 使用者完成 14 段錄音，並在比較 AirPods／MacBook Pro 後選擇 MBP。此包全部採用 Safari 回報的「MacBook Pro的麥克風」，不混用 TTS 或 AirPods。先前三段 MBP 原音與後續十一段都保留；正式資產路徑為 `docs/zhuyin/assets/audio/`。本分支尚未合併或部署。
 
+**使用者已試聽接受（2026-09-17）**：在集中試聽整理後的 14 段音檔後回覆「sounds ok」。採用這批親錄聲音供統籌整合，不需再要求整批驗音；確認紀錄與對應 commit 見 `acceptance.json`。這項接受不代表做過 iPad 真機驗證或已部署。
+
 ## 使用與來源
 
 - [集中試聽頁](index.html)：播放整理後的 14 段。從 repo 根以 `uv run python -m http.server 8766 --bind 127.0.0.1` 開站，再開 `http://127.0.0.1:8766/docs-dev/zhuyin-parent-audio/`。
@@ -30,6 +32,6 @@ node --test tests/test_zhuyin_parent_audio.mjs tests/test_zhuyin_content.mjs tes
 - Node 全量 325 passed；pytest 183 passed、1 skipped。
 - Chromium 集中試聽頁：14 段各播至 `ended`，390 px 無水平溢出、無 JavaScript 錯誤。
 - 本機注音 app：直接讀正式資產，未替換音檔路由。新建拋棄式 browser context、阻擋全部外部網路；自檢實播 14 段、聽音辨認錯→對、組字聲韻／四聲錯→對、爸爸詞卡音訊可播。沒有讀寫真實家庭進度或金鑰。
-- 使用者已完成錄製並選擇 MBP 音質；本次的自動檢查不能判定每個聲母或聲調正確，未宣稱專業人工驗音。也未做 iPad 真機驗證、未部署；依使用者既定決定，不要求逐項 iPad checklist。
+- 使用者已完成錄製、選擇 MBP 音質，並試聽接受整理後的全部 14 段。build/audit 的 `pronunciationReviewed: false` 記錄自動處理不做發音判定，使用者後續試聽接受另記在 `acceptance.json`；不宣稱專業音韻評鑑。也未做 iPad 真機驗證、未部署；依使用者既定決定，不要求逐項 iPad checklist。
 
 先前 [TTS 候選包](../zhuyin-audio-candidates/) 保持獨立，僅作歷史與來源對照；本批出貨資產不使用任何 TTS 片段。#20 是否收尾及正式發布交由統籌處理，本任務不修改 remote issue、parent/shared family 文件或 HANDOFF。
