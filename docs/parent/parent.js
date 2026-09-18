@@ -101,6 +101,11 @@
     );
     return `<div class="form-grid"><label class="family-field">活動<select id="task-app">${options.map((id) => `<option value="${id}" ${id === taskApp ? "selected" : ""}>${names[id]}</option>`).join("")}</select></label>${taskApp === "study" ? `<label class="family-field">單元<select id="task-unit">${units.map(([id, name]) => `<option value="${id}">${name}</option>`).join("")}</select></label>` : taskApp === "spelling" ? `<label class="family-field">單字組別<select id="task-batch">${Array.from({ length: 20 }, (_, i) => `<option value="${i}">第 ${i + 1} 組</option>`).join("")}</select></label>` : taskApp === "zhuyin" ? '<label class="family-field">內容<select id="task-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>' : ""}<label class="family-field">${taskApp === "zhuyin" ? "張卡" : taskApp === "spelling" ? "單字數" : "題數"}<input id="task-quantity" type="number" min="1" max="100" value="5"></label></div><button id="add-task" ${!options.length ? "disabled" : ""}>加入安排</button>`;
   }
+  function needsConnection() {
+    return auth &&
+      auth.state.status !== "connected" &&
+      !(auth.state.status === "offline" && F.cachedSettings().available);
+  }
   function render() {
     const profile = p(),
       activeApps = reg.apps.filter(
@@ -112,11 +117,7 @@
         .filter(Boolean),
       ...activeApps.filter((a) => !profile.apps.includes(a.id)),
     ];
-    if (
-      auth &&
-      auth.state.status !== "connected" &&
-      !(auth.state.status === "offline" && F.cachedSettings().available)
-    ) {
+    if (needsConnection()) {
       if (!root.querySelector("#parent-connection")) {
         root.innerHTML = '<div id="parent-connection"></div>';
         auth.renderConnection(root.querySelector("#parent-connection"), async () => {
@@ -520,6 +521,11 @@
     }
   }
   async function load() {
+    // 首次連接尚未完成時保留可操作的金鑰表單；成功回呼會再載入設定。
+    if (needsConnection()) {
+      render();
+      return;
+    }
     root
       .querySelectorAll("button,input,select")
       .forEach((el) => (el.disabled = true));

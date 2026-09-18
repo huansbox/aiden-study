@@ -86,7 +86,7 @@ class Element {
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
 }
 
-async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15" } = {}) {
+async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15", freshDevice = false } = {}) {
   const root = new Element();
   root.id = "parent";
   const storage = new Map();
@@ -100,7 +100,7 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     get length() { return storage.size; },
     key: (index) => [...storage.keys()][index],
   };
-  const search = "?k=test-token" + (child ? "&child=" + encodeURIComponent(child) : "") + (lessonId ? "&lesson=" + encodeURIComponent(lessonId) : "");
+  const search = (freshDevice ? "?" : "?k=test-token") + (child ? "&child=" + encodeURIComponent(child) : "") + (lessonId ? "&lesson=" + encodeURIComponent(lessonId) : "");
   const location = { href: origin + "/parent/" + search, search };
   const document = {
     currentScript: {},
@@ -146,7 +146,8 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
     document.currentScript.src = url.href;
     vm.runInContext(source(url.pathname.slice(1)), context, { filename: url.pathname });
   }
-  await until(() => root.querySelector("#sync-status"));
+  await until(() => root.querySelector(freshDevice ? "#connect-family" : "#sync-status"));
+  if (freshDevice) await new Promise((resolve) => setImmediate(resolve));
   return {
     root, document, requests, env, jar, context, statusQueue,
     panel: () => root.querySelector("#parent-sync"),
@@ -160,6 +161,28 @@ const progress = (child, app, date = "2026-09-15T18:05:06.000Z") => ({
   ["p:" + child + ":" + app]: { value: JSON.stringify({ rev: 3, data: {} }), metadata: { rev: 3, updatedAt: date } },
 });
 const record = (child, app, date) => ({ child, app, rev: 3, lastWrite: date });
+
+test("新機器直接開家長後台可輸入金鑰，錯誤後重試並連接成功", async () => {
+  const h = await page({ freshDevice: true });
+  const key = h.root.querySelector("[name=key]");
+  const form = h.root.querySelector("#connect-family");
+  assert.equal(key.disabled, false, "首次設定載入不得鎖住金鑰欄位");
+  assert.equal(h.root.querySelector("#connect-retry").disabled, false);
+  assert.equal(h.root.querySelector("#save"), null);
+  key.value = "wrong-test-key";
+  form.fire("submit");
+  await until(() => !key.disabled);
+  assert.equal(h.context.KidsAuth.state.status, "required");
+  assert.ok(h.root.querySelector("#connect-status").textContent);
+  key.value = "test-token";
+  form.fire("submit");
+  await until(() => h.root.querySelector("#save"));
+  await h.ready();
+  assert.equal(h.context.KidsAuth.state.status, "connected");
+  assert.equal(h.root.querySelector("#connect-family"), null);
+  assert.equal(key.value, "");
+  assert.equal(h.root.querySelector("#save").disabled, false);
+});
 
 test("Native Camp family summary reads authenticated first results, keeps modes and children separate", async () => {
   const C = globalThis.NativeCampCore;
