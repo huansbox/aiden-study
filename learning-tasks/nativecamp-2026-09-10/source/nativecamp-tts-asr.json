@@ -1,0 +1,47 @@
+{
+  "lessonId": "2026-09-10",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-10-animal-homes-try-1-q.mp3",
+      "sha256": "fe7be8de09d5de4c520451349ccdda3cf5302d7f1423e522da8833451367b358",
+      "expectedText": "This story has one squirrel. Its home is a tree. Where does the squirrel live? Build a full sentence. Start with The.",
+      "recognizedText": "This story has one squirrel. Its home is a tree. Where does the squirrel live? Build a full sentence. Start with the."
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-say-3-a.mp3",
+      "sha256": "7b6fc766bad367e842bcf888731c6c9a35315132f2fe9a853c8da4a7d8a0c0a2",
+      "expectedText": "The monkeys live in trees.",
+      "recognizedText": "The monkeys live in trees."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-try-1-q.mp3",
+      "sha256": "c21893063f78b5a7a4cba9d2bc5e680f0668d024a9cd33ff8271fd746025602c",
+      "expectedText": "This card shows one cow and grass for food. What does the cow eat? Build a full sentence. Start with The.",
+      "recognizedText": "This card shows one cow and grass for food. What does the cow eat? Build a full sentence. Start with the."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-say-3-a.mp3",
+      "sha256": "748979d71e598752e02423213c0df026836362c2b8a4e7f259f4ea44545c03f2",
+      "expectedText": "The squirrels eat nuts.",
+      "recognizedText": "The squirrels eat nuts."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-try-1-q.mp3",
+      "sha256": "b768af094e404697f7cc4bf67880793de32ec38c330b2a392086d03dc9ca5b65",
+      "expectedText": "Use the word frog. What are you in this pretend game? Build a full sentence. Start with I.",
+      "recognizedText": "Use the word frog. What are you in this pretend game? Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-say-3-a.mp3",
+      "sha256": "f41e0756ddef1f73546dcc25fb1538d5eb9c3575f82bc71adc8f0a0fb7d6e27e",
+      "expectedText": "I am an octopus.",
+      "recognizedText": "I am an octopus."
+    }
+  ]
+}

@@ -1,0 +1,913 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-11",
+  "date": "2026-09-11",
+  "title": "Seasons: say a full sentence",
+  "concepts": [
+    {
+      "id": "weather-verbs",
+      "title": "Weather changes",
+      "try": [
+        {
+          "id": "weather-verbs-try-1",
+          "prompt": "How does the weather change?",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer: warm, then hot.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It gets hot in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "gets"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "get"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "hot"
+            },
+            {
+              "id": "w4",
+              "text": "summer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-try-1-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "weather-verbs-try-2",
+          "prompt": "Tell me about snow.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Winter: snow.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It snows in winter.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "snows"
+            },
+            {
+              "id": "w3",
+              "text": "winter"
+            },
+            {
+              "id": "extra",
+              "text": "snow"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-try-2-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "weather-verbs-try-3",
+          "prompt": "How does the weather change?",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Fall: warm, then cool.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It gets cool in fall.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "gets"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "get"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "cool"
+            },
+            {
+              "id": "w4",
+              "text": "fall"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-try-3-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "weather-verbs-say-1",
+          "prompt": "How does the weather change?",
+          "instruction": "It …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Spring: cool, then warm.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It gets warm in spring.",
+          "accepted": [
+            "In spring, it gets warm.",
+            "It gets warm in the spring."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-say-1-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "weather-verbs-say-2",
+          "prompt": "How does the weather change?",
+          "instruction": "It …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Winter: cool, then cold.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It gets cold in winter.",
+          "accepted": [
+            "In winter, it gets cold.",
+            "It gets cold in the winter."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-say-2-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "weather-verbs-say-3",
+          "prompt": "Tell me about snow.",
+          "instruction": "It …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Spring: snow.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It snows in spring.",
+          "accepted": [
+            "In spring, it snows.",
+            "It snows in the spring."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-verbs-say-3-q.mp3",
+            "answer": "audio/2026-09-11-weather-verbs-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "weather-negative",
+      "title": "After doesn't",
+      "try": [
+        {
+          "id": "weather-negative-try-1",
+          "prompt": "Tell me about cold weather.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Cold weather: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't get cold in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "doesn't"
+            },
+            {
+              "id": "w3",
+              "text": "cold"
+            },
+            {
+              "id": "w5",
+              "text": "summer"
+            },
+            {
+              "id": "extra",
+              "text": "gets"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "get"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-try-1-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "weather-negative-try-2",
+          "prompt": "Tell me about snow.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Snow: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't snow in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "doesn't"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "snows"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "snow"
+            },
+            {
+              "id": "w4",
+              "text": "summer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-try-2-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "weather-negative-try-3",
+          "prompt": "Tell me about hot weather.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Winter. Hot weather: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't get hot in winter.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "doesn't"
+            },
+            {
+              "id": "w3",
+              "text": "hot"
+            },
+            {
+              "id": "w5",
+              "text": "winter"
+            },
+            {
+              "id": "extra",
+              "text": "gets"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "get"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-try-3-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "weather-negative-say-1",
+          "prompt": "Tell me about snow.",
+          "instruction": "It doesn't …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Spring. Snow: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't snow in spring.",
+          "accepted": [
+            "It does not snow in spring.",
+            "In spring, it doesn't snow."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-say-1-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "weather-negative-say-2",
+          "prompt": "Tell me about hot weather.",
+          "instruction": "It doesn't …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Fall. Hot weather: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't get hot in fall.",
+          "accepted": [
+            "It does not get hot in fall.",
+            "In fall, it doesn't get hot.",
+            "It doesn't get hot in autumn."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-say-2-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "weather-negative-say-3",
+          "prompt": "Tell me about cool weather.",
+          "instruction": "It doesn't …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Cool weather: no.",
+            "heading": "Made-up town"
+          },
+          "answerText": "It doesn't get cool in summer.",
+          "accepted": [
+            "It does not get cool in summer.",
+            "In summer, it doesn't get cool."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-weather-negative-say-3-q.mp3",
+            "answer": "audio/2026-09-11-weather-negative-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "season-order",
+      "title": "The next season",
+      "try": [
+        {
+          "id": "season-order-try-1",
+          "prompt": "What season comes next?",
+          "instruction": "Build a full sentence. Say the next season first. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: spring.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Summer comes after spring.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "comes"
+            },
+            {
+              "id": "w3",
+              "text": "spring"
+            },
+            {
+              "id": "extra",
+              "text": "Winter"
+            },
+            {
+              "id": "w0",
+              "text": "Summer"
+            },
+            {
+              "id": "w2",
+              "text": "after"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-try-1-q.mp3",
+            "answer": "audio/2026-09-11-season-order-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "season-order-try-2",
+          "prompt": "What season comes next?",
+          "instruction": "Build a full sentence. Say the next season first. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: summer.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Fall comes after summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "comes"
+            },
+            {
+              "id": "w3",
+              "text": "summer"
+            },
+            {
+              "id": "extra",
+              "text": "Spring"
+            },
+            {
+              "id": "w0",
+              "text": "Fall"
+            },
+            {
+              "id": "w2",
+              "text": "after"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-try-2-q.mp3",
+            "answer": "audio/2026-09-11-season-order-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "season-order-try-3",
+          "prompt": "What season comes next?",
+          "instruction": "Build a full sentence. Say the next season first. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: fall.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Winter comes after fall.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "comes"
+            },
+            {
+              "id": "w3",
+              "text": "fall"
+            },
+            {
+              "id": "extra",
+              "text": "Summer"
+            },
+            {
+              "id": "w0",
+              "text": "Winter"
+            },
+            {
+              "id": "w2",
+              "text": "after"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-try-3-q.mp3",
+            "answer": "audio/2026-09-11-season-order-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "season-order-say-1",
+          "prompt": "What season comes next?",
+          "instruction": "… comes after …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: winter.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Spring comes after winter.",
+          "accepted": [
+            "Spring is after winter.",
+            "After winter comes spring."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-say-1-q.mp3",
+            "answer": "audio/2026-09-11-season-order-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "season-order-say-2",
+          "prompt": "What season comes next?",
+          "instruction": "… comes after …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: summer.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Autumn comes after summer.",
+          "accepted": [
+            "Fall comes after summer.",
+            "Autumn is after summer.",
+            "After summer comes autumn."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-say-2-q.mp3",
+            "answer": "audio/2026-09-11-season-order-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "season-order-say-3",
+          "prompt": "What season comes next?",
+          "instruction": "… comes after …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Now: autumn.",
+            "heading": "Four-season calendar"
+          },
+          "answerText": "Winter comes after autumn.",
+          "accepted": [
+            "Winter comes after fall.",
+            "Winter is after autumn.",
+            "After autumn comes winter."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-season-order-say-3-q.mp3",
+            "answer": "audio/2026-09-11-season-order-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day-night-length",
+      "title": "Days and nights",
+      "try": [
+        {
+          "id": "day-night-length-try-1",
+          "prompt": "Tell me about the days.",
+          "instruction": "Build a full sentence. Start with The days. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Days: long.",
+            "heading": "Made-up town"
+          },
+          "answerText": "The days are long in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "days"
+            },
+            {
+              "id": "w3",
+              "text": "long"
+            },
+            {
+              "id": "w5",
+              "text": "summer"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w5",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-try-1-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "day-night-length-try-2",
+          "prompt": "Tell me about the nights.",
+          "instruction": "Build a full sentence. Start with The nights. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Winter. Nights: long.",
+            "heading": "Made-up town"
+          },
+          "answerText": "The nights are long in winter.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "nights"
+            },
+            {
+              "id": "w3",
+              "text": "long"
+            },
+            {
+              "id": "w5",
+              "text": "winter"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w5",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-try-2-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "day-night-length-try-3",
+          "prompt": "Tell me about the nights.",
+          "instruction": "Build a full sentence. Start with The nights. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Nights: short.",
+            "heading": "Made-up town"
+          },
+          "answerText": "The nights are short in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "nights"
+            },
+            {
+              "id": "w3",
+              "text": "short"
+            },
+            {
+              "id": "w5",
+              "text": "summer"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w5",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-try-3-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "day-night-length-say-1",
+          "prompt": "Tell me about the days.",
+          "instruction": "The days …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Winter. Days: short.",
+            "heading": "Made-up town"
+          },
+          "answerText": "The days are short in winter.",
+          "accepted": [
+            "In winter, the days are short.",
+            "Winter days are short.",
+            "The winter days are short."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-say-1-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "day-night-length-say-2",
+          "prompt": "Tell me about one summer night.",
+          "instruction": "A summer night …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Nights: short.",
+            "heading": "Made-up town"
+          },
+          "answerText": "A summer night is short.",
+          "accepted": [
+            "A night in summer is short.",
+            "In summer, a night is short."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-say-2-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "day-night-length-say-3",
+          "prompt": "Tell me about one summer day.",
+          "instruction": "A summer day …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Summer. Days: long.",
+            "heading": "Made-up town"
+          },
+          "answerText": "A summer day is long.",
+          "accepted": [
+            "A day in summer is long.",
+            "In summer, a day is long."
+          ],
+          "audio": {
+            "question": "audio/2026-09-11-day-night-length-say-3-q.mp3",
+            "answer": "audio/2026-09-11-day-night-length-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-10",
+  "status": "passed",
+  "coverage": {
+    "questionFiles": 18,
+    "allQuestionFiles": true,
+    "answerFiles": false
+  },
+  "method": {
+    "engine": "faster-whisper 1.2.1",
+    "model": "small.en",
+    "device": "cpu",
+    "computeType": "int8",
+    "language": "en",
+    "beamSize": 5,
+    "vadFilter": false,
+    "conditionOnPreviousText": false,
+    "initialPrompt": null,
+    "audioUploaded": false,
+    "comparison": "All current question-file hashes and original speech text were checked. Changed files were transcribed again; unchanged hashes retain their earlier independent transcription."
+  },
+  "comparisonNotes": [
+    "Case, punctuation and hyphenation differences were ignored. Every question cue and content word was checked.",
+    "Earlier missing phrases were confirmed with unprompted large-v2 transcription of padded tail clips. Only corrected, regenerated versions with matching current hashes are included here."
+  ],
+  "limits": {
+    "humanListening": false,
+    "naturalnessAssessment": false,
+    "iPadPlayback": false,
+    "pronunciationAssessment": false,
+    "scope": "Original synthetic review questions only. This is not an audit of private lesson recordings or child performance."
+  },
+  "samples": [
+    {
+      "file": "audio/2026-09-10-animal-homes-try-1-q.mp3",
+      "sha256": "fe7be8de09d5de4c520451349ccdda3cf5302d7f1423e522da8833451367b358",
+      "expectedText": "This story has one squirrel. Its home is a tree. Where does the squirrel live? Build a full sentence. Start with The.",
+      "recognizedText": "This story has one squirrel. Its home is a tree. Where does the squirrel live? Build a full sentence. Start with the.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-try-2-q.mp3",
+      "sha256": "0d1463e3a42ae01c6a9d7393e80fb7327e0bdd6170e949497c894a3d2f5c071b",
+      "expectedText": "This story has two eagles. Their homes are nests. Where do the eagles live? Build a full sentence. Start with The.",
+      "recognizedText": "This story has two eagles. Their homes are nests. Where do the eagles live? Build a full sentence. Start with the...",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-try-3-q.mp3",
+      "sha256": "95790c0a90eb3e197dbfb8cfd7b3d76a6b9e1aaa437a0541dfd92469275797ad",
+      "expectedText": "This story has one tiger. Its home is the forest. Where does the tiger live? Build a full sentence. Start with The.",
+      "recognizedText": "This story has one tiger. Its home is the forest. Where does the tiger live? Build a full sentence. Start with the...",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-say-1-q.mp3",
+      "sha256": "70d35c39a6a53e8d59a2967e77efa4ee6a6525042d4fd27a29f7f517dd87af53",
+      "expectedText": "This story has two sharks. Their home is the ocean. Where do the sharks live? Say a full sentence. Start with The.",
+      "recognizedText": "This story has two sharks. Their home is the ocean. Where do the sharks live? Say a full sentence. Start with the.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-say-2-q.mp3",
+      "sha256": "b1f933b73ca2ea9a8c60de801c99a9fb4e6a6f12aa8da9acb5306d1168580292",
+      "expectedText": "This story has one rabbit. Its home is a hole. Where does the rabbit live? Say a full sentence. Start with The.",
+      "recognizedText": "This story has one rabbit. Its home is a hole. Where does the rabbit live? Say a full sentence. Start with the...",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-say-3-q.mp3",
+      "sha256": "4861500e30ad05556df63de2ebcb15b25b1c8421ff8c3c77343ac87abd00df17",
+      "expectedText": "Start with The. This story has three monkeys. Their homes are trees. Where do the monkeys live? Say a full sentence.",
+      "recognizedText": "Start with the. This story has three monkeys. Their homes are trees. Where do the monkeys live? Say a full sentence.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-try-1-q.mp3",
+      "sha256": "c21893063f78b5a7a4cba9d2bc5e680f0668d024a9cd33ff8271fd746025602c",
+      "expectedText": "This card shows one cow and grass for food. What does the cow eat? Build a full sentence. Start with The.",
+      "recognizedText": "This card shows one cow and grass for food. What does the cow eat? Build a full sentence. Start with the.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-try-2-q.mp3",
+      "sha256": "df2113fced84b09587e7624f5852ec6cdd8d55d301b57aaef30151bb50d88bb4",
+      "expectedText": "Build a full sentence starting with The. The card shows two squirrels and nuts. What do they eat?",
+      "recognizedText": "Build a full sentence starting with the. The card shows two squirrels and nuts. What do they eat?",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-try-3-q.mp3",
+      "sha256": "714f7517b932ecb17e1a2b634b67c27ae76c3f6d54477f9767807440dfb18e49",
+      "expectedText": "This card shows one squirrel and nuts for food. What does the squirrel eat? Build a full sentence. Start with The.",
+      "recognizedText": "This card shows one squirrel and nuts for food. What does the squirrel eat? Build a full sentence. Start with the.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-say-1-q.mp3",
+      "sha256": "0cc632dfcc3d4e2270aef6a17cb7676944d7626a2cde2606a15cb3a2c72955f2",
+      "expectedText": "Start with The. This card shows two cows and grass for food. What do the cows eat? Say a full sentence.",
+      "recognizedText": "Start with the. This card shows two cows and grass for food. What do the cows eat? Say a full sentence.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-say-2-q.mp3",
+      "sha256": "d612f58bb0c7c25ca5e53e3ccc2b1d9a3353402d7f14760006f9dddc5e96c072",
+      "expectedText": "This card shows one cow and grass for lunch. What does the cow eat? Say a full sentence. Start with The.",
+      "recognizedText": "This card shows one cow and grass for lunch. What does the cow eat? Say a full sentence, start with the.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-say-3-q.mp3",
+      "sha256": "dd7d1efbc1f136add09111ad0856d46df59a604944e312fcf731c6cf4717ea95",
+      "expectedText": "This card shows three squirrels and nuts for food. What do the squirrels eat? Say a full sentence. Start with The.",
+      "recognizedText": "This card shows three squirrels and nuts for food. What do the squirrels eat? Say a full sentence. Start with the",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-try-1-q.mp3",
+      "sha256": "b768af094e404697f7cc4bf67880793de32ec38c330b2a392086d03dc9ca5b65",
+      "expectedText": "Use the word frog. What are you in this pretend game? Build a full sentence. Start with I.",
+      "recognizedText": "Use the word frog. What are you in this pretend game? Build a full sentence. Start with I.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-try-2-q.mp3",
+      "sha256": "b1c9ebe0ff69d5efe45a32bdd2cf2a969ebbacfbd78f8466fbbd94a42fcaeb2b",
+      "expectedText": "Use the word octopus. What are you in this pretend game? Build a full sentence. Start with I.",
+      "recognizedText": "Use the word octopus. What are you in this pretend game? Build a full sentence. Start with I.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-try-3-q.mp3",
+      "sha256": "3bb8075b858f97664adabdfa90c732a543edd32162a64cbed7953b640878c128",
+      "expectedText": "Use the word eagle. What are you in this pretend game? Build a full sentence. Start with I.",
+      "recognizedText": "Use the word Eagle. What are you in this pretend game? Build a full sentence. Start with I.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-say-1-q.mp3",
+      "sha256": "27688572fd06d1b70ad9a7ce2f831df020b1e7beea9bcc6add2fa7df82d4630c",
+      "expectedText": "Start with I. Use the word honeybee. What are you in this pretend game? Say a full sentence.",
+      "recognizedText": "Start with I. Use the word honeybee. What are you in this pretend game? Say a full sentence.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-say-2-q.mp3",
+      "sha256": "c507187f957b4e0c750331929a79820d204c1dc332b8b129f89a4cff48c36b08",
+      "expectedText": "Use the word orangutan. What are you in this pretend game? Say a full sentence. Start with I.",
+      "recognizedText": "Use the word orangutan. What are you in this pretend game? Say a full sentence. Start with I.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-say-3-q.mp3",
+      "sha256": "69f6be689acbce70c2871ac5a35f2cef47446cd2f68caf40cd4ba1c88bef62eb",
+      "expectedText": "Use the word octopus. What are you in this pretend game? Say a full sentence. Start with I.",
+      "recognizedText": "Use the word octopus. What are you in this pretend game? Say a full sentence. Start with I.",
+      "assessment": "passed"
+    }
+  ]
+}

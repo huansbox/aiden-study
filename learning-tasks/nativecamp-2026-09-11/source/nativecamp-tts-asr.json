@@ -1,0 +1,59 @@
+{
+  "lessonId": "2026-09-11",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-11-weather-verbs-try-1-q.mp3",
+      "sha256": "9bd26601cc7dfa156d8fc620d0f83e4ba451ff79cfdea13cd784065cf96171d8",
+      "expectedText": "This made-up town has a summer card. Warm, then hot. How does the weather change? Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a summer card. Warm, then hot. How does the weather change? Build a full sentence. Start with it."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-say-3-a.mp3",
+      "sha256": "a2dbbff6389a4c1796f788c1d6bce22917580ee6ac82ccf872c5578034dda3b9",
+      "expectedText": "It snows in spring.",
+      "recognizedText": "It snows in spring."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-try-1-q.mp3",
+      "sha256": "9e8d123bc374d46711a8dd1b65e2aaad564315a735f90deee417b8bfdb24d69c",
+      "expectedText": "This made-up town has a summer card. No cold weather. Tell me about cold weather. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a summer card. No cold weather. Tell me about cold weather. Build a full sentence. Start with it."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-say-3-a.mp3",
+      "sha256": "06ea30bbadeb936cd876971b18a0b1bbb9bbf5bbf3161f876a53d7a50faf4e22",
+      "expectedText": "It doesn't get cool in summer.",
+      "recognizedText": "It doesn't get cool in summer."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-try-1-q.mp3",
+      "sha256": "a589e14654ba876098208efe17be3ae39b17fdfd0123dec8b6f13586b29db125",
+      "expectedText": "On this four-season calendar, it is spring. What season comes next? Build a full sentence with comes after.",
+      "recognizedText": "On this four-season calendar, it is spring. What season comes next? Build a full sentence with comes after."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-say-3-a.mp3",
+      "sha256": "9c94431db37d18f736bbbf23af6a00ea4cf3f57685552272eb55c1c098807aa0",
+      "expectedText": "Winter comes after autumn.",
+      "recognizedText": "Winter comes after autumn."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-try-1-q.mp3",
+      "sha256": "7c9fe2776809fb9e5b7e1436c1159bb10050d2b23075df31ad61ecb788a873d4",
+      "expectedText": "Read this made-up town card. Summer. Days: long. Tell me about the days. Build a full sentence. Start with The days.",
+      "recognizedText": "Read this made-up town card. Summer. Days. Long. Tell me about the days. Build a full sentence. Start with the days."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-say-3-a.mp3",
+      "sha256": "2a55fd0afb8ac9dea107ecd2b5230885bd833a1589580ae7c0d853945b8c0c36",
+      "expectedText": "A summer day is long.",
+      "recognizedText": "A summer day is long."
+    }
+  ]
+}

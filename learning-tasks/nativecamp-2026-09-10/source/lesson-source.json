@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-10",
+  "date": "2026-09-10",
+  "title": "Animals in full sentences",
+  "concepts": [
+    {
+      "id": "animal-homes",
+      "title": "Animal homes",
+      "try": [
+        {
+          "id": "animal-homes-try-1",
+          "prompt": "Where does the squirrel live?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one squirrel. Home: a tree.",
+            "heading": "Story card"
+          },
+          "answerText": "The squirrel lives in a tree.",
+          "spokenQuestion": "This story has one squirrel. Its home is a tree. Where does the squirrel live? Build a full sentence. Start with The.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "squirrel"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "tree"
+            },
+            {
+              "id": "extra",
+              "text": "live"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "lives"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "One squirrel lives in a tree in this story."
+        },
+        {
+          "id": "animal-homes-try-2",
+          "prompt": "Where do the eagles live?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two eagles. Home: nests.",
+            "heading": "Story card"
+          },
+          "answerText": "The eagles live in nests.",
+          "spokenQuestion": "This story has two eagles. Their homes are nests. Where do the eagles live? Build a full sentence. Start with The.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "eagles"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "lives"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "live"
+            },
+            {
+              "id": "w4",
+              "text": "nests"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "Two eagles live in nests in this story."
+        },
+        {
+          "id": "animal-homes-try-3",
+          "prompt": "Where does the tiger live?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one tiger. Home: the forest.",
+            "heading": "Story card"
+          },
+          "answerText": "The tiger lives in the forest.",
+          "spokenQuestion": "This story has one tiger. Its home is the forest. Where does the tiger live? Build a full sentence. Start with The.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "tiger"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "forest"
+            },
+            {
+              "id": "extra",
+              "text": "live"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "lives"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w4",
+              "w1",
+              "w2",
+              "w3",
+              "w0",
+              "w5"
+            ]
+          ],
+          "explanation": "One tiger lives in the forest in this story."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-homes-say-1",
+          "prompt": "Where do the sharks live?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two sharks. Home: the ocean.",
+            "heading": "Story card"
+          },
+          "answerText": "The sharks live in the ocean.",
+          "spokenQuestion": "This story has two sharks. Their home is the ocean. Where do the sharks live? Say a full sentence. Start with The.",
+          "accepted": [
+            "They live in the ocean.",
+            "These sharks live in the ocean."
+          ]
+        },
+        {
+          "id": "animal-homes-say-2",
+          "prompt": "Where does the rabbit live?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one rabbit. Home: a hole.",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit lives in a hole.",
+          "spokenQuestion": "This story has one rabbit. Its home is a hole. Where does the rabbit live? Say a full sentence. Start with The.",
+          "accepted": [
+            "It lives in a hole.",
+            "This rabbit lives in a hole."
+          ]
+        },
+        {
+          "id": "animal-homes-say-3",
+          "prompt": "Where do the monkeys live?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: three monkeys. Home: trees.",
+            "heading": "Story card"
+          },
+          "answerText": "The monkeys live in trees.",
+          "spokenQuestion": "Start with The. This story has three monkeys. Their homes are trees. Where do the monkeys live? Say a full sentence.",
+          "accepted": [
+            "They live in trees.",
+            "The monkeys live in the trees.",
+            "These monkeys live in trees."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "animal-food",
+      "title": "Animal food",
+      "try": [
+        {
+          "id": "animal-food-try-1",
+          "prompt": "What does the cow eat?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one cow. Food: grass.",
+            "heading": "Story card"
+          },
+          "answerText": "The cow eats grass.",
+          "spokenQuestion": "This card shows one cow and grass for food. What does the cow eat? Build a full sentence. Start with The.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "cow"
+            },
+            {
+              "id": "w3",
+              "text": "grass"
+            },
+            {
+              "id": "extra",
+              "text": "eat"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "eats"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use eats for one cow."
+        },
+        {
+          "id": "animal-food-try-2",
+          "prompt": "What do the squirrels eat?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two squirrels. Food: nuts.",
+            "heading": "Story card"
+          },
+          "answerText": "The squirrels eat nuts.",
+          "spokenQuestion": "Build a full sentence starting with The. The card shows two squirrels and nuts. What do they eat?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "squirrels"
+            },
+            {
+              "id": "w3",
+              "text": "nuts"
+            },
+            {
+              "id": "extra",
+              "text": "eats"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "eat"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use eat for two squirrels."
+        },
+        {
+          "id": "animal-food-try-3",
+          "prompt": "What does the squirrel eat?",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one squirrel. Food: nuts.",
+            "heading": "Story card"
+          },
+          "answerText": "The squirrel eats nuts.",
+          "spokenQuestion": "This card shows one squirrel and nuts for food. What does the squirrel eat? Build a full sentence. Start with The.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "squirrel"
+            },
+            {
+              "id": "w3",
+              "text": "nuts"
+            },
+            {
+              "id": "extra",
+              "text": "eat"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "eats"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use eats for one squirrel."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-food-say-1",
+          "prompt": "What do the cows eat?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two cows. Food: grass.",
+            "heading": "Story card"
+          },
+          "answerText": "The cows eat grass.",
+          "spokenQuestion": "Start with The. This card shows two cows and grass for food. What do the cows eat? Say a full sentence.",
+          "accepted": [
+            "They eat grass.",
+            "These cows eat grass."
+          ]
+        },
+        {
+          "id": "animal-food-say-2",
+          "prompt": "What does the cow eat?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one cow. Food: grass for lunch.",
+            "heading": "Story card"
+          },
+          "answerText": "The cow eats grass.",
+          "spokenQuestion": "This card shows one cow and grass for lunch. What does the cow eat? Say a full sentence. Start with The.",
+          "accepted": [
+            "It eats grass.",
+            "The cow eats grass for lunch.",
+            "This cow eats grass."
+          ]
+        },
+        {
+          "id": "animal-food-say-3",
+          "prompt": "What do the squirrels eat?",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: three squirrels. Food: nuts.",
+            "heading": "Story card"
+          },
+          "answerText": "The squirrels eat nuts.",
+          "spokenQuestion": "This card shows three squirrels and nuts for food. What do the squirrels eat? Say a full sentence. Start with The.",
+          "accepted": [
+            "They eat nuts.",
+            "These squirrels eat nuts."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pretend-animal",
+      "title": "Pretend animals",
+      "try": [
+        {
+          "id": "pretend-animal-try-1",
+          "prompt": "What are you?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: frog.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am a frog.",
+          "spokenQuestion": "Use the word frog. What are you in this pretend game? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "am"
+            },
+            {
+              "id": "w3",
+              "text": "frog"
+            },
+            {
+              "id": "extra",
+              "text": "an"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use a before frog."
+        },
+        {
+          "id": "pretend-animal-try-2",
+          "prompt": "What are you?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: octopus.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am an octopus.",
+          "spokenQuestion": "Use the word octopus. What are you in this pretend game? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "am"
+            },
+            {
+              "id": "w3",
+              "text": "octopus"
+            },
+            {
+              "id": "extra",
+              "text": "a"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "an"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use an before the vowel sound in octopus."
+        },
+        {
+          "id": "pretend-animal-try-3",
+          "prompt": "What are you?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: eagle.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am an eagle.",
+          "spokenQuestion": "Use the word eagle. What are you in this pretend game? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "am"
+            },
+            {
+              "id": "w3",
+              "text": "eagle"
+            },
+            {
+              "id": "extra",
+              "text": "a"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "an"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "explanation": "Use an before the vowel sound in eagle."
+        }
+      ],
+      "say": [
+        {
+          "id": "pretend-animal-say-1",
+          "prompt": "What are you?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: honeybee.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am a honeybee.",
+          "spokenQuestion": "Start with I. Use the word honeybee. What are you in this pretend game? Say a full sentence.",
+          "accepted": [
+            "I'm a honeybee."
+          ]
+        },
+        {
+          "id": "pretend-animal-say-2",
+          "prompt": "What are you?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: orangutan.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am an orangutan.",
+          "spokenQuestion": "Use the word orangutan. What are you in this pretend game? Say a full sentence. Start with I.",
+          "accepted": [
+            "I'm an orangutan."
+          ]
+        },
+        {
+          "id": "pretend-animal-say-3",
+          "prompt": "What are you?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your animal: octopus.",
+            "heading": "Pretend game"
+          },
+          "answerText": "I am an octopus.",
+          "spokenQuestion": "Use the word octopus. What are you in this pretend game? Say a full sentence. Start with I.",
+          "accepted": [
+            "I'm an octopus."
+          ]
+        }
+      ]
+    }
+  ]
+}

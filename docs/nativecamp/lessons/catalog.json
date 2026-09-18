@@ -6,6 +6,9 @@
     { "id": "2026-09-16", "date": "2026-09-16", "teacher": "Edon" },
     { "id": "2026-09-15", "date": "2026-09-15", "teacher": "Silvana" },
     { "id": "2026-09-14", "date": "2026-09-14", "teacher": "Edon" },
-    { "id": "2026-09-13", "date": "2026-09-13", "teacher": "Michael" }
+    { "id": "2026-09-13", "date": "2026-09-13", "teacher": "Michael" },
+    { "id": "2026-09-12", "date": "2026-09-12", "teacher": "Lena" },
+    { "id": "2026-09-11", "date": "2026-09-11", "teacher": "Edon" },
+    { "id": "2026-09-10", "date": "2026-09-10", "teacher": "Anastasia" }
   ]
 }
