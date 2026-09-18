@@ -1,6 +1,6 @@
 # 維運手冊
 
-> 適用現況：2026-07-21。平台由 GitHub Pages 靜態前端、Cloudflare Worker＋KV（key-value 雲端儲存）同步服務，以及本機題庫 pipeline 組成。
+> 維運基線：2026-07-21；2026-09-18 局部更新作品索引、注音交付與相關入口。其餘段落不是本次完整重驗的快照，操作前回查對應 repo 文件與程式。
 
 ## 環境
 
@@ -21,15 +21,17 @@ uv sync
 | 位置 | 用途 |
 |---|---|
 | `docs/index.html` | Hub：選人、孩子首頁、家長視圖、restore 轉送 |
-| `docs/registry.json` | App registry；上下架、對象與順序的唯一資料源 |
-| `docs/{study,zhuyin,math,spelling}/` | 各學習 app |
+| `docs/registry.json` | App 目錄及預設值；孩子實際可見活動與順序由家庭設定決定 |
+| `docs/<app>/` | 各學習 app；完整位置查 [README 自動總覽](https://github.com/huansbox/aiden-study/blob/master/README.md#作品總覽) |
 | `docs/shared/sync-v1.js` | 同步協定與 sync client |
 | `docs/shared/wiring-v1.js` | 四 app 共用的身分、child store、健康燈與匯入接線 |
 | `worker/` | Cloudflare Worker＋KV |
 | `scripts/`、`data/` | 題庫萃取、分類、策展與建置 |
 | `tests/` | Python 與 Node.js 測試 |
 | `docs-dev/adr/` | 架構決策紀錄 |
-| `learning-tasks/` | 一次性家庭學習任務庫；`README.md` 是索引與歸檔規則 |
+| `learning-tasks/` | 家庭學習任務庫；`catalog.json` 是任務登錄，`README.md` 是規則與生成索引 |
+| `learning-tasks/shared/` | 已跨任務重用的做法與工具；從 [shared 索引](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/shared/README.md) 開始 |
+| `docs/parent/` | 家長作品白板與家庭設定；作品目錄只讀，不改孩子資料 |
 | `wiki/` | GitHub Wiki 原始檔；不要直接改 Wiki 網頁 |
 
 ## 日常驗證
@@ -44,17 +46,29 @@ uv sync
 
 本機網址為 <http://localhost:8765/>。同步在 localhost 出現 CORS（瀏覽器的跨來源存取限制）錯誤是預期行為：Worker 只允許 `https://huansbox.github.io` 與 `https://kids.linshuhuan.com`。要驗證真同步，必須使用正式 origin 與 `test-` 開頭的 child id，且驗收後清掉測試 KV key。
 
-截至 2026-07-21，基準結果為 Node.js 220 tests 通過、pytest 140 tests 通過。`test_zhuyin_content.mjs` 仍會警告缺 14/14 音檔；這是 [#20](https://github.com/huansbox/aiden-study/issues/20) 尚未完成的內容，不算測試失敗。
+測試數以當次執行輸出為準，不把歷史快照當目前結果。注音 14 段正式親錄已交付；`test_zhuyin_content.mjs` 現在要求 `.m4a` 齊備，缺檔會失敗，不再只是可忽略警告。交付、接受的未測範圍與維護入口見[注音專用交接](https://github.com/huansbox/aiden-study/blob/master/docs-dev/zhuyin-handoff.md)。
+
+## 作品索引與文件維護
+
+App 改 `docs/registry.json`，task 改 `learning-tasks/catalog.json`，再用既有生成器更新 README 索引與家長白板；不要手改生成區段，也不要在 Wiki 複製一份作品狀態表。
+
+```sh
+node scripts/build-work-catalog.mjs
+node scripts/build-work-catalog.mjs --check
+node --test tests/test_work_catalog.mjs
+```
+
+作品工作狀態由登錄明確標示，Git 只提供來源日期；驗收證據留在任務 README 或 issue／PR。規則見[任務庫](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/README.md)，自動更新、失敗處理與日期語意見[作品白板維護](https://github.com/huansbox/aiden-study/blob/master/docs-dev/parent-whiteboard.md)。共用 SOP／工具從 [shared 入口](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/shared/README.md) 找，既有來源不為整理索引而搬動。
 
 ## Registry 維護
 
-新增、上下架或改順序時：
+新增 App、調整目錄上下架或預設值時（不是調整孩子當前首頁順序）：
 
 1. 編輯 `docs/registry.json`。
 2. 站內 app 使用相對 `path`；外部 app 使用 HTTPS `url`，兩者只能擇一。
 3. `active` app 對每個 `audience` child 都要有 `order`。
 4. `sync: true` 的 app id 必須等於雲端 key 的 app 段，且 app 頁要載入 `sync-v1.js` 與 `wiring-v1.js`。
-5. 跑 `node --test tests/test_registry_audit.mjs`，再從 hub 實際確認兩個孩子首頁與家長視圖。
+5. 跑 `node --test tests/test_registry_audit.mjs`；依[作品白板維護](https://github.com/huansbox/aiden-study/blob/master/docs-dev/parent-whiteboard.md)重建首頁版本與作品索引，再驗證入口。孩子實際可見活動與順序在家長後台調整，不靠修改 registry 推定已生效。
 
 Registry 的 child 名單與 `wiring-v1.js` 內的 `CHILD_INFO` 是兩份靜態資料；audit 會檢查一致。新增 child 時兩處都要改。
 
@@ -65,7 +79,7 @@ Registry 的 child 名單與 `wiring-v1.js` 內的 `CHILD_INFO` 是兩份靜態�
 - `sync-v1.js` 管雲端協定、衝突決策、dirty／rev／epoch 與生命週期 flush。
 - `wiring-v1.js` 管 app 端身分、child store、匯入／重置定錨、健康燈與 pageshow 重驗。
 - 不相容變更要開 `sync-v2.js` 或 `wiring-v2.js`，不要原地破壞 v1。
-- 只要 `wiring-v1.js` 內容改變，就同步更新四個 app script tag 的 `?v=` cache-buster；目前為 `20260717b`。
+- 只要 `wiring-v1.js` 內容改變，就同步更新引用它的 app script tag 的 `?v=` cache-buster；現行版號以程式為準，不沿用 Wiki 的歷史值。
 - 至少跑全套 Node.js tests；協定變更另確認 `test_decide_sync.mjs`、`test_sync_contract.mjs`、`test_sync_worker.mjs`，wiring 變更另確認 `test_wiring_pure.mjs` 與 `test_wiring_effects.mjs`。
 
 `wiring-v1.js` 沒載到時，app 會拒絕開站，避免在身分不明的半殘狀態寫錯 child。這是 ADR-0006 的預期行為，不要改回靜默降級。
@@ -117,7 +131,7 @@ uv run python scripts/build_questions.py
 
 - `master` 的 `docs/` 是 production source；push 後通常一至數分鐘上線。
 - 2026-09-15 起正式網址是 <https://kids.linshuhuan.com/>；舊 GitHub Pages URL 以 301 轉向並保留 path／child。
-- `docs/CNAME` 已啟用；Cloudflare `kids` CNAME 指向 `huansbox.github.io`，DNS only、TTL 自動。GitHub Pages 管理 HTTPS 憑證，強制 HTTPS 已開啟；設定與驗證見 [上線紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)。
+- `docs/CNAME` 已啟用；2026-09-15 的 DNS only 設定是[上線歷史](https://github.com/huansbox/aiden-study/blob/master/docs-dev/platform-domain-rollout.md)，不是目前操作指令。後續 Cloudflare proxy 與 `/api/*` 路由以[入口連線說明](https://github.com/huansbox/aiden-study/blob/master/docs-dev/device-connection.md)為準，不照舊快照還原設定。
 - 上線後從 hub、每個 active app 與其相對路徑資產各走一次 smoke test。
 
 ### GitHub Wiki
@@ -147,7 +161,7 @@ SOP（standard operating procedure）指每次都照同一順序執行的標準�
 
 | 症狀 | 先檢查 |
 |---|---|
-| Hub 沒列出 app | `docs/registry.json` 與 `test_registry_audit.mjs` |
+| Hub 沒列出 app | App 登錄、家長後台家庭設定與 `test_registry_audit.mjs`；白板有列出不代表孩子首頁已啟用 |
 | App 顯示「載入不完整」 | `wiring-v1.js` 是否 200、cache-buster 是否一致 |
 | 顯示「不是離線」的 token／認證錯誤 | 裝置的 `kids_sync_token`、圖示 `?k=`、Worker secret |
 | 同步卡住或反覆 retry | app 的 sync meta、Worker GET response 的 rev／epoch、409 後決策 |
