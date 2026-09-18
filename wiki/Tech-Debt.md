@@ -4,9 +4,11 @@
 
 > 2026-09-14 局部更正：CI 已於 2026-07-21 完成，移至償還紀錄；其餘項目仍屬原快照，本次未重新審查，不把舊版本號或測試數當作目前狀態。
 
+> 2026-09-18 局部更正：注音交付已完成，修正下方分類與觸發條件；其餘技術債未重新審查，仍屬 2026-07-21 成本快照。作品目前狀態看 [README 自動總覽](https://github.com/huansbox/aiden-study/blob/master/README.md#作品總覽)，已核准工作回查 [issues](https://github.com/huansbox/aiden-study/issues)，不由本頁推定待辦。
+
 ## 不是技術債
 
-- #35 iPad spike 與 #34 正式網域／圖示安裝已結案；#20 注音音檔是尚未完成的交付，放在 [Plan](Plan)，不拿「技術債」名義延後。
+- #35 iPad spike、#34 正式網域／圖示與注音 #15／#20 都已有結案紀錄。注音 14 段親錄已交付，家長免除逐項 iPad checklist；不能把已免除檢查改列技術債或未完成交付。證據與限制見[注音專用交接](https://github.com/huansbox/aiden-study/blob/master/docs-dev/zhuyin-handoff.md)。
 - Monorepo、GitHub Pages、family token、不做登入、app 邏輯不抽共用 framework 都是 ADR 已拍板的設計。
 - `wiring-v1.js` 載入失敗就擋站是安全行為，不是可用性 bug。
 
@@ -26,7 +28,7 @@
 |---|---|---|
 | Cloudflare KV 無 conditional write、且為最終一致 | 同 rev 的罕見併發 PUT 可能都回 200，後寫者以 LWW（last write wins，最後寫入為準）覆蓋前寫者；單次讀也可能短暫看到舊值 | 【接受現狀】單一家庭、同 child／app 雙裝置同時作答機率低；rev、writeId、epoch 與 pagehide flush 已處理可控的大部分風險。若真實出現資料互蓋，再評估 Durable Object 或 server-side serialization |
 | 409 後本輪健康燈可能短暫顯示 retry | 下一輪會自行收斂，但家長當下可能誤以為同步仍壞 | 【接受現狀】PR #43 已裁決不修；若 production 有持續誤報再調整 |
-| 國語手寫 canvas 每次 pointer move 重畫累積 path、重讀 rect，並以全解析度 PNG 擷取 | 長筆畫、舊 iPad 或高更新率 Pencil 可能卡頓；一般單字目前可接受 | 等 #20／手寫真機使用真的回報延遲，再改增量 stroke、pointerdown 快取 rect、縮圖後編碼 |
+| 國語手寫 canvas 每次 pointer move 重畫累積 path、重讀 rect，並以全解析度 PNG 擷取 | 長筆畫、舊 iPad 或高更新率 Pencil 可能卡頓；一般單字目前可接受 | 等手寫真機使用真的回報延遲，再評估增量 stroke、pointerdown 快取 rect、縮圖後編碼；不以已結案的注音 #20 當待辦觸發 |
 | Resume 半批時，批內進度分母只由剩餘 queue 重建 | 重開後可能顯示 `0/5`，而不是原批 `3/8`；不影響 mastered 與通關 | 【暫定接受】若孩子困惑，再把原始 batch id／size 納入 challenge schema，並處理 migration |
 | Study 的 mode 差異散在多個 predicate | 未來新增第三模式或把手寫擴到別科時，要改多個判斷點 | 現有 choice／handwriting 只有兩種且已有純測試；真正新增模式時再集中成 mode config |
 | Registry children 與 wiring `CHILD_INFO` 是兩份資料 | 新增 child 要改兩處 | 【接受現狀】app 開機少抓一個檔，且 registry audit 會阻止兩份漂移 |
