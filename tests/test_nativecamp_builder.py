@@ -3,6 +3,7 @@
 import copy
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -48,6 +49,38 @@ def test_new_tasks_keep_source_and_produce_exact_audio_jobs(tmp_path, monkeypatc
     assert jobs == expected_jobs
     assert path.read_bytes() == original
     assert not list(tmp_path.rglob("*.mp3")), "Text building must not manufacture or replace audio."
+
+
+def test_planned_sunday_pack_builds_real_runtime_valid_json_without_changing_legacy(tmp_path, monkeypatch):
+    source, path = _source(tmp_path, monkeypatch, "weekly-2026-09-27", weekly=True)
+    source["date"] = "2026-09-27"
+    source["weekly"] = {"schemaVersion": 2, "practiceStart": "2026-09-20", "practiceEnd": "2026-09-27",
+                        "opensOn": "2026-09-27", "conceptCount": len(source["concepts"])}
+    path.write_text(json.dumps(source), encoding="utf-8")
+    lesson, jobs = builder.build(source["id"])
+    assert lesson["date"] != lesson["concepts"][0]["sourceConcept"]["date"]
+    result = subprocess.run(["node", "-e", "require('./docs/nativecamp/core.js'); let s=''; process.stdin.on('data',d=>s+=d); process.stdin.on('end',()=>NativeCampCore.validateLesson(JSON.parse(s)));"],
+                            cwd=ROOT, input=json.dumps(lesson), text=True, capture_output=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert len(jobs) == len(source["concepts"]) * 12
+    assert source["weekly"]["practiceEnd"] == lesson["weekly"]["opensOn"]
+
+
+@pytest.mark.parametrize("edit", [
+    lambda value: value["weekly"].update(practiceEnd="2026-09-28"),
+    lambda value: value["weekly"].update(conceptCount=5),
+    lambda value: value["weekly"].update(conceptCount=True),
+    lambda value: value["weekly"].update(schemaVersion=3),
+])
+def test_planned_pack_rejects_inconsistent_window_or_amount(tmp_path, monkeypatch, edit):
+    source, path = _source(tmp_path, monkeypatch, "weekly-2026-09-27", weekly=True)
+    source["date"] = "2026-09-27"
+    source["weekly"] = {"schemaVersion": 2, "practiceStart": "2026-09-20", "practiceEnd": "2026-09-27",
+                        "opensOn": "2026-09-27", "conceptCount": len(source["concepts"])}
+    edit(source)
+    path.write_text(json.dumps(source), encoding="utf-8")
+    with pytest.raises(ValueError):
+        builder.build(source["id"])
 
 
 def test_source_identity_and_duplicate_audio_names_fail_before_output(tmp_path, monkeypatch):

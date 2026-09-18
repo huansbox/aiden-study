@@ -35,7 +35,7 @@ class Events {
   removeEventListener(name) { this.handlers.delete(name); }
   emit(name) { this.handlers.get(name)?.(); }
 }
-function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), catalog = [], lessons = {}, child = "aiden", failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
+function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), catalog = [], lessons = {}, child = "aiden", search = "", failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
   const root = new Root(), activities = [], media = [], plays = [], roundFinishes = [], eventTarget = new Events(), documentTarget = new Events();
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
@@ -46,7 +46,7 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
     async syncNow() { app?.onChange({ type: "status" }); },
     async privateAudio(id, options) { privateRequests++; return loadPrivate ? loadPrivate(id, options) : "blob:teacher-audio-" + privateRequests; },
   };
-  app = A.mount({ root, lesson, bridge, catalog, lessons, child, date: () => practiceDate, eventTarget, documentTarget,
+  app = A.mount({ root, lesson, bridge, catalog, lessons, child, search, date: () => practiceDate, eventTarget, documentTarget,
     makeAudioController: (options) => globalThis.NativeCampAudio.create({ ...options, makeContext }), makeAudio: () => {
     const audio = { src: "", paused: true, async play() { plays.push(this.src); if (failAudio) throw Error("Media unavailable"); this.paused = false; }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
@@ -87,6 +87,29 @@ test("lesson navigation preserves unfinished courses and returning from practice
   assert.equal(h.progress.lessons["2026-09-16"].try[concept.id].initial.length, 1);
   assert.match(h.root.innerHTML, /child=bingpu&amp;lesson=2026-09-16" aria-current="page"/);
   h.app.destroy();
+});
+
+test("child calendar starts in the current month or linked lesson month and paging never writes progress", async () => {
+  const h = harness({ catalog, practiceDate: "2027-01-02" });
+  assert.match(h.root.innerHTML, />January 2027<\/h2>/);
+  assert.ok(h.root.innerHTML.includes(originalLesson.title));
+  const before = JSON.stringify(h.progress);
+  await h.app.handle("calendar-month", { direction: "-1" });
+  assert.match(h.root.innerHTML, />December 2026<\/h2>/);
+  await h.app.handle("calendar-month", { direction: "1" });
+  assert.match(h.root.innerHTML, />January 2027<\/h2>/);
+  assert.equal(JSON.stringify(h.progress), before);
+  assert.equal(h.saves, 0);
+  assert.deepEqual(h.activities, []);
+  h.app.destroy();
+  const linked = harness({ catalog, practiceDate: "2027-01-02", search: "?child=bingpu&lesson=2026-09-15", child: "bingpu" });
+  assert.match(linked.root.innerHTML, />September 2026<\/h2>/);
+  assert.match(linked.root.innerHTML, /child=bingpu&amp;lesson=2026-09-15" aria-current="page"/);
+  await linked.app.handle("start-try");
+  assert.doesNotMatch(linked.root.innerHTML, /lesson-calendar/);
+  await linked.app.handle("home");
+  assert.match(linked.root.innerHTML, />September 2026<\/h2>/);
+  linked.app.destroy();
 });
 test("real lesson opens; Listen and status-only notifications preserve selection and never record an answer", async () => {
   const h = harness();
@@ -402,10 +425,10 @@ function homeCard(h, mode) {
   const html = h.root.innerHTML.match(new RegExp(`<article class="mode-card ${mode}">([\\s\\S]*?)<\\/article>`))[1];
   return { html, action: html.match(/data-action="([^"]+)"/)[1], mode: html.match(/data-mode="([^"]+)"/)[1] };
 }
-test("finished lessons fold away and direct child actions cannot restart or change results", async () => {
+test("finished lessons are marked in the calendar and direct child actions cannot restart or change results", async () => {
   const progress = completedProgress(), h = harness({ progress, catalog, lessons: { [originalLesson.id]: originalLesson } });
   const before = JSON.stringify(h.progress);
-  assert.match(h.root.innerHTML, /<details class="finished-lessons"><summary>Finished/);
+  assert.match(h.root.innerHTML, /calendar-finished".*icons.svg#check/);
   assert.doesNotMatch(h.root.innerHTML, /href="[^"]*lesson=2026-09-15"/);
   for (const mode of ["try", "say"]) {
     await h.app.handle("home");

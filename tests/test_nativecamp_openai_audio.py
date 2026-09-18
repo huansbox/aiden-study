@@ -270,3 +270,60 @@ def test_real_decoder_rejects_silent_or_broken_mp3(tmp_path):
     silent.write_bytes(b"not-an-mp3")
     with pytest.raises(audio.AudioBuildError):
         audio.inspect_audio(silent)
+
+
+def test_unattended_journal_blocks_retry_after_uncertain_response(setup, monkeypatch):
+    args, calls = setup
+    args.request_journal = args.manifest.parent / "private" / "audio-requests.json"
+    request = audio.speech_request
+
+    def interrupted(body, path, key):
+        assert json.loads(args.request_journal.read_text())["first.mp3"]["state"] == "request-started"
+        request(body, path, key)
+        raise RuntimeError("Bearer test-secret-never-log")
+
+    monkeypatch.setattr(audio, "speech_request", interrupted)
+    with pytest.raises(audio.AudioBuildError):
+        audio.build(args)
+    monkeypatch.setattr(audio, "speech_request", request)
+    with pytest.raises(audio.AudioBuildError, match="uncertain result"):
+        audio.build(args)
+    assert len(calls) == 1
+    assert "test-secret-never-log" not in args.request_journal.read_text()
+
+
+def test_unattended_receipt_write_failure_cannot_buy_again(setup, monkeypatch):
+    args, calls = setup
+    args.request_journal = args.manifest.parent / "audio-requests.json"
+    save = audio.write_json
+
+    def disk_failure(path, value):
+        if path == args.manifest and value.get("tts"):
+            raise OSError("disk error with secret-provider-body")
+        save(path, value)
+
+    monkeypatch.setattr(audio, "write_json", disk_failure)
+    with pytest.raises(OSError):
+        audio.build(args)
+    monkeypatch.setattr(audio, "write_json", save)
+    with pytest.raises(audio.AudioBuildError, match="uncertain result"):
+        audio.build(args)
+    assert len(calls) == 1
+
+
+def test_unattended_verified_staged_response_recovers_and_lock_excludes_second_run(setup):
+    args, calls = setup
+    args.request_journal = args.manifest.parent / "audio-requests.json"
+    args.limit = 1
+    audio.build(args)
+    (args.audio_dir / "first.mp3").replace(args.audio_dir / ".first.mp3.part")
+    journal = json.loads(args.request_journal.read_text())
+    journal["first.mp3"]["state"] = "request-started"
+    args.request_journal.write_text(json.dumps(journal))
+    result = audio.build(args)
+    assert result["recovered"] == 1 and result["generated"] == 1 and len(calls) == 2
+    lock = args.request_journal.with_name(args.request_journal.name + ".lock")
+    lock.write_text("existing-owner")
+    with pytest.raises(audio.AudioBuildError, match="locked"):
+        audio.build(args)
+    assert lock.read_text() == "existing-owner" and len(calls) == 2
