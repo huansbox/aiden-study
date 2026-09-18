@@ -17,6 +17,9 @@
 
 | 任務 | 狀態 | 日期 | 對象 | 情境與玩法 | 可重用經驗／素材 |
 | --- | --- | --- | --- | --- | --- |
+| [Native Camp Weekly Review 09-14～09-20](nativecamp-weekly-2026-09-14/) | 已完成 | 2026-09-14～09-20 | 兒童英語；家長陪同口說 | 本週新題與少量較早概念；首次弱項優先 | 原創完整句題庫、固定選題與預製語音 |
+| [Native Camp 2026-09-17 Khalid](nativecamp-2026-09-17/) | 已完成 | 2026-09-17 | 兒童英語；家長陪同口說 | 來源核對、完整句排列與口說 | 新版題型與 OpenAI 預製語音 |
+| [Native Camp 2026-09-13 Michael](nativecamp-2026-09-13/) | 已完成 | 2026-09-13 | 兒童英語；家長陪同口說 | 來源核對、完整句排列與口說 | 新版題型與 OpenAI 預製語音 |
 | [Native Camp 2026-09-16 Edon](nativecamp-2026-09-16/) | 已完成 | 2026-09-16 | 兒童英語；家長陪同口說 | 來源核對、自主題、口說與跨日複習 | 沿用首堂 SOP，驗證多課接入與較慢語音 |
 | [Native Camp 2026-09-14 Edon](nativecamp-2026-09-14/) | 已完成 | 2026-09-14 | 兒童英語；家長陪同口說 | 來源核對、自主題、口說與跨日複習 | 沿用首堂 SOP，保留各堂來源與進度 |
 | [Native Camp 回放複習試作](nativecamp-review-pilot/) | 已完成；孩子已使用，家長回饋已記錄 | 2026-09-16～17 | 兒童英語課程；家長協助 | 紙本口說；另供 app 的自主題、口說與跨日複習 | [分聲道核對與逐字稿誤標](nativecamp-review-pilot/source/evidence-review.md)；[互動版與音訊](../docs-dev/nativecamp-review.md)；[製作SOP／模板](nativecamp-review-pilot/lesson-sop.md)；私人音檔不進 Git |

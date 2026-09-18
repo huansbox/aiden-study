@@ -1,0 +1,834 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-17",
+  "date": "2026-09-17",
+  "title": "School things and sentences",
+  "concepts": [
+    {
+      "id": "school-tools",
+      "title": "Choose a tool",
+      "try": [
+        {
+          "id": "school-tools-try-1",
+          "prompt": "Which tool can help?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Draw straight lines.",
+            "heading": "Your task"
+          },
+          "answerText": "I can use a ruler to draw lines.",
+          "spokenQuestion": "Your task is to draw straight lines. Which tool can help? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w7",
+              "text": "lines"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "use"
+            },
+            {
+              "id": "w4",
+              "text": "ruler"
+            },
+            {
+              "id": "w6",
+              "text": "draw"
+            },
+            {
+              "id": "extra",
+              "text": "eraser"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "school-tools-try-2",
+          "prompt": "Which tool can help?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Erase pencil marks.",
+            "heading": "Your task"
+          },
+          "answerText": "I can use an eraser to erase pencil marks.",
+          "spokenQuestion": "Your task is to erase pencil marks. Which tool can help? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "an"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w7",
+              "text": "pencil"
+            },
+            {
+              "id": "extra",
+              "text": "notebook"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "use"
+            },
+            {
+              "id": "w4",
+              "text": "eraser"
+            },
+            {
+              "id": "w6",
+              "text": "erase"
+            },
+            {
+              "id": "w8",
+              "text": "marks"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8"
+            ]
+          ]
+        },
+        {
+          "id": "school-tools-try-3",
+          "prompt": "Which tool can help?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Write notes on paper.",
+            "heading": "Your task"
+          },
+          "answerText": "I can use a notebook to write notes.",
+          "spokenQuestion": "Your task is to write notes on paper. Which tool can help? Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w7",
+              "text": "notes"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "use"
+            },
+            {
+              "id": "w4",
+              "text": "notebook"
+            },
+            {
+              "id": "w6",
+              "text": "write"
+            },
+            {
+              "id": "extra",
+              "text": "backpack"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "school-tools-say-1",
+          "prompt": "What do you use, and why?",
+          "instruction": "Say a full sentence. I use …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Carry school things.",
+            "heading": "Your task"
+          },
+          "answerText": "I use a backpack to carry school things.",
+          "spokenQuestion": "Your task is to carry school things. What do you use, and why? Say a full sentence.",
+          "accepted": [
+            "I can use a backpack to carry my school things.",
+            "I carry my school things in a backpack."
+          ]
+        },
+        {
+          "id": "school-tools-say-2",
+          "prompt": "What do you use, and why?",
+          "instruction": "Say a full sentence. I use …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Make straight lines.",
+            "heading": "Your task"
+          },
+          "answerText": "I use a ruler to draw straight lines.",
+          "spokenQuestion": "Your task is to make straight lines. What do you use, and why? Say a full sentence.",
+          "accepted": [
+            "I can draw straight lines with a ruler.",
+            "I draw straight lines with a ruler."
+          ]
+        },
+        {
+          "id": "school-tools-say-3",
+          "prompt": "What do you use, and why?",
+          "instruction": "Say a full sentence. I use …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Remove pencil marks.",
+            "heading": "Your task"
+          },
+          "answerText": "I use an eraser to erase pencil marks.",
+          "spokenQuestion": "Your task is to remove pencil marks. What do you use, and why? Say a full sentence.",
+          "accepted": [
+            "I can use an eraser to erase pencil marks.",
+            "I erase pencil marks with an eraser."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supplies-together",
+      "title": "How many together?",
+      "try": [
+        {
+          "id": "supplies-together-try-1",
+          "prompt": "How many pens do they have together?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 4 pens. Leo: 3 pens.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have seven pens.",
+          "spokenQuestion": "Mia has four pens. Leo has three pens. How many pens do they have together? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "pens"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "seven"
+            },
+            {
+              "id": "extra",
+              "text": "eight"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "supplies-together-try-2",
+          "prompt": "How many pencils do they have together?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 5 pencils. Leo: 4 pencils.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have nine pencils.",
+          "spokenQuestion": "Mia has five pencils. Leo has four pencils. How many pencils do they have together? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "pencils"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "nine"
+            },
+            {
+              "id": "extra",
+              "text": "ten"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "supplies-together-try-3",
+          "prompt": "How many erasers do they have together?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 3 erasers. Leo: 5 erasers.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have eight erasers.",
+          "spokenQuestion": "Mia has three erasers. Leo has five erasers. How many erasers do they have together? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "erasers"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "eight"
+            },
+            {
+              "id": "extra",
+              "text": "nine"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "supplies-together-say-1",
+          "prompt": "How many notebooks do they have together?",
+          "instruction": "Say a full sentence. They have …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 2 notebooks. Leo: 4 notebooks.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have six notebooks.",
+          "spokenQuestion": "Mia has two notebooks. Leo has four notebooks. How many notebooks do they have together? Say a full sentence.",
+          "accepted": [
+            "They have six notebooks together.",
+            "There are six notebooks in all."
+          ]
+        },
+        {
+          "id": "supplies-together-say-2",
+          "prompt": "How many rulers do they have together?",
+          "instruction": "Say a full sentence. They have …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 3 rulers. Leo: 7 rulers.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have ten rulers.",
+          "spokenQuestion": "Mia has three rulers. Leo has seven rulers. How many rulers do they have together? Say a full sentence.",
+          "accepted": [
+            "They have ten rulers together.",
+            "There are ten rulers in all."
+          ]
+        },
+        {
+          "id": "supplies-together-say-3",
+          "prompt": "How many pens do they have together?",
+          "instruction": "Say a full sentence. They have …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: 6 pens. Leo: 5 pens.",
+            "heading": "Add the two groups"
+          },
+          "answerText": "They have eleven pens.",
+          "spokenQuestion": "Mia has six pens. Leo has five pens. How many pens do they have together? Say a full sentence.",
+          "accepted": [
+            "They have eleven pens together.",
+            "There are eleven pens in all."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "counting-now",
+      "title": "What are they doing?",
+      "try": [
+        {
+          "id": "counting-now-try-1",
+          "prompt": "What are they doing now?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one pencil, two pencils, three pencils...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting pencils.",
+          "spokenQuestion": "Mia and Leo say, one pencil, two pencils, three pencils. What are they doing now? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "pencils"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "counting"
+            },
+            {
+              "id": "extra",
+              "text": "count"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "counting-now-try-2",
+          "prompt": "What are they doing now?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one eraser, two erasers, three erasers...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting erasers.",
+          "spokenQuestion": "Mia and Leo say, one eraser, two erasers, three erasers. What are they doing now? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "erasers"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "counting"
+            },
+            {
+              "id": "extra",
+              "text": "count"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "counting-now-try-3",
+          "prompt": "What are they doing now?",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one ruler, two rulers, three rulers...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting rulers.",
+          "spokenQuestion": "Mia and Leo say, one ruler, two rulers, three rulers. What are they doing now? Build a full sentence. Start with They.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "rulers"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "counting"
+            },
+            {
+              "id": "extra",
+              "text": "count"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "counting-now-say-1",
+          "prompt": "What are they doing now?",
+          "instruction": "Say a full sentence. They are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one pen, two pens, three pens...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting pens.",
+          "spokenQuestion": "Mia and Leo say, one pen, two pens, three pens. What are they doing now? Say a full sentence.",
+          "accepted": [
+            "They're counting pens.",
+            "Mia and Leo are counting pens.",
+            "They are counting the pens."
+          ]
+        },
+        {
+          "id": "counting-now-say-2",
+          "prompt": "What are they doing now?",
+          "instruction": "Say a full sentence. They are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one notebook, two notebooks, three notebooks...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting notebooks.",
+          "spokenQuestion": "Mia and Leo say, one notebook, two notebooks, three notebooks. What are they doing now? Say a full sentence.",
+          "accepted": [
+            "They're counting notebooks.",
+            "Mia and Leo are counting notebooks.",
+            "They are counting the notebooks."
+          ]
+        },
+        {
+          "id": "counting-now-say-3",
+          "prompt": "What are they doing now?",
+          "instruction": "Say a full sentence. They are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia and Leo: one backpack, two backpacks, three backpacks...",
+            "heading": "They are doing this now"
+          },
+          "answerText": "They are counting backpacks.",
+          "spokenQuestion": "Mia and Leo say, one backpack, two backpacks, three backpacks. What are they doing now? Say a full sentence.",
+          "accepted": [
+            "They're counting backpacks.",
+            "Mia and Leo are counting backpacks.",
+            "They are counting the backpacks."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "same-age",
+      "title": "The same age",
+      "try": [
+        {
+          "id": "same-age-try-1",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Build a full sentence. Start with I'm. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 6 years old. Kim: 6 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm six years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is six years old. Kim is six years old. Tell Kim you are the same age. Build a full sentence. Start with I'm.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "six"
+            },
+            {
+              "id": "w3",
+              "text": "old"
+            },
+            {
+              "id": "extra",
+              "text": "two"
+            },
+            {
+              "id": "w0",
+              "text": "I'm"
+            },
+            {
+              "id": "w2",
+              "text": "years"
+            },
+            {
+              "id": "w4",
+              "text": "too"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "same-age-try-2",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Build a full sentence. Start with I'm. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 8 years old. Kim: 8 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm eight years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is eight years old. Kim is eight years old. Tell Kim you are the same age. Build a full sentence. Start with I'm.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "eight"
+            },
+            {
+              "id": "w3",
+              "text": "old"
+            },
+            {
+              "id": "extra",
+              "text": "two"
+            },
+            {
+              "id": "w0",
+              "text": "I'm"
+            },
+            {
+              "id": "w2",
+              "text": "years"
+            },
+            {
+              "id": "w4",
+              "text": "too"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "same-age-try-3",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Build a full sentence. Start with I'm. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 10 years old. Kim: 10 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm ten years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is ten years old. Kim is ten years old. Tell Kim you are the same age. Build a full sentence. Start with I'm.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "ten"
+            },
+            {
+              "id": "w3",
+              "text": "old"
+            },
+            {
+              "id": "extra",
+              "text": "two"
+            },
+            {
+              "id": "w0",
+              "text": "I'm"
+            },
+            {
+              "id": "w2",
+              "text": "years"
+            },
+            {
+              "id": "w4",
+              "text": "too"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "same-age-say-1",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Say a full sentence. I'm …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 7 years old. Kim: 7 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm seven years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is seven years old. Kim is seven years old. Tell Kim you are the same age. Say a full sentence.",
+          "accepted": [
+            "I'm seven too.",
+            "I am seven years old too.",
+            "I'm also seven years old."
+          ]
+        },
+        {
+          "id": "same-age-say-2",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Say a full sentence. I'm …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 9 years old. Kim: 9 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm nine years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is nine years old. Kim is nine years old. Tell Kim you are the same age. Say a full sentence.",
+          "accepted": [
+            "I'm nine too.",
+            "I am nine years old too.",
+            "I'm also nine years old."
+          ]
+        },
+        {
+          "id": "same-age-say-3",
+          "prompt": "Tell Kim you are the same age.",
+          "instruction": "Say a full sentence. I'm …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Sam. Sam: 5 years old. Kim: 5 years old.",
+            "heading": "Pretend people"
+          },
+          "answerText": "I'm five years old too.",
+          "spokenQuestion": "Pretend you are Sam. Sam is five years old. Kim is five years old. Tell Kim you are the same age. Say a full sentence.",
+          "accepted": [
+            "I'm five too.",
+            "I am five years old too.",
+            "I'm also five years old."
+          ]
+        }
+      ]
+    }
+  ]
+}

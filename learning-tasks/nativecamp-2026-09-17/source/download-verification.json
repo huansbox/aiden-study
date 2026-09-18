@@ -1,0 +1,31 @@
+{
+  "lessonDate": "2026-09-17",
+  "audioUploaded": false,
+  "files": [
+    {
+      "relative_file": "../assets/audio/2026-09-17-1930-track-1.webm",
+      "bytes": 2143303,
+      "sha256": "9e0454775de43dfd4115597a5d21e8520eafcf048b12016a763065632d60950a",
+      "durationSeconds": 311.679,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "relative_file": "../assets/audio/2026-09-17-1930-track-3.webm",
+      "bytes": 1022278,
+      "sha256": "c596aaf1cbda25ba8f0a171955e0740e5deeb04490bd7dbb2d001da70cce5b73",
+      "durationSeconds": 160.005,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ],
+  "allLessonTracksDownloaded": false,
+  "missingTracks": 2,
+  "note": "Track 2 was readable as website transcript and playable online but browser download did not yield a file. No claim of complete recording coverage."
+}

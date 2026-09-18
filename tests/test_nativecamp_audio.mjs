@@ -27,6 +27,19 @@ function harness({ resolveSource = async (source) => source, effects = true } = 
     fail(value) { fail = value; }, endEffect() { oscillators.at(-1).end(); } };
 }
 
+test("public MP3 replacement URLs are versioned on real playback and replay, while private blob URLs stay unchanged", async () => {
+  const h = harness({ effects: false });
+  await h.audio.play("audio/is-are-try-1-q.mp3");
+  assert.equal(h.player.src, "audio/is-are-try-1-q.mp3?v=20260918-openai");
+  h.audio.stop(); assert.equal(h.player.src, ""); assert.equal(h.player.paused, true);
+  await h.audio.play("audio/is-are-try-1-q.mp3");
+  assert.equal(h.player.src, "audio/is-are-try-1-q.mp3?v=20260918-openai");
+  assert.equal(h.played.length, 2);
+  await h.audio.play("blob:private-question");
+  assert.equal(h.player.src, "blob:private-question");
+  h.audio.destroy();
+});
+
 test("correct and neutral feedback finish before the complete answer starts; one voice is reused", async () => {
   const h = harness();
   await h.audio.play("question.mp3");

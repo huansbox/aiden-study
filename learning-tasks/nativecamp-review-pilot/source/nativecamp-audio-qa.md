@@ -2,6 +2,8 @@
 
 日期：2026-09-17。適用題組：`docs/nativecamp/lessons/2026-09-15.json`。
 
+2026-09-18 更新：本檔下列 SAPI／音檔數據是初版歷史紀錄。35個一般語音現改用 OpenAI Marin、speed 1.0；目前製作與檔案證據見 [OpenAI 語音查核](openai-audio-qa.md)、[manifest](nativecamp-audio-manifest.json)及[共用語音工具](../../shared/nativecamp/README.md#openai-語音製作)。既有老師片段不變；不要使用下方歷史 builder 覆寫目前語音或 manifest。
+
 本檔記錄音訊製作階段的驗證；後續正式發布結果見[互動版說明](../../../docs-dev/nativecamp-review.md#2026-09-17-正式發布結果)。下一堂請先讀[製作SOP](../lesson-sop.md)，不要直接重跑本堂builder覆寫產物。
 
 ## 題組與語音來源

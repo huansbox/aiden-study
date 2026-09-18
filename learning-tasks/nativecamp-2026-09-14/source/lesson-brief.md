@@ -27,5 +27,5 @@
 ## 驗收與家庭回饋
 
 - 內容稽核檢查12題／24音檔、題文／問題音／答案音、親屬關係與封閉答案一致；不以教師示範／ASR遺漏推斷孩子的掌握度。
-- TTS採Zira rate -2；[manifest](nativecamp-audio-manifest.json)記實際音長、bytes、hash、完整解碼及RMS。已生成不代表人耳自然度通過。
+- TTS於2026-09-18改用 OpenAI `gpt-4o-mini-tts-2025-12-15`、Cedar、speed 1.0；[manifest](nativecamp-audio-manifest.json)記原題文、設定、輸入指紋、實際音長、bytes、hash、完整解碼及RMS。已生成不代表人耳自然度通過。
 - 瀏覽器、完整tests與正式發布狀態記本堂README；iPad、人耳完整試聽、孩子本堂作答難度未測。

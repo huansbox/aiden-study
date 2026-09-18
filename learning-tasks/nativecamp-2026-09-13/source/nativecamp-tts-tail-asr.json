@@ -1,0 +1,38 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "humanListening": false,
+  "initialPrompt": null,
+  "reason": "Whole-clip ASR omitted the final instruction.",
+  "samples": [
+    {
+      "file": "audio/2026-09-13-season-actions-try-1-q.mp3",
+      "sha256": "0b212083afebfba9b3635eac75fbecd3eecb1d5e7afc6598041cc05cd486662d",
+      "expectedTail": "Start with I.",
+      "wholeClipRecognizedText": "This pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence.",
+      "tails": [
+        {
+          "lastSeconds": 4,
+          "recognizedText": "flowers. Tell me the plan. Build a full sentence."
+        },
+        {
+          "lastSeconds": 7,
+          "recognizedText": "Pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence."
+        }
+      ]
+    }
+  ],
+  "status": "historical-before-repair",
+  "resolution": {
+    "file": "audio/2026-09-13-season-actions-try-1-q.mp3",
+    "reason": "Whole-clip and tail ASR omitted the final Start with instruction.",
+    "previousSha256": "0b212083afebfba9b3635eac75fbecd3eecb1d5e7afc6598041cc05cd486662d",
+    "replacementSha256": "12c9910ee1142cc4735a5e3683169b93cc76fc6351e7fc586f240c465f6b3a01",
+    "additionalApiRequests": 1,
+    "inputUnchanged": true,
+    "replacementRecognizedText": "This pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I.",
+    "humanListening": false,
+    "costUsd": null
+  }
+}

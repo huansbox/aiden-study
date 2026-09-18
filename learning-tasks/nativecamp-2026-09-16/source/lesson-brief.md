@@ -29,6 +29,6 @@
 ## 驗收與家庭回饋
 
 - 內容自動稽核：答案／關係／縮寫一致、source輸出一致、問音不含完整正解、18題與36音檔manifest對得上，保留舊課35音檔檢查。
-- 語音：rate -2，解碼、bytes、SHA256、音長與RMS記於 [nativecamp-audio-manifest.json](nativecamp-audio-manifest.json)；不用「已生成」代替人耳自然度驗收。
+- 語音：2026-09-18改用 OpenAI `gpt-4o-mini-tts-2025-12-15`、Cedar、speed 1.0；原題文、設定、輸入指紋、解碼、bytes、SHA256、音長與RMS記於 [nativecamp-audio-manifest.json](nativecamp-audio-manifest.json)；不用「已生成」代替人耳自然度驗收。
 - 上線／全repo檢查／瀏覽器結果由本堂README記實際完成狀態。iPad、人耳完整試聽、孩子作答難度：未測。
-- 首堂家庭回饋是「使用效果不錯、TTS偏快、too前停頓不自然」；本堂採較慢設定，尚未得到本堂孩子回饋。
+- 首堂家庭回饋是「使用效果不錯、TTS偏快、too前停頓不自然」；本堂最初採較慢 Windows 設定，後依已確認決策改為 OpenAI 正常語速，尚未得到本堂孩子回饋。

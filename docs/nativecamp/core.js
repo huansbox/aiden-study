@@ -22,10 +22,10 @@
     value.setUTCDate(value.getUTCDate() + 1);
     return value.toISOString().slice(0, 10);
   }
-  function createProgress() { return { schemaVersion: 1, lessons: {} }; }
+  function createProgress() { return { schemaVersion: 2, lessons: {}, weekly: {} }; }
   function emptyConcept() { return { initial: [], reviews: [], completedOn: null, dueOn: null, deferredQuestionId: null, pending: null }; }
   function validateProgress(input) {
-    requireValue(object(input) && input.schemaVersion === 1 && object(input.lessons));
+    requireValue(object(input) && [1, 2].includes(input.schemaVersion) && object(input.lessons));
     requireValue(Object.keys(input.lessons).length <= 200);
     const result = createProgress();
     for (const [lessonId, lesson] of Object.entries(input.lessons)) {
@@ -61,24 +61,63 @@
             requireValue(object(pending) && validId(pending.questionId) && ["initial", "deferred", "review"].includes(pending.phase) && typeof pending.helped === "boolean" && typeof pending.revealed === "boolean" && validDate(pending.date));
             normalizedState.pending = { questionId: pending.questionId, phase: pending.phase, helped: pending.helped, revealed: pending.revealed, date: pending.date };
           }
-          validateSchedule(normalizedState, mode);
+          if (input.schemaVersion === 1 || state.dueOn || state.deferredQuestionId || state.reviews.length || state.pending && state.pending.phase !== "initial") validateSchedule(normalizedState, mode);
+          else validatePractice(normalizedState, mode);
           normalized[mode][conceptId] = normalizedState;
         }
       }
       result.lessons[lessonId] = normalized;
     }
+    if (input.schemaVersion === 2) {
+      requireValue(object(input.weekly) && Object.keys(input.weekly).length <= 200);
+      for (const [id, state] of Object.entries(input.weekly)) {
+        requireValue(validId(id) && object(state) && validDate(state.startedOn) && object(state.selected) && object(state.sources));
+        const saved = { startedOn: state.startedOn, selected: {}, sources: {} };
+        for (const mode of MODES) {
+          const ids = state.selected[mode];
+          requireValue(Array.isArray(ids) && ids.length > 0 && ids.length <= 30 && ids.every(validId) && new Set(ids).size === ids.length);
+          saved.selected[mode] = [...ids];
+          for (const conceptId of ids) {
+            const source = state.sources[conceptId];
+            validateSource(source);
+            requireValue(source.date <= state.startedOn);
+            saved.sources[conceptId] = { lessonId: source.lessonId, conceptId: source.conceptId, date: source.date };
+          }
+          requireValue(Object.keys(result.lessons[id]?.[mode] || {}).every((conceptId) => ids.includes(conceptId)));
+        }
+        result.weekly[id] = saved;
+      }
+    }
     return result;
+  }
+  function validateSource(source) {
+    requireValue(object(source) && validId(source.lessonId) && validId(source.conceptId) && validDate(source.date), "This review needs a taught source concept.");
+  }
+  function validateWeekly(weekly) {
+    requireValue(object(weekly) && validDate(weekly.weekStart) && validDate(weekly.weekEnd) && validDate(weekly.opensOn), "This review needs its week and opening date.");
+    requireValue(new Date(weekly.weekStart + "T00:00:00Z").getUTCDay() === 1 && (Date.parse(weekly.weekEnd) - Date.parse(weekly.weekStart)) / 86400000 === 6 && weekly.opensOn >= weekly.weekEnd, "This review needs a Monday to Sunday week.");
+    requireValue(Number.isInteger(weekly.conceptCount) && weekly.conceptCount >= 1 && weekly.conceptCount <= 30 && Number.isInteger(weekly.earlierCount) && weekly.earlierCount >= 0 && weekly.earlierCount < weekly.conceptCount, "This review needs a practice amount.");
+    return weekly;
   }
   function validateLesson(lesson) {
     requireValue(object(lesson) && lesson.schemaVersion === 1 && validId(lesson.id) && validDate(lesson.date), "This lesson could not be opened.");
     const text = (value) => typeof value === "string" && value.trim().length > 0 && value.length <= 1500;
     requireValue(text(lesson.title) && Array.isArray(lesson.concepts) && lesson.concepts.length > 0 && lesson.concepts.length <= 30, "This lesson is incomplete.");
+    requireValue(lesson.kind === undefined || ["lesson", "weekly"].includes(lesson.kind), "This lesson type is not available.");
+    if (lesson.kind === "weekly") {
+      validateWeekly(lesson.weekly);
+      requireValue(lesson.date === lesson.weekly.weekEnd, "This review date must match its week.");
+    }
     const ids = new Set();
     const addId = (id) => { requireValue(typeof id === "string" && ID.test(id) && !ids.has(id), "This lesson has repeated or invalid questions."); ids.add(id); };
     const audio = (value) => typeof value === "string" ? /^audio\/[a-zA-Z0-9/_-]+\.(mp3|wav|ogg)$/.test(value) : object(value) && validId(value.private);
     for (const concept of lesson.concepts) {
       addId(concept.id);
       requireValue(text(concept.title), "This lesson needs a concept title.");
+      if (lesson.kind === "weekly") {
+        validateSource(concept.sourceConcept);
+        requireValue(concept.sourceConcept.date <= lesson.weekly.weekEnd && concept.sourceConcept.lessonId !== lesson.id, "This review includes a source that has not been taught.");
+      }
       for (const mode of MODES) {
         requireValue(Array.isArray(concept[mode]) && concept[mode].length >= 3, "This lesson needs three practice questions.");
         for (const q of concept[mode]) {
@@ -99,7 +138,7 @@
             const options = q.type === "choice" ? q.choices : q.tokens;
             requireValue(Array.isArray(options) && options.length >= 2 && options.length <= 18 && options.every((x) => object(x) && typeof x.id === "string" && ID.test(x.id) && text(x.text)) && new Set(options.map((x) => x.id)).size === options.length, "This question needs valid choices.");
             if (q.type === "choice") requireValue(options.some((x) => x.id === q.answer), "This question needs an answer.");
-            else requireValue(Array.isArray(q.acceptedOrders) && q.acceptedOrders.length > 0 && q.acceptedOrders.every((order) => Array.isArray(order) && order.length === options.length && new Set(order).size === order.length && order.every((id) => options.some((x) => x.id === id))), "This sentence needs a complete answer.");
+            else requireValue(Array.isArray(q.acceptedOrders) && q.acceptedOrders.length > 0 && q.acceptedOrders.every((order) => Array.isArray(order) && order.length > 0 && order.length <= options.length && options.length - order.length <= 2 && new Set(order).size === order.length && order.every((id) => options.some((x) => x.id === id))), "This sentence needs a complete answer.");
           }
         }
       }
@@ -108,6 +147,17 @@
   }
   function conceptState(progress, lessonId, mode, conceptId) { return progress.lessons[lessonId]?.[mode]?.[conceptId] ?? emptyConcept(); }
   function independent(mode, outcome) { return outcome === (mode === "try" ? "independent" : "gotIt"); }
+  function validatePractice(state, mode) {
+    const first = state.initial;
+    for (const attempt of first) {
+      requireValue(!independent(mode, attempt.outcome) || !attempt.helped);
+      requireValue(!["helped", "withHelp"].includes(attempt.outcome) || attempt.helped);
+    }
+    for (let i = 1; i < first.length; i++) requireValue(first[i].date >= first[i - 1].date);
+    const early = first.length >= 2 && first.slice(0, 2).every((attempt) => independent(mode, attempt.outcome));
+    requireValue(state.completedOn === (early ? first[1].date : first.length === 3 ? first[2].date : null));
+    if (state.pending) requireValue(!state.completedOn && state.pending.phase === "initial" && !first.some((attempt) => attempt.questionId === state.pending.questionId) && (!first.length || state.pending.date >= first.at(-1).date) && (mode === "say" || !state.pending.revealed));
+  }
   // Dates and completion are derived from the saved first answers and spaced
   // reviews. Reject contradictory external snapshots instead of inventing a repair.
   function validateSchedule(state, mode) {
@@ -161,9 +211,6 @@
     if (!state.completedOn) {
       question = questions[state.initial.length];
       phase = "initial";
-    } else if (state.dueOn && state.dueOn <= date) {
-      phase = state.deferredQuestionId ? "deferred" : "review";
-      question = state.deferredQuestionId ? questions.find((q) => q.id === state.deferredQuestionId) : questions[state.reviews.length % questions.length];
     }
     if (!question) return null;
     return { question, concept, phase, pending: state.pending?.questionId === question.id && state.pending.phase === phase ? state.pending : null,
@@ -171,7 +218,9 @@
   }
   function nextQuestion(progress, lesson, mode, date, conceptId = null) {
     requireValue(MODES.includes(mode) && validDate(date), "Please choose a practice mode and date.");
-    let concepts = conceptId ? lesson.concepts.filter((c) => c.id === conceptId) : lesson.concepts;
+    if (!isOpen(lesson, date)) return null;
+    let concepts = practiceConcepts(progress, lesson, mode);
+    if (conceptId) concepts = concepts.filter((c) => c.id === conceptId);
     const candidates = concepts.map((concept) => nextForConcept(progress, lesson, mode, concept, date)).filter(Boolean);
     // Leave a needed third initial question until the other concepts have had their first two.
     if (mode === "try" && !conceptId) candidates.sort((a, b) => Number(a.phase === "initial" && a.number === 3) - Number(b.phase === "initial" && b.number === 3));
@@ -185,6 +234,7 @@
   }
   function markPending(progress, lesson, mode, date, conceptId, questionId, action) {
     requireValue(["help", "reveal"].includes(action) && (action !== "reveal" || mode === "say"), "This action is not available.");
+    progress = startLesson(progress, lesson, date);
     const next = nextQuestion(progress, lesson, mode, date, conceptId);
     if (!next || next.question.id !== questionId) return progress;
     const change = writable(progress, lesson, mode, conceptId);
@@ -197,8 +247,9 @@
       requireValue(typeof answer === "string" && question.choices.some((c) => c.id === answer), "Pick an answer first.");
       return answer === question.answer;
     }
-    requireValue(Array.isArray(answer) && answer.length === question.tokens.length && new Set(answer).size === answer.length && answer.every((id) => question.tokens.some((t) => t.id === id)), "Use each word once.");
-    return question.acceptedOrders.some((order) => order.every((id, i) => id === answer[i]));
+    requireValue(Array.isArray(answer) && answer.length > 0 && answer.length <= question.tokens.length && new Set(answer).size === answer.length && answer.every((id) => question.tokens.some((t) => t.id === id)), "Choose words for your sentence. Use each card once.");
+    const textFor = (id) => question.tokens.find((token) => token.id === id).text;
+    return question.acceptedOrders.some((order) => order.length === answer.length && order.every((id, i) => textFor(id) === textFor(answer[i])));
   }
   function finishAttempt(progress, lesson, mode, date, next, outcome) {
     const change = writable(progress, lesson, mode, next.concept.id);
@@ -206,23 +257,18 @@
     const attempt = { questionId: next.question.id, date, outcome, helped: Boolean(next.pending?.helped || outcome === "withHelp" || outcome === "helped") };
     const previousDate = [...state.initial, ...state.reviews].map((a) => a.date).sort().at(-1);
     requireValue(!previousDate || date >= previousDate, "Please check the practice date.");
-    if (next.phase === "review") state.reviews.push(attempt);
-    else state.initial.push(attempt);
+    state.initial.push(attempt);
     state.pending = null;
-    if (next.phase === "initial") {
-      const early = state.initial.length === 2 && state.initial.every((a) => independent(mode, a.outcome));
-      if (early || state.initial.length === 3) {
-        state.completedOn = date;
-        state.dueOn = nextDay(date);
-        state.deferredQuestionId = early ? next.concept[mode][2].id : null;
-      }
-    } else {
+    const early = state.initial.length === 2 && state.initial.every((a) => independent(mode, a.outcome));
+    if (early || state.initial.length === 3) {
+      state.completedOn = date;
+      state.dueOn = null;
       state.deferredQuestionId = null;
-      state.dueOn = independent(mode, outcome) ? null : nextDay(date);
     }
     return { progress: change.progress, recorded: true, outcome, correct: mode === "try" ? outcome !== "incorrect" : outcome === "gotIt", phase: next.phase };
   }
   function submitTry(progress, lesson, date, conceptId, questionId, answer) {
+    progress = startLesson(progress, lesson, date);
     const next = nextQuestion(progress, lesson, "try", date, conceptId);
     if (!next || next.question.id !== questionId) return { progress, recorded: false };
     const correct = checkAnswer(next.question, answer);
@@ -231,6 +277,7 @@
   }
   function submitSay(progress, lesson, date, conceptId, questionId, rating) {
     requireValue(OUTCOMES.say.includes(rating), "Choose a parent rating.");
+    progress = startLesson(progress, lesson, date);
     const next = nextQuestion(progress, lesson, "say", date, conceptId);
     if (!next || next.question.id !== questionId) return { progress, recorded: false };
     requireValue(next.pending?.revealed, "Show the answer before choosing a rating.");
@@ -241,16 +288,72 @@
     requireValue(validDate(date), "Please check the practice date.");
     const result = {};
     for (const mode of MODES) {
-      const concepts = lesson.concepts.map((concept) => {
+      const concepts = practiceConcepts(progress, lesson, mode).map((concept) => {
         const state = conceptState(progress, lesson.id, mode, concept.id);
-        const summary = { id: concept.id, title: concept.title, attempted: state.initial.length, due: Boolean(state.dueOn && state.dueOn <= date), done: Boolean(state.completedOn), dueOn: state.dueOn,
+        const summary = { id: concept.id, title: concept.title, attempted: state.initial.length, due: false, done: Boolean(state.completedOn), dueOn: null,
           reviews: state.reviews.length, reviewSuccesses: state.reviews.filter((a) => independent(mode, a.outcome)).length };
         for (const outcome of OUTCOMES[mode]) summary[outcome] = state.initial.filter((a) => a.outcome === outcome).length;
+        summary.needsPractice = lesson.kind === "weekly" ? state.initial.some((a) => !independent(mode, a.outcome)) : sourcePerformance(progress, { lessonId: lesson.id, conceptId: concept.id }, mode).needsPractice;
         return summary;
       });
       result[mode] = { done: concepts.length > 0 && concepts.every((c) => c.done), concepts };
     }
     return result;
   }
-  root.NativeCampCore = { createProgress, validateProgress, validateLesson, summarizeLesson, today, nextDay, nextQuestion, markPending, checkAnswer, submitTry, submitSay };
+  function isOpen(lesson, date) { return date >= (lesson.kind === "weekly" ? lesson.weekly.opensOn : lesson.date); }
+  function sourcePerformance(progress, source, mode, excludeId) {
+    const attempts = [...conceptState(progress, source.lessonId, mode, source.conceptId).initial];
+    for (const [id, weekly] of Object.entries(progress.weekly || {})) {
+      if (id === excludeId) continue;
+      for (const [conceptId, origin] of Object.entries(weekly.sources)) {
+        if (origin.lessonId === source.lessonId && origin.conceptId === source.conceptId) attempts.push(...conceptState(progress, id, mode, conceptId).initial);
+      }
+    }
+    return { attempted: attempts.length, needsPractice: attempts.some((a) => !independent(mode, a.outcome)) };
+  }
+  function selectWeekly(progress, lesson, mode) {
+    const { weekStart, conceptCount, earlierCount } = lesson.weekly;
+    const rank = (concept) => {
+      const result = sourcePerformance(progress, concept.sourceConcept, mode, lesson.id);
+      return result.needsPractice ? 2 : result.attempted ? 0 : 1;
+    };
+    const take = (pool, count) => {
+      if (!count) return [];
+      const sorted = [...pool].sort((a, b) => rank(b) - rank(a));
+      const chosen = sorted.slice(0, count);
+      // Include a successful sample when there is room alongside weaker ideas.
+      const successful = sorted.find((concept) => rank(concept) === 0);
+      if (count > 1 && successful && chosen.length === count && !chosen.includes(successful)) chosen[count - 1] = successful;
+      return chosen;
+    };
+    const older = lesson.concepts.filter((concept) => concept.sourceConcept.date < weekStart);
+    const current = lesson.concepts.filter((concept) => concept.sourceConcept.date >= weekStart);
+    const oldSelected = take(older, earlierCount);
+    return [...take(current, conceptCount - oldSelected.length), ...oldSelected].map((concept) => concept.id);
+  }
+  function practiceConcepts(progress, lesson, mode) {
+    if (lesson.kind !== "weekly") return lesson.concepts;
+    const ids = progress.weekly?.[lesson.id]?.selected[mode] || selectWeekly(progress, lesson, mode);
+    return ids.map((id) => {
+      const concept = lesson.concepts.find((item) => item.id === id);
+      requireValue(concept, "This review changed. Ask a parent for help before continuing.");
+      const source = progress.weekly?.[lesson.id]?.sources[id];
+      requireValue(!source || source.lessonId === concept.sourceConcept.lessonId && source.conceptId === concept.sourceConcept.conceptId && source.date === concept.sourceConcept.date, "This review source changed. Ask a parent for help.");
+      return concept;
+    });
+  }
+  function startLesson(progress, lesson, date) {
+    requireValue(validDate(date), "Please check the practice date.");
+    requireValue(isOpen(lesson, date), "This review is not open yet.");
+    if (lesson.kind !== "weekly" || progress.weekly?.[lesson.id]) return progress;
+    const next = validateProgress(progress), selected = {}, sources = {};
+    for (const mode of MODES) {
+      selected[mode] = selectWeekly(next, lesson, mode);
+      requireValue(selected[mode].length > 0, "This review has no taught concepts yet.");
+      for (const id of selected[mode]) sources[id] = { ...lesson.concepts.find((c) => c.id === id).sourceConcept };
+    }
+    next.weekly[lesson.id] = { startedOn: date, selected, sources };
+    return next;
+  }
+  root.NativeCampCore = { createProgress, validateProgress, validateLesson, validateWeekly, summarizeLesson, sourcePerformance, practiceConcepts, startLesson, isOpen, today, nextDay, nextQuestion, markPending, checkAnswer, submitTry, submitSay };
 })(globalThis);

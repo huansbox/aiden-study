@@ -21,4 +21,4 @@
 
 正式題包與 speech jobs 由共用builder產生；改語音文字後要重製音檔，不只重建JSON。私人錄音、逐字稿與來源網址在ignored路徑，clone不會包含；原課中的真實人名與住址線索不入題。
 
-本堂原音全檔解碼與3段分聲道ASR已完成。公開音訊採Zira rate -2；桌面與窄版預覽已驗收，生成與檔案驗證不代表人耳完整試聽／iPad／孩子實測完成。正式發布證據留在本次PR，見整合驗收。
+本堂原音全檔解碼與3段分聲道ASR已完成。一般語音於2026-09-18改用 OpenAI `gpt-4o-mini-tts-2025-12-15`、Cedar、speed 1.0；24個原題文與檔名保留，詳見 [manifest](source/nativecamp-audio-manifest.json)與[語音查核](source/openai-audio-qa.md)。先前桌面與窄版預覽結果不代替這次語音替換驗收；生成與檔案驗證不代表人耳完整試聽／iPad／孩子實測完成。

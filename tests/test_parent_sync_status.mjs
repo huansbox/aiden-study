@@ -121,11 +121,9 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
       const url = new URL(input, location.href);
       if (url.pathname === "/registry.json") return json(registry);
       if (url.pathname === "/nativecamp/lessons/catalog.json") return json(JSON.parse(source("nativecamp/lessons/catalog.json")));
-      if (/^\/nativecamp\/lessons\/2026-09-(14|15|16)\.json$/.test(url.pathname)) {
-        // Keep this integration fixture independent of new lesson authoring.
-        const lesson = JSON.parse(source("nativecamp/lessons/2026-09-15.json"));
-        lesson.id = lesson.date = url.pathname.split("/").at(-1).slice(0, -5);
-        return json(lesson);
+      if (/^\/nativecamp\/lessons\/[a-z0-9-]+\.json$/.test(url.pathname)) {
+        // Serve each catalog entry's real bundle, including weekly IDs whose date differs from their ID.
+        return json(JSON.parse(source(url.pathname.slice(1))));
       }
       assert.equal(url.origin, origin, "不得連線正式服務");
       const headers = new Headers(init.headers);
@@ -201,17 +199,19 @@ test("Native Camp summary hides stale or malformed remote data rather than prese
   }
 });
 
-test("Native Camp defaults to latest, switches summary and preview together, and preserves unsaved parent settings", async () => {
+test("Native Camp defaults to the latest open bundle, switches old and weekly previews, and preserves unsaved parent settings", async () => {
   const C = globalThis.NativeCampCore, lesson = JSON.parse(source("nativecamp/lessons/2026-09-15.json"));
+  const entries = JSON.parse(source("nativecamp/lessons/catalog.json")).lessons;
+  const latest = entries.filter((entry) => (entry.weekly?.opensOn || entry.date) <= C.today()).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id))[0];
   const concept = lesson.concepts[0]; let data = C.createProgress();
   for (const q of concept.try.slice(0, 2)) data = C.submitTry(data, lesson, "2026-09-15", concept.id, q.id, q.answer).progress;
   const h = await page({ lessonId: null, child: "bingpu", initial: { "p:bingpu:nativecamp": { value: JSON.stringify({ rev: 1, data }) } } });
   await until(() => h.root.querySelector("#nativecamp-summary")?.innerHTML.includes("Read from family storage"));
   const panel = h.root.querySelector("#nativecamp-summary");
-  assert.match(panel.innerHTML, /data-lesson="2026-09-16" aria-pressed="true"/);
-  assert.match(panel.innerHTML, /child=bingpu&amp;lesson=2026-09-16/);
+  assert.ok(panel.innerHTML.includes(`data-lesson="${latest.id}" aria-pressed="true"`));
+  assert.ok(panel.innerHTML.includes(`child=bingpu&amp;lesson=${latest.id}`));
   assert.match(panel.innerHTML, /No practice has been saved for this lesson/);
-  assert.match(panel.innerHTML, /Review ready/);
+  assert.doesNotMatch(panel.innerHTML, /Review ready/);
   const settingsInput = h.root.querySelector('[data-site="stroke"][data-field="title"]');
   settingsInput.value = "Keep this unsaved edit"; settingsInput.fire("input");
   const saved = await h.env.KV.get("p:bingpu:nativecamp");
@@ -220,6 +220,12 @@ test("Native Camp defaults to latest, switches summary and preview together, and
   assert.match(panel.innerHTML, /child=bingpu&amp;lesson=2026-09-15/);
   assert.match(panel.innerHTML, /Try it ·/);
   assert.equal(h.context.location.search, "?child=bingpu&lesson=2026-09-15");
+  await panel.querySelector('[data-lesson="weekly-2026-09-14"]').fire("click");
+  assert.match(panel.innerHTML, /data-lesson="weekly-2026-09-14" aria-pressed="true"/);
+  assert.match(panel.innerHTML, /href="\.\.\/nativecamp\/preview\.html\?child=bingpu&amp;lesson=weekly-2026-09-14"/);
+  assert.match(panel.innerHTML, /Read from family storage/);
+  assert.match(panel.innerHTML, /No practice has been saved for this lesson/);
+  assert.equal(h.context.location.search, "?child=bingpu&lesson=weekly-2026-09-14");
   assert.equal(h.root.querySelector('[data-site="stroke"][data-field="title"]'), settingsInput);
   assert.equal(settingsInput.value, "Keep this unsaved edit");
   assert.equal(await h.env.KV.get("p:bingpu:nativecamp"), saved);

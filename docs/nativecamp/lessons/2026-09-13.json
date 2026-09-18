@@ -1,0 +1,861 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-13",
+  "date": "2026-09-13",
+  "title": "Seasons and full sentences",
+  "concepts": [
+    {
+      "id": "season-actions",
+      "title": "Actions in seasons",
+      "try": [
+        {
+          "id": "season-actions-try-1",
+          "prompt": "Tell me this plan.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: spring. Plan: plant flowers.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I plant flowers in spring.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "plant"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "winter"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "flowers"
+            },
+            {
+              "id": "w4",
+              "text": "spring"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "Use the season on this plan. Activities can happen in more than one season.",
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-try-1-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "season-actions-try-2",
+          "prompt": "Tell me this plan.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: summer. Plan: go to the beach.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I go to the beach in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "go"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "fall"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "to"
+            },
+            {
+              "id": "w4",
+              "text": "beach"
+            },
+            {
+              "id": "w6",
+              "text": "summer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "explanation": "Use the season on this plan. Activities can happen in more than one season.",
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-try-2-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "season-actions-try-3",
+          "prompt": "Tell me this plan.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: winter. Plan: eat ice cream.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I eat ice cream in winter.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "eat"
+            },
+            {
+              "id": "w3",
+              "text": "cream"
+            },
+            {
+              "id": "w5",
+              "text": "winter"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "ice"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "summer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Use the season on this plan. Activities can happen in more than one season.",
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-try-3-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "season-actions-say-1",
+          "prompt": "What do you do in this plan?",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: fall. Plan: fly a kite.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I fly a kite in fall.",
+          "accepted": [
+            "In fall, I fly a kite.",
+            "I fly a kite in the fall."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-say-1-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "season-actions-say-2",
+          "prompt": "What do you do in this plan?",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: winter. Plan: drink hot chocolate.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I drink hot chocolate in winter.",
+          "accepted": [
+            "In winter, I drink hot chocolate.",
+            "I drink hot chocolate in the winter."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-say-2-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "season-actions-say-3",
+          "prompt": "What do you do in this plan?",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Season: spring. Plan: ride a bike.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I ride a bike in spring.",
+          "accepted": [
+            "In spring, I ride a bike.",
+            "I ride a bike in the spring."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-season-actions-say-3-q.mp3",
+            "answer": "audio/2026-09-13-season-actions-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "story-weather",
+      "title": "Weather in a story",
+      "try": [
+        {
+          "id": "story-weather-try-1",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pine Town: winter. Weather: snowy.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is snowy in winter.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "summer"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "snowy"
+            },
+            {
+              "id": "w4",
+              "text": "winter"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-try-1-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-weather-try-2",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lake Town: spring. Weather: warm.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is warm in spring.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "winter"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "warm"
+            },
+            {
+              "id": "w4",
+              "text": "spring"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-try-2-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-weather-try-3",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Build a full sentence. Start with It. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Hill Town: summer. Weather: hot.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is hot in summer.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "extra",
+              "text": "fall"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "hot"
+            },
+            {
+              "id": "w4",
+              "text": "summer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-try-3-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "story-weather-say-1",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Say a full sentence. It is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Oak Town: fall. Weather: cool.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is cool in fall.",
+          "accepted": [
+            "It's cool in fall.",
+            "In fall, it is cool."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-say-1-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-weather-say-2",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Say a full sentence. It is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "River Town: winter. Weather: cold.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is cold in winter.",
+          "accepted": [
+            "It's cold in winter.",
+            "In winter, it is cold."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-say-2-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-weather-say-3",
+          "prompt": "Describe the weather in this story.",
+          "instruction": "Say a full sentence. It is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Star Town: spring. Weather: warm.",
+            "heading": "Made-up story"
+          },
+          "answerText": "It is warm in spring.",
+          "accepted": [
+            "It's warm in spring.",
+            "In spring, it is warm."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-story-weather-say-3-q.mp3",
+            "answer": "audio/2026-09-13-story-weather-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "activity-places",
+      "title": "Where do you do it?",
+      "try": [
+        {
+          "id": "activity-places-try-1",
+          "prompt": "Say where you do this.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: ride my bike. Place: in the park.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I ride my bike in the park.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "ride"
+            },
+            {
+              "id": "w3",
+              "text": "bike"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "beach"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "my"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w6",
+              "text": "park"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-try-1-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "activity-places-try-2",
+          "prompt": "Say where you do this.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: play. Place: at the beach.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I play at the beach.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "play"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "park"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "at"
+            },
+            {
+              "id": "w4",
+              "text": "beach"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-try-2-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "activity-places-try-3",
+          "prompt": "Say where you do this.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: drink hot chocolate. Place: in the house.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I drink hot chocolate in the house.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "drink"
+            },
+            {
+              "id": "w3",
+              "text": "chocolate"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "park"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "hot"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w6",
+              "text": "house"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-try-3-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "activity-places-say-1",
+          "prompt": "Say where you do this.",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: eat ice cream. Place: at the beach.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I eat ice cream at the beach.",
+          "accepted": [
+            "At the beach, I eat ice cream.",
+            "I eat ice cream at the beach."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-say-1-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "activity-places-say-2",
+          "prompt": "Say where you do this.",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: fly a kite. Place: in the park.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I fly a kite in the park.",
+          "accepted": [
+            "In the park, I fly a kite.",
+            "I fly a kite in the park."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-say-2-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "activity-places-say-3",
+          "prompt": "Say where you do this.",
+          "instruction": "Say a full sentence. I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Action: play. Place: in the house.",
+            "heading": "Pretend plan"
+          },
+          "answerText": "I play in the house.",
+          "accepted": [
+            "In the house, I play.",
+            "I play in the house."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-activity-places-say-3-q.mp3",
+            "answer": "audio/2026-09-13-activity-places-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "list-commas",
+      "title": "Lists in a sentence",
+      "try": [
+        {
+          "id": "list-commas-try-1",
+          "prompt": "Which sentence uses commas correctly?",
+          "instruction": "Pick the complete sentence.",
+          "scene": {
+            "kind": "word-card",
+            "text": "flowers / trees / birds",
+            "heading": "Three things"
+          },
+          "answerText": "I see flowers, trees, and birds.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "b",
+              "text": "I see flowers, trees, and birds."
+            },
+            {
+              "id": "c",
+              "text": "I see flowers trees and birds."
+            },
+            {
+              "id": "a",
+              "text": "I, see flowers trees and birds."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Commas separate the things in a written list. Do not say the word comma when reading.",
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-try-1-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "list-commas-try-2",
+          "prompt": "Which sentence uses commas correctly?",
+          "instruction": "Pick the complete sentence.",
+          "scene": {
+            "kind": "word-card",
+            "text": "cats / dogs / birds",
+            "heading": "Three things"
+          },
+          "answerText": "I see cats, dogs, and birds.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "c",
+              "text": "I see cats dogs and birds."
+            },
+            {
+              "id": "a",
+              "text": "I, see cats dogs and birds."
+            },
+            {
+              "id": "b",
+              "text": "I see cats, dogs, and birds."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Commas separate the things in a written list. Do not say the word comma when reading.",
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-try-2-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "list-commas-try-3",
+          "prompt": "Which sentence uses commas correctly?",
+          "instruction": "Pick the complete sentence.",
+          "scene": {
+            "kind": "word-card",
+            "text": "pens / pencils / books",
+            "heading": "Three things"
+          },
+          "answerText": "I see pens, pencils, and books.",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "a",
+              "text": "I, see pens pencils and books."
+            },
+            {
+              "id": "b",
+              "text": "I see pens, pencils, and books."
+            },
+            {
+              "id": "c",
+              "text": "I see pens pencils and books."
+            }
+          ],
+          "answer": "b",
+          "explanation": "Commas separate the things in a written list. Do not say the word comma when reading.",
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-try-3-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "list-commas-say-1",
+          "prompt": "Name all three colors in one sentence.",
+          "instruction": "Say a full sentence. The colors …",
+          "scene": {
+            "kind": "word-card",
+            "text": "red / yellow / orange",
+            "heading": "Pretend list"
+          },
+          "answerText": "The colors are red, yellow, and orange.",
+          "accepted": [
+            "I see red, yellow, and orange.",
+            "They are red, yellow, and orange."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-say-1-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "list-commas-say-2",
+          "prompt": "Name all three things in one sentence.",
+          "instruction": "Say a full sentence. I see …",
+          "scene": {
+            "kind": "word-card",
+            "text": "books / toys / hats",
+            "heading": "Pretend list"
+          },
+          "answerText": "I see books, toys, and hats.",
+          "accepted": [
+            "I can see books, toys, and hats.",
+            "There are books, toys, and hats."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-say-2-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "list-commas-say-3",
+          "prompt": "Tell me the three seasons in this pretend plan.",
+          "instruction": "Say a full sentence. I like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "spring / summer / winter",
+            "heading": "Pretend list"
+          },
+          "answerText": "I like spring, summer, and winter.",
+          "accepted": [
+            "My favorite seasons are spring, summer, and winter.",
+            "I like winter, spring, and summer."
+          ],
+          "audio": {
+            "question": "audio/2026-09-13-list-commas-say-3-q.mp3",
+            "answer": "audio/2026-09-13-list-commas-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "lessonId": "weekly-2026-09-14",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-try-1-q.mp3",
+      "sha256": "ebd9f76b76d87b444aa115c85b52e8a971578d44c6f5daca33d1d1031c0c1402",
+      "expectedText": "Nora is my dad's mum. Who is Nora? Build a full sentence. Start with She.",
+      "recognizedText": "Nora is my dad's mom. Who is Nora? Build a full sentence. Start with she."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-say-3-a.mp3",
+      "sha256": "c76d94b8f6e5aa3cfe4b1b408492454dcd233f7a0479f2f873cd5e0a5de6d725",
+      "expectedText": "They are my grandparents.",
+      "recognizedText": "They are my grandparents."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-try-1-q.mp3",
+      "sha256": "b40fa821ce7ecc98ae89464ca39995889208aacfbe053bb711f4b4dfcaa3b102",
+      "expectedText": "There are dolls on a shelf. A ball is next to a toy boat. What is this story about? Build a full sentence. Start with It.",
+      "recognizedText": "There are dolls on a shelf. A ball is next to a toy boat. What is this story about? Build a full sentence. Start with it."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-say-3-a.mp3",
+      "sha256": "93ddc6accc40b7261a23ff328d4289ea13e5d5eab25805ddaa0f0d79e35da03e",
+      "expectedText": "It is about a family.",
+      "recognizedText": "It is about a family."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-try-1-q.mp3",
+      "sha256": "56c352643a566ed90badfdffa9b27a09218081253d2272f757c073ada1390155",
+      "expectedText": "Look at the picture. Tell me what you see. Build a full sentence. Start with There.",
+      "recognizedText": "Look at the picture. Tell me what you see. Build a full sentence. Start with there."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-say-3-a.mp3",
+      "sha256": "00f9f7178dfff3ed2e23f5bb55a5417220af6183b809ac7955bcb8e76ead84c5",
+      "expectedText": "There are three cats.",
+      "recognizedText": "There are three cats."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-try-1-q.mp3",
+      "sha256": "ea71b40b1ad87fb1712ea02740bd693f72d824ba4d04267610de9523078593e2",
+      "expectedText": "The number is twelve. Is it odd or even? Build a full sentence. Start with Twelve.",
+      "recognizedText": "The number is 12. Is it odd or even? Build a full sentence. Start with 12."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-say-3-a.mp3",
+      "sha256": "75e2565885580d54465d3e261255c5e2bb07713e49d2cb6d0881e704229e3c9d",
+      "expectedText": "Fifteen is an odd number.",
+      "recognizedText": "15 is an odd number"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-try-1-q.mp3",
+      "sha256": "259df7ff279457daf90ad5bd9aea2c1b60c4b7d522bf9f32b83c3034e299ca63",
+      "expectedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence. Start with There.",
+      "recognizedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence. Start with there."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-say-3-a.mp3",
+      "sha256": "62b69a174409b4816b95a1b050b6fe613f7e4b0aa834c17f7c63a2f39fa151c5",
+      "expectedText": "There are too many hats.",
+      "recognizedText": "There are too many hats."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-try-1-q.mp3",
+      "sha256": "b866c061f72b1e72f6b28480cac7946ca4b848aa244d547eeda10c55d7ace226",
+      "expectedText": "Pretend you are Pat. Amy is your dad's sister. Who is Amy in your pretend family? Build a full sentence. Start with Amy.",
+      "recognizedText": "Pretend you are Pat. Amy is your dad's sister. Who is Amy in your pretend family? Build a full sentence. Start with Amy."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-say-3-a.mp3",
+      "sha256": "1b64899540ac3afaf3bd1de6e416e5e69abaaed3e9166d054d85b93aa59ad600",
+      "expectedText": "May is my cousin.",
+      "recognizedText": "May is my cousin."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-try-1-q.mp3",
+      "sha256": "05c33471a3adaa1e4f212ad52d0a3216c9c461db381ecd3564a542440fb6b561",
+      "expectedText": "I am happy. Make the sentence short. Build a full sentence.",
+      "recognizedText": "I am happy. Make the sentence short. Build a full sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-say-3-a.mp3",
+      "sha256": "0f82c58fc452fc45878a0e180e9cce40711a87db5dfec6c3aed7db78afee3581",
+      "expectedText": "He's eight years old.",
+      "recognizedText": "He's eight years old."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-try-1-q.mp3",
+      "sha256": "cacc85f59df62e34f4206e321f9df494883fc55be01989d2b25e225d7f467301",
+      "expectedText": "The word is cold. Name its opposite. Build a full sentence.",
+      "recognizedText": "The word is cold. Name its opposite. Build a full sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-say-3-a.mp3",
+      "sha256": "017ade831fd3ef76599464353a5bef600b413fc17a895c2d6a9590bf36e74f4b",
+      "expectedText": "Young is the opposite of old.",
+      "recognizedText": "Young is the opposite of old."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-try-1-q.mp3",
+      "sha256": "2a73f2da31ad9109561b46030d821a99120e93f9489f3fbb5bb28049d1208873",
+      "expectedText": "Your task is to carry books to school. Which tool can help? Build a full sentence. Start with I.",
+      "recognizedText": "Your task is to carry books to school. Which tool can help? Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-say-3-a.mp3",
+      "sha256": "978d0f4c61b8cc09af1bab7d54cfd2ea76a6a69c7c58b2383646cb72059404e7",
+      "expectedText": "I use a notebook to write a list.",
+      "recognizedText": "I use a notebook to write a list."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-try-1-q.mp3",
+      "sha256": "798b6255de4080ccb9d8869b0a4160fc271eefc9682a9867d18bff02865fa454",
+      "expectedText": "Mia has four erasers. Leo has five erasers. How many erasers do they have together? Build a full sentence. Start with They.",
+      "recognizedText": "Mia has four erasers. Leo has five erasers. How many erasers do they have together? Build a full sentence. Start with they."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-say-3-a.mp3",
+      "sha256": "df236b04ac0095cb701c45625c39b242b3bda449834b2bdf54b3099c58d87d11",
+      "expectedText": "They have seven erasers.",
+      "recognizedText": "They have seven erasers."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-try-1-q.mp3",
+      "sha256": "3b405a8d795342b2de61704b06c8f0fd875686051d44344036046f12a6356a23",
+      "expectedText": "Tom and Ann say, four backpacks, five backpacks, six backpacks. What are they doing now? Build a full sentence. Start with They.",
+      "recognizedText": "Tom and Ann say four backpacks, five backpacks, six backpacks. What are they doing now? Build a full sentence. Start with they."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-say-3-a.mp3",
+      "sha256": "76c4369c7961948aca159147e350b7e541bd3a562295201f204f653c22becf2b",
+      "expectedText": "They are counting erasers.",
+      "recognizedText": "They are counting erasers."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-try-1-q.mp3",
+      "sha256": "e8ba94cd8085213f3991a541ac79c89ce4c2bc2f2611464e56dc7a842b54517d",
+      "expectedText": "Pretend you are Jo. Jo and Lee are both eleven years old. Tell Lee that your ages are the same. Build a full sentence. Start with I.",
+      "recognizedText": "Pretend you are Joe. Joe and Lee are both 11 years old. Tell Lee that your ages are the same. Build a full sentence. Start with, I."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-say-3-a.mp3",
+      "sha256": "5496331b76b7b4a2d4055ee897fa7dbf705bf588dc92eb19702b31fe8951f19f",
+      "expectedText": "I am sixteen years old too.",
+      "recognizedText": "I am 16 years old too."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-try-1-q.mp3",
+      "sha256": "a65dde81d2a25d7d0ed8f4e8892066d9c2a9bc67fb673588fcc9b48413de5a35",
+      "expectedText": "This pretend plan is for fall. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I.",
+      "recognizedText": "This pretend plan is for fall. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-say-3-a.mp3",
+      "sha256": "406af2fa65bf5f6e890b10bdb960fe98170e465b4b6e57c380aa979cba3e5c11",
+      "expectedText": "I go to the beach in winter.",
+      "recognizedText": "I go to the beach in winter."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-try-1-q.mp3",
+      "sha256": "dcabe8f13c72bb6d0ba16eda9a65d513fbc805a88aaab8068de84c8f24ac59b7",
+      "expectedText": "Three things: rulers, erasers, and notebooks. Which written sentence uses commas to separate the list?",
+      "recognizedText": "Three things. Rulers, erasers, and notebooks. Which written sentence uses commas to separate the list?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-say-3-a.mp3",
+      "sha256": "0506c446e3abc7463b336ecd88398dc8ca05afce4f4d6ca9f8f48c960e9698b7",
+      "expectedText": "I like summer, fall, and winter.",
+      "recognizedText": "I like summer, fall, and winter."
+    }
+  ],
+  "repairs": [
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-try-1-q.mp3",
+      "reason": "Whole-clip and tail ASR omitted the final Start with instruction.",
+      "previousSha256": "039c613afee8e059cc6db9d8c6eac8fbe2e6b474ebe474408ca7dbfd0b60948c",
+      "replacementSha256": "259df7ff279457daf90ad5bd9aea2c1b60c4b7d522bf9f32b83c3034e299ca63",
+      "additionalApiRequests": 1,
+      "inputUnchanged": true,
+      "replacementRecognizedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence. Start with there.",
+      "humanListening": false,
+      "costUsd": null
+    }
+  ]
+}

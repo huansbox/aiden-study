@@ -1,0 +1,72 @@
+{
+  "lessonId": "2026-09-13",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-13-season-actions-try-1-q.mp3",
+      "sha256": "12c9910ee1142cc4735a5e3683169b93cc76fc6351e7fc586f240c465f6b3a01",
+      "expectedText": "This pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I.",
+      "recognizedText": "This pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-say-3-a.mp3",
+      "sha256": "8009dbee8ae1db75037d930abb476eae75be2144b718bac937cc3a267a26d6c3",
+      "expectedText": "I ride a bike in spring.",
+      "recognizedText": "I ride a bike in spring."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-try-1-q.mp3",
+      "sha256": "51b61fc76c4f0026977ff0ac1ab0acfda51259def0149b3f23614fcc92d2ca64",
+      "expectedText": "This made-up story is in Pine Town. The season is winter. The weather is snowy. Describe the weather in this story. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up story is in Pinetown. The season is winter. The weather is snowy. Describe the weather in this story. Build a full sentence. Start with it."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-say-3-a.mp3",
+      "sha256": "0f74215189fe882ca3c7eec24d4ab6392af60bbf0565c7994dcce5d7e1f52507",
+      "expectedText": "It is warm in spring.",
+      "recognizedText": "It is warm in spring."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-try-1-q.mp3",
+      "sha256": "5c04f73dd41e1291668dd56d07b29dbe9ec5fd3f422facd16eb00b4ce503dea9",
+      "expectedText": "In this pretend plan, the action is ride my bike, and the place is in the park. Where do you do this? Build a full sentence. Start with I.",
+      "recognizedText": "In this pretend plan, the action is ride my bike and the place is in the park. Where do you do this? Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-say-3-a.mp3",
+      "sha256": "4c6da1ffa9a47b7e6dd317cb4725ac499b13849face5fb02a6d1328f77d61a80",
+      "expectedText": "I play in the house.",
+      "recognizedText": "I play in the house."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-try-1-q.mp3",
+      "sha256": "49ccf5f94d148b4303eaefa636d6c74636cb3ce0bfa0adb3bd066c249df6fc30",
+      "expectedText": "Three things: flowers, trees, and birds. Which written sentence uses commas to separate the list?",
+      "recognizedText": "Three things flowers trees and birds which written sentence uses commas to separate the list"
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-say-3-a.mp3",
+      "sha256": "4a0dab8e31c347c7b869dad76067be4d675b581f70d80ca5606b73b8f47197d9",
+      "expectedText": "I like spring, summer, and winter.",
+      "recognizedText": "I like spring, summer, and winter."
+    }
+  ],
+  "repairs": [
+    {
+      "file": "audio/2026-09-13-season-actions-try-1-q.mp3",
+      "reason": "Whole-clip and tail ASR omitted the final Start with instruction.",
+      "previousSha256": "0b212083afebfba9b3635eac75fbecd3eecb1d5e7afc6598041cc05cd486662d",
+      "replacementSha256": "12c9910ee1142cc4735a5e3683169b93cc76fc6351e7fc586f240c465f6b3a01",
+      "additionalApiRequests": 1,
+      "inputUnchanged": true,
+      "replacementRecognizedText": "This pretend plan is for spring. The plan is to plant flowers. Tell me the plan. Build a full sentence. Start with I.",
+      "humanListening": false,
+      "costUsd": null
+    }
+  ]
+}

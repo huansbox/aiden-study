@@ -1,37 +1,45 @@
 {
+  "lessonId": "2026-09-16",
   "engine": "faster-whisper 1.2.1",
   "model": "small.en",
   "audioUploaded": false,
   "initialPrompt": null,
   "humanListening": false,
+  "pronunciationAssessment": false,
   "samples": [
     {
       "file": "audio/2026-09-16-family-roles-try-1-q.mp3",
+      "sha256": "23087f87a8ded174d54a6aa4fda04c474769d22a38254bbee1645add55400b57",
       "expectedText": "Tom is my mum's brother. Who is Tom? Pick one.",
-      "recognizedText": "Tom is my mum's brother. Who is Tom? Pick one."
+      "recognizedText": "Tom is my mom's brother. Who is Tom? Pick one."
     },
     {
       "file": "audio/2026-09-16-family-roles-say-3-a.mp3",
+      "sha256": "9dbdfb0b1b495f390a134e448088ba18b84a5bcba69be4180c1dc7dc99cc31e7",
       "expectedText": "She is my cousin.",
       "recognizedText": "She is my cousin."
     },
     {
       "file": "audio/2026-09-16-short-forms-try-1-q.mp3",
+      "sha256": "26357c78d712f3e8b5126f9e09760fc65ddab4debaf12673e65f6074e303b61a",
       "expectedText": "I am eight years old. Make it short. Pick one.",
-      "recognizedText": "I am eight years old make it short pick one"
+      "recognizedText": "I am eight years old. Make it short. Pick one."
     },
     {
       "file": "audio/2026-09-16-short-forms-say-3-a.mp3",
+      "sha256": "08f2b1c85e76e2b77e2d78aa372f21e910c23606c7d150a29717d533656b2048",
       "expectedText": "He's six years old.",
-      "recognizedText": "He's six years old."
+      "recognizedText": "He's 6 years old."
     },
     {
       "file": "audio/2026-09-16-opposites-try-1-q.mp3",
+      "sha256": "f3e28a6522630dbd2ce5c7aac6cf9194b639d3c8ffce9ed6ad0154b8c440b4df",
       "expectedText": "Old. Pick the opposite.",
       "recognizedText": "Old. Pick the opposite."
     },
     {
       "file": "audio/2026-09-16-opposites-say-3-a.mp3",
+      "sha256": "aded5a824a7bd5527551c3aa85027f90e3b16091a60c138efd94939e456b0684",
       "expectedText": "Small is the opposite.",
       "recognizedText": "Small is the opposite."
     }

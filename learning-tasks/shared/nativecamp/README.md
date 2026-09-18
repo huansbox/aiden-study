@@ -12,7 +12,32 @@ uv run --offline learning-tasks/shared/nativecamp/build_lesson.py --lesson 2026-
 uv run --offline learning-tasks/shared/nativecamp/build_lesson.py --lesson 2026-09-16 --check
 ```
 
-`--check` 只比對產物，不寫檔。正式語音工具入口與比較結果見[9/16課程來源](../../nativecamp-2026-09-16/source/lesson-brief.md)；音訊工具實際位置為 `learning-tasks/nativecamp-2026-09-16/source/tts-build-lesson.py`，接受兩堂日期。
+`--check` 只比對產物，不寫檔。一般語音改由下方共用 OpenAI 工具製作；舊 `tts-build-lesson.py`／`speak_nativecamp.ps1` 是 Windows SAPI 歷史工具，不用來重建目前正式音檔。
+
+## OpenAI 語音製作
+
+`build_openai_audio.py` 讀取已審核的原創 `speech-jobs.json`：`[{"file":"<題目>-q.mp3","text":"完整問題"},{"file":"<題目>-a.mp3","text":"完整答案"}]`。檔名是 MP3 basename，不能含路徑、不能重複；每段最多 4096 字元。課程與週包皆可使用，`--lesson` 必須與既有 manifest 的 lessonId 相同。
+
+使用固定 `gpt-4o-mini-tts-2025-12-15`、MP3、speed 1.0。指示為自然清楚的正常英文對話語速，沒有慢速或 135 wpm 指示。音色明確指定，不依目錄排序：09-13 Marin、09-14 Cedar、09-15 Marin、09-16 Cedar、09-17 Marin、首週包 Cedar。聲音為 AI 合成；只將原創題文送到 API，老師／孩子錄音與私人老師片段不經本工具。
+
+```powershell
+# 由已登入的 1Password CLI 暫時注入；環境裡先放 secret reference，非明文 key。
+$env:OPENAI_API_KEY = 'op://<vault>/<OpenAI item>/credential'
+op run -- uv run --python 3.13 learning-tasks/shared/nativecamp/build_openai_audio.py --lesson 2026-09-14 --voice cedar --jobs learning-tasks/nativecamp-2026-09-14/source/speech-jobs.json --manifest learning-tasks/nativecamp-2026-09-14/source/nativecamp-audio-manifest.json
+
+# 不需 key，檢查每檔的輸入指紋、hash、完整解碼與非靜音。
+uv run --python 3.13 learning-tasks/shared/nativecamp/build_openai_audio.py --lesson 2026-09-14 --voice cedar --jobs learning-tasks/nativecamp-2026-09-14/source/speech-jobs.json --manifest learning-tasks/nativecamp-2026-09-14/source/nativecamp-audio-manifest.json --check
+
+# 原創合成音的本機 ASR 抽查；需要已快取的 small.en，不上傳音檔。
+uv run --offline --python 3.13 learning-tasks/shared/nativecamp/check_openai_audio.py --manifest learning-tasks/nativecamp-2026-09-14/source/nativecamp-audio-manifest.json
+uv run --python 3.13 pytest -q tests/test_nativecamp_openai_audio.py
+```
+
+`--audio-dir` 預設 `docs/nativecamp/audio`，可指定隔離輸出。初次權限驗證可加 `--limit 1`，之後原指令續跑；不要為同一 manifest 同時執行兩個製作程序。工具不自行重試付費請求。下載先核對可得的 Content-Length，正常 EOF 短讀或中斷都視為失敗；完整驗證暫存音檔、保存 receipt 後才取代原檔。失敗不把半檔當正式音檔，下次可接續。輸入設定、hash 與解碼都相符時跳過，零 API 請求且不需 key。僅刪除或重排 jobs 時更新 manifest 清單、順序與 jobs hash，不重製音檔；`--check` 遇到過期清單會失敗且不寫檔，完全未變的重跑也不寫檔。
+
+manifest 保留既有老師片段證據。每個 TTS 項目包含文字、model、voice、settings、inputFingerprint、requestId、hash、bytes、音長、RMS 與驗證結果；頂層 `status: complete` 才代表所有工作完成。`openaiGeneration` 累計送出的請求與成功回應數；binary Speech API 未回傳 token usage，因此 usage／costUsd 記為 null，音長及請求數不能冒充實際帳單。ASR 報告每段附音檔 hash，沒有提供預期文字作辨識 prompt；轉錄比對不等於人耳自然度、iPad 或發音驗收。
+
+API 契約依 [OpenAI Speech API reference](https://developers.openai.com/api/reference/resources/audio/subresources/speech/methods/create)、[TTS guide](https://developers.openai.com/api/docs/guides/text-to-speech)及 [model snapshots](https://developers.openai.com/api/docs/models/gpt-4o-mini-tts) 核對（2026-09-18）。
 
 ## 私人回放核對
 
@@ -28,7 +53,7 @@ uv run --offline learning-tasks/shared/nativecamp/check_lesson_audio.py --task 2
 ## 內容稽核
 
 ```powershell
-node --test tests/test_nativecamp_content.mjs tests/test_nativecamp_edon_content.mjs
+node --test tests/test_nativecamp_content.mjs tests/test_nativecamp_edon_content.mjs tests/test_nativecamp_weekly_content.mjs
 ```
 
-舊課仍檢查35個原音檔；新課測試按各堂manifest驗證，並檢查整個public audio恰好是三課的聯集，防止重名覆寫、漏檔或未列入manifest的檔案。
+各題包依 manifest 驗證音檔；測試也確認 public audio 恰好是 catalog 全部課程與週包的一般 TTS 聯集，防止重名覆寫、漏檔或未列入 manifest 的檔案。私人老師片段不在 public audio 中。

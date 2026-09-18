@@ -6,6 +6,7 @@ import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 import "../docs/shared/family-core.js";
 import "../docs/nativecamp/core.js";
+import { legacyProgress, weeklyFixture } from "./helpers/nativecamp-weekly.mjs";
 const F = globalThis.KidsFamilyCore, C = globalThis.NativeCampCore;
 const origin = "https://kids.linshuhuan.com", date = "2026-09-17";
 const lesson = { id: "2026-09-15", date: "2026-09-15", title: "Counting", concepts:
@@ -31,7 +32,7 @@ function environment() {
     value: JSON.stringify({ rev: 1, data: settings }),
   } }) };
 }
-async function browser(env, { child = "aiden", storage = new Map(), offline = false } = {}) {
+async function browser(env, { child = "aiden", storage = new Map(), offline = false, schemaVersion = 2 } = {}) {
   const cookie = await login(env), listeners = new Map(), calls = [], shown = [], pendingRequests = new Set();
   const localStorage = {
     get length() { return storage.size; }, key: (i) => [...storage.keys()][i],
@@ -66,7 +67,16 @@ async function browser(env, { child = "aiden", storage = new Map(), offline = fa
   context.window = context;
   for (const path of ["shared/sync-v1.js", "shared/wiring-v1.js", "shared/family-core.js", "shared/family-client.js", "nativecamp/core.js"])
     vm.runInContext(readFileSync(new URL("../docs/" + path, import.meta.url), "utf8"), context);
-  context.nativecampWiring = context.KidsWiringV1.createWiring({ appId: "nativecamp", schemaVersion: 1, legacyChild: "aiden", legacyKey: null });
+  if (schemaVersion === 1) {
+    // Match the deployed v1 reader's strict version boundary and known-field normalization.
+    const modern = context.NativeCampCore.validateProgress;
+    context.NativeCampCore.createProgress = () => ({ schemaVersion: 1, lessons: {} });
+    context.NativeCampCore.validateProgress = (value) => {
+      if (value?.schemaVersion !== 1) throw Error("This saved progress is not valid.");
+      const normalized = modern(value); return { schemaVersion: 1, lessons: normalized.lessons };
+    };
+  }
+  context.nativecampWiring = context.KidsWiringV1.createWiring({ appId: "nativecamp", schemaVersion, legacyChild: "aiden", legacyKey: null });
   vm.runInContext(readFileSync(new URL("../docs/nativecamp/platform.js", import.meta.url), "utf8"), context);
   const notices = [], bridge = await context.NativeCampPlatform.boot(lesson, (event) => notices.push(event.type));
   return { bridge, storage, cookie, calls, notices, context,
@@ -99,7 +109,7 @@ test("new app supports parent visibility and activity without adding scheduled a
   settings.children.aiden.apps = settings.children.aiden.apps.filter((id) => id !== "nativecamp");
   assert.ok(!F.homeEntries(settings, "aiden", reg).some((entry) => entry.id === "nativecamp"));
 });
-test("independent device storage and cookies restore first results, both Done flags and deferred date", async () => {
+test("independent device storage and cookies restore first results, both Done flags without reopening tomorrow", async () => {
   const env = environment(), a = await browser(env);
   firstRounds(a.bridge);
   const final = a.bridge.getProgress();
@@ -112,7 +122,7 @@ test("independent device storage and cookies restore first results, both Done fl
   const summary = C.summarizeLesson(b.bridge.getProgress(), lesson, date);
   assert.ok(summary.try.done && summary.say.done);
   assert.equal(summary.try.concepts[0].attempted, 2);
-  assert.equal(summary.try.concepts[0].dueOn, "2026-09-18");
+  assert.equal(summary.try.concepts[0].dueOn, null);
   const streams = (await (await request(env, "activity/aiden", a.cookie)).json()).streams;
   const total = F.summarize(streams).total;
   assert.equal(total.completed, 12);
@@ -141,7 +151,7 @@ test("offline edits survive reload and upload on reconnect; other child remains 
   assert.equal(await env.KV.get("p:bingpu:nativecamp"), null);
 });
 
-test("adding another lesson and reviewing the original preserve both lessons across independent devices", async () => {
+test("adding another lesson preserves completed originals across independent devices", async () => {
   const env = environment(), first = await browser(env);
   firstRounds(first.bridge);
   const originalState = JSON.parse(JSON.stringify(first.bridge.getProgress().lessons[lesson.id]));
@@ -153,12 +163,13 @@ test("adding another lesson and reviewing the original preserve both lessons acr
   assert.deepEqual(JSON.parse(JSON.stringify(restored.lessons[lesson.id])), originalState);
   assert.equal(restored.lessons[newer.id].try["is-are"].initial[0].outcome, "incorrect");
   const due = C.nextQuestion(restored, lesson, "try", "2026-09-18", "is-are");
-  assert.equal(due.phase, "deferred");
-  const reviewed = C.submitTry(restored, lesson, "2026-09-18", "is-are", due.question.id, "yes");
+  assert.equal(due, null);
+  const reviewed = C.submitTry(restored, lesson, "2026-09-18", "is-are", "is-are-try-3", "yes");
+  assert.equal(reviewed.recorded, false);
   second.bridge.saveProgress(reviewed.progress, { answered: true, correct: true });
   await second.bridge.syncNow(); await first.bridge.syncNow();
   const final = first.bridge.getProgress();
-  assert.equal(final.lessons[lesson.id].try["is-are"].initial.length, 3);
+  assert.equal(final.lessons[lesson.id].try["is-are"].initial.length, 2);
   assert.equal(final.lessons[lesson.id].try["is-are"].dueOn, null);
   assert.deepEqual(JSON.parse(JSON.stringify(final.lessons[newer.id])), JSON.parse(JSON.stringify(restored.lessons[newer.id])));
   assert.equal(await env.KV.get("p:bingpu:nativecamp"), null);
@@ -173,6 +184,12 @@ test("Native Camp records activity immediately and exposes rewards only through 
       a.bridge.saveProgress(result.progress, { answered: true, correct: false });
     }
   }
+  const newLesson = { ...structuredClone(lesson), id: "2026-09-16", date: "2026-09-16" };
+  for (let i = 0; i < 3; i++) {
+    const next = C.nextQuestion(a.bridge.getProgress(), newLesson, "try", date, "is-are");
+    const result = C.submitTry(a.bridge.getProgress(), newLesson, date, "is-are", next.question.id, "no");
+    a.bridge.saveProgress(result.progress, { answered: true, correct: false });
+  }
   assert.equal(a.context.KidsFamily.summary("aiden").total.answered, 12);
   assert.equal(a.rewards().length, 0);
   a.bridge.setActive(false);
@@ -186,6 +203,41 @@ test("Native Camp records activity immediately and exposes rewards only through 
   assert.equal(a.rewards().length, 1);
   a.bridge.setActive(true);
   assert.equal(a.rewards().length, 0, "Beginning another round clears the previous reward.");
+});
+
+test("legacy history upgrades on a real save and weekly selections survive independent device sync", async () => {
+  const env = environment(), key = "nativecamp:progress:aiden", old = legacyProgress();
+  const storage = new Map([[key, JSON.stringify(old)]]), a = await browser(env, { storage });
+  assert.deepEqual(JSON.parse(JSON.stringify(a.bridge.getProgress().lessons)), old.lessons);
+  assert.equal(JSON.parse(storage.get(key)).schemaVersion, 1, "Reading does not rewrite the old local snapshot.");
+  const weekly = weeklyFixture(), started = C.startLesson(a.bridge.getProgress(), weekly, "2026-09-20");
+  a.bridge.saveProgress(started); await a.bridge.syncNow();
+  const b = await browser(env), progress = b.bridge.getProgress();
+  assert.deepEqual(JSON.parse(JSON.stringify(progress.weekly)), started.weekly);
+  const next = C.nextQuestion(progress, weekly, "try", "2026-09-21");
+  b.bridge.saveProgress(C.submitTry(progress, weekly, "2026-09-21", next.concept.id, next.question.id, "is").progress);
+  await b.bridge.syncNow(); await a.bridge.syncNow();
+  assert.deepEqual(JSON.parse(JSON.stringify(a.bridge.getProgress().lessons[lesson.id])), old.lessons[lesson.id]);
+  assert.deepEqual(JSON.parse(JSON.stringify(a.bridge.getProgress().weekly)), started.weekly);
+  assert.equal(C.nextQuestion(a.bridge.getProgress(), weekly, "try", "2026-09-22").number, 2);
+});
+
+test("an older open app cannot replace v2 weekly progress in family storage or shared local storage", async () => {
+  const env = environment(), old = await browser(env, { schemaVersion: 1 });
+  const current = await browser(env), weekly = weeklyFixture();
+  current.bridge.saveProgress(C.startLesson(current.bridge.getProgress(), weekly, "2026-09-20"));
+  await current.bridge.syncNow();
+  const remote = await env.KV.get("p:aiden:nativecamp");
+  await old.bridge.syncNow();
+  assert.match(old.bridge.status(), /newer app/);
+  assert.throws(() => old.bridge.saveProgress({ schemaVersion: 1, lessons: {} }), /newer app/);
+  assert.equal(await env.KV.get("p:aiden:nativecamp"), remote);
+  const shared = new Map(), stale = await browser(environment(), { storage: shared, schemaVersion: 1 });
+  stale.setOffline(true);
+  shared.set("nativecamp:progress:aiden", JSON.stringify(C.startLesson(C.createProgress(), weekly, "2026-09-20")));
+  const snapshot = shared.get("nativecamp:progress:aiden");
+  assert.throws(() => stale.bridge.saveProgress({ schemaVersion: 1, lessons: {} }), /could not be read/);
+  assert.equal(shared.get("nativecamp:progress:aiden"), snapshot);
 });
 
 test("returning to a cached lesson page preserves another lesson saved in shared device storage", async () => {
