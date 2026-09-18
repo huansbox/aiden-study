@@ -32,6 +32,9 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-09-12 Lena](learning-tasks/nativecamp-2026-09-12/) | 依實際課堂內容練完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-12) |
+| [Native Camp 2026-09-11 Edon](learning-tasks/nativecamp-2026-09-11/) | 依實際課堂內容練完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-11) |
+| [Native Camp 2026-09-10 Anastasia](learning-tasks/nativecamp-2026-09-10/) | 依實際課堂內容練完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-10) |
 | [Native Camp Weekly Review 09-14～09-20](learning-tasks/nativecamp-weekly-2026-09-14/) | 本週新題與少量較早概念；首次弱項優先。 | [不計分預覽](docs/nativecamp/preview.html?lesson=weekly-2026-09-14) |
 | [Native Camp 2026-09-17 Khalid](learning-tasks/nativecamp-2026-09-17/) | 來源核對、完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-17) |
 | [Native Camp 2026-09-13 Michael](learning-tasks/nativecamp-2026-09-13/) | 來源核對、完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-13) |

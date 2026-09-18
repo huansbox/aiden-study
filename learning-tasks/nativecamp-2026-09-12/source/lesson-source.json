@@ -1,0 +1,586 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-12",
+  "date": "2026-09-12",
+  "title": "Build, grow, and describe",
+  "concepts": [
+    {
+      "id": "can-actions",
+      "title": "What can we do?",
+      "try": [
+        {
+          "id": "can-actions-try-1",
+          "prompt": "What can you do together?",
+          "instruction": "Use can. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / build / a treehouse",
+            "heading": "Work together"
+          },
+          "answerText": "We can build a treehouse.",
+          "spokenQuestion": "Start with We can. You and a friend build a treehouse. What can you do together?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w2",
+              "text": "build"
+            },
+            {
+              "id": "w4",
+              "text": "treehouse"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "can-actions-try-2",
+          "prompt": "What can you do together?",
+          "instruction": "Use can. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / grow / flowers",
+            "heading": "Work together"
+          },
+          "answerText": "We can grow flowers.",
+          "spokenQuestion": "You and a friend work together. The action is grow. The things are flowers. What can you do together? Use can. Start with We.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "flowers"
+            },
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w2",
+              "text": "grow"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "can-actions-try-3",
+          "prompt": "What can you do together?",
+          "instruction": "Use can. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / watch / animals",
+            "heading": "Work together"
+          },
+          "answerText": "We can watch animals.",
+          "spokenQuestion": "Start with We can. You and a friend watch animals. What can you do together?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "animals"
+            },
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w2",
+              "text": "watch"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "can-actions-say-1",
+          "prompt": "What can you do together?",
+          "instruction": "We can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / make / a swing",
+            "heading": "Work together"
+          },
+          "answerText": "We can make a swing.",
+          "spokenQuestion": "You and a friend work together. The action is make. The thing is a swing. What can you do together? Say a full sentence. Start with We can.",
+          "accepted": [
+            "We can make a swing together."
+          ]
+        },
+        {
+          "id": "can-actions-say-2",
+          "prompt": "What can you do together?",
+          "instruction": "We can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / build / a snowman",
+            "heading": "Work together"
+          },
+          "answerText": "We can build a snowman.",
+          "spokenQuestion": "You and a friend work together. The action is build. The thing is a snowman. What can you do together? Say a full sentence. Start with We can.",
+          "accepted": [
+            "We can build a snowman together."
+          ]
+        },
+        {
+          "id": "can-actions-say-3",
+          "prompt": "What can you do together?",
+          "instruction": "We can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / make / an apple pie",
+            "heading": "Work together"
+          },
+          "answerText": "We can make an apple pie.",
+          "spokenQuestion": "You and a friend work together. The action is make. The thing is an apple pie. What can you do together? Say a full sentence. Start with We can.",
+          "accepted": [
+            "We can make an apple pie together."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "watch-grow",
+      "title": "Watch things grow",
+      "try": [
+        {
+          "id": "watch-grow-try-1",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch small buds. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch small buds grow.",
+          "spokenQuestion": "Start with I. You watch small buds. They get bigger. What do you watch? Use grow.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "watch"
+            },
+            {
+              "id": "w3",
+              "text": "buds"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "grow"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "watch-grow-try-2",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch small apples. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch small apples grow.",
+          "spokenQuestion": "You watch small apples. They get bigger. What do you watch? Use grow. Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "watch"
+            },
+            {
+              "id": "w3",
+              "text": "apples"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "grow"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "watch-grow-try-3",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch flowers. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch flowers grow.",
+          "spokenQuestion": "You watch flowers. They get bigger. What do you watch? Use grow. Build a full sentence. Start with I.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "watch"
+            },
+            {
+              "id": "w3",
+              "text": "grow"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "flowers"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "watch-grow-say-1",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "I watch …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch buds. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch buds grow.",
+          "spokenQuestion": "You watch buds. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+          "accepted": [
+            "I watch the buds grow."
+          ]
+        },
+        {
+          "id": "watch-grow-say-2",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "I watch …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch apples. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch apples grow.",
+          "spokenQuestion": "You watch apples. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+          "accepted": [
+            "I watch the apples grow."
+          ]
+        },
+        {
+          "id": "watch-grow-say-3",
+          "prompt": "What do you watch? Use grow.",
+          "instruction": "I watch …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You watch trees. They get bigger.",
+            "heading": "Watch closely"
+          },
+          "answerText": "I watch trees grow.",
+          "spokenQuestion": "You watch trees. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+          "accepted": [
+            "I watch the trees grow."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-details",
+      "title": "Tell me about your tree",
+      "try": [
+        {
+          "id": "tree-details-try-1",
+          "prompt": "What does your tree have?",
+          "instruction": "Build a full sentence. Start with My tree. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / red",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has red apples.",
+          "spokenQuestion": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with My tree.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "tree"
+            },
+            {
+              "id": "w3",
+              "text": "red"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w4",
+              "text": "apples"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "tree-details-try-2",
+          "prompt": "What does your tree have?",
+          "instruction": "Build a full sentence. Start with My tree. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / big",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has big apples.",
+          "spokenQuestion": "This is your tree. It has apples. The apples are big. What does your tree have? Build a full sentence. Start with My tree.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "tree"
+            },
+            {
+              "id": "w3",
+              "text": "big"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w4",
+              "text": "apples"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "tree-details-try-3",
+          "prompt": "What does your tree have?",
+          "instruction": "Build a full sentence. Start with My tree. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / small",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has small apples.",
+          "spokenQuestion": "This is your tree. It has apples. The apples are small. What does your tree have? Build a full sentence. Start with My tree.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "tree"
+            },
+            {
+              "id": "w3",
+              "text": "small"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w4",
+              "text": "apples"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "tree-details-say-1",
+          "prompt": "What does your tree have?",
+          "instruction": "My tree …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / tasty",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has tasty apples.",
+          "spokenQuestion": "This is your tree. It has apples. The apples are tasty. What does your tree have? Say a full sentence. Start with My tree.",
+          "accepted": [
+            "My tree has some tasty apples."
+          ]
+        },
+        {
+          "id": "tree-details-say-2",
+          "prompt": "What does your tree have? Use both details.",
+          "instruction": "My tree …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / big + red",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has big red apples.",
+          "spokenQuestion": "This is your tree. It has apples. The apples are big and red. What does your tree have? Use both details. Say a full sentence. Start with My tree.",
+          "accepted": [
+            "My tree has big and red apples.",
+            "My tree has apples that are big and red."
+          ]
+        },
+        {
+          "id": "tree-details-say-3",
+          "prompt": "What does your tree have? Use both details.",
+          "instruction": "My tree …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your tree / apples / red + tasty",
+            "heading": "Tree card"
+          },
+          "answerText": "My tree has tasty red apples.",
+          "spokenQuestion": "What does your tree have? Start with My tree and use both details: red and tasty apples.",
+          "accepted": [
+            "My tree has red and tasty apples.",
+            "My tree has apples that are red and tasty."
+          ]
+        }
+      ]
+    }
+  ]
+}

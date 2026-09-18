@@ -1,0 +1,47 @@
+{
+  "lessonId": "2026-09-12",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-12-can-actions-try-1-q.mp3",
+      "sha256": "3979e5700f6ea3ce2495c0f021dea707410bf1346afd62f02ee3d07764f83687",
+      "expectedText": "Start with We can. You and a friend build a treehouse. What can you do together?",
+      "recognizedText": "Start with we can you and a friend build a treehouse. What can you do together?"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-say-3-a.mp3",
+      "sha256": "9bdf36f640b8415f29ccfe836dc5a48fc462176d6045f56b2b97ebcc916ac9a7",
+      "expectedText": "We can make an apple pie.",
+      "recognizedText": "We can make an apple pie."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-try-1-q.mp3",
+      "sha256": "5b1665f0b751fc766fd482885053f3781ff6be841a5e128d4d2d9b471db5b66b",
+      "expectedText": "Start with I. You watch small buds. They get bigger. What do you watch? Use grow.",
+      "recognizedText": "Start with I. You watch small buds. They get bigger. What do you watch? Use Grow."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-say-3-a.mp3",
+      "sha256": "61b437af1c3a72b7af0ca0ae520ad9b4e123a99ea3be4ec312bc9b64b56e756e",
+      "expectedText": "I watch trees grow.",
+      "recognizedText": "I watch trees grow."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-try-1-q.mp3",
+      "sha256": "6bd006491c91a06cfad4f1d7616476edacc1edf5ec5b1485f6a28723ad17ddd5",
+      "expectedText": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with my tree."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-say-3-a.mp3",
+      "sha256": "75205523d152b4a3033f5414d3f3b17b3a81b1b70a4d69992cd58da16b8f3249",
+      "expectedText": "My tree has tasty red apples.",
+      "recognizedText": "My tree has tasty red apples."
+    }
+  ]
+}

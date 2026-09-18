@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-12",
+  "status": "passed",
+  "coverage": {
+    "questionFiles": 18,
+    "allQuestionFiles": true,
+    "answerFiles": false
+  },
+  "method": {
+    "engine": "faster-whisper 1.2.1",
+    "model": "small.en",
+    "device": "cpu",
+    "computeType": "int8",
+    "language": "en",
+    "beamSize": 5,
+    "vadFilter": false,
+    "conditionOnPreviousText": false,
+    "initialPrompt": null,
+    "audioUploaded": false,
+    "comparison": "All current question-file hashes and original speech text were checked. Changed files were transcribed again; unchanged hashes retain their earlier independent transcription."
+  },
+  "comparisonNotes": [
+    "Case, punctuation and hyphenation differences were ignored. Every question cue and content word was checked.",
+    "Earlier missing phrases were confirmed with unprompted large-v2 transcription of padded tail clips. Only corrected, regenerated versions with matching current hashes are included here.",
+    "One homophonic ASR spelling difference is explained on its sample; it is not counted as a missing phrase."
+  ],
+  "limits": {
+    "humanListening": false,
+    "naturalnessAssessment": false,
+    "iPadPlayback": false,
+    "pronunciationAssessment": false,
+    "scope": "Original synthetic review questions only. This is not an audit of private lesson recordings or child performance."
+  },
+  "samples": [
+    {
+      "file": "audio/2026-09-12-can-actions-try-1-q.mp3",
+      "sha256": "3979e5700f6ea3ce2495c0f021dea707410bf1346afd62f02ee3d07764f83687",
+      "expectedText": "Start with We can. You and a friend build a treehouse. What can you do together?",
+      "recognizedText": "Start with we can you and a friend build a treehouse. What can you do together?",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-try-2-q.mp3",
+      "sha256": "f51a4f31cd476486734206b10768892273d8803ce302bc5c410ec7dfa1fdcf64",
+      "expectedText": "You and a friend work together. The action is grow. The things are flowers. What can you do together? Use can. Start with We.",
+      "recognizedText": "You and a friend work together. The action is grow. The things are flowers. What can you do together? You's can. Start with we.",
+      "assessment": "passed",
+      "comparisonNotes": [
+        "ASR wrote \"You's can\" for \"Use can\". This is a homophonic spelling difference; all other content and the sentence-start cue match."
+      ]
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-try-3-q.mp3",
+      "sha256": "4ff792a33c1ad4a41901ff9e492e30277dfa8c8f2aba59a679d590a37a0d8e6d",
+      "expectedText": "Start with We can. You and a friend watch animals. What can you do together?",
+      "recognizedText": "Start with we can you and a friend watch animals. What can you do together?",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-say-1-q.mp3",
+      "sha256": "bc9ab234a28c844061179d908d92ee8daeb9e3957e9016d2fde5212c9544ab0b",
+      "expectedText": "You and a friend work together. The action is make. The thing is a swing. What can you do together? Say a full sentence. Start with We can.",
+      "recognizedText": "You and a friend work together. The action is make. The thing is a swing. What can you do together? Say a full sentence. Start with we can.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-say-2-q.mp3",
+      "sha256": "e5144e78a1c85b77787a20d8e921cbe1e409337d4a8c61116c3f8b516795b7fc",
+      "expectedText": "You and a friend work together. The action is build. The thing is a snowman. What can you do together? Say a full sentence. Start with We can.",
+      "recognizedText": "You and a friend work together. The action is build. The thing is a snowman. What can you do together? Say a full sentence. Start with we can.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-say-3-q.mp3",
+      "sha256": "e2ebfc1ac75a7e4368b7f0e2a5433f91f5967bf491184ed04f89964b53194cfe",
+      "expectedText": "You and a friend work together. The action is make. The thing is an apple pie. What can you do together? Say a full sentence. Start with We can.",
+      "recognizedText": "you and a friend work together. The action is make. The thing is an apple pie. What can you do together? Say a full sentence. Start with we can.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-try-1-q.mp3",
+      "sha256": "5b1665f0b751fc766fd482885053f3781ff6be841a5e128d4d2d9b471db5b66b",
+      "expectedText": "Start with I. You watch small buds. They get bigger. What do you watch? Use grow.",
+      "recognizedText": "Start with I. You watch small buds. They get bigger. What do you watch? Use Grow.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-try-2-q.mp3",
+      "sha256": "93be8da53c50971c9f088bcfd3a4d51010651db258202c7f3272819beb0b62c1",
+      "expectedText": "You watch small apples. They get bigger. What do you watch? Use grow. Build a full sentence. Start with I.",
+      "recognizedText": "You watch small apples. They get bigger. What do you watch? Use grow. Build a full sentence. Start with I.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-try-3-q.mp3",
+      "sha256": "7bb85952fb1df68a63be14f10ccb4979dddb2b59c7b7bcfbdcf7e2bc9ef8cd69",
+      "expectedText": "You watch flowers. They get bigger. What do you watch? Use grow. Build a full sentence. Start with I.",
+      "recognizedText": "You watch flowers they get bigger. What do you watch use grow build a full sentence start with I?",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-say-1-q.mp3",
+      "sha256": "f10fcb99572484dd7bbec2a9c7791d7efbbf38a905aec3bca469d8317d2a6934",
+      "expectedText": "You watch buds. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+      "recognizedText": "You watch buds. They get bigger. What do you watch? Use grow. Say a full sentence. Start with, I watch.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-say-2-q.mp3",
+      "sha256": "9a020f9de2a25859ba89196242e7d2be60f8d4c2e53d30c161b29ebed8c1d8d0",
+      "expectedText": "You watch apples. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+      "recognizedText": "You watch apples. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-say-3-q.mp3",
+      "sha256": "4354e79c78fcd164512fd963c3b77226203b3b77823f3eed46e928d3e2387726",
+      "expectedText": "You watch trees. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+      "recognizedText": "You watch trees. They get bigger. What do you watch? Use grow. Say a full sentence. Start with I watch.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-try-1-q.mp3",
+      "sha256": "6bd006491c91a06cfad4f1d7616476edacc1edf5ec5b1485f6a28723ad17ddd5",
+      "expectedText": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with my tree.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-try-2-q.mp3",
+      "sha256": "c8ac24f40e28d80404d600964bc31ba0ae4edcf1b869307b1b5229d4d5e575d2",
+      "expectedText": "This is your tree. It has apples. The apples are big. What does your tree have? Build a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are big. What does your tree have? Build a full sentence. Start with, my tree.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-try-3-q.mp3",
+      "sha256": "56bf2b10539c7ff01407fa509cf80fe19e7671577290a287c5de04b47ca10b26",
+      "expectedText": "This is your tree. It has apples. The apples are small. What does your tree have? Build a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are small. What does your tree have? Build a full sentence. Start with, my tree.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-say-1-q.mp3",
+      "sha256": "f8ee9162a8a659ccfa97b6fd87c4b7533764b160376977f9c22e11ae05f56ccc",
+      "expectedText": "This is your tree. It has apples. The apples are tasty. What does your tree have? Say a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are tasty. What does your tree have? Say a full sentence. Start with, my tree.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-say-2-q.mp3",
+      "sha256": "dbc60f1f80d22e9117a757706bd2ddb96e164d018bac41621b5383b53b37255d",
+      "expectedText": "This is your tree. It has apples. The apples are big and red. What does your tree have? Use both details. Say a full sentence. Start with My tree.",
+      "recognizedText": "This is your tree. It has apples. The apples are big and red. What does your tree have? Use both details. Say a full sentence. Start with, my tree.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-say-3-q.mp3",
+      "sha256": "17fa450048c6aa5ab58987d176966997a66287fdd6b53cf0b3bb4dc5879f4e97",
+      "expectedText": "What does your tree have? Start with My tree and use both details: red and tasty apples.",
+      "recognizedText": "What does your tree have? Start with my tree and use both details, red and tasty apples.",
+      "assessment": "passed"
+    }
+  ]
+}

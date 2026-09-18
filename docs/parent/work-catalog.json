@@ -37,7 +37,7 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-09-18",
+      "updated": "2026-09-19",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -366,6 +366,126 @@
       "freshness": {
         "state": "current",
         "checkedAt": "2026-09-18T07:00:37.125Z",
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-12",
+      "type": "task",
+      "name": "Native Camp 2026-09-12 Lena",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-12",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-12"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-12",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-12"
+        }
+      ],
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "eventDate": "2026-09-12",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-11",
+      "type": "task",
+      "name": "Native Camp 2026-09-11 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-11",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-11"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-11",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-11"
+        }
+      ],
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "eventDate": "2026-09-11",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-10",
+      "type": "task",
+      "name": "Native Camp 2026-09-10 Anastasia",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-10",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-10"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-10",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-10"
+        }
+      ],
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "eventDate": "2026-09-10",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
         "error": null
       }
     },

@@ -3,6 +3,72 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "nativecamp-2026-09-12",
+      "name": "Native Camp 2026-09-12 Lena",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "eventDate": "2026-09-12",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "url": "../nativecamp/preview.html?lesson=2026-09-12",
+          "label": "不計分預覽"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-11",
+      "name": "Native Camp 2026-09-11 Edon",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "eventDate": "2026-09-11",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "url": "../nativecamp/preview.html?lesson=2026-09-11",
+          "label": "不計分預覽"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-10",
+      "name": "Native Camp 2026-09-10 Anastasia",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #97。",
+      "eventDate": "2026-09-10",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "依實際課堂內容練完整句排列與口說。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "url": "../nativecamp/preview.html?lesson=2026-09-10",
+          "label": "不計分預覽"
+        }
+      ]
+    },
+    {
       "id": "nativecamp-weekly-2026-09-14",
       "name": "Native Camp Weekly Review 09-14～09-20",
       "status": "complete",

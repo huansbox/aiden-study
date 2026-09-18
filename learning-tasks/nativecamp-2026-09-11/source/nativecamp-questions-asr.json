@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "lessonId": "2026-09-11",
+  "status": "passed",
+  "coverage": {
+    "questionFiles": 24,
+    "allQuestionFiles": true,
+    "answerFiles": false
+  },
+  "method": {
+    "engine": "faster-whisper 1.2.1",
+    "model": "small.en",
+    "device": "cpu",
+    "computeType": "int8",
+    "language": "en",
+    "beamSize": 5,
+    "vadFilter": false,
+    "conditionOnPreviousText": false,
+    "initialPrompt": null,
+    "audioUploaded": false,
+    "comparison": "All current question-file hashes and original speech text were checked. Changed files were transcribed again; unchanged hashes retain their earlier independent transcription."
+  },
+  "comparisonNotes": [
+    "Case, punctuation and hyphenation differences were ignored. Every question cue and content word was checked.",
+    "Earlier missing phrases were confirmed with unprompted large-v2 transcription of padded tail clips. Only corrected, regenerated versions with matching current hashes are included here."
+  ],
+  "limits": {
+    "humanListening": false,
+    "naturalnessAssessment": false,
+    "iPadPlayback": false,
+    "pronunciationAssessment": false,
+    "scope": "Original synthetic review questions only. This is not an audit of private lesson recordings or child performance."
+  },
+  "samples": [
+    {
+      "file": "audio/2026-09-11-weather-verbs-try-1-q.mp3",
+      "sha256": "9bd26601cc7dfa156d8fc620d0f83e4ba451ff79cfdea13cd784065cf96171d8",
+      "expectedText": "This made-up town has a summer card. Warm, then hot. How does the weather change? Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a summer card. Warm, then hot. How does the weather change? Build a full sentence. Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-try-2-q.mp3",
+      "sha256": "1e8463ca2b993713c94288c0b154d59a6a33e0f7dcc6e3e1c3d113047a90c4c4",
+      "expectedText": "This made-up town has a winter card. Snow. Tell me about snow. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a winter card, SNOW. Tell me about SNOW. Build a full sentence. Start with IT.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-try-3-q.mp3",
+      "sha256": "ca33adc741a6aa9552e19b0a38b221bb5fb473e999085fa6f70991cca1e0e5b8",
+      "expectedText": "This made-up town has a fall card. Warm, then cool. How does the weather change? Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a fall card. Warm, then cool. How does the weather change? Build a full sentence. Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-say-1-q.mp3",
+      "sha256": "8a8a95545e7eef3452fcc16efe4fe42676890fa7c0284637f34be2e145ec2591",
+      "expectedText": "This made-up town has a spring card. Cool, then warm. How does the weather change? Start with It.",
+      "recognizedText": "This made-up town has a spring card. Cool, then warm. How does the weather change? Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-say-2-q.mp3",
+      "sha256": "07a09c67e6daccef9b3b388308b8dd9d5af27a1e3eac492a0ab86056b3bb1a64",
+      "expectedText": "This made-up town has a winter card. Cool, then cold. How does the weather change? Start with It.",
+      "recognizedText": "This made-up town has a winter card. Cool. Then cold. How does the weather change? Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-say-3-q.mp3",
+      "sha256": "cda9a85cfa6428890e721e588040ee975e2f704e49d2d57ab1e23e2804dae181",
+      "expectedText": "This made-up town has a spring card. Snow. Tell me about snow. Start with It.",
+      "recognizedText": "This made up town has a spring card. Snow. Tell me about snow. Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-try-1-q.mp3",
+      "sha256": "9e8d123bc374d46711a8dd1b65e2aaad564315a735f90deee417b8bfdb24d69c",
+      "expectedText": "This made-up town has a summer card. No cold weather. Tell me about cold weather. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a summer card. No cold weather. Tell me about cold weather. Build a full sentence. Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-try-2-q.mp3",
+      "sha256": "0a0a56b6c8fcc161ffff363090f489b150f776701f52fe5c715172e40b1cd7dd",
+      "expectedText": "This made-up town has a summer card. No snow. Tell me about snow. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a summer card, no snow, tell me about snow, build a full sentence, start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-try-3-q.mp3",
+      "sha256": "2751cfb866fc95c18ec428798c9fd3d979b020a0f48bf2855467db69a1d0faed",
+      "expectedText": "This made-up town has a winter card. No hot weather. Tell me about hot weather. Build a full sentence. Start with It.",
+      "recognizedText": "This made-up town has a winter card. No hot weather. Tell me about hot weather. Build a full sentence. Start with it.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-say-1-q.mp3",
+      "sha256": "fd4b5f2e9136f1eba978cc13c51f06e6bba2b3c7830d1d0ca253a2720eae710b",
+      "expectedText": "This made-up town has a spring card. No snow. Tell me about snow. Start with It doesn't.",
+      "recognizedText": "This made-up town has a spring card. No snow. Tell me about snow. Start with, it doesn't.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-say-2-q.mp3",
+      "sha256": "acb3711113388ef1eeda3a41934f483cc33431070c977eedbd97f5fddfc294fd",
+      "expectedText": "This made-up town has a fall card. No hot weather. Tell me about hot weather. Start with It doesn't.",
+      "recognizedText": "This made-up town has a fall card. No hot weather. Tell me about hot weather. Start with, it doesn't.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-say-3-q.mp3",
+      "sha256": "c753a7166a7409976ac54645dcc8a938e6af20a6110f45240a165a91eada1224",
+      "expectedText": "This made-up town has a summer card. No cool weather. Tell me about cool weather. Start with It doesn't.",
+      "recognizedText": "This made-up town has a summer card. No cool weather. Tell me about cool weather. Start with, it doesn't.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-try-1-q.mp3",
+      "sha256": "a589e14654ba876098208efe17be3ae39b17fdfd0123dec8b6f13586b29db125",
+      "expectedText": "On this four-season calendar, it is spring. What season comes next? Build a full sentence with comes after.",
+      "recognizedText": "On this four-season calendar, it is spring. What season comes next? Build a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-try-2-q.mp3",
+      "sha256": "8c62349daf7a720c73d1a661bcef6623bd31a4a37a1eafa80af4ed60e8be66f4",
+      "expectedText": "On this four-season calendar, it is summer. What season comes next? Build a full sentence with comes after.",
+      "recognizedText": "On this four-season calendar, it is summer. What season comes next? Build a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-try-3-q.mp3",
+      "sha256": "fb01bc81686125e3cdb4b794a24dcd1261e325e199ccc9973f1de152de877878",
+      "expectedText": "On this four-season calendar, it is fall. What season comes next? Build a full sentence with comes after.",
+      "recognizedText": "On this four season calendar, it is fall. What season comes next? Build a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-say-1-q.mp3",
+      "sha256": "e8b94c133c84d89d9ba65ca04242260511cf9b2d9f6d2b62c6c1fce816974ef3",
+      "expectedText": "On this four-season calendar, it is winter. What season comes next? Say a full sentence with comes after.",
+      "recognizedText": "On this four-season calendar, it is winter. What season comes next? Say a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-say-2-q.mp3",
+      "sha256": "a3243f992ca0d1d0001fa37fdc8ddcd33cd87d697647ca846e07355aaa53b0be",
+      "expectedText": "On this four-season calendar, it is summer. What season comes next? Say a full sentence with comes after.",
+      "recognizedText": "On this four season calendar, it is summer. What season comes next? Say a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-say-3-q.mp3",
+      "sha256": "102d66c51621b7515857417f2210e0ddbeb44f673d3a044af1d6a34451b4756d",
+      "expectedText": "On this four-season calendar, it is autumn. What season comes next? Say a full sentence with comes after.",
+      "recognizedText": "On this four-season calendar, it is autumn. What season comes next? Say a full sentence with comes after.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-try-1-q.mp3",
+      "sha256": "7c9fe2776809fb9e5b7e1436c1159bb10050d2b23075df31ad61ecb788a873d4",
+      "expectedText": "Read this made-up town card. Summer. Days: long. Tell me about the days. Build a full sentence. Start with The days.",
+      "recognizedText": "Read this made-up town card. Summer. Days. Long. Tell me about the days. Build a full sentence. Start with the days.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-try-2-q.mp3",
+      "sha256": "841c759fd8ee11ccd33cdb12a66f25d3148c8b929fa3d58084b7291264e3dbe8",
+      "expectedText": "Read this made-up town card. Winter. Nights: long. Tell me about the nights. Build a full sentence. Start with The nights.",
+      "recognizedText": "Read this made-up town card. Winter. Nights. Long. Tell me about the nights. Build a full sentence. Start with the nights.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-try-3-q.mp3",
+      "sha256": "35f77d3698e4dafb96672f58a078b9196f08addc8fb25aed3b1410d97f1b5825",
+      "expectedText": "Read this made-up town card. Summer. Nights: short. Tell me about the nights. Build a full sentence. Start with The nights.",
+      "recognizedText": "Read this made-up town card. Summer. Nights. Short. Tell me about the nights. Build a full sentence. Start with, the nights.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-say-1-q.mp3",
+      "sha256": "9e49884ed077fdd18d3683bbe4926110f4ff9a86e40ea6ed63cb19fbbd69f455",
+      "expectedText": "Read this made-up town card. Winter. Days: short. Tell me about the days. Start with The days.",
+      "recognizedText": "Read this made-up town card. Winter. Days short. Tell me about the days. Start with the days.",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-say-2-q.mp3",
+      "sha256": "4c7e89034ef7231b2ea48da11898ac6c70a4ec3cd4cf2d9b742333d18ffdd985",
+      "expectedText": "Start with A summer night. Read this made-up town card. Summer. Nights: short. Tell me about one summer night.",
+      "recognizedText": "Start with a summer night read this made-up town card summer nights short. Tell me about one summer night",
+      "assessment": "passed"
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-say-3-q.mp3",
+      "sha256": "cb066859ea91fd83807bcd19786f59b61f8dcd15300367ad1b020983505c968b",
+      "expectedText": "Start with A summer day. Read this made-up town card. Summer. Days: long. Tell me about one summer day.",
+      "recognizedText": "Start with a summer day. Read this made-up town card. Summer. Days. Long. Tell me about one summer day.",
+      "assessment": "passed"
+    }
+  ]
+}
