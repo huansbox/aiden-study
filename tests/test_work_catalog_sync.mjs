@@ -11,6 +11,7 @@ import { datedWorks, sourceKey } from "../scripts/work-catalog.mjs";
 import { fetchRemoteDates, syncWorks } from "../scripts/sync-work-catalog.mjs";
 
 const exec = promisify(execFile);
+const readText = async path => (await readFile(path, "utf8")).replace(/\r\n/g, "\n");
 const now = "2026-09-18T01:00:00.000Z";
 const before = "2026-09-17T01:00:00.000Z";
 const source = {
@@ -273,7 +274,7 @@ test("real Git transport fixture reads the registered branch's full path history
 
 test("publication workflow uses shared CLIs, complete history, safe push, and explicit Pages verification", async () => {
   const root = fileURLToPath(new URL("..", import.meta.url));
-  const workflow = await readFile(join(root, ".github/workflows/work-catalog.yml"), "utf8");
+  const workflow = await readText(join(root, ".github/workflows/work-catalog.yml"));
   assert.match(workflow, /branches: \[master\]/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /cron: '23 21 \* \* \*'/);
@@ -289,13 +290,12 @@ test("publication workflow uses shared CLIs, complete history, safe push, and ex
   assert.match(workflow, /requestPagesBuild/);
   assert.match(workflow, /getLatestPagesBuild/);
   assert.match(workflow, /JSON\.stringify\(await response\.json\(\)\) === serialized/);
-  const testWorkflow = await readFile(join(root, ".github/workflows/test.yml"), "utf8");
+  const testWorkflow = await readText(join(root, ".github/workflows/test.yml"));
   assert.equal((testWorkflow.match(/fetch-depth: 0/g) || []).length, 2);
 });
 
-async function publicationFixture({ site = {}, builds, published, expected } = {}) {
-  const root = fileURLToPath(new URL("..", import.meta.url));
-  const workflow = await readFile(join(root, ".github/workflows/work-catalog.yml"), "utf8");
+async function publicationFixture({ site = {}, builds, published, expected, workflowPath = new URL("../.github/workflows/work-catalog.yml", import.meta.url) } = {}) {
+  const workflow = await readText(workflowPath);
   const embedded = workflow.split("          script: |\n")[1];
   assert.ok(embedded, "publication JavaScript exists in the actual workflow");
   const script = embedded.split("\n").map(line => line.slice(12)).join("\n");
@@ -331,6 +331,24 @@ async function publicationFixture({ site = {}, builds, published, expected } = {
     callback => { record.waits++; callback(); });
   return { run, record };
 }
+
+test("CRLF workflow preserves CLI checks and Pages script execution without accepting a broken script marker", async (t) => {
+  const fixture = await mkdtemp(join(tmpdir(), "work-catalog-crlf-"));
+  t.after(() => rm(fixture, { recursive: true, force: true }));
+  const workflowPath = join(fixture, "work-catalog.yml");
+  const crlf = (await readFile(new URL("../.github/workflows/work-catalog.yml", import.meta.url), "utf8")).replace(/\r?\n/g, "\r\n");
+  assert.match(crlf, /\r\n/, "fixture must contain CRLF");
+  await writeFile(workflowPath, crlf);
+  const workflow = await readText(workflowPath);
+  assert.match(workflow, /if \[ "\$CATALOG_EVENT" = "push" \]; then\n\s+node scripts\/sync-work-catalog\.mjs --missing-only/);
+  assert.match(workflow, /else\n\s+node scripts\/sync-work-catalog\.mjs\n\s+fi\n\s+node scripts\/build-work-catalog\.mjs/);
+  const { run, record } = await publicationFixture({ workflowPath });
+  await run();
+  assert.equal(record.requests, 1);
+  assert.equal(record.fetches.length, 1);
+  await writeFile(workflowPath, crlf.replace("script: |", "script: >"));
+  await assert.rejects(publicationFixture({ workflowPath }), /publication JavaScript exists/);
+});
 
 test("actual Pages publication script requests a build, waits, and records exact artifact evidence", async () => {
   const { run, record } = await publicationFixture({ builds: [{ status: "building", commit: "fixture-commit" }, { status: "built", commit: "fixture-commit" }] });
