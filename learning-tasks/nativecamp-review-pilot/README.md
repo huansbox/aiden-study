@@ -43,12 +43,20 @@
 - [方案與下載重現步驟](source/plan.md)：本次結果、後續階段與驗收條件。
 - [下載驗證資料](source/download-verification.json)：格式、長度、大小、SHA256 與驗證界線。
 - [音訊與內容核對](source/evidence-review.md)／[抽樣驗證摘要](source/audio-validation.json)：分聲道結果、逐字稿誤標、教材頁碼與判讀限制。
-- [題目內容](source/review-content.json)：題目、提示、可接受答案、來源時間與教材對照。
-- [互動版題組與音訊驗證](source/nativecamp-audio-qa.md)：18題原創變體、35個預製 TTS、1段私用老師提問，以及再製方法。
+- [紙本題目內容](source/review-content.json)：題目、提示、可接受答案、來源時間與教材對照。
+- [互動版題組與音訊驗證](source/nativecamp-audio-qa.md)：18題原創變體、35個預製 TTS、1段私用老師提問的歷史證據與維護界線。
 
 本次實測可透過 Chrome 的原生媒體選單「下載」取得音檔。瀏覽器工具的 `downloadMedia()` 在這次環境中只開啟了媒體頁，必須以實際檔案落地與解碼結果判斷成功。
 
-## 再製
+## 9/15 互動題文的安全接續
+
+互動題文的唯一可編輯真相源是 [source/build_nativecamp.py](source/build_nativecamp.py) 的 `build_lesson()`；`docs/nativecamp/lessons/2026-09-15.json` 與 `source/speech-jobs.json` 是其對應產物，不與來源分頭修改。紙本另以 `source/review-content.json` 為來源。
+
+目前沒有安全的題文-only CLI。禁止用歷史 `build_nativecamp.py` CLI（包括 `--skip-tts`）重建現行課程：`--skip-tts` 只跳過 SAPI 語音生成，仍會改寫 manifest 與 teacher 證據；未帶 `--teacher` 時還會把老師片段紀錄換成未重建標記。一般音訊沿用[共用 OpenAI 語音工具](../shared/nativecamp/README.md#openai-語音製作)，不使用舊 SAPI 命令。
+
+日後若要修改 9/15 題文，須先補上不碰既有音訊、manifest 與 teacher 證據的安全文字輸出／檢查方式，再驗證題包、speech jobs 與受影響音訊一致。這只是修改首堂題文的局部前置，不阻擋新課、其他 App 或現存成品使用；本輪不新增製作器或遷移來源。恢復開發的範圍見 [#95](https://github.com/huansbox/aiden-study/issues/95)。
+
+## 原音抽查與紙本再製
 
 在 repo 根目錄執行；Python 由 `uv` 管理，各 script 的依賴列在檔頭，不改動 repo 根目錄的套件清單。
 

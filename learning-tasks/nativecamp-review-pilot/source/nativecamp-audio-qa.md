@@ -2,7 +2,9 @@
 
 日期：2026-09-17。適用題組：`docs/nativecamp/lessons/2026-09-15.json`。
 
-2026-09-18 更新：本檔下列 SAPI／音檔數據是初版歷史紀錄。35個一般語音現改用 OpenAI Marin、speed 1.0；目前製作與檔案證據見 [OpenAI 語音查核](openai-audio-qa.md)、[manifest](nativecamp-audio-manifest.json)及[共用語音工具](../../shared/nativecamp/README.md#openai-語音製作)。既有老師片段不變；不要使用下方歷史 builder 覆寫目前語音或 manifest。
+2026-09-18 更新：本檔下列 SAPI／音檔數據是初版歷史紀錄。35個一般語音現改用 OpenAI Marin、speed 1.0；目前製作與檔案證據見 [OpenAI 語音查核](openai-audio-qa.md)、[manifest](nativecamp-audio-manifest.json)及[共用語音工具](../../shared/nativecamp/README.md#openai-語音製作)。既有老師片段不變；禁止以歷史 `build_nativecamp.py` CLI（包括 `--skip-tts`）重建現行課程。
+
+9/15 互動題文的唯一可編輯真相源是 [build_nativecamp.py](build_nativecamp.py) 的 `build_lesson()`。目前沒有安全的題文-only CLI；`--skip-tts` 只跳過 SAPI 語音生成，仍會改寫 manifest 與 teacher 證據，未帶 `--teacher` 時會將老師片段紀錄換成未重建標記。日後修改首堂題文前，須先補上不碰音訊與這些證據的安全文字輸出／檢查，再驗證題包、speech jobs 與受影響音訊一致。這是該改動的局部前置，不阻擋新課、其他 App 或現存成品使用；詳見 [task README](../README.md#915-互動題文的安全接續)。
 
 本檔記錄音訊製作階段的驗證；後續正式發布結果見[互動版說明](../../../docs-dev/nativecamp-review.md#2026-09-17-正式發布結果)。下一堂請先讀[製作SOP](../lesson-sop.md)，不要直接重跑本堂builder覆寫產物。
 
@@ -15,7 +17,7 @@
 - too many 每題均標示箱子或架子的可容納數量，圖上物品多於容量；判斷不依賴「看起來很多」。前兩題口說語音保留 `Use too many in a sentence.`，畫面統一顯示作答區句型 `… too many …`，讓家長依明確任務評級。
 - 選詞問題的 Listen 不念填入答案後的完整句；排列題只念情境與操作，不念排列結果。
 
-一般英文使用本機 Windows SAPI 的 `Microsoft Zira Desktop - English (United States)`，rate 為 -1；35個 TTS MP3 全部預製，沒有 runtime TTS、外部語音服務或聲音複製。公開音訊資料夾只含這35個生成檔。
+初版歷史設定（2026-09-17）：一般英文使用本機 Windows SAPI 的 `Microsoft Zira Desktop - English (United States)`，rate 為 -1；當時35個 TTS MP3 全部預製，沒有 runtime TTS、外部語音服務或聲音複製，公開音訊資料夾只含這35個生成檔。這不是目前 OpenAI 音訊的設定或全站檔案數。
 
 ## 老師原音
 
@@ -29,7 +31,7 @@
 
 詳細轉錄、老師 MP3 與音訊包只在已忽略的 `source/private/`。public lesson 只有 private id，不含錄音、base64 或私人存取網址。Git ignore 檢查確認老師 MP3 及 `nativecamp-audio-kv.json` 均不會追蹤。
 
-## 已執行驗證與界線
+## 初版已執行驗證與界線
 
 1. 35個 TTS MP3 加1個老師 MP3 全部以 ffprobe 檢查格式與長度，ffmpeg 完整解碼，並檢查 RMS，沒有空檔或靜音假檔。每檔 SHA256、bytes、duration 與生成文字見 [nativecamp-audio-manifest.json](nativecamp-audio-manifest.json)。
 2. 六個 TTS 片段經本機 ASR 抽查，涵蓋填空問題、排列操作、奇偶答案、too many 操作與答案。結果與生成文字一致（ASR 將 Seven 寫成數字7）；詳細結果在 ignored `private/nativecamp-tts-asr.json`。
@@ -38,16 +40,14 @@
 
 以上是檔案、訊號與模型轉錄驗證。**未執行人工聽辨、iPad 真機播放或發音評分**；ASR 無法證明每個音素、精確邊界或音色自然度皆適合孩子。完整 app 的播放／揭曉／同步流程由整合驗收另記；本文件不宣稱已正式發布。
 
-## 再製與本機載入
+## 歷史再製紀錄與本機載入
 
-在 repo 根目錄執行；需要 Windows 本機音色、`uv`、`ffmpeg`、`ffprobe`。老師片段另需原始私人音檔。
+初版曾使用 Windows 本機音色與 `build_nativecamp.py --teacher` 製作；此歷史命令不再提供為現行再製入口，也不能以 `--skip-tts` 當成安全檢查。一般語音請使用上方共用 OpenAI 工具。
+
+下列保留當時的檢查與本機載入方式，在 repo 根目錄執行；需要 `uv`、`ffmpeg`、`ffprobe`，老師片段另需原始私人音檔。本機 ASR 紀錄不取代目前的 OpenAI 語音 QA。
 
 ```powershell
-uv run --script learning-tasks/nativecamp-review-pilot/source/build_nativecamp.py --teacher
 node --test tests/test_nativecamp_content.mjs
-
-# 只驗證既有 TTS 並重建老師片段，可加 --skip-tts。
-# 不加 --teacher 可重建公開題目與 TTS；manifest 會明示老師片段未重建。
 
 # 兩種本機 ASR 檢查都只使用已快取的 small.en 模型，不上傳音訊。
 uv run --script learning-tasks/nativecamp-review-pilot/source/check_nativecamp_clip.py --start 1300.23 --end 1304.10 --label teacher-hats-final
