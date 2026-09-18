@@ -110,8 +110,9 @@
       const label = shortLabel(entry) + number;
       const state = complete ? ", Finished" : locked ? `, Opens ${dateLabel(entry.weekly?.opensOn || entry.date)}` : "";
       const attributes = `${active ? ' aria-current="page"' : ""} aria-label="${esc(`${dateLabel(entry.date)}, ${entry.kind === "weekly" ? "Weekly Review" : entry.teacher}${number}${state}`)}"`;
-      const text = `${complete ? icon("check") : entry.kind === "weekly" ? icon("calendar-days") : ""}<span>${esc(label)}</span>`;
-      const classes = `calendar-lesson${complete ? " calendar-finished" : locked ? " calendar-locked" : ""}`;
+      const marker = complete ? icon("check") : locked ? entry.kind === "weekly" ? icon("calendar-days") : "" : '<svg class="icon" aria-hidden="true"><use href="icons.svg?v=20260918-calendar-a#play"></use></svg>';
+      const text = `${marker}<span>${esc(label)}</span>`;
+      const classes = `calendar-lesson${complete ? " calendar-finished" : locked ? " calendar-locked" : " calendar-available"}`;
       return complete || locked ? `<span class="${classes}"${attributes} aria-disabled="true">${text}</span>` : `<a class="${classes}" href="${esc(href(page, child, entry.id))}"${attributes}>${text}</a>`;
     };
     const cells = [];

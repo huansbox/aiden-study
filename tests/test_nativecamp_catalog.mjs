@@ -136,7 +136,7 @@ test("calendar retains every same-day lesson, short labels and unchanged parent 
   const sunday = [...row.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)][6][1];
   assert.match(sunday, /lesson=2026-09-20-a" aria-current="page" aria-label="Sep 20, 2026, Ann &amp; Lee"/);
   assert.match(sunday, /lesson=2026-09-20-b/);
-  assert.match(sunday, /lesson=weekly-2026-09-14.*icons.svg#calendar-days.*<span>Review<\/span>/);
+  assert.match(sunday, /lesson=weekly-2026-09-14.*icons.svg\?v=20260918-calendar-a#play.*<span>Review<\/span>/);
   assert.match(html, /child=bingpu&amp;lesson=2026-09-20-a/);
   assert.doesNotMatch(html, /\p{Extended_Pictographic}|[\u3400-\u9fff]/u);
   const parent = L.navigation(entries, "2026-09-20-a", { buttons: true });
