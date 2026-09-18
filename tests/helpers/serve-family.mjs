@@ -21,6 +21,7 @@ if (process.env.NATIVE_CAMP_AUDIO_PACK) {
   }
 }
 let offline = false;
+let catalogOffline = false;
 let release = null;
 createServer(async (req, res) => {
   try {
@@ -33,13 +34,24 @@ createServer(async (req, res) => {
     if (url.pathname === "/test/controls") {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.end(
-        `<h1>隔離測試控制</h1><p>雲端 ${offline ? "暫停" : "正常"}</p><p>模擬發布：${release || "關閉"}</p><a href="/test/mode?offline=1">暫停測試雲端</a><br><a href="/test/mode?offline=0">恢復測試雲端</a><br><a href="/test/release?version=a">模擬發布 A</a><br><a href="/test/release?version=b">模擬發布 B</a><br><a href="/test/release">恢復原始發布</a><br><a href="/?child=aiden">哥哥首頁</a><br><a href="/?child=bingpu">弟弟首頁</a>`,
+        `<h1>隔離測試控制</h1><p>雲端 ${offline ? "暫停" : "正常"}</p><p>白板資料 ${catalogOffline ? "暫停" : "正常"}</p><p>模擬發布：${release || "關閉"}</p><a href="/test/mode?offline=1">暫停測試雲端</a><br><a href="/test/mode?offline=0">恢復測試雲端</a><br><a href="/test/catalog?offline=1">暫停白板資料</a><br><a href="/test/catalog?offline=0">恢復白板資料</a><br><a href="/test/release?version=a">模擬發布 A</a><br><a href="/test/release?version=b">模擬發布 B</a><br><a href="/test/release">恢復原始發布</a><br><a href="/?child=aiden">哥哥首頁</a><br><a href="/?child=bingpu">弟弟首頁</a>`,
       );
       return;
     }
     if (url.pathname === "/test/mode") {
       offline = url.searchParams.get("offline") === "1";
       res.writeHead(302, { Location: "/test/controls" });
+      res.end();
+      return;
+    }
+    if (url.pathname === "/test/catalog") {
+      catalogOffline = url.searchParams.get("offline") === "1";
+      res.writeHead(302, { Location: "/test/controls" });
+      res.end();
+      return;
+    }
+    if (url.pathname === "/parent/work-catalog.json" && catalogOffline) {
+      res.writeHead(503, { "Cache-Control": "no-store" });
       res.end();
       return;
     }

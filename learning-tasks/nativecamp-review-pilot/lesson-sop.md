@@ -82,7 +82,7 @@ Show answer 自動念口說示範；家長選 Got it 後播鼓勵音，再接下
 
 ## 5. 新課檔案與目前程式支援範圍
 
-新的一堂以 `learning-tasks/nativecamp-<lesson-id>/` 保存來源、設計文件與驗收資料，先加入[任務索引](../README.md)；延用同一個 `docs/nativecamp/` App，不再註冊另一個App。只建立實際需要的目錄與成果；紙本不是每堂必做。
+新的一堂以 `learning-tasks/nativecamp-<lesson-id>/` 保存來源、設計文件與驗收資料，依[任務登錄規則](../README.md) 加入 `learning-tasks/catalog.json`，系列沿用 `nativecamp`，再執行 `node scripts/build-work-catalog.mjs` 產生索引與白板；延用同一個 `docs/nativecamp/` App，不再註冊另一個App。只建立實際需要的目錄與成果；紙本不是每堂必做。
 
 | 項目 | 新課製作方式與限制 |
 | --- | --- |
@@ -108,6 +108,6 @@ Show answer 自動念口說示範；家長選 Got it 後播鼓勵音，再接下
 3. **可重建與程式檢查**：比對來源輸出、題包及音訊manifest。沿用實際相關tests；若更動runtime／入口／來源，執行repo的Node與Python gate。測試數量以本次輸出為準，不照抄409／184。
 4. **依授權發布**：沿用本次明確授權範圍；需要新版Worker或原音KV時先完成，再發布Pages。只寫該堂指定的內容key，不變更family token或進度key，也不自動替家長勾選活動。private pack最外層是clip ID到payload的對照；每個 `c:nativecamp:audio:<clip-id>` 只存內層 `{contentType, base64}`，不是整包。本機loader沒有遠端部署功能。
 5. **上線核對**：記錄commit、CI／Pages結果、必要的Worker version；比對正式資源hash，原音匿名401／已連線播放、私人KV回讀hash。家長入口、課程選擇及摘要必須對同一堂；上線成功不等於iPad或孩子實測通過。
-6. **收尾**：在該堂README／任務索引記實際狀態與入口，保存設計、來源及驗收證據，完成已達標tracker。家長回饋留在模板末段；未提供的結果填「未測」，不把已發布工作繼續列為實作blocker。
+6. **收尾**：在 `learning-tasks/catalog.json` 更新實際狀態與入口並重建索引，該堂 README 保存設計、來源及驗收證據，完成已達標tracker；不要手改 README 產生清單。家長回饋留在模板末段；未提供的結果填「未測」，不把已發布工作繼續列為實作blocker。
 
 命令與本堂正式發布證據見[互動版說明](../../docs-dev/nativecamp-review.md)；私人音訊格式與本機工具見[音訊驗證](source/nativecamp-audio-qa.md)。新課接入的改動以當時code為準，不能直接重跑本堂builder覆寫正式內容。

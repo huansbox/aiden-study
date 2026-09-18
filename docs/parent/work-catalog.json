@@ -1,0 +1,854 @@
+{
+  "schemaVersion": 1,
+  "works": [
+    {
+      "id": "app:nativecamp",
+      "type": "app",
+      "name": "Native Camp Review",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "煦誠",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/nativecamp",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/nativecamp",
+          "docs/parent/nativecamp.js",
+          "docs-dev/nativecamp-review.md",
+          "learning-tasks/shared/nativecamp"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/nativecamp",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-17",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:study",
+      "type": "app",
+      "name": "題庫練習",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "煦誠",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/study",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/study"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/study",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../study/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-07-12",
+      "updated": "2026-09-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:math",
+      "type": "app",
+      "name": "長除法練習",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "煦誠",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/math",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/math"
+        ],
+        "excludePaths": [
+          "docs/math/nonogram"
+        ],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/math",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../math/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-07-15",
+      "updated": "2026-09-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:spelling",
+      "type": "app",
+      "name": "英文拼字",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "煦誠",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/spelling",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/spelling"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/spelling",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../spelling/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-07-15",
+      "updated": "2026-09-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:nonogram",
+      "type": "app",
+      "name": "數織解謎",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "煦誠",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/math/nonogram",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/math/nonogram"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/math/nonogram",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../math/nonogram/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-07-15",
+      "updated": "2026-09-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:zhuyin",
+      "type": "app",
+      "name": "注音練習",
+      "audience": [
+        "bingpu"
+      ],
+      "audienceLabel": "秉樸",
+      "status": "unknown",
+      "statusNote": "App 上下架：啟用；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-study/docs/zhuyin",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "docs/zhuyin",
+          "docs-dev/zhuyin-handoff.md"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/docs/zhuyin",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../zhuyin/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-07-11",
+      "updated": "2026-09-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "app:animal-fight",
+      "type": "app",
+      "name": "動物守護者",
+      "audience": [],
+      "audienceLabel": "未指定（目錄預設）",
+      "status": "unknown",
+      "statusNote": "列印作品；舊 GitHub Pages 網址已失效，改用公開 PDF 與規則。未另標記工作狀態。",
+      "availability": "available",
+      "location": "animal-fight",
+      "source": {
+        "repo": "huansbox/animal-fight",
+        "ref": "master",
+        "paths": [
+          "."
+        ],
+        "excludePaths": [],
+        "remote": true
+      },
+      "sourceUrl": "https://github.com/huansbox/animal-fight/tree/master",
+      "links": [
+        {
+          "label": "探險卡 PDF",
+          "url": "https://github.com/huansbox/animal-fight/blob/master/output/pdf/storm-forest-rescue-reveal-cards-half-label-a4.pdf"
+        },
+        {
+          "label": "任務狀態卡 PDF",
+          "url": "https://github.com/huansbox/animal-fight/blob/master/output/pdf/team-mission-status-zone-cards-quarter-label-a4.pdf"
+        },
+        {
+          "label": "規則與用法",
+          "url": "https://github.com/huansbox/animal-fight/blob/master/README.md"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-01-14",
+      "updated": "2026-08-10",
+      "freshness": {
+        "state": "current",
+        "checkedAt": "2026-09-18T06:54:06.946Z",
+        "error": null
+      }
+    },
+    {
+      "id": "app:english",
+      "type": "app",
+      "name": "英文閱讀",
+      "audience": [],
+      "audienceLabel": "未指定（目錄預設）",
+      "status": "unknown",
+      "statusNote": "App 上下架：草稿；未另標記工作狀態。",
+      "availability": "available",
+      "location": "aiden-english",
+      "source": {
+        "repo": "huansbox/aiden-english",
+        "ref": "master",
+        "paths": [
+          "."
+        ],
+        "excludePaths": [],
+        "remote": true
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-english/tree/master",
+      "links": [
+        {
+          "label": "外部網頁",
+          "url": "https://huansbox.github.io/aiden-english/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-03-09",
+      "updated": "2026-05-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": "2026-09-18T06:54:06.946Z",
+        "error": null
+      }
+    },
+    {
+      "id": "app:99-meteor",
+      "type": "app",
+      "name": "隕石數學防衛隊",
+      "audience": [],
+      "audienceLabel": "未指定（目錄預設）",
+      "status": "unknown",
+      "statusNote": "App 上下架：暫不上架；未另標記工作狀態。",
+      "availability": "available",
+      "location": "99-meteor",
+      "source": {
+        "repo": "huansbox/99-meteor",
+        "ref": "main",
+        "paths": [
+          "."
+        ],
+        "excludePaths": [],
+        "remote": true
+      },
+      "sourceUrl": "https://github.com/huansbox/99-meteor/tree/main",
+      "links": [
+        {
+          "label": "外部網頁",
+          "url": "https://huansbox.github.io/99-meteor/"
+        }
+      ],
+      "description": "",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-01-12",
+      "updated": "2026-01-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": "2026-09-18T06:54:06.946Z",
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-weekly-2026-09-14",
+      "type": "task",
+      "name": "Native Camp Weekly Review 09-14～09-20",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題庫、正式音訊與隔離整合驗收已完成；2026-09-20 開放。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-weekly-2026-09-14",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-weekly-2026-09-14"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-weekly-2026-09-14",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=weekly-2026-09-14"
+        }
+      ],
+      "description": "本週新題與少量較早概念；首次弱項優先。",
+      "eventDate": "2026-09-14～09-20",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-18",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-17",
+      "type": "task",
+      "name": "Native Camp 2026-09-17 Khalid",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "依任務索引已完成；track 2 只有可讀逐字稿與可播放頁面，沒有下載落檔，不代表全課核對。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-17",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-17"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-17",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-17"
+        }
+      ],
+      "description": "來源核對、完整句排列與口說。",
+      "eventDate": "2026-09-17",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-18",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-13",
+      "type": "task",
+      "name": "Native Camp 2026-09-13 Michael",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "內容、正式音訊與隔離整合驗收已完成；不等於全課人耳驗聽或孩子掌握度評分。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-13",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-13"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-13",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-13"
+        }
+      ],
+      "description": "來源核對、完整句排列與口說。",
+      "eventDate": "2026-09-13",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-18",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-16",
+      "type": "task",
+      "name": "Native Camp 2026-09-16 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、接入與驗證完成；新課孩子實測未完成。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-16",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-16"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-16",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-16"
+        }
+      ],
+      "description": "來源核對、自主題、口說與跨日複習。",
+      "eventDate": "2026-09-16",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-17",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-14",
+      "type": "task",
+      "name": "Native Camp 2026-09-14 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、接入與驗證完成；新課孩子實測未完成。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-14",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-14"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-14",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-14"
+        }
+      ],
+      "description": "來源核對、自主題、口說與跨日複習。",
+      "eventDate": "2026-09-14",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-17",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-review-pilot",
+      "type": "task",
+      "name": "Native Camp 回放複習試作",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語課程；家長協助",
+      "status": "complete",
+      "statusNote": "孩子已使用，家長回饋與語音調整需求已記錄。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-review-pilot",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-review-pilot"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-review-pilot",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-15"
+        },
+        {
+          "label": "孩子版 PDF",
+          "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf"
+        },
+        {
+          "label": "家長版 PDF",
+          "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf"
+        }
+      ],
+      "description": "紙本口說；另供 App 自主題、口說與跨日複習。",
+      "eventDate": "2026-09-16～17",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-17",
+      "updated": "2026-09-18",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:leisure-afternoon",
+      "type": "task",
+      "name": "悠閒午後閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/leisure-afternoon",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/leisure-afternoon"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/leisure-afternoon",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../leisure-mind-map/"
+        }
+      ],
+      "description": "五枝放射圖、各段重點保留、iPad 選詞。",
+      "eventDate": "2026-09-15",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": "2026-09-15",
+      "updated": "2026-09-16",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:grade4-math-first-practice",
+      "type": "task",
+      "name": "四上數學第一份短練習",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；四年級",
+      "status": "complete",
+      "statusNote": "時間待孩子實測；私用成品不隨 Git 提供。",
+      "availability": "private",
+      "location": "aiden-study/learning-tasks/grade4-math-first-practice",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/grade4-math-first-practice"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/grade4-math-first-practice",
+      "links": [],
+      "description": "U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。",
+      "eventDate": "2026-09-12",
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-09-12",
+      "updated": "2026-09-15",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:grade4-sem1-math-exam1",
+      "type": "task",
+      "name": "四上第一次段考數學候選卷",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；四年級",
+      "status": "complete",
+      "statusNote": "依暫定範圍；正式範圍待確認。原卷只存本機。",
+      "availability": "private",
+      "location": "aiden-study/learning-tasks/grade4-sem1-math-exam1",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/grade4-sem1-math-exam1"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/grade4-sem1-math-exam1",
+      "links": [],
+      "description": "桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷。",
+      "eventDate": "2026-09-12",
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-09-12",
+      "updated": "2026-09-12",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:reading-mind-map",
+      "type": "task",
+      "name": "閱讀心智圖選詞引導",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "老師回饋已記錄；真機操作未另驗。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/reading-mind-map",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/reading-mind-map",
+          "docs/mind-map.html",
+          "docs/mind-map.css",
+          "docs/mind-map.js",
+          "docs/mind-map-reading.js",
+          "docs/mind-map.webmanifest"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/reading-mind-map",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../mind-map.html"
+        }
+      ],
+      "description": "iPad 選詞、四角放射心智圖、短詞抄寫。",
+      "eventDate": "2026-09-08",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": "2026-09-08",
+      "updated": "2026-09-16",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:hsinchu-zoo-adventure",
+      "type": "task",
+      "name": "新竹動物園小小探險",
+      "audience": [
+        "bingpu"
+      ],
+      "audienceLabel": "5.5 歲弟弟；一位成人陪同",
+      "status": "complete",
+      "statusNote": "家長已確認 PDF，保留可重印的歷史素材包。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/hsinchu-zoo-adventure",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/hsinchu-zoo-adventure"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/hsinchu-zoo-adventure",
+      "links": [
+        {
+          "label": "列印 PDF",
+          "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/hsinchu-zoo-adventure/output/hsinchu-zoo-adventure-cards-half-label-a4.pdf"
+        }
+      ],
+      "description": "火車地理、園區選路、動物特徵觀察、昆蟲分類；卡片可任意中止。",
+      "eventDate": "2026-08-14",
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-08-14",
+      "updated": "2026-08-14",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:ai-collaboration-showcase",
+      "type": "task",
+      "name": "怎麼和 AI 一起做出探險卡",
+      "audience": [],
+      "audienceLabel": "未指定",
+      "status": "unknown",
+      "statusNote": "網站已發布；來源仍為主線外工作分支，工作狀態回查該分支。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/ai-collaboration-showcase",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "codex/ai-collaboration-showcase",
+        "paths": [
+          "learning-tasks/ai-collaboration-showcase"
+        ],
+        "excludePaths": [],
+        "remote": true
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase",
+      "links": [
+        {
+          "label": "Cloudflare Pages 故事網站",
+          "url": "https://ai-zoo-cards-story.pages.dev/"
+        }
+      ],
+      "description": "協作故事網站；不複製或合併其他分支作品。",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-08-14",
+      "updated": "2026-08-14",
+      "freshness": {
+        "state": "current",
+        "checkedAt": "2026-09-18T06:54:06.946Z",
+        "error": null
+      }
+    }
+  ]
+}

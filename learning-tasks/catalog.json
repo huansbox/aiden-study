@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
+  "tasks": [
+    {
+      "id": "nativecamp-weekly-2026-09-14",
+      "name": "Native Camp Weekly Review 09-14～09-20",
+      "status": "complete",
+      "statusNote": "題庫、正式音訊與隔離整合驗收已完成；2026-09-20 開放。",
+      "eventDate": "2026-09-14～09-20",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "本週新題與少量較早概念；首次弱項優先。",
+      "reusable": "原創完整句題庫、固定選題與預製語音",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=weekly-2026-09-14" }]
+    },
+    {
+      "id": "nativecamp-2026-09-17",
+      "name": "Native Camp 2026-09-17 Khalid",
+      "status": "complete",
+      "statusNote": "依任務索引已完成；track 2 只有可讀逐字稿與可播放頁面，沒有下載落檔，不代表全課核對。",
+      "eventDate": "2026-09-17",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "來源核對、完整句排列與口說。",
+      "reusable": "新版題型與 OpenAI 預製語音",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-09-17" }]
+    },
+    {
+      "id": "nativecamp-2026-09-13",
+      "name": "Native Camp 2026-09-13 Michael",
+      "status": "complete",
+      "statusNote": "內容、正式音訊與隔離整合驗收已完成；不等於全課人耳驗聽或孩子掌握度評分。",
+      "eventDate": "2026-09-13",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "來源核對、完整句排列與口說。",
+      "reusable": "新版題型與 OpenAI 預製語音",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-09-13" }]
+    },
+    {
+      "id": "nativecamp-2026-09-16",
+      "name": "Native Camp 2026-09-16 Edon",
+      "status": "complete",
+      "statusNote": "題包、接入與驗證完成；新課孩子實測未完成。",
+      "eventDate": "2026-09-16",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "來源核對、自主題、口說與跨日複習。",
+      "reusable": "沿用首堂 SOP，驗證多課接入與較慢語音",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-09-16" }]
+    },
+    {
+      "id": "nativecamp-2026-09-14",
+      "name": "Native Camp 2026-09-14 Edon",
+      "status": "complete",
+      "statusNote": "題包、接入與驗證完成；新課孩子實測未完成。",
+      "eventDate": "2026-09-14",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "來源核對、自主題、口說與跨日複習。",
+      "reusable": "沿用首堂 SOP，保留各堂來源與進度",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-09-14" }]
+    },
+    {
+      "id": "nativecamp-review-pilot",
+      "name": "Native Camp 回放複習試作",
+      "status": "complete",
+      "statusNote": "孩子已使用，家長回饋與語音調整需求已記錄。",
+      "eventDate": "2026-09-16～17",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語課程；家長協助",
+      "description": "紙本口說；另供 App 自主題、口說與跨日複習。",
+      "reusable": "[分聲道核對與逐字稿誤標](nativecamp-review-pilot/source/evidence-review.md)；[互動版與音訊](../docs-dev/nativecamp-review.md)；[製作 SOP／模板](nativecamp-review-pilot/lesson-sop.md)；私人音檔不進 Git",
+      "groupId": "nativecamp", "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        { "label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-09-15" },
+        { "label": "孩子版 PDF", "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf" },
+        { "label": "家長版 PDF", "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf" }
+      ]
+    },
+    {
+      "id": "leisure-afternoon",
+      "name": "悠閒午後閱讀心智圖",
+      "status": "complete",
+      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "eventDate": "2026-09-15",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "五枝放射圖、各段重點保留、iPad 選詞。",
+      "reusable": "老師回饋、詩景成組、詩與攝影的關係",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available",
+      "links": [{ "label": "網頁", "url": "../leisure-mind-map/" }]
+    },
+    {
+      "id": "grade4-math-first-practice",
+      "name": "四上數學第一份短練習",
+      "status": "complete", "statusNote": "時間待孩子實測；私用成品不隨 Git 提供。",
+      "eventDate": "2026-09-12",
+      "audience": ["aiden"], "audienceLabel": "9 歲；四年級",
+      "description": "U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。",
+      "reusable": "題目來源映射、逐題驗算、孩子／家長分卷格式",
+      "availability": "private", "links": []
+    },
+    {
+      "id": "grade4-sem1-math-exam1",
+      "name": "四上第一次段考數學候選卷",
+      "status": "complete", "statusNote": "依暫定範圍；正式範圍待確認。原卷只存本機。",
+      "eventDate": "2026-09-12",
+      "audience": ["aiden"], "audienceLabel": "9 歲；四年級",
+      "description": "桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷。",
+      "reusable": "來源 manifest、公開原卷無介面下載、PDF 與答案身分驗證",
+      "availability": "private", "links": []
+    },
+    {
+      "id": "reading-mind-map",
+      "name": "閱讀心智圖選詞引導",
+      "status": "complete", "statusNote": "老師回饋已記錄；真機操作未另驗。",
+      "eventDate": "2026-09-08",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "iPad 選詞、四角放射心智圖、短詞抄寫。",
+      "reusable": "粗體注音、多音字校正、橫向版面；來源與再製見任務 README",
+      "source": { "paths": ["learning-tasks/reading-mind-map", "docs/mind-map.html", "docs/mind-map.css", "docs/mind-map.js", "docs/mind-map-reading.js", "docs/mind-map.webmanifest"] },
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available", "links": [{ "label": "網頁", "url": "../mind-map.html" }]
+    },
+    {
+      "id": "hsinchu-zoo-adventure",
+      "name": "新竹動物園小小探險",
+      "status": "complete", "statusNote": "家長已確認 PDF，保留可重印的歷史素材包。",
+      "eventDate": "2026-08-14",
+      "audience": ["bingpu"], "audienceLabel": "5.5 歲弟弟；一位成人陪同",
+      "description": "火車地理、園區選路、動物特徵觀察、昆蟲分類；卡片可任意中止。",
+      "reusable": "[幼兒現場觀察任務卡經驗](hsinchu-zoo-adventure/design-lessons.md)、大 Poker／A4 二分標籤卡來源、圖資與 PDF",
+      "availability": "available",
+      "links": [{ "label": "列印 PDF", "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/hsinchu-zoo-adventure/output/hsinchu-zoo-adventure-cards-half-label-a4.pdf" }]
+    },
+    {
+      "id": "ai-collaboration-showcase",
+      "name": "怎麼和 AI 一起做出探險卡",
+      "status": "unknown", "statusNote": "網站已發布；來源仍為主線外工作分支，工作狀態回查該分支。",
+      "eventDate": null, "audience": [], "audienceLabel": "未指定",
+      "description": "協作故事網站；不複製或合併其他分支作品。",
+      "source": { "repo": "huansbox/aiden-study", "ref": "codex/ai-collaboration-showcase", "paths": ["learning-tasks/ai-collaboration-showcase"] },
+      "availability": "available",
+      "links": [{ "label": "Cloudflare Pages 故事網站", "url": "https://ai-zoo-cards-story.pages.dev/" }]
+    }
+  ]
+}

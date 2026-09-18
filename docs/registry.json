@@ -19,7 +19,12 @@
       "status": "active",
       "sync": true,
       "owner": "aiden",
-      "order": { "aiden": 5 }
+      "order": { "aiden": 5 },
+      "work": {
+        "groupId": "nativecamp", "groupName": "Native Camp",
+        "source": { "paths": ["docs/nativecamp", "docs/parent/nativecamp.js", "docs-dev/nativecamp-review.md", "learning-tasks/shared/nativecamp"] },
+        "links": [{ "label": "不計分預覽", "url": "../nativecamp/preview.html" }]
+      }
     },
     {
       "id": "study",
@@ -43,7 +48,8 @@
       "status": "active",
       "sync": true,
       "owner": "aiden",
-      "order": { "aiden": 2 }
+      "order": { "aiden": 2 },
+      "work": { "source": { "paths": ["docs/math"], "excludePaths": ["docs/math/nonogram"] } }
     },
     {
       "id": "spelling",
@@ -79,7 +85,8 @@
       "status": "active",
       "sync": true,
       "owner": "bingpu",
-      "order": { "bingpu": 1 }
+      "order": { "bingpu": 1 },
+      "work": { "source": { "paths": ["docs/zhuyin", "docs-dev/zhuyin-handoff.md"] } }
     },
     {
       "id": "animal-fight",
@@ -91,7 +98,16 @@
       "status": "active",
       "sync": false,
       "owner": "aiden",
-      "order": {}
+      "order": {},
+      "work": {
+        "source": { "repo": "huansbox/animal-fight", "ref": "master", "paths": ["."] },
+        "statusNote": "列印作品；舊 GitHub Pages 網址已失效，改用公開 PDF 與規則。未另標記工作狀態。",
+        "links": [
+          { "label": "探險卡 PDF", "url": "https://github.com/huansbox/animal-fight/blob/master/output/pdf/storm-forest-rescue-reveal-cards-half-label-a4.pdf" },
+          { "label": "任務狀態卡 PDF", "url": "https://github.com/huansbox/animal-fight/blob/master/output/pdf/team-mission-status-zone-cards-quarter-label-a4.pdf" },
+          { "label": "規則與用法", "url": "https://github.com/huansbox/animal-fight/blob/master/README.md" }
+        ]
+      }
     },
     {
       "id": "english",
@@ -103,7 +119,8 @@
       "status": "draft",
       "sync": false,
       "owner": "aiden",
-      "order": {}
+      "order": {},
+      "work": { "source": { "repo": "huansbox/aiden-english", "ref": "master", "paths": ["."] } }
     },
     {
       "id": "99-meteor",
@@ -115,7 +132,8 @@
       "status": "parked",
       "sync": false,
       "owner": "bingpu",
-      "order": {}
+      "order": {},
+      "work": { "source": { "repo": "huansbox/99-meteor", "ref": "main", "paths": ["."] } }
     }
   ]
 }

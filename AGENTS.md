@@ -6,7 +6,8 @@
 
 ## 家庭學習任務
 
-- 規劃、建立或歸檔家庭學習活動前，先讀並遵循 `learning-tasks/README.md`；該檔是 task／app／shared 分類、資料夾規格與索引維護的唯一真相源。
+- 規劃、建立或歸檔家庭學習活動前，先讀並遵循 `learning-tasks/README.md`；該檔是 task／app／shared 分類、資料夾規格與登錄操作的入口。任務資料以 `learning-tasks/catalog.json` 為準，App 仍以 `docs/registry.json` 為準；README 作品清單與家長白板是產物，不另手改同一份名稱、狀態或日期。
+- 新增／修改登錄後執行 `node scripts/build-work-catalog.mjs`，以 `--check` 驗證；不漏掉主線外的已登錄來源、不把 `shared/` 算成作品。維護方式與日期／狀態語意見 `docs-dev/parent-whiteboard.md`。
 
 ## 練習不中斷
 
