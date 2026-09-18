@@ -37,7 +37,7 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-09-18",
+      "updated": "2026-09-19",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -401,8 +401,8 @@
       "eventDate": "2026-09-12",
       "groupId": "nativecamp",
       "groupName": "Native Camp",
-      "created": null,
-      "updated": null,
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -441,8 +441,8 @@
       "eventDate": "2026-09-11",
       "groupId": "nativecamp",
       "groupName": "Native Camp",
-      "created": null,
-      "updated": null,
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -481,8 +481,8 @@
       "eventDate": "2026-09-10",
       "groupId": "nativecamp",
       "groupName": "Native Camp",
-      "created": null,
-      "updated": null,
+      "created": "2026-09-19",
+      "updated": "2026-09-19",
       "freshness": {
         "state": "current",
         "checkedAt": null,
