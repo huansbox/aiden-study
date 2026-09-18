@@ -9,7 +9,7 @@ import { loadWorks, gitDates, datedWorks, sourceKey } from "../scripts/work-cata
 import { buildOutputs, build } from "../scripts/build-work-catalog.mjs";
 
 const repo = fileURLToPath(new URL("../", import.meta.url));
-const read = (root, path) => readFileSync(resolve(root, path), "utf8");
+const read = (root, path) => readFileSync(resolve(root, path), "utf8").replace(/\r\n/g, "\n");
 const json = (root, path) => JSON.parse(read(root, path));
 function file(root, path, value) {
   mkdirSync(dirname(resolve(root, path)), { recursive: true });
@@ -107,6 +107,21 @@ test("真實来源一次改名，README 與 JSON 一起更新，保留非產生�
   const app = JSON.parse(outputs["docs/parent/work-catalog.json"]).works.find((entry) => entry.type === "app");
   assert.equal(app.created, "2026-09-01"); assert.equal(app.updated, "2026-09-01");
   assert.equal(Object.hasOwn(JSON.parse(outputs["docs/parent/work-catalog.json"]), "generatedAt"), false);
+});
+
+test("CRLF checkout 的作品產物與 LF 重建一致，仍會偵測內容差異", (t) => {
+  const root = fixture(t); init(root); commit(root, "2026-09-01T00:00:00Z");
+  const outputs = buildOutputs(root);
+  for (const [path, output] of Object.entries(outputs)) {
+    file(root, path, output.replace(/\n/g, "\r\n"));
+    assert.match(readFileSync(resolve(root, path), "utf8"), /\r\n/, `${path}：fixture 必須含 CRLF`);
+  }
+  assert.deepEqual(build({ root, check: true }), []);
+  for (const [path, output] of Object.entries(outputs)) assert.equal(read(root, path), output, path);
+  const changed = readFileSync(resolve(root, "README.md"), "utf8").replace("任務 A", "被改動的名稱");
+  file(root, "README.md", changed);
+  assert.notEqual(read(root, "README.md"), outputs["README.md"]);
+  assert.throws(() => build({ root, check: true }), /產物過期/);
 });
 
 test("來源 Git 日期含文件與素材，換算臺灣日期，不用活動日期或無關提交", (t) => {
