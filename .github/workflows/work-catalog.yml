@@ -1,0 +1,121 @@
+name: work-catalog
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '23 21 * * *' # Every day at 05:23 Asia/Taipei.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: work-catalog-publish
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    # Never publish an unmerged branch, including a manual run on that branch.
+    # GITHUB_TOKEN pushes do not start another run; this guard also documents
+    # and enforces the generated-commit boundary if that behavior ever changes.
+    if: >-
+      github.repository == 'huansbox/aiden-study' &&
+      github.ref == 'refs/heads/master' &&
+      !(github.actor == 'github-actions[bot]' && startsWith(github.event.head_commit.message, 'chore(catalog): sync work catalog'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Refresh registered remote sources and rebuild the shared catalog
+        env:
+          CATALOG_EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$CATALOG_EVENT" = "push" ]; then
+            node scripts/sync-work-catalog.mjs --missing-only
+          else
+            node scripts/sync-work-catalog.mjs
+          fi
+          node scripts/build-work-catalog.mjs
+          node scripts/build-work-catalog.mjs --check
+      - name: Verify catalog behavior without external requests
+        run: node --test tests/test_work_catalog*.mjs
+      - name: Commit generated outputs only, without overwriting concurrent work
+        id: catalog
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- README.md learning-tasks/README.md docs/parent/work-catalog.json docs/parent/work-catalog-remotes.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore(catalog): sync work catalog'
+            # A concurrent mainline update rejects this normal fast-forward
+            # push. Do not rebase stale generated files over new source data.
+            if ! git push origin HEAD:master; then
+              echo '::error::Mainline changed or push was denied. No changes were overwritten; rerun this workflow against the latest master.'
+              exit 1
+            fi
+          fi
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Request legacy Pages build and verify the published catalog
+        uses: actions/github-script@v8
+        env:
+          CATALOG_COMMIT: ${{ steps.catalog.outputs.commit }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const crypto = require('node:crypto');
+            const repo = context.repo;
+            const { data: site } = await github.rest.repos.getPages(repo);
+            const { data: repository } = await github.rest.repos.get(repo);
+            if (site.build_type !== 'legacy' || site.source?.branch !== 'master' || site.source?.path !== '/docs' || repository.default_branch !== 'master') {
+              throw new Error('Pages is no longer legacy master:/docs. Review the publishing contract before changing deployment settings.');
+            }
+            // Bot pushes do not trigger Pages automatically. This REST endpoint
+            // explicitly builds the existing site; it does not create/migrate it.
+            // https://docs.github.com/en/rest/pages/pages#request-a-github-pages-build
+            await github.rest.repos.requestPagesBuild(repo);
+            const expected = JSON.parse(fs.readFileSync('docs/parent/work-catalog.json', 'utf8'));
+            const serialized = JSON.stringify(expected);
+            const digest = crypto.createHash('sha256').update(serialized).digest('hex');
+            const url = new URL('parent/work-catalog.json', site.html_url);
+            let lastStatus = 'queued';
+            let lastCommit = null;
+            for (let attempt = 0; attempt < 60; attempt++) {
+              const { data: build } = await github.rest.repos.getLatestPagesBuild(repo);
+              lastStatus = build.status;
+              lastCommit = build.commit;
+              // The latest endpoint can briefly return an older build, or a
+              // concurrent master update. Neither proves this commit's result.
+              const isCurrentCommit = build.commit === process.env.CATALOG_COMMIT;
+              if (isCurrentCommit && build.status === 'errored') throw new Error(`Pages build failed: ${build.error?.message || 'see Pages build logs'}`);
+              if (isCurrentCommit && build.status === 'built') {
+                try {
+                  url.searchParams.set('catalog-check', `${process.env.CATALOG_COMMIT}-${attempt}`);
+                  const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(15000) });
+                  if (response.ok && JSON.stringify(await response.json()) === serialized) {
+                    const representative = expected.works.find(work => !work.source.remote && work.created && work.updated);
+                    await core.summary
+                      .addHeading('Published work catalog verified')
+                      .addRaw(`Source commit: ${process.env.CATALOG_COMMIT}\n\nPages build commit: ${build.commit}\n\nCatalog SHA-256: ${digest}\n\n`)
+                      .addLink('Published catalog', url.toString())
+                      .addRaw(`\n\nRepresentative Git dates: ${representative ? `${representative.id}: ${representative.created} / ${representative.updated}` : 'no dated local work'}\n`)
+                      .write();
+                    return;
+                  }
+                } catch (error) {
+                  core.info(`Published catalog not ready: ${error.name}`);
+                }
+              }
+              await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+            throw new Error(`Published catalog did not match the generated data; last Pages status: ${lastStatus}, build commit: ${lastCommit}, expected commit: ${process.env.CATALOG_COMMIT}. Inspect the Pages build and rerun.`);

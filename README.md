@@ -6,55 +6,57 @@
 
 ## 作品總覽
 
-從這裡找 App、一次性任務與主線外作品。這是一份查找入口：App 登記與上下架以 [registry](docs/registry.json) 為準；任務狀態、日期與歸檔規則以 [任務索引](learning-tasks/README.md) 為準；製作中的最新進度回查該工作的 issue／PR，不從本頁推定。
+<!-- work-catalog:start -->
+
+此區塊由 [App registry](docs/registry.json) 與 [task catalog](learning-tasks/catalog.json) 自動產生，勿手改。相同資料供[家長作品白板](https://kids.linshuhuan.com/parent/)使用；操作與歸檔規則見[任務庫](learning-tasks/README.md)。
 
 ### App
 
-包含 registry 中的站內與外部 App，不只列孩子目前看得見的活動。以下是作品／來源入口，不表示每個 App 都已啟用；孩子實際可見內容由家長設定決定。
+包含 draft／parked 與外部 App；對象是 registry 預設，不是孩子目前的家庭設定。App 上下架不代表工作已完成，沒有明確工作狀態就顯示「未標記」。
 
-| App | 來源或外部入口 | 進度保存方式 |
-| --- | --- | --- |
-| 題庫練習 | [docs/study/](docs/study/) | LocalStorage + Worker 同步 |
-| 長除法練習 | [docs/math/](docs/math/) | LocalStorage + Worker 同步 |
-| 英文拼字 | [docs/spelling/](docs/spelling/) | LocalStorage + Worker 同步 |
-| Native Camp Review | [docs/nativecamp/](docs/nativecamp/) | 完整句、口說與每週新題複習；LocalStorage + Worker 同步 |
-| 數織解謎 | [docs/math/nonogram/](docs/math/nonogram/) | 原有過關進度僅 LocalStorage；新累計另行同步 |
-| 注音練習 | [docs/zhuyin/](docs/zhuyin/)；[現況與交接](docs-dev/zhuyin-handoff.md) | LocalStorage + Worker 同步 |
-| 動物守護者 | [animal-fight](https://huansbox.github.io/animal-fight/) | 外部 App，未接平台同步 |
-| 英文閱讀 | [aiden-english](https://huansbox.github.io/aiden-english/) | 外部 App，未接平台同步 |
-| 隕石數學防衛隊 | [99-meteor](https://huansbox.github.io/99-meteor/) | 外部 App，未接平台同步 |
+| App | 來源 | 可用版本 | 工作狀態 |
+| --- | --- | --- | --- |
+| Native Camp Review | [aiden-study/docs/nativecamp](docs/nativecamp/) | [不計分預覽](docs/nativecamp/preview.html) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 題庫練習 | [aiden-study/docs/study](docs/study/) | [網頁](docs/study/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 長除法練習 | [aiden-study/docs/math](docs/math/) | [網頁](docs/math/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 英文拼字 | [aiden-study/docs/spelling](docs/spelling/) | [網頁](docs/spelling/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 數織解謎 | [aiden-study/docs/math/nonogram](docs/math/nonogram/) | [網頁](docs/math/nonogram/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 注音練習 | [aiden-study/docs/zhuyin](docs/zhuyin/) | [網頁](docs/zhuyin/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 動物守護者 | [animal-fight](https://github.com/huansbox/animal-fight/tree/master) | [探險卡 PDF](https://github.com/huansbox/animal-fight/blob/master/output/pdf/storm-forest-rescue-reveal-cards-half-label-a4.pdf)、[任務狀態卡 PDF](https://github.com/huansbox/animal-fight/blob/master/output/pdf/team-mission-status-zone-cards-quarter-label-a4.pdf)、[規則與用法](https://github.com/huansbox/animal-fight/blob/master/README.md) | 未標記；列印作品；舊 GitHub Pages 網址已失效，改用公開 PDF 與規則。未另標記工作狀態。 |
+| 英文閱讀 | [aiden-english](https://github.com/huansbox/aiden-english/tree/master) | [外部網頁](https://huansbox.github.io/aiden-english/) | 未標記；App 上下架：草稿；未另標記工作狀態。 |
+| 隕石數學防衛隊 | [99-meteor](https://github.com/huansbox/99-meteor/tree/main) | [外部網頁](https://huansbox.github.io/99-meteor/) | 未標記；App 上下架：暫不上架；未另標記工作狀態。 |
 
 ### 學習任務與共用經驗
 
-每份作品在下表只列一次；有網頁版本仍可屬於一次性任務。詳細狀態、活動日期與對象只在 [任務索引](learning-tasks/README.md#任務索引) 維護，成品與再製方式見各任務 README。
+每份任務保留一個來源入口；白板把同系列合成一列，展開後仍可找到每份素材。活動日期、狀態與對象由同一份登錄產生於[任務索引](learning-tasks/README.md#任務索引)。
 
-| 任務 | 找得到什麼 |
-| --- | --- |
-| [Native Camp：Michael 課後複習](learning-tasks/nativecamp-2026-09-13/) | 來源核對、完整句題文與預製語音 |
-| [Native Camp：Khalid 課後複習](learning-tasks/nativecamp-2026-09-17/) | 來源核對、完整句題文與預製語音 |
-| [Native Camp：Weekly Review](learning-tasks/nativecamp-weekly-2026-09-14/) | 每週重新設計的混合題包與來源概念映射 |
-| [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 單堂分析、紙本練習與 Review App 的可重建來源；[互動版使用與驗收](docs-dev/nativecamp-review.md)；[下堂製作SOP／模板](learning-tasks/nativecamp-review-pilot/lesson-sop.md) |
-| [Native Camp：Edon 家庭與詞句](learning-tasks/nativecamp-2026-09-16/) | 親屬關係、縮寫、相反詞；較慢語音與OpenAI試聽比較 |
-| [Native Camp：Edon 家庭與主題](learning-tasks/nativecamp-2026-09-14/) | 祖父母詞彙、短文主題與完整句回答 |
-| [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 十張動物園／火車探險卡、可列印 PDF、設計經驗 |
-| [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | 〈初夏雜記〉互動頁、老師回饋、舊來源位置說明 |
-| [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 新篇互動頁、可編輯來源、產生部署檔的方法 |
-| [四上第一次段考數學候選卷](learning-tasks/grade4-sem1-math-exam1/) | 原卷來源、範圍核對與來源映射；原卷僅本機保存 |
-| [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | 孩子卷／家長卷的再製方式；私用 PDF 僅本機保存 |
+| 任務 | 找得到什麼 | 可用版本 |
+| --- | --- | --- |
+| [Native Camp Weekly Review 09-14～09-20](learning-tasks/nativecamp-weekly-2026-09-14/) | 本週新題與少量較早概念；首次弱項優先。 | [不計分預覽](docs/nativecamp/preview.html?lesson=weekly-2026-09-14) |
+| [Native Camp 2026-09-17 Khalid](learning-tasks/nativecamp-2026-09-17/) | 來源核對、完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-17) |
+| [Native Camp 2026-09-13 Michael](learning-tasks/nativecamp-2026-09-13/) | 來源核對、完整句排列與口說。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-13) |
+| [Native Camp 2026-09-16 Edon](learning-tasks/nativecamp-2026-09-16/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-16) |
+| [Native Camp 2026-09-14 Edon](learning-tasks/nativecamp-2026-09-14/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-14) |
+| [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 紙本口說；另供 App 自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-15)、[孩子版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf)、[家長版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf) |
+| [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 五枝放射圖、各段重點保留、iPad 選詞。 | [網頁](docs/leisure-mind-map/) |
+| [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。 | 私用成品 |
+| [四上第一次段考數學候選卷](learning-tasks/grade4-sem1-math-exam1/) | 桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷。 | 私用成品 |
+| [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | iPad 選詞、四角放射心智圖、短詞抄寫。 | [網頁](docs/mind-map.html) |
+| [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 火車地理、園區選路、動物特徵觀察、昆蟲分類；卡片可任意中止。 | [列印 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/hsinchu-zoo-adventure/output/hsinchu-zoo-adventure-cards-half-label-a4.pdf) |
 
-可跨任務沿用的內容從 [shared 索引](learning-tasks/shared/README.md) 找；例如 [兒童閱讀心智圖](learning-tasks/shared/reading-mind-maps.md)。這些是經驗或資源，不另外計為一份學習作品。
+可跨任務沿用的內容從 [shared 索引](learning-tasks/shared/README.md) 找；例如[兒童閱讀心智圖](learning-tasks/shared/reading-mind-maps.md)。這些是經驗或資源，不另外計為一份作品。
 
 ### 主線外作品入口
 
-下列作品的來源仍有獨立工作分支，不能只搜尋目前 checkout 判定是否存在。最新工作狀態以連結中的 PR／分支為準；合併後將來源入口改成本 repo 的相對連結，不另複製一份作品。查核基準為 2026-09-17，後續整合狀態須回查 Git。
+下列作品保留其明確分支來源，不複製或合併其他裝置的工作。網站可用與來源已整合是兩件事；最新工作狀態仍回查該分支／PR，不把遠端日期當成尚未推送的即時變動。
 
-| 作品 | 來源與追蹤 | 已有成果入口 |
-| --- | --- | --- |
-| 怎麼和 AI 一起做出探險卡 | [協作故事任務來源](https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase) | [Cloudflare Pages 故事網站](https://ai-zoo-cards-story.pages.dev/)；網站已發布不代表來源已合併 |
+| 作品 | 來源 | 已有成果入口 | 工作狀態 |
+| --- | --- | --- | --- |
+| 怎麼和 AI 一起做出探險卡 | [aiden-study/learning-tasks/ai-collaboration-showcase](https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase)（codex/ai-collaboration-showcase） | [Cloudflare Pages 故事網站](https://ai-zoo-cards-story.pages.dev/) | 未標記；網站已發布；來源仍為主線外工作分支，工作狀態回查該分支。 |
 
-App 已上線與「這次新增題目已完成」是不同狀態。跨裝置同時開發時，先查遠端與對應工作紀錄；無法取得另一台電腦未提交的內容時明示未知，不以本機舊版本推定，也不自行搬動或合併其工作。
+白板的 create／update 取作品來源範圍的 Git commit 日期（臺灣時間），不是活動日、發布日或孩子作答時間；create 指目前來源位置首次收錄。完整歷史不足時建置失敗，未知日期顯示「—」。遠端同步失敗保留上次已知值並明示過期；不以同步嘗試時間更新作品日期。
 
-目前家長後台提供家庭設定與練習管理，尚未呈現這份跨 App／任務的完整總覽。這是展示入口缺口，不代表動物園等任務未歸檔；第一階段整理範圍與查核見 [#71](https://github.com/huansbox/aiden-study/issues/71)。
+<!-- work-catalog:end -->
 
 ## 平台現況
 

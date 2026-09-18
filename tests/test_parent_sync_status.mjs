@@ -79,6 +79,12 @@ class Element {
   }
   querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
   addEventListener(type, handler) { this.events.set(type, handler); }
+  removeEventListener(type) { this.events.delete(type); }
+  setAttribute(name, value) { this.attrs[name] = String(value); }
+  getAttribute(name) { return this.attrs[name] ?? null; }
+  focus() { this.focused = true; }
+  showModal() { this.open = true; }
+  close() { this.open = false; this.fire("close"); }
   fire(type) { return (this["on" + type] || this.events.get(type))?.({ target: this, preventDefault() {} }); }
   closest() { return this; }
   before(element) { element.parent = this.parent; this.parent.children.splice(this.parent.children.indexOf(this), 0, element); changed(); }
@@ -86,10 +92,16 @@ class Element {
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
 }
 
-async function page({ initial = {}, statusQueue = [], registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15", freshDevice = false } = {}) {
-  const root = new Element();
-  root.id = "parent";
+async function page({ initial = {}, statusQueue = [], catalogQueue = [], workCatalog = { schemaVersion: 1, works: [] }, registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15", freshDevice = false } = {}) {
+  const shell = new Element();
+  const html = source("parent/index.html");
+  shell.innerHTML = html;
+  const root = shell.querySelector("#parent");
+  const nav = shell.querySelector("#parent-views");
+  // The tiny DOM parser is flat; preserve this static container's actual HTML children.
+  nav.innerHTML = html.match(/<nav id="parent-views"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const storage = new Map();
+  const windowListeners = new Map();
   const requests = [];
   const env = { TOKEN: "test-token", KV: kvStub(initial), LOCAL_DEV: true };
   const jar = { cookie: "" };
@@ -105,20 +117,30 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
   const document = {
     currentScript: {},
     visibilityState: "visible",
-    getElementById: (id) => id === "parent" ? root : root.querySelector("#" + id),
+    getElementById: (id) => shell.querySelector("#" + id),
     createElement: (tag) => new Element(tag),
     addEventListener() {},
+    removeEventListener() {},
   };
   const context = vm.createContext({
     document, location, localStorage, URL, URLSearchParams, crypto, AbortController,
     performance, Blob, Intl, Date,
     setTimeout, clearTimeout, setInterval() {},
-    addEventListener() {}, dispatchEvent() {},
+    addEventListener(type, handler) {
+      if (!windowListeners.has(type)) windowListeners.set(type, new Set());
+      windowListeners.get(type).add(handler);
+    },
+    removeEventListener(type, handler) { windowListeners.get(type)?.delete(handler); },
+    dispatchEvent(event) { for (const handler of windowListeners.get(event.type) || []) handler(event); },
     CustomEvent: class { constructor(type) { this.type = type; } },
     confirm: () => true,
     history: { replaceState(_state, _title, url) { location.href = String(url); location.search = new URL(url).search; } },
     fetch: async (input, init = {}) => {
       const url = new URL(input, location.href);
+      if (url.pathname === "/parent/work-catalog.json") {
+        const queued = catalogQueue.shift();
+        return queued ? queued(url, init) : json(workCatalog);
+      }
       if (url.pathname === "/registry.json") return json(registry);
       if (url.pathname === "/nativecamp/lessons/catalog.json") return json(JSON.parse(source("nativecamp/lessons/catalog.json")));
       if (/^\/nativecamp\/lessons\/[a-z0-9-]+\.json$/.test(url.pathname)) {
@@ -149,7 +171,7 @@ async function page({ initial = {}, statusQueue = [], registry = JSON.parse(sour
   await until(() => root.querySelector(freshDevice ? "#connect-family" : "#sync-status"));
   if (freshDevice) await new Promise((resolve) => setImmediate(resolve));
   return {
-    root, document, requests, env, jar, context, statusQueue,
+    root, shell, document, requests, env, jar, context, statusQueue, catalogQueue,
     panel: () => root.querySelector("#parent-sync"),
     status: () => root.querySelector("#sync-status")?.textContent,
     async ready() { await until(() => this.status() && this.status() !== "查詢中⋯"); },
@@ -161,6 +183,262 @@ const progress = (child, app, date = "2026-09-15T18:05:06.000Z") => ({
   ["p:" + child + ":" + app]: { value: JSON.stringify({ rev: 3, data: {} }), metadata: { rev: 3, updatedAt: date } },
 });
 const record = (child, app, date) => ({ child, app, rev: 3, lastWrite: date });
+
+const boardWork = (overrides = {}) => ({
+  id: "app:nativecamp", type: "app", name: "Native Camp Review", audience: ["aiden"], audienceLabel: "哥哥",
+  status: "unknown", statusNote: "", availability: "available", location: "aiden-study/docs/nativecamp",
+  source: { repo: "huansbox/aiden-study", ref: "master", paths: ["docs/nativecamp"], excludePaths: [], remote: false },
+  sourceUrl: "https://github.com/huansbox/aiden-study/tree/master/docs/nativecamp", links: [{ label: "開啟成品", url: "../nativecamp/preview.html" }], description: "", eventDate: null,
+  groupId: "nativecamp", groupName: "Native Camp", created: "2026-09-16", updated: "2026-09-17", freshness: { state: "current", checkedAt: null, error: null }, ...overrides,
+});
+const boardCatalog = () => ({ schemaVersion: 1, works: [
+  boardWork(),
+  boardWork({ id: "task:weekly", name: "Weekly grandparents", type: "task", location: "aiden-study/learning-tasks/weekly", status: "complete", created: "2026-09-14", updated: "2026-09-18" }),
+  boardWork({ id: "task:zoo", name: "新竹動物園", type: "task", groupId: null, groupName: null, audience: ["bingpu"], audienceLabel: "弟弟", created: null, updated: null, freshness: { state: "unknown", checkedAt: null, error: null } }),
+] });
+
+test("真正 parent 白板：系列展開、搜尋、篩選、詳情與重載不重建設定表單或寫家庭資料", async () => {
+  const h = await page({ workCatalog: boardCatalog(), initial: progress("aiden", "study") });
+  await h.ready();
+  const board = h.document.getElementById("workboard");
+  await until(() => board.querySelector("#wb-count").textContent.includes("3 份"));
+  const input = h.root.querySelector('[data-site="stroke"][data-field="title"]');
+  input.value = "保留未儲存的網站名稱";
+  input.fire("input");
+  const quantity = h.root.querySelector("#task-quantity");
+  quantity.value = "19"; // 尚未按「加入安排」的 DOM-only 輸入也必須保留。
+  const settings = await h.env.KV.get("c:family:settings"), savedProgress = await h.env.KV.get("p:aiden:study");
+  const writes = () => h.requests.filter((request) => request.init.method && request.init.method !== "GET").length;
+  const beforeWrites = writes();
+  h.document.getElementById("parent-views").querySelector('[data-parent-view="workboard"]').fire("click");
+  assert.equal(h.root.hidden, true);
+  assert.equal(board.hidden, false);
+  const results = () => board.querySelector("#wb-results");
+  assert.match(results().innerHTML, /id="wb-members-group%3Anativecamp" hidden/);
+  results().querySelector('[data-wb-expand="group:nativecamp"]').fire("click");
+  assert.match(results().innerHTML, /aria-expanded="true"/);
+  assert.doesNotMatch(results().innerHTML, /id="wb-members-group%3Anativecamp" hidden/);
+  assert.match(results().innerHTML, /Weekly grandparents/);
+  const search = board.querySelector("#wb-search");
+  search.value = "grandparents"; search.fire("input");
+  assert.match(results().innerHTML, /Weekly grandparents/);
+  assert.doesNotMatch(results().innerHTML, /新竹動物園/);
+  assert.equal(board.querySelector("#wb-search"), search, "輸入搜尋時不重建輸入框");
+  const member = results().querySelector('[data-wb-detail="task:weekly"]');
+  member.fire("click");
+  const dialog = board.querySelector("#wb-detail");
+  assert.equal(dialog.open, true);
+  assert.match(dialog.innerHTML, /Weekly grandparents|2026-09-18|查看來源/);
+  dialog.querySelector("#wb-detail-close").fire("click");
+  assert.equal(dialog.open, false);
+  assert.equal(member.focused, true);
+  board.querySelector("#wb-reset").fire("click");
+  board.querySelector("#wb-audience").value = "bingpu"; board.querySelector("#wb-audience").fire("change");
+  assert.match(results().innerHTML, /新竹動物園/);
+  assert.doesNotMatch(results().innerHTML, /Native Camp/);
+  assert.match(results().innerHTML, /來源日期未知|來源尚未查核/);
+  await board.querySelector("#wb-refresh").fire("click");
+  h.document.getElementById("parent-views").querySelector('[data-parent-view="settings"]').fire("click");
+  assert.equal(h.root.hidden, false);
+  assert.equal(h.root.querySelector('[data-site="stroke"][data-field="title"]'), input);
+  assert.equal(input.value, "保留未儲存的網站名稱");
+  assert.equal(h.root.querySelector("#task-quantity"), quantity);
+  assert.equal(quantity.value, "19");
+  assert.equal(await h.env.KV.get("c:family:settings"), settings);
+  assert.equal(await h.env.KV.get("p:aiden:study"), savedProgress);
+  assert.equal(writes(), beforeWrites);
+});
+
+test("白板首次失敗不顯示空清單或零計數；重載保留焦點、拒絕重複請求並可恢復", async () => {
+  let initialRelease;
+  const h = await page({ workCatalog: boardCatalog(), catalogQueue: [() => new Promise((resolve) => { initialRelease = resolve; })] });
+  await h.ready();
+  const board = h.document.getElementById("workboard"), loadStatus = () => board.querySelector("#wb-load-status").textContent;
+  assert.equal(board.querySelector("#wb-summary").hidden, true);
+  assert.equal(board.querySelector("#wb-summary").innerHTML, "");
+  initialRelease(json({}, 503));
+  await until(() => loadStatus().includes("無法載入"));
+  assert.equal(board.querySelector("#wb-summary").hidden, true);
+  assert.equal(board.querySelector("#wb-summary").innerHTML, "");
+  assert.equal(board.querySelector("#wb-results").innerHTML, "");
+  assert.doesNotMatch(loadStatus(), /沒有已登錄作品|沒有符合/);
+  assert.ok(h.root.querySelector("#save"));
+  await board.querySelector("#wb-refresh").fire("click");
+  assert.equal(loadStatus(), "");
+  assert.equal(board.querySelector("#wb-summary").hidden, false);
+  assert.match(board.querySelector("#wb-results").innerHTML, /Native Camp/);
+  for (const response of [() => json({}, 503), () => json({ schemaVersion: 1, works: [{}] })]) {
+    h.catalogQueue.push(response);
+    await board.querySelector("#wb-refresh").fire("click");
+    assert.match(loadStatus(), /保留上次清單，資料可能過期/);
+    assert.match(board.querySelector("#wb-results").innerHTML, /Native Camp/);
+  }
+  let release;
+  h.catalogQueue.push(() => new Promise((resolve) => { release = resolve; }));
+  const refresh = board.querySelector("#wb-refresh");
+  refresh.focus();
+  const old = refresh.fire("click");
+  assert.equal(refresh.getAttribute("aria-disabled"), "true");
+  assert.equal(refresh.disabled, false, "保留按鈕的鍵盤焦點，不能設原生 disabled");
+  const next = boardCatalog(); next.works[2].name = "較新清單";
+  h.catalogQueue.push(() => json(next));
+  await refresh.fire("click");
+  assert.equal(h.catalogQueue.length, 1, "載入中再次點擊不發出第二個請求");
+  release(json(boardCatalog()));
+  await old;
+  assert.equal(refresh.getAttribute("aria-disabled"), "false");
+  assert.equal(board.querySelector("#wb-refresh"), refresh);
+  assert.equal(refresh.focused, true);
+  await refresh.fire("click");
+  assert.match(board.querySelector("#wb-results").innerHTML, /較新清單/);
+  assert.equal(loadStatus(), "");
+});
+
+test("所有作品篩選都暫時展開系列並標示命中成員；清空後還原手動展開狀態", async () => {
+  const catalog = boardCatalog();
+  catalog.works[1].audience = ["bingpu"];
+  const h = await page({ workCatalog: catalog });
+  await h.ready();
+  const board = h.document.getElementById("workboard"), html = () => board.querySelector("#wb-results").innerHTML;
+  await until(() => board.querySelector("#wb-count").textContent.includes("3 份"));
+  const expanded = () => !html().includes('id="wb-members-group%3Anativecamp" hidden');
+  assert.equal(expanded(), false);
+  assert.equal(board.querySelector("#wb-summary").getAttribute("role"), "group");
+  const choose = (id, value, event = "change") => { const input = board.querySelector(id); input.value = value; input.fire(event); };
+  for (const activate of [
+    () => board.querySelector('[data-wb-status="complete"]').fire("click"),
+    () => choose("#wb-audience", "bingpu"),
+    () => choose("#wb-type", "task"),
+    () => choose("#wb-search", "grandparents", "input"),
+  ]) {
+    activate();
+    assert.equal(expanded(), true);
+    const rows = [...html().matchAll(/<tr class="wb-member">([\s\S]*?)<\/tr>/g)].map((match) => match[1]);
+    assert.equal(rows.length, 2, "未命中的其他系列成員不隱藏");
+    assert.match(rows.find((row) => row.includes('data-wb-detail="task:weekly"')), /符合篩選/);
+    assert.doesNotMatch(rows.find((row) => row.includes('data-wb-detail="app:nativecamp"')), /符合篩選/);
+    board.querySelector("#wb-reset").fire("click");
+    assert.equal(expanded(), false, "自動展開不永久寫入手動展開狀態");
+    assert.doesNotMatch(html(), /符合篩選/);
+  }
+  board.querySelector('[data-wb-expand="group:nativecamp"]').fire("click");
+  assert.equal(expanded(), true);
+  choose("#wb-search", "grandparents", "input");
+  board.querySelector('[data-wb-expand="group:nativecamp"]').fire("click");
+  assert.equal(expanded(), false, "篩選時仍可暫時手動收合");
+  board.querySelector("#wb-reset").fire("click");
+  assert.equal(expanded(), true, "清空篩選還原之前的手動展開");
+});
+
+test("新裝置無 child／lesson 預設白板，連線提示可一鍵到家庭表單且不自動切頁", async () => {
+  const h = await page({ freshDevice: true, lessonId: null, workCatalog: boardCatalog() });
+  const board = h.document.getElementById("workboard"), nav = h.document.getElementById("parent-views");
+  const help = nav.querySelector("#wb-connection-help");
+  assert.equal(board.hidden, false);
+  assert.equal(h.root.hidden, true);
+  assert.equal(help.hidden, false);
+  assert.equal(help.textContent, "家庭尚未連線");
+  help.fire("click");
+  assert.equal(h.root.hidden, false);
+  assert.equal(board.hidden, true);
+  const key = h.root.querySelector('[name="key"]');
+  assert.equal(key.focused, true);
+  key.value = "test-token";
+  h.root.querySelector("#connect-family").fire("submit");
+  await h.ready();
+  assert.equal(help.hidden, true, "成功連接後隱藏提醒");
+  assert.equal(h.root.hidden, false, "狀態更新不自動切換區域");
+  nav.querySelector('[data-parent-view="workboard"]').fire("click");
+  for (const status of ["offline", "error", "checking", "connected"]) {
+    h.context.KidsAuth.state.status = status;
+    h.context.dispatchEvent(new h.context.CustomEvent("kids:connection"));
+    assert.equal(help.hidden, status === "checking" || status === "connected");
+    if (!help.hidden) assert.equal(help.textContent, "檢查家庭連線");
+    assert.equal(board.hidden, false);
+    assert.equal(h.root.hidden, true);
+  }
+});
+
+test("白板保留未知／過期資訊，欄位跳脫；指定 child／lesson 返回仍顯示原家庭區域", async () => {
+  const catalog = boardCatalog();
+  catalog.works[2].name = '<img src=x onerror="bad()">';
+  catalog.works[2].freshness = { state: "stale", checkedAt: "2026-09-17T00:00:00Z", error: "unavailable" };
+  const h = await page({ child: "bingpu", lessonId: "weekly-2026-09-14", workCatalog: catalog });
+  const board = h.document.getElementById("workboard");
+  await until(() => board.querySelector("#wb-count").textContent.includes("3 份"));
+  assert.equal(board.hidden, true);
+  assert.equal(h.root.hidden, false);
+  const html = board.querySelector("#wb-results").innerHTML;
+  assert.match(html, /&lt;img src=x onerror=&quot;bad\(\)&quot;&gt;/);
+  assert.doesNotMatch(html, /<img src=x/);
+  assert.match(html, /可能過期/);
+  assert.match(html, /未標記/);
+  assert.match(html, /href="https:\/\/github.com\/huansbox\/aiden-study\/tree\/master\/docs\/nativecamp"/);
+});
+
+test("白板 Native Camp 成品保留目前選定 child 與 lesson，真正 preview 返回仍開同一孩子", async () => {
+  const catalog = boardCatalog();
+  catalog.works[0].links = [
+    { label: "開啟成品", url: "../nativecamp/preview.html?lesson=2026-09-15&k=test-token" },
+    { label: "外部預覽", url: "https://example.com/nativecamp/preview.html?lesson=example" },
+    { label: "其他 App", url: "../study/" },
+  ];
+  const h = await page({ child: "aiden", lessonId: null, workCatalog: catalog });
+  await h.ready();
+  const board = h.document.getElementById("workboard");
+  await until(() => board.querySelector("#wb-count").textContent.includes("3 份"));
+  await h.root.querySelector('[data-child="bingpu"]').fire("click");
+  await h.ready();
+  assert.equal(new URL(h.context.location.href).searchParams.get("child"), "aiden", "切換按鈕後，DOM 才是目前選定孩子，不可只沿用舊網址");
+  h.document.getElementById("parent-views").querySelector('[data-parent-view="workboard"]').fire("click");
+  function openProduct() {
+    board.querySelector('[data-wb-detail="app:nativecamp"]').fire("click");
+    const dialog = board.querySelector("#wb-detail");
+    const links = dialog.querySelectorAll("a");
+    const href = links.find((link) => link.textContent === "開啟成品").getAttribute("href");
+    assert.equal(links.find((link) => link.textContent === "外部預覽").getAttribute("href"), catalog.works[0].links[1].url);
+    assert.equal(links.find((link) => link.textContent === "其他 App").getAttribute("href"), "../study/");
+    dialog.querySelector("#wb-detail-close").fire("click");
+    return new URL(href, h.context.location.href);
+  }
+  const previewURL = openProduct();
+  assert.equal(previewURL.pathname, "/nativecamp/preview.html");
+  assert.equal(previewURL.searchParams.get("child"), "bingpu");
+  assert.equal(previewURL.searchParams.get("lesson"), "2026-09-15");
+  assert.equal(previewURL.searchParams.has("k"), false);
+
+  // Execute the real Preview boot/render with the actual catalog and lesson, without audio playback.
+  for (const script of ["question-view.js", "audio.js", "preview.js"]) vm.runInContext(source("nativecamp/" + script), h.context);
+  h.document.visibilityState = "hidden";
+  const previewRoot = new Element();
+  const preview = await h.context.NativeCampPreview.boot({
+    root: previewRoot, search: previewURL.search,
+    fetchImpl: (path, init) => h.context.fetch(new URL(path, previewURL).href, init),
+    makeAudio: () => ({ play: async () => {}, pause() {}, removeAttribute() {}, load() {} }),
+  });
+  assert.ok(preview, "真正 Preview 應載入成功");
+  const back = previewRoot.querySelectorAll("a").find((link) => link.getAttribute("href")?.startsWith("../parent/"));
+  const returnURL = new URL(back.getAttribute("href"), previewURL);
+  assert.equal(returnURL.search, "?child=bingpu&lesson=2026-09-15");
+  preview.destroy();
+  const returned = await page({ child: returnURL.searchParams.get("child"), lessonId: returnURL.searchParams.get("lesson") });
+  await returned.ready();
+  assert.equal(returned.root.hidden, false);
+  assert.equal(returned.document.getElementById("workboard").hidden, true);
+  assert.equal(returned.root.querySelector('[data-child="bingpu"]').getAttribute("aria-pressed"), "true");
+
+  h.document.getElementById("parent-views").querySelector('[data-parent-view="settings"]').fire("click");
+  h.root.querySelector('[data-child="aiden"]').fire("click");
+  await h.ready();
+  assert.equal(openProduct().searchParams.get("child"), "aiden", "下次開詳情需重新讀目前選定孩子");
+  h.root.querySelectorAll("[data-child]").forEach((button) => button.setAttribute("aria-pressed", "false"));
+  h.context.location.href = origin + "/parent/?child=bingpu&k=test-token";
+  assert.equal(openProduct().searchParams.get("child"), "bingpu", "沒有選定按鈕時才採合法網址 child");
+  h.context.location.href = origin + "/parent/?child=unknown&k=test-token";
+  const fallback = openProduct();
+  assert.equal(fallback.searchParams.get("child"), "aiden");
+  assert.equal(fallback.searchParams.has("k"), false);
+});
 
 test("新機器直接開家長後台可輸入金鑰，錯誤後重試並連接成功", async () => {
   const h = await page({ freshDevice: true });

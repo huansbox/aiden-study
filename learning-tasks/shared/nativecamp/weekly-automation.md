@@ -31,7 +31,7 @@ uv run --offline learning-tasks/shared/nativecamp/weekly_automation.py prepare -
 ## 製作、語音與獨立檢查
 
 1. 只讀 `<release>/generation-brief.json` 製作原創完整句。公開概念順序沿用 brief 的來源排序，不能公開 plan 的個人表現排序。依 [weekly-planning.md](weekly-planning.md) 建立 task README、來源與索引，每概念 Try／Say 各三個新變體，保留來源映射。原創內容由 heartbeat 執行代理依 SOP 製作；Python runner 不自行呼叫另一個 LLM，也不把孩子資料傳給新的服務。
-2. builder 產生完整題包及 speech jobs；將新週包登記到 catalog。不得變更已發布課程、週包或既有音檔。新包在整批通過前保留在工作分支，不合併到正式站。
+2. builder 產生完整題包及 speech jobs；將新週包登記到 App 的 `docs/nativecamp/lessons/catalog.json`。另外依任務庫規則在 `learning-tasks/catalog.json` 登錄同一份 task（`groupId: nativecamp`），再執行 `node scripts/build-work-catalog.mjs` 產生作品索引；這不是再註冊一個 App，也不手填 README 產物。不得變更已發布課程、週包或既有音檔。新包在整批通過前保留在工作分支，不合併到正式站。
 3. 使用固定 normal-speed OpenAI 工具和私有 request journal。下列示例的 `op://` 是 secret reference，不能換成命令列中的明文 key；未具備非互動憑證時停止並回報。
 
 ```powershell

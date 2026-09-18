@@ -57,7 +57,7 @@ stdout 只回 `{status, reason?, releaseDate, lessonId?, conceptCount?}`。`stat
 
 1. 讀 generation brief 與[原課 SOP](../../nativecamp-review-pilot/lesson-sop.md)。以 brief 的 bundle metadata 和概念 sourceConcept 為契約；不複製 plan、progress、originalConcept 或選題理由到公開來源。
 2. 每概念重新設計 Try it／Say it 各三題。換情境或可見證據、保留相同目標能力；不能只換 ID、文字順序或照抄舊題。Try it 使用完整句排列／變換及少量合理混淆字，Say it 列自然完整句與合理替代答案；圖、問題、答案須一致。題目 ID 在包內唯一，沿用新概念 ID 加 mode 和變體序號。
-3. 完成六題後才建立 `learning-tasks/nativecamp-<lessonId>/source/lesson-source.json`，依任務庫規則加入 README 與索引。只放公開原創題文和來源映射，不放作答日期、outcome、helped、排名、快照 hash 或憑證。工作根中的 plan 是私有依據，task 中的 lesson source 才是公開內容真相源。
+3. 完成六題後才建立 `learning-tasks/nativecamp-<lessonId>/source/lesson-source.json`，依任務庫規則建立 task README，並在 `learning-tasks/catalog.json` 登錄，`groupId` 沿用 `nativecamp`；執行 `node scripts/build-work-catalog.mjs` 產生索引與白板，不另手填兩份 README 清單。只放公開原創題文和來源映射，不放作答日期、outcome、helped、排名、快照 hash 或憑證。工作根中的 plan 是私有依據，task 中的 lesson source 才是公開內容真相源。
 4. 執行 `uv run --offline learning-tasks/shared/nativecamp/build_lesson.py --lesson <lessonId>` 產生 JSON 與 speech jobs，再跑同命令 `--check`。建置不產生音訊，也不代表題意或音文已正確；新 JSON 必須通過 `NativeCampCore.validateLesson` 和 catalog 來源核對。
 5. 獨立 reviewer 檢查新情境、完整答案、合理替代句與提示是否洩漏答案。依[共用音訊流程](README.md#openai-語音製作)生成正常語速 OpenAI 音訊，檢查輸入指紋、解碼、非靜音、hash 與抽樣字詞。完整題包、speech jobs、manifest、所有聲音與 catalog 一致且檢查通過後，才交由已授權的發布流程處理。
 
