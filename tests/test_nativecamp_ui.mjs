@@ -6,6 +6,8 @@ import "../docs/nativecamp/catalog.js";
 import "../docs/nativecamp/question-view.js";
 import "../docs/nativecamp/audio.js";
 import "../docs/nativecamp/app.js";
+import { weeklyFixture } from "./helpers/nativecamp-weekly.mjs";
+const sound = (ref) => typeof ref === "string" && ref.startsWith("audio/") ? ref + "?v=20260918-openai" : ref;
 const C = globalThis.NativeCampCore, A = globalThis.NativeCampApp;
 const originalLesson = JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/2026-09-15.json", import.meta.url), "utf8"));
 const date = "2026-09-17";
@@ -33,7 +35,7 @@ class Events {
   removeEventListener(name) { this.handlers.delete(name); }
   emit(name) { this.handlers.get(name)?.(); }
 }
-function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), catalog = [], child = "aiden", failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
+function harness({ progress = C.createProgress(), lesson = structuredClone(originalLesson), catalog = [], lessons = {}, child = "aiden", failAudio = false, practiceDate = date, makeContext = () => null, beforeSave, loadPrivate } = {}) {
   const root = new Root(), activities = [], media = [], plays = [], roundFinishes = [], eventTarget = new Events(), documentTarget = new Events();
   let saved = C.validateProgress(progress), saves = 0, privateRequests = 0, active = false, app;
   const bridge = {
@@ -44,7 +46,7 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
     async syncNow() { app?.onChange({ type: "status" }); },
     async privateAudio(id, options) { privateRequests++; return loadPrivate ? loadPrivate(id, options) : "blob:teacher-audio-" + privateRequests; },
   };
-  app = A.mount({ root, lesson, bridge, catalog, child, date: () => practiceDate, eventTarget, documentTarget,
+  app = A.mount({ root, lesson, bridge, catalog, lessons, child, date: () => practiceDate, eventTarget, documentTarget,
     makeAudioController: (options) => globalThis.NativeCampAudio.create({ ...options, makeContext }), makeAudio: () => {
     const audio = { src: "", paused: true, async play() { plays.push(this.src); if (failAudio) throw Error("Media unavailable"); this.paused = false; }, pause() { this.paused = true; }, removeAttribute() {}, load() {} };
     media.push(audio); return audio;
@@ -68,12 +70,13 @@ function effectClock() {
   };
   return { notes, makeContext: () => context, finish() { notes.at(-1)?.onended?.(); } };
 }
-test("newest lesson home exposes an older due review and returning from practice keeps the selected lesson", async () => {
+test("lesson navigation preserves unfinished courses and returning from practice keeps the selected lesson", async () => {
   const concept = originalLesson.concepts[0]; let progress = C.createProgress();
   for (const q of concept.try.slice(0, 2)) progress = C.submitTry(progress, originalLesson, date, concept.id, q.id, q.answer).progress;
   const h = harness({ lesson: { ...structuredClone(originalLesson), id: "2026-09-16", date: "2026-09-16" }, catalog, child: "bingpu", progress, practiceDate: "2026-09-18" });
   const before = structuredClone(h.progress.lessons[originalLesson.id]);
-  assert.match(h.root.innerHTML, /lesson=2026-09-15[^>]*>.*?Silvana.*?Review ready/);
+  assert.match(h.root.innerHTML, /lesson=2026-09-15[^>]*>.*?Silvana/);
+  assert.doesNotMatch(h.root.innerHTML, /Review ready/);
   assert.match(h.root.innerHTML, /child=bingpu&amp;lesson=2026-09-16" aria-current="page"/);
   assert.doesNotMatch(h.root.innerHTML, /[\u3400-\u9fff]|\p{Extended_Pictographic}/u);
   await h.app.handle("start-try");
@@ -90,7 +93,7 @@ test("real lesson opens; Listen and status-only notifications preserve selection
   assert.equal(h.active, false);
   await h.app.handle("start-try");
   assert.equal(h.active, true);
-  assert.deepEqual(h.plays, [h.lesson.concepts[0].try[0].audio.question]);
+  assert.deepEqual(h.plays, [sound(h.lesson.concepts[0].try[0].audio.question)]);
   await h.app.handle("pick", { choice: "is" });
   assert.match(h.root.innerHTML, /data-choice="is" aria-pressed="true"/);
   await h.app.handle("question-audio");
@@ -106,7 +109,7 @@ test("real lesson opens; Listen and status-only notifications preserve selection
   assert.equal(h.saves, 1);
   assert.equal(h.roundFinishes.length, 0, "Recording a single answer must not show round rewards.");
   assert.deepEqual(h.activities, [{ answered: true, correct: true }]);
-  assert.equal(h.media[0].src, h.lesson.concepts[0].try[0].audio.answer);
+  assert.equal(h.media[0].src, sound(h.lesson.concepts[0].try[0].audio.answer));
   assert.equal(h.media[0].paused, false);
   await h.app.handle("check");
   assert.equal(h.saves, 1, "Repeated Check cannot score the first answer twice.");
@@ -118,21 +121,21 @@ test("Say it hides answer text and media until reveal; rating refers to the firs
   assert.doesNotMatch(h.root.innerHTML, new RegExp(question.answerText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.doesNotMatch(h.root.innerHTML, /data-action="answer-audio"|data-rating=/);
   await h.app.handle("answer-audio");
-  assert.deepEqual(h.plays, [question.audio.question], "The hidden answer cannot play; the question plays automatically.");
+  assert.deepEqual(h.plays, [sound(question.audio.question)], "The hidden answer cannot play; the question plays automatically.");
   await h.app.handle("rate", { rating: "gotIt" });
   assert.equal(h.activities.length, 0);
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.concepts[0].attempted, 0);
   await h.app.handle("reveal");
-  assert.deepEqual(h.plays, [question.audio.question, question.audio.answer]);
+  assert.deepEqual(h.plays, [sound(question.audio.question), sound(question.audio.answer)]);
   assert.ok(h.root.innerHTML.includes(question.answerText));
   assert.match(h.root.innerHTML, /Before showing the answer\./);
   assert.match(h.root.innerHTML, /data-action="answer-audio"/);
   await h.app.handle("answer-audio");
-  assert.equal(h.media[0].src, question.audio.answer);
+  assert.equal(h.media[0].src, sound(question.audio.answer));
   await h.app.handle("rate", { rating: "gotIt" });
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.concepts[0].gotIt, 1);
   assert.deepEqual(h.activities, [{ answered: false }]);
-  assert.equal(h.media[0].src, h.lesson.concepts[0].say[1].audio.question);
+  assert.equal(h.media[0].src, sound(h.lesson.concepts[0].say[1].audio.question));
 });
 test("Say it hint survives remount, disables Got it, and counts With help without an automatic speech score", async () => {
   const first = harness();
@@ -224,16 +227,16 @@ test("Try it plays feedback before the complete answer for independent, helped, 
     const checked = h.app.handle("check");
     await settle();
     assert.ok(h.root.innerHTML.includes(first.answerText), "The answer is visible while the short feedback plays.");
-    assert.deepEqual(h.plays, [first.audio.question]);
+    assert.deepEqual(h.plays, [sound(first.audio.question)]);
     assert.equal(clock.notes[0].pitch, outcome === "incorrect" ? 246.94 : 523.25);
     clock.finish(); await checked;
-    assert.deepEqual(h.plays, [first.audio.question, first.audio.answer]);
+    assert.deepEqual(h.plays, [sound(first.audio.question), sound(first.audio.answer)]);
     assert.equal(h.progress.lessons[h.lesson.id].try["is-are"].initial[0].outcome, outcome);
     h.media[0].onended();
     assert.match(h.root.innerHTML, /data-action="next"/);
     assert.equal(h.plays.length, 2, "Finishing the spoken answer must not advance the question.");
     await h.app.handle("next");
-    assert.equal(h.plays.at(-1), second.audio.question);
+    assert.equal(h.plays.at(-1), sound(second.audio.question));
     h.app.destroy();
   }
 });
@@ -245,11 +248,11 @@ test("Say it Got it precedes the next question, and the last rating plays only e
   const firstRating = h.app.handle("rate", { rating: "gotIt" });
   await settle();
   assert.ok(h.root.innerHTML.includes(second.prompt));
-  assert.deepEqual(h.plays, [first.audio.question, first.audio.answer]);
+  assert.deepEqual(h.plays, [sound(first.audio.question), sound(first.audio.answer)]);
   assert.equal(clock.notes.length, 3);
   assert.equal(h.roundFinishes.length, 0);
   clock.finish(); await firstRating;
-  assert.equal(h.plays.at(-1), second.audio.question);
+  assert.equal(h.plays.at(-1), sound(second.audio.question));
   await h.app.handle("reveal");
   const lastRating = h.app.handle("rate", { rating: "gotIt" });
   await settle();
@@ -258,7 +261,7 @@ test("Say it Got it precedes the next question, and the last rating plays only e
   assert.match(h.roundFinishes[0], /Done for now/, "The result screen must exist before rewards are shown.");
   assert.equal(clock.notes.length, 6);
   clock.finish(); await lastRating;
-  assert.deepEqual(h.plays, [first.audio.question, first.audio.answer, second.audio.question, second.audio.answer]);
+  assert.deepEqual(h.plays, [sound(first.audio.question), sound(first.audio.answer), sound(second.audio.question), sound(second.audio.answer)]);
   assert.equal(h.saves, 4, "Reveal and rating each persist once; playing audio never writes progress.");
   h.eventTarget.emit("pageshow");
   await h.app.handle("sync");
@@ -272,7 +275,7 @@ test("Say it With help and Not yet advance without a correct-answer sound", asyn
     await h.app.handle("reveal");
     await h.app.handle("rate", { rating });
     assert.equal(clock.notes.length, 0);
-    assert.equal(h.plays.at(-1), h.lesson.concepts[0].say[1].audio.question);
+    assert.equal(h.plays.at(-1), sound(h.lesson.concepts[0].say[1].audio.question));
     h.app.destroy();
   }
 });
@@ -310,7 +313,7 @@ test("a save completed after hiding the page cannot revive feedback audio", asyn
   h.documentTarget.emit("visibilitychange");
   assert.equal(h.plays.length, 1, "Returning to the page does not unexpectedly repeat audio.");
   await h.app.handle("answer-audio");
-  assert.equal(h.plays.at(-1), h.lesson.concepts[0].try[0].audio.answer);
+  assert.equal(h.plays.at(-1), sound(h.lesson.concepts[0].try[0].audio.answer));
   h.app.destroy();
 });
 test("pagehide cancels private question loading, and returning permits a fresh Listen", async () => {
@@ -337,8 +340,8 @@ test("pagehide cancels private question loading, and returning permits a fresh L
   assert.equal(h.documentTarget.handlers.size, 0);
   assert.equal(h.media[0].paused, true);
 });
-test("Try it finishes the round only after Continue leaves its last initial or review feedback", async () => {
-  for (const [progress, practiceDate] of [[C.createProgress(), date], [completedProgress(["try"]), "2026-09-18"]]) {
+test("Try it finishes the round only after Continue leaves its last feedback", async () => {
+  for (const [progress, practiceDate] of [[C.createProgress(), date]]) {
     const h = harness({ progress, practiceDate });
     await h.app.handle("start-try");
     let next;
@@ -399,20 +402,17 @@ function homeCard(h, mode) {
   const html = h.root.innerHTML.match(new RegExp(`<article class="mode-card ${mode}">([\\s\\S]*?)<\\/article>`))[1];
   return { html, action: html.match(/data-action="([^"]+)"/)[1], mode: html.match(/data-mode="([^"]+)"/)[1] };
 }
-test("both finished modes open only their own concept progress without changing saved dates or totals", async () => {
-  const progress = completedProgress(), h = harness({ progress });
+test("finished lessons fold away and direct child actions cannot restart or change results", async () => {
+  const progress = completedProgress(), h = harness({ progress, catalog, lessons: { [originalLesson.id]: originalLesson } });
   const before = JSON.stringify(h.progress);
+  assert.match(h.root.innerHTML, /<details class="finished-lessons"><summary>Finished/);
+  assert.doesNotMatch(h.root.innerHTML, /href="[^"]*lesson=2026-09-15"/);
   for (const mode of ["try", "say"]) {
     await h.app.handle("home");
-    const card = homeCard(h, mode);
-    assert.match(card.html, /See my progress/);
-    await h.app.handle(card.action, { mode: card.mode });
-    assert.match(h.root.innerHTML, new RegExp(`<h1 class="progress-title">${mode === "try" ? "Try it" : "Say it"}</h1>`));
-    assert.doesNotMatch(h.root.innerHTML, mode === "try" ? /Say it/ : /Try it/);
-    assert.equal((h.root.innerHTML.match(/class="concept-card"/g) || []).length, 3);
-    assert.equal((h.root.innerHTML.match(/Review tomorrow/g) || []).length, 3);
-    assert.equal((h.root.innerHTML.match(/class="pill done"/g) || []).length, 3);
-    assert.doesNotMatch(h.root.innerHTML, /Parent summary|PARENT SUMMARY|First answers|Independent|Incorrect|Got it|With help|Not yet|data-action="start-try"|data-action="start-say"/);
+    assert.doesNotMatch(h.root.innerHTML, /data-action="start-try"|data-action="choose-say"/);
+    await h.app.handle(mode === "try" ? "start-try" : "start-say", { concept: "is-are" });
+    await h.app.handle("check");
+    assert.doesNotMatch(h.root.innerHTML, /id="question-prompt"|Review tomorrow|One short review/);
   }
   assert.equal(JSON.stringify(h.progress), before);
   assert.equal(h.saves, 0);
@@ -439,21 +439,49 @@ test("Try it Done does not complete Say it; the simple home and all child screen
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).say.done, false);
   assert.equal(C.summarizeLesson(h.progress, h.lesson, date).try.done, true);
 });
-test("due reviews keep the original Try it schedule and Say it concept choice", async () => {
+test("legacy deferred questions remain history and cannot reopen through a child deep link", async () => {
   const progress = completedProgress();
+  progress.schemaVersion = 1; delete progress.weekly;
+  for (const mode of ["try", "say"]) for (const concept of originalLesson.concepts) {
+    const state = progress.lessons[originalLesson.id][mode][concept.id];
+    state.dueOn = "2026-09-18"; state.deferredQuestionId = concept[mode][2].id;
+  }
   const h = harness({ progress, practiceDate: "2026-09-18" });
-  const tryCard = homeCard(h, "try");
-  assert.match(tryCard.html, /Review now/);
-  await h.app.handle(tryCard.action, { mode: tryCard.mode });
-  assert.ok(h.root.innerHTML.includes(originalLesson.concepts[0].try[2].prompt));
-  assert.match(h.root.innerHTML, /One short review/);
+  assert.match(h.root.innerHTML, /Finished/);
+  await h.app.handle("start-try");
+  assert.doesNotMatch(h.root.innerHTML, /id="question-prompt"/);
   await h.app.handle("home");
-  const sayCard = homeCard(h, "say");
-  await h.app.handle(sayCard.action, { mode: sayCard.mode });
-  assert.equal((h.root.innerHTML.match(/data-action="start-say"/g) || []).length, 3);
-  assert.equal((h.root.innerHTML.match(/Review ready/g) || []).length, 3);
   await h.app.handle("start-say", { concept: "too-many" });
-  assert.ok(h.root.innerHTML.includes(originalLesson.concepts[2].say[2].prompt));
-  assert.match(h.root.innerHTML, /One short review/);
+  assert.doesNotMatch(h.root.innerHTML, /id="question-prompt"|One short review|Review ready/);
+  assert.deepEqual(h.progress.lessons, progress.lessons);
   assert.equal(h.saves, 0);
+});
+
+test("weekly child deep links stay closed before Sunday and starting saves a fixed selection without activity", async () => {
+  const lesson = weeklyFixture(), early = harness({ lesson, practiceDate: "2026-09-19" });
+  assert.match(early.root.innerHTML, /Opens Sep 20/);
+  assert.doesNotMatch(early.root.innerHTML, /data-action="start-try"|data-action="choose-say"/);
+  await early.app.handle("start-try"); await early.app.handle("start-say", { concept: lesson.concepts[0].id });
+  assert.equal(early.saves, 0); assert.deepEqual(early.plays, []);
+  const h = harness({ lesson, practiceDate: "2026-09-20" });
+  await h.app.handle("start-try");
+  assert.equal(h.saves, 1); assert.deepEqual(h.activities, []);
+  const frozen = structuredClone(h.progress.weekly[lesson.id]);
+  await h.app.handle("pick", { choice: "is" }); await h.app.handle("check");
+  const restored = harness({ lesson, progress: h.progress, practiceDate: "2026-09-21" });
+  await restored.app.handle("start-try");
+  assert.equal(restored.saves, 0);
+  assert.deepEqual(restored.progress.weekly[lesson.id], frozen);
+  assert.equal(C.nextQuestion(restored.progress, lesson, "try", "2026-09-21").question.id, lesson.concepts[0].try[1].id);
+});
+
+test("order Check accepts a complete sentence while leaving its distractor in the bank", async () => {
+  const lesson = structuredClone(originalLesson), q = lesson.concepts[0].try[0];
+  Object.assign(q, { type: "order", tokens: [{ id: "there", text: "There" }, { id: "is", text: "is" }, { id: "cat", text: "a cat." }, { id: "are", text: "are" }], acceptedOrders: [["there", "is", "cat"]] });
+  const h = harness({ lesson }); await h.app.handle("start-try");
+  for (const word of ["there", "is", "cat"]) await h.app.handle("add-word", { word });
+  assert.match(h.root.innerHTML, /data-action="check"[^>]*>.*?Check/);
+  assert.match(h.root.innerHTML, /data-action="add-word" data-word="are"/);
+  await h.app.handle("check");
+  assert.equal(h.progress.lessons[lesson.id].try[lesson.concepts[0].id].initial[0].outcome, "independent");
 });

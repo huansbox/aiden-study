@@ -1,8 +1,11 @@
 {
   "schemaVersion": 1,
   "lessons": [
+    { "id": "weekly-2026-09-14", "date": "2026-09-20", "teacher": "Weekly Review", "kind": "weekly", "weekly": { "weekStart": "2026-09-14", "weekEnd": "2026-09-20", "opensOn": "2026-09-20", "conceptCount": 4, "earlierCount": 1 } },
+    { "id": "2026-09-17", "date": "2026-09-17", "teacher": "Khalid" },
     { "id": "2026-09-16", "date": "2026-09-16", "teacher": "Edon" },
     { "id": "2026-09-15", "date": "2026-09-15", "teacher": "Silvana" },
-    { "id": "2026-09-14", "date": "2026-09-14", "teacher": "Edon" }
+    { "id": "2026-09-14", "date": "2026-09-14", "teacher": "Edon" },
+    { "id": "2026-09-13", "date": "2026-09-13", "teacher": "Michael" }
   ]
 }

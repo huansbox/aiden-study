@@ -1,0 +1,38 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "humanListening": false,
+  "initialPrompt": null,
+  "reason": "Whole-clip ASR omitted the final instruction.",
+  "samples": [
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-try-1-q.mp3",
+      "sha256": "039c613afee8e059cc6db9d8c6eac8fbe2e6b474ebe474408ca7dbfd0b60948c",
+      "expectedTail": "Start with There.",
+      "wholeClipRecognizedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence.",
+      "tails": [
+        {
+          "lastSeconds": 4,
+          "recognizedText": "books. Why will they not all fit? Build a full sentence."
+        },
+        {
+          "lastSeconds": 7,
+          "recognizedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence."
+        }
+      ]
+    }
+  ],
+  "status": "historical-before-repair",
+  "resolution": {
+    "file": "audio/weekly-2026-09-14-week-too-many-try-1-q.mp3",
+    "reason": "Whole-clip and tail ASR omitted the final Start with instruction.",
+    "previousSha256": "039c613afee8e059cc6db9d8c6eac8fbe2e6b474ebe474408ca7dbfd0b60948c",
+    "replacementSha256": "259df7ff279457daf90ad5bd9aea2c1b60c4b7d522bf9f32b83c3034e299ca63",
+    "additionalApiRequests": 1,
+    "inputUnchanged": true,
+    "replacementRecognizedText": "There are six books. The box has room for four books. Why will they not all fit? Build a full sentence. Start with there.",
+    "humanListening": false,
+    "costUsd": null
+  }
+}

@@ -17,8 +17,9 @@
         const result = summary[mode];
         const labels = mode === "try" ? ["Independent", "With help", "Incorrect"] : ["Got it", "With help", "Not yet"];
         const keys = mode === "try" ? ["independent", "helped", "incorrect"] : ["gotIt", "withHelp", "notYet"];
-        return `<h4>${mode === "try" ? "Try it" : "Say it"} · ${result.done ? "Done" : "In progress"}</h4><div style="overflow-x:auto"><table><thead><tr><th>Concept</th><th>First answers</th>${labels.map((label) => `<th>${label}</th>`).join("")}<th>Review</th></tr></thead><tbody>${result.concepts.map((concept) => `<tr><th>${esc(concept.title)}</th><td>${concept.attempted}</td>${keys.map((key) => `<td>${concept[key]}</td>`).join("")}<td>${concept.due ? "Ready today" : "—"}</td></tr>`).join("")}</tbody></table></div>`;
-      }).join("") + "<p>Only submitted first answers are counted above. Corrections and later reviews do not change them.</p>";
+        const needsPractice = result.concepts.filter((concept) => concept.needsPractice);
+        return `<h4>${mode === "try" ? "Try it" : "Say it"} · ${result.done ? "Done" : "In progress"}</h4><p>More practice: ${needsPractice.length ? needsPractice.map((concept) => esc(concept.title)).join(", ") : "No difficulty recorded yet"}.</p><div style="overflow-x:auto"><table><thead><tr><th>Concept</th><th>First answers</th>${labels.map((label) => `<th>${label}</th>`).join("")}<th>Past reviews</th></tr></thead><tbody>${result.concepts.map((concept) => `<tr><th>${esc(concept.title)}</th><td>${concept.attempted}</td>${keys.map((key) => `<td>${concept[key]}</td>`).join("")}<td>${concept.reviews}</td></tr>`).join("")}</tbody></table></div>`;
+      }).join("") + "<p>Only submitted first answers are counted above. Corrections and later reviews do not change them. More practice also includes difficulty recorded in Weekly Review; Done means the practice amount is complete.</p>";
   }
   let requestId = 0;
   const lastRead = new Map();

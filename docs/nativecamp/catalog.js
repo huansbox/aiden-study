@@ -9,14 +9,18 @@
     for (const item of value.lessons) {
       if (!item || typeof item.id !== "string" || !/^[a-z0-9][a-z0-9-]{0,79}$/.test(item.id) || seen.has(item.id) ||
           typeof item.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(item.date) || !Number.isFinite(Date.parse(item.date + "T00:00:00Z")) || new Date(item.date + "T00:00:00Z").toISOString().slice(0, 10) !== item.date ||
-          typeof item.teacher !== "string" || !item.teacher.trim() || item.teacher.length > 80) throw Error("The lesson list could not be read.");
+          item.kind !== "weekly" && (typeof item.teacher !== "string" || !item.teacher.trim() || item.teacher.length > 80)) throw Error("The lesson list could not be read.");
+      if (item.kind === "weekly") {
+        global.NativeCampCore.validateWeekly(item.weekly);
+        if (item.date !== item.weekly.weekEnd) throw Error("The review date does not match its week.");
+      } else if (item.kind !== undefined && item.kind !== "lesson") throw Error("The lesson type is not available.");
       seen.add(item.id);
     }
     return [...value.lessons].sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   }
-  function select(catalog, search) {
+  function select(catalog, search, { progress, lessons = {}, date = global.NativeCampCore.today() } = {}) {
     const requested = new URLSearchParams(search).get("lesson");
-    const selected = requested === null ? catalog[0] : catalog.find((item) => item.id === requested);
+    const selected = requested === null ? catalog.find((item) => global.NativeCampCore.isOpen(item, date) && !finished(progress, lessons[item.id], date)) || catalog[0] : catalog.find((item) => item.id === requested);
     if (!selected) throw Error("This lesson is not available. Open Native Camp Review from Home.");
     return selected;
   }
@@ -39,24 +43,48 @@
   async function readLesson(entry, { base = ".", fetchImpl = (...args) => fetch(...args) } = {}) {
     const lesson = global.NativeCampCore.validateLesson(await readJSON(`${base}/lessons/${entry.id}.json`, fetchImpl));
     if (lesson.id !== entry.id || lesson.date !== entry.date) throw Error("The lesson does not match the selected date. Please try again.");
+    if ((lesson.kind === "weekly") !== (entry.kind === "weekly") || lesson.kind === "weekly" && ["weekStart", "weekEnd", "opensOn", "conceptCount", "earlierCount"].some((key) => lesson.weekly[key] !== entry.weekly[key])) throw Error("The review does not match its catalog. Please try again.");
     return lesson;
+  }
+  async function readLessons(catalog, options) {
+    const loaded = await Promise.all(catalog.map((entry) => readLesson(entry, options)));
+    const lessons = Object.fromEntries(loaded.map((lesson) => [lesson.id, lesson]));
+    for (const lesson of loaded.filter((item) => item.kind === "weekly")) {
+      const seen = new Set();
+      for (const concept of lesson.concepts) {
+        const ref = concept.sourceConcept, source = lessons[ref.lessonId], key = `${ref.lessonId}/${ref.conceptId}`;
+        if (!source || source.kind === "weekly" || source.date !== ref.date || !source.concepts.some((item) => item.id === ref.conceptId) || seen.has(key)) throw Error("This review needs distinct, taught source concepts.");
+        seen.add(key);
+      }
+    }
+    return lessons;
   }
   async function load({ search = global.location?.search || "", ...options } = {}) {
     const catalog = await readCatalog(options), entry = select(catalog, search);
     return { catalog, entry, lesson: await readLesson(entry, options) };
   }
-  // Callers supply validated progress; no extra lesson fetches or new schedule are needed.
+  function finished(progress, lesson, date) {
+    if (!progress || !lesson) return false;
+    const summary = global.NativeCampCore.summarizeLesson(progress, lesson, date);
+    return summary.try.done && summary.say.done;
+  }
+  // Kept for existing consumers; daily returns have been retired.
   function reviewReady(progress, lessonId, date) {
-    const saved = progress?.lessons[lessonId];
-    return ["try", "say"].some((mode) => Object.values(saved?.[mode] || {}).some((state) => state.dueOn && state.dueOn <= date));
+    return false;
   }
-  function navigation(catalog, selectedId, { page = "./", child = "aiden", progress, date = global.NativeCampCore.today(), buttons = false } = {}) {
+  function navigation(catalog, selectedId, { page = "./", child = "aiden", progress, date = global.NativeCampCore.today(), buttons = false, childView = false, lessons = {} } = {}) {
     if (!catalog?.length) return "";
-    return `<nav class="lesson-picker" aria-label="Lessons">${catalog.map((entry) => {
+    const renderEntry = (entry) => {
       const active = entry.id === selectedId;
-      const text = `<span>${esc(dateLabel(entry.date))}</span><span class="lesson-teacher">${esc(entry.teacher)}</span>${reviewReady(progress, entry.id, date) ? '<span class="lesson-due">Review ready</span>' : ""}`;
+      const text = `<span>${esc(dateLabel(entry.date))}</span><span class="lesson-teacher">${entry.kind === "weekly" ? "Weekly Review" : esc(entry.teacher)}</span>`;
+      if (childView && finished(progress, lessons[entry.id], date)) return `<span class="lesson-link lesson-finished"><svg class="icon" aria-hidden="true"><use href="icons.svg#check"></use></svg>${text}<span class="lesson-teacher">Finished</span></span>`;
+      if (childView && !global.NativeCampCore.isOpen(entry, date)) return `<span class="lesson-link lesson-locked">${text}<span class="lesson-teacher">Opens ${esc(dateLabel(entry.weekly?.opensOn || entry.date))}</span></span>`;
       return buttons ? `<button type="button" class="lesson-link" data-lesson="${esc(entry.id)}" aria-pressed="${active}">${text}</button>` : `<a class="lesson-link" href="${esc(href(page, child, entry.id))}"${active ? ' aria-current="page"' : ""}>${text}</a>`;
-    }).join("")}</nav>`;
+    };
+    if (!childView) return `<nav class="lesson-picker" aria-label="Lessons">${catalog.map(renderEntry).join("")}</nav>`;
+    const complete = catalog.filter((entry) => finished(progress, lessons[entry.id], date));
+    const remaining = catalog.filter((entry) => !complete.includes(entry));
+    return `<nav class="lesson-picker" aria-label="Lessons">${remaining.map(renderEntry).join("")}</nav>${complete.length ? `<details class="finished-lessons"><summary>Finished · ${complete.length}</summary><div class="lesson-picker">${complete.map(renderEntry).join("")}</div></details>` : ""}`;
   }
-  global.NativeCampCatalog = { validateCatalog, select, childFrom, href, readCatalog, readLesson, load, reviewReady, navigation };
+  global.NativeCampCatalog = { validateCatalog, select, childFrom, href, readCatalog, readLesson, readLessons, load, finished, reviewReady, navigation };
 })(globalThis);

@@ -17,7 +17,7 @@
 | 題庫練習 | [docs/study/](docs/study/) | LocalStorage + Worker 同步 |
 | 長除法練習 | [docs/math/](docs/math/) | LocalStorage + Worker 同步 |
 | 英文拼字 | [docs/spelling/](docs/spelling/) | LocalStorage + Worker 同步 |
-| Native Camp Review | [docs/nativecamp/](docs/nativecamp/) | 自主題、口說與跨日複習；LocalStorage + Worker 同步 |
+| Native Camp Review | [docs/nativecamp/](docs/nativecamp/) | 完整句、口說與每週新題複習；LocalStorage + Worker 同步 |
 | 數織解謎 | [docs/math/nonogram/](docs/math/nonogram/) | 原有過關進度僅 LocalStorage；新累計另行同步 |
 | 注音練習 | [docs/zhuyin/](docs/zhuyin/)；[現況與交接](docs-dev/zhuyin-handoff.md) | LocalStorage + Worker 同步 |
 | 動物守護者 | [animal-fight](https://huansbox.github.io/animal-fight/) | 外部 App，未接平台同步 |
@@ -30,6 +30,9 @@
 
 | 任務 | 找得到什麼 |
 | --- | --- |
+| [Native Camp：Michael 課後複習](learning-tasks/nativecamp-2026-09-13/) | 來源核對、完整句題文與預製語音 |
+| [Native Camp：Khalid 課後複習](learning-tasks/nativecamp-2026-09-17/) | 來源核對、完整句題文與預製語音 |
+| [Native Camp：Weekly Review](learning-tasks/nativecamp-weekly-2026-09-14/) | 每週重新設計的混合題包與來源概念映射 |
 | [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 單堂分析、紙本練習與 Review App 的可重建來源；[互動版使用與驗收](docs-dev/nativecamp-review.md)；[下堂製作SOP／模板](learning-tasks/nativecamp-review-pilot/lesson-sop.md) |
 | [Native Camp：Edon 家庭與詞句](learning-tasks/nativecamp-2026-09-16/) | 親屬關係、縮寫、相反詞；較慢語音與OpenAI試聽比較 |
 | [Native Camp：Edon 家庭與主題](learning-tasks/nativecamp-2026-09-14/) | 祖父母詞彙、短文主題與完整句回答 |
@@ -71,7 +74,7 @@ docs/                 GitHub Pages 部署根目錄
   study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，手動匯入保留為備援
   math/               長除法與 nonogram
   spelling/           英文拼字 app
-  nativecamp/          全英文課後複習；首次表現、口說與跨日確認
+  nativecamp/          全英文課後複習；首次表現、口說與每週新題
   zhuyin/             注音 app 與錄音工具
   shared/             同步、接線與獎勵共用資源
 worker/               Cloudflare Worker 同步 API 與固定家庭唯讀題包端點

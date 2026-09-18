@@ -1,27 +1,33 @@
 {
+  "lessonId": "2026-09-14",
   "engine": "faster-whisper 1.2.1",
   "model": "small.en",
   "audioUploaded": false,
   "initialPrompt": null,
   "humanListening": false,
+  "pronunciationAssessment": false,
   "samples": [
     {
       "file": "audio/2026-09-14-grandparents-try-1-q.mp3",
+      "sha256": "1ecbdbfebbf2cbaa32c774c73c38cefd6c153810b48eb61d3fe4201232aa8c7e",
       "expectedText": "May is my mum's mum. Who is May? Pick one.",
       "recognizedText": "May is my mum's mum. Who is May? Pick one."
     },
     {
       "file": "audio/2026-09-14-grandparents-say-3-a.mp3",
+      "sha256": "002482b1988afcd2667846a2e106c93cc2eadf604887429c2a00bb80e3dbdce4",
       "expectedText": "They are my grandparents.",
       "recognizedText": "They are my grandparents."
     },
     {
       "file": "audio/2026-09-14-story-topic-try-1-q.mp3",
+      "sha256": "f1f5f55adbc6fa3c888d86f8feacbd02f0e7467fe78e0d3ad53b1e0c7233658f",
       "expectedText": "My house has a red door. It has three bedrooms. What is it about? Pick one.",
       "recognizedText": "My house has a red door. It has three bedrooms. What is it about? Pick one."
     },
     {
       "file": "audio/2026-09-14-story-topic-say-3-a.mp3",
+      "sha256": "32e789f44a1fbde195cea80f2ed98eb766a183d311f970c94375dc91fe1d8805",
       "expectedText": "It is about a family.",
       "recognizedText": "It is about a family."
     }

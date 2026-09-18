@@ -10,6 +10,8 @@
 
 家庭回饋（2026-09-17）：孩子已使用，家長表示效果不錯；TTS語速偏快，`Say the number, too.` 的停頓不自然，下一階段比較較慢語速與其他語音來源。尚無量化難度或長期成效資料。
 
+一般語音於2026-09-18改用 OpenAI `gpt-4o-mini-tts-2025-12-15`、Marin、speed 1.0；35個原題文與檔名保留，老師原音沿用原私人路徑。重建入口改用[共用語音工具](../shared/nativecamp/README.md#openai-語音製作)，驗證見[語音查核](source/openai-audio-qa.md)。
+
 - [製作 SOP](lesson-sop.md)：沿用本堂的題型、句型提示、音訊、評級、跨日確認、驗收與發布標準。
 - [單堂設計模板](templates/lesson-brief.md)：複製到新課來源目錄後填寫，含證據、六題／概念、逐題語音及交付檢查。
 - [本堂填寫範例](lesson-example-2026-09-15.md)：已發布18題的設計摘要與具體欄位示範。

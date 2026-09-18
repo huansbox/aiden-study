@@ -7,8 +7,9 @@
   function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
   const dateLabel = (date) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
   const modeLabel = (mode) => mode === "try" ? "Try it" : "Say it";
-  function mount({ root, lesson, bridge, catalog = [], child = "aiden", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
+  function mount({ root, lesson, bridge, catalog = [], lessons = {}, child = "aiden", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
     C.validateLesson(lesson);
+    lessons = { ...lessons, [lesson.id]: lesson };
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
     let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false, roundOpen = false;
     let lastProgress = JSON.stringify(bridge.getProgress());
@@ -70,8 +71,10 @@
     }
     function homeHtml() {
       const result = summary();
-      const lessons = global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date() }) || "";
-      return `${lessons}<div class="lesson-heading">${icon("calendar-days")}<div><p>${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div><section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>${footer()}`;
+      const navigation = global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date(), childView: true, lessons }) || "";
+      const complete = result.try.done && result.say.done;
+      const body = !C.isOpen(lesson, date()) ? `<p class="notice">Opens ${escape(dateLabel(lesson.weekly?.opensOn || lesson.date))}.</p>` : complete ? `<section class="finished-card">${icon("check")}<h2>Finished</h2><p>Choose another lesson or Weekly Review.</p></section>` : `<section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>`;
+      return `${navigation}<div class="lesson-heading">${icon("calendar-days")}<div><p>${lesson.kind === "weekly" ? "Weekly Review · " : ""}${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div>${body}${footer()}`;
     }
     function progressHtml() {
       const result = summary()[mode];
@@ -87,7 +90,7 @@
       const correct = outcome !== "incorrect";
       return `<section class="feedback ${correct ? "" : "retry"}" aria-live="polite"><h3>${icon(correct ? "circle-check" : "lightbulb")}${correct ? outcome === "helped" ? "You did it with help." : "You got it." : "Let's look together."}</h3><p>${escape(question.answerText)}</p>${question.explanation ? `<p class="small-note">${escape(question.explanation)}</p>` : ""}${button("answer-audio", "Listen to the answer", "listen-button", "volume-2")}</section>${correcting ? `<p class="correction-label">Try the same idea once more. Your first answer stays saved.</p>${Q.answerControls(question, selection, words)}${correctionChecked ? '<p class="help-note">That matches. Your first answer has not changed.</p>' : ""}` : ""}<div class="question-actions">${!correct && !correcting ? button("correct", "Try again", "text-button", "rotate-ccw") : '<span class="small-note">First answer saved.</span>'}${correcting && !correctionChecked ? button("check-correction", "Check", "secondary", "check", canCheck(question) ? "" : "disabled") : ""}${button("next", "Continue", "primary", "arrow-right")}</div>`;
     }
-    function canCheck(question) { return question.type === "choice" ? selection !== null : words.length === question.tokens.length; }
+    function canCheck(question) { return question.type === "choice" ? selection !== null : words.length > 0; }
     function practiceHtml() {
       const next = feedback?.next ?? current();
       if (!next) { view = "round"; return roundHtml(); }
@@ -144,6 +147,10 @@
       let nextSound = null;
       try {
         if (action === "sync") { await bridge.syncNow(); updateStatus(); return; }
+        if (["start-try", "start-say", "choose-say"].includes(action)) {
+          const previous = bridge.getProgress(), started = C.startLesson(previous, lesson, date());
+          if (started !== previous) await persist(started);
+        }
         if (action === "home" || action === "progress" || action === "choose-say") {
           if (action === "progress" && !["try", "say"].includes(data.mode)) return;
           stopAudio(); feedback = null; roundOpen = false;
@@ -221,9 +228,11 @@
     let app;
     try {
       if (!C || !Q || !global.NativeCampAudio || !global.NativeCampPlatform || !global.NativeCampCatalog) throw Error("This page did not finish loading. Please reload.");
-      const { lesson, catalog } = await global.NativeCampCatalog.load();
-      const bridge = await global.NativeCampPlatform.boot(lesson, (event) => app?.onChange(event));
-      app = mount({ root, lesson, bridge, catalog, child: global.NativeCampCatalog.childFrom(location.search) });
+      const catalog = await global.NativeCampCatalog.readCatalog();
+      const lessons = await global.NativeCampCatalog.readLessons(catalog);
+      const bridge = await global.NativeCampPlatform.boot(null, (event) => app?.onChange(event));
+      const entry = global.NativeCampCatalog.select(catalog, location.search, { progress: bridge.getProgress(), lessons });
+      app = mount({ root, lesson: lessons[entry.id], bridge, catalog, lessons, child: global.NativeCampCatalog.childFrom(location.search) });
       global.addEventListener("pagehide", () => bridge.setActive?.(false));
     } catch (error) {
       root.innerHTML = `<section class="loading-card"><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Let's try again.</h1><p class="error" role="alert">${escape(error?.message || "This page could not be opened.")}</p>${button("reload", "Try again", "primary", "rotate-ccw")} <a class="nav-link" href="../">${icon("house")}My home</a></section>`;

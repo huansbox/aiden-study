@@ -1,0 +1,20 @@
+{
+  "lessonDate": "2026-09-13",
+  "audioUploaded": false,
+  "files": [
+    {
+      "relative_file": "../assets/audio/2026-09-13-1930-lesson.webm",
+      "bytes": 10726700,
+      "sha256": "ec747c935bbf3bdf2d7514820abcb3d723403b90d23147f28a8e517861c7ca37",
+      "durationSeconds": 1528.094,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ],
+  "allLessonTracksDownloaded": true,
+  "missingTracks": null,
+  "note": "Full lesson recording saved; local ASR checked bounded samples only."
+}

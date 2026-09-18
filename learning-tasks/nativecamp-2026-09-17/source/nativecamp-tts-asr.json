@@ -1,0 +1,59 @@
+{
+  "lessonId": "2026-09-17",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-17-school-tools-try-1-q.mp3",
+      "sha256": "c6c4e4b5e976e05899dccfe6e3351966e752406474d4f82a10cffc8b979b5159",
+      "expectedText": "Your task is to draw straight lines. Which tool can help? Build a full sentence. Start with I.",
+      "recognizedText": "Your task is to draw straight lines. Which tool can help? Build a full sentence. Start with I."
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-say-3-a.mp3",
+      "sha256": "4dc86b4d548fde9fa142c9554871a18e5118879f13bf36497421b214b34db5a3",
+      "expectedText": "I use an eraser to erase pencil marks.",
+      "recognizedText": "I use an eraser to erase pencil marks."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-try-1-q.mp3",
+      "sha256": "f4c5a99b66c8c2f21ea636e313ccef30f11b2b582b5704e19e2d2812983072cb",
+      "expectedText": "Mia has four pens. Leo has three pens. How many pens do they have together? Build a full sentence. Start with They.",
+      "recognizedText": "Mia has four pens. Leo has three pens. How many pens do they have together? Build a full sentence. Start with they."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-say-3-a.mp3",
+      "sha256": "96e356b9f6155efd81dbeaa528e9a9d2ff59ffb64606a06a35103fb85dfcf28f",
+      "expectedText": "They have eleven pens.",
+      "recognizedText": "They have 11 pens."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-try-1-q.mp3",
+      "sha256": "37708a61319bad40a202637d2ef7342cd3ab813d7bc797cbc79d01cbcb67ffaf",
+      "expectedText": "Mia and Leo say, one pencil, two pencils, three pencils. What are they doing now? Build a full sentence. Start with They.",
+      "recognizedText": "Mia and Leo say one pencil, two pencils, three pencils. What are they doing now? Build a full sentence. Start with they."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-say-3-a.mp3",
+      "sha256": "ebd2fb44b249cce8a5efdbe05ed51916bdcc06ca8fa775fc0e0b1bfe9df9995c",
+      "expectedText": "They are counting backpacks.",
+      "recognizedText": "They are counting backpacks."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-try-1-q.mp3",
+      "sha256": "2309a5b25389b24c61ecd6b199ad9902b907f7b6e732dbfdb0ff0c4b0d644e9c",
+      "expectedText": "Pretend you are Sam. Sam is six years old. Kim is six years old. Tell Kim you are the same age. Build a full sentence. Start with I'm.",
+      "recognizedText": "Pretend you are Sam. Sam is six years old. Kim is six years old. Tell Kim you are the same age. Build a full sentence. Start with I'm."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-say-3-a.mp3",
+      "sha256": "24ef2d36fc26419955cb71c86fa286112cf72d816f2cb8b940ff081b75b7bd7e",
+      "expectedText": "I'm five years old too.",
+      "recognizedText": "I'm five years old too."
+    }
+  ]
+}

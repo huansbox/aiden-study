@@ -1,0 +1,47 @@
+{
+  "lessonId": "2026-09-15",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/is-are-try-1-q.mp3",
+      "sha256": "a762f69678db58e237c8ca3cde0e8c4629fca31ef80a6c2356adce4b1c841fbe",
+      "expectedText": "Look at the cat. Pick is or are.",
+      "recognizedText": "Look at the cat. Pick is or are."
+    },
+    {
+      "file": "audio/is-are-say-3-a.mp3",
+      "sha256": "f4f29daa03310a1f9884239b30940660738481aab3470bfc709c6f09ead2a283",
+      "expectedText": "There are two cats.",
+      "recognizedText": "There are two cats."
+    },
+    {
+      "file": "audio/odd-even-try-1-q.mp3",
+      "sha256": "7a9c05bc8ce7fd96e657743201aec6902308884c7684910574909d00345cb23a",
+      "expectedText": "Is five odd or even? Pick one.",
+      "recognizedText": "Is five odd or even? Pick one."
+    },
+    {
+      "file": "audio/odd-even-say-3-a.mp3",
+      "sha256": "eb2f5730d329e8e12ac8f7d49a8483c887f618b2f73e750703665aa8e0272fb7",
+      "expectedText": "Six is an even number.",
+      "recognizedText": "6 is an even number."
+    },
+    {
+      "file": "audio/too-many-try-1-q.mp3",
+      "sha256": "013d014caf1bed310463911f13d03e6218d6c04306383306c44c56f59f488d2f",
+      "expectedText": "This shelf has room for three books. Look at the books. Pick many or much.",
+      "recognizedText": "This shelf has room for three books. Look at the books. Pick many or much."
+    },
+    {
+      "file": "audio/too-many-say-3-a.mp3",
+      "sha256": "76b3c5582b8daebc2b430886494b297642c2e3989abafa31546592c0b1e97dbb",
+      "expectedText": "Yes, she has too many hats.",
+      "recognizedText": "Yes, she has too many hats."
+    }
+  ]
+}

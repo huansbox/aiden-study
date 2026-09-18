@@ -7,6 +7,8 @@
     neutral: [[0, 246.94, .08, "sine", .20], [.10, 196, .14, "sine", .18]],
   };
   const silent = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  // Existing lesson paths stay stable while replacement OpenAI recordings bypass old browser/CDN caches.
+  const recordingVersion = "20260918-openai";
   function create({ makeAudio = () => new Audio(), resolveSource = async (source) => source,
     onStatus = () => {}, makeContext = () => {
       const Constructor = global.AudioContext || global.webkitAudioContext;
@@ -96,7 +98,7 @@
         const resource = typeof resolved === "string" ? { url: resolved } : resolved;
         if (!current()) { resource.release?.(); return; }
         pending = null; releaseSource = resource.release || null;
-        const audio = voice(); audio.src = resource.url;
+        const audio = voice(); audio.src = /^audio\/[a-zA-Z0-9/_-]+\.mp3$/.test(resource.url) ? `${resource.url}?v=${recordingVersion}` : resource.url;
         const failed = () => {
           if (!current()) return;
           unlocked = false; stop(); onStatus("Could not play this sound. Tap Listen to try again.");

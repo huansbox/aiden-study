@@ -105,8 +105,8 @@ test('all spoken questions and answers resolve to verified files without cloze o
   }
   assert.equal(privateCount, 1);
   assert.equal(references.size, 35);
-  // New lessons have date-prefixed files; keep the original lesson's 35-file audit.
-  const originalFiles = readdirSync(new URL('audio/', app)).filter(name => !/^\d{4}-\d{2}-\d{2}-/.test(name));
+  // Dated lessons and weekly packs have their own prefixes; preserve the pilot's 35-file audit.
+  const originalFiles = readdirSync(new URL('audio/', app)).filter(name => !/^(?:weekly-)?\d{4}-\d{2}-\d{2}-/.test(name));
   assert.deepEqual(originalFiles.sort(), [...references].map(ref => ref.slice(6)).sort());
   const text = JSON.stringify(lesson);
   assert.ok(!/[\u3400-\u9fff]|\p{Extended_Pictographic}/u.test(text));

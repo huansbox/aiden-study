@@ -98,9 +98,11 @@ test('new family relations, opposites, and contractions have consistent, closed 
   }
 });
 
-test('public audio directory contains exactly the three lesson manifests', () => {
-  const manifests = [read(new URL('nativecamp-review-pilot/source/nativecamp-audio-manifest.json', tasks)),
-    ...specs.map(([id]) => read(new URL(`nativecamp-${id}/source/nativecamp-audio-manifest.json`, tasks)))];
+test('public audio directory contains exactly the catalog lesson and weekly manifests', () => {
+  const catalog = read(new URL('lessons/catalog.json', app)).lessons;
+  const manifests = catalog.map(({ id }) => read(new URL(id === '2026-09-15'
+    ? 'nativecamp-review-pilot/source/nativecamp-audio-manifest.json'
+    : `nativecamp-${id}/source/nativecamp-audio-manifest.json`, tasks)));
   const files = manifests.flatMap(m => m.tts.map(x => x.file.slice(6)));
   assert.equal(new Set(files).size, files.length, 'A new lesson must not replace an older lesson recording');
   assert.deepEqual(readdirSync(new URL('audio/', app)).sort(), files.sort());
