@@ -1,6 +1,6 @@
 # Native Camp Review
 
-目前追蹤：[完成收起與每週新題 #77](https://github.com/huansbox/aiden-study/issues/77)、[練習與Weekly流程 #78](https://github.com/huansbox/aiden-study/issues/78)、[OpenAI語音 #79](https://github.com/huansbox/aiden-study/issues/79)、[Michael／Khalid與首週題包 #80](https://github.com/huansbox/aiden-study/issues/80)。本頁前半說明本次工作分支的新機制；截至2026-09-18，本次尚未正式發布，不能用下方舊版發布紀錄宣稱新版已上線。
+交付追蹤：[完成收起與每週新題 #77](https://github.com/huansbox/aiden-study/issues/77)、[練習與Weekly流程 #78](https://github.com/huansbox/aiden-study/issues/78)、[OpenAI語音 #79](https://github.com/huansbox/aiden-study/issues/79)、[Michael／Khalid與首週題包 #80](https://github.com/huansbox/aiden-study/issues/80)。本頁前半說明2026-09-18新機制，由[PR #81](https://github.com/huansbox/aiden-study/pull/81)交付；合併與CI狀態以PR為準，Pages版本與正式資源核對記於主issue的結案證據。下方2026-09-17發布紀錄僅代表歷史版本。
 
 下一堂製作從[課後複習 SOP](../learning-tasks/nativecamp-review-pilot/lesson-sop.md)、[設計模板](../learning-tasks/nativecamp-review-pilot/templates/lesson-brief.md)與[首堂範例](../learning-tasks/nativecamp-review-pilot/lesson-example-2026-09-15.md)開始。現已接入共用課程清單；新課仍須完成來源、題包、音訊與三入口驗收，不能只新增JSON就宣稱上線。
 
