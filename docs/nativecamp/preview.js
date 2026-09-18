@@ -10,12 +10,13 @@
     return /^(aiden|bingpu|test-[a-z0-9-]{1,25})$/.test(child) ? child : "aiden";
   }
   const parentHref = (child, lessonId) => `../parent/?child=${encodeURIComponent(child)}${lessonId ? `&lesson=${encodeURIComponent(lessonId)}` : ""}`;
-  function mount({ root, lesson, child = "aiden", catalog = [], auth = global.KidsAuth, makeAudio = () => new Audio(),
+  function mount({ root, lesson, child = "aiden", catalog = [], search = global.location?.search || "", date = () => C.today(), auth = global.KidsAuth, makeAudio = () => new Audio(),
     makeContext, createObjectURL = (blob) => URL.createObjectURL(blob), revokeObjectURL = (url) => URL.revokeObjectURL(url) }) {
     C.validateLesson(lesson);
     let mode = "try", concept = lesson.concepts[0], questionIndex = 0;
     let selection = null, words = [], revealed = false, result = null, error = "", audioMessage = "", lastAudio = "question";
     let destroyed = false;
+    let calendarMonth = global.NativeCampCatalog?.initialMonth(lesson, search, date());
     const audio = global.NativeCampAudio.create({ makeAudio, makeContext, resolveSource, onStatus: audioStatus });
     const question = () => concept[mode][questionIndex];
     const canCheck = () => question().type === "choice" ? selection !== null : words.length > 0;
@@ -24,7 +25,7 @@
     }
     function reset() { stopAudio(); selection = null; words = []; revealed = false; result = null; error = ""; }
     function heading() {
-      return `<header class="preview-heading"><div><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Preview questions <span class="pill">Preview</span></h1><p class="preview-note">Nothing is saved. This does not change your child's practice.</p></div><a class="nav-link" href="${escape(parentHref(child, lesson.id))}">${icon("arrow-left")}Back to parent</a></header>${global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, page: "preview.html" }) || ""}`;
+      return `<header class="preview-heading"><div><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Preview questions <span class="pill">Preview</span></h1><p class="preview-note">Nothing is saved. This does not change your child's practice.</p></div><a class="nav-link" href="${escape(parentHref(child, lesson.id))}">${icon("arrow-left")}Back to parent</a></header>${global.NativeCampCatalog?.calendar(catalog, lesson.id, { child, page: "preview.html", month: calendarMonth, date: date() }) || ""}`;
     }
     function render() {
       if (destroyed) return;
@@ -70,6 +71,12 @@
     async function handle(action, data = {}) {
       if (destroyed) return;
       try {
+        if (action === "calendar-month" && ["-1", "1"].includes(data.direction)) {
+          calendarMonth = global.NativeCampCatalog.shiftMonth(calendarMonth, Number(data.direction));
+          render();
+          root.querySelector(`[data-action="calendar-month"][data-direction="${data.direction}"]`)?.focus();
+          return;
+        }
         const q = question(); let nextSound = null, effect;
         if (["question-audio", "answer-audio", "retry-audio"].includes(action)) {
           await play(action === "retry-audio" ? lastAudio : action === "answer-audio" ? "answer" : "question"); return;
@@ -125,7 +132,7 @@
       if (auth.state.status === "required") throw Error("Connect your family from the parent page, then try again.");
       const { lesson, catalog } = await global.NativeCampCatalog.load({ fetchImpl, search });
       if (sequence !== bootSequence) return null;
-      mounted = mount({ ...options, root, lesson, catalog, child, auth });
+      mounted = mount({ ...options, root, lesson, catalog, child, auth, search });
     } catch (error) {
       if (sequence !== bootSequence) return null;
       const message = auth?.state.status === "required" ? "Connect your family from the parent page, then try again." : "The preview could not be loaded. Please try again.";

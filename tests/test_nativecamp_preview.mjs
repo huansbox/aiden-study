@@ -23,7 +23,7 @@ class Root {
   addEventListener(name, handler) { this.events.set(name, handler); this.listenerCounts.set(name, (this.listenerCounts.get(name) || 0) + 1); }
   removeEventListener(name) { this.events.delete(name); this.listenerCounts.set(name, (this.listenerCounts.get(name) || 0) - 1); }
 }
-function harness({ child = "bingpu", audioFailure = false, privateFetch, mount = true, previewLesson = lesson } = {}) {
+function harness({ child = "bingpu", audioFailure = false, privateFetch, mount = true, previewLesson = lesson, previewCatalog = [], search = "", practiceDate = "2026-09-18" } = {}) {
   const root = new Root(), media = [], played = [], commands = [], requests = [], revoked = [], objectURLs = [], listeners = new Map();
   let failAudio = audioFailure, readFailures = 0, storageTouches = 0;
   const auth = { ready: Promise.resolve(), state: { status: "connected" }, refresh: async () => auth.state,
@@ -53,7 +53,7 @@ function harness({ child = "bingpu", audioFailure = false, privateFetch, mount =
     };
   };
   vm.runInContext(source("preview.js"), context);
-  const options = { root, lesson: previewLesson, child, auth,
+  const options = { root, lesson: previewLesson, child, auth, catalog: previewCatalog, search, date: () => practiceDate,
     createObjectURL: () => { const url = "blob:preview-" + (objectURLs.length + 1); objectURLs.push(url); return url; },
     revokeObjectURL: (url) => revoked.push(url),
     makeAudio: () => {
@@ -78,6 +78,24 @@ function harness({ child = "bingpu", audioFailure = false, privateFetch, mount =
   };
 }
 const settle = () => new Promise((resolve) => setImmediate(resolve));
+
+test("Preview calendar shows the linked month, pages across years and keeps answer state without learning access", async () => {
+  const h = harness({ previewCatalog: catalog.lessons, search: "?child=bingpu&lesson=2026-09-15", practiceDate: "2027-01-02" });
+  assert.match(h.root.innerHTML, />September 2026<\/h2>/);
+  assert.match(h.root.innerHTML, /preview.html\?child=bingpu&amp;lesson=2026-09-15" aria-current="page"/);
+  await h.app.handle("pick", { choice: "is" });
+  for (let count = 0; count < 4; count++) await h.app.handle("calendar-month", { direction: "1" });
+  assert.match(h.root.innerHTML, />January 2027<\/h2>/);
+  assert.match(h.root.innerHTML, /data-choice="is" aria-pressed="true"/);
+  await h.app.handle("calendar-month", { direction: "-1" });
+  assert.match(h.root.innerHTML, />December 2026<\/h2>/);
+  assert.equal(h.storageTouches, 0);
+  h.app.destroy();
+  const current = harness({ previewCatalog: catalog.lessons, practiceDate: "2027-01-02" });
+  assert.match(current.root.innerHTML, />January 2027<\/h2>/);
+  current.app.destroy();
+});
+
 async function choose(app, mode, concept, index) {
   await app.handle("mode", { mode });
   await app.handle("concept", { concept: concept.id });

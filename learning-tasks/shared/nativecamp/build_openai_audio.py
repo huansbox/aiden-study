@@ -138,7 +138,39 @@ def valid_existing(path, prior, fingerprint):
 
 
 def build(args):
+    journal_path = getattr(args, "request_journal", None)
+    if not journal_path:
+        return _build(args)
+    lock = journal_path.with_name(journal_path.name + ".lock")
+    if args.check:
+        if lock.exists():
+            raise AudioBuildError("Audio generation is locked; verify the owner before recovery.")
+        return _build(args)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        handle = lock.open("x", encoding="ascii")
+    except FileExistsError:
+        raise AudioBuildError("Audio generation is locked; verify the owner before recovery.") from None
+    try:
+        with handle:
+            handle.write(str(os.getpid()))
+            handle.flush()
+            os.fsync(handle.fileno())
+        return _build(args)
+    finally:
+        lock.unlink()
+
+
+def _build(args):
     jobs = read_jobs(args.jobs)
+    journal_path = getattr(args, "request_journal", None)
+    try:
+        journal = json.loads(journal_path.read_text(encoding="utf-8")) if journal_path and journal_path.exists() else {}
+    except (OSError, ValueError):
+        raise AudioBuildError("Cannot read request journal; do not retry uncertain paid requests.") from None
+    if not isinstance(journal, dict) or any(not isinstance(row, dict) or row.get("state") not in
+                                           ("request-started", "response-verified") for row in journal.values()):
+        raise AudioBuildError("Invalid request journal; do not retry uncertain paid requests.")
     if not all(shutil.which(tool) for tool in ("ffmpeg", "ffprobe")):
         raise AudioBuildError("ffmpeg and ffprobe must be available on PATH.")
     try:
@@ -195,6 +227,11 @@ def build(args):
             summary["recovered"] += 1
             continue
         pending.append((job, body, fingerprint, target, part))
+    # Persisted before any paid call. A killed process or an unjournaled response
+    # must not silently buy the same file again on the next scheduled run.
+    if journal_path and any(journal.get(job["file"], {}).get("state") == "request-started"
+                            for job, *_ in pending):
+        raise AudioBuildError("A paid request has an uncertain result; stop and request operator review before retrying.")
     if args.check:
         if pending:
             raise AudioBuildError(f"{len(pending)} audio files need generation or repair.")
@@ -216,6 +253,9 @@ def build(args):
         accounting["apiRequests"] += 1
         manifest.pop("lastError", None)
         save()
+        if journal_path:
+            journal[job["file"]] = {"state": "request-started", "inputFingerprint": fingerprint}
+            write_json(journal_path, journal)
         try:
             receipt = speech_request(body, part, api_key)
             accounting["successfulRequests"] += 1
@@ -226,6 +266,10 @@ def build(args):
                 "inputFingerprint": fingerprint, "generatedAt": datetime.now(timezone.utc).isoformat(),
                 **receipt, **verified}
             save()
+            if journal_path:
+                journal[job["file"]] = {"state": "response-verified", "inputFingerprint": fingerprint,
+                                         "sha256": verified["sha256"]}
+                write_json(journal_path, journal)
             part.replace(target)
             summary["generated"] += 1
             summary["verified"] += 1
@@ -248,6 +292,8 @@ def main():
     parser.add_argument("--audio-dir", type=Path, default=REPO / "docs/nativecamp/audio")
     parser.add_argument("--limit", type=int, help="Generate at most this many pending files (use 1 for a permission sample)")
     parser.add_argument("--check", action="store_true", help="Verify every input fingerprint, hash and audio; do not write or call API")
+    parser.add_argument("--request-journal", type=Path,
+                        help="Private durable paid-request journal; required for unattended weekly generation")
     args = parser.parse_args()
     if args.limit is not None and args.limit < 1:
         parser.error("--limit must be positive")

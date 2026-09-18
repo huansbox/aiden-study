@@ -4,6 +4,8 @@
 
 ## 文字與題包
 
+依實際練習產生週題計畫、新週包 schema 與出題契約見[每週規劃 SOP](weekly-planning.md)。工具使用已驗證的私有快照，不呼叫 API；既有週一至週日題包繼續相容。
+
 `build_lesson.py` 只讀取指定新課的 `source/lesson-source.json`，產生同日期公開題包與 `source/speech-jobs.json`。它不產生或覆寫音檔，也不動9/15首堂。改過spokenQuestion／answerText後，必須另外重製受影響音檔；builder通過不代表音文已一致。
 
 ```powershell
@@ -34,6 +36,8 @@ uv run --python 3.13 pytest -q tests/test_nativecamp_openai_audio.py
 ```
 
 `--audio-dir` 預設 `docs/nativecamp/audio`，可指定隔離輸出。初次權限驗證可加 `--limit 1`，之後原指令續跑；不要為同一 manifest 同時執行兩個製作程序。工具不自行重試付費請求。下載先核對可得的 Content-Length，正常 EOF 短讀或中斷都視為失敗；完整驗證暫存音檔、保存 receipt 後才取代原檔。失敗不把半檔當正式音檔，下次可接續。輸入設定、hash 與解碼都相符時跳過，零 API 請求且不需 key。僅刪除或重排 jobs 時更新 manifest 清單、順序與 jobs hash，不重製音檔；`--check` 遇到過期清單會失敗且不寫檔，完全未變的重跑也不寫檔。
+
+無人值守週包必須另帶 `--request-journal .local/nativecamp-weekly/<發布日>/audio-requests.json`。journal 在送出每次付費請求前落盤並用排他 lock 防止並行製作；結果不確定或 receipt 尚未保存時，之後重跑仍會停止並要求人工判斷，不能自動再付費。已完整驗證且保存 receipt 的暫存回應仍可直接恢復。完整排程、私有進度擷取、憑證部署門、內容 review 與發布核對見[每週自動化 SOP](weekly-automation.md)。
 
 manifest 保留既有老師片段證據。每個 TTS 項目包含文字、model、voice、settings、inputFingerprint、requestId、hash、bytes、音長、RMS 與驗證結果；頂層 `status: complete` 才代表所有工作完成。`openaiGeneration` 累計送出的請求與成功回應數；binary Speech API 未回傳 token usage，因此 usage／costUsd 記為 null，音長及請求數不能冒充實際帳單。ASR 報告每段附音檔 hash，沒有提供預期文字作辨識 prompt；轉錄比對不等於人耳自然度、iPad 或發音驗收。
 

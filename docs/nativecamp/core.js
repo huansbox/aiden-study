@@ -94,6 +94,13 @@
     requireValue(object(source) && validId(source.lessonId) && validId(source.conceptId) && validDate(source.date), "This review needs a taught source concept.");
   }
   function validateWeekly(weekly) {
+    if (weekly?.schemaVersion === 2) {
+      requireValue(validDate(weekly.practiceStart) && validDate(weekly.practiceEnd) && validDate(weekly.opensOn), "This review needs its practice window and opening date.");
+      requireValue(new Date(weekly.practiceStart + "T00:00:00Z").getUTCDay() === 0 && (Date.parse(weekly.practiceEnd) - Date.parse(weekly.practiceStart)) / 86400000 === 7 && weekly.opensOn === weekly.practiceEnd, "This review needs a Sunday to Sunday practice window.");
+      requireValue(Number.isInteger(weekly.conceptCount) && weekly.conceptCount >= 1 && weekly.conceptCount <= 4, "This review needs at most four planned concepts.");
+      return weekly;
+    }
+    requireValue(weekly?.schemaVersion === undefined || weekly.schemaVersion === 1, "This review version is not available.");
     requireValue(object(weekly) && validDate(weekly.weekStart) && validDate(weekly.weekEnd) && validDate(weekly.opensOn), "This review needs its week and opening date.");
     requireValue(new Date(weekly.weekStart + "T00:00:00Z").getUTCDay() === 1 && (Date.parse(weekly.weekEnd) - Date.parse(weekly.weekStart)) / 86400000 === 6 && weekly.opensOn >= weekly.weekEnd, "This review needs a Monday to Sunday week.");
     requireValue(Number.isInteger(weekly.conceptCount) && weekly.conceptCount >= 1 && weekly.conceptCount <= 30 && Number.isInteger(weekly.earlierCount) && weekly.earlierCount >= 0 && weekly.earlierCount < weekly.conceptCount, "This review needs a practice amount.");
@@ -106,7 +113,8 @@
     requireValue(lesson.kind === undefined || ["lesson", "weekly"].includes(lesson.kind), "This lesson type is not available.");
     if (lesson.kind === "weekly") {
       validateWeekly(lesson.weekly);
-      requireValue(lesson.date === lesson.weekly.weekEnd, "This review date must match its week.");
+      requireValue(lesson.date === (lesson.weekly.schemaVersion === 2 ? lesson.weekly.opensOn : lesson.weekly.weekEnd), "This review date must match its week.");
+      if (lesson.weekly.schemaVersion === 2) requireValue(lesson.concepts.length === lesson.weekly.conceptCount, "This review must contain its planned concepts.");
     }
     const ids = new Set();
     const addId = (id) => { requireValue(typeof id === "string" && ID.test(id) && !ids.has(id), "This lesson has repeated or invalid questions."); ids.add(id); };
@@ -116,7 +124,7 @@
       requireValue(text(concept.title), "This lesson needs a concept title.");
       if (lesson.kind === "weekly") {
         validateSource(concept.sourceConcept);
-        requireValue(concept.sourceConcept.date <= lesson.weekly.weekEnd && concept.sourceConcept.lessonId !== lesson.id, "This review includes a source that has not been taught.");
+        requireValue((lesson.weekly.schemaVersion === 2 ? concept.sourceConcept.date < lesson.weekly.practiceEnd : concept.sourceConcept.date <= lesson.weekly.weekEnd) && concept.sourceConcept.lessonId !== lesson.id, "This review includes a source that has not been taught.");
       }
       for (const mode of MODES) {
         requireValue(Array.isArray(concept[mode]) && concept[mode].length >= 3, "This lesson needs three practice questions.");
@@ -312,6 +320,9 @@
     return { attempted: attempts.length, needsPractice: attempts.some((a) => !independent(mode, a.outcome)) };
   }
   function selectWeekly(progress, lesson, mode) {
+    // New packs were selected from actual practice by the offline planner.
+    // Re-ranking by lesson dates here would silently drop late-practised lessons.
+    if (lesson.weekly.schemaVersion === 2) return lesson.concepts.map((concept) => concept.id);
     const { weekStart, conceptCount, earlierCount } = lesson.weekly;
     const rank = (concept) => {
       const result = sourcePerformance(progress, concept.sourceConcept, mode, lesson.id);

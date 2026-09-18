@@ -21,3 +21,4 @@ aiden-study-進度備份-*.json
 .DS_Store
 .wrangler/
 /data/private/study/g4-s1-math-u1/
+/.local/nativecamp-weekly/

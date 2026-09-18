@@ -8,7 +8,7 @@ import argparse
 import copy
 import json
 import re
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 TASKS = Path(__file__).resolve().parents[2]
@@ -25,7 +25,15 @@ def build(lesson_id):
     date.fromisoformat(lesson["date"])
     if lesson.get("kind") == "weekly":
         weekly = lesson["weekly"]
-        if lesson_id != f"weekly-{weekly['weekStart']}" or lesson["date"] != weekly["weekEnd"]:
+        if weekly.get("schemaVersion") == 2:
+            start, end = date.fromisoformat(weekly["practiceStart"]), date.fromisoformat(weekly["practiceEnd"])
+            if (start.weekday() != 6 or end - start != timedelta(days=7)
+                    or weekly["opensOn"] != end.isoformat() or lesson["date"] != weekly["opensOn"]
+                    or lesson_id != f"weekly-{weekly['opensOn']}"
+                    or type(weekly["conceptCount"]) is not int or not 1 <= weekly["conceptCount"] <= 4
+                    or len(lesson["concepts"]) != weekly["conceptCount"]):
+                raise ValueError("Planned weekly pack must match its Sunday release and practice window")
+        elif weekly.get("schemaVersion", 1) != 1 or lesson_id != f"weekly-{weekly['weekStart']}" or lesson["date"] != weekly["weekEnd"]:
             raise ValueError("Weekly ID/date must match its week start/end")
     elif lesson["date"] != lesson_id:
         raise ValueError("Source date must match its dated task")

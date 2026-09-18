@@ -7,12 +7,13 @@
   function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
   const dateLabel = (date) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
   const modeLabel = (mode) => mode === "try" ? "Try it" : "Say it";
-  function mount({ root, lesson, bridge, catalog = [], lessons = {}, child = "aiden", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
+  function mount({ root, lesson, bridge, catalog = [], lessons = {}, child = "aiden", search = global.location?.search || "", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
     C.validateLesson(lesson);
     lessons = { ...lessons, [lesson.id]: lesson };
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
     let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false, roundOpen = false;
     let lastProgress = JSON.stringify(bridge.getProgress());
+    let calendarMonth = global.NativeCampCatalog?.initialMonth(lesson, search, date());
     const summary = () => C.summarizeLesson(bridge.getProgress(), lesson, date());
     const current = () => mode ? C.nextQuestion(bridge.getProgress(), lesson, mode, date(), mode === "say" ? conceptId : null) : null;
     const questionKey = (q) => q ? `${q.concept.id}/${q.phase}/${q.question.id}` : null;
@@ -71,7 +72,7 @@
     }
     function homeHtml() {
       const result = summary();
-      const navigation = global.NativeCampCatalog?.navigation(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date(), childView: true, lessons }) || "";
+      const navigation = global.NativeCampCatalog?.calendar(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date(), month: calendarMonth, childView: true, lessons }) || "";
       const complete = result.try.done && result.say.done;
       const body = !C.isOpen(lesson, date()) ? `<p class="notice">Opens ${escape(dateLabel(lesson.weekly?.opensOn || lesson.date))}.</p>` : complete ? `<section class="finished-card">${icon("check")}<h2>Finished</h2><p>Choose another lesson or Weekly Review.</p></section>` : `<section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>`;
       return `${navigation}<div class="lesson-heading">${icon("calendar-days")}<div><p>${lesson.kind === "weekly" ? "Weekly Review · " : ""}${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div>${body}${footer()}`;
@@ -147,6 +148,12 @@
       let nextSound = null;
       try {
         if (action === "sync") { await bridge.syncNow(); updateStatus(); return; }
+        if (action === "calendar-month" && view === "home" && ["-1", "1"].includes(data.direction)) {
+          calendarMonth = global.NativeCampCatalog.shiftMonth(calendarMonth, Number(data.direction));
+          render();
+          root.querySelector(`[data-action="calendar-month"][data-direction="${data.direction}"]`)?.focus();
+          return;
+        }
         if (["start-try", "start-say", "choose-say"].includes(action)) {
           const previous = bridge.getProgress(), started = C.startLesson(previous, lesson, date());
           if (started !== previous) await persist(started);

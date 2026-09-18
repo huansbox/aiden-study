@@ -12,7 +12,7 @@
           item.kind !== "weekly" && (typeof item.teacher !== "string" || !item.teacher.trim() || item.teacher.length > 80)) throw Error("The lesson list could not be read.");
       if (item.kind === "weekly") {
         global.NativeCampCore.validateWeekly(item.weekly);
-        if (item.date !== item.weekly.weekEnd) throw Error("The review date does not match its week.");
+        if (item.date !== (item.weekly.schemaVersion === 2 ? item.weekly.opensOn : item.weekly.weekEnd)) throw Error("The review date does not match its week.");
       } else if (item.kind !== undefined && item.kind !== "lesson") throw Error("The lesson type is not available.");
       seen.add(item.id);
     }
@@ -43,7 +43,7 @@
   async function readLesson(entry, { base = ".", fetchImpl = (...args) => fetch(...args) } = {}) {
     const lesson = global.NativeCampCore.validateLesson(await readJSON(`${base}/lessons/${entry.id}.json`, fetchImpl));
     if (lesson.id !== entry.id || lesson.date !== entry.date) throw Error("The lesson does not match the selected date. Please try again.");
-    if ((lesson.kind === "weekly") !== (entry.kind === "weekly") || lesson.kind === "weekly" && ["weekStart", "weekEnd", "opensOn", "conceptCount", "earlierCount"].some((key) => lesson.weekly[key] !== entry.weekly[key])) throw Error("The review does not match its catalog. Please try again.");
+    if ((lesson.kind === "weekly") !== (entry.kind === "weekly") || lesson.kind === "weekly" && ["schemaVersion", "weekStart", "weekEnd", "practiceStart", "practiceEnd", "opensOn", "conceptCount", "earlierCount"].some((key) => lesson.weekly[key] !== entry.weekly[key])) throw Error("The review does not match its catalog. Please try again.");
     return lesson;
   }
   async function readLessons(catalog, options) {
@@ -86,5 +86,44 @@
     const remaining = catalog.filter((entry) => !complete.includes(entry));
     return `<nav class="lesson-picker" aria-label="Lessons">${remaining.map(renderEntry).join("")}</nav>${complete.length ? `<details class="finished-lessons"><summary>Finished · ${complete.length}</summary><div class="lesson-picker">${complete.map(renderEntry).join("")}</div></details>` : ""}`;
   }
-  global.NativeCampCatalog = { validateCatalog, select, childFrom, href, readCatalog, readLesson, readLessons, load, finished, reviewReady, navigation };
+  function initialMonth(entry, search = "", date = global.NativeCampCore.today()) {
+    return (new URLSearchParams(search).has("lesson") ? entry.date : date).slice(0, 7);
+  }
+  function shiftMonth(month, direction) {
+    const value = new Date(`${month}-01T00:00:00Z`);
+    value.setUTCMonth(value.getUTCMonth() + direction);
+    return value.toISOString().slice(0, 7);
+  }
+  function calendar(catalog, selectedId, { page = "./", child = "aiden", progress, date = global.NativeCampCore.today(), month = date.slice(0, 7), childView = false, lessons = {} } = {}) {
+    if (!catalog?.length) return "";
+    const first = new Date(`${month}-01T00:00:00Z`);
+    const offset = (first.getUTCDay() + 6) % 7;
+    const last = new Date(first); last.setUTCMonth(last.getUTCMonth() + 1); last.setUTCDate(0);
+    const title = new Intl.DateTimeFormat("en", { month: "long", year: "numeric", timeZone: "UTC" }).format(first);
+    const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="icons.svg#${name}"></use></svg>`;
+    const renderEntry = (entry) => {
+      const active = entry.id === selectedId, complete = childView && finished(progress, lessons[entry.id], date);
+      const locked = childView && !global.NativeCampCore.isOpen(entry, date);
+      const shortLabel = (item) => item.kind === "weekly" ? "Review" : item.teacher;
+      const sameLabel = catalog.filter((item) => item.date === entry.date && shortLabel(item) === shortLabel(entry));
+      const number = sameLabel.length > 1 ? ` ${sameLabel.indexOf(entry) + 1}` : "";
+      const label = shortLabel(entry) + number;
+      const state = complete ? ", Finished" : locked ? `, Opens ${dateLabel(entry.weekly?.opensOn || entry.date)}` : "";
+      const attributes = `${active ? ' aria-current="page"' : ""} aria-label="${esc(`${dateLabel(entry.date)}, ${entry.kind === "weekly" ? "Weekly Review" : entry.teacher}${number}${state}`)}"`;
+      const text = `${complete ? icon("check") : entry.kind === "weekly" ? icon("calendar-days") : ""}<span>${esc(label)}</span>`;
+      const classes = `calendar-lesson${complete ? " calendar-finished" : locked ? " calendar-locked" : ""}`;
+      return complete || locked ? `<span class="${classes}"${attributes} aria-disabled="true">${text}</span>` : `<a class="${classes}" href="${esc(href(page, child, entry.id))}"${attributes}>${text}</a>`;
+    };
+    const cells = [];
+    for (let index = 0; index < Math.ceil((offset + last.getUTCDate()) / 7) * 7; index++) {
+      const day = index - offset + 1;
+      if (day < 1 || day > last.getUTCDate()) { cells.push('<td class="calendar-empty"></td>'); continue; }
+      const dayDate = `${month}-${String(day).padStart(2, "0")}`, entries = catalog.filter((entry) => entry.date === dayDate);
+      cells.push(`<td class="calendar-day${dayDate === date ? " calendar-today" : ""}${entries.some((entry) => entry.id === selectedId) ? " calendar-selected" : ""}" data-date="${dayDate}"><time datetime="${dayDate}"${dayDate === date ? ` aria-current="date" aria-label="Today, ${esc(dateLabel(dayDate))}"` : ""}>${day}</time><div class="calendar-entries">${entries.map(renderEntry).join("")}</div></td>`);
+    }
+    const rows = [];
+    for (let index = 0; index < cells.length; index += 7) rows.push(`<tr>${cells.slice(index, index + 7).join("")}</tr>`);
+    return `<nav class="lesson-calendar" aria-label="Lessons"><div class="calendar-heading"><button type="button" class="calendar-step" data-action="calendar-month" data-direction="-1" aria-label="Previous month">${icon("arrow-left")}</button><h2 id="calendar-month-label" aria-live="polite">${esc(title)}</h2><button type="button" class="calendar-step" data-action="calendar-month" data-direction="1" aria-label="Next month">${icon("arrow-right")}</button></div><table class="calendar-table" aria-labelledby="calendar-month-label"><thead><tr>${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => `<th scope="col">${day}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></nav>`;
+  }
+  global.NativeCampCatalog = { validateCatalog, select, childFrom, href, readCatalog, readLesson, readLessons, load, finished, reviewReady, navigation, initialMonth, shiftMonth, calendar };
 })(globalThis);
