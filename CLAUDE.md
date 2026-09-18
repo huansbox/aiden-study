@@ -1,6 +1,7 @@
 # Aiden Study 全家學習平台 monorepo
 
 - 找既有作品先看 `README.md` 的「作品總覽」；主線外作品回查其 PR／分支，不能只憑目前 checkout 判定作品不存在。
+- 接續子專案開發前，依 `docs-dev/development-readiness.md` 核對來源、實際工作目錄／基線、共用範圍與交付方式；不要在舊 task 分支直接接新功能，也不清除私人或未追蹤資料。
 - 下方長篇平台實作紀錄包含歷史快照，不作為目前待辦或驗收狀態。現況回查 code／Git、對應 issue／PR 與 `README.md`；跨裝置工作先確認分支與遠端，不覆蓋他處正在開發的內容。
 - 詞彙表見 `CONTEXT.md`；涉及架構的改動先查 `docs-dev/adr/`（本 repo `docs/` 是部署目錄，ADR 放 docs-dev）
 - 規劃、建立或歸檔家庭學習活動前，先讀並遵循 `learning-tasks/README.md` 的分類與登錄規則。任務資料唯一來源為 `learning-tasks/catalog.json`，App 沿用 `docs/registry.json`；README 清單與家長作品白板由 `node scripts/build-work-catalog.mjs` 共用產生，不另手填。來源演進見 ADR-0008，操作見 `docs-dev/parent-whiteboard.md`；ADR-0007 的分類／歸檔規則保留。

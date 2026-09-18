@@ -142,6 +142,7 @@ uv run python scripts/build_questions.py
 
 ## 維護入口
 
+- [`docs-dev/development-readiness.md`](docs-dev/development-readiness.md)：子專案開工／收尾檢查，確認來源、工作目錄、跨裝置與私人素材界線。
 - [`CLAUDE.md`](CLAUDE.md)：專案架構背景與歷史技術快照；當前狀態仍回查 code、Git 歷史與 issues。
 - [`AGENTS.md`](AGENTS.md)：Codex 的 repo 導覽與家庭學習任務路由規則。
 - [`CONTEXT.md`](CONTEXT.md)：平台詞彙與 registry 欄位語意；不存工作計畫。
