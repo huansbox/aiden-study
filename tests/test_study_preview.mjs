@@ -65,6 +65,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
     boot(options = {}) { return context.StudyPreview.boot({ root: host, auth, search, documentRef: document, windowRef: context, ...options }); },
     hide() { document.visibilityState = "hidden"; documentListeners.get("visibilitychange")?.(); },
     pagehide() { windowListeners.get("pagehide")?.(); },
+    pageshow(persisted = true) { windowListeners.get("pageshow")?.({ persisted }); },
   };
 }
 
@@ -160,7 +161,7 @@ test("editing a number after feedback immediately clears the visible result with
   app.destroy();
 });
 
-test("pagehide and reopening reset the whole round while backgrounding performs no learning write", async () => {
+test("successful pagehide releases the pack and DOM; bfcache pageshow reauthorizes, reloads and reparses", async () => {
   const h = harness(), app = await h.boot();
   const secondUnit = expandedSyntheticPack().questions.find((q) => q.unit === 16);
   await selectQuestion(app, secondUnit.unit, secondUnit.subtopic);
@@ -170,16 +171,43 @@ test("pagehide and reopening reset the whole round while backgrounding performs 
   h.hide();
   assert.match(h.host.innerHTML, /新增合成解說/, "backgrounding does not pretend the page was left");
   h.pagehide();
+  assert.equal(app.state.pack, null);
+  assert.doesNotMatch(h.host.innerHTML, /合成練習|合成解說|答對了|還沒答對/);
+  assert.match(h.host.innerHTML, /返回頁面後會重新載入家庭題包/);
+  h.pageshow();
+  await settle();
+  await settle();
+  assert.equal(h.requests.length, 2);
+  assert.match(h.host.innerHTML, /家長試玩，不記錄孩子進度/);
   assert.doesNotMatch(h.host.innerHTML, /新增合成解說|答對了|還沒答對/);
-  assert.match(h.host.innerHTML, /第 1 單元：一億以內的數/);
-  assert.equal(app.state.unit, 15);
-  assert.equal(app.state.subtopic, "");
-  assert.equal(app.state.questionIndex, 0);
-  app.destroy();
-  const reopened = h.context.StudyPreview.mount({ root: h.host, pack: h.context.StudyPrivatePack.parse(JSON.stringify(expandedSyntheticPack())), child: "bingpu", documentRef: h.document, windowRef: h.context });
-  assert.doesNotMatch(h.host.innerHTML, /合成解說|答對了|還沒答對/);
   assert.equal(h.forbiddenTouches, 0);
-  reopened.destroy();
+});
+
+test("pagehide during loading aborts and invalidates the late response; persisted return starts a fresh load", async () => {
+  let call = 0, resolveOld;
+  const h = harness({ fetchImpl: () => {
+    call++;
+    if (call === 1) return new Promise((resolve) => { resolveOld = resolve; });
+    return response(expandedSyntheticPack());
+  } });
+  let parseCalls = 0;
+  const originalParse = h.context.StudyPrivatePack.parse;
+  h.context.StudyPrivatePack.parse = (...args) => { parseCalls++; return originalParse(...args); };
+  const loading = h.boot();
+  await settle();
+  assert.equal(h.requests.length, 1);
+  h.pagehide();
+  assert.equal(h.requests[0].signal.aborted, true);
+  resolveOld(response(expandedSyntheticPack()));
+  assert.equal(await loading, null);
+  assert.equal(parseCalls, 0);
+  assert.doesNotMatch(h.host.innerHTML, /合成練習|合成解說/);
+  h.pageshow();
+  await settle();
+  await settle();
+  assert.equal(h.requests.length, 2);
+  assert.equal(parseCalls, 1);
+  assert.match(h.host.innerHTML, /家長試玩，不記錄孩子進度/);
 });
 
 test("401, 404, offline, oversized, invalid UTF-8, bad JSON and invalid contract are clear and retryable", async () => {

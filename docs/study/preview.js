@@ -23,14 +23,21 @@
   let currentController = null;
   let currentAbort = null;
   let currentStatusCleanup = null;
+  let currentPageCleanup = null;
 
-  function clearCurrent() {
+  function releaseRuntime() {
     currentStatusCleanup?.();
     currentStatusCleanup = null;
     currentController?.destroy();
     currentController = null;
     currentAbort?.abort();
     currentAbort = null;
+  }
+
+  function clearCurrent() {
+    currentPageCleanup?.();
+    currentPageCleanup = null;
+    releaseRuntime();
   }
 
   function statusHTML(child, title, message, retry = false) {
@@ -40,8 +47,9 @@
       <a class="preview-button secondary" href="${parentHref(child)}">返回家長後台</a></div></section>`;
   }
 
-  function mount({ root: host, pack, child = "aiden", onRetry = null, documentRef = document, windowRef = root }) {
+  function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document }) {
     if (!host) throw Error("找不到試玩頁容器。");
+    let pack = initialPack;
     const state = { pack, unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
     const filtered = () => questionsForUnit().filter((q) => !state.subtopic || q.subtopic === state.subtopic);
@@ -129,31 +137,19 @@
       const checkButton = host.querySelector?.('[data-action="check"]');
       if (checkButton) checkButton.disabled = !state.values.every((value) => String(value).trim());
     };
-    const clearForLifecycle = () => {
-      if (state.destroyed) return;
-      state.unit = StudyPrivatePack.UNITS[0];
-      state.subtopic = "";
-      resetQuestion();
-      render();
-    };
-    // 切到背景只停止互動；不保存也不清畫面。真正離頁由 pagehide 重設整輪狀態，
-    // bfcache 返回時不會看見上一輪的選題、答案或揭答內容。
-    const onVisibility = () => {};
     host.addEventListener("click", onClick);
     host.addEventListener("change", onChange);
     host.addEventListener("input", onInput);
-    windowRef.addEventListener("pagehide", clearForLifecycle);
-    documentRef.addEventListener("visibilitychange", onVisibility);
     render();
-    return { handle, render, clearForLifecycle, get state() { return state; }, destroy() {
+    return { handle, render, get state() { return state; }, destroy() {
       if (state.destroyed) return;
       state.destroyed = true;
       clearAnswer();
+      state.pack = null;
+      pack = null;
       host.removeEventListener("click", onClick);
       host.removeEventListener("change", onChange);
       host.removeEventListener("input", onInput);
-      windowRef.removeEventListener("pagehide", clearForLifecycle);
-      documentRef.removeEventListener("visibilitychange", onVisibility);
     } };
   }
 
@@ -168,6 +164,27 @@
       if (host) host.innerHTML = statusHTML(child, "無法載入題包", "試玩頁缺少必要程式，請重新整理後再試。", true);
       return null;
     }
+    const windowRef = options.windowRef || root;
+    let leftPage = false;
+    const removePageLifecycle = () => {
+      windowRef.removeEventListener("pagehide", onPageHide);
+      windowRef.removeEventListener("pageshow", onPageShow);
+    };
+    const onPageHide = () => {
+      leftPage = true;
+      ++bootSequence;
+      releaseRuntime();
+      host.innerHTML = statusHTML(child, "四上數學家長試玩", "返回頁面後會重新載入家庭題包。");
+    };
+    const onPageShow = (event) => {
+      if (!leftPage || !event.persisted) return;
+      removePageLifecycle();
+      if (currentPageCleanup === removePageLifecycle) currentPageCleanup = null;
+      boot(options);
+    };
+    windowRef.addEventListener("pagehide", onPageHide);
+    windowRef.addEventListener("pageshow", onPageShow);
+    currentPageCleanup = removePageLifecycle;
     host.innerHTML = statusHTML(child, "四上數學家長試玩", "正在載入家庭題包⋯");
     const controller = new AbortController();
     currentAbort = controller;
@@ -187,7 +204,7 @@
       if (sequence !== bootSequence) return null;
       const pack = parser.parse(raw);
       if (sequence !== bootSequence) return null;
-      currentController = mount({ root: host, pack, child, onRetry: () => boot(options), documentRef: options.documentRef || document, windowRef: options.windowRef || root });
+      currentController = mount({ root: host, pack, child, onRetry: () => boot(options), documentRef: options.documentRef || document });
       return currentController;
     } catch (error) {
       if (sequence !== bootSequence) return null;
