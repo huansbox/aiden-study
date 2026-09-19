@@ -79,7 +79,7 @@ docs/                 GitHub Pages 部署根目錄
   index.html          child 首頁；未指定孩子時選擇入口
   parent/             家長設定、練習安排與維護入口
   registry.json       hub app registry
-  study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，手動匯入保留為備援
+  study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，另有不記錄進度的家長試玩
   math/               長除法與 nonogram
   spelling/           英文拼字 app
   nativecamp/          全英文課後複習；首次表現、口說與每週新題
@@ -123,15 +123,16 @@ uv run python -m http.server 8765 -d docs
 
 - Hub：<http://localhost:8765/>
 - 題庫：<http://localhost:8765/study/?child=aiden>
+- 四上數學家長試玩：<http://localhost:8765/study/preview.html?child=aiden>（一般靜態 server 沒有家庭 Cookie session，只能驗未連接提示）
 - iPad spike：<http://localhost:8765/platform-ipad-spike.html?child=test-spike&k=test-spike-token>
 
-localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的同步失敗是預期行為。完整本機驗證可用 `node tests/helpers/serve-family.mjs`，開啟輸出的 `/test/start`；該工具使用隔離 test-token、記憶體 KV 與合成題目，不動正式資料。`/test/controls` 可暫停／恢復隔離雲端。
+localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的同步失敗是預期行為。完整本機驗證可用 `node tests/helpers/serve-family.mjs`，開啟輸出的 `/test/start`；該工具使用隔離 test-token、記憶體 KV 與合成題目，不動正式資料。`/test/controls` 可暫停／恢復隔離雲端；Study 試玩隔離驗收從 `/test/study-preview?mode=ok` 開始，完成後由 `/test/study-preview/inspect` 核對 browser／KV 哨兵與 request allowlist。
 
 ## 題庫 pipeline
 
 紙本練習只在孩子實際需要時製作，沿用 [四上第一份短練習](learning-tasks/grade4-math-first-practice/) 的來源與再製方式，不按章自動產生 PDF。
 
-目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成最初六題 private pack、家庭權限自動讀取、獨立 review 與正式發布；[#59](https://github.com/huansbox/aiden-study/issues/59) 再把正式題包擴為 U1～U5 共十四題 rev2；[#60](https://github.com/huansbox/aiden-study/issues/60) 擴為三十題 rev3。[#101](https://github.com/huansbox/aiden-study/issues/101) 沿用相同 runtime，完成 fresh review、正式發布與 canonical private archive，把題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10；正常流程不要求家長傳檔。2026-09-14 的 iPad 操作確認只涵蓋先前 #55 六題流程，不代表五十七題已完成真機實測。下一個已核准工作是 [#103 Study 家長試玩](https://github.com/huansbox/aiden-study/issues/103)：使用現有 fixed pack 提供不寫入孩子進度的獨立試玩頁，不改題目或發布 contract。後續內容擴題再依[概念／出題方法覆蓋報告](docs-dev/grade4-math-pattern-counts.md)另行決定；`angle-v1` 等新呈現能力保留為未來選項，尚未授權開工。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
+目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成最初六題 private pack、家庭權限自動讀取、獨立 review 與正式發布；[#59](https://github.com/huansbox/aiden-study/issues/59) 再把正式題包擴為 U1～U5 共十四題 rev2；[#60](https://github.com/huansbox/aiden-study/issues/60) 擴為三十題 rev3。[#101](https://github.com/huansbox/aiden-study/issues/101) 沿用相同 runtime，完成 fresh review、正式發布與 canonical private archive，把題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10；正常流程不要求家長傳檔。2026-09-14 的 iPad 操作確認只涵蓋先前 #55 六題流程，不代表五十七題已完成真機實測。[#103 Study 家長試玩](https://github.com/huansbox/aiden-study/issues/103) 新增由家長後台進入的獨立四上數學試玩頁：只在記憶體載入與試答現有 fixed pack，不載入或寫入孩子 Study 進度、題包 cache、同步或家庭累計，也不改題目或發布 contract。後續內容擴題再依[概念／出題方法覆蓋報告](docs-dev/grade4-math-pattern-counts.md)另行決定；`angle-v1` 等新呈現能力保留為未來選項，尚未授權開工。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
 
 題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1～U5 五十七題 rev4 不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，已驗證的正式 pack 則部署在獨立 Cloudflare KV，由 Study 以 family token 自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
