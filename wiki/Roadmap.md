@@ -1,6 +1,6 @@
 # 路線圖
 
-> 快照日期：2026-09-18（局部更新作品入口與注音交付；既有數學方向仍取自 2026-09-15 基線，本次未重審）。本頁保存方向與歷史里程碑；目前作品狀態看 [README 自動總覽](https://github.com/huansbox/aiden-study/blob/master/README.md#作品總覽)，執行條件回查 [Plan](Plan) 所連的 tracker，不在此另抄待辦。
+> 快照日期：2026-09-19（更新四上數學 rev4 發布與後續選題方向）。本頁保存方向與歷史里程碑；目前作品狀態看 [README 自動總覽](https://github.com/huansbox/aiden-study/blob/master/README.md#作品總覽)，執行條件回查 [Plan](Plan) 所連的 tracker，不在此另抄待辦。
 
 ## 方向
 
@@ -30,6 +30,7 @@ Aiden Study 的數學內容沿用「歷屆題庫 → iPad 練習」方向：把�
 | 2026-09-15 | #60 完成 U1～U5 三十題 rev3 的 fresh review、正式發布與 canonical private archive；未做三十題真 iPad 實測 |
 | 2026-09-17 | 注音 #15／#20 已結案，14 段親錄交付；家長免除逐項 iPad checklist，未測項目不補稱通過，見[注音交接](https://github.com/huansbox/aiden-study/blob/master/docs-dev/zhuyin-handoff.md) |
 | 2026-09-18 | [PR #92](https://github.com/huansbox/aiden-study/pull/92) 交付自動作品總覽與家長白板；[ADR-0008](https://github.com/huansbox/aiden-study/blob/master/docs-dev/adr/0008-generated-work-catalog.md) 取代人工索引，但不改 task／app／shared 分工 |
+| 2026-09-19 | #101 完成 U1～U5 五十七題 rev4 的 fresh review、正式發布與 canonical private archive，並建立概念／出題方法覆蓋報告；未做五十七題真 iPad 實測 |
 
 ## 近期工作入口
 
@@ -41,7 +42,7 @@ Aiden Study 的數學內容沿用「歷屆題庫 → iPad 練習」方向：把�
 
 ### 題庫內容
 
-- 以孩子實際使用、學校進度及每批正式 review 決定後續擴題；U3 `angle-v1` 等方向的採納／實作狀態回查擴題路線圖，不以本頁推定已授權開工。
+- 以孩子實際使用、學校進度、每批正式 review 與[概念／出題方法覆蓋報告](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-math-pattern-counts.md)決定後續擴題；先核現有歷屆來源能否補足零題或單題模式，U3 `angle-v1` 等呈現能力留作後續選項，不以本頁推定已授權開工。
 - 自然、社會同為康軒版，日後按需要沿用「來源查證 → 概念對齊 → 小批驗收」流程；本輪只規劃四上數學。
 - 社會看圖題與其他既有 backlog 不為題數本身擴張。
 - 正式考試範圍公布後，再回頭校準段考候選題；不把教學計畫推定寫成學校公告。

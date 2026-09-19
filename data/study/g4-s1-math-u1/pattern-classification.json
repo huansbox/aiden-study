@@ -15,8 +15,8 @@
   "snapshot": {
     "packId": "g4-s1-math-u1",
     "revision": 4,
-    "status": "frozen_unreleased",
-    "evidence": null,
+    "status": "released_documented",
+    "evidence": "docs-dev/grade4-math-expansion-plan.md",
     "packBytes": 40358,
     "packSha256": "72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6"
   },

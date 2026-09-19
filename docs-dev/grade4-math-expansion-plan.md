@@ -1,6 +1,6 @@
 # 四上數學擴題路線圖
 
-更新：2026-09-15。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 已完成 review、正式發布並結案；[#60](https://github.com/huansbox/aiden-study/issues/60) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為三十題 rev3，U1～U5 分布為 9／6／2／7／6。下一步依下方已採納的 U3 `angle-v1` 能力路線另批處理。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
+更新：2026-09-19。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 與 [#60](https://github.com/huansbox/aiden-study/issues/60) 已完成；[#101](https://github.com/huansbox/aiden-study/issues/101) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10。後續先依[概念／出題方法覆蓋報告](grade4-math-pattern-counts.md)核現有歷屆來源能補哪些零題或單題模式；`angle-v1` 保留為需要圖形呈現時的能力選項，不預設為下一批。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
 
 ## 結論與現況
 
@@ -22,9 +22,9 @@
 
 | 口徑 | 現況 | 能代表什麼 |
 | --- | ---: | --- |
-| B 標記作答單位 | 216＝原六題 6＋#59 來源單位 9＋#60 來源單位 13＋未選 188 | 原卷中已做 scope mapping 的作答欄位；#60 有 12 個 B activity，其中 `tyk113-II-08a`／`08b` 是同一 activity 的兩個作答單位；不是 216 道可直接上線題 |
-| C review items | 126＝#59 來源 item 1＋#60 來源 items 4＋未選 121 | 另一種核題單位；不能與 B 相加 |
-| 數位 activity | #60 rev3 共 30＝#59 rev2 14＋新增 16 | Study 題包中的 activity 數；三十題 rev3 已正式發布 |
+| B 標記作答單位 | 216＝原六題 6＋#59 來源單位 9＋#60 來源單位 13＋#101 來源單位 24＋未選 164 | 原卷中已做 scope mapping 的作答欄位；相依多空可能合為一個 activity，不是 216 道可直接上線題 |
+| C review items | 126＝#59 來源 item 1＋#60 來源 items 4＋#101 來源 items 7＋未選 114 | 另一種核題單位；不能與 B 相加 |
+| 數位 activity | #101 rev4 共 57＝#60 rev3 30＋新增 27 | Study 題包中的 activity 數；五十七題 rev4 已正式發布 |
 
 B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落在暫定前五單元範圍，不表示答案已逐題驗算，也不表示可用現有 app 保真呈現。
 
@@ -43,7 +43,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 - 新增或更新 normalized content 必須升 revision；同 revision 比較完整實際 ID 集合，不只比較舊六題。既有 ID 不得搬 unit／subject，內容不能降版或以舊 pack 覆蓋作 rollback。
 - Public mapping row 保留既有 11 欄並新增數字 `unit`；原六題補 15，新題使用 15～19。頂層 `sourceTask`／`sourceMapping` 保留原值作為六題 legacy provenance 入口，不暗示新題來自原紙本 task。
 - Builder 以核准 mapping 的完整集合驗證 curated、questions 與 explanations 精確覆蓋；`curated.question.unit` 必須與 mapping 一致。正式內容與 QA 保持 ignored；public metadata 不含題文、選項、答案、blanks 或解說。
-- `multiple_choice` 仍為四選一；`fill_in_blank` 可有 1～9 個順序明確且同為 `number` 或同為 `comparison` 的空格。number 仍限 0 或 1～8 位無前導零非負整數，comparison 仍限 ASCII `<`、`>`、`=`。本批不新增 mixed input token／shape。128 KiB pack 上限與每批最多 10 題不變，不另設任意總題數上限。
+- `multiple_choice` 仍為四選一；`fill_in_blank` 可有 1～9 個順序明確且同為 `number` 或同為 `comparison` 的空格。number 仍限 0 或 1～8 位無前導零非負整數，comparison 仍限 ASCII `<`、`>`、`=`。本批不新增 mixed input token／shape。128 KiB pack 上限與每次練習批次最多 10 題不變，不另設任意總題數上限。
 - Study 以 active pack ID membership 判斷 private 題，不再以 `unit === 15` 推定。已知 private unit 缺章時保留未知進度並阻擋開始／reset；不能因 active pack 存在就把六題舊包誤認為 U2～U5 可用。
 - 舊 cache 在同章只載入部分題、持久 batch 仍有未知 ID 時，只練已載入題並依原相對順序把未知 ID 保留在可見 queue 後；save／clear／reset 只更新已載入的目標題，擴包後未知項可接續，legacy queue 仍沿用既有不保證順序語意，不新增 state 欄位。
 - 新 pack 只在首頁安全時點採用，作答中延後；舊 saved batch 先完成，新題進下一批。以 #59 升版為例，U1 的 2／6 變 2／7、6／6 變 6／7；已答對的舊題不重練，新增題與原未答對題正常待練。#59 新增的全新章顯示 0／2、0／2、0／1、0／2 且可開始，不誤顯示為通關。
@@ -53,11 +53,11 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 
 | 115 康軒章節 | Study unit | 候選現況 | 下一批重點 |
 | --- | ---: | --- | --- |
-| U1 一億以內的數 | 15 | B 核心 43 單位；原六題加 #59 的 1 題與 #60 的 2 題已上線 | #60 的 `anh114-II-16` 已依原卷「一格結果」目標納入；P06 集合、P08／P09 直式不硬改 |
-| U2 整數乘法 | 16 | B 純 U2 核心 35，另有跨章項；C 有核心候選及 8 個方法／位數待核 | 先做規律、比較與結果題；自行列直式、三位乘數等方法另核 |
-| U3 角度 | 17 | B 核心 41、C 核心 13，但許多依賴量角器、鐘面、角圖或作圖 | #60 完成後再以 optional `angle-v1` 靜態標註角圖搭配既有 unit 17 `number` 填答；作圖與實際量角器互動不納入 |
-| U4 整數除法 | 18 | B 純 U4 核心 36；C 有核心候選與 2 個三位除數待核 | 先做規則、估商、商位數與餘數結果；長除法過程另批 |
-| U5 公里 | 19 | B 純 U5 核心 20、M5b 10；C 純 U5 核心 11、M5b 10 | 先做 M5a 量感、換算、比較；M5b 等正式範圍或實際教學進度 |
+| U1 一億以內的數 | 15 | 五十七題 rev4 中有 18 個 activity；公開覆蓋報告辨識 13 種主要模式 | 先核現有歷屆來源能否補位值變化、數列等零題／單題模式；集合、直式不硬改 |
+| U2 整數乘法 | 16 | 五十七題 rev4 中有 12 個 activity；公開覆蓋報告辨識 8 種主要模式 | 先核現有歷屆來源能否補估算、因數反推等孤立模式；自行列直式、三位乘數等方法另核 |
+| U3 角度 | 17 | 五十七題 rev4 中有 5 個 activity、5 種主要模式；不能據此推論角圖、量角器或作圖能力完整 | 現有文字可保真題先核；需要圖形呈現時再評估 optional `angle-v1`，不是預設下一批 |
+| U4 整數除法 | 18 | 五十七題 rev4 中有 12 個 activity；公開覆蓋報告辨識 8 種主要模式 | 先核商位數、餘數情境等零題／單題模式；長除法過程與要求列式的題另批 |
+| U5 公里 | 19 | 五十七題 rev4 中有 10 個 activity；公開覆蓋報告辨識 5 種主要模式 | 先核單位換算與量感的零題／單題模式；M5b 等正式範圍或實際教學進度 |
 | U6 三角形 | 後續凍結 | B 後續 25、C 後續 1 | 需要圖形、分類集合、全等對應與作圖能力 |
 | U7 二位小數 | 後續凍結 | C 後續 6、作答格式待核 1 | 定義小數輸入、單位與等價表示 |
 | U8 整數四則 | 後續凍結 | C 後續 5 | 先決定只驗結果或驗併式／括號步驟 |
@@ -66,7 +66,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 
 B／C 的完整未選 ID、status、頁碼與 dependency／retain_context 一律回到兩份 scope JSON 查詢，不複製到本頁。各批依孩子課程進度與 app 能力選最小可保真集合；來源量多不代表答案、圖片或互動缺口已解決。
 
-U3 下一批採 optional `angle-v1`：只在既有 fixed private pack 內，以固定 SVG DOM 白名單與 `textContent` 呈現靜態標註角圖，搭配既有 unit 17 `number` 填答；禁止 raw SVG／HTML／任意 URL，不新增 app、圖檔服務、作圖或互動量角器。排除 #59／#60 已選來源後，能力範圍可涵蓋 `anh112-II-01`、`anh112-II-02`、`anh112-II-03`、`c-tyk-112-midterm-II-4`、`c-tyk-112-midterm-V-1`、`c-tyk-112-midterm-V-2`；先核前兩者及 `c-tyk-112-midterm-II-4`、`c-tyk-112-midterm-V-2` 只是內容 QA 排程，不另造格式。每張圖仍須依原卷逐圖重建並由第二人 QA；目前畫布是否足夠尚未驗證，也沒有已完成的圖題。這條能力路線不納入 #60，也不另開實作票；#60 三十題 rev3 上線後以此為下一步，不把其餘數學寫成全部完成。
+`angle-v1` 是未來需要角圖時的 optional 能力，不是 rev4 後的預設下一批：若採用，只在既有 fixed private pack 內，以固定 SVG DOM 白名單與 `textContent` 呈現靜態標註角圖，搭配既有 unit 17 `number` 填答；禁止 raw SVG／HTML／任意 URL，不新增 app、圖檔服務、作圖或互動量角器。每張圖仍須依原卷逐圖重建並由第二人 QA；目前畫布是否足夠尚未驗證，也沒有已完成的圖題。實際下一批先依覆蓋報告回查現有歷屆來源，只有現有格式不能保真承載時才排能力工作。
 
 ## 驗證與發布順序
 
@@ -82,10 +82,14 @@ Metadata release `ddfa40b90f78f4f36104a23c4d81ccb23d547903` 已 ordinary push；
 
 家長已接受個人小專案不再逐項補驗 #55 的細節，本計畫不重開完整真 iPad checklist。#59 的自動測試、review、isolated Worker 驗證、desktop CUA 與正式發布已有上述證據；#60 已完成 fresh review、正式 KV readback 與 private archive，但三十題未做真 iPad 實測，真機後續依實際使用問題處理。
 
+[#101](https://github.com/huansbox/aiden-study/issues/101) 新增 27 個已核歷屆題 activity，沒有 AI 生成題；完整 pack 為五十七題 rev4，U1～U5 分布 18／12／5／12／10。兩題缺官方答案的來源明確保留 `answerPage: null`，由作者與 fresh reviewer 各自獨立解題並一致，狀態為 `independently_solved_twice_no_official_answer`；`core_provisional` 仍只表示範圍，不當答案認證。Fresh review 對 27／27 新題與 57／57 正式投影均通過，原三十題的題文、答案與解說逐值不變；完整 Python 263 passed／1 個既有 missing-PDF skip，Node 566 passed，PR [#102](https://github.com/huansbox/aiden-study/pull/102) 與 master CI run 35420767059 均通過。
+
+五十七題 rev4 build 為 40,358 bytes、SHA256 `72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6`。發布前管理端 backup 精確回讀三十題 rev3、20,975 bytes、SHA256 `38DFC04DB66DBDAFAA98239FAF936342F52E679FA4D0B6E84BC527A3F12AC695`；唯一一次 KV put 後的 immediate 與超過 60 秒 readback 都精確回傳五十七題 rev4 及相同 bytes／SHA256。這次只前向更新 `c:study:g4-s1-math-u1`，未修改 runtime、未重新部署 Worker；現役 100% version `abf2edcc-b5bc-4abc-ae36-b09d98cbf7d5` 保持不變。Canonical private root 已先保存 rev3 exact baseline，再保存 rev4 正式檔、A／B delta、fresh review、taxonomy 稽核與 release readback；沒有把題文、答案或 QA 放進 Git。
+
 ## 明確不做
 
 - 不宣稱正式考試範圍已公布，不把 `core_provisional`、答案卷身分或候選頁面可讀性寫成已驗答案。
-- 不把目前三十題當成其餘四上數學已完成；未轉入題目、U3 `angle-v1` 與 U6～U10 仍依上方路線分批處理。
+- 不把目前五十七題或本批辨識的 39 種主要模式當成其餘四上數學已完成；未轉入題目、圖形／直式等能力與 U6～U10 仍依上方路線分批處理。
 - 不自動建立 PDF、每章 worksheet、通用 CMS、任意圖片／HTML 通道或完整互動數學技能 app。
 - 不把暫未支援的圖形、集合、直式、小數、分數與複合題永久排除。
 - 不收自然、社會，不搬舊 `aiden-math` worksheets，不做 #34／#35 網域與容器搬遷。
