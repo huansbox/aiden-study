@@ -22,7 +22,8 @@ def build(lesson_id):
     lesson = json.loads((source / "lesson-source.json").read_text(encoding="utf-8"))
     if lesson["id"] != lesson_id:
         raise ValueError("Source ID must match its task")
-    date.fromisoformat(lesson["date"])
+    if date.fromisoformat(lesson["date"]).isoformat() != lesson["date"]:
+        raise ValueError("Source date must use YYYY-MM-DD")
     if lesson.get("kind") == "weekly":
         weekly = lesson["weekly"]
         if weekly.get("schemaVersion") == 2:
@@ -35,7 +36,7 @@ def build(lesson_id):
                 raise ValueError("Planned weekly pack must match its Sunday release and practice window")
         elif weekly.get("schemaVersion", 1) != 1 or lesson_id != f"weekly-{weekly['weekStart']}" or lesson["date"] != weekly["weekEnd"]:
             raise ValueError("Weekly ID/date must match its week start/end")
-    elif lesson["date"] != lesson_id:
+    elif not re.fullmatch(rf"{re.escape(lesson['date'])}(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?", lesson_id):
         raise ValueError("Source date must match its dated task")
     result = copy.deepcopy(lesson)
     jobs = []
@@ -60,7 +61,7 @@ def build(lesson_id):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--lesson", required=True, help="Dated lesson ID or weekly-YYYY-MM-DD")
+    parser.add_argument("--lesson", required=True, help="YYYY-MM-DD[-suffix] or weekly-YYYY-MM-DD")
     parser.add_argument("--check", action="store_true", help="Compare only; write nothing")
     args = parser.parse_args()
     lesson, jobs = build(args.lesson)

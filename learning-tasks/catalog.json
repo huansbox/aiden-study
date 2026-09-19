@@ -3,6 +3,72 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "nativecamp-2026-09-12-mel",
+      "name": "Native Camp 2026-09-12 Mel",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "eventDate": "2026-09-12",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "天氣與穿著：takes／uses、wearing、is／are 與不規則複數。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-12-mel"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-09",
+      "name": "Native Camp 2026-09-09 Emi",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "eventDate": "2026-09-09",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "Who／What 問句、完整介紹、人與動物的一天。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-09"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-08",
+      "name": "Native Camp 2026-09-08 Maria",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "eventDate": "2026-09-08",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "照顧動物、午睡、棲地與故事角色的完整句。",
+      "reusable": "完整句題型、明確情境與 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-08"
+        }
+      ]
+    },
+    {
       "id": "nativecamp-2026-09-12",
       "name": "Native Camp 2026-09-12 Lena",
       "status": "complete",

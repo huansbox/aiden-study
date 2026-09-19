@@ -1,0 +1,770 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-09",
+  "date": "2026-09-09",
+  "title": "Questions and a day",
+  "concepts": [
+    {
+      "id": "who-what-questions",
+      "title": "Ask a question",
+      "try": [
+        {
+          "id": "who-what-questions-try-1",
+          "prompt": "Ask a question.",
+          "instruction": "… is this? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a book.",
+            "heading": "Look here"
+          },
+          "answerText": "What is this?",
+          "spokenQuestion": "A book is near you. Ask a question about this thing.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "extra",
+              "text": "Who"
+            },
+            {
+              "id": "w0",
+              "text": "What"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "who-what-questions-try-2",
+          "prompt": "Ask a question.",
+          "instruction": "… is this? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a person.",
+            "heading": "Look here"
+          },
+          "answerText": "Who is this?",
+          "spokenQuestion": "A person is near you. Ask a question about this person.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "extra",
+              "text": "What"
+            },
+            {
+              "id": "w0",
+              "text": "Who"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "who-what-questions-try-3",
+          "prompt": "Ask a question.",
+          "instruction": "… is that? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Far away: a tree.",
+            "heading": "Look here"
+          },
+          "answerText": "What is that?",
+          "spokenQuestion": "A tree is far away. Ask a question about that thing.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "extra",
+              "text": "Who"
+            },
+            {
+              "id": "w0",
+              "text": "What"
+            },
+            {
+              "id": "w2",
+              "text": "that"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "who-what-questions-say-1",
+          "prompt": "Ask a question.",
+          "instruction": "… is that?",
+          "scene": {
+            "kind": "word-card",
+            "text": "Far away: a person.",
+            "heading": "Look here"
+          },
+          "answerText": "Who is that?",
+          "spokenQuestion": "A person is far away. Ask a question about that person.",
+          "accepted": [
+            "Who's that?"
+          ]
+        },
+        {
+          "id": "who-what-questions-say-2",
+          "prompt": "Ask a question.",
+          "instruction": "… is this?",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a pencil.",
+            "heading": "Look here"
+          },
+          "answerText": "What is this?",
+          "spokenQuestion": "A pencil is near you. Ask a question about this thing.",
+          "accepted": [
+            "What's this?"
+          ]
+        },
+        {
+          "id": "who-what-questions-say-3",
+          "prompt": "Ask a question.",
+          "instruction": "… is this?",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a girl.",
+            "heading": "Look here"
+          },
+          "answerText": "Who is this?",
+          "spokenQuestion": "A girl is near you. Ask a question about this person.",
+          "accepted": [
+            "Who's this?",
+            "Who is she?",
+            "Who's she?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "complete-names",
+      "title": "Name it",
+      "try": [
+        {
+          "id": "complete-names-try-1",
+          "prompt": "What is this?",
+          "instruction": "This … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a book.",
+            "heading": "Look here"
+          },
+          "answerText": "This is a book.",
+          "spokenQuestion": "Start with This. A book is near you. What is this?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "book"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "complete-names-try-2",
+          "prompt": "Who is this?",
+          "instruction": "This … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: Ben.",
+            "heading": "Look here"
+          },
+          "answerText": "This is Ben.",
+          "spokenQuestion": "Start with This. Ben is near you. Who is this?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w2",
+              "text": "Ben"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "complete-names-try-3",
+          "prompt": "What is this?",
+          "instruction": "It … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a tree.",
+            "heading": "Look here"
+          },
+          "answerText": "It is a tree.",
+          "spokenQuestion": "Start with It. A tree is near you. What is this?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "tree"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "complete-names-say-1",
+          "prompt": "What is this?",
+          "instruction": "It …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a bag.",
+            "heading": "Look here"
+          },
+          "answerText": "It is a bag.",
+          "spokenQuestion": "Start with It. A bag is near you. What is this?",
+          "accepted": [
+            "It's a bag.",
+            "This is a bag."
+          ]
+        },
+        {
+          "id": "complete-names-say-2",
+          "prompt": "Who is this?",
+          "instruction": "This …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: Anna.",
+            "heading": "Look here"
+          },
+          "answerText": "This is Anna.",
+          "spokenQuestion": "Start with This. Anna is near you. Who is this?",
+          "accepted": [
+            "It is Anna.",
+            "It's Anna.",
+            "Her name is Anna."
+          ]
+        },
+        {
+          "id": "complete-names-say-3",
+          "prompt": "What is this?",
+          "instruction": "This …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Near you: a pencil.",
+            "heading": "Look here"
+          },
+          "answerText": "This is a pencil.",
+          "spokenQuestion": "Start with This. A pencil is near you. What is this?",
+          "accepted": [
+            "It is a pencil.",
+            "It's a pencil."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-routines",
+      "title": "My day",
+      "try": [
+        {
+          "id": "daily-routines-try-1",
+          "prompt": "Tell me about your morning.",
+          "instruction": "I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Morning: brush my teeth.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I brush my teeth in the morning.",
+          "spokenQuestion": "Your pretend day card says morning and brush my teeth. Tell me about your morning.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "brush"
+            },
+            {
+              "id": "w3",
+              "text": "teeth"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "at"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "my"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w6",
+              "text": "morning"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "daily-routines-try-2",
+          "prompt": "Tell me about your afternoon.",
+          "instruction": "I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Afternoon: learn English.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I learn English in the afternoon.",
+          "spokenQuestion": "Your pretend day card says afternoon and learn English. Tell me about your afternoon.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "learn"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "afternoon"
+            },
+            {
+              "id": "extra",
+              "text": "at"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "English"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "daily-routines-try-3",
+          "prompt": "Tell me about your night.",
+          "instruction": "I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Night: sleep.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I sleep at night.",
+          "spokenQuestion": "Your pretend day card says night and sleep. Tell me about your night.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "sleep"
+            },
+            {
+              "id": "w3",
+              "text": "night"
+            },
+            {
+              "id": "extra",
+              "text": "in"
+            },
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "at"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "daily-routines-say-1",
+          "prompt": "Tell me about your morning.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Morning: eat breakfast.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I eat breakfast in the morning.",
+          "spokenQuestion": "Start with I. Your pretend day card says morning and eat breakfast. Tell me about your morning.",
+          "accepted": [
+            "In the morning, I eat breakfast.",
+            "I have breakfast in the morning."
+          ]
+        },
+        {
+          "id": "daily-routines-say-2",
+          "prompt": "Tell me about your evening.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Evening: eat dinner.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I eat dinner in the evening.",
+          "spokenQuestion": "Start with I. Your pretend day card says evening and eat dinner. Tell me about your evening.",
+          "accepted": [
+            "In the evening, I eat dinner.",
+            "I have dinner in the evening."
+          ]
+        },
+        {
+          "id": "daily-routines-say-3",
+          "prompt": "Tell me about your afternoon.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Afternoon: play.",
+            "heading": "Pretend day"
+          },
+          "answerText": "I play in the afternoon.",
+          "spokenQuestion": "Start with I. Your pretend day card says afternoon and play. Tell me about your afternoon.",
+          "accepted": [
+            "In the afternoon, I play."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "animal-routines",
+      "title": "An animal day",
+      "try": [
+        {
+          "id": "animal-routines-try-1",
+          "prompt": "Tell me about the eagles.",
+          "instruction": "Eagles … Time last. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Morning. Eagles: wake up.",
+            "heading": "Story day"
+          },
+          "answerText": "Eagles wake up in the morning.",
+          "spokenQuestion": "On this story card, eagles wake up. The time is morning. Tell me about the eagles. Time last.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "wake"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "morning"
+            },
+            {
+              "id": "extra",
+              "text": "at"
+            },
+            {
+              "id": "w0",
+              "text": "Eagles"
+            },
+            {
+              "id": "w2",
+              "text": "up"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "animal-routines-try-2",
+          "prompt": "Tell me about the opossums.",
+          "instruction": "Opossums … Time last. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Afternoon. Opossums: sleep.",
+            "heading": "Story day"
+          },
+          "answerText": "Opossums sleep in the afternoon.",
+          "spokenQuestion": "Put the time last: opossums, sleep, afternoon.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "sleep"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "at"
+            },
+            {
+              "id": "w0",
+              "text": "Opossums"
+            },
+            {
+              "id": "w2",
+              "text": "in"
+            },
+            {
+              "id": "w4",
+              "text": "afternoon"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "animal-routines-try-3",
+          "prompt": "Tell me about the opossums.",
+          "instruction": "Opossums … Time last. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Night. Opossums: play.",
+            "heading": "Story day"
+          },
+          "answerText": "Opossums play at night.",
+          "spokenQuestion": "On this story card, opossums play. The time is night. Tell me about the opossums. Time last.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "play"
+            },
+            {
+              "id": "w3",
+              "text": "night"
+            },
+            {
+              "id": "extra",
+              "text": "in"
+            },
+            {
+              "id": "w0",
+              "text": "Opossums"
+            },
+            {
+              "id": "w2",
+              "text": "at"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-routines-say-1",
+          "prompt": "Tell me about the eagles and the time.",
+          "instruction": "Eagles …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Night. Eagles: sleep.",
+            "heading": "Story day"
+          },
+          "answerText": "Eagles sleep at night.",
+          "spokenQuestion": "Start with Eagles. On this story card, the action is sleep. The time is night. Say a full sentence.",
+          "accepted": [
+            "The eagles sleep at night.",
+            "At night, eagles sleep.",
+            "At night, the eagles sleep."
+          ]
+        },
+        {
+          "id": "animal-routines-say-2",
+          "prompt": "Tell me about the opossums and the time.",
+          "instruction": "Opossums …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Evening. Opossums: wake up.",
+            "heading": "Story day"
+          },
+          "answerText": "Opossums wake up in the evening.",
+          "spokenQuestion": "Start with Opossums. On this story card, the action is wake up. The time is evening. Say a full sentence.",
+          "accepted": [
+            "The opossums wake up in the evening.",
+            "In the evening, opossums wake up.",
+            "In the evening, the opossums wake up."
+          ]
+        },
+        {
+          "id": "animal-routines-say-3",
+          "prompt": "Tell me about the eagles and the time.",
+          "instruction": "Eagles …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Afternoon. Eagles: eat.",
+            "heading": "Story day"
+          },
+          "answerText": "Eagles eat in the afternoon.",
+          "spokenQuestion": "Start with Eagles. On this story card, the action is eat. The time is afternoon. Say a full sentence.",
+          "accepted": [
+            "The eagles eat in the afternoon.",
+            "In the afternoon, eagles eat.",
+            "In the afternoon, the eagles eat."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,953 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-08",
+  "date": "2026-09-08",
+  "title": "Animals and story characters",
+  "concepts": [
+    {
+      "id": "take-care-of",
+      "title": "Take care of animals",
+      "try": [
+        {
+          "id": "take-care-of-try-1",
+          "prompt": "What does Mum do for the kitten?",
+          "instruction": "Start with Mum. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mum feeds the kitten and keeps it safe.",
+            "heading": "Story card"
+          },
+          "answerText": "Mum takes care of the kitten.",
+          "spokenQuestion": "Start with Mum. Mum feeds the kitten and keeps it safe. What does Mum do for the kitten?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "takes"
+            },
+            {
+              "id": "w3",
+              "text": "of"
+            },
+            {
+              "id": "w5",
+              "text": "kitten"
+            },
+            {
+              "id": "w0",
+              "text": "Mum"
+            },
+            {
+              "id": "w2",
+              "text": "care"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "from"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Take care of means help someone stay safe and well."
+        },
+        {
+          "id": "take-care-of-try-2",
+          "prompt": "What does Dad do for the puppy?",
+          "instruction": "Start with Dad. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Dad feeds the puppy and keeps it safe.",
+            "heading": "Story card"
+          },
+          "answerText": "Dad takes care of the puppy.",
+          "spokenQuestion": "What does Dad do when he feeds the puppy and keeps it safe?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "takes"
+            },
+            {
+              "id": "w3",
+              "text": "of"
+            },
+            {
+              "id": "w5",
+              "text": "puppy"
+            },
+            {
+              "id": "w0",
+              "text": "Dad"
+            },
+            {
+              "id": "w2",
+              "text": "care"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "from"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Dad helps the puppy stay safe and well."
+        },
+        {
+          "id": "take-care-of-try-3",
+          "prompt": "What do we do for the rabbits?",
+          "instruction": "Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "We feed the rabbits and keep them safe.",
+            "heading": "Story card"
+          },
+          "answerText": "We take care of the rabbits.",
+          "spokenQuestion": "Start with We. We feed the rabbits and keep them safe. What do we do for the rabbits?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "take"
+            },
+            {
+              "id": "w3",
+              "text": "of"
+            },
+            {
+              "id": "w5",
+              "text": "rabbits"
+            },
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w2",
+              "text": "care"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "from"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "We help the rabbits stay safe and well."
+        }
+      ],
+      "say": [
+        {
+          "id": "take-care-of-say-1",
+          "prompt": "What does Nina do for the bird?",
+          "instruction": "Nina …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Nina feeds the bird and keeps it safe.",
+            "heading": "Story card"
+          },
+          "answerText": "Nina takes care of the bird.",
+          "spokenQuestion": "Start with Nina. Nina feeds the bird and keeps it safe. What does she do for the bird?",
+          "accepted": [
+            "She takes care of the bird.",
+            "She takes care of it.",
+            "Nina looks after the bird.",
+            "Nina cares for the bird."
+          ]
+        },
+        {
+          "id": "take-care-of-say-2",
+          "prompt": "What does Tom do for the dog?",
+          "instruction": "Tom …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom feeds the dog and keeps it safe.",
+            "heading": "Story card"
+          },
+          "answerText": "Tom takes care of the dog.",
+          "spokenQuestion": "Start with Tom. Tom feeds the dog and keeps it safe. What does he do for the dog?",
+          "accepted": [
+            "He takes care of the dog.",
+            "He takes care of it.",
+            "Tom looks after the dog.",
+            "Tom cares for the dog."
+          ]
+        },
+        {
+          "id": "take-care-of-say-3",
+          "prompt": "What do you and your friend do for the kittens?",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You and a friend feed the kittens and keep them safe.",
+            "heading": "Story card"
+          },
+          "answerText": "We take care of the kittens.",
+          "spokenQuestion": "Start with We. You and a friend feed the kittens and keep them safe. What do you do for them?",
+          "accepted": [
+            "We take care of them.",
+            "We look after the kittens.",
+            "We care for the kittens."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "take-a-nap",
+      "title": "Take a nap",
+      "try": [
+        {
+          "id": "take-a-nap-try-1",
+          "prompt": "What does the kitten do?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This kitten sleeps for ten minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The kitten takes a nap.",
+          "spokenQuestion": "What does the kitten do when it sleeps for ten minutes?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "kitten"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "naps"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "takes"
+            },
+            {
+              "id": "w4",
+              "text": "nap"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "A nap is a short sleep."
+        },
+        {
+          "id": "take-a-nap-try-2",
+          "prompt": "What do the cubs do?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "These tiger cubs sleep for five minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The cubs take a nap.",
+          "spokenQuestion": "Start with The. These tiger cubs sleep for five minutes. What do the cubs do?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "cubs"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "naps"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "take"
+            },
+            {
+              "id": "w4",
+              "text": "nap"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "The cubs have a short sleep."
+        },
+        {
+          "id": "take-a-nap-try-3",
+          "prompt": "What does the puppy do?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This puppy sleeps for fifteen minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The puppy takes a nap.",
+          "spokenQuestion": "Start with The. This puppy sleeps for fifteen minutes. What does the puppy do?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "puppy"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "naps"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "takes"
+            },
+            {
+              "id": "w4",
+              "text": "nap"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "explanation": "The puppy has a short sleep."
+        }
+      ],
+      "say": [
+        {
+          "id": "take-a-nap-say-1",
+          "prompt": "What does the orangutan do?",
+          "instruction": "The orangutan …",
+          "scene": {
+            "kind": "word-card",
+            "text": "This orangutan sleeps for ten minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The orangutan takes a nap.",
+          "spokenQuestion": "Say a full sentence. This orangutan sleeps for ten minutes. What does it do?",
+          "accepted": [
+            "It takes a nap.",
+            "The orangutan has a nap.",
+            "It has a nap.",
+            "The orangutan takes a short nap."
+          ]
+        },
+        {
+          "id": "take-a-nap-say-2",
+          "prompt": "What do the kittens do?",
+          "instruction": "The kittens …",
+          "scene": {
+            "kind": "word-card",
+            "text": "These kittens sleep for five minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The kittens take a nap.",
+          "spokenQuestion": "Say a full sentence. These kittens sleep for five minutes. What do they do?",
+          "accepted": [
+            "They take a nap.",
+            "The kittens have a nap.",
+            "They have a nap.",
+            "The kittens take a short nap."
+          ]
+        },
+        {
+          "id": "take-a-nap-say-3",
+          "prompt": "What does the tiger do?",
+          "instruction": "The tiger …",
+          "scene": {
+            "kind": "word-card",
+            "text": "This tiger sleeps for fifteen minutes.",
+            "heading": "Story card"
+          },
+          "answerText": "The tiger takes a nap.",
+          "spokenQuestion": "Say a full sentence. This tiger sleeps for fifteen minutes. What does it do?",
+          "accepted": [
+            "It takes a nap.",
+            "The tiger has a nap.",
+            "It has a nap.",
+            "The tiger takes a short nap."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "animal-homes",
+      "title": "Animal homes",
+      "try": [
+        {
+          "id": "animal-homes-try-1",
+          "prompt": "Where does the orangutan live?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one orangutan. Home: the forest.",
+            "heading": "Story card"
+          },
+          "answerText": "The orangutan lives in the forest.",
+          "spokenQuestion": "Start with The. One orangutan. Its home is the forest. Where does it live?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "orangutan"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "forest"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "lives"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "on"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w4",
+              "w1",
+              "w2",
+              "w3",
+              "w0",
+              "w5"
+            ]
+          ],
+          "explanation": "In this story, the forest is this orangutan's home."
+        },
+        {
+          "id": "animal-homes-try-2",
+          "prompt": "Where do the tigers live?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two tigers. Home: a reserve.",
+            "heading": "Story card"
+          },
+          "answerText": "The tigers live in a reserve.",
+          "spokenQuestion": "Start with The. Two tigers. Their home is a reserve. Where do they live?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "tigers"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "reserve"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "live"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "from"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "In this story, these tigers live in a reserve."
+        },
+        {
+          "id": "animal-homes-try-3",
+          "prompt": "Where does the baby orangutan live?",
+          "instruction": "Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one baby orangutan. Home: the rainforest.",
+            "heading": "Story card"
+          },
+          "answerText": "The baby orangutan lives in the rainforest.",
+          "spokenQuestion": "Start with The. One baby orangutan. Its home is the rainforest. Where does it live?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "baby"
+            },
+            {
+              "id": "w3",
+              "text": "lives"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "extra",
+              "text": "on"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "orangutan"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w6",
+              "text": "rainforest"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ],
+            [
+              "w5",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w0",
+              "w6"
+            ],
+            [
+              "w0",
+              "w2",
+              "w1",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ],
+            [
+              "w5",
+              "w2",
+              "w1",
+              "w3",
+              "w4",
+              "w0",
+              "w6"
+            ]
+          ],
+          "explanation": "In this story, the rainforest is this baby orangutan's home."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-homes-say-1",
+          "prompt": "Where does the lion live?",
+          "instruction": "The lion …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animal: one lion. Home: a reserve.",
+            "heading": "Story card"
+          },
+          "answerText": "The lion lives in a reserve.",
+          "spokenQuestion": "Say a full sentence. One lion. Its home is a reserve. Where does it live?",
+          "accepted": [
+            "It lives in a reserve.",
+            "This lion lives in a reserve.",
+            "The lion lives at a reserve.",
+            "The lion lives on a reserve.",
+            "It lives on a reserve.",
+            "This lion lives on a reserve."
+          ]
+        },
+        {
+          "id": "animal-homes-say-2",
+          "prompt": "Where do the orangutans live?",
+          "instruction": "The orangutans …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two orangutans. Home: the rainforest.",
+            "heading": "Story card"
+          },
+          "answerText": "The orangutans live in the rainforest.",
+          "spokenQuestion": "Say a full sentence. Two orangutans. Their home is the rainforest. Where do they live?",
+          "accepted": [
+            "They live in the rainforest.",
+            "These orangutans live in the rainforest."
+          ]
+        },
+        {
+          "id": "animal-homes-say-3",
+          "prompt": "Where do the lions live?",
+          "instruction": "The lions …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Animals: two lions. Home: the forest.",
+            "heading": "Story card"
+          },
+          "answerText": "The lions live in the forest.",
+          "spokenQuestion": "Say a full sentence. Two lions. Their home is the forest. Where do they live?",
+          "accepted": [
+            "They live in the forest.",
+            "These lions live in the forest."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "story-characters",
+      "title": "Story characters",
+      "try": [
+        {
+          "id": "story-characters-try-1",
+          "prompt": "Who are the two characters?",
+          "instruction": "Build a full sentence. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Nina rolls a ball to a kitten. They play.",
+            "heading": "Tiny story"
+          },
+          "answerText": "Nina and the kitten are characters.",
+          "spokenQuestion": "Name both characters. Nina rolls a ball to a kitten. They play. Who are the two characters?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w3",
+              "text": "kitten"
+            },
+            {
+              "id": "w5",
+              "text": "characters"
+            },
+            {
+              "id": "w0",
+              "text": "Nina"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "are"
+            },
+            {
+              "id": "extra",
+              "text": "ball"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w2",
+              "w3",
+              "w1",
+              "w0",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Nina is a person. The kitten is an animal. The ball is a thing."
+        },
+        {
+          "id": "story-characters-try-2",
+          "prompt": "Who are the two characters?",
+          "instruction": "Build a full sentence. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Leo gives a bowl to a puppy. They sit together.",
+            "heading": "Tiny story"
+          },
+          "answerText": "Leo and the puppy are characters.",
+          "spokenQuestion": "Name both characters. Leo gives a bowl to a puppy. They sit together. Who are the two characters?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w3",
+              "text": "puppy"
+            },
+            {
+              "id": "w5",
+              "text": "characters"
+            },
+            {
+              "id": "w0",
+              "text": "Leo"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "are"
+            },
+            {
+              "id": "extra",
+              "text": "bowl"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w2",
+              "w3",
+              "w1",
+              "w0",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Leo is a person. The puppy is an animal. The bowl is a thing."
+        },
+        {
+          "id": "story-characters-try-3",
+          "prompt": "Who are the two characters?",
+          "instruction": "Build a full sentence. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ava opens a box. A rabbit jumps in.",
+            "heading": "Tiny story"
+          },
+          "answerText": "Ava and the rabbit are characters.",
+          "spokenQuestion": "Name both characters. Ava opens a box. A rabbit jumps in. Who are the two characters?",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w3",
+              "text": "rabbit"
+            },
+            {
+              "id": "w5",
+              "text": "characters"
+            },
+            {
+              "id": "w0",
+              "text": "Ava"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "are"
+            },
+            {
+              "id": "extra",
+              "text": "box"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w2",
+              "w3",
+              "w1",
+              "w0",
+              "w4",
+              "w5"
+            ]
+          ],
+          "explanation": "Ava is a person. The rabbit is an animal. The box is a thing."
+        }
+      ],
+      "say": [
+        {
+          "id": "story-characters-say-1",
+          "prompt": "Who are the two characters?",
+          "instruction": "The characters are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Max holds a stick. A dog runs to him.",
+            "heading": "Tiny story"
+          },
+          "answerText": "The characters are Max and the dog.",
+          "spokenQuestion": "Name both characters. Max holds a stick. A dog runs to him. Who are the two characters?",
+          "accepted": [
+            "The characters are the dog and Max.",
+            "Max and the dog are the characters.",
+            "The dog and Max are the characters.",
+            "Max and the dog are characters.",
+            "The dog and Max are characters."
+          ]
+        },
+        {
+          "id": "story-characters-say-2",
+          "prompt": "Who are the two characters?",
+          "instruction": "The characters are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lily puts a basket down. A cat jumps in.",
+            "heading": "Tiny story"
+          },
+          "answerText": "The characters are Lily and the cat.",
+          "spokenQuestion": "Name both characters. Lily puts a basket down. A cat jumps in. Who are the two characters?",
+          "accepted": [
+            "The characters are the cat and Lily.",
+            "Lily and the cat are the characters.",
+            "The cat and Lily are the characters.",
+            "Lily and the cat are characters.",
+            "The cat and Lily are characters."
+          ]
+        },
+        {
+          "id": "story-characters-say-3",
+          "prompt": "Who are the two characters?",
+          "instruction": "The characters are …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam puts a cup beside a bird. The bird sings.",
+            "heading": "Tiny story"
+          },
+          "answerText": "The characters are Sam and the bird.",
+          "spokenQuestion": "Name both characters. Sam puts a cup beside a bird. The bird sings. Who are the two characters?",
+          "accepted": [
+            "The characters are the bird and Sam.",
+            "Sam and the bird are the characters.",
+            "The bird and Sam are the characters.",
+            "Sam and the bird are characters.",
+            "The bird and Sam are characters."
+          ]
+        }
+      ]
+    }
+  ]
+}

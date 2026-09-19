@@ -1,0 +1,77 @@
+{
+  "lessonId": "2026-09-12-mel",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-try-1-q.mp3",
+      "sha256": "de57e41225fc8463b4c99d9cca99b27d352c1893ab8b30f828ca7c30b2662cd2",
+      "expectedText": "Start with He. Ben's card says: take an umbrella.",
+      "recognizedText": "Start with he then's card says take an umbrella.",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Start with he. Ben's card says, take an umbrella.",
+        "tailRecognizedText": "Start with he. Ben's card says, take an umbrella.",
+        "tailStartSeconds": 0,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-say-3-a.mp3",
+      "sha256": "2ffb84acc59734e82a5c73211c3cd5be38be445a73fb132a5cabe34fcb6fd226",
+      "expectedText": "He uses a pencil.",
+      "recognizedText": "He uses a pencil."
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-try-1-q.mp3",
+      "sha256": "77f3a4071a4fcf41b50219d62b20fdaf6c2dea77252a70ab9bca8968774877c1",
+      "expectedText": "Start with She. Nina has a hat on her head. What is Nina wearing?",
+      "recognizedText": "Start with she Nina has a hat on her head. What is Nina wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-say-3-a.mp3",
+      "sha256": "080df13985de22acf4f50966abe1d7b35ba2a3a11665b1c0cdc976b63fb9239c",
+      "expectedText": "He is wearing a hat.",
+      "recognizedText": "He is wearing a hat."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-try-1-q.mp3",
+      "sha256": "a4a284af269c89518885167ae34ed518d7b5ffabc80b5a1e28d81454d5304942",
+      "expectedText": "Start with The cat. One cat: under the chair. Where is the cat?",
+      "recognizedText": "Start with the cat. One cat under the chair. Where is the cat?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-say-3-a.mp3",
+      "sha256": "5e5c45ee3ba1081256fc7ae188ed98cacc864eeae80bb445bdb2ca1439e611cf",
+      "expectedText": "The hats are under the chair.",
+      "recognizedText": "The hats are under the chair."
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-try-1-q.mp3",
+      "sha256": "7a1c1492a1df381c314296917ee4040c310df2ba54f3ad611e6f0066b19edbec",
+      "expectedText": "Start with There. One snowman and one snowman. How many altogether?",
+      "recognizedText": "Start with there. One snowman and one snowman. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-say-3-a.mp3",
+      "sha256": "5695a2af6bcf392058d00a42ceb0032356600495c0bdc1b6dacb02014829a100",
+      "expectedText": "There are three leaves.",
+      "recognizedText": "There are three leaves."
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}

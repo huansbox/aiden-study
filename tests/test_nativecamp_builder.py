@@ -17,9 +17,9 @@ builder = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(builder)
 
 
-def _source(tmp_path, monkeypatch, lesson_id, weekly=False):
+def _source(tmp_path, monkeypatch, lesson_id, weekly=False, lesson_date=None):
     source = json.loads((ROOT / "learning-tasks/nativecamp-2026-09-14/source/lesson-source.json").read_text(encoding="utf-8"))
-    source["id"], source["date"] = lesson_id, "2026-09-20" if weekly else lesson_id
+    source["id"], source["date"] = lesson_id, lesson_date or ("2026-09-20" if weekly else lesson_id)
     if weekly:
         source["kind"] = "weekly"
         source["weekly"] = {"weekStart": "2026-09-14", "weekEnd": "2026-09-20", "opensOn": "2026-09-20", "conceptCount": 2, "earlierCount": 0}
@@ -99,3 +99,42 @@ def test_source_identity_and_duplicate_audio_names_fail_before_output(tmp_path, 
 def test_task_path_cannot_escape_source_root():
     with pytest.raises(ValueError, match="Invalid lesson ID"):
         builder.build("../../outside")
+
+
+@pytest.mark.parametrize("suffix", ["mel", "mel-2", "2"])
+def test_same_date_lessons_keep_distinct_bundle_and_audio_identities(tmp_path, monkeypatch, suffix):
+    day = "2026-09-12"
+    _, original_path = _source(tmp_path, monkeypatch, day)
+    _, extra_path = _source(tmp_path, monkeypatch, f"{day}-{suffix}", lesson_date=day)
+    originals = {path: path.read_bytes() for path in [original_path, extra_path]}
+    old_lesson, old_jobs = builder.build(day)
+    new_lesson, new_jobs = builder.build(f"{day}-{suffix}")
+    assert old_lesson["id"] == day
+    assert new_lesson["id"] == f"{day}-{suffix}"
+    assert old_lesson["date"] == new_lesson["date"] == day
+    assert {job["file"] for job in old_jobs}.isdisjoint(job["file"] for job in new_jobs)
+    for concept in new_lesson["concepts"]:
+        for mode in ["try", "say"]:
+            for question in concept[mode]:
+                for kind, letter in [("question", "q"), ("answer", "a")]:
+                    assert question["audio"][kind] == f"audio/{day}-{suffix}-{question['id']}-{letter}.mp3"
+    assert builder.build(day) == (old_lesson, old_jobs)
+    assert all(path.read_bytes() == contents for path, contents in originals.items())
+
+
+@pytest.mark.parametrize("lesson_id,lesson_date", [
+    ("2026-09-13-mel", "2026-09-12"),
+    ("2026-09-12-", "2026-09-12"),
+    ("2026-09-12--mel", "2026-09-12"),
+    ("2026-09-12-mel--2", "2026-09-12"),
+    ("2026-09-12-Mel", "2026-09-12"),
+    ("2026-09-12-mel_2", "2026-09-12"),
+    ("20260912-mel", "20260912"),
+    ("2026-02-30-mel", "2026-02-30"),
+])
+def test_dated_suffix_rejects_mismatch_and_malformed_identity(tmp_path, monkeypatch, lesson_id, lesson_date):
+    _, path = _source(tmp_path, monkeypatch, lesson_id, lesson_date=lesson_date)
+    original = path.read_bytes()
+    with pytest.raises(ValueError):
+        builder.build(lesson_id)
+    assert path.read_bytes() == original

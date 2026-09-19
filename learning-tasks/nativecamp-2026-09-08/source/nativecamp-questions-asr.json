@@ -1,0 +1,174 @@
+{
+  "lessonId": "2026-09-08",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question files",
+  "samples": [
+    {
+      "file": "audio/2026-09-08-take-care-of-try-1-q.mp3",
+      "sha256": "e1483117b3097e7e15d7fa8924a759a38e532d0452ad7ab789efa782f615478c",
+      "expectedText": "Start with Mum. Mum feeds the kitten and keeps it safe. What does Mum do for the kitten?",
+      "recognizedText": "Start with mom. Mom feeds the kitten and keeps it safe. What does mom do for the kitten?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-try-2-q.mp3",
+      "sha256": "4c59207759c911e427cf002b621b86d0599f509186ce29fd9c465e06ce3ce475",
+      "expectedText": "What does Dad do when he feeds the puppy and keeps it safe?",
+      "recognizedText": "What does dad do when he feeds the puppy and keeps it safe?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-try-3-q.mp3",
+      "sha256": "1cbecde08fe50938dc6ae9d5b134cc88fd107d110d4d439ac45b6e16b5601cb0",
+      "expectedText": "Start with We. We feed the rabbits and keep them safe. What do we do for the rabbits?",
+      "recognizedText": "Start with we. We feed the rabbits and keep them safe. What do we do for the rabbits?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-say-1-q.mp3",
+      "sha256": "92097be4afb35b0f022cf89c0136d1e97f75e54b42fd705224e812bba4d50686",
+      "expectedText": "Start with Nina. Nina feeds the bird and keeps it safe. What does she do for the bird?",
+      "recognizedText": "Start with Mina. Mina feeds the bird and keeps it safe. What does she do for the bird?",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Start with Nina. Nina feeds the bird and keeps it safe. What does she do for the bird?",
+        "tailRecognizedText": "with Nina. Nina feeds the bird and keeps it safe. What does she do for the bird?",
+        "tailStartSeconds": 0.8159999999999998,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-say-2-q.mp3",
+      "sha256": "70c720a0a61f0b83322f6a5f31e3f05ef96d36ce0b5c40f17e9a01fb1c0adae3",
+      "expectedText": "Start with Tom. Tom feeds the dog and keeps it safe. What does he do for the dog?",
+      "recognizedText": "Start with Tom. Tom feeds the dog and keeps it safe. What does he do for the dog?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-say-3-q.mp3",
+      "sha256": "80aad94d2797be4bb438c734dbe54dd181271829a4cc8792c623a25ae7c9fa9e",
+      "expectedText": "Start with We. You and a friend feed the kittens and keep them safe. What do you do for them?",
+      "recognizedText": "Start with we you and a friend feed the kittens and keep them safe. What do you do for them?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-try-1-q.mp3",
+      "sha256": "b96074a0e819728ff63b7882af397bc3c30b44aee116d2b3d3e28fcf9eeb0860",
+      "expectedText": "What does the kitten do when it sleeps for ten minutes?",
+      "recognizedText": "What does the kitten do when it sleeps for 10 minutes?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-try-2-q.mp3",
+      "sha256": "f0fdb08cc7eb447f5dfe3c13aea38d08bc0758710412499cc36d1c82dc3592de",
+      "expectedText": "Start with The. These tiger cubs sleep for five minutes. What do the cubs do?",
+      "recognizedText": "Start with the. These tiger cubs sleep for five minutes. What do the cubs do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-try-3-q.mp3",
+      "sha256": "977725bf739df9ba1f32bed78a71a09c510fa9f9d6e0cec0ea0f12fd5f8dc304",
+      "expectedText": "Start with The. This puppy sleeps for fifteen minutes. What does the puppy do?",
+      "recognizedText": "Start with the this puppy sleeps for 15 minutes. What does the puppy do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-say-1-q.mp3",
+      "sha256": "53d09cb93f7ee6adc39638de4cffe6b6a4f5cbd96fbf87f12428cb7614f4a16f",
+      "expectedText": "Say a full sentence. This orangutan sleeps for ten minutes. What does it do?",
+      "recognizedText": "Say a full sentence. This orangutan sleeps for 10 minutes. What does it do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-say-2-q.mp3",
+      "sha256": "060b67cd47ed411a60e2f1fc12463672f43eb0d890e1fe856353c12381e0ef6d",
+      "expectedText": "Say a full sentence. These kittens sleep for five minutes. What do they do?",
+      "recognizedText": "Say a full sentence, these kittens sleep for five minutes. What do they do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-say-3-q.mp3",
+      "sha256": "6a4d07aecd025311469d9b8682fee721bb4d0f8b1cec28162e9b495c4d1b33a5",
+      "expectedText": "Say a full sentence. This tiger sleeps for fifteen minutes. What does it do?",
+      "recognizedText": "Say a full sentence. This tiger sleeps for 15 minutes. What does it do?"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-try-1-q.mp3",
+      "sha256": "5a24feb01949127247267c017cac0df0d7689997a277fc3e7dc15f349425696c",
+      "expectedText": "Start with The. One orangutan. Its home is the forest. Where does it live?",
+      "recognizedText": "start with the one orangutan its home is the forest where does it live"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-try-2-q.mp3",
+      "sha256": "dbda7e2283f7b0a77e962248b0aec7997c31e5b7be52151db4d177dcff71bd57",
+      "expectedText": "Start with The. Two tigers. Their home is a reserve. Where do they live?",
+      "recognizedText": "start with the two Tigers their home is a reserve where do they live"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-try-3-q.mp3",
+      "sha256": "f74dac288d3921732a22c06e4d5f1023107e157bbffba89f6a3eb6d187443870",
+      "expectedText": "Start with The. One baby orangutan. Its home is the rainforest. Where does it live?",
+      "recognizedText": "Start with the one baby orangutan its home is the rainforest. Where does it live?"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-say-1-q.mp3",
+      "sha256": "4065f0293078318f7e187033fa827d3b2bb274957d7157b670f9258ffd3dfaf2",
+      "expectedText": "Say a full sentence. One lion. Its home is a reserve. Where does it live?",
+      "recognizedText": "Say a full sentence. One lion. Its home is a reserve. Where does it live?"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-say-2-q.mp3",
+      "sha256": "08668fd58d54f4a6ceb72901251bc4e733295ceec623a7022054a565b6c1faeb",
+      "expectedText": "Say a full sentence. Two orangutans. Their home is the rainforest. Where do they live?",
+      "recognizedText": "Say a full sentence. Two orangutans. Their home is the rainforest. Where do they live?"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-say-3-q.mp3",
+      "sha256": "c29f452f6d7d76864df83a355064d1a50d755d102f8121471ed753c33a36ce74",
+      "expectedText": "Say a full sentence. Two lions. Their home is the forest. Where do they live?",
+      "recognizedText": "Say a full sentence, two lions, their home is the forest, where do they live?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-try-1-q.mp3",
+      "sha256": "8d42cc861b359e8f811d9cd4e6f3d138f69d232563d13b01769f25d00a3cf616",
+      "expectedText": "Name both characters. Nina rolls a ball to a kitten. They play. Who are the two characters?",
+      "recognizedText": "Name both characters. Nina rolls a ball to a kitten. They play. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-try-2-q.mp3",
+      "sha256": "078507da54b05aa4a2146234cca929c578ee0a7919fcdd3ae398555c971b0789",
+      "expectedText": "Name both characters. Leo gives a bowl to a puppy. They sit together. Who are the two characters?",
+      "recognizedText": "Name both characters. Leo gives a bowl to a puppy. They sit together. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-try-3-q.mp3",
+      "sha256": "c05c91100194ba07bedec4cbc828160efcd42d83dc25c6c11795e6c366e109b9",
+      "expectedText": "Name both characters. Ava opens a box. A rabbit jumps in. Who are the two characters?",
+      "recognizedText": "Name both characters. Ava opens a box, a rabbit jumps in. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-say-1-q.mp3",
+      "sha256": "f1589b3308a77a6dcd692fc7801a6f26e23a301bc6a316f3ffae62e5f633b3a6",
+      "expectedText": "Name both characters. Max holds a stick. A dog runs to him. Who are the two characters?",
+      "recognizedText": "Name both characters. Max holds a stick. A dog runs to him. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-say-2-q.mp3",
+      "sha256": "366c321bfa95c07aa0a73f528568ce977aaed7fd650c42b35908e39b4d4dddfe",
+      "expectedText": "Name both characters. Lily puts a basket down. A cat jumps in. Who are the two characters?",
+      "recognizedText": "Name both characters. Lily puts a basket down. A cat jumps in. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-say-3-q.mp3",
+      "sha256": "fc47c3299d79796a510d3bae61abd5fa8ff3f33e583361ac16cd6c8af66f0c87",
+      "expectedText": "Name both characters. Sam puts a cup beside a bird. The bird sings. Who are the two characters?",
+      "recognizedText": "Name both characters. Sam puts a cup beside a bird. The bird sings. Who are the two characters?"
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}

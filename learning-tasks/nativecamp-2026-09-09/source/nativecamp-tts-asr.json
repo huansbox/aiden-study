@@ -1,0 +1,67 @@
+{
+  "lessonId": "2026-09-09",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-09-who-what-questions-try-1-q.mp3",
+      "sha256": "d06b004fcc21dd39e5361a54a1fe89380aa6aeaff525df4c29a9eb629f1e4f28",
+      "expectedText": "A book is near you. Ask a question about this thing.",
+      "recognizedText": "A book is near you. Ask a question about this thing."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-say-3-a.mp3",
+      "sha256": "9fa6072efdefdc18420c133499089c800d741bc6e4b6965af5975b7f08cf9566",
+      "expectedText": "Who is this?",
+      "recognizedText": "Who is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-try-1-q.mp3",
+      "sha256": "d39f102250dd6f9b6777a11b5a821aa8c9866ed190da56947c35f0977482d10d",
+      "expectedText": "Start with This. A book is near you. What is this?",
+      "recognizedText": "Start with this. A book is near you. What is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-say-3-a.mp3",
+      "sha256": "c0f6c5c65131d21f4103f985ac6388ca9df9bcf08e98e2d29f00fa0bd42f45fc",
+      "expectedText": "This is a pencil.",
+      "recognizedText": "This is a pencil."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-try-1-q.mp3",
+      "sha256": "4d05d8239f4aae4ba43d4c17b5dba5fef7cc495aa213ce302a8a59336b526687",
+      "expectedText": "Your pretend day card says morning and brush my teeth. Tell me about your morning.",
+      "recognizedText": "Your pretend day card says morning and brush my teeth. Tell me about your morning."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-say-3-a.mp3",
+      "sha256": "a6fb601a7a0f9ad9a2958aa65820571eac549872a733cb14691c9c3dfcf1a52c",
+      "expectedText": "I play in the afternoon.",
+      "recognizedText": "I play in the afternoon."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-try-1-q.mp3",
+      "sha256": "f9728bb01c719eb988f05d723bce6f339a7bf8b64758b4e0f4aa42e7de704c98",
+      "expectedText": "On this story card, eagles wake up. The time is morning. Tell me about the eagles. Time last.",
+      "recognizedText": "On this story card, eagles wake up. The time is morning. Tell me about the eagles. Time last."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-say-3-a.mp3",
+      "sha256": "5ba8c0941df032f0b913e0ef30895c6798c9243c5a2f69e05d44f456b5766789",
+      "expectedText": "Eagles eat in the afternoon.",
+      "recognizedText": "Eagles eat in the afternoon."
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}
