@@ -35,3 +35,21 @@ export function expandedSyntheticPack() {
   });
   return pack;
 }
+
+export function navigationSyntheticPack(count = 18) {
+  if (!Number.isInteger(count) || count < ids.length) throw Error("Synthetic navigation count must preserve the original six fixtures");
+  const pack = syntheticPack();
+  pack.revision = 100 + count;
+  for (let index = pack.questions.length; index < count; index++) {
+    const number = index + 1;
+    const id = `math-g4s1-synthetic-nav-${String(number).padStart(3, "0")}-v1`;
+    const subtopic = number === count ? "合成單題概念" : "合成多題概念";
+    pack.questions.push({
+      id, subject: "math", unit: 15, subtopic, source: "synthetic navigation fixture only",
+      type: "multiple_choice", text: `合成導覽題第 ${number} 題：哪個數字最大？`,
+      options: ["3", "8", "5", "1"], answer: "2",
+    });
+    pack.explanations[id] = `合成導覽解說 ${number}：依題目指定的數字作答。`;
+  }
+  return pack;
+}

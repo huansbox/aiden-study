@@ -76,7 +76,15 @@
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
       return `<div class="preview-blanks">${q.blanks.map((blank, index) => `<label class="preview-blank"><span>第 ${index + 1} 空（${blank.input === "comparison" ? "比較符號" : "數字"}）</span>${blank.input === "comparison" ? `<span class="preview-compare">${[">", "<", "="].map((value) => `<button type="button" data-action="answer-compare" data-index="${index}" data-value="${value}" aria-pressed="${state.values[index] === value}">${value}</button>`).join("")}</span>` : `<input class="preview-number" data-action="answer-number" data-index="${index}" inputmode="decimal" autocomplete="off" value="${esc(state.values[index] || "")}" aria-label="第 ${index + 1} 空答案" />`}</label>`).join("")}</div>`;
     }
-    function render() {
+    function focusControl(action) {
+      if (!action) return;
+      const enabled = ["previous-question", "next-question"].includes(action)
+        ? host.querySelector?.(`[data-action="${action}"]:not(:disabled)`)
+        : host.querySelector?.(`[data-action="${action}"]`);
+      const target = enabled || host.querySelector?.('[data-action="question"]');
+      target?.focus?.({ preventScroll: true });
+    }
+    function render(focusAction = "") {
       if (state.destroyed) return;
       normalizeSelection();
       const unitQuestions = questionsForUnit();
@@ -89,12 +97,17 @@
           <label>單元<select data-action="unit">${StudyPrivatePack.UNITS.map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}</option>`).join("")}</select></label>
           <label>概念<select data-action="subtopic"><option value="">全部概念</option>${concepts.map((concept) => `<option value="${esc(concept)}" ${state.subtopic === concept ? "selected" : ""}>${esc(concept)}</option>`).join("")}</select></label>
         </section>
-        ${list.length ? `<nav class="preview-question-nav" aria-label="任選題目">${list.map((_, index) => `<button type="button" data-action="question" data-index="${index}" aria-pressed="${state.questionIndex === index}">第 ${index + 1} 題</button>`).join("")}</nav>` : ""}
+        ${list.length ? `<nav class="preview-question-nav" aria-label="題目導覽">
+          <button type="button" class="secondary" data-action="previous-question" ${state.questionIndex === 0 ? "disabled" : ""}>上一題</button>
+          <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
+          <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
+        </nav>` : ""}
         ${q ? `<article class="preview-card"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : `填空（${q.blanks.length} 空）`}</p>
           <div class="preview-question">${esc(q.text)}</div>${answerArea(q)}
           <div class="preview-answer-actions"><button type="button" data-action="check" ${state.values.every((value) => String(value).trim()) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
           ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
+      focusControl(focusAction);
     }
     function check() {
       const q = current();
@@ -109,7 +122,9 @@
       if (state.destroyed) return;
       if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); }
       else if (action === "subtopic") { state.subtopic = String(data.value || ""); resetQuestion(); render(); }
-      else if (action === "question") { resetQuestion(Number(data.index)); render(); }
+      else if (action === "question") { resetQuestion(Number(data.value ?? data.index)); render("question"); }
+      else if (action === "previous-question") { if (state.questionIndex > 0) resetQuestion(state.questionIndex - 1); render("previous-question"); }
+      else if (action === "next-question") { if (state.questionIndex < filtered().length - 1) resetQuestion(state.questionIndex + 1); render("next-question"); }
       else if (action === "answer-choice") { state.values[0] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-compare") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-number") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; }
@@ -121,13 +136,13 @@
     const onClick = (event) => {
       const button = event.target.closest?.("[data-action]");
       if (!button || button.disabled) return;
-      if (["answer-number", "unit", "subtopic"].includes(button.dataset.action)) return;
+      if (["answer-number", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
       handle(button.dataset.action, button.dataset);
     };
     const onChange = (event) => {
       const control = event.target.closest?.("[data-action]");
       if (!control) return;
-      if (["unit", "subtopic"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value });
+      if (["unit", "subtopic", "question"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value });
     };
     const onInput = (event) => {
       const input = event.target.closest?.('[data-action="answer-number"]');

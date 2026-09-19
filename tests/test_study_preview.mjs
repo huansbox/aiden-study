@@ -2,20 +2,23 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, ids, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, ids, navigationSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
 class Root {
-  constructor() { this.html = ""; this.listeners = new Map(); this.listenerCounts = new Map(); this.removedFeedback = 0; }
+  constructor() { this.html = ""; this.listeners = new Map(); this.listenerCounts = new Map(); this.removedFeedback = 0; this.focusedAction = ""; }
   set innerHTML(value) { this.html = value; }
   get innerHTML() { return this.html; }
   addEventListener(name, fn) { this.listeners.set(name, fn); this.listenerCounts.set(name, (this.listenerCounts.get(name) || 0) + 1); }
   removeEventListener(name, fn) { if (this.listeners.get(name) === fn) this.listeners.delete(name); this.listenerCounts.set(name, (this.listenerCounts.get(name) || 0) - 1); }
   querySelector(selector) {
-    if (selector === '[data-action="check"]' && this.html.includes('data-action="check"')) return { disabled: false };
-    return null;
+    const action = selector.match(/\[data-action="([^"]+)"\]/)?.[1];
+    if (!action) return null;
+    const tag = this.html.match(new RegExp(`<(?:button|select)[^>]*data-action="${action}"[^>]*>`))?.[0];
+    if (!tag || (selector.includes(":not(:disabled)") && /\sdisabled(?:\s|>)/.test(tag))) return null;
+    return { disabled: /\sdisabled(?:\s|>)/.test(tag), focus: () => { this.focusedAction = action; } };
   }
   querySelectorAll(selector) {
     return selector === ".preview-feedback, .preview-reveal"
@@ -89,6 +92,63 @@ test("production parser and fixed authenticated GET load the synthetic family pa
   assert.match(h.host.innerHTML, /家長試玩，不記錄孩子進度/);
   assert.match(h.host.innerHTML, /\.\.\/parent\/\?child=bingpu/);
   assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
+test("compact navigator reaches all 60 questions, enforces boundaries, clears answers and retains navigation focus", async () => {
+  const pack = navigationSyntheticPack(60);
+  const h = harness({ pack }), app = await h.boot();
+  assert.equal((h.host.innerHTML.match(/data-action="question"/g) || []).length, 1, "one native jump select replaces the button wall");
+  assert.match(h.host.innerHTML, />第 1 題／共 60 題<\/option>/);
+  assert.match(h.host.innerHTML, /data-action="previous-question" disabled/);
+  assert.doesNotMatch(h.host.innerHTML, /data-action="next-question" disabled/);
+
+  app.handle("answer-choice", { value: "2" });
+  app.handle("reveal");
+  assert.equal(app.state.revealed, true);
+  app.handle("next-question");
+  assert.equal(app.state.questionIndex, 1);
+  assert.deepEqual([...app.state.values], [""]);
+  assert.equal(app.state.result, "");
+  assert.equal(app.state.revealed, false);
+  assert.ok(h.host.innerHTML.includes(pack.questions[1].text));
+  assert.equal(h.host.focusedAction, "next-question");
+
+  app.handle("question", { value: "59" });
+  assert.equal(app.state.questionIndex, 59);
+  assert.ok(h.host.innerHTML.includes(pack.questions[59].text));
+  assert.match(h.host.innerHTML, /data-action="next-question" disabled/);
+  assert.equal(h.host.focusedAction, "question", "the select is the fallback focus at the last boundary");
+  app.handle("next-question");
+  assert.equal(app.state.questionIndex, 59, "next cannot pass the last question");
+  app.handle("previous-question");
+  assert.equal(app.state.questionIndex, 58);
+  assert.equal(h.host.focusedAction, "previous-question");
+  app.handle("question", { value: "0" });
+  app.handle("previous-question");
+  assert.equal(app.state.questionIndex, 0, "previous cannot pass the first question");
+  app.destroy();
+});
+
+test("filter changes reset count and stale state for one-question and empty results", async () => {
+  const h = harness({ pack: navigationSyntheticPack(18) }), app = await h.boot();
+  app.handle("question", { value: "8" });
+  app.handle("answer-choice", { value: "2" });
+  app.handle("reveal");
+  app.handle("subtopic", { value: "合成單題概念" });
+  assert.equal(app.state.questionIndex, 0);
+  assert.deepEqual([...app.state.values], [""]);
+  assert.equal(app.state.revealed, false);
+  assert.match(h.host.innerHTML, />第 1 題／共 1 題<\/option>/);
+  assert.match(h.host.innerHTML, /data-action="previous-question" disabled/);
+  assert.match(h.host.innerHTML, /data-action="next-question" disabled/);
+  assert.doesNotMatch(h.host.innerHTML, /合成導覽解說|還沒答對|答對了/);
+
+  app.handle("unit", { value: "19" });
+  assert.match(h.host.innerHTML, /這個篩選目前沒有題目/);
+  assert.doesNotMatch(h.host.innerHTML, /preview-question-nav/);
+  app.handle("unit", { value: "15" });
+  assert.match(h.host.innerHTML, />第 1 題／共 18 題<\/option>/);
   app.destroy();
 });
 
