@@ -1,6 +1,6 @@
 # 四上數學擴題路線圖
 
-更新：2026-09-19。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 與 [#60](https://github.com/huansbox/aiden-study/issues/60) 已完成；[#101](https://github.com/huansbox/aiden-study/issues/101) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10。下一步已定案為 [#103](https://github.com/huansbox/aiden-study/issues/103)：替現有 fixed family pack 新增獨立、只在記憶體試答且不寫孩子進度的 Study 家長試玩頁；不改題目、revision、schema、KV 或 Worker。後續內容擴題仍依[概念／出題方法覆蓋報告](grade4-math-pattern-counts.md)另行決定；`angle-v1` 保留為需要圖形呈現時的能力選項，尚未授權開工。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
+更新：2026-09-19。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 與 [#60](https://github.com/huansbox/aiden-study/issues/60) 已完成；[#101](https://github.com/huansbox/aiden-study/issues/101) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10。[#103](https://github.com/huansbox/aiden-study/issues/103) 新增獨立 Study 家長試玩頁：沿用 family Cookie session 與 production pack parser，只在記憶體載入、篩選與試答現有 fixed family pack，不讀寫孩子 Study 進度、題包 cache、同步或家庭累計；題目、revision、schema、KV 與 Worker 均不變。後續內容擴題仍依[概念／出題方法覆蓋報告](grade4-math-pattern-counts.md)另行決定；`angle-v1` 保留為需要圖形呈現時的能力選項，尚未授權開工。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
 
 ## 結論與現況
 
