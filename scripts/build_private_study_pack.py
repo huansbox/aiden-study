@@ -32,6 +32,7 @@ MAX_BYTES = 128 * 1024
 UNITS = {15, 16, 17, 18, 19}
 ID_RE = re.compile(r"math-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
 ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
+NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
     "U1-P02": ("math-g4s1-tyk113-II-11a-v1", "tyk113-II-11a", "fill_in_blank:number"),
@@ -116,9 +117,19 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
                 raise PackBuildError(f"mapping digital adaptation is wrong for {practice_id}")
         for key in ("originalId", "paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
             _require_nonempty(item[key], f"mapping {practice_id} {key}")
-        for key in ("questionPage", "answerPage"):
-            if type(item[key]) is not int or item[key] < 1:
-                raise PackBuildError(f"mapping {practice_id} {key} must be a positive integer")
+        if type(item["questionPage"]) is not int or item["questionPage"] < 1:
+            raise PackBuildError(f"mapping {practice_id} questionPage must be a positive integer")
+        answer_page = item["answerPage"]
+        no_official_answer = item["reviewStatus"] == NO_OFFICIAL_ANSWER_VERIFIED
+        if no_official_answer:
+            if answer_page is not None:
+                raise PackBuildError(
+                    f"mapping {practice_id} answerPage must be null when no official answer was obtained"
+                )
+        elif type(answer_page) is not int or answer_page < 1:
+            raise PackBuildError(
+                f"mapping {practice_id} answerPage may be null only after two independent solutions"
+            )
         by_practice[practice_id] = item
     if not set(EXPECTED).issubset(by_practice):
         raise PackBuildError("mapping metadata must retain the frozen six practice IDs")

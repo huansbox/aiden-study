@@ -1,0 +1,924 @@
+{
+  "schemaVersion": 1,
+  "taxonomyVersion": "v1.1",
+  "countUnit": "digital_activity",
+  "scope": "目前已辨識的主要推理模式，並非所有可能數學題型。",
+  "rules": [
+    "每個 activity 恰有一個 primaryPattern；secondaryTags 不參與加總。",
+    "同型不因數字、情境、選擇或填空介面拆分。",
+    "相依多空合為一個 activity；B 與 C 原始計數不相加。",
+    "只代表本批辨識模式，不聲稱窮盡數學題型。",
+    "已發布、已凍結未發布與候選分開計數。",
+    "數量衡量內容覆蓋，不推論孩子精熟。",
+    "獨立於 production subtopic，禁止改動現有進度索引。"
+  ],
+  "snapshot": {
+    "packId": "g4-s1-math-u1",
+    "revision": 4,
+    "status": "frozen_unreleased",
+    "evidence": null,
+    "packBytes": 40358,
+    "packSha256": "72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6"
+  },
+  "sourceReferences": {
+    "B": {
+      "manifest": "learning-tasks/grade4-sem1-math-exam1/source/manifest.json",
+      "review": "learning-tasks/grade4-sem1-math-exam1/source/question-scope-review.json",
+      "countUnit": "answer_unit"
+    },
+    "C": {
+      "manifest": "learning-tasks/grade4-sem1-math-exam1/source/supplemental-manifest.json",
+      "review": "learning-tasks/grade4-sem1-math-exam1/source/supplemental-question-review.json",
+      "countUnit": "review_item"
+    }
+  },
+  "patterns": [
+    {
+      "id": "U1.read",
+      "chapter": "U1",
+      "conceptId": "U1.representation",
+      "concept": "讀寫與表示",
+      "label": "讀出大數",
+      "definition": "由阿拉伯數字依位值分級轉成國字讀法。",
+      "boundary": "輸入為數字、目標為讀法；反向由國字寫數歸 U1.write。"
+    },
+    {
+      "id": "U1.write",
+      "chapter": "U1",
+      "conceptId": "U1.representation",
+      "concept": "讀寫與表示",
+      "label": "寫出大數",
+      "definition": "由國字數量依位值補零組成阿拉伯數字。",
+      "boundary": "輸入為完整國字讀法；明列各位值份數再合成歸 U1.compose。"
+    },
+    {
+      "id": "U1.compose",
+      "chapter": "U1",
+      "conceptId": "U1.place-value",
+      "concept": "位值與化聚",
+      "label": "依位值單位合成數量",
+      "definition": "把各位值單位的份數換成數量後合成；單一位值單位或換鈔情境同型。",
+      "boundary": "核心是位值單位的份數化聚；一般商品單價乘數量歸 U2.product，不因金錢情境一律歸本型。"
+    },
+    {
+      "id": "U1.digit-change",
+      "chapter": "U1",
+      "conceptId": "U1.place-value",
+      "concept": "位值與化聚",
+      "label": "替換某位數字求變化量",
+      "definition": "辨認被換位置的位值，再把數字差換成整體差量。",
+      "boundary": "指定替換位置並問差量；只問兩個既知總量的差歸 U1.difference。"
+    },
+    {
+      "id": "U1.compare",
+      "chapter": "U1",
+      "conceptId": "U1.order",
+      "concept": "大小關係",
+      "label": "依位數或位值比較大數",
+      "definition": "必要時先統一國字或位值表示，再按位數或位值比較；已知位數足以決定大小時，不必求出缺位數字。",
+      "boundary": "目標為比較大小，不要求反推缺位所有可能值；後者另型。未知數字不影響比較結論時仍屬本型。"
+    },
+    {
+      "id": "U1.sequence",
+      "chapter": "U1",
+      "conceptId": "U1.sequence",
+      "concept": "固定間隔的數列",
+      "label": "等差規律補缺項",
+      "definition": "由相鄰項辨認固定增減量，再補缺項。",
+      "boundary": "必須由多項找固定間隔；單次增加或減少的情境不因此歸數列。"
+    },
+    {
+      "id": "U1.compare-unknown",
+      "chapter": "U1",
+      "conceptId": "U1.additive",
+      "concept": "大數加減關係",
+      "label": "由較大量與差求較小量",
+      "definition": "先解讀誰比誰多，再由已知較大量扣掉差量；不與直接問兩量差混為一型。",
+      "boundary": "未知量是比較關係中的某一數量；若兩量已知而未知的是差，歸 U1.difference。"
+    },
+    {
+      "id": "U1.difference",
+      "chapter": "U1",
+      "conceptId": "U1.additive",
+      "concept": "大數加減關係",
+      "label": "已知兩量求相差",
+      "definition": "將兩個已知量放在相同單位下求差。",
+      "boundary": "問兩個已知量相差；較大量與差已知而反求較小量歸 U1.compare-unknown。"
+    },
+    {
+      "id": "U2.scale",
+      "chapter": "U2",
+      "conceptId": "U2.scaling",
+      "concept": "乘法位值規律",
+      "label": "因數整十百變化與乘積縮放",
+      "definition": "辨認因數位值變化如何影響乘積；同題相依算式合計一個活動。",
+      "boundary": "作答目標或相依題組突出因數位值變化；單一道應用題僅出現末位零，不自動歸本型。"
+    },
+    {
+      "id": "U2.compare",
+      "chapter": "U2",
+      "conceptId": "U2.product-relation",
+      "concept": "乘積關係",
+      "label": "比較兩個乘積",
+      "definition": "比較兩式的乘積；可計算或用因數互補變化辨等值，不強制指定解法。",
+      "boundary": "目標為乘積大小或等值；只求一個乘積歸 U2.product 或另核純計算模式。"
+    },
+    {
+      "id": "U2.aggregate-product",
+      "chapter": "U2",
+      "conceptId": "U2.equal-groups",
+      "concept": "等組量與總量",
+      "label": "先合併份數再求總量",
+      "definition": "先把同單價或同每份量的群組合併，再乘每份量；有額外建模步驟，與單步乘法分型。",
+      "boundary": "須先形成份數再乘；每份量與份數均直接已知歸 U2.product。"
+    },
+    {
+      "id": "U2.product",
+      "chapter": "U2",
+      "conceptId": "U2.equal-groups",
+      "concept": "等組量與總量",
+      "label": "每份量乘份數求總量",
+      "definition": "由每份量和份數求總量；單價、天數、箱數或位數變化不另拆型。",
+      "boundary": "目標為總量；反求份數或每份量屬除法，先合併份數歸 U2.aggregate-product。"
+    },
+    {
+      "id": "U3.compose-classify",
+      "chapter": "U3",
+      "conceptId": "U3.composition",
+      "concept": "角的合成與分類",
+      "label": "合角後判斷角類",
+      "definition": "合併已知角度，再依銳角、直角、鈍角等界線判斷。",
+      "boundary": "合角與分類兩步均是目標；只求未知角度的補角分解另列候選模式。"
+    },
+    {
+      "id": "U3.equal-part",
+      "chapter": "U3",
+      "conceptId": "U3.measurement",
+      "concept": "角度單位與刻度",
+      "label": "均分已知角求每份角度",
+      "definition": "以整體角度除以等分份數求刻度或每份角度；本型不表示能實際使用量角器。",
+      "boundary": "從整體角與等分求每份角，不需視讀量角器；看內外圈刻度求實測角另列讀圖模式。"
+    },
+    {
+      "id": "U4.rules",
+      "chapter": "U4",
+      "conceptId": "U4.rules",
+      "concept": "商與餘數規則",
+      "label": "判斷除法規則敘述",
+      "definition": "辨別商、估商與餘數限制的敘述；同一活動包含多個規則仍只算一次。",
+      "boundary": "作答目標是一般規則真偽；直接求商餘數或填算式不歸規則辨認。"
+    },
+    {
+      "id": "U4.quotient-digits",
+      "chapter": "U4",
+      "conceptId": "U4.quotient-place",
+      "concept": "商的位數",
+      "label": "由商位數限制反推數字",
+      "definition": "比較被除數前段與除數，從商位數限制反推缺位可取範圍。",
+      "boundary": "作答目標為商位數帶來的限制；直接運算求商不是本型。"
+    },
+    {
+      "id": "U4.group-count",
+      "chapter": "U4",
+      "conceptId": "U4.equal-groups",
+      "concept": "等組量與份數",
+      "label": "由總量與每份量反求份數",
+      "definition": "由總量和每份量反求份數；若完整情境續以份數計價，乘法延伸只記次要標籤。",
+      "boundary": "關鍵未知量為份數且不需餘數處理決策；給份數求每份量歸 U4.unit-share，進一／捨餘另型。"
+    },
+    {
+      "id": "U4.ceiling",
+      "chapter": "U4",
+      "conceptId": "U4.remainder",
+      "concept": "餘數的情境解讀",
+      "label": "有餘數仍須全部容納而進一",
+      "definition": "先求商餘數，再依全部容納需求加一份；是否先合併總量記 secondary tag。",
+      "boundary": "題意要求容納或供應全部，餘量需多一份；只問完整份數歸 U4.floor。"
+    },
+    {
+      "id": "U4.floor",
+      "chapter": "U4",
+      "conceptId": "U4.remainder",
+      "concept": "餘數的情境解讀",
+      "label": "只取完整份數而捨餘",
+      "definition": "先求商餘數，再依完整份數需求取商；與進一需求分型。",
+      "boundary": "題意明確只取完整份數，須解讀餘量；剛好整除的份數題歸 U4.group-count。"
+    },
+    {
+      "id": "U5.compose",
+      "chapter": "U5",
+      "conceptId": "U5.conversion",
+      "concept": "長度單位換算",
+      "label": "大單位或複名數換小單位",
+      "definition": "將大單位換成小單位，再合併原有的小單位。",
+      "boundary": "換成小單位，可含原有小單位相加；反向拆成大單位與餘量歸 U5.decompose。"
+    },
+    {
+      "id": "U5.decompose",
+      "chapter": "U5",
+      "conceptId": "U5.conversion",
+      "concept": "長度單位換算",
+      "label": "小單位換大單位並視需要保留餘量",
+      "definition": "以單位關係分組，把小單位量換成大單位；有餘量時依題意保留小單位，整除時只需大單位。",
+      "boundary": "換算方向為小到大；有無餘量不另拆型。換算後的主要目標若為比較大小，歸 U5.compare。"
+    },
+    {
+      "id": "U5.compare",
+      "chapter": "U5",
+      "conceptId": "U5.order",
+      "concept": "長度比較",
+      "label": "統一長度單位再比較",
+      "definition": "換成相同長度單位後比較；公里、公尺或公分不各拆一型。",
+      "boundary": "目標是比較長度；同樣換算但求圈數或次數歸 U5.convert-group。"
+    },
+    {
+      "id": "U5.convert-group",
+      "chapter": "U5",
+      "conceptId": "U5.application",
+      "concept": "換算與等組應用",
+      "label": "先統一單位再求份數",
+      "definition": "先換算目標量或每份量，再求份數；混合除法記 secondary tag。",
+      "boundary": "換算後反求份數；已知份數求總長再換單位，另列換算乘法候選模式。"
+    },
+    {
+      "id": "U1.digit-extreme",
+      "chapter": "U1",
+      "conceptId": "U1.place-value",
+      "concept": "位值與化聚",
+      "label": "由位數決定極值",
+      "definition": "依指定位數決定最大的數或最小的數，理解首位與其餘位的限制。",
+      "boundary": "輸入為位數限制；另有數字卡使用限制歸 U1.card-extreme，最終求兩個極值的差歸 U1.extreme-difference。"
+    },
+    {
+      "id": "U1.count-digits",
+      "chapter": "U1",
+      "conceptId": "U1.place-value",
+      "concept": "位值與化聚",
+      "label": "由數量名稱判定位數",
+      "definition": "把命名的大數對到最高位，判斷整個數有幾位。",
+      "boundary": "問的是位數；要求寫出完整阿拉伯數字歸 U1.write，不按名稱單位不同拆型。"
+    },
+    {
+      "id": "U1.card-extreme",
+      "chapter": "U1",
+      "conceptId": "U1.order",
+      "concept": "大小關係",
+      "label": "依數字卡限制組成極值",
+      "definition": "依可用數字、不重複及首位非零等限制，組出最大或最小數。",
+      "boundary": "必須受數字卡限制；沒有卡片限制的指定位數極值另型。若同活動續求極值差，求差記次要標籤。"
+    },
+    {
+      "id": "U1.extreme-difference",
+      "chapter": "U1",
+      "conceptId": "U1.additive",
+      "concept": "大數加減關係",
+      "label": "先求位數極值再求差",
+      "definition": "先由位數條件推得數值，再用相差關係求差量。",
+      "boundary": "兩量都已直接給出歸 U1.difference；需要先按數字卡限制組數則主歸 U1.card-extreme。"
+    },
+    {
+      "id": "U1.digit-clues",
+      "chapter": "U1",
+      "conceptId": "U1.place-value",
+      "concept": "位值與化聚",
+      "label": "依相依線索反推各位數字",
+      "definition": "依位名與各位數字間的倍數、和或差線索，按相依次序推回完整數。",
+      "boundary": "不只把已給位值份數直接相加；若每位已知僅需合成，歸 U1.compose。"
+    },
+    {
+      "id": "U2.zero-count",
+      "chapter": "U2",
+      "conceptId": "U2.scaling",
+      "concept": "乘法位值規律",
+      "label": "判斷乘積中零的個數",
+      "definition": "求出或推得乘積的表示，再辨認題目指定的零個數。",
+      "boundary": "本題目標是乘積表示中的零個數；多算式的因數整十百縮放歸 U2.scale，不假定原問只數末尾零。"
+    },
+    {
+      "id": "U2.sum-products",
+      "chapter": "U2",
+      "conceptId": "U2.equal-groups",
+      "concept": "等組量與總量",
+      "label": "不同每份量分組相乘再合併",
+      "definition": "依不同單價或每份量分組，各自求乘積，再合計總量。",
+      "boundary": "所有組的每份量相同、可先加份數再乘者歸 U2.aggregate-product。"
+    },
+    {
+      "id": "U2.missing-factor",
+      "chapter": "U2",
+      "conceptId": "U2.product-relation",
+      "concept": "乘積關係",
+      "label": "已知乘積反推因數缺位",
+      "definition": "由已知乘積與因數條件反推另一因數的缺位，處理因數位值。",
+      "boundary": "求的是因數中的數字；只求乘積不歸本型，不能把所有含末位零的題都混為縮放型。"
+    },
+    {
+      "id": "U2.estimate-factor",
+      "chapter": "U2",
+      "conceptId": "U2.estimation",
+      "concept": "乘法估算",
+      "label": "選擇相容數作乘法估算",
+      "definition": "依乘法算式挑選接近且便於運算的因數替代值。",
+      "boundary": "目標為估算策略而非精確乘積；不推定要求某種指定四捨五入規則。"
+    },
+    {
+      "id": "U3.measurement-rules",
+      "chapter": "U3",
+      "conceptId": "U3.measurement",
+      "concept": "角度單位與刻度",
+      "label": "判斷量角器與角的基本原則",
+      "definition": "辨別頂點對齊、角度測量用途及角的基本性質敘述。",
+      "boundary": "屬文字原則辨認，不代表實際讀取量角器刻度或畫角；每格大小均分歸 U3.equal-part。"
+    },
+    {
+      "id": "U3.rotation-time",
+      "chapter": "U3",
+      "conceptId": "U3.rotation",
+      "concept": "鐘面旋轉",
+      "label": "由旋轉角反求經過時間",
+      "definition": "依指定指針的轉角與時間關係，由角度反求經過時間。",
+      "boundary": "目標為經過時間；已知時間求轉角歸 U3.rotation-angle，不包含雙針追趕。"
+    },
+    {
+      "id": "U3.rotation-angle",
+      "chapter": "U3",
+      "conceptId": "U3.rotation",
+      "concept": "鐘面旋轉",
+      "label": "由經過時間求旋轉角",
+      "definition": "依指定指針的時間與轉角關係，由時間求旋轉角。",
+      "boundary": "目標為角度；已知轉角求時間歸 U3.rotation-time，不包含雙針追趕。"
+    },
+    {
+      "id": "U4.quotient-max-digits",
+      "chapter": "U4",
+      "conceptId": "U4.quotient-place",
+      "concept": "商的位數",
+      "label": "由被除數與除數位數判斷商位數上限",
+      "definition": "從兩者的位數範圍判斷商最多可能的位數。",
+      "boundary": "求的是整類算式的商位數上限；已指定商位數反求某缺位歸 U4.quotient-digits。"
+    },
+    {
+      "id": "U4.unit-share",
+      "chapter": "U4",
+      "conceptId": "U4.equal-groups",
+      "concept": "等組量與份數",
+      "label": "由總量與份數反求每份量",
+      "definition": "辨认有效分攤份數，將總量除以份數求每份量；優惠情境後續還原實價用次要標籤。",
+      "boundary": "未知目標是每份量，與每份量已知而反求份數的 U4.group-count 不同；先扣除免費份數或最後扣回原價，不各另開型。"
+    },
+    {
+      "id": "U4.quotient-remainder",
+      "chapter": "U4",
+      "conceptId": "U4.remainder",
+      "concept": "餘數的情境解讀",
+      "label": "完整求出商與餘數",
+      "definition": "依除法求商與餘數，兩個相依結果按原順序一起作答。",
+      "boundary": "不含被省略的直式過程或驗算要求；需依情境進一或取整者另歸 U4.ceiling／U4.floor。"
+    },
+    {
+      "id": "U5.magnitude",
+      "chapter": "U5",
+      "conceptId": "U5.measure-sense",
+      "concept": "長度量感",
+      "label": "判斷生活長度與單位是否合理",
+      "definition": "結合物件尺度、數值與單位，判斷長度敘述的合理性。",
+      "boundary": "需要生活尺度判斷；僅給精確量做單位換算或大小比較另歸換算／比較型。"
+    }
+  ],
+  "assignments": [
+    {
+      "appId": "math-g4s1-tyk111-I-01-v1",
+      "primaryPattern": "U1.read",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-11a-v1",
+      "primaryPattern": "U1.write",
+      "secondaryTags": [
+        "含零"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-11d-v1",
+      "primaryPattern": "U1.compose",
+      "secondaryTags": [
+        "多位值合成"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk111-II-02-v1",
+      "primaryPattern": "U1.digit-change",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk111-IV-01-v1",
+      "primaryPattern": "U1.compare",
+      "secondaryTags": [
+        "國字轉數字"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-08-v1",
+      "primaryPattern": "U1.sequence",
+      "secondaryTags": [
+        "位值跨界"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-03-v1",
+      "primaryPattern": "U1.compose",
+      "secondaryTags": [
+        "單位份數",
+        "等組乘法"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-16-v1",
+      "primaryPattern": "U1.compare-unknown",
+      "secondaryTags": [
+        "萬單位"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh112-I-01c-v1",
+      "primaryPattern": "U1.difference",
+      "secondaryTags": [
+        "複合數字表示"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-03-v1",
+      "primaryPattern": "U2.scale",
+      "secondaryTags": [
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceUnits": [
+        "tyk113-II-03a",
+        "tyk113-II-03b",
+        "tyk113-II-03c"
+      ],
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-V-02-v1",
+      "primaryPattern": "U2.compare",
+      "secondaryTags": [
+        "等值乘積"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-VI-01-v1",
+      "primaryPattern": "U2.aggregate-product",
+      "secondaryTags": [
+        "加法先備"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-10-v1",
+      "primaryPattern": "U2.product",
+      "secondaryTags": [
+        "末位零因數"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-12-v1",
+      "primaryPattern": "U2.product",
+      "secondaryTags": [
+        "一般整數乘法"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-7-v1",
+      "primaryPattern": "U2.product",
+      "secondaryTags": [
+        "末位零因數"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-02-v1",
+      "primaryPattern": "U3.compose-classify",
+      "secondaryTags": [
+        "角類界線"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-04-v1",
+      "primaryPattern": "U3.equal-part",
+      "secondaryTags": [
+        "量角器刻度"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-04-v1",
+      "primaryPattern": "U4.rules",
+      "secondaryTags": [
+        "餘數界限",
+        "估商",
+        "商大小"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-05-v1",
+      "primaryPattern": "U4.quotient-digits",
+      "secondaryTags": [
+        "缺位反推"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-5-v1",
+      "primaryPattern": "U4.group-count",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-II-3-v1",
+      "primaryPattern": "U4.group-count",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk113-VI-03-v1",
+      "primaryPattern": "U4.ceiling",
+      "secondaryTags": [
+        "先合併總量"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-11-v1",
+      "primaryPattern": "U4.ceiling",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-VI-05-v1",
+      "primaryPattern": "U4.floor",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-13-v1",
+      "primaryPattern": "U5.compose",
+      "secondaryTags": [
+        "複名數"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-II-3-v1",
+      "primaryPattern": "U5.decompose",
+      "secondaryTags": [
+        "商與餘數",
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-08-v1",
+      "primaryPattern": "U5.decompose",
+      "secondaryTags": [
+        "商與餘數",
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceUnits": [
+        "tyk113-II-08a",
+        "tyk113-II-08b"
+      ],
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-V-03-v1",
+      "primaryPattern": "U5.compare",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-III-5-v1",
+      "primaryPattern": "U5.compare",
+      "secondaryTags": [
+        "跨級換算"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-05-v1",
+      "primaryPattern": "U5.convert-group",
+      "secondaryTags": [
+        "除法分組"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-11bc-v1",
+      "primaryPattern": "U1.digit-extreme",
+      "secondaryTags": [
+        "位值合成",
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B",
+      "sourceUnits": [
+        "tyk113-II-11b",
+        "tyk113-II-11c"
+      ]
+    },
+    {
+      "appId": "math-g4s1-tyk113-V-01-v1",
+      "primaryPattern": "U1.compare",
+      "secondaryTags": [
+        "缺位不影響位數比較"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk111-II-01-v1",
+      "primaryPattern": "U1.compose",
+      "secondaryTags": [
+        "多位值合成"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk111-II-08-v1",
+      "primaryPattern": "U1.count-digits",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-06-v1",
+      "primaryPattern": "U1.card-extreme",
+      "secondaryTags": [
+        "首位非零",
+        "部分選卡"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-07-v1",
+      "primaryPattern": "U1.extreme-difference",
+      "secondaryTags": [
+        "位數變化",
+        "先求極值",
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B",
+      "sourceUnits": [
+        "anh114-II-07a",
+        "anh114-II-07b"
+      ]
+    },
+    {
+      "appId": "math-g4s1-anh112-I-03-v1",
+      "primaryPattern": "U1.card-extreme",
+      "secondaryTags": [
+        "最大與最小",
+        "相差",
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B",
+      "sourceUnits": [
+        "anh112-I-03a",
+        "anh112-I-03b",
+        "anh112-I-03c"
+      ]
+    },
+    {
+      "appId": "math-g4s1-anh112-I-04-v1",
+      "primaryPattern": "U1.digit-clues",
+      "secondaryTags": [
+        "相依線索",
+        "乘加減"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-3-v1",
+      "primaryPattern": "U1.extreme-difference",
+      "secondaryTags": [
+        "最大與最小"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk111-IV-04-v1",
+      "primaryPattern": "U2.compare",
+      "secondaryTags": [
+        "等值乘積"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-02-v1",
+      "primaryPattern": "U2.zero-count",
+      "secondaryTags": [
+        "位值縮放"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-01b-v1",
+      "primaryPattern": "U2.compare",
+      "secondaryTags": [
+        "交換律"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh112-I-05a-v1",
+      "primaryPattern": "U2.sum-products",
+      "secondaryTags": [
+        "依條件分類",
+        "不同單價"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh112-I-06a-v1",
+      "primaryPattern": "U2.missing-factor",
+      "secondaryTags": [
+        "因數位值"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-1-v1",
+      "primaryPattern": "U2.estimate-factor",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk111-I-03-v1",
+      "primaryPattern": "U3.measurement-rules",
+      "secondaryTags": [
+        "頂點對齊",
+        "角度性質"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk111-II-06-v1",
+      "primaryPattern": "U3.rotation-time",
+      "secondaryTags": [
+        "指針速率"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-114-midterm-III-6-v1",
+      "primaryPattern": "U3.rotation-angle",
+      "secondaryTags": [
+        "指針速率"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk111-I-04-v1",
+      "primaryPattern": "U4.quotient-max-digits",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh112-I-05b-v1",
+      "primaryPattern": "U4.unit-share",
+      "secondaryTags": [
+        "優惠條件",
+        "先辨計價份數"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-V-5-v1",
+      "primaryPattern": "U4.quotient-remainder",
+      "secondaryTags": [
+        "相依多空"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-VI-1-v1",
+      "primaryPattern": "U4.group-count",
+      "secondaryTags": [
+        "U2乘法",
+        "分組後計價"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-VI-5-v1",
+      "primaryPattern": "U4.unit-share",
+      "secondaryTags": [
+        "減法",
+        "分攤優惠後還原實價"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-01-v1",
+      "primaryPattern": "U5.magnitude",
+      "secondaryTags": [
+        "物件尺度"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-114-midterm-II-4-v1",
+      "primaryPattern": "U5.compare",
+      "secondaryTags": [
+        "跨級換算",
+        "多量比較"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-tyk113-II-09-v1",
+      "primaryPattern": "U5.decompose",
+      "secondaryTags": [
+        "跨級換算",
+        "整除無餘量"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-15-v1",
+      "primaryPattern": "U5.compose",
+      "secondaryTags": [
+        "跨級換算"
+      ],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    }
+  ]
+}
