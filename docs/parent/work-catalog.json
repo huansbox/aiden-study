@@ -370,6 +370,126 @@
       }
     },
     {
+      "id": "task:nativecamp-2026-09-12-mel",
+      "type": "task",
+      "name": "Native Camp 2026-09-12 Mel",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-12-mel",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-12-mel"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-12-mel",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-12-mel"
+        }
+      ],
+      "description": "天氣與穿著：takes／uses、wearing、is／are 與不規則複數。",
+      "eventDate": "2026-09-12",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-09",
+      "type": "task",
+      "name": "Native Camp 2026-09-09 Emi",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-09",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-09"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-09",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-09"
+        }
+      ],
+      "description": "Who／What 問句、完整介紹、人與動物的一天。",
+      "eventDate": "2026-09-09",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-08",
+      "type": "task",
+      "name": "Native Camp 2026-09-08 Maria",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立審查與隔離 E2E 已完成；發布證據見 #99。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-08",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-08"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-08",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-08"
+        }
+      ],
+      "description": "照顧動物、午睡、棲地與故事角色的完整句。",
+      "eventDate": "2026-09-08",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:nativecamp-2026-09-12",
       "type": "task",
       "name": "Native Camp 2026-09-12 Lena",

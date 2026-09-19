@@ -1,0 +1,174 @@
+{
+  "lessonId": "2026-09-12-mel",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question files",
+  "samples": [
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-try-1-q.mp3",
+      "sha256": "de57e41225fc8463b4c99d9cca99b27d352c1893ab8b30f828ca7c30b2662cd2",
+      "expectedText": "Start with He. Ben's card says: take an umbrella.",
+      "recognizedText": "Start with he then's card says take an umbrella.",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Start with he. Ben's card says, take an umbrella.",
+        "tailRecognizedText": "Start with he. Ben's card says, take an umbrella.",
+        "tailStartSeconds": 0,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-try-2-q.mp3",
+      "sha256": "e1daa6130ae99066a434070b11e14f2315479cdb18d9b0443251ccf8a67b6478",
+      "expectedText": "Start with She. Read Mia's school-day card: use a pencil. What does Mia use?",
+      "recognizedText": "Start with she. Read Mia's school day card. Use a pencil. What does Mia use?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-try-3-q.mp3",
+      "sha256": "df108b250e379b3e28394827f9976289bed21cdacd6834a24bd2632854c3c497",
+      "expectedText": "Start with He. Read Tom's rainy-day card: use an umbrella. What does Tom use?",
+      "recognizedText": "Start with he. Read Tom's rainy day card. Use an umbrella. What does Tom use?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-say-1-q.mp3",
+      "sha256": "b7c1de3d934bc9d85a75f32937ec2ccbc734d0004cf754a7b013d7d9bfe18bd6",
+      "expectedText": "Start with He. Leo's card says: take a bag.",
+      "recognizedText": "Start with he. Leo's card says take a bag."
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-say-2-q.mp3",
+      "sha256": "1e93c8e70ab59332615b334972d4124233deae9acd8e1cb50b9b3e24a77ff45c",
+      "expectedText": "Start with She. Read Nina's rainy-day card: use an umbrella. What does Nina use?",
+      "recognizedText": "Start with she. Read Nina's rainy day card. Use an umbrella. What does Nina use?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-say-3-q.mp3",
+      "sha256": "0597e68b2c8e8e1b9caf972a81e0bf0acd6158969587a849d61b552811103275",
+      "expectedText": "Start with He. Read Sam's school-day card: use a pencil. What does Sam use?",
+      "recognizedText": "Start with he. Read Sam's school day card. Use a pencil. What does Sam use?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-try-1-q.mp3",
+      "sha256": "77f3a4071a4fcf41b50219d62b20fdaf6c2dea77252a70ab9bca8968774877c1",
+      "expectedText": "Start with She. Nina has a hat on her head. What is Nina wearing?",
+      "recognizedText": "Start with she Nina has a hat on her head. What is Nina wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-try-2-q.mp3",
+      "sha256": "55992f9cb623d2fd3f5845eb74e71f3fbb516bd40759cc163f761a5f1843a7e6",
+      "expectedText": "Start with They. Two boys have hats on their heads. What are the boys wearing?",
+      "recognizedText": "Start with they two boys have hats on their heads. What are the boys wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-try-3-q.mp3",
+      "sha256": "44199a641fd417bb03d1bcca99dce443d286e53494376f3cb844632b4d64c0ae",
+      "expectedText": "Start with He. Tom has a scarf around his neck. What is Tom wearing?",
+      "recognizedText": "Start with he. Tom has a scarf around his neck. What is Tom wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-say-1-q.mp3",
+      "sha256": "8180072482eddaec707b82295080860cfbf22464b3779cec65f502ad227eca43",
+      "expectedText": "Start with She. Mia has socks on her feet. What is Mia wearing?",
+      "recognizedText": "Start with she Mia has socks on her feet. What is Mia wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-say-2-q.mp3",
+      "sha256": "e899ca211df5e03d619e5cd5fe6464ef209cfb91788b4710a4f14597faa1affc",
+      "expectedText": "Start with They. Two girls have scarves around their necks. What are the girls wearing?",
+      "recognizedText": "Start with they two girls have scarves around their necks. What are the girls wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-say-3-q.mp3",
+      "sha256": "90275b075bd5811917959a9abf57513421cce597a0e4e0ad2fbd6da7a653055f",
+      "expectedText": "Start with He. Leo has a hat on his head. What is Leo wearing?",
+      "recognizedText": "Start with he. Leo has a hat on his head. What is Leo wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-try-1-q.mp3",
+      "sha256": "a4a284af269c89518885167ae34ed518d7b5ffabc80b5a1e28d81454d5304942",
+      "expectedText": "Start with The cat. One cat: under the chair. Where is the cat?",
+      "recognizedText": "Start with the cat. One cat under the chair. Where is the cat?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-try-2-q.mp3",
+      "sha256": "98eb124fae881c195a1fc88307cf57841e0136551baee0e2d248069af5a0d0e9",
+      "expectedText": "Start with The books. Two books: on the table. Where are the books?",
+      "recognizedText": "Start with the books. Two books on the table. Where are the books?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-try-3-q.mp3",
+      "sha256": "62c441516770d30ffad906dd87b2e67462b70711f7c6db77756f2f5f491239e8",
+      "expectedText": "Start with The hat: one hat on the chair.",
+      "recognizedText": "Start with the hat. One hat on the chair."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-say-1-q.mp3",
+      "sha256": "7958d376eb68972facc6e4a1b5476fd27795dca65e2e71015448dc3a576ed5b9",
+      "expectedText": "Start with The cats. Two cats: under the table. Where are the cats?",
+      "recognizedText": "Start with the cats. Two cats under the table. Where are the cats?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-say-2-q.mp3",
+      "sha256": "1bcbf39e4325aa02a58880328f7b844bdc6a5fade93af1095d448b895d5a71d6",
+      "expectedText": "Start with The book. One book: on the chair. Where is the book?",
+      "recognizedText": "Start with the book. One book on the chair. Where is the book?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-say-3-q.mp3",
+      "sha256": "6d857bad7b72153d79e86dbfe26f9e0c3c544d157cc8c9c106ece949f67cbf8f",
+      "expectedText": "Start with The hats. Two hats: under the chair. Where are the hats?",
+      "recognizedText": "Start with the hats. Two hats under the chair. Where are the hats?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-try-1-q.mp3",
+      "sha256": "7a1c1492a1df381c314296917ee4040c310df2ba54f3ad611e6f0066b19edbec",
+      "expectedText": "Start with There. One snowman and one snowman. How many altogether?",
+      "recognizedText": "Start with there. One snowman and one snowman. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-try-2-q.mp3",
+      "sha256": "62a16ef277481f2616f8b28b5c815effde15eb7d967b81c1d9de6851fcc6fba8",
+      "expectedText": "Start with There. One scarf and one scarf. How many altogether?",
+      "recognizedText": "Start with there. One scarf and one scarf. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-try-3-q.mp3",
+      "sha256": "986f1172bbfd3d2797ff1cb3e84c4a10c3761d37a57d754f9b2b279ae3d67f38",
+      "expectedText": "Start with There. One leaf and one leaf. How many altogether?",
+      "recognizedText": "Start with there. One leaf and one leaf. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-say-1-q.mp3",
+      "sha256": "38389e157b538b1c6c2d27ee03fb1967ce60242c0b680bcb0c2aac8e086844fe",
+      "expectedText": "Start with There. One snowman, one snowman, one snowman. How many altogether?",
+      "recognizedText": "Start with, there. One snowman, one snowman, one snowman. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-say-2-q.mp3",
+      "sha256": "dcefa5caacc588b997dd436ee155653eb44da67691e9517902870a076ec21518",
+      "expectedText": "Start with There. One scarf, one scarf, one scarf. How many altogether?",
+      "recognizedText": "Start with there. One scarf, one scarf, one scarf. How many altogether?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-say-3-q.mp3",
+      "sha256": "e055961bc549ed30e80a632d1aaee3becd5b4f0a64aa854b47817470ac3871dd",
+      "expectedText": "Start with There. One leaf, one leaf, one leaf. How many altogether?",
+      "recognizedText": "Start with there. One leaf, one leaf, one leaf. How many altogether?"
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}

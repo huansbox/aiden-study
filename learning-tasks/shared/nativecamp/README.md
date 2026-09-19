@@ -6,7 +6,7 @@
 
 依實際練習產生週題計畫、新週包 schema 與出題契約見[每週規劃 SOP](weekly-planning.md)。工具使用已驗證的私有快照，不呼叫 API；既有週一至週日題包繼續相容。
 
-`build_lesson.py` 只讀取指定新課的 `source/lesson-source.json`，產生同日期公開題包與 `source/speech-jobs.json`。它不產生或覆寫音檔，也不動9/15首堂。改過spokenQuestion／answerText後，必須另外重製受影響音檔；builder通過不代表音文已一致。
+`build_lesson.py` 只讀取指定新課的 `source/lesson-source.json`，以完整 lesson ID 產生公開題包與 `source/speech-jobs.json`。一般課的 ID 使用 `YYYY-MM-DD` 或 `YYYY-MM-DD-<suffix>`；suffix 由小寫英文／數字組成，可用單一連字號分段，日期前綴必須與 `date` 相同。例如同日既有 `2026-09-12` Lena 保留原 ID，Mel 使用 `2026-09-12-mel`，兩堂的 `date` 都是 `2026-09-12`，題包與音檔名稱各用完整 ID 隔離。它不產生或覆寫音檔，也不動9/15首堂。改過spokenQuestion／answerText後，必須另外重製受影響音檔；builder通過不代表音文已一致。
 
 ```powershell
 uv run --offline learning-tasks/shared/nativecamp/build_lesson.py --lesson 2026-09-14

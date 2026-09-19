@@ -1,0 +1,194 @@
+{
+  "lessonId": "2026-09-09",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question files",
+  "samples": [
+    {
+      "file": "audio/2026-09-09-who-what-questions-try-1-q.mp3",
+      "sha256": "d06b004fcc21dd39e5361a54a1fe89380aa6aeaff525df4c29a9eb629f1e4f28",
+      "expectedText": "A book is near you. Ask a question about this thing.",
+      "recognizedText": "A book is near you. Ask a question about this thing."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-try-2-q.mp3",
+      "sha256": "fb4623470fe6320bb2b91ec019771ff42f44a391175764f04ee6627b86501bb3",
+      "expectedText": "A person is near you. Ask a question about this person.",
+      "recognizedText": "A person is near you. Ask a question about this person."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-try-3-q.mp3",
+      "sha256": "6df8dde6b05e4a183c6e1368465b7ed13261aa5afca3c504732389caeaadabad",
+      "expectedText": "A tree is far away. Ask a question about that thing.",
+      "recognizedText": "A tree is far away. Ask a question about that thing."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-say-1-q.mp3",
+      "sha256": "ff6dcdc7bf1189c9a24d8dadfb171ad2d7ca6960c3985519aaf2ff5be7335d5e",
+      "expectedText": "A person is far away. Ask a question about that person.",
+      "recognizedText": "A person is far away. Ask a question about that person."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-say-2-q.mp3",
+      "sha256": "7db06e119ba08d19aa598b87df39a1747323e51381e1f1d00f67757a6a904f71",
+      "expectedText": "A pencil is near you. Ask a question about this thing.",
+      "recognizedText": "A pencil is near you. Ask a question about this thing."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-say-3-q.mp3",
+      "sha256": "300cb0836ad74cd58a2bfb76c00c5e806bf7974e5e6b095a7d8f43f7f10aa451",
+      "expectedText": "A girl is near you. Ask a question about this person.",
+      "recognizedText": "A girl is near you. Ask a question about this person."
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-try-1-q.mp3",
+      "sha256": "d39f102250dd6f9b6777a11b5a821aa8c9866ed190da56947c35f0977482d10d",
+      "expectedText": "Start with This. A book is near you. What is this?",
+      "recognizedText": "Start with this. A book is near you. What is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-try-2-q.mp3",
+      "sha256": "858d27fe429186487013377a62622336b015dbb7bf1ca350b68e9dda3182573b",
+      "expectedText": "Start with This. Ben is near you. Who is this?",
+      "recognizedText": "Start with, this, then is near you, who is this?",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Start with this. Ben is near you. Who is this?",
+        "tailRecognizedText": "Start with this. Ben is near you. Who is this?",
+        "tailStartSeconds": 0,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-try-3-q.mp3",
+      "sha256": "ca2f78f5ba537419202e558b777d7ff0f16cbba4226613eb659edfdb5cb5f742",
+      "expectedText": "Start with It. A tree is near you. What is this?",
+      "recognizedText": "Start with it. A tree is near you. What is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-say-1-q.mp3",
+      "sha256": "f702c8cf0607968e3e9b59b8e3a067e1140fa62e82e03bb8cbf808b8019db72e",
+      "expectedText": "Start with It. A bag is near you. What is this?",
+      "recognizedText": "Start with it. A bag is near you. What is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-say-2-q.mp3",
+      "sha256": "f38005426c25d5c67df75c67eb6525b9e919cad5d945cbce8722cd07fd5144ff",
+      "expectedText": "Start with This. Anna is near you. Who is this?",
+      "recognizedText": "Start with this. Anna is near you. Who is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-say-3-q.mp3",
+      "sha256": "710c6ed5a08666bfa288a3efa73b369ab879f7af6bdacb7cea940d2925deaec7",
+      "expectedText": "Start with This. A pencil is near you. What is this?",
+      "recognizedText": "Start with this. A pencil is new you. What is this?",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Start with this. A pencil is near you. What is this?",
+        "tailRecognizedText": "Start with this. A pencil is near you. What is this?",
+        "tailStartSeconds": 0,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-try-1-q.mp3",
+      "sha256": "4d05d8239f4aae4ba43d4c17b5dba5fef7cc495aa213ce302a8a59336b526687",
+      "expectedText": "Your pretend day card says morning and brush my teeth. Tell me about your morning.",
+      "recognizedText": "Your pretend day card says morning and brush my teeth. Tell me about your morning."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-try-2-q.mp3",
+      "sha256": "a1fc259329acf24a285f28c8e39853d916defb7ee5400de482ed9f20affafcce",
+      "expectedText": "Your pretend day card says afternoon and learn English. Tell me about your afternoon.",
+      "recognizedText": "Your pretend day card says Afternoon and Learn English. Tell me about your afternoon."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-try-3-q.mp3",
+      "sha256": "9bfe0a91f4bdb03ce72b6b051edd2bbd34d313aa258336f2c5bbb12847387b0b",
+      "expectedText": "Your pretend day card says night and sleep. Tell me about your night.",
+      "recognizedText": "Your pretend day card says night and sleep. Tell me about your night."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-say-1-q.mp3",
+      "sha256": "366329c6650db56f3d3a5ea9ac64a0808457598aa7890723fc04bdc80757c1c5",
+      "expectedText": "Start with I. Your pretend day card says morning and eat breakfast. Tell me about your morning.",
+      "recognizedText": "Start with I. Your pretend day card says morning and eat breakfast. Tell me about your morning."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-say-2-q.mp3",
+      "sha256": "7cca95dab446c31db0544c66917306a7fd4c7cac28ba884d50059e018c6f3e40",
+      "expectedText": "Start with I. Your pretend day card says evening and eat dinner. Tell me about your evening.",
+      "recognizedText": "Start with I. Your pretend-day card says evening and eat dinner. Tell me about your evening."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-say-3-q.mp3",
+      "sha256": "7f9afeaad4f16209edc5c95b084b6d66b96ca00d14543eec44925a3dc0f93769",
+      "expectedText": "Start with I. Your pretend day card says afternoon and play. Tell me about your afternoon.",
+      "recognizedText": "Start with I. Your pretend day card says afternoon and play. Tell me about your afternoon."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-try-1-q.mp3",
+      "sha256": "f9728bb01c719eb988f05d723bce6f339a7bf8b64758b4e0f4aa42e7de704c98",
+      "expectedText": "On this story card, eagles wake up. The time is morning. Tell me about the eagles. Time last.",
+      "recognizedText": "On this story card, eagles wake up. The time is morning. Tell me about the eagles. Time last."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-try-2-q.mp3",
+      "sha256": "95b6c70981f57a3d18e84373413e7d589559e1e1447ed3b4a88109a38ac56d5d",
+      "expectedText": "Put the time last: opossums, sleep, afternoon.",
+      "recognizedText": "Put the time last, a possum's sleep afternoon.",
+      "followup": {
+        "model": "large-v2",
+        "initialPrompt": null,
+        "fullRecognizedText": "Put the time last. Opossums sleep afternoon.",
+        "tailRecognizedText": "Put the time last. Opossums sleep afternoon.",
+        "tailStartSeconds": 0,
+        "tailPaddingSeconds": 2,
+        "audioUploaded": false,
+        "humanListening": false
+      }
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-try-3-q.mp3",
+      "sha256": "4022fc71daef64642bf825b501bf687ca29e3184f2da926c89295b9061158081",
+      "expectedText": "On this story card, opossums play. The time is night. Tell me about the opossums. Time last.",
+      "recognizedText": "On this story card, Apossums play. The time is night. Tell me about the Apossums. Time last."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-say-1-q.mp3",
+      "sha256": "691e25488072a2565b7605a25ddf76d61a261e5cb43b3050acdff6bf70163c8e",
+      "expectedText": "Start with Eagles. On this story card, the action is sleep. The time is night. Say a full sentence.",
+      "recognizedText": "Start with eagles. On this story card, the action is sleep. The time is night. Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-say-2-q.mp3",
+      "sha256": "dacf6c6be52deada3443d056d507c15df99f45b6b91ce39668f96410dd23c880",
+      "expectedText": "Start with Opossums. On this story card, the action is wake up. The time is evening. Say a full sentence.",
+      "recognizedText": "Start with opossums. On this story card, the action is wake up, the time is evening. Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-say-3-q.mp3",
+      "sha256": "9f127f80fa6cb454b2e368d32acddc461bab019cf6429453c108f6dd0c549034",
+      "expectedText": "Start with Eagles. On this story card, the action is eat. The time is afternoon. Say a full sentence.",
+      "recognizedText": "Start with eagles. On this story card, the action is eat. The time is afternoon. Say a full sentence."
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}

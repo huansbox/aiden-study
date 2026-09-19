@@ -1,0 +1,67 @@
+{
+  "lessonId": "2026-09-08",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-08-take-care-of-try-1-q.mp3",
+      "sha256": "e1483117b3097e7e15d7fa8924a759a38e532d0452ad7ab789efa782f615478c",
+      "expectedText": "Start with Mum. Mum feeds the kitten and keeps it safe. What does Mum do for the kitten?",
+      "recognizedText": "Start with mom. Mom feeds the kitten and keeps it safe. What does mom do for the kitten?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-say-3-a.mp3",
+      "sha256": "5c479ac4c4bf7f7f6ed48cf3cd1862ef725ef30fe105355979f52e32f0f5a65b",
+      "expectedText": "We take care of the kittens.",
+      "recognizedText": "We take care of the kittens."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-try-1-q.mp3",
+      "sha256": "b96074a0e819728ff63b7882af397bc3c30b44aee116d2b3d3e28fcf9eeb0860",
+      "expectedText": "What does the kitten do when it sleeps for ten minutes?",
+      "recognizedText": "What does the kitten do when it sleeps for 10 minutes?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-say-3-a.mp3",
+      "sha256": "e4cbe8f573feefdefcc757f7a0c1c5fc4c7f30e5f46dc7692012ba2bff508e25",
+      "expectedText": "The tiger takes a nap.",
+      "recognizedText": "The tiger takes a nap."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-try-1-q.mp3",
+      "sha256": "5a24feb01949127247267c017cac0df0d7689997a277fc3e7dc15f349425696c",
+      "expectedText": "Start with The. One orangutan. Its home is the forest. Where does it live?",
+      "recognizedText": "start with the one orangutan its home is the forest where does it live"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-say-3-a.mp3",
+      "sha256": "192e2489fd7ddd1789acce1923442c3d2720390c2516e9e51a7d2035c920b29e",
+      "expectedText": "The lions live in the forest.",
+      "recognizedText": "The lions live in the forest."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-try-1-q.mp3",
+      "sha256": "8d42cc861b359e8f811d9cd4e6f3d138f69d232563d13b01769f25d00a3cf616",
+      "expectedText": "Name both characters. Nina rolls a ball to a kitten. They play. Who are the two characters?",
+      "recognizedText": "Name both characters. Nina rolls a ball to a kitten. They play. Who are the two characters?"
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-say-3-a.mp3",
+      "sha256": "f6d445a1859dab4b98be60ce40d69d7b4efd46dff447d7da6ab848a65497a368",
+      "expectedText": "The characters are Sam and the bird.",
+      "recognizedText": "The characters are Sam and the Bird."
+    }
+  ],
+  "textReview": {
+    "status": "key-content-matched",
+    "method": "Assistant compared recognized text with expected text; ambiguous words were checked with local large-v2 when needed.",
+    "recognitionFormattingNote": "Punctuation, letter case, numbers and ASR spelling variants are retained in the raw recognized text.",
+    "humanListening": false,
+    "pronunciationAssessment": false,
+    "unresolvedIssues": []
+  }
+}

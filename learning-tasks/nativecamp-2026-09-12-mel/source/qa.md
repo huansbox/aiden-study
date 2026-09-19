@@ -1,0 +1,24 @@
+# 2026-09-12 Mel：驗收紀錄
+
+交付追蹤：[#99](https://github.com/huansbox/aiden-study/issues/99)。以下記錄本次已取得的證據；本堂實作、隔離孩子作答與家長摘要驗收已完成；正式發布與線上核對見 #99 及其關聯 PR。
+
+| 項目 | 已確認結果 |
+| --- | --- |
+| 來源 | 統籌已讀網站逐字稿與聊天；另以教材印刷頁 74 的天氣及圖片描述交叉核對範圍。原錄音未下載，未做獨立人耳核對。 詳細時間與出題界線見 [evidence-review.md](evidence-review.md)。 |
+| 題文 | 4 個概念、24 題，各 3 題 Try／3 題 Say。使用完整句排列、單一合理混淆與有明確場景的口說題；公開內容為英文原創題文。 |
+| 可重建性 | 共用 builder 的 source／公開題包／48 筆 speech jobs 比對通過；修改問題或答案文字後，受影響音檔已重新製作，不只重建 JSON。 |
+| 獨立 review | 獨立內容與同日課程支援的 code review 已完成。 |
+| OpenAI 語音 | 本堂 48 個有效 MP3，Marin、speed 1.0；[manifest](nativecamp-audio-manifest.json)記錄本次 51 次 API 請求。三堂合計 144 個有效檔、150 次請求，其中 6 份漏句音檔已縮短文字並重製。實際費用未由 Speech API 回應提供，不以請求數冒充帳單。 |
+| 音訊技術核對 | 全部 MP3 的 hash、完整解碼與輸入 fingerprint 通過。問題語音只念題目線索，答案另有完整示範檔；技術通過不等於人耳自然度通過。 |
+| ASR | [本堂全部 24 個問題音檔](nativecamp-questions-asr.json)已核對，三堂共 72 題；另留 [本堂 8 筆標準問題／答案樣本](nativecamp-tts-asr.json)，三堂共 24 筆。樣本與問題核對範圍可重疊。ASR 在本機執行，不上傳原始課堂錄音，不作發音評分。 |
+| 程式檢查 | 本次三堂整合 Node 555 項通過；Python 258 項通過、1 項略過。數量為統籌本次實際結果，非沿用前批。 |
+| 逐題 Preview | 統籌透過瀏覽器完成本堂全部 24 個獨立題目、三堂合計 72 題的 Show answer。使用者操作允許播放後，未見問題／答案播放錯誤。Preview 專項前後 Native Camp 進度均 rev 0／data null，未寫入練習紀錄。 |
+| 孩子作答流程 | 隔離孩子流程已完成 Try 9 題與 Say 9 題。Try 首題答錯後選擇再試並訂正，首次 incorrect 仍保留；Say 首題記 With help，重新載入後正確續作，兩模式均確認條件式第三題及本堂全部完成。家長摘要已核對，兩模式均為 Done，首次紀錄正確。 |
+| 家長摘要 | 家長頁本堂 Try／Say 皆 Done，首次作答數與隔離實際提交一致。 takes-uses 的 Try 共 3 題、independent 2／incorrect 1；Say 共 3 題、Got it 2／With help 1。同日 Lena 顯示 `No practice has been saved for this lesson yet`，證實兩堂進度分開。 |
+| 窄版畫面 | Chrome 390 × 844 抽查孩子頁與 Preview；頁面可視寬與捲動寬均為 375，無水平溢出。非 iPad 真機驗收。 |
+| 正式發布 | commit、CI、正式資源 hash 與線上可用入口見 [#99](https://github.com/huansbox/aiden-study/issues/99) 及其關聯 PR；本文件的隔離驗收不單獨代表已發布。 |
+| 未測界線 | 原錄音獨立人耳／聲道核對、TTS 人耳自然度、iPad 與孩子實測未測。 |
+
+瀏覽器與 API 驗收使用 `127.0.0.1:8797` 的本機隔離服務、`test-token` 與記憶體 KV，沒有寫入正式孩子進度。重新載入測試環境時遇到舊設定快取與新 KV rev 0 的差異，僅以隔離 API 啟用 Native Camp；沒有清除瀏覽器資料或正式資料。Preview 不計分證據與之後孩子作答會產生的隔離進度分開記錄。
+
+題目或答案語音若再改動，須同步重製受影響檔案，更新 manifest 與 ASR 證據，再進行相應核對。

@@ -1,0 +1,859 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-12-mel",
+  "date": "2026-09-12",
+  "title": "Weather, clothes, and places",
+  "concepts": [
+    {
+      "id": "takes-uses",
+      "title": "Takes and uses",
+      "try": [
+        {
+          "id": "takes-uses-try-1",
+          "prompt": "What does Ben take?",
+          "instruction": "Start with He. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben: take an umbrella.",
+            "heading": "Every rainy day"
+          },
+          "answerText": "He takes an umbrella.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "takes"
+            },
+            {
+              "id": "w3",
+              "text": "umbrella"
+            },
+            {
+              "id": "extra",
+              "text": "take"
+            },
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w2",
+              "text": "an"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-try-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "takes-uses-try-2",
+          "prompt": "What does Mia use?",
+          "instruction": "Start with She. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: use a pencil.",
+            "heading": "Every school day"
+          },
+          "answerText": "She uses a pencil.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "uses"
+            },
+            {
+              "id": "w3",
+              "text": "pencil"
+            },
+            {
+              "id": "extra",
+              "text": "use"
+            },
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-try-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "takes-uses-try-3",
+          "prompt": "What does Tom use?",
+          "instruction": "Start with He. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom: use an umbrella.",
+            "heading": "Every rainy day"
+          },
+          "answerText": "He uses an umbrella.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "uses"
+            },
+            {
+              "id": "w3",
+              "text": "umbrella"
+            },
+            {
+              "id": "extra",
+              "text": "use"
+            },
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w2",
+              "text": "an"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-try-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "takes-uses-say-1",
+          "prompt": "What does Leo take?",
+          "instruction": "He …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Leo: take a bag.",
+            "heading": "Every school day"
+          },
+          "answerText": "He takes a bag.",
+          "accepted": [
+            "Leo takes a bag."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-say-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "takes-uses-say-2",
+          "prompt": "What does Nina use?",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Nina: use an umbrella.",
+            "heading": "Every rainy day"
+          },
+          "answerText": "She uses an umbrella.",
+          "accepted": [
+            "Nina uses an umbrella."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-say-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "takes-uses-say-3",
+          "prompt": "What does Sam use?",
+          "instruction": "He …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam: use a pencil.",
+            "heading": "Every school day"
+          },
+          "answerText": "He uses a pencil.",
+          "accepted": [
+            "Sam uses a pencil."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-takes-uses-say-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-takes-uses-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wearing",
+      "title": "What are they wearing?",
+      "try": [
+        {
+          "id": "wearing-try-1",
+          "prompt": "What is Nina wearing?",
+          "instruction": "Start with She. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Nina. A hat on her head.",
+            "heading": "Now"
+          },
+          "answerText": "She is wearing a hat.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w2",
+              "text": "wearing"
+            },
+            {
+              "id": "w4",
+              "text": "hat"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-try-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "wearing-try-2",
+          "prompt": "What are the boys wearing?",
+          "instruction": "Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two boys. Hats on their heads.",
+            "heading": "Now"
+          },
+          "answerText": "They are wearing hats.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "hats"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w2",
+              "text": "wearing"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-try-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "wearing-try-3",
+          "prompt": "What is Tom wearing?",
+          "instruction": "Start with He. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom. A scarf around his neck.",
+            "heading": "Now"
+          },
+          "answerText": "He is wearing a scarf.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w2",
+              "text": "wearing"
+            },
+            {
+              "id": "w4",
+              "text": "scarf"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-try-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "wearing-say-1",
+          "prompt": "What is Mia wearing?",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia. Socks on her feet.",
+            "heading": "Now"
+          },
+          "answerText": "She is wearing socks.",
+          "accepted": [
+            "She's wearing socks.",
+            "Mia is wearing socks."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-say-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "wearing-say-2",
+          "prompt": "What are the girls wearing?",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two girls. Scarves around their necks.",
+            "heading": "Now"
+          },
+          "answerText": "They are wearing scarves.",
+          "accepted": [
+            "They're wearing scarves.",
+            "The girls are wearing scarves.",
+            "They are wearing scarfs."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-say-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "wearing-say-3",
+          "prompt": "What is Leo wearing?",
+          "instruction": "He …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Leo. A hat on his head.",
+            "heading": "Now"
+          },
+          "answerText": "He is wearing a hat.",
+          "accepted": [
+            "He's wearing a hat.",
+            "Leo is wearing a hat."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-wearing-say-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-wearing-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "location-is-are",
+      "title": "Where are they?",
+      "try": [
+        {
+          "id": "location-is-are-try-1",
+          "prompt": "Where is the cat?",
+          "instruction": "Start with The cat. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "One cat: under the chair.",
+            "heading": "Look"
+          },
+          "answerText": "The cat is under the chair.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "cat"
+            },
+            {
+              "id": "w3",
+              "text": "under"
+            },
+            {
+              "id": "w5",
+              "text": "chair"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-try-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "location-is-are-try-2",
+          "prompt": "Where are the books?",
+          "instruction": "Start with The books. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two books: on the table.",
+            "heading": "Look"
+          },
+          "answerText": "The books are on the table.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "books"
+            },
+            {
+              "id": "w3",
+              "text": "on"
+            },
+            {
+              "id": "w5",
+              "text": "table"
+            },
+            {
+              "id": "extra",
+              "text": "is"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-try-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "location-is-are-try-3",
+          "prompt": "Where is the hat?",
+          "instruction": "Start with The hat. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "One hat: on the chair.",
+            "heading": "Look"
+          },
+          "answerText": "The hat is on the chair.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "hat"
+            },
+            {
+              "id": "w3",
+              "text": "on"
+            },
+            {
+              "id": "w5",
+              "text": "chair"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            },
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-try-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "location-is-are-say-1",
+          "prompt": "Where are the cats?",
+          "instruction": "The cats …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two cats: under the table.",
+            "heading": "Look"
+          },
+          "answerText": "The cats are under the table.",
+          "accepted": [
+            "They are under the table.",
+            "They're under the table."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-say-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "location-is-are-say-2",
+          "prompt": "Where is the book?",
+          "instruction": "The book …",
+          "scene": {
+            "kind": "word-card",
+            "text": "One book: on the chair.",
+            "heading": "Look"
+          },
+          "answerText": "The book is on the chair.",
+          "accepted": [
+            "It is on the chair.",
+            "It's on the chair."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-say-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "location-is-are-say-3",
+          "prompt": "Where are the hats?",
+          "instruction": "The hats …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two hats: under the chair.",
+            "heading": "Look"
+          },
+          "answerText": "The hats are under the chair.",
+          "accepted": [
+            "They are under the chair.",
+            "They're under the chair."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-location-is-are-say-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-location-is-are-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "plural-forms",
+      "title": "More than one",
+      "try": [
+        {
+          "id": "plural-forms-try-1",
+          "prompt": "How many altogether?",
+          "instruction": "Start with There. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 snowman + 1 snowman",
+            "heading": "Count"
+          },
+          "answerText": "There are two snowmen.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "snowmen"
+            },
+            {
+              "id": "extra",
+              "text": "snowmans"
+            },
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-try-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "plural-forms-try-2",
+          "prompt": "How many altogether?",
+          "instruction": "Start with There. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 scarf + 1 scarf",
+            "heading": "Count"
+          },
+          "answerText": "There are two scarves.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "scarves"
+            },
+            {
+              "id": "extra",
+              "text": "scarf"
+            },
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-try-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "plural-forms-try-3",
+          "prompt": "How many altogether?",
+          "instruction": "Start with There. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 leaf + 1 leaf",
+            "heading": "Count"
+          },
+          "answerText": "There are two leaves.",
+          "type": "order",
+          "tokens": [
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "leaves"
+            },
+            {
+              "id": "extra",
+              "text": "leafs"
+            },
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-try-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "plural-forms-say-1",
+          "prompt": "How many altogether?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 snowman + 1 snowman + 1 snowman",
+            "heading": "Count"
+          },
+          "answerText": "There are three snowmen.",
+          "accepted": [
+            "I see three snowmen.",
+            "I can see three snowmen."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-say-1-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "plural-forms-say-2",
+          "prompt": "How many altogether?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 scarf + 1 scarf + 1 scarf",
+            "heading": "Count"
+          },
+          "answerText": "There are three scarves.",
+          "accepted": [
+            "I see three scarves.",
+            "I can see three scarves.",
+            "There are three scarfs."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-say-2-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "plural-forms-say-3",
+          "prompt": "How many altogether?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 leaf + 1 leaf + 1 leaf",
+            "heading": "Count"
+          },
+          "answerText": "There are three leaves.",
+          "accepted": [
+            "I see three leaves.",
+            "I can see three leaves."
+          ],
+          "audio": {
+            "question": "audio/2026-09-12-mel-plural-forms-say-3-q.mp3",
+            "answer": "audio/2026-09-12-mel-plural-forms-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}
