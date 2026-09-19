@@ -168,6 +168,50 @@ def test_public_id_collision_fails(tmp_path):
         build_pack(*_paths(tmp_path, values))
 
 
+def test_null_answer_page_requires_two_independent_solutions(tmp_path):
+    values = _fixture()
+    values[0]["items"][0]["answerPage"] = None
+    values[0]["items"][0]["verification"] = "independently_solved_twice_no_official_answer"
+    values[2]["items"][0]["answerPage"] = None
+    values[2]["items"][0]["reviewStatus"] = "independently_solved_twice_no_official_answer"
+
+    pack = build_pack(*_paths(tmp_path, values))
+
+    assert len(pack["questions"]) == len(EXPECTED_IDS)
+
+
+@pytest.mark.parametrize(
+    ("answer_page", "review_status", "message"),
+    [
+        (None, "independently_recomputed_no_official_answer", "only after two independent"),
+        (None, "independently_recomputed_and_matches_official", "only after two independent"),
+        (2, "independently_solved_twice_no_official_answer", "must be null"),
+    ],
+)
+def test_answer_page_and_review_status_must_agree(
+    tmp_path, answer_page, review_status, message
+):
+    values = _fixture()
+    values[0]["items"][0]["answerPage"] = answer_page
+    values[0]["items"][0]["verification"] = review_status
+    values[2]["items"][0]["answerPage"] = answer_page
+    values[2]["items"][0]["reviewStatus"] = review_status
+
+    with pytest.raises(PackBuildError, match=message):
+        build_pack(*_paths(tmp_path, values))
+
+
+def test_curated_and_mapping_null_answer_page_must_match(tmp_path):
+    values = _fixture()
+    values[0]["items"][0]["answerPage"] = 2
+    values[0]["items"][0]["verification"] = "independently_solved_twice_no_official_answer"
+    values[2]["items"][0]["answerPage"] = None
+    values[2]["items"][0]["reviewStatus"] = "independently_solved_twice_no_official_answer"
+
+    with pytest.raises(PackBuildError, match="provenance does not match"):
+        build_pack(*_paths(tmp_path, values))
+
+
 def test_revision_bump_cannot_replace_same_id_with_different_semantics(tmp_path):
     values = _fixture()
     paths = _paths(tmp_path, values)
