@@ -1,6 +1,6 @@
 # 四上數學擴題路線圖
 
-更新：2026-09-19。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 與 [#60](https://github.com/huansbox/aiden-study/issues/60) 已完成；[#101](https://github.com/huansbox/aiden-study/issues/101) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10。後續先依[概念／出題方法覆蓋報告](grade4-math-pattern-counts.md)核現有歷屆來源能補哪些零題或單題模式；`angle-v1` 保留為需要圖形呈現時的能力選項，不預設為下一批。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
+更新：2026-09-19。現況：[#59](https://github.com/huansbox/aiden-study/issues/59) 與 [#60](https://github.com/huansbox/aiden-study/issues/60) 已完成；[#101](https://github.com/huansbox/aiden-study/issues/101) 已完成 fresh review、正式發布與 canonical private archive，把家庭題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10。下一步已定案為 [#103](https://github.com/huansbox/aiden-study/issues/103)：替現有 fixed family pack 新增獨立、只在記憶體試答且不寫孩子進度的 Study 家長試玩頁；不改題目、revision、schema、KV 或 Worker。後續內容擴題仍依[概念／出題方法覆蓋報告](grade4-math-pattern-counts.md)另行決定；`angle-v1` 保留為需要圖形呈現時的能力選項，尚未授權開工。原規劃基底：`88b14d55041af31a5163d0f6c2790709cd0e9514`。
 
 ## 結論與現況
 
@@ -51,7 +51,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 
 ## 後續來源與能力路線
 
-| 115 康軒章節 | Study unit | 候選現況 | 下一批重點 |
+| 115 康軒章節 | Study unit | 候選現況 | 後續內容批次重點 |
 | --- | ---: | --- | --- |
 | U1 一億以內的數 | 15 | 五十七題 rev4 中有 18 個 activity；公開覆蓋報告辨識 13 種主要模式 | 先核現有歷屆來源能否補位值變化、數列等零題／單題模式；集合、直式不硬改 |
 | U2 整數乘法 | 16 | 五十七題 rev4 中有 12 個 activity；公開覆蓋報告辨識 8 種主要模式 | 先核現有歷屆來源能否補估算、因數反推等孤立模式；自行列直式、三位乘數等方法另核 |
@@ -66,7 +66,7 @@ B 的 `core_provisional` 180 與 C 的 `core_provisional` 60 只表示概念落�
 
 B／C 的完整未選 ID、status、頁碼與 dependency／retain_context 一律回到兩份 scope JSON 查詢，不複製到本頁。各批依孩子課程進度與 app 能力選最小可保真集合；來源量多不代表答案、圖片或互動缺口已解決。
 
-`angle-v1` 是未來需要角圖時的 optional 能力，不是 rev4 後的預設下一批：若採用，只在既有 fixed private pack 內，以固定 SVG DOM 白名單與 `textContent` 呈現靜態標註角圖，搭配既有 unit 17 `number` 填答；禁止 raw SVG／HTML／任意 URL，不新增 app、圖檔服務、作圖或互動量角器。每張圖仍須依原卷逐圖重建並由第二人 QA；目前畫布是否足夠尚未驗證，也沒有已完成的圖題。實際下一批先依覆蓋報告回查現有歷屆來源，只有現有格式不能保真承載時才排能力工作。
+`angle-v1` 是未來需要角圖時的 optional 能力，不是 rev4 後已授權的工作：若採用，只在既有 fixed private pack 內，以固定 SVG DOM 白名單與 `textContent` 呈現靜態標註角圖，搭配既有 unit 17 `number` 填答；禁止 raw SVG／HTML／任意 URL，不新增 app、圖檔服務、作圖或互動量角器。每張圖仍須依原卷逐圖重建並由第二人 QA；目前畫布是否足夠尚未驗證，也沒有已完成的圖題。下一次內容擴題若另有授權，先依覆蓋報告回查現有歷屆來源，只有現有格式不能保真承載時才排能力工作。
 
 ## 驗證與發布順序
 
