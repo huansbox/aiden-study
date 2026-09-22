@@ -9,10 +9,16 @@ const source = (name) =>
 function rootElement() {
   const listeners = new Map();
   const element = {
-    innerHTML: "",
+    _innerHTML: "",
+    renderCount: 0,
+    get innerHTML() { return this._innerHTML; },
+    set innerHTML(value) { this._innerHTML = value; this.renderCount += 1; },
     lastFocused: null,
-    addEventListener(name, listener) { listeners.set(name, listener); },
-    removeEventListener(name) { listeners.delete(name); },
+    addEventListener(name, listener) {
+      if (!listeners.has(name)) listeners.set(name, new Set());
+      listeners.get(name).add(listener);
+    },
+    removeEventListener(name, listener) { listeners.get(name)?.delete(listener); },
     contains() { return true; },
     querySelectorAll(selector) {
       const match = selector.match(/data-action="([^"]+)"/);
@@ -21,12 +27,14 @@ function rootElement() {
         dataset: { action: match[1], part },
         tagName: "BUTTON",
         focus: () => { element.lastFocused = { action: match[1], part }; },
+        getBoundingClientRect: () => ({ left: 0, right: 300, top: 0, bottom: 180, width: 50, height: 30 }),
       }));
     },
     dispatchEvent() {},
     replaceChildren() { this.innerHTML = ""; },
     fire(name, target, extra = {}) {
-      listeners.get(name)?.({ target, button: 0, preventDefault() {}, ...extra });
+      const event = { target, button: 0, preventDefault() {}, ...extra };
+      for (const listener of [...listeners.get(name) || []]) listener(event);
     },
   };
   return element;
@@ -40,6 +48,7 @@ function action(dataset, extra = {}) {
 
 function harness(placed = []) {
   const callbacks = new Set();
+  const windowListeners = new Map();
   const activeBuild = {
     id: "car-build",
     modelId: "car",
@@ -89,8 +98,14 @@ function harness(placed = []) {
     CustomEvent: class {},
     Date,
     Promise,
+    queueMicrotask,
     Set,
     Math,
+    addEventListener(name, listener) {
+      if (!windowListeners.has(name)) windowListeners.set(name, new Set());
+      windowListeners.get(name).add(listener);
+    },
+    removeEventListener(name, listener) { windowListeners.get(name)?.delete(listener); },
   });
   context.window = context;
   context.globalThis = context;
@@ -117,7 +132,11 @@ function harness(placed = []) {
   vm.runInContext(source("brick-workshop.js"), context);
   const element = rootElement();
   const mounted = context.KidsBrickWorkshop.mount(element, { collection });
-  return { context, element, state, collection, placements, selectCalls, allocateCalls, mounted };
+  const notify = () => { for (const callback of callbacks) callback(state); };
+  const fireWindow = (name, extra = {}) => {
+    for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
+  };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, mounted, notify, fireWindow };
 }
 
 function placedCount(html) {
@@ -251,5 +270,152 @@ test("keyboard selection focuses the target and Escape returns focus to the same
   h.element.fire("keydown", action({ action: "target", part: "p1-2" }), { key: "Escape" });
   assert.deepEqual(h.element.lastFocused, { action: "part", part: "p1-2" });
   assert.doesNotMatch(h.element.innerHTML, /放到亮起位置/);
+  h.mounted.destroy();
+});
+
+test("touch uses implicit capture and keeps its source mounted through cancel", async () => {
+  const h = harness();
+  let captured = false, released = false, lostCapture;
+  const source = action(
+    { action: "part", part: "p1-2" },
+    {
+      setPointerCapture() { captured = true; },
+      hasPointerCapture() { return captured && !released; },
+      releasePointerCapture() { released = true; },
+    },
+  );
+  const inner = {
+    closest: () => source,
+    hasPointerCapture: () => true,
+    addEventListener(name, listener) {
+      if (name === "lostpointercapture") lostCapture = listener;
+    },
+  };
+  h.element.fire("pointerdown", inner, {
+    pointerId: 7,
+    pointerType: "touch",
+    clientX: 100,
+    clientY: 100,
+  });
+  assert.equal(captured, false, "a stationary touch must keep native click synthesis");
+
+  h.element.fire("pointerdown", action({ action: "part", part: "p1-3" }), {
+    pointerId: 8,
+    pointerType: "touch",
+    clientX: 160,
+    clientY: 100,
+  });
+  h.element.fire("pointermove", action({ action: "part", part: "p1-3" }), {
+    pointerId: 8,
+    pointerType: "touch",
+    clientX: 190,
+    clientY: 100,
+  });
+
+  const beforeDragRender = h.element.renderCount;
+  h.element.fire("pointermove", inner, {
+    pointerId: 7,
+    pointerType: "touch",
+    clientX: 120,
+    clientY: 100,
+  });
+  assert.equal(captured, false, "touch keeps the browser's implicit capture target");
+  assert.equal(
+    h.element.renderCount,
+    beforeDragRender,
+    "the captured source stays in the DOM for the whole drag",
+  );
+  h.element.fire("pointercancel", inner, { pointerId: 7 });
+  assert.equal(released, false, "implicit touch capture is released by the browser");
+  assert.equal(h.element.renderCount, beforeDragRender, "cancel waits for lostpointercapture");
+  lostCapture();
+  await Promise.resolve();
+  assert.ok(h.element.renderCount > beforeDragRender, "cancel renders after capture is released");
+  h.mounted.destroy();
+});
+
+test("subscription rendering waits until a control tap has completed", async () => {
+  const h = harness();
+  await Promise.resolve();
+  const close = action({ action: "close" });
+  const beforeTap = h.element.renderCount;
+
+  h.element.fire("pointerdown", close, { pointerId: 11, pointerType: "touch" });
+  h.notify();
+  assert.equal(h.element.renderCount, beforeTap, "the pressed control must stay mounted");
+  h.element.fire("pointerup", close, { pointerId: 11, pointerType: "touch" });
+  assert.equal(h.element.renderCount, beforeTap, "pointerup alone must not replace the click target");
+  h.element.fire("click", close, { pointerId: 11, pointerType: "touch" });
+  await Promise.resolve();
+  assert.ok(h.element.renderCount > beforeTap, "the deferred snapshot renders after click");
+  h.mounted.destroy();
+});
+
+test("destroy aborts a pending captured drop without saving it", async () => {
+  const h = harness();
+  let captured = true, lostCapture;
+  const source = action({ action: "part", part: "p1-2" });
+  const inner = {
+    closest: () => source,
+    hasPointerCapture: () => captured,
+    addEventListener(name, listener) {
+      if (name === "lostpointercapture") lostCapture = listener;
+    },
+    removeEventListener() {},
+    releasePointerCapture() { captured = false; },
+  };
+  h.element.fire("pointerdown", inner, {
+    pointerId: 12,
+    pointerType: "touch",
+    clientX: 100,
+    clientY: 100,
+  });
+  h.element.fire("pointermove", inner, {
+    pointerId: 12,
+    pointerType: "touch",
+    clientX: 120,
+    clientY: 100,
+  });
+  h.element.fire("pointerup", inner, {
+    pointerId: 12,
+    pointerType: "touch",
+    clientX: 120,
+    clientY: 100,
+  });
+  assert.equal(h.placements.length, 0, "the drop waits for capture release");
+  h.mounted.destroy();
+  lostCapture();
+  await Promise.resolve();
+  assert.equal(h.placements.length, 0, "an unmounted workshop cannot commit the pending drop");
+});
+
+test("window blur releases an active touch drag without leaving rendering blocked", async () => {
+  const h = harness();
+  let captured = true, released = false;
+  const source = action({ action: "part", part: "p1-2" });
+  const inner = {
+    closest: () => source,
+    hasPointerCapture: () => captured,
+    addEventListener() {},
+    removeEventListener() {},
+    releasePointerCapture() { captured = false; released = true; },
+  };
+  h.element.fire("pointerdown", inner, {
+    pointerId: 13,
+    pointerType: "touch",
+    clientX: 100,
+    clientY: 100,
+  });
+  h.element.fire("pointermove", inner, {
+    pointerId: 13,
+    pointerType: "touch",
+    clientX: 120,
+    clientY: 100,
+  });
+  const beforeBlur = h.element.renderCount;
+  h.fireWindow("blur");
+  await Promise.resolve();
+  assert.equal(released, true, "blur actively releases the implicit capture");
+  assert.ok(h.element.renderCount > beforeBlur, "blur finalizes the canceled drag");
   h.mounted.destroy();
 });

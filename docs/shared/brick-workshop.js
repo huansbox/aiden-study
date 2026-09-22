@@ -79,6 +79,10 @@
     let busy = "";
     let unsubscribe = null;
     let drag = null;
+    let pointerFinalizing = false;
+    let pointerInteraction = null;
+    let pendingPointerRelease = null;
+    let renderDeferred = false;
     let suppressClickUntil = 0;
     let audioEnabled = true;
     const optimisticPlaced = new Set();
@@ -348,6 +352,11 @@
 
     function render() {
       if (disposed) return;
+      if (drag?.active || pointerFinalizing || pointerInteraction) {
+        renderDeferred = true;
+        return;
+      }
+      renderDeferred = false;
       const snapshot = currentSnapshot();
       if (!global.KidsBrickModels?.models?.length) {
         element.innerHTML = `<section class="brick-workshop"><div class="brick-error" role="alert"><h2>拼裝模型沒有載入</h2><p>請重新整理頁面；如果仍然看不到模型，稍後再試一次。</p><button type="button" data-action="refresh">重新載入</button></div></section>`;
@@ -461,6 +470,8 @@
     }
 
     function onClick(event) {
+      finishPointerInteraction();
+      queueMicrotask(flushDeferredRender);
       const button = event.target?.closest?.("[data-action]");
       if (!button || !element.contains?.(button)) return;
       const action = button.dataset.action;
@@ -551,6 +562,9 @@
     function startDrag(event) {
       const partButton = event.target?.closest?.('[data-action="part"]');
       if (
+        drag ||
+        pointerFinalizing ||
+        (pointerInteraction && pointerInteraction.pointerId !== event.pointerId) ||
         !partButton ||
         !element.contains?.(partButton) ||
         partButton.disabled ||
@@ -570,9 +584,10 @@
         y: event.clientY,
         active: false,
         source: partButton,
+        captureTarget: event.target,
         ghost: null,
+        explicitCapture: false,
       };
-      partButton.setPointerCapture?.(event.pointerId);
     }
 
     function moveDrag(event) {
@@ -585,6 +600,10 @@
       ) {
         drag.active = true;
         selectedPart = drag.partId;
+        if (event.pointerType !== "touch") {
+          drag.source.setPointerCapture?.(event.pointerId);
+          drag.explicitCapture = true;
+        }
         const snapshot = currentSnapshot();
         const model = getModel(snapshot.activeBuild?.modelId);
         const part = partById(model, drag.partId);
@@ -593,7 +612,6 @@
         ghost.innerHTML = `<svg viewBox="${escapeHtml(`${part.box.x} ${part.box.y} ${part.box.width} ${part.box.height}`)}" aria-hidden="true">${part.svg}</svg>`;
         document.body.append(ghost);
         drag.ghost = ghost;
-        render();
       }
       if (!drag.active) return;
       event.preventDefault();
@@ -605,9 +623,9 @@
       if (!drag || drag.pointerId !== event.pointerId) return;
       const completedDrag = drag;
       drag = null;
-      completedDrag.source.releasePointerCapture?.(event.pointerId);
       completedDrag.ghost?.remove();
       if (!completedDrag.active) return;
+      pointerFinalizing = true;
       suppressClickUntil = Date.now() + 400;
       const targets = [...element.querySelectorAll?.('[data-action="target"]') || []];
       const target = targets.find((candidate) => {
@@ -621,29 +639,127 @@
           event.clientY <= bounds.bottom + padding
         );
       });
-      if (target) place(completedDrag.partId);
-      else {
-        selectedPart = null;
-        render();
-      }
+      afterPointerRelease(completedDrag, () => {
+        pointerFinalizing = false;
+        finishPointerInteraction(completedDrag.pointerId);
+        if (target) place(completedDrag.partId);
+        else {
+          selectedPart = null;
+          render();
+        }
+      });
     }
 
     function cancelDrag(event) {
       if (!drag || (event.pointerId != null && drag.pointerId !== event.pointerId))
         return;
-      drag.ghost?.remove();
+      const completedDrag = drag;
+      completedDrag.ghost?.remove();
       drag = null;
       selectedPart = null;
-      render();
+      pointerFinalizing = completedDrag.active;
+      afterPointerRelease(completedDrag, () => {
+        pointerFinalizing = false;
+        finishPointerInteraction(completedDrag.pointerId);
+        render();
+      });
+    }
+
+    function afterPointerRelease(completedDrag, callback) {
+      const captureTarget = completedDrag.explicitCapture
+        ? completedDrag.source
+        : completedDrag.captureTarget;
+      if (
+        captureTarget?.hasPointerCapture?.(completedDrag.pointerId) &&
+        captureTarget.addEventListener
+      ) {
+        const finish = () => {
+          if (pendingPointerRelease?.finish !== finish) return;
+          captureTarget.removeEventListener?.("lostpointercapture", finish);
+          pendingPointerRelease = null;
+          callback();
+        };
+        pendingPointerRelease = {
+          target: captureTarget,
+          pointerId: completedDrag.pointerId,
+          finish,
+        };
+        captureTarget.addEventListener("lostpointercapture", finish, {
+          once: true,
+        });
+        if (completedDrag.explicitCapture)
+          captureTarget.releasePointerCapture?.(completedDrag.pointerId);
+        return;
+      }
+      queueMicrotask(callback);
+    }
+
+    function forcePointerRelease() {
+      const pending = pendingPointerRelease;
+      if (!pending) return;
+      pending.target.releasePointerCapture?.(pending.pointerId);
+      pending.finish();
+    }
+
+    function abortPointerRelease() {
+      const pending = pendingPointerRelease;
+      if (!pending) return;
+      pendingPointerRelease = null;
+      pending.target.removeEventListener?.("lostpointercapture", pending.finish);
+      pending.target.releasePointerCapture?.(pending.pointerId);
+      pointerFinalizing = false;
+    }
+
+    function trackPointerDown(event) {
+      if (event.button > 0 || !event.target?.closest?.("[data-action]")) return;
+      if (pointerInteraction && !pointerInteraction.ended) return;
+      pointerInteraction = { pointerId: event.pointerId, ended: false };
+    }
+
+    function trackPointerEnd(event) {
+      if (!pointerInteraction || pointerInteraction.pointerId !== event.pointerId)
+        return;
+      const interaction = pointerInteraction;
+      interaction.ended = true;
+      if (pointerFinalizing) return;
+      const afterPaint = global.requestAnimationFrame || queueMicrotask;
+      afterPaint(() => {
+        if (pointerInteraction !== interaction || !interaction.ended) return;
+        finishPointerInteraction(interaction.pointerId);
+        flushDeferredRender();
+      });
+    }
+
+    function finishPointerInteraction(pointerId) {
+      if (
+        !pointerInteraction ||
+        (pointerId != null && pointerInteraction.pointerId !== pointerId)
+      )
+        return;
+      pointerInteraction = null;
+    }
+
+    function flushDeferredRender() {
+      if (renderDeferred && !pointerInteraction && !pointerFinalizing) render();
+    }
+
+    function onBlur() {
+      cancelDrag({});
+      forcePointerRelease();
+      finishPointerInteraction();
+      flushDeferredRender();
     }
 
     listen(element, "click", onClick);
     listen(element, "keydown", onKeyDown);
+    listen(element, "pointerdown", trackPointerDown);
     listen(element, "pointerdown", startDrag);
     listen(element, "pointermove", moveDrag);
     listen(element, "pointerup", finishDrag);
+    listen(element, "pointerup", trackPointerEnd);
     listen(element, "pointercancel", cancelDrag);
-    listen(global, "blur", cancelDrag);
+    listen(element, "pointercancel", trackPointerEnd);
+    listen(global, "blur", onBlur);
 
     try {
       unsubscribe = collection.subscribe?.(() => render()) || null;
@@ -665,6 +781,8 @@
         if (disposed) return;
         disposed = true;
         cancelDrag({});
+        abortPointerRelease();
+        finishPointerInteraction();
         for (const remove of listeners.splice(0)) remove();
         if (typeof unsubscribe === "function") unsubscribe();
         element.replaceChildren?.();
