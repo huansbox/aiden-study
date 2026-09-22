@@ -116,3 +116,22 @@ test("Worker遇外部storage/RPC失敗回503，validation錯誤才回400",async(
   const invalid=new Request("http://local/v1/collection/aiden/record",{method:"POST",headers:{Authorization:"Bearer test-token"},body:"null"});
   assert.equal((await worker.fetch(invalid,validEnv)).status,400);
 });
+test("DO只接受同世代回合作答證據，舊client不得以新世代完成舊回合",async()=>{
+  const runtime=await collectionRuntime();let seq=0;
+  const send=async(type,data)=>{
+    const response=await runtime.fetch(new Request(`http://local/v1/collection/aiden/${type}`,{method:"POST",headers:{Authorization:"Bearer test-token"},body:JSON.stringify({commandId:`generation-${++seq}`,...data})}));
+    return {status:response.status,body:await response.json()};
+  };
+  try{
+    await send("goals",{expectedGoalRevision:0,targets:[{entryId:"spelling",metric:"rounds",quantity:1}]});
+    const event={entryId:"spelling",roundId:"old-evidence",answered:true,occurredAt:new Date().toISOString()};
+    assert.equal((await send("record",{generation:0,event})).status,200);
+    await runtime.KV.put("c:activity-generation:aiden","1");
+    assert.equal((await send("round",{generation:1,event})).status,400);
+    const fresh={...event,roundId:"fresh-evidence"};
+    await send("record",{generation:1,event:fresh});
+    const completed=await send("round",{generation:1,event:fresh});
+    assert.equal(completed.status,200);assert.equal(completed.body.snapshot.grants.length,2);
+    assert.equal(completed.body.snapshot.daily.targets[0].progress,1);
+  }finally{await runtime.dispose();}
+});

@@ -7,19 +7,21 @@ const code=(name)=>readFileSync(new URL("../docs/shared/"+name,import.meta.url),
 function client(runtime,{storage=new Map(),child="aiden"}={}) {
   let offline=false,failWrites=false,loseResponse=false,forcedStatus=0;
   const events=new Map();
+  const requests=[];
   const localStorage={get length(){return storage.size;},key:i=>[...storage.keys()][i],getItem:k=>storage.get(k)??null,setItem(k,v){if(failWrites)throw Error("full");storage.set(k,String(v));},removeItem:k=>storage.delete(k)};
   const ctx=vm.createContext({Intl,Date,URL,JSON,Map,Set,Promise,crypto:globalThis.crypto,localStorage,CustomEvent:class{constructor(type){this.type=type;}},addEventListener:(k,f)=>events.set(k,f),dispatchEvent:()=>{}});
   ctx.window=ctx;
   ctx.KidsFamily={read(k,f=null){try{return JSON.parse(localStorage.getItem(k))??f;}catch{return f;}},write(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch{return false;}},async request(path,init={}){
     if(offline)throw Error("offline");
     if(forcedStatus){const e=Error("temporary storage failure");e.status=forcedStatus;throw e;}
+    if(init.method)requests.push({path,body:JSON.parse(init.body)});
     const response=await runtime.fetch(new Request("http://local"+path,{...init,headers:{Authorization:"Bearer test-token","Content-Type":"application/json"}}));
     if(loseResponse&&init.method){loseResponse=false;throw Error("response lost");}
     const body=await response.json();
     if(!response.ok){const e=Error(body.error);e.status=response.status;e.generation=body.generation;throw e;}return body;
   }};
   vm.runInContext(code("collection-core.js"),ctx);vm.runInContext(code("collection-client.js"),ctx);
-  return {collection:ctx.KidsCollection.create(child),storage,setOffline:v=>offline=v,setFailWrites:v=>failWrites=v,setLoseResponse:v=>loseResponse=v,setStatus:v=>forcedStatus=v};
+  return {collection:ctx.KidsCollection.create(child),storage,requests,setOffline:v=>offline=v,setFailWrites:v=>failWrites=v,setLoseResponse:v=>loseResponse=v,setStatus:v=>forcedStatus=v};
 }
 test("離線record/round重開補送、重複finish不加發、回應遺失重試保留同一包",async()=>{
   const runtime=await collectionRuntime();
@@ -43,6 +45,30 @@ test("離線record/round重開補送、重複finish不加發、回應遺失重�
     await reopened.collection.flush();
     assert.equal(reopened.collection.snapshot().activeBuild.modelId,"car");
     assert.equal(reopened.collection.snapshot().grants.length,2);
+  }finally{await runtime.dispose();}
+});
+test("回合不能跨統計重置借用舊作答；重新開始的新世代回合才可發包",async()=>{
+  const runtime=await collectionRuntime();
+  try{
+    const h=client(runtime);await h.collection.ready;
+    await h.collection.saveGoals([{entryId:"spelling",metric:"rounds",quantity:1}]);
+    const oldRound={roundId:"before-reset",entryId:"spelling"};
+    h.collection.beginRound(oldRound);
+    h.collection.record({...oldRound,answered:true,generation:0});await h.collection.flush();
+    await runtime.KV.put("c:activity-generation:aiden","1");
+    h.storage.set("family:generation:aiden","1");
+    await h.collection.finishRound(oldRound);
+    assert.equal(h.requests.filter(r=>r.path.endsWith("/round")).length,0,"不能把舊回合改標成新世代");
+    assert.equal(h.collection.snapshot().grants.length,0);
+    h.collection.record({...oldRound,answered:true,generation:1});await h.collection.flush();
+    await h.collection.finishRound(oldRound);
+    assert.equal(h.collection.snapshot().grants.length,0,"跨重置的回合已失效，新增作答不能復活它");
+    assert.equal(h.requests.at(-1).body.event.roundId,undefined);
+    const fresh={roundId:"after-reset",entryId:"spelling"};
+    h.collection.beginRound(fresh);h.collection.record({...fresh,answered:true,generation:1});
+    await h.collection.finishRound(fresh);
+    assert.equal(h.collection.snapshot().grants.length,2);
+    assert.equal(h.requests.at(-1).body.generation,1);
   }finally{await runtime.dispose();}
 });
 test("已分包零件離線持久化並與另一裝置合併；暫時storage失敗保留outbox",async()=>{

@@ -89,19 +89,23 @@
     }
     function beginRound({ roundId, entryId }) {
       if (!roundId || !C.ENTRIES[entryId]) return;
-      rounds.set(roundId, { entryId, count: 0, done: false });
+      rounds.set(roundId, { entryId, count: 0, done: false, generation: null, invalid: false });
     }
     function record({ entryId, answered = false, roundId, eventId, occurredAt = new Date().toISOString(), generation = F.read("family:generation:" + child, 0) }) {
       if (!C.ENTRIES[entryId]) return;
       const r = rounds.get(roundId);
-      const command = queue({ type: "record", commandId: eventId || uuid(), generation, event: { entryId, answered: !!answered, roundId, occurredAt } });
-      if (r && r.entryId === entryId) r.count++;
+      if (r && r.generation !== null && r.generation !== generation) r.invalid = true;
+      const activeRound = r && r.entryId === entryId && !r.invalid && !r.done;
+      const command = queue({ type: "record", commandId: eventId || uuid(), generation, event: { entryId, answered: !!answered, roundId: activeRound ? roundId : undefined, occurredAt } });
+      // 第一筆成功保存的作答固定回合世代；重置後必須重新開始回合。
+      if (activeRound) { r.generation = generation; r.count++; }
       return command.commandId;
     }
     async function finishRound({ roundId, entryId } = {}) {
       const r = rounds.get(roundId);
-      if (r && r.entryId === entryId && r.count > 0 && !r.done) {
-        queue({ type: "round", commandId: "round:" + roundId, generation: F.read("family:generation:" + child, 0), event: { roundId, entryId, occurredAt: new Date().toISOString() } });
+      if (r && r.generation !== null && r.generation !== F.read("family:generation:" + child, 0)) r.invalid = true;
+      if (r && r.entryId === entryId && r.count > 0 && !r.done && !r.invalid) {
+        queue({ type: "round", commandId: "round:" + roundId, generation: r.generation, event: { roundId, entryId, occurredAt: new Date().toISOString() } });
         r.done = true;
       }
       return flush();
