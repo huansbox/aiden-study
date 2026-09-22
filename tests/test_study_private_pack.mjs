@@ -199,10 +199,7 @@ test("unreadable or corrupt stored pack is never treated as empty during import"
   assert.throws(() => e.app.importPrivatePack(JSON.stringify(syntheticPack())), /無法讀取本機題包/);
   assert.equal(e.app.activePack, active);
 });
-test("valid prototype-named subtopics complete all six questions with the real reward manifest and fallback", async () => {
-  const mathTopics = new Set(publicQuestions.filter(q => q.subject === "math").map(q => q.subtopic));
-  const mathRewards = [...mathTopics].flatMap(k => Object.hasOwn(rewardManifest.pools, k) ? rewardManifest.pools[k] : []);
-  assert.ok(mathRewards.length);
+test("valid prototype-named subtopics complete all six questions without the retired illustration reward", async () => {
   for (const subtopic of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
     const e = await boot();
     const pack = syntheticPack(); pack.questions.forEach(q => { q.subtopic = subtopic; });
@@ -215,8 +212,8 @@ test("valid prototype-named subtopics complete all six questions with the real r
     assert.match(e.node("page-summary").innerHTML, /通關！/);
     assert.equal(e.node("page-summary").classList.contains("hidden"), false);
     assert.equal(e.app.State.doneCount(15), 6);
-    assert.equal(e.loadedImages.length, 1);
-    assert.ok(mathRewards.some(file => e.loadedImages[0] === `../shared/rewards/${file}`));
+    assert.equal(e.loadedImages.length, 0);
+    assert.doesNotMatch(e.node("page-summary").innerHTML, /點獎杯看圖/);
   }
 });
 test("blocked progress save has visible warning, one atomic answer write and no false persisted completion",async()=>{

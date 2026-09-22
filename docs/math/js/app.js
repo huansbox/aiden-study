@@ -25,6 +25,11 @@ const family = window.MathFamily;
 let state = null;
 let streak = 0;
 let progress = null; // main() 等同步 boot pull 完成後才載入
+let collectionRound;
+function beginCollectionRound() {
+  collectionRound = { roundId: crypto.randomUUID(), entryId: 'math' };
+  family?.beginRound?.(collectionRound);
+}
 
 // Boss challenge state
 const BOSS_STAGES = [
@@ -35,6 +40,7 @@ const BOSS_STAGES = [
 let bossMode = null; // null | { stage, lives, totalErrors, starsEarned }
 
 function startNewProblem() {
+  beginCollectionRound();
   family?.setActive(true);
   bossEntryEl.hidden = true;  // Reset: will be shown later if daily complete
   const { dividend, divisor } = generateProblem();
@@ -265,6 +271,7 @@ function updateBadge() {
 }
 
 function startBossMode() {
+  beginCollectionRound();
   bossMode = { stage: 0, lives: 3, totalErrors: 0, starsEarned: 0 };
   bossBtnEl.textContent = '🚪 放棄挑戰';
   updateBossUI();
@@ -356,7 +363,7 @@ function onBossProblemComplete() {
 }
 
 function showBossVictory(totalStars, perfectBonus) {
-  family?.finishRound();
+  family?.finishRound(collectionRound);
   const overlay = document.createElement('div');
   overlay.className = 'fireworks-overlay';
 
@@ -384,7 +391,7 @@ function showBossVictory(totalStars, perfectBonus) {
 }
 
 function showBossDefeat() {
-  family?.finishRound();
+  family?.finishRound(collectionRound);
   const overlay = document.createElement('div');
   overlay.className = 'celebration';
 
@@ -478,7 +485,7 @@ function onProblemComplete() {
     return;
   }
 
-  family?.finishRound();
+  family?.finishRound(collectionRound);
 
   const stars = getStars(state.errors);
   streak++;

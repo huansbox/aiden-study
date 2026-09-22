@@ -158,7 +158,10 @@ els.library.addEventListener('click', (e) => {
 });
 
 // ---- 共用：以一個單字開始一局（題庫題與自訂題共用渲染流程）----
+let collectionRound;
 function startPuzzle(word, label) {
+  collectionRound = { roundId: crypto.randomUUID(), entryId: 'nonogram' };
+  family?.beginRound?.(collectionRound);
   currentWord = word;
   solution = buildSolution(currentWord);
   clues = computeClues(solution.cells);
@@ -593,7 +596,7 @@ els.checkBtn.addEventListener('click', () => {
     els.revealBtn.hidden = true;
     els.replayBtn.hidden = false;
     els.nextBtn.hidden = isCustom; // 自訂題無題庫「下一題」序，僅留重玩／回題庫
-    family?.finishRound();
+    family?.finishRound(collectionRound);
   } else {
     els.hint.textContent = '再試試 💪';
     els.hint.classList.remove('ok');
