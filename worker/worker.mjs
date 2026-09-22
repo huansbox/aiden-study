@@ -12,6 +12,7 @@
 
 import "../docs/study/private-pack.js";
 import { familyRoute } from "./family.mjs";
+import { collectionRoute } from "./collection.mjs";
 import { authorizeSession } from "./session.mjs";
 
 const ALLOWED_ORIGINS = new Set([
@@ -81,6 +82,7 @@ async function handle(request, env, url, cors, sessionAuthorized = false) {
 
     const parts = url.pathname.split("/").filter(Boolean);
     if (parts[0] !== "v1") return json(404, { error: "not found" }, cors);
+    if (parts[1] === "collection") return await collectionRoute(request, env, url, cors);
     if (parts[1] === "settings" || parts[1] === "activity") {
       return await familyRoute(request,env,url,cors) || json(404,{error:"not found"},cors);
     }

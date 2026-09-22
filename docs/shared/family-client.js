@@ -311,6 +311,17 @@
   function attach(app, child) {
     if (!core.APPS.includes(app) || !child) return null;
     const english = app === "nativecamp";
+    const collection = window.KidsCollection?.create(child) || null;
+    let collectionRound = null;
+    let roundView = false;
+    const shownGrants = new Set(collection?.snapshot().grants.map((g) => g.id) || []);
+    let collectionStarted = false, roundLabels = [], lastRoundLabel = "";
+    function beginRound(details) {
+      collectionRound = details;
+      collectionStarted = true;
+      roundView = false;
+      collection?.beginRound(details);
+    }
     // 每次開啟有獨立寫入串流，兩個分頁同時練習不會互相覆蓋累計。
     const device = uuid();
     const key = localKey(child, app, device);
@@ -445,23 +456,45 @@
       active = !!value;
       // 下一回合開始時收掉上一回合提示；暫停、切背景都不算完成回合。
       if (active) {
+        roundView = false;
+        lastRoundLabel = "";
         dismissReward?.();
         dismissReward = null;
       }
       lastInput = lastTick = performance.now();
     }
-    function finishRound() {
+    function renderRoundReward(view = collection?.snapshot()) {
+      if (!roundView || document.visibilityState === "hidden") return;
+      const fresh = view?.grants.filter((g) => !shownGrants.has(g.id)) || [];
+      if (fresh.length) {
+        fresh.forEach((g) => shownGrants.add(g.id));
+        roundLabels.push(english ? `${fresh.length} building pack${fresh.length > 1 ? "s" : ""} saved` : `已保存 ${fresh.length} 包拼裝零件`);
+      }
+      const label = roundLabels.join(english ? " · " : "・");
+      if (!label || label === lastRoundLabel) return;
+      lastRoundLabel = label;
+      const current = document.querySelector("#family-reward strong");
+      if (current) current.textContent = label;
+      else { dismissReward?.(); dismissReward = showReward(label, child, english); }
+      if (view?.grants.length) {
+        const link = document.querySelector("#family-reward a");
+        if (link) { link.href = homeHref(child) + "&view=collection"; link.textContent = english ? "Build now" : "現在拼"; }
+      }
+    }
+    function finishRound(details = collectionRound || {}) {
       setActive(false);
+      roundView = true;
       const labels = [];
       if (pendingTaskReward) labels.push(english ? "Practice complete" : "任務完成");
       if (pendingBadges.size)
         labels.push(english ? "New badge" : "新徽章：" + [...pendingBadges.values()].join("、"));
       pendingTaskReward = false;
       pendingBadges.clear();
-      if (labels.length) {
-        dismissReward?.();
-        dismissReward = showReward(labels.join(english ? " · " : "・"), child, english);
-      }
+      roundLabels = labels;
+      renderRoundReward();
+      const pending = collection?.finishRound(details);
+      pending?.then(renderRoundReward).catch((error) => notifyError(error.message));
+      return pending;
     }
     function matches(details) {
       if (!currentTask || currentTask.date !== core.dateKey()) return false;
@@ -506,6 +539,10 @@
       const earned = core.earnedBadges(next).filter((b) => !previous.has(b.id));
       for (const badge of earned) pendingBadges.set(badge.id, badge.label);
       persist();
+      collectionStarted = true;
+      const entryId = details.entryId || (app === "study" ? core.taskEntryId({ app, unit: details.unit }) : app);
+      try { collection?.record({ ...details, entryId, roundId: details.roundId || collectionRound?.roundId, generation: generationOf(stream) }); }
+      catch (error) { notifyError(error.message); }
       return { taskDone: justDone, summary: next };
     }
     const ready = Promise.all([settings(), activity(child)]).then(
@@ -529,6 +566,8 @@
       hasSettings: () => settingsState.available,
       profile,
       record,
+      beginRound,
+      collection,
       setActive,
       finishRound,
       flush,
@@ -598,6 +637,11 @@
       beacon();
     });
     window.addEventListener("online", flush);
+    collection?.subscribe((view) => {
+      if (!collectionStarted) view.grants.forEach((g) => shownGrants.add(g.id));
+      renderRoundReward(view);
+    });
+    window.addEventListener("visibilitychange", () => renderRoundReward());
     return context;
   }
   window.KidsFamily = {

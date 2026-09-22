@@ -6,7 +6,9 @@
 //   4. npx wrangler deploy
 {
   "name": "aiden-kids-sync",
-  "main": "worker.mjs",
+  "main": "entry.mjs",
+  "durable_objects": { "bindings": [{ "name": "COLLECTIONS", "class_name": "ChildCollection" }] },
+  "migrations": [{ "tag": "collection-v1", "new_sqlite_classes": ["ChildCollection"] }],
   "compatibility_date": "2026-07-01",
   "workers_dev": true,
   "routes": [{ "pattern": "kids.linshuhuan.com/api/*", "zone_name": "linshuhuan.com" }],

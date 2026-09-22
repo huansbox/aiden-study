@@ -4,15 +4,14 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import worker from "../../worker/worker.mjs";
-import { kvStub } from "../../worker/kv-stub.mjs";
+import { collectionRuntime } from "./collection-runtime.mjs";
 import { expandedSyntheticPack, navigationSyntheticPack } from "./synthetic-study-pack.mjs";
 const root = resolve(fileURLToPath(new URL("../../docs/", import.meta.url)));
 const port = Number(process.argv[2] || 8788),
   endpoint = `http://127.0.0.1:${port}`;
-const KV = kvStub({
-  "c:study:g4-s1-math-u1": { value: JSON.stringify(expandedSyntheticPack()) },
-});
+const runtime = await collectionRuntime();
+const KV = runtime.KV;
+await KV.put("c:study:g4-s1-math-u1", JSON.stringify(expandedSyntheticPack()));
 // Explicit local-only opt-in. Default E2E never reads private recordings.
 if (process.env.NATIVE_CAMP_AUDIO_PACK) {
   const pack = JSON.parse(await readFile(resolve(process.env.NATIVE_CAMP_AUDIO_PACK), "utf8"));
@@ -38,6 +37,12 @@ createServer(async (req, res) => {
     if (url.pathname === "/test/start") {
       res.writeHead(302, { Location: "/parent/?k=test-token" });
       res.end();
+      return;
+    }
+    if (url.pathname === "/test/collection-fixture") {
+      const state = await runtime.seedFixtures({ child: url.searchParams.get("child") || "aiden", days: Number(url.searchParams.get("days") || 12) });
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      res.end(JSON.stringify(state));
       return;
     }
     if (url.pathname === "/test/controls") {
@@ -147,13 +152,12 @@ createServer(async (req, res) => {
       const chunks = [];
       for await (const chunk of req) chunks.push(chunk);
       const body = Buffer.concat(chunks);
-      const response = await worker.fetch(
+      const response = await runtime.fetch(
         new Request(url, {
           method: req.method,
           headers: req.headers,
           ...(body.length ? { body } : {}),
         }),
-        { TOKEN: "test-token", KV, LOCAL_DEV:true },
       );
       res.writeHead(response.status, Object.fromEntries(response.headers));
       res.end(Buffer.from(await response.arrayBuffer()));

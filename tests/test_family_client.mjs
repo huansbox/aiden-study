@@ -13,6 +13,7 @@ function harness({
   offline = false,
   base = "https://kids.linshuhuan.com/",
   intercept = null,
+  collection = null,
 } = {}) {
   const windows = new Map(),
     docs = new Map(),
@@ -30,7 +31,8 @@ function harness({
     removeItem: (k) => storageMap.delete(k),
   };
   const shown = [];
-  const element = () => ({
+  const element = (tagName = "") => ({
+    tagName,
     children: [],
     removed: false,
     append(...children) { this.children.push(...children); },
@@ -45,7 +47,11 @@ function harness({
       src: base + "shared/family-client.js",
     },
     visibilityState: "visible",
-    getElementById: () => null,
+    getElementById: (id) => shown.find((el) => el.id === id && !el.removed) || null,
+    querySelector: (selector) => {
+      const [id, tag] = selector.split(" ");
+      return shown.find((el) => el.id === id.slice(1) && !el.removed)?.children.find((el) => el.tagName === tag) || null;
+    },
     createElement: element,
     body: element(),
     addEventListener: (name, fn) => docs.set(name, fn),
@@ -85,6 +91,7 @@ function harness({
     },
   });
   ctx.window = ctx;
+  if (collection) ctx.KidsCollection = { create: () => collection };
   vm.runInContext(load("family-core.js"), ctx);
   vm.runInContext(load("family-client.js"), ctx);
   return {
@@ -146,6 +153,34 @@ test("達標立即存檔但回合結束才合併通知；暫停與背景不觸�
   await another.F.activity("bingpu");
   assert.equal(another.F.summary("bingpu").total.answered, 10);
   assert.equal(another.F.summary("bingpu").finishedTasks, 1);
+});
+
+test("跨午夜新包與徽章合併；離線補送僅在可見回合結束画面呈現", async () => {
+  let view = { grants: [] }, notify;
+  const collection = {
+    snapshot: () => view,
+    subscribe: (fn) => { notify = fn; },
+    beginRound() {}, record() {},
+    finishRound: async () => view,
+  };
+  const h = harness({ collection }), app = h.F.attach("spelling", "aiden");
+  await app.ready;
+  app.beginRound({ roundId: "midnight", entryId: "spelling" });
+  app.setActive(true);
+  for (let i=0;i<10;i++) app.record({ answered:true,correct:true });
+  const grant = { id:"2020-01-01:first",date:"2020-01-01",kind:"first" };
+  view={grants:[grant]}; notify(view);
+  assert.equal(h.rewards().length,0);
+  await app.finishRound({roundId:"midnight",entryId:"spelling"});
+  assert.equal(h.rewards().length,1);
+  assert.match(h.rewards()[0].children.find(el=>el.tagName==="strong").textContent,/第一塊積木.*拼裝零件/);
+  app.beginRound({roundId:"next",entryId:"spelling"}); app.setActive(true);
+  view={grants:[grant,{...grant,id:"2020-01-01:all"}]}; notify(view);
+  assert.equal(h.rewards().length,0);
+  h.visibility("hidden"); await app.finishRound();
+  assert.equal(h.rewards().length,0);
+  h.visibility("visible"); h.event("visibilitychange");
+  assert.equal(h.rewards().length,1);
 });
 test("所有站內正式 App 的普通徽章一律等明確回合結束，重開也保留累計", async () => {
   const registry = JSON.parse(readFileSync(new URL("../docs/registry.json", import.meta.url), "utf8"));
