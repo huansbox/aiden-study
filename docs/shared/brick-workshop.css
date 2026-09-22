@@ -128,6 +128,8 @@
 .brick-model-card strong { font-size: 1.1rem; }
 .brick-model-card small { color: var(--brick-muted); }
 .brick-model-card b { align-self: flex-start; margin-top: 14px; color: var(--brick-blue-dark); font-size: .88rem; }
+.brick-model-card.is-owned { opacity: .72; filter: saturate(.7); cursor: default; }
+.brick-model-card.is-owned b { color: #4a8a69; }
 
 .brick-empty,
 .brick-error,
@@ -145,6 +147,11 @@
 .brick-complete__actions .secondary { color: var(--brick-ink); background: #edf2f3; }
 .brick-complete--saving > p:not(.brick-kicker) { color: var(--brick-muted); }
 .brick-complete--saving > button { padding: 0 22px; border-radius: 14px; color: #fff; background: var(--brick-blue-dark); font-weight: 850; }
+.brick-series-complete { min-height: 430px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px; padding: 30px; border: 1px solid rgb(191 206 213 / 72%); border-radius: 25px; background: rgb(255 255 255 / 78%); text-align: center; box-shadow: 0 15px 36px rgb(41 65 78 / 8%); }
+.brick-series-complete__models { width: min(680px, 100%); display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; }
+.brick-series-complete__models .brick-thumbnail { width: 100%; }
+.brick-series-complete > p:not(.brick-kicker) { color: var(--brick-muted); }
+.brick-series-complete > button { margin-top: 8px; padding: 0 22px; border-radius: 14px; color: #fff; background: var(--brick-blue-dark); font-weight: 850; }
 
 .brick-shelf-view,
 .brick-catalog { padding: clamp(20px, 3.5vw, 34px); }

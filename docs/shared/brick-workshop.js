@@ -139,6 +139,23 @@
         (grant) => grant.buildId == null,
       ).length;
       const models = global.KidsBrickModels?.models || [];
+      const ownedModelIds = new Set(
+        (snapshot.builds || [])
+          .filter((build) => build.completedAt)
+          .map((build) => build.modelId),
+      );
+      if (snapshot.activeBuild?.completedAt)
+        ownedModelIds.add(snapshot.activeBuild.modelId);
+      if (models.length && models.every((model) => ownedModelIds.has(model.id)))
+        return `<section class="brick-series-complete">
+          <div class="brick-series-complete__models">${models
+            .map((model) => thumbnail(model.id, { complete: true, ghosts: false }))
+            .join("")}</div>
+          <p class="brick-kicker">交通工具系列</p>
+          <h2>三件作品都收集完成了</h2>
+          <p>小汽車、火車和飛機都在你的收藏室裡。</p>
+          <button type="button" data-action="view" data-view="shelf">回收藏室看看</button>
+        </section>`;
       return `<section class="brick-picker" aria-labelledby="brick-picker-title">
         <div class="brick-picker__intro">
           <p class="brick-kicker">零件盒有 ${unassigned} 包</p>
@@ -147,13 +164,14 @@
         </div>
         <div class="brick-model-grid">
           ${models
-            .map(
-              (model) => `<button class="brick-model-card" type="button" data-action="start-model" data-model="${escapeHtml(model.id)}" ${busy ? "disabled" : ""}>
+            .map((model) => {
+              const owned = ownedModelIds.has(model.id);
+              return `<button class="brick-model-card${owned ? " is-owned" : ""}" type="button" data-action="start-model" data-model="${escapeHtml(model.id)}" ${busy || owned ? "disabled" : ""}>
                 ${thumbnail(model.id, { complete: true, ghosts: false })}
                 <span><strong>${escapeHtml(model.title)}</strong><small>14 包 · 42 個零件</small></span>
-                <b>${busy === `model:${model.id}` ? "正在準備…" : "選這台"}</b>
-              </button>`,
-            )
+                <b>${owned ? "已收藏" : busy === `model:${model.id}` ? "正在準備…" : "選這台"}</b>
+              </button>`;
+            })
             .join("")}
         </div>
       </section>`;
@@ -200,6 +218,15 @@
       const total = allParts(model).length;
       const locallyComplete = placed.size >= total;
       const completed = Boolean(build.completedAt);
+      const ownedModelIds = new Set(
+        (snapshot.builds || [])
+          .filter((entry) => entry.completedAt)
+          .map((entry) => entry.modelId),
+      );
+      if (completed) ownedModelIds.add(build.modelId);
+      const hasAnotherModel = (global.KidsBrickModels?.models || []).some(
+        (entry) => !ownedModelIds.has(entry.id),
+      );
 
       if (completed)
         return `<section class="brick-complete">
@@ -209,7 +236,7 @@
           <h2>${escapeHtml(model.title)}已經可以上展示架了</h2>
           <div class="brick-complete__actions">
             <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true">放上展示架</button>
-            ${unassigned.length ? '<button type="button" class="secondary" data-action="choose-next">選下一件作品</button>' : ""}
+            ${unassigned.length && hasAnotherModel ? '<button type="button" class="secondary" data-action="choose-next">選下一件作品</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
           </div>
         </section>`;
 
@@ -337,6 +364,19 @@
       }</section>`;
     }
 
+    function focusControl(action, partId) {
+      const controls = element.querySelectorAll?.(`[data-action="${action}"]`) || [];
+      const preferred = [...controls].find(
+        (control) =>
+          control.dataset?.part === partId &&
+          (action !== "target" || control.tagName === "BUTTON"),
+      );
+      const fallback = [...controls].find(
+        (control) => control.dataset?.part === partId,
+      );
+      (preferred || fallback)?.focus?.();
+    }
+
     async function run(key, operation, fallback) {
       if (busy || disposed) return;
       busy = key;
@@ -458,7 +498,6 @@
           `model:${button.dataset.model}`,
           async () => {
             await collection.selectModel(button.dataset.model);
-            await collection.allocate();
             choosingNext = false;
           },
           "這件作品還沒準備好，請再試一次。",
@@ -482,14 +521,25 @@
           "展示架沒有更新，請再試一次。",
         );
       if (action === "part") {
-        selectedPart = selectedPart === button.dataset.part ? null : button.dataset.part;
-        return render();
+        const partId = button.dataset.part;
+        selectedPart = selectedPart === partId ? null : partId;
+        render();
+        focusControl(selectedPart ? "target" : "part", partId);
+        return;
       }
       if (action === "target" && selectedPart === button.dataset.part)
         return place(selectedPart);
     }
 
     function onKeyDown(event) {
+      if (event.key === "Escape" && selectedPart) {
+        const partId = selectedPart;
+        selectedPart = null;
+        event.preventDefault();
+        render();
+        focusControl("part", partId);
+        return;
+      }
       const target = event.target?.closest?.('[data-action="target"]');
       if (!target || !element.contains?.(target)) return;
       if ((event.key === "Enter" || event.key === " ") && selectedPart === target.dataset.part) {

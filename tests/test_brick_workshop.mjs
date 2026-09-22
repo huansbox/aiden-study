@@ -8,18 +8,28 @@ const source = (name) =>
 
 function rootElement() {
   const listeners = new Map();
-  return {
+  const element = {
     innerHTML: "",
+    lastFocused: null,
     addEventListener(name, listener) { listeners.set(name, listener); },
     removeEventListener(name) { listeners.delete(name); },
     contains() { return true; },
-    querySelectorAll() { return []; },
+    querySelectorAll(selector) {
+      const match = selector.match(/data-action="([^"]+)"/);
+      if (!match || !["part", "target"].includes(match[1])) return [];
+      return ["p1-1", "p1-2", "p1-3"].map((part) => ({
+        dataset: { action: match[1], part },
+        tagName: "BUTTON",
+        focus: () => { element.lastFocused = { action: match[1], part }; },
+      }));
+    },
     dispatchEvent() {},
     replaceChildren() { this.innerHTML = ""; },
     fire(name, target, extra = {}) {
       listeners.get(name)?.({ target, button: 0, preventDefault() {}, ...extra });
     },
   };
+  return element;
 }
 
 function action(dataset, extra = {}) {
@@ -54,7 +64,7 @@ function harness(placed = []) {
     displayedBuildIds: [],
     sync: { status: "ready", message: "", pending: 0 },
   };
-  const placements = [];
+  const placements = [], selectCalls = [], allocateCalls = [];
   const collection = {
     ready: Promise.resolve(),
     snapshot: () => state,
@@ -65,8 +75,8 @@ function harness(placed = []) {
       state.revision += 1;
       for (const callback of callbacks) callback(state);
     },
-    async selectModel() {},
-    async allocate() {},
+    async selectModel(modelId) { selectCalls.push(modelId); },
+    async allocate() { allocateCalls.push(true); },
     async setDisplayed() {},
   };
   const document = {
@@ -84,11 +94,30 @@ function harness(placed = []) {
   });
   context.window = context;
   context.globalThis = context;
-  vm.runInContext(source("brick-models.js"), context);
+  const models = [
+    ["car", "小汽車", "#d94a3d"],
+    ["train", "火車", "#2779a7"],
+    ["plane", "飛機", "#e7b84b"],
+  ].map(([id, title, fill]) => ({
+    id,
+    title,
+    viewBox: "0 0 300 180",
+    steps: [{
+      title: "第一包",
+      parts: [1, 2, 3].map((number) => ({
+        id: `p1-${number}`,
+        name: `零件${number}`,
+        svg: `<rect x="${number * 55}" y="70" width="50" height="30" fill="${fill}"/>`,
+        box: { x: number * 55, y: 70, width: 50, height: 30 },
+        z: number,
+      })),
+    }],
+  }));
+  context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
   vm.runInContext(source("brick-workshop.js"), context);
   const element = rootElement();
   const mounted = context.KidsBrickWorkshop.mount(element, { collection });
-  return { context, element, state, collection, placements, mounted };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, mounted };
 }
 
 function placedCount(html) {
@@ -114,7 +143,7 @@ test("render keeps one and two saved parts visible while only remaining parts ar
 test("clicking a tray part then its target saves the fixed grant placement", async () => {
   const h = harness();
   h.element.fire("click", action({ action: "part", part: "p1-2" }));
-  assert.match(h.element.innerHTML, /放到亮起位置：後輪軸座/);
+  assert.match(h.element.innerHTML, /放到亮起位置：零件2/);
   h.element.fire("click", action({ action: "target", part: "p1-2" }));
   await Promise.resolve();
   assert.deepEqual(JSON.parse(JSON.stringify(h.placements)), [
@@ -177,6 +206,50 @@ test("collection room combines the display shelf and full series without a third
   h.element.fire("click", action({ action: "view", view: "shelf" }));
   assert.match(h.element.innerHTML, /我的收藏/);
   assert.match(h.element.innerHTML, /第一系列/);
-  assert.match(h.element.innerHTML, /紅色小跑車/);
+  assert.match(h.element.innerHTML, /小汽車/);
+  h.mounted.destroy();
+});
+
+test("selecting a model sends one server-confirmed operation and does not allocate twice", async () => {
+  const h = harness();
+  h.state.activeBuild = null;
+  h.state.builds = [];
+  h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
+  h.mounted.render();
+  h.element.fire("click", action({ action: "start-model", model: "train" }));
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.deepEqual(h.selectCalls, ["train"]);
+  assert.equal(h.allocateCalls.length, 0);
+  h.mounted.destroy();
+});
+
+test("model picker disables owned models and routes a completed series back to the collection room", () => {
+  const h = harness(["p1-1", "p1-2", "p1-3"]);
+  h.state.activeBuild.completedAt = "2026-09-22T12:00:00.000Z";
+  h.state.grants.push({ id: "free-pack", date: "2026-09-22", kind: "all", buildId: null, packIndex: null });
+  h.element.fire("click", action({ action: "choose-next" }));
+  assert.match(h.element.innerHTML, /brick-model-card is-owned[^>]*data-model="car"[^>]*disabled/);
+  assert.match(h.element.innerHTML, /data-model="train"(?![^>]*disabled)/);
+
+  h.state.builds = ["car", "train", "plane"].map((modelId, index) => ({
+    id: `finished-${index}`,
+    modelId,
+    placed: ["p1-1", "p1-2", "p1-3"],
+    completedAt: "2026-09-22T12:00:00.000Z",
+  }));
+  h.mounted.render();
+  assert.match(h.element.innerHTML, /三件作品都收集完成了/);
+  assert.match(h.element.innerHTML, /data-view="shelf"/);
+  h.mounted.destroy();
+});
+
+test("keyboard selection focuses the target and Escape returns focus to the same part", () => {
+  const h = harness();
+  h.element.fire("click", action({ action: "part", part: "p1-2" }));
+  assert.deepEqual(h.element.lastFocused, { action: "target", part: "p1-2" });
+  h.element.fire("keydown", action({ action: "target", part: "p1-2" }), { key: "Escape" });
+  assert.deepEqual(h.element.lastFocused, { action: "part", part: "p1-2" });
+  assert.doesNotMatch(h.element.innerHTML, /放到亮起位置/);
   h.mounted.destroy();
 });
