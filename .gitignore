@@ -8,6 +8,8 @@ pdfs_社會/
 data/tcool_*.html
 social-home.png
 .venv/
+node_modules/
+/.scratch/
 __pycache__/
 data/_imgs/
 data/_imgs_math/
