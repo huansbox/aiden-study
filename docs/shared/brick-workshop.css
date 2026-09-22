@@ -137,6 +137,7 @@
 .brick-empty > p:not(.brick-kicker),
 .brick-error p { color: var(--brick-muted); }
 .brick-empty__box { margin-bottom: 10px; scale: 1.3; }
+.brick-empty--small { min-height: 230px; box-shadow: none; background: #f5f8f8; }
 .brick-error { color: #7e2930; }
 .brick-error button { padding: 0 20px; border-radius: 14px; color: #fff; background: #7e2930; font-weight: 800; }
 .brick-complete { position: relative; overflow: hidden; }
