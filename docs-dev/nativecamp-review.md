@@ -1,5 +1,7 @@
 # Native Camp Review
 
+2026-09-22 Try it 更新：8 堂單課與 09-20 週包追加 Build／Change／Fix，尚未開始的概念使用新版，已作答原版及 Say it 保留。當前版本、132 題／264 段新增音訊與驗收見 [Try it 改版紀錄](nativecamp-try-variety.md)；下方帶日期的題量與發布資訊是當時版本。
+
 交付追蹤：[完成收起與每週新題 #77](https://github.com/huansbox/aiden-study/issues/77)、[練習與Weekly流程 #78](https://github.com/huansbox/aiden-study/issues/78)、[OpenAI語音 #79](https://github.com/huansbox/aiden-study/issues/79)、[Michael／Khalid與首週題包 #80](https://github.com/huansbox/aiden-study/issues/80)。本頁前半說明2026-09-18新機制，由[PR #81](https://github.com/huansbox/aiden-study/pull/81)交付；合併與CI狀態以PR為準，Pages版本與正式資源核對記於主issue的結案證據。下方2026-09-17發布紀錄僅代表歷史版本。
 
 下一堂製作從[課後複習 SOP](../learning-tasks/nativecamp-review-pilot/lesson-sop.md)、[設計模板](../learning-tasks/nativecamp-review-pilot/templates/lesson-brief.md)與[首堂範例](../learning-tasks/nativecamp-review-pilot/lesson-example-2026-09-15.md)開始。現已接入共用課程清單；新課仍須完成來源、題包、音訊與三入口驗收，不能只新增JSON就宣稱上線。

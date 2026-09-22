@@ -197,7 +197,168 @@
             "It snows in the spring."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "weather-verbs-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "How does the weather change?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Spring: cool, then warm.",
+              "heading": "Made-up town"
+            },
+            "answerText": "It gets warm in spring.",
+            "spokenQuestion": "In this town, spring starts cool and turns warm. Describe the change.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "gets"
+              },
+              {
+                "id": "w2",
+                "text": "warm"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "spring"
+              },
+              {
+                "id": "extra0",
+                "text": "get"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ]
+          },
+          {
+            "id": "weather-verbs-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: winter. Snow.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "It gets warm in spring.",
+              "heading": "Before"
+            },
+            "answerText": "It snows in winter.",
+            "spokenQuestion": "Now tell me about snow in winter. Build the new sentence.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "snows"
+              },
+              {
+                "id": "w2",
+                "text": "in"
+              },
+              {
+                "id": "w3",
+                "text": "winter"
+              },
+              {
+                "id": "extra0",
+                "text": "snow"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ],
+              [
+                "w2",
+                "w3",
+                "w0",
+                "w1"
+              ]
+            ]
+          },
+          {
+            "id": "weather-verbs-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Fall: warm, then cool.",
+              "heading": "Made-up town"
+            },
+            "answerText": "It gets cool in fall.",
+            "spokenQuestion": "In this town, fall starts warm and turns cool. Fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "get"
+              },
+              {
+                "id": "w2",
+                "text": "cool"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "fall."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are"
+              },
+              {
+                "id": "c1",
+                "text": "gets"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "weather-negative",
@@ -408,7 +569,178 @@
             "In summer, it doesn't get cool."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "weather-negative-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Tell me about snow.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Summer. Snow: no.",
+              "heading": "Made-up town"
+            },
+            "answerText": "It doesn't snow in summer.",
+            "spokenQuestion": "In this town, there is no snow in summer. Build a full sentence.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "doesn't"
+              },
+              {
+                "id": "w2",
+                "text": "snow"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "summer"
+              },
+              {
+                "id": "extra0",
+                "text": "snows"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ]
+          },
+          {
+            "id": "weather-negative-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "New town: no snow in winter.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "It snows in winter.",
+              "heading": "Before"
+            },
+            "answerText": "It doesn't snow in winter.",
+            "spokenQuestion": "In a new town, there is no snow in winter. Change the sentence.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "doesn't"
+              },
+              {
+                "id": "w2",
+                "text": "snow"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "winter"
+              },
+              {
+                "id": "extra0",
+                "text": "snows"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ]
+          },
+          {
+            "id": "weather-negative-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Summer. Cold weather: no.",
+              "heading": "Made-up town"
+            },
+            "answerText": "It doesn't get cold in summer.",
+            "spokenQuestion": "In this town, summer never turns cold. Fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "doesn't"
+              },
+              {
+                "id": "w2",
+                "text": "gets"
+              },
+              {
+                "id": "w3",
+                "text": "cold"
+              },
+              {
+                "id": "w4",
+                "text": "in"
+              },
+              {
+                "id": "w5",
+                "text": "summer."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "get"
+              },
+              {
+                "id": "c1",
+                "text": "is"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "season-order",
@@ -595,7 +927,146 @@
             "After autumn comes winter."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "season-order-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "What comes next?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Now: spring.",
+              "heading": "Four-season calendar"
+            },
+            "answerText": "Summer comes after spring.",
+            "spokenQuestion": "It is spring on this four-season calendar. What comes next?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Summer"
+              },
+              {
+                "id": "w1",
+                "text": "comes"
+              },
+              {
+                "id": "w2",
+                "text": "after"
+              },
+              {
+                "id": "w3",
+                "text": "spring"
+              },
+              {
+                "id": "extra0",
+                "text": "fall"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "season-order-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Next: winter. Now: ?",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Summer comes after spring.",
+              "heading": "Before"
+            },
+            "answerText": "Winter comes after fall.",
+            "spokenQuestion": "The next season is winter. Build a sentence about winter and the season just before it.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Winter"
+              },
+              {
+                "id": "w1",
+                "text": "comes"
+              },
+              {
+                "id": "w2",
+                "text": "after"
+              },
+              {
+                "id": "w3",
+                "text": "fall"
+              },
+              {
+                "id": "extra0",
+                "text": "spring"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "season-order-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Now: winter. Next: spring.",
+              "heading": "Four-season calendar"
+            },
+            "answerText": "Spring comes after winter.",
+            "spokenQuestion": "It is winter and spring comes next. Fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Spring"
+              },
+              {
+                "id": "w1",
+                "text": "comes"
+              },
+              {
+                "id": "w2",
+                "text": "after"
+              },
+              {
+                "id": "w3",
+                "text": "fall."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "winter."
+              },
+              {
+                "id": "c1",
+                "text": "summer."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "day-night-length",
@@ -835,7 +1306,181 @@
             "In summer, a day is long."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "day-night-length-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Tell me about the days.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Winter. Days: short.",
+              "heading": "Made-up town"
+            },
+            "answerText": "The days are short in winter.",
+            "spokenQuestion": "In this town, winter has short days. Build a full sentence.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "days"
+              },
+              {
+                "id": "w2",
+                "text": "are"
+              },
+              {
+                "id": "w3",
+                "text": "short"
+              },
+              {
+                "id": "w4",
+                "text": "in"
+              },
+              {
+                "id": "w5",
+                "text": "winter"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w0",
+                "w1",
+                "w4",
+                "w5",
+                "w2",
+                "w3"
+              ],
+              [
+                "w4",
+                "w5",
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "day-night-length-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: one winter night. Long.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The days are short in winter.",
+              "heading": "Before"
+            },
+            "answerText": "A winter night is long.",
+            "spokenQuestion": "Now describe one long winter night. Build the new sentence.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "A"
+              },
+              {
+                "id": "w1",
+                "text": "winter"
+              },
+              {
+                "id": "w2",
+                "text": "night"
+              },
+              {
+                "id": "w3",
+                "text": "is"
+              },
+              {
+                "id": "w4",
+                "text": "long"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ]
+          },
+          {
+            "id": "day-night-length-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Summer. One day: long.",
+              "heading": "Made-up town"
+            },
+            "answerText": "A summer day is long.",
+            "spokenQuestion": "Think about one long summer day. Fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "A"
+              },
+              {
+                "id": "w1",
+                "text": "summer"
+              },
+              {
+                "id": "w2",
+                "text": "day"
+              },
+              {
+                "id": "w3",
+                "text": "are"
+              },
+              {
+                "id": "w4",
+                "text": "long."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "is"
+              },
+              {
+                "id": "c1",
+                "text": "am"
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     }
   ]
 }

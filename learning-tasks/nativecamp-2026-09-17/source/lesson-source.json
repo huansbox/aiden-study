@@ -252,7 +252,192 @@
             "I erase pencil marks with an eraser."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "school-tools-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Which tool helps, and why?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Make straight lines.",
+              "heading": "Build"
+            },
+            "answerText": "I use a ruler to draw lines.",
+            "spokenQuestion": "You want to draw straight lines. Which tool helps, and why?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "ruler"
+              },
+              {
+                "id": "w4",
+                "text": "to"
+              },
+              {
+                "id": "w5",
+                "text": "draw"
+              },
+              {
+                "id": "w6",
+                "text": "lines"
+              },
+              {
+                "id": "extra0",
+                "text": "eraser"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5",
+                "w6"
+              ]
+            ]
+          },
+          {
+            "id": "school-tools-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "New job: make pencil marks go away.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I use a ruler to draw lines.",
+              "heading": "Before"
+            },
+            "answerText": "I use an eraser to erase marks.",
+            "spokenQuestion": "Now make pencil marks go away. Which tool helps, and why?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "eraser"
+              },
+              {
+                "id": "w4",
+                "text": "to"
+              },
+              {
+                "id": "w5",
+                "text": "erase"
+              },
+              {
+                "id": "w6",
+                "text": "marks"
+              },
+              {
+                "id": "extra0",
+                "text": "a"
+              },
+              {
+                "id": "extra1",
+                "text": "ruler"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5",
+                "w6"
+              ]
+            ]
+          },
+          {
+            "id": "school-tools-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your job / make straight lines",
+              "heading": "Look"
+            },
+            "answerText": "I use a ruler to draw lines.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "ruler"
+              },
+              {
+                "id": "w4",
+                "text": "to"
+              },
+              {
+                "id": "w5",
+                "text": "erase"
+              },
+              {
+                "id": "w6",
+                "text": "lines."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "draw"
+              },
+              {
+                "id": "c1",
+                "text": "drawing"
+              }
+            ],
+            "answer": {
+              "wordId": "w5",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "supplies-together",
@@ -437,7 +622,154 @@
             "There are eleven pens in all."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "supplies-together-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "How many pens together?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mia: 4 pens. Leo: 3 pens.",
+              "heading": "Build"
+            },
+            "answerText": "They have seven pens.",
+            "spokenQuestion": "Mia has four pens, and Leo has three. How many do they have together?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "have"
+              },
+              {
+                "id": "w2",
+                "text": "seven"
+              },
+              {
+                "id": "w3",
+                "text": "pens"
+              },
+              {
+                "id": "extra0",
+                "text": "has"
+              },
+              {
+                "id": "extra1",
+                "text": "four"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "supplies-together-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now all the pens are with Leo. Tell me about Leo.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "They have seven pens.",
+              "heading": "Before"
+            },
+            "answerText": "He has seven pens.",
+            "spokenQuestion": "All the pens are with Leo now. Tell me about Leo.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "has"
+              },
+              {
+                "id": "w2",
+                "text": "seven"
+              },
+              {
+                "id": "w3",
+                "text": "pens"
+              },
+              {
+                "id": "extra0",
+                "text": "have"
+              },
+              {
+                "id": "extra1",
+                "text": "They"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "supplies-together-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mia: 3 erasers. Leo: 5 erasers.",
+              "heading": "Look"
+            },
+            "answerText": "They have eight erasers.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "has"
+              },
+              {
+                "id": "w2",
+                "text": "eight"
+              },
+              {
+                "id": "w3",
+                "text": "erasers."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "having"
+              },
+              {
+                "id": "c1",
+                "text": "have"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "counting-now",
@@ -625,7 +957,150 @@
             "They are counting the backpacks."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "counting-now-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What are they doing?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mia + Leo / one pen, two pens, three pens...",
+              "heading": "Build"
+            },
+            "answerText": "They are counting pens.",
+            "spokenQuestion": "Mia and Leo say one pen, two pens, three pens. What are they doing?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "pens"
+              },
+              {
+                "id": "extra0",
+                "text": "count"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "counting-now-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Mia only. Pencils.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "They are counting pens.",
+              "heading": "Before"
+            },
+            "answerText": "She is counting pencils.",
+            "spokenQuestion": "Now only Mia says one pencil, two pencils. What is she doing?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "pencils"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "They"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "counting-now-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Leo + Sam / one ruler, two rulers, three rulers...",
+              "heading": "Look"
+            },
+            "answerText": "They are counting rulers.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "rulers."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are"
+              },
+              {
+                "id": "c1",
+                "text": "am"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "same-age",
@@ -828,7 +1303,159 @@
             "I'm also five years old."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "same-age-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Tell Kim you are the same age.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You are Sam / Sam: 6 / Kim: 6",
+              "heading": "Build"
+            },
+            "answerText": "I'm six years old too.",
+            "spokenQuestion": "You are Sam, and both you and Kim are six. Tell Kim you are the same age.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I'm"
+              },
+              {
+                "id": "w1",
+                "text": "six"
+              },
+              {
+                "id": "w2",
+                "text": "years"
+              },
+              {
+                "id": "w3",
+                "text": "old"
+              },
+              {
+                "id": "w4",
+                "text": "too"
+              },
+              {
+                "id": "extra0",
+                "text": "seven"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ]
+          },
+          {
+            "id": "same-age-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Sam is 7. Kim is 6. You are Sam.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I'm six years old too.",
+              "heading": "Before"
+            },
+            "answerText": "I'm seven years old.",
+            "spokenQuestion": "Now Sam is seven and Kim is six. You are Sam; tell Kim your age.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I'm"
+              },
+              {
+                "id": "w1",
+                "text": "seven"
+              },
+              {
+                "id": "w2",
+                "text": "years"
+              },
+              {
+                "id": "w3",
+                "text": "old"
+              },
+              {
+                "id": "extra0",
+                "text": "too"
+              },
+              {
+                "id": "extra1",
+                "text": "six"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "same-age-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You are Sam / Sam: 9 / Kim: 9",
+              "heading": "Look"
+            },
+            "answerText": "I'm nine years old too.",
+            "spokenQuestion": "You are Sam, and both you and Kim are nine. Fix the reply to Kim.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I'm"
+              },
+              {
+                "id": "w1",
+                "text": "eight"
+              },
+              {
+                "id": "w2",
+                "text": "years"
+              },
+              {
+                "id": "w3",
+                "text": "old"
+              },
+              {
+                "id": "w4",
+                "text": "too."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "ten"
+              },
+              {
+                "id": "c1",
+                "text": "nine"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            }
+          }
+        ]
+      }
     }
   ]
 }

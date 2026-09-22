@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-08",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-1-q.mp3",
+      "sha256": "fdf6846856bd17da210538ff88859c3597f9bdca0c21c5c5865f397eb0ab64d0",
+      "expectedText": "Mum feeds a kitten and keeps it safe. What does Mum do?",
+      "recognizedText": "Mum feeds a kitten and keeps it safe. What does mum do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-1-a.mp3",
+      "sha256": "12e87bc327752661f4bef4a00acccfe8eb4a0b4c192c2a17107ae67e113b592d",
+      "expectedText": "Mum takes care of the kitten.",
+      "recognizedText": "Mum takes care of the kitten."
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-2-q.mp3",
+      "sha256": "79b734a3c96725096d724fff6493dc5a075449f95e8b8c7ccb919a8509146f21",
+      "expectedText": "Now Mum and Dad help the kitten together. Build the new sentence.",
+      "recognizedText": "Now, mom and dad, help the kitten together, build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-2-a.mp3",
+      "sha256": "49607e7a69ecb3d36a3872bd365572d8928cf1928b4f96e96f8a932fa1f40437",
+      "expectedText": "They take care of the kitten.",
+      "recognizedText": "They take care of the kitten."
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-3-q.mp3",
+      "sha256": "c71edc7d6a72019f3aafb0bc2756868563fbeb4f9915f7ddd0217792d932214e",
+      "expectedText": "Dad feeds a puppy and keeps it safe. Fix one word.",
+      "recognizedText": "Dad feeds a puppy and keeps it safe. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-08-take-care-of-v2-try-3-a.mp3",
+      "sha256": "2faed5f0d3f841484aa6c28ef061535288e0b6bf58803a976137284f6c2d99e8",
+      "expectedText": "Dad takes care of the puppy.",
+      "recognizedText": "Dad takes care of the puppy."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-1-q.mp3",
+      "sha256": "fea4c4cb0afeaab181ed3de754abcf4c52693ec745db5ccc8f808a2e2be3e3b1",
+      "expectedText": "A puppy sleeps for ten minutes. What does it do?",
+      "recognizedText": "A puppy sleeps for 10 minutes. What does it do?"
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-1-a.mp3",
+      "sha256": "df63f32f3273326bab752415321cb5542be9569156f1fc4666a3f426ccb53852",
+      "expectedText": "The puppy takes a nap.",
+      "recognizedText": "The puppy takes a nap."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-2-q.mp3",
+      "sha256": "a4fc6ef90ef9a2231fc65306937f2f5a592b0df5ef86798eceb6449f0dd65401",
+      "expectedText": "Now two puppies sleep for ten minutes. Build the new sentence.",
+      "recognizedText": "Now two puppies sleep for 10 minutes, build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-2-a.mp3",
+      "sha256": "2905fedc2503fd5ecf6b080b8763e99180ca838724c69cc26863d2c2c0bfbfbe",
+      "expectedText": "The puppies take a nap.",
+      "recognizedText": "The puppies take a nap."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-3-q.mp3",
+      "sha256": "00c8a7c032a76f9da71ff0052362945b61d3fe69e51dadb410850f3eb4c2ca6f",
+      "expectedText": "Two kittens sleep for five minutes. Fix one word.",
+      "recognizedText": "Two kittens, sleep for five minutes. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-08-take-a-nap-v2-try-3-a.mp3",
+      "sha256": "3c17b6574f5bd994272c067587e3652f9a4163aa1e6f431a265930ba8b777ab6",
+      "expectedText": "The kittens take a nap.",
+      "recognizedText": "The kittens take a nap."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-1-q.mp3",
+      "sha256": "3947ee6c99155555995ca8d112f5b214d1d84edd1959d5bdb84a0e10be494535",
+      "expectedText": "One tiger has a home in the forest. Where does it live?",
+      "recognizedText": "One tiger has a home in the forest. Where does it live?"
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-1-a.mp3",
+      "sha256": "aaa1fd26a95c08e99c59854caed8e4c8e8b0c33e71ddbe940144e752e947bc93",
+      "expectedText": "The tiger lives in the forest.",
+      "recognizedText": "The tiger lives in the forest."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-2-q.mp3",
+      "sha256": "20e91d32804124694d2adc3c2f9d9ec30794d1dfa05a56e7559d77bd804e77d0",
+      "expectedText": "Now two tigers have a home in a reserve. Build the new sentence.",
+      "recognizedText": "Now, two tigers have a home in a reserve. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-2-a.mp3",
+      "sha256": "3e901e56ef76fefe6edc6e329caf58a95227c7fd68f908c49ab1fb75d58d800f",
+      "expectedText": "The tigers live in a reserve.",
+      "recognizedText": "The Tigers live in a reserve."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-3-q.mp3",
+      "sha256": "0c365fb5d45bbd5bf847214f40ae5cf01df7a70a1b336dabca08cbc2669615c0",
+      "expectedText": "Two orangutans have a home in the rainforest. Fix one word.",
+      "recognizedText": "Two orangutans have a home in the rainforest. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-08-animal-homes-v2-try-3-a.mp3",
+      "sha256": "1e7c72d643624f75211e8b0eadae73dad17252db30331668b1969eec66a1ecfe",
+      "expectedText": "The orangutans live in the rainforest.",
+      "recognizedText": "The orangutans live in the rainforest."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-1-q.mp3",
+      "sha256": "bb55e9f4933ae021036da82773cc25f28977d87727281cd6c4207102e2a7375a",
+      "expectedText": "Nina rolls a ball to a kitten. Name both characters.",
+      "recognizedText": "Nina rolls a ball to a kitten. Name both characters."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-1-a.mp3",
+      "sha256": "2b23f368885b6c62e14ad517c257d1f7d132158d730dba7e3977151438440878",
+      "expectedText": "Nina and the kitten are characters.",
+      "recognizedText": "Mina and the kitten are characters."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-2-q.mp3",
+      "sha256": "e117bd6986dae5c17a8e847ad6190234d4523076c0bc6801f7d1e185dbe571c3",
+      "expectedText": "In a new story, a kitten sleeps on a mat. Name the character.",
+      "recognizedText": "In a new story, a kitten sleeps on a mat. Name the character."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-2-a.mp3",
+      "sha256": "d1684716624f5e8377a17f1eb038cdb6607c95fd0c94b1490c129bb48ae00f81",
+      "expectedText": "The kitten is a character.",
+      "recognizedText": "The kitten is a character."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-3-q.mp3",
+      "sha256": "e791b4a1b1358aaccd8a42e889749edcda68b325d9c8f162eb9ab8efb0f722c7",
+      "expectedText": "Leo gives a ball to a puppy. Fix one word.",
+      "recognizedText": "Leo gives a ball to a puppy. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-3-a.mp3",
+      "sha256": "488734b20534fbb1b4aca709d10b434adbec239c8b4c26461584c1758a48150c",
+      "expectedText": "Leo and the puppy are characters.",
+      "recognizedText": "Leo and the puppy are characters."
+    }
+  ]
+}

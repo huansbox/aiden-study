@@ -48,6 +48,30 @@
     "text": "It snows in spring."
   },
   {
+    "file": "2026-09-11-weather-verbs-v2-try-1-q.mp3",
+    "text": "In this town, spring starts cool and turns warm. Describe the change."
+  },
+  {
+    "file": "2026-09-11-weather-verbs-v2-try-1-a.mp3",
+    "text": "It gets warm in spring."
+  },
+  {
+    "file": "2026-09-11-weather-verbs-v2-try-2-q.mp3",
+    "text": "Now tell me about snow in winter. Build the new sentence."
+  },
+  {
+    "file": "2026-09-11-weather-verbs-v2-try-2-a.mp3",
+    "text": "It snows in winter."
+  },
+  {
+    "file": "2026-09-11-weather-verbs-v2-try-3-q.mp3",
+    "text": "In this town, fall starts warm and turns cool. Fix one word."
+  },
+  {
+    "file": "2026-09-11-weather-verbs-v2-try-3-a.mp3",
+    "text": "It gets cool in fall."
+  },
+  {
     "file": "2026-09-11-weather-negative-try-1-q.mp3",
     "text": "This made-up town has a summer card. No cold weather. Tell me about cold weather. Build a full sentence. Start with It."
   },
@@ -94,6 +118,30 @@
   {
     "file": "2026-09-11-weather-negative-say-3-a.mp3",
     "text": "It doesn't get cool in summer."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-1-q.mp3",
+    "text": "In this town, there is no snow in summer. Build a full sentence."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-1-a.mp3",
+    "text": "It doesn't snow in summer."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-2-q.mp3",
+    "text": "In a new town, there is no snow in winter. Change the sentence."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-2-a.mp3",
+    "text": "It doesn't snow in winter."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-3-q.mp3",
+    "text": "In this town, summer never turns cold. Fix one word."
+  },
+  {
+    "file": "2026-09-11-weather-negative-v2-try-3-a.mp3",
+    "text": "It doesn't get cold in summer."
   },
   {
     "file": "2026-09-11-season-order-try-1-q.mp3",
@@ -144,6 +192,30 @@
     "text": "Winter comes after autumn."
   },
   {
+    "file": "2026-09-11-season-order-v2-try-1-q.mp3",
+    "text": "It is spring on this four-season calendar. What comes next?"
+  },
+  {
+    "file": "2026-09-11-season-order-v2-try-1-a.mp3",
+    "text": "Summer comes after spring."
+  },
+  {
+    "file": "2026-09-11-season-order-v2-try-2-q.mp3",
+    "text": "The next season is winter. Build a sentence about winter and the season just before it."
+  },
+  {
+    "file": "2026-09-11-season-order-v2-try-2-a.mp3",
+    "text": "Winter comes after fall."
+  },
+  {
+    "file": "2026-09-11-season-order-v2-try-3-q.mp3",
+    "text": "It is winter and spring comes next. Fix one word."
+  },
+  {
+    "file": "2026-09-11-season-order-v2-try-3-a.mp3",
+    "text": "Spring comes after winter."
+  },
+  {
     "file": "2026-09-11-day-night-length-try-1-q.mp3",
     "text": "Read this made-up town card. Summer. Days: long. Tell me about the days. Build a full sentence. Start with The days."
   },
@@ -189,6 +261,30 @@
   },
   {
     "file": "2026-09-11-day-night-length-say-3-a.mp3",
+    "text": "A summer day is long."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-1-q.mp3",
+    "text": "In this town, winter has short days. Build a full sentence."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-1-a.mp3",
+    "text": "The days are short in winter."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-2-q.mp3",
+    "text": "Now describe one long winter night. Build the new sentence."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-2-a.mp3",
+    "text": "A winter night is long."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-3-q.mp3",
+    "text": "Think about one long summer day. Fix one word."
+  },
+  {
+    "file": "2026-09-11-day-night-length-v2-try-3-a.mp3",
     "text": "A summer day is long."
   }
 ]

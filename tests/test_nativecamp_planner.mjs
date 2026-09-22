@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { lessonFixture, weeklyFixture, legacyProgress } from './helpers/nativecamp-weekly.mjs';
+import { varietyFixture } from './helpers/nativecamp-variety.mjs';
 import { practiceWindow, normalizeSnapshot, planWeekly, generationBrief, writeWeeklyPlan } from '../learning-tasks/shared/nativecamp/plan_weekly.mjs';
 
 const C = globalThis.NativeCampCore, L = globalThis.NativeCampCatalog;
@@ -102,6 +103,23 @@ test('published release dates deduplicate the legacy September 20 pack', () => {
   assert.equal(planWeekly({ progress: C.createProgress(), lessons, catalog, releaseDate: '2026-09-20' }).reason, 'already-published');
 });
 
+test('revised Try results and legacy results both map to their original concept', () => {
+  const lesson = varietyFixture(), lessons = { [lesson.id]: lesson };
+  const catalog = [{ id: lesson.id, date: lesson.date, teacher: 'Teacher' }];
+  let progress = C.createProgress();
+  const revised = C.nextQuestion(progress, lesson, 'try', '2026-09-22');
+  progress = C.submitTry(progress, lesson, '2026-09-22', revised.concept.id, revised.question.id, revised.question.acceptedOrders[0]).progress;
+  const legacy = structuredClone(lesson);
+  legacy.concepts.forEach(c => { delete c.tryRevision; });
+  const oldConcept = legacy.concepts[1], oldQuestion = oldConcept.try[0];
+  const oldAnswer = oldQuestion.type === 'choice' ? oldQuestion.answer : oldQuestion.acceptedOrders[0];
+  progress = C.submitTry(progress, legacy, '2026-09-22', oldConcept.id, oldQuestion.id, oldAnswer).progress;
+  assert.deepEqual(normalizeSnapshot(progress, lessons), progress);
+  const result = planWeekly({ progress, lessons, catalog, releaseDate });
+  assert.deepEqual(new Set(sourceIds(result)), new Set([revised.concept.id, oldConcept.id]));
+  assert.ok(generationBrief(result, lessons).instructions.some(text => text.includes('type repair')));
+});
+
 test('reordering catalog weekly object keys does not change a valid plan', () => {
   const weekly = weeklyFixture(), original = lessonFixture('2026-09-15', ['is-are', 'odd-even', 'too-many', 'other']), older = lessonFixture('2026-09-13', ['earlier']);
   const lessons = { [weekly.id]: weekly, [original.id]: original, [older.id]: older };
@@ -178,6 +196,55 @@ test('reordering saved plan and brief object keys preserves read-only resumption
   const result = await writeWeeklyPlan({ repoRoot, snapshot: progress, releaseDate });
   assert.equal(result.status, 'resumed');
   paths.forEach((path, index) => assert.equal(readFileSync(path, 'utf8'), reordered[index]));
+});
+
+test('a pre-variety frozen brief resumes after instructions and source revisions change without accepting tampering', async t => {
+  const { repoRoot, data, privateRoot } = temporaryRepo(t);
+  const progress = answer(C.createProgress(), data.lesson, 'weak', '2026-09-21');
+  await writeWeeklyPlan({ repoRoot, snapshot: progress, releaseDate });
+  const folder = join(privateRoot, releaseDate), planPath = join(folder, 'plan.json'), briefPath = join(folder, 'generation-brief.json');
+  const planBytes = readFileSync(planPath, 'utf8');
+  // Reproduce the exact pre-release brief while its source still has only the
+  // original questions. This is independent of the updated instruction text.
+  const frozen = JSON.parse(readFileSync(briefPath, 'utf8'));
+  frozen.instructions = [
+    'Write three original Try it and three original Say it variants per concept.',
+    'Use complete sentences, one or two plausible distractors when appropriate, and natural accepted alternatives.',
+    'Change the evidence or situation; never republish an old question with a new ID.',
+    'Keep spokenQuestion and answerText aligned with the scene; use normal-speed OpenAI speech after review.',
+    'Copy only bundle metadata and authored id/title/sourceConcept/try/say to lesson-source.json. Never copy plan, progress, or originalConcept.',
+  ];
+  assert.equal(Object.hasOwn(frozen.concepts[0].originalConcept, 'tryRevision'), false);
+  const briefBytes = JSON.stringify(frozen, null, 2) + '\n';
+  writeFileSync(briefPath, briefBytes);
+  const revised = structuredClone(data.lesson);
+  revised.concepts[0].tryRevision = structuredClone(varietyFixture().concepts[0].tryRevision);
+  revised.concepts[0].tryRevision.questions.forEach((question, index) => { question.id = `weak-v2-try-${index + 1}`; });
+  writeFileSync(join(repoRoot, 'docs/nativecamp/lessons', `${revised.id}.json`), JSON.stringify(revised));
+  assert.equal((await writeWeeklyPlan({ repoRoot, releaseDate, resume: true })).status, 'resumed');
+  assert.equal(readFileSync(planPath, 'utf8'), planBytes);
+  assert.equal(readFileSync(briefPath, 'utf8'), briefBytes);
+
+  for (const edit of [
+    value => { value.instructions[1] += ' Allow any answer.'; },
+    value => { value.bundle.title = 'Changed review'; },
+    value => { value.concepts[0].originalConcept.try[0].prompt = 'A changed original question'; },
+    value => { value.concepts[0].originalConcept.tryRevision = { id: 'unverified', questions: [] }; },
+    value => { value.concepts[0].sourceConcept.conceptId = 'success'; },
+  ]) {
+    const tampered = structuredClone(frozen); edit(tampered);
+    writeFileSync(briefPath, JSON.stringify(tampered));
+    await assert.rejects(writeWeeklyPlan({ repoRoot, releaseDate, resume: true }), /saved-brief-invalid/);
+    assert.equal(readFileSync(planPath, 'utf8'), planBytes);
+  }
+  // A lost brief is new output, so regenerate the current instructions and
+  // appended revision rather than recreating an obsolete authoring contract.
+  rmSync(briefPath);
+  assert.equal((await writeWeeklyPlan({ repoRoot, releaseDate, resume: true })).status, 'resumed');
+  const restored = JSON.parse(readFileSync(briefPath, 'utf8'));
+  assert.ok(restored.instructions.some(instruction => instruction.includes('type repair')));
+  assert.deepEqual(restored.concepts[0].originalConcept.tryRevision, revised.concepts[0].tryRevision);
+  assert.equal(readFileSync(planPath, 'utf8'), planBytes);
 });
 
 test('explicit resume restores a missing brief after its own local draft enters the catalog', async t => {

@@ -1,0 +1,516 @@
+{
+  "lessonId": "weekly-2026-09-14",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-1-q.mp3",
+      "sha256": "bcd199f3ed1c0e1caa6a9c6de54a759f5d607f4fedb328bba9f730708416da03",
+      "expectedText": "Grace is your mum's mum. Who is Grace?",
+      "recognizedText": "Grace is your mum's mum. Who is Grace?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-1-a.mp3",
+      "sha256": "24a504151dc8eddb73f3c0fb4865546230062fa2dcbd895c53ad0a9e5e5bcb83",
+      "expectedText": "She is my grandmother.",
+      "recognizedText": "She is my grandmother"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-2-q.mp3",
+      "sha256": "12863e22471cdab191acced864d1ce05ea79e5d0334ea9988a447e857ba5f879",
+      "expectedText": "Now talk about your mum's mum and dad together.",
+      "recognizedText": "Now, talk about your mom's mom and dad together."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-2-a.mp3",
+      "sha256": "5dae6a6c1f94a9be7a89cd83822a680fd1321b4d9b65006fed25ce982feb7a79",
+      "expectedText": "They are my grandparents.",
+      "recognizedText": "They are my grandparents."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-3-q.mp3",
+      "sha256": "21e7ce002e01f417cae3253bcbc88659fed2fec52202617150843f39d5adb646",
+      "expectedText": "Ben is your dad's dad. Fix one word.",
+      "recognizedText": "Ben is your dad's dad. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-grandparents-v2-try-3-a.mp3",
+      "sha256": "e1c310ff4c4b830bc9a6a42eebe06130a9288190658bc6eaa91fb9ad3b9816be",
+      "expectedText": "He is my grandfather.",
+      "recognizedText": "He is my grandfather."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-1-q.mp3",
+      "sha256": "611a73b4d2ce88f46348308edaa5741c8fc5f195a168deaeb351d1d274fba084",
+      "expectedText": "A toy car and a doll are in a box. What is the story about?",
+      "recognizedText": "A toy car and a doll are in a box. What is the story about?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-1-a.mp3",
+      "sha256": "b4ce861bfbc7153cb785b0090c4839525804bfe0f91da2ffdccd817091709732",
+      "expectedText": "It is about toys.",
+      "recognizedText": "It is about toys."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-2-q.mp3",
+      "sha256": "74b2c6e511124f03bedc0392da0b10d2df7b3941faa15a26924ef7567be9ccf3",
+      "expectedText": "Now there are two stories about toys. Change the sentence.",
+      "recognizedText": "Now there are two stories about toys. Change the sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-2-a.mp3",
+      "sha256": "63e6c3a45090245c761f3146549b0dfd9da9b094778df031d317f8c3b32b1b51",
+      "expectedText": "They are about toys.",
+      "recognizedText": "They are about toys."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-3-q.mp3",
+      "sha256": "fcc9f393ac806b8b4ab1fabe955d413cbe12e667558a3cfb8e030f16d6a1b157",
+      "expectedText": "Mum and Dad play with their son. Fix one word.",
+      "recognizedText": "Mom and dad play with their son. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-story-topic-v2-try-3-a.mp3",
+      "sha256": "e30b1895badaa17d7030f0faf72185e80adc31f2983d3a01b2e640b8cb49d154",
+      "expectedText": "It is about a family.",
+      "recognizedText": "It is about a family."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-1-q.mp3",
+      "sha256": "f04bebc2616064ed6198efc5bca9f5a8065a1f93a72961d5c9f775c44f8b22e3",
+      "expectedText": "Look at the picture and build a sentence.",
+      "recognizedText": "Look at the picture and build a sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-1-a.mp3",
+      "sha256": "f03412d4befdb97a7aaed81057e65ff63766b4e326a41736c233b8364d81ed81",
+      "expectedText": "There are three cats.",
+      "recognizedText": "There are three cats."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-2-q.mp3",
+      "sha256": "a43edef12fa76b44fc877c66579886580ed724be53cb33f333c76228596e1839",
+      "expectedText": "There are three cats, and two go away. What is left?",
+      "recognizedText": "There are three cats and two go away. What is left?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-2-a.mp3",
+      "sha256": "557c20fedd598895157ba17d3ad7a71efb154cecbc67599681b52f0b0a12633c",
+      "expectedText": "There is one cat.",
+      "recognizedText": "There is one cat."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-3-q.mp3",
+      "sha256": "d75ba688083d3a409f6ce693f350b9906094a5db755fe92ebedbd19e943fc4b7",
+      "expectedText": "Look at the two dogs and fix one word.",
+      "recognizedText": "Look at the two dogs and fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-is-are-v2-try-3-a.mp3",
+      "sha256": "5e434fa6383da76c1a4e7e67678d3cc29cb93e8510bd91c2782926ee7ffbaca9",
+      "expectedText": "There are two dogs.",
+      "recognizedText": "There are two dogs."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-1-q.mp3",
+      "sha256": "601e239f78d83d4eb890d6c46210fdd0ac2025f105989735c751acfc7f7d04cd",
+      "expectedText": "Is eighteen odd or even? Build a sentence.",
+      "recognizedText": "Is 18 odd or even? Build a sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-1-a.mp3",
+      "sha256": "49c34734eea88508937db518da0ce5cc811802700123aff1479c2b347a386a04",
+      "expectedText": "Eighteen is an even number.",
+      "recognizedText": "18 is an even number."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-2-q.mp3",
+      "sha256": "176da6e4731df9489edd29c5f9b050765c15c44f2edee64cd9f1b15b117d5d4e",
+      "expectedText": "Add one to eighteen. Is the new number odd or even?",
+      "recognizedText": "Add 1 to 18. Is the new number odd or even?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-2-a.mp3",
+      "sha256": "87eabf0668fadb09614047d429673554bce3d49c48a3731d080165c54041def6",
+      "expectedText": "Nineteen is an odd number.",
+      "recognizedText": "19 is an odd number."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-3-q.mp3",
+      "sha256": "3830af5b08d1a8c10cf8d1660b79d688fe07c789e93644b1b7a44d38d2771250",
+      "expectedText": "Is twenty odd or even? Fix one word.",
+      "recognizedText": "Is 20 odd or even? Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-odd-even-v2-try-3-a.mp3",
+      "sha256": "3fb7e470ed0ab12d1dd5787be8b3ddcf728df473117e7b53893ba90c5e58120b",
+      "expectedText": "Twenty is an even number.",
+      "recognizedText": "Twenty is an even number."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-1-q.mp3",
+      "sha256": "972a95c1110e33fd929e529da0d9eca48d0cbf397f73c7625b2f9b1b844f83d9",
+      "expectedText": "The box holds six books, but you have eight. Describe the problem.",
+      "recognizedText": "The box holds six books, but you have eight. Describe the problem."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-1-a.mp3",
+      "sha256": "5840b4f0b47848b927962b0f30147be0c8e5d93db5e1ab0aa71c8b5090f4f3fa",
+      "expectedText": "There are too many books.",
+      "recognizedText": "There are too many books."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-2-q.mp3",
+      "sha256": "24a5126a5d451a7338d0ccd5559ebc15b86daf4b5b2bd1ac60fdad79022eaf2d",
+      "expectedText": "There are eight books, and you take two out. How many remain?",
+      "recognizedText": "There are eight books, and you take two out. How many remain?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-2-a.mp3",
+      "sha256": "e321cd405ac938d9eec46cecc035966458ecea11e1c4d209c342ebf2f0c87f78",
+      "expectedText": "There are six books.",
+      "recognizedText": "There are six books."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-3-q.mp3",
+      "sha256": "2e57861ea9b91c723001398cd22b3a609a67b47f055ef30e42ef571b6cbe83d0",
+      "expectedText": "There is room for four toys, but you have seven. Fix one word.",
+      "recognizedText": "There is room for four toys, but you have seven. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-too-many-v2-try-3-a.mp3",
+      "sha256": "a21928795dcdf8efdc68b3b0b67b25cb419f148ee6140e100c6fe31187a4f116",
+      "expectedText": "There are too many toys.",
+      "recognizedText": "There are too many toys."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-1-q.mp3",
+      "sha256": "b48b128738b8e9e3d0ad9ded7beef41bdb068bb904dc8d9335904bf71f487710",
+      "expectedText": "Sue is your mum's sister. Who is Sue?",
+      "recognizedText": "Sue is your mom's sister. Who is Sue?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-1-a.mp3",
+      "sha256": "d24e56644e86f5f4d6cdef61cde2025396db1a603df05c6c0f81cc9a8e6b829a",
+      "expectedText": "She is my aunt.",
+      "recognizedText": "She is my aunt."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-2-q.mp3",
+      "sha256": "02061aff3b902bfb4495c4429519bdf15ed2ef39b98e539caf55b28e2a984b0a",
+      "expectedText": "Now talk about your mum's brother. Change the sentence.",
+      "recognizedText": "Now talk about your mom's brother. Change the sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-2-a.mp3",
+      "sha256": "e23ef9caaa5679baa08727ad976ae5f3bfb399353b62463f07f88c6abeb9bb78",
+      "expectedText": "He is my uncle.",
+      "recognizedText": "He is my uncle."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-3-q.mp3",
+      "sha256": "f2cf796f918e5e2a61ac3e9d4acdb40bae41a7e7fb37f216335ef37e0afffbbf",
+      "expectedText": "Max is your aunt's son. Fix one word.",
+      "recognizedText": "Max is your aunt's son. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-family-roles-v2-try-3-a.mp3",
+      "sha256": "eca5a48426ee73182cf3091291c64b47b3edbc0c4c6693c998adce0ae4b0b313",
+      "expectedText": "He is my cousin.",
+      "recognizedText": "He is my cousin."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-1-q.mp3",
+      "sha256": "f7db6375ecfddb4b71a15f83f6aca578b6df8bc191fb37fcb2d313cda78cc34f",
+      "expectedText": "He is my friend. Make it short.",
+      "recognizedText": "He is my friend. Make it short."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-1-a.mp3",
+      "sha256": "28dbf2eaccac2fe6a2392f9e0a0038a25252b395efde161af10383cd1af1ebe8",
+      "expectedText": "He's my friend.",
+      "recognizedText": "He's my friend."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-2-q.mp3",
+      "sha256": "e2dd6e9015b0e4f702d6d108d3329c3b7bfb52ba4a8c3670a0e2bc8e3799a009",
+      "expectedText": "I'm happy. Make it long.",
+      "recognizedText": "I'm happy. Make it long."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-2-a.mp3",
+      "sha256": "9488c779360e51f983111c1e0ec406c8e30edbf69c2553320384c10335468f08",
+      "expectedText": "I am happy.",
+      "recognizedText": "I am happy."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-3-q.mp3",
+      "sha256": "869d4f015c0af715381b6f973cc31157b2a94f75ac07d9e3a945b1efe44c05d5",
+      "expectedText": "You are happy. Fix one word.",
+      "recognizedText": "You are happy. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-short-forms-v2-try-3-a.mp3",
+      "sha256": "9918562f13334dc78e02a7d6dfbcb18c9b2b20d92336dfa21a1406954d7b07f8",
+      "expectedText": "I'm happy.",
+      "recognizedText": "I'm happy."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-1-q.mp3",
+      "sha256": "00bc9c65a7e0f4d0990a9b06a8b05351b3a232f380482e68a4393339a168ae5c",
+      "expectedText": "What is the opposite of cold? Keep cold at the end.",
+      "recognizedText": "What is the opposite of cold? Keep cold at the end."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-1-a.mp3",
+      "sha256": "2d2628dd9ddabd1a1b784e8fe8eb8f2392a38417f4d1747aad1d0b50f1de9f44",
+      "expectedText": "Hot is the opposite of cold.",
+      "recognizedText": "Hot is the opposite of cold."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-2-q.mp3",
+      "sha256": "ffbe76119a27286ed97c533e416378e875964eaf7f1db34dc919344fd042d926",
+      "expectedText": "Change the sentence to start with The.",
+      "recognizedText": "Change the sentence to start with the"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-2-a.mp3",
+      "sha256": "38ee26dfb2fada74a9fc40365495bcb80c7674a392dc648681619b3574f48502",
+      "expectedText": "The opposite of old is young.",
+      "recognizedText": "The opposite of old is young."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-3-q.mp3",
+      "sha256": "cb86d1c6ff90ba487481a037768bf1e7893818796d16f80917c9850e5eb93d76",
+      "expectedText": "Keep Small and fix the last word.",
+      "recognizedText": "Keep small and fix the last word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-opposites-v2-try-3-a.mp3",
+      "sha256": "ee1ea8a0e8f64b0408648031228a8ad5926375605f0a145b15f5f72769c640cd",
+      "expectedText": "Small is the opposite of big.",
+      "recognizedText": "Small is the opposite of big."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-1-q.mp3",
+      "sha256": "ddcfd9d8a80897051ab0c3beae0404217eb132b8ca1dbe11d64f4c21cf5a5cb5",
+      "expectedText": "You want to erase a pencil mark. Which tool can help?",
+      "recognizedText": "You want to erase a pencil mark, which tool can help?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-1-a.mp3",
+      "sha256": "223cf82b0ed53e1e547a5ecd6bb97bf35f8bdc9d3ac8b9e4cb4a89b59fff60a7",
+      "expectedText": "I use an eraser.",
+      "recognizedText": "I use an eraser."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-2-q.mp3",
+      "sha256": "489384799aff6a9dfcb41a216d75ee0454438160b3dbfa185fd3bbf2a719b8e3",
+      "expectedText": "Now you want to draw a straight line. Change the sentence.",
+      "recognizedText": "Now you want to draw a straight line. Change the sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-2-a.mp3",
+      "sha256": "efd3c838b54172e6e7b0f35b968c0af042e17cddcf1164eb1d390cc67a255055",
+      "expectedText": "I use a ruler.",
+      "recognizedText": "I use a ruler."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-3-q.mp3",
+      "sha256": "54bdb9a29f6e943f67f3601058db8753171d41fe963fe0ec502a2a4e5fc37ce9",
+      "expectedText": "You want to carry books to school. Fix one word.",
+      "recognizedText": "You want to carry books to school. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-school-tools-v2-try-3-a.mp3",
+      "sha256": "d324715cb2e90c068b5051bf54fed35716c537ee3d430a681ef9b0cce71562ea",
+      "expectedText": "I use a backpack.",
+      "recognizedText": "I use a backpack."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-1-q.mp3",
+      "sha256": "18d7ef8e77e612dbb58dac5cdbfa08f652c5594e6977e25085429799671b0385",
+      "expectedText": "Amy has three pencils and Ben has four. How many altogether?",
+      "recognizedText": "Amy has 3 pencils and Ben has 4. How many altogether?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-1-a.mp3",
+      "sha256": "4578df0b2c6e321d3ab68f6fa249ffca357594a82cae1d286b688e3b10a2b107",
+      "expectedText": "They have seven pencils.",
+      "recognizedText": "They have 7 pencils."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-2-q.mp3",
+      "sha256": "e0de163f79608a41f6b8dc3eb4fe6ac9203c13d7026a7f37ca9857102fabb46b",
+      "expectedText": "Now you are Amy. How many pencils do you have?",
+      "recognizedText": "Now you are Amy. How many pencils do you have?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-2-a.mp3",
+      "sha256": "ff6040cf1810cbec4035a454a6394ad6b8b59bcd7ec1a916a469572a06a19bf8",
+      "expectedText": "I have three pencils.",
+      "recognizedText": "I have three pencils."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-3-q.mp3",
+      "sha256": "a3b4a01158a5bb9da82bb0bb72c3c00a96a479314a774143eb7390154c622674",
+      "expectedText": "Amy has two rulers and Ben has three. Fix one word.",
+      "recognizedText": "Amy has two rulers and Ben has three. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-supplies-together-v2-try-3-a.mp3",
+      "sha256": "84aacec5f5842495017653d2f2ab884c80442c1dce873c5034b702ad2e31bd9e",
+      "expectedText": "They have five rulers.",
+      "recognizedText": "They have five rulers."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-1-q.mp3",
+      "sha256": "6229b47aed1ff5c365b94dca89ab170c0462b17ca6028774ed8d9650f2a4dbed",
+      "expectedText": "Dan and Sue say one book, two books, three books. What are they doing?",
+      "recognizedText": "Dan and Sue say one book, two books, three books. What are they doing?"
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-1-a.mp3",
+      "sha256": "b95da00b0d3b818ba4f4bae258dd352d5b3a38d80d70e89ab3f7b4500cb1c03a",
+      "expectedText": "They are counting books.",
+      "recognizedText": "They are counting books."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-2-q.mp3",
+      "sha256": "051c6282a85d0e291f47ee4a181dfb5121713c60de49d72bb937867e32eaf29b",
+      "expectedText": "Now Sue is alone with hats. Change the sentence.",
+      "recognizedText": "Now Sue is alone with hats. Change the sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-2-a.mp3",
+      "sha256": "e1599b3c09b324dee937d8b430fc56d9ceec0a2df2c519b87c5cd097567edfe9",
+      "expectedText": "She is counting hats.",
+      "recognizedText": "She is counting hats."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-3-q.mp3",
+      "sha256": "9f91427400fe10ab2b4e7629f9e050ba8a64cd269824b1327e80952709328ec1",
+      "expectedText": "Kim and Pat count toys together. Fix one word.",
+      "recognizedText": "Kim and Pat count toys together. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-counting-now-v2-try-3-a.mp3",
+      "sha256": "35deb3062cc4d5aab86ed57996342fd331a04bdcfb78d948283c9b6d635b91ef",
+      "expectedText": "They are counting toys.",
+      "recognizedText": "They are counting toys."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-1-q.mp3",
+      "sha256": "f9014cf11d701ea1f81908cb5a121a49b9073734aca001935ca8a369850237b2",
+      "expectedText": "You and Pat are both nine. Tell Pat your age.",
+      "recognizedText": "You and Pat are both nine. Tell Pat your age."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-1-a.mp3",
+      "sha256": "6569754b411b446d7882b9bcd4fa083e78af82a636bf854fb0a66a6b18920254",
+      "expectedText": "I am nine years old too.",
+      "recognizedText": "I am nine years old too."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-2-q.mp3",
+      "sha256": "45fdb3413215cde9e4a101df72f3f11ff0c9b9939c0b724bb00ea5bf6a1b3716",
+      "expectedText": "You are nine, but Pat is ten. Tell Pat your age.",
+      "recognizedText": "You are 9, but Pat is 10. Tell Pat your age."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-2-a.mp3",
+      "sha256": "cef6bc773c8390b0f876ba30379ef07bcc8357e84c556c9d1943907cc6db3060",
+      "expectedText": "I am nine years old.",
+      "recognizedText": "I am nine years old."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-3-q.mp3",
+      "sha256": "eb1e9d7378787130f14250225430fe8e1dbfce2e40baa8fe61343e5d529f2ac8",
+      "expectedText": "You and Kim are both eight. Fix one word.",
+      "recognizedText": "You and Kim are both eight. Fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-same-age-v2-try-3-a.mp3",
+      "sha256": "f0e7007f335a5689d634781095011f08eebe7ab95821fd47a6886d809c8a8689",
+      "expectedText": "I am eight years old too.",
+      "recognizedText": "I am eight years old too."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-1-q.mp3",
+      "sha256": "e3e9ed0813de12d88bdbf64886d2d96b29c57213ae91a420da5d749eb3a864a2",
+      "expectedText": "Look at your winter plan and build a sentence starting with I.",
+      "recognizedText": "Look at your winter plan and build a sentence starting with I."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-1-a.mp3",
+      "sha256": "6cdd541c6873a3dc0bf996ae5a190676f434e93dd0f9a54c723456f202843014",
+      "expectedText": "I fly a kite in winter.",
+      "recognizedText": "I fly a kite in winter."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-2-q.mp3",
+      "sha256": "7482b6710990da67e5551c12e24840d19ab1eb83f5596bc471afd88c4902aae5",
+      "expectedText": "Tell the same plan, but start with In.",
+      "recognizedText": "Tell the same plan, but start within."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-2-a.mp3",
+      "sha256": "e44ea3c7e725609e1edbfa0a967039e4542529f8a030e67fb8ef3d9f8153f663",
+      "expectedText": "In summer I plant flowers.",
+      "recognizedText": "In summer, I plant flowers."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-3-q.mp3",
+      "sha256": "46f8852805618d76f6cb55539cad4046a8f4ea407c6f0df0383f8c6d9be7fb75",
+      "expectedText": "Look at your spring plan and fix one word.",
+      "recognizedText": "Look at your spring plan and fix one word."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-season-actions-v2-try-3-a.mp3",
+      "sha256": "3da4aad9645b5861ca647a237494d4db5e3486826a27cacfafcea05ddf1f901a",
+      "expectedText": "I ride a bike in spring.",
+      "recognizedText": "I ride a bike in spring."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-1-q.mp3",
+      "sha256": "e5b0bb61c7147e2cd8c3813c0b46751d242aac5e5ec6bbb550bc1f92e0620fcf",
+      "expectedText": "Put pens first and books last. Build a list sentence.",
+      "recognizedText": "Put pens first and books last. Build a list sentence."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-1-a.mp3",
+      "sha256": "3a00ec2436aff849bbab5b91f398434ba3317fd5f580c6dd605504f06f15f9a5",
+      "expectedText": "I see pens and books.",
+      "recognizedText": "I see pens and books."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-2-q.mp3",
+      "sha256": "b6ff122fedaf3138e2fa5aba1620302f0e35de3eb17a44e38ffd7b22a4ec4c63",
+      "expectedText": "Add rulers between pens and books. Use commas in your list.",
+      "recognizedText": "Add rulers between pens and books. Use commas in your list."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-2-a.mp3",
+      "sha256": "e378d36f12dde97ac932b8e5ea6dc7d8e5566ef2d6fb85a5a284a136147b552d",
+      "expectedText": "I see pens, rulers, and books.",
+      "recognizedText": "I see pens, rulers, and books."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-3-q.mp3",
+      "sha256": "d4d988cb90fdf6bbbafec55617888ae28c1a06ff0b4f34edb67b3e61987afe47",
+      "expectedText": "Look at the three things and fix the comma.",
+      "recognizedText": "Look at the three things and fix the comma."
+    },
+    {
+      "file": "audio/weekly-2026-09-14-week-list-commas-v2-try-3-a.mp3",
+      "sha256": "5c9f9de7c6c1544527900f79ceeb0cc98a520bc58c8e36eb82f9ed938a96d590",
+      "expectedText": "I see cats, dogs, and birds.",
+      "recognizedText": "I see cats, dogs, and birds."
+    }
+  ]
+}

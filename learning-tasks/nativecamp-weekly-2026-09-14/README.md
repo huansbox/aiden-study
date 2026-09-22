@@ -1,5 +1,7 @@
 # Native Camp Weekly Review：2026-09-14～09-20
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 狀態：題庫、正式音訊與隔離整合驗收已完成；正式發布記錄見[App驗收文件](../../docs-dev/nativecamp-review.md)；交付追蹤於 [#80](https://github.com/huansbox/aiden-study/issues/80)。週期使用 Asia/Taipei，2026-09-20 開放。
 
 本週題庫使用重新設計的完整句題目，每個候選概念保留來源課程與概念 ID，供 App 從已學內容優先選取首次錯誤或需要協助的概念；保留少量成功與較早內容。每次選取 4 個概念，其中最多 1 個較早概念，實際可用範圍以題包與 runtime 契約為準。開始後題目與順序固定，完成後收進 Finished。

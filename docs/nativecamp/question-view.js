@@ -16,7 +16,23 @@
   }
   function answerControls(question, selection, words) {
     if (question.type === "choice") return `<div class="choices">${question.choices.map((choice) => button("pick", escape(choice.text), "choice", `data-choice="${escape(choice.id)}" aria-pressed="${selection === choice.id}"`)).join("")}</div>`;
-    return `<div class="word-tray" aria-label="Your sentence">${words.map((id) => button("remove-word", escape(question.tokens.find((t) => t.id === id).text), "word", `data-word="${escape(id)}" aria-label="Remove ${escape(question.tokens.find((t) => t.id === id).text)}"`)).join("")}</div><div class="word-bank" aria-label="Word cards">${question.tokens.filter((token) => !words.includes(token.id)).map((token) => button("add-word", escape(token.text), "word", `data-word="${escape(token.id)}"`)).join("")}</div>`;
+    if (question.type === "repair") {
+      const replacement = question.choices.find((choice) => choice.id === selection?.choiceId);
+      return `<div class="repair-sentence" aria-label="Choose a word to fix">${question.sentence.map((word) => button("repair-word", escape(selection?.wordId === word.id && replacement ? replacement.text : word.text), "word repair-word", `data-word="${escape(word.id)}" aria-label="Change ${escape(word.text)}" aria-pressed="${selection?.wordId === word.id}"`)).join("")}</div>${selection?.wordId ? `<div class="repair-choices" aria-label="Replacement words">${question.choices.map((choice) => button("repair-choice", escape(choice.text), "word", `data-choice="${escape(choice.id)}" aria-pressed="${selection.choiceId === choice.id}"`)).join("")}</div>` : ""}`;
+    }
+    // A question gets one stable layout: feedback, help and sync never move cards.
+    // Published original questions keep their original layout.
+    const tokens = [...question.tokens];
+    if (question.stage) {
+      let seed = 2166136261;
+      for (const char of question.id) seed = Math.imul(seed ^ char.charCodeAt(0), 16777619) >>> 0;
+      for (let index = tokens.length - 1; index > 0; index--) {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+        const other = (seed >>> 0) % (index + 1);
+        [tokens[index], tokens[other]] = [tokens[other], tokens[index]];
+      }
+    }
+    return `<div class="word-tray" aria-label="Your sentence">${words.map((id) => button("remove-word", escape(question.tokens.find((t) => t.id === id).text), "word", `data-word="${escape(id)}" aria-label="Remove ${escape(question.tokens.find((t) => t.id === id).text)}"`)).join("")}</div><div class="word-bank" aria-label="Word cards">${tokens.filter((token) => !words.includes(token.id)).map((token) => button("add-word", escape(token.text), "word", `data-word="${escape(token.id)}"`)).join("")}</div>`;
   }
   global.NativeCampQuestionView = { sceneHtml, answerControls };
 })(globalThis);

@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-13",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-1-q.mp3",
+      "sha256": "48eac0c8220c56ebd96bba0b0177a88b43528af9ee41d614c9c8be0e126449ad",
+      "expectedText": "Look at the spring plan. What do you do?",
+      "recognizedText": "Look at the spring plan. What do you do?"
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-1-a.mp3",
+      "sha256": "d75f86a00325007f1623c0fb845da7b213070e48dd577294973cfa26f871c377",
+      "expectedText": "I plant flowers in spring.",
+      "recognizedText": "I plant flowers in spring."
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-2-q.mp3",
+      "sha256": "56fb32c3f14b5e7d34ae1e851759d0c577893b3dbab414cd70d7733a03dcea84",
+      "expectedText": "Now you and Mia have a summer beach plan. Tell me the new plan.",
+      "recognizedText": "Now, you and Mia have a summer beach plan. Tell me the new plan."
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-2-a.mp3",
+      "sha256": "80c0cf1ddf2713791fdc46471d292703481737b7c811533644afce86599823b6",
+      "expectedText": "We go to the beach in summer.",
+      "recognizedText": "We go to the beach in summer."
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-3-q.mp3",
+      "sha256": "8e51cd51adf90fe25b412a7b1ae568301711080f14c04710f8daef008687e01a",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-13-season-actions-v2-try-3-a.mp3",
+      "sha256": "8cef1f9ec7de32c789c2e191aa3e0bc708e29933dddc1be534fc345763dbe18e",
+      "expectedText": "I eat ice cream in winter.",
+      "recognizedText": "I eat ice cream in winter."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-1-q.mp3",
+      "sha256": "1f1e738b02120a1c1d88ca4c58717cf64a01aa3eb2600dff98209ecd6a22e83b",
+      "expectedText": "In this story, snow falls all day in winter. Describe the weather.",
+      "recognizedText": "In this story, snow falls all day in winter. Describe the weather."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-1-a.mp3",
+      "sha256": "60e2b092c964359cd1cadced58d0034ae77503c993c582e13f12482a9b5efe94",
+      "expectedText": "It is snowy in winter.",
+      "recognizedText": "It is snowy in winter."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-2-q.mp3",
+      "sha256": "36b1fa2faedf189be83bdc274bc5afd9253336eb63444804a855489efec23843",
+      "expectedText": "Keep the same season, but now snow covers the town. Describe the weather.",
+      "recognizedText": "Heap the same season, but now snow covers the town. Describe the weather."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-2-a.mp3",
+      "sha256": "c160b9a31553b5f0c76e7039f4ce65f50fef1d429df8059e000dd272384c45e0",
+      "expectedText": "It is snowy in summer.",
+      "recognizedText": "It is snowy in summer."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-3-q.mp3",
+      "sha256": "aef4b8673a37bde14889f30774b7fbf68f34d14ecf846d70e2189c464e212bf7",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-3-a.mp3",
+      "sha256": "57a2c3c5ff38b8a5fe7c339c65dee3b1f8d1bc620cbaeaa493eea303fce20f65",
+      "expectedText": "It is warm in spring.",
+      "recognizedText": "It is warm in spring."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-1-q.mp3",
+      "sha256": "64be12c180fd14a9d8854259a93283a58f96c9546a6fdd2f0d2403c28f27eb81",
+      "expectedText": "The park is the place for your bike ride. Tell me where you ride.",
+      "recognizedText": "The park is the place for your bike ride. Tell me where you ride."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-1-a.mp3",
+      "sha256": "c5aba6d39dd793aed543161754292135573d80d3c876c769a7104097d7273e71",
+      "expectedText": "I ride my bike in the park.",
+      "recognizedText": "I ride my bike in the park."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-2-q.mp3",
+      "sha256": "195d0e974e04431f9a55132e9f3ee8aea463ae7356eb769009c735101ba9e616",
+      "expectedText": "Keep playing the same game, but move to the beach. Tell me where you play.",
+      "recognizedText": "Keep playing the same game, but move to the beach. Tell me where you play."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-2-a.mp3",
+      "sha256": "fd08dfe5ae51fc563a211eab064b638815efe90295bd58904f3fc45ad4ede405",
+      "expectedText": "I play at the beach.",
+      "recognizedText": "I play at the beach."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-3-q.mp3",
+      "sha256": "d1d4f9f4c1672c57731c0a7a351ca985224961019f2402066131616da44debad",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-13-activity-places-v2-try-3-a.mp3",
+      "sha256": "a92c9accbacc7eac5fe5f6ee8c5a8b103c14373c77150bfc7d88f0f088c3b18e",
+      "expectedText": "I fly a kite in the park.",
+      "recognizedText": "I fly a kite in the park."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-1-q.mp3",
+      "sha256": "07d824fe716bd248ada1bf1541248c09d5d73e4ee3adf8130f0c19503b71c98d",
+      "expectedText": "Build a sentence listing flowers, trees, and birds in that order.",
+      "recognizedText": "Build a sentence listing flowers, trees, and birds in that order."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-1-a.mp3",
+      "sha256": "8f0a5346ec4a1836c95f431bcec476cb9963732cc5a169b42492c1db11340ac9",
+      "expectedText": "I see flowers, trees, and birds.",
+      "recognizedText": "I see flowers, trees, and birds."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-2-q.mp3",
+      "sha256": "c7a21e232a2877052ec86a5e539cb4d9d3e3d20bb5081f0f986d8a864e5a9a27",
+      "expectedText": "Add birds to the end of this list. Build the new sentence.",
+      "recognizedText": "Add birds to the end of this list, build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-2-a.mp3",
+      "sha256": "ea59cb2df82db8fe9dc7fbe89241b8e2ccc3b7318dfe6599ae05b1c1b6146591",
+      "expectedText": "I see cats, dogs, and birds.",
+      "recognizedText": "I see cats, dogs, and birds."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-3-q.mp3",
+      "sha256": "7cbc5f3db846a6d68953bf3ac202d2186f3f64292a70825dd8e308b7d79889be",
+      "expectedText": "Find and fix the missing comma.",
+      "recognizedText": "Find and fix the missing comma."
+    },
+    {
+      "file": "audio/2026-09-13-list-commas-v2-try-3-a.mp3",
+      "sha256": "fab26bc6830d4f3df6ee439a9c5d7d373afc8c0c08980fbb59b8201b0cae204f",
+      "expectedText": "I see pens, pencils, and books.",
+      "recognizedText": "I see pens, pencils, and books."
+    }
+  ]
+}

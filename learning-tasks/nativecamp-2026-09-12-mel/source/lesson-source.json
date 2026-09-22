@@ -184,7 +184,145 @@
             "Sam uses a pencil."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "takes-uses-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What does Ben do?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Ben (a boy) / take an umbrella / every rainy day",
+              "heading": "Build"
+            },
+            "answerText": "He takes an umbrella.",
+            "spokenQuestion": "On rainy days, Ben brings an umbrella. What does he take?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "takes"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "umbrella"
+              },
+              {
+                "id": "extra0",
+                "text": "take"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "takes-uses-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Mia and Nina. One pencil each.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "She uses a pencil.",
+              "heading": "Before"
+            },
+            "answerText": "They use pencils.",
+            "spokenQuestion": "Now there are two girls with pencils. Tell me about them.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "pencils"
+              },
+              {
+                "id": "extra0",
+                "text": "uses"
+              },
+              {
+                "id": "extra1",
+                "text": "She"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ]
+          },
+          {
+            "id": "takes-uses-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mia (a girl) / use a pencil / every school day",
+              "heading": "Look"
+            },
+            "answerText": "She uses a pencil.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "pencil."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "uses"
+              },
+              {
+                "id": "c1",
+                "text": "using"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "wearing",
@@ -380,7 +518,155 @@
             "Leo is wearing a hat."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "wearing-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What are they wearing?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Two boys / hats on their heads",
+              "heading": "Build"
+            },
+            "answerText": "They are wearing hats.",
+            "spokenQuestion": "Two boys have hats on their heads. What are they wearing?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "wearing"
+              },
+              {
+                "id": "w3",
+                "text": "hats"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "wearing-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Nina (a girl), alone. A scarf.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "They are wearing hats.",
+              "heading": "Before"
+            },
+            "answerText": "She is wearing a scarf.",
+            "spokenQuestion": "Now Nina is alone with a scarf around her neck. What is she wearing?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "wearing"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "scarf"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "hats"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ]
+          },
+          {
+            "id": "wearing-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Leo (a boy) / socks on his feet",
+              "heading": "Look"
+            },
+            "answerText": "He is wearing socks.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "wearing"
+              },
+              {
+                "id": "w3",
+                "text": "socks."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "am"
+              },
+              {
+                "id": "c1",
+                "text": "is"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "location-is-are",
@@ -595,7 +881,182 @@
             "They're under the chair."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "location-is-are-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Where is the cat?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One cat / under the chair",
+              "heading": "Build"
+            },
+            "answerText": "The cat is under the chair.",
+            "spokenQuestion": "Look under the chair. Tell me where the cat is.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "cat"
+              },
+              {
+                "id": "w2",
+                "text": "is"
+              },
+              {
+                "id": "w3",
+                "text": "under"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "chair"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "on"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ]
+          },
+          {
+            "id": "location-is-are-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: two cats. Under the table.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The cat is under the chair.",
+              "heading": "Before"
+            },
+            "answerText": "The cats are under the table.",
+            "spokenQuestion": "Now look under the table for two cats. Tell me where they are.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "cats"
+              },
+              {
+                "id": "w2",
+                "text": "are"
+              },
+              {
+                "id": "w3",
+                "text": "under"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "table"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              },
+              {
+                "id": "extra1",
+                "text": "cat"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ]
+          },
+          {
+            "id": "location-is-are-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Two books / on the table",
+              "heading": "Look"
+            },
+            "answerText": "The books are on the table.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "books"
+              },
+              {
+                "id": "w2",
+                "text": "is"
+              },
+              {
+                "id": "w3",
+                "text": "on"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "table."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are"
+              },
+              {
+                "id": "c1",
+                "text": "am"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c0"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "plural-forms",
@@ -781,7 +1242,154 @@
             "I can see three leaves."
           ]
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "plural-forms-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "How many altogether?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "1 snowman + 1 snowman",
+              "heading": "Build"
+            },
+            "answerText": "There are two snowmen.",
+            "spokenQuestion": "One snowman and one more snowman. How many are there?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "two"
+              },
+              {
+                "id": "w3",
+                "text": "snowmen"
+              },
+              {
+                "id": "extra0",
+                "text": "snowmans"
+              },
+              {
+                "id": "extra1",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "plural-forms-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now one melts away. How many are left?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "There are two snowmen.",
+              "heading": "Before"
+            },
+            "answerText": "There is one snowman.",
+            "spokenQuestion": "One snowman melts away. How many are left?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "one"
+              },
+              {
+                "id": "w3",
+                "text": "snowman"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "snowmen"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ]
+          },
+          {
+            "id": "plural-forms-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "1 leaf + 1 leaf + 1 leaf",
+              "heading": "Look"
+            },
+            "answerText": "There are three leaves.",
+            "spokenQuestion": "Find and fix one word.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "three"
+              },
+              {
+                "id": "w3",
+                "text": "leafs."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "leaf."
+              },
+              {
+                "id": "c1",
+                "text": "leaves."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            }
+          }
+        ]
+      }
     }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "engine": "faster-whisper 1.2.1",
+  "model": "large-v2",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "scope": "Nontrivial differences from small.en, excluding number spelling, mum/mom and I am contraction normalization",
+  "samples": [
+    {
+      "file": "audio/2026-09-08-story-characters-v2-try-1-a.mp3",
+      "sha256": "2b23f368885b6c62e14ad517c257d1f7d132158d730dba7e3977151438440878",
+      "expectedText": "Nina and the kitten are characters.",
+      "recognizedText": "Nina and the Kitten are characters."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-2-q.mp3",
+      "sha256": "3008c35f6599c03b8bab7764027aac33ae44fc3ee6a76169cf59793847e5c7ac",
+      "expectedText": "Your new pretend animal: frog. Change the sentence.",
+      "recognizedText": "Your new pretend animal, frog. Change the sentence."
+    },
+    {
+      "file": "audio/2026-09-13-story-weather-v2-try-2-q.mp3",
+      "sha256": "36b1fa2faedf189be83bdc274bc5afd9253336eb63444804a855489efec23843",
+      "expectedText": "Keep the same season, but now snow covers the town. Describe the weather.",
+      "recognizedText": "Keep the same season, but now snow covers the town. Describe the weather."
+    }
+  ]
+}

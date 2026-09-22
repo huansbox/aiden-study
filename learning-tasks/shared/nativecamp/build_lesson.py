@@ -42,10 +42,20 @@ def build(lesson_id):
     jobs = []
     question_ids = set()
     for concept in result["concepts"]:
-        for mode in ["try", "say"]:
-            if len(concept[mode]) != 3:
+        groups = [concept[mode] for mode in ["try", "say"]]
+        if any("stage" in question for question in concept["try"]):
+            validate_stages(concept["try"])
+        if "tryRevision" in concept:
+            revision = concept["tryRevision"]
+            if not isinstance(revision, dict) or not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", revision.get("id", "")):
+                raise ValueError("Try revision needs a valid ID")
+            revised = revision.get("questions")
+            validate_stages(revised)
+            groups.append(revised)
+        for questions in groups:
+            if len(questions) != 3:
                 raise ValueError("Each mode needs three variants")
-            for question in concept[mode]:
+            for question in questions:
                 spoken = question.pop("spokenQuestion")
                 if not isinstance(spoken, str) or not spoken.strip():
                     raise ValueError("Each question needs nonempty spokenQuestion text")
@@ -57,6 +67,14 @@ def build(lesson_id):
                 jobs.extend([{"file": f"{prefix}-q.mp3", "text": spoken},
                              {"file": f"{prefix}-a.mp3", "text": question["answerText"]}])
     return result, jobs
+
+
+def validate_stages(questions):
+    if not isinstance(questions, list) or len(questions) != 3 or any(
+        not isinstance(question, dict) or question.get("stage") != stage or question.get("type") != kind
+        for question, stage, kind in zip(questions, ["build", "change", "fix"], ["order", "order", "repair"])
+    ):
+        raise ValueError("Try practice needs Build, Change, and Fix questions")
 
 
 def main():

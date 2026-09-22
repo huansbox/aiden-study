@@ -126,9 +126,15 @@
         validateSource(concept.sourceConcept);
         requireValue((lesson.weekly.schemaVersion === 2 ? concept.sourceConcept.date < lesson.weekly.practiceEnd : concept.sourceConcept.date <= lesson.weekly.weekEnd) && concept.sourceConcept.lessonId !== lesson.id, "This review includes a source that has not been taught.");
       }
-      for (const mode of MODES) {
-        requireValue(Array.isArray(concept[mode]) && concept[mode].length >= 3, "This lesson needs three practice questions.");
-        for (const q of concept[mode]) {
+      const groups = MODES.map((mode) => ({ mode, questions: concept[mode] }));
+      if (concept.tryRevision !== undefined) {
+        requireValue(object(concept.tryRevision) && validId(concept.tryRevision.id) && Array.isArray(concept.tryRevision.questions) && concept.tryRevision.questions.length === 3, "This update needs three practice questions.");
+        groups.push({ mode: "try", questions: concept.tryRevision.questions });
+      }
+      for (const { mode, questions } of groups) {
+        requireValue(Array.isArray(questions) && questions.length >= 3, "This lesson needs three practice questions.");
+        if (mode === "try" && (questions === concept.tryRevision?.questions || questions.some((q) => q.stage !== undefined))) requireValue(questions.length === 3 && questions.every((q, index) => q?.stage === ["build", "change", "fix"][index] && q.type === (index === 2 ? "repair" : "order")), "This practice needs Build, Change, and Fix questions.");
+        for (const q of questions) {
           addId(q.id);
           requireValue(text(q.prompt) && text(q.instruction) && text(q.answerText), "This question is incomplete.");
           requireValue(object(q.scene) && ["cats", "dogs", "trees", "books", "toys", "numbers", "hats", "word-card", "family-link"].includes(q.scene.kind), "This picture could not be opened.");
@@ -142,11 +148,21 @@
           requireValue(q.scene.number === undefined || Number.isInteger(q.scene.number) && q.scene.number >= 0 && q.scene.number <= 10000, "This number is not valid.");
           requireValue(object(q.audio) && audio(q.audio.question) && audio(q.audio.answer), "This question needs its recordings.");
           if (mode === "try") {
-            requireValue(["choice", "order"].includes(q.type), "This question type is not supported.");
-            const options = q.type === "choice" ? q.choices : q.tokens;
+            requireValue(["choice", "order", "repair"].includes(q.type), "This question type is not supported.");
+            requireValue(q.stage === undefined || ["build", "change", "fix"].includes(q.stage), "This practice step is not supported.");
+            const options = q.type === "order" ? q.tokens : q.choices;
             requireValue(Array.isArray(options) && options.length >= 2 && options.length <= 18 && options.every((x) => object(x) && typeof x.id === "string" && ID.test(x.id) && text(x.text)) && new Set(options.map((x) => x.id)).size === options.length, "This question needs valid choices.");
             if (q.type === "choice") requireValue(options.some((x) => x.id === q.answer), "This question needs an answer.");
-            else requireValue(Array.isArray(q.acceptedOrders) && q.acceptedOrders.length > 0 && q.acceptedOrders.every((order) => Array.isArray(order) && order.length > 0 && order.length <= options.length && options.length - order.length <= 2 && new Set(order).size === order.length && order.every((id) => options.some((x) => x.id === id))), "This sentence needs a complete answer.");
+            else if (q.type === "order") requireValue(Array.isArray(q.acceptedOrders) && q.acceptedOrders.length > 0 && q.acceptedOrders.every((order) => Array.isArray(order) && order.length > 0 && order.length <= options.length && options.length - order.length <= 2 && new Set(order).size === order.length && order.every((id) => options.some((x) => x.id === id))), "This sentence needs a complete answer.");
+            else {
+              requireValue(Array.isArray(q.sentence) && q.sentence.length >= 2 && q.sentence.length <= 18 && q.sentence.every((word) => object(word) && validId(word.id) && text(word.text) && !/\s/.test(word.text)) && new Set(q.sentence.map((word) => word.id)).size === q.sentence.length, "This repair needs a sentence of word cards.");
+              requireValue(options.length <= 3 && options.every((choice) => !/\s/.test(choice.text)) && new Set(options.map((choice) => choice.text)).size === options.length, "Choose one replacement word.");
+              const word = q.sentence.find((item) => item.id === q.answer?.wordId), replacement = options.find((item) => item.id === q.answer?.choiceId);
+              requireValue(word && replacement && word.text !== replacement.text, "This sentence needs one word to fix.");
+              const corrected = q.sentence.map((item) => item.id === word.id ? replacement.text : item.text).join(" ");
+              const normalize = (value) => value.trim().replace(/[.!?]+$/, "").replace(/\s+/g, " ");
+              requireValue(normalize(corrected) === normalize(q.answerText), "The repaired sentence must match its answer recording.");
+            }
           }
         }
       }
@@ -154,6 +170,19 @@
     return lesson;
   }
   function conceptState(progress, lessonId, mode, conceptId) { return progress.lessons[lessonId]?.[mode]?.[conceptId] ?? emptyConcept(); }
+  function questionsForConcept(progress, lesson, mode, concept) {
+    if (mode !== "try" || !concept.tryRevision) return concept[mode];
+    const state = conceptState(progress, lesson.id, mode, concept.id);
+    const ids = [...state.initial, ...state.reviews].map((attempt) => attempt.questionId);
+    if (state.pending) ids.push(state.pending.questionId);
+    if (state.deferredQuestionId) ids.push(state.deferredQuestionId);
+    const original = new Set(concept.try.map((question) => question.id));
+    const updated = new Set(concept.tryRevision.questions.map((question) => question.id));
+    requireValue(ids.every((id) => original.has(id) || updated.has(id)), "This practice changed. Ask a parent for help before continuing.");
+    // An older offline device may return with an original pending or first answer.
+    // Keep that entire concept on its original questions; never reinterpret its score.
+    return ids.some((id) => original.has(id)) ? concept.try : concept.tryRevision.questions;
+  }
   function independent(mode, outcome) { return outcome === (mode === "try" ? "independent" : "gotIt"); }
   function validatePractice(state, mode) {
     const first = state.initial;
@@ -214,7 +243,7 @@
   }
   function nextForConcept(progress, lesson, mode, concept, date) {
     const state = conceptState(progress, lesson.id, mode, concept.id);
-    const questions = concept[mode].slice(0, 3);
+    const questions = questionsForConcept(progress, lesson, mode, concept).slice(0, 3);
     let question, phase;
     if (!state.completedOn) {
       question = questions[state.initial.length];
@@ -230,8 +259,12 @@
     let concepts = practiceConcepts(progress, lesson, mode);
     if (conceptId) concepts = concepts.filter((c) => c.id === conceptId);
     const candidates = concepts.map((concept) => nextForConcept(progress, lesson, mode, concept, date)).filter(Boolean);
-    // Leave a needed third initial question until the other concepts have had their first two.
-    if (mode === "try" && !conceptId) candidates.sort((a, b) => Number(a.phase === "initial" && a.number === 3) - Number(b.phase === "initial" && b.number === 3));
+    // Updated practice spaces each concept's Build, then Change, then needed Fix.
+    // An entirely original session keeps its established ordering.
+    if (mode === "try" && !conceptId) {
+      const interleave = candidates.some((next) => next.question.stage);
+      candidates.sort((a, b) => interleave ? a.number - b.number : Number(a.number === 3) - Number(b.number === 3));
+    }
     return candidates[0] ?? null;
   }
   function writable(progress, lesson, mode, conceptId) {
@@ -254,6 +287,10 @@
     if (question.type === "choice") {
       requireValue(typeof answer === "string" && question.choices.some((c) => c.id === answer), "Pick an answer first.");
       return answer === question.answer;
+    }
+    if (question.type === "repair") {
+      requireValue(object(answer) && question.sentence.some((word) => word.id === answer.wordId) && question.choices.some((choice) => choice.id === answer.choiceId), "Choose a word to fix, then a replacement.");
+      return answer.wordId === question.answer.wordId && answer.choiceId === question.answer.choiceId;
     }
     requireValue(Array.isArray(answer) && answer.length > 0 && answer.length <= question.tokens.length && new Set(answer).size === answer.length && answer.every((id) => question.tokens.some((t) => t.id === id)), "Choose words for your sentence. Use each card once.");
     const textFor = (id) => question.tokens.find((token) => token.id === id).text;
@@ -366,5 +403,5 @@
     next.weekly[lesson.id] = { startedOn: date, selected, sources };
     return next;
   }
-  root.NativeCampCore = { createProgress, validateProgress, validateLesson, validateWeekly, summarizeLesson, sourcePerformance, practiceConcepts, startLesson, isOpen, today, nextDay, nextQuestion, markPending, checkAnswer, submitTry, submitSay };
+  root.NativeCampCore = { createProgress, validateProgress, validateLesson, validateWeekly, summarizeLesson, sourcePerformance, practiceConcepts, questionsForConcept, startLesson, isOpen, today, nextDay, nextQuestion, markPending, checkAnswer, submitTry, submitSay };
 })(globalThis);

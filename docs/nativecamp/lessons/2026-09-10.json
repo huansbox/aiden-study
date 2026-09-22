@@ -242,7 +242,174 @@
             "answer": "audio/2026-09-10-animal-homes-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "animal-homes-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Where does the squirrel live?",
+            "instruction": "Start with The.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One squirrel. Home: a tree.",
+              "heading": "Story card"
+            },
+            "answerText": "The squirrel lives in a tree.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "squirrel"
+              },
+              {
+                "id": "w2",
+                "text": "lives"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "a"
+              },
+              {
+                "id": "w5",
+                "text": "tree"
+              },
+              {
+                "id": "extra0",
+                "text": "live"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-animal-homes-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-10-animal-homes-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "animal-homes-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: two eagles. Home: nests.",
+            "instruction": "Start with The.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The squirrel lives in a tree.",
+              "heading": "Before"
+            },
+            "answerText": "The eagles live in nests.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "eagles"
+              },
+              {
+                "id": "w2",
+                "text": "live"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "nests"
+              },
+              {
+                "id": "extra0",
+                "text": "lives"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-animal-homes-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-10-animal-homes-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "animal-homes-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Two monkeys. Home: trees.",
+              "heading": "Story card"
+            },
+            "answerText": "The monkeys live in trees.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "monkeys"
+              },
+              {
+                "id": "w2",
+                "text": "lives"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "trees."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are"
+              },
+              {
+                "id": "c1",
+                "text": "live"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-10-animal-homes-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-10-animal-homes-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "animal-food",
@@ -449,7 +616,155 @@
             "answer": "audio/2026-09-10-animal-food-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "animal-food-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "What does the cow eat?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One cow. Food: grass.",
+              "heading": "Story card"
+            },
+            "answerText": "The cow eats grass.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "cow"
+              },
+              {
+                "id": "w2",
+                "text": "eats"
+              },
+              {
+                "id": "w3",
+                "text": "grass"
+              },
+              {
+                "id": "extra0",
+                "text": "eat"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-animal-food-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-10-animal-food-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "animal-food-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: two squirrels. Food: nuts.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The cow eats grass.",
+              "heading": "Before"
+            },
+            "answerText": "The squirrels eat nuts.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "squirrels"
+              },
+              {
+                "id": "w2",
+                "text": "eat"
+              },
+              {
+                "id": "w3",
+                "text": "nuts"
+              },
+              {
+                "id": "extra0",
+                "text": "eats"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-animal-food-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-10-animal-food-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "animal-food-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One squirrel. Food: nuts.",
+              "heading": "Story card"
+            },
+            "answerText": "The squirrel eats nuts.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "squirrel"
+              },
+              {
+                "id": "w2",
+                "text": "eat"
+              },
+              {
+                "id": "w3",
+                "text": "nuts."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "is"
+              },
+              {
+                "id": "c1",
+                "text": "eats"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-10-animal-food-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-10-animal-food-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "pretend-animal",
@@ -652,7 +967,155 @@
             "answer": "audio/2026-09-10-pretend-animal-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "pretend-animal-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "What are you?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your animal: orangutan.",
+              "heading": "Pretend game"
+            },
+            "answerText": "I am an orangutan.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "orangutan"
+              },
+              {
+                "id": "extra0",
+                "text": "a"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-pretend-animal-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-10-pretend-animal-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "pretend-animal-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: a frog. What are you?",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I am an orangutan.",
+              "heading": "Before"
+            },
+            "answerText": "I am a frog.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "frog"
+              },
+              {
+                "id": "extra0",
+                "text": "an"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-10-pretend-animal-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-10-pretend-animal-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "pretend-animal-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your animal: octopus.",
+              "heading": "Pretend game"
+            },
+            "answerText": "I am an octopus.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "octopus."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "is"
+              },
+              {
+                "id": "c1",
+                "text": "an"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-10-pretend-animal-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-10-pretend-animal-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     }
   ]
 }

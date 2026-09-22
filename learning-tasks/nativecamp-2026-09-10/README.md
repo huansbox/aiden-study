@@ -1,5 +1,7 @@
 # Native Camp 課後複習：2026-09-10 Anastasia
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 課程：2026-09-10 19:30（Asia/Taipei），Anastasia。本堂由 [#97](https://github.com/huansbox/aiden-study/issues/97) 統籌；工作狀態以 [catalog.json](../catalog.json) 為準。
 
 ## 內容與使用

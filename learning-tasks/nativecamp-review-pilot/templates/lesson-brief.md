@@ -36,9 +36,9 @@
 
 | Slot | 題型／目標 | 情境變化 | Question ID | 正確答案／成功條件 | 問題／答案音訊來源 |
 | --- | --- | --- | --- | --- | --- |
-| Try 1 | 〔choice/order〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
-| Try 2 | 〔choice/order〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
-| Try 3 | 〔choice/order〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
+| Try 1 | build / order | 〔組完整句；1–2個混淆字〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
+| Try 2 | change / order | 〔新條件如何改變判斷，而非僅換名詞〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
+| Try 3 | fix / repair | 〔補強用的一個錯字〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
 | Say 1 | 〔完整句〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
 | Say 2 | 〔完整句〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
 | Say 3 | 〔完整句〕 | 〔〕 | 〔〕 | 〔〕 | 〔TTS/private〕 |
@@ -47,12 +47,13 @@
 
 | 欄位 | 填寫內容 |
 | --- | --- |
-| id／mode／type | 〔穩定ID〕／〔try或say〕／〔Try為choice或order〕 |
+| id／mode／type／stage | 〔穩定ID〕／〔try或say〕／〔Try為order或repair〕／〔build/change/fix〕 |
 | prompt | 〔孩子看到的英文問題〕 |
 | instruction | 〔Try操作短句；Say為作答區的句型cue〕 |
 | scene | 〔kind、count或number、需要時heading；圖與答案如何對應〕 |
 | choices／tokens | 〔Try用；ID與顯示文字分開，重複字各有ID；通常1個、最多2個合理混淆字可留未選；Say填不適用〕 |
 | answer／acceptedOrders | 〔choice正確ID／order必要token ID序列；是tokens的非空子集，列完所有符合情境的自然排列及重複字等價交換〕 |
+| sentence／repair answer | 〔repair用：完整錯句各token的id/text；answer為{wordId,choiceId}，替換後等於answerText。確認只有一個可修正位置，正解choice位置交錯〕 |
 | answerText | 〔揭曉的完整示範句〕 |
 | accepted | 〔Say的合理替代句；內容與語法判準相同〕 |
 | explanation／hint | 〔需要時填短英文；避免新增第二個學習目標〕 |
@@ -88,6 +89,7 @@ TTS引擎／音色／語速：OpenAI gpt-4o-mini-tts系列，〔本課固定Mari
 - [ ] 概念選擇有來源，未把老師提示、跟讀或ASR誤標當成孩子獨立表現。
 - [ ] 每概念各3題Try／Say；變體不同，答案、圖像、數量與語音一致。
 - [ ] Try答案封閉；排列合理答案完整；Say替代句與家長判準明確。
+- [ ] Try依序組句、實質變換、單字補強；Change不僅換數字／名詞，Fix不加難。字卡位置不提示答案，語音不先念目標答案詞。
 - [ ] 孩子畫面全英文、短句、無emoji；句型cue只在作答區出現一份且清楚可讀。
 - [ ] 問題音檔不洩答案；自動播放、重聽、揭曉／回饋、切題／背景取消正常。
 - [ ] 前兩題獨立成功可收尾，否則當回合補第三題；完成收起不回舊課隔天補題，首次紀錄與既有reviews歷史保留。

@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-12-mel",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-1-q.mp3",
+      "sha256": "dba2a8a528188449eba5e9fda10f4ce93b2e51a84a2ae0c4ee07f42903fb5b49",
+      "expectedText": "On rainy days, Ben brings an umbrella. What does he take?",
+      "recognizedText": "On rainy days, Ben brings an umbrella. What does he take?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-1-a.mp3",
+      "sha256": "0e4c0b9f0e7da6e91455e7a188b2567dce038595f1997c1a6b0c49493c9f2fa8",
+      "expectedText": "He takes an umbrella.",
+      "recognizedText": "He takes an umbrella."
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-2-q.mp3",
+      "sha256": "c6714ae657a83461e6e61a5a4df5b3669b801105b680009e66ad3f7be1780dd3",
+      "expectedText": "Now there are two girls with pencils. Tell me about them.",
+      "recognizedText": "Now there are two girls with pencils. Tell me about them."
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-2-a.mp3",
+      "sha256": "e3eed92247dd443d75560204d0df308e0a895fa70f5006829c1e78cab97f3a68",
+      "expectedText": "They use pencils.",
+      "recognizedText": "They use pencils."
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-3-q.mp3",
+      "sha256": "43ec57e4924cbaaebdbb3734773401626cd869bc3bbbde6548b3c6f57137172a",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-12-mel-takes-uses-v2-try-3-a.mp3",
+      "sha256": "8a4245ea7edccfb17af3bc350d7775d9ffb4cc2eeeae327d747386eae9fdf344",
+      "expectedText": "She uses a pencil.",
+      "recognizedText": "She uses a pencil."
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-1-q.mp3",
+      "sha256": "d6e54e7a843ea046be5ab1da46afbf64655997be581c224efa5b8317e9a03554",
+      "expectedText": "Two boys have hats on their heads. What are they wearing?",
+      "recognizedText": "Two boys have hats on their heads. What are they wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-1-a.mp3",
+      "sha256": "cbd8abd4aca70bff495f9a147275403b5669a94ebe31ad5f3bc1e47abefbb4ec",
+      "expectedText": "They are wearing hats.",
+      "recognizedText": "They are wearing hats."
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-2-q.mp3",
+      "sha256": "3e305eebfe31e9b0e4362f7c0d5782eb94a634cd84db7f43535bb4de9de57661",
+      "expectedText": "Now Nina is alone with a scarf around her neck. What is she wearing?",
+      "recognizedText": "Now Nina is alone with a scarf around her neck. What is she wearing?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-2-a.mp3",
+      "sha256": "478f27bb9d76ec126d83a16299280b492b75b5d56d9c389848ee8978aad6c581",
+      "expectedText": "She is wearing a scarf.",
+      "recognizedText": "She is wearing a scarf."
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-3-q.mp3",
+      "sha256": "66052f9a931281bfa34aef7f72bf0813e5eb677634ab5320d5e771f328c7d506",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-12-mel-wearing-v2-try-3-a.mp3",
+      "sha256": "157d54aeabd1c791c2b1ce1d2e421aea342ef08863840b2467bdcc4e49ccd5d2",
+      "expectedText": "He is wearing socks.",
+      "recognizedText": "He is wearing socks."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-1-q.mp3",
+      "sha256": "089a7ca31b9c6e7db5586f30d45d7d70e4b16eaa8b9566bb9bf1cbe854833eab",
+      "expectedText": "Look under the chair. Tell me where the cat is.",
+      "recognizedText": "Look under the chair. Tell me where the cat is."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-1-a.mp3",
+      "sha256": "d4c99b3a4d098a27df9c2375b068b0a22715c417edf48857fa30fcb79d1acb1b",
+      "expectedText": "The cat is under the chair.",
+      "recognizedText": "The cat is under the chair."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-2-q.mp3",
+      "sha256": "e26644f5601e2e322d02393aaf101ced521ee747d031e3e66a43fab1a5c82606",
+      "expectedText": "Now look under the table for two cats. Tell me where they are.",
+      "recognizedText": "Now look under the table for two cats. Tell me where they are."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-2-a.mp3",
+      "sha256": "a986632021bc6959034f1ca7449ee151c839c629ba24bb9c0822173e83c92ebf",
+      "expectedText": "The cats are under the table.",
+      "recognizedText": "The cats are under the table."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-3-q.mp3",
+      "sha256": "220c20a0de87b69d8d93249e9000511e55450fd0636fec81654dc0e65c98cab6",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-12-mel-location-is-are-v2-try-3-a.mp3",
+      "sha256": "8cc0f19fd13e28c5d61be45186e5a7ea04edc8b0c06679fb868d704e3d5320db",
+      "expectedText": "The books are on the table.",
+      "recognizedText": "The books are on the table."
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-1-q.mp3",
+      "sha256": "a7ce41e4f66d6a3bdd11eb013b2485ee72387dde8d5d1bb815fb2d3a827c04c1",
+      "expectedText": "One snowman and one more snowman. How many are there?",
+      "recognizedText": "One snowman and one more snowman, how many are there?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-1-a.mp3",
+      "sha256": "a54ed2d28754e1f04083a78c7c8743d8dc6e7d760bff56445e369ffa1c6e2990",
+      "expectedText": "There are two snowmen.",
+      "recognizedText": "There are two snowmen."
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-2-q.mp3",
+      "sha256": "51a1efc53efbe5a4544d00b5256f64bf22ec7b1ca984c7f891ce65fbd4b1c796",
+      "expectedText": "One snowman melts away. How many are left?",
+      "recognizedText": "1. Snowman melts away. How many are left?"
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-2-a.mp3",
+      "sha256": "07aa08ec2a2754de8818a039c461270a4a2fde42c3414f1d90efab140543b0f5",
+      "expectedText": "There is one snowman.",
+      "recognizedText": "There is one snowman."
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-3-q.mp3",
+      "sha256": "647793cc267afe0a3a707cc19cdcb45057f54301fade431b1bcc382b778cbfe2",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-12-mel-plural-forms-v2-try-3-a.mp3",
+      "sha256": "04cfd57115e5aec72fe731ec44a3970e882feea8f000d9ed1a1b41430e7140ed",
+      "expectedText": "There are three leaves.",
+      "recognizedText": "There are three leaves."
+    }
+  ]
+}

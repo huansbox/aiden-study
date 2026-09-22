@@ -207,7 +207,168 @@
             "answer": "audio/2026-09-12-can-actions-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "can-actions-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What can you do together?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You + Mia / build / a treehouse",
+              "heading": "Build"
+            },
+            "answerText": "We can build a treehouse.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "We"
+              },
+              {
+                "id": "w1",
+                "text": "can"
+              },
+              {
+                "id": "w2",
+                "text": "build"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "treehouse"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-can-actions-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-12-can-actions-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "can-actions-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: you work alone. Grow flowers.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "We can build a treehouse.",
+              "heading": "Before"
+            },
+            "answerText": "I can grow flowers.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "can"
+              },
+              {
+                "id": "w2",
+                "text": "grow"
+              },
+              {
+                "id": "w3",
+                "text": "flowers"
+              },
+              {
+                "id": "extra0",
+                "text": "We"
+              },
+              {
+                "id": "extra1",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-can-actions-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-12-can-actions-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "can-actions-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You + Leo / make / a swing",
+              "heading": "Look"
+            },
+            "answerText": "We can make a swing.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "We"
+              },
+              {
+                "id": "w1",
+                "text": "can"
+              },
+              {
+                "id": "w2",
+                "text": "makes"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "swing."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "make"
+              },
+              {
+                "id": "c1",
+                "text": "making"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-12-can-actions-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-12-can-actions-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "watch-grow",
@@ -417,7 +578,164 @@
             "answer": "audio/2026-09-12-watch-grow-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "watch-grow-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What do you watch? Use grow.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You watch small buds get bigger.",
+              "heading": "Build"
+            },
+            "answerText": "I watch small buds grow.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "watch"
+              },
+              {
+                "id": "w2",
+                "text": "small"
+              },
+              {
+                "id": "w3",
+                "text": "buds"
+              },
+              {
+                "id": "w4",
+                "text": "grow"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-watch-grow-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-12-watch-grow-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "watch-grow-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: you and Mia watch together. Apples.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I watch buds grow.",
+              "heading": "Before"
+            },
+            "answerText": "We watch apples grow.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "We"
+              },
+              {
+                "id": "w1",
+                "text": "watch"
+              },
+              {
+                "id": "w2",
+                "text": "apples"
+              },
+              {
+                "id": "w3",
+                "text": "grow"
+              },
+              {
+                "id": "extra0",
+                "text": "I"
+              },
+              {
+                "id": "extra1",
+                "text": "grows"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-watch-grow-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-12-watch-grow-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "watch-grow-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You watch flowers get bigger.",
+              "heading": "Look"
+            },
+            "answerText": "I watch flowers grow.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "watch"
+              },
+              {
+                "id": "w2",
+                "text": "flowers"
+              },
+              {
+                "id": "w3",
+                "text": "grows."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are."
+              },
+              {
+                "id": "c1",
+                "text": "grow."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-12-watch-grow-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-12-watch-grow-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "tree-details",
@@ -634,7 +952,178 @@
             "answer": "audio/2026-09-12-tree-details-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "tree-details-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Tell me about your tree.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your tree / red apples",
+              "heading": "Build"
+            },
+            "answerText": "My tree has red apples.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "My"
+              },
+              {
+                "id": "w1",
+                "text": "tree"
+              },
+              {
+                "id": "w2",
+                "text": "has"
+              },
+              {
+                "id": "w3",
+                "text": "red"
+              },
+              {
+                "id": "w4",
+                "text": "apples"
+              },
+              {
+                "id": "extra0",
+                "text": "have"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-tree-details-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-12-tree-details-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "tree-details-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now add the size: big. Keep the color.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "My tree has red apples.",
+              "heading": "Before"
+            },
+            "answerText": "My tree has big red apples.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "My"
+              },
+              {
+                "id": "w1",
+                "text": "tree"
+              },
+              {
+                "id": "w2",
+                "text": "has"
+              },
+              {
+                "id": "w3",
+                "text": "big"
+              },
+              {
+                "id": "w4",
+                "text": "red"
+              },
+              {
+                "id": "w5",
+                "text": "apples"
+              },
+              {
+                "id": "extra0",
+                "text": "small"
+              },
+              {
+                "id": "extra1",
+                "text": "have"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-12-tree-details-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-12-tree-details-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "tree-details-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your tree / tasty apples",
+              "heading": "Look"
+            },
+            "answerText": "My tree has tasty apples.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "My"
+              },
+              {
+                "id": "w1",
+                "text": "tree"
+              },
+              {
+                "id": "w2",
+                "text": "have"
+              },
+              {
+                "id": "w3",
+                "text": "tasty"
+              },
+              {
+                "id": "w4",
+                "text": "apples."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "has"
+              },
+              {
+                "id": "c1",
+                "text": "is"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-12-tree-details-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-12-tree-details-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     }
   ]
 }

@@ -48,6 +48,30 @@
     "text": "I ride a bike in spring."
   },
   {
+    "file": "2026-09-13-season-actions-v2-try-1-q.mp3",
+    "text": "Look at the spring plan. What do you do?"
+  },
+  {
+    "file": "2026-09-13-season-actions-v2-try-1-a.mp3",
+    "text": "I plant flowers in spring."
+  },
+  {
+    "file": "2026-09-13-season-actions-v2-try-2-q.mp3",
+    "text": "Now you and Mia have a summer beach plan. Tell me the new plan."
+  },
+  {
+    "file": "2026-09-13-season-actions-v2-try-2-a.mp3",
+    "text": "We go to the beach in summer."
+  },
+  {
+    "file": "2026-09-13-season-actions-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-13-season-actions-v2-try-3-a.mp3",
+    "text": "I eat ice cream in winter."
+  },
+  {
     "file": "2026-09-13-story-weather-try-1-q.mp3",
     "text": "This made-up story is in Pine Town. The season is winter. The weather is snowy. Describe the weather in this story. Build a full sentence. Start with It."
   },
@@ -93,6 +117,30 @@
   },
   {
     "file": "2026-09-13-story-weather-say-3-a.mp3",
+    "text": "It is warm in spring."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-1-q.mp3",
+    "text": "In this story, snow falls all day in winter. Describe the weather."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-1-a.mp3",
+    "text": "It is snowy in winter."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-2-q.mp3",
+    "text": "Keep the same season, but now snow covers the town. Describe the weather."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-2-a.mp3",
+    "text": "It is snowy in summer."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-13-story-weather-v2-try-3-a.mp3",
     "text": "It is warm in spring."
   },
   {
@@ -144,6 +192,30 @@
     "text": "I play in the house."
   },
   {
+    "file": "2026-09-13-activity-places-v2-try-1-q.mp3",
+    "text": "The park is the place for your bike ride. Tell me where you ride."
+  },
+  {
+    "file": "2026-09-13-activity-places-v2-try-1-a.mp3",
+    "text": "I ride my bike in the park."
+  },
+  {
+    "file": "2026-09-13-activity-places-v2-try-2-q.mp3",
+    "text": "Keep playing the same game, but move to the beach. Tell me where you play."
+  },
+  {
+    "file": "2026-09-13-activity-places-v2-try-2-a.mp3",
+    "text": "I play at the beach."
+  },
+  {
+    "file": "2026-09-13-activity-places-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-13-activity-places-v2-try-3-a.mp3",
+    "text": "I fly a kite in the park."
+  },
+  {
     "file": "2026-09-13-list-commas-try-1-q.mp3",
     "text": "Three things: flowers, trees, and birds. Which written sentence uses commas to separate the list?"
   },
@@ -190,5 +262,29 @@
   {
     "file": "2026-09-13-list-commas-say-3-a.mp3",
     "text": "I like spring, summer, and winter."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-1-q.mp3",
+    "text": "Build a sentence listing flowers, trees, and birds in that order."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-1-a.mp3",
+    "text": "I see flowers, trees, and birds."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-2-q.mp3",
+    "text": "Add birds to the end of this list. Build the new sentence."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-2-a.mp3",
+    "text": "I see cats, dogs, and birds."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-3-q.mp3",
+    "text": "Find and fix the missing comma."
+  },
+  {
+    "file": "2026-09-13-list-commas-v2-try-3-a.mp3",
+    "text": "I see pens, pencils, and books."
   }
 ]

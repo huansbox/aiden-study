@@ -13,13 +13,14 @@
   function mount({ root, lesson, child = "aiden", catalog = [], search = global.location?.search || "", date = () => C.today(), auth = global.KidsAuth, makeAudio = () => new Audio(),
     makeContext, createObjectURL = (blob) => URL.createObjectURL(blob), revokeObjectURL = (url) => URL.revokeObjectURL(url) }) {
     C.validateLesson(lesson);
-    let mode = "try", concept = lesson.concepts[0], questionIndex = 0;
+    let mode = "try", concept = lesson.concepts[0], questionIndex = 0, original = false;
     let selection = null, words = [], revealed = false, result = null, error = "", audioMessage = "", lastAudio = "question";
     let destroyed = false;
     let calendarMonth = global.NativeCampCatalog?.initialMonth(lesson, search, date());
     const audio = global.NativeCampAudio.create({ makeAudio, makeContext, resolveSource, onStatus: audioStatus });
-    const question = () => concept[mode][questionIndex];
-    const canCheck = () => question().type === "choice" ? selection !== null : words.length > 0;
+    const questions = () => mode === "try" && concept.tryRevision && !original ? concept.tryRevision.questions : concept[mode];
+    const question = () => questions()[questionIndex];
+    const canCheck = () => question().type === "repair" ? Boolean(selection?.wordId && selection?.choiceId) : question().type === "choice" ? selection !== null : words.length > 0;
     function stopAudio() {
       audio.stop(); audioStatus("");
     }
@@ -32,10 +33,11 @@
       const q = question();
       const modeButtons = ["try", "say"].map((value) => button("mode", value === "try" ? "Try it" : "Say it", "secondary", `data-mode="${value}" aria-pressed="${value === mode}"`)).join("");
       const concepts = lesson.concepts.map((value) => button("concept", escape(value.title), "secondary", `data-concept="${escape(value.id)}" aria-pressed="${value.id === concept.id}"`)).join("");
-      const questions = concept[mode].map((value, index) => button("question", `Question ${index + 1}`, "secondary", `data-question="${escape(value.id)}" aria-pressed="${index === questionIndex}"`)).join("");
+      const questionButtons = questions().map((value, index) => button("question", `Question ${index + 1}`, "secondary", `data-question="${escape(value.id)}" aria-pressed="${index === questionIndex}"`)).join("");
+      const versions = mode === "try" && concept.tryRevision ? `<fieldset><legend>Version</legend><div class="preview-options">${button("version", "Updated", "secondary", `data-version="updated" aria-pressed="${!original}"`)}${button("version", "Original", "secondary", `data-version="original" aria-pressed="${original}"`)}</div></fieldset>` : "";
       const answers = mode === "try" ? `<div class="answer-area">${V.answerControls(q, selection, words)}</div>` : `<div class="answer-area"><p class="speaking-cue">${escape(q.instruction)}</p></div>`;
       const solution = revealed ? `<section class="answer-reveal"><p>EXAMPLE ANSWER</p><h3>${escape(q.answerText)}</h3>${q.explanation ? `<p>${escape(q.explanation)}</p>` : ""}${q.accepted?.length ? `<div class="accepted">You can also say: ${q.accepted.map(escape).join(" / ")}</div>` : ""}${button("answer-audio", "Listen to the answer", "listen-button", "", "volume-2")}</section>` : "";
-      root.innerHTML = `${heading()}<p class="preview-lesson">${escape(lesson.date)} · <strong>${escape(lesson.title)}</strong></p><nav class="preview-controls" aria-label="Choose a question"><fieldset><legend>Mode</legend><div class="preview-options">${modeButtons}</div></fieldset><fieldset><legend>Concept</legend><div class="preview-options">${concepts}</div></fieldset><fieldset><legend>Question</legend><div class="preview-options">${questions}</div></fieldset></nav><section class="question-card"><p class="preview-question-label">${mode === "try" ? "Try it" : "Say it"} · ${escape(concept.title)} · ${questionIndex + 1} of ${concept[mode].length}</p><div class="question-layout">${V.sceneHtml(q.scene)}<div class="question-content">${button("question-audio", "Listen", "listen-button", "", "volume-2")}<h2>${escape(q.prompt)}</h2>${mode === "try" ? `<p class="instruction">${escape(q.instruction)}</p>` : ""}</div></div>${answers}${result !== null ? `<p class="preview-result" role="status">${result ? "That matches." : "Look at the example, then try again."}</p>` : ""}<div class="preview-actions">${!revealed ? button("reveal", "Show answer", "secondary", "", "arrow-right") : ""}${mode === "try" ? button("check", "Check", "primary", canCheck() ? "" : "disabled", "check") : ""}</div>${solution}${error ? `<p class="error" role="alert">${escape(error)}</p>` : ""}<p class="audio-status" id="preview-audio-message" role="status">${escape(audioMessage)}</p>${audioMessage.startsWith("Could not") ? button("retry-audio", "Try the sound again", "text-button", "", "rotate-ccw") : ""}</section><p class="preview-footer">All ${lesson.concepts.reduce((total, item) => total + item.try.length + item.say.length, 0)} questions are available here, including questions skipped during practice.</p>`;
+      root.innerHTML = `${heading()}<p class="preview-lesson">${escape(lesson.date)} · <strong>${escape(lesson.title)}</strong></p><nav class="preview-controls" aria-label="Choose a question"><fieldset><legend>Mode</legend><div class="preview-options">${modeButtons}</div></fieldset><fieldset><legend>Concept</legend><div class="preview-options">${concepts}</div></fieldset><fieldset><legend>Question</legend><div class="preview-options">${questionButtons}</div></fieldset>${versions}</nav><section class="question-card"><p class="preview-question-label">${mode === "try" ? "Try it" : "Say it"} · ${escape(concept.title)} · ${questionIndex + 1} of ${questions().length}</p><div class="question-layout">${V.sceneHtml(q.scene)}<div class="question-content">${button("question-audio", "Listen", "listen-button", "", "volume-2")}<h2>${escape(q.prompt)}</h2>${mode === "try" ? `<p class="instruction">${escape(q.instruction)}</p>` : ""}</div></div>${answers}${result !== null ? `<p class="preview-result" role="status">${result ? "That matches." : "Look at the example, then try again."}</p>` : ""}<div class="preview-actions">${!revealed ? button("reveal", "Show answer", "secondary", "", "arrow-right") : ""}${mode === "try" ? button("check", "Check", "primary", canCheck() ? "" : "disabled", "check") : ""}</div>${solution}${error ? `<p class="error" role="alert">${escape(error)}</p>` : ""}<p class="audio-status" id="preview-audio-message" role="status">${escape(audioMessage)}</p>${audioMessage.startsWith("Could not") ? button("retry-audio", "Try the sound again", "text-button", "", "rotate-ccw") : ""}</section><p class="preview-footer">All ${lesson.concepts.reduce((total, item) => total + item.try.length + item.say.length + (item.tryRevision?.questions.length || 0), 0)} questions are available here, including questions skipped during practice.</p>`;
     }
     function audioStatus(message) {
       if (destroyed) return;
@@ -87,13 +89,17 @@
           if (!next) return;
           reset(); concept = next; questionIndex = 0; nextSound = "question";
         } else if (action === "question") {
-          const index = concept[mode].findIndex((item) => item.id === data.question);
+          const index = questions().findIndex((item) => item.id === data.question);
           if (index < 0) return;
           reset(); questionIndex = index; nextSound = "question";
-        } else if (action === "pick" && mode === "try" && q.choices?.some((item) => item.id === data.choice)) { selection = data.choice; result = null; }
+        } else if (action === "version" && mode === "try" && concept.tryRevision && ["updated", "original"].includes(data.version)) {
+          reset(); original = data.version === "original"; questionIndex = 0; nextSound = "question";
+        } else if (action === "repair-word" && mode === "try" && q.type === "repair" && q.sentence.some((word) => word.id === data.word)) { selection = { wordId: data.word, choiceId: null }; result = null; }
+        else if (action === "repair-choice" && mode === "try" && q.type === "repair" && selection?.wordId && q.choices.some((choice) => choice.id === data.choice)) { selection = { ...selection, choiceId: data.choice }; result = null; }
+        else if (action === "pick" && mode === "try" && q.choices?.some((item) => item.id === data.choice)) { selection = data.choice; result = null; }
         else if (action === "add-word" && mode === "try" && q.tokens?.some((item) => item.id === data.word) && !words.includes(data.word)) { words.push(data.word); result = null; }
         else if (action === "remove-word" && mode === "try") { words = words.filter((word) => word !== data.word); result = null; }
-        else if (action === "check" && mode === "try" && canCheck()) { result = C.checkAnswer(q, q.type === "choice" ? selection : words); revealed = true; nextSound = "answer"; effect = result ? "correct" : "neutral"; }
+        else if (action === "check" && mode === "try" && canCheck()) { result = C.checkAnswer(q, q.type === "order" ? words : selection); revealed = true; nextSound = "answer"; effect = result ? "correct" : "neutral"; }
         else if (action === "reveal") { revealed = true; nextSound = "answer"; }
         else return;
         error = ""; render();
