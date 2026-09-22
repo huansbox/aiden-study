@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-11",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-1-q.mp3",
+      "sha256": "3ac934c3b6b5bd3d612c313c8cd79aa3fbfd4e56c81e1f270c4334c74d70e9fb",
+      "expectedText": "In this town, spring starts cool and turns warm. Describe the change.",
+      "recognizedText": "In this town, spring starts cool and turns warm. Describe the change."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-1-a.mp3",
+      "sha256": "6fc3816a7efabb98ca08aa8afd3b6ae2196d99e73278b6ace4be89e396e0a9fe",
+      "expectedText": "It gets warm in spring.",
+      "recognizedText": "It gets warm in spring."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-2-q.mp3",
+      "sha256": "54feaf0d82a7b8d6924cebcfb2e8fa42749ed081ea4b19a1fed5ed75e6d677f2",
+      "expectedText": "Now tell me about snow in winter. Build the new sentence.",
+      "recognizedText": "Now tell me about snow in winter, build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-2-a.mp3",
+      "sha256": "224fdd0925d439db24faed5930a9d91676f71e5429736f1575db264d65f8cc91",
+      "expectedText": "It snows in winter.",
+      "recognizedText": "It snows in winter."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-3-q.mp3",
+      "sha256": "c3a61471b93ce177727926eae69053492c915c904bff2327424dd6548f057778",
+      "expectedText": "In this town, fall starts warm and turns cool. Fix one word.",
+      "recognizedText": "In this town, fall starts warm and turns cool. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-11-weather-verbs-v2-try-3-a.mp3",
+      "sha256": "4de264c405c34f342174af7b1a425bee5ef6ff61d69a1a5f3e4646d495f5332e",
+      "expectedText": "It gets cool in fall.",
+      "recognizedText": "It gets cool in fall."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-1-q.mp3",
+      "sha256": "1fa4b26339d7f830ed174f42285fcfc3402406f7139612b5c107587a6a921f57",
+      "expectedText": "In this town, there is no snow in summer. Build a full sentence.",
+      "recognizedText": "In this town, there is no snow in summer. Build a full sentence."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-1-a.mp3",
+      "sha256": "156cfbbec5140334de97e3bc5dcaaf4167042936391c2ed4764d88d0b3e7d4c5",
+      "expectedText": "It doesn't snow in summer.",
+      "recognizedText": "It doesn't snow in summer."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-2-q.mp3",
+      "sha256": "9ea55c7eac810838ec28b170fb9c869397da39a6bfa456a9755e10600105b178",
+      "expectedText": "In a new town, there is no snow in winter. Change the sentence.",
+      "recognizedText": "In a new town, there is no snow in winter. Change the sentence."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-2-a.mp3",
+      "sha256": "9ff565b4c5c2a157d87a2aa42752c8ad4e28ed396f714bc3d81eabd839afff28",
+      "expectedText": "It doesn't snow in winter.",
+      "recognizedText": "It doesn't snow in winter."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-3-q.mp3",
+      "sha256": "b6b5714f2b59b8c07717ef59a49af2c4d0ca3386e49a00c7bc9e05f3e4efd964",
+      "expectedText": "In this town, summer never turns cold. Fix one word.",
+      "recognizedText": "In this town, summer never turns cold. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-11-weather-negative-v2-try-3-a.mp3",
+      "sha256": "d5b360c35799d6eb59e5dd546cf268db584f530e47b0cbb034c8e03d4f95b854",
+      "expectedText": "It doesn't get cold in summer.",
+      "recognizedText": "It doesn't get cold in summer."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-1-q.mp3",
+      "sha256": "ea1fad31d1251d37601d8006d9dbcfab2c9fc33121a51134c87c9e2957080634",
+      "expectedText": "It is spring on this four-season calendar. What comes next?",
+      "recognizedText": "It is spring on this four season calendar. What comes next?"
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-1-a.mp3",
+      "sha256": "76c30621d85f1fe3d730e4947823b4035b476c345ba120f69d166a50e00ce613",
+      "expectedText": "Summer comes after spring.",
+      "recognizedText": "Summer comes after spring."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-2-q.mp3",
+      "sha256": "0ba7d3260cea58171760ac0c6b702c353c7181770a6fb1fcb39ae02a51f0eaf8",
+      "expectedText": "The next season is winter. Build a sentence about winter and the season just before it.",
+      "recognizedText": "The next season is winter. Build a sentence about winter and the season just before it."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-2-a.mp3",
+      "sha256": "13ac8fdce97b12abf1d1237d923763fa7ca6f07dfb041bfcbe46176d8efda545",
+      "expectedText": "Winter comes after fall.",
+      "recognizedText": "Winter comes after fall."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-3-q.mp3",
+      "sha256": "09bee61a6077c30509f0f02e524ba615de2ba4db2c3891bad53c7ed744fe0f2d",
+      "expectedText": "It is winter and spring comes next. Fix one word.",
+      "recognizedText": "It is winter, and spring comes next. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-11-season-order-v2-try-3-a.mp3",
+      "sha256": "8699a5cc91d01e3db6e7c927ea9f88951bc31d36e23c69c80910c6be28bab85a",
+      "expectedText": "Spring comes after winter.",
+      "recognizedText": "Spring comes after winter."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-1-q.mp3",
+      "sha256": "2bf5e3177015fb55502dafb84c7b06c9e4c02752d7dfb6fcb424dc7e0b9b5e19",
+      "expectedText": "In this town, winter has short days. Build a full sentence.",
+      "recognizedText": "In this town, winter has short days. Build a full sentence."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-1-a.mp3",
+      "sha256": "61c2373879cc578bfef7adf534339e536cbde6b8f48aaabbf2e81eff482d103a",
+      "expectedText": "The days are short in winter.",
+      "recognizedText": "The days are short in winter."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-2-q.mp3",
+      "sha256": "8a3b7a5424fc6cf873cd91640712a810fb6149475da2dc882a69c1d87d91af86",
+      "expectedText": "Now describe one long winter night. Build the new sentence.",
+      "recognizedText": "Now describe one long winter night. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-2-a.mp3",
+      "sha256": "c5393d77e6e5768188d92cae7a7128eb4cbff9deaff4d3ad615775ca28ef4f59",
+      "expectedText": "A winter night is long.",
+      "recognizedText": "A winter night is long."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-3-q.mp3",
+      "sha256": "c42b35908c53975c927705246ec0e9762a5727ae413d08fdfe29a6fb624d8a36",
+      "expectedText": "Think about one long summer day. Fix one word.",
+      "recognizedText": "Think about one long summer day. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-11-day-night-length-v2-try-3-a.mp3",
+      "sha256": "b49fe73f3984fa653b30145765e3f19c9064bbbf62ade81bfa5a2c8bf2a5f9bf",
+      "expectedText": "A summer day is long.",
+      "recognizedText": "A summer day is long."
+    }
+  ]
+}

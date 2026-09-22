@@ -243,7 +243,187 @@
             "answer": "audio/2026-09-08-take-care-of-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "take-care-of-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "What does Mum do?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mum feeds a kitten and keeps it safe.",
+              "heading": "Story card"
+            },
+            "answerText": "Mum takes care of the kitten.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Mum"
+              },
+              {
+                "id": "w1",
+                "text": "takes"
+              },
+              {
+                "id": "w2",
+                "text": "care"
+              },
+              {
+                "id": "w3",
+                "text": "of"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "kitten"
+              },
+              {
+                "id": "extra0",
+                "text": "take"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-take-care-of-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-08-take-care-of-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "take-care-of-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: Mum and Dad help together.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mum takes care of the kitten.",
+              "heading": "Before"
+            },
+            "answerText": "They take care of the kitten.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "take"
+              },
+              {
+                "id": "w2",
+                "text": "care"
+              },
+              {
+                "id": "w3",
+                "text": "of"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "kitten"
+              },
+              {
+                "id": "extra0",
+                "text": "takes"
+              },
+              {
+                "id": "extra1",
+                "text": "She"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-take-care-of-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-08-take-care-of-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "take-care-of-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Dad feeds a puppy and keeps it safe.",
+              "heading": "Story card"
+            },
+            "answerText": "Dad takes care of the puppy.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Dad"
+              },
+              {
+                "id": "w1",
+                "text": "take"
+              },
+              {
+                "id": "w2",
+                "text": "care"
+              },
+              {
+                "id": "w3",
+                "text": "of"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "puppy."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "keeps"
+              },
+              {
+                "id": "c1",
+                "text": "takes"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-08-take-care-of-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-08-take-care-of-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "take-a-nap",
@@ -470,7 +650,173 @@
             "answer": "audio/2026-09-08-take-a-nap-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "take-a-nap-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "What does the puppy do?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One puppy sleeps for ten minutes.",
+              "heading": "Story card"
+            },
+            "answerText": "The puppy takes a nap.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "puppy"
+              },
+              {
+                "id": "w2",
+                "text": "takes"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "nap"
+              },
+              {
+                "id": "extra0",
+                "text": "take"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-take-a-nap-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-08-take-a-nap-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "take-a-nap-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: two puppies sleep for ten minutes.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The puppy takes a nap.",
+              "heading": "Before"
+            },
+            "answerText": "The puppies take a nap.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "puppies"
+              },
+              {
+                "id": "w2",
+                "text": "take"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "nap"
+              },
+              {
+                "id": "extra0",
+                "text": "takes"
+              },
+              {
+                "id": "extra1",
+                "text": "puppy"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-take-a-nap-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-08-take-a-nap-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "take-a-nap-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Two kittens sleep for five minutes.",
+              "heading": "Story card"
+            },
+            "answerText": "The kittens take a nap.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "kittens"
+              },
+              {
+                "id": "w2",
+                "text": "takes"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "nap."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "make"
+              },
+              {
+                "id": "c1",
+                "text": "take"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-08-take-a-nap-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-08-take-a-nap-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "animal-homes",
@@ -750,7 +1096,191 @@
             "answer": "audio/2026-09-08-animal-homes-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "animal-homes-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Where does the tiger live?",
+            "instruction": "Start with The.",
+            "scene": {
+              "kind": "word-card",
+              "text": "One tiger. Home: the forest.",
+              "heading": "Story card"
+            },
+            "answerText": "The tiger lives in the forest.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "tiger"
+              },
+              {
+                "id": "w2",
+                "text": "lives"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "forest"
+              },
+              {
+                "id": "extra0",
+                "text": "live"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w4",
+                "w1",
+                "w2",
+                "w3",
+                "w0",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-animal-homes-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-08-animal-homes-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "animal-homes-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: two tigers. Home: a reserve.",
+            "instruction": "Start with The.",
+            "scene": {
+              "kind": "word-card",
+              "text": "The tiger lives in the forest.",
+              "heading": "Before"
+            },
+            "answerText": "The tigers live in a reserve.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "tigers"
+              },
+              {
+                "id": "w2",
+                "text": "live"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "a"
+              },
+              {
+                "id": "w5",
+                "text": "reserve"
+              },
+              {
+                "id": "extra0",
+                "text": "lives"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-animal-homes-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-08-animal-homes-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "animal-homes-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Two orangutans. Home: the rainforest.",
+              "heading": "Story card"
+            },
+            "answerText": "The orangutans live in the rainforest.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "orangutans"
+              },
+              {
+                "id": "w2",
+                "text": "lives"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "rainforest."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "are"
+              },
+              {
+                "id": "c1",
+                "text": "live"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-08-animal-homes-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-08-animal-homes-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "story-characters",
@@ -1019,7 +1549,197 @@
             "answer": "audio/2026-09-08-story-characters-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "story-characters-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Name both characters.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Nina rolls a ball to a kitten.",
+              "heading": "Tiny story"
+            },
+            "answerText": "Nina and the kitten are characters.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Nina"
+              },
+              {
+                "id": "w1",
+                "text": "and"
+              },
+              {
+                "id": "w2",
+                "text": "the"
+              },
+              {
+                "id": "w3",
+                "text": "kitten"
+              },
+              {
+                "id": "w4",
+                "text": "are"
+              },
+              {
+                "id": "w5",
+                "text": "characters"
+              },
+              {
+                "id": "extra0",
+                "text": "ball"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w2",
+                "w3",
+                "w1",
+                "w0",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-story-characters-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-08-story-characters-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "story-characters-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "New story: A kitten sleeps on a mat. Name the character.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Nina and the kitten are characters.",
+              "heading": "Before"
+            },
+            "answerText": "The kitten is a character.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "kitten"
+              },
+              {
+                "id": "w2",
+                "text": "is"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "character"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "mat"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w0",
+                "w4",
+                "w2",
+                "w3",
+                "w1"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-08-story-characters-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-08-story-characters-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "story-characters-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Leo gives a ball to a puppy.",
+              "heading": "Tiny story"
+            },
+            "answerText": "Leo and the puppy are characters.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Leo"
+              },
+              {
+                "id": "w1",
+                "text": "and"
+              },
+              {
+                "id": "w2",
+                "text": "the"
+              },
+              {
+                "id": "w3",
+                "text": "ball"
+              },
+              {
+                "id": "w4",
+                "text": "are"
+              },
+              {
+                "id": "w5",
+                "text": "characters."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "puppy"
+              },
+              {
+                "id": "c1",
+                "text": "bowl"
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-08-story-characters-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-08-story-characters-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     }
   ]
 }

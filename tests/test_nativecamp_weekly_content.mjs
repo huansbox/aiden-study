@@ -11,7 +11,7 @@ const catalog = read('docs/nativecamp/lessons/catalog.json').lessons;
 const normalized = text => text.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
 const sourceFor = id => read(`learning-tasks/nativecamp-${id}/source/lesson-source.json`);
 const lessonFor = id => read(`docs/nativecamp/lessons/${id}.json`);
-const questions = lesson => lesson.concepts.flatMap(c => [...c.try, ...c.say]);
+const questions = lesson => lesson.concepts.flatMap(c => [...c.try, ...c.say, ...(c.tryRevision?.questions || [])]);
 
 for (const id of ids) {
   test(`${id}: complete original sentence questions and speech jobs agree`, () => {
@@ -21,10 +21,10 @@ for (const id of ids) {
     assert.equal(catalog.filter(entry => entry.id === id).length, 1);
     assert.equal(new Set(questions(lesson).map(q => q.id)).size, questions(lesson).length);
     const expected = structuredClone(source), expectedJobs = [];
-    for (const c of expected.concepts) for (const mode of ['try', 'say']) {
-      assert.equal(c[mode].length, 3);
-      assert.equal(new Set(c[mode].map(q => JSON.stringify(q.scene))).size, 3);
-      for (const q of c[mode]) {
+    for (const c of expected.concepts) for (const [mode, group] of [['try', c.try], ['say', c.say], ...(c.tryRevision ? [['try', c.tryRevision.questions]] : [])]) {
+      assert.equal(group.length, 3);
+      assert.equal(new Set(group.map(q => JSON.stringify(q.scene))).size, 3);
+      for (const q of group) {
         const spoken = q.spokenQuestion;
         delete q.spokenQuestion;
         q.audio = { question: `audio/${id}-${q.id}-q.mp3`, answer: `audio/${id}-${q.id}-a.mp3` };
@@ -50,6 +50,8 @@ for (const id of ids) {
             const swapped = [...order]; [swapped[a], swapped[b]] = [swapped[b], swapped[a]];
             assert.ok(q.acceptedOrders.some(answer => JSON.stringify(answer) === JSON.stringify(swapped)), `${q.id} rejects identical word cards`);
           }
+        } else if (q.type === 'repair') {
+          assert.equal(globalThis.NativeCampCore.checkAnswer(q, q.answer), true);
         } else {
           assert.equal(q.type, 'choice');
           assert.equal(q.choices.filter(choice => choice.id === q.answer).length, 1);

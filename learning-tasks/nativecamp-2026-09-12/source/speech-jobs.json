@@ -48,6 +48,30 @@
     "text": "We can make an apple pie."
   },
   {
+    "file": "2026-09-12-can-actions-v2-try-1-q.mp3",
+    "text": "You and Mia build a treehouse. What can you do together?"
+  },
+  {
+    "file": "2026-09-12-can-actions-v2-try-1-a.mp3",
+    "text": "We can build a treehouse."
+  },
+  {
+    "file": "2026-09-12-can-actions-v2-try-2-q.mp3",
+    "text": "Now you work alone and grow flowers. What can you do?"
+  },
+  {
+    "file": "2026-09-12-can-actions-v2-try-2-a.mp3",
+    "text": "I can grow flowers."
+  },
+  {
+    "file": "2026-09-12-can-actions-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-12-can-actions-v2-try-3-a.mp3",
+    "text": "We can make a swing."
+  },
+  {
     "file": "2026-09-12-watch-grow-try-1-q.mp3",
     "text": "Start with I. You watch small buds. They get bigger. What do you watch? Use grow."
   },
@@ -96,6 +120,30 @@
     "text": "I watch trees grow."
   },
   {
+    "file": "2026-09-12-watch-grow-v2-try-1-q.mp3",
+    "text": "You watch small buds get bigger. Make a sentence with grow."
+  },
+  {
+    "file": "2026-09-12-watch-grow-v2-try-1-a.mp3",
+    "text": "I watch small buds grow."
+  },
+  {
+    "file": "2026-09-12-watch-grow-v2-try-2-q.mp3",
+    "text": "Now you and Mia watch apples get bigger. Make a sentence with grow."
+  },
+  {
+    "file": "2026-09-12-watch-grow-v2-try-2-a.mp3",
+    "text": "We watch apples grow."
+  },
+  {
+    "file": "2026-09-12-watch-grow-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-12-watch-grow-v2-try-3-a.mp3",
+    "text": "I watch flowers grow."
+  },
+  {
     "file": "2026-09-12-tree-details-try-1-q.mp3",
     "text": "This is your tree. It has apples. The apples are red. What does your tree have? Build a full sentence. Start with My tree."
   },
@@ -142,5 +190,29 @@
   {
     "file": "2026-09-12-tree-details-say-3-a.mp3",
     "text": "My tree has tasty red apples."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-1-q.mp3",
+    "text": "Red apples grow on your tree. Tell me about your tree."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-1-a.mp3",
+    "text": "My tree has red apples."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-2-q.mp3",
+    "text": "Keep the color and add the size: big. Describe your tree."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-2-a.mp3",
+    "text": "My tree has big red apples."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-3-q.mp3",
+    "text": "Find and fix one word."
+  },
+  {
+    "file": "2026-09-12-tree-details-v2-try-3-a.mp3",
+    "text": "My tree has tasty apples."
   }
 ]

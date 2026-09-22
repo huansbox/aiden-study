@@ -1,0 +1,120 @@
+{
+  "lessonId": "2026-09-10",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-1-q.mp3",
+      "sha256": "fdeaa69771faef75e0b393ef5bbbc2fefc02d23472ceb688f7f6e6a545434f83",
+      "expectedText": "One squirrel has a home in a tree. Where does it live?",
+      "recognizedText": "One squirrel has a home in a tree. Where does it live?"
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-1-a.mp3",
+      "sha256": "f44867fd6d813e8fd7d4e20478c19e4f663ba31b6840d82ed07e09be33079bd0",
+      "expectedText": "The squirrel lives in a tree.",
+      "recognizedText": "The squirrel lives in a tree."
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-2-q.mp3",
+      "sha256": "bc6179ff95ecba54ef4ff6ccf77254d801d6876098b255a0ec6407867aa2935a",
+      "expectedText": "Now two eagles have homes in nests. Build the new sentence.",
+      "recognizedText": "Now two eagles have homes in nests. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-2-a.mp3",
+      "sha256": "4630c77f8097c28b41367a1d1928c1ba0bb3dacf287e6a7e9132e0df803509fd",
+      "expectedText": "The eagles live in nests.",
+      "recognizedText": "The eagles live in nests."
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-3-q.mp3",
+      "sha256": "68d388be50907ad15b31fcbab3091c76edf123848b8faf47e2723a086b9ced0e",
+      "expectedText": "Two monkeys have homes in trees. Fix one word.",
+      "recognizedText": "Two monkeys have homes in trees. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-10-animal-homes-v2-try-3-a.mp3",
+      "sha256": "d08deda0fa9857692eabf92952e6be970f0d38936501fc58f337958671e3efcd",
+      "expectedText": "The monkeys live in trees.",
+      "recognizedText": "The monkeys live in trees."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-1-q.mp3",
+      "sha256": "be20e873512c1884f0853833845ce572779a95f957067c2f221b05b4b18c397c",
+      "expectedText": "One cow has grass for food. What does it eat?",
+      "recognizedText": "One cow has grass for food. What does it eat?"
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-1-a.mp3",
+      "sha256": "f337fbef9b9dc52a54a62cca2309121a593e9afec1f600250d508160f343b6b2",
+      "expectedText": "The cow eats grass.",
+      "recognizedText": "The cow eats grass."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-2-q.mp3",
+      "sha256": "825da96af36de446bad989eae50e68a7b309b86e4cad5777d80f090e21b50217",
+      "expectedText": "Now two squirrels have nuts for food. Build the new sentence.",
+      "recognizedText": "Now, two squirrels have nuts for food. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-2-a.mp3",
+      "sha256": "7ce8ec2bebbf103f0a88d9457df26886a5017ee465b15faa2ffdf903fd4788ed",
+      "expectedText": "The squirrels eat nuts.",
+      "recognizedText": "The squirrels eat nuts."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-3-q.mp3",
+      "sha256": "ba8ae6990e4401c214d5a92ef054038b344c1f167bcb05e59376e7d39bb15e90",
+      "expectedText": "One squirrel has nuts for food. Fix one word.",
+      "recognizedText": "One squirrel has nuts for food. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-10-animal-food-v2-try-3-a.mp3",
+      "sha256": "9adb097f232acc9a80292fd6aab488e14366223075e1e7dcb513099e80575c2a",
+      "expectedText": "The squirrel eats nuts.",
+      "recognizedText": "The squirrel eats nuts."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-1-q.mp3",
+      "sha256": "82e6d3d707d5e36304b45bb6e23f1bfa6c7630563d3091e836d74f9bb37b777c",
+      "expectedText": "Your pretend animal: orangutan. What are you?",
+      "recognizedText": "Your pretend animal, orangutan. What are you?"
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-1-a.mp3",
+      "sha256": "10a4f795a7c52c1b858b279e152ef0c9a131e3fd0c0999d0fb117350a922d4fd",
+      "expectedText": "I am an orangutan.",
+      "recognizedText": "I am an orangutan."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-2-q.mp3",
+      "sha256": "3008c35f6599c03b8bab7764027aac33ae44fc3ee6a76169cf59793847e5c7ac",
+      "expectedText": "Your new pretend animal: frog. Change the sentence.",
+      "recognizedText": "Your new pretend animal, Frog, changed the sentence."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-2-a.mp3",
+      "sha256": "36f2f941085fad9373bb0d3ca992a41e36de48aeb8309a247f224db2b6e8b221",
+      "expectedText": "I am a frog.",
+      "recognizedText": "I am a frog."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-3-q.mp3",
+      "sha256": "9228005d5853208de98cb17080b3d6482574163020e718219b2d67877dea8e3e",
+      "expectedText": "Your pretend animal: octopus. Fix one word.",
+      "recognizedText": "Your pretend animal, Octopus, fix one word."
+    },
+    {
+      "file": "audio/2026-09-10-pretend-animal-v2-try-3-a.mp3",
+      "sha256": "f6969ce03063ccf6989847fbb63701c2730ff40a79882edea3c2889882f2e49d",
+      "expectedText": "I am an octopus.",
+      "recognizedText": "I am an octopus."
+    }
+  ]
+}

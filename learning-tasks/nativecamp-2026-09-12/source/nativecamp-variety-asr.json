@@ -1,0 +1,120 @@
+{
+  "lessonId": "2026-09-12",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-1-q.mp3",
+      "sha256": "cbdc9bf0c38dac6e471d59001415e961aa5e23de5b56111a9bd31fc1f5a459d0",
+      "expectedText": "You and Mia build a treehouse. What can you do together?",
+      "recognizedText": "You and Mia build a tree house. What can you do together?"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-1-a.mp3",
+      "sha256": "a2e94c16c039cd4467ca8a94aa1e59c3044ee21a4dfce9db92761854ee8311a5",
+      "expectedText": "We can build a treehouse.",
+      "recognizedText": "We can build a treehouse."
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-2-q.mp3",
+      "sha256": "96feae15d825646248cf6d24d490a46363138c4578fd0465d6cfe9c03e291403",
+      "expectedText": "Now you work alone and grow flowers. What can you do?",
+      "recognizedText": "Now you work alone and grow flowers. What can you do?"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-2-a.mp3",
+      "sha256": "21957e5d2e6586af62e974f000ba15fadaa05d684a501b062b162d7d37a06a2e",
+      "expectedText": "I can grow flowers.",
+      "recognizedText": "I can grow flowers"
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-3-q.mp3",
+      "sha256": "f24ab6b27212e86fd73cfe9a64e14d9ab62bf520832c89a5e799164e6a9bf6aa",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-12-can-actions-v2-try-3-a.mp3",
+      "sha256": "aa7b2cc14ca5b0b795a6cab4f81d05c42911925617345843907a2fe7cf550200",
+      "expectedText": "We can make a swing.",
+      "recognizedText": "We can make a swing."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-1-q.mp3",
+      "sha256": "b7a7fb4c63a442d5ed4df018f6cd899a52d85b3dfeff1801b6930760fad3879a",
+      "expectedText": "You watch small buds get bigger. Make a sentence with grow.",
+      "recognizedText": "You watch small buds get bigger, make a sentence with grow."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-1-a.mp3",
+      "sha256": "da4b30a37ced5f667eb65f74920cc4cf1d703e4d253fc6c27f9dd0199595ef56",
+      "expectedText": "I watch small buds grow.",
+      "recognizedText": "I watch small buds grow."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-2-q.mp3",
+      "sha256": "e25ecf5795d2fb5bf824bdc3c96b73b1af067b463df41ed6785cd08cbf064a53",
+      "expectedText": "Now you and Mia watch apples get bigger. Make a sentence with grow.",
+      "recognizedText": "Now, you and Mia, watch apples get bigger. Make a sentence with grow."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-2-a.mp3",
+      "sha256": "0331b66be2517019098af72cafe8edd002d13ff62cf035f8ec663a53205aebfc",
+      "expectedText": "We watch apples grow.",
+      "recognizedText": "We watch apples grow."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-3-q.mp3",
+      "sha256": "c0bdd39dff3acf5ba9d441d1ed9ac98fc82a67750e068e3e4ab0004be3d6f100",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix, one word."
+    },
+    {
+      "file": "audio/2026-09-12-watch-grow-v2-try-3-a.mp3",
+      "sha256": "991f1ad688c21d36c02e326a88fe6c219e510de505bad60618010c3ea284fdc6",
+      "expectedText": "I watch flowers grow.",
+      "recognizedText": "I watch flowers grow."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-1-q.mp3",
+      "sha256": "6987910c7fd7a0b29dff9cd89b81371a724a69bcef7abd7250d032b7128028cb",
+      "expectedText": "Red apples grow on your tree. Tell me about your tree.",
+      "recognizedText": "Red apples grow on your tree. Tell me about your tree."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-1-a.mp3",
+      "sha256": "5b46fa5877429be0150ab863bc1a02c79ef6d576feaf51fdb48eb38c30132a16",
+      "expectedText": "My tree has red apples.",
+      "recognizedText": "My tree has red apples."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-2-q.mp3",
+      "sha256": "12dc9a9b4dc4b0270bcb8ba7d1622e153981a0a54000536db8ce1bfc63af2258",
+      "expectedText": "Keep the color and add the size: big. Describe your tree.",
+      "recognizedText": "Keep the color and add the size big describe your tree"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-2-a.mp3",
+      "sha256": "ac8c9d1104d10ef6e3ef3ac3807f21bf97a56b2b11e7eb22758070ccfbb3877a",
+      "expectedText": "My tree has big red apples.",
+      "recognizedText": "My tree has big red apples."
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-3-q.mp3",
+      "sha256": "d5edb454f8554a71b676923cdcbb2921253e85dd8c7ab5c68469514ca53c66a1",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word"
+    },
+    {
+      "file": "audio/2026-09-12-tree-details-v2-try-3-a.mp3",
+      "sha256": "5968aa48390624f920ed97795483a4e3548fb3eb620f14a6e4738a2006e2e5f9",
+      "expectedText": "My tree has tasty apples.",
+      "recognizedText": "My tree has tasty apples."
+    }
+  ]
+}

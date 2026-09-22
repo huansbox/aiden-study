@@ -53,7 +53,8 @@ export function normalizeSnapshot(input, lessons) {
       if (!concept) fail('unknown-progress-concept');
       sourceConcept(lesson, concept, lessons);
       for (const attempt of [...state.initial, ...state.reviews, ...(state.pending ? [state.pending] : [])]) {
-        if (!concept[mode].some(question => question.id === attempt.questionId) || !C.isOpen(lesson, attempt.date)) fail('unknown-progress-question');
+        const questions = mode === 'try' ? [...concept.try, ...(concept.tryRevision?.questions || [])] : concept.say;
+        if (!questions.some(question => question.id === attempt.questionId) || !C.isOpen(lesson, attempt.date)) fail('unknown-progress-question');
       }
     }
   }
@@ -123,7 +124,27 @@ export function generationBrief(plan, lessons) {
     return { id: `review-${hash(keyFor(source)).slice(0, 12)}`, title: original.title, sourceConcept: source, originalConcept: original };
   });
   return { schemaVersion: 1, bundle: { schemaVersion: 1, id: plan.lessonId, date: plan.releaseDate, title: 'Weekly Review', kind: 'weekly', weekly: { schemaVersion: 2, practiceStart: plan.window.start, practiceEnd: plan.window.endExclusive, opensOn: plan.releaseDate, conceptCount: concepts.length } }, concepts,
-    instructions: ['Write three original Try it and three original Say it variants per concept.', 'Use complete sentences, one or two plausible distractors when appropriate, and natural accepted alternatives.', 'Change the evidence or situation; never republish an old question with a new ID.', 'Keep spokenQuestion and answerText aligned with the scene; use normal-speed OpenAI speech after review.', 'Copy only bundle metadata and authored id/title/sourceConcept/try/say to lesson-source.json. Never copy plan, progress, or originalConcept.'] };
+    instructions: ['Write three original Try it and three original Say it variants per concept.', 'Try it: stage build/type order, then stage change/type order with a meaningful situation or grammar change, then stage fix/type repair with one unambiguous wrong word. The third question is optional remediation.', 'Use complete sentences, one or two plausible distractors when appropriate, and natural accepted alternatives. Keep Say it unchanged in format.', 'Change the evidence or situation; never republish an old question with a new ID.', 'Keep spokenQuestion and answerText aligned with the scene; use normal-speed OpenAI speech after review.', 'Copy only bundle metadata and authored id/title/sourceConcept/try/say to lesson-source.json. Never copy plan, progress, or originalConcept.'] };
+}
+
+// Briefs already frozen before the Try it variety release retain their original
+// authoring contract. Only these exact old instructions and an absent appended
+// tryRevision are compatible; all source questions and plan metadata still match.
+const ORIGINAL_BRIEF_INSTRUCTIONS = [
+  'Write three original Try it and three original Say it variants per concept.',
+  'Use complete sentences, one or two plausible distractors when appropriate, and natural accepted alternatives.',
+  'Change the evidence or situation; never republish an old question with a new ID.',
+  'Keep spokenQuestion and answerText aligned with the scene; use normal-speed OpenAI speech after review.',
+  'Copy only bundle metadata and authored id/title/sourceConcept/try/say to lesson-source.json. Never copy plan, progress, or originalConcept.',
+];
+function matchesFrozenBrief(saved, current) {
+  const compatible = structuredClone(current);
+  if (same(saved?.instructions, ORIGINAL_BRIEF_INSTRUCTIONS)) compatible.instructions = ORIGINAL_BRIEF_INSTRUCTIONS;
+  for (let index = 0; index < compatible.concepts.length; index++) {
+    const original = saved?.concepts?.[index]?.originalConcept;
+    if (original && typeof original === 'object' && !Array.isArray(original) && !Object.hasOwn(original, 'tryRevision')) delete compatible.concepts[index].originalConcept.tryRevision;
+  }
+  return same(saved, compatible);
 }
 
 function inside(path, root) {
@@ -188,7 +209,7 @@ export async function writeWeeklyPlan({ repoRoot = REPO, snapshotPath, snapshot,
       const brief = generationBrief(plan, inputs.lessons), briefPath = privatePath(join(directory, 'generation-brief.json'), privateRoot);
       const draft = inputs.excludedEntry;
       if (draft && (draft.kind !== 'weekly' || draft.date !== releaseDate || !same(draft.weekly, brief.bundle.weekly))) fail('saved-draft-mismatch');
-      if (existsSync(briefPath) && !same(readJSON(briefPath), brief)) fail('saved-brief-invalid');
+      if (existsSync(briefPath) && !matchesFrozenBrief(readJSON(briefPath), brief)) fail('saved-brief-invalid');
       if (!existsSync(briefPath)) saveJSON(briefPath, brief);
       return { status: 'resumed', releaseDate, lessonId: plan.lessonId, conceptCount: plan.concepts.length };
     }

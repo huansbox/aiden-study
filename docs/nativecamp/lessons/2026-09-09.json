@@ -189,7 +189,145 @@
             "answer": "audio/2026-09-09-who-what-questions-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "who-what-questions-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Ask its name.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Near you: a pencil.",
+              "heading": "Look here"
+            },
+            "answerText": "What is this?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "What"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "this"
+              },
+              {
+                "id": "extra0",
+                "text": "Who"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-who-what-questions-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-09-who-what-questions-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "who-what-questions-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: a person, far away. Ask their name.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "What is this?",
+              "heading": "Before"
+            },
+            "answerText": "Who is that?",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Who"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "that"
+              },
+              {
+                "id": "extra0",
+                "text": "What"
+              },
+              {
+                "id": "extra1",
+                "text": "this"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-who-what-questions-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-09-who-what-questions-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "who-what-questions-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Far away: a bag. Ask its name.",
+              "heading": "Look there"
+            },
+            "answerText": "What is that?",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Who"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "that?"
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "It"
+              },
+              {
+                "id": "c1",
+                "text": "What"
+              }
+            ],
+            "answer": {
+              "wordId": "w0",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-09-who-what-questions-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-09-who-what-questions-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "complete-names",
@@ -388,7 +526,146 @@
             "answer": "audio/2026-09-09-complete-names-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "complete-names-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Who is this?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Near you: Emma.",
+              "heading": "Look here"
+            },
+            "answerText": "This is Emma.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "This"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "Emma"
+              },
+              {
+                "id": "extra0",
+                "text": "a"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-complete-names-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-09-complete-names-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "complete-names-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: a book, near you. Name it.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "This is Emma.",
+              "heading": "Before"
+            },
+            "answerText": "This is a book.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "This"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "book"
+              },
+              {
+                "id": "extra0",
+                "text": "an"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-complete-names-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-09-complete-names-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "complete-names-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Near you: Mia.",
+              "heading": "Look here"
+            },
+            "answerText": "This is Mia.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "This"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "Mia."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "is"
+              },
+              {
+                "id": "c1",
+                "text": "am"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-09-complete-names-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-09-complete-names-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "daily-routines",
@@ -615,7 +892,181 @@
             "answer": "audio/2026-09-09-daily-routines-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "daily-routines-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Tell me about your afternoon.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Afternoon: play.",
+              "heading": "Pretend day"
+            },
+            "answerText": "I play in the afternoon.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "play"
+              },
+              {
+                "id": "w2",
+                "text": "in"
+              },
+              {
+                "id": "w3",
+                "text": "the"
+              },
+              {
+                "id": "w4",
+                "text": "afternoon"
+              },
+              {
+                "id": "extra0",
+                "text": "at"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w2",
+                "w3",
+                "w4",
+                "w0",
+                "w1"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-daily-routines-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-09-daily-routines-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "daily-routines-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: night. Sleep.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I play in the afternoon.",
+              "heading": "Before"
+            },
+            "answerText": "I sleep at night.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "sleep"
+              },
+              {
+                "id": "w2",
+                "text": "at"
+              },
+              {
+                "id": "w3",
+                "text": "night"
+              },
+              {
+                "id": "extra0",
+                "text": "in"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ],
+              [
+                "w2",
+                "w3",
+                "w0",
+                "w1"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-daily-routines-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-09-daily-routines-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "daily-routines-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Morning: eat breakfast.",
+              "heading": "Pretend day"
+            },
+            "answerText": "I eat breakfast in the morning.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "eat"
+              },
+              {
+                "id": "w2",
+                "text": "breakfast"
+              },
+              {
+                "id": "w3",
+                "text": "at"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "morning."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "on"
+              },
+              {
+                "id": "c1",
+                "text": "in"
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-09-daily-routines-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-09-daily-routines-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "animal-routines",
@@ -836,7 +1287,179 @@
             "answer": "audio/2026-09-09-animal-routines-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "animal-routines-v2-try-1",
+            "type": "order",
+            "stage": "build",
+            "prompt": "Tell me about the eagles.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Eagles. Night: sleep.",
+              "heading": "Story day"
+            },
+            "answerText": "Eagles sleep at night.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Eagles"
+              },
+              {
+                "id": "w1",
+                "text": "sleep"
+              },
+              {
+                "id": "w2",
+                "text": "at"
+              },
+              {
+                "id": "w3",
+                "text": "night"
+              },
+              {
+                "id": "extra0",
+                "text": "in"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ],
+              [
+                "w2",
+                "w3",
+                "w0",
+                "w1"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-animal-routines-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-09-animal-routines-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "animal-routines-v2-try-2",
+            "type": "order",
+            "stage": "change",
+            "prompt": "Now: morning. Eagles wake up.",
+            "instruction": "Build the new sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Eagles sleep at night.",
+              "heading": "Before"
+            },
+            "answerText": "Eagles wake up in the morning.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Eagles"
+              },
+              {
+                "id": "w1",
+                "text": "wake"
+              },
+              {
+                "id": "w2",
+                "text": "up"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "the"
+              },
+              {
+                "id": "w5",
+                "text": "morning"
+              },
+              {
+                "id": "extra0",
+                "text": "at"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w3",
+                "w4",
+                "w5",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-09-animal-routines-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-09-animal-routines-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "animal-routines-v2-try-3",
+            "type": "repair",
+            "stage": "fix",
+            "prompt": "Fix one word.",
+            "instruction": "Tap a word. Choose a new word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Opossums. Night: play.",
+              "heading": "Story day"
+            },
+            "answerText": "Opossums play at night.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Opossums"
+              },
+              {
+                "id": "w1",
+                "text": "play"
+              },
+              {
+                "id": "w2",
+                "text": "in"
+              },
+              {
+                "id": "w3",
+                "text": "night."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "at"
+              },
+              {
+                "id": "c1",
+                "text": "on"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-09-animal-routines-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-09-animal-routines-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     }
   ]
 }

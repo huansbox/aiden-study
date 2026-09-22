@@ -7,6 +7,7 @@ import "../docs/nativecamp/question-view.js";
 import "../docs/nativecamp/audio.js";
 import "../docs/nativecamp/app.js";
 import { weeklyFixture } from "./helpers/nativecamp-weekly.mjs";
+import { varietyFixture } from "./helpers/nativecamp-variety.mjs";
 const sound = (ref) => typeof ref === "string" && ref.startsWith("audio/") ? ref + "?v=20260918-openai" : ref;
 const C = globalThis.NativeCampCore, A = globalThis.NativeCampApp;
 const originalLesson = JSON.parse(readFileSync(new URL("../docs/nativecamp/lessons/2026-09-15.json", import.meta.url), "utf8"));
@@ -57,6 +58,63 @@ function harness({ progress = C.createProgress(), lesson = structuredClone(origi
   };
 }
 const settle = () => new Promise((resolve) => setImmediate(resolve));
+test("repair uses two selections, saves only the first result, and replays the complete answer after correction", async () => {
+  const lesson = varietyFixture(); lesson.concepts = lesson.concepts.slice(0, 1);
+  const concept = lesson.concepts[0], updated = concept.tryRevision.questions;
+  let progress = C.createProgress();
+  progress = C.submitTry(progress, lesson, date, concept.id, updated[0].id, ["w4"]).progress;
+  progress = C.submitTry(progress, lesson, date, concept.id, updated[1].id, updated[1].acceptedOrders[0]).progress;
+  const h = harness({ lesson, progress });
+  await h.app.handle("start-try");
+  assert.match(h.root.innerHTML, /Fix one word/);
+  assert.doesNotMatch(h.root.innerHTML, /data-action="repair-choice"/);
+  await h.app.handle("repair-choice", { choice: "are" });
+  assert.equal(h.saves, 0);
+  await h.app.handle("repair-word", { word: "s1" });
+  assert.match(h.root.innerHTML, /data-action="check" disabled/);
+  await h.app.handle("repair-choice", { choice: "am" });
+  const beforeSync = h.root.innerHTML;
+  await h.app.handle("sync");
+  assert.equal(h.root.innerHTML, beforeSync);
+  await h.app.handle("check");
+  const saved = structuredClone(h.progress);
+  assert.equal(h.saves, 1);
+  assert.equal(h.activities.length, 1);
+  assert.equal(saved.lessons[lesson.id].try[concept.id].initial.at(-1).outcome, "incorrect");
+  assert.match(h.root.innerHTML, /They are counting rulers\./);
+  assert.equal(h.plays.at(-1), sound(updated[2].audio.answer));
+  await h.app.handle("correct");
+  await h.app.handle("repair-word", { word: "s1" });
+  await h.app.handle("repair-choice", { choice: "are" });
+  await h.app.handle("check-correction");
+  assert.match(h.root.innerHTML, /That matches/);
+  assert.deepEqual(h.progress, saved);
+  assert.equal(h.saves, 1);
+  assert.equal(h.activities.length, 1);
+  assert.equal(h.plays.at(-1), sound(updated[2].audio.answer));
+  await h.app.handle("next");
+  assert.match(h.root.innerHTML, /LESSON DONE/);
+  assert.equal(h.roundFinishes.length, 1);
+  h.app.destroy();
+});
+
+test("a newly published revision never replaces an original pending question on the child screen", async () => {
+  const lesson = varietyFixture(), concept = lesson.concepts[0];
+  const original = structuredClone(lesson); original.concepts.forEach(c => delete c.tryRevision);
+  const progress = C.markPending(C.createProgress(), original, "try", date, concept.id, concept.try[0].id, "help");
+  const h = harness({ lesson, progress });
+  // The new concepts' first Build questions may interleave, but the old pending
+  // concept still presents its original question, help and audio.
+  await h.app.handle("start-try");
+  assert.ok(h.root.innerHTML.includes(concept.try[0].prompt));
+  assert.ok(h.root.innerHTML.includes("With help"));
+  assert.equal(h.plays.at(-1), sound(concept.try[0].audio.question));
+  await h.app.handle("pick", { choice: concept.try[0].answer });
+  await h.app.handle("check");
+  assert.equal(h.progress.lessons[lesson.id].try[concept.id].initial[0].questionId, concept.try[0].id);
+  assert.equal(h.progress.lessons[lesson.id].try[concept.id].initial[0].outcome, "helped");
+  h.app.destroy();
+});
 function effectClock() {
   const notes = [];
   const context = {

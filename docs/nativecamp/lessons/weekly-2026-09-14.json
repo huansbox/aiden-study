@@ -224,6 +224,158 @@
         "lessonId": "2026-09-14",
         "conceptId": "grandparents",
         "date": "2026-09-14"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-grandparents-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Who is Grace?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Grace: your mum's mum.",
+              "heading": "Story card"
+            },
+            "answerText": "She is my grandmother.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "grandmother"
+              },
+              {
+                "id": "extra0",
+                "text": "grandfather"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-grandparents-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-grandparents-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-grandparents-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Grace and your mum's dad.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "She is my grandmother.",
+              "heading": "Before"
+            },
+            "answerText": "They are my grandparents.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "grandparents"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              },
+              {
+                "id": "extra1",
+                "text": "She"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-grandparents-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-grandparents-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-grandparents-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Who is Ben?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Ben: your dad's dad.",
+              "heading": "Story card"
+            },
+            "answerText": "He is my grandfather.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "grandmother."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "uncle."
+              },
+              {
+                "id": "c1",
+                "text": "grandfather."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-grandparents-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-grandparents-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -442,6 +594,162 @@
         "lessonId": "2026-09-14",
         "conceptId": "story-topic",
         "date": "2026-09-14"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-story-topic-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What is the story about?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "A toy car is in a box. A doll is next to it.",
+              "heading": "Short story"
+            },
+            "answerText": "It is about toys.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "about"
+              },
+              {
+                "id": "w3",
+                "text": "toys"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-story-topic-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-story-topic-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-story-topic-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: two stories. Both are about toys.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "It is about toys.",
+              "heading": "Before"
+            },
+            "answerText": "They are about toys.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "about"
+              },
+              {
+                "id": "w3",
+                "text": "toys"
+              },
+              {
+                "id": "extra0",
+                "text": "It"
+              },
+              {
+                "id": "extra1",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-story-topic-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-story-topic-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-story-topic-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "What is the story about?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Mum and Dad play with their son.",
+              "heading": "Short story"
+            },
+            "answerText": "It is about a family.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "about"
+              },
+              {
+                "id": "w3",
+                "text": "a"
+              },
+              {
+                "id": "w4",
+                "text": "family."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "is"
+              },
+              {
+                "id": "c0",
+                "text": "am"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-story-topic-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-story-topic-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -648,6 +956,158 @@
         "lessonId": "2026-09-15",
         "conceptId": "is-are",
         "date": "2026-09-15"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-is-are-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What can you see?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "cats",
+              "count": 3,
+              "heading": "Look at the cats."
+            },
+            "answerText": "There are three cats.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "three"
+              },
+              {
+                "id": "w3",
+                "text": "cats"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-is-are-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-is-are-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-is-are-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: two cats go away.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "There are three cats.",
+              "heading": "Before"
+            },
+            "answerText": "There is one cat.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "one"
+              },
+              {
+                "id": "w3",
+                "text": "cat"
+              },
+              {
+                "id": "extra0",
+                "text": "are"
+              },
+              {
+                "id": "extra1",
+                "text": "cats"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-is-are-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-is-are-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-is-are-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Look at the picture.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "dogs",
+              "count": 2,
+              "heading": "Look at the dogs."
+            },
+            "answerText": "There are two dogs.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "two"
+              },
+              {
+                "id": "w3",
+                "text": "dogs."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "am"
+              },
+              {
+                "id": "c1",
+                "text": "are"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-is-are-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-is-are-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -871,6 +1331,168 @@
         "lessonId": "2026-09-15",
         "conceptId": "odd-even",
         "date": "2026-09-15"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-odd-even-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Odd or even?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "numbers",
+              "number": 18,
+              "heading": "Think about pairs."
+            },
+            "answerText": "Eighteen is an even number.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Eighteen"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "even"
+              },
+              {
+                "id": "w4",
+                "text": "number"
+              },
+              {
+                "id": "extra0",
+                "text": "odd"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-odd-even-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-odd-even-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-odd-even-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: add one. Odd or even?",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "18 + 1",
+              "heading": "New number"
+            },
+            "answerText": "Nineteen is an odd number.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Nineteen"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "odd"
+              },
+              {
+                "id": "w4",
+                "text": "number"
+              },
+              {
+                "id": "extra0",
+                "text": "even"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-odd-even-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-odd-even-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-odd-even-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Look at the number.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "numbers",
+              "number": 20,
+              "heading": "Think about pairs."
+            },
+            "answerText": "Twenty is an even number.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Twenty"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "odd"
+              },
+              {
+                "id": "w4",
+                "text": "number."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "even"
+              },
+              {
+                "id": "c0",
+                "text": "small"
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-odd-even-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-odd-even-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -1094,6 +1716,167 @@
         "lessonId": "2026-09-15",
         "conceptId": "too-many",
         "date": "2026-09-15"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-too-many-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Will all the books fit?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "books",
+              "count": 8,
+              "heading": "The box has room for 6 books."
+            },
+            "answerText": "There are too many books.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "too"
+              },
+              {
+                "id": "w3",
+                "text": "many"
+              },
+              {
+                "id": "w4",
+                "text": "books"
+              },
+              {
+                "id": "extra0",
+                "text": "much"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-too-many-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-too-many-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-too-many-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: take two books out. How many remain?",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "8 books. Room for 6.",
+              "heading": "Before"
+            },
+            "answerText": "There are six books.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "six"
+              },
+              {
+                "id": "w3",
+                "text": "books"
+              },
+              {
+                "id": "extra0",
+                "text": "too"
+              },
+              {
+                "id": "extra1",
+                "text": "many"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-too-many-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-too-many-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-too-many-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Will all the toys fit?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "toys",
+              "count": 7,
+              "heading": "The box has room for 4 toys."
+            },
+            "answerText": "There are too many toys.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "There"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "too"
+              },
+              {
+                "id": "w3",
+                "text": "much"
+              },
+              {
+                "id": "w4",
+                "text": "toys."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "little"
+              },
+              {
+                "id": "c1",
+                "text": "many"
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-too-many-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-too-many-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -1302,6 +2085,158 @@
         "lessonId": "2026-09-16",
         "conceptId": "family-roles",
         "date": "2026-09-16"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-family-roles-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Who is Sue?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Sue: your mum's sister.",
+              "heading": "Story card"
+            },
+            "answerText": "She is my aunt.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "aunt"
+              },
+              {
+                "id": "extra0",
+                "text": "uncle"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-family-roles-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-family-roles-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-family-roles-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: talk about your mum's brother.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "She is my aunt.",
+              "heading": "Before"
+            },
+            "answerText": "He is my uncle.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "uncle"
+              },
+              {
+                "id": "extra0",
+                "text": "She"
+              },
+              {
+                "id": "extra1",
+                "text": "aunt"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-family-roles-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-family-roles-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-family-roles-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Who is Max?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Max: your aunt's son.",
+              "heading": "Story card"
+            },
+            "answerText": "He is my cousin.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "He"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "uncle."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "cousin."
+              },
+              {
+                "id": "c0",
+                "text": "aunt."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-family-roles-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-family-roles-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -1492,6 +2427,136 @@
         "lessonId": "2026-09-16",
         "conceptId": "short-forms",
         "date": "2026-09-16"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-short-forms-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Make it short.",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "He is my friend.",
+              "heading": "Long form"
+            },
+            "answerText": "He's my friend.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "He's"
+              },
+              {
+                "id": "w1",
+                "text": "my"
+              },
+              {
+                "id": "w2",
+                "text": "friend"
+              },
+              {
+                "id": "extra0",
+                "text": "I'm"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-short-forms-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-short-forms-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-short-forms-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: use the long form.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I'm happy.",
+              "heading": "Short form"
+            },
+            "answerText": "I am happy.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "happy"
+              },
+              {
+                "id": "extra0",
+                "text": "is"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-short-forms-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-short-forms-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-short-forms-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Talk about yourself.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You: happy.",
+              "heading": "Story card"
+            },
+            "answerText": "I'm happy.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "He's"
+              },
+              {
+                "id": "w1",
+                "text": "happy."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "She's"
+              },
+              {
+                "id": "c1",
+                "text": "I'm"
+              }
+            ],
+            "answer": {
+              "wordId": "w0",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-short-forms-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-short-forms-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -1802,6 +2867,182 @@
         "lessonId": "2026-09-16",
         "conceptId": "opposites",
         "date": "2026-09-16"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-opposites-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Name the opposite.",
+            "instruction": "Keep cold at the end.",
+            "scene": {
+              "kind": "word-card",
+              "text": "cold",
+              "heading": "Find the opposite"
+            },
+            "answerText": "Hot is the opposite of cold.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "Hot"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "the"
+              },
+              {
+                "id": "w3",
+                "text": "opposite"
+              },
+              {
+                "id": "w4",
+                "text": "of"
+              },
+              {
+                "id": "w5",
+                "text": "cold"
+              },
+              {
+                "id": "extra0",
+                "text": "young"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-opposites-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-opposites-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-opposites-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: start with The.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Young is the opposite of old.",
+              "heading": "Before"
+            },
+            "answerText": "The opposite of old is young.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "The"
+              },
+              {
+                "id": "w1",
+                "text": "opposite"
+              },
+              {
+                "id": "w2",
+                "text": "of"
+              },
+              {
+                "id": "w3",
+                "text": "old"
+              },
+              {
+                "id": "w4",
+                "text": "is"
+              },
+              {
+                "id": "w5",
+                "text": "young"
+              },
+              {
+                "id": "extra0",
+                "text": "hot"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-opposites-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-opposites-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-opposites-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Keep Small. Fix the last word.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "small",
+              "heading": "Find the opposite"
+            },
+            "answerText": "Small is the opposite of big.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "Small"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "the"
+              },
+              {
+                "id": "w3",
+                "text": "opposite"
+              },
+              {
+                "id": "w4",
+                "text": "of"
+              },
+              {
+                "id": "w5",
+                "text": "hot."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "big."
+              },
+              {
+                "id": "c0",
+                "text": "young."
+              }
+            ],
+            "answer": {
+              "wordId": "w5",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-opposites-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-opposites-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -2084,6 +3325,158 @@
         "lessonId": "2026-09-17",
         "conceptId": "school-tools",
         "date": "2026-09-17"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-school-tools-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Which tool can help?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Erase a pencil mark.",
+              "heading": "Your task"
+            },
+            "answerText": "I use an eraser.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "an"
+              },
+              {
+                "id": "w3",
+                "text": "eraser"
+              },
+              {
+                "id": "extra0",
+                "text": "ruler"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-school-tools-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-school-tools-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-school-tools-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: draw a straight line.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I use an eraser.",
+              "heading": "Before"
+            },
+            "answerText": "I use a ruler.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "ruler"
+              },
+              {
+                "id": "extra0",
+                "text": "an"
+              },
+              {
+                "id": "extra1",
+                "text": "eraser"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-school-tools-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-school-tools-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-school-tools-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Which tool can help?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Carry books to school.",
+              "heading": "Your task"
+            },
+            "answerText": "I use a backpack.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "use"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "ruler."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "eraser."
+              },
+              {
+                "id": "c1",
+                "text": "backpack."
+              }
+            ],
+            "answer": {
+              "wordId": "w3",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-school-tools-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-school-tools-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -2292,6 +3685,158 @@
         "lessonId": "2026-09-17",
         "conceptId": "supplies-together",
         "date": "2026-09-17"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-supplies-together-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "How many pencils together?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Amy: 3 pencils. Ben: 4 pencils.",
+              "heading": "Story card"
+            },
+            "answerText": "They have seven pencils.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "have"
+              },
+              {
+                "id": "w2",
+                "text": "seven"
+              },
+              {
+                "id": "w3",
+                "text": "pencils"
+              },
+              {
+                "id": "extra0",
+                "text": "six"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-supplies-together-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-supplies-together-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-supplies-together-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: you are Amy. Count only your pencils.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Amy: 3 pencils. Ben: 4 pencils.",
+              "heading": "Same pencils"
+            },
+            "answerText": "I have three pencils.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "have"
+              },
+              {
+                "id": "w2",
+                "text": "three"
+              },
+              {
+                "id": "w3",
+                "text": "pencils"
+              },
+              {
+                "id": "extra0",
+                "text": "They"
+              },
+              {
+                "id": "extra1",
+                "text": "seven"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-supplies-together-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-supplies-together-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-supplies-together-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "How many rulers together?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Amy: 2 rulers. Ben: 3 rulers.",
+              "heading": "Story card"
+            },
+            "answerText": "They have five rulers.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "have"
+              },
+              {
+                "id": "w2",
+                "text": "four"
+              },
+              {
+                "id": "w3",
+                "text": "rulers."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "five"
+              },
+              {
+                "id": "c0",
+                "text": "six"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-supplies-together-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-supplies-together-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -2500,6 +4045,158 @@
         "lessonId": "2026-09-17",
         "conceptId": "counting-now",
         "date": "2026-09-17"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-counting-now-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "What are Dan and Sue doing?",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Dan and Sue: one book, two books, three books...",
+              "heading": "Story card"
+            },
+            "answerText": "They are counting books.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "books"
+              },
+              {
+                "id": "extra0",
+                "text": "count"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-counting-now-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-counting-now-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-counting-now-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Sue only. Hats.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "They are counting books.",
+              "heading": "Before"
+            },
+            "answerText": "She is counting hats.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "She"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "hats"
+              },
+              {
+                "id": "extra0",
+                "text": "They"
+              },
+              {
+                "id": "extra1",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-counting-now-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-counting-now-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-counting-now-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "What are Kim and Pat doing?",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Kim and Pat: one toy, two toys, three toys...",
+              "heading": "Story card"
+            },
+            "answerText": "They are counting toys.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "They"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "counting"
+              },
+              {
+                "id": "w3",
+                "text": "toys."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "am"
+              },
+              {
+                "id": "c1",
+                "text": "are"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-counting-now-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-counting-now-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -2741,6 +4438,177 @@
         "lessonId": "2026-09-17",
         "conceptId": "same-age",
         "date": "2026-09-17"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-same-age-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Tell Pat your age. Show it is the same.",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You are Sam. Sam: 9. Pat: 9.",
+              "heading": "Pretend ages"
+            },
+            "answerText": "I am nine years old too.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "nine"
+              },
+              {
+                "id": "w3",
+                "text": "years"
+              },
+              {
+                "id": "w4",
+                "text": "old"
+              },
+              {
+                "id": "w5",
+                "text": "too"
+              },
+              {
+                "id": "extra0",
+                "text": "eight"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-same-age-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-same-age-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-same-age-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: Sam is 9. Pat is 10. Tell Pat your age.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You are Sam.",
+              "heading": "Pretend ages"
+            },
+            "answerText": "I am nine years old.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "nine"
+              },
+              {
+                "id": "w3",
+                "text": "years"
+              },
+              {
+                "id": "w4",
+                "text": "old"
+              },
+              {
+                "id": "extra0",
+                "text": "too"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-same-age-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-same-age-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-same-age-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "You are Jo. Tell Kim your age.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Jo: 8. Kim: 8.",
+              "heading": "Pretend ages"
+            },
+            "answerText": "I am eight years old too.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "am"
+              },
+              {
+                "id": "w2",
+                "text": "seven"
+              },
+              {
+                "id": "w3",
+                "text": "years"
+              },
+              {
+                "id": "w4",
+                "text": "old"
+              },
+              {
+                "id": "w5",
+                "text": "too."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "eight"
+              },
+              {
+                "id": "c0",
+                "text": "nine"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-same-age-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-same-age-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -2977,6 +4845,177 @@
         "lessonId": "2026-09-13",
         "conceptId": "season-actions",
         "date": "2026-09-13"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-season-actions-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Tell me the plan. Start with I.",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You: fly a kite. Season: winter.",
+              "heading": "Pretend plan"
+            },
+            "answerText": "I fly a kite in winter.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "fly"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "kite"
+              },
+              {
+                "id": "w4",
+                "text": "in"
+              },
+              {
+                "id": "w5",
+                "text": "winter"
+              },
+              {
+                "id": "extra0",
+                "text": "on"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-season-actions-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-season-actions-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-season-actions-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: start with In.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I plant flowers in summer.",
+              "heading": "Before"
+            },
+            "answerText": "In summer I plant flowers.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "In"
+              },
+              {
+                "id": "w1",
+                "text": "summer"
+              },
+              {
+                "id": "w2",
+                "text": "I"
+              },
+              {
+                "id": "w3",
+                "text": "plant"
+              },
+              {
+                "id": "w4",
+                "text": "flowers"
+              },
+              {
+                "id": "extra0",
+                "text": "on"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-season-actions-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-season-actions-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-season-actions-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Tell me the plan.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "You: ride a bike. Season: spring.",
+              "heading": "Pretend plan"
+            },
+            "answerText": "I ride a bike in spring.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "ride"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "bike"
+              },
+              {
+                "id": "w4",
+                "text": "on"
+              },
+              {
+                "id": "w5",
+                "text": "spring."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "at"
+              },
+              {
+                "id": "c1",
+                "text": "in"
+              }
+            ],
+            "answer": {
+              "wordId": "w4",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-season-actions-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-season-actions-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     },
     {
@@ -3143,6 +5182,189 @@
         "lessonId": "2026-09-13",
         "conceptId": "list-commas",
         "date": "2026-09-13"
+      },
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "week-list-commas-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Build the list in this order.",
+            "instruction": "Build a sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "pens / books",
+              "heading": "Two things"
+            },
+            "answerText": "I see pens and books.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "pens"
+              },
+              {
+                "id": "w3",
+                "text": "and"
+              },
+              {
+                "id": "w4",
+                "text": "books"
+              },
+              {
+                "id": "extra0",
+                "text": "pens,"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-list-commas-v2-try-1-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-list-commas-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "week-list-commas-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now: add rulers between pens and books.",
+            "instruction": "Change the sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I see pens and books.",
+              "heading": "Before"
+            },
+            "answerText": "I see pens, rulers, and books.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "pens,"
+              },
+              {
+                "id": "w3",
+                "text": "rulers,"
+              },
+              {
+                "id": "w4",
+                "text": "and"
+              },
+              {
+                "id": "w5",
+                "text": "books"
+              },
+              {
+                "id": "extra0",
+                "text": "pens"
+              },
+              {
+                "id": "extra1",
+                "text": "rulers"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w0",
+                "w1",
+                "w2",
+                "extra1",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-list-commas-v2-try-2-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-list-commas-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "week-list-commas-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Fix the comma.",
+            "instruction": "Fix one word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "cats / dogs / birds",
+              "heading": "Three things"
+            },
+            "answerText": "I see cats, dogs, and birds.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "cats"
+              },
+              {
+                "id": "w3",
+                "text": "dogs,"
+              },
+              {
+                "id": "w4",
+                "text": "and"
+              },
+              {
+                "id": "w5",
+                "text": "birds."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c1",
+                "text": "cats,"
+              },
+              {
+                "id": "c0",
+                "text": "cats."
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/weekly-2026-09-14-week-list-commas-v2-try-3-q.mp3",
+              "answer": "audio/weekly-2026-09-14-week-list-commas-v2-try-3-a.mp3"
+            }
+          }
+        ]
       }
     }
   ]

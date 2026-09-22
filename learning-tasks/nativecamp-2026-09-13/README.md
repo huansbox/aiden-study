@@ -1,5 +1,7 @@
 # Native Camp 課後複習：2026-09-13 Michael
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 狀態：內容、正式音訊與隔離整合驗收已完成；正式發布記錄見[App驗收文件](../../docs-dev/nativecamp-review.md)。課程：2026-09-13 19:30（Asia/Taipei），Michael；交付追蹤於 [#80](https://github.com/huansbox/aiden-study/issues/80)。
 
 依[製作 SOP](../nativecamp-review-pilot/lesson-sop.md)整理已教過的重點，製作完整句排列與家長陪同口說。既有課程的 ID、題意與學習紀錄保留。

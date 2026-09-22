@@ -138,3 +138,41 @@ def test_dated_suffix_rejects_mismatch_and_malformed_identity(tmp_path, monkeypa
     with pytest.raises(ValueError):
         builder.build(lesson_id)
     assert path.read_bytes() == original
+
+def test_revision_appends_new_audio_jobs_without_changing_original_question_contract(tmp_path, monkeypatch):
+    source, path = _source(tmp_path, monkeypatch, '2026-09-14')
+    old_lesson, old_jobs = builder.build(source['id'])
+    concept = source['concepts'][0]
+    questions = []
+    for index, stage in enumerate(['build', 'change', 'fix'], 1):
+        question = copy.deepcopy(concept['try'][0])
+        question.update(id=f"{concept['id']}-v2-try-{index}", stage=stage,
+                        type='repair' if stage == 'fix' else 'order')
+        questions.append(question)
+    concept['tryRevision'] = {'id': 'variety-v1', 'questions': questions}
+    path.write_text(json.dumps(source), encoding='utf-8')
+    original_bytes = path.read_bytes()
+    lesson, jobs = builder.build(source['id'])
+    for before, after in zip(old_lesson['concepts'], lesson['concepts']):
+        assert before['try'] == after['try']
+        assert before['say'] == after['say']
+    assert {job['file']: job for job in jobs if job['file'] in {j['file'] for j in old_jobs}} == {job['file']: job for job in old_jobs}
+    assert len(jobs) == len(old_jobs) + 6
+    assert len(set(job['file'] for job in jobs)) == len(jobs)
+    revised = lesson['concepts'][0]['tryRevision']['questions']
+    assert all('spokenQuestion' not in q and q['audio']['question'].endswith(f"{q['id']}-q.mp3") for q in revised)
+    assert path.read_bytes() == original_bytes
+    assert not list(tmp_path.rglob('*.mp3'))
+    source['concepts'][0]['tryRevision']['questions'][0]['id'] = source['concepts'][0]['try'][0]['id']
+    path.write_text(json.dumps(source), encoding='utf-8')
+    with pytest.raises(ValueError, match='Question IDs'):
+        builder.build(source['id'])
+
+
+@pytest.mark.parametrize('revision', [None, {}, {'id': 'bad/path', 'questions': []}, {'id': 'variety-v1', 'questions': []}])
+def test_revision_rejects_missing_or_malformed_identity_and_stages(tmp_path, monkeypatch, revision):
+    source, path = _source(tmp_path, monkeypatch, '2026-09-14')
+    source['concepts'][0]['tryRevision'] = revision
+    path.write_text(json.dumps(source), encoding='utf-8')
+    with pytest.raises(ValueError):
+        builder.build(source['id'])

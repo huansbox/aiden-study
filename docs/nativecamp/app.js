@@ -91,7 +91,7 @@
       const correct = outcome !== "incorrect";
       return `<section class="feedback ${correct ? "" : "retry"}" aria-live="polite"><h3>${icon(correct ? "circle-check" : "lightbulb")}${correct ? outcome === "helped" ? "You did it with help." : "You got it." : "Let's look together."}</h3><p>${escape(question.answerText)}</p>${question.explanation ? `<p class="small-note">${escape(question.explanation)}</p>` : ""}${button("answer-audio", "Listen to the answer", "listen-button", "volume-2")}</section>${correcting ? `<p class="correction-label">Try the same idea once more. Your first answer stays saved.</p>${Q.answerControls(question, selection, words)}${correctionChecked ? '<p class="help-note">That matches. Your first answer has not changed.</p>' : ""}` : ""}<div class="question-actions">${!correct && !correcting ? button("correct", "Try again", "text-button", "rotate-ccw") : '<span class="small-note">First answer saved.</span>'}${correcting && !correctionChecked ? button("check-correction", "Check", "secondary", "check", canCheck(question) ? "" : "disabled") : ""}${button("next", "Continue", "primary", "arrow-right")}</div>`;
     }
-    function canCheck(question) { return question.type === "choice" ? selection !== null : words.length > 0; }
+    function canCheck(question) { return question.type === "repair" ? Boolean(selection?.wordId && selection?.choiceId) : question.type === "choice" ? selection !== null : words.length > 0; }
     function practiceHtml() {
       const next = feedback?.next ?? current();
       if (!next) { view = "round"; return roundHtml(); }
@@ -175,6 +175,8 @@
         const q = next.question;
         if (action === "question-audio" || action === "answer-audio" || action === "retry-audio") { await play(action === "retry-audio" ? lastAudio : action === "answer-audio" ? "answer" : "question"); return; }
         if (action === "pick") selection = data.choice;
+        else if (action === "repair-word" && q.type === "repair" && q.sentence.some((word) => word.id === data.word)) selection = { wordId: data.word, choiceId: null };
+        else if (action === "repair-choice" && q.type === "repair" && selection?.wordId && q.choices.some((choice) => choice.id === data.choice)) selection = { ...selection, choiceId: data.choice };
         else if (action === "add-word" && !words.includes(data.word) && q.tokens?.some((t) => t.id === data.word)) words.push(data.word);
         else if (action === "remove-word") words = words.filter((word) => word !== data.word);
         else if ((action === "help" || action === "reveal") && !feedback) {
@@ -183,7 +185,7 @@
           await persist(C.markPending(bridge.getProgress(), lesson, mode, date(), next.concept.id, q.id, action === "help" ? "help" : "reveal"));
           if (action === "reveal" && epoch === audioEpoch) nextSound = () => play("answer");
         } else if (action === "check" && mode === "try" && !feedback) {
-          const result = C.submitTry(bridge.getProgress(), lesson, date(), next.concept.id, q.id, q.type === "choice" ? selection : words);
+          const result = C.submitTry(bridge.getProgress(), lesson, date(), next.concept.id, q.id, q.type === "order" ? words : selection);
           if (result.recorded) {
             stopAudio(); const epoch = audioEpoch;
             await persist(result.progress, { answered: true, correct: result.outcome === "independent" });
@@ -202,7 +204,7 @@
         } else if (action === "next" && feedback) { resetQuestion(); if (!current()) view = "round"; else nextSound = () => play("question"); }
         else if (action === "correct" && feedback) { stopAudio(); correcting = true; selection = null; words = []; correctionChecked = false; }
         else if (action === "check-correction" && feedback && correcting) {
-          correctionChecked = C.checkAnswer(q, q.type === "choice" ? selection : words);
+          correctionChecked = C.checkAnswer(q, q.type === "order" ? words : selection);
           if (!correctionChecked) error = "Look at the example and try once more, or continue.";
           nextSound = () => play("answer", { effect: correctionChecked ? "correct" : "neutral" });
         }

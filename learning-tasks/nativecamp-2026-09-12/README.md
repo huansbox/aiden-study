@@ -1,5 +1,7 @@
 # Native Camp 2026-09-12 Lena
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 2026-09-12 21:00（Asia/Taipei）Lena 課程的課後複習，適合已有基本英文閱讀能力、由家長陪同口說的孩子。題包與正式 OpenAI 語音已完成，由 [#97](https://github.com/huansbox/aiden-study/issues/97) 統籌交付；任務狀態以 [任務登錄](../catalog.json) 為準。
 
 [Preview 入口](https://kids.linshuhuan.com/nativecamp/preview.html?child=aiden&lesson=2026-09-12)可供家長檢視題目；實際發布 commit、CI 與正式資源核對結果見 #97 及其關聯 PR。

@@ -24,7 +24,7 @@ function onlySentences(q, expected) {
 }
 function expectedBundle(source) {
   const lesson = structuredClone(source), jobs = [];
-  for (const c of lesson.concepts) for (const q of questions(c)) {
+  for (const c of lesson.concepts) for (const q of [...questions(c), ...(c.tryRevision?.questions || [])]) {
     const spoken = q.spokenQuestion;
     delete q.spokenQuestion;
     q.audio = { question: `audio/${lesson.id}-${q.id}-q.mp3`, answer: `audio/${lesson.id}-${q.id}-a.mp3` };
@@ -86,7 +86,7 @@ for (const spec of specs) {
     core.validateLesson(lesson);
     assert.deepEqual(lesson, expected.lesson);
     assert.deepEqual(jobs, expected.jobs);
-    assert.equal(new Set(jobs.map(job => job.file)).size, concepts.length * 12);
+    assert.equal(new Set(jobs.map(job => job.file)).size, expected.jobs.length);
   });
 
   test(`[audio] ${id}: every recording matches its text, hash and normal-speed OpenAI voice`, () => {
@@ -102,7 +102,7 @@ for (const spec of specs) {
     assert.ok(!/slow|\b135\b/i.test(manifest.voice.instructions));
     assert.ok(!/nativecamp\.net|chat_hash|base64|source[\\/]private|sk-[a-zA-Z0-9]/.test(JSON.stringify(manifest)), id);
     const speech = new Map(manifest.tts.map(item => [item.file, item]));
-    assert.equal(manifest.tts.length, concepts.length * 12);
+    assert.equal(manifest.tts.length, jobs.length);
     assert.equal(speech.size, jobs.length);
     for (const job of jobs) {
       assert.ok(job.file.startsWith(`${id}-`));

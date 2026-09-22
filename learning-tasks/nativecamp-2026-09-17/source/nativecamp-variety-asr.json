@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-17",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-1-q.mp3",
+      "sha256": "b1a1eb0e0fe8f9923d11cc3f68764d2409127cc8ed56aafaec0b0a7f5529c81f",
+      "expectedText": "You want to draw straight lines. Which tool helps, and why?",
+      "recognizedText": "You want to draw straight lines. Which tool helps, and why?"
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-1-a.mp3",
+      "sha256": "f913e70387b1b8aeae3f0bcb6c5f2fee6f6400dd1223cd5cff858edc987f683c",
+      "expectedText": "I use a ruler to draw lines.",
+      "recognizedText": "I use a ruler to draw lines."
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-2-q.mp3",
+      "sha256": "7c0e1479d319262dc79fee4d20cbd8ec171b61e76ab53eb8459915cd2462889b",
+      "expectedText": "Now make pencil marks go away. Which tool helps, and why?",
+      "recognizedText": "Now make pencil marks go away. Which tool helps? And why?"
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-2-a.mp3",
+      "sha256": "45bcafd6732f046ca433d6622bbcac9b3be5028e5abd9c84fafc91ad227d7580",
+      "expectedText": "I use an eraser to erase marks.",
+      "recognizedText": "I use an eraser to erase marks."
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-3-q.mp3",
+      "sha256": "50e2cedf6947bda1bef786a057b0a58c9e24589b4a567a2ae1f0e12db6be1afa",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-17-school-tools-v2-try-3-a.mp3",
+      "sha256": "904388cc38ac2cf10d45c3db139ab90fadadb73e25e0a5895bceb24b34d66483",
+      "expectedText": "I use a ruler to draw lines.",
+      "recognizedText": "I use a ruler to draw lines."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-1-q.mp3",
+      "sha256": "1f48cd59228b0c7bb1da64889cf2788a1d2f971f62f7cca9c2880836d342b0fa",
+      "expectedText": "Mia has four pens, and Leo has three. How many do they have together?",
+      "recognizedText": "Mia has four pens and Leo has three. How many do they have together?"
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-1-a.mp3",
+      "sha256": "953051310eab34663ce966ef670d0017d3c2a9ec69cab5982d40a6902b3a966a",
+      "expectedText": "They have seven pens.",
+      "recognizedText": "They have seven pens."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-2-q.mp3",
+      "sha256": "6da14120ddb2861142aec24609923a6b31f597544c0d974541c9208df31ea84e",
+      "expectedText": "All the pens are with Leo now. Tell me about Leo.",
+      "recognizedText": "All the pens are with Leo now. Tell me about Leo."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-2-a.mp3",
+      "sha256": "3de1e76e46d176d284204afca5f3de9593ace5bd64770975dfb06881a66dab63",
+      "expectedText": "He has seven pens.",
+      "recognizedText": "He has seven pens."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-3-q.mp3",
+      "sha256": "a934d97b9c531c1fc23d184fdc4d3dc504c95844f7daf5d06d3adc28fa675c4f",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-17-supplies-together-v2-try-3-a.mp3",
+      "sha256": "a1a68f6da27fe983eb04e474a8d2365ba47d1c2f77c8cbf1f3ef1449dc4947b5",
+      "expectedText": "They have eight erasers.",
+      "recognizedText": "They have eight erasers."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-1-q.mp3",
+      "sha256": "3496749ece3844950d289b6cb41eb59ce92cb4dcc601533fd67bb162ccee8e02",
+      "expectedText": "Mia and Leo say one pen, two pens, three pens. What are they doing?",
+      "recognizedText": "Mia and Leo say one pen, two pens, three pens. What are they doing?"
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-1-a.mp3",
+      "sha256": "f8c822cd4648cfe20b0df12eb746a18ada8ea9b04c99938cae3c3ed1945a6f49",
+      "expectedText": "They are counting pens.",
+      "recognizedText": "They are counting pens."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-2-q.mp3",
+      "sha256": "a3036de009f9c171b5693e025e2dfa478eebfdbddd1cef8ae0d55b72de5ceb24",
+      "expectedText": "Now only Mia says one pencil, two pencils. What is she doing?",
+      "recognizedText": "Now only Mia says one pencil, two pencils. What is she doing?"
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-2-a.mp3",
+      "sha256": "d986c3dcda40151c3128c685e4e5ab768794203c92426259635dbbafe20bd3b5",
+      "expectedText": "She is counting pencils.",
+      "recognizedText": "She is counting pencils."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-3-q.mp3",
+      "sha256": "94125f27d1cd7b0b2ef2a97058dd52a8d2f74d24ba6aee6c3ae1f3900a847815",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-17-counting-now-v2-try-3-a.mp3",
+      "sha256": "ab956dbfccf2c5051be331fa8fca29f48b8af24f1652afc96b0bee639e01ce7f",
+      "expectedText": "They are counting rulers.",
+      "recognizedText": "They are counting rulers."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-1-q.mp3",
+      "sha256": "015e16306310ea9a21bc19648fe05b0abeef75f769bc4dec2bfcf0d1c9dc2f72",
+      "expectedText": "You are Sam, and both you and Kim are six. Tell Kim you are the same age.",
+      "recognizedText": "You are Sam, and both you and Kim are six. Tell Kim you are the same age."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-1-a.mp3",
+      "sha256": "6dd56a9eedbeebc91cda9e092de5ec51fa9938488d2f66d6abab7ac59357890a",
+      "expectedText": "I'm six years old too.",
+      "recognizedText": "I'm six years old too."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-2-q.mp3",
+      "sha256": "b3f457068a9ab33ba6dc55d6351b5268f102090f1801dba9bd27e3fd70819c3e",
+      "expectedText": "Now Sam is seven and Kim is six. You are Sam; tell Kim your age.",
+      "recognizedText": "Now Sam is seven and Kim is six. You are Sam. Tell Kim your age."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-2-a.mp3",
+      "sha256": "976866e543c85914978c1f3b745db042c4eb530bccb7336c129edff392e31c25",
+      "expectedText": "I'm seven years old.",
+      "recognizedText": "I'm seven years old."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-3-q.mp3",
+      "sha256": "3a19452694f98025d488e4bb7c5c00affe8d5bc32906f3289fefd41bb0b8a6ca",
+      "expectedText": "You are Sam, and both you and Kim are nine. Fix the reply to Kim.",
+      "recognizedText": "You are Sam, and both you and Kim are 9. Fix the reply to Kim."
+    },
+    {
+      "file": "audio/2026-09-17-same-age-v2-try-3-a.mp3",
+      "sha256": "86d758b2f9366b45b703eec35e3a2df950b9e893a6bb022d3811651096059ed6",
+      "expectedText": "I'm nine years old too.",
+      "recognizedText": "I am nine years old too."
+    }
+  ]
+}

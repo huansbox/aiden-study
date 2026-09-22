@@ -1,0 +1,156 @@
+{
+  "lessonId": "2026-09-09",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all revised Try question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-1-q.mp3",
+      "sha256": "c58a45c57f682c3d791300d3efa08f2b9dad1bc0467cb7aa9735fdf7e6a79733",
+      "expectedText": "A pencil is near you. Ask its name.",
+      "recognizedText": "A pencil is near you. Ask its name."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-1-a.mp3",
+      "sha256": "b5d786c38dab919632efd50fdf569453d3399c4fa98494462eb5f0732bb8522f",
+      "expectedText": "What is this?",
+      "recognizedText": "What is this?"
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-2-q.mp3",
+      "sha256": "3f101d7a71774f3b6979ab3fa745d57be0f190ef488451fb0af2a87461c587b2",
+      "expectedText": "Now a person is far away. Ask their name.",
+      "recognizedText": "Now a person is far away. Ask their name."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-2-a.mp3",
+      "sha256": "b0b8eac9b052144fea13590a91bca55468a1bcdbb331314d44d84564c8b320a0",
+      "expectedText": "Who is that?",
+      "recognizedText": "Who is that?"
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-3-q.mp3",
+      "sha256": "0808a7edba9a42ecf2fca51dbc31fc0899c202569b32e9e357a464bc0093c3c9",
+      "expectedText": "A bag is far away. Fix the question.",
+      "recognizedText": "A bag is far away. Fix the question."
+    },
+    {
+      "file": "audio/2026-09-09-who-what-questions-v2-try-3-a.mp3",
+      "sha256": "8b9935b30063fd4e1d36b6de5b22245624bed2eb4774dd1ad6f4cd70c2191bc2",
+      "expectedText": "What is that?",
+      "recognizedText": "What is that?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-1-q.mp3",
+      "sha256": "f90ae241017bf59ae3ce113dcd4dc256f649f92f66c8e268a9d114c09998a697",
+      "expectedText": "Emma is near you. Who is this?",
+      "recognizedText": "Emma is near you. Who is this?"
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-1-a.mp3",
+      "sha256": "d26730973bbb273fd3308bb56a248c10cf235a59822283bdd59fe915f245f716",
+      "expectedText": "This is Emma.",
+      "recognizedText": "This is Emma."
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-2-q.mp3",
+      "sha256": "25b8b597434f6f02028e8dc2c91531b1e92de099c99c84b5a357775268b5ec5c",
+      "expectedText": "Now a book is near you. Name it in a full sentence.",
+      "recognizedText": "Now a book is near you. Name it in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-2-a.mp3",
+      "sha256": "d53d39f02d925eb90eb6eb7210ccf6f7f577d49bdd12245d1ee832125d654f0b",
+      "expectedText": "This is a book.",
+      "recognizedText": "This is a book."
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-3-q.mp3",
+      "sha256": "d1cefbc38a0b81d8d6519cac276118d049388c95c36f996e59c82cb679d5d128",
+      "expectedText": "Mia is near you. Fix one word.",
+      "recognizedText": "Mia is near you. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-09-complete-names-v2-try-3-a.mp3",
+      "sha256": "79c38fd4e2f82d109b118635ca01c7980d705673ef42a7a5556215aa07316627",
+      "expectedText": "This is Mia.",
+      "recognizedText": "This is Mia."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-1-q.mp3",
+      "sha256": "c5fc701d54d4bce9e8a209ba3ffd8c71a3cb9806272ad6db8643647cb0e1611c",
+      "expectedText": "You play in the afternoon. Tell me about your day.",
+      "recognizedText": "You play in the afternoon. Tell me about your day."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-1-a.mp3",
+      "sha256": "41d5a7c685c301d321183f04b3c848f0f3a9c166a366aba98ac0bc08b578afb7",
+      "expectedText": "I play in the afternoon.",
+      "recognizedText": "I play in the afternoon."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-2-q.mp3",
+      "sha256": "b78500df925f8549e51b39645aec89ad390ac44a5ea1d9a25c7300e8d22b10ee",
+      "expectedText": "Now it is night and you sleep. Build the new sentence.",
+      "recognizedText": "Now it is night and you sleep. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-2-a.mp3",
+      "sha256": "2fefa9708c060d57c92d4b9ad2b7ccdd387b78991d9a9098e1b7997975d227c4",
+      "expectedText": "I sleep at night.",
+      "recognizedText": "I sleep at night."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-3-q.mp3",
+      "sha256": "5cba5b94d100f0c6402aaa3972e929ad99350382a02e06006365fb2a25ea7f4b",
+      "expectedText": "Look at your morning plan and fix one word.",
+      "recognizedText": "Look at your morning plan and fix one word."
+    },
+    {
+      "file": "audio/2026-09-09-daily-routines-v2-try-3-a.mp3",
+      "sha256": "27966014ffb4454da67548ab84dc70e074fc653e4f1c139f6be717daf2bbcc44",
+      "expectedText": "I eat breakfast in the morning.",
+      "recognizedText": "I eat breakfast in the morning."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-1-q.mp3",
+      "sha256": "4e97bec08eb40a5c9b796f5935193147c00f5f99bbfe93c2f483bae2dedddc1a",
+      "expectedText": "In this story, eagles sleep when it is night. Build a full sentence.",
+      "recognizedText": "In this story, eagles sleep when it is night. Build a full sentence."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-1-a.mp3",
+      "sha256": "7798ac8264faf536f0d4e89fcf364ef18d9893315d3babfbe1021ac270387891",
+      "expectedText": "Eagles sleep at night.",
+      "recognizedText": "Eagles sleep at night."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-2-q.mp3",
+      "sha256": "161df9a95a298b162a6fd8f3f537fd660709a63b30635556df31d93357d552ec",
+      "expectedText": "Now it is morning and the eagles wake up. Build the new sentence.",
+      "recognizedText": "Now, it is morning, and the eagles wake up. Build the new sentence."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-2-a.mp3",
+      "sha256": "3d6f4609bba0ae7bcc69506df88bd2a5b5b4fb4aa7743726a1ad2fa138807155",
+      "expectedText": "Eagles wake up in the morning.",
+      "recognizedText": "Eagles wake up in the morning."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-3-q.mp3",
+      "sha256": "50f99ded6785b61750dbceb8d5c5932fb3d15a63775a5fafd560d471afbe148d",
+      "expectedText": "In this story, opossums play when it is night. Fix one word.",
+      "recognizedText": "In this story, opossums play when it is night. Fix one word."
+    },
+    {
+      "file": "audio/2026-09-09-animal-routines-v2-try-3-a.mp3",
+      "sha256": "083cf6460e282be6614868ae6c2b2e787b8bb9708c3ad9689bdc2cd6c143b0a1",
+      "expectedText": "Opossums play at night.",
+      "recognizedText": "Opossums play at night."
+    }
+  ]
+}

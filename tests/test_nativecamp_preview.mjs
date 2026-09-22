@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import "../docs/nativecamp/core.js";
 import { weeklyFixture } from "./helpers/nativecamp-weekly.mjs";
+import { varietyFixture } from "./helpers/nativecamp-variety.mjs";
 const sound = (ref) => typeof ref === "string" && ref.startsWith("audio/") ? ref + "?v=20260918-openai" : ref;
 const C = globalThis.NativeCampCore;
 const source = (path) => readFileSync(new URL("../docs/nativecamp/" + path, import.meta.url), "utf8");
@@ -78,6 +79,34 @@ function harness({ child = "bingpu", audioFailure = false, privateFetch, mount =
   };
 }
 const settle = () => new Promise((resolve) => setImmediate(resolve));
+test("Preview defaults to updated questions, exposes originals, and repairs without learning access", async () => {
+  const previewLesson = varietyFixture(), concept = previewLesson.concepts[0], revised = concept.tryRevision.questions;
+  const h = harness({ previewLesson });
+  assert.match(h.root.innerHTML, /data-version="updated" aria-pressed="true"/);
+  assert.ok(h.root.innerHTML.includes(revised[0].prompt));
+  await h.app.handle("version", { version: "original" });
+  assert.ok(h.root.innerHTML.includes(concept.try[0].prompt));
+  assert.equal(h.commands.at(-1).resource, concept.try[0].audio.question);
+  await h.app.handle("version", { version: "updated" });
+  await h.app.handle("question", { question: revised[2].id });
+  assert.match(h.root.innerHTML, /Fix one word/);
+  assert.doesNotMatch(h.root.innerHTML, /data-action="repair-choice"/);
+  await h.app.handle("repair-word", { word: "s0" });
+  await h.app.handle("repair-choice", { choice: "are" });
+  await h.app.handle("check");
+  assert.match(h.root.innerHTML, /Look at the example/);
+  await h.app.handle("repair-word", { word: "s1" });
+  await h.app.handle("repair-choice", { choice: "are" });
+  await h.app.handle("check");
+  assert.match(h.root.innerHTML, /That matches/);
+  assert.ok(h.root.innerHTML.includes(revised[2].answerText));
+  assert.equal(h.commands.at(-1).resource, revised[2].audio.answer);
+  await h.app.handle("mode", { mode: "say" });
+  assert.doesNotMatch(h.root.innerHTML, /data-version=/);
+  assert.ok(h.root.innerHTML.includes(concept.say[0].prompt));
+  assert.equal(h.storageTouches, 0);
+  h.app.destroy();
+});
 
 test("Preview calendar shows the linked month, pages across years and keeps answer state without learning access", async () => {
   const h = harness({ previewCatalog: catalog.lessons, search: "?child=bingpu&lesson=2026-09-15", practiceDate: "2027-01-02" });

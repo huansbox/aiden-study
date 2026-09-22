@@ -1,5 +1,7 @@
 # Native Camp 課後複習：2026-09-09 Emi
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 課程為 2026-09-09 20:00（Asia/Taipei），Emi。題包、語音、獨立 review、逐題 Preview、隔離孩子作答與家長摘要驗收皆完成；正式發布與線上核對見 [#99](https://github.com/huansbox/aiden-study/issues/99) 及其關聯 PR。任務狀態以 [任務登錄](../catalog.json) 為準。
 
 依 [製作 SOP](../nativecamp-review-pilot/lesson-sop.md) 製作 4 個概念、24 題：Ask a question、Name it、My day、An animal day。每概念各 3 題完整句排列與 3 題口說，排列通常 1 張合理混淆。重點是 Who／What 完整問句、命名句，以及虛構日程與故事動物的完整作息句。 正式音訊為 48 個 OpenAI Marin 問題／答案 MP3，speed 1.0；同堂同聲，重播不呼叫 API。

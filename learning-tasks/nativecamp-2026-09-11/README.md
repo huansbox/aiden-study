@@ -1,5 +1,7 @@
 # Native Camp 課後複習：2026-09-11 Edon
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 課程為 2026-09-11 20:00（Asia/Taipei），Edon。交付追蹤於 [#97](https://github.com/huansbox/aiden-study/issues/97)，任務狀態以 [任務登錄](../catalog.json) 為準。
 
 題包與正式語音已完成。依 [製作 SOP](../nativecamp-review-pilot/lesson-sop.md) 製作完整句練習。4 個概念、24 題：Weather changes、After doesn't、The next season、Days and nights，配有 48 個 OpenAI Marin 問題／答案 MP3，speed 1.0。重點是 gets／snows、doesn't 後的原形、季節先後，以及單複數的日夜長短句；每概念各 3 題排列與 3 題口說，排列有 1 個合理混淆字。虛構天氣卡限定答案，不把冬天一定下雪或全球都分四季當通則。

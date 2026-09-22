@@ -238,7 +238,203 @@
             "answer": "audio/2026-09-13-season-actions-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "season-actions-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Tell me your plan.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your plan / spring / plant flowers",
+              "heading": "Build"
+            },
+            "answerText": "I plant flowers in spring.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "plant"
+              },
+              {
+                "id": "w2",
+                "text": "flowers"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "spring"
+              },
+              {
+                "id": "extra0",
+                "text": "on"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-season-actions-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-13-season-actions-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "season-actions-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "New plan: you and Mia / summer / go to the beach.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I plant flowers in spring.",
+              "heading": "Before"
+            },
+            "answerText": "We go to the beach in summer.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "We"
+              },
+              {
+                "id": "w1",
+                "text": "go"
+              },
+              {
+                "id": "w2",
+                "text": "to"
+              },
+              {
+                "id": "w3",
+                "text": "the"
+              },
+              {
+                "id": "w4",
+                "text": "beach"
+              },
+              {
+                "id": "w5",
+                "text": "in"
+              },
+              {
+                "id": "w6",
+                "text": "summer"
+              },
+              {
+                "id": "extra0",
+                "text": "I"
+              },
+              {
+                "id": "extra1",
+                "text": "at"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5",
+                "w6"
+              ],
+              [
+                "w5",
+                "w6",
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-season-actions-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-13-season-actions-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "season-actions-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your plan / winter / eat ice cream",
+              "heading": "Look"
+            },
+            "answerText": "I eat ice cream in winter.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "eat"
+              },
+              {
+                "id": "w2",
+                "text": "ice"
+              },
+              {
+                "id": "w3",
+                "text": "cream"
+              },
+              {
+                "id": "w4",
+                "text": "on"
+              },
+              {
+                "id": "w5",
+                "text": "winter."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "in"
+              },
+              {
+                "id": "c1",
+                "text": "at"
+              }
+            ],
+            "answer": {
+              "wordId": "w4",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-13-season-actions-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-13-season-actions-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "story-weather",
@@ -456,7 +652,191 @@
             "answer": "audio/2026-09-13-story-weather-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "story-weather-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Describe the weather.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Pine Town story / winter / snow all day",
+              "heading": "Build"
+            },
+            "answerText": "It is snowy in winter.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "snowy"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "winter"
+              },
+              {
+                "id": "extra0",
+                "text": "snow"
+              },
+              {
+                "id": "extra1",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-story-weather-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-13-story-weather-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "story-weather-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Same season. Now snow covers the town.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "It is hot in summer.",
+              "heading": "Before"
+            },
+            "answerText": "It is snowy in summer.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "is"
+              },
+              {
+                "id": "w2",
+                "text": "snowy"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "summer"
+              },
+              {
+                "id": "extra0",
+                "text": "hot"
+              },
+              {
+                "id": "extra1",
+                "text": "are"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w3",
+                "w4",
+                "w0",
+                "w1",
+                "w2"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-story-weather-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-13-story-weather-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "story-weather-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Lake Town story / spring / warm",
+              "heading": "Look"
+            },
+            "answerText": "It is warm in spring.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "It"
+              },
+              {
+                "id": "w1",
+                "text": "are"
+              },
+              {
+                "id": "w2",
+                "text": "warm"
+              },
+              {
+                "id": "w3",
+                "text": "in"
+              },
+              {
+                "id": "w4",
+                "text": "spring."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "am"
+              },
+              {
+                "id": "c1",
+                "text": "is"
+              }
+            ],
+            "answer": {
+              "wordId": "w1",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-13-story-weather-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-13-story-weather-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "activity-places",
@@ -694,7 +1074,207 @@
             "answer": "audio/2026-09-13-activity-places-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "activity-places-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Where do you ride?",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your plan / ride my bike / the park",
+              "heading": "Build"
+            },
+            "answerText": "I ride my bike in the park.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "ride"
+              },
+              {
+                "id": "w2",
+                "text": "my"
+              },
+              {
+                "id": "w3",
+                "text": "bike"
+              },
+              {
+                "id": "w4",
+                "text": "in"
+              },
+              {
+                "id": "w5",
+                "text": "the"
+              },
+              {
+                "id": "w6",
+                "text": "park"
+              },
+              {
+                "id": "extra0",
+                "text": "on"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5",
+                "w6"
+              ],
+              [
+                "w4",
+                "w5",
+                "w6",
+                "w0",
+                "w1",
+                "w2",
+                "w3"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-activity-places-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-13-activity-places-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "activity-places-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Same game. Move to the beach.",
+            "instruction": "Build a full sentence.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I play in the house.",
+              "heading": "Before"
+            },
+            "answerText": "I play at the beach.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "play"
+              },
+              {
+                "id": "w2",
+                "text": "at"
+              },
+              {
+                "id": "w3",
+                "text": "the"
+              },
+              {
+                "id": "w4",
+                "text": "beach"
+              },
+              {
+                "id": "extra0",
+                "text": "in"
+              },
+              {
+                "id": "extra1",
+                "text": "house"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4"
+              ],
+              [
+                "w2",
+                "w3",
+                "w4",
+                "w0",
+                "w1"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-activity-places-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-13-activity-places-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "activity-places-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find one mistake.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "Your plan / fly a kite / the park",
+              "heading": "Look"
+            },
+            "answerText": "I fly a kite in the park.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "fly"
+              },
+              {
+                "id": "w2",
+                "text": "a"
+              },
+              {
+                "id": "w3",
+                "text": "kite"
+              },
+              {
+                "id": "w4",
+                "text": "on"
+              },
+              {
+                "id": "w5",
+                "text": "the"
+              },
+              {
+                "id": "w6",
+                "text": "park."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "in"
+              },
+              {
+                "id": "c1",
+                "text": "of"
+              }
+            ],
+            "answer": {
+              "wordId": "w4",
+              "choiceId": "c0"
+            },
+            "audio": {
+              "question": "audio/2026-09-13-activity-places-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-13-activity-places-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "list-commas",
@@ -855,7 +1435,195 @@
             "answer": "audio/2026-09-13-list-commas-say-3-a.mp3"
           }
         }
-      ]
+      ],
+      "tryRevision": {
+        "id": "variety-v1",
+        "questions": [
+          {
+            "id": "list-commas-v2-try-1",
+            "stage": "build",
+            "type": "order",
+            "prompt": "Name all three. Keep this order.",
+            "instruction": "Keep the list order.",
+            "scene": {
+              "kind": "word-card",
+              "text": "flowers / trees / birds",
+              "heading": "Build"
+            },
+            "answerText": "I see flowers, trees, and birds.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "flowers,"
+              },
+              {
+                "id": "w3",
+                "text": "trees,"
+              },
+              {
+                "id": "w4",
+                "text": "and"
+              },
+              {
+                "id": "w5",
+                "text": "birds"
+              },
+              {
+                "id": "extra0",
+                "text": "flowers"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-list-commas-v2-try-1-q.mp3",
+              "answer": "audio/2026-09-13-list-commas-v2-try-1-a.mp3"
+            }
+          },
+          {
+            "id": "list-commas-v2-try-2",
+            "stage": "change",
+            "type": "order",
+            "prompt": "Now add birds last.",
+            "instruction": "Keep the list order.",
+            "scene": {
+              "kind": "word-card",
+              "text": "I see cats and dogs.",
+              "heading": "Before"
+            },
+            "answerText": "I see cats, dogs, and birds.",
+            "tokens": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "cats,"
+              },
+              {
+                "id": "w3",
+                "text": "dogs,"
+              },
+              {
+                "id": "w4",
+                "text": "and"
+              },
+              {
+                "id": "w5",
+                "text": "birds"
+              },
+              {
+                "id": "extra0",
+                "text": "cats"
+              },
+              {
+                "id": "extra1",
+                "text": "dogs"
+              }
+            ],
+            "acceptedOrders": [
+              [
+                "w0",
+                "w1",
+                "w2",
+                "w3",
+                "w4",
+                "w5"
+              ],
+              [
+                "w0",
+                "w1",
+                "w2",
+                "extra1",
+                "w4",
+                "w5"
+              ]
+            ],
+            "audio": {
+              "question": "audio/2026-09-13-list-commas-v2-try-2-q.mp3",
+              "answer": "audio/2026-09-13-list-commas-v2-try-2-a.mp3"
+            }
+          },
+          {
+            "id": "list-commas-v2-try-3",
+            "stage": "fix",
+            "type": "repair",
+            "prompt": "Find the missing comma.",
+            "instruction": "Tap the mistake. Choose a word.",
+            "scene": {
+              "kind": "word-card",
+              "text": "pens / pencils / books",
+              "heading": "Look"
+            },
+            "answerText": "I see pens, pencils, and books.",
+            "sentence": [
+              {
+                "id": "w0",
+                "text": "I"
+              },
+              {
+                "id": "w1",
+                "text": "see"
+              },
+              {
+                "id": "w2",
+                "text": "pens"
+              },
+              {
+                "id": "w3",
+                "text": "pencils,"
+              },
+              {
+                "id": "w4",
+                "text": "and"
+              },
+              {
+                "id": "w5",
+                "text": "books."
+              }
+            ],
+            "choices": [
+              {
+                "id": "c0",
+                "text": "pens."
+              },
+              {
+                "id": "c1",
+                "text": "pens,"
+              }
+            ],
+            "answer": {
+              "wordId": "w2",
+              "choiceId": "c1"
+            },
+            "audio": {
+              "question": "audio/2026-09-13-list-commas-v2-try-3-q.mp3",
+              "answer": "audio/2026-09-13-list-commas-v2-try-3-a.mp3"
+            }
+          }
+        ]
+      }
     }
   ]
 }

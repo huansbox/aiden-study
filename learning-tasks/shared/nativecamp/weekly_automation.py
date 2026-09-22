@@ -191,7 +191,8 @@ def validate_public_content(repo, lesson, plan, brief):
                 scan(item)
 
     scan(lesson)
-    questions = lambda value: [q for concept in value["concepts"] for mode in ("try", "say") for q in concept[mode]]
+    questions = lambda value: [q for concept in value["concepts"]
+        for q in [*concept["try"], *concept["say"], *concept.get("tryRevision", {}).get("questions", [])]]
     signature = lambda q: canonical({key: q.get(key) for key in ("prompt", "scene", "answerText")})
     old = set()
     for entry in read_json(repo / "docs/nativecamp/lessons/catalog.json")["lessons"]:

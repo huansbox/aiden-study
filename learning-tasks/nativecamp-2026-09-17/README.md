@@ -1,5 +1,7 @@
 # Native Camp 課後複習：2026-09-17 Khalid
 
+2026-09-22 追加新版 Try it：每概念 Build／Change／Fix 各一題，尚未開始才用新版，已作答原題與 Say it 保留。Preview 可切 Updated／Original；目前音訊總數以 manifest 為準。新版題量、語音與驗收見 [改版紀錄](../../docs-dev/nativecamp-try-variety.md) 與 [全新版音檔 ASR](source/nativecamp-variety-asr.json)。以下保留原版交付證據。
+
 課程：2026-09-17 19:30（Asia/Taipei），Khalid。目前工作狀態以 [catalog.json](../catalog.json) 的本任務登錄為準；以下保留有日期的交付證據與使用限制。
 
 ## 交付紀錄：2026-09-18
