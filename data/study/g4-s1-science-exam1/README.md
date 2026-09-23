@@ -2,7 +2,7 @@
 
 這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫與獨立覆核完成後，77 題 revision 5 家庭題包已於 **2026-09-23 正式發布**；實體 iPad 尚未驗證。
 
-後續 [#119 第二批](second-batch.md) 增加 12 個活動並完成 89 題 revision 6 的本機候選驗證；這 12 個活動與 revision 6 **尚未正式發布**。下方表格與缺口敘述保留首批發布當時的 20 題快照。
+後續 [#119 第二批](second-batch.md) 增加 12 個完整活動、29 個原卷作答位置；89 題 revision 6 已於 **2026-09-23 正式發布**。下方表格與缺口敘述仍保留首批發布當時的 20 題快照，第二批後的自然題數為 32。
 
 發布基線為 merge commit `cb2e2cc19227b614c141db4fc0b89ccccc7ed298`，Worker version `807a397e-2ba7-423c-821a-f9f15d8873fe`。題包 SHA256 `98150515D8897C0240316D173FD8D94B47EDAE0804C05A271BB0431DBBE6B22C`，正式 KV 的立即與傳播後原始讀回均逐 byte 相同；不含題文的發布證據見 canonical ignored `data/private/study/g4-s1-math-u1/rev5-release/release-audit/kv-20260923T0445Z/release-summary.json`。
 

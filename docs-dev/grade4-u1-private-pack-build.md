@@ -1,8 +1,8 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 5 共 77 題，包含原數學 57 題與自然首批 20 題，狀態與 hash 見[自然首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
+本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 6 共 89 題，包含原數學 57 題、自然首批 20 題與第二批 12 題；發布結果與 hash 見[自然第二批整合紀錄](grade4-science-study-second-batch.md)，rev5 歷史見[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
-[#119 第二批](grade4-science-study-second-batch.md)已建置 89 題 revision 6 本機候選；正式服務仍是上述 revision 5。候選建置、覆核與歸檔不等於發布。
+[#119 第二批](grade4-science-study-second-batch.md)已依「新版 Worker → 合併並讀回 Pages → 一次前向 KV 寫入與兩階段讀回」順序正式發布 revision 6；候選建置、覆核與歸檔本身仍不等於發布。以下通用步驟是後續批次的操作契約，不能把 #119 的既有發布授權套用到新工作。
 
 ## 輸入約定
 
@@ -16,7 +16,7 @@
 - #119 的 `grouped_choice` 僅限自然：`options` 是整組共用的 2～4 個選項（每項最多 300 code points），`parts` 是 2～8 個 `{id,text}`（id 組內唯一、1～32 位英數／連字號；text 最多 600 code points）；`answer` 是按 parts 順序排列的 1-based 選項索引字串。每格可以重複選同一選項。整組全部填齊後送出，一個 q.id 只算一個 activity。缺少共同選項池的原題不硬轉此格式。
 - Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 128 KiB，不另設任意總題數上限。
 - 覆寫既有 pack.json 前，檢查新 ID 集合包含所有舊題，且各既有 ID 的作答內容、subject/unit/subtopic 不變。新增或 source/解說更新需更高 revision；同 revision 比較排序後的完整 ID 集合。拒絕刪題、降版或同 ID 偷換題。
-- `material` 全內容與 `parts` 原順序／文字都受同 ID 語意守衛保護。新 revision 仍須另外拿已核 rev5 歸檔逐值核對舊 77 題及解說，因一般升版規則允許修改解說；不能把守衛通過誤當成 rev5 解說逐值不變的證據。
+- `material` 全內容與 `parts` 原順序／文字都受同 ID 語意守衛保護。#119 的 rev6 另拿已核 rev5 歸檔逐值核對舊 77 題及解說；後續升版也須與當時已發布基線逐值比對，因一般升版規則允許修改解說，不能只憑語意守衛認定舊解說不變。
 
 ## 重建
 
