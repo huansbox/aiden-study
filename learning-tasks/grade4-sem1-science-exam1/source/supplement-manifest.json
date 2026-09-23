@@ -24,7 +24,7 @@
         "kind": "同校同學年度教科書選用版本明細表",
         "url": "https://www.yap.kh.edu.tw/upload/33/101_34007/113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%90%84%E5%B9%B4%E7%B4%9A%E6%95%99%E7%A7%91%E6%9B%B8%E9%81%B8%E7%94%A8%E7%89%88%E6%9C%AC-113.5.22.24ok.pdf",
         "locator": "第1頁：自然科學列×四年級欄",
-        "local_reference": "source/private/supp-yap-113-books.pdf",
+        "local_reference": "source/private/supplement/supp-yap-113-books.pdf",
         "reference_sha256": "18163D20783FD39195BC173C881E6E527556ABA0756E937CC17DCBE4B2B4CC28"
       },
       "kind": "question",
@@ -60,7 +60,7 @@
         "kind": "同校同學年度教科書選用版本明細表",
         "url": "https://www.yap.kh.edu.tw/upload/33/101_34007/114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%90%84%E5%B9%B4%E7%B4%9A%E6%95%99%E7%A7%91%E6%9B%B8%E9%81%B8%E7%94%A8%E7%89%88%E6%9C%AC-114.4.30-5.18-5.19.pdf",
         "locator": "第1頁：自然列×四年級欄",
-        "local_reference": "source/private/supp-yap-114-books.pdf",
+        "local_reference": "source/private/supplement/supp-yap-114-books.pdf",
         "reference_sha256": "BC2E7E78C1CED2FC6385EC96A1CA38B18549A8229E2631157340F591A4550885"
       },
       "kind": "question",
