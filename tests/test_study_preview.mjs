@@ -367,6 +367,8 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
+  assert.match(source("preview.html"), /preview\.js\?v=20260923-group-media/);
+  assert.match(source("preview.html"), /preview\.css\?v=20260923-group-media/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "preview.js"]);
   const preview = source("preview.js");
