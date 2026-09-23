@@ -7,6 +7,7 @@
 .study-material-overlay img { max-width: 100%; max-height: calc(100dvh - 100px); object-fit: contain; background: white; }
 .study-material-overlay button { align-self: flex-end; background: white; }
 .study-table-scroll { max-width: 100%; overflow-x: auto; margin: 0 0 18px; border: 1px solid #cbd5e1; border-radius: 10px; }
+.study-table-hint { margin: -12px 0 18px; color: #475569; font-size: .9rem; }
 .study-material-table { border-collapse: collapse; min-width: max-content; width: 100%; background: white; }
 .study-material-table caption { text-align: left; padding: 10px; font-weight: 700; }
 .study-material-table th, .study-material-table td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; vertical-align: top; }

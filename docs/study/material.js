@@ -5,7 +5,7 @@
 
   function render(material) {
     if (!material) return "";
-    if (material.kind === "table") return `<div class="study-table-scroll" role="region" tabindex="0" aria-label="${esc(material.caption)}；表格可左右捲動"><table class="study-material-table"><caption>${esc(material.caption)}</caption><thead><tr>${material.columns.map(cell => `<th scope="col">${esc(cell)}</th>`).join("")}</tr></thead><tbody>${material.rows.map(row => `<tr>${row.map((cell, index) => index === 0 ? `<th scope="row">${esc(cell)}</th>` : `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    if (material.kind === "table") return `<div class="study-table-scroll" role="region" tabindex="0" aria-label="${esc(material.caption)}；表格可左右捲動"><table class="study-material-table"><caption>${esc(material.caption)}</caption><thead><tr>${material.columns.map(cell => `<th scope="col">${esc(cell)}</th>`).join("")}</tr></thead><tbody>${material.rows.map(row => `<tr>${row.map((cell, index) => index === 0 ? `<th scope="row">${esc(cell)}</th>` : `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="study-table-hint">表格可左右滑動查看全部欄位</p>`;
     return `<figure class="study-material-image"><img src="${esc(material.data)}" alt="${esc(material.alt)}"><figcaption>${esc(material.alt)}</figcaption><button type="button" data-material-open>放大圖片</button><div class="study-material-overlay" role="dialog" aria-modal="true" aria-label="放大圖片：${esc(material.alt)}" hidden><button type="button" data-material-close>關閉圖片</button><img src="${esc(material.data)}" alt="${esc(material.alt)}"></div></figure>`;
   }
 
