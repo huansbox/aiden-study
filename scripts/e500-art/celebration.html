@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>E500 完工試車</title>
+  <link rel="stylesheet" href="/shared/brick-workshop.css">
+  <link rel="stylesheet" href="/shared/brick-celebration.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#193348;font-family:system-ui,"Microsoft JhengHei",sans-serif}
+    .preview-toolbar{max-width:1200px;margin:auto;padding:18px 24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .preview-toolbar p{margin:0;line-height:1.65}.preview-toolbar small{color:#617586}.preview-toolbar button{font:inherit;min-height:48px;padding:10px 18px;background:#fff;border:1px solid #b9c8cd;border-radius:12px;cursor:pointer}
+    .preview-toolbar a{color:#165a83}#workshop{max-width:1200px;margin:auto;padding:0 20px 24px}
+  </style>
+</head>
+<body>
+  <header class="preview-toolbar">
+    <p><strong>完工試車預覽</strong><br><span id="preview-instructions">把最後一組積木拖進金色框，列車就會向前駛過。</span><br><small>使用示範進度 · <a id="model-link" href="./index.html">回到完整模型</a></small></p>
+    <nav aria-label="選擇積木列車"><a href="?model=e500">E500</a> · <a href="?model=emu3000">EMU3000</a> · <a href="?model=r200">R200</a></nav>
+    <button id="restart" type="button">重設為只差最後一片</button>
+  </header>
+  <main id="workshop"></main>
+  <script src="/shared/brick-e500.js"></script>
+  <script src="/shared/brick-emu3000.js"></script>
+  <script src="/shared/brick-r200.js"></script>
+  <script src="/shared/brick-models.js"></script>
+  <script src="/shared/brick-celebration.js"></script>
+  <script src="/shared/brick-audio.js"></script>
+  <script src="/shared/brick-workshop.js"></script>
+  <script src="./celebration-preview.js"></script>
+</body>
+</html>

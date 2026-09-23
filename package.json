@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "test:collection": "node --test tests/test_collection*.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "miniflare": "4.20260730.0",
+    "sharp": "0.35.4",
+    "three": "0.186.0"
+  },
+  "overrides": {
+    "undici": "^7.29.0",
+    "sharp": "0.35.4"
+  }
+}

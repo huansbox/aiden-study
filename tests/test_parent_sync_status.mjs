@@ -70,6 +70,7 @@ class Element {
   get textContent() { return this.text ?? decode(this.innerHTML.replace(/<[^>]+>/g, "")); }
   matches(selector) {
     if (selector.startsWith("#")) return this.id === selector.slice(1);
+    if (selector.startsWith(".")) return (this.attrs.class || "").split(/\s+/).includes(selector.slice(1));
     if (selector.startsWith("[")) return [...selector.matchAll(/\[([^=\]]+)(?:=["']?([^"'\]]+)["']?)?\]/g)].every(([, key, value]) => Object.hasOwn(this.attrs, key) && (value === undefined || this.attrs[key] === value));
     return selector === this.tag;
   }
@@ -90,6 +91,7 @@ class Element {
   before(element) { element.parent = this.parent; this.parent.children.splice(this.parent.children.indexOf(this), 0, element); changed(); }
   appendChild(element) { element.parent = this; this.children.push(element); changed(); return element; }
   get elements() { return { key: this.parent.querySelector("[name=key]") }; }
+  get isConnected() { return Boolean(this.parent); }
 }
 
 async function page({ initial = {}, statusQueue = [], catalogQueue = [], workCatalog = { schemaVersion: 1, works: [] }, registry = JSON.parse(source("registry.json")), child, lessonId = "2026-09-15", freshDevice = false } = {}) {

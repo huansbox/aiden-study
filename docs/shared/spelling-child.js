@@ -16,6 +16,7 @@ window.KidsSpellingChild = ({
     roundCount = 0,
     checked = false,
     roundDone = false;
+  let collectionRound;
   const task = family.task();
   const word = () => words[batch * batchSize + index];
   const esc = (s) =>
@@ -97,14 +98,16 @@ window.KidsSpellingChild = ({
       index =
         (index + 1) % Math.min(batchSize, words.length - batch * batchSize);
       render();
-      if (roundDone) family.finishRound();
+      if (roundDone) family.finishRound(collectionRound);
     });
   }
   function restart() {
+    collectionRound = { roundId: crypto.randomUUID(), entryId: "spelling" };
+    family.beginRound?.(collectionRound);
     index = 0;
     roundCount = 0;
     roundDone = false;
     render();
   }
-  render();
+  restart();
 };

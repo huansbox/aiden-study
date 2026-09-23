@@ -12,6 +12,7 @@
     lessons = { ...lessons, [lesson.id]: lesson };
     let view = "home", mode = null, conceptId = null, selection = null, words = [], feedback = null, correcting = false, correctionChecked = false;
     let busy = false, error = "", audioMessage = "", audioEpoch = 0, lastAudio = "question", lastKey = null, destroyed = false, suspended = false, roundOpen = false;
+    let collectionRound;
     let lastProgress = JSON.stringify(bridge.getProgress());
     let calendarMonth = global.NativeCampCatalog?.initialMonth(lesson, search, date());
     const summary = () => C.summarizeLesson(bridge.getProgress(), lesson, date());
@@ -127,7 +128,7 @@
       bridge.setActive?.(view === "practice" && canPlay());
       if (view === "round" && roundOpen && canPlay()) {
         roundOpen = false;
-        bridge.finishRound();
+        bridge.finishRound(collectionRound);
       }
     }
     async function persist(progress, activity) {
@@ -166,7 +167,12 @@
         }
         if (action === "start-try" || action === "start-say") {
           mode = action === "start-try" ? "try" : "say"; conceptId = mode === "say" ? data.concept : null;
-          view = "practice"; resetQuestion(); roundOpen = Boolean(current()); if (!current()) view = "round"; render(); await play("question"); return;
+          view = "practice"; resetQuestion(); roundOpen = Boolean(current());
+          if (roundOpen && bridge.beginRound) {
+            collectionRound = { roundId: crypto.randomUUID(), entryId: "nativecamp" };
+            bridge.beginRound(collectionRound);
+          }
+          if (!current()) view = "round"; render(); await play("question"); return;
         }
         if (view !== "practice") return;
         if (!feedback && lastKey !== questionKey(current())) { resetQuestion(); error = "Your saved practice changed. Please try this question."; render(); await play("question"); return; }

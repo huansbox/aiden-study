@@ -1,0 +1,86 @@
+.brick-celebration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  padding: clamp(18px, 3vw, 30px) 0;
+  overflow: hidden;
+  border-radius: 24px;
+  color: var(--brick-ink, #193348);
+  background: radial-gradient(ellipse at 50% 48%, #fffdf5 0%, #fff5df 65%, #f6eddd 100%);
+  text-align: center;
+}
+
+.brick-celebration__heading { padding: 0 18px; }
+.brick-celebration__heading h2 {
+  margin: 7px 0 9px;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  letter-spacing: -.04em;
+}
+.brick-celebration .brick-celebration__message {
+  margin-top: 8px;
+  color: var(--brick-muted, #617586);
+  line-height: 1.6;
+}
+.brick-celebration__scene {
+  width: min(100%, 880px, max(320px, calc((100svh - 270px) * 1.6)));
+  min-width: 0;
+  overflow: hidden;
+}
+.brick-celebration__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+}
+.brick-celebration__train {
+  animation: brick-celebration-drive var(--celebration-duration, 6000ms) linear both;
+}
+.brick-celebration__confetti {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brick-celebration-sprinkle 1500ms ease-out var(--delay) both;
+}
+.brick-workshop .brick-celebration__skip {
+  min-height: 48px;
+  max-width: calc(100% - 32px);
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--brick-blue-dark, #165a83);
+  font: inherit;
+  font-weight: 850;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.brick-celebration__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.brick-workshop .brick-celebration__sound { min-height: 48px; padding: 12px 18px; border: 1px solid #b5c6ce; border-radius: 14px; background: #fff; color: var(--brick-ink, #193348); font: inherit; cursor: pointer; }
+.brick-workshop .brick-celebration__skip:hover { background: #12496b; }
+.brick-workshop .brick-celebration__skip:focus-visible {
+  outline: 4px solid rgb(39 121 167 / 35%);
+  outline-offset: 4px;
+}
+
+/* Travel follows the model's rail projection: +178.5 x = -46 y.
+   Enter from the rear/right, cross the centre at 3 seconds, and leave entirely
+   through the front/left. One pass only; no reversal or reset while visible. */
+@keyframes brick-celebration-drive {
+  from { transform: translate(700px, -180.392px); }
+  to { transform: translate(-700px, 180.392px); }
+}
+@keyframes brick-celebration-sprinkle {
+  0% { opacity: 0; transform: translate(0, 12px) rotate(0deg); }
+  18% { opacity: 1; }
+  55% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--drift), 45px) rotate(var(--turn)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brick-celebration-replay { display: none; }
+  .brick-celebration__train { animation: none; transform: none; }
+  .brick-celebration__confetti { animation: none; opacity: .65; transform: none; }
+}

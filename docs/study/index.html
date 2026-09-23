@@ -532,7 +532,9 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science"></script><script src="../shared/family-client.js?v=20260917-reset"></script><script src="../shared/family-app.js?v=20260916-session"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science-collection"></script><script src="../shared/collection-core.js?v=20260923-train-series"></script>
+<script src="../shared/collection-client.js?v=20260923-train-series"></script>
+<script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
 <script src="./private-pack.js?v=20260923-group-media"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script>
 (function() {
@@ -1342,6 +1344,10 @@ function startQuiz(mode, unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_
   }
 
   showPage("page-quiz");
+  if (quiz.queue.length) {
+    quiz.collectionRound = { roundId: crypto.randomUUID(), entryId: "study:" + (unitToSubject.get(unit) || currentScope().subjKey) };
+    family?.beginRound?.(quiz.collectionRound);
+  }
   renderQuiz();
 }
 
@@ -1398,7 +1404,7 @@ function submitAnswer(selected) {
 
   });
   quiz.answered.push({ questionId: q.id, correct });
-  family?.record({unit:q.unit,answered:true,correct});
+  family?.record({unit:q.unit,entryId:"study:" + unitToSubject.get(q.unit),answered:true,correct});
   renderFeedback(correct, q);
 }
 
@@ -2459,7 +2465,7 @@ function finishHandwritingRemedialQuestion(q) {
     quiz.queue.push(q.id);
   }
   quiz.answered.push({ questionId: q.id, correct: false });
-  family?.record({unit:q.unit,answered:true,correct:false});
+  family?.record({unit:q.unit,entryId:"study:" + unitToSubject.get(q.unit),answered:true,correct:false});
 }
 
 function completeHandwritingRemedialAttempt(q, dataUrl) {
@@ -3307,7 +3313,7 @@ function renderBatchBreak() {
   const nextN = nextBatchSizeForMode(unitTotal - unitDone, quiz.practiceMode); // 下一批實際題數（依當下剩餘現算）
   const stArg = quiz.subtopic ? `decodeURIComponent('${encodeURIComponent(quiz.subtopic).replace(/'/g, "%27")}')` : "null";
   const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
-  const reward = pickReward("batch", quiz.unit);   // 看這批主力 subtopic 抽圖（缺則 roll-up/null）
+  const reward = null; // 拼裝包由 family 在真正批末合併顯示。
   preloadThen(reward, () => {
     document.getElementById("page-summary").innerHTML = `
       <h2>這批完成！</h2>
@@ -3318,7 +3324,7 @@ function renderBatchBreak() {
         <button class="summary-btn" onclick="window._goHome()">離開</button>
       </div>`;
     showPage("page-summary");
-    family?.finishRound();
+    family?.finishRound(quiz.collectionRound);
     playSound("complete");
   });
 }
@@ -3354,7 +3360,7 @@ function renderSummary() {
   }
 
   // full 通關＝整單元合併池；錯題清除＝通用鼓勵池
-  const reward = pickReward(quiz.mode === "full" ? "unit" : "error", quiz.unit);
+  const reward = null;
   preloadThen(reward, () => {
     document.getElementById("page-summary").innerHTML = `
       <h2>${title}</h2>
@@ -3363,7 +3369,7 @@ function renderSummary() {
       <div class="score-label">${scoreLabel}</div>
       <div style="margin-top:24px">${buttonsHtml}</div>`;
     showPage("page-summary");
-    family?.finishRound();
+    family?.finishRound(quiz.collectionRound);
     playSound(quiz.mode === "full" ? "victory" : "complete");
   });
 }

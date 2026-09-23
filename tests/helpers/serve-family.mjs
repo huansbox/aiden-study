@@ -1,19 +1,20 @@
-// 隔離的本機 E2E：只用 test-token、synthetic 題包、記憶體 KV。
+// 隔離的本機 E2E：test-token、synthetic 題包及 Miniflare KV／SQLite DO。
 import { createServer } from "node:http";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import worker from "../../worker/worker.mjs";
-import { kvStub } from "../../worker/kv-stub.mjs";
+import { collectionRuntime } from "./collection-runtime.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack } from "./synthetic-study-pack.mjs";
 import { loadPrivateStudyQaPack } from "./private-study-qa-pack.mjs";
+import { lessonFixture } from "./nativecamp-weekly.mjs";
+import "../../docs/nativecamp/core.js";
 const root = resolve(fileURLToPath(new URL("../../docs/", import.meta.url)));
 const port = Number(process.argv[2] || 8788),
   endpoint = `http://127.0.0.1:${port}`;
-const KV = kvStub({
-  "c:study:g4-s1-math-u1": { value: JSON.stringify(expandedSyntheticPack()) },
-});
+const runtime = await collectionRuntime();
+const KV = runtime.KV;
+await KV.put("c:study:g4-s1-math-u1", JSON.stringify(expandedSyntheticPack()));
 const pendingQaPack = process.env.STUDY_PRIVATE_QA_BASE || process.env.STUDY_PRIVATE_QA_DELTA
   ? loadPrivateStudyQaPack(process.env.STUDY_PRIVATE_QA_BASE, process.env.STUDY_PRIVATE_QA_DELTA) : null;
 // Explicit local-only opt-in. Default E2E never reads private recordings.
@@ -29,6 +30,7 @@ let catalogOffline = false;
 let release = null;
 let studyPreviewMode = "ok";
 let requestLog = [];
+let finishedLesson = null;
 const previewProgress = JSON.stringify({ rev: 7, epoch: "synthetic-preview", writeId: "synthetic-preview", data: { sentinel: "study-progress" } });
 const previewActivity = JSON.stringify({ version: 1, days: {}, tasks: {}, done: {} });
 const digest = (value) => createHash("sha256").update(value).digest("hex");
@@ -41,6 +43,12 @@ createServer(async (req, res) => {
     if (url.pathname === "/test/start") {
       res.writeHead(302, { Location: "/parent/?k=test-token" });
       res.end();
+      return;
+    }
+    if (url.pathname === "/test/collection-fixture") {
+      const state = await runtime.seedFixtures({ child: url.searchParams.get("child") || "aiden", days: Number(url.searchParams.get("days") || 12) });
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      res.end(JSON.stringify(state));
       return;
     }
     if (url.pathname === "/test/study-science-pack") {
@@ -66,6 +74,41 @@ createServer(async (req, res) => {
       res.end(
         `<h1>隔離測試控制</h1><p>雲端 ${offline ? "暫停" : "正常"}</p><p>白板資料 ${catalogOffline ? "暫停" : "正常"}</p><p>模擬發布：${release || "關閉"}</p><a href="/test/mode?offline=1">暫停測試雲端</a><br><a href="/test/mode?offline=0">恢復測試雲端</a><br><a href="/test/catalog?offline=1">暫停白板資料</a><br><a href="/test/catalog?offline=0">恢復白板資料</a><br><a href="/test/release?version=a">模擬發布 A</a><br><a href="/test/release?version=b">模擬發布 B</a><br><a href="/test/release">恢復原始發布</a><br><a href="/?child=aiden">哥哥首頁</a><br><a href="/?child=bingpu">弟弟首頁</a>`,
       );
+      return;
+    }
+    if (url.pathname === "/test/activity-reset") {
+      const child = url.searchParams.get("child");
+      if (!["aiden", "bingpu"].includes(child)) throw Error("invalid fixture child");
+      // Mirror the documented maintenance operation; preserve all old streams and collection data.
+      const key = `c:activity-generation:${child}`;
+      const generation = Number(await KV.get(key) || 0) + 1;
+      await KV.put(key, String(generation));
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      res.end(JSON.stringify({ generation }));
+      return;
+    }
+    if (url.pathname === "/test/nativecamp-finished") {
+      const child = url.searchParams.get("child");
+      if (!["aiden", "bingpu"].includes(child)) throw Error("invalid fixture child");
+      const C = globalThis.NativeCampCore, date = C.today();
+      finishedLesson = lessonFixture("2026-09-15", ["is-are"]);
+      let progress = C.createProgress();
+      for (const mode of ["try", "say"]) {
+        for (let i = 0; i < 2; i++) {
+          const next = C.nextQuestion(progress, finishedLesson, mode, date, "is-are");
+          if (mode === "say") progress = C.markPending(progress, finishedLesson, mode, date, "is-are", next.question.id, "reveal");
+          progress = (mode === "try" ? C.submitTry(progress, finishedLesson, date, "is-are", next.question.id, "is") : C.submitSay(progress, finishedLesson, date, "is-are", next.question.id, "gotIt")).progress;
+        }
+      }
+      await KV.put(`p:${child}:nativecamp`, JSON.stringify({ rev: 1, epoch: "synthetic-finished", writeId: "synthetic-finished", data: progress }), { metadata: { rev: 1, updatedAt: new Date().toISOString() } });
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      res.end(JSON.stringify({ done: C.summarizeLesson(progress, finishedLesson, date) }));
+      return;
+    }
+    if (finishedLesson && ["/nativecamp/lessons/catalog.json", "/nativecamp/lessons/2026-09-15.json"].includes(url.pathname)) {
+      const value = url.pathname.endsWith("catalog.json") ? { schemaVersion: 1, lessons: [{ id: finishedLesson.id, date: finishedLesson.date, teacher: "Synthetic" }] } : finishedLesson;
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      res.end(JSON.stringify(value));
       return;
     }
     if (url.pathname === "/test/study-preview") {
@@ -171,13 +214,12 @@ createServer(async (req, res) => {
       const chunks = [];
       for await (const chunk of req) chunks.push(chunk);
       const body = Buffer.concat(chunks);
-      const response = await worker.fetch(
+      const response = await runtime.fetch(
         new Request(url, {
           method: req.method,
           headers: req.headers,
           ...(body.length ? { body } : {}),
         }),
-        { TOKEN: "test-token", KV, LOCAL_DEV:true },
       );
       res.writeHead(response.status, Object.fromEntries(response.headers));
       res.end(Buffer.from(await response.arrayBuffer()));

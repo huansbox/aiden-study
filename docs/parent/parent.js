@@ -166,7 +166,41 @@
       document.getElementById("parent-stats").closest("section").before(syncPanel);
     }
     renderSync();
+    mountDailyGoals();
     window.NativeCampParent?.mount(root, child);
+  }
+  function mountDailyGoals() {
+    if (!window.KidsCollection) return;
+    const owner = child, collection = window.KidsCollection.create(owner);
+    const panel = document.createElement("section");
+    panel.id = "daily-goals";
+    panel.className = "family-panel family-stack";
+    panel.innerHTML = "<h2>每日目標與拼裝包</h2><p>讀取中⋯</p>";
+    root.querySelector(".savebar").before(panel);
+    const fill = () => {
+      if (!panel.isConnected || child !== owner) return;
+      const state = collection.snapshot();
+      const availableEntries = new Set(C.homeEntries(config, owner, reg).map((entry) => entry.id));
+      const options = Object.entries(window.KidsCollection.core.ENTRIES).filter(([id]) => availableEntries.has(id));
+      const chosen = state.goals.targets;
+      // 新目標只顯示建議，不自動增加孩子必做量，按保存才生效。
+      const suggestions = state.goalRevision ? [] : options.filter(([id]) => id === "study:math" || id === (p().apps.includes("nativecamp") ? "nativecamp" : "spelling")).map(([entryId, meta]) => ({ entryId, metric: meta.metric, quantity: entryId === "study:math" ? 10 : 1 }));
+      const selected = chosen.length || state.goalRevision ? chosen : suggestions;
+      const all = [...options, ...chosen.filter((t) => !options.some(([id]) => id === t.entryId)).map((t) => [t.entryId, window.KidsCollection.core.ENTRIES[t.entryId]])];
+      panel.innerHTML = `<h2>每日目標與拼裝包</h2><p>設定一次，每天重新開始；內容由孩子自己選。完成任一項得第一包，全部完成得第二包。沒有目標時，自由練習完整一輪可得第一包。</p><div class="family-stack">${all.map(([id,meta]) => { const target = selected.find((t)=>t.entryId===id); return `<div class="family-row"><label><input type="checkbox" data-daily-entry="${id}" ${target?"checked":""}> ${esc(meta.label)}${options.some(([available])=>available===id)?"":"（首頁已隱藏，可在此取消目標）"}</label><label class="family-field" style="margin-left:auto">每日${meta.metric==="answered"?"題數":"輪數"}<input type="number" min="1" max="100" data-daily-quantity="${id}" value="${target?.quantity || (id==="study:math"?10:1)}" style="width:100px"></label></div>`; }).join("") || "<p>先在首頁活動開放一個站內練習，再設定目標。</p>"}</div><p class="muted">現在起使用這份目標，已領拼裝包保留。不指定單元、課程或複習；新增 App 不會自動加進目標。若今天沒有可練內容，可取消該活動或調整份量，再儲存。</p><button type="button" id="save-daily-goals">儲存每日目標</button><p id="daily-goals-status" role="status">${esc(state.sync.message || (state.goalRevision ? "已儲存；每天自動使用這份目標。" : "以下是建議，尚未儲存。"))}</p>`;
+      panel.querySelector("#save-daily-goals").onclick = async (event) => {
+        event.currentTarget.disabled = true;
+        const feedback = panel.querySelector("#daily-goals-status");
+        feedback.textContent = "儲存中⋯";
+        try {
+          const targets = [...panel.querySelectorAll("[data-daily-entry]:checked")].map((input) => ({ entryId: input.dataset.dailyEntry, metric: window.KidsCollection.core.ENTRIES[input.dataset.dailyEntry].metric, quantity: Number([...panel.querySelectorAll("[data-daily-quantity]")].find((q)=>q.dataset.dailyQuantity===input.dataset.dailyEntry).value) }));
+          await collection.saveGoals(targets);
+          if (panel.isConnected) feedback.textContent = "已儲存，現在起使用這份目標。已領拼裝包保留。";
+        } catch(error) { if(panel.isConnected) feedback.textContent=error.message; }
+        finally { if(panel.isConnected) panel.querySelector("#save-daily-goals").disabled=false; }
+      };
+    };
+    collection.ready.then(fill);
   }
   function syncSnapshot(body) {
     if (!body || !Array.isArray(body.keys)) throw Error("invalid status");

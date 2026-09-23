@@ -1,0 +1,16 @@
+.results-tabs { display:flex; gap:12px; margin:24px 0; }
+.results-tabs button { min-height:48px; padding:12px 24px; border:2px solid #c7d1d9; border-radius:16px; background:#fff; color:#33445b; font:inherit; font-weight:700; }
+.results-tabs button[aria-pressed="true"] { background:#244c5c; border-color:#244c5c; color:#fff; }
+.daily-goals { margin:0 0 24px; border:1px solid #d6e3db; background:linear-gradient(115deg,#f3faf4,#fff); }
+.daily-goals .family-row { justify-content:space-between; gap:12px; }
+.daily-goals h2 { margin:0; }
+.daily-pack-count { font-size:15px; font-weight:700; background:#e2efe3; padding:8px 12px; border-radius:20px; white-space:nowrap; }
+.daily-explanation { color:#52665b; line-height:1.7; margin:12px 0 18px; }
+.daily-goal-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(225px,1fr)); gap:12px; }
+.daily-goal { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:64px; padding:16px; border-radius:16px; background:#fff; border:1px solid #d7e1db; color:#25473c; text-decoration:none; }
+.daily-goal.done { background:#e2eee5; }
+.daily-goal.unavailable { flex-wrap:wrap; }
+.daily-goal small { flex-basis:100%; }
+.daily-build { margin:18px 0 0; color:#52665b; }
+.family-stats-link small { font-size:14px; font-weight:400; }
+@media(max-width:540px) { .daily-goals .family-row { align-items:flex-start; flex-direction:column; } .results-tabs button { flex:1; padding:12px; } }

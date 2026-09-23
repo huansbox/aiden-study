@@ -32,7 +32,7 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
   const requests = [];
   const loadedImages = [];
   const ctx = vm.createContext({ document, localStorage: st, location: { search: ports.search || `?child=${child}`, hash: "", pathname: "/study/", reload() {} },
-    console: { log() {}, warn() {}, error: (...e) => errors.push(e) }, TextEncoder, TextDecoder, structuredClone, URL, URLSearchParams, Blob, AbortController,
+    console: { log() {}, warn() {}, error: (...e) => errors.push(e) }, TextEncoder, TextDecoder, structuredClone, URL, URLSearchParams, Blob, AbortController, crypto: globalThis.crypto,
     setTimeout: ports.setTimeout || (() => 1), clearTimeout: ports.clearTimeout || (() => {}), addEventListener() {}, scrollTo() {},
     Image: class { set src(path) { loadedImages.push(path); this.onload(); } },
     fetch: async (url, init) => { requests.push(url); if (ports.fetch && String(url).startsWith("https://")) return ports.fetch(url, init); return { ok: true, json: async () => structuredClone(url === "./questions.json" ? publicQuestions : url === "../shared/rewards.json" ? rewardManifest : {}) }; },

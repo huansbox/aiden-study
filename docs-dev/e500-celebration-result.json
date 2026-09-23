@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "gold final target accepts a touch tap; completion produces actual WebAudio signal",
+    "mute cancels current and scheduled notes; unmute resumes; skip stops the fanfare",
+    "six-second replay finishes without allocating another audio context or retaining notes",
+    "portrait Pad drag reaches the highlighted target; reset closes audio during celebration"
+  ],
+  "physicalIPad": false,
+  "at": "2026-09-23T06:36:38.936Z"
+}

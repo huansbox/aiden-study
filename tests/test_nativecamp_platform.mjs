@@ -44,7 +44,7 @@ async function browser(env, { child = "aiden", storage = new Map(), offline = fa
     remove() { this.removed = true; }, setAttribute() {},
     addEventListener() {}, classList: { add() {} } });
   const document = { currentScript: { src: origin + "/shared/family-client.js" }, visibilityState: "visible",
-    getElementById: () => null, createElement: element, body: element(), addEventListener() {} };
+    getElementById: () => null, querySelector: () => null, createElement: element, body: element(), addEventListener() {} };
   const auth = { endpoint: origin + "/api", state: { status: "connected" }, ready: Promise.resolve(),
     canAttempt: () => auth.state.status !== "required",
     refresh: async () => { auth.state.status = offline ? "offline" : "connected"; return auth.state; },
