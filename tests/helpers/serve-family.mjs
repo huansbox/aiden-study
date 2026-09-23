@@ -7,12 +7,15 @@ import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack } from "./synthetic-study-pack.mjs";
+import { loadPrivateStudyQaPack } from "./private-study-qa-pack.mjs";
 const root = resolve(fileURLToPath(new URL("../../docs/", import.meta.url)));
 const port = Number(process.argv[2] || 8788),
   endpoint = `http://127.0.0.1:${port}`;
 const KV = kvStub({
   "c:study:g4-s1-math-u1": { value: JSON.stringify(expandedSyntheticPack()) },
 });
+const pendingQaPack = process.env.STUDY_PRIVATE_QA_BASE || process.env.STUDY_PRIVATE_QA_DELTA
+  ? loadPrivateStudyQaPack(process.env.STUDY_PRIVATE_QA_BASE, process.env.STUDY_PRIVATE_QA_DELTA) : null;
 // Explicit local-only opt-in. Default E2E never reads private recordings.
 if (process.env.NATIVE_CAMP_AUDIO_PACK) {
   const pack = JSON.parse(await readFile(resolve(process.env.NATIVE_CAMP_AUDIO_PACK), "utf8"));
@@ -52,6 +55,12 @@ createServer(async (req, res) => {
       res.end();
       return;
     }
+    if (url.pathname === "/test/study-pending-pack" && pendingQaPack) {
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(pendingQaPack));
+      res.writeHead(302, { Location: "/?child=aiden" });
+      res.end();
+      return;
+    }
     if (url.pathname === "/test/controls") {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.end(
@@ -61,10 +70,13 @@ createServer(async (req, res) => {
     }
     if (url.pathname === "/test/study-preview") {
       const requested = url.searchParams.get("mode") || "ok";
+      if (requested === "pending" && !pendingQaPack) {
+        res.writeHead(404); res.end("Pending private QA is not enabled"); return;
+      }
       const requestedCount = Number(url.searchParams.get("questions") || 0);
       studyPreviewMode = ["ok", "401", "404", "offline", "500", "bad-json", "bad-utf8", "invalid", "delay-once"].includes(requested) ? requested : "ok";
       requestLog = [];
-      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(requested === "group" ? groupedSyntheticPack() : requested === "science" ? scienceSyntheticPack() : [18, 60].includes(requestedCount) ? navigationSyntheticPack(requestedCount) : expandedSyntheticPack()));
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(requested === "pending" && pendingQaPack ? pendingQaPack : requested === "group" ? groupedSyntheticPack() : requested === "science" ? scienceSyntheticPack() : [18, 60].includes(requestedCount) ? navigationSyntheticPack(requestedCount) : expandedSyntheticPack()));
       await KV.put("p:aiden:study", previewProgress, { metadata: { rev: 7, updatedAt: "2026-09-19T00:00:00.000Z" } });
       await KV.put("m:aiden:study:preview-sentinel", previewActivity);
       res.setHeader("Content-Type", "text/html; charset=utf-8");
