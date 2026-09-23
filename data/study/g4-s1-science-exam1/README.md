@@ -1,6 +1,8 @@
 # 四上自然首批練習選題
 
-這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫、獨立內容覆核及本機題包整合已完成；候選題包尚未正式發布。
+這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫與獨立覆核完成後，77 題 revision 5 家庭題包已於 **2026-09-23 正式發布**；實體 iPad 尚未驗證。
+
+發布基線為 merge commit `cb2e2cc19227b614c141db4fc0b89ccccc7ed298`，Worker version `807a397e-2ba7-423c-821a-f9f15d8873fe`。題包 SHA256 `98150515D8897C0240316D173FD8D94B47EDAE0804C05A271BB0431DBBE6B22C`，正式 KV 的立即與傳播後原始讀回均逐 byte 相同；不含題文的發布證據見 canonical ignored `data/private/study/g4-s1-math-u1/rev5-release/release-audit/kv-20260923T0445Z/release-summary.json`。
 
 桃子腳 115 學年度四上自然使用康軒。「地表的靜與動」和「水生生物與環境」是依 [課程比較](../../../learning-tasks/grade4-sem1-science-exam1/source/curriculum-comparison.md)採用的**暫定核心**，不是校方已公布的第一次定期評量範圍。每一題依作答所需概念比對，不沿用舊卷章序整卷放行。永安 114 原卷屬南一版，此批只選可比的水域概念。
 
@@ -22,5 +24,5 @@
 
 - 逐題來源 ID、頁碼、印刷題號、概念、方法和依賴見 [`selection-metadata.json`](selection-metadata.json)。
 - 桃子腳來源與官方答案身分見 [school manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/school-manifest.json)；永安 114 南一版身分與無官方答案現況見 [supplement manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/supplement-manifest.json)。公開索引只記有無官方答案，不存答案內容。
-- 私人轉寫、解說、已覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。15 題有校方答案者經獨立核答與校答一致；5 題無校方答案者經兩次獨立解題一致。這 20 題已與既有 57 題 rev4 合成 revision 5 候選包，並通過本機題包與隔離畫面驗證。
-- 長期私人候選歸檔位於 canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/`；先看其中的 `README.md` 和 `manifest.json`，可定位 rev4 基線、已覆核 delta、重建腳本、兩階段 fresh review、77 題候選包與來源 PDF／SHA256。此歸檔僅證明本機候選，**尚未部署**。
+- 私人轉寫、解說、已覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。15 題有校方答案者經獨立核答與校答一致；5 題無校方答案者經兩次獨立解題一致。這 20 題與既有 57 題 rev4 合成 revision 5 正式包；原數學題逐值不變。
+- 長期私人來源歸檔位於 canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/`；其中的 `README.md` 和 `manifest.json` 保留發布前候選快照，可定位 rev4 基線、已覆核 delta、重建腳本、兩階段 fresh review、77 題包與來源 PDF／SHA256。正式發布結果以同目錄 `release-audit/kv-20260923T0445Z/release-summary.json` 為準。

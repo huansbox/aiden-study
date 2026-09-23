@@ -13,13 +13,15 @@
 
 先確認正式 rev4 歸檔 SHA256 為 `72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6`，再將必要三檔複製到本 worktree 精確 ignored root。自然內容須經來源覆核後才合併 curated、explanations 與公開 mapping，三者 revision 一致後由 `uv run python scripts/build_private_study_pack.py` 重建。正式 pack hash 需由整合驗證核定，不能以 synthetic fixture 代替。
 
-本次候選 pack 為 revision 5、77 題、53,239 bytes、SHA256 `98150515d8897c0240316d173fd8d94b47edae0804c05a271bb0431dbbe6b22c`。再次執行私人合併腳本與 builder 得到相同 hash；production parser 與唯讀 verifier 均通過。以 rev4 歸檔逐值比較，原 57 題的 question 與 explanation 不變，公開 mapping 原 57 row 也不變。新增 20 題與公開 selection 的 ID／來源投影一致。這些是本機候選驗證結果，不表示已寫入正式 KV。
+正式 pack 為 revision 5、77 題、53,239 bytes、SHA256 `98150515D8897C0240316D173FD8D94B47EDAE0804C05A271BB0431DBBE6B22C`。再次執行私人合併腳本與 builder 得到相同 hash；production parser 與唯讀 verifier 均通過。以 rev4 歸檔逐值比較，原 57 題的 question 與 explanation 不變，公開 mapping 原 57 row 也不變。新增 20 題與公開 selection 的 ID／來源投影一致。
 
-canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/README.md` 與 `manifest.json` 保存 rev4 基線、自然 delta、fresh review 證據、合併來源、候選 pack、必要來源 PDF 與公開定位快照；31 個歸檔檔案已核對 SHA256，其中 30 個複製檔與來源逐 byte 相同。本 worktree 的 ignored 原件仍保留，沒有移動或刪除。未經正式發布核准，不以本機候選覆蓋現役 KV。
+**2026-09-23 正式發布**：merge commit `cb2e2cc19227b614c141db4fc0b89ccccc7ed298` 的 Pages 公開資產已逐 byte 讀回；Worker deployment `bf359a23-46a1-450a-b58c-3d361f3ec852`／version `807a397e-2ba7-423c-821a-f9f15d8873fe` 維持 100%。正式 `c:study:g4-s1-math-u1` 先讀回原 rev4 的 57 題、40,358 bytes 與核定 hash，再一次 forward put rev5；立即讀回及 78 秒後讀回皆為 77 題、53,239 bytes，原始 bytes 與核准包完全一致。未觸碰孩子進度 `p:` key。
+
+canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/README.md` 與 `manifest.json` 保留發布前的 rev4 基線、自然 delta、fresh review、合併來源、候選 pack、必要來源 PDF 與公開定位快照；31 個歸檔檔案已核對 SHA256，其中 30 個複製檔與來源逐 byte 相同。這兩檔是歷史候選快照，正式發布稽核另見 `data/private/study/g4-s1-math-u1/rev5-release/release-audit/kv-20260923T0445Z/release-summary.json`，含發布前、立即與傳播後讀回的 count／bytes／hash，原始題包讀回留在同一 ignored 稽核目錄。
 
 `node scripts/verify_private_study_pack.mjs <核准的SHA256>` 唯讀確認精確 ignored 輸出與 production parser；`node scripts/build-study-pattern-report.mjs --check` 只計算數學 57 題。自然覆蓋另按公開 selection metadata 整理首批概念、方法與後續缺口，不把原卷作答格當成可獨立上線的 activity。
 
-能力驗證使用 synthetic 題包與隔離家庭服務。真 iPad 驗收、正式 Worker／Pages／KV 發布與發布後讀回屬後續核准步驟；舊 iPad checklist 豁免不因本批重新啟用。
+能力驗證使用 synthetic 題包與隔離家庭服務；正式 Worker／Pages／KV 與發布後讀回已依序完成。**實體 iPad 尚未驗證**；舊 iPad checklist 豁免不因本批重新啟用。
 
 ### 隔離畫面驗收
 
