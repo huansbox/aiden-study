@@ -6,7 +6,7 @@
 
 ## 來源與操作
 
-- [課程比較](source/curriculum-comparison.md)：今年教材、校方進度及跨年度概念證據；目前仍在核對。
+- [課程比較](source/curriculum-comparison.md)：115 康軒前兩單元、校方版本／評量日期，以及 113／114 康軒概念先例；校方自然週進度和正式考試範圍仍未取得。
 - [收集紀錄](source/collection-notes.md)：來源、取得方式及限制；本批只收有限首批，不代表全庫已查盡。
 - 原卷存於本機 `source/papers/`；OCR、題文及含題文的核對紀錄存於本機 `source/private/`。兩個目錄均由本 task 的 `.gitignore` 排除，Git clone 不提供原件。
 
