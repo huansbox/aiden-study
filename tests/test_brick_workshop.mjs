@@ -6,6 +6,17 @@ import { readFileSync } from "node:fs";
 const source = (name) =>
   readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
 
+test("trial labels do not promise saved child progress; production labels stay unchanged", () => {
+  const trial = harness([], { preview: true }), live = harness();
+  assert.match(trial.element.innerHTML, /示範進度只留在此頁，不會保存到孩子的收藏/);
+  assert.match(trial.element.innerHTML, /結束試拼/);
+  assert.doesNotMatch(trial.element.innerHTML, /拼裝進度已保存|稍後再拼/);
+  assert.match(live.element.innerHTML, /拼裝進度已保存/);
+  assert.match(live.element.innerHTML, /稍後再拼/);
+  trial.mounted.destroy();
+  live.mounted.destroy();
+});
+
 function rootElement() {
   const listeners = new Map();
   const element = {
@@ -85,7 +96,7 @@ function controlledClock() {
 
 function harness(placed = [], {
   modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1,
-  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false, withAudio = false,
+  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false, withAudio = false, preview = false,
 } = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
@@ -205,7 +216,7 @@ function harness(placed = [], {
   if (withCelebration) vm.runInContext(source("brick-celebration.js"), context);
   vm.runInContext(source("brick-workshop.js"), context);
   const element = rootElement();
-  const mounted = context.KidsBrickWorkshop.mount(element, { collection, onClose: () => closeCalls.push(true) });
+  const mounted = context.KidsBrickWorkshop.mount(element, { collection, preview, onClose: () => closeCalls.push(true) });
   const notify = () => { for (const callback of callbacks) callback(state); };
   const fireWindow = (name, extra = {}) => {
     for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
