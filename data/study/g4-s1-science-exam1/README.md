@@ -22,4 +22,5 @@
 
 - 逐題來源 ID、頁碼、印刷題號、概念、方法和依賴見 [`selection-metadata.json`](selection-metadata.json)。
 - 桃子腳來源與官方答案身分見 [school manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/school-manifest.json)；永安 114 南一版身分與無官方答案現況見 [supplement manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/supplement-manifest.json)。公開索引只記有無官方答案，不存答案內容。
-- 私人轉寫、解說、已覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。15 題有校方答案者經獨立核答與校答一致；5 題無校方答案者經兩次獨立解題一致。整合者將它們合入既有 57 題 rev4 的新 revision，仍須驗證題包與運行行為。
+- 私人轉寫、解說、已覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。15 題有校方答案者經獨立核答與校答一致；5 題無校方答案者經兩次獨立解題一致。這 20 題已與既有 57 題 rev4 合成 revision 5 候選包，並通過本機題包與隔離畫面驗證。
+- 長期私人候選歸檔位於 canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/`；先看其中的 `README.md` 和 `manifest.json`，可定位 rev4 基線、已覆核 delta、重建腳本、兩階段 fresh review、77 題候選包與來源 PDF／SHA256。此歸檔僅證明本機候選，**尚未部署**。

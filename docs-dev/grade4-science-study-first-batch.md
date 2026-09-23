@@ -15,7 +15,7 @@
 
 本次候選 pack 為 revision 5、77 題、53,239 bytes、SHA256 `98150515d8897c0240316d173fd8d94b47edae0804c05a271bb0431dbbe6b22c`。再次執行私人合併腳本與 builder 得到相同 hash；production parser 與唯讀 verifier 均通過。以 rev4 歸檔逐值比較，原 57 題的 question 與 explanation 不變，公開 mapping 原 57 row 也不變。新增 20 題與公開 selection 的 ID／來源投影一致。這些是本機候選驗證結果，不表示已寫入正式 KV。
 
-本 worktree 的 ignored `science-first-batch/archive-manifest.json` 記錄 rev4 基線、自然 delta、fresh review 證據、合併來源和候選 pack 的檔案大小與 SHA256；它與私人內容同屬本機歸檔，不進 Git。合併或移除 worktree 前，須把這份私人歸檔完整移到 canonical ignored archive，並重新核對 manifest。未經正式發布核准，不以本機候選覆蓋現役 KV。
+canonical repo 的 ignored `data/private/study/g4-s1-math-u1/rev5-release/README.md` 與 `manifest.json` 保存 rev4 基線、自然 delta、fresh review 證據、合併來源、候選 pack、必要來源 PDF 與公開定位快照；31 個歸檔檔案已核對 SHA256，其中 30 個複製檔與來源逐 byte 相同。本 worktree 的 ignored 原件仍保留，沒有移動或刪除。未經正式發布核准，不以本機候選覆蓋現役 KV。
 
 `node scripts/verify_private_study_pack.mjs <核准的SHA256>` 唯讀確認精確 ignored 輸出與 production parser；`node scripts/build-study-pattern-report.mjs --check` 只計算數學 57 題。自然覆蓋另按公開 selection metadata 整理首批概念、方法與後續缺口，不把原卷作答格當成可獨立上線的 activity。
 
