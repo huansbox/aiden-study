@@ -41,6 +41,15 @@ async function checkZoom(page) {
   assert.ok(metrics.scrollWidth > metrics.clientWidth);
   assert.ok(metrics.bottom >= metrics.scrollHeight - metrics.clientHeight - 1);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
+  await page.locator(".study-material-viewport").evaluate(node => { node.scrollLeft = 0; });
+  await page.keyboard.press("Tab");
+  assert.equal(await page.locator(".study-material-viewport").evaluate(node => node === document.activeElement), true);
+  await page.keyboard.press("ArrowRight");
+  await page.waitForFunction(() => document.querySelector(".study-material-viewport").scrollLeft > 0);
+  await page.keyboard.press("Shift+Tab");
+  assert.equal(await page.locator("[data-material-close]").evaluate(node => node === document.activeElement), true);
+  await page.keyboard.press("Tab");
+  assert.equal(await page.locator(".study-material-viewport").evaluate(node => node === document.activeElement), true);
 }
 let browser;
 try {

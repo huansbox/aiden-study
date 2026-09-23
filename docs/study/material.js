@@ -14,6 +14,7 @@
     const close = container.querySelector?.("[data-material-close]");
     const overlay = container.querySelector?.(".study-material-overlay");
     if (!open || !close || !overlay) return;
+    const viewport = overlay.querySelector(".study-material-viewport");
     const image = overlay.querySelector("img");
     const sizeImage = () => { if (image.naturalWidth) image.style.width = `${image.naturalWidth * 2}px`; };
     image.onload = sizeImage;
@@ -22,7 +23,7 @@
     overlay.onclick = event => { if (event.target === overlay) close.click(); };
     overlay.onkeydown = event => {
       if (event.key === "Escape") { event.preventDefault(); close.click(); }
-      else if (event.key === "Tab") { event.preventDefault(); close.focus(); }
+      else if (event.key === "Tab") { event.preventDefault(); (event.target === close ? viewport : close).focus(); }
     };
   }
   root.StudyMaterial = { render, bind };
