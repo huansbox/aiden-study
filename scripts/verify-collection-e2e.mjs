@@ -180,7 +180,19 @@ try {
   }
   await settled();
   assert.ok((await state()).activeBuild.completedAt);
+  await browser.waitFor('document.querySelector("[data-celebration]")');
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__rails image").length'),3);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__train image").length'),39);
+  assert.equal(await browser.evaluate('getComputedStyle(document.querySelector(".brick-celebration__rails")).animationName'),'none');
+  await browser.waitFor('Math.abs(new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41)>30');
+  await browser.screenshot('.scratch/collection-e2e/celebration.png',{fullPage:true});
   await browser.waitFor('document.querySelector("[data-action=display]")');
+  await browser.click('[data-action="celebration-replay"]',true);
+  await browser.waitFor('document.querySelector("[data-celebration]")');
+  await browser.click('[data-action="celebration-skip"]',true);
+  await browser.waitFor('document.querySelector("[data-action=display]")');
+  assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-celebration]"))'),false);
+  passed('server-confirmed completion drives 39 LEGO train groups along 3 stationary rails, auto-finishes, replays and skips');
   await browser.click('[data-action="display"][data-displayed="true"]');
   await browser.waitFor('KidsCollection.create("aiden").snapshot().displayedBuildIds.includes("e500")');
   await browser.screenshot('.scratch/collection-e2e/collection.png',{fullPage:true});
@@ -220,6 +232,7 @@ try {
   passed('other child remains isolated');
   await browser.navigate(origin+'/?child=aiden&view=collection');
   await browser.waitFor('document.querySelector("[data-results-tab=records]")');
+  assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-celebration]"))'),false,'existing completed collection never auto-replays');
   await browser.click('[data-results-tab="records"]');
   assert.equal(await browser.evaluate('document.querySelectorAll(".family-badge").length'),8);
   assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/里程碑/);

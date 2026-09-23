@@ -1,0 +1,85 @@
+.brick-celebration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  padding: clamp(18px, 3vw, 30px) 0;
+  overflow: hidden;
+  border-radius: 24px;
+  color: var(--brick-ink, #193348);
+  background: radial-gradient(ellipse at 50% 48%, #fffdf5 0%, #fff5df 65%, #f6eddd 100%);
+  text-align: center;
+}
+
+.brick-celebration__heading { padding: 0 18px; }
+.brick-celebration__heading h2 {
+  margin: 7px 0 9px;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  letter-spacing: -.04em;
+}
+.brick-celebration .brick-celebration__message {
+  margin-top: 8px;
+  color: var(--brick-muted, #617586);
+  line-height: 1.6;
+}
+.brick-celebration__scene {
+  width: min(100%, 880px, max(320px, calc((100svh - 270px) * 1.6)));
+  min-width: 0;
+  overflow: hidden;
+}
+.brick-celebration__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+}
+.brick-celebration__train {
+  animation: brick-celebration-drive var(--celebration-duration, 4200ms) both;
+}
+.brick-celebration__confetti {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brick-celebration-sprinkle 1500ms ease-out var(--delay) both;
+}
+.brick-workshop .brick-celebration__skip {
+  min-height: 48px;
+  max-width: calc(100% - 32px);
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--brick-blue-dark, #165a83);
+  font: inherit;
+  font-weight: 850;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.brick-workshop .brick-celebration__skip:hover { background: #12496b; }
+.brick-workshop .brick-celebration__skip:focus-visible {
+  outline: 4px solid rgb(39 121 167 / 35%);
+  outline-offset: 4px;
+}
+
+/* Travel follows the model's rail projection: +178.5 x = -46 y.
+   All six axles stay on the stationary track, and the train parks at origin. */
+@keyframes brick-celebration-drive {
+  0%, 8% { transform: translate(0, 0); animation-timing-function: ease-in-out; }
+  35% { transform: translate(-84px, 21.65px); animation-timing-function: ease-in-out; }
+  69% { transform: translate(64px, -16.49px); animation-timing-function: ease-in-out; }
+  94%, 100% { transform: translate(0, 0); }
+}
+@keyframes brick-celebration-sprinkle {
+  0% { opacity: 0; transform: translate(0, 12px) rotate(0deg); }
+  18% { opacity: 1; }
+  55% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--drift), 45px) rotate(var(--turn)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brick-celebration-replay { display: none; }
+  .brick-celebration__train { animation: none; transform: none; }
+  .brick-celebration__confetti { animation: none; opacity: .65; transform: none; }
+}

@@ -96,6 +96,9 @@
     let suppressClickUntil = 0;
     let audioEnabled = true;
     let placementAnimationTimer = null;
+    let celebration = null;
+    const completionCandidates = new Set();
+    const celebratedBuilds = new Set();
     const optimisticPlaced = new Set();
     const imageLoads = new Map();
     const listeners = [];
@@ -244,6 +247,26 @@
       </section>`;
     }
 
+    function stopCelebration() {
+      if (celebration) global.clearTimeout(celebration.timer);
+      celebration = null;
+    }
+
+    function startCelebration(build, model) {
+      if (!global.KidsBrickCelebration?.supports(model) ||
+          global.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+      stopCelebration();
+      celebration = {
+        buildId: build.id,
+        rendered: false,
+        timer: global.setTimeout(() => {
+          stopCelebration();
+          render();
+          element.querySelector?.('[data-action="display"]')?.focus?.({ preventScroll: true });
+        }, global.KidsBrickCelebration.duration),
+      };
+    }
+
     function renderWorkbench(snapshot, animatedPartId = null) {
       const build = snapshot.activeBuild;
       const unassigned = (snapshot.grants || []).filter(
@@ -299,6 +322,15 @@
           ${placedArtwork === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}
         </section>`;
 
+      if (completed && completionCandidates.has(build.id) && !celebratedBuilds.has(build.id)) {
+        celebratedBuilds.add(build.id);
+        startCelebration(build, model);
+      }
+      if (completed && celebration?.buildId === build.id) {
+        celebration.rendered = true;
+        return global.KidsBrickCelebration.render(model);
+      }
+
       if (completed)
         return `<section class="brick-complete">
           <div class="brick-complete__shine" aria-hidden="true"></div>
@@ -308,6 +340,7 @@
           ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(model.series || "這個系列")}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
           <div class="brick-complete__actions">
             <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true">放上展示架</button>
+            ${global.KidsBrickCelebration?.supports(model) ? '<button type="button" class="secondary brick-celebration-replay" data-action="celebration-replay">再開一次</button>' : ""}
             ${unassigned.length && hasAnotherModel ? '<button type="button" class="secondary" data-action="choose-next">選下一件作品</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
           </div>
         </section>`;
@@ -430,6 +463,11 @@
       }
       renderDeferred = false;
       const snapshot = currentSnapshot();
+      const build = snapshot.activeBuild;
+      if (celebration && (view !== "workshop" || choosingNext || build?.id !== celebration.buildId || !build.completedAt)) stopCelebration();
+      // Keep the same animation DOM through save/image callbacks. Replacing it
+      // would restart a four-second celebration on every collection update.
+      if (celebration?.rendered) return;
       if (!global.KidsBrickModels?.models?.length) {
         element.innerHTML = `<section class="brick-workshop"><div class="brick-error" role="alert"><h2>拼裝模型沒有載入</h2><p>請重新整理頁面；如果仍然看不到模型，稍後再試一次。</p><button type="button" data-action="refresh">重新載入</button></div></section>`;
         return;
@@ -443,6 +481,10 @@
           ? artworkNotice([...(global.KidsBrickModels?.models || []), ...(snapshot.builds || []).map((build) => getModel(build.modelId)).filter(Boolean)]) + renderShelf(snapshot) + renderCatalog(snapshot)
             : renderWorkbench(snapshot, animatedPartId)
       }</section>`;
+      if (celebration?.rendered) {
+        element.querySelector?.('[data-celebration]')?.scrollIntoView?.({ block: "center", behavior: "instant" });
+        element.querySelector?.('[data-action="celebration-skip"]')?.focus?.({ preventScroll: true });
+      }
     }
 
     function focusControl(action, partId) {
@@ -519,6 +561,10 @@
       }
       selectedPart = null;
       optimisticPlaced.add(partId);
+      // A stale unfinished cache can become complete during the initial refresh.
+      // Celebrate only a final placement made in this mounted workshop.
+      const placed = new Set([...(build.placed || []), ...optimisticPlaced]);
+      if (allParts(model).every((entry) => placed.has(entry.id))) completionCandidates.add(build.id);
       busy = `part:${partId}`;
       localError = "";
       playPlacedSound();
@@ -539,6 +585,7 @@
         });
       } catch (error) {
         optimisticPlaced.delete(partId);
+        completionCandidates.delete(build.id);
         localError = safeError(error, "這個零件沒有保存成功，請再試一次。");
       } finally {
         busy = "";
@@ -547,6 +594,7 @@
     }
 
     function closeWorkshop() {
+      stopCelebration();
       if (typeof onClose === "function") onClose();
       element.dispatchEvent?.(
         new CustomEvent("kids:workshop-close", { bubbles: true }),
@@ -561,8 +609,29 @@
       const action = button.dataset.action;
       if (action === "part" && Date.now() < suppressClickUntil) return;
       if (action === "close") return closeWorkshop();
+      if (action === "celebration-skip") {
+        stopCelebration();
+        render();
+        element.querySelector?.('[data-action="display"]')?.focus?.();
+        return;
+      }
+      if (action === "celebration-replay") {
+        const build = currentSnapshot().activeBuild;
+        const model = getModel(build?.modelId);
+        if (build?.completedAt && imageState(allParts(model)) === "ready") {
+          startCelebration(build, model);
+          render();
+        }
+        return;
+      }
       if (action === "sound") {
         audioEnabled = !audioEnabled;
+        if (celebration) {
+          button.textContent = audioEnabled ? "音效開" : "音效關";
+          button.setAttribute?.("aria-pressed", String(audioEnabled));
+          button.setAttribute?.("aria-label", audioEnabled ? "關閉拼裝音效" : "開啟拼裝音效");
+          return;
+        }
         return render();
       }
       if (action === "view") {
@@ -633,6 +702,13 @@
     }
 
     function onKeyDown(event) {
+      if (event.key === "Escape" && celebration) {
+        event.preventDefault();
+        stopCelebration();
+        render();
+        element.querySelector?.('[data-action="display"]')?.focus?.();
+        return;
+      }
       if (event.key === "Escape" && selectedPart) {
         const partId = selectedPart;
         selectedPart = null;
@@ -871,6 +947,7 @@
       destroy() {
         if (disposed) return;
         disposed = true;
+        stopCelebration();
         if (placementAnimationTimer) global.clearTimeout(placementAnimationTimer);
         cancelDrag({});
         abortPointerRelease();

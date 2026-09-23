@@ -11,7 +11,11 @@ npm ci
 node scripts/e500-art/serve.mjs
 ```
 
-預覽位於 `http://127.0.0.1:8877/index.html`。匯出器使用隔離 Chromium 的 CDP endpoint，會建立並關閉自己的頁面：
+預覽位於 `http://127.0.0.1:8877/index.html`。
+
+同一服務的 `/celebration.html` 是完工慶祝預覽：用示範進度保留最後一組踏階，點擊或拖曳拼上後，以正式工作台與動畫模組播放約 4.2 秒試車，可略過或再次播放。示範保存僅在記憶體，不呼叫家庭 API；重新整理或按重設回到 41／42 組。
+
+匯出器使用隔離 Chromium 的 CDP endpoint，會建立並關閉自己的頁面：
 
 ```sh
 node scripts/e500-art/export-sprites.mjs ws://127.0.0.1:PORT/devtools/browser/ID

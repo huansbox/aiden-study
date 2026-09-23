@@ -10,6 +10,7 @@
     "offline placement survives reload and merges after reconnect",
     "independent browser storage resumes and returns the same saved build",
     "window pack accepts third-first-second placement and renders the same saved model",
+    "server-confirmed completion drives 39 LEGO train groups along 3 stationary rails, auto-finishes, replays and skips",
     "Taiwan series offers E500; 12 synthetic past-day packs plus 2 real earned packs produce a permanent 42-group displayed locomotive",
     "new device reports unavailable completed-collection artwork and retries without changing ownership or display",
     "real generation reset preserves unbuilt packs, completed models and display; rejects delayed old events",
@@ -21,5 +22,5 @@
     "older-client train selection resumes its original identity and saved group; no E500 relabeling"
   ],
   "physicalIPad": false,
-  "at": "2026-09-23T04:03:37.143Z"
+  "at": "2026-09-23T05:35:34.187Z"
 }

@@ -47,11 +47,41 @@ function action(dataset, extra = {}) {
   return target;
 }
 
-function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1 } = {}) {
+function controlledClock() {
+  let now = 0, nextId = 1;
+  const timers = new Map();
+  return {
+    setTimeout(callback, delay) {
+      const id = nextId++;
+      timers.set(id, { callback, at: now + delay });
+      return id;
+    },
+    clearTimeout(id) { timers.delete(id); },
+    pending() { return [...timers.values()].map((timer) => timer.at - now).sort((a, b) => a - b); },
+    advance(milliseconds) {
+      const end = now + milliseconds;
+      for (;;) {
+        const next = [...timers].filter(([, timer]) => timer.at <= end).sort((a, b) => a[1].at - b[1].at)[0];
+        if (!next) break;
+        timers.delete(next[0]);
+        now = next[1].at;
+        next[1].callback();
+      }
+      now = end;
+    },
+  };
+}
+
+function harness(placed = [], {
+  modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1,
+  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false,
+} = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
   const imageLoads = [];
   const dragGhosts = [];
+  const clock = controlledTimers ? controlledClock() : null;
+  const closeCalls = [];
   class TestImage {
     set src(value) { this.url = value; imageLoads.push(this); }
   }
@@ -60,7 +90,7 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
     id: `${activeModelId}-build`,
     modelId: activeModelId,
     placed: [...placed],
-    completedAt: null,
+    completedAt: initialCompleted ? "2026-09-23T12:00:00.000Z" : null,
   };
   const state = {
     version: 1,
@@ -106,8 +136,9 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
     Date,
     Promise,
     queueMicrotask,
-    setTimeout,
-    clearTimeout,
+    setTimeout: clock?.setTimeout || setTimeout,
+    clearTimeout: clock?.clearTimeout || clearTimeout,
+    matchMedia: () => ({ matches: reducedMotion }),
     Image: TestImage,
     Set,
     Math,
@@ -149,19 +180,258 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
     })),
   }));
   context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
+  if (withCelebration) vm.runInContext(source("brick-celebration.js"), context);
   vm.runInContext(source("brick-workshop.js"), context);
   const element = rootElement();
-  const mounted = context.KidsBrickWorkshop.mount(element, { collection });
+  const mounted = context.KidsBrickWorkshop.mount(element, { collection, onClose: () => closeCalls.push(true) });
   const notify = () => { for (const callback of callbacks) callback(state); };
   const fireWindow = (name, extra = {}) => {
     for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
   };
-  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, dragGhosts, mounted, notify, fireWindow };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, dragGhosts, mounted, notify, fireWindow, clock, closeCalls };
 }
 
 function placedCount(html) {
   return (html.match(/brick-svg-part--placed/g) || []).length;
 }
+
+const completePartIds = Array.from({ length: 14 }, (_, pack) =>
+  [1, 2, 3].map((number) => `p${pack + 1}-${number}`),
+).flat();
+const celebrationMarker = /data-celebration(?:\s|>)/;
+function celebrationHarness(options = {}, placed = options.initialCompleted ? completePartIds : completePartIds.slice(0, -1)) {
+  const h = harness(placed, {
+    modelIds: ["e500"], packCount: 14, withCelebration: true, controlledTimers: true, ...options,
+  });
+  h.state.grants.push({ id: "last-pack", buildId: h.state.activeBuild.id, packIndex: 13 });
+  h.mounted.render();
+  return h;
+}
+function clickFinalGroup(h) {
+  h.element.fire("click", action({ action: "part", part: "p14-3" }));
+  h.element.fire("click", action({ action: "target", part: "p14-3" }));
+}
+function finishLocalBuild(h) {
+  clickFinalGroup(h);
+  assert.equal(h.placements.length, 1, "the current visit places its final group");
+  assert.equal(h.state.activeBuild.placed.length, 42);
+  h.clock.advance(320);
+}
+function confirmCompletion(h) {
+  h.state.activeBuild.completedAt = "2026-09-23T12:00:00.000Z";
+  h.state.revision++;
+  h.notify();
+}
+
+test("E500 celebration waits for server completion and keeps its DOM through subscription updates", async () => {
+  const h = celebrationHarness();
+  try {
+    await Promise.resolve();
+    h.state.sync = { status: "offline", pending: 1 };
+    finishLocalBuild(h);
+    h.notify();
+    assert.match(h.element.innerHTML, /最後一片已放好/);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), []);
+
+    confirmCompletion(h);
+    assert.match(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), [4200]);
+    const html = h.element.innerHTML, renders = h.element.renderCount;
+    h.state.revision++;
+    h.state.sync = { status: "ready", pending: 0 };
+    h.notify();
+    h.mounted.render();
+    await Promise.resolve();
+    assert.equal(h.element.innerHTML, html);
+    assert.equal(h.element.renderCount, renders, "save callbacks must not replace the animation DOM");
+    assert.deepEqual(h.clock.pending(), [4200]);
+  } finally { h.mounted.destroy(); }
+});
+
+test("E500 celebration ends after 4.2 seconds, does not auto-repeat, and can be replayed manually", () => {
+  const h = celebrationHarness();
+  try {
+    finishLocalBuild(h);
+    confirmCompletion(h);
+    h.clock.advance(4199);
+    assert.match(h.element.innerHTML, celebrationMarker);
+    h.clock.advance(1);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.match(h.element.innerHTML, /data-action="display"/);
+    assert.match(h.element.innerHTML, /data-action="celebration-replay"/);
+    h.notify();
+    h.element.fire("click", action({ action: "view", view: "shelf" }));
+    h.element.fire("click", action({ action: "view", view: "workshop" }));
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), []);
+
+    h.element.fire("click", action({ action: "celebration-replay" }));
+    assert.match(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), [4200]);
+    h.clock.advance(4200);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.state.activeBuild.placed, completePartIds);
+  } finally { h.mounted.destroy(); }
+});
+
+test("remote completion of a cached E500 never auto-celebrates without a local final placement", async (t) => {
+  for (const cachedCount of [41, 42]) await t.test(`${cachedCount} cached parts`, async () => {
+    const h = celebrationHarness({}, completePartIds.slice(0, cachedCount));
+    try {
+      await Promise.resolve();
+      assert.equal(h.placements.length, 0);
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      h.state.activeBuild.placed = [...completePartIds];
+      confirmCompletion(h);
+      h.notify();
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      assert.match(h.element.innerHTML, /data-action="display"/);
+      assert.deepEqual(h.clock.pending(), []);
+      h.element.fire("click", action({ action: "view", view: "shelf" }));
+      h.element.fire("click", action({ action: "view", view: "workshop" }));
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      h.element.fire("click", action({ action: "celebration-replay" }));
+      assert.match(h.element.innerHTML, celebrationMarker, "explicit replay remains available after a remote completion");
+    } finally { h.mounted.destroy(); }
+  });
+});
+
+test("skipping E500 celebration by button or Escape clears its timer without another automatic replay", async (t) => {
+  for (const method of ["button", "Escape"]) await t.test(method, () => {
+    const h = celebrationHarness();
+    try {
+      finishLocalBuild(h);
+      confirmCompletion(h);
+      if (method === "button") h.element.fire("click", action({ action: "celebration-skip" }));
+      else h.element.fire("keydown", action({}), { key: "Escape" });
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      assert.match(h.element.innerHTML, /data-action="display"/);
+      assert.deepEqual(h.clock.pending(), []);
+      const renders = h.element.renderCount;
+      h.clock.advance(5000);
+      assert.equal(h.element.renderCount, renders);
+      h.notify();
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    } finally { h.mounted.destroy(); }
+  });
+});
+
+test("existing completed collections, reduced motion, and unsupported models do not auto-celebrate", async (t) => {
+  for (const [name, options] of [
+    ["existing E500", { initialCompleted: true }],
+    ["reduced motion", { reducedMotion: true }],
+    ["legacy train", { modelIds: ["train"] }],
+    ["missing celebration module", { withCelebration: false }],
+  ]) await t.test(name, async () => {
+    const h = celebrationHarness(options);
+    try {
+      await Promise.resolve();
+      if (!options.initialCompleted) {
+        finishLocalBuild(h);
+        confirmCompletion(h);
+      }
+      h.notify();
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      assert.match(h.element.innerHTML, /data-action="display"/);
+      assert.deepEqual(h.clock.pending(), []);
+      if (options.initialCompleted) {
+        h.element.fire("click", action({ action: "celebration-replay" }));
+        assert.match(h.element.innerHTML, celebrationMarker, "old collections can opt into a replay");
+      }
+    } finally { h.mounted.destroy(); }
+  });
+});
+
+test("closing, destroying, or leaving the workshop cancels the E500 celebration timer", async (t) => {
+  for (const method of ["close", "destroy", "shelf"]) await t.test(method, async () => {
+    const h = celebrationHarness();
+    try {
+      await Promise.resolve();
+      finishLocalBuild(h);
+      confirmCompletion(h);
+      assert.deepEqual(h.clock.pending(), [4200]);
+      if (method === "destroy") h.mounted.destroy();
+      else if (method === "close") h.element.fire("click", action({ action: "close" }));
+      else h.element.fire("click", action({ action: "view", view: "shelf" }));
+      assert.deepEqual(h.clock.pending(), []);
+      if (method === "close") assert.equal(h.closeCalls.length, 1);
+      if (method === "destroy") assert.equal(h.element.innerHTML, "");
+      const renders = h.element.renderCount;
+      h.clock.advance(5000);
+      assert.equal(h.element.renderCount, renders);
+      if (method === "destroy") {
+        h.notify();
+        assert.equal(h.element.renderCount, renders, "destroy unsubscribes collection updates");
+      }
+      if (method === "shelf") {
+        h.element.fire("click", action({ action: "view", view: "workshop" }));
+        assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      }
+    } finally { h.mounted.destroy(); }
+  });
+});
+
+test("missing artwork blocks the final placement until retry, then local completion can celebrate", async () => {
+  const h = celebrationHarness({ imageArtwork: true });
+  try {
+    await Promise.resolve();
+    assert.equal(h.imageLoads.length, 42);
+    clickFinalGroup(h);
+    assert.equal(h.placements.length, 0, "unloaded artwork cannot authorize a final placement");
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), []);
+    const failed = h.imageLoads.at(-1);
+    for (const image of h.imageLoads) image === failed ? image.onerror() : image.onload();
+    await Promise.resolve();
+    assert.match(h.element.innerHTML, /這包圖片載入失敗/);
+    clickFinalGroup(h);
+    assert.equal(h.placements.length, 0, "failed artwork cannot authorize a final placement");
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    h.element.fire("click", action({ action: "retry-art" }));
+    const retry = h.imageLoads.at(-1);
+    assert.notEqual(retry, failed);
+    assert.equal(retry.url, failed.url);
+    assert.deepEqual(h.clock.pending(), []);
+    retry.onload();
+    await Promise.resolve();
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), []);
+    finishLocalBuild(h);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    confirmCompletion(h);
+    assert.match(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), [4200]);
+    const renders = h.element.renderCount;
+    failed.onload();
+    await Promise.resolve();
+    assert.equal(h.element.renderCount, renders, "a stale image request cannot restart celebration");
+    h.mounted.destroy();
+    const destroyedRenders = h.element.renderCount;
+    retry.onload();
+    await Promise.resolve();
+    h.clock.advance(5000);
+    assert.equal(h.element.renderCount, destroyedRenders, "late image callbacks cannot revive a destroyed workshop");
+  } finally { h.mounted.destroy(); }
+});
+
+test("server confirmation during the final snap waits for that placement animation to finish", async () => {
+  const h = celebrationHarness({}, completePartIds.slice(0, -1));
+  try {
+    await Promise.resolve();
+    clickFinalGroup(h);
+    await Promise.resolve();
+    assert.equal(h.state.activeBuild.placed.length, 42);
+    assert.match(h.element.innerHTML, /brick-svg-part--just-placed/);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    confirmCompletion(h);
+    h.clock.advance(319);
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    h.clock.advance(1);
+    assert.match(h.element.innerHTML, celebrationMarker);
+    assert.deepEqual(h.clock.pending(), [4200]);
+  } finally { h.mounted.destroy(); }
+});
 
 test("render keeps one and two saved parts visible while only remaining parts are ghosts", async () => {
   const one = harness(["p1-1"]);
