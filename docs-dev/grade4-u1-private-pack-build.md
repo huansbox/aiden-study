@@ -9,9 +9,12 @@
 - mapping 的 `sourceTask/sourceMapping` 保留原六題紙本 task 入口，僅表示 legacy provenance，不宣稱新八題也出自該紙本。新題由 row 的 paperId/originalId/題答頁追溯八卷來源；新增收錄集合由核准 mapping 決定。
 - curated row 仍為 `practiceId/originalId/paperId/questionPage/answerPage/concept/adaptation/verification/question`。`question.unit` 對 mapping.unit，question.id 對 appId；adaptation 對 sourceAdaptation，verification 對 reviewStatus，其餘來源欄位也需精確一致。source 仍由 builder 產生，原六題 source 字串不變。
 - `questionPage` 固定為正整數。有官方答案時 `answerPage` 也必須是正整數；只有官方答案確實未取得、作者與 fresh reviewer 已各自獨立解題一致，且 mapping `reviewStatus`／curated `verification` 精確為 `independently_solved_twice_no_official_answer` 時，兩邊 `answerPage` 才可同為 `null`。作者階段或其他 status 的 null 會被 builder 拒絕；不得填假答案頁，也不得用範圍狀態冒充答案審查。
-- 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。未核准的 mixed token、其他題型或 image 不因擴題自動加入。
+- 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。其他題型與媒體須依下方 #119 的限定契約明確加入。
+- #119 的新自然題可使用受限 `material`：`png` 僅限題包內 canonical PNG data URI，解碼後最多 32 KiB、寬高各 1～1600；`table` 僅限純文字 caption／columns／rows、2～8 欄與 1～16 列。文字上限以 Unicode code points 計：caption 300、欄名 80、儲存格 240、PNG alt 200。圖片與表格都留在私人題包，不放公開 assets；內容必須經來源等價與清晰度覆核。
+- #119 的 `grouped_choice` 僅限自然：`options` 是整組共用的 2～4 個選項（每項最多 300 code points），`parts` 是 2～8 個 `{id,text}`（id 組內唯一、1～32 位英數／連字號；text 最多 600 code points）；`answer` 是按 parts 順序排列的 1-based 選項索引字串。每格可以重複選同一選項。整組全部填齊後送出，一個 q.id 只算一個 activity。缺少共同選項池的原題不硬轉此格式。
 - Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 128 KiB，不另設任意總題數上限。
 - 覆寫既有 pack.json 前，檢查新 ID 集合包含所有舊題，且各既有 ID 的作答內容、subject/unit/subtopic 不變。新增或 source/解說更新需更高 revision；同 revision 比較排序後的完整 ID 集合。拒絕刪題、降版或同 ID 偷換題。
+- `material` 全內容與 `parts` 原順序／文字都受同 ID 語意守衛保護。新 revision 仍須另外拿已核 rev5 歸檔逐值核對舊 77 題及解說，因一般升版規則允許修改解說；不能把守衛通過誤當成 rev5 解說逐值不變的證據。
 
 ## 重建
 
