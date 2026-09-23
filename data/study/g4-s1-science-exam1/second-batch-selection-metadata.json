@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "frozen_selection_pending_content_review",
+  "status": "content_review_pass_pending_ui_integration",
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/119",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
   "scopeEvidence": "learning-tasks/grade4-sem1-science-exam1/source/curriculum-comparison.md",
@@ -134,7 +134,7 @@
       "format": "grouped_choice",
       "answerSlots": 8,
       "materialKind": "table",
-      "dependency": "完整四欄七列資料表與 A–G 代碼共用於八子項；原 PDF 缺筆字形按文字層保留原字元",
+      "dependency": "完整四欄七列資料表與 A–G 代碼共用於八子項；原 PDF 文字層與放大字形一致，直接保留原字元，未作字形修復",
       "officialAnswerAvailable": false
     },
     {
