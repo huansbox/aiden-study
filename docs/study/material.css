@@ -3,8 +3,9 @@
 .study-material-image figcaption { margin: 6px 0; color: #475569; }
 .study-material-image button { min-height: 48px; border: 2px solid #0f766e; border-radius: 10px; padding: 8px 14px; background: #fff; color: #115e59; font: inherit; font-weight: 700; }
 .study-material-overlay[hidden] { display: none; }
-.study-material-overlay { position: fixed; z-index: 1000; inset: 0; display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 16px; background: rgba(15,23,42,.92); }
-.study-material-overlay img { max-width: 100%; max-height: calc(100dvh - 100px); object-fit: contain; background: white; }
+.study-material-overlay { position: fixed; z-index: 1000; inset: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px; background: rgba(15,23,42,.92); }
+.study-material-viewport { flex: 1; min-height: 0; width: 100%; overflow: auto; overscroll-behavior: contain; }
+.study-material-viewport img { display: block; max-width: none; height: auto; background: white; }
 .study-material-overlay button { align-self: flex-end; background: white; }
 .study-table-scroll { max-width: 100%; overflow-x: auto; margin: 0 0 18px; border: 1px solid #cbd5e1; border-radius: 10px; }
 .study-table-hint { margin: -12px 0 18px; color: #475569; font-size: .9rem; }
@@ -12,4 +13,4 @@
 .study-material-table caption { text-align: left; padding: 10px; font-weight: 700; }
 .study-material-table th, .study-material-table td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; vertical-align: top; }
 .study-material-table thead th { background: #f0fdfa; }
-.study-table-scroll:focus-visible, .study-material-image button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+.study-table-scroll:focus-visible, .study-material-viewport:focus-visible, .study-material-image button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }

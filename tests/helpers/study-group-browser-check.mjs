@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { syntheticPngData } from "./synthetic-study-pack.mjs";
 
 const root = resolve(fileURLToPath(new URL("../../", import.meta.url)));
 const require = createRequire(import.meta.url);
@@ -19,6 +20,28 @@ const ready = new Promise((ok, fail) => {
   server.stdout.on("data", chunk => { if (String(chunk).includes(`${base}/test/start`)) { clearTimeout(timer); ok(); } });
   server.once("exit", code => { clearTimeout(timer); fail(Error(`synthetic server exited ${code}`)); });
 });
+async function checkZoom(page) {
+  const inline = page.locator(".study-material-image > img");
+  await page.waitForFunction(() => document.querySelector(".study-material-image > img")?.naturalWidth === 550);
+  const inlineWidth = (await inline.boundingBox()).width;
+  await page.locator("[data-material-open]").click();
+  assert.equal(await page.locator(".study-material-overlay").isVisible(), true);
+  assert.equal(await page.locator("[data-material-close]").evaluate(node => node === document.activeElement), true);
+  const metrics = await page.locator(".study-material-viewport").evaluate(viewport => {
+    const image = viewport.querySelector("img");
+    const before = { imageWidth: image.getBoundingClientRect().width, naturalWidth: image.naturalWidth,
+      scrollWidth: viewport.scrollWidth, clientWidth: viewport.clientWidth,
+      scrollHeight: viewport.scrollHeight, clientHeight: viewport.clientHeight };
+    viewport.scrollTo(viewport.scrollWidth, viewport.scrollHeight);
+    return { ...before, right: viewport.scrollLeft, bottom: viewport.scrollTop };
+  });
+  assert.equal(metrics.naturalWidth, 550);
+  assert.ok(metrics.imageWidth >= 1100 && metrics.imageWidth >= inlineWidth * 1.9);
+  assert.ok(metrics.scrollWidth >= metrics.imageWidth && metrics.right >= metrics.scrollWidth - metrics.clientWidth - 1);
+  assert.ok(metrics.scrollWidth > metrics.clientWidth);
+  assert.ok(metrics.bottom >= metrics.scrollHeight - metrics.clientHeight - 1);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
+}
 let browser;
 try {
   await ready;
@@ -28,6 +51,13 @@ try {
     const context = await browser.newContext({ viewport: { width, height } });
     const page = await context.newPage();
     await page.goto(`${base}/test/start`);
+    if (width === 390) {
+      const decoded = await page.evaluate(async ([valid, duplicate]) => {
+        const decode = async src => { const img = new Image(); img.src = src; try { await img.decode(); return true; } catch { return false; } };
+        return [await decode(valid), await decode(duplicate)];
+      }, [syntheticPngData(1, 3, 1, 1, 1, 2), syntheticPngData(1, 3, 1, 1, 2, 2)]);
+      assert.deepEqual(decoded, [true, false]);
+    }
     await page.goto(`${base}/test/study-group-pack`);
     await page.getByRole("link", { name: "自然" }).click();
     await page.locator("#study-home-content .unit-section").first().waitFor();
@@ -36,10 +66,10 @@ try {
     assert.equal(await page.locator("#group-parts select").count(), 3);
     assert.equal(await page.locator("#group-submit").isDisabled(), true);
     assert.ok((await page.locator("#group-parts select").first().boundingBox()).height >= 44);
-    await page.locator("[data-material-open]").click();
-    assert.equal(await page.locator(".study-material-overlay").isVisible(), true);
+    await checkZoom(page);
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".study-material-overlay").isVisible(), false);
+    assert.equal(await page.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
     await page.screenshot({ path: resolve(screenshotDir, `group-child-image-${width}.png`) });
     for (const [index, value] of ["1", "2", "3"].entries()) await page.locator(`#group-parts select[data-group-index="${index}"]`).selectOption(value);
     assert.equal(await page.locator("#group-submit").isDisabled(), false);
@@ -61,10 +91,10 @@ try {
     await preview.locator('select[data-action="subject"]').selectOption("science");
     await preview.locator('select[data-action="unit"]').selectOption("21");
     await preview.locator('select[data-action="subtopic"]').selectOption("合成圖像");
-    await preview.locator("[data-material-open]").click();
-    assert.equal(await preview.locator(".study-material-overlay").isVisible(), true);
+    await checkZoom(preview);
     await preview.locator("[data-material-close]").click();
     assert.equal(await preview.locator(".study-material-overlay").isVisible(), false);
+    assert.equal(await preview.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
     assert.equal(await preview.locator('button[data-action="check"]').isDisabled(), true);
     for (const [index, value] of ["1", "2", "3"].entries()) await preview.locator(`select[data-action="answer-group"][data-index="${index}"]`).selectOption(value);
     await preview.locator('button[data-action="check"]').click();
