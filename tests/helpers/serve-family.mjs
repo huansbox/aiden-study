@@ -6,7 +6,7 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { expandedSyntheticPack, navigationSyntheticPack } from "./synthetic-study-pack.mjs";
+import { expandedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack } from "./synthetic-study-pack.mjs";
 const root = resolve(fileURLToPath(new URL("../../docs/", import.meta.url)));
 const port = Number(process.argv[2] || 8788),
   endpoint = `http://127.0.0.1:${port}`;
@@ -40,6 +40,12 @@ createServer(async (req, res) => {
       res.end();
       return;
     }
+    if (url.pathname === "/test/study-science-pack") {
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(scienceSyntheticPack()));
+      res.writeHead(302, { Location: "/?child=aiden" });
+      res.end();
+      return;
+    }
     if (url.pathname === "/test/controls") {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.end(
@@ -52,7 +58,7 @@ createServer(async (req, res) => {
       const requestedCount = Number(url.searchParams.get("questions") || 0);
       studyPreviewMode = ["ok", "401", "404", "offline", "500", "bad-json", "bad-utf8", "invalid", "delay-once"].includes(requested) ? requested : "ok";
       requestLog = [];
-      await KV.put("c:study:g4-s1-math-u1", JSON.stringify([18, 60].includes(requestedCount) ? navigationSyntheticPack(requestedCount) : expandedSyntheticPack()));
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(requested === "science" ? scienceSyntheticPack() : [18, 60].includes(requestedCount) ? navigationSyntheticPack(requestedCount) : expandedSyntheticPack()));
       await KV.put("p:aiden:study", previewProgress, { metadata: { rev: 7, updatedAt: "2026-09-19T00:00:00.000Z" } });
       await KV.put("m:aiden:study:preview-sentinel", previewActivity);
       res.setHeader("Content-Type", "text/html; charset=utf-8");

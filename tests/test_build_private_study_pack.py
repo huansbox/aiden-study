@@ -144,7 +144,7 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
         }
         common = {"practiceId": practice_id, "originalId": source_id, "paperId": "synthetic-paper", "questionPage": 1,
                   "answerPage": 2, "concept": "Synthetic concept", "sourceAdaptation": "Synthetic unchanged context",
-                  "reviewStatus": "synthetic_only"}
+                  "reviewStatus": "independently_recomputed_and_matches_official"}
         curated["items"].append({**{k: common[k] for k in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
                                  "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
         metadata["items"].append({**common, "appId": app_id, "unit": unit, "contextPolicy": "Synthetic standalone question",
@@ -167,6 +167,17 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
         mutation(broken[0]["items"][-2]["question"])
         with pytest.raises(PackBuildError):
             build_pack(*_paths(tmp_path / str(id(broken)), broken))
+    pending = copy.deepcopy((curated, explanations, metadata, public_questions))
+    pending[0]["items"][-2]["verification"] = "pending"
+    pending[2]["items"][-2]["reviewStatus"] = "pending"
+    with pytest.raises(PackBuildError, match="review is not complete"):
+        build_pack(*_paths(tmp_path / "pending", pending))
+    no_official = copy.deepcopy((curated, explanations, metadata, public_questions))
+    no_official[0]["items"][-2]["answerPage"] = None
+    no_official[0]["items"][-2]["verification"] = private_builder.NO_OFFICIAL_ANSWER_VERIFIED
+    no_official[2]["items"][-2]["answerPage"] = None
+    no_official[2]["items"][-2]["reviewStatus"] = private_builder.NO_OFFICIAL_ANSWER_VERIFIED
+    assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
 
 
 @pytest.mark.parametrize(
