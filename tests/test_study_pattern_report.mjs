@@ -21,11 +21,13 @@ function fixture() {
   return { classification, mapping, sourceDocuments };
 }
 
-test("現有公開分類完整覆蓋 mapping；generated report 可由公開資料重算", () => {
+test("現有數學分類完整覆蓋數學 mapping；generated report 可由公開資料重算", () => {
   const classification = read("data/study/g4-s1-math-u1/pattern-classification.json");
   const mapping = read("data/study/g4-s1-math-u1/mapping-metadata.json");
   const summary = build({ root, check: true });
-  assert.equal(summary.reduce((n, s) => n + s.activities, 0), mapping.items.length);
+  const mathRows = mapping.items.filter(row => row.unit >= 15 && row.unit <= 19);
+  assert.equal(summary.reduce((n, s) => n + s.activities, 0), mathRows.length);
+  assert.equal(mathRows.length, classification.assignments.length);
   assert.equal(summary.reduce((n, s) => n + s.observedPatterns, 0), new Set(classification.assignments.map(a => a.primaryPattern)).size);
   assert.equal(summary.reduce((n, s) => n + s.singleton + s.repeated, 0), new Set(classification.assignments.map(a => a.primaryPattern)).size);
 });
