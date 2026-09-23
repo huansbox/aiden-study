@@ -195,13 +195,32 @@ body {
   background: #fff; font-size: 1.125rem; line-height: 1.5;
   cursor: pointer; transition: all 0.15s; text-align: left; gap: 10px;
 }
-.group-parts { display: grid; gap: 14px; margin-bottom: 16px; }
-.group-part { display: grid; gap: 6px; min-width: 0; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; }
-.group-part > span:first-child { white-space: pre-wrap; font-weight: 700; }
-.group-part select { width: 100%; min-width: 0; min-height: 56px; border: 2px solid #94a3b8; border-radius: 10px; padding: 8px; background: #fff; font: inherit; }
-.group-part select.group-correct { border-color: #15803d; }
-.group-part select.group-wrong { border-color: #dc2626; }
+.group-card { display: grid; gap: 12px; align-content: start; }
+.group-card .q-type { margin-bottom: 0; }
+.group-context, .group-work { min-width: 0; }
+.group-context .study-table-scroll { max-height: 38dvh; overflow: auto; }
+.group-context .study-material-image > img { max-height: 38dvh; object-fit: contain; }
+.group-context .q-text { margin-bottom: 0; }
+.group-parts { min-width: 0; }
+.group-part { display: grid; gap: 8px; min-width: 0; }
+.group-part-question { white-space: pre-wrap; font-weight: 700; font-size: 1.15rem; line-height: 1.5; }
+.group-options { display: grid; gap: 8px; margin-top: 10px; }
+.group-option { display: flex; align-items: center; gap: 10px; min-height: 52px; width: 100%; padding: 9px 12px; text-align: left; border: 2px solid #cbd5e1; border-radius: 10px; background: white; font: inherit; cursor: pointer; }
+.group-option[aria-pressed="true"] { border-color: #4361ee; background: #eef2ff; }
+.group-option:disabled { opacity: 1; cursor: default; }
+.group-option .opt-label { display: grid; place-items: center; flex: 0 0 28px; min-height: 28px; border-radius: 50%; background: #e2e8f0; font-weight: 700; }
+.group-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; }
+.group-nav button { min-height: 44px; padding: 8px 12px; border: 1px solid #a5b4fc; border-radius: 9px; background: white; color: #3730a3; font: inherit; font-weight: 700; }
+.group-nav button:disabled { opacity: .45; }
+.group-nav span { font-weight: 800; white-space: nowrap; }
 .group-feedback { font-weight: 700; }
+@media (orientation: landscape) and (min-width: 800px) {
+  .container:has(.group-card) { max-width: 1100px; }
+  .group-card { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+  .group-card .q-type { grid-column: 1 / -1; }
+  .group-context .study-table-scroll { max-height: 52dvh; }
+  .group-context .study-material-image > img { max-height: 45dvh; }
+}
 .opt-btn:active:not(.disabled) { transform: scale(0.98); }
 .opt-btn:hover:not(.disabled) { border-color: #4361ee; background: #f0f4ff; }
 .opt-btn .opt-label {
@@ -1221,6 +1240,8 @@ function resetQuestionRuntime() {
   quiz.handwritingRemedialHintVisible = false;
   quiz._groupValues = null;
   quiz._groupResults = null;
+  quiz._groupIndex = 0;
+  quiz._renderGroupPart = null;
 }
 
 // ════════════════════════════════════════════════════
@@ -2668,7 +2689,7 @@ function renderQuiz() {
     }
   } else if (isGroup) {
     if (!quiz._groupValues || quiz._groupValues.length !== q.parts.length) quiz._groupValues = q.parts.map(() => "");
-    answerHtml = `<div class="group-parts" id="group-parts">${q.parts.map((part, i) => `<label class="group-part"><span>${escapeHtml(part.text)}</span><select data-group-index="${i}" aria-label="${escapeHtml(part.id)} 的答案"><option value="">請選擇</option>${q.options.map((option, index) => `<option value="${index + 1}" ${quiz._groupValues[i] === String(index + 1) ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select><span class="group-feedback" data-group-feedback="${i}"></span></label>`).join("")}</div><button class="next-btn" id="group-submit" disabled>確認整組答案</button>`;
+    answerHtml = `<div class="group-parts" id="group-parts"></div><div class="group-nav" aria-label="小題導覽"><button type="button" id="group-prev">上一小題</button><span id="group-position"></span><button type="button" id="group-next">下一小題</button></div><button class="next-btn" id="group-submit" disabled>確認整組答案</button>`;
   } else if (isFill) {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
@@ -2727,11 +2748,13 @@ function renderQuiz() {
       <span class="mode-label">${modeText}</span>
     </div>
     ${progressHtml}
-    <div class="question-card">
+    <div class="question-card${isGroup ? " group-card" : ""}">
       <span class="${typeClass}">${typeLabel}</span>
+      ${isGroup ? '<div class="group-context">' : ""}
       ${q.image ? `<img class="q-image" src="${q.image}" alt="題目附表">` : ""}
       ${isPrivateQuestion(q) ? StudyMaterial.render(q.material) : ""}
       <div class="q-text">${displayText}</div>
+      ${isGroup ? '</div><div class="group-work">' : ""}
       ${answerHtml}
       <div class="result-hint hidden" id="result-hint"></div>
       <div class="explain-card hidden" id="explain-card"></div>
@@ -2748,6 +2771,7 @@ function renderQuiz() {
       <div class="skip-area" id="skip-area">
         <button class="skip-btn" id="skip-btn">先跳過這題</button>
       </div>` : ""}
+      ${isGroup ? '</div>' : ""}
     </div>`;
 
   // Bind events
@@ -2760,11 +2784,21 @@ function renderQuiz() {
   } else if (isFill) {
     bindFillEvents(q);
   } else if (isGroup) {
-    const selects = [...document.querySelectorAll("#group-parts select")];
     const submit = document.getElementById("group-submit");
     const refresh = () => { submit.disabled = quiz._groupValues.some(value => !value); };
-    selects.forEach(select => { select.onchange = () => { quiz._groupValues[Number(select.dataset.groupIndex)] = select.value; refresh(); }; });
+    const renderPart = () => {
+      const i = quiz._groupIndex, part = q.parts[i];
+      document.getElementById("group-position").textContent = `小題 ${i + 1}／${q.parts.length}`;
+      document.getElementById("group-prev").disabled = i === 0;
+      document.getElementById("group-next").disabled = i === q.parts.length - 1;
+      document.getElementById("group-parts").innerHTML = `<div class="group-part"><span class="group-part-question">${escapeHtml(part.text)}</span><div class="group-options">${q.options.map((option, index) => `<button type="button" class="group-option" data-group-value="${index + 1}" aria-pressed="${quiz._groupValues[i] === String(index + 1)}" ${quiz.isAnswered ? "disabled" : ""}><span class="opt-label">${index + 1}</span><span>${escapeHtml(option)}</span></button>`).join("")}</div>${quiz.isAnswered ? `<span class="group-feedback">${quiz._groupResults[i] ? "答對" : `正解：${escapeHtml(q.options[Number(q.answer[i]) - 1])}`}</span>` : ""}</div>`;
+      document.querySelectorAll("#group-parts [data-group-value]").forEach(button => { button.onclick = () => { quiz._groupValues[i] = button.dataset.groupValue; renderPart(); refresh(); }; });
+    };
+    document.getElementById("group-prev").onclick = () => { if (quiz._groupIndex > 0) { quiz._groupIndex--; renderPart(); } };
+    document.getElementById("group-next").onclick = () => { if (quiz._groupIndex < q.parts.length - 1) { quiz._groupIndex++; renderPart(); } };
     submit.onclick = () => { if (!submit.disabled && !quiz.isAnswered) submitAnswer([...quiz._groupValues]); };
+    quiz._renderGroupPart = renderPart;
+    renderPart();
     refresh();
   } else if (isChinese) {
     bindChineseEvents(q);
@@ -3102,12 +3136,7 @@ function renderFeedback(correct, q) {
     });
     wrongHint = "答錯了，紅色格子旁有正確答案";
   } else if (q.type === "grouped_choice") {
-    document.querySelectorAll("#group-parts select").forEach((select, i) => {
-      select.disabled = true;
-      select.classList.add(quiz._groupResults[i] ? "group-correct" : "group-wrong");
-      const feedback = document.querySelector(`[data-group-feedback="${i}"]`);
-      if (feedback) feedback.textContent = quiz._groupResults[i] ? "答對" : `正解：${q.options[Number(q.answer[i]) - 1]}`;
-    });
+    quiz._renderGroupPart();
     document.getElementById("group-submit").classList.add("hidden");
     wrongHint = "答錯了，請看各小題旁的正確答案";
   } else if (q.type === "chinese_correction") {

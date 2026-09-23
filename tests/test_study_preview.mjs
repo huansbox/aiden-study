@@ -128,12 +128,21 @@ test("preview shows private image and table groups, scores the complete group in
   assert.match(h.host.innerHTML, /data:image\/png;base64/);
   assert.match(h.host.innerHTML, /放大圖片/);
   assert.match(h.host.innerHTML, /data-action="check" disabled/);
+  assert.match(h.host.innerHTML, /小題 1／3/);
+  assert.equal((h.host.innerHTML.match(/preview-group-question/g) || []).length, 1);
   app.handle("answer-group", { index: 0, value: "1" });
+  app.handle("next-part");
+  assert.equal(app.state.partIndex, 1);
+  app.handle("previous-part");
+  assert.equal(app.state.values[0], "1");
+  app.handle("next-part");
   app.handle("answer-group", { index: 1, value: "2" });
   assert.match(h.host.innerHTML, /data-action="check" disabled/);
   app.handle("answer-group", { index: 2, value: "1" });
+  app.handle("next-part");
   app.handle("check");
   assert.equal(app.state.result, "wrong");
+  assert.match(h.host.innerHTML, /正解：丙：中間/);
   app.handle("answer-group", { index: 2, value: "3" });
   app.handle("check");
   assert.equal(app.state.result, "correct");
@@ -141,6 +150,10 @@ test("preview shows private image and table groups, scores the complete group in
   assert.match(h.host.innerHTML, /study-material-table/);
   assert.match(h.host.innerHTML, /合成動物表/);
   assert.equal(app.state.values.length, 8);
+  assert.equal(app.state.partIndex, 0);
+  app.handle("next-part");
+  app.handle("reset");
+  assert.equal(app.state.partIndex, 0);
   assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
@@ -367,8 +380,8 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
-  assert.match(source("preview.html"), /preview\.js\?v=20260923-group-media/);
-  assert.match(source("preview.html"), /preview\.css\?v=20260923-group-media/);
+  assert.match(source("preview.html"), /preview\.js\?v=20260923-group-stepwise/);
+  assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "preview.js"]);
   const preview = source("preview.js");

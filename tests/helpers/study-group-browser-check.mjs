@@ -71,23 +71,31 @@ try {
     await page.getByRole("link", { name: "自然" }).click();
     await page.locator("#study-home-content .unit-section").first().waitFor();
     await page.evaluate(() => window._startFull(21, "合成圖像"));
-    await page.locator("#group-parts select").first().waitFor();
-    assert.equal(await page.locator("#group-parts select").count(), 3);
+    await page.locator("#group-parts .group-option").first().waitFor();
+    assert.equal(await page.locator("#group-parts .group-part-question").count(), 1);
     assert.equal(await page.locator("#group-submit").isDisabled(), true);
-    assert.ok((await page.locator("#group-parts select").first().boundingBox()).height >= 44);
+    assert.ok((await page.locator("#group-parts .group-option").first().boundingBox()).height >= 44);
     await checkZoom(page);
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".study-material-overlay").isVisible(), false);
     assert.equal(await page.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
     await page.screenshot({ path: resolve(screenshotDir, `group-child-image-${width}.png`) });
-    for (const [index, value] of ["1", "2", "3"].entries()) await page.locator(`#group-parts select[data-group-index="${index}"]`).selectOption(value);
+    for (const [index, value] of ["1", "2", "3"].entries()) {
+      await page.locator(`#group-parts [data-group-value="${value}"]`).click();
+      if (index < 2) assert.equal(await page.locator("#group-submit").isDisabled(), true);
+      if (index < 2) await page.locator("#group-next").click();
+    }
+    await page.locator("#group-prev").click();
+    assert.equal(await page.locator('#group-parts [aria-pressed="true"]').getAttribute("data-group-value"), "2");
+    await page.locator("#group-next").click();
     assert.equal(await page.locator("#group-submit").isDisabled(), false);
     await page.locator("#group-submit").click();
     assert.match(await page.locator("#result-hint").innerText(), /答對/);
     await page.evaluate(() => window._startFull(21, "合成表格"));
     await page.locator(".study-material-table").waitFor();
     assert.equal(await page.locator(".study-material-table tbody tr").count(), 2);
-    assert.equal(await page.locator("#group-parts select").count(), 8);
+    assert.equal(await page.locator("#group-position").innerText(), "小題 1／8");
+    assert.equal(await page.locator("#group-parts .group-part-question").count(), 1);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
     await page.screenshot({ path: resolve(screenshotDir, `group-child-table-${width}.png`) });
     await context.close();
@@ -105,12 +113,20 @@ try {
     assert.equal(await preview.locator(".study-material-overlay").isVisible(), false);
     assert.equal(await preview.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
     assert.equal(await preview.locator('button[data-action="check"]').isDisabled(), true);
-    for (const [index, value] of ["1", "2", "3"].entries()) await preview.locator(`select[data-action="answer-group"][data-index="${index}"]`).selectOption(value);
+    for (const [index, value] of ["1", "2", "3"].entries()) {
+      await preview.locator(`[data-action="answer-group"][data-value="${value}"]`).click();
+      if (index < 2) assert.equal(await preview.locator('button[data-action="check"]').isDisabled(), true);
+      if (index < 2) await preview.locator('[data-action="next-part"]').click();
+    }
+    await preview.locator('[data-action="previous-part"]').click();
+    assert.equal(await preview.locator('[data-action="answer-group"][aria-pressed="true"]').getAttribute("data-value"), "2");
+    await preview.locator('[data-action="next-part"]').click();
     await preview.locator('button[data-action="check"]').click();
     assert.match(await preview.locator(".preview-feedback").innerText(), /答對/);
     await preview.locator('select[data-action="subtopic"]').selectOption("合成表格");
     assert.equal(await preview.locator(".study-material-table tbody tr").count(), 2);
-    assert.equal(await preview.locator('select[data-action="answer-group"]').count(), 8);
+    assert.match(await preview.locator(".preview-group-nav").innerText(), /小題 1／8/);
+    assert.equal(await preview.locator(".preview-group-question").count(), 1);
     assert.equal(await preview.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
     await preview.screenshot({ path: resolve(screenshotDir, `group-preview-table-${width}.png`) });
     await preview.goto(`${base}/test/study-preview/inspect`);
