@@ -43,8 +43,8 @@
       "地震報告、防災與地表變動": 19,
       "跨領域閱讀資訊（待確認）": 3,
       "月亮觀測方法、高度角與方位": 21,
-      "月亮位置與日夜天空": 14,
-      "月相圖像與週期": 22
+      "月亮位置與日夜天空": 13,
+      "月相圖像與週期": 23
     },
     "by_primary_method": {
       "判斷敘述": 109,
@@ -3025,7 +3025,7 @@
       "page": 2,
       "section": "第10題",
       "item": "1.1",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "跨週紀錄能否推論單日高度角變化",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
@@ -3041,14 +3041,16 @@
       "page": 2,
       "section": "第10題",
       "item": "1.2",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "由不同日期的紀錄比較月形變化",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
-      "app_presentation": "保留紀錄日期、時間、方位、高度與月形圖像；兩小組不可脫離同一資料表。",
+      "app_presentation": "保留跨週同時刻的紀錄與月形圖像，須比較不同日期，不能當作單日位置題。",
       "official_answer_presence": "missing",
-      "concept_cluster": "月亮位置與日夜天空",
-      "secondary_concept_clusters": []
+      "concept_cluster": "月相圖像與週期",
+      "secondary_concept_clusters": [
+        "月亮位置與日夜天空"
+      ]
     },
     {
       "id": "tyk114-10-03",
@@ -3057,7 +3059,7 @@
       "page": 2,
       "section": "第10題",
       "item": "1.3",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "由不同日期同時刻的紀錄比較月亮位置",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
@@ -3073,7 +3075,7 @@
       "page": 2,
       "section": "第10題",
       "item": "2.1",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "月亮升落時間對夜間可見性的影響",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
@@ -3089,7 +3091,7 @@
       "page": 2,
       "section": "第10題",
       "item": "2.2",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "雲層對月亮觀測的遮蔽",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
@@ -3105,7 +3107,7 @@
       "page": 2,
       "section": "第10題",
       "item": "2.3",
-      "concept": "月亮觀測紀錄表的資訊與限制推論",
+      "concept": "環境光對月亮觀測清晰度的影響",
       "scope": "future",
       "primary_method": "圖表判讀後判斷",
       "shared_dependency": "第10題含兩個小組，各三作答格；共用跨週月亮觀測紀錄圖表",
