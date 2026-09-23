@@ -137,6 +137,8 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上數學 U1～U5 五十七題 rev4 不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，已驗證的正式 pack 則部署在獨立 Cloudflare KV，由 Study 以 family token 自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
+[#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已在本機完成 20 題的內容覆核、同一家庭題包的 revision 5 候選整合與隔離畫面驗證。候選包共 77 題，原數學 57 題逐值維持不變；目前尚未正式發布，家長端與孩子端的正式服務仍以已發布版本為準。公開來源、覆蓋缺口與驗證界線見[自然首批選題](data/study/g4-s1-science-exam1/README.md)及[整合紀錄](docs-dev/grade4-science-study-first-batch.md)。
+
 ```bash
 # PDF 萃取範例
 uv run python scripts/extract.py --input pdfs_期末 --output data/raw_questions_期末.json

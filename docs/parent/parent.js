@@ -50,6 +50,8 @@
     17: "四上 數學 3",
     18: "四上 數學 4",
     19: "四上 數學 5",
+    20: "四上 自然 1：地表的靜與動",
+    21: "四上 自然 2：水生生物與環境",
   };
   let config = C.defaults(),
     rev = 0,
@@ -143,7 +145,7 @@
             `<div class="app-row"><span style="flex:1">${esc(names[t.app])} · ${esc(C.taskLabel(t))}${!C.availableTask(t, profile) ? " <small>已隱藏，不會派發</small>" : ""}</span><button data-remove="${i}" aria-label="移除第 ${i + 1} 項任務">移除</button></div>`,
         )
         .join("") || '<p class="muted">這份安排沒有任務。</p>'
-    }</div><div id="task-fields" class="family-stack">${taskFields()}</div><p class="muted">以完成練習量計算，不要求全對。孩子仍可自由選其他活動。跨日不累積欠交。</p></section><section class="family-panel"><h2>累計紀錄</h2><div id="parent-stats">讀取中⋯</div><p class="muted">分鐘是頁面使用中的估計值；進入背景、停留超過兩分鐘未操作不計。新累計從改版後開始，既有 App 進度另行保留。</p></section><section class="family-panel"><h2>內容與維護</h2><p class="muted">試玩頁只讀取家庭題包，不會載入或保存孩子進度。</p><div class="family-row" style="margin-top:16px"><a class="button" href="../study/preview.html?child=${child}">四上數學試玩</a>${reg.apps
+    }</div><div id="task-fields" class="family-stack">${taskFields()}</div><p class="muted">以完成練習量計算，不要求全對。孩子仍可自由選其他活動。跨日不累積欠交。</p></section><section class="family-panel"><h2>累計紀錄</h2><div id="parent-stats">讀取中⋯</div><p class="muted">分鐘是頁面使用中的估計值；進入背景、停留超過兩分鐘未操作不計。新累計從改版後開始，既有 App 進度另行保留。</p></section><section class="family-panel"><h2>內容與維護</h2><p class="muted">試玩頁只讀取家庭題包，不會載入或保存孩子進度。</p><div class="family-row" style="margin-top:16px"><a class="button" href="../study/preview.html?child=${child}">四上數學／自然試玩</a>${reg.apps
       .filter((a) => a.path && a.id !== "nonogram")
       .map(
         (a) =>

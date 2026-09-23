@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, ids, navigationSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -92,6 +92,30 @@ test("production parser and fixed authenticated GET load the synthetic family pa
   assert.match(h.host.innerHTML, /家長試玩，不記錄孩子進度/);
   assert.match(h.host.innerHTML, /\.\.\/parent\/\?child=bingpu/);
   assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
+test("subject switch reaches science true_false and choice without touching child state", async () => {
+  const h = harness({ pack: scienceSyntheticPack() }), app = await h.boot();
+  app.handle("subject", { value: "science" });
+  assert.equal(app.state.unit, 20);
+  assert.match(h.host.innerHTML, /是非題/);
+  assert.match(h.host.innerHTML, /data-value="true"/);
+  app.handle("answer-choice", { value: "false" });
+  app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("reveal");
+  assert.match(h.host.innerHTML, /O（正確）/);
+  app.handle("unit", { value: "21" });
+  assert.deepEqual([...app.state.values], [""]);
+  assert.match(h.host.innerHTML, /四選一/);
+  app.handle("answer-choice", { value: "1" });
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
+  app.handle("subject", { value: "math" });
+  assert.equal(app.state.unit, 15);
+  assert.equal(h.forbiddenTouches, 0);
+  assert.equal(h.requests.length, 1);
   app.destroy();
 });
 
@@ -323,7 +347,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
   assert.match(source("../parent/parent.js"), /study\/preview\.html\?child=\$\{child\}/);
-  assert.match(source("../parent/parent.js"), /四上數學試玩/);
+  assert.match(source("../parent/parent.js"), /四上數學／自然試玩/);
 });
 
 test("shared answer seam retains Study number and comparison equivalence rules", () => {

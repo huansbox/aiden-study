@@ -23,7 +23,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a.preview-butto
 .preview-notice { margin: 0; padding: 12px 14px; border-radius: 12px; background: #fff7d6; color: #713f12; font-weight: 800; }
 .preview-actions, .preview-filter-row, .preview-answer-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .preview-actions { margin-top: 14px; }
-.preview-filters { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.preview-filters { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin: 16px 0; }
 .preview-filters label { display: grid; gap: 6px; font-weight: 750; }
 .preview-filters select, .preview-number { width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; padding: 10px 12px; background: #fff; }
 .preview-question-nav { display: grid; grid-template-columns: minmax(96px,max-content) minmax(200px,280px) minmax(96px,max-content); justify-content: center; gap: 10px; padding: 2px 0 16px; }

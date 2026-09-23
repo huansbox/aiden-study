@@ -14,7 +14,7 @@ const answer = q => q.blanks ? q.blanks.map(b => b.answer) : q.answer;
 const flush = async () => { for (let i = 0; i < 50; i++) await Promise.resolve(); };
 async function ready(pack = syntheticPack()) {
   const st = storage(); st.map.set(cacheKey, JSON.stringify(pack));
-  const e = await boot(st); e.app.State.setStudyTerm("g4-s1"); return e;
+  const e = await boot(st); e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math"); return e;
 }
 
 test("six-question cache upgrades to fourteen activities with chapter counts, original mastery and half-batch intact", async () => {
@@ -27,7 +27,7 @@ test("six-question cache upgrades to fourteen activities with chapter counts, or
     assert.equal(e.st.getItem(progressKey), before);
     assert.equal(e.app.State.doneCount(15), done);
     assert.match(e.node("page-home").innerHTML, new RegExp(`已答對 ${done} / 7`));
-    assert.match(e.node("page-home").innerHTML, /四上數學 14 題，版本 2/);
+    assert.match(e.node("page-home").innerHTML, /四上數學 14 題、自然 0 題，版本 2/);
     assert.deepEqual([15,16,17,18,19].map(unit => e.app.activePack.questions.filter(q => q.unit === unit).length), [7,2,2,1,2]);
     e = await boot(e.st);
     e.app.startQuiz("full", 15);
@@ -137,7 +137,7 @@ test("new chapters use all-or-nothing ordered blanks and isolate reset, error po
   e.app.leaveQuiz(); e.window._resetChallenge(16);
   assert.equal(e.app.State.doneCount(16), 0); assert.equal(e.app.State.doneCount(17), 1);
   assert.deepEqual(plain(e.app.state.mastered[5]), { modes: { choice: [publicQ.id] } });
-  const other = await boot(e.st, "test-other"); other.app.State.setStudyTerm("g4-s1");
+  const other = await boot(e.st, "test-other"); other.app.State.setStudyTerm("g4-s1"); other.app.State.setSubject("math");
   assert.equal(other.app.activePack.questions.length, 14); assert.equal(other.app.State.doneCount(17), 0);
   const output = JSON.stringify(e.syncConfig.loadData()) + e.app.buildBackupText(e.app.state);
   for (const q of expandedSyntheticPack().questions) assert.ok(!output.includes(q.text));
@@ -184,7 +184,7 @@ test("background expanded download defers until home, preserves drafts and reche
   let resolve;
   const waiting = new Promise(r => { resolve = r; });
   const fetch = async url => String(url).includes("/packs/") ? waiting : new Response(JSON.stringify({ rev: 0, data: null }));
-  const e = await boot(st, "test-child", { fetch }); e.app.State.setStudyTerm("g4-s1");
+  const e = await boot(st, "test-child", { fetch }); e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");
   e.app.State.saveBatch("15", ids); e.app.startQuiz("full", 15);
   const queue = plain(e.app.quiz.queue), saved = st.getItem(cacheKey);
   e.node("sync-token-input").value = "unfinished draft"; e.node("backup-io").innerHTML = "restore draft";
@@ -239,7 +239,7 @@ test("expanded cache and all chapter progress survive HTTP/UTF8/size/quota failu
   let reply = () => new Response("", { status: 503 });
   const fetch = async url => String(url).includes("/packs/") ? reply() : new Response(JSON.stringify({ rev: 0, data: null }));
   const e = await boot(st, "test-child", { fetch }); await flush();
-  e.app.State.setStudyTerm("g4-s1"); e.app.State.addMastered(17, addedIds[3]); e.app.State.saveBatch("19", addedIds.slice(-2));
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math"); e.app.State.addMastered(17, addedIds[3]); e.app.State.saveBatch("19", addedIds.slice(-2));
   const cache = st.getItem(cacheKey), progress = st.getItem(progressKey);
   for (const response of [() => new Response("", { status: 401 }), () => new Response(new Uint8Array([0xff])), () => new Response("x".repeat(131073))]) {
     reply = response; await e.app.loadPrivatePack();
