@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "frozen_selection_content_review_pending",
+  "status": "frozen_selection_content_review_pass",
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/117",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
   "scopeEvidence": "learning-tasks/grade4-sem1-science-exam1/source/curriculum-comparison.md",

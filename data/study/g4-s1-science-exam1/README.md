@@ -1,6 +1,6 @@
 # 四上自然首批練習選題
 
-這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題已凍結；內容轉寫及獨立覆核仍須另行完成。
+這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫與獨立內容覆核已完成；正式題包整合與運行驗收仍待完成。
 
 桃子腳 115 學年度四上自然使用康軒。「地表的靜與動」和「水生生物與環境」是依 [課程比較](../../../learning-tasks/grade4-sem1-science-exam1/source/curriculum-comparison.md)採用的**暫定核心**，不是校方已公布的第一次定期評量範圍。每一題依作答所需概念比對，不沿用舊卷章序整卷放行。永安 114 原卷屬南一版，此批只選可比的水域概念。
 
@@ -20,4 +20,4 @@
 
 - 逐題來源 ID、頁碼、印刷題號、概念、方法和依賴見 [`selection-metadata.json`](selection-metadata.json)。
 - 桃子腳來源與官方答案身分見 [school manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/school-manifest.json)；永安 114 南一版身分與無官方答案現況見 [supplement manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/supplement-manifest.json)。公開索引只記有無官方答案，不存答案內容。
-- 私人轉寫、解說、待覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。只有通過獨立內容覆核後，整合者才能將它們合入既有 57 題 rev4 的新 revision。
+- 私人轉寫、解說、已覆核 mapping rows 和 QA 位於 ignored `data/private/study/g4-s1-math-u1/science-first-batch/`。15 題有校方答案者經獨立核答與校答一致；5 題無校方答案者經兩次獨立解題一致。整合者將它們合入既有 57 題 rev4 的新 revision，仍須驗證題包與運行行為。
