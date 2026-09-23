@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-23",
+  "task": "grade4-sem1-science-exam1",
+  "target": {
+    "school": "新北市立桃子腳國民中小學國小部",
+    "academic_year": 115,
+    "grade": 4,
+    "semester": 1,
+    "subject": "自然",
+    "publisher": "康軒",
+    "publisher_evidence_url": "https://www.tykjh.ntpc.edu.tw/p/426-1000-71.php",
+    "provisional_core": ["地表的靜與動", "水生生物與環境"],
+    "formal_exam_range": "not_announced",
+    "boundary_note": "舊卷標示單元1～2只能證明舊年度當時的評量範圍；不代表115同單元，也不構成113或114出版社證據。"
+  },
+  "school_source_chain": {
+    "school_home": "https://www.tykjh.ntpc.edu.tw/",
+    "school_question_bank": "https://www.tykjh.ntpc.edu.tw/p/426-1000-57.php",
+    "navigation": "學校首頁 → 桃子腳試題庫 → 國小部試題 → 113國小／114國小 → 第1學期第1次／自然資料夾",
+    "school_113_first_exam_folder": "https://drive.google.com/drive/folders/1IeFeej3HglUmNCPwd_Hcl3btfKkRSNet",
+    "school_114_first_exam_folder": "https://drive.google.com/drive/folders/17LhNrCnLdsyC9-7AeCX4TyIyzUaiyg4R",
+    "school_114_science_folder": "https://drive.google.com/drive/folders/1J9rB90WsdOmNXAnh9Rl3ZHCFfeOckFm_"
+  },
+  "papers": [
+    {
+      "paper_id": "tyk113",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "自然",
+      "face_range": "單元1～單元2",
+      "publisher": "unknown",
+      "publisher_evidence": "卷面未印出版社；本次未取得113學年度桃子腳四年級自然版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1A1RJpkvK9M8K1cD5EZWfqvPla52eOP7h/view",
+      "question_file": "source/papers/tyk-113-g4s1-science-exam1-q.pdf",
+      "question_pdf": {
+        "pages": 2,
+        "bytes": 836377,
+        "sha256": "82ECB3A6BFD5A1151607EE8D064F630593A326A25943ACE1D0C4CD6541F161A7",
+        "inspection": "兩頁原卷已渲染並逐頁人工核對；圖像、地震報告及閱讀短文清楚。"
+      },
+      "answer_source_url": "https://drive.google.com/file/d/1V1L0_Dvv_HELSecALJb_QvJeMN_pWpkY/view",
+      "answer_file": "source/papers/tyk-113-g4s1-science-exam1-a.pdf",
+      "answer_identity": "桃子腳官方113上第1次考試同資料夾，檔名標示四年級自然期中考解答；卷面與題目版一致並有紅字標答。",
+      "answer_pdf": {
+        "pages": 2,
+        "bytes": 842965,
+        "sha256": "29E159DD34BEA4A238CED54389D1B9C55E7EB27C88E3A4607CEAE2A62F932682",
+        "inspection": "兩頁已渲染核對答案卷身分；第11題第1～4小題的作答欄仍空白，其餘96格有校方標示。本次未複算或驗證標答正確性。"
+      },
+      "marked_units": 100,
+      "answer_presence": "96 present; 4 blank in official answer PDF"
+    },
+    {
+      "paper_id": "tyk114",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "自然",
+      "face_range": "單元1～單元2",
+      "publisher": "unknown",
+      "publisher_evidence": "卷面未印出版社；本次未取得114學年度桃子腳四年級自然版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1VxX6kGEJ1IgSo99S6Bbhhmge1tGfIizz/view",
+      "question_file": "source/papers/tyk-114-g4s1-science-exam1-q.pdf",
+      "question_pdf": {
+        "pages": 2,
+        "bytes": 609174,
+        "sha256": "66AECEF9BFCE7DF4DFD680C723230345F08F71F5CEE5263EAB0646310A1BD0E7",
+        "inspection": "兩頁原卷已渲染並逐頁人工核對；動物表、月亮圖、月相圖及閱讀短文清楚。"
+      },
+      "answer_source_url": null,
+      "answer_file": null,
+      "answer_identity": "missing：官方114自然資料夾公開列出題目卷，本次未見對應校方答案檔；不以題目PDF文字層的符號或AI作答當成校方答案。",
+      "answer_pdf": null,
+      "marked_units": 100,
+      "answer_presence": "100 missing"
+    }
+  ],
+  "collection_limit": "首批僅桃子腳113、114兩卷；未宣稱校方或跨版本卷庫已窮盡。",
+  "private_boundary": "題目PDF、校方答案PDF、擷取文字、渲染頁圖及含題文檢查檔僅在受ignore保護的source/papers/與source/private/；公開metadata不含題文、選項、答案、解說或原圖。"
+}
