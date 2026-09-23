@@ -96,7 +96,7 @@
     </g>`;
   }
 
-  function mount(element, { collection, onClose } = {}) {
+  function mount(element, { collection, onClose, preview = false } = {}) {
     if (!element || typeof element.addEventListener !== "function")
       throw new TypeError("workshop mount element is required");
     if (!collection || typeof collection.snapshot !== "function")
@@ -182,6 +182,7 @@
     const partById = (model, partId) =>
       allParts(model).find((part) => part.id === partId);
     const statusText = (snapshot) => {
+      if (preview) return "示範進度只留在此頁，不會保存到孩子的收藏。";
       const sync = snapshot.sync || {};
       if (sync.status === "offline")
         return sync.message || "目前離線，拼裝進度會留在這台裝置並稍後送出。";
@@ -199,12 +200,12 @@
     function renderHeader(snapshot) {
       return `<header class="brick-workshop__header">
         <div>
-          <p class="brick-workshop__eyebrow">每日拼裝收藏</p>
-          <h1>${view === "shelf" ? "我的收藏室" : "拼裝工作台"}</h1>
+          <p class="brick-workshop__eyebrow">${preview ? "火車試拼" : "每日拼裝收藏"}</p>
+          <h1>${view === "shelf" ? (preview ? "示範收藏室" : "我的收藏室") : "拼裝工作台"}</h1>
         </div>
         <div class="brick-workshop__header-actions">
           <button class="brick-icon-button" type="button" data-action="sound" aria-pressed="${audioEnabled}" aria-label="${audioEnabled ? "關閉" : "開啟"}拼裝音效">${audioEnabled ? "音效開" : "音效關"}</button>
-          <button class="brick-close" type="button" data-action="close">稍後再拼</button>
+          <button class="brick-close" type="button" data-action="close">${preview ? "結束試拼" : "稍後再拼"}</button>
         </div>
       </header>
       <nav class="brick-tabs" aria-label="拼裝收藏頁面">
