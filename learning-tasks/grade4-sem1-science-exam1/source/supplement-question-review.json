@@ -23,10 +23,13 @@
     "S2-aquatic-habitat": "水生與陸生生物的環境適應",
     "S2-plant-form": "水生植物生長型態",
     "S2-plant-adaptation": "水生植物構造與水位適應",
+    "S2-plant-structure": "水生植物部位與用途",
     "S2-animal-motion": "水生動物外形與運動",
+    "S2-animal-protection": "魚體構造與保護功能",
     "S2-animal-breathing": "水生動物呼吸構造",
     "S2-conservation": "水域汙染與環境保護",
     "F-moon": "月亮位置、月相與觀測",
+    "F-moon-angle": "拳頭估測月亮高度角的操作",
     "F-light": "光、影子與太陽位置",
     "X-regional-products": "地方特產與地理（本批自然範圍待確認）"
   },
@@ -153,9 +156,9 @@
           "section": "I",
           "item": "9",
           "answer_slots": 1,
-          "concept": "S2-plant-form",
+          "concept": "S2-plant-adaptation",
           "scope": "core-provisional",
-          "question_approach": "水生植物型態分類",
+          "question_approach": "水位變化推論",
           "type": "true-false",
           "dependency": null,
           "app_presentation": "逐敘述判斷"
@@ -531,9 +534,9 @@
           "section": "IV",
           "item": "2(1)",
           "answer_slots": 1,
-          "concept": "S2-animal-motion",
+          "concept": "S2-animal-protection",
           "scope": "core-provisional",
-          "question_approach": "動物構造與運動配對",
+          "question_approach": "魚體構造與防護功能配對",
           "type": "matching",
           "dependency": "supp-yap-113-midterm-IV-2",
           "app_presentation": "共用魚體圖與功能代號；整組呈現"
@@ -559,9 +562,9 @@
           "section": "IV",
           "item": "2(3)",
           "answer_slots": 1,
-          "concept": "S2-animal-motion",
+          "concept": "S2-animal-breathing",
           "scope": "core-provisional",
-          "question_approach": "動物構造與運動配對",
+          "question_approach": "呼吸構造比較",
           "type": "matching",
           "dependency": "supp-yap-113-midterm-IV-2",
           "app_presentation": "共用魚體圖與功能代號；整組呈現"
@@ -575,10 +578,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
+          "question_approach": "報告數值取值",
           "type": "numeric-entry",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-V-1-2",
@@ -589,10 +592,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
+          "question_approach": "報告數值取值",
           "type": "numeric-entry",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-V-1-3",
@@ -603,10 +606,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
-          "type": "numeric-entry",
+          "question_approach": "震度等級讀取（含強／弱）",
+          "type": "intensity-grade-entry",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-V-1-4",
@@ -617,10 +620,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
+          "question_approach": "報告數值取值",
           "type": "numeric-entry",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-V-1-5",
@@ -631,10 +634,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
+          "question_approach": "震度與現象對照",
           "type": "single-choice",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-V-1-6",
@@ -645,10 +648,10 @@
           "answer_slots": 1,
           "concept": "S1-quake-report",
           "scope": "needs-confirmation",
-          "question_approach": "地震報告圖表取值與推論",
+          "question_approach": "報告資訊範圍判斷",
           "type": "single-choice",
           "dependency": "supp-yap-113-midterm-V-1",
-          "app_presentation": "共用地震報告圖；保留單位與各地震度表"
+          "app_presentation": "共用地震報告圖；保留單位、各地震度表及強／弱級別"
         },
         {
           "id": "supp-yap-113-midterm-VI-1-1",
@@ -743,7 +746,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質與動物棲息",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -757,7 +760,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質與植物生長",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -771,7 +774,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質與動物棲息",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -785,7 +788,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質與人類居住",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -799,7 +802,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質與水生生物棲息",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -813,7 +816,7 @@
           "answer_slots": 1,
           "concept": "S1-surface-material",
           "scope": "core-provisional",
-          "question_approach": "特徵分類與用途判讀",
+          "question_approach": "地表物質的建材用途",
           "type": "multi-check",
           "dependency": "supp-yap-113-midterm-VI-2",
           "app_presentation": "共用指示；逐項勾選"
@@ -979,9 +982,9 @@
           "section": "VI",
           "item": "5(1)",
           "answer_slots": 1,
-          "concept": "S2-plant-form",
+          "concept": "S2-plant-structure",
           "scope": "core-provisional",
-          "question_approach": "水生植物型態分類",
+          "question_approach": "植物部位與用途判讀",
           "type": "true-false",
           "dependency": "supp-yap-113-midterm-VI-5",
           "app_presentation": "共用指示；逐項判斷"
@@ -2028,9 +2031,9 @@
           "section": "VII",
           "item": "3(1).1",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2042,9 +2045,9 @@
           "section": "VII",
           "item": "3(1).2",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2056,9 +2059,9 @@
           "section": "VII",
           "item": "3(2).1",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2070,9 +2073,9 @@
           "section": "VII",
           "item": "3(2).2",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2084,9 +2087,9 @@
           "section": "VII",
           "item": "3(2).3",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2098,9 +2101,9 @@
           "section": "VII",
           "item": "3(3).1",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2112,9 +2115,9 @@
           "section": "VII",
           "item": "3(3).2",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
@@ -2126,9 +2129,9 @@
           "section": "VII",
           "item": "3(3).3",
           "answer_slots": 1,
-          "concept": "F-moon",
+          "concept": "F-moon-angle",
           "scope": "future",
-          "question_approach": "觀測資料／月相判讀",
+          "question_approach": "拳頭量角操作與估測",
           "type": "true-false",
           "dependency": "supp-yap-114-midterm-VII-3",
           "app_presentation": "共用拳頭測角情境；逐項判斷"
