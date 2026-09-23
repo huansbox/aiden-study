@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "collected_on": "2026-09-23",
+  "batch": "其他年度／版本首批兩卷；同一校方公開來源；非完整歷屆庫",
+  "target_115": {
+    "school": "新北市立桃子腳國民中小學國小部",
+    "grade": 4,
+    "semester": 1,
+    "subject": "自然科學",
+    "textbook": "康軒",
+    "scope_status": "暫定收題核心為地表的靜與動、水生生物與環境；正式第一次定期評量範圍未公告"
+  },
+  "paper_files": [
+    {
+      "paper_id": "supp-yap-113-midterm",
+      "school": "高雄市永安國小",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 1,
+      "exam": "期中評量",
+      "exam_title_evidence": "原卷第1頁卷首",
+      "textbook": "康軒",
+      "textbook_evidence": {
+        "kind": "同校同學年度教科書選用版本明細表",
+        "url": "https://www.yap.kh.edu.tw/upload/33/101_34007/113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%90%84%E5%B9%B4%E7%B4%9A%E6%95%99%E7%A7%91%E6%9B%B8%E9%81%B8%E7%94%A8%E7%89%88%E6%9C%AC-113.5.22.24ok.pdf",
+        "locator": "第1頁：自然科學列×四年級欄",
+        "local_reference": "source/private/supp-yap-113-books.pdf",
+        "reference_sha256": "18163D20783FD39195BC173C881E6E527556ABA0756E937CC17DCBE4B2B4CC28"
+      },
+      "kind": "question",
+      "file": "source/papers/supp-yap-113-q.pdf",
+      "source_url": "https://www.yap.kh.edu.tw/upload/33/104_44061/113%E4%B8%8A%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E5%8D%B7.pdf",
+      "bytes": 523580,
+      "sha256": "155C5A5DF40511588E0D3955924B21BB4221DD735D71678CCA5718BFC010FD59",
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_size": "A3",
+      "page_review": [
+        {"pdf_page": 1, "visual": "逐頁檢視，雙欄文字、圖、題號可辨", "text_layer": "readable"},
+        {"pdf_page": 2, "visual": "逐頁檢視，地震報告圖、表與題號可辨", "text_layer": "readable"}
+      ],
+      "answer": {
+        "identity": "未找到校方官方答案原件；不可用網站或AI答案冒充",
+        "file": null,
+        "verified_review_items": 0,
+        "total_review_items": 75
+      },
+      "selection_reason": "近年卷同時涵蓋地表物質／變動／地震及水域環境／生物，供暫定概念比對；部分震度細節與跨領域題待確認。"
+    },
+    {
+      "paper_id": "supp-yap-114-midterm",
+      "school": "高雄市永安國小",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam": "期中評量",
+      "exam_title_evidence": "原卷第1頁卷首",
+      "textbook": "南一",
+      "textbook_evidence": {
+        "kind": "同校同學年度教科書選用版本明細表",
+        "url": "https://www.yap.kh.edu.tw/upload/33/101_34007/114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%90%84%E5%B9%B4%E7%B4%9A%E6%95%99%E7%A7%91%E6%9B%B8%E9%81%B8%E7%94%A8%E7%89%88%E6%9C%AC-114.4.30-5.18-5.19.pdf",
+        "locator": "第1頁：自然列×四年級欄",
+        "local_reference": "source/private/supp-yap-114-books.pdf",
+        "reference_sha256": "BC2E7E78C1CED2FC6385EC96A1CA38B18549A8229E2631157340F591A4550885"
+      },
+      "kind": "question",
+      "file": "source/papers/supp-yap-114-q.pdf",
+      "source_url": "https://www.yap.kh.edu.tw/upload/33/104_44061/114%E4%B8%8A%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F.pdf",
+      "bytes": 891163,
+      "sha256": "B3F258A3545226F6ED3F6DEC1FCB63D3D90A400B4BA212EDD261A8E4A34E8ABD",
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_size": "A3",
+      "page_review": [
+        {"pdf_page": 1, "visual": "逐頁檢視，雙欄文字、水生植物圖、題號可辨", "text_layer": "readable"},
+        {"pdf_page": 2, "visual": "逐頁檢視，高度角／月亮／影子／植物圖可辨", "text_layer": "readable"}
+      ],
+      "answer": {
+        "identity": "未找到校方官方答案原件；不可用網站或AI答案冒充",
+        "file": null,
+        "verified_review_items": 0,
+        "total_review_items": 78
+      },
+      "selection_reason": "同校新版別直接證實南一，不同於115康軒；水域題可按概念比對，月亮／光影標後續。原章序與今年不同，卷中沒有本批地表題。"
+    }
+  ],
+  "candidate_search": [
+    {
+      "candidate": "高雄市永安國小113四上自然期中",
+      "url": "https://www.yap.kh.edu.tw/upload/33/104_44061/113%E4%B8%8A%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E5%8D%B7.pdf",
+      "outcome": "採用；校方PDF與113版本表均已取得"
+    },
+    {
+      "candidate": "高雄市永安國小114四上自然期中",
+      "url": "https://www.yap.kh.edu.tw/upload/33/104_44061/114%E4%B8%8A%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F.pdf",
+      "outcome": "採用；校方PDF與114版本表均已取得"
+    },
+    {
+      "candidate": "基隆市深美國小114四上自然期中",
+      "url": "https://smps.kl.edu.tw/images/files/smps012/%E8%87%AA.pdf",
+      "outcome": "搜尋預覽顯示原卷卷首為康軒且含地表、水域；本機取得時校站TLS握手失敗，未收到PDF；停止重試，不計入已收"
+    },
+    {
+      "candidate": "基隆市深美國小108四上自然期中",
+      "url": "https://oldsmps.kl.edu.tw/books/file/35/%E8%87%AA.pdf",
+      "outcome": "原卷直接標南一且可讀；108較舊課程及月亮／水域章序差異較大，本批優先採114南一，未納逐題分類"
+    },
+    {
+      "candidate": "臺南市和順國小112四上自然第一次評量及校方答案",
+      "url": "https://www.hses.tn.edu.tw/modules/tad_uploader/index.php?cat_sn=190&cfsn=1020&fn=112-01%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A9%95%E9%87%8F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "answer_candidate_url": "https://www.hses.tn.edu.tw/modules/tad_uploader/index.php?cat_sn=190&cfsn=1019&name=112-01%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A9%95%E9%87%8F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E8%A9%95%E9%87%8F%E7%AD%94%E6%A1%88%E5%8D%B7.pdf&op=dlfile",
+      "outcome": "搜尋索引可見題目與答案，但本機公開連結回傳HTML而非PDF；未取得原件，不計入已收，也不宣稱答案覆蓋"
+    },
+    {
+      "candidate": "臺北市博愛國小112四上自然課程計畫",
+      "url": "https://www.baps.tp.edu.tw/uploads/1693370616703MdCyWoV1.pdf",
+      "outcome": "校方文件可證翰林課程含水域，但僅找到課程計畫、未找到可核對的同卷官方試題；不算收卷"
+    },
+    {
+      "candidate": "彰化縣伸仁國小109四上南一卷（Scribd）",
+      "url": "https://www.scribd.com/document/682344926/%E4%BC%B8%E4%BB%81109-1%E5%9B%9B%E4%B8%8A%E5%8D%97%E8%87%AA%E6%9C%9F%E4%B8%AD",
+      "outcome": "僅找到第三方轉載；未取原校PDF，未以轉載取代官方原件"
+    }
+  ],
+  "collection_limit": "只完成有限首批；同校兩年跨版並非全校或全出版社覆蓋。南一卷在本次考次只有水域概念，跨版地表題仍缺。",
+  "access_note": "只正常下載公開校方PDF；未登入、繞過存取限制或操作使用者Chrome。"
+}
