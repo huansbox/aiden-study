@@ -1,8 +1,10 @@
 import copy
+import base64
 import json
 from pathlib import Path
 import subprocess
 import sys
+import zlib
 
 import pytest
 
@@ -178,6 +180,56 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
     no_official[2]["items"][-2]["answerPage"] = None
     no_official[2]["items"][-2]["reviewStatus"] = private_builder.NO_OFFICIAL_ANSWER_VERIFIED
     assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
+
+
+def _synthetic_png() -> str:
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")
+    ihdr = (1).to_bytes(4, "big") * 2 + bytes([8, 6, 0, 0, 0])
+    image = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + chunk(b"IDAT", zlib.compress(bytes([0, 12, 34, 56, 255]))) + chunk(b"IEND", b"")
+    return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
+
+
+def test_grouped_choice_png_table_builder_and_production_parser(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 6
+    for suffix, material, parts, options, answer in (
+        ("image", {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic labeled picture"},
+         [{"id": "A", "text": "Synthetic A"}, {"id": "B", "text": "Synthetic B"}], ["甲", "乙"], "12"),
+        ("table", {"kind": "table", "caption": "Synthetic table", "columns": ["Code", "Kind"], "rows": [["A", "Water"], ["B", "Land"]]},
+         [{"id": "1", "text": "Synthetic statement 1"}, {"id": "2", "text": "Synthetic statement 2"}], ["O", "X"], "11"),
+    ):
+        app_id = f"science-g4s1-synthetic-group-{suffix}-v1"
+        practice = f"S2-{suffix}"
+        question = {"id": app_id, "subject": "science", "unit": 21, "type": "grouped_choice", "text": "Synthetic common context",
+                    "subtopic": "Synthetic group", "options": options, "answer": answer, "parts": parts, "material": material}
+        common = {"practiceId": practice, "originalId": suffix, "paperId": "synthetic-paper", "questionPage": 1,
+                  "answerPage": None, "concept": "Synthetic concept", "sourceAdaptation": "Synthetic group adaptation",
+                  "reviewStatus": private_builder.NO_OFFICIAL_ANSWER_VERIFIED}
+        curated["items"].append({**{key: common[key] for key in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                                 "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
+        metadata["items"].append({**common, "appId": app_id, "unit": 21, "contextPolicy": "Synthetic complete group",
+                                  "digitalAdaptation": "grouped_choice"})
+        explanations["entries"].append({"id": app_id, "text": "Synthetic group explanation。"})
+    output = tmp_path / "pack.json"
+    pack, _ = private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert len(pack["questions"]) == 8
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "8"
+    for change in (
+        lambda v: v[0]["items"][-2]["question"]["material"].update(data="https://outside.invalid/image.png"),
+        lambda v: v[0]["items"][-2]["question"]["parts"].append({"id": "A", "text": "duplicate"}),
+        lambda v: v[0]["items"][-1]["question"]["material"]["rows"][0].pop(),
+        lambda v: v[0]["items"][-1]["question"].update(answer="31"),
+    ):
+        broken = copy.deepcopy(values)
+        change(broken)
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / str(id(broken)), broken))
 
 
 @pytest.mark.parametrize(

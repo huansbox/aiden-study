@@ -9,6 +9,8 @@ written outside the selected output file.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -17,6 +19,7 @@ import re
 import subprocess
 import tempfile
 from typing import Any
+import zlib
 
 from build_explanations import merge_entries, validate_entries
 from data_helpers import validate_blanks
@@ -31,7 +34,7 @@ MAX_BYTES = 128 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}}
 ID_RE = re.compile(r"(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "true_false"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "true_false", "grouped_choice"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 EXPECTED = {
@@ -77,6 +80,71 @@ def _require_nonempty(value: Any, label: str) -> str:
     return value.strip()
 
 
+def _validate_material(material: Any, label: str) -> None:
+    if not isinstance(material, dict):
+        raise PackBuildError(f"{label} must be a material object")
+    if material.get("kind") == "table":
+        _require_exact_keys(material, {"kind", "caption", "columns", "rows"}, label)
+        _require_nonempty(material["caption"], label)
+        if len(material["caption"]) > 300:
+            raise PackBuildError(f"{label} caption is too long")
+        columns, rows = material["columns"], material["rows"]
+        if not isinstance(columns, list) or not 2 <= len(columns) <= 8 or not all(isinstance(c, str) and c.strip() and len(c) <= 80 for c in columns):
+            raise PackBuildError(f"{label} columns are invalid")
+        if not isinstance(rows, list) or not 1 <= len(rows) <= 16 or not all(
+            isinstance(row, list) and len(row) == len(columns) and all(isinstance(cell, str) and cell.strip() and len(cell) <= 240 for cell in row)
+            for row in rows
+        ):
+            raise PackBuildError(f"{label} rows are invalid")
+        return
+    if material.get("kind") != "png":
+        raise PackBuildError(f"{label} kind is unsupported")
+    _require_exact_keys(material, {"kind", "data", "alt"}, label)
+    _require_nonempty(material["alt"], label)
+    if len(material["alt"]) > 200:
+        raise PackBuildError(f"{label} alt is too long")
+    data = material["data"]
+    if not isinstance(data, str) or not re.fullmatch(r"data:image/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?", data):
+        raise PackBuildError(f"{label} PNG data URI is invalid")
+    try:
+        image = base64.b64decode(data[22:], validate=True)
+    except binascii.Error as exc:
+        raise PackBuildError(f"{label} PNG base64 is invalid") from exc
+    if not image or len(image) > 32768 or base64.b64encode(image).decode("ascii") != data[22:]:
+        raise PackBuildError(f"{label} PNG base64 is oversized or noncanonical")
+    if image[:8] != b"\x89PNG\r\n\x1a\n":
+        raise PackBuildError(f"{label} PNG signature is invalid")
+    offset, seen_header, seen_data, seen_end = 8, False, False, False
+    while offset + 12 <= len(image):
+        length = int.from_bytes(image[offset:offset + 4], "big")
+        start, end = offset + 8, offset + 8 + length
+        if end + 4 > len(image):
+            break
+        kind = image[offset + 4:start]
+        if not re.fullmatch(rb"[A-Za-z]{4}", kind):
+            break
+        actual_crc = int.from_bytes(image[end:end + 4], "big")
+        if zlib.crc32(image[offset + 4:end]) != actual_crc:
+            break
+        if not seen_header:
+            if kind != b"IHDR" or length != 13:
+                break
+            width, height = int.from_bytes(image[start:start + 4], "big"), int.from_bytes(image[start + 4:start + 8], "big")
+            if not 1 <= width <= 1600 or not 1 <= height <= 1600 or image[start + 10:start + 12] != b"\x00\x00" or image[start + 12] > 1:
+                break
+            seen_header = True
+        elif kind in {b"IHDR", b"acTL", b"fcTL", b"fdAT"}:
+            break
+        if kind == b"IDAT":
+            seen_data = True
+        if kind == b"IEND":
+            seen_end = length == 0 and seen_data and end + 4 == len(image)
+            break
+        offset = end + 4
+    if not (seen_header and seen_data and seen_end):
+        raise PackBuildError(f"{label} PNG chunks are invalid")
+
+
 def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]]:
     _require_exact_keys(
         metadata,
@@ -109,7 +177,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "math" and item["digitalAdaptation"] == "true_false"):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice"}):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -143,7 +211,9 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
 def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any]) -> dict[str, Any]:
     expected_id, adaptation = mapping["appId"], mapping["digitalAdaptation"]
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
-    expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set())
+    expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
+    if isinstance(question, dict) and "material" in question:
+        expected_fields.add("material")
     _require_exact_keys(question, expected_fields, f"question {practice_id}")
     subject = mapping["appId"].split("-", 1)[0]
     if question["id"] != expected_id or question["subject"] != subject or type(question["unit"]) is not int or question["unit"] != mapping["unit"] or question["unit"] not in SUBJECT_UNITS[subject]:
@@ -152,6 +222,10 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     _require_nonempty(question["subtopic"], f"question {practice_id} subtopic")
     if not isinstance(question["options"], list) or not isinstance(question["answer"], str):
         raise PackBuildError(f"question {practice_id} options or answer has the wrong type")
+    if "material" in question:
+        if subject != "science":
+            raise PackBuildError(f"question {practice_id} material is only allowed for science")
+        _validate_material(question["material"], f"question {practice_id} material")
 
     if adaptation == "multiple_choice":
         if question["type"] != "multiple_choice" or len(question["options"]) != 4:
@@ -163,6 +237,18 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     elif adaptation == "true_false":
         if question["type"] != "true_false" or question["options"] != [] or question["answer"] not in {"true", "false"}:
             raise PackBuildError(f"question {practice_id} must use true_false with empty options and a true/false string answer")
+    elif adaptation == "grouped_choice":
+        options, parts, answer = question["options"], question["parts"], question["answer"]
+        if question["type"] != "grouped_choice" or not 2 <= len(options) <= 4 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options):
+            raise PackBuildError(f"question {practice_id} group options are invalid")
+        if not isinstance(parts, list) or not 2 <= len(parts) <= 8 or len(answer) != len(parts) or any(digit not in "1234" or int(digit) > len(options) for digit in answer):
+            raise PackBuildError(f"question {practice_id} group parts or answer are invalid")
+        ids = set()
+        for part in parts:
+            _require_exact_keys(part, {"id", "text"}, f"question {practice_id} part")
+            if not isinstance(part["id"], str) or not re.fullmatch(r"[A-Za-z0-9-]{1,32}", part["id"]) or part["id"] in ids or not isinstance(part["text"], str) or not part["text"].strip() or len(part["text"]) > 600:
+                raise PackBuildError(f"question {practice_id} group part is invalid")
+            ids.add(part["id"])
     else:
         input_type = adaptation.split(":", 1)[1]
         if question["type"] != "fill_in_blank" or question["options"] != [] or question["answer"] != "":
@@ -337,6 +423,8 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         question.get("subject"), question.get("unit"), question.get("subtopic"),
         question.get("type"), question.get("text"), tuple(question.get("options", [])),
         question.get("answer"), blank_semantic,
+        tuple((part.get("id"), part.get("text")) for part in question.get("parts", [])) if "parts" in question else None,
+        json.dumps(question.get("material"), ensure_ascii=False, sort_keys=True) if "material" in question else None,
     )
 
 
