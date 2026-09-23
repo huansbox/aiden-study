@@ -10,9 +10,10 @@ function rootElement() {
   const listeners = new Map();
   const element = {
     _innerHTML: "",
+    renderHistory: [],
     renderCount: 0,
     get innerHTML() { return this._innerHTML; },
-    set innerHTML(value) { this._innerHTML = value; this.renderCount += 1; },
+    set innerHTML(value) { this._innerHTML = value; this.renderHistory.push(value); this.renderCount += 1; },
     lastFocused: null,
     addEventListener(name, listener) {
       if (!listeners.has(name)) listeners.set(name, new Set());
@@ -46,12 +47,17 @@ function action(dataset, extra = {}) {
   return target;
 }
 
-function harness(placed = []) {
+function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwork = false, packCount = 1 } = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
+  const imageLoads = [];
+  class TestImage {
+    set src(value) { this.url = value; imageLoads.push(this); }
+  }
+  const activeModelId = modelIds[0];
   const activeBuild = {
-    id: "car-build",
-    modelId: "car",
+    id: `${activeModelId}-build`,
+    modelId: activeModelId,
     placed: [...placed],
     completedAt: null,
   };
@@ -99,6 +105,9 @@ function harness(placed = []) {
     Date,
     Promise,
     queueMicrotask,
+    setTimeout,
+    clearTimeout,
+    Image: TestImage,
     Set,
     Math,
     addEventListener(name, listener) {
@@ -109,24 +118,29 @@ function harness(placed = []) {
   });
   context.window = context;
   context.globalThis = context;
-  const models = [
-    ["car", "小汽車", "#d94a3d"],
-    ["train", "火車", "#2779a7"],
-    ["plane", "飛機", "#e7b84b"],
-  ].map(([id, title, fill]) => ({
+  const entries = {
+    car: ["小汽車", "#d94a3d"],
+    train: ["火車", "#2779a7"],
+    plane: ["飛機", "#e7b84b"],
+    e500: ["台鐵 E500 型電力機車", "#d94a3d"],
+  };
+  const models = modelIds.map((id) => ({
     id,
-    title,
+    title: entries[id][0],
+    series: id === "e500" ? "臺灣火車系列" : undefined,
     viewBox: "0 0 300 180",
-    steps: [{
-      title: "第一包",
+    steps: Array.from({ length: packCount }, (_, pack) => ({
+      title: `第${pack + 1}包`,
       parts: [1, 2, 3].map((number) => ({
-        id: `p1-${number}`,
-        name: `零件${number}`,
-        svg: `<rect x="${number * 55}" y="70" width="50" height="30" fill="${fill}"/>`,
+        id: `p${pack + 1}-${number}`,
+        name: pack === 0 ? `零件${number}` : `零件${pack + 1}-${number}`,
+        svg: imageArtwork
+          ? `<image href="/art/${id}-p${pack + 1}-${number}.png" x="${number * 55}" y="70" width="50" height="30"/>`
+          : `<rect x="${number * 55}" y="70" width="50" height="30" fill="${entries[id][1]}"/>`,
         box: { x: number * 55, y: 70, width: 50, height: 30 },
-        z: number,
+        z: pack * 3 + number,
       })),
-    }],
+    })),
   }));
   context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
   vm.runInContext(source("brick-workshop.js"), context);
@@ -136,7 +150,7 @@ function harness(placed = []) {
   const fireWindow = (name, extra = {}) => {
     for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
   };
-  return { context, element, state, collection, placements, selectCalls, allocateCalls, mounted, notify, fireWindow };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, mounted, notify, fireWindow };
 }
 
 function placedCount(html) {
@@ -175,6 +189,98 @@ test("clicking a tray part then its target saves the fixed grant placement", asy
   ]);
   assert.equal(placedCount(h.element.innerHTML), 1);
   assert.match(h.element.innerHTML, /brick-svg-part--placed[^>]*data-part-id="p1-2"/);
+  h.mounted.destroy();
+});
+
+test("only the newly placed group animates once; saved groups stay still through save and sound redraws", async () => {
+  const h = harness(["p1-1"]);
+  const before = h.element.renderHistory.length;
+  h.element.fire("click", action({ action: "part", part: "p1-2" }));
+  h.element.fire("click", action({ action: "target", part: "p1-2" }));
+  const placementHtml = h.element.renderHistory.slice(before).find((html) =>
+    /brick-svg-part--just-placed" data-part-id="p1-2"/.test(html),
+  );
+  assert.ok(placementHtml, "the locally placed group receives the short snap animation");
+  assert.match(placementHtml, /brick-svg-part--placed" data-part-id="p1-1"/);
+  assert.doesNotMatch(placementHtml, /brick-svg-part--just-placed" data-part-id="p1-1"/);
+  await new Promise((resolve) => setTimeout(resolve, 350));
+  assert.equal(h.element.renderHistory.filter((html) => /brick-svg-part--just-placed/.test(html)).length, 1);
+  assert.doesNotMatch(h.element.innerHTML, /brick-svg-part--just-placed/);
+  h.element.fire("click", action({ action: "sound" }));
+  assert.doesNotMatch(h.element.innerHTML, /brick-svg-part--just-placed/);
+  h.mounted.destroy();
+});
+
+test("failed image art blocks placement, retry resumes without losing saved progress", async () => {
+  const h = harness(["p1-1"], { imageArtwork: true });
+  assert.match(h.element.innerHTML, /正在載入拼裝圖片/);
+  assert.equal(h.imageLoads.length, 3);
+  h.imageLoads[0].onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /正在載入這包圖片/);
+  h.imageLoads[1].onerror();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /這包圖片載入失敗/);
+  assert.match(h.element.innerHTML, /重試載入圖片/);
+  assert.equal(h.placements.length, 0);
+  assert.deepEqual(h.state.activeBuild.placed, ["p1-1"]);
+
+  h.element.fire("click", action({ action: "retry-art" }));
+  assert.equal(h.imageLoads.length, 4);
+  for (const image of h.imageLoads.slice(2)) image.onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /data-action="part" data-part="p1-2"/);
+  h.element.fire("click", action({ action: "part", part: "p1-2" }));
+  h.element.fire("click", action({ action: "target", part: "p1-2" }));
+  await Promise.resolve();
+  assert.equal(h.placements.length, 1);
+  assert.deepEqual(h.state.activeBuild.placed, ["p1-1", "p1-2"]);
+  h.mounted.destroy();
+});
+
+test("a pending next pack keeps the completed pack and its one-time placement animation visible", async () => {
+  const h = harness(["p1-1", "p1-2"], { imageArtwork: true, packCount: 2 });
+  h.state.grants.push({ id: "grant-2", date: "2026-09-22", kind: "all", buildId: h.state.activeBuild.id, packIndex: 1 });
+  for (const image of h.imageLoads) image.onload();
+  await Promise.resolve();
+  h.element.fire("click", action({ action: "part", part: "p1-3" }));
+  h.element.fire("click", action({ action: "target", part: "p1-3" }));
+  const afterPlacement = h.element.innerHTML;
+  assert.match(afterPlacement, /brick-svg-part--just-placed" data-part-id="p1-3"/);
+  assert.match(afterPlacement, /正在載入這包圖片/);
+  assert.doesNotMatch(afterPlacement, /brick-art-gate/);
+  assert.equal(h.imageLoads.length, 6);
+  for (const image of h.imageLoads.slice(3)) image.onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /brick-svg-part--just-placed" data-part-id="p1-3"/, "image callbacks wait for the snap animation");
+  await new Promise((resolve) => setTimeout(resolve, 350));
+  assert.match(h.element.innerHTML, /data-action="part" data-part="p2-1"/);
+  assert.doesNotMatch(h.element.innerHTML, /brick-svg-part--just-placed/);
+  h.mounted.destroy();
+});
+
+test("completed work and the collection room show image failure and retry without changing ownership", async () => {
+  const h = harness(["p1-1", "p1-2", "p1-3"], { imageArtwork: true });
+  h.state.activeBuild.completedAt = "2026-09-22T12:00:00.000Z";
+  h.mounted.render();
+  h.imageLoads[0].onload();
+  h.imageLoads[1].onload();
+  h.imageLoads[2].onerror();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /拼裝圖片載入失敗/);
+  assert.match(h.element.innerHTML, /data-action="retry-art"/);
+  h.element.fire("click", action({ action: "view", view: "shelf" }));
+  assert.match(h.element.innerHTML, /拼裝圖片載入失敗/);
+  assert.match(h.element.innerHTML, /已收藏/);
+  assert.match(h.element.innerHTML, /data-action="retry-art"/);
+  h.element.fire("click", action({ action: "retry-art" }));
+  const retry = h.imageLoads.filter((image) => image.url === "/art/car-p1-3.png").at(-1);
+  assert.notEqual(retry, h.imageLoads[2]);
+  retry.onload();
+  await Promise.resolve();
+  assert.doesNotMatch(h.element.innerHTML, /拼裝圖片載入失敗/);
+  assert.match(h.element.innerHTML, /已收藏/);
+  assert.deepEqual(h.state.activeBuild.placed, ["p1-1", "p1-2", "p1-3"]);
   h.mounted.destroy();
 });
 
@@ -258,8 +364,31 @@ test("model picker disables owned models and routes a completed series back to t
     completedAt: "2026-09-22T12:00:00.000Z",
   }));
   h.mounted.render();
-  assert.match(h.element.innerHTML, /三件作品都收集完成了/);
+  assert.match(h.element.innerHTML, /這個系列目前的作品都收集完成了/);
   assert.match(h.element.innerHTML, /data-view="shelf"/);
+  h.mounted.destroy();
+});
+
+test("E500 is the only selectable series model and spare packs stay in the box after completion", async () => {
+  const h = harness([], { modelIds: ["e500"] });
+  h.state.activeBuild = null;
+  h.state.builds = [];
+  h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
+  h.mounted.render();
+  assert.match(h.element.innerHTML, /臺灣火車系列/);
+  assert.match(h.element.innerHTML, /data-model="e500"/);
+  assert.doesNotMatch(h.element.innerHTML, /data-model="(?:car|train|plane)"/);
+  h.element.fire("click", action({ action: "start-model", model: "e500" }));
+  await Promise.resolve();
+  assert.deepEqual(h.selectCalls, ["e500"]);
+
+  h.state.activeBuild = { id: "e500", modelId: "e500", placed: ["p1-1", "p1-2", "p1-3"], completedAt: "2026-09-22T12:00:00.000Z" };
+  h.state.builds = [h.state.activeBuild];
+  h.mounted.render();
+  assert.match(h.element.innerHTML, /臺灣火車系列目前的作品都收集完成了/);
+  assert.match(h.element.innerHTML, /剩下的 1 包會留在零件盒/);
+  assert.doesNotMatch(h.element.innerHTML, /data-model="e500"/);
+  assert.match(h.element.innerHTML, /放上展示架/);
   h.mounted.destroy();
 });
 

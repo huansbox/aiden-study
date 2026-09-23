@@ -8,7 +8,7 @@ if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin || '')) throw Error('Only an isol
 const control=await fetch(origin+'/test/controls');
 if (!(await control.text()).includes('隔離測試控制')) throw Error('Not the isolated family test server');
 await fetch(origin+'/test/study-preview?questions=18');
-const browser=await connectBrowser(endpoint);
+const browser=await connectBrowser(endpoint,origin);
 const checks=[];
 let second, secondContext;
 const passed=(label)=>{checks.push(label);console.log('PASS '+label);};
@@ -80,10 +80,24 @@ try {
   assert.equal((await state()).grants.length,2);
   assert.equal((await state()).daily.targets.find(t=>t.entryId==='spelling').progress,1);
   passed('real spelling full round grants second pack');
+  await browser.send('Network.enable');
+  await browser.send('Network.setCacheDisabled',{cacheDisabled:true});
+  await browser.send('Network.setBlockedURLs',{urls:['*e500-v1/assets/p1-1.png*']});
   await browser.navigate(origin+'/?child=aiden&view=collection');
-  await browser.waitFor('document.querySelector("[data-action=start-model][data-model=car]")');
-  await browser.click('[data-action="start-model"][data-model="car"]',true);
+  await browser.waitFor('document.querySelector("[data-action=start-model][data-model=e500]")');
+  assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.dataset.model)'),['e500']);
+  assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/臺灣火車系列/);
+  await browser.click('[data-action="start-model"][data-model="e500"]',true);
+  await browser.waitFor('document.querySelector("[data-action=retry-art]")');
+  assert.equal(await browser.evaluate('document.querySelectorAll("[data-action=part]").length'),0,'missing image must not offer invisible placement');
+  assert.equal((await state()).activeBuild.placed.length,0);
+  await browser.send('Network.setBlockedURLs',{urls:[]});
+  await browser.click('[data-action="retry-art"]',true);
   await browser.waitFor('document.querySelector("[data-action=part]")');
+  const decoded=await browser.evaluate(`Promise.all(KidsBrickE500.steps.flatMap(step=>step.parts).map(part=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img.naturalWidth>0);img.onerror=()=>reject(Error(part.id));img.src=part.svg.match(/href="([^"]+)"/)[1];})))`);
+  assert.equal(decoded.filter(Boolean).length,42,'all actual local art assets decode');
+  await browser.send('Network.setCacheDisabled',{cacheDisabled:false});
+  passed('42 cropped E500 images decode; missing artwork pauses placement and retry preserves progress');
   await browser.click('[data-action="part"][data-part="p1-1"]',true);
   await browser.click('[data-action="target"][data-part="p1-1"]',true);
   await browser.waitFor('KidsCollection.create("aiden").snapshot().activeBuild.placed.length===1');
@@ -137,12 +151,19 @@ try {
   // Finish the two already-open packs before the UI offers the remaining packs.
   let placed=(await state()).activeBuild.placed.length;
   while(placed<42) {
+    // Wait for the one-piece placement animation before choosing the next UI
+    // state: the persisted count can advance before a new pack button appears.
+    await browser.waitFor('!document.querySelector(".brick-svg-part--just-placed")');
     if(await browser.evaluate('Boolean(document.querySelector("[data-action=allocate]"))')) await browser.click('[data-action="allocate"]');
     await browser.waitFor('document.querySelector(".brick-part:not(:disabled)")');
     const id=await browser.evaluate('document.querySelector(".brick-part:not(:disabled)").dataset.part');
-    await browser.click('[data-action="part"][data-part="'+id+'"]');
-    await browser.waitFor('document.querySelector(\'button[data-action="target"][data-part="'+id+'"]\')');
-    await browser.click('button[data-action="target"][data-part="'+id+'"]');
+    if([8,20,32,40].includes(placed)) {
+      await browser.drag('[data-action="part"][data-part="'+id+'"]','[data-action="target"][data-part="'+id+'"]',{touch:true});
+    } else {
+      await browser.click('[data-action="part"][data-part="'+id+'"]');
+      await browser.waitFor('document.querySelector(\'button[data-action="target"][data-part="'+id+'"]\')');
+      await browser.click('button[data-action="target"][data-part="'+id+'"]');
+    }
     await browser.waitFor('KidsCollection.create("aiden").snapshot().activeBuild.placed.length>'+placed);
     placed=(await state()).activeBuild.placed.length;
     if(placed===21) await browser.screenshot('.scratch/collection-e2e/half-built.png',{fullPage:true});
@@ -151,9 +172,22 @@ try {
   assert.ok((await state()).activeBuild.completedAt);
   await browser.waitFor('document.querySelector("[data-action=display]")');
   await browser.click('[data-action="display"][data-displayed="true"]');
-  await browser.waitFor('KidsCollection.create("aiden").snapshot().displayedBuildIds.includes("car")');
+  await browser.waitFor('KidsCollection.create("aiden").snapshot().displayedBuildIds.includes("e500")');
   await browser.screenshot('.scratch/collection-e2e/collection.png',{fullPage:true});
-  passed('12 synthetic past-day packs plus 2 real earned packs produce a permanent 42-part displayed car');
+  passed('Taiwan series offers E500; 12 synthetic past-day packs plus 2 real earned packs produce a permanent 42-group displayed locomotive');
+  await second.send('Network.enable');
+  await second.send('Network.setCacheDisabled',{cacheDisabled:true});
+  await second.send('Network.setBlockedURLs',{urls:['*e500-v1/assets/p14-3.png*']});
+  await second.navigate(origin+'/?child=aiden&view=collection');
+  await second.waitFor('document.querySelector("[data-action=retry-art]")');
+  assert.equal(await second.evaluate('KidsCollection.create("aiden").snapshot().activeBuild.placed.length'),42,'completed model survives unavailable artwork');
+  await second.click('[data-action="view"][data-view="shelf"]');
+  await second.waitFor('document.querySelector("[data-action=retry-art]")');
+  await second.send('Network.setBlockedURLs',{urls:[]});
+  await second.click('[data-action="retry-art"]');
+  await second.waitFor('!document.querySelector("[data-action=retry-art]") && document.querySelector(".brick-shelf-item .brick-thumbnail")');
+  assert.deepEqual(await second.evaluate('KidsCollection.create("aiden").snapshot().displayedBuildIds'),['e500']);
+  passed('new device reports unavailable completed-collection artwork and retries without changing ownership or display');
   await fetch(origin+'/test/collection-fixture?child=aiden&days=13');
   await browser.navigate(origin+'/?child=aiden&view=collection');
   await browser.waitFor('KidsCollection.create("aiden").snapshot().grants.length===15');
@@ -165,7 +199,7 @@ try {
   const afterReset=await state();
   assert.deepEqual(afterReset.grants,beforeReset.grants);
   assert.deepEqual(afterReset.builds,beforeReset.builds);
-  assert.deepEqual(afterReset.displayedBuildIds,['car']);
+  assert.deepEqual(afterReset.displayedBuildIds,['e500']);
   const rejected=await browser.evaluate(`KidsFamily.request('/v1/collection/aiden/record',{method:'POST',body:JSON.stringify({commandId:'late-before-reset',generation:0,event:{entryId:'study:math',answered:true,occurredAt:new Date().toISOString()}})}).then(()=>0,e=>e.status)`);
   assert.equal(rejected,409);
   passed('real generation reset preserves unbuilt packs, completed models and display; rejects delayed old events');
@@ -181,20 +215,47 @@ try {
   assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/里程碑/);
   passed('unified results retains learning records and all 8 milestones');
   await browser.click('[data-results-tab="collection"]');
-  await browser.waitFor('document.querySelector("[data-action=choose-next]")');
-  await browser.click('[data-action="choose-next"]');
-  assert.equal(await browser.evaluate('document.querySelector("[data-action=start-model][data-model=car]").disabled'),true);
-  await browser.click('[data-action="start-model"][data-model="train"]');
-  await browser.waitFor('KidsCollection.create("aiden").snapshot().activeBuild?.modelId==="train"');
-  assert.deepEqual((await state()).displayedBuildIds,['car']);
-  assert.equal((await state()).grants.filter(g=>g.buildId==='train').length,1);
-  passed('finished car cannot be selected again; next train receives the saved pack and display stays intact');
+  await browser.waitFor('document.querySelector(".brick-complete")');
+  assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-action=choose-next]"))'),false);
+  await browser.click('[data-action="view"][data-view="shelf"]');
+  await browser.waitFor('document.querySelector(".brick-catalog")');
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-catalog-card").length'),1);
+  assert.match(await browser.evaluate('document.querySelector(".brick-catalog").innerText'),/臺灣火車系列/);
+  assert.deepEqual((await state()).displayedBuildIds,['e500']);
+  assert.equal((await state()).grants.filter(g=>g.buildId==null).length,1);
+  await browser.screenshot('.scratch/collection-e2e/e500-shelf.png',{fullPage:true});
+  passed('completed E500 remains on shelf; no legacy model is offered and extra packs stay unassigned');
+  await browser.send('Emulation.setDeviceMetricsOverride',{width:768,height:1024,deviceScaleFactor:1,mobile:true});
+  assert.equal(await browser.evaluate('document.documentElement.scrollWidth<=innerWidth'),true,'portrait tablet has no horizontal overflow');
+  await browser.screenshot('.scratch/collection-e2e/e500-portrait.png',{fullPage:true});
+  await browser.send('Emulation.setDeviceMetricsOverride',{width:1024,height:768,deviceScaleFactor:1,mobile:true});
+  passed('completed collection remains readable without horizontal overflow on portrait tablet');
   await verifyUnavailableActivity();
+  await verifyLegacyBuild();
 } finally {
   await writeFile('.scratch/collection-e2e/result.json',JSON.stringify({checks,physicalIPad:false,at:new Date().toISOString()},null,2));
   second?.close();
   if(secondContext) await browser.send('Target.disposeBrowserContext',{browserContextId:secondContext},false);
   browser.close();
+}
+
+async function verifyLegacyBuild() {
+  // Simulate an older client selecting its original catalog entry in isolated storage.
+  // New clients must resume that exact artwork and part identity, not turn it into E500.
+  await browser.navigate(origin+'/?child=bingpu&view=collection');
+  await browser.waitFor('KidsCollection.create("bingpu").snapshot().sync.status==="ready"');
+  await browser.evaluate('KidsCollection.create("bingpu").selectModel("train")');
+  await browser.waitFor('document.querySelector(".brick-stage-card h2")?.textContent==="藍綠蒸汽火車"');
+  await browser.click('[data-action="part"][data-part="p1-1"]');
+  await browser.click('button[data-action="target"][data-part="p1-1"]');
+  await browser.waitFor('KidsCollection.create("bingpu").snapshot().activeBuild.placed.length===1 && KidsCollection.create("bingpu").snapshot().sync.pending===0');
+  await browser.navigate(origin+'/?child=bingpu&view=collection');
+  await browser.waitFor('document.querySelectorAll(".brick-svg-part--placed").length===1');
+  const legacy=await browser.evaluate('KidsCollection.create("bingpu").snapshot().activeBuild');
+  assert.equal(legacy.modelId,'train');
+  assert.deepEqual(legacy.placed,['p1-1']);
+  assert.equal(await browser.evaluate('document.querySelector(".brick-stage-card h2").textContent'),'藍綠蒸汽火車');
+  passed('older-client train selection resumes its original identity and saved group; no E500 relabeling');
 }
 
 async function verifyUnavailableActivity() {

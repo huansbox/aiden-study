@@ -3,22 +3,24 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import vm from "node:vm";
 
-const source = readFileSync(
-  new URL("../docs/shared/brick-models.js", import.meta.url),
-  "utf8",
-);
 const context = vm.createContext({});
-vm.runInContext(source, context);
+for (const name of ["brick-e500.js", "brick-models.js"]) {
+  const source = readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
+  vm.runInContext(source, context);
+}
 const catalog = context.KidsBrickModels;
 
-test("catalog publishes three complete transport models with stable pack part ids", () => {
+test("catalog offers E500 and preserves legacy model identities", () => {
   assert.equal(catalog.version, 1);
   assert.deepEqual(
     Array.from(catalog.models, (model) => model.id),
-    ["car", "train", "plane"],
+    ["e500"],
   );
+  assert.equal(catalog.models[0].series, "臺灣火車系列");
+  assert.deepEqual(Array.from(catalog.legacyModels, (model) => model.id), ["car", "train", "plane"]);
+  assert.notEqual(catalog.get("train"), catalog.get("e500"));
 
-  for (const model of catalog.models) {
+  for (const model of [...catalog.models, ...catalog.legacyModels]) {
     assert.equal(model.viewBox, "0 0 800 500");
     assert.equal(model.steps.length, 14, `${model.id} pack count`);
     assert.equal(
@@ -41,13 +43,14 @@ test("catalog publishes three complete transport models with stable pack part id
   assert.equal(catalog.get("missing"), null);
 });
 
-test("all 126 parts expose touch-friendly target geometry and vector artwork", () => {
-  const allParts = catalog.models.flatMap((model) =>
+test("all published and legacy parts expose touch-friendly target geometry and independent artwork", () => {
+  const allModels = [...catalog.models, ...catalog.legacyModels];
+  const allParts = allModels.flatMap((model) =>
     model.steps.flatMap((step) => step.parts),
   );
-  assert.equal(allParts.length, 126);
+  assert.equal(allParts.length, 168);
 
-  for (const model of catalog.models) {
+  for (const model of allModels) {
     const names = new Set();
     for (const step of model.steps) {
       assert.ok(step.title.trim(), `${model.id} has an untitled pack`);
@@ -57,11 +60,9 @@ test("all 126 parts expose touch-friendly target geometry and vector artwork", (
         assert.ok(!names.has(part.name), `${model.id} duplicate name ${part.name}`);
         names.add(part.name);
         assert.match(part.svg, /<(?:g|path|circle|ellipse|rect)\b/);
-        assert.ok(
-          !/<(?:image|svg)\b/i.test(part.svg),
-          `${model.id}/${part.id} embeds a whole image`,
-        );
-        assert.ok(Number.isInteger(part.z), `${model.id}/${part.id}.z`);
+        if (model.id === "e500") assert.match(part.svg, /<image\b/);
+        else assert.doesNotMatch(part.svg, /<(?:image|svg)\b/i, `${model.id}/${part.id} legacy vector`);
+        assert.ok(Number.isFinite(part.z), `${model.id}/${part.id}.z`);
         for (const key of ["x", "y", "width", "height"])
           assert.ok(Number.isFinite(part.box[key]), `${model.id}/${part.id}.${key}`);
         assert.ok(part.box.width >= 44, `${model.id}/${part.id} target too narrow`);
@@ -83,8 +84,8 @@ test("all 126 parts expose touch-friendly target geometry and vector artwork", (
   }
 });
 
-test("each model combines silhouettes, round mechanisms, and layered detail", () => {
-  for (const model of catalog.models) {
+test("legacy models retain their layered artwork", () => {
+  for (const model of catalog.legacyModels) {
     const artwork = model.steps
       .flatMap((step) => step.parts)
       .map((part) => part.svg);

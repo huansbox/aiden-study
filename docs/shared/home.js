@@ -77,7 +77,7 @@
       const label = entry?.title || goal.label || names[goal.entryId] || goal.entryId;
       const content = `<span>${esc(label)}</span><strong>${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${goal.metric === "answered" ? "題" : "輪"}${goal.done ? " · 完成" : ""}</strong>`;
       return entry ? `<a class="daily-goal ${goal.done ? "done" : ""}" href="${esc(F.entryHref(entry, child.id))}">${content}</a>` : `<div class="daily-goal unavailable">${content}<small>活動未開放，請家長調整每日目標。</small></div>`;
-    }).join("")}</div>${build ? `<p class="daily-build">${build.completedAt ? "已完成" : "正在拼"}：${esc(title || "交通工具")} · 已放上 ${build.placed.length} / 42 個零件</p>` : ""}${state.sync?.status === "offline" || state.sync?.status === "error" ? `<p class="family-connection-notice" role="status">${esc(state.sync.message || "目前離線，已保存的成果會在連線後同步。")}</p>` : ""}</section>`;
+    }).join("")}</div>${build ? `<p class="daily-build">${build.completedAt ? "已完成" : "正在拼"}：${esc(title || "積木作品")} · 已放上 ${build.placed.length} / 42 組部件</p>` : ""}${state.sync?.status === "offline" || state.sync?.status === "error" ? `<p class="family-connection-notice" role="status">${esc(state.sync.message || "目前離線，已保存的成果會在連線後同步。")}</p>` : ""}</section>`;
   }
   function results() {
     return `<div class="family-row"><button data-view="home">← 首頁</button><h1>我的成果</h1></div><nav class="results-tabs" aria-label="成果分類"><button data-results-tab="collection" aria-pressed="${resultsTab === "collection"}">我的收藏</button><button data-results-tab="records" aria-pressed="${resultsTab === "records"}">學習紀錄</button></nav>${resultsTab === "records" ? stats() : '<div id="collection-workshop"></div>'}`;

@@ -27,19 +27,22 @@
       )
       .sort((left, right) => (left.z || 0) - (right.z || 0));
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
+  const imageSources = (part) =>
+    [...(part.svg || "").matchAll(/<image\b[^>]*\b(?:href|xlink:href)\s*=\s*["']([^"']+)["']/gi)]
+      .map((match) => match[1]);
   const safeError = (error, fallback) =>
     typeof error?.message === "string" && error.message.trim()
       ? error.message.trim()
       : fallback;
 
-  function modelSvg(model, placedIds, { targets = [], complete = false } = {}) {
+  function modelSvg(model, placedIds, { targets = [], complete = false, animatedPartId = null } = {}) {
     if (!model) return "";
     const placed = asSet(placedIds);
     const targetIds = asSet(targets);
     return allParts(model)
       .map((part) => {
         if (complete || placed.has(part.id))
-          return `<g class="brick-svg-part brick-svg-part--placed" data-part-id="${escapeHtml(part.id)}">${part.svg}</g>`;
+          return `<g class="brick-svg-part brick-svg-part--placed${part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}" data-part-id="${escapeHtml(part.id)}">${part.svg}</g>`;
         if (targetIds.has(part.id))
           return `<g class="brick-svg-part brick-svg-part--target" role="button" tabindex="0" aria-label="放置${escapeHtml(part.name)}" data-action="target" data-part="${escapeHtml(part.id)}">${part.svg}</g>`;
         return "";
@@ -49,7 +52,7 @@
 
   function thumbnail(
     modelId,
-    { placed = [], complete = false, ghosts = true, className = "" } = {},
+    { placed = [], complete = false, ghosts = true, className = "", animatedPartId = null } = {},
   ) {
     const model = modelFrom(modelId);
     if (!model)
@@ -59,7 +62,7 @@
       .map((part) => {
         const visible = complete || placedIds.has(part.id);
         if (!visible && !ghosts) return "";
-        return `<g class="${visible ? "brick-thumbnail__placed" : "brick-thumbnail__ghost"}">${part.svg}</g>`;
+        return `<g class="${visible ? "brick-thumbnail__placed" : "brick-thumbnail__ghost"}${visible && part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}">${part.svg}</g>`;
       })
       .join("");
     return `<svg class="brick-thumbnail ${escapeHtml(className)}" viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}">${parts}</svg>`;
@@ -85,8 +88,49 @@
     let renderDeferred = false;
     let suppressClickUntil = 0;
     let audioEnabled = true;
+    let placementAnimationTimer = null;
     const optimisticPlaced = new Set();
+    const imageLoads = new Map();
     const listeners = [];
+
+    function imageState(parts) {
+      let pending = false;
+      let failed = false;
+      for (const source of new Set(parts.flatMap(imageSources))) {
+        let load = imageLoads.get(source);
+        if (!load) {
+          load = { status: "pending" };
+          imageLoads.set(source, load);
+          if (typeof global.Image === "function") {
+            const image = new global.Image();
+            image.onload = () => {
+              if (imageLoads.get(source) !== load || disposed) return;
+              load.status = "ready";
+              queueMicrotask(() => render({ deferForPlacement: true }));
+            };
+            image.onerror = () => {
+              if (imageLoads.get(source) !== load || disposed) return;
+              load.status = "error";
+              queueMicrotask(() => render({ deferForPlacement: true }));
+            };
+            image.src = source;
+            if (image.complete && image.naturalWidth > 0) load.status = "ready";
+          } else load.status = "error";
+        }
+        if (load.status === "pending") pending = true;
+        if (load.status === "error") failed = true;
+      }
+      return failed ? "error" : pending ? "pending" : "ready";
+    }
+
+    function artworkNotice(models) {
+      const status = imageState(models.flatMap(allParts));
+      if (status === "ready") return "";
+      return `<div class="brick-art-notice" role="${status === "error" ? "alert" : "status"}">
+        <span>${status === "error" ? "拼裝圖片載入失敗，作品與進度仍會保留。" : "正在載入拼裝圖片…"}</span>
+        ${status === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}
+      </div>`;
+    }
 
     const listen = (target, name, handler, options) => {
       target?.addEventListener?.(name, handler, options);
@@ -150,19 +194,20 @@
       );
       if (snapshot.activeBuild?.completedAt)
         ownedModelIds.add(snapshot.activeBuild.modelId);
+      const notice = artworkNotice(models);
       if (models.length && models.every((model) => ownedModelIds.has(model.id)))
-        return `<section class="brick-series-complete">
+        return `${notice}<section class="brick-series-complete">
           <div class="brick-series-complete__models">${models
             .map((model) => thumbnail(model.id, { complete: true, ghosts: false }))
             .join("")}</div>
-          <p class="brick-kicker">交通工具系列</p>
-          <h2>三件作品都收集完成了</h2>
-          <p>小汽車、火車和飛機都在你的收藏室裡。</p>
+          <p class="brick-kicker">${escapeHtml(models[0].series || "拼裝系列")}</p>
+          <h2>這個系列目前的作品都收集完成了</h2>
+          <p>作品已收進收藏室。${unassigned ? `剩下的 ${unassigned} 包` : "之後拿到的拼裝包"}會留在零件盒，等有新作品再使用。</p>
           <button type="button" data-action="view" data-view="shelf">回收藏室看看</button>
         </section>`;
-      return `<section class="brick-picker" aria-labelledby="brick-picker-title">
+      return `${notice}<section class="brick-picker" aria-labelledby="brick-picker-title">
         <div class="brick-picker__intro">
-          <p class="brick-kicker">零件盒有 ${unassigned} 包</p>
+          <p class="brick-kicker">${escapeHtml(models[0]?.series || "拼裝系列")} · 零件盒有 ${unassigned} 包</p>
           <h2 id="brick-picker-title">這次想拼哪一台？</h2>
           <p>選一台喜歡的，今天就開始拼。每完成一包，作品會再多一點。</p>
         </div>
@@ -172,7 +217,7 @@
               const owned = ownedModelIds.has(model.id);
               return `<button class="brick-model-card${owned ? " is-owned" : ""}" type="button" data-action="start-model" data-model="${escapeHtml(model.id)}" ${busy || owned ? "disabled" : ""}>
                 ${thumbnail(model.id, { complete: true, ghosts: false })}
-                <span><strong>${escapeHtml(model.title)}</strong><small>14 包 · 42 個零件</small></span>
+                <span><strong>${escapeHtml(model.title)}</strong><small>${model.steps.length} 包 · ${allParts(model).length} 組部件</small></span>
                 <b>${owned ? "已收藏" : busy === `model:${model.id}` ? "正在準備…" : "選這台"}</b>
               </button>`;
             })
@@ -192,13 +237,18 @@
       </section>`;
     }
 
-    function renderWorkbench(snapshot) {
+    function renderWorkbench(snapshot, animatedPartId = null) {
       const build = snapshot.activeBuild;
       const unassigned = (snapshot.grants || []).filter(
         (grant) => grant.buildId == null,
       );
-      if (!build || choosingNext)
-        return unassigned.length ? renderPicker(snapshot) : renderEmpty(snapshot);
+      if (!build || choosingNext) {
+        const models = global.KidsBrickModels?.models || [];
+        const collected = models.length && models.every((model) =>
+          (snapshot.builds || []).some((entry) => entry.modelId === model.id && entry.completedAt),
+        );
+        return unassigned.length || collected ? renderPicker(snapshot) : renderEmpty(snapshot);
+      }
       const model = getModel(build.modelId);
       if (!model)
         return '<section class="brick-error"><h2>這件作品還沒準備好</h2><p>請重新整理頁面，或稍後再回來看看。</p></section>';
@@ -219,6 +269,8 @@
         : null;
       const currentParts = currentStep?.parts || [];
       const remaining = currentParts.filter((part) => !placed.has(part.id));
+      const placedArtwork = imageState(allParts(model).filter((part) => placed.has(part.id)));
+      const trayArtwork = imageState(currentParts);
       const total = allParts(model).length;
       const locallyComplete = placed.size >= total;
       const completed = Boolean(build.completedAt);
@@ -232,12 +284,21 @@
         (entry) => !ownedModelIds.has(entry.id),
       );
 
+      if (placedArtwork !== "ready")
+        return `<section class="brick-art-gate" role="${placedArtwork === "error" ? "alert" : "status"}">
+          <p class="brick-kicker">${escapeHtml(model.title)} · ${placed.size} / ${total} 組部件</p>
+          <h2>${placedArtwork === "error" ? "拼裝圖片載入失敗" : "正在載入拼裝圖片…"}</h2>
+          <p>${placedArtwork === "error" ? "半成品圖片還沒顯示，先不要拼。請重試，已放好的部件會保留。" : "半成品圖片載好後就能繼續拼，已放好的部件會保留。"}</p>
+          ${placedArtwork === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}
+        </section>`;
+
       if (completed)
         return `<section class="brick-complete">
           <div class="brick-complete__shine" aria-hidden="true"></div>
           ${thumbnail(model.id, { complete: true, ghosts: false, className: "brick-complete__model" })}
           <p class="brick-kicker">作品完成</p>
           <h2>${escapeHtml(model.title)}已經可以上展示架了</h2>
+          ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(model.series || "這個系列")}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
           <div class="brick-complete__actions">
             <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true">放上展示架</button>
             ${unassigned.length && hasAnotherModel ? '<button type="button" class="secondary" data-action="choose-next">選下一件作品</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
@@ -246,7 +307,7 @@
 
       if (locallyComplete)
         return `<section class="brick-complete brick-complete--saving">
-          ${thumbnail(model.id, { complete: true, ghosts: false, className: "brick-complete__model" })}
+          ${thumbnail(model.id, { complete: true, ghosts: false, className: "brick-complete__model", animatedPartId })}
           <p class="brick-kicker">最後一片已放好</p>
           <h2>正在保存完成的${escapeHtml(model.title)}</h2>
           <p>可以稍後再回來，作品不會不見。</p>
@@ -257,20 +318,22 @@
         <div class="brick-stage-card">
           <div class="brick-stage-card__top">
             <div><p class="brick-kicker">正在拼</p><h2>${escapeHtml(model.title)}</h2></div>
-            <strong>${placed.size}<small> / ${total} 零件</small></strong>
+            <strong>${placed.size}<small> / ${total} 組部件</small></strong>
           </div>
           <div class="brick-progress" role="progressbar" aria-label="${escapeHtml(model.title)}拼裝進度" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${placed.size}"><span style="width:${Math.min(100, (placed.size / total) * 100)}%"></span></div>
           <div class="brick-stage" data-stage>
             <svg viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}半成品">
-              ${modelSvg(model, placed, { targets: remaining.map((part) => part.id) })}
+              ${modelSvg(model, placed, { targets: trayArtwork === "ready" ? remaining.map((part) => part.id) : [], animatedPartId })}
             </svg>
-            ${selectedPart ? `<button class="brick-stage__hint brick-stage__place" type="button" data-action="target" data-part="${escapeHtml(selectedPart)}">放到亮起位置：${escapeHtml(partById(model, selectedPart)?.name || "零件")}</button>` : '<p class="brick-stage__hint">可以點零件再點位置，也可以直接拖過去</p>'}
+            ${trayArtwork === "ready" && selectedPart ? `<button class="brick-stage__hint brick-stage__place" type="button" data-action="target" data-part="${escapeHtml(selectedPart)}">放到亮起位置：${escapeHtml(partById(model, selectedPart)?.name || "零件")}</button>` : trayArtwork === "ready" ? '<p class="brick-stage__hint">可以點零件再點位置，也可以直接拖過去</p>' : ""}
           </div>
         </div>
-        <aside class="brick-tray" aria-label="本包零件">
+        <aside class="brick-tray" aria-label="本包部件">
           ${
             currentStep
-              ? `<div class="brick-tray__heading"><div><p class="brick-kicker">第 ${currentGrant.packIndex + 1} 包</p><h3>${escapeHtml(currentStep.title || "今天的零件")}</h3></div><span>${3 - remaining.length} / 3</span></div>
+              ? trayArtwork !== "ready"
+                ? `<div class="brick-art-tray" role="${trayArtwork === "error" ? "alert" : "status"}"><p class="brick-kicker">第 ${currentGrant.packIndex + 1} 包</p><h3>${trayArtwork === "error" ? "這包圖片載入失敗" : "正在載入這包圖片…"}</h3><p>已拼好的半成品會留在工作台。</p>${trayArtwork === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}</div>`
+                : `<div class="brick-tray__heading"><div><p class="brick-kicker">第 ${currentGrant.packIndex + 1} 包</p><h3>${escapeHtml(currentStep.title || "今天的零件")}</h3></div><span>${3 - remaining.length} / 3</span></div>
                 <div class="brick-parts">
                   ${currentParts
                     .map((part) => {
@@ -320,7 +383,7 @@
                 .map((build) => {
                   const model = getModel(build.modelId);
                   return model
-                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 零件</small></span><b>繼續拼</b></button>`
+                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
                     : "";
                 })
                 .join("")}</div>`
@@ -331,9 +394,10 @@
 
     function renderCatalog(snapshot) {
       const builds = snapshot.builds || [];
+      const models = global.KidsBrickModels?.models || [];
       return `<section class="brick-catalog">
-        <div class="brick-section-heading"><div><p class="brick-kicker">第一系列</p><h2>交通工具</h2></div><span>3 件作品</span></div>
-        <div class="brick-catalog-grid">${(global.KidsBrickModels?.models || [])
+        <div class="brick-section-heading"><div><p class="brick-kicker">第一系列</p><h2>${escapeHtml(models[0]?.series || "拼裝系列")}</h2></div><span>${models.length} 件作品</span></div>
+        <div class="brick-catalog-grid">${models
           .map((model) => {
             const owned = builds.filter(
               (build) => build.modelId === model.id && build.completedAt,
@@ -343,15 +407,16 @@
             );
             return `<article class="brick-catalog-card${owned ? " is-owned" : ""}">
               ${thumbnail(model.id, { complete: true, ghosts: !owned })}
-              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "待解鎖"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / 42 零件` : "取得拼裝包後可以選擇"}</small></div>
+              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "待解鎖"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / ${allParts(model).length} 組部件` : "取得拼裝包後可以選擇"}</small></div>
             </article>`;
           })
           .join("")}</div>
       </section>`;
     }
 
-    function render() {
+    function render({ animatedPartId = null, deferForPlacement = false } = {}) {
       if (disposed) return;
+      if (deferForPlacement && placementAnimationTimer) return;
       if (drag?.active || pointerFinalizing || pointerInteraction) {
         renderDeferred = true;
         return;
@@ -368,8 +433,8 @@
       }
       element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}${
         view === "shelf"
-          ? renderShelf(snapshot) + renderCatalog(snapshot)
-            : renderWorkbench(snapshot)
+          ? artworkNotice([...(global.KidsBrickModels?.models || []), ...(snapshot.builds || []).map((build) => getModel(build.modelId)).filter(Boolean)]) + renderShelf(snapshot) + renderCatalog(snapshot)
+            : renderWorkbench(snapshot, animatedPartId)
       }</section>`;
     }
 
@@ -431,6 +496,11 @@
       const model = getModel(build?.modelId);
       const part = partById(model, partId);
       if (!build || !part || (build.placed || []).includes(partId)) return;
+      if (imageState([...allParts(model).filter((entry) => (build.placed || []).includes(entry.id)), part]) !== "ready") {
+        selectedPart = null;
+        render();
+        return;
+      }
       const grant = (snapshot.grants || []).find(
         (entry) =>
           entry.buildId === build.id && entry.packIndex === part.packIndex,
@@ -445,7 +515,14 @@
       busy = `part:${partId}`;
       localError = "";
       playPlacedSound();
-      render();
+      if (placementAnimationTimer) global.clearTimeout(placementAnimationTimer);
+      placementAnimationTimer = null;
+      render({ animatedPartId: partId });
+      if (!global.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches)
+        placementAnimationTimer = global.setTimeout(() => {
+          placementAnimationTimer = null;
+          render();
+        }, 320);
       try {
         await collection.placePart({
           grantId: grant.id,
@@ -458,7 +535,7 @@
         localError = safeError(error, "這個零件沒有保存成功，請再試一次。");
       } finally {
         busy = "";
-        render();
+        render({ deferForPlacement: true });
       }
     }
 
@@ -498,6 +575,12 @@
           () => collection.refresh?.(),
           "重新載入失敗，請檢查連線後再試。",
         );
+      if (action === "retry-art") {
+        for (const [source, load] of imageLoads)
+          if (load.status === "error") imageLoads.delete(source);
+        localError = "";
+        return render();
+      }
       if (action === "flush")
         return run(
           "flush",
@@ -762,7 +845,7 @@
     listen(global, "blur", onBlur);
 
     try {
-      unsubscribe = collection.subscribe?.(() => render()) || null;
+      unsubscribe = collection.subscribe?.(() => render({ deferForPlacement: true })) || null;
     } catch (error) {
       localError = safeError(error, "無法讀取拼裝進度。請重新整理。");
     }
@@ -780,6 +863,7 @@
       destroy() {
         if (disposed) return;
         disposed = true;
+        if (placementAnimationTimer) global.clearTimeout(placementAnimationTimer);
         cancelDrag({});
         abortPointerRelease();
         finishPointerInteraction();

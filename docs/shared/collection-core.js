@@ -1,6 +1,7 @@
 /* 每日拼裝規則；只接新的練習事件，與舊累計及其重置世代分開。 */
 (() => {
-  const MODELS = ["car", "train", "plane"];
+  // 舊作品的 ID 仍需保留，讓既有半成品與舊版離線操作能繼續同步。
+  const MODELS = ["car", "train", "plane", "e500"];
   const ENTRIES = {
     "study:math": { label: "題庫數學", metric: "answered" },
     "study:science": { label: "題庫自然", metric: "answered" },
@@ -71,7 +72,7 @@
       if (command.type === "round") { data.counts[event.entryId].rounds++; data.rounds++; }
       award(state, day);
     } else if (command.type === "select-model") {
-      check(MODELS.includes(command.modelId), "請選擇交通工具");
+      check(MODELS.includes(command.modelId), "請選擇拼裝作品");
       const active = state.builds.find((b) => b.id === state.activeBuildId);
       if (active && !active.completedAt) check(active.modelId === command.modelId, "另一個入口已選好作品，先完成目前作品。", 409);
       else {

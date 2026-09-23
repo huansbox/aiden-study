@@ -8,6 +8,22 @@ import { collectionRuntime } from "./helpers/collection-runtime.mjs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 const C = globalThis.KidsCollectionCore;
+test("E500 can begin with a pack while an existing train build keeps its original identity and placed part", () => {
+  const now = new Date("2026-09-22T12:00:00Z");
+  const event = { entryId: "spelling", roundId: "first", occurredAt: now.toISOString() };
+  let fresh = C.apply(C.empty(), { type: "round", hasPractice: true, event }, now);
+  fresh = C.apply(fresh, { type: "select-model", modelId: "e500" }, now);
+  assert.equal(fresh.activeBuildId, "e500");
+  assert.equal(fresh.grants[0].buildId, "e500");
+
+  let legacy = C.apply(C.apply(C.empty(), { type: "round", hasPractice: true, event }, now), { type: "select-model", modelId: "train" }, now);
+  const grant = legacy.grants[0];
+  legacy = C.apply(legacy, { type: "place", grantId: grant.id, buildId: "train", packIndex: 0, partId: "p1-1" }, now);
+  const restored = C.snapshot(C.apply(legacy, { type: "allocate" }, now), "2026-09-22");
+  assert.equal(restored.activeBuild.modelId, "train");
+  assert.deepEqual(restored.activeBuild.placed, ["p1-1"]);
+  assert.equal(restored.grants[0].buildId, "train");
+});
 test("每日份量、單項兩包、空目標只有完整回合一包", () => {
   const now = new Date("2026-09-22T12:00:00Z");
   let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: [{ entryId: "study:math", metric: "answered", quantity: 2 }] }, now);

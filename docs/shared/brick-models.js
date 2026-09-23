@@ -455,13 +455,15 @@
     ],
   ]);
 
-  const models = [car, train, plane];
+  const legacyModels = [car, train, plane];
+  const models = root.KidsBrickE500 ? [root.KidsBrickE500] : [];
 
   root.KidsBrickModels = {
     version: 1,
     models,
+    legacyModels,
     get(id) {
-      return models.find((model) => model.id === id) || null;
+      return [...models, ...legacyModels].find((model) => model.id === id) || null;
     },
   };
 })(typeof window === "undefined" ? globalThis : window);
