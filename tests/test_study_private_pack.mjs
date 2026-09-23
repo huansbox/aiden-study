@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
-import { syntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, scienceSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
@@ -17,7 +17,7 @@ function oldPart(s) {
 }
 async function ready() {
   const st = storage(); st.map.set(key("test-child"), JSON.stringify(oldProgress()));
-  const env = await boot(st); env.app.importPrivatePack(JSON.stringify(syntheticPack())); env.app.State.setStudyTerm("g4-s1");
+  const env = await boot(st); env.app.importPrivatePack(JSON.stringify(syntheticPack())); env.app.State.setStudyTerm("g4-s1"); env.app.State.setSubject("math");
   env.app.State.saveBatch("15", ids);
   return env;
 }
@@ -78,7 +78,7 @@ test("missing pack: real sync adopt → save/export → restore → reimport pre
   const e = await boot();
   const remote = { ...oldProgress(), studyTerm:"g4-s1", mastered:{...oldProgress().mastered,15:[ids[0]]}, challenge:{15:{batch:ids.slice(1)}}, stats:{[ids[1]]:{practiced:1,correct:0}}, errorBank:[{questionId:ids[1],unit:15}], flagged:[{questionId:ids[5],unit:15,flaggedAt:123}] };
   e.syncConfig.saveData(remote); e.syncConfig.onAdopt(remote);
-  e.app.State.setStudyTerm("g3-s2"); e.app.State.setStudyTerm("g4-s1");
+  e.app.State.setStudyTerm("g3-s2"); e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");
   const before = JSON.parse(e.st.getItem(key(e.child)));
   e.window._startFull(15); e.window._resetChallenge(15); e.window._startError("15");
   e.app.State.resetMastered(15); e.app.State.resetChallenge("15");
@@ -108,7 +108,7 @@ test("scopes isolate error pool, reset and flags; unit numbers remain unique", a
   const saved = JSON.stringify(e.app.state); e.window._startFull(15); assert.equal(JSON.stringify(e.app.state),saved);
   assert.ok(e.app.Picker.forErrorPractice([5,6,7,8,9]).every(id => !ids.includes(id)));
   const units=Object.values(e.app.STUDY_TERMS).flatMap(t=>Object.values(t.subjects).flatMap(s=>Object.values(s.semesters).flatMap(s=>s.units.map(u=>u.id))));
-  assert.equal(new Set(units).size,19); assert.equal(units.length,19);
+  assert.equal(new Set(units).size,21); assert.equal(units.length,21);
   assert.deepEqual([15,16,17,18,19].map(u => e.app.unitNum(u)), [1,2,3,4,5]);
 });
 test("invalid imports and quota failures atomically retain active pack, indices and persisted progress", async () => {
@@ -144,6 +144,32 @@ test("same pack reorder is idempotent; higher revision explanation update preser
   e.app.importPrivatePack(JSON.stringify(p));assert.equal(e.st.getItem(key(e.child)),before);
   p.revision=2;p.explanations[ids[0]]="更新合成解說";e.app.importPrivatePack(JSON.stringify(p));
   assert.equal(e.app.State.doneCount(15),1); assert.throws(()=>e.app.importPrivatePack(JSON.stringify(syntheticPack())),/較舊/);
+});
+
+test("science rev5 appends units 20/21, accepts true_false, preserves math progress and rejects wrong subject contracts", async () => {
+  const e = await ready();
+  e.app.State.addMastered(15, ids[0]);
+  const mathDone = e.app.State.doneCount(15);
+  const pack = scienceSyntheticPack();
+  e.app.importPrivatePack(JSON.stringify(pack));
+  assert.equal(e.app.State.doneCount(15), mathDone);
+  assert.equal(e.app.activePack.questions.length, 8);
+  e.app.State.setSubject("science");
+  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [20, 21]);
+  e.window._goHome();
+  assert.match(e.node("page-home").innerHTML, /地表的靜與動/);
+  e.app.startQuiz("full", 20);
+  assert.equal(e.app.quiz.queue.length, 1);
+  e.app.submitAnswer("true");
+  e.app.advance();
+  assert.equal(e.app.State.doneCount(20), 1);
+  assert.equal(e.app.State.doneCount(15), mathDone);
+  const invalid = (mutate) => { const p = scienceSyntheticPack(); mutate(p.questions[6]); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(p))); };
+  invalid(q => { q.subject = "math"; });
+  invalid(q => { q.unit = 19; });
+  invalid(q => { q.answer = "1"; });
+  invalid(q => { q.options = ["O", "X"]; });
+  invalid(q => { q.blanks = []; });
 });
 test("two initially empty tabs: persisted pack blocks stale tab from replacing same-ID answers", async () => {
   const st = storage();
@@ -206,7 +232,7 @@ test("valid prototype-named subtopics complete all six questions with the real r
   for (const subtopic of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
     const e = await boot();
     const pack = syntheticPack(); pack.questions.forEach(q => { q.subtopic = subtopic; });
-    e.app.importPrivatePack(JSON.stringify(pack)); e.app.State.setStudyTerm("g4-s1");
+    e.app.importPrivatePack(JSON.stringify(pack)); e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");
     e.app.startQuiz("full", 15);
     while (e.app.quiz.queue.length) {
       e.app.submitAnswer(answer(e.app.map.get(e.app.quiz.queue[0])));
@@ -240,7 +266,7 @@ test("two children share pack only; actual wiring sync loadData and backup/repor
 test("untrusted question/option/report rendering escapes before generated markup; explanation uses textContent",async()=>{
   const e=await boot();const p=syntheticPack();const payload='<img src=x onerror="alert(1)"> & <svg/onload=alert(2)>';
   p.questions[0].text=payload;p.questions[0].options[0]=payload;p.questions[1].text=payload+"（１）";p.explanations[ids[0]]=payload;
-  e.app.importPrivatePack(JSON.stringify(p));e.app.State.setStudyTerm("g4-s1");e.app.State.saveBatch("15",ids);e.app.startQuiz("full",15);
+  e.app.importPrivatePack(JSON.stringify(p));e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");e.app.State.saveBatch("15",ids);e.app.startQuiz("full",15);
   assert.ok(!e.node("page-quiz").innerHTML.includes('<img src=x'));assert.match(e.node("page-quiz").innerHTML,/&lt;img/);
   e.app.submitAnswer("2");assert.equal(e.node("explain-card").textContent,payload);
   e.app.State.flagQuestion(ids[0],15);assert.ok(!e.app.renderFlaggedSection().includes('<img src=x'));
@@ -261,16 +287,17 @@ test("科目入口覆蓋上次選擇但保留進度，隱藏學期不能由網�
   const science=await boot(st,"aiden",{search:"?child=aiden&subject=science&term=g3-s2",family:familyFor(["g3-s2","g4-s1"])});
   assert.equal(science.app.currentScope().subjKey,"science");
   assert.equal(science.app.state.studyTerm,"g3-s2");
-  assert.doesNotMatch(science.node("page-home").innerHTML, /_setSubject|_setStudyTerm\('g4-s1'\)/);
+  assert.doesNotMatch(science.node("page-home").innerHTML, /_setSubject/);
+  assert.match(science.node("page-home").innerHTML, /_setStudyTerm\('g4-s1'\)/);
   assert.deepEqual(oldPart(science.app.state),before);
   science.syncConfig.onAdopt({ ...science.app.state, studyTerm: "g4-s1", subject: "math" });
   assert.equal(science.app.currentScope().subjKey,"science");
-  assert.equal(science.app.state.studyTerm,"g3-s2");
+  assert.equal(science.app.state.studyTerm,"g4-s1");
   const math=await boot(st,"aiden",{search:"?child=aiden&subject=math&term=g4-s1",family:familyFor(["g4-s1"])});
   assert.equal(math.app.currentScope().subjKey,"math");assert.equal(math.app.state.studyTerm,"g4-s1");
   assert.deepEqual(oldPart(math.app.state),before);
   const hidden=await boot(st,"aiden",{search:"?child=aiden&subject=science&term=g3-s2",family:familyFor(["g4-s1"])});
-  assert.equal(hidden.app.state.studyTerm,"g4-s1");assert.equal(hidden.app.currentScope().subjKey,"math");
+  assert.equal(hidden.app.state.studyTerm,"g4-s1");assert.equal(hidden.app.currentScope().subjKey,"science");
 });
 test("首頁科目清單與真實 Study 學期內容相符", async () => {
   await import("../docs/shared/family-core.js");

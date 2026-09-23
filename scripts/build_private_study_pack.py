@@ -1,4 +1,4 @@
-"""Build the private Grade 4 semester 1 math Study pack (legacy U1 key).
+"""Build the private Grade 4 semester 1 Study pack (legacy math U1 key).
 
 The production inputs and output live under the precisely ignored
 ``data/private/study/g4-s1-math-u1`` directory.  Public source mapping is
@@ -29,9 +29,9 @@ PUBLIC_QUESTIONS = ROOT / "docs" / "study" / "questions.json"
 PACK_ID = "g4-s1-math-u1"
 MAX_BYTES = 128 * 1024
 # The six original IDs are a required baseline, not the complete current set.
-UNITS = {15, 16, 17, 18, 19}
-ID_RE = re.compile(r"math-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
+SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}}
+ID_RE = re.compile(r"(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "true_false"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
@@ -104,10 +104,11 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         app_id = item["appId"]
         if not ID_RE.fullmatch(app_id) or app_id in seen_ids:
             raise PackBuildError(f"mapping appId is invalid or duplicate for {practice_id}")
+        subject = app_id.split("-", 1)[0]
         seen_ids.add(app_id)
-        if type(item["unit"]) is not int or item["unit"] not in UNITS:
+        if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS:
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "math" and item["digitalAdaptation"] == "true_false"):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -141,7 +142,8 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
     expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set())
     _require_exact_keys(question, expected_fields, f"question {practice_id}")
-    if question["id"] != expected_id or question["subject"] != "math" or type(question["unit"]) is not int or question["unit"] != mapping["unit"]:
+    subject = mapping["appId"].split("-", 1)[0]
+    if question["id"] != expected_id or question["subject"] != subject or type(question["unit"]) is not int or question["unit"] != mapping["unit"] or question["unit"] not in SUBJECT_UNITS[subject]:
         raise PackBuildError(f"question {practice_id} ID, subject, or unit is outside the frozen contract")
     _require_nonempty(question["text"], f"question {practice_id} text")
     _require_nonempty(question["subtopic"], f"question {practice_id} subtopic")
@@ -155,6 +157,9 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
             raise PackBuildError(f"question {practice_id} has an empty option")
         if question["answer"] not in {"1", "2", "3", "4"}:
             raise PackBuildError(f"question {practice_id} answer must be a 1-based string")
+    elif adaptation == "true_false":
+        if question["type"] != "true_false" or question["options"] != [] or question["answer"] not in {"true", "false"}:
+            raise PackBuildError(f"question {practice_id} must use true_false with empty options and a true/false string answer")
     else:
         input_type = adaptation.split(":", 1)[1]
         if question["type"] != "fill_in_blank" or question["options"] != [] or question["answer"] != "":
@@ -220,7 +225,8 @@ def build_pack(
     if set(by_practice) != set(metadata):
         raise PackBuildError("curated source must contain exactly the approved mapping practice IDs")
     # Stable output regardless of source ordering; legacy baseline keeps its order.
-    practice_order = [*EXPECTED, *sorted(set(metadata) - set(EXPECTED))]
+    practice_order = [*EXPECTED, *sorted((pid for pid in metadata if pid not in EXPECTED and metadata[pid]["appId"].startswith("math-"))),
+                      *sorted((pid for pid in metadata if metadata[pid]["appId"].startswith("science-")))]
     expected_ids = [metadata[practice_id]["appId"] for practice_id in practice_order]
 
     explanation_source = _read_json(explanations_path)
@@ -381,7 +387,8 @@ def ensure_compatible_with_existing(
     for question_id, question in previous_by_id.items():
         if not isinstance(question_id, str) or not ID_RE.fullmatch(question_id):
             raise PackBuildError("existing output has an invalid question ID")
-        if type(question.get("unit")) is not int or question["unit"] not in UNITS or (question_id in EXPECTED_IDS and question["unit"] != 15):
+        subject = question.get("subject")
+        if subject not in SUBJECT_UNITS or not question_id.startswith(f"{subject}-g4s1-") or type(question.get("unit")) is not int or question["unit"] not in SUBJECT_UNITS[subject] or (question_id in EXPECTED_IDS and question["unit"] != 15):
             raise PackBuildError("existing output has an invalid unit")
         _require_nonempty(question.get("source"), "existing question source")
         _require_nonempty(previous["explanations"][question_id], "existing question explanation")

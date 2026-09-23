@@ -128,6 +128,47 @@ def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
     assert serialize_pack(build_pack(*paths)) == first_payload
 
 
+def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(tmp_path):
+    curated, explanations, metadata, public_questions = _fixture()
+    for source_id, unit, adaptation, answer in (
+        ("synthetic-S1-01", 20, "true_false", "false"),
+        ("synthetic-S2-01", 21, "multiple_choice", "3"),
+    ):
+        app_id = f"science-g4s1-{source_id}-v1"
+        practice_id = "S1-P01" if unit == 20 else "S2-P01"
+        question = {
+            "id": app_id, "subject": "science", "unit": unit,
+            "type": adaptation, "text": "Synthetic science question?",
+            "subtopic": "Synthetic observation", "options": [] if adaptation == "true_false" else ["A", "B", "C", "D"],
+            "answer": answer,
+        }
+        common = {"practiceId": practice_id, "originalId": source_id, "paperId": "synthetic-paper", "questionPage": 1,
+                  "answerPage": 2, "concept": "Synthetic concept", "sourceAdaptation": "Synthetic unchanged context",
+                  "reviewStatus": "synthetic_only"}
+        curated["items"].append({**{k: common[k] for k in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                                 "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
+        metadata["items"].append({**common, "appId": app_id, "unit": unit, "contextPolicy": "Synthetic standalone question",
+                                  "digitalAdaptation": adaptation})
+        explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    for value in (curated, explanations, metadata):
+        value["revision"] = 5
+    paths = _paths(tmp_path, (curated, explanations, metadata, public_questions))
+    pack = build_pack(*paths)
+    assert len(pack["questions"]) == 8
+    assert [q["unit"] for q in pack["questions"][-2:]] == [20, 21]
+    assert all("subject" not in row for row in metadata["items"])
+    for mutation in (
+        lambda q: q.update(subject="math"),
+        lambda q: q.update(unit=19),
+        lambda q: q.update(answer="1"),
+        lambda q: q.update(options=["O", "X"]),
+    ):
+        broken = copy.deepcopy((curated, explanations, metadata, public_questions))
+        mutation(broken[0]["items"][-2]["question"])
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / str(id(broken)), broken))
+
+
 @pytest.mark.parametrize(
     ("mutate", "message"),
     [

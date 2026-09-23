@@ -1,4 +1,4 @@
-/* 四上數學家長試玩：題包、選題與答案只存在此頁記憶體。 */
+/* 四上家長試玩：題包、選題與答案只存在此頁記憶體。 */
 (function(root) {
   "use strict";
 
@@ -8,7 +8,10 @@
     [17, "第 3 單元：角度"],
     [18, "第 4 單元：整數的除法"],
     [19, "第 5 單元：公里"],
+    [20, "第 1 單元：地表的靜與動"],
+    [21, "第 2 單元：水生生物與環境"],
   ]);
+  const SUBJECTS = new Map([["math", "數學"], ["science", "自然"]]);
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const childFrom = (search) => {
     const child = new URLSearchParams(search || "").get("child");
@@ -17,6 +20,7 @@
   const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
   const answerLabel = (q) => q.type === "multiple_choice"
     ? `${q.answer}. ${q.options[Number(q.answer) - 1]}`
+    : q.type === "true_false" ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
     : q.blanks.map((blank, index) => `第 ${index + 1} 空：${blank.answer}`).join("；");
 
   let bootSequence = 0;
@@ -50,7 +54,8 @@
   function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document }) {
     if (!host) throw Error("找不到試玩頁容器。");
     let pack = initialPack;
-    const state = { pack, unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, values: [], result: "", revealed: false, destroyed: false };
+    const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, values: [], result: "", revealed: false, destroyed: false };
+    const unitsForSubject = () => StudyPrivatePack.UNITS.filter((unit) => state.subject === "science" ? unit >= 20 : unit <= 19);
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
     const filtered = () => questionsForUnit().filter((q) => !state.subtopic || q.subtopic === state.subtopic);
     const current = () => filtered()[state.questionIndex] || null;
@@ -74,6 +79,7 @@
     }
     function answerArea(q) {
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
+      if (q.type === "true_false") return `<div class="preview-options">${[["true", "O", "正確"], ["false", "X", "錯誤"]].map(([value, label, caption]) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${value}" aria-pressed="${state.values[0] === value}"><span>${label}</span><span>${caption}</span></button>`).join("")}</div>`;
       return `<div class="preview-blanks">${q.blanks.map((blank, index) => `<label class="preview-blank"><span>第 ${index + 1} 空（${blank.input === "comparison" ? "比較符號" : "數字"}）</span>${blank.input === "comparison" ? `<span class="preview-compare">${[">", "<", "="].map((value) => `<button type="button" data-action="answer-compare" data-index="${index}" data-value="${value}" aria-pressed="${state.values[index] === value}">${value}</button>`).join("")}</span>` : `<input class="preview-number" data-action="answer-number" data-index="${index}" inputmode="decimal" autocomplete="off" value="${esc(state.values[index] || "")}" aria-label="第 ${index + 1} 空答案" />`}</label>`).join("")}</div>`;
     }
     function focusControl(action) {
@@ -90,11 +96,12 @@
       const unitQuestions = questionsForUnit();
       const concepts = [...new Set(unitQuestions.map((q) => q.subtopic))];
       const list = filtered(), q = current();
-      host.innerHTML = `<header class="preview-top"><h1>四上數學家長試玩</h1>
+      host.innerHTML = `<header class="preview-top"><h1>四上家長試玩</h1>
         <p class="preview-notice">家長試玩，不記錄孩子進度</p>
         <div class="preview-actions"><a class="preview-button secondary" href="${parentHref(child)}">返回家長後台</a><button type="button" class="danger" data-action="reset">重設本頁作答</button></div></header>
         <section class="preview-filters" aria-label="選擇試玩題目">
-          <label>單元<select data-action="unit">${StudyPrivatePack.UNITS.map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}</option>`).join("")}</select></label>
+          <label>科目<select data-action="subject">${[...SUBJECTS].map(([subject, label]) => `<option value="${subject}" ${state.subject === subject ? "selected" : ""}>${label}</option>`).join("")}</select></label>
+          <label>單元<select data-action="unit">${unitsForSubject().map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}</option>`).join("")}</select></label>
           <label>概念<select data-action="subtopic"><option value="">全部概念</option>${concepts.map((concept) => `<option value="${esc(concept)}" ${state.subtopic === concept ? "selected" : ""}>${esc(concept)}</option>`).join("")}</select></label>
         </section>
         ${list.length ? `<nav class="preview-question-nav" aria-label="題目導覽">
@@ -102,7 +109,7 @@
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : `填空（${q.blanks.length} 空）`}</p>
+        ${q ? `<article class="preview-card"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : q.type === "true_false" ? "是非題" : `填空（${q.blanks.length} 空）`}</p>
           <div class="preview-question">${esc(q.text)}</div>${answerArea(q)}
           <div class="preview-answer-actions"><button type="button" data-action="check" ${state.values.every((value) => String(value).trim()) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
@@ -112,7 +119,7 @@
     function check() {
       const q = current();
       if (!q) return;
-      const correct = q.type === "multiple_choice"
+      const correct = q.type === "multiple_choice" || q.type === "true_false"
         ? state.values[0] === q.answer
         : q.blanks.every((blank, index) => StudyAnswer.isBlankCorrect(blank, state.values[index]));
       state.result = correct ? "correct" : "wrong";
@@ -120,7 +127,8 @@
     }
     function handle(action, data = {}) {
       if (state.destroyed) return;
-      if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); }
+      if (action === "subject") { state.subject = SUBJECTS.has(data.value) ? data.value : "math"; state.unit = unitsForSubject()[0]; state.subtopic = ""; resetQuestion(); render(); }
+      else if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); }
       else if (action === "subtopic") { state.subtopic = String(data.value || ""); resetQuestion(); render(); }
       else if (action === "question") { resetQuestion(Number(data.value ?? data.index)); render("question"); }
       else if (action === "previous-question") { if (state.questionIndex > 0) resetQuestion(state.questionIndex - 1); render("previous-question"); }
@@ -136,13 +144,13 @@
     const onClick = (event) => {
       const button = event.target.closest?.("[data-action]");
       if (!button || button.disabled) return;
-      if (["answer-number", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
+      if (["answer-number", "subject", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
       handle(button.dataset.action, button.dataset);
     };
     const onChange = (event) => {
       const control = event.target.closest?.("[data-action]");
       if (!control) return;
-      if (["unit", "subtopic", "question"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value });
+      if (["subject", "unit", "subtopic", "question"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value });
     };
     const onInput = (event) => {
       const input = event.target.closest?.('[data-action="answer-number"]');
@@ -189,7 +197,7 @@
       leftPage = true;
       ++bootSequence;
       releaseRuntime();
-      host.innerHTML = statusHTML(child, "四上數學家長試玩", "返回頁面後會重新載入家庭題包。");
+      host.innerHTML = statusHTML(child, "四上家長試玩", "返回頁面後會重新載入家庭題包。");
     };
     const onPageShow = (event) => {
       if (!leftPage || !event.persisted) return;
@@ -200,7 +208,7 @@
     windowRef.addEventListener("pagehide", onPageHide);
     windowRef.addEventListener("pageshow", onPageShow);
     currentPageCleanup = removePageLifecycle;
-    host.innerHTML = statusHTML(child, "四上數學家長試玩", "正在載入家庭題包⋯");
+    host.innerHTML = statusHTML(child, "四上家長試玩", "正在載入家庭題包⋯");
     const controller = new AbortController();
     currentAbort = controller;
     let timer;

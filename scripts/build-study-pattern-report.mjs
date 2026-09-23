@@ -41,14 +41,14 @@ export function summarize(classification, mapping, sourceDocuments) {
   requireThat(classification.schemaVersion === 1, "不支援的分類 schemaVersion");
   requireThat(nonempty(classification.taxonomyVersion), "缺少 taxonomyVersion");
   requireThat(classification.countUnit === "digital_activity", "計數單位必須是 digital_activity");
-  requireThat(classification.snapshot?.packId === mapping.packId && classification.snapshot?.revision === mapping.revision, "packId／revision 與 mapping 不一致");
+  requireThat(classification.snapshot?.packId === mapping.packId && mapping.revision >= classification.snapshot?.revision, "packId／revision 與 mapping 不一致");
   requireThat(Number.isSafeInteger(classification.snapshot.revision) && classification.snapshot.revision > 0, "revision 無效");
   requireThat(["released_documented", "frozen_unreleased"].includes(classification.snapshot?.status), "發布狀態無效");
   requireThat(classification.snapshot.status !== "released_documented" || nonempty(classification.snapshot.evidence), "已發布快照缺少證據入口");
   requireThat(Number.isSafeInteger(classification.snapshot.packBytes) && classification.snapshot.packBytes > 0 && /^[A-F0-9]{64}$/.test(classification.snapshot.packSha256), "題包指紋無效");
   const patterns = uniqueMap(classification.patterns, "id", "pattern");
   const items = uniqueMap(classification.assignments, "appId", "assignment");
-  const mapped = uniqueMap(mapping.items, "appId", "mapping");
+  const mapped = uniqueMap(mapping.items.filter(row => !row.appId.startsWith("science-g4s1-")), "appId", "mapping");
   sameIds(items, mapped, "assignment／mapping");
   const concepts = new Map();
   for (const pattern of patterns.values()) {
@@ -109,14 +109,22 @@ export function summarize(classification, mapping, sourceDocuments) {
 // Optional read-only identity check; content validation remains with the existing private-pack verifier.
 export function verifyPack(bytes, classification, mapping) {
   const pack = json(bytes.toString("utf8"), "私有題包");
-  requireThat(pack.packId === classification.snapshot.packId && pack.revision === classification.snapshot.revision, "私有題包 packId／revision 不一致");
-  const questions = uniqueMap(pack.questions, "id", "私有題包");
+  requireThat(pack.packId === classification.snapshot.packId && pack.revision >= classification.snapshot.revision, "私有題包 packId／revision 不一致");
+  if (pack.revision > classification.snapshot.revision) {
+    requireThat(pack.revision === mapping.revision, "私有題包／mapping revision 不一致");
+    const allQuestions = uniqueMap(pack.questions, "id", "私有題包");
+    const allMapping = uniqueMap(mapping.items, "appId", "mapping");
+    sameIds(allQuestions, allMapping, "私有題包／mapping");
+    for (const [id, question] of allQuestions) requireThat(question.unit === allMapping.get(id).unit, "私有題包 unit 與 mapping 不一致");
+  }
+  const questions = uniqueMap(pack.questions.filter(row => !row.id.startsWith("science-g4s1-")), "id", "私有題包");
   const items = uniqueMap(classification.assignments, "appId", "assignment");
   sameIds(questions, items, "私有題包／assignment");
-  const mapped = uniqueMap(mapping.items, "appId", "mapping");
+  const mapped = uniqueMap(mapping.items.filter(row => !row.appId.startsWith("science-g4s1-")), "appId", "mapping");
   sameIds(questions, mapped, "私有題包／mapping");
   for (const [id, question] of questions) requireThat(question.unit === mapped.get(id).unit, "私有題包 unit 與 mapping 不一致");
-  requireThat(bytes.length === classification.snapshot.packBytes && createHash("sha256").update(bytes).digest("hex").toUpperCase() === classification.snapshot.packSha256, "私有題包 bytes／SHA256 不一致");
+  if (pack.revision === classification.snapshot.revision)
+    requireThat(bytes.length === classification.snapshot.packBytes && createHash("sha256").update(bytes).digest("hex").toUpperCase() === classification.snapshot.packSha256, "私有題包 bytes／SHA256 不一致");
 }
 
 export function renderReport(classification, summary) {

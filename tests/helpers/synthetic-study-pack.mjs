@@ -53,3 +53,15 @@ export function navigationSyntheticPack(count = 18) {
   }
   return pack;
 }
+
+export function scienceSyntheticPack() {
+  const pack = syntheticPack();
+  pack.revision = 5;
+  const questions = [
+    { id: "science-g4s1-synthetic-S1-01-v1", subject: "science", unit: 20, type: "true_false", text: "合成自然練習：觀察紀錄需要日期。", subtopic: "合成觀察", source: "synthetic fixture only", options: [], answer: "true" },
+    { id: "science-g4s1-synthetic-S2-01-v1", subject: "science", unit: 21, type: "multiple_choice", text: "合成自然練習：哪一項是觀察工具？", subtopic: "合成工具", source: "synthetic fixture only", options: ["尺", "碗", "枕頭", "鞋"], answer: "1" },
+  ];
+  pack.questions.push(...questions);
+  for (const q of questions) pack.explanations[q.id] = "合成解說：依觀察目的選擇作法。";
+  return pack;
+}
