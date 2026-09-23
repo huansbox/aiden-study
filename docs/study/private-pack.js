@@ -44,7 +44,7 @@
     const signature = [137, 80, 78, 71, 13, 10, 26, 10];
     if (signature.some((byte, i) => bytes[i] !== byte)) return false;
     const view = new DataView(bytes.buffer);
-    let offset = 8, ihdr = false, idat = false, iend = false;
+    let offset = 8, ihdr = false, plte = false, idat = false, iend = false, bitDepth, colorType;
     while (offset + 12 <= bytes.length) {
       const length = view.getUint32(offset), start = offset + 8, end = start + length;
       if (end + 4 > bytes.length) return false;
@@ -59,9 +59,19 @@
       if (!ihdr) {
         if (type !== "IHDR" || length !== 13) return false;
         const width = view.getUint32(start), height = view.getUint32(start + 4);
-        if (width < 1 || width > 1600 || height < 1 || height > 1600 || bytes[start + 10] !== 0 || bytes[start + 11] !== 0 || bytes[start + 12] > 1) return false;
+        bitDepth = bytes[start + 8]; colorType = bytes[start + 9];
+        const allowedDepths = { 0: [1, 2, 4, 8, 16], 2: [8, 16], 3: [1, 2, 4, 8], 4: [8, 16], 6: [8, 16] };
+        if (width < 1 || width > 1600 || height < 1 || height > 1600 ||
+            !allowedDepths[colorType]?.includes(bitDepth) || bytes[start + 10] !== 0 || bytes[start + 11] !== 0 || bytes[start + 12] > 1) return false;
         ihdr = true;
       } else if (type === "IHDR" || type === "acTL" || type === "fcTL" || type === "fdAT") return false;
+      if (type === "PLTE") {
+        const entries = length / 3;
+        if (plte || idat || colorType === 0 || colorType === 4 || !Number.isInteger(entries) || entries < 1 || entries > 256 ||
+            (colorType === 3 && entries > 2 ** bitDepth)) return false;
+        plte = true;
+      }
+      if (type === "IDAT" && colorType === 3 && !plte) return false;
       if (type === "IDAT") idat = true;
       if (type === "IEND") { if (length !== 0 || !idat || end + 4 !== bytes.length) return false; iend = true; break; }
       offset = end + 4;

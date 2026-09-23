@@ -12,11 +12,14 @@ function pngChunk(type, data) {
   checksum.writeUInt32BE((crc ^ 0xffffffff) >>> 0);
   return Buffer.concat([length, name, data, checksum]);
 }
-export function syntheticPngData() {
+export function syntheticPngData(bitDepth = 8, colorType = 6, width = 1, height = 1, paletteCount = colorType === 3 ? 1 : 0, paletteEntries = 16) {
   const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(1, 0); ihdr.writeUInt32BE(1, 4); ihdr[8] = 8; ihdr[9] = 6;
+  ihdr.writeUInt32BE(width, 0); ihdr.writeUInt32BE(height, 4); ihdr[8] = bitDepth; ihdr[9] = colorType;
+  const palette = Array.from({ length: paletteCount }, () => pngChunk("PLTE", Buffer.alloc(paletteEntries * 3, 128)));
+  const row = colorType === 3 ? Buffer.from([0, ...Array(width).fill(0)]) : Buffer.from([0, ...Array(width).fill([12, 34, 56, 255]).flat()]);
+  const pixels = Buffer.concat(Array(height).fill(row));
   const bytes = Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
-    pngChunk("IHDR", ihdr), pngChunk("IDAT", deflateSync(Buffer.from([0, 12, 34, 56, 255]))), pngChunk("IEND", Buffer.alloc(0))]);
+    pngChunk("IHDR", ihdr), ...palette, pngChunk("IDAT", deflateSync(pixels)), pngChunk("IEND", Buffer.alloc(0))]);
   return `data:image/png;base64,${bytes.toString("base64")}`;
 }
 export const ids = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(x => `math-g4s1-${x}-v1`);
@@ -94,7 +97,7 @@ export function groupedSyntheticPack() {
       text: "合成圖：依觀察標籤逐項選擇。", subtopic: "合成圖像", source: "synthetic fixture only",
       options: ["甲：上方", "乙：下方", "丙：中間"], answer: "123",
       parts: [{ id: "A", text: "圖 A" }, { id: "B", text: "圖 B" }, { id: "C", text: "圖 C" }],
-      material: { kind: "png", data: syntheticPngData(), alt: "合成圖，含 A、B、C 標籤" } },
+      material: { kind: "png", data: syntheticPngData(8, 6, 550, 304), alt: "550×304 合成尺寸圖" } },
     { id: "science-g4s1-synthetic-group-table-v1", subject: "science", unit: 21, type: "grouped_choice",
       text: "合成表：依資料逐項判斷。", subtopic: "合成表格", source: "synthetic fixture only",
       options: ["O", "X"], answer: "12121212",

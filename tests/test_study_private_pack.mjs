@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
-import { syntheticPack, scienceSyntheticPack, groupedSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, scienceSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
@@ -176,6 +176,19 @@ test("grouped science activity validates bounded material and immutable parts", 
   const pack = groupedSyntheticPack();
   assert.equal(e.window.StudyPrivatePack.parse(JSON.stringify(pack)).questions.length, 10);
   const mutate = (change) => { const next = groupedSyntheticPack(); change(next.questions); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(next))); };
+  mutate(qs => { qs[8].material.data = syntheticPngData(0, 6); }); // CRC is recomputed for the invalid IHDR.
+  mutate(qs => { qs[8].material.data = syntheticPngData(16, 3); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(4, 6); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(8, 1); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(1, 3, 1, 1, 0); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(1, 3, 1, 1, 2, 2); }); // Two CRC-valid PLTE chunks.
+  mutate(qs => { qs[8].material.data = syntheticPngData(4, 3, 1, 1, 1, 17); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(8, 0, 1, 1, 1); });
+  const palette = groupedSyntheticPack();
+  palette.questions[8].material.data = syntheticPngData(4, 3); // Valid 16-colour indexed PNG.
+  assert.doesNotThrow(() => e.window.StudyPrivatePack.parse(JSON.stringify(palette)));
+  palette.questions[8].material.data = syntheticPngData(1, 3, 1, 1, 1, 2);
+  assert.doesNotThrow(() => e.window.StudyPrivatePack.parse(JSON.stringify(palette)));
   mutate(qs => { qs[8].material.data = "https://outside.invalid/image.png"; });
   mutate(qs => { qs[8].material.data = qs[8].material.data.slice(0, -5) + "AAAAA"; });
   mutate(qs => { qs[8].material.data = "data:image/png;base64," + "A".repeat(43692); });

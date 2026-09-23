@@ -114,7 +114,8 @@ def _validate_material(material: Any, label: str) -> None:
         raise PackBuildError(f"{label} PNG base64 is oversized or noncanonical")
     if image[:8] != b"\x89PNG\r\n\x1a\n":
         raise PackBuildError(f"{label} PNG signature is invalid")
-    offset, seen_header, seen_data, seen_end = 8, False, False, False
+    offset, seen_header, seen_palette, seen_data, seen_end = 8, False, False, False, False
+    bit_depth = color_type = None
     while offset + 12 <= len(image):
         length = int.from_bytes(image[offset:offset + 4], "big")
         start, end = offset + 8, offset + 8 + length
@@ -130,10 +131,19 @@ def _validate_material(material: Any, label: str) -> None:
             if kind != b"IHDR" or length != 13:
                 break
             width, height = int.from_bytes(image[start:start + 4], "big"), int.from_bytes(image[start + 4:start + 8], "big")
-            if not 1 <= width <= 1600 or not 1 <= height <= 1600 or image[start + 10:start + 12] != b"\x00\x00" or image[start + 12] > 1:
+            bit_depth, color_type = image[start + 8:start + 10]
+            allowed_depths = {0: (1, 2, 4, 8, 16), 2: (8, 16), 3: (1, 2, 4, 8), 4: (8, 16), 6: (8, 16)}
+            if not 1 <= width <= 1600 or not 1 <= height <= 1600 or bit_depth not in allowed_depths.get(color_type, ()) or image[start + 10:start + 12] != b"\x00\x00" or image[start + 12] > 1:
                 break
             seen_header = True
         elif kind in {b"IHDR", b"acTL", b"fcTL", b"fdAT"}:
+            break
+        if kind == b"PLTE":
+            entries = length // 3
+            if seen_palette or seen_data or color_type in (0, 4) or length % 3 or not 1 <= entries <= 256 or (color_type == 3 and entries > 2 ** bit_depth):
+                break
+            seen_palette = True
+        if kind == b"IDAT" and color_type == 3 and not seen_palette:
             break
         if kind == b"IDAT":
             seen_data = True
