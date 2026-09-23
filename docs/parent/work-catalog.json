@@ -968,6 +968,41 @@
       }
     },
     {
+      "id": "task:grade4-sem1-science-exam1",
+      "type": "task",
+      "name": "四上第一次段考自然候選卷",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；四年級",
+      "status": "complete",
+      "statusNote": "首批四卷與一份校方答案已收集，來源及逐題 metadata 通過獨立複核；正式範圍與答案正確性待核，原卷只存本機。",
+      "availability": "private",
+      "location": "aiden-study/learning-tasks/grade4-sem1-science-exam1",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/grade4-sem1-science-exam1"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/grade4-sem1-science-exam1",
+      "links": [],
+      "description": "桃子腳第一次段考前，依地表與水生環境概念篩選歷屆自然卷。",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": "2026-09-23",
+      "updated": "2026-09-23",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:reading-mind-map",
       "type": "task",
       "name": "閱讀心智圖選詞引導",
