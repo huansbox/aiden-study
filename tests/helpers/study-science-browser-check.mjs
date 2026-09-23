@@ -23,6 +23,16 @@ const ready = new Promise((ok, fail) => {
   });
   server.once("exit", code => { clearTimeout(timer); fail(Error(`synthetic server exited ${code}`)); });
 });
+async function assertPreviewIsolation(page) {
+  await page.goto(`${base}/test/study-preview/inspect`);
+  await page.locator("#browser-result").getByText(/未變更|已變更/).waitFor();
+  assert.match(await page.locator("#browser-result").innerText(), /哨兵：未變更/, "preview changed browser sentinel");
+  await page.locator("#server-result").getByText(/kvSentinelsUnchanged/).waitFor();
+  const snapshot = JSON.parse(await page.locator("#server-result").innerText());
+  assert.equal(snapshot.kvSentinelsUnchanged, true, "preview changed fake KV sentinel");
+  assert.deepEqual(snapshot.requests.filter(r => r.pathname.startsWith("/api/")).map(r => [r.method, r.pathname]),
+    [["GET", "/api/v1/session"], ["GET", "/api/v1/packs/g4-s1-math-u1"]]);
+}
 let browser;
 try {
   await ready;
@@ -45,17 +55,21 @@ try {
     const studySize = await page.evaluate(() => ({ width: innerWidth, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth }));
     assert.equal(studySize.width, width);
     assert.equal(studySize.overflow, false, `Study horizontal overflow at ${width}px`);
+    await context.close(); // A live Study round can sync progress after navigation; isolate the preview write check.
 
-    await page.goto(`${base}/test/study-preview?mode=science`);
-    await page.locator('select[data-action="subject"]').selectOption("science");
-    await page.locator('.preview-option[data-value="false"]').click();
-    await page.locator('button[data-action="check"]').click();
-    assert.match(await page.locator(".preview-feedback").innerText(), /還沒答對/);
-    await page.locator('button[data-action="reveal"]').click();
-    assert.match(await page.locator(".preview-reveal").innerText(), /O（正確）.*合成解說/s);
-    await page.locator('select[data-action="unit"]').selectOption("21");
-    assert.equal(await page.locator(".preview-option").count(), 4);
-    const previewSize = await page.evaluate(() => ({
+    const previewContext = await browser.newContext({ viewport: { width, height } });
+    const previewPage = await previewContext.newPage();
+    await previewPage.goto(`${base}/test/start`);
+    await previewPage.goto(`${base}/test/study-preview?mode=science`);
+    await previewPage.locator('select[data-action="subject"]').selectOption("science");
+    await previewPage.locator('.preview-option[data-value="false"]').click();
+    await previewPage.locator('button[data-action="check"]').click();
+    assert.match(await previewPage.locator(".preview-feedback").innerText(), /還沒答對/);
+    await previewPage.locator('button[data-action="reveal"]').click();
+    assert.match(await previewPage.locator(".preview-reveal").innerText(), /O（正確）.*合成解說/s);
+    await previewPage.locator('select[data-action="unit"]').selectOption("21");
+    assert.equal(await previewPage.locator(".preview-option").count(), 4);
+    const previewSize = await previewPage.evaluate(() => ({
       width: innerWidth,
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
       filterColumns: getComputedStyle(document.querySelector(".preview-filters")).gridTemplateColumns.split(" ").length,
@@ -65,26 +79,29 @@ try {
     assert.equal(previewSize.overflow, false, `Preview horizontal overflow at ${width}px`);
     assert.equal(previewSize.filterColumns, width <= 640 ? 1 : 3);
     assert.equal(previewSize.navColumns, width <= 480 ? 2 : 3);
-    await page.screenshot({ path: resolve(screenshotDir, `preview-${width}.png`) });
+    await previewPage.screenshot({ path: resolve(screenshotDir, `preview-${width}.png`) });
+    await assertPreviewIsolation(previewPage); // Check science answers before the next fixture clears request logs and sentinels.
+    const originalProgress = await previewPage.evaluate(() => localStorage.getItem("study:progress:aiden"));
+    try {
+      await previewPage.evaluate(() => localStorage.setItem("study:progress:aiden", "synthetic-negative-control"));
+      await assert.rejects(assertPreviewIsolation(previewPage), /preview changed browser sentinel/);
+    } finally {
+      await previewPage.evaluate(value => localStorage.setItem("study:progress:aiden", value), originalProgress);
+    }
+    await assertPreviewIsolation(previewPage);
 
-    await page.goto(`${base}/test/study-preview?questions=60`);
-    await page.locator('select[data-action="question"]').selectOption("59");
-    assert.match(await page.locator(".preview-question-jump").innerText(), /第 60 題／共 60 題/);
-    const nav = await page.evaluate(() => ({
+    await previewPage.goto(`${base}/test/study-preview?questions=60`);
+    await previewPage.locator('select[data-action="question"]').selectOption("59");
+    assert.match(await previewPage.locator(".preview-question-jump").innerText(), /第 60 題／共 60 題/);
+    const nav = await previewPage.evaluate(() => ({
       width: Math.round(document.querySelector('select[data-action="question"]').getBoundingClientRect().width),
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     }));
     assert.equal(nav.overflow, false);
     assert.ok(nav.width <= (width <= 480 ? width : 280), `question jump too wide at ${width}px: ${nav.width}`);
-    await page.goto(`${base}/test/study-preview/inspect`);
-    await page.locator("#browser-result").getByText(/未變更/).waitFor();
-    await page.locator("#server-result").getByText(/kvSentinelsUnchanged/).waitFor();
-    const snapshot = JSON.parse(await page.locator("#server-result").innerText());
-    assert.equal(snapshot.kvSentinelsUnchanged, true);
-    assert.deepEqual(snapshot.requests.filter(r => r.pathname.startsWith("/api/")).map(r => [r.method, r.pathname]),
-      [["GET", "/api/v1/session"], ["GET", "/api/v1/packs/g4-s1-math-u1"]]);
+    await assertPreviewIsolation(previewPage);
     console.log(`responsive synthetic QA ${width}x${height}: Study touch ${touchHeight}px, preview ${previewSize.filterColumns}/${previewSize.navColumns} columns, jump ${nav.width}px, no overflow or preview writes`);
-    await context.close();
+    await previewContext.close();
   }
 } finally {
   await browser?.close();
