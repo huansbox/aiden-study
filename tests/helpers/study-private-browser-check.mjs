@@ -36,6 +36,28 @@ async function inspectMaterial(page, question, name, width) {
     await page.locator(".study-material-table").waitFor();
     assert.equal(await page.locator(".study-material-table thead th").count(), question.material.columns.length);
     assert.equal(await page.locator(".study-material-table tbody tr").count(), question.material.rows.length);
+    if (width >= 768) {
+      const card = page.locator(name === "child" ? ".group-card" : ".preview-group-card");
+      const geometryForPart = async part => {
+        await card.locator(".study-table-scroll").evaluate(node => node.scrollIntoView({ block: "start" }));
+        const geometry = await card.evaluate((element, role) => {
+        const box = selector => element.querySelector(selector)?.getBoundingClientRect();
+        const material = box(".study-table-scroll"), question = box(role === "child" ? ".group-part-question" : ".preview-group-question");
+        const option = box(role === "child" ? ".group-option" : ".preview-group-part .preview-option");
+        const nav = box(role === "child" ? ".group-nav" : ".preview-group-nav");
+        return { material: [material.top, material.bottom], question: [question.top, question.bottom], option: [option.top, option.bottom], nav: [nav.top, nav.bottom], viewport: innerHeight, scroll: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+        }, name);
+        assert.equal(geometry.scroll, 0);
+        const top = Math.min(geometry.material[0], geometry.question[0], geometry.option[0], geometry.nav[0]);
+        const bottom = Math.max(geometry.material[1], geometry.question[1], geometry.option[1], geometry.nav[1]);
+        assert.ok(top >= -1 && bottom <= geometry.viewport + 1, `${name} ${width} part ${part}: table and current answer must be in one viewport: ${JSON.stringify(geometry)}`);
+        await page.screenshot({ path: resolve(screenshotDir, `${name}-table-${width}-part-${part}-viewport.png`) });
+        console.log(`${name} ${width} part ${part}: ${JSON.stringify(geometry)}`);
+      };
+      await geometryForPart(1);
+      for (let i = 1; i < question.parts.length; i++) await page.locator(name === "child" ? "#group-next" : '[data-action="next-part"]').click();
+      await geometryForPart(question.parts.length);
+    }
   }
   await page.screenshot({ path: resolve(screenshotDir, `${name}-${image ? "image" : "table"}-${width}.png`), fullPage: true });
   if (image) {
@@ -70,7 +92,8 @@ try {
       await page.getByRole("link", { name: "自然" }).click();
       await page.locator("#study-home-content .unit-section").first().waitFor();
       await page.evaluate(({ unit, subtopic }) => window._startFull(unit, subtopic), question);
-      assert.equal(await page.locator("#group-parts select").count(), question.parts.length);
+      assert.equal(await page.locator("#group-parts .group-part-question").count(), 1);
+      assert.match(await page.locator("#group-position").innerText(), new RegExp(`小題 1／${question.parts.length}`));
       await inspectMaterial(page, question, "child", width);
       await context.close();
 
@@ -82,7 +105,8 @@ try {
       await preview.locator('select[data-action="subject"]').selectOption("science");
       await preview.locator('select[data-action="unit"]').selectOption(String(question.unit));
       await preview.locator('select[data-action="subtopic"]').selectOption(question.subtopic);
-      assert.equal(await preview.locator('select[data-action="answer-group"]').count(), question.parts.length);
+      assert.equal(await preview.locator(".preview-group-question").count(), 1);
+      assert.match(await preview.locator(".preview-group-nav").innerText(), new RegExp(`小題 1／${question.parts.length}`));
       await inspectMaterial(preview, question, "preview", width);
       await preview.goto(`${base}/test/study-preview/inspect`);
       await preview.locator("#server-result").getByText(/kvSentinelsUnchanged/).waitFor();

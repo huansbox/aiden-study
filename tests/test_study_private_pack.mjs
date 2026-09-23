@@ -232,6 +232,23 @@ test("grouped science submits once for all parts and keeps content out of progre
   const output = JSON.stringify(e.syncConfig.loadData()) + e.app.buildBackupText(e.app.state) + decodeURIComponent(e.app.buildReportUrl());
   for (const secret of [q.text, q.options[0], q.material.data, pack.explanations[q.id]]) assert.ok(!output.includes(secret));
 });
+test("grouped choice records one activity and finishes its round after the complete group", async () => {
+  const events = { records: 0, finishes: 0 };
+  const family = { ...familyFor(["g4-s1"]), beginRound() {}, record() { events.records++; }, finishRound() { events.finishes++; } };
+  const e = await boot(storage(), "aiden", { search: "?child=aiden&subject=science&term=g4-s1", family });
+  const pack = groupedSyntheticPack(), q = pack.questions[8];
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.setSubject("science");
+  e.app.State.saveBatch("21", [q.id]);
+  e.app.startQuiz("full", 21);
+  assert.equal(events.records, 0);
+  assert.equal(events.finishes, 0);
+  e.app.submitAnswer(["1", "2", "3"]);
+  assert.equal(events.records, 1);
+  assert.equal(events.finishes, 0);
+  e.app.advance();
+  assert.equal(events.finishes, 1);
+});
 test("two initially empty tabs: persisted pack blocks stale tab from replacing same-ID answers", async () => {
   const st = storage();
   const a = await boot(st);

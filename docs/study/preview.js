@@ -55,12 +55,13 @@
   function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document }) {
     if (!host) throw Error("找不到試玩頁容器。");
     let pack = initialPack;
-    const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, values: [], result: "", revealed: false, destroyed: false };
+    const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const unitsForSubject = () => StudyPrivatePack.UNITS.filter((unit) => state.subject === "science" ? unit >= 20 : unit <= 19);
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
     const filtered = () => questionsForUnit().filter((q) => !state.subtopic || q.subtopic === state.subtopic);
     const current = () => filtered()[state.questionIndex] || null;
     function clearAnswer() {
+      state.partIndex = 0;
       state.values = [];
       state.result = "";
       state.revealed = false;
@@ -81,11 +82,19 @@
     function answerArea(q) {
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
       if (q.type === "true_false") return `<div class="preview-options">${[["true", "O", "正確"], ["false", "X", "錯誤"]].map(([value, label, caption]) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${value}" aria-pressed="${state.values[0] === value}"><span>${label}</span><span>${caption}</span></button>`).join("")}</div>`;
-      if (q.type === "grouped_choice") return `<div class="preview-group">${q.parts.map((part, index) => `<label class="preview-group-part"><span>${esc(part.text)}</span><select data-action="answer-group" data-index="${index}" aria-label="${esc(part.id)} 的答案"><option value="">請選擇</option>${q.options.map((option, choice) => `<option value="${choice + 1}" ${state.values[index] === String(choice + 1) ? "selected" : ""}>${esc(option)}</option>`).join("")}</select>${state.result ? `<span class="preview-group-feedback">${state.values[index] === q.answer[index] ? "答對" : `正解：${esc(q.options[Number(q.answer[index]) - 1])}`}</span>` : ""}</label>`).join("")}</div>`;
+      if (q.type === "grouped_choice") {
+        const index = state.partIndex, part = q.parts[index];
+        return `<div class="preview-group"><div class="preview-group-part"><span class="preview-group-question">${esc(part.text)}</span><div class="preview-options">${q.options.map((option, choice) => `<button type="button" class="preview-option" data-action="answer-group" data-index="${index}" data-value="${choice + 1}" aria-pressed="${state.values[index] === String(choice + 1)}"><span>${choice + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>${state.result ? `<span class="preview-group-feedback">${state.values[index] === q.answer[index] ? "答對" : `正解：${esc(q.options[Number(q.answer[index]) - 1])}`}</span>` : ""}</div><nav class="preview-group-nav" aria-label="小題導覽"><button type="button" class="secondary" data-action="previous-part" ${index === 0 ? "disabled" : ""}>上一小題</button><span>小題 ${index + 1}／${q.parts.length}</span><button type="button" class="secondary" data-action="next-part" ${index === q.parts.length - 1 ? "disabled" : ""}>下一小題</button></nav></div>`;
+      }
       return `<div class="preview-blanks">${q.blanks.map((blank, index) => `<label class="preview-blank"><span>第 ${index + 1} 空（${blank.input === "comparison" ? "比較符號" : "數字"}）</span>${blank.input === "comparison" ? `<span class="preview-compare">${[">", "<", "="].map((value) => `<button type="button" data-action="answer-compare" data-index="${index}" data-value="${value}" aria-pressed="${state.values[index] === value}">${value}</button>`).join("")}</span>` : `<input class="preview-number" data-action="answer-number" data-index="${index}" inputmode="decimal" autocomplete="off" value="${esc(state.values[index] || "")}" aria-label="第 ${index + 1} 空答案" />`}</label>`).join("")}</div>`;
     }
     function focusControl(action) {
       if (!action) return;
+      if (["previous-part", "next-part"].includes(action)) {
+        const other = action === "previous-part" ? "next-part" : "previous-part";
+        (host.querySelector?.(`[data-action="${action}"]:not(:disabled)`) || host.querySelector?.(`[data-action="${other}"]:not(:disabled)`) || host.querySelector?.('.preview-group-part .preview-option'))?.focus?.({ preventScroll: true });
+        return;
+      }
       const enabled = ["previous-question", "next-question"].includes(action)
         ? host.querySelector?.(`[data-action="${action}"]:not(:disabled)`)
         : host.querySelector?.(`[data-action="${action}"]`);
@@ -111,17 +120,17 @@
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : q.type === "true_false" ? "是非題" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
-          ${StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${answerArea(q)}
+        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : q.type === "true_false" ? "是非題" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
+          ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
           <div class="preview-answer-actions"><button type="button" data-action="check" ${state.values.every((value) => String(value).trim()) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
-          ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
+          ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}${q.type === "grouped_choice" ? '</div>' : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
       focusControl(focusAction);
       StudyMaterial.bind(host);
     }
     function check() {
       const q = current();
-      if (!q) return;
+      if (!q || state.values.some((value) => !String(value).trim())) return;
       const correct = q.type === "grouped_choice"
         ? q.parts.every((_, index) => state.values[index] === q.answer[index])
         : q.type === "multiple_choice" || q.type === "true_false"
@@ -141,7 +150,8 @@
       else if (action === "answer-choice") { state.values[0] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-compare") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-number") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; }
-      else if (action === "answer-group") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; }
+      else if (action === "previous-part" || action === "next-part") { const step = action === "previous-part" ? -1 : 1; state.partIndex = Math.max(0, Math.min(current()?.parts?.length - 1 || 0, state.partIndex + step)); render(action); }
+      else if (action === "answer-group") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); host.querySelector?.('.preview-group-part [aria-pressed="true"]')?.focus?.({ preventScroll: true }); }
       else if (action === "check") check();
       else if (action === "reveal") { state.revealed = true; render(); }
       else if (action === "retry-answer" || action === "reset") { resetQuestion(action === "reset" ? 0 : state.questionIndex); render(); }
@@ -150,18 +160,13 @@
     const onClick = (event) => {
       const button = event.target.closest?.("[data-action]");
       if (!button || button.disabled) return;
-      if (["answer-number", "answer-group", "subject", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
+      if (["answer-number", "subject", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
       handle(button.dataset.action, button.dataset);
     };
     const onChange = (event) => {
       const control = event.target.closest?.("[data-action]");
       if (!control) return;
-      if (["subject", "unit", "subtopic", "question", "answer-group"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value, index: control.dataset.index });
-      if (control.dataset.action === "answer-group") {
-        host.querySelectorAll?.(".preview-feedback, .preview-reveal, .preview-group-feedback").forEach(element => element.remove());
-        const checkButton = host.querySelector?.('[data-action="check"]');
-        if (checkButton) checkButton.disabled = !state.values.every(value => String(value).trim());
-      }
+      if (["subject", "unit", "subtopic", "question"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value, index: control.dataset.index });
     };
     const onInput = (event) => {
       const input = event.target.closest?.('[data-action="answer-number"]');
