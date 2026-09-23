@@ -59,7 +59,13 @@ try {
 
     const previewContext = await browser.newContext({ viewport: { width, height } });
     const previewPage = await previewContext.newPage();
-    await previewPage.goto(`${base}/test/start`);
+    const login = await previewContext.request.post(`${base}/api/v1/session`, {
+      data: { key: "test-token" }, headers: { Origin: base },
+    });
+    assert.equal(login.status(), 200, "synthetic preview session login failed");
+    assert.equal((await login.json()).authenticated, true);
+    assert.ok((await previewContext.cookies(base)).some(cookie => cookie.name === "kids_session_dev"),
+      "synthetic preview session cookie was not stored");
     await previewPage.goto(`${base}/test/study-preview?mode=science`);
     await previewPage.locator('select[data-action="subject"]').selectOption("science");
     await previewPage.locator('.preview-option[data-value="false"]').click();
