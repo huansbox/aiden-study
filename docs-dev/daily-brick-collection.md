@@ -2,6 +2,8 @@
 
 主規格 [#110](https://github.com/huansbox/aiden-study/issues/110)，實作拆分為每日目標 [#111](https://github.com/huansbox/aiden-study/issues/111)、拼裝 [#112](https://github.com/huansbox/aiden-study/issues/112) 與整合驗收 [#113](https://github.com/huansbox/aiden-study/issues/113)。
 
+目前狀態：2026-09-23 已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 合併並發布至[正式網站](https://kids.linshuhuan.com/)，主規格及三個實作 issues 已結案。下方各階段驗收紀錄保留當時狀態，最新發布結果見文末。
+
 ## 使用方式
 
 家長後台的「每日目標與拼裝包」設定一次活動和份量，每天按臺灣日期重新計算。題庫數學預設建議 10 題，英文建議一輪；按儲存後才生效。新增活動不會自動加進每日必做量，孩子仍自行選內容，不指定單元或複習。
@@ -130,6 +132,14 @@ CDP 測試的 touch drag 按畫面 frame 分送移動，完成後保留 500 ms �
 - [23 條隔離 E2E](taiwan-trains-e2e-result.json) 通過：先練習領包完成 E500，再透過真實 UI 依序選擇並完成兩台新車，各 36 組、觸控拖曳、伺服器確認、6 秒慶祝與展示。確認各車首頁從 `0 / 36` 到 `36 / 36`，三台同時收藏、剩餘 1 包保留，學習紀錄重置不刪收藏。
 - [EMU3000](emu3000-celebration-result.json) 與 [R200](r200-celebration-result.json) 各 4 條 native WebAudio／Pad 檢查通過：金框觸控點擊、實際音訊訊號、靜音／恢復／略過、重播及直向拖曳；兩台完整模型與最後一組位置已目視檢查。
 - 獨立唯讀 review 發現首頁分母固定為 42，已依車型修正並補真實首頁 DOM 驗證；複查無未解 P1／P2。素材分組也修正遠側客窗不可見與最後一組範圍過大的問題。
-- 本次結果位於 PR #114，正式環境未合併／部署；實體 iPad 與孩子每包操作時間仍未實測。已包含自然題庫 PR #120 與其最終主線文件；合併衝突保留圖表、整組選答與收藏回合接線，獨立唯讀複查通過。另跑 390×844、768×1024、1024×768 的合成自然題組圖表／家長預覽檢查通過。
+- 本次結果位於 PR #114，已合併／部署，發布紀錄如下；實體 iPad 與孩子每包操作時間仍未實測。已包含自然題庫 PR #120 與其最終主線文件；合併衝突保留圖表、整組選答與收藏回合接線，獨立唯讀複查通過。另跑 390×844、768×1024、1024×768 的合成自然題組圖表／家長預覽檢查通過。
 
 ![三台完成收藏的展示架](taiwan-trains-collection-preview.png)
+
+## 2026-09-23 正式發布
+
+- 使用者授權 Land 後，先從已驗收的 `d379de2d` 部署 Worker，再合併 PR #114。Worker 於 18:42（臺灣時間）完成，版本 `6b4c4317-b419-4282-bad0-3c67219ed374` 承接 100% 流量；`COLLECTIONS` SQLite Durable Object 已綁定，沿用原 KV namespace、家庭登入及既有題庫能力。
+- PR 於 18:43 合併為 `9ee4e617`；作品目錄自動更新為 `d586293e`。主線 [test](https://github.com/huansbox/aiden-study/actions/runs/35850414900)、[work-catalog](https://github.com/huansbox/aiden-study/actions/runs/35850414649) 與 [GitHub Pages](https://github.com/huansbox/aiden-study/actions/runs/35850440984) 全數成功。
+- 18:45 從正式 HTTPS 站逐檔讀取本次 230 個發布檔案（含全部 198 張 PNG，共 10,138,171 bytes），與合併 commit 的 SHA-256 全數一致；自動產生的作品目錄另依最新主線驗證。首頁 release hash 為 `f0692b0072aed5f25bf032ab47bacb53b2f2fab9c6537cca248699309c5d7619`。
+- 未登入的 session、收藏與題庫 API 均回傳 401／`no-store`；跨來源收藏寫入請求在授權層回傳 403。正式首頁與家庭連接畫面可正常載入，瀏覽器沒有 JavaScript 錯誤。
+- 正式環境檢查未登入家庭或寫入學習／收藏進度。完整領包、114 組拼裝、音效、離線與跨裝置驗證採上述隔離 E2E；實體 iPad 與孩子操作手感仍待實際使用確認。
