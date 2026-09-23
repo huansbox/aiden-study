@@ -47,10 +47,11 @@ function action(dataset, extra = {}) {
   return target;
 }
 
-function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwork = false, packCount = 1 } = {}) {
+function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1 } = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
   const imageLoads = [];
+  const dragGhosts = [];
   class TestImage {
     set src(value) { this.url = value; imageLoads.push(this); }
   }
@@ -96,7 +97,7 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
   };
   const document = {
     body: { append() {} },
-    createElement: () => ({ style: {}, remove() {} }),
+    createElement: () => { const ghost = { style: {}, remove() {} }; dragGhosts.push(ghost); return ghost; },
   };
   const context = vm.createContext({
     console,
@@ -131,15 +132,20 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
     viewBox: "0 0 300 180",
     steps: Array.from({ length: packCount }, (_, pack) => ({
       title: `第${pack + 1}包`,
-      parts: [1, 2, 3].map((number) => ({
-        id: `p${pack + 1}-${number}`,
-        name: pack === 0 ? `零件${number}` : `零件${pack + 1}-${number}`,
-        svg: imageArtwork
-          ? `<image href="/art/${id}-p${pack + 1}-${number}.png" x="${number * 55}" y="70" width="50" height="30"/>`
-          : `<rect x="${number * 55}" y="70" width="50" height="30" fill="${entries[id][1]}"/>`,
-        box: { x: number * 55, y: 70, width: 50, height: 30 },
-        z: pack * 3 + number,
-      })),
+      parts: [1, 2, 3].map((number) => {
+        const partId = `p${pack + 1}-${number}`;
+        const svgFor = (suffix = "") => `<image href="/art/${id}-${partId}${suffix}.png" x="${number * 55}" y="70" width="50" height="30"/>`;
+        const peers = variantArtwork ? Array.from({ length: number - 1 }, (_, index) => `p${pack + 1}-${index + 1}`) : [];
+        return {
+          id: partId,
+          name: pack === 0 ? `零件${number}` : `零件${pack + 1}-${number}`,
+          svg: imageArtwork ? svgFor() : `<rect x="${number * 55}" y="70" width="50" height="30" fill="${entries[id][1]}"/>`,
+          occlusionPeers: peers,
+          variants: variantArtwork ? Array.from({ length: (1 << peers.length) - 1 }, (_, mask) => ({ mask, svg: svgFor(`-v${mask}`) })) : [],
+          box: { x: number * 55, y: 70, width: 50, height: 30 },
+          z: pack * 3 + number,
+        };
+      }),
     })),
   }));
   context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
@@ -150,7 +156,7 @@ function harness(placed = [], { modelIds = ["car", "train", "plane"], imageArtwo
   const fireWindow = (name, extra = {}) => {
     for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
   };
-  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, mounted, notify, fireWindow };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, dragGhosts, mounted, notify, fireWindow };
 }
 
 function placedCount(html) {
@@ -235,6 +241,58 @@ test("failed image art blocks placement, retry resumes without losing saved prog
   await Promise.resolve();
   assert.equal(h.placements.length, 1);
   assert.deepEqual(h.state.activeBuild.placed, ["p1-1", "p1-2"]);
+  h.mounted.destroy();
+});
+
+test("same-pack third group changes artwork when an earlier group is placed later", async () => {
+  const h = harness([], { imageArtwork: true, variantArtwork: true });
+  assert.equal(h.imageLoads.length, 7, "all same-pack variants preload before assembly");
+  for (const image of h.imageLoads) image.onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /data-action="target" data-part="p1-3">[^<]*<image[^>]*p1-3-v0\.png/);
+  assert.match(h.element.innerHTML.match(/<button[^>]*data-action="part" data-part="p1-3"[\s\S]*?<\/button>/)?.[0] || "", /p1-3-v0\.png/);
+
+  const source = action({ action: "part", part: "p1-3" });
+  h.element.fire("pointerdown", source, { pointerId: 21, pointerType: "mouse", clientX: 100, clientY: 100 });
+  h.element.fire("pointermove", source, { pointerId: 21, pointerType: "mouse", clientX: 120, clientY: 100, preventDefault() {} });
+  assert.match(h.dragGhosts.at(-1).innerHTML, /p1-3-v0\.png/);
+  h.element.fire("pointercancel", source, { pointerId: 21 });
+  await Promise.resolve();
+
+  h.element.fire("click", action({ action: "part", part: "p1-3" }));
+  h.element.fire("click", action({ action: "target", part: "p1-3" }));
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /brick-svg-part--placed[^>]*data-part-id="p1-3">[^<]*<image[^>]*p1-3-v0\.png/);
+  h.element.fire("click", action({ action: "part", part: "p1-1" }));
+  h.element.fire("click", action({ action: "target", part: "p1-1" }));
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /brick-svg-part--placed[^>]*data-part-id="p1-3">[^<]*<image[^>]*p1-3-v1\.png/);
+  assert.match(h.element.innerHTML.match(/<button[^>]*data-action="part" data-part="p1-3"[\s\S]*?<\/button>/)?.[0] || "", /p1-3-v1\.png/);
+  assert.match(h.context.KidsBrickWorkshop.thumbnail("car", { placed: ["p1-3"] }), /p1-3-v0\.png/);
+  assert.match(h.context.KidsBrickWorkshop.thumbnail("car", { placed: ["p1-1", "p1-3"] }), /p1-3-v1\.png/);
+  assert.match(h.context.KidsBrickWorkshop.thumbnail("car", { complete: true }), /car-p1-3\.png/);
+  h.mounted.destroy();
+});
+
+test("a failed same-pack variant can retry before placing the third group", async () => {
+  const h = harness(["p1-1"], { imageArtwork: true, variantArtwork: true });
+  const failed = h.imageLoads.find((image) => image.url.endsWith("p1-3-v1.png"));
+  assert.ok(failed, "the mask-one variant is preloaded");
+  for (const image of h.imageLoads) image === failed ? image.onerror() : image.onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /這包圖片載入失敗/);
+  assert.deepEqual(h.state.activeBuild.placed, ["p1-1"]);
+  h.element.fire("click", action({ action: "retry-art" }));
+  const retry = h.imageLoads.filter((image) => image.url === failed.url).at(-1);
+  assert.notEqual(retry, failed);
+  retry.onload();
+  await Promise.resolve();
+  assert.match(h.element.innerHTML, /data-action="part" data-part="p1-3"/);
+  h.element.fire("click", action({ action: "part", part: "p1-3" }));
+  h.element.fire("click", action({ action: "target", part: "p1-3" }));
+  await Promise.resolve();
+  assert.equal(h.placements.length, 1);
+  assert.deepEqual(h.state.activeBuild.placed, ["p1-1", "p1-3"]);
   h.mounted.destroy();
 });
 

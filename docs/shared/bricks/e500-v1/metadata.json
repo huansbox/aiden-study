@@ -10,63 +10,88 @@
       "parts": [
         {
           "id": "p1-1",
-          "name": "前段枕木與鋼軌",
-          "z": 100,
-          "originalZ": 100,
+          "name": "前段展示軌道",
+          "z": 0,
           "box": {
-            "x": 41,
-            "y": 345.25,
-            "width": 317.5,
-            "height": 117.5
+            "x": 78,
+            "y": 375.75,
+            "width": 287,
+            "height": 103.25
           },
           "imageBox": {
-            "x": 41,
-            "y": 345.25,
-            "width": 317.5,
-            "height": 117.5
+            "x": 78,
+            "y": 375.75,
+            "width": 287,
+            "height": 103.25
           },
           "file": "assets/p1-1.png",
-          "sha256": "ac679f099918c739a7646a4aaa38c25efbfaa48d335dd4190e9f23ae40c601d7"
+          "sha256": "7be294cca549ba84501b2b5fc402a33cbdc0e2162f9674ede2c576e9c3b4333f",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p1-2",
-          "name": "中段枕木與鋼軌",
-          "z": 99,
-          "originalZ": 99,
+          "name": "中段展示軌道",
+          "z": 1,
           "box": {
-            "x": 237.25,
-            "y": 283.75,
-            "width": 317.5,
-            "height": 117.5
+            "x": 256.5,
+            "y": 329.75,
+            "width": 287,
+            "height": 103.25
           },
           "imageBox": {
-            "x": 237.25,
-            "y": 283.75,
-            "width": 317.5,
-            "height": 117.5
+            "x": 256.5,
+            "y": 329.75,
+            "width": 287,
+            "height": 103.25
           },
           "file": "assets/p1-2.png",
-          "sha256": "bf2258328411269edd9067b646ac9ab4d7bcb50f430db0cb5df950730f3c2d16"
+          "sha256": "e3b14ee0aaa5def79baa9f948fa314e5918c3b81d9d53116db761c31f5a8d5fb",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-2-v0.png",
+              "sha256": "ac6f84ae52c99e5fe4bf12bdb781b3097969278fa9cf135c5362832bb351e9c0"
+            }
+          ]
         },
         {
           "id": "p1-3",
-          "name": "後段枕木與鋼軌",
-          "z": 98,
-          "originalZ": 98,
+          "name": "後段展示軌道",
+          "z": 2,
           "box": {
-            "x": 433.5,
-            "y": 222,
-            "width": 317.5,
-            "height": 117.5
+            "x": 435,
+            "y": 283.75,
+            "width": 287,
+            "height": 103.25
           },
           "imageBox": {
-            "x": 433.5,
-            "y": 222,
-            "width": 317.5,
-            "height": 117.5
+            "x": 435,
+            "y": 283.75,
+            "width": 287,
+            "height": 103.25
           },
           "file": "assets/p1-3.png",
-          "sha256": "c40977a30bf3e7d479b1d6d7dcadb401d2e7ce0cfa362c5f18f3688975ed7683"
+          "sha256": "41c3ac8c016551a1f4498935248e2fbbbe4f21c104387f7c89d69a73b312a7ab",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-3-v0.png",
+              "sha256": "394a7597eb3214b9aaaf4e5ca30cbbb7f9f0b6320d6698927cdbaa418752f550"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p1-3-v1.png",
+              "sha256": "394a7597eb3214b9aaaf4e5ca30cbbb7f9f0b6320d6698927cdbaa418752f550"
+            }
+          ]
         }
       ]
     },
@@ -76,62 +101,87 @@
         {
           "id": "p2-1",
           "name": "前轉向架・第一輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 3,
           "box": {
-            "x": 177,
-            "y": 333.25,
-            "width": 101.5,
-            "height": 67
+            "x": 179.75,
+            "y": 360.75,
+            "width": 96.25,
+            "height": 71.5
           },
           "imageBox": {
-            "x": 177,
-            "y": 333.25,
-            "width": 101.5,
-            "height": 67
+            "x": 179.75,
+            "y": 360.75,
+            "width": 96.25,
+            "height": 71.5
           },
           "file": "assets/p2-1.png",
-          "sha256": "7a32acf07fc156f617f6e1771dc77ec7002e1fa40fcd561f4fef414e2a5a5747"
+          "sha256": "996b8fb474a5fc062206ffa8d8f869582a5422fd7d525745d6fd86939f6c1c68",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p2-2",
           "name": "前轉向架・第二輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 4,
           "box": {
-            "x": 207.75,
-            "y": 323.5,
-            "width": 101.75,
-            "height": 67
+            "x": 214.75,
+            "y": 351.75,
+            "width": 96.25,
+            "height": 71.5
           },
           "imageBox": {
-            "x": 207.75,
-            "y": 323.5,
-            "width": 101.75,
-            "height": 67
+            "x": 214.75,
+            "y": 351.75,
+            "width": 96.25,
+            "height": 71.5
           },
           "file": "assets/p2-2.png",
-          "sha256": "d1f89e2ec14255e4b74dcc5f1f06a76a384da1c5286f995a6443ad8d21a83a8e"
+          "sha256": "b8bb4643e631f929c7d38a08741cd48423897bd9a69753db8c4ef08aa7722ff5",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-2-v0.png",
+              "sha256": "9420d016ec275ab6aa7ac86a12b7a6fcda7233727b2458a211ebf5ea053af9ce"
+            }
+          ]
         },
         {
           "id": "p2-3",
           "name": "前轉向架・第三輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 5,
           "box": {
-            "x": 238.75,
-            "y": 313.75,
-            "width": 101.5,
-            "height": 67
+            "x": 249.75,
+            "y": 342.5,
+            "width": 96.5,
+            "height": 71.5
           },
           "imageBox": {
-            "x": 238.75,
-            "y": 313.75,
-            "width": 101.5,
-            "height": 67
+            "x": 249.75,
+            "y": 342.5,
+            "width": 96.5,
+            "height": 71.5
           },
           "file": "assets/p2-3.png",
-          "sha256": "e7d61dbd14bb738f2b65563ef85b6a9b4d0a902e5cddf42cbbf9a0f56eec5bd9"
+          "sha256": "aad13807155d994c04bf2b601cdfcbc56449d363c9b241b5d6122fa2501ccf08",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "2601b473fc1b8ac2b26bc682bf4537e9efb2c282c12a3d861f06acdfd4119f67"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p2-3-v1.png",
+              "sha256": "2601b473fc1b8ac2b26bc682bf4537e9efb2c282c12a3d861f06acdfd4119f67"
+            }
+          ]
         }
       ]
     },
@@ -141,62 +191,87 @@
         {
           "id": "p3-1",
           "name": "後轉向架・第一輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 6,
           "box": {
-            "x": 469.5,
-            "y": 241.25,
-            "width": 101.5,
-            "height": 67
+            "x": 453.75,
+            "y": 290.25,
+            "width": 96.5,
+            "height": 71.5
           },
           "imageBox": {
-            "x": 469.5,
-            "y": 241.25,
-            "width": 101.5,
-            "height": 67
+            "x": 453.75,
+            "y": 290.25,
+            "width": 96.5,
+            "height": 71.5
           },
           "file": "assets/p3-1.png",
-          "sha256": "255d29e81e7af6b217137ff129fde9e47f70f3cd601273b35bc841fbb4a454d6"
+          "sha256": "0c518462c734238e55ec016d9a503abead4f8016d5b589b0f0e7cfc0ff6c1866",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p3-2",
           "name": "後轉向架・第二輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 7,
           "box": {
-            "x": 500.25,
-            "y": 231.75,
-            "width": 101.75,
-            "height": 66.75
+            "x": 489,
+            "y": 281,
+            "width": 96.25,
+            "height": 71.75
           },
           "imageBox": {
-            "x": 500.25,
-            "y": 231.75,
-            "width": 101.75,
-            "height": 66.75
+            "x": 489,
+            "y": 281,
+            "width": 96.25,
+            "height": 71.75
           },
           "file": "assets/p3-2.png",
-          "sha256": "5e0e7b53782fa2c77e05076b02daf9d6316f8b896c2f1a902d193de10d59e1db"
+          "sha256": "1cbeca5e9ebf1da03b4ea136ba4d6dfd500da921ec248e591f82797bb678c145",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "d58a9c5416a298db11664e3cebf50c86f10fe713fed64b3ad665d6f94de4cbc5"
+            }
+          ]
         },
         {
           "id": "p3-3",
           "name": "後轉向架・第三輪軸",
-          "z": 1200,
-          "originalZ": 1200,
+          "z": 8,
           "box": {
-            "x": 531.25,
-            "y": 222,
-            "width": 101.5,
-            "height": 67
+            "x": 524,
+            "y": 272,
+            "width": 96.25,
+            "height": 71.5
           },
           "imageBox": {
-            "x": 531.25,
-            "y": 222,
-            "width": 101.5,
-            "height": 67
+            "x": 524,
+            "y": 272,
+            "width": 96.25,
+            "height": 71.5
           },
           "file": "assets/p3-3.png",
-          "sha256": "5e88c1dcf6fe905dfda4f025f910d38a878cf20b6d6da9ba9485b7620640dcb0"
+          "sha256": "f2dfeaf59bf00e985c8810320b936d41fdd721c8dceb4948f9cf25225a1c9ffb",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "62229e1cf4026e4552963e6007e301271d8bc2a8b068ad68903c1b88c48e2249"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "62229e1cf4026e4552963e6007e301271d8bc2a8b068ad68903c1b88c48e2249"
+            }
+          ]
         }
       ]
     },
@@ -206,62 +281,87 @@
         {
           "id": "p4-1",
           "name": "前段承重底盤",
-          "z": 1800,
-          "originalZ": 1800,
+          "z": 9,
           "box": {
-            "x": 98.75,
-            "y": 278.5,
-            "width": 258.5,
-            "height": 96.75
+            "x": 128.25,
+            "y": 310.75,
+            "width": 235,
+            "height": 89
           },
           "imageBox": {
-            "x": 98.75,
-            "y": 278.5,
-            "width": 258.5,
-            "height": 96.75
+            "x": 128.25,
+            "y": 310.75,
+            "width": 235,
+            "height": 89
           },
           "file": "assets/p4-1.png",
-          "sha256": "59a195b9abd059a8898d4566f066fe7c3c4f3c4ffc9a7aeb9b5cc5d23ba4bfb4"
+          "sha256": "ba959ed3a68e97d94f35ddb32d0816e698111acc4b23c9ef58d404c2cecd3217",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p4-2",
           "name": "中央承重底盤",
-          "z": 1799,
-          "originalZ": 1799,
+          "z": 10,
           "box": {
-            "x": 271.25,
-            "y": 224.25,
-            "width": 258.5,
-            "height": 96.75
+            "x": 281.25,
+            "y": 271.5,
+            "width": 235,
+            "height": 88.75
           },
           "imageBox": {
-            "x": 271.25,
-            "y": 224.25,
-            "width": 258.5,
-            "height": 96.75
+            "x": 281.25,
+            "y": 271.5,
+            "width": 235,
+            "height": 88.75
           },
           "file": "assets/p4-2.png",
-          "sha256": "653eedd9865e32473df90de98d95a12445007fd15af692ac7821810ee27b3631"
+          "sha256": "60d3652884f3f8392de5ebe924daf7fb5a08222dd09d3e69c5f8a4f245c03451",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "3cf019507e67a8da12c5101dfcc585f2b182032f2116d1e7b28850a3706763a7"
+            }
+          ]
         },
         {
           "id": "p4-3",
           "name": "後段承重底盤",
-          "z": 1798,
-          "originalZ": 1798,
+          "z": 11,
           "box": {
-            "x": 443.75,
-            "y": 170,
-            "width": 258.5,
-            "height": 96.75
+            "x": 434.25,
+            "y": 232,
+            "width": 235,
+            "height": 89
           },
           "imageBox": {
-            "x": 443.75,
-            "y": 170,
-            "width": 258.5,
-            "height": 96.75
+            "x": 434.25,
+            "y": 232,
+            "width": 235,
+            "height": 89
           },
           "file": "assets/p4-3.png",
-          "sha256": "bc287e3860bdcc50e8c163794d6b47589970c719914cc1b9b07316a960ec88dd"
+          "sha256": "1858c9cea2ce9039fd496d4ecb513f327d39c5f2f2787c78d15a1c4b5edbbf93",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-3-v0.png",
+              "sha256": "955358f45922b1cd6b1d26812b2be83b0ad75655f94f6b4803d445290112f3bb"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p4-3-v1.png",
+              "sha256": "955358f45922b1cd6b1d26812b2be83b0ad75655f94f6b4803d445290112f3bb"
+            }
+          ]
         }
       ]
     },
@@ -270,63 +370,82 @@
       "parts": [
         {
           "id": "p5-1",
-          "name": "前轉向架懸吊框",
-          "z": 1700,
-          "originalZ": 2000,
+          "name": "前轉向架分段懸吊框",
+          "z": 12,
           "box": {
-            "x": 164.75,
-            "y": 297,
-            "width": 180.5,
-            "height": 88
+            "x": 234,
+            "y": 357.5,
+            "width": 129.25,
+            "height": 55
           },
           "imageBox": {
-            "x": 164.75,
-            "y": 297,
-            "width": 180.5,
-            "height": 88
+            "x": 234,
+            "y": 357.5,
+            "width": 129.25,
+            "height": 55
           },
           "file": "assets/p5-1.png",
-          "sha256": "2f665c5df5e4abf2003aede2a73681a262454205c63812cdc6eabeec06f58eca"
+          "sha256": "57d71fcaa7f851b681ee22c01aef653da4b331c74e062b5e57d8c9ff5aaf74e8",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p5-2",
-          "name": "後轉向架懸吊框",
-          "z": 1700,
-          "originalZ": 2000,
+          "name": "後轉向架分段懸吊框",
+          "z": 13,
           "box": {
-            "x": 457.25,
-            "y": 205,
-            "width": 180.75,
-            "height": 88.25
+            "x": 498.75,
+            "y": 289.25,
+            "width": 132.25,
+            "height": 54.25
           },
           "imageBox": {
-            "x": 457.25,
-            "y": 205,
-            "width": 180.75,
-            "height": 88.25
+            "x": 498.75,
+            "y": 289.25,
+            "width": 132.25,
+            "height": 54.25
           },
           "file": "assets/p5-2.png",
-          "sha256": "d4699751f5ee499bceab67341d950af5bedd8bb376c0dfe9fa78721d58aa45d6"
+          "sha256": "8dbf3310ab3236f2a8a6624b95da4fc7322ca189c31752f5a92b4e0935ef3254",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": []
         },
         {
           "id": "p5-3",
-          "name": "中央電池箱與風缸",
-          "z": 1750,
-          "originalZ": 2100,
+          "name": "中央電池箱與圓風缸",
+          "z": 14,
           "box": {
-            "x": 306.75,
-            "y": 253.75,
-            "width": 186.75,
-            "height": 86.5
+            "x": 341.5,
+            "y": 326.75,
+            "width": 139.75,
+            "height": 45.75
           },
           "imageBox": {
-            "x": 306.75,
-            "y": 253.75,
-            "width": 186.75,
-            "height": 86.5
+            "x": 341.5,
+            "y": 326.75,
+            "width": 139.75,
+            "height": 45.75
           },
           "file": "assets/p5-3.png",
-          "sha256": "7a5071fc868b403791d9ec9bce55d1d8806aa8a786629a138d3028e22b373a1b"
+          "sha256": "2a7241118bb763459f2c3a8d04c6481003e9e9bfadad96719eab45e5f9ac406f",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-3-v0.png",
+              "sha256": "78c441bf92f70300f1e99c96c571dbbd5a4db7ba0657ae936a4462dc6e4ca52d"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p5-3-v2.png",
+              "sha256": "78c441bf92f70300f1e99c96c571dbbd5a4db7ba0657ae936a4462dc6e4ca52d"
+            }
+          ]
         }
       ]
     },
@@ -335,63 +454,88 @@
       "parts": [
         {
           "id": "p6-1",
-          "name": "前駕駛室下車身",
-          "z": 3000,
-          "originalZ": 3000,
+          "name": "前駕駛室橘色下車身",
+          "z": 15,
           "box": {
-            "x": 98.75,
-            "y": 255.5,
-            "width": 161.75,
-            "height": 108.75
+            "x": 130.75,
+            "y": 287.75,
+            "width": 156,
+            "height": 101.5
           },
           "imageBox": {
-            "x": 98.75,
-            "y": 255.5,
-            "width": 161.75,
-            "height": 108.75
+            "x": 130.75,
+            "y": 287.75,
+            "width": 156,
+            "height": 101.5
           },
           "file": "assets/p6-1.png",
-          "sha256": "08cf3ec1d4f28d327805032679f3829ed32b8ceae7d42bbf2e14f0115394d6c1"
+          "sha256": "e9bc6fc12909766f9b3ccfee53e20d608050b7ed75df0b597a714b7ab2610d71",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p6-2",
-          "name": "中央橘色裙板",
-          "z": 2990,
-          "originalZ": 2990,
+          "name": "中央橘色裙板磚列",
+          "z": 16,
           "box": {
-            "x": 176.75,
-            "y": 163.25,
-            "width": 449.5,
-            "height": 175
+            "x": 207.25,
+            "y": 227.75,
+            "width": 385.5,
+            "height": 141.75
           },
           "imageBox": {
-            "x": 176.75,
-            "y": 163.25,
-            "width": 449.5,
-            "height": 175
+            "x": 207.25,
+            "y": 227.75,
+            "width": 385.5,
+            "height": 141.75
           },
           "file": "assets/p6-2.png",
-          "sha256": "6ab2a216bb3574e1ec753cfdeca89fb1e62fd9479404e39e54a982eba72919b3"
+          "sha256": "05bfef18a3e0dce32b9949185dd55154c2afaf47d132c75051b229b6982b993c",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-2-v0.png",
+              "sha256": "2fc0bf4dfedde4570904fec927b7e9cf35c639c89e5aafc036f0e436fffb6a86"
+            }
+          ]
         },
         {
           "id": "p6-3",
-          "name": "後駕駛室下車身",
-          "z": 2980,
-          "originalZ": 2980,
+          "name": "後駕駛室下車身與車鉤",
+          "z": 17,
           "box": {
-            "x": 543.75,
-            "y": 117.5,
-            "width": 156,
-            "height": 111.5
+            "x": 513.25,
+            "y": 187,
+            "width": 159.75,
+            "height": 125.25
           },
           "imageBox": {
-            "x": 543.75,
-            "y": 117.5,
-            "width": 156,
-            "height": 111.5
+            "x": 513.25,
+            "y": 187,
+            "width": 159.75,
+            "height": 125.25
           },
           "file": "assets/p6-3.png",
-          "sha256": "ada4cf8d09553d17969e4359c2032c6b7e5aa8ec668951bd456616b634278a4b"
+          "sha256": "d5887c1e01519d893900f46843bfa663fb253efb2a5139011a39b1ebf993fe0b",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "3f8ab1285d8d3fd85f923e6000a02280c48677f7821d9723bed7509a08d10b11"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "3f8ab1285d8d3fd85f923e6000a02280c48677f7821d9723bed7509a08d10b11"
+            }
+          ]
         }
       ]
     },
@@ -400,63 +544,88 @@
       "parts": [
         {
           "id": "p7-1",
-          "name": "前段機械室外殼",
-          "z": 3200,
-          "originalZ": 3200,
+          "name": "前段機械室積木牆",
+          "z": 18,
           "box": {
-            "x": 176.75,
-            "y": 168,
-            "width": 205.25,
-            "height": 140.25
+            "x": 207.25,
+            "y": 198.75,
+            "width": 181.5,
+            "height": 144.5
           },
           "imageBox": {
-            "x": 176.75,
-            "y": 168,
-            "width": 205.25,
-            "height": 140.25
+            "x": 207.25,
+            "y": 198.75,
+            "width": 181.5,
+            "height": 144.5
           },
           "file": "assets/p7-1.png",
-          "sha256": "b713d5b0449ce371675ee1c70d38337220b9554e39fdd5e91ff7f6b9f45dc548"
+          "sha256": "2d799902db34df43a13777598b973d0ab309e4a082f89b9f215729891bcca510",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p7-2",
-          "name": "中央機械室外殼",
-          "z": 3199,
-          "originalZ": 3199,
+          "name": "中央機械室積木牆",
+          "z": 19,
           "box": {
-            "x": 299,
-            "y": 129.75,
-            "width": 205.25,
-            "height": 140
+            "x": 309.25,
+            "y": 172.5,
+            "width": 181.5,
+            "height": 144.5
           },
           "imageBox": {
-            "x": 299,
-            "y": 129.75,
-            "width": 205.25,
-            "height": 140
+            "x": 309.25,
+            "y": 172.5,
+            "width": 181.5,
+            "height": 144.5
           },
           "file": "assets/p7-2.png",
-          "sha256": "841dbb881fd6d9ca3ac5b555fc83a627163cb03855d0dc0db8b4959e3a534e38"
+          "sha256": "4becfb6b277a652947e811502052ef6ab9e6a465b9996c18e4ec84dabb6316e7",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-2-v0.png",
+              "sha256": "60849bc4c0ab2217005676eb0f8fd1ea673baa752de9e3c1d1a87b5d7fd3775c"
+            }
+          ]
         },
         {
           "id": "p7-3",
-          "name": "後段機械室外殼",
-          "z": 3198,
-          "originalZ": 3198,
+          "name": "後段機械室積木牆",
+          "z": 20,
           "box": {
-            "x": 421.5,
-            "y": 91.25,
-            "width": 205.25,
-            "height": 140
+            "x": 411.25,
+            "y": 146.5,
+            "width": 181.5,
+            "height": 144.25
           },
           "imageBox": {
-            "x": 421.5,
-            "y": 91.25,
-            "width": 205.25,
-            "height": 140
+            "x": 411.25,
+            "y": 146.5,
+            "width": 181.5,
+            "height": 144.25
           },
           "file": "assets/p7-3.png",
-          "sha256": "4757427d5f9df187316eeba0c2b882e05df20d1778b54722f7d257e09e35a492"
+          "sha256": "321a6adebcb13ac2b095ee2da9f030983af908abd5544a2f0965ad3cc1938b21",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "8108b411e24e3acba6780451d5fa072812c0f8d06759dc6fd35e25c983373b8a"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p7-3-v1.png",
+              "sha256": "8108b411e24e3acba6780451d5fa072812c0f8d06759dc6fd35e25c983373b8a"
+            }
+          ]
         }
       ]
     },
@@ -465,63 +634,82 @@
       "parts": [
         {
           "id": "p8-1",
-          "name": "前駕駛室側牆與車門",
-          "z": 3500,
-          "originalZ": 3500,
+          "name": "前駕駛室橘色斜牆與門柱",
+          "z": 21,
           "box": {
-            "x": 178,
-            "y": 230,
-            "width": 82.25,
-            "height": 104.25
+            "x": 143.75,
+            "y": 227.5,
+            "width": 143,
+            "height": 113.5
           },
           "imageBox": {
-            "x": 178,
-            "y": 230,
-            "width": 82.25,
-            "height": 104.25
+            "x": 143.75,
+            "y": 227.5,
+            "width": 143,
+            "height": 113.5
           },
           "file": "assets/p8-1.png",
-          "sha256": "6bb6c4574146bcaf7b710efc613c58c6b9671f15531ec63babcd807f7c65038f"
+          "sha256": "965bb4bb503b9daae1d9451fa651a68226c0adf3d8fff8bef97e4823d883a94c",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p8-2",
-          "name": "後駕駛室側牆與車門",
-          "z": 4001,
-          "originalZ": 3500,
+          "name": "後駕駛室斜牆與厚窗框",
+          "z": 22,
           "box": {
-            "x": 623.25,
-            "y": 98.25,
-            "width": 76.75,
-            "height": 113.75
+            "x": 515.5,
+            "y": 129.25,
+            "width": 154.25,
+            "height": 116.5
           },
           "imageBox": {
-            "x": 623.25,
-            "y": 98.25,
-            "width": 76.75,
-            "height": 113.75
+            "x": 515.5,
+            "y": 129.25,
+            "width": 154.25,
+            "height": 116.5
           },
           "file": "assets/p8-2.png",
-          "sha256": "680770b29d82c7fa0799483d4898c302d15845775a2c10051d2e1048f0c8e64d"
+          "sha256": "72ba674cf7d43f6621572ae0cf1374b4d01f12619fd865dc33b8fe609d500e53",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": []
         },
         {
           "id": "p8-3",
-          "name": "前端斜面深灰車頭框",
-          "z": 4300,
-          "originalZ": 4300,
+          "name": "前駕駛室厚實斜窗框",
+          "z": 23,
           "box": {
-            "x": 98.25,
-            "y": 199.25,
-            "width": 125,
-            "height": 112.25
+            "x": 130.25,
+            "y": 232.25,
+            "width": 146.5,
+            "height": 112.5
           },
           "imageBox": {
-            "x": 98.25,
-            "y": 199.25,
-            "width": 125,
-            "height": 112.25
+            "x": 130.25,
+            "y": 232.25,
+            "width": 146.5,
+            "height": 112.5
           },
           "file": "assets/p8-3.png",
-          "sha256": "631d5f357212cc40cc28465453f5bce348c964c449267aad653abe8802a164e5"
+          "sha256": "37d24cd058d019d186fbdcea732a74c57e40484d3de0611aee59281967298e0f",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "0afaec3980ee93143cdd5211cd8df869da3721eefad0736a6c49aa440444734b"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p8-3-v2.png",
+              "sha256": "0afaec3980ee93143cdd5211cd8df869da3721eefad0736a6c49aa440444734b"
+            }
+          ]
         }
       ]
     },
@@ -530,128 +718,167 @@
       "parts": [
         {
           "id": "p9-1",
-          "name": "前擋風玻璃與雨刷",
-          "z": 4600,
-          "originalZ": 4600,
+          "name": "前端整片玻璃與儀表臺",
+          "z": 24,
           "box": {
-            "x": 107,
-            "y": 224.25,
-            "width": 88.25,
-            "height": 76
+            "x": 144,
+            "y": 251,
+            "width": 80,
+            "height": 77.5
           },
           "imageBox": {
-            "x": 107,
-            "y": 224.25,
-            "width": 88.25,
-            "height": 76
+            "x": 144,
+            "y": 251,
+            "width": 80,
+            "height": 77.5
           },
           "file": "assets/p9-1.png",
-          "sha256": "eda4805aa2cb963cc946f7abf16aebbf7383c27a7c3039fc2101815e4844a1a0"
+          "sha256": "ac6c508c70544dd4aaab5bbb5254001efbbdee9c37f03e02580ebb5da26ea195",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p9-2",
-          "name": "前側窗與橘色扶手",
-          "z": 4700,
-          "originalZ": 4700,
+          "name": "前側窗與粗橘色扶手",
+          "z": 25,
           "box": {
-            "x": 210.25,
-            "y": 241.75,
-            "width": 51.75,
-            "height": 86.75
+            "x": 176.75,
+            "y": 255.75,
+            "width": 116,
+            "height": 101.75
           },
           "imageBox": {
-            "x": 210.25,
-            "y": 241.75,
-            "width": 51.75,
-            "height": 86.75
+            "x": 176.75,
+            "y": 255.75,
+            "width": 116,
+            "height": 101.75
           },
           "file": "assets/p9-2.png",
-          "sha256": "751dcdef4599842ecc191f3dc23664702d88077abf6d03b1aeec50fe6c386e88"
+          "sha256": "78fb0518b3a2660e29352819992198056ba84293bef54e2f252e79536199ae2d",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p9-2-v0.png",
+              "sha256": "4d7a119c5cf26394d1cbca4221644f2fc77b68edd79cc4d2cdbc04937ff3af77"
+            }
+          ]
         },
         {
           "id": "p9-3",
-          "name": "後側窗與橘色扶手",
-          "z": 4700,
-          "originalZ": 4700,
+          "name": "後端玻璃窗組與扶手",
+          "z": 26,
           "box": {
-            "x": 625.5,
-            "y": 104,
-            "width": 50.5,
-            "height": 102.25
+            "x": 535.25,
+            "y": 153.25,
+            "width": 95.25,
+            "height": 124.75
           },
           "imageBox": {
-            "x": 625.5,
-            "y": 104,
-            "width": 50.5,
-            "height": 102.25
+            "x": 535.25,
+            "y": 153.25,
+            "width": 95.25,
+            "height": 124.75
           },
           "file": "assets/p9-3.png",
-          "sha256": "40e57b4c8e9d6ebb84e30455bc94bc861ced1ba6db34f9f4d7827b3deba513d0"
+          "sha256": "cdb9908910e1357b707d1c302387454265f15081c1214249ea7477f01bbb7a09",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
         }
       ]
     },
     {
-      "title": "分段灰色車頂",
+      "title": "分段積木車頂",
       "parts": [
         {
           "id": "p10-1",
-          "name": "前駕駛室斜角屋頂",
-          "z": 4100,
-          "originalZ": 4100,
+          "name": "前駕駛室凸點屋頂",
+          "z": 27,
           "box": {
-            "x": 133,
-            "y": 187,
-            "width": 128.25,
-            "height": 62.75
+            "x": 161.75,
+            "y": 221.5,
+            "width": 126,
+            "height": 55.75
           },
           "imageBox": {
-            "x": 133,
-            "y": 187,
-            "width": 128.25,
-            "height": 62.75
+            "x": 161.75,
+            "y": 221.5,
+            "width": 126,
+            "height": 55.75
           },
           "file": "assets/p10-1.png",
-          "sha256": "97e23534aca9f10799a9e72b1c618665191f205b2b97dc4400c7dfccb9e3df0b"
+          "sha256": "7febd87b5bc741b7940dcce7fd93d89c371f315c8a0bcbaed7e0a070c3f8923a",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p10-2",
-          "name": "前半機械室屋頂",
-          "z": 4000,
-          "originalZ": 4000,
+          "name": "前半機械室斜磚屋頂",
+          "z": 28,
           "box": {
-            "x": 177.5,
-            "y": 123,
-            "width": 267.25,
-            "height": 112.75
+            "x": 206.25,
+            "y": 182.25,
+            "width": 234.5,
+            "height": 83.5
           },
           "imageBox": {
-            "x": 177.5,
-            "y": 123,
-            "width": 267.25,
-            "height": 112.75
+            "x": 206.25,
+            "y": 182.25,
+            "width": 234.5,
+            "height": 83.5
           },
           "file": "assets/p10-2.png",
-          "sha256": "22a6888dffda23468bec0c077b5cb3caf2e984cf9bb77e0fd1374f2825b77916"
+          "sha256": "8938148bc7899df64b59708740c2e1722ea9b7911449f661152c8db1ca266a77",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-2-v0.png",
+              "sha256": "8d046fc10bc1dc94c3c78d9ab9d74eecd943d0a17e6981bfe75aaa7bc496a744"
+            }
+          ]
         },
         {
           "id": "p10-3",
-          "name": "後半屋頂與另一端車頭",
-          "z": 3999,
-          "originalZ": 4000,
+          "name": "後半屋頂與後駕駛室頂",
+          "z": 29,
           "box": {
-            "x": 361.25,
-            "y": 51.25,
-            "width": 338.75,
-            "height": 127
+            "x": 359.25,
+            "y": 131.25,
+            "width": 279,
+            "height": 95
           },
           "imageBox": {
-            "x": 361.25,
-            "y": 51.25,
-            "width": 338.75,
-            "height": 127
+            "x": 359.25,
+            "y": 131.25,
+            "width": 279,
+            "height": 95
           },
           "file": "assets/p10-3.png",
-          "sha256": "7605e43977d6dc94e8622fd2d0a343b53349b608ae7deae6d3339dcc18130cfd"
+          "sha256": "ab56a561da5426ed8c011f9c707cf2b751ac33dfb7a71363b122fbb48cd18ef6",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-3-v0.png",
+              "sha256": "f86b5fa88af920aabf401d29c87a8d47adaa1b8abe4800b932d2c060da01845d"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p10-3-v1.png",
+              "sha256": "f86b5fa88af920aabf401d29c87a8d47adaa1b8abe4800b932d2c060da01845d"
+            }
+          ]
         }
       ]
     },
@@ -660,63 +887,71 @@
       "parts": [
         {
           "id": "p11-1",
-          "name": "前端絕緣座與散熱格柵",
-          "z": 5100,
-          "originalZ": 5100,
+          "name": "前端散熱格柵與絕緣座",
+          "z": 30,
           "box": {
-            "x": 212.5,
-            "y": 144.75,
-            "width": 124.25,
-            "height": 58.5
+            "x": 237.75,
+            "y": 196.25,
+            "width": 117.5,
+            "height": 46.75
           },
           "imageBox": {
-            "x": 212.5,
-            "y": 144.75,
-            "width": 124.25,
-            "height": 58.5
+            "x": 237.75,
+            "y": 196.25,
+            "width": 117.5,
+            "height": 46.75
           },
           "file": "assets/p11-1.png",
-          "sha256": "1c2a085595bdc5647a44cd9a9a4aaa1af6c6b69298581b1bd200c6864ee11c8f"
+          "sha256": "cd945f1b2b263de4e0c289f713b44f144eeb0b0913950c05ec472504a2ac89de",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p11-2",
-          "name": "中央雙組散熱百葉",
-          "z": 5100,
-          "originalZ": 5100,
+          "name": "中央雙組厚磚散熱格柵",
+          "z": 31,
           "box": {
-            "x": 329,
-            "y": 99.75,
-            "width": 183,
-            "height": 66.75
+            "x": 346,
+            "y": 172.625,
+            "width": 120.75,
+            "height": 44
           },
           "imageBox": {
-            "x": 329,
-            "y": 99.75,
-            "width": 183,
-            "height": 66.75
+            "x": 346,
+            "y": 172.75,
+            "width": 120.75,
+            "height": 43.75
           },
           "file": "assets/p11-2.png",
-          "sha256": "89e0bcca4cd5a9fd9ebb155b6af092dfda287ef9e0162ff311d1226ff745a1f3"
+          "sha256": "1cf5a5a494c003f46fed064f3e08fab507c27236b1c8fa51970f4ea54d32da66",
+          "occlusionPeers": [
+            "p11-1"
+          ],
+          "variants": []
         },
         {
           "id": "p11-3",
-          "name": "後端屋頂設備與絕緣座",
-          "z": 5100,
-          "originalZ": 5100,
+          "name": "後端散熱格柵與絕緣座",
+          "z": 32,
           "box": {
-            "x": 467,
-            "y": 52,
-            "width": 182.25,
-            "height": 71.25
+            "x": 444.75,
+            "y": 145.25,
+            "width": 124,
+            "height": 47.5
           },
           "imageBox": {
-            "x": 467,
-            "y": 52,
-            "width": 182.25,
-            "height": 71.25
+            "x": 444.75,
+            "y": 145.25,
+            "width": 124,
+            "height": 47.5
           },
           "file": "assets/p11-3.png",
-          "sha256": "167138c2194930eeecb01b195001a92603b74f57cd8d70a71534b06ecdb05687"
+          "sha256": "1fc802d28e06b91f52eac82f94d978888a5c9da250b830cdf20b3a7509787745",
+          "occlusionPeers": [
+            "p11-1",
+            "p11-2"
+          ],
+          "variants": []
         }
       ]
     },
@@ -725,63 +960,82 @@
       "parts": [
         {
           "id": "p12-1",
-          "name": "前端升起的 Z 形集電弓",
-          "z": 5800,
-          "originalZ": 5800,
+          "name": "前端升起的粗 Z 形集電弓",
+          "z": 33,
           "box": {
-            "x": 246,
-            "y": 70.25,
-            "width": 98.25,
-            "height": 114
+            "x": 258.25,
+            "y": 129,
+            "width": 96.25,
+            "height": 97.75
           },
           "imageBox": {
-            "x": 246,
-            "y": 70.25,
-            "width": 98.25,
-            "height": 114
+            "x": 258.25,
+            "y": 129,
+            "width": 96.25,
+            "height": 97.75
           },
           "file": "assets/p12-1.png",
-          "sha256": "3ecd4d0bac3cc9e34a3cdb50506aa2836ec44bd4ec377363b9bf39e31660080f"
+          "sha256": "f35905367ee66635fc164bba3952c3e009e4812470d78ee1a666105ee21b4d19",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p12-2",
-          "name": "後端收低的 Z 形集電弓",
-          "z": 5700,
-          "originalZ": 5700,
+          "name": "後端收低的粗 Z 形集電弓",
+          "z": 34,
           "box": {
-            "x": 515.75,
-            "y": 42,
-            "width": 86.25,
-            "height": 59.5
+            "x": 449.5,
+            "y": 112.75,
+            "width": 92.25,
+            "height": 64.75
           },
           "imageBox": {
-            "x": 515.75,
-            "y": 42,
-            "width": 86.25,
-            "height": 59.5
+            "x": 449.5,
+            "y": 112.75,
+            "width": 92.25,
+            "height": 64.75
           },
           "file": "assets/p12-2.png",
-          "sha256": "aa913902d721bccf11ef1b3bfbcf7bca106daa7178181dcd30e596e5b67d722d"
+          "sha256": "d9900879a1ec8bb317009911e27e8860319da8d23a834c92248e31f836b6f5c4",
+          "occlusionPeers": [
+            "p12-1"
+          ],
+          "variants": []
         },
         {
           "id": "p12-3",
-          "name": "高壓母線與黃色絕緣器",
-          "z": 5400,
-          "originalZ": 5400,
+          "name": "黃色絕緣器與高壓連接桿",
+          "z": 35,
           "box": {
-            "x": 290.5,
-            "y": 69.25,
-            "width": 217.75,
-            "height": 88
+            "x": 301.5,
+            "y": 144.75,
+            "width": 146.25,
+            "height": 59
           },
           "imageBox": {
-            "x": 290.5,
-            "y": 69.25,
-            "width": 217.75,
-            "height": 88
+            "x": 301.5,
+            "y": 144.75,
+            "width": 146.25,
+            "height": 59
           },
           "file": "assets/p12-3.png",
-          "sha256": "49e8220b94d756de6e97d970d35b0184f5b306bf39bf3c4d7f29b045353b4f36"
+          "sha256": "2ade0c117ba18feec715b0dd3f80b8e213a5fe72cbb69633b6be9b68ad564cb4",
+          "occlusionPeers": [
+            "p12-1",
+            "p12-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p12-3-v0.png",
+              "sha256": "a7b6e815c28896dce75dd5af8f0b16effe953173c3a9f53ae142166927ecfc0e"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p12-3-v2.png",
+              "sha256": "a7b6e815c28896dce75dd5af8f0b16effe953173c3a9f53ae142166927ecfc0e"
+            }
+          ]
         }
       ]
     },
@@ -790,131 +1044,153 @@
       "parts": [
         {
           "id": "p13-1",
-          "name": "擋風玻璃上方雙頭燈",
-          "z": 6100,
-          "originalZ": 6100,
+          "name": "前端上方雙圓頭燈",
+          "z": 36,
           "box": {
-            "x": 146.375,
-            "y": 200.625,
+            "x": 172.375,
+            "y": 230,
             "width": 44,
             "height": 44
           },
           "imageBox": {
-            "x": 147,
-            "y": 205.5,
-            "width": 42.75,
-            "height": 34.25
+            "x": 175.75,
+            "y": 236.25,
+            "width": 37.25,
+            "height": 31.5
           },
           "file": "assets/p13-1.png",
-          "sha256": "cfc59592eea4af316814fa7bed9a096232cb01bb7dd97feecd89f8bb21bffadc"
+          "sha256": "1efcc020deacc7078986fc161838ba13321959e7a1edb4c6873b3421546d473a",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p13-2",
-          "name": "下方雙燈組與台鐵車頭標誌",
-          "z": 6100,
-          "originalZ": 6100,
+          "name": "前端下方雙燈組與標誌",
+          "z": 37,
           "box": {
-            "x": 103,
-            "y": 296.875,
-            "width": 71.75,
-            "height": 44
+            "x": 130.25,
+            "y": 317.5,
+            "width": 76.75,
+            "height": 48.5
           },
           "imageBox": {
-            "x": 103,
-            "y": 297.5,
-            "width": 71.75,
-            "height": 42.75
+            "x": 130.25,
+            "y": 317.5,
+            "width": 76.75,
+            "height": 48.5
           },
           "file": "assets/p13-2.png",
-          "sha256": "6336f7420700c3d9a1cf9cac01ea9085f51ac6038c0526884c70afebb494cf52"
+          "sha256": "bb9f199cc9412917111acbf93a1a6de8075ff1430eb22a2d38cdd0facd6be5df",
+          "occlusionPeers": [
+            "p13-1"
+          ],
+          "variants": []
         },
         {
           "id": "p13-3",
-          "name": "後駕駛室車號與踏階",
-          "z": 6200,
-          "originalZ": 6200,
+          "name": "後端燈組、踏階與車號",
+          "z": 38,
           "box": {
-            "x": 627.25,
-            "y": 154,
-            "width": 46,
-            "height": 73
+            "x": 587,
+            "y": 131.5,
+            "width": 82.75,
+            "height": 169.5
           },
           "imageBox": {
-            "x": 627.25,
-            "y": 154,
-            "width": 46,
-            "height": 73
+            "x": 587,
+            "y": 131.5,
+            "width": 82.75,
+            "height": 169.5
           },
           "file": "assets/p13-3.png",
-          "sha256": "467fd7f7f98a4c4e4a90d08133a0125040a5ca4b3422fb03258c17528175beb3"
+          "sha256": "7691d7ac87be54a34df674066016c12d5112244b22ea53c779987ca50f8e73ee",
+          "occlusionPeers": [
+            "p13-1",
+            "p13-2"
+          ],
+          "variants": []
         }
       ]
     },
     {
-      "title": "完成車鉤與排障器",
+      "title": "完成車鉤與踏階",
       "parts": [
         {
           "id": "p14-1",
-          "name": "前端灰色排障板",
-          "z": 6600,
-          "originalZ": 6600,
+          "name": "前端厚灰色排障板",
+          "z": 39,
           "box": {
-            "x": 80.25,
-            "y": 332.75,
-            "width": 107,
-            "height": 86.25
+            "x": 127,
+            "y": 351.5,
+            "width": 94.25,
+            "height": 83.75
           },
           "imageBox": {
-            "x": 80.25,
-            "y": 332.75,
-            "width": 107,
-            "height": 86.25
+            "x": 127,
+            "y": 351.5,
+            "width": 94.25,
+            "height": 83.75
           },
           "file": "assets/p14-1.png",
-          "sha256": "30bc3ea9e44008b9c077d5957fc87df98d996178c1fe875c92adfc7e2ba1ca48"
+          "sha256": "96361f6901527260364de9d8732cb8cdca4c392f6ee3ae8b5c5b0c13cc7192d6",
+          "occlusionPeers": [],
+          "variants": []
         },
         {
           "id": "p14-2",
-          "name": "中央車鉤與制動軟管",
-          "z": 6800,
-          "originalZ": 6800,
+          "name": "前端短厚玩具車鉤",
+          "z": 40,
           "box": {
-            "x": 98.5,
-            "y": 340.75,
-            "width": 74.5,
-            "height": 62.5
+            "x": 134,
+            "y": 361.25,
+            "width": 72.75,
+            "height": 46.25
           },
           "imageBox": {
-            "x": 98.5,
-            "y": 340.75,
-            "width": 74.5,
-            "height": 62.5
+            "x": 134,
+            "y": 361.25,
+            "width": 72.75,
+            "height": 46.25
           },
           "file": "assets/p14-2.png",
-          "sha256": "4f000d1d72a6dfdc1bb4bc1a6129717d0d3824c7cddc0ffa354f0af83ab852ac"
+          "sha256": "c0e5b279529aaf84c58403f5eb5957e760f2d6a30c38a140e2b7665e7f0680bd",
+          "occlusionPeers": [
+            "p14-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p14-2-v0.png",
+              "sha256": "7167943beddfe51a93e55af93e3afaed6ff61a3401c175759f16f714b1b2a6a6"
+            }
+          ]
         },
         {
           "id": "p14-3",
-          "name": "前駕駛室踏階與 E501 車號",
-          "z": 6900,
-          "originalZ": 6900,
+          "name": "前端踏階與 E501 車號",
+          "z": 41,
           "box": {
-            "x": 176.5,
-            "y": 294.5,
-            "width": 86,
-            "height": 79.25
+            "x": 245.25,
+            "y": 343.75,
+            "width": 47.5,
+            "height": 44
           },
           "imageBox": {
-            "x": 176.5,
-            "y": 294.5,
-            "width": 86,
-            "height": 79.25
+            "x": 245.25,
+            "y": 348.5,
+            "width": 47.5,
+            "height": 34.5
           },
           "file": "assets/p14-3.png",
-          "sha256": "afdaa94cddefdd99a336be9d45c5d8e85aa916dd4f6fe12c24abec44274eeb0b"
+          "sha256": "250fc93b3edc73e46325633d5de212f22e8e3616cf48a1a49f73af41a4ddae18",
+          "occlusionPeers": [
+            "p14-1",
+            "p14-2"
+          ],
+          "variants": []
         }
       ]
     }
   ],
-  "assetDigest": "0c1972d0be50c8380ea962b76f9af701b5a12ea348e2ca03c3a40d5bc5949d0e"
+  "assetDigest": "56c2cbae37740d1628095649c2be0a7e60d84fcb24a50146ac6ca07f72e000d2"
 }

@@ -94,10 +94,11 @@ try {
   await browser.send('Network.setBlockedURLs',{urls:[]});
   await browser.click('[data-action="retry-art"]',true);
   await browser.waitFor('document.querySelector("[data-action=part]")');
-  const decoded=await browser.evaluate(`Promise.all(KidsBrickE500.steps.flatMap(step=>step.parts).map(part=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img.naturalWidth>0);img.onerror=()=>reject(Error(part.id));img.src=part.svg.match(/href="([^"]+)"/)[1];})))`);
-  assert.equal(decoded.filter(Boolean).length,42,'all actual local art assets decode');
+  const assetCount=await browser.evaluate('KidsBrickE500.steps.flatMap(step=>step.parts).flatMap(part=>[part,...part.variants]).length');
+  const decoded=await browser.evaluate(`Promise.all(KidsBrickE500.steps.flatMap(step=>step.parts).flatMap(part=>[part,...part.variants]).map(asset=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img.naturalWidth>0);img.onerror=()=>reject(Error(asset.file));img.src=asset.svg.match(/href="([^"]+)"/)[1];})))`);
+  assert.equal(decoded.filter(Boolean).length,assetCount,'all actual local art assets and free-order variants decode');
   await browser.send('Network.setCacheDisabled',{cacheDisabled:false});
-  passed('42 cropped E500 images decode; missing artwork pauses placement and retry preserves progress');
+  passed('all 42 E500 groups and free-order image variants decode; missing artwork pauses placement and retry preserves progress');
   await browser.click('[data-action="part"][data-part="p1-1"]',true);
   await browser.click('[data-action="target"][data-part="p1-1"]',true);
   await browser.waitFor('KidsCollection.create("aiden").snapshot().activeBuild.placed.length===1');
@@ -156,7 +157,10 @@ try {
     await browser.waitFor('!document.querySelector(".brick-svg-part--just-placed")');
     if(await browser.evaluate('Boolean(document.querySelector("[data-action=allocate]"))')) await browser.click('[data-action="allocate"]');
     await browser.waitFor('document.querySelector(".brick-part:not(:disabled)")');
-    const id=await browser.evaluate('document.querySelector(".brick-part:not(:disabled)").dataset.part');
+    const id=await browser.evaluate(`(() => {
+      const choices=[...document.querySelectorAll('.brick-part:not(:disabled)')];
+      return (choices.find(p=>p.dataset.part==='p9-3')||choices.find(p=>p.dataset.part==='p9-1')||choices[0]).dataset.part;
+    })()`);
     if([8,20,32,40].includes(placed)) {
       await browser.drag('[data-action="part"][data-part="'+id+'"]','[data-action="target"][data-part="'+id+'"]',{touch:true});
     } else {
@@ -167,6 +171,12 @@ try {
     await browser.waitFor('KidsCollection.create("aiden").snapshot().activeBuild.placed.length>'+placed);
     placed=(await state()).activeBuild.placed.length;
     if(placed===21) await browser.screenshot('.scratch/collection-e2e/half-built.png',{fullPage:true});
+    if(placed===25){
+      assert.ok((await state()).activeBuild.placed.includes('p9-3'));
+      assert.ok(!(await state()).activeBuild.placed.includes('p9-1'));
+      await browser.screenshot('.scratch/collection-e2e/windows-third-first.png',{fullPage:true});
+    }
+    if(placed===27)passed('window pack accepts third-first-second placement and renders the same saved model');
   }
   await settled();
   assert.ok((await state()).activeBuild.completedAt);

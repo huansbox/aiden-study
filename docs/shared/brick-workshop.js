@@ -27,8 +27,15 @@
       )
       .sort((left, right) => (left.z || 0) - (right.z || 0));
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
+  const partArtwork = (part, placed, complete = false) => {
+    const peers = part.occlusionPeers || [];
+    if (complete || !peers.length) return part.svg;
+    const mask = peers.reduce((value, id, index) => value | (placed.has(id) ? 1 << index : 0), 0);
+    return part.variants?.find((variant) => variant.mask === mask)?.svg || part.svg;
+  };
   const imageSources = (part) =>
-    [...(part.svg || "").matchAll(/<image\b[^>]*\b(?:href|xlink:href)\s*=\s*["']([^"']+)["']/gi)]
+    [part.svg, ...(part.variants || []).map((variant) => variant.svg)]
+      .flatMap((artwork) => [...(artwork || "").matchAll(/<image\b[^>]*\b(?:href|xlink:href)\s*=\s*["']([^"']+)["']/gi)])
       .map((match) => match[1]);
   const safeError = (error, fallback) =>
     typeof error?.message === "string" && error.message.trim()
@@ -42,9 +49,9 @@
     return allParts(model)
       .map((part) => {
         if (complete || placed.has(part.id))
-          return `<g class="brick-svg-part brick-svg-part--placed${part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}" data-part-id="${escapeHtml(part.id)}">${part.svg}</g>`;
+          return `<g class="brick-svg-part brick-svg-part--placed${part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}" data-part-id="${escapeHtml(part.id)}">${partArtwork(part, placed, complete)}</g>`;
         if (targetIds.has(part.id))
-          return `<g class="brick-svg-part brick-svg-part--target" role="button" tabindex="0" aria-label="放置${escapeHtml(part.name)}" data-action="target" data-part="${escapeHtml(part.id)}">${part.svg}</g>`;
+          return `<g class="brick-svg-part brick-svg-part--target" role="button" tabindex="0" aria-label="放置${escapeHtml(part.name)}" data-action="target" data-part="${escapeHtml(part.id)}">${partArtwork(part, placed)}</g>`;
         return "";
       })
       .join("");
@@ -62,7 +69,7 @@
       .map((part) => {
         const visible = complete || placedIds.has(part.id);
         if (!visible && !ghosts) return "";
-        return `<g class="${visible ? "brick-thumbnail__placed" : "brick-thumbnail__ghost"}${visible && part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}">${part.svg}</g>`;
+        return `<g class="${visible ? "brick-thumbnail__placed" : "brick-thumbnail__ghost"}${visible && part.id === animatedPartId ? " brick-svg-part--just-placed" : ""}">${partArtwork(part, placedIds, complete)}</g>`;
       })
       .join("");
     return `<svg class="brick-thumbnail ${escapeHtml(className)}" viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}">${parts}</svg>`;
@@ -339,7 +346,7 @@
                     .map((part) => {
                       const done = placed.has(part.id);
                       return `<button class="brick-part${selectedPart === part.id ? " is-selected" : ""}${done ? " is-placed" : ""}" type="button" data-action="part" data-part="${escapeHtml(part.id)}" ${done || busy === `part:${part.id}` ? "disabled" : ""} aria-pressed="${selectedPart === part.id}">
-                        <svg viewBox="${escapeHtml(`${part.box.x} ${part.box.y} ${part.box.width} ${part.box.height}`)}" aria-hidden="true">${part.svg}</svg>
+                        <svg viewBox="${escapeHtml(`${part.box.x} ${part.box.y} ${part.box.width} ${part.box.height}`)}" aria-hidden="true">${partArtwork(part, placed)}</svg>
                         <span>${done ? "已放好" : escapeHtml(part.name)}</span>
                       </button>`;
                     })
@@ -692,7 +699,8 @@
         const part = partById(model, drag.partId);
         const ghost = document.createElement("div");
         ghost.className = "brick-drag-ghost";
-        ghost.innerHTML = `<svg viewBox="${escapeHtml(`${part.box.x} ${part.box.y} ${part.box.width} ${part.box.height}`)}" aria-hidden="true">${part.svg}</svg>`;
+        const placed = new Set([...(snapshot.activeBuild?.placed || []), ...optimisticPlaced]);
+        ghost.innerHTML = `<svg viewBox="${escapeHtml(`${part.box.x} ${part.box.y} ${part.box.width} ${part.box.height}`)}" aria-hidden="true">${partArtwork(part, placed)}</svg>`;
         document.body.append(ghost);
         drag.ghost = ghost;
       }

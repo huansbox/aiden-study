@@ -24,7 +24,12 @@ test("E500 has 14 complete semantic packs and stable placement identities", () =
   model.steps.forEach((step, i) => {
     assert.ok(step.title);
     assert.equal(step.parts.length, 3);
-    step.parts.forEach((part, j) => assert.equal(part.id, `p${i + 1}-${j + 1}`));
+    step.parts.forEach((part, j) => {
+      assert.equal(part.id, `p${i + 1}-${j + 1}`);
+      assert.deepEqual(Array.from(part.occlusionPeers), Array.from(step.parts.slice(0, j), p => p.id));
+      assert.equal(new Set(part.variants.map(v => v.mask)).size, part.variants.length);
+      for (const variant of part.variants) assert.ok(Number.isInteger(variant.mask) && variant.mask >= 0 && variant.mask < (1 << j) - 1);
+    });
   });
 });
 
@@ -40,7 +45,10 @@ test("every independently cropped image fits its touch target and decodes as tra
     assert.doesNotMatch(p.svg, /NaN|undefined|<script|\bid=|url\(/, p.id);
     assert.equal((p.svg.match(/<image\b/g) || []).length, 1, p.id);
     assert.ok(p.svg.includes(`x="${image.x}" y="${image.y}" width="${image.width}" height="${image.height}"`), p.id);
-    const raster = sharp(fs.readFileSync(assetPath(p)));
+    for (const asset of [p, ...p.variants]) {
+    assert.doesNotMatch(asset.svg, /NaN|undefined|<script|\bid=|url\(/, asset.file);
+    assert.equal((asset.svg.match(/<image\b/g) || []).length, 1, asset.file);
+    const raster = sharp(fs.readFileSync(assetPath(asset)));
     const info = await raster.metadata();
     assert.equal(info.format, "png", p.id);
     assert.ok(info.hasAlpha, p.id);
@@ -52,24 +60,40 @@ test("every independently cropped image fits its touch target and decodes as tra
       if (pixels[i] === 0) transparent++;
     }
     assert.ok(opaque > 100 && transparent > 100, `${p.id} has visible artwork and transparent surroundings`);
+    }
   }
 });
 
-test("each of the 42 placements visibly advances the assembled model", async () => {
-  const layers = await Promise.all(parts.map(async part => ({
-    id: part.id, z: part.z,
-    input: await sharp(fs.readFileSync(assetPath(part))).resize(Math.round(part.imageBox.width), Math.round(part.imageBox.height)).toBuffer(),
-    left: Math.round(part.imageBox.x), top: Math.round(part.imageBox.y),
-  })));
+test("all six within-pack placement orders visibly advance the assembled model", async () => {
+  const images = new Map();
+  for (const p of parts) for (const asset of [p, ...p.variants]) {
+    images.set(asset.file, await sharp(fs.readFileSync(assetPath(asset))).resize(Math.round(p.imageBox.width), Math.round(p.imageBox.height)).toBuffer());
+  }
   const canvas = () => sharp({ create: { width: 800, height: 500, channels: 4, background: "#f3efe5" } });
-  let previous = await canvas().raw().toBuffer();
-  for (let count = 1; count <= layers.length; count++) {
-    const overlays = layers.slice(0, count).sort((a, b) => a.z - b.z).map(({input, left, top}) => ({input, left, top}));
-    const current = await canvas().composite(overlays).raw().toBuffer();
-    let changed = 0;
-    for (let i = 0; i < current.length; i += 4) if (Math.abs(current[i] - previous[i]) + Math.abs(current[i + 1] - previous[i + 1]) + Math.abs(current[i + 2] - previous[i + 2]) > 30) changed++;
-    assert.ok(changed > 100, `${layers[count - 1].id}: ${changed} visibly changed pixels`);
-    previous = current;
+  const compose = selection => {
+    const placed = new Set(selection.map(p => p.id));
+    const overlays = [...selection].sort((a,b) => a.z-b.z).map(p => {
+      const mask = p.occlusionPeers.reduce((value,id,bit) => value | (placed.has(id) ? 1 << bit : 0), 0);
+      const file = p.variants.find(v => v.mask === mask)?.file || p.file;
+      return {input:images.get(file),left:Math.round(p.imageBox.x),top:Math.round(p.imageBox.y)};
+    });
+    return canvas().composite(overlays).raw().toBuffer();
+  };
+  for (let pack = 0; pack < 14; pack++) {
+    const completed = parts.slice(0,pack*3);
+    const initial = await compose(completed);
+    for (const order of [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]) {
+      let previous = initial;
+      const selection = [...completed];
+      for (const index of order) {
+        const part = parts[pack*3+index];selection.push(part);
+        const current = await compose(selection);
+        let changed = 0;
+        for (let i = 0; i < current.length; i += 4) if (Math.abs(current[i] - previous[i]) + Math.abs(current[i + 1] - previous[i + 1]) + Math.abs(current[i + 2] - previous[i + 2]) > 30) changed++;
+        assert.ok(changed > 100, `${part.id}, order ${order}: ${changed} visibly changed pixels`);
+        previous = current;
+      }
+    }
   }
 });
 
@@ -78,7 +102,7 @@ test("asset URLs remain local under root and repository-prefixed Pages deploymen
     const another = vm.createContext({ window: {}, URL, document: { currentScript: { src: `https://example.test${prefix}/shared/brick-e500.js?v=release` } } });
     vm.runInContext(source, another);
     for (const p of another.window.KidsBrickE500.steps.flatMap(step => step.parts)) {
-      assert.ok(p.svg.includes(`href="https://example.test${prefix}/shared/bricks/e500-v1/${p.file}?v=${model.assetVersion}"`), p.id);
+      for (const asset of [p, ...p.variants]) assert.ok(asset.svg.includes(`href="https://example.test${prefix}/shared/bricks/e500-v1/${asset.file}?v=${model.assetVersion}"`), p.id);
     }
   }
 });
