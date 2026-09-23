@@ -29,8 +29,8 @@
       "tyk114": 100
     },
     "by_scope": {
-      "needs-confirmation": 5,
-      "core-provisional": 138,
+      "needs-confirmation": 11,
+      "core-provisional": 132,
       "future": 57
     },
     "by_concept_cluster": {
@@ -75,7 +75,7 @@
   "scope_definitions": {
     "core-provisional": "概念落入 115 康軒前兩單元暫定核心；正式段考範圍尚未公布。",
     "future": "月亮、日夜天空及高度角觀測等本次暫定核心以外概念，保留後續。",
-    "needs-confirmation": "陸域棲地、閱讀日期／地理資訊等未能由目前115前兩單元概念直接確認；正式範圍或課程細節公布後再決定。"
+    "needs-confirmation": "地震報告讀值與推論、陸域棲地、閱讀日期／地理資訊等細目未能由目前115資料直接確認；正式範圍或課程細節公布後再決定。"
   },
   "groups": [
     {
@@ -1354,7 +1354,7 @@
       "section": "第11題",
       "item": "1",
       "concept": "從地震報告擷取震源深度",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "圖表擷取數值",
       "shared_dependency": "第11題六小題共用同一中央氣象署地震報告圖；第6小題另有三幅震源示意圖",
       "app_presentation": "報告數值、地圖色階與震源示意圖須可放大；保留規模、深度、震央、震度與距離的不同測量意義。",
@@ -1370,7 +1370,7 @@
       "section": "第11題",
       "item": "2",
       "concept": "從地震報告擷取規模",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "圖表擷取數值",
       "shared_dependency": "第11題六小題共用同一中央氣象署地震報告圖；第6小題另有三幅震源示意圖",
       "app_presentation": "報告數值、地圖色階與震源示意圖須可放大；保留規模、深度、震央、震度與距離的不同測量意義。",
@@ -1386,7 +1386,7 @@
       "section": "第11題",
       "item": "3",
       "concept": "從地震報告定位震央",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "圖表擷取位置",
       "shared_dependency": "第11題六小題共用同一中央氣象署地震報告圖；第6小題另有三幅震源示意圖",
       "app_presentation": "報告數值、地圖色階與震源示意圖須可放大；保留規模、深度、震央、震度與距離的不同測量意義。",
@@ -1402,7 +1402,7 @@
       "section": "第11題",
       "item": "4",
       "concept": "從地震報告比較最大震度",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "圖表比較",
       "shared_dependency": "第11題六小題共用同一中央氣象署地震報告圖；第6小題另有三幅震源示意圖",
       "app_presentation": "報告數值、地圖色階與震源示意圖須可放大；保留規模、深度、震央、震度與距離的不同測量意義。",
@@ -1418,7 +1418,7 @@
       "section": "第11題",
       "item": "5",
       "concept": "震度與距震央遠近的推論",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "單選判讀",
       "shared_dependency": "第11題六小題共用同一中央氣象署地震報告圖；第6小題另有三幅震源示意圖",
       "app_presentation": "報告數值、地圖色階與震源示意圖須可放大；保留規模、深度、震央、震度與距離的不同測量意義。",
@@ -1434,7 +1434,7 @@
       "section": "第11題",
       "item": "6",
       "concept": "震源與震央空間關係",
-      "scope": "core-provisional",
+      "scope": "needs-confirmation",
       "primary_method": "圖像單選",
       "shared_dependency": "共用地震報告圖；另依賴三幅震源剖面圖",
       "app_presentation": "保留三幅剖面圖及標籤，不能改成純文字定義題。",

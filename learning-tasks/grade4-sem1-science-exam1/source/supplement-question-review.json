@@ -45,7 +45,7 @@
           "item": "1",
           "answer_slots": 1,
           "concept": "S1-habitat",
-          "scope": "core-provisional",
+          "scope": "needs-confirmation",
           "question_approach": "棲地條件比較",
           "type": "true-false",
           "dependency": null,
@@ -927,7 +927,7 @@
           "item": "4(3)",
           "answer_slots": 1,
           "concept": "S1-habitat",
-          "scope": "core-provisional",
+          "scope": "needs-confirmation",
           "question_approach": "棲地條件比較",
           "type": "true-false",
           "dependency": "supp-yap-113-midterm-VI-4",
@@ -955,7 +955,7 @@
           "item": "4(5)",
           "answer_slots": 1,
           "concept": "S1-habitat",
-          "scope": "core-provisional",
+          "scope": "needs-confirmation",
           "question_approach": "棲地條件比較",
           "type": "true-false",
           "dependency": "supp-yap-113-midterm-VI-4",
@@ -1089,9 +1089,9 @@
         }
       ],
       "counts": {
-        "core-provisional": 66,
+        "core-provisional": 63,
         "future": 0,
-        "needs-confirmation": 9
+        "needs-confirmation": 12
       },
       "review_item_count": 75,
       "answer_slot_count": 75,
