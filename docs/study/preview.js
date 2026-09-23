@@ -90,6 +90,11 @@
     }
     function focusControl(action) {
       if (!action) return;
+      if (["previous-part", "next-part"].includes(action)) {
+        const other = action === "previous-part" ? "next-part" : "previous-part";
+        (host.querySelector?.(`[data-action="${action}"]:not(:disabled)`) || host.querySelector?.(`[data-action="${other}"]:not(:disabled)`) || host.querySelector?.('.preview-group-part .preview-option'))?.focus?.({ preventScroll: true });
+        return;
+      }
       const enabled = ["previous-question", "next-question"].includes(action)
         ? host.querySelector?.(`[data-action="${action}"]:not(:disabled)`)
         : host.querySelector?.(`[data-action="${action}"]`);
@@ -146,7 +151,7 @@
       else if (action === "answer-compare") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-number") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; }
       else if (action === "previous-part" || action === "next-part") { const step = action === "previous-part" ? -1 : 1; state.partIndex = Math.max(0, Math.min(current()?.parts?.length - 1 || 0, state.partIndex + step)); render(action); }
-      else if (action === "answer-group") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); }
+      else if (action === "answer-group") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); host.querySelector?.('.preview-group-part [aria-pressed="true"]')?.focus?.({ preventScroll: true }); }
       else if (action === "check") check();
       else if (action === "reveal") { state.revealed = true; render(); }
       else if (action === "retry-answer" || action === "reset") { resetQuestion(action === "reset" ? 0 : state.questionIndex); render(); }

@@ -2792,10 +2792,21 @@ function renderQuiz() {
       document.getElementById("group-prev").disabled = i === 0;
       document.getElementById("group-next").disabled = i === q.parts.length - 1;
       document.getElementById("group-parts").innerHTML = `<div class="group-part"><span class="group-part-question">${escapeHtml(part.text)}</span><div class="group-options">${q.options.map((option, index) => `<button type="button" class="group-option" data-group-value="${index + 1}" aria-pressed="${quiz._groupValues[i] === String(index + 1)}" ${quiz.isAnswered ? "disabled" : ""}><span class="opt-label">${index + 1}</span><span>${escapeHtml(option)}</span></button>`).join("")}</div>${quiz.isAnswered ? `<span class="group-feedback">${quiz._groupResults[i] ? "答對" : `正解：${escapeHtml(q.options[Number(q.answer[i]) - 1])}`}</span>` : ""}</div>`;
-      document.querySelectorAll("#group-parts [data-group-value]").forEach(button => { button.onclick = () => { quiz._groupValues[i] = button.dataset.groupValue; renderPart(); refresh(); }; });
+      document.querySelectorAll("#group-parts [data-group-value]").forEach(button => { button.onclick = () => {
+        quiz._groupValues[i] = button.dataset.groupValue;
+        renderPart();
+        refresh();
+        document.querySelector('#group-parts [aria-pressed="true"]')?.focus({ preventScroll: true });
+      }; });
     };
-    document.getElementById("group-prev").onclick = () => { if (quiz._groupIndex > 0) { quiz._groupIndex--; renderPart(); } };
-    document.getElementById("group-next").onclick = () => { if (quiz._groupIndex < q.parts.length - 1) { quiz._groupIndex++; renderPart(); } };
+    const movePart = (step, action, fallback) => {
+      quiz._groupIndex = Math.max(0, Math.min(q.parts.length - 1, quiz._groupIndex + step));
+      renderPart();
+      const target = document.getElementById(action);
+      (target.disabled ? document.getElementById(fallback) : target).focus({ preventScroll: true });
+    };
+    document.getElementById("group-prev").onclick = () => movePart(-1, "group-prev", "group-next");
+    document.getElementById("group-next").onclick = () => movePart(1, "group-next", "group-prev");
     submit.onclick = () => { if (!submit.disabled && !quiz.isAnswered) submitAnswer([...quiz._groupValues]); };
     quiz._renderGroupPart = renderPart;
     renderPart();

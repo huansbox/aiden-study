@@ -79,6 +79,13 @@ try {
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".study-material-overlay").isVisible(), false);
     assert.equal(await page.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
+    await page.locator('#group-parts [data-group-value="1"]').focus();
+    await page.keyboard.press("Enter");
+    assert.equal(await page.locator('#group-parts [data-group-value="1"]').evaluate(node => node === document.activeElement), true);
+    for (let i = 0; i < 2; i++) { await page.locator("#group-next").focus(); await page.keyboard.press("Enter"); }
+    assert.equal(await page.locator("#group-prev").evaluate(node => node === document.activeElement), true);
+    for (let i = 0; i < 2; i++) { await page.locator("#group-prev").focus(); await page.keyboard.press("Enter"); }
+    assert.equal(await page.locator("#group-next").evaluate(node => node === document.activeElement), true);
     await page.screenshot({ path: resolve(screenshotDir, `group-child-image-${width}.png`) });
     for (const [index, value] of ["1", "2", "3"].entries()) {
       await page.locator(`#group-parts [data-group-value="${value}"]`).click();
@@ -112,6 +119,16 @@ try {
     await preview.locator("[data-material-close]").click();
     assert.equal(await preview.locator(".study-material-overlay").isVisible(), false);
     assert.equal(await preview.locator("[data-material-open]").evaluate(node => node === document.activeElement), true);
+    await preview.locator('[data-action="answer-group"][data-value="1"]').focus();
+    await preview.keyboard.press("Enter");
+    assert.equal(await preview.locator('[data-action="answer-group"][data-value="1"]').evaluate(node => node === document.activeElement), true);
+    for (let i = 0; i < 2; i++) { await preview.locator('[data-action="next-part"]').focus(); await preview.keyboard.press("Enter"); }
+    assert.equal(await preview.locator('[data-action="previous-part"]').evaluate(node => node === document.activeElement), true);
+    const scrollAfterPart = await preview.evaluate(() => scrollY);
+    await preview.keyboard.press("Tab");
+    assert.ok(await preview.evaluate(previous => document.activeElement !== document.body && scrollY >= previous - 2, scrollAfterPart));
+    for (let i = 0; i < 2; i++) { await preview.locator('[data-action="previous-part"]').focus(); await preview.keyboard.press("Enter"); }
+    assert.equal(await preview.locator('[data-action="next-part"]').evaluate(node => node === document.activeElement), true);
     assert.equal(await preview.locator('button[data-action="check"]').isDisabled(), true);
     for (const [index, value] of ["1", "2", "3"].entries()) {
       await preview.locator(`[data-action="answer-group"][data-value="${value}"]`).click();
