@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "parent trial link opens isolated first-pack mode and preserves return child",
+    "e500: touch placement in arbitrary order opens the next sample pack",
+    "e500: portrait drag, real sound, mute/unmute, skip/replay and reset pass without child/storage access",
+    "emu3000: touch placement in arbitrary order opens the next sample pack",
+    "EMU3000 all 12 sample packs / 36 groups complete and enter sample display shelf",
+    "emu3000: portrait drag, real sound, mute/unmute, skip/replay and reset pass without child/storage access",
+    "r200: touch placement in arbitrary order opens the next sample pack",
+    "r200: portrait drag, real sound, mute/unmute, skip/replay and reset pass without child/storage access",
+    "model switch / close / reload reset correctly; zero API requests and both children plus KV sentinels unchanged",
+    "390px mobile and Pad layouts have no horizontal page overflow"
+  ],
+  "physicalIPad": false,
+  "at": "2026-09-23T11:02:57.744Z"
+}
