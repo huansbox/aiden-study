@@ -137,7 +137,7 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上家庭私人題包已發布 revision 5，共 77 題（數學 U1～U5 57 題、自然 S1～S2 20 題），不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，正式 pack 部署在獨立 Cloudflare KV，由 Study 以家庭連線自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
-[#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已完成 20 題內容覆核與 revision 5 正式發布，原數學 57 題逐值維持不變；[自然首批選題](data/study/g4-s1-science-exam1/README.md)與[整合紀錄](docs-dev/grade4-science-study-first-batch.md)記錄上線內容、覆蓋缺口與驗證界線。[#119 第二批](https://github.com/huansbox/aiden-study/issues/119) 正在處理已收原卷的水域保護與完整圖表題，尚未發布。
+[#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已完成 20 題內容覆核與 revision 5 正式發布，原數學 57 題逐值維持不變；[自然首批選題](data/study/g4-s1-science-exam1/README.md)與[整合紀錄](docs-dev/grade4-science-study-first-batch.md)記錄上線內容、覆蓋缺口與驗證界線。[#119 第二批](https://github.com/huansbox/aiden-study/issues/119) 已完成 12 個活動的內容與本機整合驗證，89 題 revision 6 僅為候選，尚未發布；見[第二批狀態](data/study/g4-s1-science-exam1/second-batch.md)。
 
 ```bash
 # PDF 萃取範例

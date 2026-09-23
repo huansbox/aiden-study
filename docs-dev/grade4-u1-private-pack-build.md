@@ -2,6 +2,8 @@
 
 本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 5 共 77 題，包含原數學 57 題與自然首批 20 題，狀態與 hash 見[自然首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
+[#119 第二批](grade4-science-study-second-batch.md)已建置 89 題 revision 6 本機候選；正式服務仍是上述 revision 5。候選建置、覆核與歸檔不等於發布。
+
 ## 輸入約定
 
 - curated 頂層保留 `schemaVersion/packId/revision/items`；explanations 保留 `schemaVersion/packId/revision/entries`；public mapping 保留 `schemaVersion/packId/revision/sourceTask/sourceMapping/items`。三份版本必須一致，schemaVersion 固定 1。
