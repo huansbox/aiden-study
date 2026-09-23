@@ -88,6 +88,15 @@
 .brick-svg-part--target:focus { opacity: .58; filter: none; transform: scale(1.025); }
 .brick-svg-part--just-placed { animation: brick-place .32s cubic-bezier(.2, 1.45, .45, 1); }
 
+.brick-target-guide { pointer-events: none; }
+.brick-target-guide__hit { pointer-events: all; fill: transparent; cursor: pointer; }
+.brick-target-guide__hit:focus-visible { outline: 3px solid #165a83; outline-offset: 4px; }
+.brick-target-guide__halo { fill: rgb(255 218 74 / 24%); stroke: #fffdf1; stroke-width: 9; }
+.brick-target-guide__outline { fill: none; stroke: #aa6200; stroke-width: 3; stroke-dasharray: 8 5; }
+.brick-target-guide__label { fill: #fff2b9; stroke: #aa6200; stroke-width: 2; }
+.brick-target-guide text { fill: #583500; font: 800 17px system-ui, sans-serif; }
+.brick-target-guide__arrow { fill: none; stroke: #aa6200; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
 .brick-tray { padding: 20px; }
 .brick-tray__heading { margin-bottom: 15px; }
 .brick-tray__heading h3 { margin-top: 4px; font-size: 1.25rem; }

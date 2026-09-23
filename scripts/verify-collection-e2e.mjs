@@ -161,6 +161,11 @@ try {
       const choices=[...document.querySelectorAll('.brick-part:not(:disabled)')];
       return (choices.find(p=>p.dataset.part==='p9-3')||choices.find(p=>p.dataset.part==='p9-1')||choices[0]).dataset.part;
     })()`);
+    if(placed===41) {
+      assert.equal(await browser.evaluate('document.querySelector(\'[data-target-guide="p14-3"]\').style.display'), '');
+      assert.match(await browser.evaluate('document.querySelector(\'[data-target-guide="p14-3"]\').textContent'), /最後一片，放這裡/);
+      await browser.screenshot('.scratch/collection-e2e/final-target.png',{fullPage:true});
+    }
     if([8,20,32,40].includes(placed)) {
       await browser.drag('[data-action="part"][data-part="'+id+'"]','[data-action="target"][data-part="'+id+'"]',{touch:true});
     } else {
@@ -181,18 +186,25 @@ try {
   await settled();
   assert.ok((await state()).activeBuild.completedAt);
   await browser.waitFor('document.querySelector("[data-celebration]")');
-  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__rails image").length'),3);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__rails image").length'),9);
   assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__train image").length'),39);
   assert.equal(await browser.evaluate('getComputedStyle(document.querySelector(".brick-celebration__rails")).animationName'),'none');
-  await browser.waitFor('Math.abs(new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41)>30');
+  assert.equal(await browser.evaluate('KidsBrickCelebration.duration'),6000);
+  await browser.waitFor('Math.abs(new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41)<12');
+  const middleX=await browser.evaluate('new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41');
   await browser.screenshot('.scratch/collection-e2e/celebration.png',{fullPage:true});
+  await browser.waitFor('new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41 < -150');
+  assert.ok(middleX > -150, 'train advances from right to left');
   await browser.waitFor('document.querySelector("[data-action=display]")');
   await browser.click('[data-action="celebration-replay"]',true);
   await browser.waitFor('document.querySelector("[data-celebration]")');
+  await browser.click('.brick-celebration__sound',true);
+  assert.equal(await browser.evaluate('document.querySelector(".brick-celebration__sound").getAttribute("aria-pressed")'),'false');
+  assert.equal(await browser.evaluate('document.querySelector(".brick-workshop__header [data-action=sound]").getAttribute("aria-pressed")'),'false');
   await browser.click('[data-action="celebration-skip"]',true);
   await browser.waitFor('document.querySelector("[data-action=display]")');
   assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-celebration]"))'),false);
-  passed('server-confirmed completion drives 39 LEGO train groups along 3 stationary rails, auto-finishes, replays and skips');
+  passed('final gold target is visible; server-confirmed completion drives E500 one-way for 6 seconds on extended stationary track, auto-finishes, replays, mutes and skips');
   await browser.click('[data-action="display"][data-displayed="true"]');
   await browser.waitFor('KidsCollection.create("aiden").snapshot().displayedBuildIds.includes("e500")');
   await browser.screenshot('.scratch/collection-e2e/collection.png',{fullPage:true});

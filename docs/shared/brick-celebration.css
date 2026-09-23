@@ -36,7 +36,7 @@
   overflow: hidden;
 }
 .brick-celebration__train {
-  animation: brick-celebration-drive var(--celebration-duration, 4200ms) both;
+  animation: brick-celebration-drive var(--celebration-duration, 6000ms) linear both;
 }
 .brick-celebration__confetti {
   opacity: 0;
@@ -57,6 +57,8 @@
   line-height: 1.4;
   cursor: pointer;
 }
+.brick-celebration__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.brick-workshop .brick-celebration__sound { min-height: 48px; padding: 12px 18px; border: 1px solid #b5c6ce; border-radius: 14px; background: #fff; color: var(--brick-ink, #193348); font: inherit; cursor: pointer; }
 .brick-workshop .brick-celebration__skip:hover { background: #12496b; }
 .brick-workshop .brick-celebration__skip:focus-visible {
   outline: 4px solid rgb(39 121 167 / 35%);
@@ -64,12 +66,11 @@
 }
 
 /* Travel follows the model's rail projection: +178.5 x = -46 y.
-   All six axles stay on the stationary track, and the train parks at origin. */
+   Enter from the rear/right, cross the centre at 3 seconds, and leave entirely
+   through the front/left. One pass only; no reversal or reset while visible. */
 @keyframes brick-celebration-drive {
-  0%, 8% { transform: translate(0, 0); animation-timing-function: ease-in-out; }
-  35% { transform: translate(-84px, 21.65px); animation-timing-function: ease-in-out; }
-  69% { transform: translate(64px, -16.49px); animation-timing-function: ease-in-out; }
-  94%, 100% { transform: translate(0, 0); }
+  from { transform: translate(700px, -180.392px); }
+  to { transform: translate(-700px, 180.392px); }
 }
 @keyframes brick-celebration-sprinkle {
   0% { opacity: 0; transform: translate(0, 12px) rotate(0deg); }

@@ -12,8 +12,17 @@ function rootElement() {
     _innerHTML: "",
     renderHistory: [],
     renderCount: 0,
+    guideNodes: [],
     get innerHTML() { return this._innerHTML; },
-    set innerHTML(value) { this._innerHTML = value; this.renderHistory.push(value); this.renderCount += 1; },
+    set innerHTML(value) {
+      this._innerHTML = value;
+      this.renderHistory.push(value);
+      this.renderCount += 1;
+      this.guideNodes = [...value.matchAll(/<g data-target-guide="([^"]+)"([^>]*)>/g)].map(([, part, attributes]) => ({
+        dataset: { targetGuide: part },
+        style: { display: attributes.includes('display:none') ? "none" : "" },
+      }));
+    },
     lastFocused: null,
     addEventListener(name, listener) {
       if (!listeners.has(name)) listeners.set(name, new Set());
@@ -22,6 +31,7 @@ function rootElement() {
     removeEventListener(name, listener) { listeners.get(name)?.delete(listener); },
     contains() { return true; },
     querySelectorAll(selector) {
+      if (selector === "[data-target-guide]") return this.guideNodes;
       const match = selector.match(/data-action="([^"]+)"/);
       if (!match || !["part", "target"].includes(match[1])) return [];
       return ["p1-1", "p1-2", "p1-3"].map((part) => ({
@@ -51,6 +61,7 @@ function controlledClock() {
   let now = 0, nextId = 1;
   const timers = new Map();
   return {
+    now: () => now,
     setTimeout(callback, delay) {
       const id = nextId++;
       timers.set(id, { callback, at: now + delay });
@@ -74,7 +85,7 @@ function controlledClock() {
 
 function harness(placed = [], {
   modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1,
-  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false,
+  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false, withAudio = false,
 } = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
@@ -82,6 +93,7 @@ function harness(placed = [], {
   const dragGhosts = [];
   const clock = controlledTimers ? controlledClock() : null;
   const closeCalls = [];
+  const audioCalls = [];
   class TestImage {
     set src(value) { this.url = value; imageLoads.push(this); }
   }
@@ -133,7 +145,7 @@ function harness(placed = [], {
     console,
     document,
     CustomEvent: class {},
-    Date,
+    Date: clock ? class extends Date { static now() { return clock.now(); } } : Date,
     Promise,
     queueMicrotask,
     setTimeout: clock?.setTimeout || setTimeout,
@@ -180,6 +192,14 @@ function harness(placed = [], {
     })),
   }));
   context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
+  if (withAudio) context.KidsBrickAudio = {
+    create() {
+      audioCalls.push({ method: "create", args: [] });
+      return Object.fromEntries(["unlock", "place", "celebrate", "stop", "setEnabled", "destroy"].map((method) =>
+        [method, (...args) => audioCalls.push({ method, args })],
+      ));
+    },
+  };
   if (withCelebration) vm.runInContext(source("brick-celebration.js"), context);
   vm.runInContext(source("brick-workshop.js"), context);
   const element = rootElement();
@@ -188,7 +208,7 @@ function harness(placed = [], {
   const fireWindow = (name, extra = {}) => {
     for (const listener of [...windowListeners.get(name) || []]) listener({ type: name, ...extra });
   };
-  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, dragGhosts, mounted, notify, fireWindow, clock, closeCalls };
+  return { context, element, state, collection, placements, selectCalls, allocateCalls, imageLoads, dragGhosts, mounted, notify, fireWindow, clock, closeCalls, audioCalls };
 }
 
 function placedCount(html) {
@@ -236,7 +256,7 @@ test("E500 celebration waits for server completion and keeps its DOM through sub
 
     confirmCompletion(h);
     assert.match(h.element.innerHTML, celebrationMarker);
-    assert.deepEqual(h.clock.pending(), [4200]);
+    assert.deepEqual(h.clock.pending(), [6000]);
     const html = h.element.innerHTML, renders = h.element.renderCount;
     h.state.revision++;
     h.state.sync = { status: "ready", pending: 0 };
@@ -245,18 +265,20 @@ test("E500 celebration waits for server completion and keeps its DOM through sub
     await Promise.resolve();
     assert.equal(h.element.innerHTML, html);
     assert.equal(h.element.renderCount, renders, "save callbacks must not replace the animation DOM");
-    assert.deepEqual(h.clock.pending(), [4200]);
+    assert.deepEqual(h.clock.pending(), [6000]);
   } finally { h.mounted.destroy(); }
 });
 
-test("E500 celebration ends after 4.2 seconds, does not auto-repeat, and can be replayed manually", () => {
-  const h = celebrationHarness();
+test("E500 celebration ends after 6 seconds, does not auto-repeat, and can be replayed manually", () => {
+  const h = celebrationHarness({ withAudio: true });
   try {
     finishLocalBuild(h);
     confirmCompletion(h);
-    h.clock.advance(4199);
+    h.clock.advance(5999);
     assert.match(h.element.innerHTML, celebrationMarker);
+    const stops = h.audioCalls.filter((call) => call.method === "stop").length;
     h.clock.advance(1);
+    assert.equal(h.audioCalls.filter((call) => call.method === "stop").length, stops + 1);
     assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
     assert.match(h.element.innerHTML, /data-action="display"/);
     assert.match(h.element.innerHTML, /data-action="celebration-replay"/);
@@ -268,8 +290,8 @@ test("E500 celebration ends after 4.2 seconds, does not auto-repeat, and can be 
 
     h.element.fire("click", action({ action: "celebration-replay" }));
     assert.match(h.element.innerHTML, celebrationMarker);
-    assert.deepEqual(h.clock.pending(), [4200]);
-    h.clock.advance(4200);
+    assert.deepEqual(h.clock.pending(), [6000]);
+    h.clock.advance(6000);
     assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
     assert.deepEqual(h.state.activeBuild.placed, completePartIds);
   } finally { h.mounted.destroy(); }
@@ -299,12 +321,14 @@ test("remote completion of a cached E500 never auto-celebrates without a local f
 
 test("skipping E500 celebration by button or Escape clears its timer without another automatic replay", async (t) => {
   for (const method of ["button", "Escape"]) await t.test(method, () => {
-    const h = celebrationHarness();
+    const h = celebrationHarness({ withAudio: true });
     try {
       finishLocalBuild(h);
       confirmCompletion(h);
+      const stops = h.audioCalls.filter((call) => call.method === "stop").length;
       if (method === "button") h.element.fire("click", action({ action: "celebration-skip" }));
       else h.element.fire("keydown", action({}), { key: "Escape" });
+      assert.equal(h.audioCalls.filter((call) => call.method === "stop").length, stops + 1);
       assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
       assert.match(h.element.innerHTML, /data-action="display"/);
       assert.deepEqual(h.clock.pending(), []);
@@ -345,20 +369,25 @@ test("existing completed collections, reduced motion, and unsupported models do 
 
 test("closing, destroying, or leaving the workshop cancels the E500 celebration timer", async (t) => {
   for (const method of ["close", "destroy", "shelf"]) await t.test(method, async () => {
-    const h = celebrationHarness();
+    const h = celebrationHarness({ withAudio: true });
     try {
       await Promise.resolve();
       finishLocalBuild(h);
       confirmCompletion(h);
-      assert.deepEqual(h.clock.pending(), [4200]);
+      assert.deepEqual(h.clock.pending(), [6000]);
+      const stops = h.audioCalls.filter((call) => call.method === "stop").length;
       if (method === "destroy") h.mounted.destroy();
       else if (method === "close") h.element.fire("click", action({ action: "close" }));
       else h.element.fire("click", action({ action: "view", view: "shelf" }));
+      assert.equal(h.audioCalls.filter((call) => call.method === "stop").length, stops + 1);
+      assert.equal(h.audioCalls.filter((call) => call.method === "destroy").length, method === "destroy" ? 1 : 0);
       assert.deepEqual(h.clock.pending(), []);
       if (method === "close") assert.equal(h.closeCalls.length, 1);
       if (method === "destroy") assert.equal(h.element.innerHTML, "");
       const renders = h.element.renderCount;
-      h.clock.advance(5000);
+      const audioCount = h.audioCalls.length;
+      h.clock.advance(7000);
+      assert.equal(h.audioCalls.length, audioCount, "cancelled timers cannot restart sound");
       assert.equal(h.element.renderCount, renders);
       if (method === "destroy") {
         h.notify();
@@ -370,6 +399,117 @@ test("closing, destroying, or leaving the workshop cancels the E500 celebration 
       }
     } finally { h.mounted.destroy(); }
   });
+});
+
+test("workshop sound follows confirmed completion and resumes from the animation time after unmuting", async () => {
+  const h = celebrationHarness({ withAudio: true });
+  const calls = (method) => h.audioCalls.filter((call) => call.method === method);
+  try {
+    await Promise.resolve();
+    assert.equal(calls("create").length, 1);
+    h.state.sync = { status: "offline", pending: 1 };
+    finishLocalBuild(h);
+    assert.equal(calls("place").length, 1);
+    assert.equal(calls("celebrate").length, 0, "local placement alone does not start celebration audio");
+    confirmCompletion(h);
+    assert.equal(calls("celebrate").length, 1);
+    assert.equal(calls("celebrate")[0].args[0] ?? 0, 0);
+    const renders = h.element.renderCount;
+    h.notify();
+    h.mounted.render();
+    assert.equal(calls("celebrate").length, 1, "subscription redraws do not restart audio");
+
+    h.element.fire("click", action({ action: "sound" }));
+    assert.deepEqual(calls("setEnabled").at(-1).args, [false]);
+    assert.equal(calls("celebrate").length, 1, "muting does not schedule more celebration audio");
+    h.clock.advance(1750);
+    const unmuteStart = h.audioCalls.length;
+    h.element.fire("click", action({ action: "sound" }));
+    assert.deepEqual(h.audioCalls.slice(unmuteStart), [
+      { method: "setEnabled", args: [true] },
+      { method: "unlock", args: [] },
+      { method: "celebrate", args: [1.75] },
+    ]);
+    assert.equal(h.element.renderCount, renders, "sound controls preserve the current animation DOM");
+    assert.deepEqual(h.clock.pending(), [4250], "unmuting preserves the original visual end time");
+
+    h.element.fire("click", action({ action: "celebration-skip" }));
+    const replayStart = h.audioCalls.length;
+    h.element.fire("click", action({ action: "celebration-replay" }));
+    const replayCalls = h.audioCalls.slice(replayStart);
+    assert.equal(replayCalls[0].method, "unlock", "manual replay unlocks audio from its user gesture");
+    assert.equal(replayCalls.filter((call) => call.method === "celebrate").length, 1);
+    assert.equal(replayCalls.find((call) => call.method === "celebrate").args[0] ?? 0, 0);
+    assert.equal(calls("place").length, 1, "replay does not repeat the placement sound");
+  } finally { h.mounted.destroy(); }
+  assert.equal(calls("destroy").length, 1);
+});
+
+test("missing audio module leaves completion, sound controls, skip, and replay usable", () => {
+  const h = celebrationHarness();
+  try {
+    assert.equal(h.context.KidsBrickAudio, undefined);
+    finishLocalBuild(h);
+    confirmCompletion(h);
+    h.element.fire("click", action({ action: "sound" }));
+    h.clock.advance(1000);
+    h.element.fire("click", action({ action: "sound" }));
+    assert.match(h.element.innerHTML, celebrationMarker);
+    h.element.fire("click", action({ action: "celebration-skip" }));
+    assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+    h.element.fire("click", action({ action: "celebration-replay" }));
+    assert.match(h.element.innerHTML, celebrationMarker);
+    h.clock.advance(6000);
+    assert.match(h.element.innerHTML, /data-action="display"/);
+    assert.equal(h.placements.length, 1);
+  } finally { h.mounted.destroy(); }
+});
+
+test("the last E500 group has a visible labelled destination before selection", () => {
+  const h = celebrationHarness();
+  try {
+    assert.deepEqual(h.element.guideNodes.map((guide) => [guide.dataset.targetGuide, guide.style.display]), [["p14-3", ""]]);
+    assert.match(h.element.innerHTML, /最後一片，放這裡/);
+    const hit = h.element.innerHTML.match(/<rect class="brick-target-guide__hit"[^>]+>/)?.[0];
+    assert.ok(hit);
+    assert.match(hit, /data-action="target" data-part="p14-3"/);
+    const value = (attribute) => Number(hit.match(new RegExp(`\\b${attribute}="([^"]+)"`))[1]);
+    const { box } = h.context.KidsBrickModels.get("e500").steps[13].parts[2];
+    assert.ok(value("x") <= box.x && value("x") + value("width") >= box.x + box.width);
+    assert.ok(value("y") <= box.y && value("y") + value("height") >= box.y + box.height);
+    assert.ok(value("x") >= 0 && value("x") + value("width") <= 300);
+    assert.ok(value("y") >= 0 && value("y") + value("height") <= 180);
+    clickFinalGroup(h);
+    assert.equal(h.placements[0].partId, "p14-3", "the guide uses the same placement action as the model target");
+  } finally { h.mounted.destroy(); }
+});
+
+test("selection and dragging reveal only the matching target guide without replacing captured DOM", async () => {
+  const h = harness([], { controlledTimers: true, withAudio: true });
+  const visible = () => h.element.guideNodes.filter((guide) => guide.style.display !== "none").map((guide) => guide.dataset.targetGuide);
+  try {
+    await Promise.resolve();
+    assert.deepEqual(visible(), []);
+    h.element.fire("click", action({ action: "part", part: "p1-1" }));
+    assert.deepEqual(visible(), ["p1-1"]);
+    assert.doesNotMatch(h.element.innerHTML, /最後一片，放這裡/);
+    const guides = h.element.guideNodes, renders = h.element.renderCount, captures = [];
+    const source = action({ action: "part", part: "p1-3" }, { setPointerCapture: (id) => captures.push(id) });
+    const unlocks = h.audioCalls.filter((call) => call.method === "unlock").length;
+    h.element.fire("pointerdown", source, { pointerId: 31, pointerType: "mouse", clientX: 100, clientY: 100 });
+    h.element.fire("pointermove", source, { pointerId: 31, pointerType: "mouse", clientX: 120, clientY: 100 });
+    assert.deepEqual(visible(), ["p1-3"]);
+    assert.deepEqual(captures, [31]);
+    assert.ok(h.audioCalls.filter((call) => call.method === "unlock").length > unlocks);
+    h.notify();
+    assert.equal(h.element.guideNodes, guides, "dragging updates the existing guide styles");
+    assert.equal(h.element.renderCount, renders, "subscription updates retain pointer capture during drag");
+    h.element.fire("pointercancel", source, { pointerId: 31 });
+    await Promise.resolve();
+    assert.deepEqual(visible(), []);
+    assert.equal(h.placements.length, 0);
+    assert.equal(h.audioCalls.filter((call) => call.method === "place").length, 0);
+  } finally { h.mounted.destroy(); }
 });
 
 test("missing artwork blocks the final placement until retry, then local completion can celebrate", async () => {
@@ -401,7 +541,7 @@ test("missing artwork blocks the final placement until retry, then local complet
     assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
     confirmCompletion(h);
     assert.match(h.element.innerHTML, celebrationMarker);
-    assert.deepEqual(h.clock.pending(), [4200]);
+    assert.deepEqual(h.clock.pending(), [6000]);
     const renders = h.element.renderCount;
     failed.onload();
     await Promise.resolve();
@@ -429,7 +569,7 @@ test("server confirmation during the final snap waits for that placement animati
     assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
     h.clock.advance(1);
     assert.match(h.element.innerHTML, celebrationMarker);
-    assert.deepEqual(h.clock.pending(), [4200]);
+    assert.deepEqual(h.clock.pending(), [6000]);
   } finally { h.mounted.destroy(); }
 });
 

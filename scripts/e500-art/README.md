@@ -13,7 +13,9 @@ node scripts/e500-art/serve.mjs
 
 預覽位於 `http://127.0.0.1:8877/index.html`。
 
-同一服務的 `/celebration.html` 是完工慶祝預覽：用示範進度保留最後一組踏階，點擊或拖曳拼上後，以正式工作台與動畫模組播放約 4.2 秒試車，可略過或再次播放。示範保存僅在記憶體，不呼叫家庭 API；重新整理或按重設回到 41／42 組。
+同一服務的 `/celebration.html` 是完工慶祝預覽：用示範進度保留最後一組踏階，依金色目標框點擊或拖曳拼上後，以正式工作台與動畫模組播放約 6 秒單向試車，附慶祝音效，可靜音、略過或再次播放。示範保存僅在記憶體，不呼叫家庭 API；重新整理或按重設回到 41／42 組。
+
+另以全新隔離 agent-browser session 先打開 `/celebration.html`，取得 CDP endpoint 後可執行 `node scripts/e500-art/verify-celebration.mjs <CDP endpoint> [preview origin]`。這四項檢查包含真實 WebAudio 訊號、觸控啟動、靜音／恢復／略過、重播共用 context、直向拖曳及中途重設；結果與截圖輸出到 `.scratch/collection-e2e/`。
 
 匯出器使用隔離 Chromium 的 CDP endpoint，會建立並關閉自己的頁面：
 

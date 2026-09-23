@@ -75,6 +75,27 @@
     return `<svg class="brick-thumbnail ${escapeHtml(className)}" viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}">${parts}</svg>`;
   }
 
+  function targetGuide(model, part, label) {
+    const [, , width, height] = model.viewBox.split(/\s+/).map(Number);
+    const cx = part.box.x + part.box.width / 2;
+    const cy = part.box.y + part.box.height / 2;
+    const w = Math.max(76, part.box.width + 18), h = Math.max(70, part.box.height + 18);
+    const x = Math.max(5, Math.min(width - w - 5, cx - w / 2));
+    const y = Math.max(50, Math.min(height - h - 5, cy - h / 2));
+    const labelWidth = label.length * 17 + 28;
+    const labelX = Math.max(6, Math.min(width - labelWidth - 6, cx - labelWidth / 2));
+    return `<g class="brick-target-guide" data-guide-part="${escapeHtml(part.id)}">
+      <rect class="brick-target-guide__hit" x="${x}" y="${y}" width="${w}" height="${h}" rx="13" role="button" tabindex="0" aria-label="放置${escapeHtml(part.name)}" data-action="target" data-part="${escapeHtml(part.id)}"/>
+      <g aria-hidden="true">
+      <rect class="brick-target-guide__halo" x="${x}" y="${y}" width="${w}" height="${h}" rx="13"/>
+      <rect class="brick-target-guide__outline" x="${x}" y="${y}" width="${w}" height="${h}" rx="13"/>
+      <rect class="brick-target-guide__label" x="${labelX}" y="${y - 48}" width="${labelWidth}" height="32" rx="10"/>
+      <text x="${labelX + labelWidth / 2}" y="${y - 26}" text-anchor="middle">${escapeHtml(label)}</text>
+      <path class="brick-target-guide__arrow" d="M${cx} ${y - 14}v9m-5-5 5 5 5-5"/>
+      </g>
+    </g>`;
+  }
+
   function mount(element, { collection, onClose } = {}) {
     if (!element || typeof element.addEventListener !== "function")
       throw new TypeError("workshop mount element is required");
@@ -95,6 +116,7 @@
     let renderDeferred = false;
     let suppressClickUntil = 0;
     let audioEnabled = true;
+    const sound = global.KidsBrickAudio?.create();
     let placementAnimationTimer = null;
     let celebration = null;
     const completionCandidates = new Set();
@@ -249,6 +271,7 @@
 
     function stopCelebration() {
       if (celebration) global.clearTimeout(celebration.timer);
+      sound?.stop();
       celebration = null;
     }
 
@@ -258,6 +281,7 @@
       stopCelebration();
       celebration = {
         buildId: build.id,
+        startedAt: Date.now(),
         rendered: false,
         timer: global.setTimeout(() => {
           stopCelebration();
@@ -265,6 +289,7 @@
           element.querySelector?.('[data-action="display"]')?.focus?.({ preventScroll: true });
         }, global.KidsBrickCelebration.duration),
       };
+      sound?.celebrate();
     }
 
     function renderWorkbench(snapshot, animatedPartId = null) {
@@ -328,7 +353,7 @@
       }
       if (completed && celebration?.buildId === build.id) {
         celebration.rendered = true;
-        return global.KidsBrickCelebration.render(model);
+        return global.KidsBrickCelebration.render(model, { audioEnabled });
       }
 
       if (completed)
@@ -364,8 +389,9 @@
           <div class="brick-stage" data-stage>
             <svg viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}半成品">
               ${modelSvg(model, placed, { targets: trayArtwork === "ready" ? remaining.map((part) => part.id) : [], animatedPartId })}
+              ${trayArtwork === "ready" ? remaining.map((part) => `<g data-target-guide="${escapeHtml(part.id)}" ${selectedPart === part.id || (!selectedPart && remaining.length === 1) ? "" : 'style="display:none"'}>${targetGuide(model, part, placed.size === total - 1 ? "最後一片，放這裡" : "放這裡")}</g>`).join("") : ""}
             </svg>
-            ${trayArtwork === "ready" && selectedPart ? `<button class="brick-stage__hint brick-stage__place" type="button" data-action="target" data-part="${escapeHtml(selectedPart)}">放到亮起位置：${escapeHtml(partById(model, selectedPart)?.name || "零件")}</button>` : trayArtwork === "ready" ? '<p class="brick-stage__hint">可以點零件再點位置，也可以直接拖過去</p>' : ""}
+            ${trayArtwork === "ready" && selectedPart ? `<button class="brick-stage__hint brick-stage__place" type="button" data-action="target" data-part="${escapeHtml(selectedPart)}">放到亮起位置：${escapeHtml(partById(model, selectedPart)?.name || "零件")}</button>` : trayArtwork === "ready" ? `<p class="brick-stage__hint">${remaining.length === 1 ? "把零件拖進金色框，也可以點零件再點位置" : "點一下或拿起零件，就會標出要放的位置"}</p>` : ""}
           </div>
         </div>
         <aside class="brick-tray" aria-label="本包部件">
@@ -466,7 +492,7 @@
       const build = snapshot.activeBuild;
       if (celebration && (view !== "workshop" || choosingNext || build?.id !== celebration.buildId || !build.completedAt)) stopCelebration();
       // Keep the same animation DOM through save/image callbacks. Replacing it
-      // would restart a four-second celebration on every collection update.
+      // would restart a six-second celebration on every collection update.
       if (celebration?.rendered) return;
       if (!global.KidsBrickModels?.models?.length) {
         element.innerHTML = `<section class="brick-workshop"><div class="brick-error" role="alert"><h2>拼裝模型沒有載入</h2><p>請重新整理頁面；如果仍然看不到模型，稍後再試一次。</p><button type="button" data-action="refresh">重新載入</button></div></section>`;
@@ -516,27 +542,7 @@
     }
 
     function playPlacedSound() {
-      if (!audioEnabled) return;
-      try {
-        const Audio = global.AudioContext || global.webkitAudioContext;
-        if (!Audio) return;
-        const context = new Audio();
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(480, context.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(
-          720,
-          context.currentTime + 0.07,
-        );
-        gain.gain.setValueAtTime(0.001, context.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.08, context.currentTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.09);
-        oscillator.connect(gain).connect(context.destination);
-        oscillator.start();
-        oscillator.stop(context.currentTime + 0.1);
-        oscillator.addEventListener("ended", () => context.close());
-      } catch {}
+      sound?.place();
     }
 
     async function place(partId) {
@@ -607,6 +613,7 @@
       const button = event.target?.closest?.("[data-action]");
       if (!button || !element.contains?.(button)) return;
       const action = button.dataset.action;
+      if (["part", "target", "celebration-replay"].includes(action)) sound?.unlock();
       if (action === "part" && Date.now() < suppressClickUntil) return;
       if (action === "close") return closeWorkshop();
       if (action === "celebration-skip") {
@@ -626,10 +633,17 @@
       }
       if (action === "sound") {
         audioEnabled = !audioEnabled;
+        sound?.setEnabled(audioEnabled);
+        if (audioEnabled) {
+          sound?.unlock();
+          if (celebration) sound?.celebrate((Date.now() - celebration.startedAt) / 1000);
+        }
         if (celebration) {
-          button.textContent = audioEnabled ? "音效開" : "音效關";
-          button.setAttribute?.("aria-pressed", String(audioEnabled));
-          button.setAttribute?.("aria-label", audioEnabled ? "關閉拼裝音效" : "開啟拼裝音效");
+          for (const control of new Set([button, ...(element.querySelectorAll?.('[data-action="sound"]') || [])])) {
+            control.textContent = audioEnabled ? "音效開" : "音效關";
+            control.setAttribute?.("aria-pressed", String(audioEnabled));
+            control.setAttribute?.("aria-label", audioEnabled ? "關閉拼裝音效" : "開啟拼裝音效");
+          }
           return;
         }
         return render();
@@ -702,6 +716,7 @@
     }
 
     function onKeyDown(event) {
+      if (event.key === "Enter" || event.key === " ") sound?.unlock();
       if (event.key === "Escape" && celebration) {
         event.preventDefault();
         stopCelebration();
@@ -766,6 +781,9 @@
       ) {
         drag.active = true;
         selectedPart = drag.partId;
+        // Keep pointer capture intact: update only the existing guide visibility.
+        for (const guide of element.querySelectorAll?.("[data-target-guide]") || [])
+          guide.style.display = guide.dataset.targetGuide === drag.partId ? "" : "none";
         if (event.pointerType !== "touch") {
           drag.source.setPointerCapture?.(event.pointerId);
           drag.explicitCapture = true;
@@ -788,6 +806,7 @@
 
     function finishDrag(event) {
       if (!drag || drag.pointerId !== event.pointerId) return;
+      sound?.unlock();
       const completedDrag = drag;
       drag = null;
       completedDrag.ghost?.remove();
@@ -879,6 +898,7 @@
 
     function trackPointerDown(event) {
       if (event.button > 0 || !event.target?.closest?.("[data-action]")) return;
+      sound?.unlock();
       if (pointerInteraction && !pointerInteraction.ended) return;
       pointerInteraction = { pointerId: event.pointerId, ended: false };
     }
@@ -948,6 +968,7 @@
         if (disposed) return;
         disposed = true;
         stopCelebration();
+        sound?.destroy();
         if (placementAnimationTimer) global.clearTimeout(placementAnimationTimer);
         cancelDrag({});
         abortPointerRelease();
