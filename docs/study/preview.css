@@ -39,6 +39,11 @@ button:focus-visible, select:focus-visible, input:focus-visible, a.preview-butto
 .preview-option[aria-pressed="true"] { border-color: #155e75; background: #ecfeff; }
 .preview-option span:first-child { display: grid; place-items: center; flex: 0 0 30px; min-height: 30px; border-radius: 50%; background: #e2e8f0; font-weight: 800; }
 .preview-blanks { display: grid; gap: 12px; }
+.preview-group { display: grid; gap: 12px; margin-top: 16px; }
+.preview-group-part { display: grid; gap: 6px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; min-width: 0; }
+.preview-group-part > span:first-child { white-space: pre-wrap; font-weight: 750; }
+.preview-group-part select { width: 100%; min-width: 0; min-height: 56px; border: 2px solid #94a3b8; border-radius: 10px; padding: 8px; background: white; }
+.preview-group-feedback { font-weight: 750; }
 .preview-blank { display: grid; grid-template-columns: minmax(80px,auto) minmax(0,1fr); gap: 12px; align-items: center; }
 .preview-blank > span { font-weight: 800; }
 .preview-compare { display: flex; gap: 8px; }
