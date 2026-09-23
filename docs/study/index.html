@@ -195,6 +195,13 @@ body {
   background: #fff; font-size: 1.125rem; line-height: 1.5;
   cursor: pointer; transition: all 0.15s; text-align: left; gap: 10px;
 }
+.group-parts { display: grid; gap: 14px; margin-bottom: 16px; }
+.group-part { display: grid; gap: 6px; min-width: 0; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; }
+.group-part > span:first-child { white-space: pre-wrap; font-weight: 700; }
+.group-part select { width: 100%; min-width: 0; min-height: 56px; border: 2px solid #94a3b8; border-radius: 10px; padding: 8px; background: #fff; font: inherit; }
+.group-part select.group-correct { border-color: #15803d; }
+.group-part select.group-wrong { border-color: #dc2626; }
+.group-feedback { font-weight: 700; }
 .opt-btn:active:not(.disabled) { transform: scale(0.98); }
 .opt-btn:hover:not(.disabled) { border-color: #4361ee; background: #f0f4ff; }
 .opt-btn .opt-label {
@@ -513,6 +520,7 @@ body {
 .hidden { display: none !important; }
 a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
+<link rel="stylesheet" href="./material.css?v=20260923-group-media">
 <link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
@@ -524,10 +532,10 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science-collection"></script><script src="../shared/collection-core.js?v=20260922-collection"></script>
-<script src="../shared/collection-client.js?v=20260922-collection"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science-collection"></script><script src="../shared/collection-core.js?v=20260923-train-series"></script>
+<script src="../shared/collection-client.js?v=20260923-train-series"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20260923-science"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="./private-pack.js?v=20260923-group-media"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script>
 (function() {
 "use strict";
@@ -1211,6 +1219,8 @@ function resetQuestionRuntime() {
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
   quiz.handwritingRemedialHintVisible = false;
+  quiz._groupValues = null;
+  quiz._groupResults = null;
 }
 
 // ════════════════════════════════════════════════════
@@ -1355,6 +1365,9 @@ function submitAnswer(selected) {
   if (q.type === "fill_in_blank") {
     quiz._fillResults = q.blanks.map((b, i) => isBlankCorrect(b, selected[i]));
     correct = quiz._fillResults.every(Boolean);   // 多空格全對才算對
+  } else if (q.type === "grouped_choice") {
+    quiz._groupResults = q.parts.map((_, i) => selected[i] === q.answer[i]);
+    correct = quiz._groupResults.every(Boolean);
   } else if (q.type === "vertical_calc") {
     correct = selected.vcErrors === 0;            // 逐格即時驗證：零失誤才算對
   } else {
@@ -2145,6 +2158,7 @@ function formatAnswer(q) {
   if (q.type === "fill_in_blank") {
     return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
+  if (q.type === "grouped_choice") return q.parts.map((part, i) => `${part.id}：${q.options[Number(q.answer[i]) - 1]}`).join("；");
   if (q.type === "vertical_calc") {
     return q.op === "long_division"
       ? `商 ${q.answer.quotient}、餘數 ${q.answer.remainder}`
@@ -2604,10 +2618,12 @@ function renderQuiz() {
   // Question type
   const isTF = q.type === "true_false";
   const isFill = q.type === "fill_in_blank";
+  const isGroup = q.type === "grouped_choice";
   const isVc = q.type === "vertical_calc";
   const isChinese = q.type === "chinese_correction";
   let typeClass = "q-type", typeLabel = "選擇題";
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
+  else if (isGroup) { typeClass += " tf"; typeLabel = `整組選答（${q.parts.length} 小題）`; }
   else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
   else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
@@ -2619,7 +2635,7 @@ function renderQuiz() {
     if (optStart > 0) displayText = displayText.substring(0, optStart).trim();
   }
   // 列舉條列換行（選擇/是非題；MC 已切選項，故答案串①甲乙丁不在 displayText 內。填充在下方自有分支處理）
-  if (!isFill && !isVc && !isChinese) displayText = applyEnumBreaks(displayText);
+  if (!isFill && !isVc && !isChinese && !isGroup) displayText = applyEnumBreaks(displayText);
 
   // Answer area（依題型）
   let answerHtml;
@@ -2650,6 +2666,9 @@ function renderQuiz() {
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
+  } else if (isGroup) {
+    if (!quiz._groupValues || quiz._groupValues.length !== q.parts.length) quiz._groupValues = q.parts.map(() => "");
+    answerHtml = `<div class="group-parts" id="group-parts">${q.parts.map((part, i) => `<label class="group-part"><span>${escapeHtml(part.text)}</span><select data-group-index="${i}" aria-label="${escapeHtml(part.id)} 的答案"><option value="">請選擇</option>${q.options.map((option, index) => `<option value="${index + 1}" ${quiz._groupValues[i] === String(index + 1) ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select><span class="group-feedback" data-group-feedback="${i}"></span></label>`).join("")}</div><button class="next-btn" id="group-submit" disabled>確認整組答案</button>`;
   } else if (isFill) {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
@@ -2711,6 +2730,7 @@ function renderQuiz() {
     <div class="question-card">
       <span class="${typeClass}">${typeLabel}</span>
       ${q.image ? `<img class="q-image" src="${q.image}" alt="題目附表">` : ""}
+      ${isPrivateQuestion(q) ? StudyMaterial.render(q.material) : ""}
       <div class="q-text">${displayText}</div>
       ${answerHtml}
       <div class="result-hint hidden" id="result-hint"></div>
@@ -2734,10 +2754,18 @@ function renderQuiz() {
   document.getElementById("btn-leave").onclick = leaveQuiz;
   const skipBtn = document.getElementById("skip-btn");
   if (skipBtn) skipBtn.onclick = skipCurrentQuestion;
+  if (isPrivateQuestion(q)) StudyMaterial.bind(document.getElementById("page-quiz"));
   if (isVc) {
     bindVcEvents(q);
   } else if (isFill) {
     bindFillEvents(q);
+  } else if (isGroup) {
+    const selects = [...document.querySelectorAll("#group-parts select")];
+    const submit = document.getElementById("group-submit");
+    const refresh = () => { submit.disabled = quiz._groupValues.some(value => !value); };
+    selects.forEach(select => { select.onchange = () => { quiz._groupValues[Number(select.dataset.groupIndex)] = select.value; refresh(); }; });
+    submit.onclick = () => { if (!submit.disabled && !quiz.isAnswered) submitAnswer([...quiz._groupValues]); };
+    refresh();
   } else if (isChinese) {
     bindChineseEvents(q);
   } else {
@@ -3073,6 +3101,15 @@ function renderFeedback(correct, q) {
       chip.classList.add(quiz._fillResults[Number(chip.dataset.chip)] ? "b-correct" : "b-wrong");
     });
     wrongHint = "答錯了，紅色格子旁有正確答案";
+  } else if (q.type === "grouped_choice") {
+    document.querySelectorAll("#group-parts select").forEach((select, i) => {
+      select.disabled = true;
+      select.classList.add(quiz._groupResults[i] ? "group-correct" : "group-wrong");
+      const feedback = document.querySelector(`[data-group-feedback="${i}"]`);
+      if (feedback) feedback.textContent = quiz._groupResults[i] ? "答對" : `正解：${q.options[Number(q.answer[i]) - 1]}`;
+    });
+    document.getElementById("group-submit").classList.add("hidden");
+    wrongHint = "答錯了，請看各小題旁的正確答案";
   } else if (q.type === "chinese_correction") {
     document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
     // 手寫 selfCheck 的「不太會寫／我寫對了」在作答後也要失效，避免對已 mastered 的題再記錯

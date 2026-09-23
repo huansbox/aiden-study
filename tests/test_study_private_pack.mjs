@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
-import { syntheticPack, scienceSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, scienceSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
@@ -170,6 +170,67 @@ test("science rev5 appends units 20/21, accepts true_false, preserves math progr
   invalid(q => { q.answer = "1"; });
   invalid(q => { q.options = ["O", "X"]; });
   invalid(q => { q.blanks = []; });
+});
+test("grouped science activity validates bounded material and immutable parts", async () => {
+  const e = await boot();
+  const pack = groupedSyntheticPack();
+  assert.equal(e.window.StudyPrivatePack.parse(JSON.stringify(pack)).questions.length, 10);
+  const mutate = (change) => { const next = groupedSyntheticPack(); change(next.questions); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(next))); };
+  mutate(qs => { qs[8].material.data = syntheticPngData(0, 6); }); // CRC is recomputed for the invalid IHDR.
+  mutate(qs => { qs[8].material.data = syntheticPngData(16, 3); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(4, 6); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(8, 1); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(1, 3, 1, 1, 0); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(1, 3, 1, 1, 2, 2); }); // Two CRC-valid PLTE chunks.
+  mutate(qs => { qs[8].material.data = syntheticPngData(4, 3, 1, 1, 1, 17); });
+  mutate(qs => { qs[8].material.data = syntheticPngData(8, 0, 1, 1, 1); });
+  const palette = groupedSyntheticPack();
+  palette.questions[8].material.data = syntheticPngData(4, 3); // Valid 16-colour indexed PNG.
+  assert.doesNotThrow(() => e.window.StudyPrivatePack.parse(JSON.stringify(palette)));
+  palette.questions[8].material.data = syntheticPngData(1, 3, 1, 1, 1, 2);
+  assert.doesNotThrow(() => e.window.StudyPrivatePack.parse(JSON.stringify(palette)));
+  mutate(qs => { qs[8].material.data = "https://outside.invalid/image.png"; });
+  mutate(qs => { qs[8].material.data = qs[8].material.data.slice(0, -5) + "AAAAA"; });
+  mutate(qs => { qs[8].material.data = "data:image/png;base64," + "A".repeat(43692); });
+  mutate(qs => { qs[8].material.alt = "😀".repeat(201); });
+  mutate(qs => { qs[8].parts[1].id = qs[8].parts[0].id; });
+  mutate(qs => { qs[8].answer = "444"; });
+  mutate(qs => { qs[9].material.rows[0].pop(); });
+  mutate(qs => { qs[9].material.caption = "😀".repeat(301); });
+  for (const change of [qs => { qs[8].parts[0].text += "變"; }, qs => { qs[8].material.alt += "變"; }, qs => { qs[9].material.rows[0][1] += "變"; }]) {
+    const next = groupedSyntheticPack(); next.revision++; change(next.questions);
+    assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(next), [], pack), /相同 ID/);
+  }
+  const reordered = groupedSyntheticPack();
+  reordered.questions[8].material = { alt: reordered.questions[8].material.alt, data: reordered.questions[8].material.data, kind: "png" };
+  assert.doesNotThrow(() => e.window.StudyPrivatePack.parse(JSON.stringify(reordered), [], pack));
+  const escaped = groupedSyntheticPack().questions[9].material;
+  escaped.rows[0][1] = '<svg onload="alert(1)">';
+  const html = e.window.StudyMaterial.render(escaped);
+  assert.ok(html.includes("&lt;svg"));
+  assert.ok(!html.includes("<svg"));
+});
+
+test("grouped science submits once for all parts and keeps content out of progress and reports", async () => {
+  const e = await ready();
+  const pack = groupedSyntheticPack(), q = pack.questions[8];
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.setSubject("science");
+  e.app.State.saveBatch("21", [q.id]);
+  e.app.startQuiz("full", 21);
+  assert.equal(e.app.quiz.queue[0], q.id);
+  assert.match(e.node("page-quiz").innerHTML, /整組選答（3 小題）/);
+  assert.match(e.node("page-quiz").innerHTML, /data:image\/png;base64/);
+  assert.equal(e.app.State.doneCount(21), 0);
+  const before = e.app.state.stats[q.id]?.modes?.choice?.practiced || 0;
+  e.app.submitAnswer(["1", "2", "1"]);
+  assert.equal(e.app.state.stats[q.id].modes.choice.practiced, before + 1);
+  assert.equal(e.app.State.doneCount(21), 0);
+  e.app.advance();
+  e.app.submitAnswer(["1", "2", "3"]);
+  assert.equal(e.app.State.doneCount(21), 1);
+  const output = JSON.stringify(e.syncConfig.loadData()) + e.app.buildBackupText(e.app.state) + decodeURIComponent(e.app.buildReportUrl());
+  for (const secret of [q.text, q.options[0], q.material.data, pack.explanations[q.id]]) assert.ok(!output.includes(secret));
 });
 test("two initially empty tabs: persisted pack blocks stale tab from replacing same-ID answers", async () => {
   const st = storage();

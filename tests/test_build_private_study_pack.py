@@ -1,8 +1,10 @@
 import copy
+import base64
 import json
 from pathlib import Path
 import subprocess
 import sys
+import zlib
 
 import pytest
 
@@ -178,6 +180,76 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
     no_official[2]["items"][-2]["answerPage"] = None
     no_official[2]["items"][-2]["reviewStatus"] = private_builder.NO_OFFICIAL_ANSWER_VERIFIED
     assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
+
+
+def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")
+    ihdr = (1).to_bytes(4, "big") * 2 + bytes([bit_depth, color_type, 0, 0, 0])
+    if palette_count is None:
+        palette_count = 1 if color_type == 3 else 0
+    palette = chunk(b"PLTE", bytes([128] * palette_entries * 3)) * palette_count
+    pixels = bytes([0, 0]) if color_type == 3 else bytes([0, 12, 34, 56, 255])
+    image = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + palette + chunk(b"IDAT", zlib.compress(pixels)) + chunk(b"IEND", b"")
+    return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
+
+
+def test_png_ihdr_rejects_invalid_depth_and_color_with_valid_crc():
+    material = {"kind": "png", "data": _synthetic_png(4, 3), "alt": "Synthetic 16-colour palette"}
+    private_builder._validate_material(material, "synthetic image")
+    material["data"] = _synthetic_png(1, 3, palette_entries=2)
+    private_builder._validate_material(material, "synthetic image")
+    for bit_depth, color_type in ((0, 6), (16, 3), (4, 6), (8, 1)):
+        material["data"] = _synthetic_png(bit_depth, color_type)
+        with pytest.raises(PackBuildError, match="PNG chunks are invalid"):
+            private_builder._validate_material(material, "synthetic image")
+    for data in (_synthetic_png(1, 3, palette_count=0), _synthetic_png(1, 3, palette_count=2, palette_entries=2),
+                 _synthetic_png(4, 3, palette_entries=17), _synthetic_png(8, 0, palette_count=1)):
+        material["data"] = data
+        with pytest.raises(PackBuildError, match="PNG chunks are invalid"):
+            private_builder._validate_material(material, "synthetic image")
+
+
+def test_grouped_choice_png_table_builder_and_production_parser(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 6
+    for suffix, material, parts, options, answer in (
+        ("image", {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic labeled picture"},
+         [{"id": "A", "text": "Synthetic A"}, {"id": "B", "text": "Synthetic B"}], ["甲", "乙"], "12"),
+        ("table", {"kind": "table", "caption": "Synthetic table", "columns": ["Code", "Kind"], "rows": [["A", "Water"], ["B", "Land"]]},
+         [{"id": "1", "text": "Synthetic statement 1"}, {"id": "2", "text": "Synthetic statement 2"}], ["O", "X"], "11"),
+    ):
+        app_id = f"science-g4s1-synthetic-group-{suffix}-v1"
+        practice = f"S2-{suffix}"
+        question = {"id": app_id, "subject": "science", "unit": 21, "type": "grouped_choice", "text": "Synthetic common context",
+                    "subtopic": "Synthetic group", "options": options, "answer": answer, "parts": parts, "material": material}
+        common = {"practiceId": practice, "originalId": suffix, "paperId": "synthetic-paper", "questionPage": 1,
+                  "answerPage": None, "concept": "Synthetic concept", "sourceAdaptation": "Synthetic group adaptation",
+                  "reviewStatus": private_builder.NO_OFFICIAL_ANSWER_VERIFIED}
+        curated["items"].append({**{key: common[key] for key in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                                 "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
+        metadata["items"].append({**common, "appId": app_id, "unit": 21, "contextPolicy": "Synthetic complete group",
+                                  "digitalAdaptation": "grouped_choice"})
+        explanations["entries"].append({"id": app_id, "text": "Synthetic group explanation。"})
+    output = tmp_path / "pack.json"
+    pack, _ = private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
+    assert len(pack["questions"]) == 8
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "8"
+    for change in (
+        lambda v: v[0]["items"][-2]["question"]["material"].update(data="https://outside.invalid/image.png"),
+        lambda v: v[0]["items"][-2]["question"]["parts"].append({"id": "A", "text": "duplicate"}),
+        lambda v: v[0]["items"][-1]["question"]["material"]["rows"][0].pop(),
+        lambda v: v[0]["items"][-1]["question"].update(answer="31"),
+    ):
+        broken = copy.deepcopy(values)
+        change(broken)
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / str(id(broken)), broken))
 
 
 @pytest.mark.parametrize(

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -60,6 +60,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   for (const name of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "Storage", "State"])
     Object.defineProperty(context, name, { configurable: true, get() { forbiddenTouches++; throw Error(`preview accessed ${name}`); } });
   vm.runInContext(source("private-pack.js"), context);
+  vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
@@ -116,6 +117,31 @@ test("subject switch reaches science true_false and choice without touching chil
   assert.equal(app.state.unit, 15);
   assert.equal(h.forbiddenTouches, 0);
   assert.equal(h.requests.length, 1);
+  app.destroy();
+});
+test("preview shows private image and table groups, scores the complete group in memory", async () => {
+  const h = harness({ pack: groupedSyntheticPack() }), app = await h.boot();
+  app.handle("subject", { value: "science" });
+  app.handle("unit", { value: "21" });
+  app.handle("subtopic", { value: "合成圖像" });
+  assert.match(h.host.innerHTML, /整組選答（3 小題）/);
+  assert.match(h.host.innerHTML, /data:image\/png;base64/);
+  assert.match(h.host.innerHTML, /放大圖片/);
+  assert.match(h.host.innerHTML, /data-action="check" disabled/);
+  app.handle("answer-group", { index: 0, value: "1" });
+  app.handle("answer-group", { index: 1, value: "2" });
+  assert.match(h.host.innerHTML, /data-action="check" disabled/);
+  app.handle("answer-group", { index: 2, value: "1" });
+  app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("answer-group", { index: 2, value: "3" });
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
+  app.handle("subtopic", { value: "合成表格" });
+  assert.match(h.host.innerHTML, /study-material-table/);
+  assert.match(h.host.innerHTML, /合成動物表/);
+  assert.equal(app.state.values.length, 8);
+  assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
 
@@ -341,8 +367,10 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
+  assert.match(source("preview.html"), /preview\.js\?v=20260923-group-media/);
+  assert.match(source("preview.html"), /preview\.css\?v=20260923-group-media/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "answer.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);

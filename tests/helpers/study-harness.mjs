@@ -45,6 +45,7 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
   ctx.KidsSyncV1.createSyncClient = cfg => { syncConfig = cfg; return originalClient(cfg); };
   vm.runInContext(read("docs/shared/wiring-v1.js"), ctx);
   vm.runInContext(read("docs/study/private-pack.js"), ctx);
+  vm.runInContext(read("docs/study/material.js"), ctx);
   vm.runInContext(read("docs/study/answer.js"), ctx);
   const inline = read("docs/study/index.html").match(/<script>([\s\S]*?)<\/script>/)[1];
   const expose = `globalThis.app = { init, State, Storage, Picker, quiz, importPrivatePack, loadPrivatePack, currentScope, startQuiz, submitAnswer, advance, leaveQuiz, skipCurrentQuestion, renderHome, renderQuiz, buildReportUrl, renderFlaggedSection, buildBackupText, parseBackup, wiring, unitNum, STUDY_TERMS,
