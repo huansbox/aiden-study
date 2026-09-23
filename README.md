@@ -47,6 +47,7 @@
 | [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 五枝放射圖、各段重點保留、iPad 選詞。 | [網頁](docs/leisure-mind-map/) |
 | [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。 | 私用成品 |
 | [四上第一次段考數學候選卷](learning-tasks/grade4-sem1-math-exam1/) | 桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷。 | 私用成品 |
+| [四上第一次段考自然候選卷](learning-tasks/grade4-sem1-science-exam1/) | 桃子腳第一次段考前，依地表與水生環境概念篩選歷屆自然卷。 | 私用成品 |
 | [閱讀心智圖選詞引導](learning-tasks/reading-mind-map/) | iPad 選詞、四角放射心智圖、短詞抄寫。 | [網頁](docs/mind-map.html) |
 | [新竹動物園小小探險](learning-tasks/hsinchu-zoo-adventure/) | 火車地理、園區選路、動物特徵觀察、昆蟲分類；卡片可任意中止。 | [列印 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/hsinchu-zoo-adventure/output/hsinchu-zoo-adventure-cards-half-label-a4.pdf) |
 
