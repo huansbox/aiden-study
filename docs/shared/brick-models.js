@@ -456,7 +456,7 @@
   ]);
 
   const legacyModels = [car, train, plane];
-  const models = root.KidsBrickE500 ? [root.KidsBrickE500] : [];
+  const models = [root.KidsBrickE500, root.KidsBrickEmu3000, root.KidsBrickR200].filter(Boolean);
 
   root.KidsBrickModels = {
     version: 1,

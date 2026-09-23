@@ -117,7 +117,8 @@
       async placePart(details) {
         // 檢查伺服器已確認分配的包，避免未取得使用權就顯示成功。
         const grant = base.grants.find((g) => g.id === details.grantId);
-        C.check(grant && grant.buildId === details.buildId && grant.packIndex === details.packIndex && [1, 2, 3].some((n) => details.partId === `p${details.packIndex + 1}-${n}`), "請先連線取得這包零件。");
+        const build = base.builds.find((b) => b.id === details.buildId);
+        C.check(build && Number.isInteger(details.packIndex) && details.packIndex >= 0 && details.packIndex < C.PACK_COUNTS[build.modelId] && grant && grant.buildId === build.id && grant.packIndex === details.packIndex && [1, 2, 3].some((n) => details.partId === `p${details.packIndex + 1}-${n}`), "請先連線取得這包零件。");
         queue({ type: "place", ...details }); return snapshot();
       },
       setDisplayed: (buildId, displayed) => online("display", { buildId, displayed }),

@@ -1,0 +1,1038 @@
+{
+  "id": "r200",
+  "title": "台鐵 R200 型柴電機車",
+  "series": "臺灣火車系列",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "鋪好展示軌道",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前段展示軌道",
+          "z": 0,
+          "box": {
+            "x": 78,
+            "y": 344.75,
+            "width": 287,
+            "height": 103.5
+          },
+          "imageBox": {
+            "x": 78,
+            "y": 344.75,
+            "width": 287,
+            "height": 103.5
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "e2902c90ea3efd8e77ef43e981c004a50572eff63f04607779ddf5133d60a05b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中段展示軌道",
+          "z": 1,
+          "box": {
+            "x": 256.5,
+            "y": 299,
+            "width": 287,
+            "height": 103.25
+          },
+          "imageBox": {
+            "x": 256.5,
+            "y": 299,
+            "width": 287,
+            "height": 103.25
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "4cbadd13201eed7600b81b4f2dfdf05053ac0f8c33f793fc4a230d625b1d3b4b",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-2-v0.png",
+              "sha256": "459b5fdf846f388a875602dffc1c046fb775545bbb15d69c2c9b8e68fcf41456"
+            }
+          ]
+        },
+        {
+          "id": "p1-3",
+          "name": "後段展示軌道",
+          "z": 2,
+          "box": {
+            "x": 435,
+            "y": 253,
+            "width": 287,
+            "height": 103.25
+          },
+          "imageBox": {
+            "x": 435,
+            "y": 253,
+            "width": 287,
+            "height": 103.25
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "961f10e3bce643565864b8693db41345415b730f2faa4060ae3ac8f8286e0a1e",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-3-v0.png",
+              "sha256": "001fb7783cadd47ba105f9459271bdee61dc5c5eac83b97b0e74a2de14bc03c2"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p1-3-v1.png",
+              "sha256": "001fb7783cadd47ba105f9459271bdee61dc5c5eac83b97b0e74a2de14bc03c2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "前轉向架的三根輪軸",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "前轉向架・第一輪軸",
+          "z": 3,
+          "box": {
+            "x": 176.5,
+            "y": 327.5,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "imageBox": {
+            "x": 176.5,
+            "y": 327.5,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "162e38756cf4df799274111001a9f7ebc0d1bd296ab8257b6b01dfa74b50a050",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "前轉向架・第二輪軸",
+          "z": 4,
+          "box": {
+            "x": 211.75,
+            "y": 318.5,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "imageBox": {
+            "x": 211.75,
+            "y": 318.5,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "9e094575fdc66db63295a3db4344590faf3551a4cdd929c12ce4852ef04a2197",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-2-v0.png",
+              "sha256": "6610673b9e3201c23d1ff4afaeee0b79021ad590710bdb35c37a20bab5888504"
+            }
+          ]
+        },
+        {
+          "id": "p2-3",
+          "name": "前轉向架・第三輪軸",
+          "z": 5,
+          "box": {
+            "x": 246.75,
+            "y": 309.25,
+            "width": 102.5,
+            "height": 75.5
+          },
+          "imageBox": {
+            "x": 246.75,
+            "y": 309.25,
+            "width": 102.5,
+            "height": 75.5
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "264dec9817aa7d359a3244662ec1bfdb9d1512afac70f5646137c425a960c9e6",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "b67eed2fc4cc63fada9530918f7bd3e69d3e32f10669bbedd0e58add28ab9b98"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p2-3-v1.png",
+              "sha256": "b67eed2fc4cc63fada9530918f7bd3e69d3e32f10669bbedd0e58add28ab9b98"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "後轉向架的三根輪軸",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "後轉向架・第一輪軸",
+          "z": 6,
+          "box": {
+            "x": 450.75,
+            "y": 257,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "imageBox": {
+            "x": 450.75,
+            "y": 257,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "5be5fc1347c6377b17c1f8f0f88c7544d6a3cd2eda931d9ec96b2b1704e30c06",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "後轉向架・第二輪軸",
+          "z": 7,
+          "box": {
+            "x": 485.75,
+            "y": 248,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "imageBox": {
+            "x": 485.75,
+            "y": 248,
+            "width": 102.5,
+            "height": 75.25
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "21c20c671f3586471144caa77cc46161db33989b1acdec88b9889cdcff72af54",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "0419af684a38dd6f5f09f728e74ae4a889aa30925d948e05d7b94e218e4652ce"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "後轉向架・第三輪軸",
+          "z": 8,
+          "box": {
+            "x": 521,
+            "y": 238.75,
+            "width": 102.5,
+            "height": 75.5
+          },
+          "imageBox": {
+            "x": 521,
+            "y": 238.75,
+            "width": 102.5,
+            "height": 75.5
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "1ec08e56c9c1a9446262f6a09d093a57dcb2395758370acd1ccbb5cf4591a067",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "c915a6f8f63e4cdcfbcf871562734e64dd17b5d55e56b28598339513f408ba5b"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "c915a6f8f63e4cdcfbcf871562734e64dd17b5d55e56b28598339513f408ba5b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "連成長長的底盤",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "前段承重底盤",
+          "z": 9,
+          "box": {
+            "x": 128.25,
+            "y": 280,
+            "width": 235,
+            "height": 89
+          },
+          "imageBox": {
+            "x": 128.25,
+            "y": 280,
+            "width": 235,
+            "height": 89
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "db8d521c6df1d066879c03590f4e28482c2928aba08ebcf04c960ec801f5ca65",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "中央承重底盤",
+          "z": 10,
+          "box": {
+            "x": 281.25,
+            "y": 240.5,
+            "width": 235,
+            "height": 89
+          },
+          "imageBox": {
+            "x": 281.25,
+            "y": 240.5,
+            "width": 235,
+            "height": 89
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "19256dc4456ccbaa41fe7bbdb7fd1013c1bbdf16a147c05206168d3bcdd4caae",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "8d13aa54d4384d15a3ca20621c3bc99cca7b2d42d01494cd032dc13386316d88"
+            }
+          ]
+        },
+        {
+          "id": "p4-3",
+          "name": "後段承重底盤",
+          "z": 11,
+          "box": {
+            "x": 434.25,
+            "y": 201.25,
+            "width": 235,
+            "height": 89
+          },
+          "imageBox": {
+            "x": 434.25,
+            "y": 201.25,
+            "width": 235,
+            "height": 89
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "874ec4af5ba49d41ae4e87b678a61dcccaf6bb570b812cd72bccb23cf5849d25",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-3-v0.png",
+              "sha256": "f04ec9921f663e6a055c848adafc3bd3eb07445efe4c2efd0af07a6c714c628c"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p4-3-v1.png",
+              "sha256": "f04ec9921f663e6a055c848adafc3bd3eb07445efe4c2efd0af07a6c714c628c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上車底設備",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "前轉向架懸吊框",
+          "z": 12,
+          "box": {
+            "x": 237.25,
+            "y": 326.75,
+            "width": 126.5,
+            "height": 51.25
+          },
+          "imageBox": {
+            "x": 237.25,
+            "y": 326.75,
+            "width": 126.5,
+            "height": 51.25
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "219d538038ba4ffb7a1377ebc41943e21fd0189578ffe0e8d13ebabd9034099f",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "中央油箱與設備箱",
+          "z": 13,
+          "box": {
+            "x": 340.25,
+            "y": 296,
+            "width": 141.5,
+            "height": 45.5
+          },
+          "imageBox": {
+            "x": 340.25,
+            "y": 296,
+            "width": 141.5,
+            "height": 45.5
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "4fc0c66742d724fc0fb273f62a7901586306e10e74733ec3774bad3011934ea9",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-2-v0.png",
+              "sha256": "456f6403caaf59f2fe1bbe770f53133ff5e0cf885ccca7b98cd6bfa884330852"
+            }
+          ]
+        },
+        {
+          "id": "p5-3",
+          "name": "後轉向架懸吊框",
+          "z": 14,
+          "box": {
+            "x": 505,
+            "y": 258.25,
+            "width": 126.75,
+            "height": 51
+          },
+          "imageBox": {
+            "x": 505,
+            "y": 258.25,
+            "width": 126.75,
+            "height": 51
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "a77df6783b4fafae4471f64b9e3b41b32b677239622c469a213ddeb782c3ac3d",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "拼起引擎室下半身",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "前段引擎室下車身",
+          "z": 15,
+          "box": {
+            "x": 207.25,
+            "y": 245.75,
+            "width": 181.5,
+            "height": 93
+          },
+          "imageBox": {
+            "x": 207.25,
+            "y": 245.75,
+            "width": 181.5,
+            "height": 93
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "e6381992b99738858d1542ac0799f170e79f43c69238cc55ed1a6116d5d925bb",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "中段引擎室下車身",
+          "z": 16,
+          "box": {
+            "x": 309.25,
+            "y": 219.5,
+            "width": 181.5,
+            "height": 93
+          },
+          "imageBox": {
+            "x": 309.25,
+            "y": 219.5,
+            "width": 181.5,
+            "height": 93
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "d01a08b53005cc61e205e060bf53528a90f1581af7cb6352a9e0ef94c1eac223",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-2-v0.png",
+              "sha256": "6f9653e097e14e81014d3e2c60b93c995eabaa6dc2168995cbe8328f1697dcb1"
+            }
+          ]
+        },
+        {
+          "id": "p6-3",
+          "name": "後段引擎室下車身",
+          "z": 17,
+          "box": {
+            "x": 411.25,
+            "y": 193.25,
+            "width": 181.5,
+            "height": 93
+          },
+          "imageBox": {
+            "x": 411.25,
+            "y": 193.25,
+            "width": 181.5,
+            "height": 93
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "da3736000caad4172cd83b7e0c517bf8bbeac159742a67a554777f4d093d597d",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "39247e7e8bc329b6b46269d3beeb0d1804f263d6862f69b686f9320b6d1ca129"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "39247e7e8bc329b6b46269d3beeb0d1804f263d6862f69b686f9320b6d1ca129"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上深藍色長側板",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "前段深藍引擎室",
+          "z": 18,
+          "box": {
+            "x": 206,
+            "y": 185.5,
+            "width": 184.75,
+            "height": 127.75
+          },
+          "imageBox": {
+            "x": 206,
+            "y": 185.5,
+            "width": 184.75,
+            "height": 127.75
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "b7f9faf0f7b9e0cbfb34d6eab239d9c8b69789630187d00bed3fdc32e5c40fc8",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "中段深藍引擎室",
+          "z": 19,
+          "box": {
+            "x": 308,
+            "y": 159.25,
+            "width": 184.75,
+            "height": 127.75
+          },
+          "imageBox": {
+            "x": 308,
+            "y": 159.25,
+            "width": 184.75,
+            "height": 127.75
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "3885c863ee3174813b8ed534607925a98695da4a6c14c7e360e24a23da4990d0",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-2-v0.png",
+              "sha256": "8f0f9655982ba2490bd7d62b0ea8d9f0447e78b4b4438ba934b73ad48d3bae86"
+            }
+          ]
+        },
+        {
+          "id": "p7-3",
+          "name": "後段深藍引擎室",
+          "z": 20,
+          "box": {
+            "x": 410,
+            "y": 133,
+            "width": 184.75,
+            "height": 128
+          },
+          "imageBox": {
+            "x": 410,
+            "y": 133,
+            "width": 184.75,
+            "height": 128
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "f7324443eb94d095e9cbb904ca91457538cbf50610bdff4ff203012b8917766f",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "4f8829933d032c889f2bfab5cbb19715cb2baf59bd028c0f113da26f10e7ad20"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p7-3-v1.png",
+              "sha256": "4f8829933d032c889f2bfab5cbb19715cb2baf59bd028c0f113da26f10e7ad20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上雙端白色駕駛室",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "前駕駛室白色下車身",
+          "z": 21,
+          "box": {
+            "x": 132.25,
+            "y": 241,
+            "width": 168.5,
+            "height": 117.75
+          },
+          "imageBox": {
+            "x": 132.25,
+            "y": 241,
+            "width": 168.5,
+            "height": 117.75
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "aed631f2670b730cb4d3de12a47f124a26f54ad7b421ca6772115910f1c2cc66",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "後駕駛室白色下車身",
+          "z": 22,
+          "box": {
+            "x": 506.5,
+            "y": 146.75,
+            "width": 161.25,
+            "height": 120
+          },
+          "imageBox": {
+            "x": 506.5,
+            "y": 146.75,
+            "width": 161.25,
+            "height": 120
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "124fa5b98d63b96ed0580462678b6bf7b54fe735c44260613a3b7b806ea2a463",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p8-3",
+          "name": "兩端駕駛室白色斜角上牆",
+          "z": 23,
+          "box": {
+            "x": 131.75,
+            "y": 94.75,
+            "width": 536.5,
+            "height": 219
+          },
+          "imageBox": {
+            "x": 131.75,
+            "y": 94.75,
+            "width": 536.5,
+            "height": 219
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "8c918fa90550eeb717569fe61c62323afeb46d44687e2731e8c813874c33e6de",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "3708cdcc1f59eb8c79718b19dc1300a106770619fc991645209c5a66e1f191a3"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "b066ac8dc4ffe8e049e8dcd33dd38a2f3955c8e21e7613587b57f3ebbbc2875d"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p8-3-v2.png",
+              "sha256": "676e868205fd5d98ce4a51735d80d5a74793eac8e9edd68ca3c5f78035fc5c2e"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "嵌入黑框大玻璃",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "前端大擋風玻璃與側窗",
+          "z": 24,
+          "box": {
+            "x": 144,
+            "y": 207.25,
+            "width": 161.5,
+            "height": 142.5
+          },
+          "imageBox": {
+            "x": 144,
+            "y": 207.25,
+            "width": 161.5,
+            "height": 142.5
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "48c2b4d7c2527626206523cc219bc69df974275751c7912a12caf2f653705ad1",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "後端大擋風玻璃與側窗",
+          "z": 25,
+          "box": {
+            "x": 564.25,
+            "y": 109,
+            "width": 91.5,
+            "height": 163.75
+          },
+          "imageBox": {
+            "x": 564.25,
+            "y": 109,
+            "width": 91.5,
+            "height": 163.75
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "b67fd72998c8c44e37b854e7e688e34f59ab25f273fd8fc5ee566affe3557e39",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p9-3",
+          "name": "兩側引擎室通風小磚",
+          "z": 26,
+          "box": {
+            "x": 322.75,
+            "y": 188,
+            "width": 255.75,
+            "height": 89.25
+          },
+          "imageBox": {
+            "x": 322.75,
+            "y": 188,
+            "width": 255.75,
+            "height": 89.25
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "d59d32ffd22c88558c3acac63bd793b7e7a23f4e9daa20e4bb08abc32191c7d5",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "蓋上分段深色車頂",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "前端駕駛室凸點屋頂",
+          "z": 27,
+          "box": {
+            "x": 162.5,
+            "y": 177.5,
+            "width": 137,
+            "height": 59.5
+          },
+          "imageBox": {
+            "x": 162.5,
+            "y": 177.5,
+            "width": 137,
+            "height": 59.5
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "5a147892f5c76906622410a2f240bd08e3a967eb7788f3a3d9cabcc29a7592b2",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "中央引擎室凸點屋頂",
+          "z": 28,
+          "box": {
+            "x": 220,
+            "y": 103.75,
+            "width": 360,
+            "height": 141.5
+          },
+          "imageBox": {
+            "x": 220,
+            "y": 103.75,
+            "width": 360,
+            "height": 141.5
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "7e4c1f5b92e0b7f0f834bf8c9a38b564435ab9ea73e4387da0fb023f5240a6c4",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-2-v0.png",
+              "sha256": "ee07f50b97163d730b729b4546c07056dd7c9a3c46968f93053786ae681f3548"
+            }
+          ]
+        },
+        {
+          "id": "p10-3",
+          "name": "後端駕駛室凸點屋頂",
+          "z": 29,
+          "box": {
+            "x": 500.5,
+            "y": 90.75,
+            "width": 137,
+            "height": 59.75
+          },
+          "imageBox": {
+            "x": 500.5,
+            "y": 90.75,
+            "width": 137,
+            "height": 59.75
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "3f948871415885a7d48e92e326dfbf798473fb5e8295334b787a517252c07876",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-3-v0.png",
+              "sha256": "01004187fa70aa96f47d73b0545bbd65bf838cd63dd52007305a408f8f36a3b2"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p10-3-v1.png",
+              "sha256": "01004187fa70aa96f47d73b0545bbd65bf838cd63dd52007305a408f8f36a3b2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上柴油機車頂設備",
+      "parts": [
+        {
+          "id": "p11-1",
+          "name": "前段柴油機散熱格柵",
+          "z": 30,
+          "box": {
+            "x": 247.25,
+            "y": 156.25,
+            "width": 127,
+            "height": 49
+          },
+          "imageBox": {
+            "x": 247.25,
+            "y": 156.25,
+            "width": 127,
+            "height": 49
+          },
+          "file": "assets/p11-1.png",
+          "sha256": "c1688c238dff63add0be28307493b2191b6c35de2d36857447a199051d99b6c6",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p11-2",
+          "name": "中央排氣口與橘色機件",
+          "z": 31,
+          "box": {
+            "x": 356,
+            "y": 127.75,
+            "width": 104.25,
+            "height": 47
+          },
+          "imageBox": {
+            "x": 356,
+            "y": 127.75,
+            "width": 104.25,
+            "height": 47
+          },
+          "file": "assets/p11-2.png",
+          "sha256": "37a39b6a3e1f7d8dcc58591b63f19c421b757b9398b06f585bc8aea0b075899d",
+          "occlusionPeers": [
+            "p11-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p11-3",
+          "name": "後段柴油機散熱格柵",
+          "z": 32,
+          "box": {
+            "x": 438.5,
+            "y": 107.25,
+            "width": 127,
+            "height": 49
+          },
+          "imageBox": {
+            "x": 438.5,
+            "y": 107.25,
+            "width": 127,
+            "height": 49
+          },
+          "file": "assets/p11-3.png",
+          "sha256": "15ac2b9a5cf7d49862f795acbb8021ba4e0c103cadd8ba9270a0e32a686e888e",
+          "occlusionPeers": [
+            "p11-1",
+            "p11-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "完成 R201 車頭細節",
+      "parts": [
+        {
+          "id": "p12-1",
+          "name": "雙端方形頭燈與側面車號",
+          "z": 33,
+          "box": {
+            "x": 132.25,
+            "y": 180.5,
+            "width": 535.5,
+            "height": 144
+          },
+          "imageBox": {
+            "x": 132.25,
+            "y": 180.5,
+            "width": 535.5,
+            "height": 144
+          },
+          "file": "assets/p12-1.png",
+          "sha256": "70599cc23552aa9be8f635b72690c00870437104ed0f9147026e6dbdf10d1e4d",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p12-2",
+          "name": "後端格柵、防撞梁與車號",
+          "z": 34,
+          "box": {
+            "x": 575,
+            "y": 178,
+            "width": 101.5,
+            "height": 107.75
+          },
+          "imageBox": {
+            "x": 575,
+            "y": 178,
+            "width": 101.5,
+            "height": 107.75
+          },
+          "file": "assets/p12-2.png",
+          "sha256": "4dab5b7d15cde0f850217c49be427e5d9c0d5563745069d52525f58585562674",
+          "occlusionPeers": [
+            "p12-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p12-3",
+          "name": "前端格柵、防撞梁與車鉤",
+          "z": 35,
+          "box": {
+            "x": 123.5,
+            "y": 290.5,
+            "width": 91.5,
+            "height": 117.5
+          },
+          "imageBox": {
+            "x": 123.5,
+            "y": 290.5,
+            "width": 91.5,
+            "height": 117.5
+          },
+          "file": "assets/p12-3.png",
+          "sha256": "c320dd33c1da0fc1305a1b31d0d8962eb318d792ef202e0c029fa1462acd5da9",
+          "occlusionPeers": [
+            "p12-1",
+            "p12-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p12-3-v0.png",
+              "sha256": "5eb707f94044d45bc38931fd2c5616c2b8cb4d3910abf9751da0f2d46dac72e1"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p12-3-v2.png",
+              "sha256": "5eb707f94044d45bc38931fd2c5616c2b8cb4d3910abf9751da0f2d46dac72e1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assetDigest": "b6bb0dd67faa7772a4c93c3563563ac4c288a70fd4cc3e0fe3e7516080e40559"
+}

@@ -95,6 +95,46 @@ test("14包42零件完成永久收藏；後續重送不回退，可以選下一�
   assert.equal(s.builds[0].completedAt,completedAt);
   assert.deepEqual(s.displayedBuildIds,["car"]);assert.equal(s.activeBuildId,"train");
 });
+test("EMU3000 與 R200 各在 12 包、36 組完成，剩餘包留給下一件；舊車仍需 14 包",()=>{
+  let state=C.empty();
+  state.grants=Array.from({length:26},(_,i)=>({id:`grant-${i}`,date:"2026-09-01",kind:"first",buildId:null,packIndex:null}));
+  state=C.apply(state,{type:"select-model",modelId:"emu3000"});
+  assert.equal(state.grants.filter(g=>g.buildId==="emu3000").length,12);
+  assert.equal(state.grants.filter(g=>!g.buildId).length,14);
+  assert.deepEqual(state.grants.filter(g=>g.buildId==="emu3000").map(g=>g.packIndex),Array.from({length:12},(_,i)=>i));
+  const emuGrants=state.grants.filter(g=>g.buildId==="emu3000");
+  for(const grant of emuGrants)for(let n=1;n<=3;n++){
+    state=C.apply(state,{type:"place",grantId:grant.id,buildId:"emu3000",packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${n}`});
+    if(grant.packIndex<11||n<3)assert.equal(state.builds[0].completedAt,null);
+  }
+  assert.equal(state.builds[0].placed.length,36);
+  assert.ok(state.builds[0].completedAt);
+  state=C.apply(state,{type:"select-model",modelId:"r200"});
+  assert.equal(state.grants.filter(g=>g.buildId==="r200").length,12);
+  assert.equal(state.grants.filter(g=>!g.buildId).length,2);
+  for(const grant of state.grants.filter(g=>g.buildId==="r200"))for(let n=1;n<=3;n++)
+    state=C.apply(state,{type:"place",grantId:grant.id,buildId:"r200",packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${n}`});
+  assert.equal(state.builds[1].placed.length,36);
+  assert.ok(state.builds[1].completedAt);
+  state=C.apply(state,{type:"select-model",modelId:"e500"});
+  assert.equal(state.grants.filter(g=>g.buildId==="e500").length,2);
+  assert.equal(state.builds[2].completedAt,null);
+  assert.equal(C.PACK_COUNTS.car,14);
+  assert.equal(C.PACK_COUNTS.train,14);
+  assert.equal(C.PACK_COUNTS.plane,14);
+});
+test("12 包車型拒絕第 13、14 包，即使持久資料意外含有該包授權",()=>{
+  for(const modelId of ["emu3000","r200"]){
+    let state=C.apply(C.empty(),{type:"select-model",modelId});
+    for(const index of [12,13]){
+      const grant={id:`invalid-${index}`,buildId:modelId,packIndex:index,date:"2026-09-01",kind:"first"};
+      state.grants.push(grant);
+      assert.throws(()=>C.apply(state,{type:"place",grantId:grant.id,buildId:modelId,packIndex:index,partId:`p${index+1}-1`}),/零件位置不正確/);
+    }
+    assert.deepEqual(state.builds[0].placed,[]);
+    assert.equal(state.builds[0].completedAt,null);
+  }
+});
 test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>{
   const dir=await mkdtemp(join(tmpdir(),"aiden-collection-"));
   let runtime=await collectionRuntime({persist:dir});
@@ -112,6 +152,35 @@ test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>
     const state=await send("record",record);
     assert.equal(state.grants.length,2);assert.equal(state.daily.targets[0].progress,1);
     assert.deepEqual(state.activeBuild.placed,["p1-1"]);
+  }finally{await runtime.dispose();await rm(dir,{recursive:true,force:true});}
+});
+test("SQLite 重啟保留 EMU3000 的 12 包分配，餘下包可給下一車型",async()=>{
+  const dir=await mkdtemp(join(tmpdir(),"aiden-collection-model-"));
+  let runtime=await collectionRuntime({persist:dir});
+  let seq=0;
+  const call=async(type,data={})=>{
+    const response=await runtime.fetch(new Request(`http://local/v1/collection/aiden${type?"/"+type:""}`,{
+      method:type?"POST":"GET",headers:{Authorization:"Bearer test-token"},
+      ...(type?{body:JSON.stringify({commandId:`model-persist-${++seq}`,...data})}:{})
+    }));
+    return {status:response.status,body:await response.json()};
+  };
+  try{
+    await runtime.seedFixtures({days:14});
+    const selected=await call("select-model",{modelId:"emu3000"});
+    assert.equal(selected.status,200);
+    assert.equal(selected.body.snapshot.grants.filter(g=>g.buildId==="emu3000").length,12);
+    assert.equal(selected.body.snapshot.grants.filter(g=>!g.buildId).length,2);
+    await runtime.dispose();runtime=await collectionRuntime({persist:dir});
+    const restored=(await call()).body;
+    assert.equal(restored.activeBuild.modelId,"emu3000");
+    assert.deepEqual(restored.grants.filter(g=>g.buildId==="emu3000").map(g=>g.packIndex),Array.from({length:12},(_,i)=>i));
+    const last=restored.grants.find(g=>g.packIndex===11);
+    assert.equal((await call("place",{grantId:last.id,buildId:"emu3000",packIndex:11,partId:"p12-1"})).status,200);
+    for(const index of [12,13])assert.equal((await call("place",{grantId:last.id,buildId:"emu3000",packIndex:index,partId:`p${index+1}-1`})).status,400);
+    const after=(await call()).body;
+    assert.deepEqual(after.activeBuild.placed,["p12-1"]);
+    assert.equal(after.grants.filter(g=>!g.buildId).length,2);
   }finally{await runtime.dispose();await rm(dir,{recursive:true,force:true});}
 });
 test("既有activity大數字不反推包；test-only fixture重播不重複發包",async()=>{

@@ -167,11 +167,13 @@ function harness(placed = [], {
     train: ["火車", "#2779a7"],
     plane: ["飛機", "#e7b84b"],
     e500: ["台鐵 E500 型電力機車", "#d94a3d"],
+    emu3000: ["台鐵 EMU3000 型電聯車", "#f2f1e9"],
+    r200: ["台鐵 R200 型柴電機車", "#1c4c70"],
   };
   const models = modelIds.map((id) => ({
     id,
     title: entries[id][0],
-    series: id === "e500" ? "臺灣火車系列" : undefined,
+    series: ["e500", "emu3000", "r200"].includes(id) ? "臺灣火車系列" : undefined,
     viewBox: "0 0 300 180",
     steps: Array.from({ length: packCount }, (_, pack) => ({
       title: `第${pack + 1}包`,
@@ -241,6 +243,33 @@ function confirmCompletion(h) {
   h.state.activeBuild.completedAt = "2026-09-23T12:00:00.000Z";
   h.state.revision++;
   h.notify();
+}
+
+for (const modelId of ["emu3000", "r200"]) {
+  test(`${modelId} celebrates its 36th group after confirmation and keeps the final target visible`, async () => {
+    const ids = Array.from({ length: 12 }, (_, pack) => [1, 2, 3].map(n => `p${pack + 1}-${n}`)).flat();
+    const h = harness(ids.slice(0, -1), { modelIds: [modelId], packCount: 12, withCelebration: true, controlledTimers: true, withAudio: true });
+    try {
+      h.state.grants.push({ id: "last-pack", buildId: h.state.activeBuild.id, packIndex: 11 });
+      h.mounted.render();
+      assert.match(h.element.innerHTML, /最後一片，放這裡/);
+      assert.equal(h.element.guideNodes.find(node => node.dataset.targetGuide === "p12-3").style.display, "");
+      h.element.fire("click", action({ action: "part", part: "p12-3" }));
+      h.element.fire("click", action({ action: "target", part: "p12-3" }));
+      await Promise.resolve();
+      h.clock.advance(320);
+      assert.equal(h.state.activeBuild.placed.length, 36);
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      confirmCompletion(h);
+      assert.match(h.element.innerHTML, celebrationMarker);
+      assert.match(h.element.innerHTML, /36 組積木，全部完成/);
+      assert.match(h.element.innerHTML, new RegExp(modelId.toUpperCase() + "，出發！"));
+      assert.ok(h.audioCalls.some(call => call.method === "celebrate"));
+      h.clock.advance(6000);
+      assert.doesNotMatch(h.element.innerHTML, celebrationMarker);
+      assert.match(h.element.innerHTML, /data-action="display"/);
+    } finally { h.mounted.destroy(); }
+  });
 }
 
 test("E500 celebration waits for server completion and keeps its DOM through subscription updates", async () => {

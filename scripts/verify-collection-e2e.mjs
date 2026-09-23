@@ -32,6 +32,70 @@ async function answerSyntheticStudy() {
   assert.equal(await browser.evaluate('Boolean(document.querySelector("#family-reward"))'),false,'no reward during answer feedback');
   await browser.click('#next-btn',true);
 }
+async function verifyModelArt(globalName,packCount,groupCount) {
+  const model=await browser.evaluate(`(() => {
+    const model=window[${JSON.stringify(globalName)}];
+    return { title:model.title, packs:model.steps.length, groups:model.steps.flatMap(step=>step.parts).length };
+  })()`);
+  assert.equal(model.packs,packCount,`${model.title} pack count`);
+  assert.equal(model.groups,groupCount,`${model.title} group count`);
+  const decoded=await browser.evaluate(`Promise.all(window[${JSON.stringify(globalName)}].steps.flatMap(step=>step.parts).flatMap(part=>[part,...part.variants]).map(asset=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img.naturalWidth>0);img.onerror=()=>reject(Error(asset.file));img.src=asset.svg.match(/href="([^"]+)"/)[1];})))`);
+  assert.ok(decoded.every(Boolean),`${model.title} artwork and variants decode`);
+  return model;
+}
+async function finishNewTrain(modelId,globalName) {
+  await browser.waitFor('document.querySelector("[data-action=choose-next]")');
+  await browser.click('[data-action=choose-next]',true);
+  await browser.waitFor(`document.querySelector('[data-action=start-model][data-model=${modelId}]')`);
+  const label=await browser.evaluate(`document.querySelector('[data-action=start-model][data-model=${modelId}]').innerText`);
+  assert.match(label,/12 包 · 36 組部件/);
+  assert.equal(await browser.evaluate('document.querySelectorAll("[data-action=start-model]").length'),3);
+  await browser.click(`[data-action=start-model][data-model=${modelId}]`,true);
+  await browser.waitFor(`KidsCollection.create('aiden').snapshot().activeBuild?.modelId===${JSON.stringify(modelId)} && document.querySelector('.brick-part:not(:disabled)')`);
+  const model=await verifyModelArt(globalName,12,36);
+  assert.equal(await browser.evaluate('document.querySelector(".brick-stage-card h2").textContent'),model.title);
+  assert.equal(await browser.evaluate('Number(document.querySelector(".brick-progress").getAttribute("aria-valuemax"))'),36);
+  assert.equal((await state()).grants.filter(g=>g.buildId===modelId).length,12);
+  await browser.navigate(origin+'/?child=aiden');
+  await browser.waitFor('document.querySelector(".daily-build")');
+  assert.match(await browser.evaluate('document.querySelector(".daily-build").textContent'),/正在拼.*0 \/ 36 組部件/);
+  await browser.navigate(origin+'/?child=aiden&view=collection');
+  let placed=0;
+  while(placed<36) {
+    await browser.waitFor('!document.querySelector(".brick-svg-part--just-placed")');
+    if(await browser.evaluate('Boolean(document.querySelector("[data-action=allocate]"))')) await browser.click('[data-action=allocate]');
+    await browser.waitFor('document.querySelector(".brick-part:not(:disabled)")');
+    const id=await browser.evaluate('document.querySelector(".brick-part:not(:disabled)").dataset.part');
+    if(placed===35)assert.match(await browser.evaluate(`document.querySelector('[data-target-guide="${id}"]')?.textContent`),/最後一片，放這裡/);
+    if(placed===0)await browser.drag(`[data-action=part][data-part=${id}]`,`[data-action=target][data-part=${id}]`,{touch:true});
+    else {
+      await browser.click(`[data-action=part][data-part=${id}]`);
+      await browser.waitFor(`document.querySelector('button[data-action=target][data-part=${id}]')`);
+      await browser.click(`button[data-action=target][data-part=${id}]`);
+    }
+    await browser.waitFor(`KidsCollection.create('aiden').snapshot().activeBuild.placed.length>${placed}`);
+    placed=(await state()).activeBuild.placed.length;
+  }
+  await settled();
+  assert.equal((await state()).activeBuild.placed.length,36);
+  assert.ok((await state()).activeBuild.completedAt,`${modelId} server completion`);
+  await browser.waitFor('document.querySelector("[data-celebration]")');
+  assert.match(await browser.evaluate('document.querySelector("[data-celebration]").getAttribute("aria-label")'),new RegExp(modelId.toUpperCase()));
+  assert.match(await browser.evaluate('document.querySelector(".brick-celebration__heading").innerText'),/36 組積木/);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__rails image").length'),9);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-celebration__train image").length'),33);
+  assert.equal(await browser.evaluate('KidsBrickCelebration.duration'),6000);
+  await browser.click('[data-action=celebration-skip]',true);
+  await browser.waitFor('document.querySelector("[data-action=display]")');
+  await browser.click('[data-action=display][data-displayed=true]');
+  await browser.waitFor(`KidsCollection.create('aiden').snapshot().displayedBuildIds.includes(${JSON.stringify(modelId)})`);
+  await browser.navigate(origin+'/?child=aiden');
+  await browser.waitFor('document.querySelector(".daily-build")');
+  assert.match(await browser.evaluate('document.querySelector(".daily-build").textContent'),/已完成.*36 \/ 36 組部件/);
+  await browser.navigate(origin+'/?child=aiden&view=collection');
+  await browser.waitFor('document.querySelector(".brick-complete")');
+  passed(`${modelId} 12 packs / 36 groups: artwork, touch placement, server completion, 6-second celebration skip and permanent display`);
+}
 await mkdir('.scratch/collection-e2e',{recursive:true});
 try {
   await browser.send('Storage.clearDataForOrigin',{origin,storageTypes:'all'});
@@ -85,7 +149,8 @@ try {
   await browser.send('Network.setBlockedURLs',{urls:['*e500-v1/assets/p1-1.png*']});
   await browser.navigate(origin+'/?child=aiden&view=collection');
   await browser.waitFor('document.querySelector("[data-action=start-model][data-model=e500]")');
-  assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.dataset.model)'),['e500']);
+  assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.dataset.model)'),['e500','emu3000','r200']);
+  assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.querySelector("small").textContent)'),['14 包 · 42 組部件','12 包 · 36 組部件','12 包 · 36 組部件']);
   assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/臺灣火車系列/);
   await browser.click('[data-action="start-model"][data-model="e500"]',true);
   await browser.waitFor('document.querySelector("[data-action=retry-art]")');
@@ -94,9 +159,7 @@ try {
   await browser.send('Network.setBlockedURLs',{urls:[]});
   await browser.click('[data-action="retry-art"]',true);
   await browser.waitFor('document.querySelector("[data-action=part]")');
-  const assetCount=await browser.evaluate('KidsBrickE500.steps.flatMap(step=>step.parts).flatMap(part=>[part,...part.variants]).length');
-  const decoded=await browser.evaluate(`Promise.all(KidsBrickE500.steps.flatMap(step=>step.parts).flatMap(part=>[part,...part.variants]).map(asset=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img.naturalWidth>0);img.onerror=()=>reject(Error(asset.file));img.src=asset.svg.match(/href="([^"]+)"/)[1];})))`);
-  assert.equal(decoded.filter(Boolean).length,assetCount,'all actual local art assets and free-order variants decode');
+  await verifyModelArt('KidsBrickE500',14,42);
   await browser.send('Network.setCacheDisabled',{cacheDisabled:false});
   passed('all 42 E500 groups and free-order image variants decode; missing artwork pauses placement and retry preserves progress');
   await browser.click('[data-action="part"][data-part="p1-1"]',true);
@@ -222,9 +285,17 @@ try {
   await second.waitFor('!document.querySelector("[data-action=retry-art]") && document.querySelector(".brick-shelf-item .brick-thumbnail")');
   assert.deepEqual(await second.evaluate('KidsCollection.create("aiden").snapshot().displayedBuildIds'),['e500']);
   passed('new device reports unavailable completed-collection artwork and retries without changing ownership or display');
-  await fetch(origin+'/test/collection-fixture?child=aiden&days=13');
+  await fetch(origin+'/test/collection-fixture?child=aiden&days=37');
   await browser.navigate(origin+'/?child=aiden&view=collection');
-  await browser.waitFor('KidsCollection.create("aiden").snapshot().grants.length===15');
+  await browser.waitFor('KidsCollection.create("aiden").snapshot().grants.length===39');
+  assert.equal((await state()).grants.filter(g=>g.buildId==null).length,25);
+  await finishNewTrain('emu3000','KidsBrickEmu3000');
+  assert.equal((await state()).grants.filter(g=>g.buildId==null).length,13);
+  await finishNewTrain('r200','KidsBrickR200');
+  assert.equal((await state()).grants.filter(g=>g.buildId==null).length,1);
+  assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-action=choose-next]"))'),false);
+  assert.match(await browser.evaluate('document.querySelector(".brick-complete__summary").textContent'),/剩下的 1 包/);
+  passed('all three trains completed; surplus pack remains in the box without another model choice');
   const beforeReset=await state();
   const reset=await fetch(origin+'/test/activity-reset?child=aiden').then(r=>r.json());
   assert.equal(reset.generation,1);
@@ -233,7 +304,7 @@ try {
   const afterReset=await state();
   assert.deepEqual(afterReset.grants,beforeReset.grants);
   assert.deepEqual(afterReset.builds,beforeReset.builds);
-  assert.deepEqual(afterReset.displayedBuildIds,['e500']);
+  assert.deepEqual(afterReset.displayedBuildIds,['e500','emu3000','r200']);
   const rejected=await browser.evaluate(`KidsFamily.request('/v1/collection/aiden/record',{method:'POST',body:JSON.stringify({commandId:'late-before-reset',generation:0,event:{entryId:'study:math',answered:true,occurredAt:new Date().toISOString()}})}).then(()=>0,e=>e.status)`);
   assert.equal(rejected,409);
   passed('real generation reset preserves unbuilt packs, completed models and display; rejects delayed old events');
@@ -254,15 +325,17 @@ try {
   assert.equal(await browser.evaluate('Boolean(document.querySelector("[data-action=choose-next]"))'),false);
   await browser.click('[data-action="view"][data-view="shelf"]');
   await browser.waitFor('document.querySelector(".brick-catalog")');
-  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-catalog-card").length'),1);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-shelf-item").length'),3);
+  assert.equal(await browser.evaluate('document.querySelectorAll(".brick-catalog-card").length'),3);
   assert.match(await browser.evaluate('document.querySelector(".brick-catalog").innerText'),/臺灣火車系列/);
-  assert.deepEqual((await state()).displayedBuildIds,['e500']);
+  assert.deepEqual((await state()).displayedBuildIds,['e500','emu3000','r200']);
   assert.equal((await state()).grants.filter(g=>g.buildId==null).length,1);
-  await browser.screenshot('.scratch/collection-e2e/e500-shelf.png',{fullPage:true});
-  passed('completed E500 remains on shelf; no legacy model is offered and extra packs stay unassigned');
+  await browser.waitFor('!document.querySelector(".brick-art-notice")');
+  await browser.screenshot('.scratch/collection-e2e/three-trains-shelf.png',{fullPage:true});
+  passed('all three finished trains remain on the shelf; no legacy model is offered and extra packs stay unassigned');
   await browser.send('Emulation.setDeviceMetricsOverride',{width:768,height:1024,deviceScaleFactor:1,mobile:true});
   assert.equal(await browser.evaluate('document.documentElement.scrollWidth<=innerWidth'),true,'portrait tablet has no horizontal overflow');
-  await browser.screenshot('.scratch/collection-e2e/e500-portrait.png',{fullPage:true});
+  await browser.screenshot('.scratch/collection-e2e/three-trains-portrait.png',{fullPage:true});
   await browser.send('Emulation.setDeviceMetricsOverride',{width:1024,height:768,deviceScaleFactor:1,mobile:true});
   passed('completed collection remains readable without horizontal overflow on portrait tablet');
   await verifyUnavailableActivity();

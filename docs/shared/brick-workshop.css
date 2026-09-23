@@ -100,7 +100,7 @@
 .brick-tray { padding: 20px; }
 .brick-tray__heading { margin-bottom: 15px; }
 .brick-tray__heading h3 { margin-top: 4px; font-size: 1.25rem; }
-.brick-tray__heading > span { padding: 7px 10px; border-radius: 999px; background: #edf3f5; color: var(--brick-muted); font-size: .78rem; font-weight: 850; }
+.brick-tray__heading > span { flex-shrink: 0; white-space: nowrap; padding: 7px 10px; border-radius: 999px; background: #edf3f5; color: var(--brick-muted); font-size: .78rem; font-weight: 850; }
 .brick-parts { display: grid; gap: 11px; }
 .brick-part { display: grid; grid-template-columns: 76px 1fr; align-items: center; min-height: 86px !important; padding: 9px 12px; border: 2px solid transparent !important; border-radius: 18px; color: var(--brick-ink); background: #f4f8f8; text-align: left; touch-action: none; user-select: none; transition: border-color .16s, transform .16s, box-shadow .16s; }
 .brick-part svg { display: block; width: 70px; height: 60px; overflow: visible; filter: drop-shadow(0 5px 4px rgb(32 43 50 / 15%)); }

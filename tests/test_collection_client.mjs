@@ -92,3 +92,22 @@ test("已分包零件離線持久化並與另一裝置合併；暫時storage失�
     assert.equal(h.collection.snapshot().activeBuild.placed.includes("p1-3"),false);
   }finally{await runtime.dispose();}
 });
+test("EMU3000 第 12 包可離線保存並重開同步，第 13、14 包不進 outbox",async()=>{
+  const runtime=await collectionRuntime();
+  try{
+    await runtime.seedFixtures({days:12});
+    const h=client(runtime);await h.collection.ready;
+    await h.collection.selectModel("emu3000");
+    const grants=h.collection.snapshot().grants.filter(g=>g.buildId==="emu3000");
+    assert.equal(grants.length,12);
+    const last=grants.find(g=>g.packIndex===11);
+    h.setOffline(true);
+    await h.collection.placePart({grantId:last.id,buildId:"emu3000",packIndex:11,partId:"p12-3"});
+    for(const index of [12,13])await assert.rejects(h.collection.placePart({grantId:last.id,buildId:"emu3000",packIndex:index,partId:`p${index+1}-1`}),/請先連線取得/);
+    assert.equal(h.collection.snapshot().sync.pending,1);
+    const reopened=client(runtime,{storage:h.storage});await reopened.collection.ready;
+    assert.equal(reopened.collection.snapshot().sync.pending,0);
+    assert.deepEqual([...reopened.collection.snapshot().activeBuild.placed],["p12-3"]);
+    assert.equal(reopened.collection.snapshot().activeBuild.completedAt,null);
+  }finally{await runtime.dispose();}
+});

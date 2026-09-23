@@ -4,17 +4,18 @@ import test from "node:test";
 import vm from "node:vm";
 
 const context = vm.createContext({});
-for (const name of ["brick-e500.js", "brick-models.js"]) {
+for (const name of ["brick-e500.js", "brick-emu3000.js", "brick-r200.js", "brick-models.js"]) {
   const source = readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
   vm.runInContext(source, context);
 }
 const catalog = context.KidsBrickModels;
+vm.runInContext(readFileSync(new URL("../docs/shared/collection-core.js", import.meta.url), "utf8"), context);
 
-test("catalog offers E500 and preserves legacy model identities", () => {
+test("catalog offers three Taiwan trains and preserves legacy model identities", () => {
   assert.equal(catalog.version, 1);
   assert.deepEqual(
     Array.from(catalog.models, (model) => model.id),
-    ["e500"],
+    ["e500", "emu3000", "r200"],
   );
   assert.equal(catalog.models[0].series, "臺灣火車系列");
   assert.deepEqual(Array.from(catalog.legacyModels, (model) => model.id), ["car", "train", "plane"]);
@@ -22,17 +23,19 @@ test("catalog offers E500 and preserves legacy model identities", () => {
 
   for (const model of [...catalog.models, ...catalog.legacyModels]) {
     assert.equal(model.viewBox, "0 0 800 500");
-    assert.equal(model.steps.length, 14, `${model.id} pack count`);
+    const packs = ["emu3000", "r200"].includes(model.id) ? 12 : 14;
+    assert.equal(context.KidsCollectionCore.PACK_COUNTS[model.id], packs, `${model.id} server and artwork agree`);
+    assert.equal(model.steps.length, packs, `${model.id} pack count`);
     assert.equal(
       model.steps.reduce((count, step) => count + step.parts.length, 0),
-      42,
+      packs * 3,
       `${model.id} part count`,
     );
     assert.deepEqual(
       Array.from(model.steps, (step) =>
         Array.from(step.parts, (part) => part.id),
       ),
-      Array.from({ length: 14 }, (_, stepIndex) =>
+      Array.from({ length: packs }, (_, stepIndex) =>
         Array.from({ length: 3 }, (_, partIndex) =>
           `p${stepIndex + 1}-${partIndex + 1}`,
         ),
@@ -48,7 +51,7 @@ test("all published and legacy parts expose touch-friendly target geometry and i
   const allParts = allModels.flatMap((model) =>
     model.steps.flatMap((step) => step.parts),
   );
-  assert.equal(allParts.length, 168);
+  assert.equal(allParts.length, 240);
 
   for (const model of allModels) {
     const names = new Set();
@@ -60,7 +63,7 @@ test("all published and legacy parts expose touch-friendly target geometry and i
         assert.ok(!names.has(part.name), `${model.id} duplicate name ${part.name}`);
         names.add(part.name);
         assert.match(part.svg, /<(?:g|path|circle|ellipse|rect)\b/);
-        if (model.id === "e500") assert.match(part.svg, /<image\b/);
+        if (catalog.models.includes(model)) assert.match(part.svg, /<image\b/);
         else assert.doesNotMatch(part.svg, /<(?:image|svg)\b/i, `${model.id}/${part.id} legacy vector`);
         assert.ok(Number.isFinite(part.z), `${model.id}/${part.id}.z`);
         for (const key of ["x", "y", "width", "height"])

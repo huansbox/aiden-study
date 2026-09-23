@@ -3,13 +3,18 @@
   const host = document.querySelector('#workshop');
   let mounted;
   let saveTimer;
+  const requested = new URLSearchParams(location.search).get('model') || 'e500';
+  const model = window.KidsBrickModels.get(requested) || window.KidsBrickModels.get('e500');
+  const lastPart = model.steps.at(-1).parts.at(-1).id;
+  document.querySelector('#model-link').href = './index.html?model=' + model.id;
+  document.title = model.title + '完工試車';
+  document.querySelector('#preview-instructions').textContent = `把最後一組積木拖進金色框，${model.id.toUpperCase()} 就會向前駛過，播放約 6 秒的完工慶祝。`;
   function restart() {
     clearTimeout(saveTimer);
     mounted?.destroy();
-    const model = window.KidsBrickModels.get('e500');
     const build = {
-      id: 'e500', modelId: 'e500', completedAt: null,
-      placed: model.steps.flatMap(step => step.parts.map(part => part.id)).filter(id => id !== 'p14-3'),
+      id: model.id, modelId: model.id, completedAt: null,
+      placed: model.steps.flatMap(step => step.parts.map(part => part.id)).filter(id => id !== lastPart),
     };
     const state = {
       version: 1, revision: 1, activeBuild: build, builds: [build], displayedBuildIds: [],
@@ -23,7 +28,7 @@
       snapshot: () => state,
       subscribe(callback) { subscribers.add(callback); return () => subscribers.delete(callback); },
       async placePart({ partId }) {
-        if (partId !== 'p14-3' || build.placed.includes(partId)) return;
+        if (partId !== lastPart || build.placed.includes(partId)) return;
         build.placed.push(partId);
         state.sync = { status: 'saving', pending: 1 };
         notify();

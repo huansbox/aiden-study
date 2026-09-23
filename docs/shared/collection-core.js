@@ -1,7 +1,8 @@
 /* 每日拼裝規則；只接新的練習事件，與舊累計及其重置世代分開。 */
 (() => {
   // 舊作品的 ID 仍需保留，讓既有半成品與舊版離線操作能繼續同步。
-  const MODELS = ["car", "train", "plane", "e500"];
+  const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12 });
+  const MODELS = Object.keys(PACK_COUNTS);
   const ENTRIES = {
     "study:math": { label: "題庫數學", metric: "answered" },
     "study:science": { label: "題庫自然", metric: "answered" },
@@ -49,7 +50,7 @@
     const build = state.builds.find((b) => b.id === state.activeBuildId);
     if (!build || build.completedAt) return;
     let count = state.grants.filter((g) => g.buildId === build.id).length;
-    for (const grant of state.grants) if (!grant.buildId && count < 14) { grant.buildId = build.id; grant.packIndex = count++; }
+    for (const grant of state.grants) if (!grant.buildId && count < PACK_COUNTS[build.modelId]) { grant.buildId = build.id; grant.packIndex = count++; }
   }
   function apply(previous, command, now = new Date()) {
     const state = copy(previous), today = dateKey(now);
@@ -84,10 +85,10 @@
     } else if (command.type === "allocate") allocate(state);
     else if (command.type === "place") {
       const build = state.builds.find((b) => b.id === command.buildId), grant = state.grants.find((g) => g.id === command.grantId);
-      check(build && grant && grant.buildId === build.id && grant.packIndex === command.packIndex, "這包尚未配給目前作品，請先連線讀取。", 409);
-      check(Number.isInteger(command.packIndex) && command.packIndex >= 0 && command.packIndex < 14 && [1, 2, 3].some((n) => command.partId === `p${command.packIndex + 1}-${n}`), "零件位置不正確");
+      check(build && Number.isInteger(command.packIndex) && command.packIndex >= 0 && command.packIndex < PACK_COUNTS[build.modelId] && [1, 2, 3].some((n) => command.partId === `p${command.packIndex + 1}-${n}`), "零件位置不正確");
+      check(grant && grant.buildId === build.id && grant.packIndex === command.packIndex, "這包尚未配給目前作品，請先連線讀取。", 409);
       if (!build.placed.includes(command.partId)) build.placed.push(command.partId);
-      if (build.placed.length === 42 && !build.completedAt) build.completedAt = new Date(now).toISOString();
+      if (build.placed.length === PACK_COUNTS[build.modelId] * 3 && !build.completedAt) build.completedAt = new Date(now).toISOString();
     } else if (command.type === "display") {
       check(state.builds.some((b) => b.id === command.buildId && b.completedAt), "完成作品後才能展示");
       check(typeof command.displayed === "boolean", "展示設定不正確");
@@ -101,5 +102,5 @@
     check(validDate(day), "日期不正確");
     return { version: 1, revision: state.revision, goalRevision: state.goalRevision, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
   }
-  globalThis.KidsCollectionCore = { MODELS, ENTRIES, dateKey, validDate, targets, empty, apply, snapshot, check };
+  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, ENTRIES, dateKey, validDate, targets, empty, apply, snapshot, check };
 })();

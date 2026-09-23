@@ -15,11 +15,14 @@
 </head>
 <body>
   <header class="preview-toolbar">
-    <p><strong>完工試車預覽</strong><br>把最後的踏階拖進金色框，E500 就會向前駛過，播放約 6 秒的完工慶祝。<br><small>使用示範進度 · <a href="./index.html">回到完整模型</a></small></p>
+    <p><strong>完工試車預覽</strong><br><span id="preview-instructions">把最後一組積木拖進金色框，列車就會向前駛過。</span><br><small>使用示範進度 · <a id="model-link" href="./index.html">回到完整模型</a></small></p>
+    <nav aria-label="選擇積木列車"><a href="?model=e500">E500</a> · <a href="?model=emu3000">EMU3000</a> · <a href="?model=r200">R200</a></nav>
     <button id="restart" type="button">重設為只差最後一片</button>
   </header>
   <main id="workshop"></main>
   <script src="/shared/brick-e500.js"></script>
+  <script src="/shared/brick-emu3000.js"></script>
+  <script src="/shared/brick-r200.js"></script>
   <script src="/shared/brick-models.js"></script>
   <script src="/shared/brick-celebration.js"></script>
   <script src="/shared/brick-audio.js"></script>

@@ -1,0 +1,29 @@
+{
+  "checks": [
+    "parent configures math 10 + spelling 1 round once; no old-statistics backfill",
+    "real Study answer controls: threshold during batch, first pack only displayed at round end",
+    "real spelling full round grants second pack",
+    "all 42 E500 groups and free-order image variants decode; missing artwork pauses placement and retry preserves progress",
+    "real SQLite-backed touch click + cancel + drag preserve visible placed pieces",
+    "defer and reopen resumes the exact partial build",
+    "workshop and collection-room navigation stays inside unified results",
+    "offline placement survives reload and merges after reconnect",
+    "independent browser storage resumes and returns the same saved build",
+    "window pack accepts third-first-second placement and renders the same saved model",
+    "final gold target is visible; server-confirmed completion drives E500 one-way for 6 seconds on extended stationary track, auto-finishes, replays, mutes and skips",
+    "Taiwan series offers E500; 12 synthetic past-day packs plus 2 real earned packs produce a permanent 42-group displayed locomotive",
+    "new device reports unavailable completed-collection artwork and retries without changing ownership or display",
+    "emu3000 12 packs / 36 groups: artwork, touch placement, server completion, 6-second celebration skip and permanent display",
+    "r200 12 packs / 36 groups: artwork, touch placement, server completion, 6-second celebration skip and permanent display",
+    "all three trains completed; surplus pack remains in the box without another model choice",
+    "real generation reset preserves unbuilt packs, completed models and display; rejects delayed old events",
+    "other child remains isolated",
+    "unified results retains learning records and all 8 milestones",
+    "all three finished trains remain on the shelf; no legacy model is offered and extra packs stay unassigned",
+    "completed collection remains readable without horizontal overflow on portrait tablet",
+    "finished Native Camp grants nothing; parent removes unavailable goal and preserved spelling progress completes today without a third pack",
+    "older-client train selection resumes its original identity and saved group; no E500 relabeling"
+  ],
+  "physicalIPad": false,
+  "at": "2026-09-23T08:36:29.814Z"
+}

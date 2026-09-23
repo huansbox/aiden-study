@@ -12,9 +12,9 @@ const metadataFile = path.resolve(process.argv[3] || path.join(repository, "docs
 const outputDirectory = path.resolve(process.argv[2] || path.join(repository, ".scratch/e500-sprite-qa"));
 const assetDirectory = path.dirname(metadataFile);
 const model = JSON.parse(await fs.readFile(metadataFile, "utf8"));
-assert.equal(model.id, "e500");
+assert.ok(["e500", "emu3000", "r200"].includes(model.id));
 assert.equal(model.viewBox, "0 0 800 500");
-assert.equal(model.steps.length, 14);
+assert.equal(model.steps.length, model.id === "e500" ? 14 : 12);
 assert.ok(Number.isInteger(model.scale) && model.scale > 0);
 const parts = model.steps.flatMap((step, packIndex) => {
   assert.equal(step.parts.length, 3);
@@ -39,7 +39,7 @@ const parts = model.steps.flatMap((step, packIndex) => {
     return { ...part, occlusionPeers: peers, variants };
   });
 });
-assert.equal(parts.length, 42);
+assert.equal(parts.length, model.steps.length * 3);
 
 const assets = new Map();
 for (const part of parts) for (const artwork of [part, ...part.variants]) {
@@ -82,19 +82,19 @@ const compose = async (selection) => {
   return sharp({ create: { width, height, channels: 4, background } }).composite(layers).png().toBuffer();
 };
 
-const stages = [3, 6, 21, 42];
+const stages = [3, 6, 21, parts.length];
 const stageImages = [];
 for (const count of stages) {
   const image = await compose(parts.slice(0, count));
   stageImages.push(image);
-  await fs.writeFile(path.join(outputDirectory, `e500-stage-${count}.png`), image);
+  await fs.writeFile(path.join(outputDirectory, `${model.id}-stage-${count}.png`), image);
 }
-await fs.writeFile(path.join(outputDirectory, "e500-composite.png"), stageImages.at(-1));
+await fs.writeFile(path.join(outputDirectory, `${model.id}-composite.png`), stageImages.at(-1));
 await sharp(stageImages.at(-1)).flatten({ background: "#eee3d1" }).png()
-  .toFile(path.join(outputDirectory, "e500-composite-on-beige.png"));
+  .toFile(path.join(outputDirectory, `${model.id}-composite-on-beige.png`));
 await sharp({ create: { width: width * 2, height: height * 2, channels: 4, background: "#eee3d1" } })
   .composite(stageImages.map((input, index) => ({ input, left: index % 2 * width, top: Math.floor(index / 2) * height })))
-  .png().toFile(path.join(outputDirectory, "e500-stages.png"));
+  .png().toFile(path.join(outputDirectory, `${model.id}-stages.png`));
 
 // Keep one out-of-order assembly visible so a published mask is checked in context.
 const outOfOrderPart = parts.find((part) => part.variants.length);
@@ -104,11 +104,11 @@ if (outOfOrderPart) {
   const selectedPeers = new Set(outOfOrderPart.occlusionPeers.filter((_, index) => sample.mask & (1 << index)));
   const selection = parts.filter((part) => Number(part.id.match(/^p(\d+)-/)[1]) - 1 < packIndex || selectedPeers.has(part.id) || part.id === outOfOrderPart.id);
   assert.equal(artworkFile(outOfOrderPart, new Set(selection.map((part) => part.id))), sample.file);
-  await fs.writeFile(path.join(outputDirectory, "e500-out-of-order.png"), await compose(selection));
+  await fs.writeFile(path.join(outputDirectory, `${model.id}-out-of-order.png`), await compose(selection));
 }
 
 // A contact sheet keeps covered interior groups visible for inspection.
-const columns = 6, rows = 7, cellWidth = 220, cellHeight = 220;
+const columns = 6, rows = Math.ceil(parts.length / columns), cellWidth = 220, cellHeight = 220;
 const trayLayers = [];
 for (const [index, part] of parts.entries()) {
   const left = index % columns * cellWidth;
@@ -122,5 +122,5 @@ for (const [index, part] of parts.entries()) {
   trayLayers.push({ input: label, left, top });
 }
 await sharp({ create: { width: columns * cellWidth, height: rows * cellHeight, channels: 4, background: "#fbf5e9" } })
-  .composite(trayLayers).png().toFile(path.join(outputDirectory, "e500-trays.png"));
+  .composite(trayLayers).png().toFile(path.join(outputDirectory, `${model.id}-trays.png`));
 console.log(`Verified ${assets.size} PNGs for ${parts.length} groups and wrote offline QA to ${outputDirectory}`);

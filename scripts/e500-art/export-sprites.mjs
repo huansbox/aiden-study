@@ -5,20 +5,26 @@ import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-const base=path.dirname(fileURLToPath(import.meta.url)),out=path.resolve(base,'../../.scratch/e500-art/candidates');
+const modelId=process.argv.find(arg=>arg.startsWith('--model='))?.slice(8)||'e500';
+const packCounts={e500:14,emu3000:12,r200:12};
+if(!Object.hasOwn(packCounts,modelId))throw Error('Unknown model: '+modelId);
+const total=packCounts[modelId]*3;
+const base=path.dirname(fileURLToPath(import.meta.url)),out=path.resolve(base,'../../.scratch/e500-art/candidates',modelId==='e500'?'':modelId);
 await fs.mkdir(path.join(out,'assets'),{recursive:true});
 const endpoint=process.argv[2];
 const origin=process.argv.find(a=>/^http:\/\/127\.0\.0\.1:\d+$/.test(a))||'http://127.0.0.1:8877';
 const first=await connectBrowser(endpoint);
-const {targetId}=await first.send('Target.createTarget',{url:origin+'/index.html?sprites=1'},false);first.close();
+const {targetId}=await first.send('Target.createTarget',{url:origin+'/index.html?sprites=1&model='+modelId},false);first.close();
 const tab=await connectBrowser(endpoint,{targetId});
 try{
+ await tab.send('Page.bringToFront');
  await tab.waitFor('window.renderReady===true',60000);
- const model=await tab.evaluate('window.e500.descriptor'),parts=model.steps.flatMap(s=>s.parts);
- assert.equal(parts.length,42);
+ const model=await tab.evaluate('window.trainArt.descriptor'),parts=model.steps.flatMap(s=>s.parts);
+ assert.equal(model.id,modelId);
+ assert.equal(parts.length,total);
  parts.forEach((p,i)=>assert.equal(p.id,`p${Math.floor(i/3)+1}-${i%3+1}`));
  const metadata={id:model.id,title:model.title,series:model.series,viewBox:model.viewBox,scale:2,steps:[]};
- const raw=Buffer.from(await tab.evaluate('window.e500.renderSelection(Array.from({length:42},(_,i)=>i))'),'base64');
+ const raw=Buffer.from(await tab.evaluate(`window.trainArt.renderSelection(Array.from({length:${total}},(_,i)=>i))`),'base64');
  await sharp(raw).resize(1600,1000).png().toFile(path.join(out,'full-3d.png'));
  for(let i=0;i<parts.length;i++){
   const p=parts[i],packStart=i-i%3,fullMask=(1<<(i%3))-1,images=[];
@@ -27,7 +33,7 @@ try{
   for(let mask=0;mask<=fullMask;mask++){
    const occludeWith=Array.from({length:packStart},(_,n)=>n);
    for(let bit=0;bit<i%3;bit++)if(mask&(1<<bit))occludeWith.push(packStart+bit);
-   images.push(Buffer.from(await tab.evaluate(`window.e500.renderSelection([${i}],{occludeWith:${JSON.stringify(occludeWith)}})`),'base64'));
+   images.push(Buffer.from(await tab.evaluate(`window.trainArt.renderSelection([${i}],{occludeWith:${JSON.stringify(occludeWith)}})`),'base64'));
   }
   const png=images[0];
   const {data,info}=await sharp(png).ensureAlpha().raw().toBuffer({resolveWithObject:true});
@@ -73,7 +79,7 @@ try{
   const indices=[...Array.from({length:24},(_,i)=>i),...siblings.map(i=>24+i)];
   const name='window-order-'+siblings.map(i=>i+1).join('-');
   await compose(indices.map(i=>flat[i]),name+'.png');
-  const reference=Buffer.from(await tab.evaluate(`window.e500.renderSelection(${JSON.stringify(indices)})`),'base64');
+  const reference=Buffer.from(await tab.evaluate(`window.trainArt.renderSelection(${JSON.stringify(indices)})`),'base64');
   await sharp(reference).resize(1600,1000).png().toFile(path.join(out,name+'-3d.png'));
  }
  for(const file of ['full-3d','composited','stage-3','stage-6','stage-21'])await sharp(path.join(out,file+'.png')).flatten({background:'#eee3d1'}).png().toFile(path.join(out,file+'-on-beige.png'));
@@ -84,12 +90,12 @@ try{
  console.log({visiblePixels:visible,materialOrOcclusionDifference:differs/visible});
  await fs.writeFile(path.join(out,'comparison.json'),JSON.stringify({visiblePixels:visible,materialOrOcclusionDifference:differs/visible,notes:'Difference includes shadows cast between groups and subpixel alpha resampling, as well as ordering. Inspect images, do not treat as a visual acceptance test.'},null,2));
  await fs.writeFile(path.join(out,'candidate-model.js'),`(function(root){const data=${JSON.stringify(metadata)};root.createE500SpriteCandidate=function(assetBase){if(!assetBase)throw Error('An explicit local asset base is required');return {...data,steps:data.steps.map(s=>({...s,parts:s.parts.map(p=>({...p,svg:'<g aria-hidden="true"><image x="'+p.imageBox.x+'" y="'+p.imageBox.y+'" width="'+p.imageBox.width+'" height="'+p.imageBox.height+'" href="'+assetBase.replace(/\\/$/,'')+'/'+p.file+'"/></g>'}))}))};};})(window);`);
- await fs.writeFile(path.join(out,'index.html'),`<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>E500 積木素材比對</title><style>body{margin:0;padding:24px;background:#eee3d1;font:16px system-ui;color:#303840}h1{font-size:24px}section{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#f8f3ea;border-radius:16px;padding:16px}img,svg{width:100%;height:auto}p{margin:0}h2{font-size:18px}#live{border:1px solid #d5c9b6}</style><h1>E500：42 組積木素材</h1><p>左：完整模型。右：工作台使用的 42 組零件圖片合成；下方可看逐步拼裝。</p><section><div class="card"><h2>完整 3D</h2><img src="full-3d.png"></div><div class="card"><h2>42 張組合</h2><svg id="live" viewBox="0 0 800 500"></svg></div></section><section>${[3,6,21,42].map(n=>'<div class="card"><h2>'+n+' / 42</h2><img src="'+(n===42?'composited.png':'stage-'+n+'.png')+'"></div>').join('')}</section><script src="candidate-model.js"></script><script>const model=createE500SpriteCandidate('.');document.querySelector('#live').innerHTML=model.steps.flatMap(s=>s.parts).sort((a,b)=>a.z-b.z).map(p=>p.svg).join('');</script></html>`);
+ await fs.writeFile(path.join(out,'index.html'),`<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>${model.title} 積木素材比對</title><style>body{margin:0;padding:24px;background:#eee3d1;font:16px system-ui;color:#303840}h1{font-size:24px}section{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#f8f3ea;border-radius:16px;padding:16px}img,svg{width:100%;height:auto}p{margin:0}h2{font-size:18px}#live{border:1px solid #d5c9b6}</style><h1>${model.title}：${total} 組積木素材</h1><p>左：完整模型。右：工作台使用的 ${total} 組零件圖片合成；下方可看逐步拼裝。</p><section><div class="card"><h2>完整 3D</h2><img src="full-3d.png"></div><div class="card"><h2>${total} 張組合</h2><svg id="live" viewBox="0 0 800 500"></svg></div></section><section>${[3,6,21,total].map(n=>'<div class="card"><h2>'+n+' / '+total+'</h2><img src="'+(n===total?'composited.png':'stage-'+n+'.png')+'"></div>').join('')}</section><script src="candidate-model.js"></script><script>const model=createE500SpriteCandidate('.');document.querySelector('#live').innerHTML=model.steps.flatMap(s=>s.parts).sort((a,b)=>a.z-b.z).map(p=>p.svg).join('');</script></html>`);
  if(process.argv.includes('--publish')){
-  const published=path.resolve(base,'../../docs/shared/bricks/e500-v1');
+  const published=path.resolve(base,'../../docs/shared/bricks/'+modelId+'-v1');
   await fs.mkdir(path.join(published,'assets'),{recursive:true});
   for(const p of metadata.steps.flatMap(s=>s.parts))for(const asset of [p,...p.variants])await fs.copyFile(path.join(out,asset.file),path.join(published,asset.file));
   await fs.copyFile(path.join(out,'metadata.json'),path.join(published,'metadata.json'));
-  console.log('Published 42 sprites and metadata: '+published);
+  console.log('Published '+total+' groups and metadata: '+published);
  }
 }finally{await tab.send('Target.closeTarget',{targetId},false);tab.close();}

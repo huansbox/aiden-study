@@ -2,7 +2,8 @@
   "use strict";
 
   const duration = 6000;
-  const supports = (model) => model?.id === "e500";
+  const trainNames = { e500: "E500", emu3000: "EMU3000", r200: "R200" };
+  const supports = (model) => Object.hasOwn(trainNames, model?.id);
 
   function render(model, { audioEnabled = true } = {}) {
     if (!supports(model)) return "";
@@ -28,10 +29,11 @@
       `<g transform="translate(${x} ${y})"><g class="brick-celebration__confetti" style="--drift:${dx}px;--turn:${angle}deg;--delay:${2550 + index * 55}ms" fill="${colors[index % colors.length]}"><rect x="-8" y="-5" width="16" height="10" rx="2"/><rect x="-5" y="-8" width="4" height="4" rx="1"/><rect x="1" y="-8" width="4" height="4" rx="1"/><path d="M-6-3H6" stroke="#fff" stroke-opacity=".45" stroke-width="1.5"/></g></g>`
     ).join("");
 
-    return `<section class="brick-celebration" data-celebration style="--celebration-duration:${duration}ms" aria-label="E500 完成慶祝">
+    const name = trainNames[model.id];
+    return `<section class="brick-celebration" data-celebration style="--celebration-duration:${duration}ms" aria-label="${name} 完成慶祝">
       <div class="brick-celebration__heading" role="status">
-        <p class="brick-kicker">42 組積木，全部完成</p>
-        <h2>E500，出發！</h2>
+        <p class="brick-kicker">${parts.length} 組積木，全部完成</p>
+        <h2>${name}，出發！</h2>
         <p class="brick-celebration__message">你完成的積木列車，出發了。</p>
       </div>
       <div class="brick-celebration__scene">

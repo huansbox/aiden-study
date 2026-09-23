@@ -7,20 +7,21 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = new URL("../", import.meta.url);
-const source = fs.readFileSync(new URL("docs/shared/brick-e500.js", root), "utf8");
+for (const [modelId, globalName, packs] of [['e500', 'KidsBrickE500', 14], ['emu3000', 'KidsBrickEmu3000', 12], ['r200', 'KidsBrickR200', 12]]) {
+const source = fs.readFileSync(new URL(`docs/shared/brick-${modelId}.js`, root), "utf8");
 const context = vm.createContext({});
 vm.runInContext(source, context);
-const model = context.KidsBrickE500;
+const model = context[globalName];
 const parts = model.steps.flatMap(step => step.parts);
-const assetPath = part => new URL(`docs/shared/bricks/e500-v1/${part.file}`, root);
+const assetPath = part => new URL(`docs/shared/bricks/${modelId}-v1/${part.file}`, root);
 
-test("E500 has 14 complete semantic packs and stable placement identities", () => {
-  assert.equal(model.id, "e500");
+test(`${modelId} has ${packs} complete semantic packs and stable placement identities`, () => {
+  assert.equal(model.id, modelId);
   assert.equal(model.series, "臺灣火車系列");
   assert.equal(model.viewBox, "0 0 800 500");
-  assert.equal(model.steps.length, 14);
-  assert.equal(parts.length, 42);
-  assert.equal(new Set(parts.map(p => p.name)).size, 42);
+  assert.equal(model.steps.length, packs);
+  assert.equal(parts.length, packs * 3);
+  assert.equal(new Set(parts.map(p => p.name)).size, packs * 3);
   model.steps.forEach((step, i) => {
     assert.ok(step.title);
     assert.equal(step.parts.length, 3);
@@ -33,7 +34,7 @@ test("E500 has 14 complete semantic packs and stable placement identities", () =
   });
 });
 
-test("every independently cropped image fits its touch target and decodes as transparent PNG", async () => {
+test(`${modelId}: every independently cropped image fits its touch target and decodes as transparent PNG`, async () => {
   for (const p of parts) {
     const b = p.box, image = p.imageBox;
     assert.ok(Number.isFinite(p.z), p.id);
@@ -64,7 +65,7 @@ test("every independently cropped image fits its touch target and decodes as tra
   }
 });
 
-test("all six within-pack placement orders visibly advance the assembled model", async () => {
+test(`${modelId}: all six within-pack placement orders visibly advance the assembled model`, async () => {
   const images = new Map();
   for (const p of parts) for (const asset of [p, ...p.variants]) {
     images.set(asset.file, await sharp(fs.readFileSync(assetPath(asset))).resize(Math.round(p.imageBox.width), Math.round(p.imageBox.height)).toBuffer());
@@ -79,7 +80,7 @@ test("all six within-pack placement orders visibly advance the assembled model",
     });
     return canvas().composite(overlays).raw().toBuffer();
   };
-  for (let pack = 0; pack < 14; pack++) {
+  for (let pack = 0; pack < packs; pack++) {
     const completed = parts.slice(0,pack*3);
     const initial = await compose(completed);
     for (const order of [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]) {
@@ -97,19 +98,21 @@ test("all six within-pack placement orders visibly advance the assembled model",
   }
 });
 
-test("asset URLs remain local under root and repository-prefixed Pages deployments", () => {
+test(`${modelId}: asset URLs remain local under root and repository-prefixed Pages deployments`, () => {
   for (const prefix of ["", "/aiden-study"]) {
-    const another = vm.createContext({ window: {}, URL, document: { currentScript: { src: `https://example.test${prefix}/shared/brick-e500.js?v=release` } } });
+    const another = vm.createContext({ window: {}, URL, document: { currentScript: { src: `https://example.test${prefix}/shared/brick-${modelId}.js?v=release` } } });
     vm.runInContext(source, another);
-    for (const p of another.window.KidsBrickE500.steps.flatMap(step => step.parts)) {
-      for (const asset of [p, ...p.variants]) assert.ok(asset.svg.includes(`href="https://example.test${prefix}/shared/bricks/e500-v1/${asset.file}?v=${model.assetVersion}"`), p.id);
+    for (const p of another.window[globalName].steps.flatMap(step => step.parts)) {
+      for (const asset of [p, ...p.variants]) assert.ok(asset.svg.includes(`href="https://example.test${prefix}/shared/bricks/${modelId}-v1/${asset.file}?v=${model.assetVersion}"`), p.id);
     }
   }
 });
 
-test("checked-in runtime matches the asset manifest and image bytes", () => {
-  execFileSync(process.execPath, [fileURLToPath(new URL("scripts/build-e500-runtime.mjs", root)), "--check"]);
+test(`${modelId}: checked-in runtime matches the asset manifest and image bytes`, () => {
+  execFileSync(process.execPath, [fileURLToPath(new URL("scripts/build-e500-runtime.mjs", root)), "--check", `--model=${modelId}`]);
   const another = vm.createContext({ window: {} });
   vm.runInContext(source, another);
-  assert.equal(JSON.stringify(another.window.KidsBrickE500), JSON.stringify(model));
+  assert.equal(JSON.stringify(another.window[globalName]), JSON.stringify(model));
 });
+
+}

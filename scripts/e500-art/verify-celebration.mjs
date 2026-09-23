@@ -2,7 +2,10 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { connectBrowser } from '../../tests/helpers/collection-browser.mjs';
-const [endpoint, origin = 'http://127.0.0.1:8878'] = process.argv.slice(2);
+const [endpoint, origin = 'http://127.0.0.1:8878', modelId = 'e500'] = process.argv.slice(2);
+if (!['e500','emu3000','r200'].includes(modelId)) throw Error('Unknown train');
+const lastPart = modelId === 'e500' ? 'p14-3' : 'p12-3';
+const previewUrl = origin + '/celebration.html?model=' + modelId;
 if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) throw Error('Local preview only');
 if (!(await fetch(origin + '/celebration.html').then(r => r.text())).includes('celebration-preview.js')) throw Error('Memory-only preview required');
 const b = await connectBrowser(endpoint, origin);
@@ -44,12 +47,12 @@ const { identifier } = await b.send('Page.addScriptToEvaluateOnNewDocument', { s
 try {
   await b.send('Emulation.setDeviceMetricsOverride', { width: 1024, height: 768, deviceScaleFactor: 1, mobile: true });
   await b.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
-  await b.navigate(origin + '/celebration.html');
+  await b.navigate(previewUrl);
   await b.waitFor('document.querySelector(".brick-target-guide__hit")');
   assert.equal(await b.evaluate('__brickAudioProbe.length'), 0, 'no audio context before a gesture');
   assert.match(await b.evaluate('document.querySelector(".brick-target-guide").textContent'), /最後一片，放這裡/);
-  await b.screenshot('.scratch/collection-e2e/final-target-preview.png', { fullPage: true });
-  await b.click('[data-action="part"][data-part="p14-3"]', true);
+  await b.screenshot(`.scratch/collection-e2e/${modelId}-final-target-preview.png`, { fullPage: true });
+  await b.click(`[data-action="part"][data-part="${lastPart}"]`, true);
   await b.click('.brick-target-guide__hit', true);
   await b.waitFor('document.querySelector("[data-celebration]")');
   await b.waitFor('__brickPeak() > 0.001');
@@ -68,7 +71,7 @@ try {
   await b.click('[data-action="celebration-replay"]', true);
   await b.waitFor('__brickPeak() > 0.001');
   await b.waitFor('Math.abs(new DOMMatrix(getComputedStyle(document.querySelector(".brick-celebration__train")).transform).m41) < 12');
-  await b.screenshot('.scratch/collection-e2e/celebration-forward-preview.png');
+  await b.screenshot(`.scratch/collection-e2e/${modelId}-celebration-forward-preview.png`);
   await b.waitFor('document.querySelector("[data-action=display]")');
   assert.equal(await b.evaluate('__brickAudioProbe.length'), 1);
   await b.waitFor('__brickAudioProbe.at(-1).voices.size === 0');
@@ -79,7 +82,7 @@ try {
   await b.waitFor('document.querySelector(".brick-target-guide__hit")');
   assert.equal(await b.evaluate('__brickAudioProbe[0].state'), 'closed');
   assert.equal(await b.evaluate('document.documentElement.scrollWidth <= innerWidth'), true);
-  await b.drag('[data-action="part"][data-part="p14-3"]', '.brick-target-guide__hit', { touch: true });
+  await b.drag(`[data-action="part"][data-part="${lastPart}"]`, '.brick-target-guide__hit', { touch: true });
   await b.waitFor('document.querySelector("[data-celebration]") && __brickPeak() > 0.001');
   await b.click('#restart', true);
   await b.waitFor('document.querySelector(".brick-target-guide__hit") && __brickAudioProbe.at(-1).state === "closed"');
@@ -87,7 +90,7 @@ try {
 } finally {
   await b.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
   await b.send('Emulation.clearDeviceMetricsOverride');
-  await b.navigate(origin + '/celebration.html');
-  await writeFile('.scratch/collection-e2e/celebration-result.json', JSON.stringify({ checks, physicalIPad: false, at: new Date().toISOString() }, null, 2));
+  await b.navigate(previewUrl);
+  await writeFile(`.scratch/collection-e2e/${modelId}-celebration-result.json`, JSON.stringify({ modelId, checks, physicalIPad: false, at: new Date().toISOString() }, null, 2));
   b.close();
 }
