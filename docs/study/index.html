@@ -524,10 +524,10 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260922-collection"></script><script src="../shared/collection-core.js?v=20260922-collection"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science-collection"></script><script src="../shared/collection-core.js?v=20260922-collection"></script>
 <script src="../shared/collection-client.js?v=20260922-collection"></script>
-<script src="../shared/family-client.js?v=20260922-collection"></script><script src="../shared/family-app.js?v=20260922-collection"></script>
-<script src="./private-pack.js?v=20260916-session"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
+<script src="./private-pack.js?v=20260923-science"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script>
 (function() {
 "use strict";
@@ -1516,6 +1516,10 @@ const STUDY_TERMS = {
       { id: 17, num: 3, name: "第 3 單元：角度" },
       { id: 18, num: 4, name: "第 4 單元：整數的除法" },
       { id: 19, num: 5, name: "第 5 單元：公里" }
+    ] } } },
+    science: { label: "自然", semesters: { final: { label: "", units: [
+      { id: 20, num: 1, name: "第 1 單元：地表的靜與動" },
+      { id: 21, num: 2, name: "第 2 單元：水生生物與環境" }
     ] } } }
   } }
 };
@@ -1569,9 +1573,10 @@ function packAvailabilityText() {
   if (!activePack) return "這個容器尚未載入題包。";
   const counts = StudyPrivatePack.UNITS.map(unit => {
     const count = activePack.questions.filter(q => q.unit === unit).length;
-    return count ? `第 ${unitNum(unit)} 單元 ${count} 題` : `第 ${unitNum(unit)} 單元尚未載入`;
+    const subject = unit >= 20 ? "自然" : "數學";
+    return count ? `${subject}第 ${unitNum(unit)} 單元 ${count} 題` : `${subject}第 ${unitNum(unit)} 單元尚未載入`;
   });
-  return `本機已有四上數學 ${activePack.questions.length} 題，版本 ${activePack.revision}。${counts.join("；")}。`;
+  return `本機已有四上數學 ${activePack.questions.filter(q => q.subject === "math").length} 題、自然 ${activePack.questions.filter(q => q.subject === "science").length} 題，版本 ${activePack.revision}。${counts.join("；")}。`;
 }
 function renderPrivatePackSection() {
   return `<details class="flagged-section" id="private-pack-details" ${packNotice ? "open" : ""}>
@@ -1625,9 +1630,10 @@ function renderBackupSection() {
 
 // 期末單元卡片下的 subtopic 練習入口（可接續）
 function renderSubtopics(u) {
-  if (!u.subtopics) return "";
+  const subtopics = u.subtopics || (StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []);
+  if (!subtopics.length) return "";
   let rows = "";
-  for (const st of u.subtopics) {
+  for (const st of subtopics) {
     const count = questionIdsFor(u.id, st).length;
     if (count === 0) continue;  // 該 subtopic 無題則不顯示
     const done = State.doneCount(u.id, st, DEFAULT_PRACTICE_MODE);
@@ -1637,11 +1643,12 @@ function renderSubtopics(u) {
     } else if (done > 0) {
       statusHtml = `<span class="st-count">接續 ${done}/${count}</span>`;
     }
+    const encoded = encodeURIComponent(st).replace(/'/g, "%27");
     rows += `
       <div class="subtopic-row">
-        <span class="subtopic-name">${st}${statusHtml}</span>
+        <span class="subtopic-name">${escapeHtml(st)}${statusHtml}</span>
         <span class="st-actions">
-          <button class="st-btn" onclick="window._startFull(${u.id}, '${st}')">練習</button>
+          <button class="st-btn" onclick="window._startFull(${u.id}, decodeURIComponent('${encoded}'))">練習</button>
         </span>
       </div>`;
   }
@@ -1725,7 +1732,7 @@ function renderHome(preserveParentForms = false) {
   // Unit sections（無題單元不渲染；整科無題 → 空狀態）
   const missingUnits = units.filter(u => !privateUnitAvailable(u.id));
   if (missingUnits.length) {
-    html += family ? '<div class="empty-state">題目還在準備中，先回首頁吧。</div>' : `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}</div>`;
+    html += `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}<br><button class="st-btn" onclick="window._retryPrivatePack()">重試取得題包</button></div>`;
   }
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
   if (visibleUnits.length === 0 && units.some(u => privateUnitAvailable(u.id))) {
@@ -2582,7 +2589,7 @@ function renderQuiz() {
 
   // Mode label
   let modeText = "";
-  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + quiz.subtopic : ""}`;
+  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + escapeHtml(quiz.subtopic) : ""}`;
   if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
   else {
     const eu = quiz.unit;  // error 模式：unit 為單元陣列
@@ -3267,7 +3274,7 @@ function renderBatchBreak() {
   const unitTotal = questionIdsFor(quiz.unit, quiz.subtopic).length;
   const unitDone = State.doneCount(quiz.unit, quiz.subtopic, quiz.practiceMode);
   const nextN = nextBatchSizeForMode(unitTotal - unitDone, quiz.practiceMode); // 下一批實際題數（依當下剩餘現算）
-  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const stArg = quiz.subtopic ? `decodeURIComponent('${encodeURIComponent(quiz.subtopic).replace(/'/g, "%27")}')` : "null";
   const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
   const reward = null; // 拼裝包由 family 在真正批末合併顯示。
   preloadThen(reward, () => {
@@ -3303,7 +3310,7 @@ function renderSummary() {
     scoreLabel = "所有錯題都答對了";
   }
 
-  const stArg = quiz.subtopic ? `'${quiz.subtopic}'` : "null";
+  const stArg = quiz.subtopic ? `decodeURIComponent('${encodeURIComponent(quiz.subtopic).replace(/'/g, "%27")}')` : "null";
   const modeArg = `'${normalizePracticeMode(quiz.practiceMode)}'`;
   let buttonsHtml = "";
   if (quiz.mode === "full") {

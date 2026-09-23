@@ -67,7 +67,7 @@ test("real boot auto-download → two correct one wrong → reload/resume; share
   assert.equal(e.app.state.studyTerm,"g3-s2");
   const packReq=net.requests.find(r=>r.url.includes("/packs/"));
   assert.equal(packReq.init.headers.Authorization,"Bearer test-token"); assert.equal(packReq.init.cache,"no-store"); assert.ok(!packReq.url.includes("test-token"));
-  e.app.State.setStudyTerm("g4-s1"); e.app.State.saveBatch("15",ids); e.app.startQuiz("full",15);
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math"); e.app.State.saveBatch("15",ids); e.app.startQuiz("full",15);
   for(let i=0;i<2;i++){e.app.submitAnswer(answer(e.app.map.get(e.app.quiz.queue[0])));e.app.advance();}
   e.app.submitAnswer(["999"]); const queue=plain(e.app.quiz.queue);
   e=await boot(e.st,"test-child",net); await flush();
@@ -91,7 +91,7 @@ test("no token is nonblocking; existing settings callback and select-term retry 
 test("background wait cannot block local boot or change live quiz; apply at home then persist revision", async () => {
   let resolve; const waiting=new Promise(r=>resolve=r); const net=network(()=>waiting);
   const e=await boot(seeded(syntheticPack()),"test-child",net);
-  e.app.State.setStudyTerm("g4-s1"); e.app.State.saveBatch("15",ids); e.app.startQuiz("full",15);
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math"); e.app.State.saveBatch("15",ids); e.app.startQuiz("full",15);
   const map=e.app.map, queue=plain(e.app.quiz.queue), progress=e.st.getItem(progressKey);
   const p=syntheticPack();p.revision=2;p.explanations[ids[0]]="新的合成解說";
   resolve(new Response(raw(p))); await flush();
@@ -102,7 +102,7 @@ test("background wait cannot block local boot or change live quiz; apply at home
 test("network/HTTP/invalid/size/revision/semantic/storage failures keep active cache and every progress field", async () => {
   let reply=()=>new Response(raw()); const net=network(()=>reply());
   const e=await boot(seeded(syntheticPack()),"test-child",net); await flush();
-  e.app.State.setStudyTerm("g4-s1");e.app.State.addMastered(15,ids[0]);
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");e.app.State.addMastered(15,ids[0]);
   const p=syntheticPack();p.revision=2;e.app.importPrivatePack(raw(p));
   const original=e.app.activePack, cache=e.st.getItem(cacheKey), progress=e.st.getItem(progressKey);
   const invalid=[];
@@ -139,7 +139,7 @@ test("production Worker.fetch behind real client: cached reload failure and publ
   let e=await boot(seeded(),"test-child",ports);await flush();
   const q=e.app.map.values().next().value;
   e.app.State.addMastered(q.unit,q.id);
-  e.app.State.setStudyTerm("g4-s1");e.app.State.addMastered(15,ids[0]);
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");e.app.State.addMastered(15,ids[0]);
   const previous=plain(e.app.state),cache=e.st.getItem(cacheKey);
   failed=true;e=await boot(e.st,"test-child",ports);await flush();
   assert.equal(e.st.getItem(cacheKey),cache);assert.equal(e.app.activePack.questions.length,6);
@@ -151,7 +151,7 @@ test("production Worker.fetch behind real client: cached reload failure and publ
 test("deferred response is rechecked against latest persisted revision; corrupt cache and interrupted UTF-8 are retained", async () => {
   let reply=()=>new Response(raw());const net=network(()=>reply());
   const e=await boot(seeded(syntheticPack()),"test-child",net);await flush();
-  e.app.State.setStudyTerm("g4-s1");e.app.startQuiz("full",15);
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");e.app.startQuiz("full",15);
   const p=syntheticPack();p.revision=2;reply=()=>new Response(raw(p));await e.app.loadPrivatePack();
   const newer=syntheticPack();newer.revision=3;e.st.map.set(cacheKey,raw(newer));
   e.window._goHome();assert.equal(e.app.activePack.revision,1);assert.equal(JSON.parse(e.st.getItem(cacheKey)).revision,3);

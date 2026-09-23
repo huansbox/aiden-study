@@ -21,13 +21,24 @@ function fixture() {
   return { classification, mapping, sourceDocuments };
 }
 
-test("現有公開分類完整覆蓋 mapping；generated report 可由公開資料重算", () => {
+test("現有數學分類完整覆蓋數學 mapping；generated report 可由公開資料重算", () => {
   const classification = read("data/study/g4-s1-math-u1/pattern-classification.json");
   const mapping = read("data/study/g4-s1-math-u1/mapping-metadata.json");
   const summary = build({ root, check: true });
-  assert.equal(summary.reduce((n, s) => n + s.activities, 0), mapping.items.length);
+  const mathRows = mapping.items.filter(row => row.unit >= 15 && row.unit <= 19);
+  assert.equal(summary.reduce((n, s) => n + s.activities, 0), mathRows.length);
+  assert.equal(mathRows.length, classification.assignments.length);
   assert.equal(summary.reduce((n, s) => n + s.observedPatterns, 0), new Set(classification.assignments.map(a => a.primaryPattern)).size);
   assert.equal(summary.reduce((n, s) => n + s.singleton + s.repeated, 0), new Set(classification.assignments.map(a => a.primaryPattern)).size);
+});
+
+test("rev5 mapping 追加自然時，數學分類仍只統計既有題", () => {
+  const { classification, mapping, sourceDocuments } = fixture();
+  mapping.revision = 5;
+  mapping.items.push({ appId: "science-g4s1-synthetic-S1-01-v1", unit: 20, paperId: "synthetic-science", originalId: "synthetic-S1-01" });
+  const summary = summarize(classification, mapping, sourceDocuments);
+  assert.equal(summary.reduce((n, row) => n + row.activities, 0), 3);
+  assert.equal(summary.reduce((n, row) => n + row.observedPatterns, 0), 2);
 });
 
 test("漏 ID、多 ID、重複 assignment ID 都拒絕，不能產生低估或重計的報告", () => {
@@ -129,7 +140,7 @@ test("11bc 合併契約只包含 b/c，不吞入原有 a/d 活動", () => {
 
 test("不同 revision、缺分類邊界與不一致概念歸屬不產生報告", () => {
   let { classification, mapping, sourceDocuments } = fixture();
-  mapping.revision = 2;
+  mapping.revision = 0;
   assert.throws(() => summarize(classification, mapping, sourceDocuments), /revision 與 mapping 不一致/);
   ({ classification, mapping, sourceDocuments } = fixture());
   delete classification.patterns[0].boundary;

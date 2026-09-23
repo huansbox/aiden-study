@@ -237,6 +237,7 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
     C.homeEntries(settings, "aiden", registry).map((e) => e.id),
     [
       "study:math",
+      "study:science",
       "spelling",
       "math",
       "nonogram",
@@ -268,6 +269,8 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
     [14, "chinese"],
     [15, "math"],
     [19, "math"],
+    [20, "science"],
+    [21, "science"],
   ])
     assert.equal(C.taskEntryId({ app: "study", unit }), "study:" + subject);
   settings.websites[0].children = ["bingpu"];

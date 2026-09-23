@@ -1,6 +1,6 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-本流程建立同一個 `g4-s1-math-u1` 家庭數學題包；目前正式題數、revision 與 hash 回查[擴題路線圖](grade4-math-expansion-plan.md)及對應 release issue，不把歷史批次數字當成現況。U1～U5 使用 unit 15～19。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
+本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 5 共 77 題，包含原數學 57 題與自然首批 20 題，狀態與 hash 見[自然首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
 ## 輸入約定
 
@@ -9,7 +9,7 @@
 - mapping 的 `sourceTask/sourceMapping` 保留原六題紙本 task 入口，僅表示 legacy provenance，不宣稱新八題也出自該紙本。新題由 row 的 paperId/originalId/題答頁追溯八卷來源；新增收錄集合由核准 mapping 決定。
 - curated row 仍為 `practiceId/originalId/paperId/questionPage/answerPage/concept/adaptation/verification/question`。`question.unit` 對 mapping.unit，question.id 對 appId；adaptation 對 sourceAdaptation，verification 對 reviewStatus，其餘來源欄位也需精確一致。source 仍由 builder 產生，原六題 source 字串不變。
 - `questionPage` 固定為正整數。有官方答案時 `answerPage` 也必須是正整數；只有官方答案確實未取得、作者與 fresh reviewer 已各自獨立解題一致，且 mapping `reviewStatus`／curated `verification` 精確為 `independently_solved_twice_no_official_answer` 時，兩邊 `answerPage` 才可同為 `null`。作者階段或其他 status 的 null 會被 builder 拒絕；不得填假答案頁，也不得用範圍狀態冒充答案審查。
-- digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`。MC 固定四選一；填空 1～9 格、同型、順序明確，每格有全形標記。未核准的 mixed token、新題型或 image 不因擴題自動加入。
+- 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。未核准的 mixed token、其他題型或 image 不因擴題自動加入。
 - Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 128 KiB，不另設任意總題數上限。
 - 覆寫既有 pack.json 前，檢查新 ID 集合包含所有舊題，且各既有 ID 的作答內容、subject/unit/subtopic 不變。新增或 source/解說更新需更高 revision；同 revision 比較排序後的完整 ID 集合。拒絕刪題、降版或同 ID 偷換題。
 
