@@ -5,32 +5,32 @@
       "sourceKey": "{\"repo\":\"huansbox/animal-fight\",\"ref\":\"master\",\"paths\":[\".\"],\"excludePaths\":[]}",
       "created": "2026-01-14",
       "updated": "2026-08-10",
-      "attemptedAt": "2026-09-24T23:54:41.324Z",
-      "lastSuccessAt": "2026-09-24T23:54:41.324Z",
+      "attemptedAt": "2026-09-25T23:58:27.223Z",
+      "lastSuccessAt": "2026-09-25T23:58:27.223Z",
       "error": null
     },
     "app:english": {
       "sourceKey": "{\"repo\":\"huansbox/aiden-english\",\"ref\":\"master\",\"paths\":[\".\"],\"excludePaths\":[]}",
       "created": "2026-03-09",
       "updated": "2026-05-18",
-      "attemptedAt": "2026-09-24T23:54:41.324Z",
-      "lastSuccessAt": "2026-09-24T23:54:41.324Z",
+      "attemptedAt": "2026-09-25T23:58:27.223Z",
+      "lastSuccessAt": "2026-09-25T23:58:27.223Z",
       "error": null
     },
     "app:99-meteor": {
       "sourceKey": "{\"repo\":\"huansbox/99-meteor\",\"ref\":\"main\",\"paths\":[\".\"],\"excludePaths\":[]}",
       "created": "2026-01-12",
       "updated": "2026-01-27",
-      "attemptedAt": "2026-09-24T23:54:41.324Z",
-      "lastSuccessAt": "2026-09-24T23:54:41.324Z",
+      "attemptedAt": "2026-09-25T23:58:27.223Z",
+      "lastSuccessAt": "2026-09-25T23:58:27.223Z",
       "error": null
     },
     "task:ai-collaboration-showcase": {
       "sourceKey": "{\"repo\":\"huansbox/aiden-study\",\"ref\":\"codex/ai-collaboration-showcase\",\"paths\":[\"learning-tasks/ai-collaboration-showcase\"],\"excludePaths\":[]}",
       "created": "2026-08-14",
       "updated": "2026-08-14",
-      "attemptedAt": "2026-09-24T23:54:41.324Z",
-      "lastSuccessAt": "2026-09-24T23:54:41.324Z",
+      "attemptedAt": "2026-09-25T23:58:27.223Z",
+      "lastSuccessAt": "2026-09-25T23:58:27.223Z",
       "error": null
     }
   }
