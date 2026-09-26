@@ -3,7 +3,7 @@
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/129",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
   "countUnit": "complete_activity",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "total": 5,
   "originalAnswerSlots": 13,
   "byUnit": {
@@ -37,7 +37,7 @@
       "materialKind": "png",
       "dependency": "四圖與四類代號完整共用；每一圖為一part，整組為一activity。",
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原四圖、圖上名稱、原印編號、根部與水面關係及四個共用類別；從頁圖裁出完整四圖，僅二值化壓縮，不以植物名稱替代圖像；紙本填代號改為整組選答。",
       "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
     },
@@ -63,7 +63,7 @@
       "materialKind": "png",
       "dependency": "完整兩種水位、四幅姿態圖與共用判斷指示；四格同一activity。",
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留水位低／高標示與兩組四幅原圖、原印①②順序；只裁圖與二值化壓縮，不移除水面、箱底或植株姿態；紙本逐格勾叉改為同一活動的四格正誤選答。",
       "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
     },
@@ -86,7 +86,7 @@
       "materialKind": "table",
       "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
       "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
     },
@@ -109,7 +109,7 @@
       "materialKind": "table",
       "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
       "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
     },
@@ -134,7 +134,7 @@
       "materialKind": null,
       "dependency": "三作用與甲乙丙結果池完整保留，沒有新增選項不可重複的限制。",
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原三作用及甲乙丙三項結果共用選項池；紙本連線改整組選答，不增加原卷未寫的互斥限制。",
       "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
     }

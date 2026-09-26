@@ -2,7 +2,7 @@
 
 狀態：**已完成兩輪有限來源收集，目前 6 份題目原卷、2 份校方答案**（2026-09-27）；不代表所有年度／學校已收齊。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集自然科歷屆卷，按概念逐題判讀，作為後續 iPad 練習題庫的來源。首批見 [#115](https://github.com/huansbox/aiden-study/issues/115)，第二輪見 [#129](https://github.com/huansbox/aiden-study/issues/129)。
 
-這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)與[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)均已正式上線；家庭題包 revision 6 共 89 題，其中自然 32 題。
+這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)、[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)與[第三批 #129 的 5 個完整 activity／13 個作答位置](../../docs-dev/grade4-science-study-third-batch.md)均已正式上線；家庭題包 revision 7 共 94 題，其中自然 37 題。六份來源卷屬有限收集，尚未取得校方正式範圍，也未收齊所有年度與方法。
 
 今年採康軒版；「地表的靜與動」「水生生物與環境」是本批**暫定收題核心**，不是校方已公布的正式考試範圍。舊卷依實際概念對照，月亮題留供後續使用。卷面未證實的出版社標為未知。
 

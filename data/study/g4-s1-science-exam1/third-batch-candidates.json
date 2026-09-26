@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "content_review_complete_pending_release",
+  "status": "published_with_exclusions",
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/129",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
   "countUnit": "complete_activity",
@@ -29,15 +29,15 @@
       "materialKind": "png",
       "dependency": "四圖與四類代號完整共用；每一圖為一part，整組為一activity。",
       "officialAnswerAvailable": false,
-      "status": "content_approved_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原四圖、圖上名稱、原印編號、根部與水面關係及四個共用類別；從頁圖裁出完整四圖，僅二值化壓縮，不以植物名稱替代圖像；紙本填代號改為整組選答。",
       "priority": 1,
       "estimatedPackContributionBytes": 5925,
-      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "answerVerificationMethod": "無官方答案；作者與 fresh reviewer 各自獨立解題，並完成來源、答案、解說及素材核對。",
       "addedCoverage": "首個植物根與水面位置的原圖分類活動",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "coverageApplied": false,
-      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+      "coverageApplied": true,
+      "coverageNote": "已隨 revision 7 正式發布，計入現役 Study 自然題包。"
     },
     {
       "appId": "science-g4s1-supp-yap-114-midterm-VII-4-v1",
@@ -61,15 +61,15 @@
       "materialKind": "png",
       "dependency": "完整兩種水位、四幅姿態圖與共用判斷指示；四格同一activity。",
       "officialAnswerAvailable": false,
-      "status": "content_approved_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留水位低／高標示與兩組四幅原圖、原印①②順序；只裁圖與二值化壓縮，不移除水面、箱底或植株姿態；紙本逐格勾叉改為同一活動的四格正誤選答。",
       "priority": 2,
       "estimatedPackContributionBytes": 6688,
-      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "answerVerificationMethod": "無官方答案；作者與 fresh reviewer 各自獨立解題，並完成來源、答案、解說及素材核對。",
       "addedCoverage": "首個低／高水位成對圖片比較活動",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "coverageApplied": false,
-      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+      "coverageApplied": true,
+      "coverageNote": "已隨 revision 7 正式發布，計入現役 Study 自然題包。"
     },
     {
       "appId": "science-g4s1-supp-yap-113-midterm-IV-1-1-v1",
@@ -90,15 +90,15 @@
       "materialKind": "table",
       "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
       "officialAnswerAvailable": false,
-      "status": "content_approved_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
       "priority": 3,
       "estimatedPackContributionBytes": 1037,
-      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "answerVerificationMethod": "無官方答案；作者與 fresh reviewer 各自獨立解題，並完成來源、答案、解說及素材核對。",
       "addedCoverage": "把構造紀錄轉為植物識別",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "coverageApplied": false,
-      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+      "coverageApplied": true,
+      "coverageNote": "已隨 revision 7 正式發布，計入現役 Study 自然題包。"
     },
     {
       "appId": "science-g4s1-supp-yap-113-midterm-IV-1-2-v1",
@@ -147,15 +147,15 @@
       "materialKind": "table",
       "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
       "officialAnswerAvailable": false,
-      "status": "content_approved_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
       "priority": 5,
       "estimatedPackContributionBytes": 1037,
-      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "answerVerificationMethod": "無官方答案；作者與 fresh reviewer 各自獨立解題，並完成來源、答案、解說及素材核對。",
       "addedCoverage": "從紀錄辨認沉水型態",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "coverageApplied": false,
-      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+      "coverageApplied": true,
+      "coverageNote": "已隨 revision 7 正式發布，計入現役 Study 自然題包。"
     },
     {
       "appId": "science-g4s1-supp-yap-113-midterm-III-2-v1",
@@ -178,15 +178,15 @@
       "materialKind": null,
       "dependency": "三作用與甲乙丙結果池完整保留，沒有新增選項不可重複的限制。",
       "officialAnswerAvailable": false,
-      "status": "content_approved_pending_release",
+      "status": "published",
       "sourceAdaptation": "保留原三作用及甲乙丙三項結果共用選項池；紙本連線改整組選答，不增加原卷未寫的互斥限制。",
       "priority": 6,
       "estimatedPackContributionBytes": 814,
-      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "answerVerificationMethod": "無官方答案；作者與 fresh reviewer 各自獨立解題，並完成來源、答案、解說及素材核對。",
       "addedCoverage": "首個地表作用及結果共用池配對",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "coverageApplied": false,
-      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+      "coverageApplied": true,
+      "coverageNote": "已隨 revision 7 正式發布，計入現役 Study 自然題包。"
     },
     {
       "appId": "science-g4s1-supp-yap-113-midterm-II-5-v1",
@@ -217,7 +217,7 @@
       "coverageApplied": false
     }
   ],
-  "scopeNote": "115康軒前兩單元為暫定核心，正式第一次定期評量範圍尚未公告。",
+  "scopeNote": "115康軒前兩單元為暫定核心；尚未取得校方正式第一次定期評量範圍。",
   "baseline": {
     "revision": 6,
     "scienceActivities": 32,
