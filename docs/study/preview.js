@@ -58,7 +58,7 @@
     const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const unitsForSubject = () => StudyPrivatePack.UNITS.filter((unit) => state.subject === "science" ? unit >= 20 : unit <= 19);
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
-    const filtered = () => questionsForUnit().filter((q) => !state.subtopic || q.subtopic === state.subtopic);
+    const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic));
     const current = () => filtered()[state.questionIndex] || null;
     function clearAnswer() {
       state.partIndex = 0;
@@ -72,7 +72,7 @@
     }
     function normalizeSelection() {
       const unitQuestions = questionsForUnit();
-      if (state.subtopic && !unitQuestions.some((q) => q.subtopic === state.subtopic)) state.subtopic = "";
+      if (state.subtopic && !unitQuestions.some((q) => StudyScienceTopics.matches(q, state.subtopic))) state.subtopic = "";
       const list = filtered();
       if (state.questionIndex < 0 || state.questionIndex >= list.length) state.questionIndex = 0;
       const q = current();
@@ -105,7 +105,11 @@
       if (state.destroyed) return;
       normalizeSelection();
       const unitQuestions = questionsForUnit();
-      const concepts = [...new Set(unitQuestions.map((q) => q.subtopic))];
+      const scienceTopics = StudyScienceTopics.topicsForUnit(state.unit);
+      const concepts = scienceTopics.length
+        ? scienceTopics.filter((topic) => unitQuestions.some((q) => StudyScienceTopics.matches(q, topic.key)))
+          .map((topic) => [topic.key, topic.label])
+        : [...new Set(unitQuestions.map((q) => q.subtopic))].map((concept) => [concept, concept]);
       const list = filtered(), q = current();
       host.innerHTML = `<header class="preview-top"><h1>四上家長試玩</h1>
         <p class="preview-notice">家長試玩，不記錄孩子進度</p>
@@ -113,14 +117,14 @@
         <section class="preview-filters" aria-label="選擇試玩題目">
           <label>科目<select data-action="subject">${[...SUBJECTS].map(([subject, label]) => `<option value="${subject}" ${state.subject === subject ? "selected" : ""}>${label}</option>`).join("")}</select></label>
           <label>單元<select data-action="unit">${unitsForSubject().map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}</option>`).join("")}</select></label>
-          <label>概念<select data-action="subtopic"><option value="">全部概念</option>${concepts.map((concept) => `<option value="${esc(concept)}" ${state.subtopic === concept ? "selected" : ""}>${esc(concept)}</option>`).join("")}</select></label>
+          <label>${scienceTopics.length ? "練習主題" : "概念"}<select data-action="subtopic"><option value="">${scienceTopics.length ? "整單元練習" : "全部概念"}</option>${concepts.map(([key, label]) => `<option value="${esc(key)}" ${state.subtopic === key ? "selected" : ""}>${esc(label)}</option>`).join("")}</select></label>
         </section>
         ${list.length ? `<nav class="preview-question-nav" aria-label="題目導覽">
           <button type="button" class="secondary" data-action="previous-question" ${state.questionIndex === 0 ? "disabled" : ""}>上一題</button>
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(q.subtopic)}／${q.type === "multiple_choice" ? "四選一" : q.type === "true_false" ? "是非題" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
+        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${q.type === "multiple_choice" ? "四選一" : q.type === "true_false" ? "是非題" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
           ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
           <div class="preview-answer-actions"><button type="button" data-action="check" ${state.values.every((value) => String(value).trim()) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
