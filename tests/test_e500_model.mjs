@@ -7,7 +7,13 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const root = new URL("../", import.meta.url);
-for (const [modelId, globalName, packs] of [['e500', 'KidsBrickE500', 14], ['emu3000', 'KidsBrickEmu3000', 12], ['r200', 'KidsBrickR200', 12]]) {
+for (const [modelId, globalName, packs, series] of [
+  ['e500', 'KidsBrickE500', 14, '臺灣火車系列'],
+  ['emu3000', 'KidsBrickEmu3000', 12, '臺灣火車系列'],
+  ['r200', 'KidsBrickR200', 12, '臺灣火車系列'],
+  ['700t', 'KidsBrick700T', 12, '臺灣高速鐵路'],
+  ['n700s', 'KidsBrickN700S', 12, '日本新幹線'],
+]) {
 const source = fs.readFileSync(new URL(`docs/shared/brick-${modelId}.js`, root), "utf8");
 const context = vm.createContext({});
 vm.runInContext(source, context);
@@ -17,7 +23,7 @@ const assetPath = part => new URL(`docs/shared/bricks/${modelId}-v1/${part.file}
 
 test(`${modelId} has ${packs} complete semantic packs and stable placement identities`, () => {
   assert.equal(model.id, modelId);
-  assert.equal(model.series, "臺灣火車系列");
+  assert.equal(model.series, series);
   assert.equal(model.viewBox, "0 0 800 500");
   assert.equal(model.steps.length, packs);
   assert.equal(parts.length, packs * 3);

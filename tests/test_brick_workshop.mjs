@@ -180,11 +180,13 @@ function harness(placed = [], {
     e500: ["台鐵 E500 型電力機車", "#d94a3d"],
     emu3000: ["台鐵 EMU3000 型電聯車", "#f2f1e9"],
     r200: ["台鐵 R200 型柴電機車", "#1c4c70"],
+    "700t": ["台灣高鐵 700T", "#f2f1e9"],
+    n700s: ["日本新幹線 N700S", "#f2f1e9"],
   };
   const models = modelIds.map((id) => ({
     id,
     title: entries[id][0],
-    series: ["e500", "emu3000", "r200"].includes(id) ? "臺灣火車系列" : undefined,
+    series: ({ e500: "臺灣火車系列", emu3000: "臺灣火車系列", r200: "臺灣火車系列", "700t": "臺灣高速鐵路", n700s: "日本新幹線" })[id],
     viewBox: "0 0 300 180",
     steps: Array.from({ length: packCount }, (_, pack) => ({
       title: `第${pack + 1}包`,
@@ -204,7 +206,7 @@ function harness(placed = [], {
       }),
     })),
   }));
-  context.KidsBrickModels = { models, get: (id) => models.find((model) => model.id === id) || null };
+  context.KidsBrickModels = { title: "積木列車收藏", models, get: (id) => models.find((model) => model.id === id) || null };
   if (withAudio) context.KidsBrickAudio = {
     create() {
       audioCalls.push({ method: "create", args: [] });
@@ -256,7 +258,7 @@ function confirmCompletion(h) {
   h.notify();
 }
 
-for (const modelId of ["emu3000", "r200"]) {
+for (const modelId of ["emu3000", "r200", "700t", "n700s"]) {
   test(`${modelId} celebrates its 36th group after confirmation and keeps the final target visible`, async () => {
     const ids = Array.from({ length: 12 }, (_, pack) => [1, 2, 3].map(n => `p${pack + 1}-${n}`)).flat();
     const h = harness(ids.slice(0, -1), { modelIds: [modelId], packCount: 12, withCelebration: true, controlledTimers: true, withAudio: true });
@@ -838,7 +840,7 @@ test("collection room combines the display shelf and full series without a third
   assert.doesNotMatch(h.element.innerHTML, /data-view="catalog"/);
   h.element.fire("click", action({ action: "view", view: "shelf" }));
   assert.match(h.element.innerHTML, /我的收藏/);
-  assert.match(h.element.innerHTML, /第一系列/);
+  assert.match(h.element.innerHTML, /積木列車收藏/);
   assert.match(h.element.innerHTML, /小汽車/);
   h.mounted.destroy();
 });
@@ -877,23 +879,24 @@ test("model picker disables owned models and routes a completed series back to t
   h.mounted.destroy();
 });
 
-test("E500 is the only selectable series model and spare packs stay in the box after completion", async () => {
-  const h = harness([], { modelIds: ["e500"] });
+test("all five trains are selectable and spare packs stay in the box after completion", async () => {
+  const h = harness([], { modelIds: ["e500", "emu3000", "r200", "700t", "n700s"] });
   h.state.activeBuild = null;
   h.state.builds = [];
   h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
   h.mounted.render();
-  assert.match(h.element.innerHTML, /臺灣火車系列/);
-  assert.match(h.element.innerHTML, /data-model="e500"/);
+  assert.match(h.element.innerHTML, /積木列車收藏/);
+  for (const id of ["e500", "emu3000", "r200", "700t", "n700s"])
+    assert.match(h.element.innerHTML, new RegExp(`data-model="${id}"`));
   assert.doesNotMatch(h.element.innerHTML, /data-model="(?:car|train|plane)"/);
   h.element.fire("click", action({ action: "start-model", model: "e500" }));
   await Promise.resolve();
   assert.deepEqual(h.selectCalls, ["e500"]);
 
-  h.state.activeBuild = { id: "e500", modelId: "e500", placed: ["p1-1", "p1-2", "p1-3"], completedAt: "2026-09-22T12:00:00.000Z" };
-  h.state.builds = [h.state.activeBuild];
+  h.state.activeBuild = { id: "n700s", modelId: "n700s", placed: ["p1-1", "p1-2", "p1-3"], completedAt: "2026-09-22T12:00:00.000Z" };
+  h.state.builds = ["e500", "emu3000", "r200", "700t", "n700s"].map(modelId => ({ ...h.state.activeBuild, id: modelId, modelId }));
   h.mounted.render();
-  assert.match(h.element.innerHTML, /臺灣火車系列目前的作品都收集完成了/);
+  assert.match(h.element.innerHTML, /積木列車收藏目前的作品都收集完成了/);
   assert.match(h.element.innerHTML, /剩下的 1 包會留在零件盒/);
   assert.doesNotMatch(h.element.innerHTML, /data-model="e500"/);
   assert.match(h.element.innerHTML, /放上展示架/);

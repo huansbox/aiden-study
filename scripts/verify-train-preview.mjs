@@ -59,7 +59,7 @@ try {
   assert.equal(await count(),0);
   pass('parent trial link opens isolated first-pack mode and preserves return child');
 
-  for(const model of ['e500','emu3000','r200']) {
+  for(const model of ['e500','emu3000','r200','700t','n700s']) {
     if(model!=='e500'){
       await assertIsolated();
       await browser.navigate(origin+'/parent/train-preview.html?child=bingpu&model='+model);

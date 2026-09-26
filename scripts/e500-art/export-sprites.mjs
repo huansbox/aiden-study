@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 const modelId=process.argv.find(arg=>arg.startsWith('--model='))?.slice(8)||'e500';
-const packCounts={e500:14,emu3000:12,r200:12};
+const packCounts={e500:14,emu3000:12,r200:12,'700t':12,n700s:12};
 if(!Object.hasOwn(packCounts,modelId))throw Error('Unknown model: '+modelId);
 const total=packCounts[modelId]*3;
 const base=path.dirname(fileURLToPath(import.meta.url)),out=path.resolve(base,'../../.scratch/e500-art/candidates',modelId==='e500'?'':modelId);

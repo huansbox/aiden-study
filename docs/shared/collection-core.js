@@ -1,7 +1,7 @@
 /* 每日拼裝規則；只接新的練習事件，與舊累計及其重置世代分開。 */
 (() => {
   // 舊作品的 ID 仍需保留，讓既有半成品與舊版離線操作能繼續同步。
-  const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12 });
+  const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12, '700t': 12, n700s: 12 });
   const MODELS = Object.keys(PACK_COUNTS);
   const ENTRIES = {
     "study:math": { label: "題庫數學", metric: "answered" },
