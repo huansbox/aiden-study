@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "status": "content_review_complete_pending_release",
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/129",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "countUnit": "complete_activity",
+  "total": 7,
+  "originalAnswerSlots": 15,
+  "items": [
+    {
+      "appId": "science-g4s1-supp-yap-114-midterm-V-1-v1",
+      "practiceId": "S2-P22",
+      "originalId": "supp-yap-114-midterm-V-1",
+      "constituentSourceIds": [
+        "supp-yap-114-midterm-V-1-1",
+        "supp-yap-114-midterm-V-1-2",
+        "supp-yap-114-midterm-V-1-3",
+        "supp-yap-114-midterm-V-1-4"
+      ],
+      "paperId": "supp-yap-114-midterm",
+      "questionPage": 1,
+      "printedLocator": "五、配合題 1，原印①～④",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生植物圖像分類",
+      "method": "依根、莖葉與水面位置進行四圖分類",
+      "format": "grouped_choice",
+      "answerSlots": 4,
+      "materialKind": "png",
+      "dependency": "四圖與四類代號完整共用；每一圖為一part，整組為一activity。",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "sourceAdaptation": "保留原四圖、圖上名稱、原印編號、根部與水面關係及四個共用類別；從頁圖裁出完整四圖，僅二值化壓縮，不以植物名稱替代圖像；紙本填代號改為整組選答。",
+      "priority": 1,
+      "estimatedPackContributionBytes": 5925,
+      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "addedCoverage": "首個植物根與水面位置的原圖分類活動",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "coverageApplied": false,
+      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-114-midterm-VII-4-v1",
+      "practiceId": "S2-P23",
+      "originalId": "supp-yap-114-midterm-VII-4",
+      "constituentSourceIds": [
+        "supp-yap-114-midterm-VII-4(1)-1",
+        "supp-yap-114-midterm-VII-4(1)-2",
+        "supp-yap-114-midterm-VII-4(2)-1",
+        "supp-yap-114-midterm-VII-4(2)-2"
+      ],
+      "paperId": "supp-yap-114-midterm",
+      "questionPage": 2,
+      "printedLocator": "七、題組 4(1)①②、4(2)①②",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 沉水植物與水位",
+      "method": "低水位與高水位成對圖片比較",
+      "format": "grouped_choice",
+      "answerSlots": 4,
+      "materialKind": "png",
+      "dependency": "完整兩種水位、四幅姿態圖與共用判斷指示；四格同一activity。",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "sourceAdaptation": "保留水位低／高標示與兩組四幅原圖、原印①②順序；只裁圖與二值化壓縮，不移除水面、箱底或植株姿態；紙本逐格勾叉改為同一活動的四格正誤選答。",
+      "priority": 2,
+      "estimatedPackContributionBytes": 6688,
+      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "addedCoverage": "首個低／高水位成對圖片比較活動",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "coverageApplied": false,
+      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-1-v1",
+      "practiceId": "S2-P24",
+      "originalId": "supp-yap-113-midterm-IV-1-1",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-IV-1-1"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "四、看圖回答問題 1(1)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 植物觀察紀錄判讀",
+      "method": "由觀察紀錄辨識通氣構造",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
+      "priority": 3,
+      "estimatedPackContributionBytes": 1037,
+      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "addedCoverage": "把構造紀錄轉為植物識別",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "coverageApplied": false,
+      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-2-v1",
+      "practiceId": "S2-P25",
+      "originalId": "supp-yap-113-midterm-IV-1-2",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-IV-1-2"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "四、看圖回答問題 1(2)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 植物觀察紀錄判讀",
+      "method": "跨列整合根部位置與浮葉型態線索",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
+      "officialAnswerAvailable": false,
+      "status": "excluded_after_independent_review",
+      "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
+      "priority": 4,
+      "estimatedPackContributionBytes": 1124,
+      "answerVerificationMethod": "作者初答經fresh reviewer獨立核對後未通過；原題條件不足，本輪不交付。",
+      "addedCoverage": "跨列整合根位置與浮葉型態資訊",
+      "exclusionReason": "原觀察紀錄不足以唯一推出所有組別的根部位置；不能依預期植物名稱補足未提供條件，本輪排除。",
+      "coverageApplied": false
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-3-v1",
+      "practiceId": "S2-P26",
+      "originalId": "supp-yap-113-midterm-IV-1-3",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-IV-1-3"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "四、看圖回答問題 1(3)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 植物觀察紀錄判讀",
+      "method": "由觀察紀錄辨識沉水型態",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
+      "priority": 5,
+      "estimatedPackContributionBytes": 1037,
+      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "addedCoverage": "從紀錄辨認沉水型態",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "coverageApplied": false,
+      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-III-2-v1",
+      "practiceId": "S1-P12",
+      "originalId": "supp-yap-113-midterm-III-2",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-III-2-1",
+        "supp-yap-113-midterm-III-2-2",
+        "supp-yap-113-midterm-III-2-3"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "三、連連看 2(1)～(3)",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1b 地表作用與結果",
+      "method": "風、流水、地震與地表結果配對",
+      "format": "grouped_choice",
+      "answerSlots": 3,
+      "materialKind": null,
+      "dependency": "三作用與甲乙丙結果池完整保留，沒有新增選項不可重複的限制。",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "sourceAdaptation": "保留原三作用及甲乙丙三項結果共用選項池；紙本連線改整組選答，不增加原卷未寫的互斥限制。",
+      "priority": 6,
+      "estimatedPackContributionBytes": 814,
+      "answerVerificationMethod": "無官方答案；作者與fresh reviewer各自獨立解題，並完成來源、答案、解說及素材核對，內容已核准，尚待發布。",
+      "addedCoverage": "首個地表作用及結果共用池配對",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "coverageApplied": false,
+      "coverageNote": "內容核准後預計新增；只有正式發布後才計入現役App。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-II-5-v1",
+      "practiceId": "S1-P13",
+      "originalId": "supp-yap-113-midterm-II-5",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-II-5"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "二、選擇題 (5)",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1b 風力與顆粒大小",
+      "method": "比較土壤與沙顆粒受風吹動的原因",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": null,
+      "dependency": "獨立四選一，完整保留土壤／沙子比較與原選項。",
+      "officialAnswerAvailable": false,
+      "status": "excluded_after_independent_review",
+      "sourceAdaptation": "完整保留原題幹、四選項與原順序；紙本圈選改數位單選。",
+      "priority": 7,
+      "estimatedPackContributionBytes": 701,
+      "answerVerificationMethod": "作者初答經fresh reviewer獨立核對後未通過；原題條件不足，本輪不交付。",
+      "addedCoverage": "補風力與顆粒大小的原因比較",
+      "exclusionReason": "原題缺少含水、鬆散程度與相近風力等比較條件，無法支持一般化的風力因果結論；不能用解說補題幹，本輪排除。",
+      "coverageApplied": false
+    }
+  ],
+  "scopeNote": "115康軒前兩單元為暫定核心，正式第一次定期評量範圍尚未公告。",
+  "baseline": {
+    "revision": 6,
+    "scienceActivities": 32,
+    "scienceByFormat": {
+      "true_false": 22,
+      "multiple_choice": 6,
+      "grouped_choice": 4
+    },
+    "packBytes": 107492,
+    "scienceByUnit": {
+      "20": 11,
+      "21": 21
+    }
+  },
+  "byFormat": {
+    "multiple_choice": 4,
+    "grouped_choice": 3
+  },
+  "byUnit": {
+    "20": 2,
+    "21": 5
+  },
+  "excluded": [
+    {
+      "originalId": "supp-yap-113-midterm-VI-1",
+      "status": "needs-content-clarification",
+      "reason": "防災行動含場所與姿勢前提不足的小項，不用解說替原題補條件後判對；本輪整組不採。"
+    },
+    {
+      "originalId": "tyk113-13",
+      "status": "needs-content-clarification",
+      "reason": "防災時序有避難時點歧義；保留完整組，不刪歧義項硬湊活動。"
+    },
+    {
+      "originalId": "tyk113-05",
+      "status": "deferred-redundant",
+      "reason": "八圖植物分類與所選四圖測量方法高度重複、圖像較大；優先較小且完整的四型圖組。"
+    },
+    {
+      "originalId": "tyk114-08",
+      "status": "deferred-redundant",
+      "reason": "同為八圖四型植物分類，未增加本輪方法缺口且增加素材負擔。"
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-4",
+      "status": "reserve",
+      "reason": "地表物質識別可忠實四選一，但相對圖表及比較題的新增價值較低。"
+    },
+    {
+      "originalId": "tyk113-12",
+      "status": "reserve",
+      "reason": "整組資源利弊可用現有grouped_choice呈現，但既有行為分類已有涵蓋，本輪優先新方法。"
+    },
+    {
+      "originalId": "tyk113-11",
+      "status": "needs-confirmation",
+      "reason": "地震報告讀值／推論不因想補圖表而改列核心。"
+    },
+    {
+      "originalId": "supp-yap-113-midterm-V-1",
+      "status": "needs-confirmation",
+      "reason": "地震報告深度維持既有待核邊界。"
+    },
+    {
+      "originalId": "supp-yap-114-midterm-II-7",
+      "status": "excluded-scientific-ambiguity",
+      "reason": "沿用首批科學歧義排除，不重新採用。"
+    },
+    {
+      "originalId": "supp-yap-113-midterm-IV-1-2",
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-2-v1",
+      "status": "excluded_after_independent_review",
+      "reason": "原觀察紀錄不足以唯一推出所有組別的根部位置；不能依預期植物名稱補足未提供條件，本輪排除。"
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-5",
+      "appId": "science-g4s1-supp-yap-113-midterm-II-5-v1",
+      "status": "excluded_after_independent_review",
+      "reason": "原題缺少含水、鬆散程度與相近風力等比較條件，無法支持一般化的風力因果結論；不能用解說補題幹，本輪排除。"
+    }
+  ],
+  "countNote": "total、originalAnswerSlots、byFormat、byUnit保留原7候選歷史；approvedSelection為本輪核准交付集合。",
+  "approvedSelection": {
+    "total": 5,
+    "originalAnswerSlots": 13,
+    "byFormat": {
+      "multiple_choice": 2,
+      "grouped_choice": 3
+    },
+    "byUnit": {
+      "20": 1,
+      "21": 4
+    },
+    "appIds": [
+      "science-g4s1-supp-yap-114-midterm-V-1-v1",
+      "science-g4s1-supp-yap-114-midterm-VII-4-v1",
+      "science-g4s1-supp-yap-113-midterm-IV-1-1-v1",
+      "science-g4s1-supp-yap-113-midterm-IV-1-3-v1",
+      "science-g4s1-supp-yap-113-midterm-III-2-v1"
+    ],
+    "estimatedPackContributionBytes": 15501
+  },
+  "projectedAfterRelease": {
+    "scienceActivities": 37,
+    "scienceByUnit": {
+      "20": 12,
+      "21": 25
+    },
+    "scienceByFormat": {
+      "true_false": 22,
+      "multiple_choice": 8,
+      "grouped_choice": 7
+    },
+    "note": "預計發布後數量；目前不能視為已在App上線。"
+  }
+}

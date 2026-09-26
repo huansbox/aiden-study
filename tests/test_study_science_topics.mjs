@@ -56,3 +56,28 @@ test("science topics scope the child picker while keeping IDs, fine history and 
   assert.match(home, /整單元練習/);
   assert.doesNotMatch(home, /S1a 土壤的組成|新細概念待分類/);
 });
+
+test("third-batch fine tags map to the existing seven science topics", async () => {
+  const e = await boot();
+  const topics = e.window.StudyScienceTopics;
+  assert.equal(topics.topicsForUnit(20).length + topics.topicsForUnit(21).length, 7);
+  for (const [unit, key, fineTags] of [
+    [20, "@science-topic:S1b", ["S1b 地表作用與結果"]],
+    [21, "@science-topic:S2b-plants", ["S2b 水生植物圖像分類", "S2b 沉水植物與水位", "S2b 植物觀察紀錄判讀"]]
+  ]) {
+    for (const subtopic of fineTags) {
+      const question = { unit, subtopic };
+      assert.equal(topics.topicForQuestion(question)?.key, key);
+      assert.equal(topics.matches(question, key), true);
+      assert.equal(topics.matches(question, subtopic), true, "fine-tag history remains readable");
+    }
+  }
+  const unknown = { unit: 21, subtopic: "S2b 尚未分類的合成細標籤" };
+  assert.equal(topics.topicForQuestion(unknown), null);
+  assert.equal(topics.matches(unknown, ""), true);
+  assert.equal(topics.matches(unknown, "@science-topic:S2b-plants"), false);
+  const excludedWindTag = { unit: 20, subtopic: "S1b 風力與顆粒大小" };
+  assert.equal(topics.topicForQuestion(excludedWindTag), null);
+  assert.equal(topics.matches(excludedWindTag, ""), true);
+  assert.equal(topics.matches(excludedWindTag, "@science-topic:S1b"), false);
+});
