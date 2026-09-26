@@ -555,6 +555,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/collection-client.js?v=20260923-train-series"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
 <script src="./private-pack.js?v=20260923-group-media"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="./science-topics.js?v=20260926-practice-topics"></script>
 <script>
 (function() {
 "use strict";
@@ -1010,7 +1011,7 @@ const State = {
       for (const m of targetModes) {
         modes[m] = (modes[m] || []).filter(id => {
           const q = questionMap.get(id);
-          return !q || q.unit !== unit || (subtopic && q.subtopic !== subtopic);
+          return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic);
         });
       }
     } else {
@@ -1061,7 +1062,7 @@ function updatedChallenge(key, nextBatch = null) {
   const subtopic = slash < 0 ? null : base.slice(slash + 1);
   const keep = id => {
     const q = questionMap.get(id);
-    return !q || q.unit !== unit || (subtopic && q.subtopic !== subtopic);
+    return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic);
   };
   const previous = state.challenge[key];
   const pending = Array.isArray(previous?.batch) ? previous.batch.filter(keep) : [];
@@ -1076,7 +1077,7 @@ function updatedChallenge(key, nextBatch = null) {
 // 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
 function questionIdsFor(unit, subtopic) {
   return allQuestions
-    .filter(q => q.unit === unit && (!subtopic || q.subtopic === subtopic) && !State.isFlagged(q.id))
+    .filter(q => q.unit === unit && StudyScienceTopics.matches(q, subtopic) && !State.isFlagged(q.id))
     .map(q => q.id);
 }
 
@@ -1662,31 +1663,35 @@ function renderBackupSection() {
 //    初次渲染＝renderBackupSection 內嵌 wiring.syncStatusHtml()，刷新＝wiring.refreshSyncStatus()
 //    （認 #sync-status 錨點原地換），window._saveSyncToken／_syncNow 由 wiring 掛
 
-// 期末單元卡片下的 subtopic 練習入口（可接續）
+// 期末單元卡片下的練習主題入口（可接續）；其他學期沿用原細概念。
 function renderSubtopics(u) {
-  const subtopics = u.subtopics || (StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []);
-  if (!subtopics.length) return "";
+  const topics = StudyScienceTopics.topicsForUnit(u.id);
+  const selections = topics.length
+    ? topics.map(topic => ({ key: topic.key, label: topic.label }))
+    : (u.subtopics || (StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []))
+      .map(st => ({ key: st, label: st }));
+  if (!selections.length) return "";
   let rows = "";
-  for (const st of subtopics) {
-    const count = questionIdsFor(u.id, st).length;
+  for (const { key, label } of selections) {
+    const count = questionIdsFor(u.id, key).length;
     if (count === 0) continue;  // 該 subtopic 無題則不顯示
-    const done = State.doneCount(u.id, st, DEFAULT_PRACTICE_MODE);
+    const done = State.doneCount(u.id, key, DEFAULT_PRACTICE_MODE);
     let statusHtml = `<span class="st-count">${count} 題</span>`;
     if (done >= count) {
       statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
     } else if (done > 0) {
       statusHtml = `<span class="st-count">接續 ${done}/${count}</span>`;
     }
-    const encoded = encodeURIComponent(st).replace(/'/g, "%27");
+    const encoded = encodeURIComponent(key).replace(/'/g, "%27");
     rows += `
       <div class="subtopic-row">
-        <span class="subtopic-name">${escapeHtml(st)}${statusHtml}</span>
+        <span class="subtopic-name">${escapeHtml(label)}${statusHtml}</span>
         <span class="st-actions">
           <button class="st-btn" onclick="window._startFull(${u.id}, decodeURIComponent('${encoded}'))">練習</button>
         </span>
       </div>`;
   }
-  return rows ? `<div class="subtopic-list"><div class="subtopic-head">依概念練習</div>${rows}</div>` : "";
+  return rows ? `<div class="subtopic-list"><div class="subtopic-head">${topics.length ? "練習主題" : "依概念練習"}</div>${rows}</div>` : "";
 }
 
 // 國語單元某模式（choice/handwriting）的首頁狀態文字（已通關／接續／題數）
@@ -1808,15 +1813,15 @@ function renderHome(preserveParentForms = false) {
 
     if (isCleared) {
       // 已通關
-      fullLabel = "全部練習";
+      fullLabel = subjKey === "science" && state.studyTerm === "g4-s1" ? "整單元練習" : "全部練習";
       fullStatus = '<span class="status" style="color:#2ecc71;font-weight:600">已通關</span>';
     } else if (done > 0) {
       // 進行中
-      fullLabel = "全部練習（接續）";
+      fullLabel = subjKey === "science" && state.studyTerm === "g4-s1" ? "整單元練習（接續）" : "全部練習（接續）";
       fullStatus = `<span class="status">已答對 ${done} / ${totalInUnit}</span>`;
     } else {
       // 未開始
-      fullLabel = "全部練習";
+      fullLabel = subjKey === "science" && state.studyTerm === "g4-s1" ? "整單元練習" : "全部練習";
       fullStatus = `<span class="status">${totalInUnit} 題</span>`;
     }
 
@@ -2624,8 +2629,8 @@ function renderQuiz() {
 
   // Mode label
   let modeText = "";
-  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + escapeHtml(quiz.subtopic) : ""}`;
-  if (quiz.mode === "full") modeText = `全部練習 — ${scopeText}`;
+  const scopeText = `第${unitNum(quiz.unit)}單元${quiz.subtopic ? "／" + escapeHtml(StudyScienceTopics.labelFor(quiz.subtopic)) : ""}`;
+  if (quiz.mode === "full") modeText = `${StudyScienceTopics.isTopicSelection(quiz.subtopic) ? "練習主題" : "全部練習"} — ${scopeText}`;
   else {
     const eu = quiz.unit;  // error 模式：unit 為單元陣列
     if (Array.isArray(eu) && eu.length === 1) modeText = `錯題練習 — 第${unitNum(eu[0])}單元`;
@@ -3358,7 +3363,7 @@ function renderBatchBreak() {
     document.getElementById("page-summary").innerHTML = `
       <h2>這批完成！</h2>
       ${rewardRevealHtml(reward)}
-      <div class="score-label" style="margin-top:8px">整單元進度：已答對 ${unitDone} / ${unitTotal} 題</div>
+      <div class="score-label" style="margin-top:8px">${StudyScienceTopics.isTopicSelection(quiz.subtopic) ? "練習主題" : "整單元"}進度：已答對 ${unitDone} / ${unitTotal} 題</div>
       <div style="margin-top:24px">
         <button class="summary-btn primary" onclick="window._startFull(${quiz.unit}, ${stArg}, ${modeArg})">再做 ${nextN} 題</button>
         <button class="summary-btn" onclick="window._goHome()">離開</button>

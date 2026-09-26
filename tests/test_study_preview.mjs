@@ -62,6 +62,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   vm.runInContext(source("private-pack.js"), context);
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
+  vm.runInContext(source("science-topics.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
     host, auth, requests, context, document, windowListeners, documentListeners,
@@ -117,6 +118,32 @@ test("subject switch reaches science true_false and choice without touching chil
   assert.equal(app.state.unit, 15);
   assert.equal(h.forbiddenTouches, 0);
   assert.equal(h.requests.length, 1);
+  app.destroy();
+});
+
+test("science preview defaults to the whole unit and filters the same broad topics without child writes", async () => {
+  const pack = scienceSyntheticPack();
+  const science = pack.questions.filter((q) => q.subject === "science");
+  science[0].subtopic = "S1a 土壤的組成";
+  science[1].subtopic = "S2b 魚體部位與功能";
+  const plant = { ...science[1], id: "science-g4s1-synthetic-plant-v1", subtopic: "S2b 沉水植物與水流" };
+  pack.questions.push(plant);
+  pack.explanations[plant.id] = "合成植物解說。";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "science" });
+  assert.equal(app.state.subtopic, "");
+  assert.match(h.host.innerHTML, /練習主題/);
+  assert.match(h.host.innerHTML, /整單元練習/);
+  assert.match(h.host.innerHTML, /地表物質/);
+  assert.doesNotMatch(h.host.innerHTML, /S1a 土壤的組成/);
+  app.handle("unit", { value: "21" });
+  assert.match(h.host.innerHTML, />第 1 題／共 2 題<\/option>/);
+  assert.match(h.host.innerHTML, /水生植物/);
+  assert.match(h.host.innerHTML, /水生動物/);
+  app.handle("subtopic", { value: "@science-topic:S2b-plants" });
+  assert.match(h.host.innerHTML, />第 1 題／共 1 題<\/option>/);
+  assert.ok(h.host.innerHTML.includes(plant.text));
+  assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
 test("preview shows private image and table groups, scores the complete group in memory", async () => {
@@ -380,10 +407,10 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
-  assert.match(source("preview.html"), /preview\.js\?v=20260923-group-stepwise/);
+  assert.match(source("preview.html"), /preview\.js\?v=20260926-practice-topics/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
