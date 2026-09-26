@@ -28,7 +28,7 @@
 
 fresh read-only reviewer `/root/latest_five_content_review` 逐題檢查 162 題、來源映射、自然替代句、Change 的實際轉換、27 題 Fix 的唯一替換及 Weekly 手動政策。初審發現部分排列缺少剩餘字卡限制、把 books 直接稱為活動；修正後複查通過。後續語音改寫另經同一獨立 reviewer 核對，避免先念出受測 `prefers`。
 
-- Node 全套 726 項通過；Python 271 項通過、1 項略過。五堂題包／speech jobs 重建一致，五堂完整音訊 `--check` 通過且零 API 請求。
+- 整合最新主線後 Node 全套 728 項通過；Python 271 項通過、1 項略過。五堂題包／speech jobs 重建一致，五堂完整音訊 `--check` 通過且零 API 請求。
 - Chrome 隔離服務 8798、test-token、測試 KV 完成 9/22 Try 全輪：5 個 Build、5 個 Change、1 個 Fix。第一概念故意答錯後訂正，首次 incorrect 保留；其他四個概念前兩題獨立成功，第三題省略。結束畫面才出現徽章／建築包提示。這些是代理的合成測試，不是孩子作答。
 - 驗證替代字序 `My shirt is like the blue sky` 被接受。Preview 可直接檢視第三題、進行 too／either 修正、切換 Say、遮蔽／揭示答案與重播。操作前後隔離 Native Camp 進度 envelope 完全相同。
 - 390 × 844 下目視檢查較長的 When 題，題文、字卡與操作按鈕正常換行；恢復原 viewport。新課 Preview 無版本切換，月曆週一開頭並顯示全部五堂。代表性課程可自動播題與答案，瀏覽器無 console error。
