@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[#129 第三批](../../../docs-dev/grade4-science-study-third-batch.md)已在本機完成五個核准 activity、13 個原卷作答格的 revision 7 題包：全包 94 題（數學 57／自然 37）、125,022 bytes、SHA256 `12ba60aa97f021c24bd31becb9bf4d2224bd3317e7f40c30c4d62b1f823920a8`。兩個審題未通過的候選整組排除；**revision 7 尚未發布**。本頁下方仍保留首批 revision 5 的歷史快照。
+
 這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫與獨立覆核完成後，77 題 revision 5 家庭題包已於 **2026-09-23 正式發布**；實體 iPad 尚未驗證。
 
 後續 [#119 第二批](second-batch.md) 增加 12 個完整活動、29 個原卷作答位置；89 題 revision 6 已於 **2026-09-23 正式發布**。下方表格與缺口敘述仍保留首批發布當時的 20 題快照，第二批後的自然題數為 32。

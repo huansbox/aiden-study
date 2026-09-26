@@ -368,7 +368,7 @@
     {
       "id": "grade4-sem1-science-exam1",
       "name": "四上第一次段考自然候選卷",
-      "status": "complete", "statusNote": "首批四卷與一份校方答案已收集，來源及逐題 metadata 通過獨立複核；正式範圍與答案正確性待核，原卷只存本機。",
+      "status": "in-progress", "statusNote": "首批四卷已收，32 題已上線；本輪依 #129 補查較早年度與跨版原卷，並補齊既有卷的題型缺口。原卷只存本機。",
       "eventDate": null,
       "audience": ["aiden"], "audienceLabel": "9 歲；四年級",
       "description": "桃子腳第一次段考前，依地表與水生環境概念篩選歷屆自然卷。",

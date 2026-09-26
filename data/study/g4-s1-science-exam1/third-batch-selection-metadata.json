@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/129",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "countUnit": "complete_activity",
+  "status": "reviewed_pending_release",
+  "total": 5,
+  "originalAnswerSlots": 13,
+  "byUnit": {
+    "20": 1,
+    "21": 4
+  },
+  "byFormat": {
+    "multiple_choice": 2,
+    "grouped_choice": 3
+  },
+  "items": [
+    {
+      "appId": "science-g4s1-supp-yap-114-midterm-V-1-v1",
+      "practiceId": "S2-P22",
+      "originalId": "supp-yap-114-midterm-V-1",
+      "constituentSourceIds": [
+        "supp-yap-114-midterm-V-1-1",
+        "supp-yap-114-midterm-V-1-2",
+        "supp-yap-114-midterm-V-1-3",
+        "supp-yap-114-midterm-V-1-4"
+      ],
+      "paperId": "supp-yap-114-midterm",
+      "questionPage": 1,
+      "printedLocator": "五、配合題 1，原印①～④",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生植物圖像分類",
+      "method": "依根、莖葉與水面位置進行四圖分類",
+      "format": "grouped_choice",
+      "answerSlots": 4,
+      "materialKind": "png",
+      "dependency": "四圖與四類代號完整共用；每一圖為一part，整組為一activity。",
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "sourceAdaptation": "保留原四圖、圖上名稱、原印編號、根部與水面關係及四個共用類別；從頁圖裁出完整四圖，僅二值化壓縮，不以植物名稱替代圖像；紙本填代號改為整組選答。",
+      "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-114-midterm-VII-4-v1",
+      "practiceId": "S2-P23",
+      "originalId": "supp-yap-114-midterm-VII-4",
+      "constituentSourceIds": [
+        "supp-yap-114-midterm-VII-4(1)-1",
+        "supp-yap-114-midterm-VII-4(1)-2",
+        "supp-yap-114-midterm-VII-4(2)-1",
+        "supp-yap-114-midterm-VII-4(2)-2"
+      ],
+      "paperId": "supp-yap-114-midterm",
+      "questionPage": 2,
+      "printedLocator": "七、題組 4(1)①②、4(2)①②",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 沉水植物與水位",
+      "method": "低水位與高水位成對圖片比較",
+      "format": "grouped_choice",
+      "answerSlots": 4,
+      "materialKind": "png",
+      "dependency": "完整兩種水位、四幅姿態圖與共用判斷指示；四格同一activity。",
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "sourceAdaptation": "保留水位低／高標示與兩組四幅原圖、原印①②順序；只裁圖與二值化壓縮，不移除水面、箱底或植株姿態；紙本逐格勾叉改為同一活動的四格正誤選答。",
+      "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-1-v1",
+      "practiceId": "S2-P24",
+      "originalId": "supp-yap-113-midterm-IV-1-1",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-IV-1-1"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "四、看圖回答問題 1(1)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 植物觀察紀錄判讀",
+      "method": "由觀察紀錄辨識通氣構造",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
+      "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-3-v1",
+      "practiceId": "S2-P26",
+      "originalId": "supp-yap-113-midterm-IV-1-3",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-IV-1-3"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "四、看圖回答問題 1(3)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 植物觀察紀錄判讀",
+      "method": "由觀察紀錄辨識沉水型態",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "dependency": "supp-yap-113-midterm-IV-1 共用甲乙丙丁四筆紀錄；原三問選項池不同，各題完整重現同一表，不硬轉共用選項題組。",
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "sourceAdaptation": "保留原題幹、完整四選項與原順序；共用觀察紀錄逐題完整重現，不拆掉判讀條件。",
+      "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-III-2-v1",
+      "practiceId": "S1-P12",
+      "originalId": "supp-yap-113-midterm-III-2",
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-III-2-1",
+        "supp-yap-113-midterm-III-2-2",
+        "supp-yap-113-midterm-III-2-3"
+      ],
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 1,
+      "printedLocator": "三、連連看 2(1)～(3)",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1b 地表作用與結果",
+      "method": "風、流水、地震與地表結果配對",
+      "format": "grouped_choice",
+      "answerSlots": 3,
+      "materialKind": null,
+      "dependency": "三作用與甲乙丙結果池完整保留，沒有新增選項不可重複的限制。",
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "sourceAdaptation": "保留原三作用及甲乙丙三項結果共用選項池；紙本連線改整組選答，不增加原卷未寫的互斥限制。",
+      "answerVerificationMethod": "作者與 fresh reviewer 各自獨立解題一致；無官方答案。"
+    }
+  ],
+  "excludedAfterReview": [
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-IV-1-2-v1",
+      "practiceId": "S2-P25"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-II-5-v1",
+      "practiceId": "S1-P13"
+    }
+  ],
+  "scopeNote": "115康軒前兩單元為暫定核心；尚未取得校方正式第一次定期評量範圍。"
+}
