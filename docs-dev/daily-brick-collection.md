@@ -2,7 +2,7 @@
 
 主規格 [#110](https://github.com/huansbox/aiden-study/issues/110)，實作拆分為每日目標 [#111](https://github.com/huansbox/aiden-study/issues/111)、拼裝 [#112](https://github.com/huansbox/aiden-study/issues/112) 與整合驗收 [#113](https://github.com/huansbox/aiden-study/issues/113)。
 
-目前狀態：2026-09-23 已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 合併並發布至[正式網站](https://kids.linshuhuan.com/)，主規格及三個實作 issues 已結案。下方各階段驗收紀錄保留當時狀態，最新發布結果見文末。
+目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊。2026-09-26 新增的 700T／N700S 尚待發布；下列使用說明描述包含這兩台的候選版本。主規格及三個原實作 issues 已結案，歷史驗收紀錄保留當時狀態。
 
 ## 使用方式
 
@@ -59,6 +59,10 @@
 - 模型 ID 為 `700t`、`n700s`。已收齊前三台的孩子可繼續選新車，已領取但未分配的包可接續使用；兩個孩子仍各自選車與保存。
 
 新增車型同時擴充共用 `PACK_COUNTS`，發布時須先部署可接受新 ID 的 Worker，再發布前端；不需要資料遷移或修改已收藏作品。
+
+![700T 實際工作台素材合成](700t-complete-preview.png)
+
+![N700S 實際工作台素材合成](n700s-complete-preview.png)
 
 ## 完工試車慶祝
 
@@ -168,3 +172,15 @@ CDP 測試的 touch drag 按畫面 frame 分送移動，完成後保留 500 ms �
 - 重現：啟動全新 `node tests/helpers/serve-family.mjs 8841`，用隔離 agent-browser 開本機試拼頁，取得 CDP endpoint 後執行 `node scripts/verify-train-preview.mjs <CDP endpoint> http://127.0.0.1:8841`。
 
 ![家長試拼的最後一片模式](parent-train-preview.png)
+
+## 2026-09-26 高速列車延伸驗收
+
+- 已整合最新主線 `9965091`，包含自然題庫主題分類 PR #126。Node 全套 730 項通過；Python 271 項通過、1 項略過；首頁版本與作品目錄一致性檢查通過。
+- [25 條完整收藏 E2E](highspeed-trains-e2e-result.json)通過：真實數學與拼字回合領包，依序完成五台共 186 組，700T／N700S 各 36 組經觸控操作、伺服器保存、六秒慶祝與展示；剩下 1 包保留。重置學習紀錄仍保留五台收藏，另一個孩子未受影響；直向 Pad 無頁面橫向溢出。
+- 700T 為 36 張基本圖＋33 張遮擋變體，N700S 為 36＋35 張，各約 2.80 MB。五台共 338 張 PNG 全部解碼、hash／裁切／URL 檢查通過；每包六種順序共 1116 次放置均有可見變化。兩台鼻端細件經此檢查放大或加上清楚的邊框。
+- [700T 慶祝](700t-celebration-result.json)與 [N700S 慶祝](n700s-celebration-result.json)各 4 條 native WebAudio／Pad 檢查通過：最後位置提示、實際聲音訊號、靜音／恢復／略過、六秒重播、直向拖曳及中途重設關閉音效。
+- 獨立唯讀 review 檢查新車型接線、舊收藏相容性、來源／素材、階段圖及部件托盤；未留下實質 bug。完整 3D 與實際 PNG 合成已目視比對，修正過鼻燈懸空及軌道末塊超長。
+- [14 條家長試拼 E2E](highspeed-train-preview-e2e-result.json)通過：五車任意順序拼第一包、最後一片直向拖曳與真實音效；EMU3000 完整 36 組試拼、切換／重設／關閉／重新整理、390px 與 Pad 排版。試拼過程家庭 API 請求為零，瀏覽器儲存、兩個孩子收藏及測試用學習資料完全不變。
+- 本次尚未合併或部署。自動化採 Chromium 的 Pad 尺寸及 touch input；未用正式家庭資料，亦未做實體 iPad 驗收。
+
+![五台列車完成收藏](highspeed-trains-collection-preview.png)
