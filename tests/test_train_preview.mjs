@@ -10,13 +10,13 @@ function harness() {
   // Reading any real progress or storage is a failure, even before a write.
   for(const name of ['KidsCollection','KidsFamily','KidsAuth','KidsSyncV1','localStorage','sessionStorage','indexedDB','fetch','XMLHttpRequest'])
     Object.defineProperty(context,name,{get(){throw Error('Preview accessed '+name);}});
-  for(const file of ['brick-e500.js','brick-emu3000.js','brick-r200.js','brick-models.js'])
+  for(const file of ['brick-e500.js','brick-emu3000.js','brick-r200.js','brick-700t.js','brick-n700s.js','brick-models.js'])
     vm.runInContext(read('shared/'+file),context);
   vm.runInContext(read('parent/train-preview.js'),context);
   return {models:context.KidsBrickModels.models,create:context.KidsTrainPreview.createCollection};
 }
 
-for(const id of ['e500','emu3000','r200']) {
+for(const id of ['e500','emu3000','r200','700t','n700s']) {
   test(`${id}: trial progresses pack by pack through completion, without family or storage access`,async()=>{
     const h=harness(), model=h.models.find(m=>m.id===id), c=h.create(model);
     assert.equal(c.snapshot().grants.filter(g=>g.buildId).length,1);

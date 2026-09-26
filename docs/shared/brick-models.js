@@ -456,10 +456,11 @@
   ]);
 
   const legacyModels = [car, train, plane];
-  const models = [root.KidsBrickE500, root.KidsBrickEmu3000, root.KidsBrickR200].filter(Boolean);
+  const models = [root.KidsBrickE500, root.KidsBrickEmu3000, root.KidsBrickR200, root.KidsBrick700T, root.KidsBrickN700S].filter(Boolean);
 
   root.KidsBrickModels = {
     version: 1,
+    title: "積木列車收藏",
     models,
     legacyModels,
     get(id) {

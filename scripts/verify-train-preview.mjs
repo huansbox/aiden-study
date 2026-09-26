@@ -8,6 +8,7 @@ assert.match(await fetch(origin+'/test/controls').then(r=>r.text()),/隔離測�
 const browser=await connectBrowser(endpoint,origin), checks=[];
 const pass=label=>{checks.push(label);console.log('PASS '+label);};
 const report=()=>fetch(origin+'/test/study-preview/snapshot').then(r=>r.json());
+assert.equal((await report()).kvSentinelsUnchanged,true,'start a fresh isolated server before running the trial check');
 const cloud=async()=>Promise.all(['aiden','bingpu'].map(async child=>{
   const r=await fetch(origin+'/v1/collection/'+child,{headers:{Authorization:'Bearer test-token'}});
   assert.equal(r.status,200);return r.json();
@@ -59,7 +60,7 @@ try {
   assert.equal(await count(),0);
   pass('parent trial link opens isolated first-pack mode and preserves return child');
 
-  for(const model of ['e500','emu3000','r200']) {
+  for(const model of ['e500','emu3000','r200','700t','n700s']) {
     if(model!=='e500'){
       await assertIsolated();
       await browser.navigate(origin+'/parent/train-preview.html?child=bingpu&model='+model);

@@ -2,7 +2,7 @@
   "use strict";
 
   const duration = 6000;
-  const trainNames = { e500: "E500", emu3000: "EMU3000", r200: "R200" };
+  const trainNames = { e500: "E500", emu3000: "EMU3000", r200: "R200", '700t': "700T", n700s: "N700S" };
   const supports = (model) => Object.hasOwn(trainNames, model?.id);
 
   function render(model, { audioEnabled = true } = {}) {

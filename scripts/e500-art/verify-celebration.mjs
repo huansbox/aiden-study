@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { connectBrowser } from '../../tests/helpers/collection-browser.mjs';
 const [endpoint, origin = 'http://127.0.0.1:8878', modelId = 'e500'] = process.argv.slice(2);
-if (!['e500','emu3000','r200'].includes(modelId)) throw Error('Unknown train');
+if (!['e500','emu3000','r200','700t','n700s'].includes(modelId)) throw Error('Unknown train');
 const lastPart = modelId === 'e500' ? 'p14-3' : 'p12-3';
 const previewUrl = origin + '/celebration.html?model=' + modelId;
 if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) throw Error('Local preview only');
