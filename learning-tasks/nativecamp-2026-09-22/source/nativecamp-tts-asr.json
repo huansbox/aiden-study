@@ -1,0 +1,372 @@
+{
+  "lessonId": "2026-09-22",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-22-friends-pets-try-1-q.mp3",
+      "sha256": "8c640c125a06a0493ad95dd7ecd2f4a6141f12cf199f01a95f515f3cef8e1574",
+      "expectedText": "Sam's pet is a hamster. Tell us about his pet. Start with He.",
+      "recognizedText": "Sam's pet is a hamster. Tell us about his pet. Start with he."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-try-1-a.mp3",
+      "sha256": "968e6a5e9ddb3a803a392b3952155fe5f8258d5d35b626ef57c0337ea12fe147",
+      "expectedText": "He has a hamster.",
+      "recognizedText": "He has a hamster."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-try-2-q.mp3",
+      "sha256": "840d03c34a3ea986acbdc871382d576050a1e09d3658333fe107e2a0ebd0fd9a",
+      "expectedText": "Can you start with I and tell us about your pet as if you are Sam?",
+      "recognizedText": "Can you start with I and tell us about your pet as if you are Sam"
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-try-2-a.mp3",
+      "sha256": "cb3c71374b25e1bf067d0806052ab8a0a2f633dd29b8a45110c1935cd73c4552",
+      "expectedText": "I have a hamster.",
+      "recognizedText": "I have a hamster."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-try-3-q.mp3",
+      "sha256": "5cc8e852524fde5331d056dd4a55e776032b61efc22cc0993c84dfbfe37f473c",
+      "expectedText": "Mia and Leo share one goldfish. Find and fix one word.",
+      "recognizedText": "Mia and Leo share one goldfish. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-try-3-a.mp3",
+      "sha256": "59c36f9125b9d9dc0e8fc2c22c92fc8ad91d2b3d901ae48c34e80b1670912887",
+      "expectedText": "They have a goldfish.",
+      "recognizedText": "They have a goldfish."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-1-q.mp3",
+      "sha256": "f790d3067cdda1b7c6214d494f4c0b47248c224acaf180fdab0a63b4c1c176ec",
+      "expectedText": "Lily's pet is a rabbit. Tell us about her pet in a full sentence.",
+      "recognizedText": "Lily's pet is a rabbit. Tell us about her pet in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-1-a.mp3",
+      "sha256": "5f886b15de05c1bc9484be6679424acceb09ba46eb9a5893fce54aefd5ed99d0",
+      "expectedText": "She has a rabbit.",
+      "recognizedText": "She has a rabbit."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-2-q.mp3",
+      "sha256": "36896d7d8298dca26c6e5e6dfa89fa98c4f0b98a415187be6dabdcdd0503ff5f",
+      "expectedText": "Pretend you are Max. Max's pet is a goldfish. Tell us about your pet in a full sentence.",
+      "recognizedText": "Pretend you are Max. Max's pet is a goldfish. Tell us about your pet in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-2-a.mp3",
+      "sha256": "045064715dda484d81736bd2c92442db495960a6052cd552f20ea825d0bd3a8a",
+      "expectedText": "I have a goldfish.",
+      "recognizedText": "I have a goldfish."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-3-q.mp3",
+      "sha256": "475b6944ec02eb27f28b18d0bed964418e5862308a1989d65abac4cf4cca2790",
+      "expectedText": "Ben and Kim share two guppies. Tell us about their pets in a full sentence.",
+      "recognizedText": "Ben and Kim share two guppies. Tell us about their pets in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-friends-pets-say-3-a.mp3",
+      "sha256": "458f9e540baaca74c2e44a5912c09b6acdfc29f827bf84e51869a0896d957f24",
+      "expectedText": "They have two guppies.",
+      "recognizedText": "They have two guppies."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-1-q.mp3",
+      "sha256": "4f343211938f327484c8ea837fac86ab4f07851b0762a158cd9ac02d04d170f9",
+      "expectedText": "In this story, this parrot can talk. Why do you like it? Use because.",
+      "recognizedText": "In this story, this parrot can talk. Why do you like it? Use because."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-1-a.mp3",
+      "sha256": "41e61512eaa3dd6c5178d5427a50082528b3ecc480a51cbcee13b9832341fe25",
+      "expectedText": "I like this parrot because it can talk.",
+      "recognizedText": "I like this parrot because it can talk."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-2-q.mp3",
+      "sha256": "f3661012c8fc5e197c79dd6c4d601addfc35cfe66ebdb001db36c46d6dce8538",
+      "expectedText": "Now there are two parrots, and both can talk. Explain why you like them. Use because.",
+      "recognizedText": "Now, there are two parrots, and both can talk. Explain why you like them. Use because."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-2-a.mp3",
+      "sha256": "dabeb2f20df1339fbba424f9518498b4933decd20471ce97180da41bd0bbf539",
+      "expectedText": "I like these parrots because they can talk.",
+      "recognizedText": "I like these parrots because they can talk."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-3-q.mp3",
+      "sha256": "d4ed22892b74accb462b2efb6086aee8466330309b7d096435e04b852a0471f4",
+      "expectedText": "There is one kitten on the story card. Find and fix one word.",
+      "recognizedText": "There is one kitten on the story card. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-try-3-a.mp3",
+      "sha256": "633a98523a5250935c627993b78f2f6c9ddbc58023764e93b941f3b5766f85ec",
+      "expectedText": "I like this kitten because it can play.",
+      "recognizedText": "I like this kitten because it can play."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-1-q.mp3",
+      "sha256": "9ef5be923ae17d3034499fd98eba6207392b4655b5dcee1ef7f172828b5b29e8",
+      "expectedText": "Look at the rabbit on the story card. Why does Mia like it? Use because.",
+      "recognizedText": "Look at the rabbit on the story card. Why does Mia like it? Use because."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-1-a.mp3",
+      "sha256": "bc84fb08b80a1b4a7050b497c4f95cdda1fdcd581f9b8089a7a24404d35d5350",
+      "expectedText": "Mia likes this rabbit because it has soft fur.",
+      "recognizedText": "Mia likes this rabbit because it has soft fur."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-2-q.mp3",
+      "sha256": "ae696713bf70d9ead1a2581eede7f810a128d3e380b39e2b3173ac65855f130c",
+      "expectedText": "In this story, the lizards catch mosquitoes. Why do you like them? Use because.",
+      "recognizedText": "In this story, the lizards catch mosquitoes. Why do you like them? Use because."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-2-a.mp3",
+      "sha256": "2c72aa2501ce76d4c4ab6bdbf5249d45615f86cae92604651fc9c38ecfffd016",
+      "expectedText": "I like these lizards because they catch mosquitoes.",
+      "recognizedText": "I like these lizards because they catch mosquitoes."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-3-q.mp3",
+      "sha256": "2b00d7bbf5fb05e17e15dd7b376f7b96895024582c154ac759a0b7aed3b092b1",
+      "expectedText": "Look at the bird on the story card. Why does Leo like it? Use because.",
+      "recognizedText": "Look at the bird on the story card. Why does Leo like it? Use because."
+    },
+    {
+      "file": "audio/2026-09-22-pet-reasons-say-3-a.mp3",
+      "sha256": "86adbd1f2fbc7b163e1acb4ac1c8571499699b011d38c268485c0ec79f785091",
+      "expectedText": "Leo likes this bird because it sings.",
+      "recognizedText": "Leo likes this bird because it sings."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-1-q.mp3",
+      "sha256": "5e410b2594a4ae4e517dd4e2c97e892f0532ab78fac106705197e5412154b52b",
+      "expectedText": "Look at the dog on the story card. Describe its body. Start with Its body.",
+      "recognizedText": "Look at the dog on the story card. Describe its body. Start with its body."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-1-a.mp3",
+      "sha256": "115781d7707ab332f33ed928bdc8fdd00ba4c716506fc2ae7dbad9f863fcf636",
+      "expectedText": "Its body is yellow.",
+      "recognizedText": "Its body is yellow."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-2-q.mp3",
+      "sha256": "fac520f8557f8f0a290bd463fcd154adea456f4d652db2e85e96244bc916893f",
+      "expectedText": "Now describe only the dog's ears. Start with Its ears.",
+      "recognizedText": "Now describe only the dog's ears. Start with its ears."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-2-a.mp3",
+      "sha256": "ba131faf0b584686f51057517d26398be9b1f48ac79d32c7a477065ab08484af",
+      "expectedText": "Its ears are white.",
+      "recognizedText": "Its ears are white."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-3-q.mp3",
+      "sha256": "85df422340384bfe1b5e9179c5acea135093ea810bbac7a784e1eb66de185b82",
+      "expectedText": "Look at the rabbit's ears. Find and fix one word.",
+      "recognizedText": "Look at the rabbit's ears. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-try-3-a.mp3",
+      "sha256": "7269f2cbb1bb4105450c12bbb2ab2ada151d05354844dda2587e3c70bb1b8917",
+      "expectedText": "Its ears are brown.",
+      "recognizedText": "Its ears are brown."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-1-q.mp3",
+      "sha256": "b1c8fd2ad799290f9ba4faeaefe1086852e7463d985b28eaf96a5c2422ce4101",
+      "expectedText": "Look at the kitten's fur on the story card. Describe it in a full sentence.",
+      "recognizedText": "Look at the kitten's fur on the story card. Describe it in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-1-a.mp3",
+      "sha256": "d25601228f849478f61fc8cde44418fa9f91af456fcc98ed19ebb2a09ba0c4c7",
+      "expectedText": "Its fur is white.",
+      "recognizedText": "Its fur is white."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-2-q.mp3",
+      "sha256": "8f19ed0ca6faade9a27aaac1d03ad1265b4bcf024dbecfcdb9c4564f3833956e",
+      "expectedText": "Look at the lizard's size and color. Describe both in one full sentence.",
+      "recognizedText": "Look at the lizard's size and color. Describe both in one full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-2-a.mp3",
+      "sha256": "8fbc8db564bf83247db9bf068b0468f412dcb6a5311c8733a6fcda1b26749adb",
+      "expectedText": "The lizard is small and green.",
+      "recognizedText": "The lizard is small and green."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-3-q.mp3",
+      "sha256": "41149678de2a06247cad224061b96173220816ab3fe553a00313e6f25ac37c76",
+      "expectedText": "Look at the dog's feet on the story card. Describe them in a full sentence.",
+      "recognizedText": "Look at the dog's feet on the story card. Describe them in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-22-pet-looks-say-3-a.mp3",
+      "sha256": "7675698ed3be3b850cc8680bf20911777ead17ac8f16fb9189619f8035c8294b",
+      "expectedText": "Its feet are white.",
+      "recognizedText": "Its feet are white."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-1-q.mp3",
+      "sha256": "160834f96bfb48cd6322a020c4d5005f195d7922a7e15aee97d04442b3415c1b",
+      "expectedText": "Mia says her hamster is small and Leo says his rabbit is big, so what are they talking about?",
+      "recognizedText": "Mia says her hamster is small, and Leo says his rabbit is big, so what are they talking about?"
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-1-a.mp3",
+      "sha256": "df2109b177b9a394e53f240e002f08c862e8eb3dcb643e67f0ea5bd1bc1ad453",
+      "expectedText": "They are talking about pets.",
+      "recognizedText": "They are talking about pets."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-2-q.mp3",
+      "sha256": "a21931e03860fd51f0c730b917bb44c1c3ec137b7f9593b82a4d47a5a394c3a4",
+      "expectedText": "Now only Mia is speaking about her rabbit. Tell us what she is doing. Start with She.",
+      "recognizedText": "Now only Mia is speaking about her rabbit. Tell us what she is doing. Start with she."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-2-a.mp3",
+      "sha256": "453fa3d7ccd4d09f55bebfe6cc2d41fed61aa31974da395347631afd8c695323",
+      "expectedText": "She is talking about her rabbit.",
+      "recognizedText": "She is talking about her rabbit"
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-3-q.mp3",
+      "sha256": "b10ee8ead938422fec9f4108781142fa9eb424db01b34b10e2b2aea4188ac983",
+      "expectedText": "Sam and Kim are both speaking. Find and fix one word.",
+      "recognizedText": "Sam and Kim are both speaking. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-try-3-a.mp3",
+      "sha256": "5f14b45ce57f5a10de0d34b68f19142da67e252321454ad914d147839fc41296",
+      "expectedText": "They are talking about goldfish.",
+      "recognizedText": "They are talking about goldfish."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-1-q.mp3",
+      "sha256": "40fdb1644d9daa28fca6a877e85e68a1b59ffdb9527e6e764286ba04e819dd43",
+      "expectedText": "Lily says, My hamster is small. Max says, My parrot can talk. What are they talking about?",
+      "recognizedText": "Lily says, my hamster is small. Max says my parrot can talk. What are they talking about?"
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-1-a.mp3",
+      "sha256": "a44d7b62d76e25fb4de4ce65674d12c6c4380f4ee15afce11cb19b09e3f5b286",
+      "expectedText": "They are talking about pets.",
+      "recognizedText": "They are talking about pets."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-2-q.mp3",
+      "sha256": "6fa77607a849a1c446283ebffe4752b1599ca4cadfa0c1645f839def01279e45",
+      "expectedText": "Only Ben is speaking. He says, My kitten is white. What is he talking about?",
+      "recognizedText": "Only Ben is speaking. He says my kitten is white. What is he talking about?"
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-2-a.mp3",
+      "sha256": "e5bbdf3ad1e45961183abfb2d96dc2fcaf61c6bc4a5cd813a0ae2b894b4e6b67",
+      "expectedText": "He is talking about his kitten.",
+      "recognizedText": "He is talking about his kitten."
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-3-q.mp3",
+      "sha256": "aa3caa532d770f199551fe4a4fb4429677736c5dae78b88060d96baf90384351",
+      "expectedText": "Mia says, My bird is green. Sam says, My bird is blue. What are they talking about?",
+      "recognizedText": "Mia says, my bird is green. Sam says, my bird is blue. What are they talking about?"
+    },
+    {
+      "file": "audio/2026-09-22-talking-about-say-3-a.mp3",
+      "sha256": "c7f1e3d9eca83128b508c1a519bef24c6da1948a3df20c99a6e37a278c565e54",
+      "expectedText": "They are talking about birds.",
+      "recognizedText": "They are talking about birds."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-1-q.mp3",
+      "sha256": "8f8d83cd6c35c8755cb75de877cf262fcfed3d08247ebed5ad62af9ae24adf6d",
+      "expectedText": "Pretend this is your shirt. Compare its color with the sky. Use like.",
+      "recognizedText": "Pretend this is your shirt. Compare its color with the sky. Use like."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-1-a.mp3",
+      "sha256": "f9c2d79632230c9fc9c3b4973a95390296c0e648f3bc9c840ac330961f33e088",
+      "expectedText": "My shirt is blue like the sky.",
+      "recognizedText": "My shirt is blue like the sky."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-2-q.mp3",
+      "sha256": "b86c4b54ab281002614023418955fb9c7b9bcd4983fef9ebd99f976b19e2ab8b",
+      "expectedText": "Now compare your shoes with the sky. Use like.",
+      "recognizedText": "Now compare your shoes with the sky. Use like."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-2-a.mp3",
+      "sha256": "90ed441dfb6637345747f080a31952ffbd2e58c884197834811816f6dcc8bc25",
+      "expectedText": "My shoes are blue like the sky.",
+      "recognizedText": "My shoes are blue, like the sky."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-3-q.mp3",
+      "sha256": "5846567ef873a1b8f5eda9f28433a1555b4aaa4d3409fe4506e767d81c23b5b4",
+      "expectedText": "Look at the hat and the grass. Find and fix one word.",
+      "recognizedText": "Look at the hat and the grass. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-try-3-a.mp3",
+      "sha256": "71263876acf5db93427cc61f6854c732b3761e1d7b569b92dcb999d036778959",
+      "expectedText": "My hat is green like the grass.",
+      "recognizedText": "My hat is green like the grass."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-1-q.mp3",
+      "sha256": "8d8c7c1a22e05cb83e955553bc6bd56bbc7aa128780c2e8ac9b8ad75797cbeec",
+      "expectedText": "Pretend this is your bottle. Compare its color with the grass. Use like.",
+      "recognizedText": "Pretend this is your bottle. Compare its color with the grass. Use like."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-1-a.mp3",
+      "sha256": "78209a645d8893f0367b889b33edd9102b5ecc03296477c23cf5c2de5f65c8ad",
+      "expectedText": "My bottle is green like the grass.",
+      "recognizedText": "My bottle is green like the grass."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-2-q.mp3",
+      "sha256": "44877ac676ad8a3ec48284b369330a6a2792d84a808805c588cbaeafec0b50cc",
+      "expectedText": "Can you use like to compare the color of your pretend shoes with the sun?",
+      "recognizedText": "Can you use like to compare the color of your pretend shoes with the sun?"
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-2-a.mp3",
+      "sha256": "955152495733f5773f0d9a57933641da8efa30e2741df4ceda47aaecc56630fb",
+      "expectedText": "My shoes are yellow like the sun.",
+      "recognizedText": "My shoes are yellow like the sun."
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-3-q.mp3",
+      "sha256": "3c21153106bf179dedb4e4abe7bd6761300a17f3cb97e7f0f3b89e32c037fa7d",
+      "expectedText": "Can you use like to compare the color of your pretend shirt with the clouds?",
+      "recognizedText": "Can you use like to compare the color of your pretend shirt with the clouds?"
+    },
+    {
+      "file": "audio/2026-09-22-same-color-say-3-a.mp3",
+      "sha256": "7c8cd0cf4b18f50e543b4fca18c0ac33f37e20e6580f8b5af4231949c1b2f02d",
+      "expectedText": "My shirt is white like the clouds.",
+      "recognizedText": "My shirt is white like the clouds."
+    }
+  ]
+}

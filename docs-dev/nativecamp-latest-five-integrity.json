@@ -1,0 +1,20 @@
+{
+  "baseline": "5af6c923bb00c4025ae9d3511715e9bf7bc187a0",
+  "lessonPacks": 5,
+  "concepts": 27,
+  "questions": 162,
+  "newAudioFiles": 324,
+  "successfulApiRequests": 345,
+  "qualityReplacements": 21,
+  "allNewAudioAndAsrHashesMatch": true,
+  "sourceRecordingsFullyDecoded": 6,
+  "sourceChannelSampleWindows": 34,
+  "existingPublishedLessonPacks": 12,
+  "existingAudioFilesPreserved": 887,
+  "originalRuntimeLessonsAndAudioUnchanged": true,
+  "originalTaskSourceFilesUnchanged": true,
+  "existingAppCatalogEntriesUnchanged": true,
+  "existingTaskCatalogEntriesUnchanged": true,
+  "weeklySchedule": "PAUSED; manual only",
+  "newWeeklyPackageCreated": false
+}

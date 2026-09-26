@@ -1,0 +1,1132 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-22",
+  "date": "2026-09-22",
+  "title": "Pets, friends and colors",
+  "concepts": [
+    {
+      "id": "friends-pets",
+      "title": "A friend's pet",
+      "try": [
+        {
+          "id": "friends-pets-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us about Sam's pet.",
+          "instruction": "He … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam (he) / pet: hamster",
+            "heading": "Story card"
+          },
+          "answerText": "He has a hamster.",
+          "spokenQuestion": "Sam's pet is a hamster. Tell us about his pet. Start with He.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "hamster"
+            },
+            {
+              "id": "extra0",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "friends-pets-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "You are Sam now. Tell us about your pet.",
+          "instruction": "I … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "He has a hamster.",
+            "heading": "Before"
+          },
+          "answerText": "I have a hamster.",
+          "spokenQuestion": "Can you start with I and tell us about your pet as if you are Sam?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "hamster"
+            },
+            {
+              "id": "extra0",
+              "text": "He"
+            },
+            {
+              "id": "extra1",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "friends-pets-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia + Leo / one goldfish together",
+            "heading": "Story card"
+          },
+          "answerText": "They have a goldfish.",
+          "spokenQuestion": "Mia and Leo share one goldfish. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "goldfish."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "have"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "friends-pets-say-1",
+          "prompt": "Tell us about Lily's pet.",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lily (she) / pet: rabbit",
+            "heading": "Story card"
+          },
+          "answerText": "She has a rabbit.",
+          "spokenQuestion": "Lily's pet is a rabbit. Tell us about her pet in a full sentence.",
+          "accepted": [
+            "Lily has a rabbit.",
+            "She's got a rabbit."
+          ]
+        },
+        {
+          "id": "friends-pets-say-2",
+          "prompt": "You are Max. Tell us about your pet.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You are Max / pet: goldfish",
+            "heading": "Story card"
+          },
+          "answerText": "I have a goldfish.",
+          "spokenQuestion": "Pretend you are Max. Max's pet is a goldfish. Tell us about your pet in a full sentence.",
+          "accepted": [
+            "I've got a goldfish."
+          ]
+        },
+        {
+          "id": "friends-pets-say-3",
+          "prompt": "Tell us about Ben and Kim's pets.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben + Kim / two guppies together",
+            "heading": "Story card"
+          },
+          "answerText": "They have two guppies.",
+          "spokenQuestion": "Ben and Kim share two guppies. Tell us about their pets in a full sentence.",
+          "accepted": [
+            "Ben and Kim have two guppies.",
+            "They've got two guppies."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pet-reasons",
+      "title": "Why this pet?",
+      "try": [
+        {
+          "id": "pet-reasons-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Why do you like this parrot?",
+          "instruction": "I … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This parrot: can talk / you: like",
+            "heading": "Story card"
+          },
+          "answerText": "I like this parrot because it can talk.",
+          "spokenQuestion": "In this story, this parrot can talk. Why do you like it? Use because.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            },
+            {
+              "id": "w3",
+              "text": "parrot"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "it"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "talk"
+            },
+            {
+              "id": "extra0",
+              "text": "they"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "pet-reasons-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: two parrots can talk. Explain why you like them.",
+          "instruction": "I … because … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I like this parrot because it can talk.",
+            "heading": "Before"
+          },
+          "answerText": "I like these parrots because they can talk.",
+          "spokenQuestion": "Now there are two parrots, and both can talk. Explain why you like them. Use because.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "these"
+            },
+            {
+              "id": "w3",
+              "text": "parrots"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "they"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "talk"
+            },
+            {
+              "id": "extra0",
+              "text": "this"
+            },
+            {
+              "id": "extra1",
+              "text": "it"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "pet-reasons-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This kitten: can play / you: like",
+            "heading": "Story card"
+          },
+          "answerText": "I like this kitten because it can play.",
+          "spokenQuestion": "There is one kitten on the story card. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            },
+            {
+              "id": "w3",
+              "text": "kitten"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "they"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "play."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "we"
+            },
+            {
+              "id": "c1",
+              "text": "it"
+            }
+          ],
+          "answer": {
+            "wordId": "w5",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "pet-reasons-say-1",
+          "prompt": "Why does Mia like this rabbit?",
+          "instruction": "Mia … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: likes this rabbit / rabbit: soft fur",
+            "heading": "Story card"
+          },
+          "answerText": "Mia likes this rabbit because it has soft fur.",
+          "spokenQuestion": "Look at the rabbit on the story card. Why does Mia like it? Use because.",
+          "accepted": [
+            "She likes this rabbit because it has soft fur.",
+            "Mia likes the rabbit because its fur is soft."
+          ]
+        },
+        {
+          "id": "pet-reasons-say-2",
+          "prompt": "Why do you like these lizards?",
+          "instruction": "I … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You: like these lizards / lizards: catch mosquitoes",
+            "heading": "Story card"
+          },
+          "answerText": "I like these lizards because they catch mosquitoes.",
+          "spokenQuestion": "In this story, the lizards catch mosquitoes. Why do you like them? Use because.",
+          "accepted": [
+            "I like the lizards because they catch mosquitoes.",
+            "I like these lizards because they can catch mosquitoes."
+          ]
+        },
+        {
+          "id": "pet-reasons-say-3",
+          "prompt": "Why does Leo like this bird?",
+          "instruction": "Leo … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Leo: likes this bird / bird: sings",
+            "heading": "Story card"
+          },
+          "answerText": "Leo likes this bird because it sings.",
+          "spokenQuestion": "Look at the bird on the story card. Why does Leo like it? Use because.",
+          "accepted": [
+            "He likes this bird because it sings.",
+            "Leo likes this bird because it can sing."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pet-looks",
+      "title": "Describe a pet",
+      "try": [
+        {
+          "id": "pet-looks-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Describe the dog's body.",
+          "instruction": "Its body … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Dog / body: yellow / ears: white",
+            "heading": "Story card"
+          },
+          "answerText": "Its body is yellow.",
+          "spokenQuestion": "Look at the dog on the story card. Describe its body. Start with Its body.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Its"
+            },
+            {
+              "id": "w1",
+              "text": "body"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "yellow"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "pet-looks-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe only the dog's ears.",
+          "instruction": "Its ears … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Its body is yellow. / Ears: white",
+            "heading": "Before and now"
+          },
+          "answerText": "Its ears are white.",
+          "spokenQuestion": "Now describe only the dog's ears. Start with Its ears.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Its"
+            },
+            {
+              "id": "w1",
+              "text": "ears"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "white"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            },
+            {
+              "id": "extra1",
+              "text": "yellow"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "pet-looks-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Rabbit / ears: brown",
+            "heading": "Story card"
+          },
+          "answerText": "Its ears are brown.",
+          "spokenQuestion": "Look at the rabbit's ears. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Its"
+            },
+            {
+              "id": "w1",
+              "text": "ears"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "brown."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "has"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "pet-looks-say-1",
+          "prompt": "Describe the kitten's fur.",
+          "instruction": "Its fur …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Kitten / fur: white",
+            "heading": "Story card"
+          },
+          "answerText": "Its fur is white.",
+          "spokenQuestion": "Look at the kitten's fur on the story card. Describe it in a full sentence.",
+          "accepted": [
+            "The kitten's fur is white.",
+            "The kitten has white fur."
+          ]
+        },
+        {
+          "id": "pet-looks-say-2",
+          "prompt": "Describe its size and color.",
+          "instruction": "The lizard …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lizard / size: small / color: green",
+            "heading": "Story card"
+          },
+          "answerText": "The lizard is small and green.",
+          "spokenQuestion": "Look at the lizard's size and color. Describe both in one full sentence.",
+          "accepted": [
+            "It is small and green.",
+            "The lizard is green and small."
+          ]
+        },
+        {
+          "id": "pet-looks-say-3",
+          "prompt": "Describe the dog's feet.",
+          "instruction": "Its feet …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Dog / body: brown / feet: white",
+            "heading": "Story card"
+          },
+          "answerText": "Its feet are white.",
+          "spokenQuestion": "Look at the dog's feet on the story card. Describe them in a full sentence.",
+          "accepted": [
+            "The dog's feet are white.",
+            "The dog has white feet."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "talking-about",
+      "title": "What are they talking about?",
+      "try": [
+        {
+          "id": "talking-about-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What are Mia and Leo talking about?",
+          "instruction": "They … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: My hamster is small. / Leo: My rabbit is big.",
+            "heading": "Listen"
+          },
+          "answerText": "They are talking about pets.",
+          "spokenQuestion": "Mia says her hamster is small and Leo says his rabbit is big, so what are they talking about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "talking"
+            },
+            {
+              "id": "w3",
+              "text": "about"
+            },
+            {
+              "id": "w4",
+              "text": "pets"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "talking-about-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now only Mia is speaking about her rabbit.",
+          "instruction": "She … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "They are talking about pets.",
+            "heading": "Before"
+          },
+          "answerText": "She is talking about her rabbit.",
+          "spokenQuestion": "Now only Mia is speaking about her rabbit. Tell us what she is doing. Start with She.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "talking"
+            },
+            {
+              "id": "w3",
+              "text": "about"
+            },
+            {
+              "id": "w4",
+              "text": "her"
+            },
+            {
+              "id": "w5",
+              "text": "rabbit"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            },
+            {
+              "id": "extra1",
+              "text": "They"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "talking-about-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam: My goldfish is orange. / Kim: Mine is white.",
+            "heading": "Listen"
+          },
+          "answerText": "They are talking about goldfish.",
+          "spokenQuestion": "Sam and Kim are both speaking. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "talking"
+            },
+            {
+              "id": "w3",
+              "text": "about"
+            },
+            {
+              "id": "w4",
+              "text": "goldfish."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "talking-about-say-1",
+          "prompt": "What are they talking about?",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lily: My hamster is small. / Max: My parrot can talk.",
+            "heading": "Listen"
+          },
+          "answerText": "They are talking about pets.",
+          "spokenQuestion": "Lily says, My hamster is small. Max says, My parrot can talk. What are they talking about?",
+          "accepted": [
+            "They're talking about pets.",
+            "Lily and Max are talking about pets.",
+            "They are talking about their pets."
+          ]
+        },
+        {
+          "id": "talking-about-say-2",
+          "prompt": "What is Ben talking about?",
+          "instruction": "He …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Only Ben is speaking. / Ben: My kitten is white.",
+            "heading": "Listen"
+          },
+          "answerText": "He is talking about his kitten.",
+          "spokenQuestion": "Only Ben is speaking. He says, My kitten is white. What is he talking about?",
+          "accepted": [
+            "He's talking about his kitten.",
+            "Ben is talking about his kitten."
+          ]
+        },
+        {
+          "id": "talking-about-say-3",
+          "prompt": "What are they talking about?",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: My bird is green. / Sam: My bird is blue.",
+            "heading": "Listen"
+          },
+          "answerText": "They are talking about birds.",
+          "spokenQuestion": "Mia says, My bird is green. Sam says, My bird is blue. What are they talking about?",
+          "accepted": [
+            "They're talking about birds.",
+            "Mia and Sam are talking about birds.",
+            "They are talking about their birds."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "same-color",
+      "title": "The same color",
+      "try": [
+        {
+          "id": "same-color-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Compare the colors.",
+          "instruction": "My shirt … like … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your shirt: blue / sky: blue",
+            "heading": "Story card"
+          },
+          "answerText": "My shirt is blue like the sky.",
+          "spokenQuestion": "Pretend this is your shirt. Compare its color with the sky. Use like.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "shirt"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "blue"
+            },
+            {
+              "id": "w4",
+              "text": "like"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "w6",
+              "text": "sky"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ],
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w4",
+              "w5",
+              "w3",
+              "w6"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w5",
+              "w6",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "same-color-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now compare your shoes with the sky.",
+          "instruction": "My shoes … like … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "My shirt is blue like the sky. / Your shoes: blue",
+            "heading": "Before and now"
+          },
+          "answerText": "My shoes are blue like the sky.",
+          "spokenQuestion": "Now compare your shoes with the sky. Use like.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "shoes"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "blue"
+            },
+            {
+              "id": "w4",
+              "text": "like"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "w6",
+              "text": "sky"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            },
+            {
+              "id": "extra1",
+              "text": "shirt"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ],
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w4",
+              "w5",
+              "w3",
+              "w6"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w5",
+              "w6",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "same-color-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your hat: green / grass: green",
+            "heading": "Story card"
+          },
+          "answerText": "My hat is green like the grass.",
+          "spokenQuestion": "Look at the hat and the grass. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "hat"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "green"
+            },
+            {
+              "id": "w4",
+              "text": "like"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "w6",
+              "text": "grass."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "has"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "same-color-say-1",
+          "prompt": "Compare the colors.",
+          "instruction": "My bottle … like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your bottle: green / grass: green",
+            "heading": "Story card"
+          },
+          "answerText": "My bottle is green like the grass.",
+          "spokenQuestion": "Pretend this is your bottle. Compare its color with the grass. Use like.",
+          "accepted": [
+            "The bottle is green like the grass.",
+            "My bottle is green, just like the grass."
+          ]
+        },
+        {
+          "id": "same-color-say-2",
+          "prompt": "Compare the colors.",
+          "instruction": "My shoes … like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your shoes: yellow / sun: yellow",
+            "heading": "Story card"
+          },
+          "answerText": "My shoes are yellow like the sun.",
+          "spokenQuestion": "Can you use like to compare the color of your pretend shoes with the sun?",
+          "accepted": [
+            "The shoes are yellow like the sun.",
+            "My shoes are yellow, just like the sun."
+          ]
+        },
+        {
+          "id": "same-color-say-3",
+          "prompt": "Compare the colors.",
+          "instruction": "My shirt … like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your shirt: white / clouds: white",
+            "heading": "Story card"
+          },
+          "answerText": "My shirt is white like the clouds.",
+          "spokenQuestion": "Can you use like to compare the color of your pretend shirt with the clouds?",
+          "accepted": [
+            "The shirt is white like the clouds.",
+            "My shirt is white, just like the clouds."
+          ]
+        }
+      ]
+    }
+  ]
+}

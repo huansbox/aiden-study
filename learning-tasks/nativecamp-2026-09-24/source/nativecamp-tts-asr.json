@@ -1,0 +1,444 @@
+{
+  "lessonId": "2026-09-24",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-1-q.mp3",
+      "sha256": "845097f091d1a063bee724bc64b6ba7ede89fccedc5d8810833e5eaedd5b5e06",
+      "expectedText": "Starting with We, what do we do with grapes at the picnic?",
+      "recognizedText": "Starting with we, what do we do with grapes at the picnic?"
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-1-a.mp3",
+      "sha256": "7a5bb9636ed2ad12a3eb9be692095f431749d40d14c18d93217afb3ea442b2cb",
+      "expectedText": "We eat grapes.",
+      "recognizedText": "We eat grapes."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-2-q.mp3",
+      "sha256": "52f0562536803892c1015bec9639e451355f9e6e5cff439ee3613a9399813b4e",
+      "expectedText": "The old sentence is We eat grapes. Now it is juice. Change the action too. Start with We.",
+      "recognizedText": "The old sentence is, we eat grapes. Now, it is juice. Change the action too. Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-2-a.mp3",
+      "sha256": "0affeade8fe4e49e1c716ceaa11dcef8b2f83cd68ee9566110a742c2262750a2",
+      "expectedText": "We drink juice.",
+      "recognizedText": "We drink juice."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-3-q.mp3",
+      "sha256": "d36ca270fb131974587a811829d1163f6d3068e77663afce1b5cb46847069c7b",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-try-3-a.mp3",
+      "sha256": "e5bb0df5b3b1e0462f9b704f2daeb2f3ca1316b3d28b5299414a906f1c0116ca",
+      "expectedText": "We drink water.",
+      "recognizedText": "We drink water."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-1-q.mp3",
+      "sha256": "d980506456584c0e60a1aad4d60e58a8ef6a932069f3844e6b2e5cdd8e92d209",
+      "expectedText": "What do we do with sandwiches at the picnic? Start with We.",
+      "recognizedText": "What do we do with fanwatches at the picnic? Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-1-a.mp3",
+      "sha256": "e97de5f18a0b8ec52a94987dd7f0abdf960a07ab22a546c8efff2726cf78173a",
+      "expectedText": "We eat sandwiches.",
+      "recognizedText": "We eat sandwiches."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-2-q.mp3",
+      "sha256": "dbf568a4d123c0034fcf9f69e895bfd5b22e275c732d8cabd67f7b60e08c30c7",
+      "expectedText": "What do we do with soda at the picnic? Start with We.",
+      "recognizedText": "What do we do with soda at the picnic? Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-2-a.mp3",
+      "sha256": "9067b4fdbf5d4857265a14b3fcbceebf34dfc19cc41919d0491a3a9453ce02b8",
+      "expectedText": "We drink soda.",
+      "recognizedText": "We drink soda."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-3-q.mp3",
+      "sha256": "685b434d667366790bfbbdba36fd3031914f61459ec6f99698e26ad9c30550f9",
+      "expectedText": "Pretend you like juice. What do you like to do with it? Start with I like to.",
+      "recognizedText": "Pretend you like juice. What do you like to do with it? Start with, I like too."
+    },
+    {
+      "file": "audio/2026-09-24-eat-and-drink-say-3-a.mp3",
+      "sha256": "7d2b60e555623585bc6110feac397bf0094bbe9066750b55bfbbe13aff19392b",
+      "expectedText": "I like to drink juice.",
+      "recognizedText": "I like to drink juice."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-1-q.mp3",
+      "sha256": "0175c942b814d5ef566b8ab5207802829926bd72747bf2794c4bb7ce4e0813f4",
+      "expectedText": "Look at our picnic plan. What must we bring? Start with We.",
+      "recognizedText": "Look at our picnic plan. What must we bring? Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-1-a.mp3",
+      "sha256": "9d6dde087d8774a129bd7c092edabd62f1491e51104710a321cdfb023e635dde",
+      "expectedText": "We need some sandwiches.",
+      "recognizedText": "We need some sandwiches."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-2-q.mp3",
+      "sha256": "d9ecc281a31785a5eff2658c2a002e8b80238570faa3db551bd6eb7854bfb72b",
+      "expectedText": "The old sentence is We want some juice. Our new plan puts juice on the must-bring list. Change the sentence.",
+      "recognizedText": "The old sentence is we want some juice our new plan puts juice on the must-bring list change the sentence"
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-2-a.mp3",
+      "sha256": "08dc65b746e0ee1cfa90e0db9add22e1848bcbec1a6bad4a8078e62ca686608e",
+      "expectedText": "We need some juice.",
+      "recognizedText": "We need some juice."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-3-q.mp3",
+      "sha256": "8a054262d03fd14b54714f82c37b796de2f1e0062d72ed0c2e14a1e76d568d9b",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-try-3-a.mp3",
+      "sha256": "002d17bb227a0b31f099e787cdc1d029b109766c7ca262db4dc792186c1f653e",
+      "expectedText": "We want some candy.",
+      "recognizedText": "We want some candy."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-1-q.mp3",
+      "sha256": "b9165049213e2ea6320ad65fe2b0f80fe75444cfa1e86ed0b3c51c13f2f16952",
+      "expectedText": "Look at our plan for water. Say what we want or need. Start with We.",
+      "recognizedText": "Look at our plan for water. Say what we want or need. Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-1-a.mp3",
+      "sha256": "6077c81533651b9ccf105e52345b5e897364256ed4ae8673901fe756ff75ad2f",
+      "expectedText": "We need some water.",
+      "recognizedText": "We need some water."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-2-q.mp3",
+      "sha256": "2b61772c99b6328c8533295882f5327f9dc7060549b84de723c526fd49e83d9f",
+      "expectedText": "Look at our plan for grapes. Say what we want or need. Start with We.",
+      "recognizedText": "Look at our plan for grapes. Say what we want or need. Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-2-a.mp3",
+      "sha256": "ab836ff2a771eb110a13108d900f901ec6b35da47f09626e459cde6b7c66abed",
+      "expectedText": "We want some grapes.",
+      "recognizedText": "We want some grapes."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-3-q.mp3",
+      "sha256": "b8bd0272c6177cfae54aa717c91dda28c6f586b846c2fd7ff0a4c6d7508d6873",
+      "expectedText": "Look at our plan for cups. Say what we want or need. Start with We.",
+      "recognizedText": "Look at our plan for cups. Say what we want or need. Start with we."
+    },
+    {
+      "file": "audio/2026-09-24-picnic-plan-say-3-a.mp3",
+      "sha256": "0e455b9bc837bc6f560037b8a6a9d48085ec8d1fa3897b7fe105ef9f76acf56d",
+      "expectedText": "We need some cups.",
+      "recognizedText": "We need some cups."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-1-q.mp3",
+      "sha256": "dae947c5f16c49d96e46c437e61a4fbc7765877c508f937334cd5c7c0270650d",
+      "expectedText": "Your pretend brother says, I want a cookie. Tell me about your brother. Start with My brother.",
+      "recognizedText": "Your pretend brother says, I want a cookie. Tell me about your brother. Start with, my brother."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-1-a.mp3",
+      "sha256": "dd96a7692e33ee34517a46151c85d53a5915714046750aa408944375294d7d7e",
+      "expectedText": "My brother wants a cookie.",
+      "recognizedText": "My brother wants a cookie."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-2-q.mp3",
+      "sha256": "279db1c15efde55010808e4ac78c3cb0dcde722a3b2fb906e8db05e31e7f7a83",
+      "expectedText": "Your pretend sister says, I need a cup. Change her words to tell me about your sister. Start with My sister.",
+      "recognizedText": "Your pretend sister says, I need a cup. Change your words to tell me about your sister. Start with my sister."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-2-a.mp3",
+      "sha256": "9cc921d91cdecba572ce8327926a96fde875ba20e57a8ab791d2f8bafb1f22e1",
+      "expectedText": "My sister needs a cup.",
+      "recognizedText": "My sister needs a cup."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-3-q.mp3",
+      "sha256": "525f15e6f63605690810e292710878ce412186a44b1ae81de0e8172c88325187",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-try-3-a.mp3",
+      "sha256": "eacf1eeb6006b826b5bc02131a882cf3c0551a498964bd75cc6605378aeecc7d",
+      "expectedText": "My dad needs water.",
+      "recognizedText": "My dad needs water."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-1-q.mp3",
+      "sha256": "8d0f8b482739620c6ada5b858b6357828c42b4578985e52754b7a87e2e2c92b5",
+      "expectedText": "Your pretend friend says, I want a sandwich. What does your friend want? Start with My friend.",
+      "recognizedText": "Your pretend friend says, I want a sandwich. What does your friend want? Start with, my friend."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-1-a.mp3",
+      "sha256": "ffc3278f0f7ebfe989b740f2310cc82d9bf255a8d00a16af5ef0a166c28675c5",
+      "expectedText": "My friend wants a sandwich.",
+      "recognizedText": "My friend wants a sandwich."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-2-q.mp3",
+      "sha256": "97c162eb4c87bb2456360dd829cc5f5a5655a8d6095a14ca55d0b35da29b9798",
+      "expectedText": "Your pretend mum says, I need a bag. What does your mum need? Start with My mum.",
+      "recognizedText": "Your pretend mom says, I need a bag. What does your mom need? Start with, my mom."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-2-a.mp3",
+      "sha256": "0567c6313ae9401a28ab17f67a9f175ae584f37a71cb58b711fba5722f9b5a89",
+      "expectedText": "My mum needs a bag.",
+      "recognizedText": "My mom needs a bag."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-3-q.mp3",
+      "sha256": "69da84a06805856b7412cd8971b72d59b6015ef365444cd5c9698e9b730332cd",
+      "expectedText": "Your pretend sister says, I want some grapes. What does your sister want? Start with My sister.",
+      "recognizedText": "Your pretend sister says, I want some grapes. What does your sister want? Start with my sister."
+    },
+    {
+      "file": "audio/2026-09-24-report-wishes-say-3-a.mp3",
+      "sha256": "42feca0e98dd67e73c80c3ab6431904384509e92e2c568acaa1bfb6d734a6581",
+      "expectedText": "My sister wants some grapes.",
+      "recognizedText": "My sister wants some grapes."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-1-q.mp3",
+      "sha256": "2dc61bcbe4d982f394656a3bb04f52a651e0d8a072bd07337d2af862b9a8720e",
+      "expectedText": "Look at the person and the action. What does the farmer do? Start with A farmer.",
+      "recognizedText": "Look at the person and the action. What does the farmer do? Start with a farmer."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-1-a.mp3",
+      "sha256": "67f795cf1ba5cb1e16a0118eea72849ca1fddfc184c5503558cc25731da06543",
+      "expectedText": "A farmer sells apples.",
+      "recognizedText": "A farmer sells apples."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-2-q.mp3",
+      "sha256": "7a9ceb90b93de9fa465663e1f956476396306fc9db39e1600c233f961e1d398f",
+      "expectedText": "Change the sentence to two farmers. Start with Two farmers.",
+      "recognizedText": "Change the sentence to two farmers. Start with two farmers."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-2-a.mp3",
+      "sha256": "42344b27dc9e555e7604247b9917f707cded695c7d1f93eeaa68c920c66e4f08",
+      "expectedText": "Two farmers sell apples.",
+      "recognizedText": "Two farmers sell apples."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-3-q.mp3",
+      "sha256": "44088acf669b515bfe010881f0117f776b894f776baa773a2e7160d6bb304ea6",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-try-3-a.mp3",
+      "sha256": "ec2dfec8bd239eea2a9126e5849abf46db6645b9f97657f3e065a7ccf0a4842f",
+      "expectedText": "The girl plays a game.",
+      "recognizedText": "The girl plays a game."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-1-q.mp3",
+      "sha256": "680d510b94265f09a643241cb14a3d91c27ee033b244abcc4627a5c6372a0aa1",
+      "expectedText": "Look at Leo and his action. What does Leo do? Say a full sentence.",
+      "recognizedText": "Look at Leo and his action. What does Leo do? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-1-a.mp3",
+      "sha256": "5aa0b3f662df82d8aba03ea4031acb0051f7ff6d8dd8e9a88a6278ec994476b9",
+      "expectedText": "Leo runs in the park.",
+      "recognizedText": "Leo runs in the park."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-2-q.mp3",
+      "sha256": "093122d8e9172a87523243a8b394057a8d01584fd52f3979c642825996f539b8",
+      "expectedText": "Look at the farmers and their action. What do farmers do? Say a full sentence.",
+      "recognizedText": "Look at the farmers and their action. What do farmers do? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-2-a.mp3",
+      "sha256": "81dd06c8167cd67eefee4db1c33ca67b4bf9a59070a69eed75853417de75cfc5",
+      "expectedText": "Farmers grow rice.",
+      "recognizedText": "Farmers grow rice."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-3-q.mp3",
+      "sha256": "e478abc74f60594192054ebab34b4c7786ecf7edcc23184e02fc55f05daaece7",
+      "expectedText": "Look at the police officers and their action, and tell us in a full sentence what police officers do.",
+      "recognizedText": "Look at the police officers and their action, and tell us in a full sentence what police officers do."
+    },
+    {
+      "file": "audio/2026-09-24-people-and-actions-say-3-a.mp3",
+      "sha256": "f2197f1c26bfc42e2e1d556b3d61ac55757c31b2c55fd701cbc3cc7da94e7e4e",
+      "expectedText": "Police officers help people.",
+      "recognizedText": "Police officers help people."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-1-q.mp3",
+      "sha256": "0cee6fd707777a3f9a7057d7caa664ab35729d7a99bc1a60d280f68490d8af73",
+      "expectedText": "You have a kite. Leo has a ball. Tell Leo which of his things you want. Start with I.",
+      "recognizedText": "You have a kite. Leo has a ball. Tell Leo which of his things you want. Start with I."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-1-a.mp3",
+      "sha256": "9c7f2946101809a21e61a2bf399d1946c26503256b349cdac78d2f39b6b2eb06",
+      "expectedText": "I want your ball.",
+      "recognizedText": "I want your ball."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-2-q.mp3",
+      "sha256": "60394dbea4b42b71130749260d95ea848ee835e673829c7756413f7cef2a3eba",
+      "expectedText": "You own the kite and are speaking to Leo. Change You want my kite into a question. Start with Do.",
+      "recognizedText": "You own the kite and are speaking to Leo. Change you want my kite into a question. Start with do."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-2-a.mp3",
+      "sha256": "9fdc570fa08fab3110e2bf28e4ce2e453baf5f99ff469540ed1d6a0e3ca1e411",
+      "expectedText": "Do you want my kite?",
+      "recognizedText": "Do you want my kite?"
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-3-q.mp3",
+      "sha256": "3141994cf8b463c343acc69bf755ec88555cd8fa811b26e99baabb462a203a24",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-try-3-a.mp3",
+      "sha256": "98ac12cb708c8dc11e4cae9cd32f3a48adcae3845ed806c28d71831a8178efb4",
+      "expectedText": "I want your kite.",
+      "recognizedText": "I want your kite."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-1-q.mp3",
+      "sha256": "d7d108036bb58f88eb06f7965125f7aad502f9b52b9ac3615c4a81061b5ccc34",
+      "expectedText": "You have a ball. Kim has a kite. Tell Kim what you want from her. Start with I want.",
+      "recognizedText": "You have a ball. Kim has a kite. Tell Kim what you want from her. Start with, I want."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-1-a.mp3",
+      "sha256": "087a22b1896f7f5e148784c5efd86293b15b42c4c497db57a266ba14270af7a7",
+      "expectedText": "I want your kite.",
+      "recognizedText": "I want your kite."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-2-q.mp3",
+      "sha256": "abf38dcf624998998a18a477dbd838d098582a3aa9bb762e52440541268f6dfc",
+      "expectedText": "You have a red hat. Ben has a blue hat. Offer your red hat to Ben. Start with Do you want.",
+      "recognizedText": "You have a red hat. Ben has a blue hat. Offer your red hat to Ben. Start with, Do you want?"
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-2-a.mp3",
+      "sha256": "42a52ca7cb99a609ec13bad8c77215d24832f76de5ed9e2f0c19a43be3aa974a",
+      "expectedText": "Do you want my red hat?",
+      "recognizedText": "Do you want my red hat?"
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-3-q.mp3",
+      "sha256": "d5ecd60ffd8b33b0381e3cfd0f4fb483df95d49fb1a3f73d94e45c181149ada3",
+      "expectedText": "Pretend the coat belongs to you. Whose coat is this? Say a full sentence.",
+      "recognizedText": "Pretend the coat belongs to you. Whose coat is this? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-24-my-and-your-say-3-a.mp3",
+      "sha256": "340c704ba66fa1a6bf59d053c2c26ff53160918fe2921885db11af50f48bc89d",
+      "expectedText": "This is my coat.",
+      "recognizedText": "This is my coat."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-1-q.mp3",
+      "sha256": "b5267c5af4c0cdf737a9cbf57b6989a6f2578895885bb8c506fff4dd7baa39e4",
+      "expectedText": "Look at the two kinds of candy and use prefer to tell us which you like more.",
+      "recognizedText": "Look at the two kinds of candy, and use prefer to tell us which you like more."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-1-a.mp3",
+      "sha256": "90776fb44a3f733ae3dea2a15a4473d2cf3a878505b14e248cbc9e00284d3a6d",
+      "expectedText": "I prefer lemon candy.",
+      "recognizedText": "I prefer lemon candy."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-2-q.mp3",
+      "sha256": "a82610b6fbf490b78efe2f664d8d2a1e2b7660b156b4fb00d844bd87e385fc5e",
+      "expectedText": "You told us about yourself before; now Ava likes lemon candy more than mint candy, so starting with She, tell us about her choice.",
+      "recognizedText": "You told us about yourself before. Now Ava likes lemon candy more than mint candy. So starting with she, tell us about her choice."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-2-a.mp3",
+      "sha256": "c57aaf0a5435da6c3fb85b44de8bc401c5b3d37dc13135ee2c2d97feb0e90cf5",
+      "expectedText": "She prefers lemon candy.",
+      "recognizedText": "She prefers lemon candy."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-3-q.mp3",
+      "sha256": "db9fd7f59822436cdff7c89fff686f25b9acd6fe60d38110b95b26e6a798ccac",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-try-3-a.mp3",
+      "sha256": "f647c97b16e037703ed496b4f1865bc1d1c79a5e0a85db13103a87fcb495214f",
+      "expectedText": "I prefer apple juice.",
+      "recognizedText": "I prefer apple juice."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-1-q.mp3",
+      "sha256": "f2b139349d4e47a11f59f1c3a8719d419b4983d46186cc62591d25be6503cbc0",
+      "expectedText": "Pretend you like orange juice more than apple juice. Which juice do you like more? Use prefer.",
+      "recognizedText": "Pretend you like orange juice more than apple juice. Which juice do you like more? Use prefer."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-1-a.mp3",
+      "sha256": "a69d87677206b1ece11c075e9c6668f8ddb9a59ee9a22fd3462152d213f6f91b",
+      "expectedText": "I prefer orange juice.",
+      "recognizedText": "I prefer orange juice."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-2-q.mp3",
+      "sha256": "10801dac8da0e5b3f9c25ba95837bc1bb05b31f5e86c9e4cebb4572d2ae6b818",
+      "expectedText": "Pretend you like cookies more than chips. Which snack do you like more? Use prefer.",
+      "recognizedText": "Pretend you like cookies more than chips. Which snack do you like more? Use prefer."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-2-a.mp3",
+      "sha256": "b3132dff517a7c2944d9aada6d0faf7e0269b98228b157e47fbd97afad9dbb9b",
+      "expectedText": "I prefer cookies.",
+      "recognizedText": "I prefer cookies."
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-3-q.mp3",
+      "sha256": "eeea71dcb39016c2ffcc3ea9d4e13e27c21db123de186cc1e3192ce5337fa61a",
+      "expectedText": "In this story, you like grapes more than apples, so can you use prefer to tell us which fruit you like more?",
+      "recognizedText": "In this story, you like grapes more than apples. So can you use preferr to tell us which fruit you like more?"
+    },
+    {
+      "file": "audio/2026-09-24-prefer-more-say-3-a.mp3",
+      "sha256": "8cd61c437b54d4744c595da90f1019568a603cc1a398672913612684392f7be6",
+      "expectedText": "I prefer grapes.",
+      "recognizedText": "I prefer grapes."
+    }
+  ]
+}

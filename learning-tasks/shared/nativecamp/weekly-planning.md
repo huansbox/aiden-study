@@ -1,6 +1,6 @@
 # 依實際練習製作 Weekly Review
 
-本流程只處理 Aiden 已同步的 Native Camp 作答。排程與發布交由自動化流程承接；本工具不連線讀家庭資料、不呼叫付費 API、不發布，也不替孩子作答。原課與既有 `weekly-2026-09-14`（09-20 開放）保持原樣。
+本流程只在使用者明確要求製作 Weekly Review 時執行，處理 Aiden 已同步的 Native Camp 作答。2026-09-26 起取消自動排程；不得自行啟用 heartbeat、另建排程或因新課完成而附帶製作週包。手動擷取、製作與發布沿用[按需製作 SOP](weekly-automation.md)；本 planner 不連線讀家庭資料、不呼叫付費 API、不發布，也不替孩子作答。原課與既有 `weekly-2026-09-14`（09-20 開放）保持原樣。
 
 ## 規劃入口與私有資料
 
@@ -8,11 +8,11 @@
 node learning-tasks/shared/nativecamp/plan_weekly.mjs --snapshot .local/nativecamp-weekly/captured-progress.json --release 2026-09-27
 ```
 
-排程可用 `--stdin` 取代 `--snapshot`，由 child process 的 stdin 傳入 Wrangler 固定 key 的 JSON，避免原始回應進入終端或模型輸出。兩者互斥，輸入上限 2 MiB。輸入可為 core 的進度物件，或 KV `{rev, data}` envelope；`data: null` 代表尚無已同步進度，無效 JSON、schema、來源概念或 question ID 則失敗，不視為空週。
+手動製作流程沿用 `weekly_automation.py prepare`，由它呼叫 planner 的 `--stdin` 取代 `--snapshot`，透過 child process stdin 傳入 Wrangler 固定 key 的 JSON，避免原始回應進入終端或模型輸出。planner 這兩個輸入選項互斥，輸入上限 2 MiB。輸入可為 core 的進度物件，或 KV `{rev, data}` envelope；`data: null` 代表尚無已同步進度，無效 JSON、schema、來源概念或 question ID 則失敗，不視為空週。
 
 已存在計畫的續作使用 `node learning-tasks/shared/nativecamp/plan_weekly.mjs --resume --release 2026-09-27`；此模式只讀保存的 `progress.json`，不接受 `--snapshot`／`--stdin`，也不重新讀雲端。模組對應 `writeWeeklyPlan({releaseDate, resume: true})`；缺少保存計畫即失敗，不能悄悄建立另一份。
 
-發布日必須是 Asia/Taipei 的週日。`2026-09-27` 的練習窗口為 `2026-09-20`（含）至 `2026-09-27`（不含）；`attempt.date` 本身就是孩子端記錄的臺北日期，不依 lesson.date、KV updatedAt 或電腦當地時區分類。原課 `initial`、保留的舊 `reviews` 與週包實際回答都計入是否練過；單純開啟題目、pending 提示或尚未同步不算已回答。週包透過已保存的來源與公開題包核對，映射回原課概念。
+`release` 仍須是 Asia/Taipei 的週日，作為既有題包識別與練習窗口邊界；手動製作日期不受星期限制。使用者未指定週次時，採最近一個已到達的週日，不改成任意七天、不自動補齊漏做的週次。`2026-09-27` 的練習窗口為 `2026-09-20`（含）至 `2026-09-27`（不含）；`attempt.date` 本身就是孩子端記錄的臺北日期，不依 lesson.date、KV updatedAt 或電腦當地時區分類。原課 `initial`、保留的舊 `reviews` 與週包實際回答都計入是否練過；單純開啟題目、pending 提示或尚未同步不算已回答。週包透過已保存的來源與公開題包核對，映射回原課概念。
 
 唯一私有工作根為 repo 的 `/.local/nativecamp-weekly/`，由 root `.gitignore` 精確排除；snapshot 路徑不得在此根之外，也不得經 symlink／junction 指向公開目錄。工具只保存正規化後的 core 欄位，不保留 envelope 的未知欄位。切勿將下列檔案貼進 issue、commit、日誌或公開題包：
 
@@ -20,7 +20,7 @@ node learning-tasks/shared/nativecamp/plan_weekly.mjs --snapshot .local/nativeca
 - `<release>/plan.json`：快照 hash、實際練習日期與選題依據；屬個人表現。
 - `<release>/generation-brief.json`：移除表現欄位的出題工作檔，包含公開原課概念與題文作為設計參考；仍留在私有工作根。
 
-stdout 只回 `{status, reason?, releaseDate, lessonId?, conceptCount?}`。`status` 是 `planned`、`resumed` 或 `skipped`；skip 原因是 `already-published`、`no-synced-progress` 或 `no-new-practice`。無效輸入 exit 1，只印固定錯誤訊息。不要把 stderr 或完整 snapshot 當成 review 材料。模組提供 `practiceWindow`、`normalizeSnapshot`、`planWeekly`、`generationBrief`、`loadPublicInputs`、`writeWeeklyPlan`，供離線測試與自動化重用；生產入口仍須遵守固定 Aiden 與私有根。
+stdout 只回 `{status, reason?, releaseDate, lessonId?, conceptCount?}`。`status` 是 `planned`、`resumed` 或 `skipped`；skip 原因是 `already-published`、`no-synced-progress` 或 `no-new-practice`。無效輸入 exit 1，只印固定錯誤訊息。不要把 stderr 或完整 snapshot 當成 review 材料。模組提供 `practiceWindow`、`normalizeSnapshot`、`planWeekly`、`generationBrief`、`loadPublicInputs`、`writeWeeklyPlan`，供離線測試與手動製作流程重用；生產入口仍須遵守固定 Aiden 與私有根。
 
 ## 選題與續作
 
