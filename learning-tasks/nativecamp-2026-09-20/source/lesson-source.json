@@ -1,0 +1,1348 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-20",
+  "date": "2026-09-20",
+  "title": "Needs, actions and stories",
+  "concepts": [
+    {
+      "id": "needs-reasons",
+      "title": "What do we need?",
+      "try": [
+        {
+          "id": "needs-reasons-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Explain why you need water.",
+          "instruction": "I … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you: thirsty / water bottle: empty"
+          },
+          "answerText": "I need water because I am thirsty.",
+          "spokenQuestion": "Your water bottle is empty and you are thirsty, so can you explain why you need water using because?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "water"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "I"
+            },
+            {
+              "id": "w5",
+              "text": "am"
+            },
+            {
+              "id": "w6",
+              "text": "thirsty"
+            },
+            {
+              "id": "extra0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "needs-reasons-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now speak for all three of you.",
+          "instruction": "We … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: I need water because I am thirsty. / Now: you + two friends / all thirsty"
+          },
+          "answerText": "We need water because we are thirsty.",
+          "spokenQuestion": "Now you and two friends have empty bottles, so can you begin with We and explain the same need for all three of you?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "water"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "we"
+            },
+            {
+              "id": "w5",
+              "text": "are"
+            },
+            {
+              "id": "w6",
+              "text": "thirsty"
+            },
+            {
+              "id": "extra0",
+              "text": "am"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "needs-reasons-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Mia (she) / thirsty / no water"
+          },
+          "answerText": "She needs water because she is thirsty.",
+          "spokenQuestion": "Mia has no water to drink, so can you fix one word in the sentence about her need?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "needs"
+            },
+            {
+              "id": "w2",
+              "text": "water"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "she"
+            },
+            {
+              "id": "w5",
+              "text": "are"
+            },
+            {
+              "id": "w6",
+              "text": "thirsty."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w5",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "needs-reasons-say-1",
+          "prompt": "Why do you need a pencil?",
+          "instruction": "I … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you must write now / no pencil"
+          },
+          "answerText": "I need a pencil because I must write.",
+          "spokenQuestion": "You must write now but have no pencil, so can you explain why you need one using because?",
+          "accepted": [
+            "I need a pencil because I need to write.",
+            "I need a pencil because I have to write."
+          ]
+        },
+        {
+          "id": "needs-reasons-say-2",
+          "prompt": "Why does Sam want a game?",
+          "instruction": "Sam … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sam / already has games / wants another / likes it"
+          },
+          "answerText": "Sam wants a game because he likes it.",
+          "spokenQuestion": "Sam already has games but likes another one, so can you explain his wish using because?",
+          "accepted": [
+            "He wants a game because he likes it.",
+            "Sam wants another game because he likes it."
+          ]
+        },
+        {
+          "id": "needs-reasons-say-3",
+          "prompt": "Why do you need food?",
+          "instruction": "We … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you + a friend / both hungry / no food"
+          },
+          "answerText": "We need food because we are hungry.",
+          "spokenQuestion": "You and a friend are both hungry and have no food, so can you explain your need using because?",
+          "accepted": [
+            "We need some food because we are hungry."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "use-when",
+      "title": "When do you use it?",
+      "try": [
+        {
+          "id": "use-when-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "When do you use your umbrella?",
+          "instruction": "I … when … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / umbrella / rain starts"
+          },
+          "answerText": "I use my umbrella when it rains.",
+          "spokenQuestion": "The rain starts and you open your umbrella, so can you tell us when you use it?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "use"
+            },
+            {
+              "id": "w2",
+              "text": "my"
+            },
+            {
+              "id": "w3",
+              "text": "umbrella"
+            },
+            {
+              "id": "w4",
+              "text": "when"
+            },
+            {
+              "id": "w5",
+              "text": "it"
+            },
+            {
+              "id": "w6",
+              "text": "rains"
+            },
+            {
+              "id": "extra0",
+              "text": "rain"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "use-when-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us about Mia.",
+          "instruction": "She … when … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: I use my umbrella when it rains. / Now: Mia and her umbrella"
+          },
+          "answerText": "She uses her umbrella when it rains.",
+          "spokenQuestion": "Now the umbrella belongs to Mia, so can you change the sentence to tell us about Mia in the rain?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "uses"
+            },
+            {
+              "id": "w2",
+              "text": "her"
+            },
+            {
+              "id": "w3",
+              "text": "umbrella"
+            },
+            {
+              "id": "w4",
+              "text": "when"
+            },
+            {
+              "id": "w5",
+              "text": "it"
+            },
+            {
+              "id": "w6",
+              "text": "rains"
+            },
+            {
+              "id": "extra0",
+              "text": "use"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "use-when-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You / bike / going to the park"
+          },
+          "answerText": "I use my bike when I go to the park.",
+          "spokenQuestion": "In this story, you use a bike to get to the park, so can you fix one word in the sentence?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "use"
+            },
+            {
+              "id": "w2",
+              "text": "my"
+            },
+            {
+              "id": "w3",
+              "text": "bike"
+            },
+            {
+              "id": "w4",
+              "text": "when"
+            },
+            {
+              "id": "w5",
+              "text": "I"
+            },
+            {
+              "id": "w6",
+              "text": "goes"
+            },
+            {
+              "id": "w7",
+              "text": "to"
+            },
+            {
+              "id": "w8",
+              "text": "the"
+            },
+            {
+              "id": "w9",
+              "text": "park."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "go"
+            },
+            {
+              "id": "c1",
+              "text": "going"
+            }
+          ],
+          "answer": {
+            "wordId": "w6",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "use-when-say-1",
+          "prompt": "When do you use your bike?",
+          "instruction": "I … when …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / bike / going to the park"
+          },
+          "answerText": "I use my bike when I go to the park.",
+          "spokenQuestion": "Pretend you travel to the park by bike, and tell us when you use your bike using when.",
+          "accepted": [
+            "When I go to the park, I use my bike.",
+            "I use my bike when I ride to the park."
+          ]
+        },
+        {
+          "id": "use-when-say-2",
+          "prompt": "When does Sam use his umbrella?",
+          "instruction": "He … when …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sam (he) / umbrella / rain starts"
+          },
+          "answerText": "He uses his umbrella when it rains.",
+          "spokenQuestion": "When the rain starts, Sam opens his umbrella, so can you tell us about Sam and his umbrella using when?",
+          "accepted": [
+            "Sam uses his umbrella when it rains.",
+            "He uses his umbrella when it is rainy."
+          ]
+        },
+        {
+          "id": "use-when-say-3",
+          "prompt": "When do you use a pencil?",
+          "instruction": "I … when …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / pencil / drawing a picture"
+          },
+          "answerText": "I use a pencil when I draw a picture.",
+          "spokenQuestion": "Pretend you use a pencil for drawing, and tell us when you use it using when.",
+          "accepted": [
+            "When I draw a picture, I use a pencil.",
+            "I use a pencil when I draw."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-meals",
+      "title": "Every day",
+      "try": [
+        {
+          "id": "daily-meals-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us both things you have every day.",
+          "instruction": "I … every day. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / food: eggs / drink: milk / every day"
+          },
+          "answerText": "I eat eggs and drink milk every day.",
+          "spokenQuestion": "In this story, you have eggs and milk every day, so can you tell us both what you eat and what you drink?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "eat"
+            },
+            {
+              "id": "w2",
+              "text": "eggs"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "drink"
+            },
+            {
+              "id": "w5",
+              "text": "milk"
+            },
+            {
+              "id": "w6",
+              "text": "every"
+            },
+            {
+              "id": "w7",
+              "text": "day"
+            },
+            {
+              "id": "extra0",
+              "text": "eats"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w4",
+              "w5",
+              "w3",
+              "w1",
+              "w2",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "daily-meals-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us about Sam.",
+          "instruction": "He … every day. Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: I eat eggs and drink milk every day. / Now: Sam (he)"
+          },
+          "answerText": "He eats eggs and drinks milk every day.",
+          "spokenQuestion": "Now Sam has the same food and drink every day, so can you change the sentence to tell us both things about him?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "eats"
+            },
+            {
+              "id": "w2",
+              "text": "eggs"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "drinks"
+            },
+            {
+              "id": "w5",
+              "text": "milk"
+            },
+            {
+              "id": "w6",
+              "text": "every"
+            },
+            {
+              "id": "w7",
+              "text": "day"
+            },
+            {
+              "id": "extra0",
+              "text": "eat"
+            },
+            {
+              "id": "extra1",
+              "text": "drink"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w4",
+              "w5",
+              "w3",
+              "w1",
+              "w2",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "daily-meals-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Mia / every day / drink: water"
+          },
+          "answerText": "Mia drinks water every day.",
+          "spokenQuestion": "Mia has water every day, so can you fix the sentence about her daily drink?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "drink"
+            },
+            {
+              "id": "w2",
+              "text": "water"
+            },
+            {
+              "id": "w3",
+              "text": "every"
+            },
+            {
+              "id": "w4",
+              "text": "day."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "drinking"
+            },
+            {
+              "id": "c1",
+              "text": "drinks"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "daily-meals-say-1",
+          "prompt": "Tell us both things you have every day.",
+          "instruction": "I … and … every day.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / food: rice / drink: water / every day"
+          },
+          "answerText": "I eat rice and drink water every day.",
+          "spokenQuestion": "In this story, you have rice and water every day, so can you tell us both what you eat and what you drink?",
+          "accepted": [
+            "I drink water and eat rice every day.",
+            "Every day, I eat rice and drink water."
+          ]
+        },
+        {
+          "id": "daily-meals-say-2",
+          "prompt": "Tell us both things Lily has every day.",
+          "instruction": "She … and … every day.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Lily (she) / food: bread / drink: milk / every day"
+          },
+          "answerText": "She eats bread and drinks milk every day.",
+          "spokenQuestion": "Lily has bread and milk every day, so can you tell us about both her daily food and drink?",
+          "accepted": [
+            "Lily eats bread and drinks milk every day.",
+            "She drinks milk and eats bread every day."
+          ]
+        },
+        {
+          "id": "daily-meals-say-3",
+          "prompt": "Tell us both things you have every day.",
+          "instruction": "We … and … every day.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you + Sam / food: apples / drink: water / every day"
+          },
+          "answerText": "We eat apples and drink water every day.",
+          "spokenQuestion": "You and Sam have apples and water every day in this story, so can you tell us both things using We?",
+          "accepted": [
+            "We drink water and eat apples every day.",
+            "Every day, we eat apples and drink water."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buy-sell",
+      "title": "Who buys? Who sells?",
+      "try": [
+        {
+          "id": "buy-sell-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does May do?",
+          "instruction": "May … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "May gives apples to Paul. / Paul gives money to May."
+          },
+          "answerText": "May sells apples.",
+          "spokenQuestion": "May gives apples to Paul and gets money from him, so what does May do?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "May"
+            },
+            {
+              "id": "w1",
+              "text": "sells"
+            },
+            {
+              "id": "w2",
+              "text": "apples"
+            },
+            {
+              "id": "extra0",
+              "text": "buys"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "buy-sell-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us what Paul does.",
+          "instruction": "Paul … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Same sale / May gives apples. / Paul gives money."
+          },
+          "answerText": "Paul buys apples.",
+          "spokenQuestion": "Look at the same sale from Paul's side: he gives money and gets apples, so what does Paul do?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Paul"
+            },
+            {
+              "id": "w1",
+              "text": "buys"
+            },
+            {
+              "id": "w2",
+              "text": "apples"
+            },
+            {
+              "id": "extra0",
+              "text": "sells"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "buy-sell-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Leo gives money. / Leo gets milk."
+          },
+          "answerText": "Leo buys milk.",
+          "spokenQuestion": "Leo gives money and gets milk, so can you fix the action word in the sentence?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Leo"
+            },
+            {
+              "id": "w1",
+              "text": "sells"
+            },
+            {
+              "id": "w2",
+              "text": "milk."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "buys"
+            },
+            {
+              "id": "c1",
+              "text": "makes"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "buy-sell-say-1",
+          "prompt": "What does Sara do?",
+          "instruction": "Sara …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sara gives toys to Ben. / Ben gives money to Sara."
+          },
+          "answerText": "Sara sells toys.",
+          "spokenQuestion": "Sara gives toys to Ben and gets money from him, so can you tell us what Sara does?",
+          "accepted": [
+            "She sells toys.",
+            "Sara sells toys to Ben."
+          ]
+        },
+        {
+          "id": "buy-sell-say-2",
+          "prompt": "What does Tom do?",
+          "instruction": "Tom …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Tom gives money to Eva. / Eva gives books to Tom."
+          },
+          "answerText": "Tom buys books.",
+          "spokenQuestion": "Tom gives money to Eva and gets books from her, so can you tell us what Tom does?",
+          "accepted": [
+            "He buys books.",
+            "Tom buys books from Eva."
+          ]
+        },
+        {
+          "id": "buy-sell-say-3",
+          "prompt": "You are Sara. What do you do?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You are Sara. / You give toys to Ben. / Ben gives you money."
+          },
+          "answerText": "I sell toys.",
+          "spokenQuestion": "Pretend you are Sara, giving toys to Ben and getting money from him, and tell us what you do using I.",
+          "accepted": [
+            "I sell toys to Ben."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "story-order",
+      "title": "First, then, last",
+      "try": [
+        {
+          "id": "story-order-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do you do first?",
+          "instruction": "First, I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Make a paper plane / steps: fly the plane / get paper / fold the paper"
+          },
+          "answerText": "First, I get paper.",
+          "spokenQuestion": "The steps on the card are fly the plane, get paper, and fold the paper, so which step must you do first?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "First"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "get"
+            },
+            {
+              "id": "w3",
+              "text": "paper"
+            },
+            {
+              "id": "extra0",
+              "text": "Last"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "story-order-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "The paper is folded. What comes next?",
+          "instruction": "Then, I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Paper plane / done: get paper, fold the paper / next: fly it"
+          },
+          "answerText": "Then, I fly the plane.",
+          "spokenQuestion": "You have the paper and have finished folding your plane, so what do you do next?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Then"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "fly"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "plane"
+            },
+            {
+              "id": "extra0",
+              "text": "First"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "story-order-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Lunch order / 1: wash hands / 2: eat lunch / 3: wash plate"
+          },
+          "answerText": "Then, I eat lunch.",
+          "spokenQuestion": "In this story, eating lunch comes after washing your hands and before washing your plate, so can you fix the order word?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "First,"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "eat"
+            },
+            {
+              "id": "w3",
+              "text": "lunch."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "Then,"
+            },
+            {
+              "id": "c1",
+              "text": "Finally,"
+            }
+          ],
+          "answer": {
+            "wordId": "w0",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "story-order-say-1",
+          "prompt": "What does Mia do first?",
+          "instruction": "First, Mia …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Mia / wants to draw / has: pencil / needs: paper"
+          },
+          "answerText": "First, Mia gets paper.",
+          "spokenQuestion": "Mia has a pencil but no paper for her picture, so what does she do first?",
+          "accepted": [
+            "First, she gets paper.",
+            "Mia gets paper first."
+          ]
+        },
+        {
+          "id": "story-order-say-2",
+          "prompt": "What do you do next?",
+          "instruction": "Then, I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Make a card / done: fold paper / next: draw a flower / last: give it to Sam"
+          },
+          "answerText": "Then, I draw a flower.",
+          "spokenQuestion": "You have folded the paper for a card, and the next step is to draw before giving it to Sam, so what do you do next?",
+          "accepted": [
+            "I draw a flower next.",
+            "Next, I draw a flower."
+          ]
+        },
+        {
+          "id": "story-order-say-3",
+          "prompt": "What does Ben do last?",
+          "instruction": "Last, Ben …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Ben's plan / 1: wash apple / 2: cut apple / 3: eat apple"
+          },
+          "answerText": "Last, Ben eats the apple.",
+          "spokenQuestion": "Ben's plan is to wash an apple, cut it, and eat it, so what does he do last?",
+          "accepted": [
+            "Finally, Ben eats the apple.",
+            "Ben eats the apple last.",
+            "Last, he eats the apple."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feelings-because",
+      "title": "How do they feel? Why?",
+      "try": [
+        {
+          "id": "feelings-because-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Explain why Mia is happy.",
+          "instruction": "Mia … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Mia: happy / reason: her team wins"
+          },
+          "answerText": "Mia is happy because her team wins.",
+          "spokenQuestion": "Mia's team wins and she feels happy, so can you put her feeling and its reason in one sentence using because?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "her"
+            },
+            {
+              "id": "w5",
+              "text": "team"
+            },
+            {
+              "id": "w6",
+              "text": "wins"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "feelings-because-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now Mia and Ben both feel happy.",
+          "instruction": "They … because … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: Mia is happy because her team wins. / Now: Mia + Ben / same team"
+          },
+          "answerText": "They are happy because their team wins.",
+          "spokenQuestion": "Mia and Ben are on the winning team and both feel happy, so how can you change the sentence to talk about them together?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "their"
+            },
+            {
+              "id": "w5",
+              "text": "team"
+            },
+            {
+              "id": "w6",
+              "text": "wins"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            },
+            {
+              "id": "extra1",
+              "text": "her"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "feelings-because-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sam (he): sad / reason: his toy breaks"
+          },
+          "answerText": "Sam is sad because his toy breaks.",
+          "spokenQuestion": "Sam's own toy breaks and he feels sad, so can you fix the word about whose toy it is?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Sam"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "sad"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "her"
+            },
+            {
+              "id": "w5",
+              "text": "toy"
+            },
+            {
+              "id": "w6",
+              "text": "breaks."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "his"
+            },
+            {
+              "id": "c1",
+              "text": "their"
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "feelings-because-say-1",
+          "prompt": "Explain why Lily is sad.",
+          "instruction": "Lily … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Lily (she): sad / reason: her kite breaks"
+          },
+          "answerText": "Lily is sad because her kite breaks.",
+          "spokenQuestion": "Lily's kite breaks and she feels sad, so can you explain her feeling using because?",
+          "accepted": [
+            "She is sad because her kite breaks.",
+            "Lily feels sad because her kite breaks."
+          ]
+        },
+        {
+          "id": "feelings-because-say-2",
+          "prompt": "Explain why Ben is angry.",
+          "instruction": "Ben … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Ben (he): angry / reason: Sam breaks Ben's toy"
+          },
+          "answerText": "Ben is angry because Sam breaks his toy.",
+          "spokenQuestion": "Sam breaks Ben's toy and Ben feels angry, so can you explain Ben's feeling using because?",
+          "accepted": [
+            "He is angry because Sam breaks his toy.",
+            "Ben feels angry because Sam breaks his toy.",
+            "Ben is angry because Sam breaks Ben's toy."
+          ]
+        },
+        {
+          "id": "feelings-because-say-3",
+          "prompt": "Explain why you are happy.",
+          "instruction": "We … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you + Mia: happy / reason: your team wins"
+          },
+          "answerText": "We are happy because our team wins.",
+          "spokenQuestion": "You and Mia are on the winning team and feel happy, so can you explain both your feeling and its reason using We?",
+          "accepted": [
+            "We feel happy because our team wins."
+          ]
+        }
+      ]
+    }
+  ]
+}

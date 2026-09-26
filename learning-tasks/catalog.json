@@ -3,6 +3,116 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "nativecamp-2026-09-21",
+      "name": "Native Camp 2026-09-21 Alex",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-21",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "願望、交換、借物、動作與工作計畫的完整句",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-21"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-20",
+      "name": "Native Camp 2026-09-20 Kyla",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-20",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "需求、用途、買賣、故事順序與原因",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-20"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-19-zibuyile",
+      "name": "Native Camp 2026-09-19 Zibuyile",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-19",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "水果特徵、所有權視角與完整數量問答",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19-zibuyile"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-19",
+      "name": "Native Camp 2026-09-19 Edon",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-19",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "故事預測、能力、感受原因、近遠與寵物描述",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-18",
+      "name": "Native Camp 2026-09-18 Zeus",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-18",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "食物、完整問答、故事順序、數量與分享理由",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-18"
+        }
+      ]
+    },
+    {
       "id": "nativecamp-2026-09-26",
       "name": "Native Camp 2026-09-26 Danielle",
       "status": "complete",

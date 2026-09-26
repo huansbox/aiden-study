@@ -1,0 +1,1096 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-19",
+  "date": "2026-09-19",
+  "title": "Friends, feelings and things near us",
+  "concepts": [
+    {
+      "id": "story-about",
+      "title": "What is the story about?",
+      "try": [
+        {
+          "id": "story-about-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What is this story about?",
+          "instruction": "It … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A little bird has no friends. It sits alone.",
+            "heading": "Story card"
+          },
+          "answerText": "It is about a lonely bird.",
+          "spokenQuestion": "A little bird has no friends and sits alone, so what is this story about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lonely"
+            },
+            {
+              "id": "w5",
+              "text": "bird"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "story-about-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Ask if this is right.",
+          "instruction": "Is …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: It is about a lonely bird.\nNow: ask a question.",
+            "heading": "Story card"
+          },
+          "answerText": "Is it about a lonely bird?",
+          "spokenQuestion": "How can you change the sentence about a lonely bird into a question that starts with Is?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Is"
+            },
+            {
+              "id": "w1",
+              "text": "it"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lonely"
+            },
+            {
+              "id": "w5",
+              "text": "bird"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "story-about-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story: a girl finds a lost kitten.",
+            "heading": "Story card"
+          },
+          "answerText": "It is about a lost kitten.",
+          "spokenQuestion": "A girl finds a lost kitten in this story, so can you fix one word in the sentence about it?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lost"
+            },
+            {
+              "id": "w5",
+              "text": "kitten."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "story-about-say-1",
+          "prompt": "What do you think the story is about?",
+          "instruction": "I think it is about …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A boy cannot find his red cap. He looks under every chair.",
+            "heading": "Story card"
+          },
+          "answerText": "I think it is about a lost cap.",
+          "spokenQuestion": "A boy looks under every chair for his red cap, so what do you think the story is about?",
+          "accepted": [
+            "I think it is about a boy looking for his cap.",
+            "It is about a lost cap.",
+            "It is about a boy looking for his cap."
+          ]
+        },
+        {
+          "id": "story-about-say-2",
+          "prompt": "Ask if this is right.",
+          "instruction": "Is …?",
+          "scene": {
+            "kind": "word-card",
+            "text": "Guess: a lonely rabbit\nAsk a question.",
+            "heading": "Story card"
+          },
+          "answerText": "Is it about a lonely rabbit?",
+          "spokenQuestion": "How can you ask if the story is about a lonely rabbit?",
+          "accepted": [
+            "Is the story about a lonely rabbit?"
+          ]
+        },
+        {
+          "id": "story-about-say-3",
+          "prompt": "What do you think the story is about?",
+          "instruction": "I think it is about …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two children meet at the park. They play together and become friends.",
+            "heading": "Story card"
+          },
+          "answerText": "I think it is about two new friends.",
+          "spokenQuestion": "Two children meet and start playing together at the park, so what do you think the story is about?",
+          "accepted": [
+            "I think it is about making friends.",
+            "It is about two new friends.",
+            "It is about two children becoming friends."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "can-help",
+      "title": "Can you help?",
+      "try": [
+        {
+          "id": "can-help-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us what the rabbit can do.",
+          "instruction": "The rabbit … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: rabbit / lifts a light box",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit can lift the box.",
+          "spokenQuestion": "In this pretend story a rabbit lifts a light box, so how can you tell us what it can do?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "rabbit"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "lift"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "box"
+            },
+            {
+              "id": "extra0",
+              "text": "cannot"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "can-help-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "The box is too heavy now. Change the sentence.",
+          "instruction": "The rabbit … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The rabbit can lift the box.\nNow: the box is too heavy.",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit cannot lift the box.",
+          "spokenQuestion": "How does the sentence change when the box becomes too heavy for the rabbit to lift?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "rabbit"
+            },
+            {
+              "id": "w2",
+              "text": "cannot"
+            },
+            {
+              "id": "w3",
+              "text": "lift"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "box"
+            },
+            {
+              "id": "extra0",
+              "text": "can"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "can-help-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: bird / able to find its nest",
+            "heading": "Story card"
+          },
+          "answerText": "The bird can find its nest.",
+          "spokenQuestion": "In this pretend story the bird knows where its nest is, so can you fix one word in the sentence?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "bird"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "finds"
+            },
+            {
+              "id": "w4",
+              "text": "its"
+            },
+            {
+              "id": "w5",
+              "text": "nest."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "finding"
+            },
+            {
+              "id": "c1",
+              "text": "find"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "can-help-say-1",
+          "prompt": "Tell us what the rabbit can do.",
+          "instruction": "The rabbit can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: rabbit / able to help a lost duck",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit can help the duck.",
+          "spokenQuestion": "In this pretend story a rabbit knows the way home, so how can it help the lost duck?",
+          "accepted": [
+            "It can help the duck find its way home.",
+            "The rabbit can help the duck find its home.",
+            "The rabbit can show the duck the way home."
+          ]
+        },
+        {
+          "id": "can-help-say-2",
+          "prompt": "Tell us what the kitten cannot do.",
+          "instruction": "The kitten cannot …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: kitten / nest too high to reach",
+            "heading": "Story card"
+          },
+          "answerText": "The kitten cannot reach the nest.",
+          "spokenQuestion": "In this pretend story the nest is too high for a kitten, so what is the kitten unable to do?",
+          "accepted": [
+            "The kitten can't reach the nest.",
+            "It cannot reach the nest.",
+            "It can't reach the nest."
+          ]
+        },
+        {
+          "id": "can-help-say-3",
+          "prompt": "Tell us what the two friends can do.",
+          "instruction": "They can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: two friends / strong enough to carry a box together",
+            "heading": "Story card"
+          },
+          "answerText": "They can carry the box together.",
+          "spokenQuestion": "Two friends are strong enough to move this box together, so how can you describe what they can do?",
+          "accepted": [
+            "The two friends can carry the box together.",
+            "They can carry the box.",
+            "The two friends can carry the box."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feelings-because",
+      "title": "Feelings and reasons",
+      "try": [
+        {
+          "id": "feelings-because-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us how Mia feels and why.",
+          "instruction": "Mia … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia (she): happy / finds her dog",
+            "heading": "Story card"
+          },
+          "answerText": "Mia is happy because she finds her dog.",
+          "spokenQuestion": "Mia finds her dog and feels happy, so how can you join her feeling and the reason with because?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "she"
+            },
+            {
+              "id": "w5",
+              "text": "finds"
+            },
+            {
+              "id": "w6",
+              "text": "her"
+            },
+            {
+              "id": "w7",
+              "text": "dog"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "feelings-because-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now Mia and Leo find their dog. Change the sentence.",
+          "instruction": "They … because … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Mia is happy because she finds her dog.\nNow: Mia + Leo / their dog",
+            "heading": "Story card"
+          },
+          "answerText": "They are happy because they find their dog.",
+          "spokenQuestion": "How does the sentence change when Mia and Leo find their dog together and both feel happy?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "they"
+            },
+            {
+              "id": "w5",
+              "text": "find"
+            },
+            {
+              "id": "w6",
+              "text": "their"
+            },
+            {
+              "id": "w7",
+              "text": "dog"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            },
+            {
+              "id": "extra1",
+              "text": "finds"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "feelings-because-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben (he): sad / cannot find his toy",
+            "heading": "Story card"
+          },
+          "answerText": "Ben is sad because he cannot find his toy.",
+          "spokenQuestion": "Ben feels sad about his missing toy, so can you fix one word in this sentence?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Ben"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "sad"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "he"
+            },
+            {
+              "id": "w5",
+              "text": "cannot"
+            },
+            {
+              "id": "w6",
+              "text": "finds"
+            },
+            {
+              "id": "w7",
+              "text": "his"
+            },
+            {
+              "id": "w8",
+              "text": "toy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "finding"
+            },
+            {
+              "id": "c1",
+              "text": "find"
+            }
+          ],
+          "answer": {
+            "wordId": "w6",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "feelings-because-say-1",
+          "prompt": "Tell us how Lily feels and why.",
+          "instruction": "Lily … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lily (she): happy / has a new friend",
+            "heading": "Story card"
+          },
+          "answerText": "Lily is happy because she has a new friend.",
+          "spokenQuestion": "Lily has a new friend and feels happy, so how can you join her feeling and the reason with because?",
+          "accepted": [
+            "She is happy because she has a new friend.",
+            "Lily feels happy because she has a new friend.",
+            "Lily is happy because she made a new friend."
+          ]
+        },
+        {
+          "id": "feelings-because-say-2",
+          "prompt": "Tell us how the rabbits feel and why.",
+          "instruction": "They … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: two rabbits / scared / a lion is chasing them",
+            "heading": "Story card"
+          },
+          "answerText": "They are scared because a lion is chasing them.",
+          "spokenQuestion": "In this pretend story a lion is chasing two rabbits, so how do they feel and why?",
+          "accepted": [
+            "The rabbits are scared because a lion is chasing them.",
+            "They feel scared because the lion is chasing them."
+          ]
+        },
+        {
+          "id": "feelings-because-say-3",
+          "prompt": "Tell us how Ben feels and why.",
+          "instruction": "Ben … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben (he): lonely / has no one to play with",
+            "heading": "Story card"
+          },
+          "answerText": "Ben is lonely because he has no one to play with.",
+          "spokenQuestion": "Ben has no one to play with and feels lonely, so how can you join his feeling and the reason with because?",
+          "accepted": [
+            "He is lonely because he has no one to play with.",
+            "Ben feels lonely because he has no one to play with.",
+            "Ben is lonely because he has no friends to play with."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "near-far",
+      "title": "Near or far?",
+      "try": [
+        {
+          "id": "near-far-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Point to the pencil and name it.",
+          "instruction": "This / That … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "One pencil / in your hand / near you",
+            "heading": "Story card"
+          },
+          "answerText": "This is a pencil.",
+          "spokenQuestion": "How can you point to and name the pencil in your hand?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "pencil"
+            },
+            {
+              "id": "extra0",
+              "text": "That"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "near-far-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now there are two pencils far away. Change the sentence.",
+          "instruction": "These / Those … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: This is a pencil.\nNow: two pencils / far away",
+            "heading": "Story card"
+          },
+          "answerText": "Those are pencils.",
+          "spokenQuestion": "How does the sentence change when you point to two pencils far away?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Those"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "pencils"
+            },
+            {
+              "id": "extra0",
+              "text": "These"
+            },
+            {
+              "id": "extra1",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "near-far-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two books / beside you / near you",
+            "heading": "Story card"
+          },
+          "answerText": "These are books.",
+          "spokenQuestion": "Two books are right beside you, so can you fix one word to show that they are near you?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Those"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "books."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "This"
+            },
+            {
+              "id": "c1",
+              "text": "These"
+            }
+          ],
+          "answer": {
+            "wordId": "w0",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "near-far-say-1",
+          "prompt": "Point to the book and name it.",
+          "instruction": "This / That …",
+          "scene": {
+            "kind": "word-card",
+            "text": "One book / across the room / far away",
+            "heading": "Story card"
+          },
+          "answerText": "That is a book.",
+          "spokenQuestion": "How can you point to and name the one book across the room?",
+          "accepted": [
+            "That's a book."
+          ]
+        },
+        {
+          "id": "near-far-say-2",
+          "prompt": "Point to the oranges and name them.",
+          "instruction": "These / Those …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two oranges / in your hands / near you",
+            "heading": "Story card"
+          },
+          "answerText": "These are oranges.",
+          "spokenQuestion": "How can you point to and name the two oranges in your hands?",
+          "accepted": [
+            "These are two oranges."
+          ]
+        },
+        {
+          "id": "near-far-say-3",
+          "prompt": "Point to the birds and name them.",
+          "instruction": "These / Those …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Three birds / in a faraway tree",
+            "heading": "Story card"
+          },
+          "answerText": "Those are birds.",
+          "spokenQuestion": "How can you point to and name the three birds in the faraway tree?",
+          "accepted": [
+            "Those are three birds."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pet-description",
+      "title": "Tell us about a pet",
+      "try": [
+        {
+          "id": "pet-description-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "You are Sam. Tell us about your pet.",
+          "instruction": "I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend you are Sam / pet: small rabbit",
+            "heading": "Story card"
+          },
+          "answerText": "I have a small rabbit.",
+          "spokenQuestion": "Pretend you are Sam with a small pet rabbit, so how can you describe your pet starting with I?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "rabbit"
+            },
+            {
+              "id": "extra0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "pet-description-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us about Sam.",
+          "instruction": "He … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: I have a small rabbit.\nSam uses he.",
+            "heading": "Story card"
+          },
+          "answerText": "He has a small rabbit.",
+          "spokenQuestion": "How can you change Sam's sentence to tell someone else about his pet, starting with He?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "rabbit"
+            },
+            {
+              "id": "extra0",
+              "text": "have"
+            },
+            {
+              "id": "extra1",
+              "text": "I"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "pet-description-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia + Leo / two green lizards together",
+            "heading": "Story card"
+          },
+          "answerText": "They have two green lizards.",
+          "spokenQuestion": "Mia and Leo share two green lizards, so can you fix one word in the sentence?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            },
+            {
+              "id": "w3",
+              "text": "green"
+            },
+            {
+              "id": "w4",
+              "text": "lizards."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "have"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "pet-description-say-1",
+          "prompt": "Tell us about Eva's pet.",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Eva (she) / pet: white kitten",
+            "heading": "Story card"
+          },
+          "answerText": "She has a white kitten.",
+          "spokenQuestion": "Eva's pet is a white kitten, so how can you describe her pet in a full sentence?",
+          "accepted": [
+            "Eva has a white kitten.",
+            "Her pet is a white kitten.",
+            "She's got a white kitten."
+          ]
+        },
+        {
+          "id": "pet-description-say-2",
+          "prompt": "Tell us about the two friends' pets.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben + Kim / two small goldfish together",
+            "heading": "Story card"
+          },
+          "answerText": "They have two small goldfish.",
+          "spokenQuestion": "Ben and Kim share two small goldfish, so how can you describe their pets in a full sentence?",
+          "accepted": [
+            "Ben and Kim have two small goldfish.",
+            "Their pets are two small goldfish.",
+            "They've got two small goldfish."
+          ]
+        },
+        {
+          "id": "pet-description-say-3",
+          "prompt": "You are Max. Tell us about your pet.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend you are Max / pet: big brown dog",
+            "heading": "Story card"
+          },
+          "answerText": "I have a big brown dog.",
+          "spokenQuestion": "Pretend you are Max with a big brown pet dog, so how can you describe your pet starting with I?",
+          "accepted": [
+            "My pet is a big brown dog.",
+            "I've got a big brown dog."
+          ]
+        }
+      ]
+    }
+  ]
+}
