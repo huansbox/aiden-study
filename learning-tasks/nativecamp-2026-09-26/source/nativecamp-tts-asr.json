@@ -1,0 +1,444 @@
+{
+  "lessonId": "2026-09-26",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-26-home-locations-try-1-q.mp3",
+      "sha256": "90a9f0c61a97b398b33dcfbc6d1deaf50468bc4382dc7adaa5fda4ba07778e06",
+      "expectedText": "In this story, a house floats on water. Where is the house?",
+      "recognizedText": "In this story, a house floats on water. Where is the house?"
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-try-1-a.mp3",
+      "sha256": "66a7fe5b95b5090c62d67d082fbd5f1a250159ef4a868afd8260f8541015a364",
+      "expectedText": "The house is on the water.",
+      "recognizedText": "The house is on the water."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-try-2-q.mp3",
+      "sha256": "a4d14a0046cbe5ce4ee14b21eb273b336cf48a1825855b19c1e7c600868b1a02",
+      "expectedText": "Before, the house floated on water. Now move it to dry ground. Correct the old claim.",
+      "recognizedText": "Before the house floated on water now move it to dry ground correct the old claim"
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-try-2-a.mp3",
+      "sha256": "1d498039fc9d07af6f0a8c42a3bb413ea8b4a716453a7a555a073db76b3193b4",
+      "expectedText": "The house is not on the water.",
+      "recognizedText": "The house is not on the water."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-try-3-q.mp3",
+      "sha256": "7a46cfe2a4a0f384671603673ee435a7e405df928515b293b38d44052862d8dd",
+      "expectedText": "Look at the story picture card. Find and fix one word about the place.",
+      "recognizedText": "Look at the story picture card. Find and fix one word about the place."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-try-3-a.mp3",
+      "sha256": "54efd48557bd2fd087859f9205ad2a98cf7575e8a350ed8a90440c8eb4c87468",
+      "expectedText": "The house is on land.",
+      "recognizedText": "The house is on land."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-1-q.mp3",
+      "sha256": "32e2f3c08ed596d7f966f314da9111c7c6538a01bda89e20b759ddc5b1143b31",
+      "expectedText": "In this story, a house floats on water. Where is the house?",
+      "recognizedText": "In this story, a house floats on water. Where is the house?"
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-1-a.mp3",
+      "sha256": "a7c7a5a465efa0775c4a401e33b66bfe93c93e3591cf27861f3e6aa11a6f3562",
+      "expectedText": "The house is on the water.",
+      "recognizedText": "The house is on the water."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-2-q.mp3",
+      "sha256": "822e13e65d176ff4babca9956e9d5e73b2668e4bad167ad3074c11f75610c65d",
+      "expectedText": "The house stands on dry land. Is it on the water? Use a full sentence.",
+      "recognizedText": "The house stands on dry land. Is it on the water? Use a full sentence."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-2-a.mp3",
+      "sha256": "e9f37929bfcac7b5b00a36f870281ecf57903a96c655bb72fd252a46e10b8379",
+      "expectedText": "The house is not on the water.",
+      "recognizedText": "The house is not on the water."
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-3-q.mp3",
+      "sha256": "301a37fac4825f6a94d2ab38b1c9383f8e787c06b463db5dc54e62ab7abc9bc1",
+      "expectedText": "Two houses stand on dry land. Where are the houses?",
+      "recognizedText": "Two houses stand on dry land. Where are the houses?"
+    },
+    {
+      "file": "audio/2026-09-26-home-locations-say-3-a.mp3",
+      "sha256": "b0b1dc3f3ab736254b8a412b6a1de2c6506110b688ecaa0864b491e30805b4a8",
+      "expectedText": "The houses are on land.",
+      "recognizedText": "The houses are on land."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-1-q.mp3",
+      "sha256": "f33762412706b338d656aef43f6bfc60db87f39c4381c4bbc420b1b7866416ca",
+      "expectedText": "Sam says, I do not know. You do not know. Agree with Sam.",
+      "recognizedText": "Sam says, I do not know. You do not know. Agree with Sam."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-1-a.mp3",
+      "sha256": "1c18968c702944765ab50496bde3bd89d096f91c9621de65ad095fd6f73484ee",
+      "expectedText": "I do not know either.",
+      "recognizedText": "I do not know, either."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-2-q.mp3",
+      "sha256": "e22d1e23df2d2bf560c383ed72f342349039af9e586e1d750b5ef7cfca6a0203",
+      "expectedText": "Before, both people liked rain, but now Sam does not like rain and you do not like it, so how can you agree with Sam?",
+      "recognizedText": "Before both people liked rain, but now Sam does not like rain and you do not like it. So how can you agree with Sam?"
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-2-a.mp3",
+      "sha256": "fa799983e427e7a74de75351bf80f68dec0a729d54e4e9e809e248c315ca8e4b",
+      "expectedText": "I do not like rain either.",
+      "recognizedText": "I do not like rain either."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-3-q.mp3",
+      "sha256": "40140358eff416c3a12ca8c081a0aa8b7500e4870a1f191dae9447c123d9f312",
+      "expectedText": "Sam says, I do not know. Your answer is the same. Find and fix one word.",
+      "recognizedText": "Sam says, I do not know. Your answer is the same. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-try-3-a.mp3",
+      "sha256": "6ccf7d0b82fb0558242dae0151c2850369177fbf3bde0a53d82a1af552744292",
+      "expectedText": "I do not know either.",
+      "recognizedText": "I do not know, either."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-1-q.mp3",
+      "sha256": "571ef6d41a3a754721ab2f71a0df5321419cdd9ced89b99fc94b8a2afe83ca97",
+      "expectedText": "Kim says, I do not know. You do not know. Agree with Kim in a full sentence.",
+      "recognizedText": "Kim says, I do not know, you do not know, agree with Kim in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-1-a.mp3",
+      "sha256": "994e9df622c26589db0e0aae887f1b58a9696c64fe9571af1da6782790b1deb9",
+      "expectedText": "I do not know either.",
+      "recognizedText": "I do not know either."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-2-q.mp3",
+      "sha256": "7e4e7c47ef339dce9d72b86eae15fbc80d800503f9b516fab0c759603772bc23",
+      "expectedText": "Kim says, I do not like rain. In the story, you feel the same. Agree with Kim in a full sentence.",
+      "recognizedText": "Kim says, I do not like rain. In the story, you feel the same. Agree with Kim in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-2-a.mp3",
+      "sha256": "13bfa3b27c4ea9c217c80e0f06534a9c15b2e231002e924ff1edb0a15be2c372",
+      "expectedText": "I do not like rain either.",
+      "recognizedText": "I do not like rain either."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-3-q.mp3",
+      "sha256": "49dd3fca33d9860c1597fde358c15d711884ae0851795f0193e2d7df39e4ca15",
+      "expectedText": "Kim says, I do not have a boat. In the story, you have no boat. Agree with Kim in a full sentence.",
+      "recognizedText": "Kim says, I do not have a boat. In the story, you have no boat. Agree with Kim in a full sentence."
+    },
+    {
+      "file": "audio/2026-09-26-negative-either-say-3-a.mp3",
+      "sha256": "989a27454f14fa8b09f006686dde17436c5e56c7929d218f9a8fc140c223fefa",
+      "expectedText": "I do not have a boat either.",
+      "recognizedText": "I do not have a boat either."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-1-q.mp3",
+      "sha256": "26793e65758abbe8fb92e9640fc2bf7e1ebb5f3b033b31d7e21e0e777edc977e",
+      "expectedText": "The story card shows one house and three bedrooms. Tell me about the bedrooms in one sentence.",
+      "recognizedText": "The story card shows one house and three bedrooms. Tell me about the bedrooms in one sentence."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-1-a.mp3",
+      "sha256": "d79e770673e57c563137d4a082e904d036bb09d5241df442ba8f7f1981e92cbf",
+      "expectedText": "The house has three bedrooms.",
+      "recognizedText": "The house has three bedrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-2-q.mp3",
+      "sha256": "37aac867cae2f2c90a51d905da6e3b9cab40c1bd187ee70f36ecb929889ffee2",
+      "expectedText": "Now there are two houses with six bedrooms in all. Describe both houses together.",
+      "recognizedText": "Now, there are two houses with six bedrooms in all. Describe both houses together."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-2-a.mp3",
+      "sha256": "437de91bd9654196d858691825f18d006f357f77db68a3a482e5a2c3055fb362",
+      "expectedText": "The houses have six bedrooms.",
+      "recognizedText": "The houses have six bedrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-3-q.mp3",
+      "sha256": "78b5ef8baf0eb390aecd67053a8a3887cd56538bafc95cf5cddfafd03962bc8e",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-try-3-a.mp3",
+      "sha256": "421224ac85743013bbd62634b87662f6ad0404e6297b9df38c4ab4b6a9e2b5b1",
+      "expectedText": "The house has two bathrooms.",
+      "recognizedText": "The house has two bathrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-1-q.mp3",
+      "sha256": "a9eb83b44bc646b00e4ddd9b61356e5117ccfc8d9cef346403c19882f1eceb7f",
+      "expectedText": "The story card shows one house and two bathrooms. Tell me about the bathrooms.",
+      "recognizedText": "The story card shows one house and two bathrooms. Tell me about the bathrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-1-a.mp3",
+      "sha256": "f37cb91e51310b6c76b9d1e0010e15cb41211594c65c6fb9103166bc36596cdf",
+      "expectedText": "The house has two bathrooms.",
+      "recognizedText": "The house has two bathrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-2-q.mp3",
+      "sha256": "5816f01a664bab41f17597fdb13bc70ffa938c326e77bdeee48c765b0aa18497",
+      "expectedText": "The story card shows two houses and two studies in all. Tell me about the studies in both houses.",
+      "recognizedText": "The story card shows two houses and two studies in all. Tell me about the studies in both houses."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-2-a.mp3",
+      "sha256": "f9df4a978d4518b85aa90fec81dd0afcd8a840e9f146263e9beefc8a3628d6fc",
+      "expectedText": "The houses have two studies.",
+      "recognizedText": "The houses have two studies."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-3-q.mp3",
+      "sha256": "35842716f3fc460c5c2c507654145e84bcb622c085cf79cdee9b5efe7ca6eea3",
+      "expectedText": "The story card shows one house and four bedrooms. Tell me about the bedrooms.",
+      "recognizedText": "The story card shows one house and four bedrooms. Tell me about the bedrooms."
+    },
+    {
+      "file": "audio/2026-09-26-home-rooms-say-3-a.mp3",
+      "sha256": "68beaf84a8528d93f70f7f079905b9dcd040c1e8292c0767111fa190c8c3626a",
+      "expectedText": "The house has four bedrooms.",
+      "recognizedText": "The house has four bedrooms."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-1-q.mp3",
+      "sha256": "6dbfe591386e3e03a8c1b1e6021498ac1ab5fdaccaf2d9dafc013fc74570361a",
+      "expectedText": "In this story, you choose the kitchen. Your reason is that you can cook there. Which room do you like, and why?",
+      "recognizedText": "In this story, you choose the kitchen. Your reason is that you can cook there. Which room do you like, and why?"
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-1-a.mp3",
+      "sha256": "10c0efef2b149ae15f536dd96a519326bb7d6624686c4c11eab53bf838e6693f",
+      "expectedText": "I like the kitchen because I can cook.",
+      "recognizedText": "I like the kitchen because I can cook."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-2-q.mp3",
+      "sha256": "c51802300ee061f8c821c9f6ba6b5a776503861a3123c1e5084711ca56ccfa3a",
+      "expectedText": "Now two friends choose the living room. Their reason is playing there. Speak for both friends and give their reason.",
+      "recognizedText": "Now two friends choose the living room. Their reason is playing there. Speak for both friends and give their reason."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-2-a.mp3",
+      "sha256": "19e984d4d1f76bd56eaf099a3e54ad04daf49ceb6b4de89aa4918a13bb7b2147",
+      "expectedText": "We like the living room because we can play.",
+      "recognizedText": "We like the living room because we can play."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-3-q.mp3",
+      "sha256": "c4d0d7686071ac2c57ef616748d5dab7db99b3d38964f81d95cb6c469ee9d960",
+      "expectedText": "You choose the study. Reading there is your reason. Fix the word that links your choice to your reason.",
+      "recognizedText": "You choose the study. Reading there is your reason. Fix the word that links your choice to your reason."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-try-3-a.mp3",
+      "sha256": "af94857de60cc956d4350adc3be6326d731b3b80cdde07333d2e02a8859cee8b",
+      "expectedText": "I like the study because I can read.",
+      "recognizedText": "I like the study, because I can read."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-1-q.mp3",
+      "sha256": "5cd0e23fc6442da80a52645fc22f8e57e070e9f68f2fe6438ff45924504b1cc4",
+      "expectedText": "In this story, you choose the bedroom. Your reason is that you can rest there. Which room do you like, and why?",
+      "recognizedText": "In this story you choose the bedroom. Your reason is that you can rest there. Which room do you like and why?"
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-1-a.mp3",
+      "sha256": "1438b2dc53b5659e5f1cfb285a734497657d872919650d053a7c54ec2465274c",
+      "expectedText": "I like the bedroom because I can rest.",
+      "recognizedText": "I like the bedroom, because I can rest."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-2-q.mp3",
+      "sha256": "d26394382b6734ad4b30ad5741929973f22bdaecf9c87406272932dea2196f4a",
+      "expectedText": "In this story, your choice is the study for reading, so which room do you like, and why?",
+      "recognizedText": "In this story, your choice is the study for reading, so which room do you like and why?"
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-2-a.mp3",
+      "sha256": "3d9c35ac4b1df2edc1cd78660f448a969c00ed6adc7cad6d1fc478498b026997",
+      "expectedText": "I like the study because I can read.",
+      "recognizedText": "I like the study because I can read."
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-3-q.mp3",
+      "sha256": "1f17f445bb4e36f5fd75048b8276be8d3b90fc853a508277f2970d1bc930b9c0",
+      "expectedText": "Two friends choose the living room. Their reason is that they can play games there. Speak for both friends. Which room do you like, and why?",
+      "recognizedText": "Two friends choose the living room. Their reason is that they can play games there. Speak for both friends. Which room do you like, and why?"
+    },
+    {
+      "file": "audio/2026-09-26-room-reasons-say-3-a.mp3",
+      "sha256": "229739079ae022f83cde628ac1d2edfa446fc9b49ef9a5f03d307973672ffb42",
+      "expectedText": "We like the living room because we can play games.",
+      "recognizedText": "We like the living room, because we can play games."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-1-q.mp3",
+      "sha256": "573f20465103be3fed3b370ce94a759646687e41c940ebf68a6943ac096d5f17",
+      "expectedText": "In this story, you choose board games for your free time. What do you enjoy?",
+      "recognizedText": "In this story, you choose board games for your free time. What do you enjoy?"
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-1-a.mp3",
+      "sha256": "dc3cd701aaeede2fbc1171effbb076dad929848a03766a94790e51d252b90f04",
+      "expectedText": "I enjoy playing board games.",
+      "recognizedText": "I enjoy playing board games."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-2-q.mp3",
+      "sha256": "5b9afd2d7ceb6192b2ca526824037dad4e6cb58eeeeff8f6a2299c3dfe0b4a90",
+      "expectedText": "Before, you spoke about yourself. Now Mia likes to read books. Speak about Mia.",
+      "recognizedText": "Before, you spoke about yourself. Now, Mia likes to read books. Speak about Mia."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-2-a.mp3",
+      "sha256": "73d664dce91ac2229eb13e8eb7067abe1c028228072c0967972eda708b57691d",
+      "expectedText": "She enjoys reading books.",
+      "recognizedText": "She enjoys reading books."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-3-q.mp3",
+      "sha256": "1e9ddb7e6177e5706d3768c195ac2d70f300d033828c3844fbf7b09af5286a7f",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-try-3-a.mp3",
+      "sha256": "f7caa66432a368d0e6cd5e098274d006ccc579faf218e35d353745c03d83a0a9",
+      "expectedText": "I enjoy playing card games.",
+      "recognizedText": "I enjoy playing card games."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-1-q.mp3",
+      "sha256": "96e6cbf42ad71207bfe65f2c0328740a5448b4030f9ae5e42000d19b8075c7a6",
+      "expectedText": "In this story, you like to read books. What do you enjoy?",
+      "recognizedText": "In this story, you like to read books. What do you enjoy?"
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-1-a.mp3",
+      "sha256": "32b75decc0bef73ef9f10da6b475254a75588ecd38c0abf6d89619ea8530272d",
+      "expectedText": "I enjoy reading books.",
+      "recognizedText": "I enjoy reading books."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-2-q.mp3",
+      "sha256": "633b8aee84e384d6e3f28a9bb0ecd4eac95ed7537773de07ec59c2a68ca4f501",
+      "expectedText": "Two friends like to play card games. Speak for both friends. What do you enjoy?",
+      "recognizedText": "Two friends like to play card games. Speak for both friends. What do you enjoy?"
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-2-a.mp3",
+      "sha256": "94afd088f68a49a3f0053098f880645d4db52aa8b932abf659897f1dcaa0e9a9",
+      "expectedText": "We enjoy playing card games.",
+      "recognizedText": "We enjoy playing card games."
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-3-q.mp3",
+      "sha256": "9c36e5749a98beb33040a54bca0caed288654bdf2e0724864fba9cb71eacf1f1",
+      "expectedText": "Tom likes to play board games. What does Tom enjoy?",
+      "recognizedText": "Tom likes to play board games. What does Tom enjoy?"
+    },
+    {
+      "file": "audio/2026-09-26-enjoy-activities-say-3-a.mp3",
+      "sha256": "8556ca7a3ab66ec9b8a17b9092bbaa29d6046513f23f628b2d8e60f18ec82c62",
+      "expectedText": "He enjoys playing board games.",
+      "recognizedText": "He enjoys playing board games."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-1-q.mp3",
+      "sha256": "f0683bc51789fc92bd0c78cc26e9f44b81e3df7d9ec55049f8757383492b6cd9",
+      "expectedText": "Look at the story road. Many cars are moving past. When can it be dangerous?",
+      "recognizedText": "Look at the story road. Many cars are moving past. When can it be dangerous?"
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-1-a.mp3",
+      "sha256": "eb304c43b0cb64511c6a682950ad50d85e6a125aa3014af02c0cd84ee7394d99",
+      "expectedText": "When there are many cars, it can be dangerous.",
+      "recognizedText": "When there are many cars, it can be dangerous."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-2-q.mp3",
+      "sha256": "1b4f2f0b90c4953556a1e201db74734ce03704ae01132668d70d44caf2c89a17",
+      "expectedText": "Before, the road had many cars. Now there is one fast car. Keep the warning and describe the new scene.",
+      "recognizedText": "Before, the road had many cars. Now there is one fast car. Keep the warning and describe the new scene."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-2-a.mp3",
+      "sha256": "2c6616672ed6138dde863e8da85ac8fbb12c40da2a736187fb3a42074402808b",
+      "expectedText": "When there is a fast car, it can be dangerous.",
+      "recognizedText": "When there's a fast car, it can be dangerous."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-3-q.mp3",
+      "sha256": "199d2e1133117efa0293484f80381b63fde932a3607a8ab7ab4dd5c9fd3454e8",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-try-3-a.mp3",
+      "sha256": "f9fb397bb176d691bd2a1c075c952410fd41612784a0584bb16231e51bf112a1",
+      "expectedText": "When there are many cars, it can be dangerous.",
+      "recognizedText": "When there are many cars, it can be dangerous."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-1-q.mp3",
+      "sha256": "8d40ee1eb962e1b21b5ed7824266fabc43f8f05c060f690df7ef107f8e50761b",
+      "expectedText": "In the story, many cars are moving along the road. When can it be dangerous?",
+      "recognizedText": "In the story, many cars are moving along the road, when can it be dangerous?"
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-1-a.mp3",
+      "sha256": "722842c081fc1b5c0048bee7d5d201b99966de59aa9ddebea986ac6e02ad19f8",
+      "expectedText": "When there are many cars, it can be dangerous.",
+      "recognizedText": "When there are many cars, it can be dangerous."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-2-q.mp3",
+      "sha256": "3aac3a179c98ae82c05fee35050b2e266935f67ec1d13e56e6c48754dbe6a15a",
+      "expectedText": "In the story, one fast car is moving along the road. When can it be dangerous?",
+      "recognizedText": "In the story, one fast car is moving along the road. When can it be dangerous?"
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-2-a.mp3",
+      "sha256": "248d9094d7c42a3519eb66c41bf3433d350c4405e3aaa51727cb5c7aeaf282c1",
+      "expectedText": "When there is a fast car, it can be dangerous.",
+      "recognizedText": "When there is a fast car, it can be dangerous."
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-3-q.mp3",
+      "sha256": "8cb599ae0f3f85f47b48e99c547b48a6ef9b3e2b72702352158eecf5e5a00810",
+      "expectedText": "In the story, many boats are moving close to the houses on the water. When can it be dangerous?",
+      "recognizedText": "In the story, many boats are moving close to the houses on the water. When can it be dangerous?"
+    },
+    {
+      "file": "audio/2026-09-26-when-dangerous-say-3-a.mp3",
+      "sha256": "b1d717851c0a14509a2a1c55a5308f43f041af5503b2c56eee7cc64b180fe8ab",
+      "expectedText": "When there are many boats, it can be dangerous.",
+      "recognizedText": "When there are many boats, it can be dangerous."
+    }
+  ]
+}

@@ -1,22 +1,22 @@
-# 每週日製作與發布 Weekly Review
+# 按需製作與發布 Weekly Review
 
-這份 SOP 是原生 Codex heartbeat 的執行入口，承接 [#82](https://github.com/huansbox/aiden-study/issues/82)、[#84](https://github.com/huansbox/aiden-study/issues/84)、[#85](https://github.com/huansbox/aiden-study/issues/85)。只處理 Aiden，每週日 01:00 Asia/Taipei 執行，採[實際練習規劃契約](weekly-planning.md)。既有 09-20 首包保留；其後每個發布週日最多一包。
+2026-09-26 依使用者在 [#125](https://github.com/huansbox/aiden-study/issues/125) 的要求，取消 Weekly Review 自動排程，改為只有使用者明確要求製作週包時才執行。既有 Codex heartbeat `native-camp` 已設為 `PAUSED`；不得因讀到本 SOP、到了週日、新課完成或工具可用，就自行恢復 heartbeat，或另建 cron／Windows 排程。重新啟用排程必須有使用者另一次明確要求。
 
-本機排程需要電腦及 Codex App 可用。建立 heartbeat、通過 dry-run 或保存一把 key，都不代表已完成無人值守驗證。排程由統籌確認環境及新增憑證保存授權後才啟用，不以另一個 cron 繞過原生 heartbeat；先查重既有 automations，再更新既有排程。
+本 SOP 保留 [#82](https://github.com/huansbox/aiden-study/issues/82)、[#84](https://github.com/huansbox/aiden-study/issues/84)、[#85](https://github.com/huansbox/aiden-study/issues/85) 建立的安全工具，供按需製作與續作使用。只處理 Aiden，採[實際練習規劃契約](weekly-planning.md)；既有 09-20 首包保留，每個發布週日最多一包。`weekly_automation.py` 與私有 `automation.json` 保留原名，名稱不代表排程仍啟用；取消排程不刪除舊週包、工作檔、付費請求紀錄或憑證。
 
-## 啟用前的部署門
+## 手動製作前的環境核對
 
-1. 核對機器時區、插電與睡眠設定、Codex App 可用性及排程所屬 task。此 repo 的預設分支是 `origin/master`；從它取得已整合工具，記錄部署 commit。每個發布週日使用 `D:/mywork/aiden-study-nativecamp-runs/<YYYY-MM-DD>`，從最新 `origin/master` 建立 `codex/nativecamp-weekly-<YYYY-MM-DD>` 隔離 worktree；同週重跑沿用原 worktree、branch、私有工作檔，不重置或刪除。保留原 task 的 checkout 及其他工作。
+1. 確認本次已有使用者製作週包的明確要求，核對機器時區與工作 task。此 repo 的預設分支是 `origin/master`；從它取得已整合工具，記錄部署 commit。每個發布週日使用 `D:/mywork/aiden-study-nativecamp-runs/<YYYY-MM-DD>`，從最新 `origin/master` 建立 `codex/nativecamp-weekly-<YYYY-MM-DD>` 隔離 worktree；同週重跑沿用原 worktree、branch、私有工作檔，不重置或刪除。保留原 task 的 checkout 及其他工作。
 2. 安裝並核對 `uv`、Python 3.13、Node、ffmpeg／ffprobe、已快取的 faster-whisper small.en，以及可非互動使用的 GitHub／Cloudflare 管理登入。固定 Wrangler 版本的準備命令為 `npx --yes wrangler@4.132.0 --version`；執行時只用 `--no-install wrangler@4.132.0`，不臨時下載新版本。
-3. OpenAI 憑證須能在沒有互動解鎖時交給製作 child process。沿用 `op run` 的暫時注入；互動解鎖是實際部署限制，不能假報可無人值守。
+3. OpenAI 憑證透過 `op run` 暫時注入製作 child process，或沿用下列已核可的本機 DPAPI 保存方式。需要互動解鎖時由使用者完成，不把 key 放入命令列、工作文件或輸出。
 4. 可選 Windows `openai_credential.ps1` 已提供 current-user DPAPI 的 status／install／remove／run／probe。只有使用者另外核可保存持久加密副本後才能 install 真 key；核可前只能用假秘密測試。預設 `%LOCALAPPDATA%/AidenStudy/nativecamp/openai.dpapi`，只限目前 Windows 使用者存取。相同使用者的程序可解密，移除本機副本不等於撤銷 OpenAI key；撤銷 API key 仍由原服務執行。新增外部秘密接收者也須另行核可。
-5. 用合成進度與外部操作替身跑完整恢復／失敗檢查，再做固定進度 key 的正式唯讀驗證。實際排程需能到達製作、review、發布和正式資源驗證。尚未取得的核可或未測條件要明列，不能以工具完成代替啟用完成。
+5. 環境或工具有變更時，用合成進度與外部操作替身跑相關恢復／失敗檢查，再做固定進度 key 的正式唯讀驗證。每次製作仍須完成內容、review、發布前置與正式資源驗證；尚未取得的核可或未測條件要明列，不能以工具檢查通過代替週包交付。
 
-2026-09-18 已取得本機 DPAPI 持久保存授權，統籌已完成預設位置的 install、fresh PowerShell status ready 與 `/v1/models` HTTP 200 probe；沒有生成付費音訊。既有 key 可在同一 Windows 使用者的各個週次 worktree 使用，無須每週重新要求保存授權。正式固定 KV 唯讀擷取及 planner smoke 已完成：09-27 沒有新練習、09-20 已有發布包。排程建立、啟用及最終正式交付紀錄由統籌記於 #85；以上不是已發布新週包的證據。
+2026-09-18 已取得本機 DPAPI 持久保存授權，統籌已完成預設位置的 install、fresh PowerShell status ready 與 `/v1/models` HTTP 200 probe；沒有生成付費音訊。既有 key 可在同一 Windows 使用者的各個週次 worktree 使用，無須每次重新要求保存授權。正式固定 KV 唯讀擷取及 planner smoke 已完成；當時的排程建立、啟用及交付紀錄見 #85，僅為歷史紀錄，現行製作政策以上述 #125 為準。以上不是已發布新週包的證據。
 
 ## 每次執行
 
-先確認 repo／remote／分支，保留其他工作與原 8791 服務。先 fetch `origin/master`，從主線讀這份 SOP，並在上列當週 worktree 執行工具。使用 Asia/Taipei 最近一個週日作為 `<release>`，不要以 UTC 日期、課程日期或最近一筆 KV 時間推定；同一工作延遲續跑時，沿用已保存的發布週日，不重新漂移到下一週。先核對遠端同日發布狀態，才開始新工作；若已有私有 ready receipt，僅接續尚未完成的發布核對。遇到其他未處理的變更，停在草稿並回報。
+收到製作要求後，先確認 repo／remote／分支，保留其他工作與原 8791 服務。先 fetch `origin/master`，從主線讀這份 SOP，並在上列週次 worktree 執行工具。未指定週次時，沿用 Asia/Taipei 最近一個已到達的週日作為 `<release>`；週日是既有練習窗口與題包識別的邊界，不代表要在週日自動執行。不要以 UTC 日期、課程日期或最近一筆 KV 時間推定；同一工作延遲續跑時，沿用已保存的發布週日，不重新漂移到下一週。先核對遠端同日發布狀態，才開始新工作；若已有私有 ready receipt，僅接續尚未完成的發布核對。遇到其他未處理的變更，停在草稿並回報。下列日期僅示範命令格式，不是待執行的排程。
 
 ```powershell
 uv run --offline learning-tasks/shared/nativecamp/weekly_automation.py prepare --release 2026-09-27
@@ -26,13 +26,13 @@ uv run --offline learning-tasks/shared/nativecamp/weekly_automation.py prepare -
 
 固定 Wrangler 4.132.0 的一般 logger 預設也寫 disk；因此 capture 強制 `WRANGLER_WRITE_LOGS=false`、`WRANGLER_LOG_SANITIZE=true`、`WRANGLER_LOG=error`、`WRANGLER_SEND_METRICS=false`，並移除 child process 不需要的 `OPENAI_API_KEY`。不用 `--text`，保留 binary stdout 管線；僅設定 log level 不足以禁止檔案日誌。更新 Wrangler 前必須重新核對這個行為。
 
-工具只印安全摘要。`already-published`、`no-synced-progress`、`no-new-practice` 靜默結束；CLI 非零退出、空白／無效回應、未知來源和缺工具都視為故障，不能當成空週。已有 plan 時，`prepare` 呼叫 planner 的 `--resume`：只驗證已保存的 progress／plan，恢復遺失的 generation brief，保留既有 ready receipt，不重新讀雲端。即使本機 catalog 已登記該週草稿，也要完成相同核對；保存資料不一致時失敗，不能僅憑 plan 檔案存在便回報恢復成功。合成測試可用 `--snapshot .local/nativecamp-weekly/<fixture>.json`，此選項不能指向公開路徑。
+工具只印安全摘要。`already-published`、`no-synced-progress`、`no-new-practice` 不製作新包，向本次提出要求的使用者簡短回報原因；CLI 非零退出、空白／無效回應、未知來源和缺工具都視為故障，不能當成空週。已有 plan 時，`prepare` 呼叫 planner 的 `--resume`：只驗證已保存的 progress／plan，恢復遺失的 generation brief，保留既有 ready receipt，不重新讀雲端。即使本機 catalog 已登記該週草稿，也要完成相同核對；保存資料不一致時失敗，不能僅憑 plan 檔案存在便回報恢復成功。合成測試可用 `--snapshot .local/nativecamp-weekly/<fixture>.json`，此選項不能指向公開路徑。
 
 ## 製作、語音與獨立檢查
 
-1. 只讀 `<release>/generation-brief.json` 製作原創完整句。公開概念順序沿用 brief 的來源排序，不能公開 plan 的個人表現排序。依 [weekly-planning.md](weekly-planning.md) 建立 task README、來源與索引，每概念 Try／Say 各三個新變體，保留來源映射。原創內容由 heartbeat 執行代理依 SOP 製作；Python runner 不自行呼叫另一個 LLM，也不把孩子資料傳給新的服務。
+1. 只讀 `<release>/generation-brief.json` 製作原創完整句。公開概念順序沿用 brief 的來源排序，不能公開 plan 的個人表現排序。依 [weekly-planning.md](weekly-planning.md) 建立 task README、來源與索引，每概念 Try／Say 各三個新變體，保留來源映射。原創內容由承接本次使用者要求的代理依 SOP 製作；Python runner 不自行呼叫另一個 LLM，也不把孩子資料傳給新的服務。
 2. builder 產生完整題包及 speech jobs；將新週包登記到 App 的 `docs/nativecamp/lessons/catalog.json`。另外依任務庫規則在 `learning-tasks/catalog.json` 登錄同一份 task（`groupId: nativecamp`），再執行 `node scripts/build-work-catalog.mjs` 產生作品索引；這不是再註冊一個 App，也不手填 README 產物。不得變更已發布課程、週包或既有音檔。新包在整批通過前保留在工作分支，不合併到正式站。
-3. 使用固定 normal-speed OpenAI 工具和私有 request journal。下列示例的 `op://` 是 secret reference，不能換成命令列中的明文 key；未具備非互動憑證時停止並回報。
+3. 使用固定 normal-speed OpenAI 工具和私有 request journal。下列示例的 `op://` 是 secret reference，不能換成命令列中的明文 key；無法取得已授權的憑證時停止並回報。
 
 ```powershell
 $env:OPENAI_API_KEY = 'op://<vault>/<OpenAI item>/credential'
@@ -90,7 +90,7 @@ uv run --offline learning-tasks/shared/nativecamp/weekly_automation.py verify-pu
 
 遇到不確定的付費請求，保留 `.part`、manifest、request journal；已驗證的回應可恢復，未驗證的結果等待人工判斷。發生 CLI／憑證／內容／音訊／CI／正式資源故障時回報該階段與安全摘要，不附 raw progress、環境變數、API body 或憑證。
 
-只有新包發布完成、故障或需要使用者行動時通知；沒有新練習、已發布、一般重跑或其他沒有改變的狀態保持安靜。不要在每次 heartbeat 留例行進度訊息。
+向本次提出要求的使用者回報已完成的週包、略過原因或需處理的故障，並區分本機驗證與正式發布結果。未收到製作要求時不執行、不輪詢；不為了等待新練習或補發通知另建 heartbeat。
 
 ## 離線驗證
 

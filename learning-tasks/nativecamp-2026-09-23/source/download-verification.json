@@ -1,0 +1,19 @@
+{
+  "lessonId": "2026-09-23",
+  "audioUploaded": false,
+  "humanListening": false,
+  "files": [
+    {
+      "track": 1,
+      "relativeFile": "../assets/audio/2026-09-23-track-1.webm",
+      "bytes": 11078294,
+      "sha256": "790cfdebdc751a1c03ac04a906ee6e989c59172e2b559b4711778941a69917b0",
+      "durationSeconds": 1542.812,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ]
+}

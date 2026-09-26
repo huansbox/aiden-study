@@ -1,0 +1,983 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-23",
+  "date": "2026-09-23",
+  "title": "Jobs, needs, and questions",
+  "concepts": [
+    {
+      "id": "job-actions",
+      "title": "How do people help?",
+      "try": [
+        {
+          "id": "job-actions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do farmers do?",
+          "instruction": "Start with Farmers. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Farmers / fields / food"
+          },
+          "answerText": "Farmers grow food.",
+          "spokenQuestion": "What do farmers do in the fields? Build a full sentence. Start with Farmers.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Farmers"
+            },
+            {
+              "id": "w1",
+              "text": "grow"
+            },
+            {
+              "id": "w2",
+              "text": "food."
+            },
+            {
+              "id": "x0",
+              "text": "grows"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "job-actions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: one farmer.",
+          "instruction": "Start with A farmer. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Farmers grow food."
+          },
+          "answerText": "A farmer grows food.",
+          "spokenQuestion": "Change the sentence to one farmer. Start with A farmer.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "farmer"
+            },
+            {
+              "id": "w2",
+              "text": "grows"
+            },
+            {
+              "id": "w3",
+              "text": "food."
+            },
+            {
+              "id": "x0",
+              "text": "grow"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "job-actions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Doctors / healthy"
+          },
+          "answerText": "Doctors keep us healthy.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Doctors"
+            },
+            {
+              "id": "w1",
+              "text": "keeps"
+            },
+            {
+              "id": "w2",
+              "text": "us"
+            },
+            {
+              "id": "w3",
+              "text": "healthy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "helps"
+            },
+            {
+              "id": "c1",
+              "text": "keep"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "job-actions-say-1",
+          "prompt": "How do doctors help us?",
+          "instruction": "Say a full sentence. Doctors …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Doctors / healthy"
+          },
+          "answerText": "Doctors keep us healthy.",
+          "spokenQuestion": "How do doctors help us? Say a full sentence.",
+          "accepted": [
+            "Doctors help us stay healthy.",
+            "Doctors help us be healthy."
+          ]
+        },
+        {
+          "id": "job-actions-say-2",
+          "prompt": "How do teachers help us?",
+          "instruction": "Say a full sentence. Teachers …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Teachers / learn"
+          },
+          "answerText": "Teachers help us learn.",
+          "spokenQuestion": "How do teachers help us? Say a full sentence.",
+          "accepted": [
+            "Teachers teach us.",
+            "Teachers help children learn."
+          ]
+        },
+        {
+          "id": "job-actions-say-3",
+          "prompt": "How do police officers help us?",
+          "instruction": "Say a full sentence. Police officers …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Police officers / safe"
+          },
+          "answerText": "Police officers keep us safe.",
+          "spokenQuestion": "Can you tell us in a full sentence how police officers help us?",
+          "accepted": [
+            "Police officers help keep people safe.",
+            "Police officers help us stay safe."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "topic-clues",
+      "title": "Use the title",
+      "try": [
+        {
+          "id": "topic-clues-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Games or jobs?",
+          "instruction": "Start with This text. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Title: Fun with Balls / Picture: balls and bats"
+          },
+          "answerText": "This text is about games.",
+          "spokenQuestion": "The title is Fun with Balls. The picture shows balls and bats. Is the topic games or jobs? Build a full sentence.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "text"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "about"
+            },
+            {
+              "id": "w4",
+              "text": "games."
+            },
+            {
+              "id": "x0",
+              "text": "jobs."
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "topic-clues-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Use the new title. Change the old sentence.",
+          "instruction": "Keep games. Start with This text. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Old: This text is about games. / New title: Soup for Lunch"
+          },
+          "answerText": "This text is not about games.",
+          "spokenQuestion": "The old sentence says the text is about games. The new title is Soup for Lunch. Keep the word games and change the old sentence to fit the new title.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "text"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "not"
+            },
+            {
+              "id": "w4",
+              "text": "about"
+            },
+            {
+              "id": "w5",
+              "text": "games."
+            },
+            {
+              "id": "x0",
+              "text": "no"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "topic-clues-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Title: Shirts and Hats"
+          },
+          "answerText": "This text is about clothes.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "text"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "about"
+            },
+            {
+              "id": "w4",
+              "text": "clothes."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "topic-clues-say-1",
+          "prompt": "Food or games?",
+          "instruction": "Say a full sentence. It is about …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Title: Cooking Soup / Picture: a pot and vegetables"
+          },
+          "answerText": "It is about food.",
+          "spokenQuestion": "The title is Cooking Soup and the picture shows a pot and vegetables, so can you tell us in a full sentence if the text is about food or games?",
+          "accepted": [
+            "The text is about food.",
+            "It is about cooking soup."
+          ]
+        },
+        {
+          "id": "topic-clues-say-2",
+          "prompt": "Clothes or jobs?",
+          "instruction": "Say a full sentence. It is about …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Title: New Shirts / Picture: shirts and coats"
+          },
+          "answerText": "It is about clothes.",
+          "spokenQuestion": "The title is New Shirts and the picture shows shirts and coats, so can you tell us in a full sentence if the text is about clothes or jobs?",
+          "accepted": [
+            "The text is about clothes.",
+            "It is about clothing."
+          ]
+        },
+        {
+          "id": "topic-clues-say-3",
+          "prompt": "Jobs or food?",
+          "instruction": "Say a full sentence. It is about …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Title: People at Work / Picture: a doctor and a teacher"
+          },
+          "answerText": "It is about jobs.",
+          "spokenQuestion": "The title is People at Work. The picture shows a doctor and a teacher. Is the text about jobs or food? Say a full sentence.",
+          "accepted": [
+            "The text is about jobs.",
+            "It is about people and their jobs."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "need-or-want",
+      "title": "What is needed now?",
+      "try": [
+        {
+          "id": "need-or-want-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What must you get for homework?",
+          "instruction": "Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Homework now / no pencil / a toy can wait"
+          },
+          "answerText": "I need a pencil.",
+          "spokenQuestion": "You have homework now and no pencil. A toy can wait. What must you get for homework? Start with I.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "pencil."
+            },
+            {
+              "id": "x0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "need-or-want-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: no shoes for the walk to school.",
+          "instruction": "Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Old: I want new shoes. / Now: no shoes for the school walk."
+          },
+          "answerText": "I need new shoes.",
+          "spokenQuestion": "The old sentence is I want new shoes. Now you have no shoes for the walk to school. Change the sentence.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "new"
+            },
+            {
+              "id": "w3",
+              "text": "shoes."
+            },
+            {
+              "id": "x0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "need-or-want-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Food and water: ready / toy: just for fun, can wait"
+          },
+          "answerText": "I want a toy.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "toy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "needs"
+            },
+            {
+              "id": "c1",
+              "text": "want"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "need-or-want-say-1",
+          "prompt": "What do you want or need now?",
+          "instruction": "Choose want or need. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You are thirsty / no water to drink"
+          },
+          "answerText": "I need water.",
+          "spokenQuestion": "You are thirsty and have no water to drink, so starting with I, what do you want or need now?",
+          "accepted": [
+            "I need some water.",
+            "I need water to drink."
+          ]
+        },
+        {
+          "id": "need-or-want-say-2",
+          "prompt": "What do you want or need for the walk?",
+          "instruction": "Choose want or need. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Walk to school / no shoes"
+          },
+          "answerText": "I need shoes.",
+          "spokenQuestion": "You must walk to school and have no shoes, so starting with I, what do you want or need for the walk?",
+          "accepted": [
+            "I need a pair of shoes.",
+            "I need shoes for the walk."
+          ]
+        },
+        {
+          "id": "need-or-want-say-3",
+          "prompt": "What do you want or need for fun?",
+          "instruction": "Choose want or need. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Everything for today: ready / toy: just for fun, can wait"
+          },
+          "answerText": "I want a toy.",
+          "spokenQuestion": "Everything for today is ready and a toy is just for fun and can wait, so starting with I, what do you want or need for fun?",
+          "accepted": [
+            "I want a toy for fun.",
+            "I want a new toy."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "does-have-want",
+      "title": "Ask with Does",
+      "try": [
+        {
+          "id": "does-have-want-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Ask if Ella has a coat.",
+          "instruction": "Start with Does she. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ella / a coat?"
+          },
+          "answerText": "Does she have a coat?",
+          "spokenQuestion": "Ask if Ella has a coat. Start with Does she.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Does"
+            },
+            {
+              "id": "w1",
+              "text": "she"
+            },
+            {
+              "id": "w2",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "coat?"
+            },
+            {
+              "id": "x0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "does-have-want-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Change the statement into a question.",
+          "instruction": "Start with Does. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "He wants a kite."
+          },
+          "answerText": "Does he want a kite?",
+          "spokenQuestion": "Change He wants a kite into a question. Start with Does.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Does"
+            },
+            {
+              "id": "w1",
+              "text": "he"
+            },
+            {
+              "id": "w2",
+              "text": "want"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "kite?"
+            },
+            {
+              "id": "x0",
+              "text": "wants"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "does-have-want-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ask about his hat."
+          },
+          "answerText": "Does he have a hat?",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Does"
+            },
+            {
+              "id": "w1",
+              "text": "he"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "hat?"
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "have"
+            },
+            {
+              "id": "c1",
+              "text": "wants"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "does-have-want-say-1",
+          "prompt": "Does Ella have a coat?",
+          "instruction": "Say a full answer. Yes, she …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ella / coat in her bag"
+          },
+          "answerText": "Yes, she has a coat.",
+          "spokenQuestion": "Look at Ella's card. Does Ella have a coat? Say a full answer.",
+          "accepted": [
+            "Yes, she does. She has a coat.",
+            "Yes, Ella has a coat."
+          ]
+        },
+        {
+          "id": "does-have-want-say-2",
+          "prompt": "Does Noah want a toy train?",
+          "instruction": "Say a full answer. No, he …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Noah / wants a ball / no toy train"
+          },
+          "answerText": "No, he doesn't want a toy train.",
+          "spokenQuestion": "Look at Noah's card and give a full answer: does Noah want a toy train?",
+          "accepted": [
+            "No, Noah doesn't want a toy train.",
+            "No, he does not want a toy train."
+          ]
+        },
+        {
+          "id": "does-have-want-say-3",
+          "prompt": "Does Lily want a book?",
+          "instruction": "Say a full answer. Yes, she …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Lily / wants a book"
+          },
+          "answerText": "Yes, she wants a book.",
+          "spokenQuestion": "Look at Lily's card. Does Lily want a book? Say a full answer.",
+          "accepted": [
+            "Yes, she does. She wants a book.",
+            "Yes, Lily wants a book."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-does-want",
+      "title": "Ask what someone wants",
+      "try": [
+        {
+          "id": "what-does-want-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Ask what Ella wants.",
+          "instruction": "Start with What. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ella / ?"
+          },
+          "answerText": "What does she want?",
+          "spokenQuestion": "Ask what Ella wants. Start with What.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "What"
+            },
+            {
+              "id": "w1",
+              "text": "does"
+            },
+            {
+              "id": "w2",
+              "text": "she"
+            },
+            {
+              "id": "w3",
+              "text": "want?"
+            },
+            {
+              "id": "x0",
+              "text": "do"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "what-does-want-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Ask about the thing he wants.",
+          "instruction": "Start with What. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "He wants a ball."
+          },
+          "answerText": "What does he want?",
+          "spokenQuestion": "Change the statement into a question about the thing he wants. Start with What.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "What"
+            },
+            {
+              "id": "w1",
+              "text": "does"
+            },
+            {
+              "id": "w2",
+              "text": "he"
+            },
+            {
+              "id": "w3",
+              "text": "want?"
+            },
+            {
+              "id": "x0",
+              "text": "wants?"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "what-does-want-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ask about the thing she wants."
+          },
+          "answerText": "What does she want?",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "What"
+            },
+            {
+              "id": "w1",
+              "text": "does"
+            },
+            {
+              "id": "w2",
+              "text": "she"
+            },
+            {
+              "id": "w3",
+              "text": "wants?"
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "needs?"
+            },
+            {
+              "id": "c1",
+              "text": "want?"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "what-does-want-say-1",
+          "prompt": "Ask what Nora wants.",
+          "instruction": "Ask a full question. What …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Nora / ?"
+          },
+          "answerText": "What does she want?",
+          "spokenQuestion": "Ask what Nora wants. Start with What.",
+          "accepted": [
+            "What does Nora want?"
+          ]
+        },
+        {
+          "id": "what-does-want-say-2",
+          "prompt": "What does Ben want?",
+          "instruction": "Say a full answer. He …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Ben / a puzzle"
+          },
+          "answerText": "He wants a puzzle.",
+          "spokenQuestion": "Look at Ben's card. What does Ben want? Say a full answer.",
+          "accepted": [
+            "Ben wants a puzzle."
+          ]
+        },
+        {
+          "id": "what-does-want-say-3",
+          "prompt": "Ask what Milo wants.",
+          "instruction": "Ask a full question. What …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Milo / ?"
+          },
+          "answerText": "What does he want?",
+          "spokenQuestion": "Ask what Milo wants. Start with What.",
+          "accepted": [
+            "What does Milo want?"
+          ]
+        }
+      ]
+    }
+  ]
+}

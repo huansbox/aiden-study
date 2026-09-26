@@ -32,6 +32,11 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-09-26 Danielle](learning-tasks/nativecamp-2026-09-26/) | 住家描述、否定附和、理由、喜好與條件句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-26) |
+| [Native Camp 2026-09-25 Edon](learning-tasks/nativecamp-2026-09-25/) | 動物與顏色描述、主題預測、尾音及存在句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-25) |
+| [Native Camp 2026-09-24 Mia](learning-tasks/nativecamp-2026-09-24/) | 野餐需求、動作、交換與偏好的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-24) |
+| [Native Camp 2026-09-23 Bianca](learning-tasks/nativecamp-2026-09-23/) | 工作與需求、讀取線索及現在式完整問答 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-23) |
+| [Native Camp 2026-09-22 Edon](learning-tasks/nativecamp-2026-09-22/) | 寵物、朋友介紹、理由與完整句描述 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-22) |
 | [Native Camp 2026-09-12 Mel](learning-tasks/nativecamp-2026-09-12-mel/) | 天氣與穿著：takes／uses、wearing、is／are 與不規則複數。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-12-mel) |
 | [Native Camp 2026-09-09 Emi](learning-tasks/nativecamp-2026-09-09/) | Who／What 問句、完整介紹、人與動物的一天。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-09) |
 | [Native Camp 2026-09-08 Maria](learning-tasks/nativecamp-2026-09-08/) | 照顧動物、午睡、棲地與故事角色的完整句。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-08) |

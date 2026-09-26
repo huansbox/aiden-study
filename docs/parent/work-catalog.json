@@ -370,6 +370,206 @@
       }
     },
     {
+      "id": "task:nativecamp-2026-09-26",
+      "type": "task",
+      "name": "Native Camp 2026-09-26 Danielle",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-26",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-26"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-26",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-26"
+        }
+      ],
+      "description": "住家描述、否定附和、理由、喜好與條件句",
+      "eventDate": "2026-09-26",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-25",
+      "type": "task",
+      "name": "Native Camp 2026-09-25 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-25",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-25"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-25",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-25"
+        }
+      ],
+      "description": "動物與顏色描述、主題預測、尾音及存在句",
+      "eventDate": "2026-09-25",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-24",
+      "type": "task",
+      "name": "Native Camp 2026-09-24 Mia",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-24",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-24"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-24",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-24"
+        }
+      ],
+      "description": "野餐需求、動作、交換與偏好的完整句",
+      "eventDate": "2026-09-24",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-23",
+      "type": "task",
+      "name": "Native Camp 2026-09-23 Bianca",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-23",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-23"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-23",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-23"
+        }
+      ],
+      "description": "工作與需求、讀取線索及現在式完整問答",
+      "eventDate": "2026-09-23",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-22",
+      "type": "task",
+      "name": "Native Camp 2026-09-22 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-22",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-22"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-22",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-22"
+        }
+      ],
+      "description": "寵物、朋友介紹、理由與完整句描述",
+      "eventDate": "2026-09-22",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:nativecamp-2026-09-12-mel",
       "type": "task",
       "name": "Native Camp 2026-09-12 Mel",
