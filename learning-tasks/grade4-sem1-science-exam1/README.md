@@ -1,14 +1,18 @@
 # 四上自然第一次段考候選卷
 
-狀態：**首批收集與概念對照已完成，獨立複核通過**（2026-09-23）。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集自然科歷屆卷，按概念逐題判讀，作為後續 iPad 練習題庫的來源。工作範圍見 [#115](https://github.com/huansbox/aiden-study/issues/115)。
+狀態：**已完成兩輪有限來源收集，目前 6 份題目原卷、2 份校方答案**（2026-09-27）；不代表所有年度／學校已收齊。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集自然科歷屆卷，按概念逐題判讀，作為後續 iPad 練習題庫的來源。首批見 [#115](https://github.com/huansbox/aiden-study/issues/115)，第二輪見 [#129](https://github.com/huansbox/aiden-study/issues/129)。
 
 這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)與[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)均已正式上線；家庭題包 revision 6 共 89 題，其中自然 32 題。
 
 今年採康軒版；「地表的靜與動」「水生生物與環境」是本批**暫定收題核心**，不是校方已公布的正式考試範圍。舊卷依實際概念對照，月亮題留供後續使用。卷面未證實的出版社標為未知。
 
-## 首批入口
+## 第二輪與目前來源
 
-目前有 **4 份題目原卷、8 頁**：桃子腳 113／114 與永安 113／114；另有桃子腳 113 校方答案 1 份、2 頁。永安 114 同年度校方版本表直接證實南一，與今年康軒不同。桃子腳兩份舊卷的出版社沒有證實，均標未知。
+[第二輪總覽](source/round2-overview.md)新增桃子腳 112 四上第一次題答卷，以及五堵 113 **四下期末、翰林**原卷。五堵地表概念可比對今年暫定核心；桃子腳 112 的光、月亮與能源留供後續。目前題卷共 13 頁、官方答案共 5 頁；南一地表及桃子腳 111 仍未取得。本輪新增卷尚未轉入 App。
+
+## 首批入口（2026-09-23 快照）
+
+首批有 **4 份題目原卷、8 頁**：桃子腳 113／114 與永安 113／114；另有桃子腳 113 校方答案 1 份、2 頁。永安 114 同年度校方版本表直接證實南一，與今年康軒不同。桃子腳兩份舊卷的出版社沒有證實，均標未知。
 
 - [首批題數、概念與出題方式概覽](source/coverage-overview.md)：兩組不同計數口徑、題組依賴、答案現況及後續數位化缺口。
 - [桃子腳校卷來源](source/school-manifest.json)、[逐格分類](source/school-question-review.md)與[資料](source/school-question-review.json)。
@@ -28,4 +32,4 @@
 
 本機工作原件位於此 task 的 `source/papers/` 與 `source/private/`。長期保留副本位於 `D:/mywork/aiden-study/learning-tasks/grade4-sem1-science-exam1/source/` 的同名目錄，兩處皆以精確 ignore 保護；Git clone 只有 metadata，需按 manifest 來源重新取得並核 hash。私人核題資料分在 `source/private/school/`、`source/private/supplement/`，課程原件在 `source/private/curriculum/`。正式答案、素材權利與 App 接入仍須後續處理。
 
-本批不製作 App、Worker、正式題包或 PDF 練習卷，也不更動孩子的正式進度。
+本 task 保存收卷來源；App 接入與正式題包狀態另見自然題庫紀錄，不更動孩子的正式進度。
