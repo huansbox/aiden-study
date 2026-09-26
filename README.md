@@ -32,6 +32,11 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-09-21 Alex](learning-tasks/nativecamp-2026-09-21/) | 願望、交換、借物、動作與工作計畫的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-21) |
+| [Native Camp 2026-09-20 Kyla](learning-tasks/nativecamp-2026-09-20/) | 需求、用途、買賣、故事順序與原因 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-20) |
+| [Native Camp 2026-09-19 Zibuyile](learning-tasks/nativecamp-2026-09-19-zibuyile/) | 水果特徵、所有權視角與完整數量問答 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-19-zibuyile) |
+| [Native Camp 2026-09-19 Edon](learning-tasks/nativecamp-2026-09-19/) | 故事預測、能力、感受原因、近遠與寵物描述 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-19) |
+| [Native Camp 2026-09-18 Zeus](learning-tasks/nativecamp-2026-09-18/) | 食物、完整問答、故事順序、數量與分享理由 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-18) |
 | [Native Camp 2026-09-26 Danielle](learning-tasks/nativecamp-2026-09-26/) | 住家描述、否定附和、理由、喜好與條件句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-26) |
 | [Native Camp 2026-09-25 Edon](learning-tasks/nativecamp-2026-09-25/) | 動物與顏色描述、主題預測、尾音及存在句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-25) |
 | [Native Camp 2026-09-24 Mia](learning-tasks/nativecamp-2026-09-24/) | 野餐需求、動作、交換與偏好的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-24) |
