@@ -45,4 +45,4 @@ fresh review 排除永安113 四1(2)：觀察紀錄不足以唯一推出所有�
 
 所有納入題目前無官方答案；作者與 fresh reviewer 已各自獨立解題，並完成來源、答案、解說與素材核對，五題內容通過、兩題排除。私人原七候選、作者 QA 與 review 指紋保留原狀；本公開文件記錄內容決定與發布後覆蓋，不修改審查證據。正式 builder、整合驗證及 KV 兩階段讀回均已完成，細節見第三批整合紀錄。
 
-另已新收翰林五堵 113 四下期末卷，可作後續地表搬運圖候選來源；目前尚未轉為 App 活動，不計入上述五題、37 題或已補缺口。新收來源 metadata 已整合，見[第二輪總覽](../../../learning-tasks/grade4-sem1-science-exam1/source/round2-overview.md)。
+另已新收翰林五堵 113 四下期末卷，可作後續地表搬運圖候選來源；第三批當時尚未轉為 App 活動，因此不計入上述五題、37 題或已補缺口；後續 [#134 第四批](../../../docs-dev/grade4-science-study-fourth-batch.md)已有 3 個活動正式發布，自然目前共 40 題。新收來源 metadata 已整合，見[第二輪總覽](../../../learning-tasks/grade4-sem1-science-exam1/source/round2-overview.md)。

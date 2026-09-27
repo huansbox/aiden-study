@@ -1375,8 +1375,8 @@
         "aiden"
       ],
       "audienceLabel": "9 歲；四年級",
-      "status": "in-progress",
-      "statusNote": "六份題目原卷已收，自然 37 題已上線；#134 新增三個活動已核題，正進行發布驗證。正式範圍尚未取得，原卷只存本機。",
+      "status": "complete",
+      "statusNote": "六份題目原卷已收，自然 40 題已上線；#134 完成翰林流水圖與防災三個活動。正式範圍尚未取得，仍有題型缺口；下批須先處理題包容量。原卷只存本機。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/grade4-sem1-science-exam1",
       "source": {
