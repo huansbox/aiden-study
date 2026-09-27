@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/134",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "status": "content_review_complete_pending_release",
+  "countUnit": "complete_activity",
+  "total": 3,
+  "originalAnswerSlots": 5,
+  "baseline": {
+    "revision": 7,
+    "packCount": 94,
+    "scienceActivities": 37,
+    "packBytes": 125022,
+    "remainingBytes": 6050
+  },
+  "proposedSelection": {
+    "total": 3,
+    "originalAnswerSlots": 5,
+    "estimatedIncrementBytes": 5226,
+    "estimatedPackBytes": 130248,
+    "estimatedRemainingBytes": 824
+  },
+  "items": [
+    {
+      "appId": "science-g4s1-round2-cross-wdps-113-s2-final-II-3-v1",
+      "practiceId": "S1-P14",
+      "originalId": "round2-cross-wdps-113-s2-final-II-3",
+      "constituentSourceIds": [
+        "round2-cross-wdps-113-s2-final-II-3"
+      ],
+      "paperId": "round2-cross-wdps-113-s2-final",
+      "questionPage": 1,
+      "printedLocator": "二、選擇題 3",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1c 地震當下行動",
+      "method": "防災行動辨識",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": null,
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "coverageApplied": false,
+      "sourceAdaptation": "保留原題幹、四個選項及原順序；移除紙本作答括號與圈號，改為四選一；不增補原題前提。",
+      "estimatedPackContributionBytes": 866,
+      "reviewStatus": "independently_solved_twice_no_official_answer"
+    },
+    {
+      "appId": "science-g4s1-round2-cross-wdps-113-s2-final-II-5-v1",
+      "practiceId": "S1-P15",
+      "originalId": "round2-cross-wdps-113-s2-final-II-5",
+      "constituentSourceIds": [
+        "round2-cross-wdps-113-s2-final-II-5"
+      ],
+      "paperId": "round2-cross-wdps-113-s2-final",
+      "questionPage": 1,
+      "printedLocator": "二、選擇題 5",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1c 地震保命步驟",
+      "method": "保命動作順序辨識",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": null,
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "coverageApplied": false,
+      "sourceAdaptation": "保留原題幹、四個選項及原順序；移除紙本作答括號與圈號，改為四選一；不增補原題前提。",
+      "estimatedPackContributionBytes": 771,
+      "reviewStatus": "independently_solved_twice_no_official_answer"
+    },
+    {
+      "appId": "science-g4s1-round2-cross-wdps-113-s2-final-III-5-v1",
+      "practiceId": "S1-P16",
+      "originalId": "round2-cross-wdps-113-s2-final-III-5",
+      "constituentSourceIds": [
+        "round2-cross-wdps-113-s2-final-III-5-A",
+        "round2-cross-wdps-113-s2-final-III-5-B",
+        "round2-cross-wdps-113-s2-final-III-5-C"
+      ],
+      "paperId": "round2-cross-wdps-113-s2-final",
+      "questionPage": 2,
+      "printedLocator": "三、綜合題 5（左欄下方；右欄另有重複題號5閱讀題）",
+      "unit": 20,
+      "scope": "core-provisional",
+      "concept": "S1b 流水搬運圖示",
+      "method": "圖示位置與材料推論",
+      "format": "grouped_choice",
+      "answerSlots": 3,
+      "materialKind": "png",
+      "officialAnswerAvailable": false,
+      "status": "content_approved_pending_release",
+      "coverageApplied": false,
+      "sourceAdaptation": "保留原共同題幹與完整手持澆水器、水流、土堆坡度、石粒、A/B/C位置及三格；原圖等尺寸裁切後二值化壓縮，不重畫或增加粒徑；原文三類材料作共用選項，寫國字改為逐格選答。",
+      "estimatedPackContributionBytes": 3589,
+      "authorConcernResolution": "作者原先疑義經獨立解題與統籌裁決後，接受為一般搬運趨勢示意；不宣稱實測、控制變因或無條件必然結果。",
+      "reviewStatus": "independently_solved_twice_no_official_answer"
+    }
+  ],
+  "scopeNote": "原卷為五堵113學年度四下期末翰林自然，依概念比對暫定核心；尚未取得桃子腳正式考試範圍。",
+  "approvedSelection": {
+    "appIds": [
+      "science-g4s1-round2-cross-wdps-113-s2-final-II-3-v1",
+      "science-g4s1-round2-cross-wdps-113-s2-final-II-5-v1",
+      "science-g4s1-round2-cross-wdps-113-s2-final-III-5-v1"
+    ],
+    "total": 3,
+    "originalAnswerSlots": 5
+  }
+}

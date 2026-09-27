@@ -8,10 +8,10 @@
     { unit: 20, key: "@science-topic:S1b", label: "地表變化與保護", subtopics: [
       "S1b 人類活動與地表變動", "S1b 山坡地開發風險", "S1b 水流強度與搬運",
       "S1b 森林資源保護行動", "S1b 植被與坡地保護", "S1b 顆粒大小與搬運",
-      "S1b 地表作用與結果"
+      "S1b 地表作用與結果", "S1b 流水搬運圖示"
     ] },
     { unit: 20, key: "@science-topic:S1c", label: "地震與防災", subtopics: [
-      "S1c 地震與地裂", "S1c 地震與堰塞湖"
+      "S1c 地震與地裂", "S1c 地震與堰塞湖", "S1c 地震當下行動", "S1c 地震保命步驟"
     ] },
     { unit: 21, key: "@science-topic:S2a", label: "水域環境與觀察", subtopics: [
       "S2a 人工水域與觀察場域", "S2a 水生動物與棲地", "S2a 水域調查安全與紀錄",
