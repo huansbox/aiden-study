@@ -1289,8 +1289,8 @@
       "eventDate": "2026-09-29",
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
-      "created": null,
-      "updated": null,
+      "created": "2026-09-29",
+      "updated": "2026-09-29",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -1330,7 +1330,7 @@
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
       "created": "2026-09-15",
-      "updated": "2026-09-16",
+      "updated": "2026-09-29",
       "freshness": {
         "state": "current",
         "checkedAt": null,
