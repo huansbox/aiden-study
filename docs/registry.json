@@ -5,6 +5,7 @@
     { "id": "bingpu", "name": "秉樸", "emoji": "🧒" }
   ],
   "mindMaps": [
+    { "id": "love-sharing", "title": "愛的分享", "date": "2026-09-29", "path": "love-sharing-mind-map/" },
     { "id": "leisure-afternoon", "title": "悠閒午後", "date": "2026-09-15", "path": "leisure-mind-map/" },
     { "id": "early-summer", "title": "初夏雜記", "date": "2026-09-08", "path": "mind-map.html" }
   ],

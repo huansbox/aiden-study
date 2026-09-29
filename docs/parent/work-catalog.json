@@ -1258,6 +1258,46 @@
       }
     },
     {
+      "id": "task:love-sharing",
+      "type": "task",
+      "name": "愛的分享閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/love-sharing",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/love-sharing"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/love-sharing",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../love-sharing-mind-map/"
+        }
+      ],
+      "description": "奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。",
+      "eventDate": "2026-09-29",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:leisure-afternoon",
       "type": "task",
       "name": "悠閒午後閱讀心智圖",
@@ -1266,7 +1306,7 @@
       ],
       "audienceLabel": "9 歲；成人可陪讀",
       "status": "complete",
-      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "statusNote": "已上線；家長於 2026-09-29 回報老師沒有修正。額外驗收依家長決定略過。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/leisure-afternoon",
       "source": {

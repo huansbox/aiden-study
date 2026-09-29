@@ -443,10 +443,23 @@
       ]
     },
     {
+      "id": "love-sharing",
+      "name": "愛的分享閱讀心智圖",
+      "status": "complete",
+      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "eventDate": "2026-09-29",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。",
+      "reusable": "各段主枝必填、成組短詞、陪伴與復健同時保留",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available",
+      "links": [{ "label": "網頁", "url": "../love-sharing-mind-map/" }]
+    },
+    {
       "id": "leisure-afternoon",
       "name": "悠閒午後閱讀心智圖",
       "status": "complete",
-      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "statusNote": "已上線；家長於 2026-09-29 回報老師沒有修正。額外驗收依家長決定略過。",
       "eventDate": "2026-09-15",
       "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
       "description": "五枝放射圖、各段重點保留、iPad 選詞。",

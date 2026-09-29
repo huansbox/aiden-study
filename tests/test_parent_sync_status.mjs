@@ -548,8 +548,10 @@ test("returning from preview preserves the selected child and maintenance opens 
 
 test("家長心智圖顯示最新索引文章，僅控制顯示、不再編輯舊篇名網址", async () => {
   const registry = JSON.parse(source("registry.json"));
-  registry.mindMaps.unshift({ id: "older", title: "較舊文章", date: "2026-08-01", path: "old/" });
-  registry.mindMaps.push({ id: "newer", title: "本週新文章", date: "2026-09-22", path: "new/" });
+  registry.mindMaps = [
+    { id: "older", title: "較舊文章", date: "2026-08-01", path: "old/" },
+    { id: "newer", title: "本週新文章", date: "2026-09-22", path: "new/" },
+  ];
   const h = await page({ registry });
   await h.ready();
   assert.match(h.root.innerHTML, /最新文章：本週新文章/);
