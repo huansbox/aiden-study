@@ -124,7 +124,7 @@ test("EMU3000 與 R200 各在 12 包、36 組完成，剩餘包留給下一件�
   assert.equal(C.PACK_COUNTS.plane,14);
 });
 test("12 包車型拒絕第 13、14 包，即使持久資料意外含有該包授權",()=>{
-  for(const modelId of ["emu3000","r200"]){
+  for(const modelId of ["emu3000","r200","700t","n700s"]){
     let state=C.apply(C.empty(),{type:"select-model",modelId});
     for(const index of [12,13]){
       const grant={id:`invalid-${index}`,buildId:modelId,packIndex:index,date:"2026-09-01",kind:"first"};
@@ -134,6 +134,24 @@ test("12 包車型拒絕第 13、14 包，即使持久資料意外含有該包�
     assert.deepEqual(state.builds[0].placed,[]);
     assert.equal(state.builds[0].completedAt,null);
   }
+});
+test("五台列車用 62 包完成 186 組，剩下 1 包不分配並保留展示",()=>{
+  let state=C.empty();
+  state.grants=Array.from({length:63},(_,i)=>({id:`grant-${i}`,date:"2026-09-01",kind:"first",buildId:null,packIndex:null}));
+  for(const [modelId,packs] of [["e500",14],["emu3000",12],["r200",12],["700t",12],["n700s",12]]){
+    state=C.apply(state,{type:"select-model",modelId});
+    const assigned=state.grants.filter(g=>g.buildId===modelId);
+    assert.equal(assigned.length,packs,`${modelId} pack allocation`);
+    for(const grant of assigned)for(let n=1;n<=3;n++)
+      state=C.apply(state,{type:"place",grantId:grant.id,buildId:modelId,packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${n}`});
+    const build=state.builds.find(b=>b.modelId===modelId);
+    assert.equal(build.placed.length,packs*3);
+    assert.ok(build.completedAt);
+    state=C.apply(state,{type:"display",buildId:build.id,displayed:true});
+  }
+  assert.equal(state.builds.reduce((count,build)=>count+build.placed.length,0),186);
+  assert.equal(state.grants.filter(g=>!g.buildId).length,1);
+  assert.deepEqual(C.snapshot(state).displayedBuildIds,["e500","emu3000","r200","700t","n700s"]);
 });
 test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>{
   const dir=await mkdtemp(join(tmpdir(),"aiden-collection-"));

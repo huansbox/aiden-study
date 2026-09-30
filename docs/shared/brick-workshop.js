@@ -26,6 +26,7 @@
         (step.parts || []).map((part) => ({ ...part, packIndex })),
       )
       .sort((left, right) => (left.z || 0) - (right.z || 0));
+  const catalogTitle = () => global.KidsBrickModels?.title || "拼裝系列";
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
   const partArtwork = (part, placed, complete = false) => {
     const peers = part.occlusionPeers || [];
@@ -233,14 +234,14 @@
           <div class="brick-series-complete__models">${models
             .map((model) => thumbnail(model.id, { complete: true, ghosts: false }))
             .join("")}</div>
-          <p class="brick-kicker">${escapeHtml(models[0].series || "拼裝系列")}</p>
+          <p class="brick-kicker">${escapeHtml(catalogTitle())}</p>
           <h2>這個系列目前的作品都收集完成了</h2>
           <p>作品已收進收藏室。${unassigned ? `剩下的 ${unassigned} 包` : "之後拿到的拼裝包"}會留在零件盒，等有新作品再使用。</p>
           <button type="button" data-action="view" data-view="shelf">回收藏室看看</button>
         </section>`;
       return `${notice}<section class="brick-picker" aria-labelledby="brick-picker-title">
         <div class="brick-picker__intro">
-          <p class="brick-kicker">${escapeHtml(models[0]?.series || "拼裝系列")} · 零件盒有 ${unassigned} 包</p>
+          <p class="brick-kicker">${escapeHtml(catalogTitle())} · 零件盒有 ${unassigned} 包</p>
           <h2 id="brick-picker-title">這次想拼哪一台？</h2>
           <p>選一台喜歡的，今天就開始拼。每完成一包，作品會再多一點。</p>
         </div>
@@ -363,7 +364,7 @@
           ${thumbnail(model.id, { complete: true, ghosts: false, className: "brick-complete__model" })}
           <p class="brick-kicker">作品完成</p>
           <h2>${escapeHtml(model.title)}已經可以上展示架了</h2>
-          ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(model.series || "這個系列")}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
+          ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(catalogTitle())}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
           <div class="brick-complete__actions">
             <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true">放上展示架</button>
             ${global.KidsBrickCelebration?.supports(model) ? '<button type="button" class="secondary brick-celebration-replay" data-action="celebration-replay">再開一次</button>' : ""}
@@ -463,7 +464,7 @@
       const builds = snapshot.builds || [];
       const models = global.KidsBrickModels?.models || [];
       return `<section class="brick-catalog">
-        <div class="brick-section-heading"><div><p class="brick-kicker">第一系列</p><h2>${escapeHtml(models[0]?.series || "拼裝系列")}</h2></div><span>${models.length} 件作品</span></div>
+        <div class="brick-section-heading"><div><p class="brick-kicker">作品圖鑑</p><h2>${escapeHtml(catalogTitle())}</h2></div><span>${models.length} 件作品</span></div>
         <div class="brick-catalog-grid">${models
           .map((model) => {
             const owned = builds.filter(

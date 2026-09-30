@@ -7,13 +7,15 @@ const definitions = {
  e500: {title:'台鐵 E500 型電力機車', packs:14, create:createE500Model},
  emu3000: {title:'台鐵 EMU3000 型電聯車', packs:12, create:async material=>(await import('./model-emu3000.js')).createEmu3000Model(material)},
  r200: {title:'台鐵 R200 型柴電機車', packs:12, create:async material=>(await import('./model-r200.js')).createR200Model(material)},
+ '700t': {title:'台灣高鐵 700T', series:'臺灣高速鐵路', packs:12, create:async material=>(await import('./model-700t.js')).create700TModel(material)},
+ n700s: {title:'日本新幹線 N700S', series:'日本新幹線', packs:12, create:async material=>(await import('./model-n700s.js')).createN700SModel(material)},
 };
 const requested = new URLSearchParams(location.search).get('model') || 'e500';
 const modelId = Object.hasOwn(definitions, requested) ? requested : 'e500';
 const definition = definitions[modelId], total = definition.packs * 3;
 document.title = definition.title + '積木模型';
 document.querySelector('h1').textContent = '一包一包，拼出 ' + modelId.toUpperCase();
-document.querySelector('#model-description').textContent = `${definition.packs} 包、${total} 組，逐步加上輪子、車身與車頂。${modelId === 'emu3000' ? 'EMU3000 以一節先頭車呈現。' : ''}`;
+document.querySelector('#model-description').textContent = `${definition.packs} 包、${total} 組，逐步加上輪子、車身與車頂。${['emu3000','700t','n700s'].includes(modelId) ? '以一節先頭車呈現。' : ''}`;
 document.querySelector('#progress').max = total;
 document.querySelector('[data-count="42"]').dataset.count = total;
 document.querySelector('#celebration-link').href = './celebration.html?model=' + modelId;
@@ -60,7 +62,7 @@ document.querySelectorAll('[data-count]').forEach(b=>b.addEventListener('click',
 new ResizeObserver(resize).observe(mount);resize();home();setCount(total);
 controls.addEventListener('change',()=>renderer.render(scene,camera));
 renderer.setAnimationLoop(()=>controls.update());
-const descriptor={id:modelId,title:definition.title,series:'臺灣火車系列',viewBox:'0 0 800 500',steps:[]};
+const descriptor={id:modelId,title:definition.title,series:definition.series||'臺灣火車系列',viewBox:'0 0 800 500',steps:[]};
 assemblyGroups.forEach((g,i)=>{if(i%3===0)descriptor.steps.push({title:g.userData.packTitle,parts:[]});descriptor.steps.at(-1).parts.push({id:g.userData.id,name:g.userData.name||g.name,z:g.userData.z});});
 window.trainArt={renderer,scene,camera,model,assemblyGroups,descriptor,home,setCount,
  renderSelection(indices,{occludeWith=[]}={}){

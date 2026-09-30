@@ -22,7 +22,7 @@ export async function collectionRuntime({ persist } = {}) {
       const url=new URL(request.url);
       if(url.pathname==="/__collection_fixture") {
         const {child,days}=await request.json();
-        if(!["aiden","bingpu"].includes(child)||!Number.isInteger(days)||days<1||days>42)return new Response("invalid fixture",{status:400});
+        if(!["aiden","bingpu"].includes(child)||!Number.isInteger(days)||days<1||days>90)return new Response("invalid fixture",{status:400});
         return Response.json(await env.COLLECTIONS.getByName(child).seed(days));
       }
       return worker.fetch(request,env,ctx);

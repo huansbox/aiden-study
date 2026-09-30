@@ -4,26 +4,29 @@ import test from "node:test";
 import vm from "node:vm";
 
 const context = vm.createContext({});
-for (const name of ["brick-e500.js", "brick-emu3000.js", "brick-r200.js", "brick-models.js"]) {
+for (const name of ["brick-e500.js", "brick-emu3000.js", "brick-r200.js", "brick-700t.js", "brick-n700s.js", "brick-models.js"]) {
   const source = readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
   vm.runInContext(source, context);
 }
 const catalog = context.KidsBrickModels;
 vm.runInContext(readFileSync(new URL("../docs/shared/collection-core.js", import.meta.url), "utf8"), context);
 
-test("catalog offers three Taiwan trains and preserves legacy model identities", () => {
+test("catalog offers five trains and preserves legacy model identities", () => {
   assert.equal(catalog.version, 1);
+  assert.equal(catalog.title, "積木列車收藏");
   assert.deepEqual(
     Array.from(catalog.models, (model) => model.id),
-    ["e500", "emu3000", "r200"],
+    ["e500", "emu3000", "r200", "700t", "n700s"],
   );
-  assert.equal(catalog.models[0].series, "臺灣火車系列");
+  assert.deepEqual(Array.from(catalog.models, (model) => model.series), [
+    "臺灣火車系列", "臺灣火車系列", "臺灣火車系列", "臺灣高速鐵路", "日本新幹線",
+  ]);
   assert.deepEqual(Array.from(catalog.legacyModels, (model) => model.id), ["car", "train", "plane"]);
   assert.notEqual(catalog.get("train"), catalog.get("e500"));
 
   for (const model of [...catalog.models, ...catalog.legacyModels]) {
     assert.equal(model.viewBox, "0 0 800 500");
-    const packs = ["emu3000", "r200"].includes(model.id) ? 12 : 14;
+    const packs = catalog.models.includes(model) && model.id !== "e500" ? 12 : 14;
     assert.equal(context.KidsCollectionCore.PACK_COUNTS[model.id], packs, `${model.id} server and artwork agree`);
     assert.equal(model.steps.length, packs, `${model.id} pack count`);
     assert.equal(
@@ -51,7 +54,7 @@ test("all published and legacy parts expose touch-friendly target geometry and i
   const allParts = allModels.flatMap((model) =>
     model.steps.flatMap((step) => step.parts),
   );
-  assert.equal(allParts.length, 240);
+  assert.equal(allParts.length, 312);
 
   for (const model of allModels) {
     const names = new Set();

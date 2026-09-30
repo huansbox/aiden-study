@@ -12,7 +12,7 @@ const metadataFile = path.resolve(process.argv[3] || path.join(repository, "docs
 const outputDirectory = path.resolve(process.argv[2] || path.join(repository, ".scratch/e500-sprite-qa"));
 const assetDirectory = path.dirname(metadataFile);
 const model = JSON.parse(await fs.readFile(metadataFile, "utf8"));
-assert.ok(["e500", "emu3000", "r200"].includes(model.id));
+assert.ok(["e500", "emu3000", "r200", "700t", "n700s"].includes(model.id));
 assert.equal(model.viewBox, "0 0 800 500");
 assert.equal(model.steps.length, model.id === "e500" ? 14 : 12);
 assert.ok(Number.isInteger(model.scale) && model.scale > 0);
