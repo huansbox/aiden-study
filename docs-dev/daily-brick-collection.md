@@ -2,7 +2,7 @@
 
 主規格 [#110](https://github.com/huansbox/aiden-study/issues/110)，實作拆分為每日目標 [#111](https://github.com/huansbox/aiden-study/issues/111)、拼裝 [#112](https://github.com/huansbox/aiden-study/issues/112) 與整合驗收 [#113](https://github.com/huansbox/aiden-study/issues/113)。
 
-目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊。2026-09-26 新增的 700T／N700S 尚待發布；下列使用說明描述包含這兩台的候選版本。主規格及三個原實作 issues 已結案，歷史驗收紀錄保留當時狀態。
+目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊。700T／N700S 已於 2026-09-30 透過 [PR #127](https://github.com/huansbox/aiden-study/pull/127) 合併及發布；下列使用說明對應正式版本。主規格及三個原實作 issues 已結案，歷史驗收紀錄保留當時狀態。
 
 ## 使用方式
 
@@ -184,3 +184,11 @@ CDP 測試的 touch drag 按畫面 frame 分送移動，完成後保留 500 ms �
 - 本次尚未合併或部署。自動化採 Chromium 的 Pad 尺寸及 touch input；未用正式家庭資料，亦未做實體 iPad 驗收。
 
 ![五台列車完成收藏](highspeed-trains-collection-preview.png)
+
+## 2026-09-30 高速列車正式發布
+
+- 整合最新主線 `b3971e6` 後，以 `a94cc95` 完成驗收。Node 全套 770 項、Python 271 項通過，1 項原有略過；重新執行 25 條完整收藏 E2E 與 14 條家長試拼 E2E 均通過，五台共 186 組經隔離 SQLite DO 與實際 UI 操作完成。獨立唯讀 review 未發現實質問題。
+- 14:40（臺灣時間）先部署 Worker `aiden-kids-sync`，版本 `c0b46490-a7ae-42b6-8e54-032b60499579` 承接 100% 流量；沿用既有 KV、SQLite Durable Object 與家庭登入，不需資料遷移。14:41 合併 PR #127 為 `9ea93db`，作品目錄更新為 `2131e99`。
+- 主線 [test](https://github.com/huansbox/aiden-study/actions/runs/36679538399)、[work-catalog](https://github.com/huansbox/aiden-study/actions/runs/36679538409) 與 [GitHub Pages](https://github.com/huansbox/aiden-study/actions/runs/36679567075) 全數成功。首頁 release hash 為 `9e9b5b4248aaa72d0b31171f9245bbf01851e35a0d8f22eb6944592c5a2c0d4b`。
+- 14:49 從正式 HTTPS 站逐檔核對 357 個檔案（含全部 338 張 PNG，共 15,572,387 bytes），SHA-256 均與發布 commit 一致。未登入的 session、收藏與題庫 API 回傳 401／`no-store`；正式家長試拼可載入兩台新車並完成最後一組，N700S 六秒慶祝可正常結束，瀏覽器無 JavaScript 錯誤。
+- 正式環境檢查僅使用公開素材、未登入 API 與獨立家長示範頁，未讀寫孩子的學習或收藏紀錄。自動化採 Chromium 觸控；實體 iPad 與孩子單包操作時間仍未實測。
