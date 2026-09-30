@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-27",
+  "purpose": "#129 第二輪跨出版社原卷來源與題型缺口；非正式考試範圍或 App 題數",
+  "target_scope": {
+    "school": "新北市立桃子腳國民中小學國小部",
+    "academic_year": 115,
+    "grade": 4,
+    "semester": 1,
+    "exam": "第一次定期評量",
+    "publisher": "康軒",
+    "formal_range": "尚未取得正式範圍",
+    "comparison_only": true
+  },
+  "collected_question_papers": [
+    {
+      "paper_id": "round2-cross-wdps-113-s2-final",
+      "school": "基隆市五堵國民小學",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 2,
+      "exam": "期末評量",
+      "subject": "自然科",
+      "target_exam_match": false,
+      "comparison_basis": "相同地表物質、地表變動與地震防災概念；不得稱為四上第一次段考原卷",
+      "publisher": "翰林",
+      "publisher_evidence": {
+        "kind": "同校同學年度教科書選用表",
+        "url": "https://king.kl.edu.tw/course/file/164/%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%9C%83%E8%AD%B0.pdf",
+        "locator": "PDF 第 8 頁：自然列 × 四年級欄＝翰林",
+        "local_reference": "source/private/round2-cross/wdps-113-books.pdf",
+        "visual_reference": "source/private/round2-cross/wdps-113-books-p8.png",
+        "bytes": 3148621,
+        "sha256": "012B03C9B0F64D479C5750F712F315CDA430F41AE67D53135C3D690FE0A9A512",
+        "pdf_magic": "%PDF-",
+        "pages": 8
+      },
+      "question_source_url": "https://oldwdps.kl.edu.tw/docs/file/314/113%E5%9B%9B%E4%B8%8B%E6%9C%9F%E6%9C%AB%E8%87%AA%E7%84%B6.pdf",
+      "question_file": "source/papers/round2-cross-wdps-113-s2-final-q.pdf",
+      "question_pdf": {
+        "bytes": 307615,
+        "sha256": "D2F3DCDA3E1652CE9C4AA3A626BB55ADD428DAF1310CF2CF3D492C8991BB9027",
+        "pdf_magic": "%PDF-",
+        "pages": 2,
+        "page_size": "A3",
+        "page_review": [
+          {"pdf_page": 1, "visual_reference": "source/private/round2-cross/wdps-113-q-1.png", "result": "卷首學年／學期／年級／科目、雙欄題號與選項可辨"},
+          {"pdf_page": 2, "visual_reference": "source/private/round2-cross/wdps-113-q-2.png", "result": "共用代號、地表搬運與堆積圖、各題號可辨"}
+        ]
+      },
+      "answer": {
+        "official_source_found": false,
+        "identity": "本輪未找到校方官方答案原件；不得將網路或 AI 解答稱為官方答案",
+        "local_file": null,
+        "verified_answer_count": 0
+      },
+      "concepts_and_item_locations": [
+        {"topic": "S1a 地表材料與特徵", "items": ["是非 8", "選擇 9", "綜合 4 後半"], "approaches": ["材料形成與特徵判斷", "材料比較"]},
+        {"topic": "S1b 風、水、人與地表變動", "items": ["是非 1、2、6", "選擇 2、8", "綜合 3", "綜合 4 前半", "綜合 5"], "approaches": ["植被與侵蝕因果", "河水混濁原因", "地貌成因分類", "崩塌條件判斷", "圖示推論水流搬運與堆積"]},
+        {"topic": "S1c 地震影響與防災", "items": ["選擇 3、4、5"], "approaches": ["當下行動辨識", "災害類型辨識", "保命動作順序"]},
+        {"topic": "S2a 水域型態與調查", "items": [], "approaches": []},
+        {"topic": "S2b 水生植物與動物適應", "items": [], "approaches": []},
+        {"topic": "S2c 人類影響與水域保護", "items": [], "approaches": []}
+      ],
+      "item_cautions": [
+        {"item": "是非 9", "status": "隔離待核", "reason": "地震搖晃當下處理火源的優先順序與消防署就地掩護指引不一致，不納入本批題包"},
+        {"item": "選擇 4", "status": "待核", "reason": "跨災害類型，超出地表單元核心的部分需確認"},
+        {"item": "是非 6、選擇 8、綜合 3", "status": "待核", "reason": "在地地貌成因與海岸工程效果需查實，不能只依卷面認定科學正確"},
+        {"item": "綜合 5", "status": "圖文相依", "reason": "保留圖示和共同條件；這是搬運／堆積推論，非控制變因實驗"}
+      ],
+      "later_or_out_of_scope": "電路、能源與發電題不屬本輪暫定核心；卷內無水域生物單元；未見月亮／光影題。"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "jdps-113-s2-midterm",
+      "status": "可讀未採",
+      "school": "桃園市桃園區建德國小",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 2,
+      "exam": "期中定期評量",
+      "publisher": "康軒",
+      "publisher_evidence_url": "https://www.jdps.tyc.edu.tw/modules/tadnews/index.php?files_sn=13766&op=tufdl",
+      "question_url": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?cat_sn=734&cfsn=4183&name=113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%BA%8C%E5%AD%B8%E6%9C%9F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F.pdf&op=dlfile",
+      "result": "官方原卷可下載，2 頁，卷首身分與文字可讀；相關三-2、四-1、四-2、六-2、六-4、六-5，偏水域分類／植物及一般防災，未見地表控制變因實驗；與已收卷型態多重疊，故不列新收。月亮／光影須隔離。",
+      "private_candidate": "source/private/round2-cross/jdps-113-s2-mid-q-candidate.pdf"
+    },
+    {
+      "id": "taes-109-s2-final",
+      "status": "概念不相符",
+      "school": "桃園市同安國小",
+      "academic_year": 109,
+      "grade": 4,
+      "semester": 2,
+      "exam": "期末",
+      "publisher": "翰林（卷面）",
+      "question_url": "https://www.taes.tyc.edu.tw/exam/g15q?file=1090202%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E6%9C%AB%E9%A1%8C%E7%9B%AE%E5%8D%B7.pdf",
+      "answer_url": "https://www.taes.tyc.edu.tw/exam/g15a?file=1090202%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E6%9C%9F%E6%9C%AB%E8%A7%A3%E7%AD%94%E5%8D%B7.pdf",
+      "result": "官方題卷與答案連結回應正常，但卷內主題為毛細現象、連通管、光等，與暫定 S1／S2 概念不符；不因出版社吻合而採收。"
+    },
+    {
+      "id": "smps-114-s1-exam1",
+      "status": "來源受限",
+      "school": "基隆市深美國小",
+      "publisher": "康軒（候選資訊；未作本輪卷面覆核）",
+      "question_url": "https://smps.kl.edu.tw/images/files/smps012/%E8%87%AA.pdf",
+      "result": "前輪與本輪一般 HTTP 下載均在 TLS 握手失敗（SEC_E_ILLEGAL_MESSAGE）；無可驗原卷，不計入收卷，不再重試同一入口。"
+    },
+    {
+      "id": "hses-112-s1-exam1",
+      "status": "來源受限",
+      "school": "臺南市和順國小",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "question_url": "https://www.hses.tn.edu.tw/modules/tad_uploader/index.php?cat_sn=190&cfsn=1020&name=112-01%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A9%95%E9%87%8F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "answer_url": "https://www.hses.tn.edu.tw/modules/tad_uploader/index.php?cat_sn=190&cfsn=1019&name=112-01%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A9%95%E9%87%8F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E8%A9%95%E9%87%8F%E7%AD%94%E6%A1%88%E5%8D%B7.pdf&op=dlfile",
+      "result": "題卷與答案的 HTTPS 下載遇憑證主體不符（SEC_E_WRONG_PRINCIPAL），HTTP 回 404；搜尋索引可讀不等於原件已取得，出版社仍 unknown，不計入收卷。"
+    },
+    {
+      "id": "baps-112-s1-plan",
+      "status": "非原卷",
+      "school": "臺北市博愛國小",
+      "result": "既有翰林課程計畫僅能證明教學安排；沒有學校考卷原件，不計入已收。"
+    }
+  ],
+  "counts": {
+    "new_official_question_papers": 1,
+    "new_official_question_pages": 2,
+    "new_official_answer_papers": 0,
+    "publisher_verified_hanlin_papers": 1,
+    "publisher_verified_nani_papers": 0,
+    "new_app_activities": 0,
+    "formal_exam_range_verified": false
+  }
+}

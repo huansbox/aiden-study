@@ -3,6 +3,226 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "nativecamp-2026-09-21",
+      "name": "Native Camp 2026-09-21 Alex",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-21",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "願望、交換、借物、動作與工作計畫的完整句",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-21"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-20",
+      "name": "Native Camp 2026-09-20 Kyla",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-20",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "需求、用途、買賣、故事順序與原因",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-20"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-19-zibuyile",
+      "name": "Native Camp 2026-09-19 Zibuyile",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-19",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "水果特徵、所有權視角與完整數量問答",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19-zibuyile"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-19",
+      "name": "Native Camp 2026-09-19 Edon",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-19",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "故事預測、能力、感受原因、近遠與寵物描述",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-18",
+      "name": "Native Camp 2026-09-18 Zeus",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "eventDate": "2026-09-18",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "食物、完整問答、故事順序、數量與分享理由",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-18"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-26",
+      "name": "Native Camp 2026-09-26 Danielle",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "eventDate": "2026-09-26",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "住家描述、否定附和、理由、喜好與條件句",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-26"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-25",
+      "name": "Native Camp 2026-09-25 Edon",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "eventDate": "2026-09-25",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "動物與顏色描述、主題預測、尾音及存在句",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-25"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-24",
+      "name": "Native Camp 2026-09-24 Mia",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "eventDate": "2026-09-24",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "野餐需求、動作、交換與偏好的完整句",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-24"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-23",
+      "name": "Native Camp 2026-09-23 Bianca",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "eventDate": "2026-09-23",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "工作與需求、讀取線索及現在式完整問答",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-23"
+        }
+      ]
+    },
+    {
+      "id": "nativecamp-2026-09-22",
+      "name": "Native Camp 2026-09-22 Edon",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "eventDate": "2026-09-22",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "寵物、朋友介紹、理由與完整句描述",
+      "reusable": "Build／Change／Fix、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-22"
+        }
+      ]
+    },
+    {
       "id": "nativecamp-2026-09-12-mel",
       "name": "Native Camp 2026-09-12 Mel",
       "status": "complete",
@@ -223,10 +443,23 @@
       ]
     },
     {
+      "id": "love-sharing",
+      "name": "愛的分享閱讀心智圖",
+      "status": "complete",
+      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "eventDate": "2026-09-29",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。",
+      "reusable": "各段主枝必填、成組短詞、陪伴與復健同時保留",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available",
+      "links": [{ "label": "網頁", "url": "../love-sharing-mind-map/" }]
+    },
+    {
       "id": "leisure-afternoon",
       "name": "悠閒午後閱讀心智圖",
       "status": "complete",
-      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "statusNote": "已上線；家長於 2026-09-29 回報老師沒有修正。額外驗收依家長決定略過。",
       "eventDate": "2026-09-15",
       "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
       "description": "五枝放射圖、各段重點保留、iPad 選詞。",
@@ -258,7 +491,7 @@
     {
       "id": "grade4-sem1-science-exam1",
       "name": "四上第一次段考自然候選卷",
-      "status": "complete", "statusNote": "首批四卷與一份校方答案已收集，來源及逐題 metadata 通過獨立複核；正式範圍與答案正確性待核，原卷只存本機。",
+      "status": "complete", "statusNote": "六份題目原卷已收，自然 40 題已上線；#134 完成翰林流水圖與防災三個活動。正式範圍尚未取得，仍有題型缺口；下批須先處理題包容量。原卷只存本機。",
       "eventDate": null,
       "audience": ["aiden"], "audienceLabel": "9 歲；四年級",
       "description": "桃子腳第一次段考前，依地表與水生環境概念篩選歷屆自然卷。",

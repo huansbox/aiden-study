@@ -1,0 +1,1473 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-26",
+  "date": "2026-09-26",
+  "title": "Homes, rooms, and reasons",
+  "concepts": [
+    {
+      "id": "home-locations",
+      "title": "Homes on land and water",
+      "try": [
+        {
+          "id": "home-locations-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Where is the house?",
+          "instruction": "Build a full sentence. Start with The house. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A floating house / water under it",
+            "heading": "Story picture"
+          },
+          "answerText": "The house is on the water.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "house"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "on"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "water"
+            },
+            {
+              "id": "x0",
+              "text": "land"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-try-1-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "home-locations-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now move the house to land. Correct the old claim.",
+          "instruction": "Build a full sentence. Start with The house. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "The house is on the water.",
+            "heading": "Before"
+          },
+          "answerText": "The house is not on the water.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "house"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "not"
+            },
+            {
+              "id": "w4",
+              "text": "on"
+            },
+            {
+              "id": "w5",
+              "text": "the"
+            },
+            {
+              "id": "w6",
+              "text": "water"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-try-2-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "home-locations-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the place.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A house on dry land / no water under it",
+            "heading": "Story picture"
+          },
+          "answerText": "The house is on land.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "house"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "on"
+            },
+            {
+              "id": "w4",
+              "text": "water."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "land."
+            },
+            {
+              "id": "c1",
+              "text": "boat."
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-try-3-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "home-locations-say-1",
+          "prompt": "Where is the house?",
+          "instruction": "The house …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A floating house / water under it",
+            "heading": "Story picture"
+          },
+          "answerText": "The house is on the water.",
+          "accepted": [
+            "It is on the water.",
+            "The house is on water."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-say-1-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "home-locations-say-2",
+          "prompt": "Is the house on the water?",
+          "instruction": "The house …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A house on dry land / no water under it",
+            "heading": "Story picture"
+          },
+          "answerText": "The house is not on the water.",
+          "accepted": [
+            "No, the house is not on the water.",
+            "The house is on land.",
+            "No, it is on land.",
+            "The house is not on water."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-say-2-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "home-locations-say-3",
+          "prompt": "Where are the houses?",
+          "instruction": "The houses …",
+          "scene": {
+            "kind": "word-card",
+            "text": "2 houses on dry land / no water under them",
+            "heading": "Story picture"
+          },
+          "answerText": "The houses are on land.",
+          "accepted": [
+            "They are on land.",
+            "The two houses are on land.",
+            "The houses are not on the water."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-locations-say-3-q.mp3",
+            "answer": "audio/2026-09-26-home-locations-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "negative-either",
+      "title": "Agree with a negative",
+      "try": [
+        {
+          "id": "negative-either-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "You are the same. Agree with Sam.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam: I do not know. / You: do not know",
+            "heading": "Story roles"
+          },
+          "answerText": "I do not know either.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "know"
+            },
+            {
+              "id": "w4",
+              "text": "either"
+            },
+            {
+              "id": "x0",
+              "text": "too"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-try-1-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "negative-either-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now neither person likes rain. Agree with Sam.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I like rain too.",
+            "heading": "Before"
+          },
+          "answerText": "I do not like rain either.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "like"
+            },
+            {
+              "id": "w4",
+              "text": "rain"
+            },
+            {
+              "id": "w5",
+              "text": "either"
+            },
+            {
+              "id": "x0",
+              "text": "too"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-try-2-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "negative-either-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the agreement.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Sam: I do not know. / You: same",
+            "heading": "Story roles"
+          },
+          "answerText": "I do not know either.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "know"
+            },
+            {
+              "id": "w4",
+              "text": "too."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "also."
+            },
+            {
+              "id": "c1",
+              "text": "either."
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-try-3-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "negative-either-say-1",
+          "prompt": "You are the same. Agree with Kim.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Kim: I do not know. / You: do not know",
+            "heading": "Story roles"
+          },
+          "answerText": "I do not know either.",
+          "accepted": [
+            "I do not know either.",
+            "I don’t know either."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-say-1-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "negative-either-say-2",
+          "prompt": "You are the same. Agree with Kim.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Kim: I do not like rain. / You: same",
+            "heading": "Story roles"
+          },
+          "answerText": "I do not like rain either.",
+          "accepted": [
+            "I don’t like rain either.",
+            "I do not like it either.",
+            "I don’t like it either."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-say-2-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "negative-either-say-3",
+          "prompt": "You are the same. Agree with Kim.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Kim: I do not have a boat. / You: no boat",
+            "heading": "Story roles"
+          },
+          "answerText": "I do not have a boat either.",
+          "accepted": [
+            "I don’t have a boat either.",
+            "I do not have one either.",
+            "I don’t have one either."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-negative-either-say-3-q.mp3",
+            "answer": "audio/2026-09-26-negative-either-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "home-rooms",
+      "title": "Tell me about the rooms",
+      "try": [
+        {
+          "id": "home-rooms-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell me about the bedrooms.",
+          "instruction": "Build a full sentence. Start with The house. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 house / bedrooms: 3",
+            "heading": "Story home"
+          },
+          "answerText": "The house has three bedrooms.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "house"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w3",
+              "text": "three"
+            },
+            {
+              "id": "w4",
+              "text": "bedrooms"
+            },
+            {
+              "id": "x0",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-try-1-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "home-rooms-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe both houses together.",
+          "instruction": "Build a full sentence. Start with The houses. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "2 houses / bedrooms in all: 6",
+            "heading": "New picture"
+          },
+          "answerText": "The houses have six bedrooms.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "houses"
+            },
+            {
+              "id": "w2",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "six"
+            },
+            {
+              "id": "w4",
+              "text": "bedrooms"
+            },
+            {
+              "id": "x0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-try-2-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "home-rooms-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 house / bathrooms: 2",
+            "heading": "Story home"
+          },
+          "answerText": "The house has two bathrooms.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "house"
+            },
+            {
+              "id": "w2",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "two"
+            },
+            {
+              "id": "w4",
+              "text": "bathrooms."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "has"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-try-3-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "home-rooms-say-1",
+          "prompt": "Tell me about the bathrooms.",
+          "instruction": "The house …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 house / bathrooms: 2",
+            "heading": "Story home"
+          },
+          "answerText": "The house has two bathrooms.",
+          "accepted": [
+            "It has two bathrooms."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-say-1-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "home-rooms-say-2",
+          "prompt": "Tell me about the studies in both houses.",
+          "instruction": "The houses …",
+          "scene": {
+            "kind": "word-card",
+            "text": "2 houses / studies in all: 2",
+            "heading": "Story homes"
+          },
+          "answerText": "The houses have two studies.",
+          "accepted": [
+            "They have two studies.",
+            "The two houses have two studies in all."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-say-2-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "home-rooms-say-3",
+          "prompt": "Tell me about the bedrooms.",
+          "instruction": "The house …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 house / bedrooms: 4",
+            "heading": "Story home"
+          },
+          "answerText": "The house has four bedrooms.",
+          "accepted": [
+            "It has four bedrooms."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-home-rooms-say-3-q.mp3",
+            "answer": "audio/2026-09-26-home-rooms-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "room-reasons",
+      "title": "Say why you like a room",
+      "try": [
+        {
+          "id": "room-reasons-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Which room do you like, and why?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: kitchen / Reason: cook",
+            "heading": "Story choice"
+          },
+          "answerText": "I like the kitchen because I can cook.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "kitchen"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "I"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "cook"
+            },
+            {
+              "id": "x0",
+              "text": "but"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w5",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w0",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-try-1-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "room-reasons-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now speak for both friends. Give their reason.",
+          "instruction": "Build a full sentence. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two friends / Choice: living room / Reason: play",
+            "heading": "New choice"
+          },
+          "answerText": "We like the living room because we can play.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "living"
+            },
+            {
+              "id": "w4",
+              "text": "room"
+            },
+            {
+              "id": "w5",
+              "text": "because"
+            },
+            {
+              "id": "w6",
+              "text": "we"
+            },
+            {
+              "id": "w7",
+              "text": "can"
+            },
+            {
+              "id": "w8",
+              "text": "play"
+            },
+            {
+              "id": "x0",
+              "text": "likes"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-try-2-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "room-reasons-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Link the room to the reason.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Choice: study / Reason: read",
+            "heading": "Story choice"
+          },
+          "answerText": "I like the study because I can read.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "study"
+            },
+            {
+              "id": "w4",
+              "text": "but"
+            },
+            {
+              "id": "w5",
+              "text": "I"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "read."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "and"
+            },
+            {
+              "id": "c1",
+              "text": "because"
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-try-3-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "room-reasons-say-1",
+          "prompt": "Which room do you like, and why?",
+          "instruction": "I like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: bedroom / Reason: rest",
+            "heading": "Story choice"
+          },
+          "answerText": "I like the bedroom because I can rest.",
+          "accepted": [
+            "I like the bedroom because I can rest there.",
+            "I like the bedroom because it is a place to rest."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-say-1-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "room-reasons-say-2",
+          "prompt": "Which room do you like, and why?",
+          "instruction": "I like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: study / Reason: read",
+            "heading": "Story choice"
+          },
+          "answerText": "I like the study because I can read.",
+          "accepted": [
+            "I like the study because I can read there.",
+            "I like the study because it is a place to read."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-say-2-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "room-reasons-say-3",
+          "prompt": "Which room do both friends like, and why?",
+          "instruction": "We like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two friends / Choice: living room / Reason: play games",
+            "heading": "Story choice"
+          },
+          "answerText": "We like the living room because we can play games.",
+          "accepted": [
+            "We like the living room because we can play games there.",
+            "We like the living room because we can play board games."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-room-reasons-say-3-q.mp3",
+            "answer": "audio/2026-09-26-room-reasons-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "enjoy-activities",
+      "title": "Activities we enjoy",
+      "try": [
+        {
+          "id": "enjoy-activities-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do you enjoy?",
+          "instruction": "Build a full sentence. Start with I enjoy. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: play board games",
+            "heading": "Story choice"
+          },
+          "answerText": "I enjoy playing board games.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "enjoy"
+            },
+            {
+              "id": "w2",
+              "text": "playing"
+            },
+            {
+              "id": "w3",
+              "text": "board"
+            },
+            {
+              "id": "w4",
+              "text": "games"
+            },
+            {
+              "id": "x0",
+              "text": "play"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-try-1-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "enjoy-activities-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now speak about Mia.",
+          "instruction": "Build a full sentence. Start with She. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I enjoy playing board games. / Mia: read books",
+            "heading": "New person"
+          },
+          "answerText": "She enjoys reading books.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "enjoys"
+            },
+            {
+              "id": "w2",
+              "text": "reading"
+            },
+            {
+              "id": "w3",
+              "text": "books"
+            },
+            {
+              "id": "x0",
+              "text": "enjoy"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-try-2-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "enjoy-activities-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: card games",
+            "heading": "Story choice"
+          },
+          "answerText": "I enjoy playing card games.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "enjoy"
+            },
+            {
+              "id": "w2",
+              "text": "play"
+            },
+            {
+              "id": "w3",
+              "text": "card"
+            },
+            {
+              "id": "w4",
+              "text": "games."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "playing"
+            },
+            {
+              "id": "c1",
+              "text": "plays"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-try-3-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "enjoy-activities-say-1",
+          "prompt": "What do you enjoy?",
+          "instruction": "I enjoy …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Your choice: read books",
+            "heading": "Story choice"
+          },
+          "answerText": "I enjoy reading books.",
+          "accepted": [
+            "I enjoy reading."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-say-1-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "enjoy-activities-say-2",
+          "prompt": "What do both friends enjoy?",
+          "instruction": "We enjoy …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two friends / Choice: play card games",
+            "heading": "Story choice"
+          },
+          "answerText": "We enjoy playing card games.",
+          "accepted": [
+            "We both enjoy playing card games."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-say-2-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "enjoy-activities-say-3",
+          "prompt": "What does Tom enjoy?",
+          "instruction": "He …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom / Choice: play board games",
+            "heading": "Story choice"
+          },
+          "answerText": "He enjoys playing board games.",
+          "accepted": [
+            "Tom enjoys playing board games."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-enjoy-activities-say-3-q.mp3",
+            "answer": "audio/2026-09-26-enjoy-activities-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-dangerous",
+      "title": "Tell me when",
+      "try": [
+        {
+          "id": "when-dangerous-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "When can it be dangerous?",
+          "instruction": "Build a full sentence. Start with When. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Road / many cars / danger",
+            "heading": "Story picture"
+          },
+          "answerText": "When there are many cars, it can be dangerous.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "When"
+            },
+            {
+              "id": "w1",
+              "text": "there"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "many"
+            },
+            {
+              "id": "w4",
+              "text": "cars,"
+            },
+            {
+              "id": "w5",
+              "text": "it"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "be"
+            },
+            {
+              "id": "w8",
+              "text": "dangerous"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-try-1-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "when-dangerous-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now there is one fast car. Keep the warning.",
+          "instruction": "Build a full sentence. Start with When. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "When there are many cars, it can be dangerous.",
+            "heading": "Before"
+          },
+          "answerText": "When there is a fast car, it can be dangerous.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "When"
+            },
+            {
+              "id": "w1",
+              "text": "there"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "fast"
+            },
+            {
+              "id": "w5",
+              "text": "car,"
+            },
+            {
+              "id": "w6",
+              "text": "it"
+            },
+            {
+              "id": "w7",
+              "text": "can"
+            },
+            {
+              "id": "w8",
+              "text": "be"
+            },
+            {
+              "id": "w9",
+              "text": "dangerous"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8",
+              "w9"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-try-2-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "when-dangerous-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Road / many cars / danger",
+            "heading": "Story picture"
+          },
+          "answerText": "When there are many cars, it can be dangerous.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "When"
+            },
+            {
+              "id": "w1",
+              "text": "there"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "many"
+            },
+            {
+              "id": "w4",
+              "text": "cars,"
+            },
+            {
+              "id": "w5",
+              "text": "it"
+            },
+            {
+              "id": "w6",
+              "text": "can"
+            },
+            {
+              "id": "w7",
+              "text": "be"
+            },
+            {
+              "id": "w8",
+              "text": "dangerous."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-try-3-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "when-dangerous-say-1",
+          "prompt": "When can it be dangerous?",
+          "instruction": "When …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Road / many cars / danger",
+            "heading": "Story picture"
+          },
+          "answerText": "When there are many cars, it can be dangerous.",
+          "accepted": [
+            "It can be dangerous when there are many cars.",
+            "When there are many cars on the road, it can be dangerous."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-say-1-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "when-dangerous-say-2",
+          "prompt": "When can it be dangerous?",
+          "instruction": "When …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Road / 1 fast car / danger",
+            "heading": "Story picture"
+          },
+          "answerText": "When there is a fast car, it can be dangerous.",
+          "accepted": [
+            "It can be dangerous when there is a fast car.",
+            "When a car is going fast, it can be dangerous."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-say-2-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "when-dangerous-say-3",
+          "prompt": "When can it be dangerous?",
+          "instruction": "When …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Water near houses / many boats / danger",
+            "heading": "Story picture"
+          },
+          "answerText": "When there are many boats, it can be dangerous.",
+          "accepted": [
+            "It can be dangerous when there are many boats.",
+            "When there are many boats near the houses, it can be dangerous."
+          ],
+          "audio": {
+            "question": "audio/2026-09-26-when-dangerous-say-3-q.mp3",
+            "answer": "audio/2026-09-26-when-dangerous-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

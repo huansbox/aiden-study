@@ -1,0 +1,372 @@
+{
+  "lessonId": "2026-09-19",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-19-story-about-try-1-q.mp3",
+      "sha256": "2b58db7ee1d2ab6c53e7015133bdbfe4067f3cfa34d3a12aca714223ef02e84d",
+      "expectedText": "A little bird has no friends and sits alone, so what is this story about?",
+      "recognizedText": "A little bird has no friends and sits alone, so what is this story about?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-try-1-a.mp3",
+      "sha256": "5d46d14c5cb03000fb8b38c93432994ee999cd1b697c558e220d59985d50a2e4",
+      "expectedText": "It is about a lonely bird.",
+      "recognizedText": "It is about a lonely bird."
+    },
+    {
+      "file": "audio/2026-09-19-story-about-try-2-q.mp3",
+      "sha256": "4d72180d073d57835395e3a75692fada00d41e8c9defb03ed8dfbdc059d7c51e",
+      "expectedText": "How can you change the sentence about a lonely bird into a question that starts with Is?",
+      "recognizedText": "How can you change the sentence about a lonely bird into a question that starts with is?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-try-2-a.mp3",
+      "sha256": "999474ad324fe41ca8767c641a8c91d7c168cef0786b876a9c6fcafca7d432e5",
+      "expectedText": "Is it about a lonely bird?",
+      "recognizedText": "Is it about a lonely bird?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-try-3-q.mp3",
+      "sha256": "72c46b2f1f24687870ac5170715eb83d3d7c4d14371bead6cb1fcc35ad4f40de",
+      "expectedText": "A girl finds a lost kitten in this story, so can you fix one word in the sentence about it?",
+      "recognizedText": "A girl finds a lost kitten in this story, so can you fix one word in the sentence about it?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-try-3-a.mp3",
+      "sha256": "66621f665f667e1a9aa86d647a3132a82898bcde14598c8a07ca03b2ea6be26f",
+      "expectedText": "It is about a lost kitten.",
+      "recognizedText": "It is about a lost kitten."
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-1-q.mp3",
+      "sha256": "3623f8eeb399c4f1f73e1a1eade1a61f10a6b3904e932cc7b9e7790ced85b464",
+      "expectedText": "A boy looks under every chair for his red cap, so what do you think the story is about?",
+      "recognizedText": "A boy looks under every chair for his red cap. So what do you think the story is about?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-1-a.mp3",
+      "sha256": "1253f1296bb5ac9cd25f1b8e3575591b0b8b71819b6255e6c81dc51bf5aceea0",
+      "expectedText": "I think it is about a lost cap.",
+      "recognizedText": "I think it is about a lost cap."
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-2-q.mp3",
+      "sha256": "4b12d40facb5c987ade22a58eab11e33d8e55ac355cd9a92bee7d23087acabf6",
+      "expectedText": "How can you ask if the story is about a lonely rabbit?",
+      "recognizedText": "How can you ask if the story is about a lonely rabbit?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-2-a.mp3",
+      "sha256": "782705bee7baac69cdb0029305c015cd43b80c21a0474e156920a2d2a96ef2f4",
+      "expectedText": "Is it about a lonely rabbit?",
+      "recognizedText": "Is it about a lonely rabbit?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-3-q.mp3",
+      "sha256": "8c2d7e2581dbc111963782f2f5cf5affa985cf2d1c7d1ed01bf4aa3c5fb6e722",
+      "expectedText": "Two children meet and start playing together at the park, so what do you think the story is about?",
+      "recognizedText": "Two children meet and start playing together at the park, so what do you think the story is about?"
+    },
+    {
+      "file": "audio/2026-09-19-story-about-say-3-a.mp3",
+      "sha256": "c7473d2a0dfb924b1d32db37e6718a48b8fe72eb8365675a3d1d4d2a130f269a",
+      "expectedText": "I think it is about two new friends.",
+      "recognizedText": "I think it is about two new friends."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-1-q.mp3",
+      "sha256": "082831bf17d386aa3bd681326fe8cb9f5644f947af9f8142e11a2d1ee2b79855",
+      "expectedText": "In this pretend story a rabbit lifts a light box, so how can you tell us what it can do?",
+      "recognizedText": "In this pretend story, a rabbit lifts a light box, so how can you tell us what it can do?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-1-a.mp3",
+      "sha256": "4e4fa874f99279f7ce61b27d26f8420d5967591f29447d92282cdca48ba466ed",
+      "expectedText": "The rabbit can lift the box.",
+      "recognizedText": "The rabbit can lift the box."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-2-q.mp3",
+      "sha256": "ca7ac8ea76f154481b03da0d4b0645c46245fd5c969bff477a3e0c4bd0a78515",
+      "expectedText": "How does the sentence change when the box becomes too heavy for the rabbit to lift?",
+      "recognizedText": "How does the sentence change when the box becomes too heavy for the rabbit to lift?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-2-a.mp3",
+      "sha256": "f9e2fa49da3b4b7550c97e55cbee076c862f01083fe690679d0c49d4f26cb88c",
+      "expectedText": "The rabbit cannot lift the box.",
+      "recognizedText": "The rabbit cannot lift the box."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-3-q.mp3",
+      "sha256": "37268d93440be1685810d6cf00c3e04272e1dcc9e7cf8a4b78cfc9945b64a0d2",
+      "expectedText": "In this pretend story the bird knows where its nest is, so can you fix one word in the sentence?",
+      "recognizedText": "In this pretend story, the bird knows where its nest is, so can you fix one word in the sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-try-3-a.mp3",
+      "sha256": "78bf2d788c4213716942a0bffa2dce2fdec14e91e500e06e4a09a0051b79e7c8",
+      "expectedText": "The bird can find its nest.",
+      "recognizedText": "The bird can find its nest."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-1-q.mp3",
+      "sha256": "2d7a699ff752b3e87c758e2153869285454774e0e3af7d3390ec734fad9abbae",
+      "expectedText": "In this pretend story a rabbit knows the way home, so how can it help the lost duck?",
+      "recognizedText": "In this pretend story, a rabbit knows the way home, so how can it help the lost duck?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-1-a.mp3",
+      "sha256": "e1cb79e6b425d8c7acaf0ced44986f844164a2d7312f5419a5983eacb2eb5bcc",
+      "expectedText": "The rabbit can help the duck.",
+      "recognizedText": "The rabbit can help the duck."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-2-q.mp3",
+      "sha256": "ce011f7956c2f9a71a7da37c9331cc85f814f1680cce6dffa3b0ffa62aa578f3",
+      "expectedText": "In this pretend story the nest is too high for a kitten, so what is the kitten unable to do?",
+      "recognizedText": "In this pretend story, the nest is too high for a kitten, so what is the kitten unable to do?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-2-a.mp3",
+      "sha256": "6458f097a053d19bf7ca5c75a94919a44b920d8057f7bd6582304fe1bb4d9563",
+      "expectedText": "The kitten cannot reach the nest.",
+      "recognizedText": "The kitten cannot reach the nest."
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-3-q.mp3",
+      "sha256": "b48f68a1228a231de9823cbf083c04a0890373782b79183d763c71a6a4b8c370",
+      "expectedText": "Two friends are strong enough to move this box together, so how can you describe what they can do?",
+      "recognizedText": "Two friends are strong enough to move this box together, so how can you describe what they can do?"
+    },
+    {
+      "file": "audio/2026-09-19-can-help-say-3-a.mp3",
+      "sha256": "4288fbf2dd5172741b584e95db54fe048bcff19d8324aa437d5e248df0ec53f6",
+      "expectedText": "They can carry the box together.",
+      "recognizedText": "They can carry the box together."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-1-q.mp3",
+      "sha256": "9f1e717dcc52a02951c7e83265fd4e575227be47a2095c5d2d527589a4985833",
+      "expectedText": "Mia finds her dog and feels happy, so how can you join her feeling and the reason with because?",
+      "recognizedText": "Mia finds her dog and feels happy, so how can you join her feeling and the reason with because?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-1-a.mp3",
+      "sha256": "715b7f62b86afe22361faf5a33673b5c7904f1bd2efdfb4d4888c142bf5f5ba9",
+      "expectedText": "Mia is happy because she finds her dog.",
+      "recognizedText": "Mia is happy because she finds her dog."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-2-q.mp3",
+      "sha256": "59bee6d0bb485f12c0fbe0cdb7596c1759ae7f1eff96ae54dbdc14abf1082399",
+      "expectedText": "How does the sentence change when Mia and Leo find their dog together and both feel happy?",
+      "recognizedText": "How does the sentence change when Mia and Leo find their dog together and both feel happy?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-2-a.mp3",
+      "sha256": "36997c114e6b8a6730478af83ee73b70687889526620a450385a81195cd4d530",
+      "expectedText": "They are happy because they find their dog.",
+      "recognizedText": "They are happy because they find their dog."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-3-q.mp3",
+      "sha256": "e8f35c42c8cbb999fbdf9efa12eb3d49f35e77d571f72a05e63ff7d48b3e7618",
+      "expectedText": "Ben feels sad about his missing toy, so can you fix one word in this sentence?",
+      "recognizedText": "Ben feels sad about his missing toy, so can you fix one word in this sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-try-3-a.mp3",
+      "sha256": "3f5a8b4b21083639d4f3ae3a8945333d014a54d51aeb7861bb985778d3b61154",
+      "expectedText": "Ben is sad because he cannot find his toy.",
+      "recognizedText": "Ben is sad because he cannot find his toy."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-1-q.mp3",
+      "sha256": "5d009718d4b196b78315d445bbd6ea6ee63d71eaad9c424590776d2547cbfc16",
+      "expectedText": "Lily has a new friend and feels happy, so how can you join her feeling and the reason with because?",
+      "recognizedText": "Lily has a new friend and feels happy, so how can you join her feeling and the reason with because?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-1-a.mp3",
+      "sha256": "242b5aa315aa5f21976e6a5114922d6209734fcc865f9663bee49231721a7103",
+      "expectedText": "Lily is happy because she has a new friend.",
+      "recognizedText": "Lily is happy because she has a new friend."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-2-q.mp3",
+      "sha256": "03ce3d0a6b3231a9fe7b73249e6760105298cedb6ff2d778cd595fc3e4018613",
+      "expectedText": "In this pretend story a lion is chasing two rabbits, so how do they feel and why?",
+      "recognizedText": "In this pretend story, a lion is chasing two rabbits. So, how do they feel and why?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-2-a.mp3",
+      "sha256": "59ff914e4a7e28ff6437c7621cea0127f9c9e543135dbeb2ba72b0f254baa122",
+      "expectedText": "They are scared because a lion is chasing them.",
+      "recognizedText": "They are scared, because a lion is chasing them."
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-3-q.mp3",
+      "sha256": "cab5cd42725cb0b15d3e961e1321cf7aa19ca37dc7beb0704b52a394357f6721",
+      "expectedText": "Ben has no one to play with and feels lonely, so how can you join his feeling and the reason with because?",
+      "recognizedText": "Ben has no one to play with and feels lonely, so how can you join his feeling and the reason with because?"
+    },
+    {
+      "file": "audio/2026-09-19-feelings-because-say-3-a.mp3",
+      "sha256": "89b5746d354d1463dc1402e3d3a8356653077ccf0c630d1b82ae72a823ed8577",
+      "expectedText": "Ben is lonely because he has no one to play with.",
+      "recognizedText": "Ben is lonely because he has no one to play with."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-1-q.mp3",
+      "sha256": "030cb95af8a83902dabba79d41ed0d5680ede996f477bf212bb89234d3f196c2",
+      "expectedText": "How can you point to and name the pencil in your hand?",
+      "recognizedText": "How can you point to and name the pencil in your hand?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-1-a.mp3",
+      "sha256": "19cb70bed29cf1c619f0761c776c8fe59fc3607902fa03155799a5c76c3de2bc",
+      "expectedText": "This is a pencil.",
+      "recognizedText": "This is a pencil."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-2-q.mp3",
+      "sha256": "27c2af7b6616bb68ed537bd5a4b94250fe07390726975466a982358b7913f6d4",
+      "expectedText": "How does the sentence change when you point to two pencils far away?",
+      "recognizedText": "How does the sentence change when you point to two pencils far away?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-2-a.mp3",
+      "sha256": "99c694b26d62545f93b46a038981d1ca43f46de49c85b45a47163725bfb44a64",
+      "expectedText": "Those are pencils.",
+      "recognizedText": "Those are pencils."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-3-q.mp3",
+      "sha256": "9322be5df5a38db72631b81d7908cfcd8e28f407d6a66073054b92dabcd4f755",
+      "expectedText": "Two books are right beside you, so can you fix one word to show that they are near you?",
+      "recognizedText": "Two books are right beside you, so can you fix one word to show that they are near you?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-try-3-a.mp3",
+      "sha256": "bd92e614c11da6733c1603d1f0c76a52846ddae260f05b9a6bddb528b566a45e",
+      "expectedText": "These are books.",
+      "recognizedText": "These are books."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-1-q.mp3",
+      "sha256": "d41758fff065663c18ef8675de188c4cce0cc2bad0774d5bf3b875d02a604a61",
+      "expectedText": "How can you point to and name the one book across the room?",
+      "recognizedText": "How can you point to and name the one book across the room?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-1-a.mp3",
+      "sha256": "7f2bfb197838534ae1be1a1a59e06c1bb2bd7ba33954082c162a852f2afcb686",
+      "expectedText": "That is a book.",
+      "recognizedText": "That is a book."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-2-q.mp3",
+      "sha256": "84e881314635cf726d166f5f354ebaceee7846b316312a372ab8acd5d153e184",
+      "expectedText": "How can you point to and name the two oranges in your hands?",
+      "recognizedText": "How can you point to and name the two oranges in your hands?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-2-a.mp3",
+      "sha256": "c465301972d30fed9b88b9e6a44f331e8fe5526880907201e26f17db4c8e1b75",
+      "expectedText": "These are oranges.",
+      "recognizedText": "These are oranges."
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-3-q.mp3",
+      "sha256": "e4529306d790277deb3e17055667905ebcf9f430732a06729ea7bda27f624edc",
+      "expectedText": "How can you point to and name the three birds in the faraway tree?",
+      "recognizedText": "How can you point to and name the three birds in the faraway tree?"
+    },
+    {
+      "file": "audio/2026-09-19-near-far-say-3-a.mp3",
+      "sha256": "16cadfc9b96a39b6b9f7c29935c34b7387d098169013866c778cd3c4fb078742",
+      "expectedText": "Those are birds.",
+      "recognizedText": "Those are birds."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-1-q.mp3",
+      "sha256": "713538787aa352d331eeecc46493bdbd92ae112a831111fee58ba250b8c3e91f",
+      "expectedText": "Pretend you are Sam with a small pet rabbit, so how can you describe your pet starting with I?",
+      "recognizedText": "Pretend you are Sam with a small pet rabbit, so how can you describe your pet starting with I?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-1-a.mp3",
+      "sha256": "900e83f640c1c886f29b7a92c7cd4865234373a666a10ef679ce78bd1c71e3ef",
+      "expectedText": "I have a small rabbit.",
+      "recognizedText": "I have a small rabbit."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-2-q.mp3",
+      "sha256": "2abf60a09797e34f50cf3f2f842604d77096d8f52ddd279bc63d84e8e85fdb06",
+      "expectedText": "How can you change Sam's sentence to tell someone else about his pet, starting with He?",
+      "recognizedText": "How can you change Sam's sentence to tell someone else about his pet, starting with he?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-2-a.mp3",
+      "sha256": "082c4fba896f759fba959c984df915d6aff2bb099d1af06ed85507a545586088",
+      "expectedText": "He has a small rabbit.",
+      "recognizedText": "He has a small rabbit."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-3-q.mp3",
+      "sha256": "50091dd06413059e511eda20692ddbcd3b63104ea4b97bc4da1024fffd1149b7",
+      "expectedText": "Mia and Leo share two green lizards, so can you fix one word in the sentence?",
+      "recognizedText": "Mia and Leo share two green lizards, so can you fix one word in the sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-try-3-a.mp3",
+      "sha256": "68bc6cb15db941263b33307743e663954ed1676a05d14347a098c955eaac7bf5",
+      "expectedText": "They have two green lizards.",
+      "recognizedText": "They have two green lizards."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-1-q.mp3",
+      "sha256": "c167a8cf2bb4518752a4277addf9357c3f59bf8bd389fcf269219560e045d7d7",
+      "expectedText": "Eva's pet is a white kitten, so how can you describe her pet in a full sentence?",
+      "recognizedText": "Eva's pet is a white kitten, so how can you describe her pet in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-1-a.mp3",
+      "sha256": "6a225e9cbc6255aee21b5d91757f0af45bcafbe01955317ec1240ac9c55f8533",
+      "expectedText": "She has a white kitten.",
+      "recognizedText": "She has a white kitten."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-2-q.mp3",
+      "sha256": "fe5209af573190ca2cec5d3648643c47fe3c9e828042c8296089c5fd6a81f97f",
+      "expectedText": "Ben and Kim share two small goldfish, so how can you describe their pets in a full sentence?",
+      "recognizedText": "Ben and Kim share two small goldfish, so how can you describe their pets in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-2-a.mp3",
+      "sha256": "c0311ba93dd5f95ee022850ff907a42f6bf9db2f55bf16f653fca1b1a7fc403e",
+      "expectedText": "They have two small goldfish.",
+      "recognizedText": "They have two small goldfish."
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-3-q.mp3",
+      "sha256": "9a296af60d1dd0bc9b5776269e6d49f16311cf28f64f73607a9d34ccf89869a6",
+      "expectedText": "Pretend you are Max with a big brown pet dog, so how can you describe your pet starting with I?",
+      "recognizedText": "Pretend you are Max with a big brown pet dog. So how can you describe your pet starting with I?"
+    },
+    {
+      "file": "audio/2026-09-19-pet-description-say-3-a.mp3",
+      "sha256": "6d796161793a5882e6c6e09963df51bf3032fa4d67a0ace650939cf3544e1c3e",
+      "expectedText": "I have a big brown dog.",
+      "recognizedText": "I have a big brown dog."
+    }
+  ]
+}

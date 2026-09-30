@@ -32,6 +32,16 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-09-21 Alex](learning-tasks/nativecamp-2026-09-21/) | 願望、交換、借物、動作與工作計畫的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-21) |
+| [Native Camp 2026-09-20 Kyla](learning-tasks/nativecamp-2026-09-20/) | 需求、用途、買賣、故事順序與原因 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-20) |
+| [Native Camp 2026-09-19 Zibuyile](learning-tasks/nativecamp-2026-09-19-zibuyile/) | 水果特徵、所有權視角與完整數量問答 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-19-zibuyile) |
+| [Native Camp 2026-09-19 Edon](learning-tasks/nativecamp-2026-09-19/) | 故事預測、能力、感受原因、近遠與寵物描述 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-19) |
+| [Native Camp 2026-09-18 Zeus](learning-tasks/nativecamp-2026-09-18/) | 食物、完整問答、故事順序、數量與分享理由 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-18) |
+| [Native Camp 2026-09-26 Danielle](learning-tasks/nativecamp-2026-09-26/) | 住家描述、否定附和、理由、喜好與條件句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-26) |
+| [Native Camp 2026-09-25 Edon](learning-tasks/nativecamp-2026-09-25/) | 動物與顏色描述、主題預測、尾音及存在句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-25) |
+| [Native Camp 2026-09-24 Mia](learning-tasks/nativecamp-2026-09-24/) | 野餐需求、動作、交換與偏好的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-24) |
+| [Native Camp 2026-09-23 Bianca](learning-tasks/nativecamp-2026-09-23/) | 工作與需求、讀取線索及現在式完整問答 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-23) |
+| [Native Camp 2026-09-22 Edon](learning-tasks/nativecamp-2026-09-22/) | 寵物、朋友介紹、理由與完整句描述 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-22) |
 | [Native Camp 2026-09-12 Mel](learning-tasks/nativecamp-2026-09-12-mel/) | 天氣與穿著：takes／uses、wearing、is／are 與不規則複數。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-12-mel) |
 | [Native Camp 2026-09-09 Emi](learning-tasks/nativecamp-2026-09-09/) | Who／What 問句、完整介紹、人與動物的一天。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-09) |
 | [Native Camp 2026-09-08 Maria](learning-tasks/nativecamp-2026-09-08/) | 照顧動物、午睡、棲地與故事角色的完整句。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-08) |
@@ -44,6 +54,7 @@
 | [Native Camp 2026-09-16 Edon](learning-tasks/nativecamp-2026-09-16/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-16) |
 | [Native Camp 2026-09-14 Edon](learning-tasks/nativecamp-2026-09-14/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-14) |
 | [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 紙本口說；另供 App 自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-15)、[孩子版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf)、[家長版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf) |
+| [愛的分享閱讀心智圖](learning-tasks/love-sharing/) | 奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。 | [網頁](docs/love-sharing-mind-map/) |
 | [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 五枝放射圖、各段重點保留、iPad 選詞。 | [網頁](docs/leisure-mind-map/) |
 | [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。 | 私用成品 |
 | [四上第一次段考數學候選卷](learning-tasks/grade4-sem1-math-exam1/) | 桃子腳第一次段考前，依概念與實際範圍篩選歷屆數學卷。 | 私用成品 |
@@ -135,9 +146,9 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55 四上數學 U1：歷屆題庫接入 iPad 練習](https://github.com/huansbox/aiden-study/issues/55) 已完成最初六題 private pack、家庭權限自動讀取、獨立 review 與正式發布；[#59](https://github.com/huansbox/aiden-study/issues/59) 再把正式題包擴為 U1～U5 共十四題 rev2；[#60](https://github.com/huansbox/aiden-study/issues/60) 擴為三十題 rev3。[#101](https://github.com/huansbox/aiden-study/issues/101) 沿用相同 runtime，完成 fresh review、正式發布與 canonical private archive，把題包擴為五十七題 rev4，U1～U5 分布為 18／12／5／12／10；正常流程不要求家長傳檔。2026-09-14 的 iPad 操作確認只涵蓋先前 #55 六題流程，不代表五十七題已完成真機實測。[#103 Study 家長試玩](https://github.com/huansbox/aiden-study/issues/103) 新增由家長後台進入的獨立四上數學試玩頁：只在記憶體載入與試答現有 fixed pack，不載入或寫入孩子 Study 進度、題包 cache、同步或家庭累計，也不改題目或發布 contract。後續內容擴題再依[概念／出題方法覆蓋報告](docs-dev/grade4-math-pattern-counts.md)另行決定；`angle-v1` 等新呈現能力保留為未來選項，尚未授權開工。程式保護三下題目與現存進度；已放棄的三下歷史紀錄不再追回。詳見 [家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)、[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)、[執行狀態](wiki/Plan.md) 與 [整合方案](docs-dev/grade4-u1-study-integration-plan.md)。
 
-題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上家庭私人題包已發布 revision 6，共 89 題（數學 U1～U5 57 題、自然 S1～S2 32 題），不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，正式 pack 部署在獨立 Cloudflare KV，由 Study 以家庭連線自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
+題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上家庭私人題包已發布 revision 8，共 97 題（數學 U1～U5 57 題、自然 S1～S2 40 題），不加入 public data；ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，正式 pack 部署在獨立 Cloudflare KV，由 Study 以家庭連線自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。重建與驗證方式見 [`docs-dev/grade4-u1-private-pack-build.md`](docs-dev/grade4-u1-private-pack-build.md)，後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
 
-[#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已完成 20 題內容覆核與 revision 5 正式發布，原數學 57 題逐值維持不變；[自然首批選題](data/study/g4-s1-science-exam1/README.md)與[整合紀錄](docs-dev/grade4-science-study-first-batch.md)保留首批歷史。[#119 第二批](https://github.com/huansbox/aiden-study/issues/119) 新增 12 個完整活動、29 個原卷作答位置，revision 6 共 89 題已正式發布；見[第二批狀態](data/study/g4-s1-science-exam1/second-batch.md)。實體 iPad 尚未驗收，正式第一次定期評量範圍尚未公布。
+[#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已完成 20 題內容覆核與 revision 5 正式發布，原數學 57 題逐值維持不變；[自然首批選題](data/study/g4-s1-science-exam1/README.md)與[整合紀錄](docs-dev/grade4-science-study-first-batch.md)保留首批歷史。[#119 第二批](https://github.com/huansbox/aiden-study/issues/119) 新增 12 個完整活動、29 個原卷作答位置，revision 6 共 89 題已正式發布；見[第二批狀態](data/study/g4-s1-science-exam1/second-batch.md)。[#129 第三批](https://github.com/huansbox/aiden-study/issues/129) 新增 5 個完整活動、13 個原卷作答位置，revision 7 共 94 題已正式發布；見[第三批整合與發布紀錄](docs-dev/grade4-science-study-third-batch.md)。[#134 第四批](https://github.com/huansbox/aiden-study/issues/134) 從翰林卷增加 3 個完整活動、5 個原卷作答格，revision 8 已正式發布；見[第四批整合紀錄](docs-dev/grade4-science-study-fourth-batch.md)。實體 iPad 尚未驗收，尚未取得校方正式範圍。
 
 ```bash
 # PDF 萃取範例

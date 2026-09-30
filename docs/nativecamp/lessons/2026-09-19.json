@@ -1,0 +1,1186 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-19",
+  "date": "2026-09-19",
+  "title": "Friends, feelings and things near us",
+  "concepts": [
+    {
+      "id": "story-about",
+      "title": "What is the story about?",
+      "try": [
+        {
+          "id": "story-about-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What is this story about?",
+          "instruction": "It … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A little bird has no friends. It sits alone.",
+            "heading": "Story card"
+          },
+          "answerText": "It is about a lonely bird.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lonely"
+            },
+            {
+              "id": "w5",
+              "text": "bird"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-story-about-try-1-q.mp3",
+            "answer": "audio/2026-09-19-story-about-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-about-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Ask if this is right.",
+          "instruction": "Is …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: It is about a lonely bird.\nNow: ask a question.",
+            "heading": "Story card"
+          },
+          "answerText": "Is it about a lonely bird?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Is"
+            },
+            {
+              "id": "w1",
+              "text": "it"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lonely"
+            },
+            {
+              "id": "w5",
+              "text": "bird"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-story-about-try-2-q.mp3",
+            "answer": "audio/2026-09-19-story-about-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-about-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story: a girl finds a lost kitten.",
+            "heading": "Story card"
+          },
+          "answerText": "It is about a lost kitten.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "It"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "about"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "lost"
+            },
+            {
+              "id": "w5",
+              "text": "kitten."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-19-story-about-try-3-q.mp3",
+            "answer": "audio/2026-09-19-story-about-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "story-about-say-1",
+          "prompt": "What do you think the story is about?",
+          "instruction": "I think it is about …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A boy cannot find his red cap. He looks under every chair.",
+            "heading": "Story card"
+          },
+          "answerText": "I think it is about a lost cap.",
+          "accepted": [
+            "I think it is about a boy looking for his cap.",
+            "It is about a lost cap.",
+            "It is about a boy looking for his cap."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-story-about-say-1-q.mp3",
+            "answer": "audio/2026-09-19-story-about-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-about-say-2",
+          "prompt": "Ask if this is right.",
+          "instruction": "Is …?",
+          "scene": {
+            "kind": "word-card",
+            "text": "Guess: a lonely rabbit\nAsk a question.",
+            "heading": "Story card"
+          },
+          "answerText": "Is it about a lonely rabbit?",
+          "accepted": [
+            "Is the story about a lonely rabbit?"
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-story-about-say-2-q.mp3",
+            "answer": "audio/2026-09-19-story-about-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-about-say-3",
+          "prompt": "What do you think the story is about?",
+          "instruction": "I think it is about …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two children meet at the park. They play together and become friends.",
+            "heading": "Story card"
+          },
+          "answerText": "I think it is about two new friends.",
+          "accepted": [
+            "I think it is about making friends.",
+            "It is about two new friends.",
+            "It is about two children becoming friends."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-story-about-say-3-q.mp3",
+            "answer": "audio/2026-09-19-story-about-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "can-help",
+      "title": "Can you help?",
+      "try": [
+        {
+          "id": "can-help-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us what the rabbit can do.",
+          "instruction": "The rabbit … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: rabbit / lifts a light box",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit can lift the box.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "rabbit"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "lift"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "box"
+            },
+            {
+              "id": "extra0",
+              "text": "cannot"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-can-help-try-1-q.mp3",
+            "answer": "audio/2026-09-19-can-help-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "can-help-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "The box is too heavy now. Change the sentence.",
+          "instruction": "The rabbit … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The rabbit can lift the box.\nNow: the box is too heavy.",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit cannot lift the box.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "rabbit"
+            },
+            {
+              "id": "w2",
+              "text": "cannot"
+            },
+            {
+              "id": "w3",
+              "text": "lift"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "box"
+            },
+            {
+              "id": "extra0",
+              "text": "can"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-can-help-try-2-q.mp3",
+            "answer": "audio/2026-09-19-can-help-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "can-help-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: bird / able to find its nest",
+            "heading": "Story card"
+          },
+          "answerText": "The bird can find its nest.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "bird"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "finds"
+            },
+            {
+              "id": "w4",
+              "text": "its"
+            },
+            {
+              "id": "w5",
+              "text": "nest."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "finding"
+            },
+            {
+              "id": "c1",
+              "text": "find"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-19-can-help-try-3-q.mp3",
+            "answer": "audio/2026-09-19-can-help-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "can-help-say-1",
+          "prompt": "Tell us what the rabbit can do.",
+          "instruction": "The rabbit can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: rabbit / able to help a lost duck",
+            "heading": "Story card"
+          },
+          "answerText": "The rabbit can help the duck.",
+          "accepted": [
+            "It can help the duck find its way home.",
+            "The rabbit can help the duck find its home.",
+            "The rabbit can show the duck the way home."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-can-help-say-1-q.mp3",
+            "answer": "audio/2026-09-19-can-help-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "can-help-say-2",
+          "prompt": "Tell us what the kitten cannot do.",
+          "instruction": "The kitten cannot …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: kitten / nest too high to reach",
+            "heading": "Story card"
+          },
+          "answerText": "The kitten cannot reach the nest.",
+          "accepted": [
+            "The kitten can't reach the nest.",
+            "It cannot reach the nest.",
+            "It can't reach the nest."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-can-help-say-2-q.mp3",
+            "answer": "audio/2026-09-19-can-help-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "can-help-say-3",
+          "prompt": "Tell us what the two friends can do.",
+          "instruction": "They can …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: two friends / strong enough to carry a box together",
+            "heading": "Story card"
+          },
+          "answerText": "They can carry the box together.",
+          "accepted": [
+            "The two friends can carry the box together.",
+            "They can carry the box.",
+            "The two friends can carry the box."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-can-help-say-3-q.mp3",
+            "answer": "audio/2026-09-19-can-help-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "feelings-because",
+      "title": "Feelings and reasons",
+      "try": [
+        {
+          "id": "feelings-because-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us how Mia feels and why.",
+          "instruction": "Mia … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia (she): happy / finds her dog",
+            "heading": "Story card"
+          },
+          "answerText": "Mia is happy because she finds her dog.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "she"
+            },
+            {
+              "id": "w5",
+              "text": "finds"
+            },
+            {
+              "id": "w6",
+              "text": "her"
+            },
+            {
+              "id": "w7",
+              "text": "dog"
+            },
+            {
+              "id": "extra0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-try-1-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "feelings-because-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now Mia and Leo find their dog. Change the sentence.",
+          "instruction": "They … because … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Mia is happy because she finds her dog.\nNow: Mia + Leo / their dog",
+            "heading": "Story card"
+          },
+          "answerText": "They are happy because they find their dog.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "happy"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "they"
+            },
+            {
+              "id": "w5",
+              "text": "find"
+            },
+            {
+              "id": "w6",
+              "text": "their"
+            },
+            {
+              "id": "w7",
+              "text": "dog"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            },
+            {
+              "id": "extra1",
+              "text": "finds"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-try-2-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "feelings-because-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben (he): sad / cannot find his toy",
+            "heading": "Story card"
+          },
+          "answerText": "Ben is sad because he cannot find his toy.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Ben"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "sad"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "he"
+            },
+            {
+              "id": "w5",
+              "text": "cannot"
+            },
+            {
+              "id": "w6",
+              "text": "finds"
+            },
+            {
+              "id": "w7",
+              "text": "his"
+            },
+            {
+              "id": "w8",
+              "text": "toy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "finding"
+            },
+            {
+              "id": "c1",
+              "text": "find"
+            }
+          ],
+          "answer": {
+            "wordId": "w6",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-try-3-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "feelings-because-say-1",
+          "prompt": "Tell us how Lily feels and why.",
+          "instruction": "Lily … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lily (she): happy / has a new friend",
+            "heading": "Story card"
+          },
+          "answerText": "Lily is happy because she has a new friend.",
+          "accepted": [
+            "She is happy because she has a new friend.",
+            "Lily feels happy because she has a new friend.",
+            "Lily is happy because she made a new friend."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-say-1-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "feelings-because-say-2",
+          "prompt": "Tell us how the rabbits feel and why.",
+          "instruction": "They … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend story: two rabbits / scared / a lion is chasing them",
+            "heading": "Story card"
+          },
+          "answerText": "They are scared because a lion is chasing them.",
+          "accepted": [
+            "The rabbits are scared because a lion is chasing them.",
+            "They feel scared because the lion is chasing them."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-say-2-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "feelings-because-say-3",
+          "prompt": "Tell us how Ben feels and why.",
+          "instruction": "Ben … because …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben (he): lonely / has no one to play with",
+            "heading": "Story card"
+          },
+          "answerText": "Ben is lonely because he has no one to play with.",
+          "accepted": [
+            "He is lonely because he has no one to play with.",
+            "Ben feels lonely because he has no one to play with.",
+            "Ben is lonely because he has no friends to play with."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-feelings-because-say-3-q.mp3",
+            "answer": "audio/2026-09-19-feelings-because-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "near-far",
+      "title": "Near or far?",
+      "try": [
+        {
+          "id": "near-far-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Point to the pencil and name it.",
+          "instruction": "This / That … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "One pencil / in your hand / near you",
+            "heading": "Story card"
+          },
+          "answerText": "This is a pencil.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "pencil"
+            },
+            {
+              "id": "extra0",
+              "text": "That"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-near-far-try-1-q.mp3",
+            "answer": "audio/2026-09-19-near-far-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "near-far-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now there are two pencils far away. Change the sentence.",
+          "instruction": "These / Those … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: This is a pencil.\nNow: two pencils / far away",
+            "heading": "Story card"
+          },
+          "answerText": "Those are pencils.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Those"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "pencils"
+            },
+            {
+              "id": "extra0",
+              "text": "These"
+            },
+            {
+              "id": "extra1",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-near-far-try-2-q.mp3",
+            "answer": "audio/2026-09-19-near-far-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "near-far-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two books / beside you / near you",
+            "heading": "Story card"
+          },
+          "answerText": "These are books.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Those"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "books."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "This"
+            },
+            {
+              "id": "c1",
+              "text": "These"
+            }
+          ],
+          "answer": {
+            "wordId": "w0",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-19-near-far-try-3-q.mp3",
+            "answer": "audio/2026-09-19-near-far-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "near-far-say-1",
+          "prompt": "Point to the book and name it.",
+          "instruction": "This / That …",
+          "scene": {
+            "kind": "word-card",
+            "text": "One book / across the room / far away",
+            "heading": "Story card"
+          },
+          "answerText": "That is a book.",
+          "accepted": [
+            "That's a book."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-near-far-say-1-q.mp3",
+            "answer": "audio/2026-09-19-near-far-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "near-far-say-2",
+          "prompt": "Point to the oranges and name them.",
+          "instruction": "These / Those …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two oranges / in your hands / near you",
+            "heading": "Story card"
+          },
+          "answerText": "These are oranges.",
+          "accepted": [
+            "These are two oranges."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-near-far-say-2-q.mp3",
+            "answer": "audio/2026-09-19-near-far-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "near-far-say-3",
+          "prompt": "Point to the birds and name them.",
+          "instruction": "These / Those …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Three birds / in a faraway tree",
+            "heading": "Story card"
+          },
+          "answerText": "Those are birds.",
+          "accepted": [
+            "Those are three birds."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-near-far-say-3-q.mp3",
+            "answer": "audio/2026-09-19-near-far-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pet-description",
+      "title": "Tell us about a pet",
+      "try": [
+        {
+          "id": "pet-description-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "You are Sam. Tell us about your pet.",
+          "instruction": "I … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend you are Sam / pet: small rabbit",
+            "heading": "Story card"
+          },
+          "answerText": "I have a small rabbit.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "rabbit"
+            },
+            {
+              "id": "extra0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-try-1-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "pet-description-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us about Sam.",
+          "instruction": "He … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: I have a small rabbit.\nSam uses he.",
+            "heading": "Story card"
+          },
+          "answerText": "He has a small rabbit.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "small"
+            },
+            {
+              "id": "w4",
+              "text": "rabbit"
+            },
+            {
+              "id": "extra0",
+              "text": "have"
+            },
+            {
+              "id": "extra1",
+              "text": "I"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-try-2-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "pet-description-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia + Leo / two green lizards together",
+            "heading": "Story card"
+          },
+          "answerText": "They have two green lizards.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            },
+            {
+              "id": "w3",
+              "text": "green"
+            },
+            {
+              "id": "w4",
+              "text": "lizards."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "have"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-try-3-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "pet-description-say-1",
+          "prompt": "Tell us about Eva's pet.",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Eva (she) / pet: white kitten",
+            "heading": "Story card"
+          },
+          "answerText": "She has a white kitten.",
+          "accepted": [
+            "Eva has a white kitten.",
+            "Her pet is a white kitten.",
+            "She's got a white kitten."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-say-1-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "pet-description-say-2",
+          "prompt": "Tell us about the two friends' pets.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ben + Kim / two small goldfish together",
+            "heading": "Story card"
+          },
+          "answerText": "They have two small goldfish.",
+          "accepted": [
+            "Ben and Kim have two small goldfish.",
+            "Their pets are two small goldfish.",
+            "They've got two small goldfish."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-say-2-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "pet-description-say-3",
+          "prompt": "You are Max. Tell us about your pet.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pretend you are Max / pet: big brown dog",
+            "heading": "Story card"
+          },
+          "answerText": "I have a big brown dog.",
+          "accepted": [
+            "My pet is a big brown dog.",
+            "I've got a big brown dog."
+          ],
+          "audio": {
+            "question": "audio/2026-09-19-pet-description-say-3-q.mp3",
+            "answer": "audio/2026-09-19-pet-description-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

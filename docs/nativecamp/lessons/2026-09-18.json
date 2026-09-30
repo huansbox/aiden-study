@@ -1,0 +1,1207 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-18",
+  "date": "2026-09-18",
+  "title": "Food, stories and sharing",
+  "concepts": [
+    {
+      "id": "food-or-object",
+      "title": "What can we eat?",
+      "try": [
+        {
+          "id": "food-or-object-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us what we eat.",
+          "instruction": "We … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Carrots: food / pots: not food"
+          },
+          "answerText": "We eat carrots.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "eat"
+            },
+            {
+              "id": "w2",
+              "text": "carrots"
+            },
+            {
+              "id": "extra",
+              "text": "not"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-try-1-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-or-object-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us about stones.",
+          "instruction": "We … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: carrots / Now: stones, not food"
+          },
+          "answerText": "We do not eat stones.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "eat"
+            },
+            {
+              "id": "w4",
+              "text": "stones"
+            },
+            {
+              "id": "extra",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-try-2-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-or-object-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find and fix one word.",
+          "instruction": "One word changes.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pots: not food"
+          },
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "eat"
+            },
+            {
+              "id": "w4",
+              "text": "pots."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "do"
+            },
+            {
+              "id": "c2",
+              "text": "has"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          },
+          "answerText": "We do not eat pots.",
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-try-3-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "food-or-object-say-1",
+          "prompt": "Tell us what we eat.",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Potatoes: food / stones: not food"
+          },
+          "answerText": "We eat potatoes.",
+          "accepted": [
+            "We can eat potatoes."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-say-1-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-or-object-say-2",
+          "prompt": "Tell us about pots.",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pots: not food"
+          },
+          "answerText": "We do not eat pots.",
+          "accepted": [
+            "We don't eat pots.",
+            "We cannot eat pots."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-say-2-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-or-object-say-3",
+          "prompt": "Compare onions and stones.",
+          "instruction": "We …, but …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Onions: food / stones: not food"
+          },
+          "answerText": "We eat onions, but we do not eat stones.",
+          "accepted": [
+            "We eat onions, but we don't eat stones.",
+            "We can eat onions, but we cannot eat stones."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-or-object-say-3-q.mp3",
+            "answer": "audio/2026-09-18-food-or-object-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "have-any-food",
+      "title": "Ask about food",
+      "try": [
+        {
+          "id": "have-any-food-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us what your group is missing.",
+          "instruction": "We … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Your group / onions: 0"
+          },
+          "answerText": "We do not have any onions.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "have"
+            },
+            {
+              "id": "w4",
+              "text": "any"
+            },
+            {
+              "id": "w5",
+              "text": "onions"
+            },
+            {
+              "id": "extra",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-try-1-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "have-any-food-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now ask Lee's group.",
+          "instruction": "Do you …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Your group: no onions / Ask Lee about onions"
+          },
+          "answerText": "Do you have any onions?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Do"
+            },
+            {
+              "id": "w1",
+              "text": "you"
+            },
+            {
+              "id": "w2",
+              "text": "have"
+            },
+            {
+              "id": "w3",
+              "text": "any"
+            },
+            {
+              "id": "w4",
+              "text": "onions"
+            },
+            {
+              "id": "extra",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-try-2-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "have-any-food-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find and fix one word.",
+          "instruction": "One word changes.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Ask Kim about carrots"
+          },
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Do"
+            },
+            {
+              "id": "w1",
+              "text": "you"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w3",
+              "text": "any"
+            },
+            {
+              "id": "w4",
+              "text": "carrots?"
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            },
+            {
+              "id": "c2",
+              "text": "have"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c2"
+          },
+          "answerText": "Do you have any carrots?",
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-try-3-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "have-any-food-say-1",
+          "prompt": "Ask Kim's group about food.",
+          "instruction": "Do you …?",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Kim's group / food: ?"
+          },
+          "answerText": "Do you have any food?",
+          "accepted": [
+            "Have you got any food?"
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-say-1-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "have-any-food-say-2",
+          "prompt": "Answer for your group.",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Your group / potatoes: 0"
+          },
+          "answerText": "We do not have any potatoes.",
+          "accepted": [
+            "We don't have any potatoes.",
+            "We have no potatoes."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-say-2-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "have-any-food-say-3",
+          "prompt": "Answer for your group.",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Your group / sausages: 3"
+          },
+          "answerText": "We have three sausages.",
+          "accepted": [
+            "We have some sausages.",
+            "Yes, we have three sausages."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-have-any-food-say-3-q.mp3",
+            "answer": "audio/2026-09-18-have-any-food-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "story-parts",
+      "title": "Beginning, middle and end",
+      "try": [
+        {
+          "id": "story-parts-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does the girl do in the middle?",
+          "instruction": "The girl … in the middle. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One girl / 1: get paper / 2: draw a tree / 3: show the picture"
+          },
+          "answerText": "The girl draws a tree in the middle.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "girl"
+            },
+            {
+              "id": "w2",
+              "text": "draws"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "tree"
+            },
+            {
+              "id": "w5",
+              "text": "in"
+            },
+            {
+              "id": "w6",
+              "text": "the"
+            },
+            {
+              "id": "w7",
+              "text": "middle"
+            },
+            {
+              "id": "extra",
+              "text": "draw"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-try-1-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-parts-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now two girls: tell us the ending.",
+          "instruction": "The girls … at the end. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Two girls / 1: get paper / 2: draw a tree / 3: show the picture"
+          },
+          "answerText": "The girls show the picture at the end.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "girls"
+            },
+            {
+              "id": "w2",
+              "text": "show"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "picture"
+            },
+            {
+              "id": "w5",
+              "text": "at"
+            },
+            {
+              "id": "w6",
+              "text": "the"
+            },
+            {
+              "id": "w7",
+              "text": "end"
+            },
+            {
+              "id": "extra",
+              "text": "shows"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-try-2-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-parts-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find and fix one word.",
+          "instruction": "One word changes.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One boy / 1: draw a house / 2: color it / 3: show it"
+          },
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "boy"
+            },
+            {
+              "id": "w2",
+              "text": "draw"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "house"
+            },
+            {
+              "id": "w5",
+              "text": "at"
+            },
+            {
+              "id": "w6",
+              "text": "the"
+            },
+            {
+              "id": "w7",
+              "text": "beginning."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "draws"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            },
+            {
+              "id": "c2",
+              "text": "drawing"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "answerText": "The boy draws a house at the beginning.",
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-try-3-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "story-parts-say-1",
+          "prompt": "Tell us the beginning.",
+          "instruction": "They … at the beginning.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Two children / 1: get a pot / 2: add water / 3: add carrots"
+          },
+          "answerText": "They get a pot at the beginning.",
+          "accepted": [
+            "At the beginning, they get a pot.",
+            "The children get a pot at the beginning."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-say-1-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "story-parts-say-2",
+          "prompt": "Tell us the middle.",
+          "instruction": "The boy … in the middle.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One boy / 1: get paper / 2: draw a cat / 3: show the picture"
+          },
+          "answerText": "The boy draws a cat in the middle.",
+          "accepted": [
+            "In the middle, the boy draws a cat.",
+            "He draws a cat in the middle."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-say-2-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "story-parts-say-3",
+          "prompt": "Tell us the ending.",
+          "instruction": "They … at the end.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Two children / 1: get a pot / 2: add food / 3: eat soup"
+          },
+          "answerText": "They eat soup at the end.",
+          "accepted": [
+            "At the end, they eat soup.",
+            "The children eat soup at the end."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-story-parts-say-3-q.mp3",
+            "answer": "audio/2026-09-18-story-parts-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "food-totals",
+      "title": "How many altogether?",
+      "try": [
+        {
+          "id": "food-totals-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "How many potatoes do they have together?",
+          "instruction": "They … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Leo: 3 potatoes / Mia: 5 potatoes"
+          },
+          "answerText": "They have eight potatoes.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "eight"
+            },
+            {
+              "id": "w3",
+              "text": "potatoes"
+            },
+            {
+              "id": "extra",
+              "text": "potato"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-try-1-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-totals-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now ask about their total.",
+          "instruction": "How many …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Leo and Mia / Ask about their potatoes"
+          },
+          "answerText": "How many potatoes do they have?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "How"
+            },
+            {
+              "id": "w1",
+              "text": "many"
+            },
+            {
+              "id": "w2",
+              "text": "potatoes"
+            },
+            {
+              "id": "w3",
+              "text": "do"
+            },
+            {
+              "id": "w4",
+              "text": "they"
+            },
+            {
+              "id": "w5",
+              "text": "have"
+            },
+            {
+              "id": "extra",
+              "text": "does"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-try-2-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-totals-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find and fix one word.",
+          "instruction": "One word changes.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Jo: 4 carrots / Kim: 3 carrots"
+          },
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "seven"
+            },
+            {
+              "id": "w3",
+              "text": "carrot."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "onion."
+            },
+            {
+              "id": "c1",
+              "text": "carrots."
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          },
+          "answerText": "They have seven carrots.",
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-try-3-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "food-totals-say-1",
+          "prompt": "How many sausages do they have together?",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Ben: 2 sausages / Anna: 5 sausages"
+          },
+          "answerText": "They have seven sausages.",
+          "accepted": [
+            "They have seven sausages altogether.",
+            "Ben and Anna have seven sausages."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-say-1-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-totals-say-2",
+          "prompt": "Ask Mia about the number of onions.",
+          "instruction": "How many …?",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Mia / onions: ? / Ask Mia"
+          },
+          "answerText": "How many onions do you have?",
+          "accepted": [
+            "How many onions have you got?",
+            "How many onions are in your basket?"
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-say-2-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-totals-say-3",
+          "prompt": "How many carrots are in the pot?",
+          "instruction": "There … in the pot.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pot: 3 carrots + 2 carrots / Bowl: 4 carrots"
+          },
+          "answerText": "There are five carrots in the pot.",
+          "accepted": [
+            "The pot has five carrots.",
+            "Five carrots are in the pot."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-food-totals-say-3-q.mp3",
+            "answer": "audio/2026-09-18-food-totals-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sharing-reasons",
+      "title": "Tell us why",
+      "try": [
+        {
+          "id": "sharing-reasons-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us why your group is hungry.",
+          "instruction": "We … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Your group / hungry / food: none"
+          },
+          "answerText": "We are hungry because we have no food.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "hungry"
+            },
+            {
+              "id": "w3",
+              "text": "because"
+            },
+            {
+              "id": "w4",
+              "text": "we"
+            },
+            {
+              "id": "w5",
+              "text": "have"
+            },
+            {
+              "id": "w6",
+              "text": "no"
+            },
+            {
+              "id": "w7",
+              "text": "food"
+            },
+            {
+              "id": "extra",
+              "text": "not"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-try-1-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "sharing-reasons-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now your group has food. Tell us why.",
+          "instruction": "We … because … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Now: your group has food / not hungry"
+          },
+          "answerText": "We are not hungry because we have food.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "hungry"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "we"
+            },
+            {
+              "id": "w6",
+              "text": "have"
+            },
+            {
+              "id": "w7",
+              "text": "food"
+            },
+            {
+              "id": "extra",
+              "text": "no"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-try-2-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "sharing-reasons-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find and fix one word.",
+          "instruction": "One word changes.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Two children / have soup / not hungry"
+          },
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "hungry"
+            },
+            {
+              "id": "w4",
+              "text": "because"
+            },
+            {
+              "id": "w5",
+              "text": "they"
+            },
+            {
+              "id": "w6",
+              "text": "has"
+            },
+            {
+              "id": "w7",
+              "text": "soup."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "have"
+            },
+            {
+              "id": "c2",
+              "text": "was"
+            }
+          ],
+          "answer": {
+            "wordId": "w6",
+            "choiceId": "c1"
+          },
+          "answerText": "They are not hungry because they have soup.",
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-try-3-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "sharing-reasons-say-1",
+          "prompt": "Why is this boy hungry?",
+          "instruction": "He … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One boy / hungry / food: none"
+          },
+          "answerText": "He is hungry because he has no food.",
+          "accepted": [
+            "He is hungry because he doesn't have any food.",
+            "The boy is hungry because he has no food."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-say-1-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "sharing-reasons-say-2",
+          "prompt": "Why are these children not hungry?",
+          "instruction": "They … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Two children / have soup / not hungry"
+          },
+          "answerText": "They are not hungry because they have soup.",
+          "accepted": [
+            "They aren't hungry because they have soup.",
+            "The children are not hungry because they have soup."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-say-2-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "sharing-reasons-say-3",
+          "prompt": "Why does everyone have soup?",
+          "instruction": "Everyone … because …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One pot of soup / children share / soup for everyone"
+          },
+          "answerText": "Everyone has soup because they share.",
+          "accepted": [
+            "They all have soup because they share.",
+            "Everyone has some soup because the children share."
+          ],
+          "audio": {
+            "question": "audio/2026-09-18-sharing-reasons-say-3-q.mp3",
+            "answer": "audio/2026-09-18-sharing-reasons-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

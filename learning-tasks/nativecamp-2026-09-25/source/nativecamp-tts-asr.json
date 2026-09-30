@@ -1,0 +1,372 @@
+{
+  "lessonId": "2026-09-25",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-1-q.mp3",
+      "sha256": "b622b46d13089e2822e9b37bc31939c5c20d05d6f22f621cde8a13e142a392a2",
+      "expectedText": "There are two birds. Both are red. Describe the birds in one sentence.",
+      "recognizedText": "There are two birds. Both are red. Describe the birds in one sentence."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-1-a.mp3",
+      "sha256": "e3fafdc344421fb32893d7669efbb6060519df5d1536c884695ba1098bb48bdd",
+      "expectedText": "The two birds are red.",
+      "recognizedText": "The two birds are red."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-2-q.mp3",
+      "sha256": "57c2ca8e3420ceacb7c6aaceef64358db15d011fc68e85b0c0ed7e8b6a842c33",
+      "expectedText": "Before, there were two red birds. Now one bird is left. Describe its color.",
+      "recognizedText": "Before, there were two red birds. Now one bird is left. Describe its color."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-2-a.mp3",
+      "sha256": "be76141de9d74ff8a82ba70716771a9d662eeaf482fb1ef201d0425ddedb1703",
+      "expectedText": "The bird is red.",
+      "recognizedText": "The bird is red."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-3-q.mp3",
+      "sha256": "0bd1104b7e2ee41366bb835e5a97c000d4cc137d53dfa069fca0f4f9384d3a79",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-try-3-a.mp3",
+      "sha256": "d0277166e0916292d4571512e970a7011aceb0394b7d5651d3a568ed02009f63",
+      "expectedText": "The three rabbits are white.",
+      "recognizedText": "The three rabbits are white."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-1-q.mp3",
+      "sha256": "e8e87525528464fcda01159e57d4bdb6cfd1cc6be9050b8192be5dfdf4117865",
+      "expectedText": "There is one green frog. Describe the frog in one sentence.",
+      "recognizedText": "There is one green frog. Describe the frog in one sentence."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-1-a.mp3",
+      "sha256": "bbbe63c2375798b221c7441ed7361ef94c6236dbec6e62d41665331283eb3bf2",
+      "expectedText": "The frog is green.",
+      "recognizedText": "The frog is green."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-2-q.mp3",
+      "sha256": "571e74315b1b3648a95d18a0de6dc47f48e57bda59077d90e276c2581afbca88",
+      "expectedText": "There are three rabbits. All are black. Describe all three rabbits in one sentence.",
+      "recognizedText": "There are three rabbits. All are black. Describe all three rabbits in one sentence."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-2-a.mp3",
+      "sha256": "998643a8fbbb322adb05173a539c62e61e10cefba67bd820ed466c981768e342",
+      "expectedText": "The three rabbits are black.",
+      "recognizedText": "The three rabbits are black."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-3-q.mp3",
+      "sha256": "2bfc2397fbf6b2b08715a919d72606fd241ebb9847cbcfffa48448ab94774a8d",
+      "expectedText": "There are two birds. Both are blue. Describe both birds in one sentence.",
+      "recognizedText": "There are two birds. Both are blue. Describe both birds in one sentence."
+    },
+    {
+      "file": "audio/2026-09-25-animal-descriptions-say-3-a.mp3",
+      "sha256": "aba16c6e2553c38c0b86844a9a40948a4e4632e347f85b8a20ac2415c236b659",
+      "expectedText": "The two birds are blue.",
+      "recognizedText": "The two birds are blue."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-1-q.mp3",
+      "sha256": "182121b2e4af6d818653cb88df1711d442c0cd9663a2f46677b943e9732f5a93",
+      "expectedText": "The title is A Bird in the Rain. What do you think the poem is about?",
+      "recognizedText": "The title is A Bird in the Rain. What do you think the poem is about?"
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-1-a.mp3",
+      "sha256": "87955d2d33581efdea02a83a7accebf239dfe0cfb0a642af62310ffbce2f0194",
+      "expectedText": "I think this poem is about a bird.",
+      "recognizedText": "I think this poem is about a bird."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-2-q.mp3",
+      "sha256": "705cf147248624b52deaabdb1fb86f48cd0321d69e776ea9cd08e13017826378",
+      "expectedText": "Now there are two poems. The titles are A Bird in the Rain and A Dog in the Snow. What do you think both poems are about?",
+      "recognizedText": "Now there are two poems. The titles are A Bird in the Rain and A Dog in the Snow. What do you think both poems are about?"
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-2-a.mp3",
+      "sha256": "ee92e1ba33d03a608a8a1d43add0d4a41155798c2ee6c8b2ba0651cd49d8b68d",
+      "expectedText": "I think these poems are about animals.",
+      "recognizedText": "I think these poems are about animals."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-3-q.mp3",
+      "sha256": "87531c77fa7521688523bad6ca4878681c2bb5b553dffa49c171f32af7c86363",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-try-3-a.mp3",
+      "sha256": "6105f3f190eb6cc14dedc8fd652bb5527bc9bdf25b8e2037d41f5783c91d16c8",
+      "expectedText": "I think this poem is about a tree.",
+      "recognizedText": "I think this poem is about a tree."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-1-q.mp3",
+      "sha256": "defa259ec6848c45fc5118944051d087833cace54108a57c5582db083540de2b",
+      "expectedText": "The title is A Fish in the Lake. What do you think this poem is about?",
+      "recognizedText": "The title is, A Fish in the Lake. What do you think this poem is about?"
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-1-a.mp3",
+      "sha256": "7bfa7f51d983eec27e6e99d1cf533880a86e82b3612fdf7589d0b69f9a8481b7",
+      "expectedText": "I think this poem is about a fish.",
+      "recognizedText": "I think this poem is about a fish."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-2-q.mp3",
+      "sha256": "61f8857d365e9632dcd7e55854bbbbaa357b1852e8fb01f3b78f5da0bafa95b2",
+      "expectedText": "The titles are A Rabbit at Dawn and A Bird at Night. What do you think both poems are about?",
+      "recognizedText": "The titles are A Rabbit at Dawn and A Bird at Night. What do you think both poems are about?"
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-2-a.mp3",
+      "sha256": "dbfc8f8356387ce996b33559592b02bc0e153b7e4fc7eb50edc1f3852d9ea985",
+      "expectedText": "I think these poems are about animals.",
+      "recognizedText": "I think these poems are about animals."
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-3-q.mp3",
+      "sha256": "afd95b8ddd896926041cbcbeb944c804ad92589534a1c484104231887815fb5e",
+      "expectedText": "The title is A Tree in the Wind. What do you think this poem is about?",
+      "recognizedText": "The title is, A Tree in the Wind, what do you think this poem is about?"
+    },
+    {
+      "file": "audio/2026-09-25-title-predictions-say-3-a.mp3",
+      "sha256": "61076728ed580849cdffb2a26dae4aabb177b981d570bb03126db86793510e9e",
+      "expectedText": "I think this poem is about a tree.",
+      "recognizedText": "I think this poem is about a tree."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-1-q.mp3",
+      "sha256": "d05529eb3e5d289e77448b47c0a26dbc6b2c6f4f2695bc6ce347ef7c5c6b5ce8",
+      "expectedText": "Say tree, see, and sun. Which word rhymes with tree?",
+      "recognizedText": "Say, tree, sea, and sun. Which word rhymes with tree?"
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-1-a.mp3",
+      "sha256": "a76f1c0f84a3314977e7ad3ac809cf67a15a39a1346142d3ecb57cb18c74fa38",
+      "expectedText": "Tree rhymes with see.",
+      "recognizedText": "Tree rhymes with C."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-2-q.mp3",
+      "sha256": "5c3790da23e1e0eb35c83888401eb31a3cf2f3c6d99061bdeac8e5265e7a3d79",
+      "expectedText": "Before, the words were tree and see. Now compare tree and sun. How do the ending sounds compare?",
+      "recognizedText": "Before, the words were tree and sea. Now compare tree and sun. How do the ending sounds compare?"
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-2-a.mp3",
+      "sha256": "805ff31b32c6a498925d96ac5e214de8fcac57987347e2e641999626b64ee8ed",
+      "expectedText": "Tree and sun sound different.",
+      "recognizedText": "Tree and sun sound different."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-3-q.mp3",
+      "sha256": "3069f75d9e8dd2ee05906d1e98290f868a5452b2b25f7e68c48aa22aae17681a",
+      "expectedText": "Say sky, high, and see. Find and fix one word in the sentence.",
+      "recognizedText": "Say sky, high, and sea. Find and fix one word in the sentence."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-try-3-a.mp3",
+      "sha256": "9b5e6dd960d444af91ade3f590f23cf1dd7244fbc7309211b9609ed4d4f41daf",
+      "expectedText": "Sky rhymes with high.",
+      "recognizedText": "Sky rhymes with high."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-1-q.mp3",
+      "sha256": "16a52ed3a73957b11bfaa7dc2cb49f64b02e25c73e8b238fda4e2393ef49423e",
+      "expectedText": "Say sun, fun, and tree. Which word rhymes with sun?",
+      "recognizedText": "say sun, fun, and tree. Which word rhymes with sun?"
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-1-a.mp3",
+      "sha256": "7acd9c9ab05513810dfb8b81193176944b3d9f0471783158c000ebd31f6570a1",
+      "expectedText": "Sun rhymes with fun.",
+      "recognizedText": "Sun rhymes with fun."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-2-q.mp3",
+      "sha256": "eb050747779ac195042172c698ae69780858ce867a08ee7bbc87c2abf65ad749",
+      "expectedText": "Say dark and tree. How do the ending sounds compare?",
+      "recognizedText": "say dark and tree. How do the ending sounds compare?"
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-2-a.mp3",
+      "sha256": "8865125d70feaf6f28f2b4e4ed3690c029133570666b4740110fcfe7730c211c",
+      "expectedText": "The ending sounds are different.",
+      "recognizedText": "The ending sounds are different."
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-3-q.mp3",
+      "sha256": "3dfca6cbc222d08261797acd9acf68e8628a4759e621dd922cdd9d32c8b9119a",
+      "expectedText": "Say black, high, and back. Which word rhymes with black?",
+      "recognizedText": "say black, high, and back. Which word rhymes with black?"
+    },
+    {
+      "file": "audio/2026-09-25-rhyming-words-say-3-a.mp3",
+      "sha256": "77748b44af946d8860b92dc38e3a8a5641f8ddfec7c4796a88c3ce9cf5747543",
+      "expectedText": "Black rhymes with back.",
+      "recognizedText": "Black rhymes with back."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-1-q.mp3",
+      "sha256": "d00b1e65aff619bba7420deac7a4edf3fdc10b435f7eb81277617d47adeb05d1",
+      "expectedText": "Ava wrote A Green Leaf. Ben reads it aloud. Who is the author?",
+      "recognizedText": "Ava wrote a green leaf, then reads it aloud. Who is the author?"
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-1-a.mp3",
+      "sha256": "96cb3258e3dd4d7defed219419cb9e5666b5ad7ff7d480e3958a14dae7d02485",
+      "expectedText": "Ava is the author.",
+      "recognizedText": "Ava is the author."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-2-q.mp3",
+      "sha256": "7633071d15b63dcdebfd284fb2314c2c3485248f79643c3d771ce6f7938ed8d8",
+      "expectedText": "Ava wrote the poem, and Ben reads it aloud. Now talk about Ben. Is he the author?",
+      "recognizedText": "Ava wrote the poem and Ben reads it aloud. Now talk about Ben. Is he the author?"
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-2-a.mp3",
+      "sha256": "98200d53f4eee3d26cd3e67c8e83e128a7236793f1b17059d6c48185abcd0266",
+      "expectedText": "Ben is not the author.",
+      "recognizedText": "Ben is not the author."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-3-q.mp3",
+      "sha256": "120cef20e737eaaf25f9721e71a362f7b99f7ae45708911e801aae1438d8fc3f",
+      "expectedText": "Leo wrote the poem, and Mia reads it aloud. Find and fix one word.",
+      "recognizedText": "Leo wrote the poem, and Mia reads it aloud. Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-try-3-a.mp3",
+      "sha256": "8c0c2399054cb760f19bc454a65d73190cc0b6d56da02801140e4317638c6e5d",
+      "expectedText": "Leo is the author.",
+      "recognizedText": "Leo is the author."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-1-q.mp3",
+      "sha256": "9b8692aef5942c53febd7b61cbed36b2fcf9f7a4e706aadf64cbfd45f7315884",
+      "expectedText": "Mia wrote The Small Seed and Sam reads it aloud, so who is the author?",
+      "recognizedText": "Mia wrote The Small Seed and Sam reads it aloud, so who is the author?"
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-1-a.mp3",
+      "sha256": "1171e83da4e56de66455a912bc07968e90220d77feb3bccb460d56255edab864",
+      "expectedText": "Mia is the author.",
+      "recognizedText": "Mia is the author."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-2-q.mp3",
+      "sha256": "9f561be32398e0b663a7dcc8d604012d935c8c9e6a8ca7cf56d86f582fd6eed4",
+      "expectedText": "Mia wrote the poem and Sam reads it aloud, so can you say in a full sentence if Sam is the author?",
+      "recognizedText": "Mia wrote the poem, and Sam reads it aloud, so can you say in a full sentence if Sam is the author?"
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-2-a.mp3",
+      "sha256": "2dbe316ea626fd990c724357b87f5aa82fb15c6175a26abc0621f5af02555180",
+      "expectedText": "Sam is not the author.",
+      "recognizedText": "Sam is not the author."
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-3-q.mp3",
+      "sha256": "07c3c7c5d6b12b21e65249f9637a620bc8e318046c9daa180cdd0a06869ad763",
+      "expectedText": "Kim wrote A Red Leaf. Tom reads it aloud. Who is the author?",
+      "recognizedText": "Kim wrote A Red Leaf. Tom reads it aloud. Who is the author?"
+    },
+    {
+      "file": "audio/2026-09-25-poem-authors-say-3-a.mp3",
+      "sha256": "7ff47d493985a239e89a6ada8cab21159cbde4cdc79bbfe2a03e62f3e102eb35",
+      "expectedText": "Kim is the author.",
+      "recognizedText": "Kim is the author."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-1-q.mp3",
+      "sha256": "b729fe5937d06a5f19f83e3e6b8e737c55537ba9bb6896a1582c66946850b9ee",
+      "expectedText": "In the garden, you see one black rabbit. Tell me what is there.",
+      "recognizedText": "In the garden, you see one black rabbit. Tell me what is there."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-1-a.mp3",
+      "sha256": "079ecf699c27151119744e5ec46d2c7f1d33d069e8360225dbe46a7251be44d5",
+      "expectedText": "There is a black rabbit.",
+      "recognizedText": "There is a black rabbit."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-2-q.mp3",
+      "sha256": "97058b2cf37fad083f3ebb291ee2c9bedcde67ff17964f892e6eb725e82eceef",
+      "expectedText": "Before, there was one black rabbit. Now another black rabbit comes. Tell me what is there.",
+      "recognizedText": "Before, there was one black rabbit. Now another black rabbit comes. Tell me what is there."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-2-a.mp3",
+      "sha256": "aa94bc79d8ac2234cd29273dfe9c9885103e5b4aa31ee24569b19429c917ed34",
+      "expectedText": "There are two black rabbits.",
+      "recognizedText": "There are two black rabbits."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-3-q.mp3",
+      "sha256": "408894d59b3740c721706f20f5db16eb63f37f251d30e5446317038b80b21ab9",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-try-3-a.mp3",
+      "sha256": "0baceadabb7c8914b4f1eeed0d25649325d29ce6aae1416145e230aa7540c8d2",
+      "expectedText": "There is a green lizard.",
+      "recognizedText": "There is a green lizard."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-1-q.mp3",
+      "sha256": "3d00afe1730f24058287397963d78541d9d2475a6c51150da6168e93dca970a9",
+      "expectedText": "In the garden, you see one red bird. Tell me what is there.",
+      "recognizedText": "In the garden you see one red bird. Tell me what is there."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-1-a.mp3",
+      "sha256": "a1fb3ee9419444bcc6ff2cb19e8e7c390ff6c54431f19c2221df8f5cd639f021",
+      "expectedText": "There is a red bird.",
+      "recognizedText": "There is a red bird."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-2-q.mp3",
+      "sha256": "e34846560d48c7eaa41eac542e1566238fcd17fa090776dca1afc8ed51e0ac84",
+      "expectedText": "In the garden, you see three white rabbits. Tell me what is there.",
+      "recognizedText": "In the garden, you see three white rabbits. Tell me what is there."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-2-a.mp3",
+      "sha256": "f9c45ae1aa0b425063689cedd08c078d7a5442d28562164d9d9b7c66b4459ba4",
+      "expectedText": "There are three white rabbits.",
+      "recognizedText": "There are three white rabbits."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-3-q.mp3",
+      "sha256": "fa70a942bd9e1a7a542b704e68988d056112d3637b585bd478741776662c83b4",
+      "expectedText": "In the garden, you see two green lizards. Tell me what is there.",
+      "recognizedText": "In the garden, you see two green lizards. Tell me what is there."
+    },
+    {
+      "file": "audio/2026-09-25-there-is-are-say-3-a.mp3",
+      "sha256": "27163da4323e854b8ffb6f994ab61eb79c889a2c56feeb1cbd0a18cbd9de39d3",
+      "expectedText": "There are two green lizards.",
+      "recognizedText": "There are two green lizards."
+    }
+  ]
+}

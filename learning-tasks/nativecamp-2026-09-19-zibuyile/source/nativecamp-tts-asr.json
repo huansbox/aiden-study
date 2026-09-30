@@ -1,0 +1,300 @@
+{
+  "lessonId": "2026-09-19-zibuyile",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-1-q.mp3",
+      "sha256": "685099d331161c6b28ae174dad422a71424e78e9ddba59b2e555831a51be90e3",
+      "expectedText": "How can you describe the large pit inside this cut peach in a full sentence?",
+      "recognizedText": "How can you describe the large pit inside this cut peach in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-1-a.mp3",
+      "sha256": "c263fa8279d0bad597592b6c553f542b2044dc735413d228a0a575a9e033f0da",
+      "expectedText": "This peach has a pit.",
+      "recognizedText": "This peach has a pit."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-2-q.mp3",
+      "sha256": "d0e3a1927700607f8bacfbc5c0908c5370b054fac618311c269137bbabae3380",
+      "expectedText": "How does the sentence change when you describe two peaches with one pit in each?",
+      "recognizedText": "How does the sentence change when you describe two peaches with one pit in each?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-2-a.mp3",
+      "sha256": "11eea6065303e42db438fbd7022ee8356226170511fd04d7a472cf1e7e107787",
+      "expectedText": "These peaches have pits.",
+      "recognizedText": "These peaches have pits."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-3-q.mp3",
+      "sha256": "35464a21ab37d7b5fa5795e0fc75e82c4c8461c3adf65d71b80e3d8d18a28e0e",
+      "expectedText": "Can you fix one word in the sentence about the small seeds inside this cut cucumber?",
+      "recognizedText": "Can you fix one word in a sentence about the small seeds inside this cut cucumber?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-try-3-a.mp3",
+      "sha256": "3633760dbe34ee4c97a3ca5a97fd85c48742c1f609e1a2d6d89481674c1a7c0c",
+      "expectedText": "This cucumber has seeds.",
+      "recognizedText": "This cucumber has seeds."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-1-q.mp3",
+      "sha256": "a8fe97693d7304c63152089cefed5912d5fd5e67e9163a609c1f19d523cc378c",
+      "expectedText": "How can you describe the large pit inside this cut mango in a full sentence?",
+      "recognizedText": "How can you describe the large pit inside this cut mango in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-1-a.mp3",
+      "sha256": "390617f36f37ff2b38a91dc64798f8c138509bf1f082edaa2e70e294ff49278c",
+      "expectedText": "This mango has a pit.",
+      "recognizedText": "This mango has a pit."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-2-q.mp3",
+      "sha256": "941578d78799c65623585e638230ed23df6ab8373e3d85322dc4e4248b42c513",
+      "expectedText": "How can you describe what is inside both cut tomatoes in a full sentence?",
+      "recognizedText": "How can you describe what is inside both cut tomatoes in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-2-a.mp3",
+      "sha256": "61815544d7b5e77ec43042919b677a8bbd4f2e107a81165fed565428d05eaa7d",
+      "expectedText": "These tomatoes have seeds.",
+      "recognizedText": "These tomatoes have seeds."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-3-q.mp3",
+      "sha256": "e4e18675d2256a9a5094521225aa68b6fb9368b5e4373ad063069476c84d351f",
+      "expectedText": "How can you describe the large pit inside this cut avocado in a full sentence?",
+      "recognizedText": "How can you describe the large pit inside this cut avocado in a full sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-inside-say-3-a.mp3",
+      "sha256": "d8ce7b2fecc32342d713e45dde86c7bca64fc9e050e8365c738ba644344fbdb4",
+      "expectedText": "This avocado has a pit.",
+      "recognizedText": "This avocado has a pit."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-1-q.mp3",
+      "sha256": "9f7a4d2f35b3e1c7d4c8b823b53c3980d1f3e34c402495943f52bcad3bea7878",
+      "expectedText": "Starting with I, can you tell Leo about your two mangoes and his one mango as if you are Mia?",
+      "recognizedText": "Starting with I, can you tell Leo about your two mangoes and his one mango, as if you are Mia?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-1-a.mp3",
+      "sha256": "21cf3a20ad865bc4b9d78d9c83f6729d968496f49eca3cf97e67d6fb96928f19",
+      "expectedText": "I have two mangoes and you have one mango.",
+      "recognizedText": "I have two mangoes and you have one mango."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-2-q.mp3",
+      "sha256": "b0b36c3e80d8ba2f41445edd9e9e6dded053ebef7c9682f6a70946d12165cce6",
+      "expectedText": "How does the sentence change when Leo tells Mia about both amounts, starting with his own mango?",
+      "recognizedText": "How does the sentence change when Leo tells Mia about both amounts, starting with his own mango?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-2-a.mp3",
+      "sha256": "4359ec5af614a7db651bf5904cdf9a3f8e93562b4453b7399e3d4d40f48d0128",
+      "expectedText": "I have one mango and you have two mangoes.",
+      "recognizedText": "I have one mango, and you have two mangoes."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-3-q.mp3",
+      "sha256": "580ceda09b2b726d4a4fbf1f8d921216f406fc7a31055353a6011fb1c3f9e1a5",
+      "expectedText": "You are telling Ben about his three peaches, so can you fix one word in the sentence?",
+      "recognizedText": "You are telling Ben about his three peaches, so can you fix one word in the sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-try-3-a.mp3",
+      "sha256": "a5f9c8d1fce0fb7dd29798854b999bb5e3e8aff3abaff1adcc217484feb1b015",
+      "expectedText": "You have three peaches.",
+      "recognizedText": "You have three peaches."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-1-q.mp3",
+      "sha256": "b2e26f881ae08e540341adc7c2a0918df0050b4110a9a09bf835534dedc52e65",
+      "expectedText": "Can you tell your friend about your four oranges and his two oranges, using I and you in one sentence?",
+      "recognizedText": "Can you tell your friend about your four oranges and his two oranges using I and you in one sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-1-a.mp3",
+      "sha256": "ab99ca828a5c20f55abbbec262996883be10412a6f8c3ceffa1c4fb65f79f124",
+      "expectedText": "I have four oranges and you have two oranges.",
+      "recognizedText": "I have four oranges, and you have two oranges."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-2-q.mp3",
+      "sha256": "7033f83bb36119262df74afd2625d6edd17292132d057fc76fee1ebc7c1147a8",
+      "expectedText": "How can Max tell Lily about both amounts, starting with his own two oranges?",
+      "recognizedText": "How can Max tell Lily about both amounts, starting with his own two oranges?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-2-a.mp3",
+      "sha256": "4b026b4b3651c7810fc85f030ccd32072bd6f5101d007978fdd37e53358ac90a",
+      "expectedText": "I have two oranges and you have four oranges.",
+      "recognizedText": "I have two oranges, and you have four oranges."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-3-q.mp3",
+      "sha256": "c03ca66ac752998cd22c67f5ef49a704a4d3a331329e22c0de776323484e43ee",
+      "expectedText": "Pretend you are Sam with one avocado and Eva has three, so how can you tell her about both amounts?",
+      "recognizedText": "Pretend you are Sam with one avocado and Eva has three, so how can you tell her about both amounts?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-my-turn-your-turn-say-3-a.mp3",
+      "sha256": "a13a6d05cc9ab52725dc508d81b0fdce47c4e1f901e51781e90effb1f71fab5d",
+      "expectedText": "I have one avocado and you have three avocados.",
+      "recognizedText": "I have one avocado, and you have three avocados."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-1-q.mp3",
+      "sha256": "6fd195e612c3354a6bceca44087235682f71b44250526e3eee0f653347aff723",
+      "expectedText": "Pretend you are Mia with three tomatoes while Leo has two, so how can you tell us only your own amount?",
+      "recognizedText": "Pretend you are Mia with three tomatoes while Leo has two. So how can you tell us only your own amount?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-1-a.mp3",
+      "sha256": "aeef6ceea77a6549074854d41885d694a3d1d997bedc8b3f4dc43ff7b1a9adca",
+      "expectedText": "I have three tomatoes.",
+      "recognizedText": "I have three tomatoes."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-2-q.mp3",
+      "sha256": "a9789b497466f9bf63f68e77537c0377f7db3b3542a0e9e07219519b31f7b4e2",
+      "expectedText": "How can Mia and Leo tell us their total when they put all three and two tomatoes together?",
+      "recognizedText": "How can Mia and Leo tell us their total when they put all three and two tomatoes together?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-2-a.mp3",
+      "sha256": "7b851f855b795f1d9c30320d22c3ffc75b605f4b9368fa1cb8deca198514e987",
+      "expectedText": "We have five tomatoes.",
+      "recognizedText": "We have five tomatoes."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-3-q.mp3",
+      "sha256": "31064f686a9083a350328508bbd147e9499e0fe9964177064772761fa8a29524",
+      "expectedText": "Lily and Max put two peaches and four peaches together, so can you fix one word in their sentence?",
+      "recognizedText": "Lily and Max put two peaches and four peaches together, so can you fix one word in their sentence?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-try-3-a.mp3",
+      "sha256": "2513b4f7eb93a868c6588297e259c1d9606226fc662f68b4abeee32667ca7405",
+      "expectedText": "We have six peaches.",
+      "recognizedText": "We have six peaches."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-1-q.mp3",
+      "sha256": "84eac785a5c474be4ae8a42f4602fc586a1068182f6445c1ff66e9b14b4f172b",
+      "expectedText": "You have two mangoes and Sam has three, so how can you tell us how many you have together?",
+      "recognizedText": "You have two mangoes and Sam has three, so how can you tell us how many you have together?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-1-a.mp3",
+      "sha256": "d00c0315289c20fc305cf7e00c2c97b0573d4fb763560070b0c93f72a7846550",
+      "expectedText": "We have five mangoes.",
+      "recognizedText": "We have five mangoes."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-2-q.mp3",
+      "sha256": "f639f718e73095895817311a2e12e393a24f7d228002c0994a35878faeb2cd8d",
+      "expectedText": "How can you say the addition for four oranges plus three oranges using plus and equals?",
+      "recognizedText": "How can you save the addition for four oranges plus three oranges using plus and equals?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-2-a.mp3",
+      "sha256": "d931d80994e9adbfe73244a1753e0363bfe4d8f38032386aa30c28ae120f68e8",
+      "expectedText": "Four plus three equals seven.",
+      "recognizedText": "4 plus 3 equals 7."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-3-q.mp3",
+      "sha256": "82fa81a3ec62701c7f820ae829d3946f2f6bb758332d7e2349a87fd4db3c66f3",
+      "expectedText": "You have one cucumber and Lily has four, so how can you tell us how many you have together?",
+      "recognizedText": "You have one cucumber and Lily has four, so how can you tell us how many you have together?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-fruit-total-say-3-a.mp3",
+      "sha256": "395886502911406eb51004f4e56ae39c42d157ee2eac040c00523b6416d2ab24",
+      "expectedText": "We have five cucumbers.",
+      "recognizedText": "We have five cucumbers."
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-1-q.mp3",
+      "sha256": "d34d788ff4f99c8397029c0b4b91e53522f2345cfa2f8b8aee374e478ca0adcd",
+      "expectedText": "Pretend you are Mia sharing oranges with Leo, so how can you ask about your total number of oranges?",
+      "recognizedText": "Pretend you are Mia sharing oranges with Leo, so how can you ask about your total number of oranges?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-1-a.mp3",
+      "sha256": "4949609d66d1cbcc5bfe178f1a26250e6b17a999975f950e7fcbeb132d0a2739",
+      "expectedText": "How many oranges do we have?",
+      "recognizedText": "How many oranges do we have?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-2-q.mp3",
+      "sha256": "f412d9133da6e6a2d26cbd9dca1b74b6a6e3681a7ed2b53e33f8d303a79d14f0",
+      "expectedText": "How does your question change when you ask Ben about only his oranges?",
+      "recognizedText": "How does your question change when you ask Ben about only his oranges?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-2-a.mp3",
+      "sha256": "fca86bf927c9bd900be952ad95adac7f9b656eb47f2bf9c4cf4457f58a15fb14",
+      "expectedText": "How many oranges do you have?",
+      "recognizedText": "How many oranges do you have?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-3-q.mp3",
+      "sha256": "bc235a5a612d03b16ac348c532bec78b4e3a0c5606a90e90adb6f51ff5ef199f",
+      "expectedText": "Can you fix one word in this question about the number of Kim's mangoes?",
+      "recognizedText": "Can you fix one word in this question about the number of Kim's mangoes?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-try-3-a.mp3",
+      "sha256": "cac96f4930220419dcda560f7ee8085dafb32335c176f406d5152cf79d5fe7c9",
+      "expectedText": "How many mangoes do you have?",
+      "recognizedText": "How many mangoes do you have?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-1-q.mp3",
+      "sha256": "3fc17c37ba5d9c2d4d23540081246c12b18864ee1d7f96f7003f6ab99dfb2619",
+      "expectedText": "You and Max are putting your peaches together, so how can you ask about your total?",
+      "recognizedText": "You and Max are putting your peaches together, so how can you ask about your total?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-1-a.mp3",
+      "sha256": "d70316f23cc345c4dc4c05012f2de992c4f918355d3e5bd1644d3586fb4ca486",
+      "expectedText": "How many peaches do we have?",
+      "recognizedText": "How many peaches do we have?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-2-q.mp3",
+      "sha256": "d3709c80f613786af5623d31ef3807758bd8fb7b4871015c2a4bd21590f23d86",
+      "expectedText": "How can you ask Sam about the number of tomatoes he has?",
+      "recognizedText": "How can you ask Sam about the number of tomatoes he has?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-2-a.mp3",
+      "sha256": "982a7915c1376677abd0599fea5bf787b708c0b3a182196be9c7efe5f61c7952",
+      "expectedText": "How many tomatoes do you have?",
+      "recognizedText": "How many tomatoes do you have?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-3-q.mp3",
+      "sha256": "7fa608406846e9c1546f290a23b5b7608186e595241710989425c724abcfbb2a",
+      "expectedText": "You and Lily are putting your avocados together, so how can you ask about your total?",
+      "recognizedText": "You and Lily are putting your avocados together, so how can you ask about your total?"
+    },
+    {
+      "file": "audio/2026-09-19-zibuyile-how-many-say-3-a.mp3",
+      "sha256": "e11dbefcc3ac843f952fcf73cf0027ce9190ce8eddebc04eee7b7e9316a569ed",
+      "expectedText": "How many avocados do we have?",
+      "recognizedText": "How many avocados do we have?"
+    }
+  ]
+}

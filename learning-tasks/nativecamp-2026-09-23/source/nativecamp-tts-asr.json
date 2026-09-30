@@ -1,0 +1,372 @@
+{
+  "lessonId": "2026-09-23",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-23-job-actions-try-1-q.mp3",
+      "sha256": "1c8a985c5631f8607a114bbfd198b22ea95d4f4aebe45a439cf91e5d42f0d5b5",
+      "expectedText": "What do farmers do in the fields? Build a full sentence. Start with Farmers.",
+      "recognizedText": "What do farmers do in the fields? Build a full sentence. Start with farmers."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-try-1-a.mp3",
+      "sha256": "4df4d1e20a86f81691cc8264f9ee40c9e73b9510fb59483f8705e1b4d2d6d695",
+      "expectedText": "Farmers grow food.",
+      "recognizedText": "Farmers grow food."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-try-2-q.mp3",
+      "sha256": "b97ee2fe34191163492b2c897c31d920ab0eb55f56671b8044957041b92940a6",
+      "expectedText": "Change the sentence to one farmer. Start with A farmer.",
+      "recognizedText": "Change the sentence to one farmer. Start with a farmer."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-try-2-a.mp3",
+      "sha256": "c36eabae5725ff22953fe96774ff36044ede0e28edff0928d4c0474c42c2c559",
+      "expectedText": "A farmer grows food.",
+      "recognizedText": "A farmer grows food."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-try-3-q.mp3",
+      "sha256": "cae8fe28a0f1e7d099133bbf7c1e4f629ca12b235ab8ed9946f991bbdcf93ef5",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-try-3-a.mp3",
+      "sha256": "0384df03acbfa7ae56475d6a0d59ac8aa4bcda720a60cf69e7b2eae58dffc0be",
+      "expectedText": "Doctors keep us healthy.",
+      "recognizedText": "Doctors keep us healthy."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-1-q.mp3",
+      "sha256": "aaff307cc0522d2e23a7d5a67f7e8fe20acde931cabbfc208aeb362500a6b3c2",
+      "expectedText": "How do doctors help us? Say a full sentence.",
+      "recognizedText": "How do doctors help us? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-1-a.mp3",
+      "sha256": "95548aac651dee188dd754869c8588cb49eb81fd4208c0e43861134965f17dd5",
+      "expectedText": "Doctors keep us healthy.",
+      "recognizedText": "Doctors keep us healthy."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-2-q.mp3",
+      "sha256": "51c16e111c6b79cf3d7352f421d00e853d14dcb8a8eacd4b7d001b2883824f33",
+      "expectedText": "How do teachers help us? Say a full sentence.",
+      "recognizedText": "How do teachers help us? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-2-a.mp3",
+      "sha256": "f21d85167539070aebff48af4db36ad1dd7218aa81f942c1dd1a4727a655d1cc",
+      "expectedText": "Teachers help us learn.",
+      "recognizedText": "Teachers help us learn."
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-3-q.mp3",
+      "sha256": "f53a23bde40f25c0264b2529b1dd74d1bf38e35e009267de7b068ee0115885f6",
+      "expectedText": "Can you tell us in a full sentence how police officers help us?",
+      "recognizedText": "Can you tell us in a full sentence how police officers help us?"
+    },
+    {
+      "file": "audio/2026-09-23-job-actions-say-3-a.mp3",
+      "sha256": "56e8a7c52306a6c41ec724b0fe7500f84f8cabc5c6cf707983c9e5ffae288a64",
+      "expectedText": "Police officers keep us safe.",
+      "recognizedText": "Police officers keep us safe."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-1-q.mp3",
+      "sha256": "ab689b0d2eafc514c306e32f98424a330dac470bcbe37266927c2f64b1289f5d",
+      "expectedText": "The title is Fun with Balls. The picture shows balls and bats. Is the topic games or jobs? Build a full sentence.",
+      "recognizedText": "The title is Fun with Balls. The picture shows balls and bats. Is the topic games or jobs? Build a full sentence."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-1-a.mp3",
+      "sha256": "05021da9d5cbf56b3aa23284b6b96c92d5a60aa6add864f4abb210f05b7f5f72",
+      "expectedText": "This text is about games.",
+      "recognizedText": "This text is about games."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-2-q.mp3",
+      "sha256": "9ff3a12bdea044a9a9f1510a2cd9eccce9324149192cf26db15526e743c7fdfb",
+      "expectedText": "The old sentence says the text is about games. The new title is Soup for Lunch. Keep the word games and change the old sentence to fit the new title.",
+      "recognizedText": "The old sentence says the text is about games. The new title is Soup for Lunch. Keep the word games and change the old sentence to fit the new title."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-2-a.mp3",
+      "sha256": "1cbeb329a1e98cf5fb4f52c69cae31848d6be8527db0986afe1cdcbd9ad368eb",
+      "expectedText": "This text is not about games.",
+      "recognizedText": "This text is not about games."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-3-q.mp3",
+      "sha256": "ee55c65c8da2e8ec3c7790b3ada273a3153e61d6066e4b4fbf2975249b4d7c62",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-try-3-a.mp3",
+      "sha256": "bc0f08a985d7281eaf8679cc99d7fb3b57e6a708ceff248c4e1338681d13869f",
+      "expectedText": "This text is about clothes.",
+      "recognizedText": "This text is about clothes."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-1-q.mp3",
+      "sha256": "7e8399c2bc2c8ca05d40128c31c6d2e7e4625d025bae9f7ea371763f6da8bfa8",
+      "expectedText": "The title is Cooking Soup and the picture shows a pot and vegetables, so can you tell us in a full sentence if the text is about food or games?",
+      "recognizedText": "The title is Cooking Soup, and the picture shows a pot and vegetables. So can you tell us in a full sentence if the text is about food or games?"
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-1-a.mp3",
+      "sha256": "35ca312f0bbf1b7d02d42e0c98069767f2a6b24d36a99199c94dd140a7bbc694",
+      "expectedText": "It is about food.",
+      "recognizedText": "It is about food."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-2-q.mp3",
+      "sha256": "158be2390417902a4e38ad917d10ecf968b930d93d242e0656e898f88205aee6",
+      "expectedText": "The title is New Shirts and the picture shows shirts and coats, so can you tell us in a full sentence if the text is about clothes or jobs?",
+      "recognizedText": "The title is New Shirts, and the picture shows shirts and coats, so can you tell us in a full sentence if the text is about clothes or jobs?"
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-2-a.mp3",
+      "sha256": "04b70a0c38aebe5c89e760f1249d4141bdf9bde6aa36368122730b2680f115c4",
+      "expectedText": "It is about clothes.",
+      "recognizedText": "It is about clothes."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-3-q.mp3",
+      "sha256": "73162e368f672785440a6f69845af279df19f697a297e5463db25d2a881159fc",
+      "expectedText": "The title is People at Work. The picture shows a doctor and a teacher. Is the text about jobs or food? Say a full sentence.",
+      "recognizedText": "The title is People at Work. The picture shows a doctor and a teacher. Is the text about jobs or food? Say a full sentence."
+    },
+    {
+      "file": "audio/2026-09-23-topic-clues-say-3-a.mp3",
+      "sha256": "e5c01cb38c232f3f2f795a33eab8f19b7336af4cff1d5b48c93244597c703979",
+      "expectedText": "It is about jobs.",
+      "recognizedText": "It is about jobs."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-1-q.mp3",
+      "sha256": "ea50db558783cdba20169110e88ef422c7aa48856ecd592cbb43117ee8d5cb2f",
+      "expectedText": "You have homework now and no pencil. A toy can wait. What must you get for homework? Start with I.",
+      "recognizedText": "You have homework now and no pencil. A toy can wait. What must you get for homework? Start with I."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-1-a.mp3",
+      "sha256": "406891455019efb7a6b6abbf7d042ac76148f4cdf59315b5e57db4a6b13e2367",
+      "expectedText": "I need a pencil.",
+      "recognizedText": "I need a pencil."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-2-q.mp3",
+      "sha256": "7dbe97178f90920eaf4a03556c033e1fa593dbe1b7a661155d8deec16eec8393",
+      "expectedText": "The old sentence is I want new shoes. Now you have no shoes for the walk to school. Change the sentence.",
+      "recognizedText": "The old sentence is, I want new shoes. Now you have no shoes for the walk to school. Change the sentence."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-2-a.mp3",
+      "sha256": "37b0a051c78e4fe30ff804db51fc9b5f401dcf3fa0cd3eebac7af41877743867",
+      "expectedText": "I need new shoes.",
+      "recognizedText": "I need new shoes."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-3-q.mp3",
+      "sha256": "0aefd764b437c7c079069770dc238a014c9cf42f72c8e2323fa2850b4c0b39dc",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-try-3-a.mp3",
+      "sha256": "39df1867a6bdb75cae823dace1e270bb1f8dae1eaab0357dc7d0002b50215765",
+      "expectedText": "I want a toy.",
+      "recognizedText": "I want a toy."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-1-q.mp3",
+      "sha256": "7d3f2eae7e25e33fda7591a76e63e5671fe4c1af6f19852c9e9d74090d6c157e",
+      "expectedText": "You are thirsty and have no water to drink, so starting with I, what do you want or need now?",
+      "recognizedText": "You are thirsty and have no water to drink, so starting with I, what do you want or need now?"
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-1-a.mp3",
+      "sha256": "4c267e2534bdc694bd6979eb8b05ccf7e5090ca7dceeb3278c9c804a177c3909",
+      "expectedText": "I need water.",
+      "recognizedText": "I need water."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-2-q.mp3",
+      "sha256": "a3ccbf4b923c01c9e67ebd140e66170e1a008ade3665e957f5d895d228e3e242",
+      "expectedText": "You must walk to school and have no shoes, so starting with I, what do you want or need for the walk?",
+      "recognizedText": "You must walk to school and have no shoes, so starting with I, what do you want or need for the walk?"
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-2-a.mp3",
+      "sha256": "1fde92445359c0e1c95858d4757dfaea33c3de8a4103da8d9c9af404142a41db",
+      "expectedText": "I need shoes.",
+      "recognizedText": "I need shoes."
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-3-q.mp3",
+      "sha256": "39540ebe2431d49ddf64ba876dcdf853d99cf741efe10ffb5c8296095478a7b4",
+      "expectedText": "Everything for today is ready and a toy is just for fun and can wait, so starting with I, what do you want or need for fun?",
+      "recognizedText": "Everything for today is ready, and a toy is just for fun and can wait. So starting with I, what do you want or need for fun?"
+    },
+    {
+      "file": "audio/2026-09-23-need-or-want-say-3-a.mp3",
+      "sha256": "17ee4b0e738f40e1129b1ecaa6c0f5038ab79ae77547e23633583ff5ebc573df",
+      "expectedText": "I want a toy.",
+      "recognizedText": "I want a toy."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-1-q.mp3",
+      "sha256": "5b3b58247da463e03737f20765fc92223af64cfb001b5ce3a35e3c4d53585cf6",
+      "expectedText": "Ask if Ella has a coat. Start with Does she.",
+      "recognizedText": "Ask if Ella has a coat. Start with, does she?"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-1-a.mp3",
+      "sha256": "e426cde6a876585da77d3ccfc763721574170a13316cad13a7f766ebc5e3e7e6",
+      "expectedText": "Does she have a coat?",
+      "recognizedText": "Does she have a coat?"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-2-q.mp3",
+      "sha256": "afaf70541aeff2276398e27dbe9da33a89a2666d8150e8acdfe35bf8c79f1704",
+      "expectedText": "Change He wants a kite into a question. Start with Does.",
+      "recognizedText": "Change he wants a kite into a question. Start with does"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-2-a.mp3",
+      "sha256": "19b7cf784a9266d4406f3c1fc06462a5d74debe5184a55bdc68a35c38ba6d810",
+      "expectedText": "Does he want a kite?",
+      "recognizedText": "Does he want a kite?"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-3-q.mp3",
+      "sha256": "789b9adb379d309ae461b8c87595854387f454924a97014524ae206fca663417",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-try-3-a.mp3",
+      "sha256": "ef7d0392758f75d9c1312c1078f134f037e015d5fd219b3c89d9533a67c20a37",
+      "expectedText": "Does he have a hat?",
+      "recognizedText": "Does he have a hat?"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-1-q.mp3",
+      "sha256": "8ed2902f8a600e12efb03525a50956b0b3cd070731885c79e91587d98309a0e2",
+      "expectedText": "Look at Ella's card. Does Ella have a coat? Say a full answer.",
+      "recognizedText": "Look at Ella's card. Does Ella have a coat? Say a full answer."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-1-a.mp3",
+      "sha256": "d3281251b375e709be489f0a2c4bc86b2f7e8484c48583024fff00d0a63dbeee",
+      "expectedText": "Yes, she has a coat.",
+      "recognizedText": "Yes, she has a coat."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-2-q.mp3",
+      "sha256": "342671b58c1d365c683db7f1569152a7d85ce560f2d5ba585eb23af889ca0500",
+      "expectedText": "Look at Noah's card and give a full answer: does Noah want a toy train?",
+      "recognizedText": "Look at Noah's card and give a full answer. Does Noah want a toy train?"
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-2-a.mp3",
+      "sha256": "503fde800cf83f4ffa294027d8fc37edd9e1e94c64ad170625e5338ffb21ce53",
+      "expectedText": "No, he doesn't want a toy train.",
+      "recognizedText": "No, he doesn't want a toy train."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-3-q.mp3",
+      "sha256": "01496b95acd34c5749c3087b6338564fad32b735e5068dd0a63c57dcd43343df",
+      "expectedText": "Look at Lily's card. Does Lily want a book? Say a full answer.",
+      "recognizedText": "Look at Lily's card. Does Lily want a book? Say a full answer."
+    },
+    {
+      "file": "audio/2026-09-23-does-have-want-say-3-a.mp3",
+      "sha256": "4b0e8e5e6679de83b181464a58c5b19054050dc697233ae4e4c58cf42d85b1cf",
+      "expectedText": "Yes, she wants a book.",
+      "recognizedText": "Yes, she wants a book."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-1-q.mp3",
+      "sha256": "5b4b4bd2920a29bfe9da788749ebbb5b22888613bbf9e0d59272e8f6ec944fc5",
+      "expectedText": "Ask what Ella wants. Start with What.",
+      "recognizedText": "Ask what Ella wants. Start with what."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-1-a.mp3",
+      "sha256": "2267622b9703550d96c92f42715f4b462094075a535b4ab4075c5acc1fc08a14",
+      "expectedText": "What does she want?",
+      "recognizedText": "What does she want?"
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-2-q.mp3",
+      "sha256": "84dfe67e6576d638ed69ac8078f6a87150de62064ef3937ff95c794656ccfbf3",
+      "expectedText": "Change the statement into a question about the thing he wants. Start with What.",
+      "recognizedText": "Change the statement into a question about the thing he wants. Start with what?"
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-2-a.mp3",
+      "sha256": "6953b9a12c9bc2abe72d0664d31bcb53ea3b6393b10dbf41d6660689abec8b22",
+      "expectedText": "What does he want?",
+      "recognizedText": "What does he want?"
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-3-q.mp3",
+      "sha256": "c77805f4675c3ee524ff7031730a004672676ea0bd0f6456f8a9591ea00d2dbd",
+      "expectedText": "Find and fix one word.",
+      "recognizedText": "Find and fix one word."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-try-3-a.mp3",
+      "sha256": "991efdd4ad1915028a990c88fdfb96896b8a212e0779e75dc2594c4dda749574",
+      "expectedText": "What does she want?",
+      "recognizedText": "What does she want?"
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-1-q.mp3",
+      "sha256": "8748b44e383beb15622d5e8102a8c5fc2a984aa1c141d6d853533ab0ed00477c",
+      "expectedText": "Ask what Nora wants. Start with What.",
+      "recognizedText": "Ask what Nora wants. Start with what."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-1-a.mp3",
+      "sha256": "3df3ace886a79c91a198e8ad7d3752a91402ad73c55c2cc7c07723ef79406ed3",
+      "expectedText": "What does she want?",
+      "recognizedText": "What does she want?"
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-2-q.mp3",
+      "sha256": "364dafb729ce0c0cb86d10f9284f8b916e8bca388be1e42818440e7af5a8e2b1",
+      "expectedText": "Look at Ben's card. What does Ben want? Say a full answer.",
+      "recognizedText": "Look at Ben's card. What does Ben want? Say a full answer."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-2-a.mp3",
+      "sha256": "d9e527872e4094a691487971832cc1de1504865cf2e41d750be7cd22ee727681",
+      "expectedText": "He wants a puzzle.",
+      "recognizedText": "He wants a puzzle."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-3-q.mp3",
+      "sha256": "956b235dedee3607cd676a2391d92911709c411512272dcd7e3b90e4467da5f5",
+      "expectedText": "Ask what Milo wants. Start with What.",
+      "recognizedText": "Ask what Milo wants. Start with what."
+    },
+    {
+      "file": "audio/2026-09-23-what-does-want-say-3-a.mp3",
+      "sha256": "cf69df5ea431566a82a0a8d3516a92801e4c860bd3ed5a9f21c4d2c1063c97cd",
+      "expectedText": "What does he want?",
+      "recognizedText": "What does he want?"
+    }
+  ]
+}

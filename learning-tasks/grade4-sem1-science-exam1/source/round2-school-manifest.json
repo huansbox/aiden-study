@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-27",
+  "task": "grade4-sem1-science-exam1",
+  "scope": "桃子腳較早年度四上第一次自然；本輪最多新增兩份原卷，113／114已在school-manifest.json，不重複計數。",
+  "official_entry": "https://www.tykjh.ntpc.edu.tw/p/426-1000-57.php",
+  "source_chain": {
+    "school_page_observation": "國小部試題(3年內)頁籤列114、113、112；切至112國小後，校方嵌入的112國小部試題資料夾列112上-1。",
+    "year_112_folder": "https://drive.google.com/drive/folders/1KeiwKMqQPFukOFwEQPyNLxGvh1LhnJ3F",
+    "year_112_first_exam_folder": "https://drive.google.com/drive/folders/1fwY3xUEUZd2hD7vDkZkn2cg9el6pVLJk",
+    "year_111_observation": "現行國小部試題(3年內)頁籤未列111；針對校名、111上國小與四年級自然的公開搜尋，本次未取得可由校方入口追溯的111原卷或答案連結。未取得不表示校方從未公開或試卷不存在。",
+    "year_115_first_science_range": "此次未取得校方直接公告；115康軒版與暫定核心仍依curriculum-comparison.md，不能由112卷面單元1～2推定。"
+  },
+  "papers": [
+    {
+      "paper_id": "tyk112",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "自然",
+      "face_range": "單元1～單元2（112當年卷面範圍）",
+      "publisher": "unknown",
+      "publisher_evidence": "112題目卷與答案卷卷面均未印出版社；此次未取得同校112學年度四年級自然版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1CLkeD1sugNc3RbyYfRthWsPtmSS2Gkyo/view",
+      "question_original_name": "112-1四年級期中自然試題.pdf",
+      "question_file": "source/papers/round2-tyk-112-g4s1-science-exam1-q.pdf",
+      "question_pdf": {
+        "magic": "%PDF-1.7",
+        "pages": 3,
+        "bytes": 529674,
+        "sha256": "B55F4661640445A58A9E261618813C16DBFBAADB1BB95CE404F976F98EE741D1",
+        "inspection": "三頁逐頁渲染核對：第1頁校名、112四上第一次自然、圖表；第2頁圖形題；第3頁獨立閱讀附件。"
+      },
+      "answer_source_url": "https://drive.google.com/file/d/1XTuaWzFhZMpTyX2jN_ONUk31nVtb0fny/view",
+      "answer_original_name": "112-1-1四年級自然期中答案卷.pdf",
+      "answer_file": "source/papers/round2-tyk-112-g4s1-science-exam1-a.pdf",
+      "answer_identity": "與題目同一校方112上-1資料夾；三頁校名、年度、年級、考次、科目、題目版面及附件一致，前兩頁有紅色標記。",
+      "answer_pdf": {
+        "magic": "%PDF-1.7",
+        "pages": 3,
+        "bytes": 536194,
+        "sha256": "FFDE1A6E555012D79AA40E09481604F21F08F391DC2DCDF4C39C8798EBCD6227",
+        "inspection": "三頁逐頁渲染核對；前兩頁各題作答位置有校方紅色標記，第三頁為與題卷一致的閱讀附件。本次僅驗證答案卷身分與標記存在，未逐題驗算正確性。"
+      },
+      "marked_units": 100,
+      "answer_presence": "100 present; no visible blank marking positions",
+      "selection_status": "已收；七個現行練習主題均無核心候選，本卷僅適合月亮、光、能源等後續單元，不增加本次核心可用題數。"
+    }
+  ],
+  "count": {
+    "new_valid_official_question_papers": 1,
+    "new_official_answer_papers": 1,
+    "new_provisional_core_candidates": 0,
+    "year_111_question_papers_obtained": 0
+  },
+  "private_boundary": "題目與答案PDF及逐頁渲染圖僅存受Git ignore保護的source/papers/與source/private/round2-school/；公開資料只記來源、檔案驗證及概念方法，不含題文、選項、答案或原圖。"
+}

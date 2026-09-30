@@ -1,0 +1,1138 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-24",
+  "date": "2026-09-24",
+  "title": "Our picnic plans and wishes",
+  "concepts": [
+    {
+      "id": "eat-and-drink",
+      "title": "Eat or drink?",
+      "try": [
+        {
+          "id": "eat-and-drink-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do we do with grapes?",
+          "instruction": "Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Picnic food / grapes"
+          },
+          "answerText": "We eat grapes.",
+          "spokenQuestion": "Starting with We, what do we do with grapes at the picnic?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "eat"
+            },
+            {
+              "id": "w2",
+              "text": "grapes."
+            },
+            {
+              "id": "x0",
+              "text": "drink"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "eat-and-drink-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: juice. Change the action too.",
+          "instruction": "Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "We eat grapes."
+          },
+          "answerText": "We drink juice.",
+          "spokenQuestion": "The old sentence is We eat grapes. Now it is juice. Change the action too. Start with We.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "drink"
+            },
+            {
+              "id": "w2",
+              "text": "juice."
+            },
+            {
+              "id": "x0",
+              "text": "eat"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "eat-and-drink-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "A glass of water"
+          },
+          "answerText": "We drink water.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "eat"
+            },
+            {
+              "id": "w2",
+              "text": "water."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "drinks"
+            },
+            {
+              "id": "c1",
+              "text": "drink"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "eat-and-drink-say-1",
+          "prompt": "What do we do with sandwiches?",
+          "instruction": "Say a full sentence. We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Picnic / sandwiches"
+          },
+          "answerText": "We eat sandwiches.",
+          "spokenQuestion": "What do we do with sandwiches at the picnic? Start with We.",
+          "accepted": [
+            "We can eat sandwiches."
+          ]
+        },
+        {
+          "id": "eat-and-drink-say-2",
+          "prompt": "What do we do with soda?",
+          "instruction": "Say a full sentence. We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Picnic / soda"
+          },
+          "answerText": "We drink soda.",
+          "spokenQuestion": "What do we do with soda at the picnic? Start with We.",
+          "accepted": [
+            "We can drink soda."
+          ]
+        },
+        {
+          "id": "eat-and-drink-say-3",
+          "prompt": "What do you like to do with juice?",
+          "instruction": "Say a full sentence. I like to …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend: you like juice"
+          },
+          "answerText": "I like to drink juice.",
+          "spokenQuestion": "Pretend you like juice. What do you like to do with it? Start with I like to.",
+          "accepted": [
+            "I like drinking juice."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "picnic-plan",
+      "title": "Follow our picnic plan",
+      "try": [
+        {
+          "id": "picnic-plan-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What must we bring?",
+          "instruction": "Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Our plan / Must bring: sandwiches / Nice to have: cookies"
+          },
+          "answerText": "We need some sandwiches.",
+          "spokenQuestion": "Look at our picnic plan. What must we bring? Start with We.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "some"
+            },
+            {
+              "id": "w3",
+              "text": "sandwiches."
+            },
+            {
+              "id": "x0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "picnic-plan-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: juice is on the must-bring list.",
+          "instruction": "Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Old: We want some juice. / New plan: Must bring juice."
+          },
+          "answerText": "We need some juice.",
+          "spokenQuestion": "The old sentence is We want some juice. Our new plan puts juice on the must-bring list. Change the sentence.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "some"
+            },
+            {
+              "id": "w3",
+              "text": "juice."
+            },
+            {
+              "id": "x0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "picnic-plan-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Our plan / Candy: nice to have, can wait / Must-bring items: ready"
+          },
+          "answerText": "We want some candy.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "need"
+            },
+            {
+              "id": "w2",
+              "text": "some"
+            },
+            {
+              "id": "w3",
+              "text": "candy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "want"
+            },
+            {
+              "id": "c1",
+              "text": "wants"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "picnic-plan-say-1",
+          "prompt": "What does our plan say about water?",
+          "instruction": "Choose want or need. We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Our plan / Must bring: water"
+          },
+          "answerText": "We need some water.",
+          "spokenQuestion": "Look at our plan for water. Say what we want or need. Start with We.",
+          "accepted": [
+            "We need water."
+          ]
+        },
+        {
+          "id": "picnic-plan-say-2",
+          "prompt": "What does our plan say about grapes?",
+          "instruction": "Choose want or need. We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Our plan / Grapes: nice to have, can wait"
+          },
+          "answerText": "We want some grapes.",
+          "spokenQuestion": "Look at our plan for grapes. Say what we want or need. Start with We.",
+          "accepted": [
+            "We want grapes."
+          ]
+        },
+        {
+          "id": "picnic-plan-say-3",
+          "prompt": "What does our plan say about cups?",
+          "instruction": "Choose want or need. We …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Our plan / Must bring: cups"
+          },
+          "answerText": "We need some cups.",
+          "spokenQuestion": "Look at our plan for cups. Say what we want or need. Start with We.",
+          "accepted": [
+            "We need cups."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-wishes",
+      "title": "Tell me about someone",
+      "try": [
+        {
+          "id": "report-wishes-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell me about your brother.",
+          "instruction": "Start with My brother. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend brother: I want a cookie."
+          },
+          "answerText": "My brother wants a cookie.",
+          "spokenQuestion": "Your pretend brother says, I want a cookie. Tell me about your brother. Start with My brother.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "brother"
+            },
+            {
+              "id": "w2",
+              "text": "wants"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "cookie."
+            },
+            {
+              "id": "x0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "report-wishes-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Your sister says this. Tell me about her.",
+          "instruction": "Start with My sister. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend sister: I need a cup."
+          },
+          "answerText": "My sister needs a cup.",
+          "spokenQuestion": "Your pretend sister says, I need a cup. Change her words to tell me about your sister. Start with My sister.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "sister"
+            },
+            {
+              "id": "w2",
+              "text": "needs"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "cup."
+            },
+            {
+              "id": "x0",
+              "text": "need"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "report-wishes-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend dad: I need water."
+          },
+          "answerText": "My dad needs water.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "My"
+            },
+            {
+              "id": "w1",
+              "text": "dad"
+            },
+            {
+              "id": "w2",
+              "text": "need"
+            },
+            {
+              "id": "w3",
+              "text": "water."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "want"
+            },
+            {
+              "id": "c1",
+              "text": "needs"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "report-wishes-say-1",
+          "prompt": "What does your friend want?",
+          "instruction": "Tell me about your friend. My friend …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend friend: I want a sandwich."
+          },
+          "answerText": "My friend wants a sandwich.",
+          "spokenQuestion": "Your pretend friend says, I want a sandwich. What does your friend want? Start with My friend.",
+          "accepted": [
+            "My friend wants one sandwich."
+          ]
+        },
+        {
+          "id": "report-wishes-say-2",
+          "prompt": "What does your mum need?",
+          "instruction": "Tell me about your mum. My mum …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend mum: I need a bag."
+          },
+          "answerText": "My mum needs a bag.",
+          "spokenQuestion": "Your pretend mum says, I need a bag. What does your mum need? Start with My mum.",
+          "accepted": [
+            "My mother needs a bag.",
+            "My mom needs a bag."
+          ]
+        },
+        {
+          "id": "report-wishes-say-3",
+          "prompt": "What does your sister want?",
+          "instruction": "Tell me about your sister. My sister …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend sister: I want some grapes."
+          },
+          "answerText": "My sister wants some grapes.",
+          "spokenQuestion": "Your pretend sister says, I want some grapes. What does your sister want? Start with My sister.",
+          "accepted": [
+            "My sister wants grapes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "people-and-actions",
+      "title": "People and actions",
+      "try": [
+        {
+          "id": "people-and-actions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does the farmer do?",
+          "instruction": "Start with A farmer. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "One farmer / sell / apples"
+          },
+          "answerText": "A farmer sells apples.",
+          "spokenQuestion": "Look at the person and the action. What does the farmer do? Start with A farmer.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "farmer"
+            },
+            {
+              "id": "w2",
+              "text": "sells"
+            },
+            {
+              "id": "w3",
+              "text": "apples."
+            },
+            {
+              "id": "x0",
+              "text": "sell"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "people-and-actions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: two farmers.",
+          "instruction": "Start with Two farmers. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "A farmer sells apples."
+          },
+          "answerText": "Two farmers sell apples.",
+          "spokenQuestion": "Change the sentence to two farmers. Start with Two farmers.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Two"
+            },
+            {
+              "id": "w1",
+              "text": "farmers"
+            },
+            {
+              "id": "w2",
+              "text": "sell"
+            },
+            {
+              "id": "w3",
+              "text": "apples."
+            },
+            {
+              "id": "x0",
+              "text": "sells"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "people-and-actions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "One girl / play / a game"
+          },
+          "answerText": "The girl plays a game.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "girl"
+            },
+            {
+              "id": "w2",
+              "text": "play"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "game."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "plays"
+            },
+            {
+              "id": "c1",
+              "text": "sells"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "people-and-actions-say-1",
+          "prompt": "What does Leo do?",
+          "instruction": "Say a full sentence. Leo …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Leo / run / in the park"
+          },
+          "answerText": "Leo runs in the park.",
+          "spokenQuestion": "Look at Leo and his action. What does Leo do? Say a full sentence.",
+          "accepted": [
+            "He runs in the park."
+          ]
+        },
+        {
+          "id": "people-and-actions-say-2",
+          "prompt": "What do farmers do?",
+          "instruction": "Say a full sentence. Farmers …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Farmers / grow / rice"
+          },
+          "answerText": "Farmers grow rice.",
+          "spokenQuestion": "Look at the farmers and their action. What do farmers do? Say a full sentence.",
+          "accepted": [
+            "The farmers grow rice."
+          ]
+        },
+        {
+          "id": "people-and-actions-say-3",
+          "prompt": "What do police officers do?",
+          "instruction": "Say a full sentence. Police officers …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Police officers / help / people"
+          },
+          "answerText": "Police officers help people.",
+          "spokenQuestion": "Look at the police officers and their action, and tell us in a full sentence what police officers do.",
+          "accepted": [
+            "The police officers help people.",
+            "They help people."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "my-and-your",
+      "title": "My things and your things",
+      "try": [
+        {
+          "id": "my-and-your-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell Leo which of his things you want.",
+          "instruction": "Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You: a kite / Leo: a ball / Speak to Leo."
+          },
+          "answerText": "I want your ball.",
+          "spokenQuestion": "You have a kite. Leo has a ball. Tell Leo which of his things you want. Start with I.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "your"
+            },
+            {
+              "id": "w3",
+              "text": "ball."
+            },
+            {
+              "id": "x0",
+              "text": "my"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "my-and-your-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Ask instead of telling.",
+          "instruction": "Start with Do. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You own the kite. Speak to Leo. / Old: You want my kite."
+          },
+          "answerText": "Do you want my kite?",
+          "spokenQuestion": "You own the kite and are speaking to Leo. Change You want my kite into a question. Start with Do.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Do"
+            },
+            {
+              "id": "w1",
+              "text": "you"
+            },
+            {
+              "id": "w2",
+              "text": "want"
+            },
+            {
+              "id": "w3",
+              "text": "my"
+            },
+            {
+              "id": "w4",
+              "text": "kite?"
+            },
+            {
+              "id": "x0",
+              "text": "wants"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "my-and-your-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You: a ball / Rose: a kite / Ask Rose for her kite."
+          },
+          "answerText": "I want your kite.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "my"
+            },
+            {
+              "id": "w3",
+              "text": "kite."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "me"
+            },
+            {
+              "id": "c1",
+              "text": "your"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "my-and-your-say-1",
+          "prompt": "Tell Kim what you want from her.",
+          "instruction": "Say a full sentence. I want …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You: a ball / Kim: a kite / Speak to Kim."
+          },
+          "answerText": "I want your kite.",
+          "spokenQuestion": "You have a ball. Kim has a kite. Tell Kim what you want from her. Start with I want.",
+          "accepted": [
+            "I would like your kite."
+          ]
+        },
+        {
+          "id": "my-and-your-say-2",
+          "prompt": "Offer your red hat to Ben.",
+          "instruction": "Ask a full question. Do you want …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You: a red hat / Ben: a blue hat / Speak to Ben."
+          },
+          "answerText": "Do you want my red hat?",
+          "spokenQuestion": "You have a red hat. Ben has a blue hat. Offer your red hat to Ben. Start with Do you want.",
+          "accepted": [
+            "Do you want my hat?"
+          ]
+        },
+        {
+          "id": "my-and-your-say-3",
+          "prompt": "Whose coat is this?",
+          "instruction": "Say a full sentence. This is …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend: the coat belongs to you."
+          },
+          "answerText": "This is my coat.",
+          "spokenQuestion": "Pretend the coat belongs to you. Whose coat is this? Say a full sentence.",
+          "accepted": [
+            "It is my coat.",
+            "It's my coat."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prefer-more",
+      "title": "What do you like more?",
+      "try": [
+        {
+          "id": "prefer-more-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Which candy do you like more?",
+          "instruction": "Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You / lemon candy: like more / mint candy: like less"
+          },
+          "answerText": "I prefer lemon candy.",
+          "spokenQuestion": "Look at the two kinds of candy and use prefer to tell us which you like more.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "prefer"
+            },
+            {
+              "id": "w2",
+              "text": "lemon"
+            },
+            {
+              "id": "w3",
+              "text": "candy."
+            },
+            {
+              "id": "x0",
+              "text": "prefers"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "prefer-more-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now: tell me about Ava.",
+          "instruction": "Start with She. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Old: I prefer lemon candy. / Ava likes lemon candy more than mint candy."
+          },
+          "answerText": "She prefers lemon candy.",
+          "spokenQuestion": "You told us about yourself before; now Ava likes lemon candy more than mint candy, so starting with She, tell us about her choice.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "prefers"
+            },
+            {
+              "id": "w2",
+              "text": "lemon"
+            },
+            {
+              "id": "w3",
+              "text": "candy."
+            },
+            {
+              "id": "x0",
+              "text": "prefer"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "prefer-more-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "You / apple juice: like more / grape juice: like less"
+          },
+          "answerText": "I prefer apple juice.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "prefers"
+            },
+            {
+              "id": "w2",
+              "text": "apple"
+            },
+            {
+              "id": "w3",
+              "text": "juice."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "prefer"
+            },
+            {
+              "id": "c1",
+              "text": "wants"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "prefer-more-say-1",
+          "prompt": "Which juice do you like more?",
+          "instruction": "Use prefer. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend: orange juice / like more than apple juice"
+          },
+          "answerText": "I prefer orange juice.",
+          "spokenQuestion": "Pretend you like orange juice more than apple juice. Which juice do you like more? Use prefer.",
+          "accepted": [
+            "I prefer orange juice to apple juice."
+          ]
+        },
+        {
+          "id": "prefer-more-say-2",
+          "prompt": "Which snack do you like more?",
+          "instruction": "Use prefer. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend: cookies / like more than chips"
+          },
+          "answerText": "I prefer cookies.",
+          "spokenQuestion": "Pretend you like cookies more than chips. Which snack do you like more? Use prefer.",
+          "accepted": [
+            "I prefer cookies to chips."
+          ]
+        },
+        {
+          "id": "prefer-more-say-3",
+          "prompt": "Which fruit do you like more?",
+          "instruction": "Use prefer. I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Look",
+            "text": "Pretend: grapes / like more than apples"
+          },
+          "answerText": "I prefer grapes.",
+          "spokenQuestion": "In this story, you like grapes more than apples, so can you use prefer to tell us which fruit you like more?",
+          "accepted": [
+            "I prefer grapes to apples."
+          ]
+        }
+      ]
+    }
+  ]
+}

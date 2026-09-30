@@ -1,0 +1,444 @@
+{
+  "lessonId": "2026-09-21",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-1-q.mp3",
+      "sha256": "9d16b0c6eec544bd2551bab2ca78f61c2de124260eebe67451c96c6856239101",
+      "expectedText": "Sam already has a kite, so starting with He, can you tell us about the comic book on his wish list?",
+      "recognizedText": "Sam already has a kite, so starting with he, can you tell us about the comic book on his wishlist?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-1-a.mp3",
+      "sha256": "db51769fafcdfb14239dd3ed863e42e978432b558921ade18d4aa9d73159ff50",
+      "expectedText": "He wants a comic book.",
+      "recognizedText": "He wants a comic book."
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-2-q.mp3",
+      "sha256": "7eedf8d85d9fc4bfc53cde121a93d19962ccfff949af338b7858d4d57d547728",
+      "expectedText": "A comic book is on both boys' wish lists, so can you begin with They and tell us about the boys together?",
+      "recognizedText": "A comic book is on both boys' wish lists, so can you begin with they and tell us about the boys together?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-2-a.mp3",
+      "sha256": "a4bb44eb8a1b567b5fc9ecc6c9c5b61fc5c888d60a0e8211ae29adcc31d6dd9e",
+      "expectedText": "They want comic books.",
+      "recognizedText": "They want comic books."
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-3-q.mp3",
+      "sha256": "2ac4c8772d5d24de49232ef7f2d3df002c50d8f9db293ebbbd087f6fb7460c5e",
+      "expectedText": "Lily has no board game and would like one, so can you fix the sentence about her wish?",
+      "recognizedText": "Lily has no board game and would like one, so can you fix the sentence above her wish?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-try-3-a.mp3",
+      "sha256": "c3bb8e7e245356b785382e1cde1d6ef7512dc315521ccb5de4b08c671a979323",
+      "expectedText": "Lily wants a board game.",
+      "recognizedText": "Lily wants a board game."
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-1-q.mp3",
+      "sha256": "ffec422e2fe078ec5197c685750f2d84b364ff4b742e4cc1982edc016c77fc6e",
+      "expectedText": "If you already have a ball and a doll is on your wish list, what do you want?",
+      "recognizedText": "If you already have a ball and a doll is on your wish list, what do you want?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-1-a.mp3",
+      "sha256": "f080c9339a51f336e86d8623cf0e7a490dbdda08a500ef3b8e38ff0c92c1c630",
+      "expectedText": "I want a doll.",
+      "recognizedText": "I want a doll."
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-2-q.mp3",
+      "sha256": "4ec8776c7292a917a8ae0a4829a70d22a062dd57bc0b346f0f1e4bb3e1f7d521",
+      "expectedText": "Eva already has pins and a kite is on her wish list, so what does she want?",
+      "recognizedText": "Eva already has pins and a kite is on her wishlist, so what does she want?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-2-a.mp3",
+      "sha256": "f00724b3c0494e874be7a6d21bb90b57243668f90b603d3de80e85a2ff979ad2",
+      "expectedText": "She wants a kite.",
+      "recognizedText": "She wants a kite."
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-3-q.mp3",
+      "sha256": "94f25aadbcff98626cdd3abd5cca7a87193637ade44f6b8c349007f449fa7978",
+      "expectedText": "The twins already have stickers and pins are on their wish list, so what do they want?",
+      "recognizedText": "The twims already have stickers and pins are on their wish list, so what do they want?"
+    },
+    {
+      "file": "audio/2026-09-21-toy-wishes-say-3-a.mp3",
+      "sha256": "6ae66200104456155e8e11ad3e966df76dbefbaee293922e14da31890895382b",
+      "expectedText": "They want pins.",
+      "recognizedText": "They want pins."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-1-q.mp3",
+      "sha256": "819973468432c6e1aafaa1d5203e142b3f006db8142b2b94c7f87c4128009d94",
+      "expectedText": "Mia starts with a kite and Leo starts with a ball, so what does Mia have after they trade?",
+      "recognizedText": "Mia starts with a kite and Leo starts with a ball, so what does Mia have after they trade?"
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-1-a.mp3",
+      "sha256": "e8409178a2d489123d9879953cbeae247096433f416d8a3b0019a785262b3e9f",
+      "expectedText": "Mia has a ball.",
+      "recognizedText": "Mia has a ball."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-2-q.mp3",
+      "sha256": "b610fbff7b7eb795c37564f984d2f83dc5ee0169ef2b3a05e001111692a4d10c",
+      "expectedText": "After the trade, pretend you are Mia and tell us what you have, beginning with I.",
+      "recognizedText": "After the trade, pretend you are Mia, and tell us what you have, beginning with I."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-2-a.mp3",
+      "sha256": "5f365bc1172a3bc9d915297c3ca8ade55f14ff3a5af6dbcbc741b714c13d2ae0",
+      "expectedText": "I have a ball.",
+      "recognizedText": "I have a ball."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-3-q.mp3",
+      "sha256": "999f14d9df159b2d7df1dfe1627c6c22959640bedded486a48169fb70ba7f191",
+      "expectedText": "Ben starts with a book and Eva starts with a doll, so can you fix the sentence about Eva after they trade?",
+      "recognizedText": "Ben starts with a book, and Eva starts with a doll. So can you fix the sentence about Eva after they trade?"
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-try-3-a.mp3",
+      "sha256": "17c8c73bbb7f961163f7ae3273eea1545bea5176b2c9a42e230bf0f7db4e43ac",
+      "expectedText": "Eva has a book.",
+      "recognizedText": "Eva has a book."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-1-q.mp3",
+      "sha256": "7065a2e5bbeddb767c12a66f1d4434dc58fbd97a06f90c89ee341c99a875a10d",
+      "expectedText": "Sam starts with a doll and Eva starts with a kite, so what does Sam have after they trade?",
+      "recognizedText": "Sam starts with a doll and Eva starts with a kite, so what does Sam have after they trade?"
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-1-a.mp3",
+      "sha256": "e0eae83d0c92b1aa1112831fa8b2926c3f685c4fd7c3111f8eb2ee3b12800026",
+      "expectedText": "Sam has a kite.",
+      "recognizedText": "Sam has a kite."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-2-q.mp3",
+      "sha256": "1b5c2356e53808732a09ea18239728295b8c7389f4cbd525f7e63f733dc5dd0b",
+      "expectedText": "Sam starts with a doll and Eva starts with a kite, so if you are Eva, what do you have after the trade?",
+      "recognizedText": "Sam starts with a doll, and Eva starts with a kite, so if you are Eva, what do you have after the trade?"
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-2-a.mp3",
+      "sha256": "309526af007beb27de568df41abcc49402e9aa06dd5efa9ef302174315bd637b",
+      "expectedText": "I have a doll.",
+      "recognizedText": "I have a doll."
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-3-q.mp3",
+      "sha256": "d55d9906d9ffbc8e396ab2ff288b9349ee7d0315a9db432ea4b7cbcfa183c463",
+      "expectedText": "Ben starts with a board game and Kim starts with a comic book, so what does Ben have after they trade?",
+      "recognizedText": "Ben starts with a board game and Kim starts with a comic book, so what does Ben have after they trade?"
+    },
+    {
+      "file": "audio/2026-09-21-after-trade-say-3-a.mp3",
+      "sha256": "b0b4906eee8b10f46605c2f07036e43c1034bf5a41d849bed18156c585d423cd",
+      "expectedText": "Ben has a comic book.",
+      "recognizedText": "Ben has a comic book."
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-1-q.mp3",
+      "sha256": "81b549f42b2fd331a4b6de4c89083e15a7548ec4cc0ca5d7450cd223234a102d",
+      "expectedText": "Mia has the pencil you need, so how can you ask to borrow it politely?",
+      "recognizedText": "Mia has the pencil you need, so how can you ask to borrow it politely?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-1-a.mp3",
+      "sha256": "3ef407739e8bbdb14f1a16523c04e158e8823617ffac67ac7c6842bb5b3e5e50",
+      "expectedText": "Can I borrow your pencil, please?",
+      "recognizedText": "Can I borrow your pencil, please?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-2-q.mp3",
+      "sha256": "042b938e43a975ee145c0c64298d5a4949c3dcdcd5dd2c127b7a9efa09124f57",
+      "expectedText": "You and Sam need Mia's pencil together, so how can you ask to borrow it for both of you?",
+      "recognizedText": "You and Sam me me as pencil together, so how can you ask to borrow it for both of you?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-2-a.mp3",
+      "sha256": "cfef5a145047d91042b4182f8ca0f6222833e708f6a6d85d1f1e00361494dab9",
+      "expectedText": "Can we borrow your pencil, please?",
+      "recognizedText": "Can we borrow your pencil, please?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-3-q.mp3",
+      "sha256": "b7fb48d6721dc1ef5d30d404289e0b43dae5ca7ddfb349805fcf339a6ccf499e",
+      "expectedText": "You need Mia's ruler and are speaking to her, so can you fix the word about whose ruler it is?",
+      "recognizedText": "You need Mia's ruler and are speaking to her so can you fix the word about whose ruler it is?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-try-3-a.mp3",
+      "sha256": "c587ea6e499962b9d211f730e17564b0758e645659151a591d18efe6e47d9ea7",
+      "expectedText": "Can I borrow your ruler, please?",
+      "recognizedText": "Can I borrow your ruler, please?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-1-q.mp3",
+      "sha256": "82379f0d1850362d837f35c12da49626a4c795c7a5ecd1a561349303a5710a3f",
+      "expectedText": "Ben has the comic book you need, so how can you politely ask him to borrow it?",
+      "recognizedText": "Ben has the comic book you need, so how can you politely ask him to borrow it?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-1-a.mp3",
+      "sha256": "c10e8de72f13dc099185d1901282c5acb4d7731b0d6ebd92516ce44ced47e4a9",
+      "expectedText": "Can I borrow your comic book, please?",
+      "recognizedText": "Can I borrow your comic book, please?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-2-q.mp3",
+      "sha256": "eefaad2a91d4cf7c67e16ba467685ae004d63f158d7b01963f7e7fadd5174c84",
+      "expectedText": "You and Mia want to borrow Sam's board game together, so how can you politely ask him?",
+      "recognizedText": "You and Mia want to borrow Sam's board game together, so how can you politely ask him?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-2-a.mp3",
+      "sha256": "5def74506d43a40f06fced33b326f25b97b4bbc1cf5ea4ace834061fd4fa016c",
+      "expectedText": "Can we borrow your board game, please?",
+      "recognizedText": "Can we borrow your board game, please?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-3-q.mp3",
+      "sha256": "8c9eade9408666cc4c51503043288d3dddce42e588fdcad9d21411f5dfca657d",
+      "expectedText": "Lily has the red pen you need, so how can you politely ask her to borrow it?",
+      "recognizedText": "Lily has the red pen you need, so how can you politely ask her to borrow it?"
+    },
+    {
+      "file": "audio/2026-09-21-borrow-politely-say-3-a.mp3",
+      "sha256": "a0231ed69dca2070d3384d3cc91405969e0e81b07c1212fd9c5a54cb545032ea",
+      "expectedText": "Can I borrow your red pen, please?",
+      "recognizedText": "Can I borrow your red pen, please?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-1-q.mp3",
+      "sha256": "b15567725c0dd7737de29f8a47d6db0e9c7e15efcecb63d511769aadf1b8f8a3",
+      "expectedText": "Leo's action is to grow plants, so can you tell us what he does in one sentence?",
+      "recognizedText": "Leo's action is to grow plants, so can you tell us what he does in one sentence?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-1-a.mp3",
+      "sha256": "010c54689eb9d39e2dd764076bf6a5f7bc39a391e9ef66b174a4fc5515eaf058",
+      "expectedText": "Leo grows plants.",
+      "recognizedText": "Leo Grows Plants"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-2-q.mp3",
+      "sha256": "6d17738864d319497557f5d795b478e938aad5ca606fc0bbc41cfc63a24da8fd",
+      "expectedText": "Now Leo and Mia both do this action, so can you change the sentence to talk about them together?",
+      "recognizedText": "Now Leo and Mia both do this action, so can you change the sentence to talk about them together?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-2-a.mp3",
+      "sha256": "2a3bcce132a5d7e6f51d7daf8096604dc1b02fed7a34053e1b1edf6c08ff1b1c",
+      "expectedText": "They grow plants.",
+      "recognizedText": "They grow plants."
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-3-q.mp3",
+      "sha256": "911298d628e6d25b0b8e220185d159963f351c154b7b6fe55f1522c4e270cd82",
+      "expectedText": "Kim's action is to sell toys, so can you fix the sentence about what she does?",
+      "recognizedText": "Kim's action is to sell toys, so can you fix the sentence about what she does?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-try-3-a.mp3",
+      "sha256": "cce0f33fe2a6ad751b09e19a88ccc455ee35f2bfb3917edc08eb4319e97cdff3",
+      "expectedText": "She sells toys.",
+      "recognizedText": "She sells toys."
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-1-q.mp3",
+      "sha256": "673e9bb4f41f5161e5757662b0a1e0f5cdb76afa77da8f4400b914e46d2bfd4e",
+      "expectedText": "Pretend your action is to mix colors, and tell us what you do in one sentence.",
+      "recognizedText": "Pretend your action is to mix colors and tell us what you do in one sentence."
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-1-a.mp3",
+      "sha256": "e0100a9c3c4e48cb1703f1284866967b2600080654afbe09151ba7b01cd9ba8c",
+      "expectedText": "I mix colors.",
+      "recognizedText": "I mix colors."
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-2-q.mp3",
+      "sha256": "b92949f82de80a101a0c1afb240803bd8205b841cae2c6f901429ddf9e3ff32d",
+      "expectedText": "The farmer's action is to grow food, so can you tell us what the farmer does in one sentence?",
+      "recognizedText": "The farmer's action is to grow food, so can you tell us what the farmer does in one sentence?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-2-a.mp3",
+      "sha256": "cdb41cefe7f8840af401e84739ebaf6fc184ea56127473ff5956e149eb7e01ee",
+      "expectedText": "The farmer grows food.",
+      "recognizedText": "The farmer grows food."
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-3-q.mp3",
+      "sha256": "f3a25a3782f9797324526714470e5d715695e1b093a12dfec254d3c76b6b297a",
+      "expectedText": "Maya's action is to ride a bike, so can you tell us what she does in one sentence?",
+      "recognizedText": "Maya's action is to ride a bike, so can you tell us what she does in one sentence?"
+    },
+    {
+      "file": "audio/2026-09-21-action-sentences-say-3-a.mp3",
+      "sha256": "f96884ed67e9f72bb246900a67144fa8ef4f0aa7a7a2be90a5e5087460dfb4b4",
+      "expectedText": "Maya rides a bike.",
+      "recognizedText": "Maya rides a bike."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-1-q.mp3",
+      "sha256": "4a1aacadf13d4da87d615d8c00cb4cf3e4989ad247cc1b89c19293a0892131b2",
+      "expectedText": "Sam's dream job is teacher, so can you begin with He and tell us about his future job plan?",
+      "recognizedText": "Sam's dream job is teacher, so can you begin with he and tell us about his future job plan?"
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-1-a.mp3",
+      "sha256": "1f8dbed7e55f1b0170fe34a206eb12e50ad6ac9174531194c8a5ce19072a3147",
+      "expectedText": "He wants to be a teacher.",
+      "recognizedText": "He wants to be a teacher."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-2-q.mp3",
+      "sha256": "3cf0f7a5ac9cc63bf3541f290817bd71bb00077fc9bf564cec451e1b21aa2d99",
+      "expectedText": "Pretend you are Sam and tell us about your dream job, beginning with I.",
+      "recognizedText": "Pretend you are Sam and tell us about your dream job beginning with I"
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-2-a.mp3",
+      "sha256": "b6f4784828d973cac2de2b93579778eed4c19f82f7129e8bf959d015fd121bca",
+      "expectedText": "I want to be a teacher.",
+      "recognizedText": "I want to be a teacher."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-3-q.mp3",
+      "sha256": "68e5e99368ada37b053677a7ab675803c109e7bb4395e38eabd85aee2114ee80",
+      "expectedText": "Eva's dream job is doctor, so can you fix the sentence about her plan?",
+      "recognizedText": "Eva's dream job is doctor, so can you fix the sentence about her plan?"
+    },
+    {
+      "file": "audio/2026-09-21-future-job-try-3-a.mp3",
+      "sha256": "79962ab1f862ecf3a99484d5c97823cb10b7aa0447aa08f38f8510964cb02671",
+      "expectedText": "She wants to be a doctor.",
+      "recognizedText": "She wants to be a doctor."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-1-q.mp3",
+      "sha256": "083a76fa753df98b7d2f368a6871b2d2136dca1cc6659ba101334ca42f1d00de",
+      "expectedText": "Pretend your dream job is police officer and tell us what you want to be when you grow up.",
+      "recognizedText": "Pretend your dream job is police officer and tell us what you want to be when you grow up."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-1-a.mp3",
+      "sha256": "b9b518d8e851a00f75bf1fb17a1257ebaf05039b871309e2bb883c24f1a0e5be",
+      "expectedText": "I want to be a police officer.",
+      "recognizedText": "I want to be a police officer."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-2-q.mp3",
+      "sha256": "682787c97237f9dcd4924e121a765b7065b1f4ada68077b2e1b8d4c0ad40bffb",
+      "expectedText": "Lily's dream job is teacher, so can you tell us about her future job plan?",
+      "recognizedText": "Lily's dream job is teacher, so can you tell us about her future job plan?"
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-2-a.mp3",
+      "sha256": "0e346f0d70d54254459507a852c1c8aaaecd31ec45b93be22c96e9ef7eca587b",
+      "expectedText": "She wants to be a teacher.",
+      "recognizedText": "She wants to be a teacher."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-3-q.mp3",
+      "sha256": "93da567ddfe2aeffe1d38985c7ed41e43c19af7f1ae5d187adc41b2eb9697bdd",
+      "expectedText": "Pretend your dream job is doctor and tell us what you want to be when you grow up.",
+      "recognizedText": "Pretend your dream job as doctor and tell us what you want to be when you grow up."
+    },
+    {
+      "file": "audio/2026-09-21-future-job-say-3-a.mp3",
+      "sha256": "0e8c76f218857bcfa023c3891835a911b1803767c38c1ca5dd626cda6ba6d961",
+      "expectedText": "I want to be a doctor.",
+      "recognizedText": "I want to be a doctor."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-1-q.mp3",
+      "sha256": "69b32e077850788897c52ca2dce0658495357dcefcd43b8aed62ff106d188aaa",
+      "expectedText": "A text called Fun at Sea shows a boat and a sail, so what do you think it is about?",
+      "recognizedText": "A text called Fun at Sea shows a boat and a sail, so what do you think it is about?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-1-a.mp3",
+      "sha256": "2b06383e6e9d43d26bfdd661e810f3058b6a533707f790364e271476860f23f7",
+      "expectedText": "I think it is about boats.",
+      "recognizedText": "I think it is about boats."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-2-q.mp3",
+      "sha256": "e71f26de3ed459d33c02327de0a071aceff3d2a963682b523d6e51c48fba2a6a",
+      "expectedText": "One text called At the Farm shows a cow and another called Pet Time shows a cat, so what do you think both texts are about?",
+      "recognizedText": "One text called at the farm shows a cow and another called pet time shows a cat. So what do you think both texts are about?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-2-a.mp3",
+      "sha256": "23f59c40e798668577f382db0108dbae07971b300c089fd345da888ed91b09a7",
+      "expectedText": "I think they are about animals.",
+      "recognizedText": "I think they are about animals."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-3-q.mp3",
+      "sha256": "da13c7062605702f3ea264504565b480ac1e09b7611c568822f9b98d5c90de3f",
+      "expectedText": "The title and pictures give clues about one text, so can you fix the sentence about its topic?",
+      "recognizedText": "The title and pictures give clues about one text, so can you fix the sentence about its topic?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-try-3-a.mp3",
+      "sha256": "df29ef640faaf365df890285edcfae88b9e66c2b834a4c451247925b3a88c172",
+      "expectedText": "I think it is about toys.",
+      "recognizedText": "I think it is about toys."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-1-q.mp3",
+      "sha256": "1b9c4c4f89db06b084b4a0cfaf23bcad069a811157d698a7c3227d29aae850f8",
+      "expectedText": "A text called Rainy Days shows rain and dark clouds, so what do you think it is about?",
+      "recognizedText": "A text called Rainy Days shows rain and dark clouds, so what do you think it is about?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-1-a.mp3",
+      "sha256": "111d3d6f5223ad1da5f3664781b8e45e2d4218e3a2bcdd79380f0d687fa488ca",
+      "expectedText": "I think it is about rain.",
+      "recognizedText": "I think it is about rain."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-2-q.mp3",
+      "sha256": "70f784f07bf5e714de9004e9c29a546d9b6359e19334df71c901710233fed4c3",
+      "expectedText": "A text called Our Garden shows flowers and trees, so what do you think it is about?",
+      "recognizedText": "A text called Our Garden shows flowers and trees. So what do you think it is about?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-2-a.mp3",
+      "sha256": "ddbe3062a40b29247a70e366da1cdf7f9ca3b8d1d25e692c06e197879cedf743",
+      "expectedText": "I think it is about plants.",
+      "recognizedText": "I think it is about plants."
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-3-q.mp3",
+      "sha256": "8bdfd10734d89edcb3a08c9acfb5363915b1e079a8bd6c853df973e03212ebe6",
+      "expectedText": "A text called Play Together shows a board game and two friends, so what do you think it is about?",
+      "recognizedText": "A text called Play Together shows a board game and two friends. So what do you think it is about?"
+    },
+    {
+      "file": "audio/2026-09-21-title-clues-say-3-a.mp3",
+      "sha256": "aabac3e830d33602ad774f1cc71620632a0678c74b389b869522b6ee24aa1fc6",
+      "expectedText": "I think it is about games.",
+      "recognizedText": "I think it is about games."
+    }
+  ]
+}

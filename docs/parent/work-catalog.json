@@ -37,7 +37,7 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-09-26",
+      "updated": "2026-09-30",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -77,7 +77,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-12",
-      "updated": "2026-09-26",
+      "updated": "2026-09-27",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -119,7 +119,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-09-26",
+      "updated": "2026-09-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -159,7 +159,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-09-26",
+      "updated": "2026-09-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -199,7 +199,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-09-26",
+      "updated": "2026-09-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -240,7 +240,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-11",
-      "updated": "2026-09-26",
+      "updated": "2026-09-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -289,7 +289,7 @@
       "updated": "2026-08-10",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-09-25T23:58:27.223Z",
+        "checkedAt": "2026-09-30T00:34:19.218Z",
         "error": null
       }
     },
@@ -327,7 +327,7 @@
       "updated": "2026-05-18",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-09-25T23:58:27.223Z",
+        "checkedAt": "2026-09-30T00:34:19.218Z",
         "error": null
       }
     },
@@ -365,7 +365,407 @@
       "updated": "2026-01-27",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-09-25T23:58:27.223Z",
+        "checkedAt": "2026-09-30T00:34:19.218Z",
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-21",
+      "type": "task",
+      "name": "Native Camp 2026-09-21 Alex",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-21",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-21"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-21",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-21"
+        }
+      ],
+      "description": "願望、交換、借物、動作與工作計畫的完整句",
+      "eventDate": "2026-09-21",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-27",
+      "updated": "2026-09-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-20",
+      "type": "task",
+      "name": "Native Camp 2026-09-20 Kyla",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-20",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-20"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-20",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-20"
+        }
+      ],
+      "description": "需求、用途、買賣、故事順序與原因",
+      "eventDate": "2026-09-20",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-27",
+      "updated": "2026-09-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-19-zibuyile",
+      "type": "task",
+      "name": "Native Camp 2026-09-19 Zibuyile",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-19-zibuyile",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-19-zibuyile"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-19-zibuyile",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19-zibuyile"
+        }
+      ],
+      "description": "水果特徵、所有權視角與完整數量問答",
+      "eventDate": "2026-09-19",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-27",
+      "updated": "2026-09-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-19",
+      "type": "task",
+      "name": "Native Camp 2026-09-19 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-19",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-19"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-19",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-19"
+        }
+      ],
+      "description": "故事預測、能力、感受原因、近遠與寵物描述",
+      "eventDate": "2026-09-19",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-27",
+      "updated": "2026-09-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-18",
+      "type": "task",
+      "name": "Native Camp 2026-09-18 Zeus",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #130。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-18",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-18"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-18",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-18"
+        }
+      ],
+      "description": "食物、完整問答、故事順序、數量與分享理由",
+      "eventDate": "2026-09-18",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-27",
+      "updated": "2026-09-27",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-26",
+      "type": "task",
+      "name": "Native Camp 2026-09-26 Danielle",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-26",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-26"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-26",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-26"
+        }
+      ],
+      "description": "住家描述、否定附和、理由、喜好與條件句",
+      "eventDate": "2026-09-26",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-26",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-25",
+      "type": "task",
+      "name": "Native Camp 2026-09-25 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-25",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-25"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-25",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-25"
+        }
+      ],
+      "description": "動物與顏色描述、主題預測、尾音及存在句",
+      "eventDate": "2026-09-25",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-26",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-24",
+      "type": "task",
+      "name": "Native Camp 2026-09-24 Mia",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-24",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-24"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-24",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-24"
+        }
+      ],
+      "description": "野餐需求、動作、交換與偏好的完整句",
+      "eventDate": "2026-09-24",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-26",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-23",
+      "type": "task",
+      "name": "Native Camp 2026-09-23 Bianca",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-23",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-23"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-23",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-23"
+        }
+      ],
+      "description": "工作與需求、讀取線索及現在式完整問答",
+      "eventDate": "2026-09-23",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-26",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-22",
+      "type": "task",
+      "name": "Native Camp 2026-09-22 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "題包、OpenAI 語音、獨立內容審查與隔離 E2E 完成；發布證據見 #125。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-22",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-22"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-22",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-22"
+        }
+      ],
+      "description": "寵物、朋友介紹、理由與完整句描述",
+      "eventDate": "2026-09-22",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": "2026-09-26",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
         "error": null
       }
     },
@@ -850,7 +1250,47 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-09-22",
+      "updated": "2026-09-26",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:love-sharing",
+      "type": "task",
+      "name": "愛的分享閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/love-sharing",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/love-sharing"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/love-sharing",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../love-sharing-mind-map/"
+        }
+      ],
+      "description": "奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。",
+      "eventDate": "2026-09-29",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": "2026-09-29",
+      "updated": "2026-09-29",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -866,7 +1306,7 @@
       ],
       "audienceLabel": "9 歲；成人可陪讀",
       "status": "complete",
-      "statusNote": "已上線，可直接使用；額外驗收依家長決定略過。",
+      "statusNote": "已上線；家長於 2026-09-29 回報老師沒有修正。額外驗收依家長決定略過。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/leisure-afternoon",
       "source": {
@@ -890,7 +1330,7 @@
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
       "created": "2026-09-15",
-      "updated": "2026-09-16",
+      "updated": "2026-09-29",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -976,7 +1416,7 @@
       ],
       "audienceLabel": "9 歲；四年級",
       "status": "complete",
-      "statusNote": "首批四卷與一份校方答案已收集，來源及逐題 metadata 通過獨立複核；正式範圍與答案正確性待核，原卷只存本機。",
+      "statusNote": "六份題目原卷已收，自然 40 題已上線；#134 完成翰林流水圖與防災三個活動。正式範圍尚未取得，仍有題型缺口；下批須先處理題包容量。原卷只存本機。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/grade4-sem1-science-exam1",
       "source": {
@@ -995,7 +1435,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-09-23",
-      "updated": "2026-09-23",
+      "updated": "2026-09-27",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -1121,7 +1561,7 @@
       "updated": "2026-08-14",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-09-25T23:58:27.223Z",
+        "checkedAt": "2026-09-30T00:34:19.218Z",
         "error": null
       }
     }

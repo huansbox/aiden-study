@@ -1,0 +1,1048 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-25",
+  "date": "2026-09-25",
+  "title": "Animals, poems, and sounds",
+  "concepts": [
+    {
+      "id": "animal-descriptions",
+      "title": "Describe the animals",
+      "try": [
+        {
+          "id": "animal-descriptions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Describe the birds.",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "2 birds / red",
+            "heading": "Look"
+          },
+          "answerText": "The two birds are red.",
+          "spokenQuestion": "There are two birds. Both are red. Describe the birds in one sentence.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "two"
+            },
+            {
+              "id": "w2",
+              "text": "birds"
+            },
+            {
+              "id": "w3",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "red"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "animal-descriptions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now one bird is left. Describe its color.",
+          "instruction": "Build a full sentence. Start with The. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "The two birds are red.",
+            "heading": "Before"
+          },
+          "answerText": "The bird is red.",
+          "spokenQuestion": "Before, there were two red birds. Now one bird is left. Describe its color.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "bird"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "red"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "animal-descriptions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "3 rabbits / white",
+            "heading": "Look"
+          },
+          "answerText": "The three rabbits are white.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "three"
+            },
+            {
+              "id": "w2",
+              "text": "rabbits"
+            },
+            {
+              "id": "w3",
+              "text": "is"
+            },
+            {
+              "id": "w4",
+              "text": "white."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-descriptions-say-1",
+          "prompt": "Describe the frog.",
+          "instruction": "The frog …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 frog / green",
+            "heading": "Look"
+          },
+          "answerText": "The frog is green.",
+          "spokenQuestion": "There is one green frog. Describe the frog in one sentence.",
+          "accepted": [
+            "It is green.",
+            "The one frog is green."
+          ]
+        },
+        {
+          "id": "animal-descriptions-say-2",
+          "prompt": "Describe all three rabbits.",
+          "instruction": "The three rabbits …",
+          "scene": {
+            "kind": "word-card",
+            "text": "3 rabbits / black",
+            "heading": "Look"
+          },
+          "answerText": "The three rabbits are black.",
+          "spokenQuestion": "There are three rabbits. All are black. Describe all three rabbits in one sentence.",
+          "accepted": [
+            "All three rabbits are black.",
+            "The rabbits are black."
+          ]
+        },
+        {
+          "id": "animal-descriptions-say-3",
+          "prompt": "Describe both birds.",
+          "instruction": "The two birds …",
+          "scene": {
+            "kind": "word-card",
+            "text": "2 birds / blue",
+            "heading": "Look"
+          },
+          "answerText": "The two birds are blue.",
+          "spokenQuestion": "There are two birds. Both are blue. Describe both birds in one sentence.",
+          "accepted": [
+            "Both birds are blue.",
+            "The birds are blue."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "title-predictions",
+      "title": "Use the title",
+      "try": [
+        {
+          "id": "title-predictions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do you think the poem is about?",
+          "instruction": "Build a full sentence. Start with I think. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Bird in the Rain",
+            "heading": "Title"
+          },
+          "answerText": "I think this poem is about a bird.",
+          "spokenQuestion": "The title is A Bird in the Rain. What do you think the poem is about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            },
+            {
+              "id": "w3",
+              "text": "poem"
+            },
+            {
+              "id": "w4",
+              "text": "is"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "a"
+            },
+            {
+              "id": "w7",
+              "text": "bird"
+            },
+            {
+              "id": "x0",
+              "text": "fish"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ]
+        },
+        {
+          "id": "title-predictions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now use both titles. What are the poems about?",
+          "instruction": "Build a full sentence. Start with I think. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Bird in the Rain / A Dog in the Snow",
+            "heading": "Two titles"
+          },
+          "answerText": "I think these poems are about animals.",
+          "spokenQuestion": "Now there are two poems. The titles are A Bird in the Rain and A Dog in the Snow. What do you think both poems are about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "these"
+            },
+            {
+              "id": "w3",
+              "text": "poems"
+            },
+            {
+              "id": "w4",
+              "text": "are"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "animals"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ]
+        },
+        {
+          "id": "title-predictions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Tall Tree",
+            "heading": "One title"
+          },
+          "answerText": "I think this poem is about a tree.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "this"
+            },
+            {
+              "id": "w3",
+              "text": "poem"
+            },
+            {
+              "id": "w4",
+              "text": "are"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "a"
+            },
+            {
+              "id": "w7",
+              "text": "tree."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "title-predictions-say-1",
+          "prompt": "What do you think this poem is about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Fish in the Lake",
+            "heading": "Title"
+          },
+          "answerText": "I think this poem is about a fish.",
+          "spokenQuestion": "The title is A Fish in the Lake. What do you think this poem is about?",
+          "accepted": [
+            "I think it is about a fish.",
+            "I think the poem is about a fish in a lake.",
+            "The poem may be about a fish."
+          ]
+        },
+        {
+          "id": "title-predictions-say-2",
+          "prompt": "What do you think both poems are about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Rabbit at Dawn / A Bird at Night",
+            "heading": "Two titles"
+          },
+          "answerText": "I think these poems are about animals.",
+          "spokenQuestion": "The titles are A Rabbit at Dawn and A Bird at Night. What do you think both poems are about?",
+          "accepted": [
+            "I think they are about animals.",
+            "I think the poems are about a rabbit and a bird.",
+            "The poems may be about animals."
+          ]
+        },
+        {
+          "id": "title-predictions-say-3",
+          "prompt": "What do you think this poem is about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "A Tree in the Wind",
+            "heading": "Title"
+          },
+          "answerText": "I think this poem is about a tree.",
+          "spokenQuestion": "The title is A Tree in the Wind. What do you think this poem is about?",
+          "accepted": [
+            "I think it is about a tree.",
+            "I think the poem is about a tree in the wind.",
+            "The poem may be about a tree."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rhyming-words",
+      "title": "Hear the ending",
+      "try": [
+        {
+          "id": "rhyming-words-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Which word rhymes with tree?",
+          "instruction": "Build a full sentence. Start with Tree. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "tree / see / sun",
+            "heading": "Say the words"
+          },
+          "answerText": "Tree rhymes with see.",
+          "spokenQuestion": "Say tree, see, and sun. Which word rhymes with tree?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Tree"
+            },
+            {
+              "id": "w1",
+              "text": "rhymes"
+            },
+            {
+              "id": "w2",
+              "text": "with"
+            },
+            {
+              "id": "w3",
+              "text": "see"
+            },
+            {
+              "id": "x0",
+              "text": "sun"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "rhyming-words-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now compare tree and sun. How do the endings sound?",
+          "instruction": "Build a full sentence. Start with Tree. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tree rhymes with see.",
+            "heading": "Before"
+          },
+          "answerText": "Tree and sun sound different.",
+          "spokenQuestion": "Before, the words were tree and see. Now compare tree and sun. How do the ending sounds compare?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Tree"
+            },
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w2",
+              "text": "sun"
+            },
+            {
+              "id": "w3",
+              "text": "sound"
+            },
+            {
+              "id": "w4",
+              "text": "different"
+            },
+            {
+              "id": "x0",
+              "text": "same"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "rhyming-words-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the rhyming word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "sky / high / see",
+            "heading": "Say the words"
+          },
+          "answerText": "Sky rhymes with high.",
+          "spokenQuestion": "Say sky, high, and see. Find and fix one word in the sentence.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Sky"
+            },
+            {
+              "id": "w1",
+              "text": "rhymes"
+            },
+            {
+              "id": "w2",
+              "text": "with"
+            },
+            {
+              "id": "w3",
+              "text": "tree."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "see."
+            },
+            {
+              "id": "c1",
+              "text": "high."
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "rhyming-words-say-1",
+          "prompt": "Which word rhymes with sun?",
+          "instruction": "Sun …",
+          "scene": {
+            "kind": "word-card",
+            "text": "sun / fun / tree",
+            "heading": "Say the words"
+          },
+          "answerText": "Sun rhymes with fun.",
+          "spokenQuestion": "Say sun, fun, and tree. Which word rhymes with sun?",
+          "accepted": [
+            "Fun rhymes with sun.",
+            "Sun and fun rhyme."
+          ]
+        },
+        {
+          "id": "rhyming-words-say-2",
+          "prompt": "How do these ending sounds compare?",
+          "instruction": "The ending sounds …",
+          "scene": {
+            "kind": "word-card",
+            "text": "dark / tree",
+            "heading": "Say the words"
+          },
+          "answerText": "The ending sounds are different.",
+          "spokenQuestion": "Say dark and tree. How do the ending sounds compare?",
+          "accepted": [
+            "The ending sounds are different.",
+            "Dark does not rhyme with tree.",
+            "Dark and tree do not rhyme.",
+            "Tree and dark sound different."
+          ]
+        },
+        {
+          "id": "rhyming-words-say-3",
+          "prompt": "Which word rhymes with black?",
+          "instruction": "Black …",
+          "scene": {
+            "kind": "word-card",
+            "text": "black / high / back",
+            "heading": "Say the words"
+          },
+          "answerText": "Black rhymes with back.",
+          "spokenQuestion": "Say black, high, and back. Which word rhymes with black?",
+          "accepted": [
+            "Back rhymes with black.",
+            "Black and back rhyme."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "poem-authors",
+      "title": "Who is the author?",
+      "try": [
+        {
+          "id": "poem-authors-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Who is the author?",
+          "instruction": "Build a full sentence. Start with Ava. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Poem: A Green Leaf / Written by: Ava / Read by: Ben",
+            "heading": "Poem card"
+          },
+          "answerText": "Ava is the author.",
+          "spokenQuestion": "Ava wrote A Green Leaf. Ben reads it aloud. Who is the author?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Ava"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "author"
+            },
+            {
+              "id": "x0",
+              "text": "reader"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "poem-authors-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now talk about Ben. Is he the author?",
+          "instruction": "Build a full sentence. Start with Ben. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Written by: Ava / Read by: Ben",
+            "heading": "Same poem"
+          },
+          "answerText": "Ben is not the author.",
+          "spokenQuestion": "Ava wrote the poem, and Ben reads it aloud. Now talk about Ben. Is he the author?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Ben"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "author"
+            },
+            {
+              "id": "x0",
+              "text": "reader"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "poem-authors-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the role.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Poem: A Quiet Lake / Written by: Leo / Read by: Mia",
+            "heading": "Poem card"
+          },
+          "answerText": "Leo is the author.",
+          "spokenQuestion": "Leo wrote the poem, and Mia reads it aloud. Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Leo"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "reader."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "author."
+            },
+            {
+              "id": "c1",
+              "text": "poem."
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "poem-authors-say-1",
+          "prompt": "Who is the author?",
+          "instruction": "The author …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Poem: The Small Seed / Written by: Mia / Read by: Sam",
+            "heading": "Poem card"
+          },
+          "answerText": "Mia is the author.",
+          "spokenQuestion": "Mia wrote The Small Seed and Sam reads it aloud, so who is the author?",
+          "accepted": [
+            "The author is Mia.",
+            "Mia is the writer.",
+            "Mia wrote the poem."
+          ]
+        },
+        {
+          "id": "poem-authors-say-2",
+          "prompt": "Is Sam the author?",
+          "instruction": "Sam …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Poem: The Small Seed / Written by: Mia / Read by: Sam",
+            "heading": "Poem card"
+          },
+          "answerText": "Sam is not the author.",
+          "spokenQuestion": "Mia wrote the poem and Sam reads it aloud, so can you say in a full sentence if Sam is the author?",
+          "accepted": [
+            "No, Sam is not the author.",
+            "Sam is the reader, not the author.",
+            "No, Mia is the author."
+          ]
+        },
+        {
+          "id": "poem-authors-say-3",
+          "prompt": "Who is the author?",
+          "instruction": "The author …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Poem: A Red Leaf / Written by: Kim / Read by: Tom",
+            "heading": "Poem card"
+          },
+          "answerText": "Kim is the author.",
+          "spokenQuestion": "Kim wrote A Red Leaf. Tom reads it aloud. Who is the author?",
+          "accepted": [
+            "The author is Kim.",
+            "Kim is the writer.",
+            "Kim wrote the poem."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "there-is-are",
+      "title": "There is or there are",
+      "try": [
+        {
+          "id": "there-is-are-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What is in the garden?",
+          "instruction": "Build a full sentence. Start with There. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Garden / 1 black rabbit",
+            "heading": "Look"
+          },
+          "answerText": "There is a black rabbit.",
+          "spokenQuestion": "In the garden, you see one black rabbit. Tell me what is there.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "black"
+            },
+            {
+              "id": "w4",
+              "text": "rabbit"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "there-is-are-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now there are two rabbits. Tell me what is there.",
+          "instruction": "Build a full sentence. Start with There. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "There is a black rabbit.",
+            "heading": "Before"
+          },
+          "answerText": "There are two black rabbits.",
+          "spokenQuestion": "Before, there was one black rabbit. Now another black rabbit comes. Tell me what is there.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            },
+            {
+              "id": "w3",
+              "text": "black"
+            },
+            {
+              "id": "w4",
+              "text": "rabbits"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "there-is-are-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Garden / 1 green lizard",
+            "heading": "Look"
+          },
+          "answerText": "There is a green lizard.",
+          "spokenQuestion": "Find and fix one word.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "There"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "green"
+            },
+            {
+              "id": "w4",
+              "text": "lizard."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "am"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "there-is-are-say-1",
+          "prompt": "What is in the garden?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Garden / 1 red bird",
+            "heading": "Look"
+          },
+          "answerText": "There is a red bird.",
+          "spokenQuestion": "In the garden, you see one red bird. Tell me what is there.",
+          "accepted": [
+            "There is one red bird.",
+            "There is a red bird in the garden."
+          ]
+        },
+        {
+          "id": "there-is-are-say-2",
+          "prompt": "What is in the garden?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Garden / 3 white rabbits",
+            "heading": "Look"
+          },
+          "answerText": "There are three white rabbits.",
+          "spokenQuestion": "In the garden, you see three white rabbits. Tell me what is there.",
+          "accepted": [
+            "There are three white rabbits in the garden."
+          ]
+        },
+        {
+          "id": "there-is-are-say-3",
+          "prompt": "What is in the garden?",
+          "instruction": "There …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Garden / 2 green lizards",
+            "heading": "Look"
+          },
+          "answerText": "There are two green lizards.",
+          "spokenQuestion": "In the garden, you see two green lizards. Tell me what is there.",
+          "accepted": [
+            "There are two green lizards in the garden."
+          ]
+        }
+      ]
+    }
+  ]
+}

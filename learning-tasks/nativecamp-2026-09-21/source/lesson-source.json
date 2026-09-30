@@ -1,0 +1,1247 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-21",
+  "date": "2026-09-21",
+  "title": "Toys, trades and plans",
+  "concepts": [
+    {
+      "id": "toy-wishes",
+      "title": "What do they want?",
+      "try": [
+        {
+          "id": "toy-wishes-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does Sam want?",
+          "instruction": "He … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sam (he) / has: kite / wants: comic book"
+          },
+          "answerText": "He wants a comic book.",
+          "spokenQuestion": "Sam already has a kite, so starting with He, can you tell us about the comic book on his wish list?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "wants"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "comic"
+            },
+            {
+              "id": "w4",
+              "text": "book"
+            },
+            {
+              "id": "extra0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "toy-wishes-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now tell us both boys' wish.",
+          "instruction": "They … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: He wants a comic book. / Now: Sam + Leo / one comic book each"
+          },
+          "answerText": "They want comic books.",
+          "spokenQuestion": "A comic book is on both boys' wish lists, so can you begin with They and tell us about the boys together?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "comic"
+            },
+            {
+              "id": "w3",
+              "text": "books"
+            },
+            {
+              "id": "extra0",
+              "text": "wants"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "toy-wishes-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Lily / has: no board game / wish: board game"
+          },
+          "answerText": "Lily wants a board game.",
+          "spokenQuestion": "Lily has no board game and would like one, so can you fix the sentence about her wish?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Lily"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "board"
+            },
+            {
+              "id": "w4",
+              "text": "game."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "wants"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "toy-wishes-say-1",
+          "prompt": "What do you want?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you have: ball / your wish: doll"
+          },
+          "answerText": "I want a doll.",
+          "spokenQuestion": "If you already have a ball and a doll is on your wish list, what do you want?",
+          "accepted": [
+            "I would like a doll."
+          ]
+        },
+        {
+          "id": "toy-wishes-say-2",
+          "prompt": "What does Eva want?",
+          "instruction": "She …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Eva (she) / has: pins / wish: kite"
+          },
+          "answerText": "She wants a kite.",
+          "spokenQuestion": "Eva already has pins and a kite is on her wish list, so what does she want?",
+          "accepted": [
+            "Eva wants a kite.",
+            "She would like a kite."
+          ]
+        },
+        {
+          "id": "toy-wishes-say-3",
+          "prompt": "What do the twins want?",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Twins / have: stickers / wish: pins"
+          },
+          "answerText": "They want pins.",
+          "spokenQuestion": "The twins already have stickers and pins are on their wish list, so what do they want?",
+          "accepted": [
+            "The twins want pins.",
+            "They would like pins."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after-trade",
+      "title": "After the trade",
+      "try": [
+        {
+          "id": "after-trade-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does Mia have now?",
+          "instruction": "Mia … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before / Mia: kite / Leo: ball / They trade."
+          },
+          "answerText": "Mia has a ball.",
+          "spokenQuestion": "Mia starts with a kite and Leo starts with a ball, so what does Mia have after they trade?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "ball"
+            },
+            {
+              "id": "extra0",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "after-trade-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "You are Mia now. What do you have?",
+          "instruction": "I … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: Mia has a ball. / Now: you are Mia"
+          },
+          "answerText": "I have a ball.",
+          "spokenQuestion": "After the trade, pretend you are Mia and tell us what you have, beginning with I.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "ball"
+            },
+            {
+              "id": "extra0",
+              "text": "has"
+            },
+            {
+              "id": "extra1",
+              "text": "Mia"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ]
+        },
+        {
+          "id": "after-trade-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before / Ben: book / Eva: doll / They trade."
+          },
+          "answerText": "Eva has a book.",
+          "spokenQuestion": "Ben starts with a book and Eva starts with a doll, so can you fix the sentence about Eva after they trade?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Eva"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "book."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "has"
+            },
+            {
+              "id": "c1",
+              "text": "are"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "after-trade-say-1",
+          "prompt": "What does Sam have after the trade?",
+          "instruction": "Sam …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before / Sam: doll / Eva: kite / They trade."
+          },
+          "answerText": "Sam has a kite.",
+          "spokenQuestion": "Sam starts with a doll and Eva starts with a kite, so what does Sam have after they trade?",
+          "accepted": [
+            "He has a kite."
+          ]
+        },
+        {
+          "id": "after-trade-say-2",
+          "prompt": "You are Eva. What do you have now?",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before / Sam: doll / Eva: kite / They trade. / You are Eva."
+          },
+          "answerText": "I have a doll.",
+          "spokenQuestion": "Sam starts with a doll and Eva starts with a kite, so if you are Eva, what do you have after the trade?",
+          "accepted": [
+            "I've got a doll."
+          ]
+        },
+        {
+          "id": "after-trade-say-3",
+          "prompt": "What does Ben have after the trade?",
+          "instruction": "Ben …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before / Ben: board game / Kim: comic book / They trade."
+          },
+          "answerText": "Ben has a comic book.",
+          "spokenQuestion": "Ben starts with a board game and Kim starts with a comic book, so what does Ben have after they trade?",
+          "accepted": [
+            "He has a comic book."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "borrow-politely",
+      "title": "Can I borrow it?",
+      "try": [
+        {
+          "id": "borrow-politely-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Ask Mia for her pencil.",
+          "instruction": "Can I …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You need a pencil. / Pencil: Mia's"
+          },
+          "answerText": "Can I borrow your pencil, please?",
+          "spokenQuestion": "Mia has the pencil you need, so how can you ask to borrow it politely?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Can"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "borrow"
+            },
+            {
+              "id": "w3",
+              "text": "your"
+            },
+            {
+              "id": "w4",
+              "text": "pencil"
+            },
+            {
+              "id": "w5",
+              "text": "please"
+            },
+            {
+              "id": "extra0",
+              "text": "my"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w5",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "borrow-politely-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now you and Sam ask together.",
+          "instruction": "Can we …? One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: Can I borrow your pencil, please? / Now: you + Sam"
+          },
+          "answerText": "Can we borrow your pencil, please?",
+          "spokenQuestion": "You and Sam need Mia's pencil together, so how can you ask to borrow it for both of you?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Can"
+            },
+            {
+              "id": "w1",
+              "text": "we"
+            },
+            {
+              "id": "w2",
+              "text": "borrow"
+            },
+            {
+              "id": "w3",
+              "text": "your"
+            },
+            {
+              "id": "w4",
+              "text": "pencil"
+            },
+            {
+              "id": "w5",
+              "text": "please"
+            },
+            {
+              "id": "extra0",
+              "text": "I"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w5",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ]
+        },
+        {
+          "id": "borrow-politely-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You ask Mia. / Ruler: Mia's / You need it."
+          },
+          "answerText": "Can I borrow your ruler, please?",
+          "spokenQuestion": "You need Mia's ruler and are speaking to her, so can you fix the word about whose ruler it is?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Can"
+            },
+            {
+              "id": "w1",
+              "text": "I"
+            },
+            {
+              "id": "w2",
+              "text": "borrow"
+            },
+            {
+              "id": "w3",
+              "text": "my"
+            },
+            {
+              "id": "w4",
+              "text": "ruler,"
+            },
+            {
+              "id": "w5",
+              "text": "please?"
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "you"
+            },
+            {
+              "id": "c1",
+              "text": "your"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "borrow-politely-say-1",
+          "prompt": "Ask Ben for his comic book.",
+          "instruction": "Can I …?",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You need a comic book. / Comic book: Ben's"
+          },
+          "answerText": "Can I borrow your comic book, please?",
+          "spokenQuestion": "Ben has the comic book you need, so how can you politely ask him to borrow it?",
+          "accepted": [
+            "Can I please borrow your comic book?",
+            "May I borrow your comic book, please?"
+          ]
+        },
+        {
+          "id": "borrow-politely-say-2",
+          "prompt": "Ask for the board game together.",
+          "instruction": "Can we …?",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You + Mia ask Sam. / Board game: Sam's"
+          },
+          "answerText": "Can we borrow your board game, please?",
+          "spokenQuestion": "You and Mia want to borrow Sam's board game together, so how can you politely ask him?",
+          "accepted": [
+            "Can we please borrow your board game?",
+            "May we borrow your board game, please?"
+          ]
+        },
+        {
+          "id": "borrow-politely-say-3",
+          "prompt": "Ask Lily for her red pen.",
+          "instruction": "Can I …?",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "You need a red pen. / Red pen: Lily's"
+          },
+          "answerText": "Can I borrow your red pen, please?",
+          "spokenQuestion": "Lily has the red pen you need, so how can you politely ask her to borrow it?",
+          "accepted": [
+            "Can I please borrow your red pen?",
+            "May I borrow your red pen, please?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "action-sentences",
+      "title": "Say the action",
+      "try": [
+        {
+          "id": "action-sentences-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us what Leo does.",
+          "instruction": "Leo … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Leo / action: grow / plants"
+          },
+          "answerText": "Leo grows plants.",
+          "spokenQuestion": "Leo's action is to grow plants, so can you tell us what he does in one sentence?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Leo"
+            },
+            {
+              "id": "w1",
+              "text": "grows"
+            },
+            {
+              "id": "w2",
+              "text": "plants"
+            },
+            {
+              "id": "extra0",
+              "text": "grow"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "action-sentences-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now Leo and Mia do this together.",
+          "instruction": "They … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: Leo grows plants. / Now: Leo + Mia"
+          },
+          "answerText": "They grow plants.",
+          "spokenQuestion": "Now Leo and Mia both do this action, so can you change the sentence to talk about them together?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "grow"
+            },
+            {
+              "id": "w2",
+              "text": "plants"
+            },
+            {
+              "id": "extra0",
+              "text": "grows"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ]
+        },
+        {
+          "id": "action-sentences-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Kim (she) / action: sell / toys"
+          },
+          "answerText": "She sells toys.",
+          "spokenQuestion": "Kim's action is to sell toys, so can you fix the sentence about what she does?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "sell"
+            },
+            {
+              "id": "w2",
+              "text": "toys."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "sells"
+            },
+            {
+              "id": "c1",
+              "text": "selling"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "action-sentences-say-1",
+          "prompt": "Tell us what you do.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / you / action: mix / colors"
+          },
+          "answerText": "I mix colors.",
+          "spokenQuestion": "Pretend your action is to mix colors, and tell us what you do in one sentence.",
+          "accepted": [
+            "I mix the colors."
+          ]
+        },
+        {
+          "id": "action-sentences-say-2",
+          "prompt": "Tell us what the farmer does.",
+          "instruction": "The farmer …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Farmer / action: grow / food"
+          },
+          "answerText": "The farmer grows food.",
+          "spokenQuestion": "The farmer's action is to grow food, so can you tell us what the farmer does in one sentence?",
+          "accepted": [
+            "He grows food.",
+            "She grows food."
+          ]
+        },
+        {
+          "id": "action-sentences-say-3",
+          "prompt": "Tell us what Maya does.",
+          "instruction": "Maya …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Maya / action: ride / a bike"
+          },
+          "answerText": "Maya rides a bike.",
+          "spokenQuestion": "Maya's action is to ride a bike, so can you tell us what she does in one sentence?",
+          "accepted": [
+            "She rides a bike."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "future-job",
+      "title": "When I grow up",
+      "try": [
+        {
+          "id": "future-job-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us about Sam's future job.",
+          "instruction": "He … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Sam (he) / future job wish: teacher"
+          },
+          "answerText": "He wants to be a teacher.",
+          "spokenQuestion": "Sam's dream job is teacher, so can you begin with He and tell us about his future job plan?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "He"
+            },
+            {
+              "id": "w1",
+              "text": "wants"
+            },
+            {
+              "id": "w2",
+              "text": "to"
+            },
+            {
+              "id": "w3",
+              "text": "be"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "teacher"
+            },
+            {
+              "id": "extra0",
+              "text": "want"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "future-job-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "You are Sam now. Tell us your plan.",
+          "instruction": "I … Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Before: He wants to be a teacher. / Now: you are Sam"
+          },
+          "answerText": "I want to be a teacher.",
+          "spokenQuestion": "Pretend you are Sam and tell us about your dream job, beginning with I.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "to"
+            },
+            {
+              "id": "w3",
+              "text": "be"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "teacher"
+            },
+            {
+              "id": "extra0",
+              "text": "He"
+            },
+            {
+              "id": "extra1",
+              "text": "wants"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "future-job-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Eva (she) / future job wish: doctor"
+          },
+          "answerText": "She wants to be a doctor.",
+          "spokenQuestion": "Eva's dream job is doctor, so can you fix the sentence about her plan?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "want"
+            },
+            {
+              "id": "w2",
+              "text": "to"
+            },
+            {
+              "id": "w3",
+              "text": "be"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "doctor."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "wants"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "future-job-say-1",
+          "prompt": "Tell us your dream job.",
+          "instruction": "I … to be …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / your future job wish: police officer"
+          },
+          "answerText": "I want to be a police officer.",
+          "spokenQuestion": "Pretend your dream job is police officer and tell us what you want to be when you grow up.",
+          "accepted": [
+            "When I grow up, I want to be a police officer.",
+            "I would like to be a police officer."
+          ]
+        },
+        {
+          "id": "future-job-say-2",
+          "prompt": "Tell us about Lily's dream job.",
+          "instruction": "She … to be …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Lily (she) / future job wish: teacher"
+          },
+          "answerText": "She wants to be a teacher.",
+          "spokenQuestion": "Lily's dream job is teacher, so can you tell us about her future job plan?",
+          "accepted": [
+            "Lily wants to be a teacher.",
+            "She would like to be a teacher."
+          ]
+        },
+        {
+          "id": "future-job-say-3",
+          "prompt": "Tell us your dream job.",
+          "instruction": "I … to be …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Pretend / your future job wish: doctor"
+          },
+          "answerText": "I want to be a doctor.",
+          "spokenQuestion": "Pretend your dream job is doctor and tell us what you want to be when you grow up.",
+          "accepted": [
+            "When I grow up, I want to be a doctor.",
+            "I would like to be a doctor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "title-clues",
+      "title": "Use the clues",
+      "try": [
+        {
+          "id": "title-clues-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do you think this text is about?",
+          "instruction": "I think … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Title: Fun at Sea / Picture clues: boat, sail"
+          },
+          "answerText": "I think it is about boats.",
+          "spokenQuestion": "A text called Fun at Sea shows a boat and a sail, so what do you think it is about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "it"
+            },
+            {
+              "id": "w3",
+              "text": "is"
+            },
+            {
+              "id": "w4",
+              "text": "about"
+            },
+            {
+              "id": "w5",
+              "text": "boats"
+            },
+            {
+              "id": "extra0",
+              "text": "trains"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "title-clues-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now find the shared topic of both texts.",
+          "instruction": "I think they … One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Text 1: At the Farm / cow / Text 2: Pet Time / cat"
+          },
+          "answerText": "I think they are about animals.",
+          "spokenQuestion": "One text called At the Farm shows a cow and another called Pet Time shows a cat, so what do you think both texts are about?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "they"
+            },
+            {
+              "id": "w3",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "about"
+            },
+            {
+              "id": "w5",
+              "text": "animals"
+            },
+            {
+              "id": "extra0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ]
+        },
+        {
+          "id": "title-clues-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Find one mistake.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "One text / Title: Time to Play / Picture clues: doll, kite"
+          },
+          "answerText": "I think it is about toys.",
+          "spokenQuestion": "The title and pictures give clues about one text, so can you fix the sentence about its topic?",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "it"
+            },
+            {
+              "id": "w3",
+              "text": "are"
+            },
+            {
+              "id": "w4",
+              "text": "about"
+            },
+            {
+              "id": "w5",
+              "text": "toys."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "has"
+            },
+            {
+              "id": "c1",
+              "text": "is"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "title-clues-say-1",
+          "prompt": "What do you think this text is about?",
+          "instruction": "I think it …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Title: Rainy Days / Picture clues: rain, dark clouds"
+          },
+          "answerText": "I think it is about rain.",
+          "spokenQuestion": "A text called Rainy Days shows rain and dark clouds, so what do you think it is about?",
+          "accepted": [
+            "I think the text is about rainy days.",
+            "I think it is about rainy weather.",
+            "I think it is about the weather."
+          ]
+        },
+        {
+          "id": "title-clues-say-2",
+          "prompt": "What do you think this text is about?",
+          "instruction": "I think it …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Title: Our Garden / Picture clues: flowers, trees"
+          },
+          "answerText": "I think it is about plants.",
+          "spokenQuestion": "A text called Our Garden shows flowers and trees, so what do you think it is about?",
+          "accepted": [
+            "I think the text is about plants.",
+            "I think it is about a garden.",
+            "I think it is about flowers and trees."
+          ]
+        },
+        {
+          "id": "title-clues-say-3",
+          "prompt": "What do you think this text is about?",
+          "instruction": "I think it …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Story card",
+            "text": "Title: Play Together / Picture clues: board game, two friends"
+          },
+          "answerText": "I think it is about games.",
+          "spokenQuestion": "A text called Play Together shows a board game and two friends, so what do you think it is about?",
+          "accepted": [
+            "I think the text is about board games.",
+            "I think it is about playing games with friends."
+          ]
+        }
+      ]
+    }
+  ]
+}

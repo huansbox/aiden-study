@@ -2,7 +2,7 @@
 
 狀態：**首批收集、分類與整合獨立複核已完成**（2026-09-23）。今年桃子腳四年級自然採康軒；本批以「地表的靜與動」「水生生物與環境」為**暫定收題核心**，正式第一次定期評量範圍未公告。課程證據與細概念邊界見[課程對照](curriculum-comparison.md)。本次只收有限首批，不能推論全庫、教材各概念或孩子能力的完整覆蓋。
 
-本頁的「App 新增 0」是**原卷分類當時**的快照。後續已上線內容見[自然首批 20 個 activity](../../../data/study/g4-s1-science-exam1/README.md)及[#119 第二批 12 個完整 activity／29 個作答位置](../../../data/study/g4-s1-science-exam1/second-batch.md)；家庭正式題包現為 revision 6、89 題，其中自然 32 題。第二批索引也記錄剩餘缺口。
+本頁的「App 新增 0」是**原卷分類當時**的快照。後續已上線內容見[自然首批 20 個 activity](../../../data/study/g4-s1-science-exam1/README.md)、[#119 第二批 12 個完整 activity／29 個作答位置](../../../data/study/g4-s1-science-exam1/second-batch.md)及[#129 第三批 5 個完整 activity／13 個作答位置](../../../docs-dev/grade4-science-study-third-batch.md)；家庭正式題包現為 revision 7、94 題，其中自然 37 題。六份來源卷仍屬有限收集，尚未取得校方正式範圍；[第三批缺口盤點](../../../data/study/g4-s1-science-exam1/third-batch-gap-analysis.md)記錄未補部分。
 
 ## 四份原卷與不同計數單位
 

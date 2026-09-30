@@ -1,0 +1,43 @@
+{
+  "lessonId": "2026-09-19-zibuyile",
+  "audioUploaded": false,
+  "humanListening": false,
+  "files": [
+    {
+      "track": 1,
+      "relativeFile": "../assets/audio/2026-09-19-zibuyile-track-1.webm",
+      "bytes": 8029001,
+      "sha256": "44871dea7858664a5607318b470ed1c6541f1599c41d95cd07e9cad007cae24e",
+      "durationSeconds": 1146.419,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "track": 2,
+      "relativeFile": "../assets/audio/2026-09-19-zibuyile-track-2.webm",
+      "bytes": 1602667,
+      "sha256": "9899570da7309d13c869dc4c24dfb4c52c57dce8014dbcd386d89f7a21cfb264",
+      "durationSeconds": 225.241,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "track": 3,
+      "relativeFile": "../assets/audio/2026-09-19-zibuyile-track-3.webm",
+      "bytes": 1604001,
+      "sha256": "c79a70c747ea31d48a73e80bf9d0ebdb8b44cbd58f59d876dfcbcdff7c95e0e5",
+      "durationSeconds": 225.465,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ]
+}

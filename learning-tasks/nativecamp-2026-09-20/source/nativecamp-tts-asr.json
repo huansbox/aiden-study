@@ -1,0 +1,444 @@
+{
+  "lessonId": "2026-09-20",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "scope": "all question and answer files",
+  "samples": [
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-1-q.mp3",
+      "sha256": "57ccf9d670dccc6064da44c201f44fd5293000dcdd9b1231c5c79348b76c5a6e",
+      "expectedText": "Your water bottle is empty and you are thirsty, so can you explain why you need water using because?",
+      "recognizedText": "Your water bottle is empty and you are thirsty, so can you explain why you need water using because?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-1-a.mp3",
+      "sha256": "01ae2c70ce05fb916a803711339acfb99b5d0c8aa5826f244b3c62f0d30fd108",
+      "expectedText": "I need water because I am thirsty.",
+      "recognizedText": "I need water, because I am thirsty."
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-2-q.mp3",
+      "sha256": "9f630417da2900b01d0658d3cc74a8415895b751c519657e501b95bc7fe1e05e",
+      "expectedText": "Now you and two friends have empty bottles, so can you begin with We and explain the same need for all three of you?",
+      "recognizedText": "Now you and two friends have empty bottles, so can you begin with we and explain the same need for all three of you?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-2-a.mp3",
+      "sha256": "75f2e640d119ea258c9471aa09507d6bb86aba56b2a7d3a096dd8bbf1d344fa8",
+      "expectedText": "We need water because we are thirsty.",
+      "recognizedText": "We need water because we are thirsty."
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-3-q.mp3",
+      "sha256": "4bc3379a78f8babfd9faca4906fcaa58256516f638eeecb0281fb5190df87bbd",
+      "expectedText": "Mia has no water to drink, so can you fix one word in the sentence about her need?",
+      "recognizedText": "Mia has no water to drink, so can you fix one word in the sentence about her need?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-try-3-a.mp3",
+      "sha256": "70f58a28d7b906bb783da10b4f495edfb35fb9acbd9bd508a9c20f07290ecb8d",
+      "expectedText": "She needs water because she is thirsty.",
+      "recognizedText": "She needs water because she is thirsty."
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-1-q.mp3",
+      "sha256": "26226836d473bbdf3d3c9e2cd37b93f059fa9a15b46e068177619852d2545993",
+      "expectedText": "You must write now but have no pencil, so can you explain why you need one using because?",
+      "recognizedText": "You must write now, but have no pencil. So can you explain why you need one using because?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-1-a.mp3",
+      "sha256": "9fd14e58b7845030729bc433840279725f7bcc5f500dbea726783911fed67418",
+      "expectedText": "I need a pencil because I must write.",
+      "recognizedText": "I need a pencil because I must write."
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-2-q.mp3",
+      "sha256": "f0f937231da2a6a17dff4b844b21db737772635ab29e380df51362e92ca0e01a",
+      "expectedText": "Sam already has games but likes another one, so can you explain his wish using because?",
+      "recognizedText": "Sam already has games, but likes another one, so can you explain his wish using because?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-2-a.mp3",
+      "sha256": "214eb66ab45ca822864981e9d43a17d87f27b32349ed3ecf43bab07c5f740040",
+      "expectedText": "Sam wants a game because he likes it.",
+      "recognizedText": "Sam wants a game because he likes it."
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-3-q.mp3",
+      "sha256": "caaa53e5ddc50e361fc52aaa3f9e647edc789b64bbefff1bbc8e16b98e474122",
+      "expectedText": "You and a friend are both hungry and have no food, so can you explain your need using because?",
+      "recognizedText": "You and a friend are both hungry and have no food, so can you explain your need using because?"
+    },
+    {
+      "file": "audio/2026-09-20-needs-reasons-say-3-a.mp3",
+      "sha256": "727f02592b90cc5e27331e924afcf8f9d4e259205f5a9ac71ab534a3563024f7",
+      "expectedText": "We need food because we are hungry.",
+      "recognizedText": "We need food because we are hungry."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-1-q.mp3",
+      "sha256": "8f054888d5660fca6f833ecb8738dbdfa5bef6bfdc7895a705f2123e62da50a8",
+      "expectedText": "The rain starts and you open your umbrella, so can you tell us when you use it?",
+      "recognizedText": "The rain starts and you open your umbrella, so can you tell us when you use it?"
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-1-a.mp3",
+      "sha256": "e9f0ff7340cdad6e5261973f2b0b605b7d4c71f17c4009260eee7c346e0c0ae6",
+      "expectedText": "I use my umbrella when it rains.",
+      "recognizedText": "I use my umbrella when it rains."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-2-q.mp3",
+      "sha256": "165ed36f0be7edf0cc4aa5b50c06ed689a895769bee613599299952423b4ff75",
+      "expectedText": "Now the umbrella belongs to Mia, so can you change the sentence to tell us about Mia in the rain?",
+      "recognizedText": "Now the umbrella belongs to Mia, so can you change the sentence to tell us about Mia in the rain?"
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-2-a.mp3",
+      "sha256": "5e63172703838ee1e25da1d9582bd80c49a25309cebb98aeff99806b4238ad31",
+      "expectedText": "She uses her umbrella when it rains.",
+      "recognizedText": "She uses her umbrella when it rains."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-3-q.mp3",
+      "sha256": "b1eb855eafdcf1fa686e05164e6dd199657686322a621a8613cc087e711c73d6",
+      "expectedText": "In this story, you use a bike to get to the park, so can you fix one word in the sentence?",
+      "recognizedText": "In this story, you use a bike to get to the park, so can you fix one word in the sentence?"
+    },
+    {
+      "file": "audio/2026-09-20-use-when-try-3-a.mp3",
+      "sha256": "eecfe65142a2a170f58101f40a2cd8a6ee7f27a8742a9ddb4824b322c30b05e2",
+      "expectedText": "I use my bike when I go to the park.",
+      "recognizedText": "I use my bike when I go to the park."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-1-q.mp3",
+      "sha256": "40d2086b2ff9ea3b6171a1190838d95cff5948ddef05fda1e322543158d0d334",
+      "expectedText": "Pretend you travel to the park by bike, and tell us when you use your bike using when.",
+      "recognizedText": "Pretend you travel to the park by bike and tell us when you use your bike using when."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-1-a.mp3",
+      "sha256": "66ad2a5c1f659ea6f270041b80d2a470d40ad79b49b83cbc16bf7ca5079b62e8",
+      "expectedText": "I use my bike when I go to the park.",
+      "recognizedText": "I use my bike when I go to the park."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-2-q.mp3",
+      "sha256": "3e6f421a5629cd5cda4920c52d11571bc92e34567aa4adbeba588c862339d79d",
+      "expectedText": "When the rain starts, Sam opens his umbrella, so can you tell us about Sam and his umbrella using when?",
+      "recognizedText": "When the rain starts, Sam opens his umbrella, so can you tell us about Sam and his umbrella using when?"
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-2-a.mp3",
+      "sha256": "4374b8b2dfb2e7ba2fa15e6541cdcbc54bd449235c975e8882ef6d523e2a07de",
+      "expectedText": "He uses his umbrella when it rains.",
+      "recognizedText": "He uses his umbrella when it rains."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-3-q.mp3",
+      "sha256": "6d8ac959230098d98c03354e66f720df1e2a79f7cd8b49fc36430f9eea938a08",
+      "expectedText": "Pretend you use a pencil for drawing, and tell us when you use it using when.",
+      "recognizedText": "Pretend you use a pencil for drawing and tell us when you use it using when."
+    },
+    {
+      "file": "audio/2026-09-20-use-when-say-3-a.mp3",
+      "sha256": "31a82abb48600054943a47b4f7fe1c2c6a05a74a3ea0a2c8200125956fbcb210",
+      "expectedText": "I use a pencil when I draw a picture.",
+      "recognizedText": "I use a pencil when I draw a picture."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-1-q.mp3",
+      "sha256": "a2b3422a3b3a41e299b45572269b5d0f6279e63f97765caa0836082726cfff9d",
+      "expectedText": "In this story, you have eggs and milk every day, so can you tell us both what you eat and what you drink?",
+      "recognizedText": "In this story, you have eggs and milk every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-1-a.mp3",
+      "sha256": "73511f817e68676f401ec6262189123623e9c5e75c3df0461369f8cb83f05390",
+      "expectedText": "I eat eggs and drink milk every day.",
+      "recognizedText": "I eat eggs and drink milk every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-2-q.mp3",
+      "sha256": "cfa4f877381916eef2feb1e9db8fdfac5efebe3e24297a0f888e9344d9b9e42b",
+      "expectedText": "Now Sam has the same food and drink every day, so can you change the sentence to tell us both things about him?",
+      "recognizedText": "Now Sam has the same food and drink every day. So can you change the sentence to tell us both things about him?"
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-2-a.mp3",
+      "sha256": "add19ce07455472c1076565d5bc7407ecc66a1d899c288986797a7cb89da327e",
+      "expectedText": "He eats eggs and drinks milk every day.",
+      "recognizedText": "He eats eggs and drinks milk every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-3-q.mp3",
+      "sha256": "3629fcf4a51e2514ab09f7d77e498d404052d99b07b929cf988277c9edc4e567",
+      "expectedText": "Mia has water every day, so can you fix the sentence about her daily drink?",
+      "recognizedText": "Mia has water every day, so can you fix the sentence about her daily drink?"
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-try-3-a.mp3",
+      "sha256": "017438c31265f0b3eb6def6d33fad1feb6449f38d2d4624402da2a85132030c9",
+      "expectedText": "Mia drinks water every day.",
+      "recognizedText": "Mia drinks water every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-1-q.mp3",
+      "sha256": "9c842a950904e03d33912754fbd45d37e87a91a93c2e79ed686ee925661b2b2c",
+      "expectedText": "In this story, you have rice and water every day, so can you tell us both what you eat and what you drink?",
+      "recognizedText": "In this story, you have rice and water every day. So can you tell us both what you eat and what you drink?"
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-1-a.mp3",
+      "sha256": "13e94e977841618572a9dd38bd7b785591d8206f43d3040cc57a78938e326276",
+      "expectedText": "I eat rice and drink water every day.",
+      "recognizedText": "I eat rice and drink water every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-2-q.mp3",
+      "sha256": "3c9b39e2a1590b540ef3fb2f25a0c3fa21a83b889ed0201e3f8932fdb6506576",
+      "expectedText": "Lily has bread and milk every day, so can you tell us about both her daily food and drink?",
+      "recognizedText": "Lily has bread and milk every day, so can you tell us about both her daily food and Drake?"
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-2-a.mp3",
+      "sha256": "b38d99353f8adef58096f640265ba7fba3a4578b1bf2edbafd96d0882ba440c9",
+      "expectedText": "She eats bread and drinks milk every day.",
+      "recognizedText": "She eats bread and drinks milk every day."
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-3-q.mp3",
+      "sha256": "80e4922ff62346f136363472bd241dedbf896c88f9bd9456c72925790761720d",
+      "expectedText": "You and Sam have apples and water every day in this story, so can you tell us both things using We?",
+      "recognizedText": "You and Sam have apples and water every day in this story, so can you tell us both things using we?"
+    },
+    {
+      "file": "audio/2026-09-20-daily-meals-say-3-a.mp3",
+      "sha256": "a6cd31f12e9354d96494907e48d3b585dc0193c231f40881ec11819478311626",
+      "expectedText": "We eat apples and drink water every day.",
+      "recognizedText": "We eat apples and drink water every day."
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-1-q.mp3",
+      "sha256": "56ad3cdb94f0f274dcff6ed8e6cb994c23fdad284e1b01c429e7eb15bd303aca",
+      "expectedText": "May gives apples to Paul and gets money from him, so what does May do?",
+      "recognizedText": "May gives apples to Paul and gets money from him, so what does May do?"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-1-a.mp3",
+      "sha256": "c92d2ae1185aeba53a6d27ebe9650fb8524e4505514e1cd6972a065aa165c277",
+      "expectedText": "May sells apples.",
+      "recognizedText": "May sells apples."
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-2-q.mp3",
+      "sha256": "0cd945458117b00f82d1595d43507ecd601281990fe798f938b05af8c54cb8ec",
+      "expectedText": "Look at the same sale from Paul's side: he gives money and gets apples, so what does Paul do?",
+      "recognizedText": "Look at the same sale from Paul's side. He gives money and gets apples. So what does Paul do?"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-2-a.mp3",
+      "sha256": "d7842bfbc40a26226e7f183b3a644c5880654f61a4815bf1b1de3ccfec22cd4a",
+      "expectedText": "Paul buys apples.",
+      "recognizedText": "Paul buys apples."
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-3-q.mp3",
+      "sha256": "6ca0fe3260cec466be05f1208bd838035b2077197f77fe746e4926332b53e338",
+      "expectedText": "Leo gives money and gets milk, so can you fix the action word in the sentence?",
+      "recognizedText": "Leo gives money and gets milk, so can you fix the action word in the sentence?"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-try-3-a.mp3",
+      "sha256": "11a1c513d86b2d826ce71341e3a939fef732e54963bdce1fc7e4a0116b008bc8",
+      "expectedText": "Leo buys milk.",
+      "recognizedText": "Leo buys milk."
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-1-q.mp3",
+      "sha256": "068905e584e9f813211a1fc20defcca4f330b82c2c81ac32389df7b14e622001",
+      "expectedText": "Sara gives toys to Ben and gets money from him, so can you tell us what Sara does?",
+      "recognizedText": "Sarah gives toys to Ben and gets money from him, so can you tell us what Sarah does?"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-1-a.mp3",
+      "sha256": "69b5ada81c1559b296bd49fcad3ef2e2462d32fdaf66a7f090f560891fae0800",
+      "expectedText": "Sara sells toys.",
+      "recognizedText": "Sarah sells toys."
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-2-q.mp3",
+      "sha256": "16180bcddc7e3da0914710d2582b1cd401dc21bcd8351aac6822c40c6eb9e482",
+      "expectedText": "Tom gives money to Eva and gets books from her, so can you tell us what Tom does?",
+      "recognizedText": "Tom gives money to Eva and gets books from her. So can you tell us what Tom does?"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-2-a.mp3",
+      "sha256": "01d1c566b5bf787ccc9a11fad30c8fd1e0b364ef6bbac7e0eec5c52816e233ee",
+      "expectedText": "Tom buys books.",
+      "recognizedText": "Tom buys books"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-3-q.mp3",
+      "sha256": "e4c76fad9a52c673a452484fd054270fe34a5b337f52c7b83177383195c85c9c",
+      "expectedText": "Pretend you are Sara, giving toys to Ben and getting money from him, and tell us what you do using I.",
+      "recognizedText": "Pretend you are Sarah giving toys to Ben and getting money from him and tell us what you do using I"
+    },
+    {
+      "file": "audio/2026-09-20-buy-sell-say-3-a.mp3",
+      "sha256": "3209dfdbe7d18da9a1c002d297d3508ba97d8b18772487a8a4c962f8c76b2578",
+      "expectedText": "I sell toys.",
+      "recognizedText": "I sell toys."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-1-q.mp3",
+      "sha256": "220eef673703da83d020036337dd73aedc6683942c39cfa7e0503292f1feae30",
+      "expectedText": "The steps on the card are fly the plane, get paper, and fold the paper, so which step must you do first?",
+      "recognizedText": "The steps on the card are fly the plane, get paper, and fold the paper. So which step must you do first?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-1-a.mp3",
+      "sha256": "25596b8c61c5b9c8f532e6efe74b0de9a3a366faa4eb7953667a1e3c3a32569f",
+      "expectedText": "First, I get paper.",
+      "recognizedText": "First, I get paper."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-2-q.mp3",
+      "sha256": "a81e0614a419d0b401e7a797925269402b424be86aad10973d8465edd4d73201",
+      "expectedText": "You have the paper and have finished folding your plane, so what do you do next?",
+      "recognizedText": "You have the paper and have finished folding your plane, so what do you do next?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-2-a.mp3",
+      "sha256": "d77c86bc30bc23ffd0287a62aa9e93512e8eaf40885e0099a4efd157d50d2e8c",
+      "expectedText": "Then, I fly the plane.",
+      "recognizedText": "Then, I fly the plane."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-3-q.mp3",
+      "sha256": "43b93bda3188ba81ca1554c41e857fb43616ff4e22fe45533c9fbfb4ee7ee3e8",
+      "expectedText": "In this story, eating lunch comes after washing your hands and before washing your plate, so can you fix the order word?",
+      "recognizedText": "In this story, eating lunch comes after washing your hands and before washing your plate. So can you fix the order word?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-try-3-a.mp3",
+      "sha256": "7e7c19371b4d8625a0895d654d443be23b3fce7110be0308603bb4640d1a49e7",
+      "expectedText": "Then, I eat lunch.",
+      "recognizedText": "Then, I eat lunch."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-1-q.mp3",
+      "sha256": "6c4a7a92fcc807157058f67712fea5e0e02cb5af3e1940636083375e37d90196",
+      "expectedText": "Mia has a pencil but no paper for her picture, so what does she do first?",
+      "recognizedText": "Mia has a pencil, but no paper for her picture. So what does she do first?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-1-a.mp3",
+      "sha256": "543eb304f0a491642914541426bdb38d4424efd9d72f10ce5bf6642d6ee8fc7d",
+      "expectedText": "First, Mia gets paper.",
+      "recognizedText": "First, Mia gets paper."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-2-q.mp3",
+      "sha256": "139d7d28a882e85d4b4251719f5ede66c3896e36d8f6e06516f8bab40c514654",
+      "expectedText": "You have folded the paper for a card, and the next step is to draw before giving it to Sam, so what do you do next?",
+      "recognizedText": "You have folded the paper for a card, and the next step is to draw before giving it to Sam. So what do you do next?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-2-a.mp3",
+      "sha256": "b82de6af6e51d5d158c10c4ce053a3776eea7b783daf0d81f9fb2a23acb871e8",
+      "expectedText": "Then, I draw a flower.",
+      "recognizedText": "Then, I draw a flower."
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-3-q.mp3",
+      "sha256": "ad4b3b62d85b7e425cd02d9668f23443e9ad867808266c438a3ecaef8cd8b6f8",
+      "expectedText": "Ben's plan is to wash an apple, cut it, and eat it, so what does he do last?",
+      "recognizedText": "Ben's plan is to wash an apple, cut it, and eat it. So what does he do last?"
+    },
+    {
+      "file": "audio/2026-09-20-story-order-say-3-a.mp3",
+      "sha256": "de418c70e3bd7d3111e4b49400abe13fddc63b84b440fc399bc66c1cc5ecb357",
+      "expectedText": "Last, Ben eats the apple.",
+      "recognizedText": "Last, Ben eats the apple."
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-1-q.mp3",
+      "sha256": "6d01627acf55dc5a42ecee605c2068bb4f0c9e765b59a1fc192e1307994a22a6",
+      "expectedText": "Mia's team wins and she feels happy, so can you put her feeling and its reason in one sentence using because?",
+      "recognizedText": "Mia's team wins, and she feels happy, so can you put her feeling and its reason in one sentence using because?"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-1-a.mp3",
+      "sha256": "d12797e538cd846518c69413949d823b4550d5c7e3e3a65be7c85eb1f0b6b652",
+      "expectedText": "Mia is happy because her team wins.",
+      "recognizedText": "Mia is happy because her team wins."
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-2-q.mp3",
+      "sha256": "21c2fe3e58aba2359788a8bf28d17ab73ddb8d2d5fcf8cac4574b81f28121d9e",
+      "expectedText": "Mia and Ben are on the winning team and both feel happy, so how can you change the sentence to talk about them together?",
+      "recognizedText": "Mia and Ben are on the winning team and both feel happy, so how can you change the sentence to talk about them together?"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-2-a.mp3",
+      "sha256": "c2101fe7c41e3d8c2f8ad959d4cce57cb35692aa45ecd2d2ebe98f5a181ab9aa",
+      "expectedText": "They are happy because their team wins.",
+      "recognizedText": "They are happy because their team wins."
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-3-q.mp3",
+      "sha256": "c131bf04a017117818621e590b7de3cf98008069ac34a2b5b138bfeb6cca2158",
+      "expectedText": "Sam's own toy breaks and he feels sad, so can you fix the word about whose toy it is?",
+      "recognizedText": "Sam's own toy breaks and he feels sad. So can you fix the word about whose toy it is?"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-try-3-a.mp3",
+      "sha256": "ba1471d86415c6a49c839aa218ae9e11e0d6114ad675c86a9864a27c588cedc7",
+      "expectedText": "Sam is sad because his toy breaks.",
+      "recognizedText": "Sam is sad because his toy breaks"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-1-q.mp3",
+      "sha256": "1574f22dd92c88606eb0b49f53d80559363b119e63a75d4b8f09e655e2d69fb3",
+      "expectedText": "Lily's kite breaks and she feels sad, so can you explain her feeling using because?",
+      "recognizedText": "Lily's kite breaks, and she feels sad. So can you explain her feeling using because?"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-1-a.mp3",
+      "sha256": "1ad7df3e14c46f2b62507b151a649d8697884881c9e83df53b1bc3bcfebece31",
+      "expectedText": "Lily is sad because her kite breaks.",
+      "recognizedText": "Lily is sad because her kite breaks."
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-2-q.mp3",
+      "sha256": "4d9861cf35e256dc5aea579bcaa8a9f7328ae77ce1642686a7ce89568d956b86",
+      "expectedText": "Sam breaks Ben's toy and Ben feels angry, so can you explain Ben's feeling using because?",
+      "recognizedText": "Sam breaks Ben's toy and Ben feels angry so can you explain Ben's feeling using because"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-2-a.mp3",
+      "sha256": "0a7cfdc714d380158ffee2c60f2c34097b0744c8ce8c78dbf4fb173c763e3afa",
+      "expectedText": "Ben is angry because Sam breaks his toy.",
+      "recognizedText": "Ben is angry because Sam breaks his toy."
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-3-q.mp3",
+      "sha256": "19fda1e0d9cfcc1647a8e3e52c220b3bd862c479d202e8f0478d4afc3b519686",
+      "expectedText": "You and Mia are on the winning team and feel happy, so can you explain both your feeling and its reason using We?",
+      "recognizedText": "You and Mia are on the winning team and feel happy. So can you explain both your feeling and its reason using we?"
+    },
+    {
+      "file": "audio/2026-09-20-feelings-because-say-3-a.mp3",
+      "sha256": "b56fc49902ca48e70bb32770ac3059cb76d12e02d184a62f966aa6851f6c0497",
+      "expectedText": "We are happy because our team wins.",
+      "recognizedText": "We are happy because our team wins."
+    }
+  ]
+}
