@@ -2,6 +2,8 @@
 
 2026-09-14 與 2026-09-16 Edon 課程實際共用下列工具。課程設計標準仍在[首堂 SOP](../../nativecamp-review-pilot/lesson-sop.md)，每堂題文與證據留在各自的task，不集中成一份巨大題庫。
 
+私人錄音、製作紀錄、完成 worktree 的歸檔位置及恢復步驟，以 [Native Camp 資料保存與恢復](https://github.com/huansbox/aiden-study/wiki/Native-Camp-Storage) 為正本。工作副本刪除不代表原始資料遺失；先查私人歸檔清單，不重新下載或重送付費語音請求。
+
 ## 文字與題包
 
 目前新 Try it 契約為 Build／Change／Fix；已發布課程追加 `tryRevision`，builder 同時保留原 try、say 與新版 speech jobs。來源ID及音檔不可覆蓋舊版。細節與這次改版驗證見 [Try it 改版紀錄](../../../docs-dev/nativecamp-try-variety.md)。
