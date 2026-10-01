@@ -1,0 +1,61 @@
+{
+  "lessonId": "2026-09-28",
+  "engine": "faster-whisper 1.2.1",
+  "model": "large-v2",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-3-q.mp3",
+      "sha256": "66298506d456b61c357a46c005d1781ca31295edf4b4761e58f77ee684f5ef42",
+      "expectedText": "Use the card to fix one body-covering word.",
+      "recognizedText": "Use the card to fix one body covering word.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-3-q.mp3",
+      "sha256": "345eaf7b948b587387e5244c5cea8db3fb89e414f5ff9eff5246fed57974f26d",
+      "expectedText": "Use the card to fix one body-part word.",
+      "recognizedText": "Use the card to fix one body part word.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-3-q.mp3",
+      "sha256": "c198059e6138e6ea35dbdfd8543fd2f2a628aba2c724001029bf5fe1d6f724b0",
+      "expectedText": "Use the card. What do these birds lay? Say a full sentence.",
+      "recognizedText": "Use the card. What do these birds lay? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-1-q.mp3",
+      "sha256": "87bfc4a5665f52e8b50d04520674fdb6b139e25cb6c51d12216f1d67554b616c",
+      "expectedText": "Use the fact card. What do gills help fish do?",
+      "recognizedText": "Use the fact card. What do gills help fish do?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-2-q.mp3",
+      "sha256": "b37856f60f066ab15ee3c69746a014b22fc62155ed5f9f3518c70446de578d80",
+      "expectedText": "The old claim says only fish have gills. Use the crab fact to add another animal. End with too.",
+      "recognizedText": "The old claim says only fish have gills. Use the crab fact to add another animal. End with two.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-2-q.mp3",
+      "sha256": "8079301156e7d0b8f7e15abad45f94c6a63b3616c7aa15cc215bd0e49255aa56",
+      "expectedText": "The frog can live in water. The new card adds another place. Where else can it live? End with too.",
+      "recognizedText": "The frog can live in water. The new card adds another place. Where else can it live? End with 2.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-3-q.mp3",
+      "sha256": "95ac47761476cb6d9b79915df88193f410bd19df6f8107886f82852981cd37ec",
+      "expectedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "recognizedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}

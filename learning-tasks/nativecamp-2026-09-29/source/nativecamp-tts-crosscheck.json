@@ -1,0 +1,61 @@
+{
+  "lessonId": "2026-09-29",
+  "engine": "faster-whisper 1.2.1",
+  "model": "large-v2",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-29-people-actions-say-3-q.mp3",
+      "sha256": "d5d53d431e84b0af884b01b37b3fd6cb9f2cee0cc71f5779a92f727a2d23dac1",
+      "expectedText": "Mia faces Jo, and Jo faces Mia. Which way are the girls facing?",
+      "recognizedText": "Mia faces Joe, and Joe faces Mia. Which way are the girls facing?",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-29-help-by-try-3-q.mp3",
+      "sha256": "8b14345609d3cefd0b0443a6cb17693066979dbf540987ddcd119473603ea35e",
+      "expectedText": "You and Jo give books to children to help the teacher. Fix one word in the sentence.",
+      "recognizedText": "You and Joe give books to children to help the teacher. Fix one word in the sentence.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-29-help-by-say-2-q.mp3",
+      "sha256": "b1042085019e362501eb81dba3726b74f5569f7827c32dd24c9b1ea705f7bbdf",
+      "expectedText": "You and Jo clean the floor to help the teacher. How do you and Jo help?",
+      "recognizedText": "You and Joe clean the floor to help the teacher. How do you and Joe help?",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-29-polite-patient-say-2-a.mp3",
+      "sha256": "27963fdcbd9bd28bf19d8f67181480d14c13d552dc3c584bc82d89c20c916cf4",
+      "expectedText": "Tom is patient.",
+      "recognizedText": "Tom is patient.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-29-polite-patient-say-3-q.mp3",
+      "sha256": "b830b4e36d1b253aee99f402621e769738e605858f36072e0217d62c631e74ea",
+      "expectedText": "Jo waits calmly for the bus. Which word describes her waiting? Use a full sentence.",
+      "recognizedText": "Joe waits calmly for the bus. Which word describes her waiting? Use a full sentence.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-29-polite-patient-say-3-a.mp3",
+      "sha256": "38934525fb60247bb39b02cc87bd760a56f0150ade06433e31ec94d7c835f90c",
+      "expectedText": "Jo is patient.",
+      "recognizedText": "Joe is patient.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-29-helper-roles-say-3-q.mp3",
+      "sha256": "7717741989e21fe979105b0e6be79cdf38f150aefccedcb046310e4a47ae7e2d",
+      "expectedText": "Who leads the school? Use a full sentence.",
+      "recognizedText": "Who leads the school? Use a full sentence.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}

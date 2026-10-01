@@ -1,0 +1,516 @@
+{
+  "lessonId": "2026-09-28",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-28-animal-groups-try-1-q.mp3",
+      "sha256": "57f580f0d41a361b786259ec22ee47f4d55e5372658338fd266f877095e42990",
+      "expectedText": "Use the fact card. What animal group is the cat in?",
+      "recognizedText": "Use the fact card. What animal group is the cat in?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-try-1-a.mp3",
+      "sha256": "0b298fc2714c74cdbf331da0b606891462d34f3778ff5b0386d19e917a072cb5",
+      "expectedText": "The cat is a mammal.",
+      "recognizedText": "The cat is a mammal.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-try-2-q.mp3",
+      "sha256": "252190ad303ac7e7ca6567c8622e83836267d21c4e8c9c6ef8b515c3169ed48b",
+      "expectedText": "Now look at a frog instead of a cat. Is it a mammal? Make a sentence starting with The frog.",
+      "recognizedText": "Now look at a frog instead of a cat. Is it a mammal? Make a sentence starting with the frog.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-try-2-a.mp3",
+      "sha256": "d8e5d11d103a255bd9816959e328a46478ac989a19aa07f830938e60893b87a6",
+      "expectedText": "The frog is not a mammal.",
+      "recognizedText": "The frog is not a mammal.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-try-3-q.mp3",
+      "sha256": "459a2d5c35200163ae996b24e16bf9036dd3091c7aec23b603abeab42b0b4bed",
+      "expectedText": "Use the card to find and fix one wrong group word.",
+      "recognizedText": "Use the card to find and fix one wrong group word.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-try-3-a.mp3",
+      "sha256": "9c9ce3b352c3586d02fbf7e6577aad95e7c4fe0dd47f6d1948ad70282f58761c",
+      "expectedText": "Frogs are amphibians.",
+      "recognizedText": "Frogs are amphibians.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-1-q.mp3",
+      "sha256": "752f8ab3d733b02924c29c25fb93db9947ec5b3e4a97539448329e71f5c7cb26",
+      "expectedText": "Use the fact card. What group is the elephant in? Say a full sentence.",
+      "recognizedText": "Use the fact card. What group is the elephant in? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-1-a.mp3",
+      "sha256": "3e6f5e1c24f1cc09f4936fae7d98b77e0c0d63e7522928d84063984f708f4b28",
+      "expectedText": "The elephant is a mammal.",
+      "recognizedText": "The elephant is a mammal.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-2-q.mp3",
+      "sha256": "3572c07df5a23a5e9f253c043c8c64e16ce17d82f6d2d2330598a69f5aecbecb",
+      "expectedText": "Use the fact card. Is the frog a mammal? Say a full sentence.",
+      "recognizedText": "Use the fact card. Is the frog a mammal? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-2-a.mp3",
+      "sha256": "82b255d519c42ea5dfed2ce16a818b5df13b6fce8a7052804daa6aa4d2f947dd",
+      "expectedText": "The frog is not a mammal.",
+      "recognizedText": "The frog is not a mammal.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-3-q.mp3",
+      "sha256": "7e01a8888916b47e6d62b55c6e55aa69003dbcac544753eb597275edc7f393b8",
+      "expectedText": "Use the fact card. What group are the orangutans in? Say a full sentence.",
+      "recognizedText": "Use the fact card. What group are the orangutans in? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-groups-say-3-a.mp3",
+      "sha256": "aaeda97434cbb64c8df9f11c28fce33b63b50a51df026a0ce2e9f2ae87bc0ddd",
+      "expectedText": "The orangutans are mammals.",
+      "recognizedText": "The orangutans are mammals.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-1-q.mp3",
+      "sha256": "96a33b7483a0480f7f54da9e21fba02be331158a4f700d941fb714f535d1ccd9",
+      "expectedText": "Use the fact card. What covers the birds?",
+      "recognizedText": "Use the fact card. What covers the birds?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-1-a.mp3",
+      "sha256": "383192857da70ac68fcdef5668c2c21fd3c9017ba80e3180e1b8ec5f515c579a",
+      "expectedText": "Birds have feathers.",
+      "recognizedText": "Birds have feathers.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-2-q.mp3",
+      "sha256": "bde72ece407d890311b9535e29d80731d8722a7b0a6579068a5ab4ca66ca7115",
+      "expectedText": "Now describe one lizard instead of the birds. Use the card for its body covering.",
+      "recognizedText": "Now describe one lizard instead of the birds. Use the card for its body covering.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-2-a.mp3",
+      "sha256": "9d5b4e20388a9f641775e32577cf14daec9e5ea3c1d123f91462e258949d3f97",
+      "expectedText": "This lizard has scales.",
+      "recognizedText": "This lizard has scales.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-3-q.mp3",
+      "sha256": "66298506d456b61c357a46c005d1781ca31295edf4b4761e58f77ee684f5ef42",
+      "expectedText": "Use the card to fix one body-covering word.",
+      "recognizedText": "Use the card to fix one body covering word.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-try-3-a.mp3",
+      "sha256": "619000ae4f72914768f1bb7bb8b61498792eb770b7e63f3640733ef315c7c527",
+      "expectedText": "The cat has fur.",
+      "recognizedText": "The cat has fur.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-1-q.mp3",
+      "sha256": "cc45d95697eb54828d9229dde302892088b87e92bcaf74d4c770d336a31e9d47",
+      "expectedText": "Use the card. What covers the bird? Say a full sentence.",
+      "recognizedText": "Use the card. What covers the bird? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-1-a.mp3",
+      "sha256": "838f15cae277799d5e9e1d879dd8b11b10c269aa452a71372b30bc3d606218ba",
+      "expectedText": "The bird has feathers.",
+      "recognizedText": "The bird has feathers.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-2-q.mp3",
+      "sha256": "41a43ea6cea54708847089b5e8b6a107ec052717b9f13f9bcf2ca71544752290",
+      "expectedText": "Use the card. What covers the two cats? Say a full sentence.",
+      "recognizedText": "Use the card. What covers the two cats? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-2-a.mp3",
+      "sha256": "e392888e9f811cfb29d38ebb00d1499217e04e830028c994b9e595be37cc87fb",
+      "expectedText": "The cats have fur.",
+      "recognizedText": "The cats have fur.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-3-q.mp3",
+      "sha256": "7ddb22ec9ce58588606be5c6694a6b980d1f59befc198980bd7c57a47d7a46ee",
+      "expectedText": "Use the card. What covers the lizard? Say a full sentence.",
+      "recognizedText": "Use the card. What covers the lizard? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-coverings-say-3-a.mp3",
+      "sha256": "d6e959294ea7370d038200d5e79031103a7865de3c9fa96ab549bb5db1d364ba",
+      "expectedText": "The lizard has scales.",
+      "recognizedText": "The lizard has scales.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-1-q.mp3",
+      "sha256": "51b62d5e6ae70f216c065f2d10e4173cbb3376b3f2bf7e5160764ae45be637e6",
+      "expectedText": "Use the card. Tell the body part and its number for birds.",
+      "recognizedText": "Use the card. Tell the body part and its number for birds.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-1-a.mp3",
+      "sha256": "44da90b4ce83ec3d1d2d75d69c07b42177947b776a4262cf21f6b156192e435e",
+      "expectedText": "Birds have two wings.",
+      "recognizedText": "Birds have two wings.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-2-q.mp3",
+      "sha256": "4e8c4bb7feb1e252a95fda637c63479f381046ff764416e686c7e98cb3a9803f",
+      "expectedText": "Now think about orangutans instead of birds. Do they have wings? Make a full sentence.",
+      "recognizedText": "Now, think about orangutans instead of birds. Do they have wings? Make a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-2-a.mp3",
+      "sha256": "88337c243520783de673fe5d222bc64f54704f1978358bb5e6b351959cbe8f58",
+      "expectedText": "Orangutans do not have wings.",
+      "recognizedText": "orangutans do not have wings.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-3-q.mp3",
+      "sha256": "345eaf7b948b587387e5244c5cea8db3fb89e414f5ff9eff5246fed57974f26d",
+      "expectedText": "Use the card to fix one body-part word.",
+      "recognizedText": "Use the card to fix one body part word.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-try-3-a.mp3",
+      "sha256": "27571e4af1e58e20ade8a66231812d8673770b95d7da7bc61a794e4e5f64a77b",
+      "expectedText": "The bird has two wings.",
+      "recognizedText": "The bird has two wings.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-1-q.mp3",
+      "sha256": "94d5301f6e1b8317fdbce877792fe2496450291b390cc2cc05cb2b762ce2a918",
+      "expectedText": "Use the card. What does the bird have? Include the number.",
+      "recognizedText": "Use the card. What does the bird have? Include the number.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-1-a.mp3",
+      "sha256": "710e4df5be96fad96b997c23589270e5f2280fb46c5d949c88ffc9581387d36b",
+      "expectedText": "The bird has two wings.",
+      "recognizedText": "The bird has two wings.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-2-q.mp3",
+      "sha256": "51648b5602033ac12184d0ec9ee2db1405c7e395ca48911ed1aa148ed6b608d6",
+      "expectedText": "Use the card. Do orangutans have wings? Answer with a full sentence.",
+      "recognizedText": "Use the card. Do orangutans have wings? Answer with a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-2-a.mp3",
+      "sha256": "04108d2b1a4fd61ffcb901dcfce80e0c5c0c3fd57dc89b2c26842f4c6b3ca6f2",
+      "expectedText": "Orangutans do not have wings.",
+      "recognizedText": "orangutans do not have wings",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-3-q.mp3",
+      "sha256": "a0e9d53f3389b4aa43aee1dc397c4214825a52d65323113b274aa23c8ff0267d",
+      "expectedText": "Use the card. Do these birds have wings? Say a full sentence.",
+      "recognizedText": "Use the card. Do these birds have wings? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-wings-say-3-a.mp3",
+      "sha256": "fc4f02cc35c3a95ab51d64a1a930d39da61125859446281bbac6e942807f0b73",
+      "expectedText": "These birds have wings.",
+      "recognizedText": "These birds have wings.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-1-q.mp3",
+      "sha256": "33223a1e168a34b9f95569c543efd03a83892ccd46eda2c7243b0deea6fc8cb6",
+      "expectedText": "Use the card. What do chickens lay? Say what they do.",
+      "recognizedText": "Use the card. What do chickens lay? Say what they do.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-1-a.mp3",
+      "sha256": "5b30629328734c1132fe302b670b49fcd508bb892cd829ac405cea8e923cbd59",
+      "expectedText": "Chickens lay eggs.",
+      "recognizedText": "Chickens lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-2-q.mp3",
+      "sha256": "6ed6d4e9c5f07ccaa5bb86ed5dac2114c3a74e3ddae0c42beb3ce2a10c533509",
+      "expectedText": "Now talk about cats instead of chickens. Correct the egg claim using the card.",
+      "recognizedText": "Now talk about cats instead of chickens. Correct the egg claim using the card.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-2-a.mp3",
+      "sha256": "8c72c38e71f0e6dca774074ab95ae94247cc6117bdfb8a214fbaace6229284ee",
+      "expectedText": "Cats do not lay eggs.",
+      "recognizedText": "Cats do not lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-3-q.mp3",
+      "sha256": "8203ef961d33fca1facd218e0609249fb6874d37f29f6606e21a9f605b306ca7",
+      "expectedText": "Use the card. Fix one word about what chickens lay.",
+      "recognizedText": "Use the card. Fix one word about what chickens lay.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-try-3-a.mp3",
+      "sha256": "bf8c386857913d388d5af2e69dd5829f50e9181c5f29451a316160534a96ad3f",
+      "expectedText": "Chickens lay eggs.",
+      "recognizedText": "Chickens lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-1-q.mp3",
+      "sha256": "22fcf9bc34247c4eb5fc0f26f9d1efa99ec8726d7a0923af960f8ad08177bec0",
+      "expectedText": "Use the card. What do chickens lay? Say a full sentence.",
+      "recognizedText": "Use the card. What do chickens lay? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-1-a.mp3",
+      "sha256": "2e3040eb6786fd1c19d2c98d1533883b174e1ca56a7269ea221c6364b31f4889",
+      "expectedText": "Chickens lay eggs.",
+      "recognizedText": "Chickens lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-2-q.mp3",
+      "sha256": "f3122503efd360fb7696eecbcaa1d9b9c5496558d29821d10f6189f81bc1b6a1",
+      "expectedText": "Use the card. Do cats lay eggs? Say a full sentence.",
+      "recognizedText": "Use the card. Do cats lay eggs? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-2-a.mp3",
+      "sha256": "e4ddac7857dfd802e57a006c3679fb7ca17d41e456142bbbf2fe9604204fa10f",
+      "expectedText": "Cats do not lay eggs.",
+      "recognizedText": "Cats do not lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-3-q.mp3",
+      "sha256": "c198059e6138e6ea35dbdfd8543fd2f2a628aba2c724001029bf5fe1d6f724b0",
+      "expectedText": "Use the card. What do these birds lay? Say a full sentence.",
+      "recognizedText": "Use the card. What do these birds lay? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-animal-eggs-say-3-a.mp3",
+      "sha256": "9596be364f8ee64c5412135e7fb666e4f235ad656b334a6b45564cc9d0dfde7c",
+      "expectedText": "These birds lay eggs.",
+      "recognizedText": "These birds lay eggs.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-1-q.mp3",
+      "sha256": "87bfc4a5665f52e8b50d04520674fdb6b139e25cb6c51d12216f1d67554b616c",
+      "expectedText": "Use the fact card. What do gills help fish do?",
+      "recognizedText": "Use a fact card. What do gills help fish do?",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-1-a.mp3",
+      "sha256": "7a326612d19a27e863b859a5728f66105fdbe4b37eae15423f1c3f9915f79e6c",
+      "expectedText": "Gills help fish breathe.",
+      "recognizedText": "Gills help fish breathe.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-2-q.mp3",
+      "sha256": "b37856f60f066ab15ee3c69746a014b22fc62155ed5f9f3518c70446de578d80",
+      "expectedText": "The old claim says only fish have gills. Use the crab fact to add another animal. End with too.",
+      "recognizedText": "The old claim says only fish have gills. Use the crab fact to add another animal. End with 2.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-2-a.mp3",
+      "sha256": "5f1b91d16eacf8a2732ae47f6ccc4646e2481f3b52524149417ec69bc12317f1",
+      "expectedText": "Crabs have gills too.",
+      "recognizedText": "Crabs have gills too.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-3-q.mp3",
+      "sha256": "0658d47c94b947454841f999726f92c6aaddf1ca7b75220f9a1bc566513ba660",
+      "expectedText": "Use the card to fix one action word.",
+      "recognizedText": "Use the card to fix one action word.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-try-3-a.mp3",
+      "sha256": "50d6cf1b506431f7c7658e998cb0e4c2f6a37a495aed488da9a87598cccf0caa",
+      "expectedText": "Gills help fish breathe.",
+      "recognizedText": "Gills help fish breathe.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-1-q.mp3",
+      "sha256": "b194106b1ca018854b890dc897bac73c104cddfb43605906ac973c9ce02d4112",
+      "expectedText": "Use the fact card. What do gills help fish do? Say a full sentence.",
+      "recognizedText": "Use the fact card. What do gills help fish do? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-1-a.mp3",
+      "sha256": "8be3c6e953c6c3c501022d80a4c86bd555ba916eddf010bba1d2300bf941674b",
+      "expectedText": "Gills help fish breathe.",
+      "recognizedText": "Gills help fish breathe.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-2-q.mp3",
+      "sha256": "3327044b4a14020b64198392c77c8d1af9230227d822165840d096ec2265df59",
+      "expectedText": "Use the two facts. Do only fish have gills? Name another animal in a full sentence.",
+      "recognizedText": "Use the two facts. Do only fish have gills? Name another animal in a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-2-a.mp3",
+      "sha256": "b835a7ee7ccc1bd41e5892a72f49ee241890d739dedcd5c185cb1dc5f06b49dd",
+      "expectedText": "Crabs have gills too.",
+      "recognizedText": "Crabs have gills, too.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-3-q.mp3",
+      "sha256": "697881cb96d178aee02aa481a9f1fdb616e521d5c952793497f5b80f6a14f119",
+      "expectedText": "Use the fact card. What helps these baby frogs breathe? Say a full sentence.",
+      "recognizedText": "Use the fact card. What helps these baby frogs breathe? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-gills-breathing-say-3-a.mp3",
+      "sha256": "128da62e5d711548af21546f1eaba8aad2ef2be3b67c93492afd079431ce4e46",
+      "expectedText": "These baby frogs use gills to breathe.",
+      "recognizedText": "These baby frogs use gills to breathe.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-1-q.mp3",
+      "sha256": "e9c52291ad9b0d9216876c71952092d5a669827522864530802948e0dc85c35e",
+      "expectedText": "Use the fact card. Where can this frog live?",
+      "recognizedText": "Use the fact card. Where can this frog live?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-1-a.mp3",
+      "sha256": "f058dc2cb85888f9ec95cb1321a17e9fc6947f99e3faa22ae748eae62434095f",
+      "expectedText": "This frog can live in water.",
+      "recognizedText": "This frog can live in water.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-2-q.mp3",
+      "sha256": "8079301156e7d0b8f7e15abad45f94c6a63b3616c7aa15cc215bd0e49255aa56",
+      "expectedText": "The frog can live in water. The new card adds another place. Where else can it live? End with too.",
+      "recognizedText": "The frog can live in water the new card adds another place where else can it live end with two",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-2-a.mp3",
+      "sha256": "0ff3647525620d06f4ddb2f4c363168b10c517b5b1cc3b5228a9d1327c074b51",
+      "expectedText": "This frog can live on land too.",
+      "recognizedText": "This frog can live on land too.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-3-q.mp3",
+      "sha256": "4077bf247d7bd1035ddf9d0d4460e49ac7ab5f783693942530c2efae089e0a35",
+      "expectedText": "Use the fact card. Find and fix the small word before the place.",
+      "recognizedText": "Use the fact card. Find and fix the small word before the place.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-try-3-a.mp3",
+      "sha256": "7cb04f3e6cd20dc1f9e915434a2fb6fb35bbea41558b94b967fd4aca6e36c812",
+      "expectedText": "The frog can live on land.",
+      "recognizedText": "The frog can live on land.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-1-q.mp3",
+      "sha256": "2ba9c0057a20c778737376094ff3ff16aa6777865af582b44884ad85e9dee75c",
+      "expectedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "recognizedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-1-a.mp3",
+      "sha256": "ac8478ea9d4ea1eb00ae7f458e4bb7de569a0a0033623cba0bf1fa3baabc1fcd",
+      "expectedText": "This frog can live in water.",
+      "recognizedText": "This frog can live in water.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-2-q.mp3",
+      "sha256": "b36b44a00c82b1ced5c82e15834901d6ace65d59c981293fc85b8418084fbba8",
+      "expectedText": "The first place was water. Use the new card to say where else this frog can live.",
+      "recognizedText": "The first place was water. Use the new card to say where else this frog can live.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-2-a.mp3",
+      "sha256": "8c3af9c5dbc59d16f8e1b2bfb9f81e6af5bfb5614ce0cd39fcf12b59777b158b",
+      "expectedText": "This frog can live on land too.",
+      "recognizedText": "This frog can live on land too.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-3-q.mp3",
+      "sha256": "95ac47761476cb6d9b79915df88193f410bd19df6f8107886f82852981cd37ec",
+      "expectedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "recognizedText": "Use the card. Where can this frog live? Say a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-28-frog-habitats-say-3-a.mp3",
+      "sha256": "d0559002e83e1e3c652e9089ba661fd6266e1cc6bc4d17c7821459955b23f15e",
+      "expectedText": "This frog can live on land.",
+      "recognizedText": "This frog can live on land.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}

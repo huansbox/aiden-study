@@ -370,6 +370,126 @@
       }
     },
     {
+      "id": "task:nativecamp-2026-09-30",
+      "type": "task",
+      "name": "Native Camp 2026-09-30 Edon",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "原創題文、OpenAI 語音與隔離驗證完成；正式發布追蹤 #140。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-30",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-30"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-30",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-30"
+        }
+      ],
+      "description": "顏色、名詞分類、邀請與預測主題",
+      "eventDate": "2026-09-30",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-29",
+      "type": "task",
+      "name": "Native Camp 2026-09-29 Zibuyile",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "原創題文、OpenAI 語音與隔離驗證完成；正式發布追蹤 #140。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-29",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-29"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-29",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-29"
+        }
+      ],
+      "description": "互相幫助、禮貌與社區工作者",
+      "eventDate": "2026-09-29",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "task:nativecamp-2026-09-28",
+      "type": "task",
+      "name": "Native Camp 2026-09-28 Alex",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "原創題文、OpenAI 語音與隔離驗證完成；正式發布追蹤 #140。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-09-28",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-09-28"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-09-28",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-09-28"
+        }
+      ],
+      "description": "動物分類、特徵與完整句分步練習",
+      "eventDate": "2026-09-28",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:nativecamp-2026-09-21",
       "type": "task",
       "name": "Native Camp 2026-09-21 Alex",
