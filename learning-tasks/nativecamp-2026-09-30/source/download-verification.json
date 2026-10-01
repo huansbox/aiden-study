@@ -1,0 +1,31 @@
+{
+  "lessonId": "2026-09-30",
+  "audioUploaded": false,
+  "humanListening": false,
+  "files": [
+    {
+      "track": 1,
+      "relativeFile": "../assets/audio/2026-09-30-track-1.webm",
+      "bytes": 6372187,
+      "sha256": "0a6dbf71f2328d0eaa9f702887b7376f77b171f18a9dae04adca694777559ef4",
+      "durationSeconds": 874.985,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "track": 2,
+      "relativeFile": "../assets/audio/2026-09-30-track-2.webm",
+      "bytes": 4912803,
+      "sha256": "9faa9dc19ba9e2fffd61bab6487dcbc058b586aab567d71b1dad6dfb8c95b226",
+      "durationSeconds": 648.674,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ]
+}

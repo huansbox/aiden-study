@@ -1,0 +1,516 @@
+{
+  "lessonId": "2026-09-30",
+  "engine": "faster-whisper 1.2.1",
+  "model": "small.en",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-30-noun-groups-try-1-q.mp3",
+      "sha256": "6b02e5104daa6941b4a6ae247a1c654f1d7551083c44b114ba76f7fae615bae8",
+      "expectedText": "Think about the word teacher. Is it a person, a place, or a thing? Use a full sentence.",
+      "recognizedText": "think about the word teacher. Is it a person, a place, or a thing? Use a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-try-1-a.mp3",
+      "sha256": "67c237b303392bdeaa62c3bfd8dee95edeade508d933278a1d1b7d20238f464d",
+      "expectedText": "A teacher is a person.",
+      "recognizedText": "A teacher is a person.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-try-2-q.mp3",
+      "sha256": "7138de2737a4728a6e7c95b6db7f6de344122f273b8ef2d753261ef767a20a64",
+      "expectedText": "Before, we had one book. Now talk about two books. Tell their noun group in a full sentence.",
+      "recognizedText": "Before, we had one book. Now talk about two books. Tell their noun group in a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-try-2-a.mp3",
+      "sha256": "4d8076f1222bc685500c365bcb962adea1b55bf280bf4533a4204a16cdb46842",
+      "expectedText": "Books are things.",
+      "recognizedText": "Books are things.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-try-3-q.mp3",
+      "sha256": "1f255a0147542e734efefc01b0096bb83d77dbbbdf81c32c3254682f7664aee2",
+      "expectedText": "Think about a playground, where children play. Find and fix one wrong word.",
+      "recognizedText": "Think about a playground where children play. Find and fix one wrong word.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-try-3-a.mp3",
+      "sha256": "15124fbabb6afa2f50e0af248c42d0df8bfdfbe902251ff67f5de7cf86983a11",
+      "expectedText": "A playground is a place.",
+      "recognizedText": "A playground is a place.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-1-q.mp3",
+      "sha256": "053f495aab022ff1bf6df5da980ce4b4e997778e4c0b114da0c1089c0e167d1c",
+      "expectedText": "What kind of noun is teacher? Start with A teacher and use a full sentence.",
+      "recognizedText": "What kind of noun is teacher? Start with a teacher and use a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-1-a.mp3",
+      "sha256": "a020afb894fb23e592553813e23d7678410512a562e66697e09e311a1c8e65ea",
+      "expectedText": "A teacher is a person.",
+      "recognizedText": "A teacher is a person.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-2-q.mp3",
+      "sha256": "b052d93beb8cc9f7796976c9e03b9dee33cf9e5cdf1b98063b83612160fc7f00",
+      "expectedText": "What kind of noun is fireworks? Start with Fireworks and use a full sentence.",
+      "recognizedText": "What kind of noun is fireworks? Start with fireworks and use a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-2-a.mp3",
+      "sha256": "abc4536373756cc7ce6042ec0b59423cb1fd7fd03f62403cf93d1a650f385784",
+      "expectedText": "Fireworks are things.",
+      "recognizedText": "Fireworks are things.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-3-q.mp3",
+      "sha256": "f936344b4b2e9a5c39bc25eff8448a975fc4d65a718b9d3db4855f69f0f93539",
+      "expectedText": "What kind of noun is school? Start with A school and use a full sentence.",
+      "recognizedText": "What kind of noun is school? Start with a school and use a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-noun-groups-say-3-a.mp3",
+      "sha256": "272832f438f0ed36ee9f6fc5a8c2b39c060713d44704abe0d227a8fbae3f7988",
+      "expectedText": "A school is a place.",
+      "recognizedText": "A school is a place.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-1-q.mp3",
+      "sha256": "235c39ec44d16aa1f84c9d1e71368c2a9ea276964239face13c8816ee2b79051",
+      "expectedText": "Invite your friend to paint with you. Start with Do you.",
+      "recognizedText": "Invite your friend to paint with you. Start with Do You.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-1-a.mp3",
+      "sha256": "e467588da60bdbf36dd2659b6c5ec919805162c4be299fee5da28643a6c4122f",
+      "expectedText": "Do you want to paint with me?",
+      "recognizedText": "Do you want to paint with me?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-2-q.mp3",
+      "sha256": "df9cee7fc82133709a74153c25013db2bc5ffb823dc060d26e4dc016716a2275",
+      "expectedText": "Your friend agrees to color with you. Make a suggestion. Start with Let's.",
+      "recognizedText": "Your friend agrees to color with you. Make a suggestion. Start with let's.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-2-a.mp3",
+      "sha256": "ea3390c8b5b3c9170305a42a615fdc3ed30b24d993dc0ef1aa12d35380b5a5a5",
+      "expectedText": "Let's color together.",
+      "recognizedText": "Let's, color together.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-3-q.mp3",
+      "sha256": "c0cf3ca049b486894fba54f33d762a0798dc5f725bff17aafc1b798f6587c9a6",
+      "expectedText": "You are inviting a friend. Find and fix one wrong word.",
+      "recognizedText": "You are inviting a friend. Find and fix one wrong word.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-try-3-a.mp3",
+      "sha256": "6337a2ff77067394b107f6e7835cd1d4688cdbca4ca670ffecbfdcb16c9e2900",
+      "expectedText": "Do you want to paint with me?",
+      "recognizedText": "Do you want to paint with me?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-1-q.mp3",
+      "sha256": "792c23d9c0365b3fc595f59f7c5af1428ac849e77116ad905f7c21e9ac2e05c1",
+      "expectedText": "Invite your friend to draw with you. Start with Do you.",
+      "recognizedText": "Invite your friend to draw with you start with do you",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-1-a.mp3",
+      "sha256": "2fd2d24c9f3df2004c1dd87482b4761689b11221462becbddcb742b3c3b68d7d",
+      "expectedText": "Do you want to draw with me?",
+      "recognizedText": "Do you want to draw with me?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-2-q.mp3",
+      "sha256": "c5dd2c7bca9b933f5813322c5e7dbab5821e1773e60c607f690ae87d1a07a824",
+      "expectedText": "Your friend agrees to color with you. Suggest the activity in a full sentence. Start with Let's.",
+      "recognizedText": "Your friend agrees to color with you. Suggest the activity in a full sentence. Start with let's.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-2-a.mp3",
+      "sha256": "ecef44f5c7b5cf037b836ed1b9dd294d1f2803ebd6c791d3c7bbbfe33e497878",
+      "expectedText": "Let's color together.",
+      "recognizedText": "Let's color together.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-3-q.mp3",
+      "sha256": "c96545890a2d3649e7009c284c33858beefb3f73b1d84950801fcceb36205d38",
+      "expectedText": "Invite your friend to make a mural with you. Start with Do you.",
+      "recognizedText": "Invite your friend to make a mural with you. Start with Do You.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-3-a.mp3",
+      "sha256": "fada1833e671c91b6a599d638492af8dd8dc83e32e8315ae36ce4f0bdbba69d7",
+      "expectedText": "Do you want to make a mural with me?",
+      "recognizedText": "Do you want to make a mural with me?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-1-q.mp3",
+      "sha256": "d2f45498a5daed043a47438dfef3f55c6c5e1ac6e14bc27ffd77a0f80f421281",
+      "expectedText": "A mural is a painting on a wall. This one has a starfish. Tell what the mural shows.",
+      "recognizedText": "A mural is a painting on a wall. This one has a starfish. Tell what the mural shows.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-1-a.mp3",
+      "sha256": "860c382be9bc40b888fd44857aee794ef0f5f88c60d7e13d67dee52717f71de0",
+      "expectedText": "The mural shows a starfish.",
+      "recognizedText": "The mural shows a starfish.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-2-q.mp3",
+      "sha256": "88764a90525c3152431551ef91045b582f1efa237564c364e37ec41864603b02",
+      "expectedText": "Before, there was one mural. Now there are two murals, with a starfish on each. Describe the murals.",
+      "recognizedText": "Before, there was one mural. Now there are two murals with a starfish on each. Describe the murals.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-2-a.mp3",
+      "sha256": "bbd323a25cabd57fc90c6e95fd8150455d391d367b530d78b17d69e5bebfaf28",
+      "expectedText": "The murals show starfish.",
+      "recognizedText": "The murals show starfish.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-3-q.mp3",
+      "sha256": "703c4b8229c4e980cb08d3b16c768066389262455d8bbc97ad736c165e424ba5",
+      "expectedText": "One mural has the ocean in it. Find and fix one wrong word.",
+      "recognizedText": "One mural has the ocean in it. Find and fix one wrong word.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-try-3-a.mp3",
+      "sha256": "1ece18a6f1bbd0059aa833d64b99714823d7d107e6c2eb2c91c36a106a813988",
+      "expectedText": "The mural shows the ocean.",
+      "recognizedText": "The mural shows the ocean.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-1-q.mp3",
+      "sha256": "460494dfafa9a51aaad6bd5f77c5317ec677d79b5671ed24e968c499b828379a",
+      "expectedText": "One wall painting has seaweed in it. What does the mural show? Use a full sentence. Start with The mural.",
+      "recognizedText": "One wall painting has seaweed in it. What does the mural show? Use a full sentence. Start with the mural.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-1-a.mp3",
+      "sha256": "21cb60fc77b8f0361ecf3cb489233755f33513dad3c7ca24f9a78fe79af1f411",
+      "expectedText": "The mural shows seaweed.",
+      "recognizedText": "The mural shows seaweed.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-2-q.mp3",
+      "sha256": "3f2896a9d2fe92ac4a72fc785ed1e41db398a93511949bf9d13162e99b49f8a1",
+      "expectedText": "There are two murals. Both have the ocean in them. Tell what the murals show. Start with The murals.",
+      "recognizedText": "There are two murals. Both have the ocean in them. Tell what the murals show. Start with the murals.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-2-a.mp3",
+      "sha256": "3f6cfb28d26dadc27dde9925fd301372f7dec757ebc5d08abac89c5f0396d56f",
+      "expectedText": "The murals show the ocean.",
+      "recognizedText": "The murals show the ocean.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-3-q.mp3",
+      "sha256": "221d40b226c8e821f24d2932cfb0ea90d99f6821d0dde2a46f71ee7a13055a68",
+      "expectedText": "One mural has two jellyfish in it. Tell what the mural shows, including the number. Start with The mural.",
+      "recognizedText": "One mural has two jellyfish in it. Tell what the mural shows, including the number. Start with the mural.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-3-a.mp3",
+      "sha256": "a7cca60745d1d3b134d7da4ca8acd70ba449cb6e68f0dbcfaef2aa70d8450fb9",
+      "expectedText": "The mural shows two jellyfish.",
+      "recognizedText": "The mural shows two jellyfish.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-1-q.mp3",
+      "sha256": "b5a70c8b03e836a7bfbbbd87237e343d0e4f8cc5c282f421139df9bbf1520146",
+      "expectedText": "Use the paint card. Tell how we make green paint. Start with We.",
+      "recognizedText": "Use the paint card. Tell how we make green paint. Start with we.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-1-a.mp3",
+      "sha256": "f135bd8656e452d58494581bf09f4729c400c2221d90a69e7887bf1a3781767d",
+      "expectedText": "We mix blue and yellow to make green.",
+      "recognizedText": "We mix blue and yellow to make green.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-2-q.mp3",
+      "sha256": "1fce3ee296a806e34fc730966c5bca198dd932d038059e28b1af9af2665448c0",
+      "expectedText": "Before, we made green paint. Now Ava makes orange with red and yellow. Describe Ava. Start with She.",
+      "recognizedText": "Before, we made green paint. Now Ava makes orange with red and yellow. Describe Ava. Start with she.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-2-a.mp3",
+      "sha256": "753bda28dbd8637b56db875e986c4f46348527d8a4e6049858cfdaad092867a7",
+      "expectedText": "She mixes red and yellow to make orange.",
+      "recognizedText": "She mixes red and yellow to make orange.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-3-q.mp3",
+      "sha256": "8a902c0c2423c2580fa46919b12cd55256336ceaf0128be6eafc8be776c5ea68",
+      "expectedText": "Use the paint card. Find and fix one wrong word about the paint result.",
+      "recognizedText": "Use the paint card. Find and fix one wrong word about the paint result.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-3-a.mp3",
+      "sha256": "9ea2b5784efd17a40015a06bc8173787477e852c1673d9c8414bd22c92971b7a",
+      "expectedText": "We mix red and blue to make purple.",
+      "recognizedText": "We mix red and blue to make purple.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-1-q.mp3",
+      "sha256": "986b34cd69dbb73949cefa7052380575dd94962ce22aabb5c43c450775b971b6",
+      "expectedText": "Use the paint card. Tell how you make orange paint. Start with I.",
+      "recognizedText": "Use the paint card. Tell how you make orange paint. Start with I.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-1-a.mp3",
+      "sha256": "1a78ee1d20fb6181b59be55ccd330057eeb33a93f51ccd918758a797638de7c2",
+      "expectedText": "I mix red and yellow to make orange.",
+      "recognizedText": "I mix red and yellow to make orange.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-2-q.mp3",
+      "sha256": "789386785ae6a04c429ce68e7da7e7955afc47083bc06bc76fdb52b3bb08c9b8",
+      "expectedText": "Use the paint card. Tell how we make green paint. Start with We.",
+      "recognizedText": "Use the paint card. Tell how we make green paint. Start with we.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-2-a.mp3",
+      "sha256": "fe00f3f9b6cd474b99f8750aac7ef3a53f912ada7c2bcc87a34d775afa327def",
+      "expectedText": "We mix blue and yellow to make green.",
+      "recognizedText": "We mix blue and yellow to make green.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-3-q.mp3",
+      "sha256": "c5fc4fd0f83ec48a691af4d53ad62672faa093d0655700ce80139ce30992e291",
+      "expectedText": "Use the paint card. Tell how you make purple paint. Start with I.",
+      "recognizedText": "Use the paint card. Tell how you make purple paint. Start with I.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-say-3-a.mp3",
+      "sha256": "51006f400cdda7f491e4a995ca5d8426a7155dcaa36d457634d87883039df72f",
+      "expectedText": "I mix red and blue to make purple.",
+      "recognizedText": "I mix red and blue to make purple.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-1-q.mp3",
+      "sha256": "7d5237a947e167e09c0515c65cac16557db8b1f388f455a97237a84d55d3c7ba",
+      "expectedText": "The title is Busy Birds. The first words are wings and nests. What do you think the text is about?",
+      "recognizedText": "The title is Busy Birds. The first words are wings and nests. What do you think the text is about?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-1-a.mp3",
+      "sha256": "93cda26d1b7a692a3417ce69206124ec3a5158530b6c8e20a50928a58c94b622",
+      "expectedText": "I think the text is about birds.",
+      "recognizedText": "I think the text is about birds.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-2-q.mp3",
+      "sha256": "454177b4a7b0ffb6cf752d7abdaebdc3ad86b8bcbe5e4eb157e54243de4735c7",
+      "expectedText": "The new title is Orange All Around. It begins with orange walls and hats. Predict the new topic.",
+      "recognizedText": "The new title is Orange All Around. It begins with orange walls and hats. Predict the new topic.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-2-a.mp3",
+      "sha256": "7bc1359fe73dcd115ab9ce5c2c872b929a3c73ae1f669daa5f6c9d0874b60763",
+      "expectedText": "I think the text is about a color.",
+      "recognizedText": "I think the text is about a color.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-3-q.mp3",
+      "sha256": "a236dd4fe5360b4627748bc9b644362f28c98ee7ac2e1d534294f3772a6a3c0f",
+      "expectedText": "The title is Busy Birds. The first words are wings and nests. Find and fix one wrong word in the prediction.",
+      "recognizedText": "The title is Busy Birds. The first words are wings and nests. Find and fix one wrong word in the prediction.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-try-3-a.mp3",
+      "sha256": "0be67edff5167d4833ba98c8235ed368f0ec5048c8178524f4cd624c6ca88676",
+      "expectedText": "I think the text is about birds.",
+      "recognizedText": "I think the text is about birds.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-1-q.mp3",
+      "sha256": "df3353c51d4c2e7dcd4daaa7a081f4328dd3c84dd7c6451c908183f1dc95163d",
+      "expectedText": "The title is Life Under Water. The first words are jellyfish and starfish. Predict the topic. Start with I think.",
+      "recognizedText": "The title is Life Underwater. The first words are jellyfish and starfish. Predict the topic. Start with, I think.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-1-a.mp3",
+      "sha256": "e3bd5ba8aad3dbee034efd3074aa5bf62e80786b7a1fdc040ced5fec9d664ce3",
+      "expectedText": "I think the text is about ocean animals.",
+      "recognizedText": "I think the text is about ocean animals.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-2-q.mp3",
+      "sha256": "3f122f901183c0f0df9324915dabc8c631fc5c1f23368babedc9890651f5cb73",
+      "expectedText": "The title is Purple in the Park. It begins with purple flowers and shirts. Predict the topic. Start with I think.",
+      "recognizedText": "The title is Purple in the Park. It begins with purple flowers and shirts. Predict the topic. Start with, I think.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-2-a.mp3",
+      "sha256": "bd3799b80117756996cfec31e7e7b63aa518adc6a9f52805f6cf675763115347",
+      "expectedText": "I think the text is about the color purple.",
+      "recognizedText": "I think the text is about the color purple.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-3-q.mp3",
+      "sha256": "11938a3c70871e627666a0577558ccf0d206e20974f70ed0d893858fe4a07796",
+      "expectedText": "The title is All About Wall Art. It begins with large paintings on walls. Predict the topic. Start with I think.",
+      "recognizedText": "The title is all about wall art. It begins with large paintings on walls. Predict the topic. Start with, I think.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-3-a.mp3",
+      "sha256": "02a4523c5bb7d7b09f379b0407745abf7cdacd1c9871311f055c866c453a5308",
+      "expectedText": "I think the text is about murals.",
+      "recognizedText": "I think the text is about murals.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-1-q.mp3",
+      "sha256": "2f24e1f70c74abf108364241b93e62d971f4e3b2402afb76379fef3325eb7ed5",
+      "expectedText": "The ball is red and the kite is red. Compare their colors. Start with The ball.",
+      "recognizedText": "The ball is red, and the kite is red. Compare their colors. Start with the ball.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-1-a.mp3",
+      "sha256": "cdaaedd1702c47deb40db7d83fc4c7a46fcc8ee633d94ceb47146e9336f806b2",
+      "expectedText": "The ball and the kite are the same color.",
+      "recognizedText": "The ball and the kite are the same color.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-2-q.mp3",
+      "sha256": "de9c3ad985780ecf4ef1e111c6ad2805bf99f83c84b00445db4daacfd217e7e8",
+      "expectedText": "Before, the ball and kite were red. Now the kite is blue and the ball stays red. Compare their colors.",
+      "recognizedText": "Before the ball and kite were red. Now the kite is blue and the ball stays red. Compare their colors.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-2-a.mp3",
+      "sha256": "fe6037f7126860177506a4a2998745e92d21d24ae4bcb97683f75fa4f5b1b111",
+      "expectedText": "The ball and the kite are different colors.",
+      "recognizedText": "The ball and the kite are different colors.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-3-q.mp3",
+      "sha256": "213f5ee206e77f845ab34a7833cb7a85627f076bb18abd69b21b4a85f2f3fd9d",
+      "expectedText": "Both hats are pink. Find and fix one wrong word in the sentence.",
+      "recognizedText": "Both hats are pink. Find and fix one wrong word in the sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-try-3-a.mp3",
+      "sha256": "4d42428d58dc6f1e0446e9fd56a57b231f59d0388c5351c3d5eb7d38046d16f4",
+      "expectedText": "The hats are the same color.",
+      "recognizedText": "The hats are the same color.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-1-q.mp3",
+      "sha256": "60710ba8b838d3e30c421e5bbb6560f09908671f413de4ba8b44f94bd2696d13",
+      "expectedText": "The ball is red and the kite is red. Compare their colors in one full sentence. Start with The ball and the kite.",
+      "recognizedText": "The ball is red, and the kite is red. Compare their colors in one full sentence. Start with the ball and the kite.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-1-a.mp3",
+      "sha256": "a0cc5b026fe741bf8e4fad898b5459fe9ac075b2dfc23f1376053cc917aad2f0",
+      "expectedText": "The ball and the kite are the same color.",
+      "recognizedText": "The ball and the kite are the same color.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-2-q.mp3",
+      "sha256": "bab5c47028928a6085b29d02cd06a2e23622c47a2fb975bdaecbb593b213e843",
+      "expectedText": "The ball is red and the kite is blue. Compare their colors in one full sentence. Start with The ball and the kite.",
+      "recognizedText": "The ball is red and the kite is blue. Compare their colors in one full sentence. Start with the ball and the kite.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-2-a.mp3",
+      "sha256": "b9eb7a1624ca3bb5621957c69a8e700c7cec7e7eaa7c2433c563513cf79a9b4e",
+      "expectedText": "The ball and the kite are different colors.",
+      "recognizedText": "The ball and the kite are different colors.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-3-q.mp3",
+      "sha256": "4804013e04b0eb17cbf46e644de974985c4014abfa2bc4bda98fc77a278bb15b",
+      "expectedText": "Both shells are gray. Compare their colors. Start with The shells.",
+      "recognizedText": "Both shells are gray. Compare their colors. Start with the shells.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-comparing-colors-say-3-a.mp3",
+      "sha256": "43e89619d56f1453895cf69dbe827964f503a3545a4dc4ea5ae549db1168ffba",
+      "expectedText": "The shells are the same color.",
+      "recognizedText": "The shells are the same color.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}

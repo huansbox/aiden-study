@@ -32,6 +32,9 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-09-30 Edon](learning-tasks/nativecamp-2026-09-30/) | 顏色、名詞分類、邀請與預測主題 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-30) |
+| [Native Camp 2026-09-29 Zibuyile](learning-tasks/nativecamp-2026-09-29/) | 互相幫助、禮貌與社區工作者 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-29) |
+| [Native Camp 2026-09-28 Alex](learning-tasks/nativecamp-2026-09-28/) | 動物分類、特徵與完整句分步練習 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-28) |
 | [Native Camp 2026-09-21 Alex](learning-tasks/nativecamp-2026-09-21/) | 願望、交換、借物、動作與工作計畫的完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-21) |
 | [Native Camp 2026-09-20 Kyla](learning-tasks/nativecamp-2026-09-20/) | 需求、用途、買賣、故事順序與原因 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-20) |
 | [Native Camp 2026-09-19 Zibuyile](learning-tasks/nativecamp-2026-09-19-zibuyile/) | 水果特徵、所有權視角與完整數量問答 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-19-zibuyile) |

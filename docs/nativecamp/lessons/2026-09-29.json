@@ -1,0 +1,1469 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-29",
+  "date": "2026-09-29",
+  "title": "Helping, manners, and school rules",
+  "concepts": [
+    {
+      "id": "people-actions",
+      "title": "Tell what people are doing",
+      "try": [
+        {
+          "id": "people-actions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What are the girls doing?",
+          "instruction": "Build a full sentence. Start with The girls. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two girls / clap their hands / now",
+            "heading": "Read the situation"
+          },
+          "answerText": "The girls are clapping their hands.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "girls"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "clapping"
+            },
+            {
+              "id": "w4",
+              "text": "their"
+            },
+            {
+              "id": "w5",
+              "text": "hands"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "Two girls go with are. Then add the action.",
+          "explanation": "Use are with the girls. Clapping tells what they are doing now.",
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-try-1-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "people-actions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now only Mia is doing it. Change the sentence.",
+          "instruction": "Build a full sentence. Start with Mia. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The girls are clapping their hands. / Now: only Mia",
+            "heading": "Before and now"
+          },
+          "answerText": "Mia is clapping her hands.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "clapping"
+            },
+            {
+              "id": "w3",
+              "text": "her"
+            },
+            {
+              "id": "w4",
+              "text": "hands"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "Mia is one person. Use is and her.",
+          "explanation": "One girl goes with is. Her hands are Mia's hands.",
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-try-2-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "people-actions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix one word about the two girls.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two girls / face each other / now",
+            "heading": "Read the situation"
+          },
+          "answerText": "The girls are facing each other.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "girls"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "facing"
+            },
+            {
+              "id": "w4",
+              "text": "each"
+            },
+            {
+              "id": "w5",
+              "text": "other."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "hint": "Check the word just after the girls.",
+          "explanation": "Use are for two girls. Facing each other means each girl faces the other girl.",
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-try-3-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "people-actions-say-1",
+          "prompt": "What are the girls doing?",
+          "instruction": "The girls …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Two girls / play a game / now",
+            "heading": "Read the situation"
+          },
+          "answerText": "The girls are playing a game.",
+          "accepted": [
+            "They are playing a game.",
+            "Two girls are playing a game."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-say-1-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "people-actions-say-2",
+          "prompt": "What is Mia doing?",
+          "instruction": "Mia …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia / clap her hands / now",
+            "heading": "Read the situation"
+          },
+          "answerText": "Mia is clapping her hands.",
+          "accepted": [
+            "She is clapping her hands."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-say-2-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "people-actions-say-3",
+          "prompt": "Which way are the girls facing?",
+          "instruction": "The girls …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia faces Jo. Jo faces Mia.",
+            "heading": "Read the situation"
+          },
+          "answerText": "The girls are facing each other.",
+          "accepted": [
+            "They are facing each other.",
+            "Mia and Jo are facing each other."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-people-actions-say-3-q.mp3",
+            "answer": "audio/2026-09-29-people-actions-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "help-by",
+      "title": "Say how you help",
+      "try": [
+        {
+          "id": "help-by-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "How do you help?",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You help the teacher / mop the floor",
+            "heading": "Read the situation"
+          },
+          "answerText": "I help by mopping the floor.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "help"
+            },
+            {
+              "id": "w2",
+              "text": "by"
+            },
+            {
+              "id": "w3",
+              "text": "mopping"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "floor"
+            },
+            {
+              "id": "x0",
+              "text": "mop"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "After by, use an action word ending in ing.",
+          "explanation": "By mopping tells how you help. Use mopping after by.",
+          "audio": {
+            "question": "audio/2026-09-29-help-by-try-1-q.mp3",
+            "answer": "audio/2026-09-29-help-by-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "help-by-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Make this a sentence about how you help.",
+          "instruction": "Build a full sentence. Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I clean the floor.",
+            "heading": "Start with this action"
+          },
+          "answerText": "I help by cleaning the floor.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "help"
+            },
+            {
+              "id": "w2",
+              "text": "by"
+            },
+            {
+              "id": "w3",
+              "text": "cleaning"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "floor"
+            },
+            {
+              "id": "x0",
+              "text": "clean"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "Put the action after help by. Change clean to cleaning.",
+          "explanation": "I clean the floor names an action. I help by cleaning the floor tells how you help.",
+          "audio": {
+            "question": "audio/2026-09-29-help-by-try-2-q.mp3",
+            "answer": "audio/2026-09-29-help-by-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "help-by-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the action word after by.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You and Jo help the teacher / give books to children",
+            "heading": "Read the situation"
+          },
+          "answerText": "We help by giving books to children.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "help"
+            },
+            {
+              "id": "w2",
+              "text": "by"
+            },
+            {
+              "id": "w3",
+              "text": "give"
+            },
+            {
+              "id": "w4",
+              "text": "books"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w6",
+              "text": "children."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "gives"
+            },
+            {
+              "id": "c1",
+              "text": "giving"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c1"
+          },
+          "hint": "The action after by needs an ing ending.",
+          "explanation": "Use giving after by. We means you and Jo together.",
+          "audio": {
+            "question": "audio/2026-09-29-help-by-try-3-q.mp3",
+            "answer": "audio/2026-09-29-help-by-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "help-by-say-1",
+          "prompt": "How do you help?",
+          "instruction": "I help by …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You help the teacher / give books to children",
+            "heading": "Read the situation"
+          },
+          "answerText": "I help by giving books to children.",
+          "accepted": [
+            "I help the teacher by giving books to children.",
+            "I help by giving the children books."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-help-by-say-1-q.mp3",
+            "answer": "audio/2026-09-29-help-by-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "help-by-say-2",
+          "prompt": "How do you and Jo help?",
+          "instruction": "We help by …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You and Jo / help the teacher / clean the floor",
+            "heading": "Read the situation"
+          },
+          "answerText": "We help by cleaning the floor.",
+          "accepted": [
+            "We help the teacher by cleaning the floor.",
+            "Jo and I help by cleaning the floor."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-help-by-say-2-q.mp3",
+            "answer": "audio/2026-09-29-help-by-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "help-by-say-3",
+          "prompt": "How do you help?",
+          "instruction": "I help by …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You help the teacher / mop the floor",
+            "heading": "Read the situation"
+          },
+          "answerText": "I help by mopping the floor.",
+          "accepted": [
+            "I help the teacher by mopping the floor."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-help-by-say-3-q.mp3",
+            "answer": "audio/2026-09-29-help-by-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "join-two-actions",
+      "title": "Put two actions in one sentence",
+      "try": [
+        {
+          "id": "join-two-actions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do they do? Say both actions.",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story parents / cook food + wash clothes",
+            "heading": "Read the situation"
+          },
+          "answerText": "They cook food and wash clothes.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "cook"
+            },
+            {
+              "id": "w2",
+              "text": "food"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "wash"
+            },
+            {
+              "id": "w5",
+              "text": "clothes"
+            },
+            {
+              "id": "x0",
+              "text": "or"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w4",
+              "w5",
+              "w3",
+              "w1",
+              "w2"
+            ]
+          ],
+          "hint": "Both actions happen. Join them with and.",
+          "explanation": "And joins two things they do. Or would give a choice between the actions.",
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-try-1-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "join-two-actions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Join the two sentences. Say They only once.",
+          "instruction": "Build a full sentence. Start with They. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "They take Leo to school. They wash clothes.",
+            "heading": "Two short sentences"
+          },
+          "answerText": "They take Leo to school and wash clothes.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "take"
+            },
+            {
+              "id": "w2",
+              "text": "Leo"
+            },
+            {
+              "id": "w3",
+              "text": "to"
+            },
+            {
+              "id": "w4",
+              "text": "school"
+            },
+            {
+              "id": "w5",
+              "text": "and"
+            },
+            {
+              "id": "w6",
+              "text": "wash"
+            },
+            {
+              "id": "w7",
+              "text": "clothes"
+            },
+            {
+              "id": "x0",
+              "text": "or"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w6",
+              "w7",
+              "w5",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "Keep both actions. Put and between them.",
+          "explanation": "They can name the parents once. And joins taking Leo to school with washing clothes.",
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-try-2-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "join-two-actions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Both actions happen. Fix one word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story parents / every day: cook food + check homework",
+            "heading": "Read the situation"
+          },
+          "answerText": "They cook food and check homework.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "They"
+            },
+            {
+              "id": "w1",
+              "text": "cook"
+            },
+            {
+              "id": "w2",
+              "text": "food"
+            },
+            {
+              "id": "w3",
+              "text": "or"
+            },
+            {
+              "id": "w4",
+              "text": "check"
+            },
+            {
+              "id": "w5",
+              "text": "homework."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "and"
+            },
+            {
+              "id": "c1",
+              "text": "but"
+            }
+          ],
+          "answer": {
+            "wordId": "w3",
+            "choiceId": "c0"
+          },
+          "hint": "Choose the joining word for two things that both happen.",
+          "explanation": "And says they do both jobs. Or does not clearly say that they do both.",
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-try-3-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "join-two-actions-say-1",
+          "prompt": "What do they do? Say both actions.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story parents / cook food + check homework",
+            "heading": "Read the situation"
+          },
+          "answerText": "They cook food and check homework.",
+          "accepted": [
+            "They check homework and cook food.",
+            "The parents cook food and check homework."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-say-1-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "join-two-actions-say-2",
+          "prompt": "What do they do? Say both actions.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story parents / take Leo to school + wash clothes",
+            "heading": "Read the situation"
+          },
+          "answerText": "They take Leo to school and wash clothes.",
+          "accepted": [
+            "They wash clothes and take Leo to school.",
+            "The parents take Leo to school and wash clothes."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-say-2-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "join-two-actions-say-3",
+          "prompt": "What do they do? Say both actions.",
+          "instruction": "They …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Story parents / wash clothes + cook food",
+            "heading": "Read the situation"
+          },
+          "answerText": "They wash clothes and cook food.",
+          "accepted": [
+            "They cook food and wash clothes.",
+            "The parents wash clothes and cook food."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-join-two-actions-say-3-q.mp3",
+            "answer": "audio/2026-09-29-join-two-actions-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "polite-patient",
+      "title": "Polite words and patient waiting",
+      "try": [
+        {
+          "id": "polite-patient-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Describe Mia's kind words.",
+          "instruction": "Build a full sentence. Start with Mia. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia at school / says please and thank you",
+            "heading": "Read the situation"
+          },
+          "answerText": "Mia is polite at school.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "polite"
+            },
+            {
+              "id": "w3",
+              "text": "at"
+            },
+            {
+              "id": "w4",
+              "text": "school"
+            },
+            {
+              "id": "x0",
+              "text": "patient"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "Kind words show good manners. Waiting calmly shows something different.",
+          "explanation": "Please and thank you are polite words. Patient means waiting calmly.",
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-try-1-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "polite-patient-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe Mia's calm waiting.",
+          "instruction": "Build a full sentence. Start with Mia. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Mia says please. / Now: Mia waits calmly for her turn.",
+            "heading": "Before and now"
+          },
+          "answerText": "Mia is patient.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "patient"
+            },
+            {
+              "id": "x0",
+              "text": "polite"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "hint": "Choose the word that means waiting calmly.",
+          "explanation": "Patient describes calm waiting. This new situation is about waiting for a turn.",
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-try-2-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "polite-patient-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Describe Tom's kind words. Fix one word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom says please and thank you.",
+            "heading": "Read the situation"
+          },
+          "answerText": "Tom is polite.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Tom"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "patient."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "quiet."
+            },
+            {
+              "id": "c1",
+              "text": "polite."
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          },
+          "hint": "Look for the word about good manners.",
+          "explanation": "Kind words such as please and thank you show that Tom is polite.",
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-try-3-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "polite-patient-say-1",
+          "prompt": "Which word describes Mia's kind words?",
+          "instruction": "Mia …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia says please and thank you.",
+            "heading": "Read the situation"
+          },
+          "answerText": "Mia is polite.",
+          "accepted": [
+            "She is polite.",
+            "Mia is being polite."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-say-1-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "polite-patient-say-2",
+          "prompt": "Which word describes Tom's calm waiting?",
+          "instruction": "Tom …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Tom waits calmly for his turn.",
+            "heading": "Read the situation"
+          },
+          "answerText": "Tom is patient.",
+          "accepted": [
+            "He is patient.",
+            "Tom is being patient."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-say-2-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "polite-patient-say-3",
+          "prompt": "Which word describes Jo's calm waiting?",
+          "instruction": "Jo …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Jo waits calmly for the bus.",
+            "heading": "Read the situation"
+          },
+          "answerText": "Jo is patient.",
+          "accepted": [
+            "She is patient.",
+            "Jo is being patient."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-polite-patient-say-3-q.mp3",
+            "answer": "audio/2026-09-29-polite-patient-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "helper-roles",
+      "title": "Tell what helpers do",
+      "try": [
+        {
+          "id": "helper-roles-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Who helps with the books? Say what they do.",
+          "instruction": "Build a full sentence. Start with A. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "School library / children need help finding books",
+            "heading": "Read the situation"
+          },
+          "answerText": "A librarian helps children find books.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "librarian"
+            },
+            {
+              "id": "w2",
+              "text": "helps"
+            },
+            {
+              "id": "w3",
+              "text": "children"
+            },
+            {
+              "id": "w4",
+              "text": "find"
+            },
+            {
+              "id": "w5",
+              "text": "books"
+            },
+            {
+              "id": "x0",
+              "text": "principal"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "Think of the helper who works with library books.",
+          "explanation": "A librarian helps people find books. A principal leads the school.",
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-try-1-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "helper-roles-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now we are at a street. Who helps people cross?",
+          "instruction": "Build a full sentence. Start with A. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: a helper at the pool / Now: people need to cross the street",
+            "heading": "A new place"
+          },
+          "answerText": "A crossing guard helps people cross the street.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "crossing"
+            },
+            {
+              "id": "w2",
+              "text": "guard"
+            },
+            {
+              "id": "w3",
+              "text": "helps"
+            },
+            {
+              "id": "w4",
+              "text": "people"
+            },
+            {
+              "id": "w5",
+              "text": "cross"
+            },
+            {
+              "id": "w6",
+              "text": "the"
+            },
+            {
+              "id": "w7",
+              "text": "street"
+            },
+            {
+              "id": "x0",
+              "text": "lifeguard"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "hint": "Match the helper to the street, not the pool.",
+          "explanation": "A crossing guard helps people cross streets. A lifeguard helps people at a pool.",
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-try-2-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "helper-roles-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the school leader's job name.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This person leads the school.",
+            "heading": "Read the situation"
+          },
+          "answerText": "The principal leads the school.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "librarian"
+            },
+            {
+              "id": "w2",
+              "text": "leads"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "school."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "principal"
+            },
+            {
+              "id": "c1",
+              "text": "lifeguard"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          },
+          "hint": "The school leader has a different job from the book helper.",
+          "explanation": "The principal leads the school. The librarian's job is to help with books.",
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-try-3-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "helper-roles-say-1",
+          "prompt": "Who helps? Say who it is and what they do.",
+          "instruction": "A …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Library / children need help finding books",
+            "heading": "Read the situation"
+          },
+          "answerText": "A librarian helps children find books.",
+          "accepted": [
+            "The librarian helps children find books.",
+            "A librarian helps children find the books."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-say-1-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "helper-roles-say-2",
+          "prompt": "Who helps at the pool? Say what they do.",
+          "instruction": "A …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Pool / people need help in the water",
+            "heading": "Read the situation"
+          },
+          "answerText": "A lifeguard helps people at the pool.",
+          "accepted": [
+            "The lifeguard helps people at the pool.",
+            "A lifeguard helps people in the water."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-say-2-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "helper-roles-say-3",
+          "prompt": "Who leads the school? Use a full sentence.",
+          "instruction": "The …",
+          "scene": {
+            "kind": "word-card",
+            "text": "School / its leader",
+            "heading": "Read the situation"
+          },
+          "answerText": "The principal leads the school.",
+          "accepted": [
+            "A principal leads the school.",
+            "The principal is the school leader."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-helper-roles-say-3-q.mp3",
+            "answer": "audio/2026-09-29-helper-roles-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "classroom-rules",
+      "title": "Say what classroom rules allow",
+      "try": [
+        {
+          "id": "classroom-rules-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What can we do in this classroom?",
+          "instruction": "Build a full sentence. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Class rules / OK: clean up the classroom",
+            "heading": "Read the situation"
+          },
+          "answerText": "We can clean up the classroom.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w2",
+              "text": "clean"
+            },
+            {
+              "id": "w3",
+              "text": "up"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "classroom"
+            },
+            {
+              "id": "x0",
+              "text": "cannot"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ],
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w4",
+              "w5",
+              "w3"
+            ]
+          ],
+          "hint": "Choose the word for an action the rule allows.",
+          "explanation": "Can says an action is allowed. This rule allows cleaning up.",
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-try-1-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "classroom-rules-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "The rule changes. Change the sentence.",
+          "instruction": "Build a full sentence. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: We can play now. / New rule: No games now.",
+            "heading": "Before and now"
+          },
+          "answerText": "We cannot play now.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "cannot"
+            },
+            {
+              "id": "w2",
+              "text": "play"
+            },
+            {
+              "id": "w3",
+              "text": "now"
+            },
+            {
+              "id": "x0",
+              "text": "can"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ],
+            [
+              "w0",
+              "w3",
+              "w1",
+              "w2"
+            ],
+            [
+              "w0",
+              "w1",
+              "w3",
+              "w2"
+            ]
+          ],
+          "hint": "The new rule says no. Add the word that means not allowed.",
+          "explanation": "Cannot means the action is not allowed. Keep now because the rule is about this time.",
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-try-2-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "classroom-rules-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the sentence to match the rule.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Class rules / No fighting",
+            "heading": "Read the situation"
+          },
+          "answerText": "We cannot fight in the classroom.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "can"
+            },
+            {
+              "id": "w2",
+              "text": "fight"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "classroom."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "cannot"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          },
+          "hint": "The rule says no. Check the word before fight.",
+          "explanation": "Cannot matches a no-fighting rule. We cannot fight is a complete rule sentence.",
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-try-3-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "classroom-rules-say-1",
+          "prompt": "What can we do?",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Class rules / OK: clean up the classroom",
+            "heading": "Read the situation"
+          },
+          "answerText": "We can clean up the classroom.",
+          "accepted": [
+            "We can tidy up the classroom.",
+            "We can clean the classroom up."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-say-1-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "classroom-rules-say-2",
+          "prompt": "What does the rule say about fighting?",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Class rules / No fighting",
+            "heading": "Read the situation"
+          },
+          "answerText": "We cannot fight in the classroom.",
+          "accepted": [
+            "We can't fight in the classroom.",
+            "We cannot fight.",
+            "We can't fight."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-say-2-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "classroom-rules-say-3",
+          "prompt": "What can we do?",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Class rules / OK: help the teacher",
+            "heading": "Read the situation"
+          },
+          "answerText": "We can help the teacher.",
+          "accepted": [
+            "We can help our teacher."
+          ],
+          "audio": {
+            "question": "audio/2026-09-29-classroom-rules-say-3-q.mp3",
+            "answer": "audio/2026-09-29-classroom-rules-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1506 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-30",
+  "date": "2026-09-30",
+  "title": "Colors, murals, and invitations",
+  "concepts": [
+    {
+      "id": "noun-groups",
+      "title": "Name the noun group",
+      "try": [
+        {
+          "id": "noun-groups-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What kind of noun is teacher?",
+          "instruction": "Build a full sentence. Start with A teacher. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "teacher / person, place, or thing",
+            "heading": "Fact card"
+          },
+          "answerText": "A teacher is a person.",
+          "hint": "A teacher is someone who helps you learn.",
+          "explanation": "A teacher names a person.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "teacher"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "person"
+            },
+            {
+              "id": "x0",
+              "text": "place"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-try-1-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "noun-groups-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now talk about two books.",
+          "instruction": "Build a full sentence. Start with Books. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: A book is a thing. / Now: 2 books",
+            "heading": "Fact card"
+          },
+          "answerText": "Books are things.",
+          "hint": "Two books need plural words.",
+          "explanation": "Use are and things for more than one book.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Books"
+            },
+            {
+              "id": "w1",
+              "text": "are"
+            },
+            {
+              "id": "w2",
+              "text": "things"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-try-2-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "noun-groups-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the noun group.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "playground / where children play",
+            "heading": "Fact card"
+          },
+          "answerText": "A playground is a place.",
+          "hint": "A playground tells us where, not who.",
+          "explanation": "A playground names a place.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "A"
+            },
+            {
+              "id": "w1",
+              "text": "playground"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "person."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "thing."
+            },
+            {
+              "id": "c1",
+              "text": "place."
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-try-3-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "noun-groups-say-1",
+          "prompt": "What kind of noun is teacher?",
+          "instruction": "A teacher …",
+          "scene": {
+            "kind": "word-card",
+            "text": "teacher / person, place, or thing",
+            "heading": "Fact card"
+          },
+          "answerText": "A teacher is a person.",
+          "accepted": [
+            "A teacher is a noun that names a person.",
+            "A teacher is a person who helps us learn."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-say-1-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "noun-groups-say-2",
+          "prompt": "What kind of noun is fireworks?",
+          "instruction": "Fireworks …",
+          "scene": {
+            "kind": "word-card",
+            "text": "fireworks / person, place, or thing",
+            "heading": "Fact card"
+          },
+          "answerText": "Fireworks are things.",
+          "accepted": [
+            "Fireworks are nouns that name things."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-say-2-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "noun-groups-say-3",
+          "prompt": "What kind of noun is school?",
+          "instruction": "A school …",
+          "scene": {
+            "kind": "word-card",
+            "text": "school / person, place, or thing",
+            "heading": "Fact card"
+          },
+          "answerText": "A school is a place.",
+          "accepted": [
+            "A school is a place where people learn."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-noun-groups-say-3-q.mp3",
+            "answer": "audio/2026-09-30-noun-groups-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "friendly-invitations",
+      "title": "Invite a friend",
+      "try": [
+        {
+          "id": "friendly-invitations-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Invite your friend to paint.",
+          "instruction": "Build a full sentence. Start with Do you. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / paint together",
+            "heading": "Fact card"
+          },
+          "answerText": "Do you want to paint with me?",
+          "hint": "Make a question with Do you want to.",
+          "explanation": "Use Do you want to plus an activity to invite someone.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Do"
+            },
+            {
+              "id": "w1",
+              "text": "you"
+            },
+            {
+              "id": "w2",
+              "text": "want"
+            },
+            {
+              "id": "w3",
+              "text": "to"
+            },
+            {
+              "id": "w4",
+              "text": "paint"
+            },
+            {
+              "id": "w5",
+              "text": "with"
+            },
+            {
+              "id": "w6",
+              "text": "me"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-try-1-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "friendly-invitations-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Your friend agrees. Suggest coloring together.",
+          "instruction": "Build a full sentence. Start with Let's. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Do you want to color with me? / Friend: yes",
+            "heading": "Fact card"
+          },
+          "answerText": "Let's color together.",
+          "hint": "After Let's, use the activity word.",
+          "explanation": "Let's color together is a suggestion for you and your friend.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Let's"
+            },
+            {
+              "id": "w1",
+              "text": "color"
+            },
+            {
+              "id": "w2",
+              "text": "together"
+            },
+            {
+              "id": "x0",
+              "text": "colors"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-try-2-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "friendly-invitations-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the activity word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / paint together",
+            "heading": "Fact card"
+          },
+          "answerText": "Do you want to paint with me?",
+          "hint": "Use the short activity word after want to.",
+          "explanation": "Say want to paint, not want to painting.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Do"
+            },
+            {
+              "id": "w1",
+              "text": "you"
+            },
+            {
+              "id": "w2",
+              "text": "want"
+            },
+            {
+              "id": "w3",
+              "text": "to"
+            },
+            {
+              "id": "w4",
+              "text": "painting"
+            },
+            {
+              "id": "w5",
+              "text": "with"
+            },
+            {
+              "id": "w6",
+              "text": "me?"
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "paint"
+            },
+            {
+              "id": "c1",
+              "text": "paints"
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-try-3-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "friendly-invitations-say-1",
+          "prompt": "Invite your friend to draw.",
+          "instruction": "Do you …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / draw together",
+            "heading": "Fact card"
+          },
+          "answerText": "Do you want to draw with me?",
+          "accepted": [
+            "Do you want to draw together?"
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-say-1-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "friendly-invitations-say-2",
+          "prompt": "Your friend agrees. Make a suggestion.",
+          "instruction": "Let's …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Friend: yes / color together",
+            "heading": "Fact card"
+          },
+          "answerText": "Let's color together.",
+          "accepted": [
+            "Let's color."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-say-2-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "friendly-invitations-say-3",
+          "prompt": "Invite your friend to make a mural.",
+          "instruction": "Do you …",
+          "scene": {
+            "kind": "word-card",
+            "text": "You + a friend / make a mural",
+            "heading": "Fact card"
+          },
+          "answerText": "Do you want to make a mural with me?",
+          "accepted": [
+            "Do you want to make a mural together?"
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-friendly-invitations-say-3-q.mp3",
+            "answer": "audio/2026-09-30-friendly-invitations-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mural-descriptions",
+      "title": "Describe a mural",
+      "try": [
+        {
+          "id": "mural-descriptions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What does the mural show?",
+          "instruction": "Build a full sentence. Start with The mural. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Wall painting: 1 mural / a starfish",
+            "heading": "Fact card"
+          },
+          "answerText": "The mural shows a starfish.",
+          "hint": "One mural: use shows.",
+          "explanation": "A mural is a wall painting. One mural shows something.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "mural"
+            },
+            {
+              "id": "w2",
+              "text": "shows"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "starfish"
+            },
+            {
+              "id": "x0",
+              "text": "show"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-try-1-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "mural-descriptions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now there are two murals. Describe both.",
+          "instruction": "Build a full sentence. Start with The murals. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The mural shows a starfish. / Now: 2 murals, a starfish on each",
+            "heading": "Fact card"
+          },
+          "answerText": "The murals show starfish.",
+          "hint": "Two murals need show.",
+          "explanation": "Use murals show for more than one mural. Starfish can name more than one.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "murals"
+            },
+            {
+              "id": "w2",
+              "text": "show"
+            },
+            {
+              "id": "w3",
+              "text": "starfish"
+            },
+            {
+              "id": "x0",
+              "text": "shows"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-try-2-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "mural-descriptions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix one word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Wall painting: 1 mural / the ocean",
+            "heading": "Fact card"
+          },
+          "answerText": "The mural shows the ocean.",
+          "hint": "One mural: check the verb.",
+          "explanation": "Use shows with one mural.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "mural"
+            },
+            {
+              "id": "w2",
+              "text": "show"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "ocean."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "shows"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-try-3-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "mural-descriptions-say-1",
+          "prompt": "What does the mural show?",
+          "instruction": "The mural …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Wall painting: 1 mural / seaweed",
+            "heading": "Fact card"
+          },
+          "answerText": "The mural shows seaweed.",
+          "accepted": [
+            "The mural shows some seaweed."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-say-1-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "mural-descriptions-say-2",
+          "prompt": "What do the murals show?",
+          "instruction": "The murals …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Wall paintings: 2 murals / ocean on both",
+            "heading": "Fact card"
+          },
+          "answerText": "The murals show the ocean.",
+          "accepted": [
+            "The murals both show the ocean."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-say-2-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "mural-descriptions-say-3",
+          "prompt": "What does the mural show?",
+          "instruction": "The mural …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Wall painting: 1 mural / 2 jellyfish",
+            "heading": "Fact card"
+          },
+          "answerText": "The mural shows two jellyfish.",
+          "accepted": [
+            "The mural shows a pair of jellyfish."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mural-descriptions-say-3-q.mp3",
+            "answer": "audio/2026-09-30-mural-descriptions-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mixing-paints",
+      "title": "Mix two paints",
+      "try": [
+        {
+          "id": "mixing-paints-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell how we make green paint.",
+          "instruction": "Build a full sentence. Start with We. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Paint card: blue + yellow = green; red + yellow = orange; red + blue = purple",
+            "heading": "Fact card"
+          },
+          "answerText": "We mix blue and yellow to make green.",
+          "hint": "Find the two paints beside green.",
+          "explanation": "On this paint card, blue and yellow make green.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "mix"
+            },
+            {
+              "id": "w2",
+              "text": "blue"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "yellow"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w6",
+              "text": "make"
+            },
+            {
+              "id": "w7",
+              "text": "green"
+            },
+            {
+              "id": "x0",
+              "text": "purple"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w3",
+              "w2",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-try-1-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "mixing-paints-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe Ava. She makes orange paint.",
+          "instruction": "Build a full sentence. Start with She. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: We mix blue and yellow to make green. / Now: Ava / red + yellow = orange",
+            "heading": "Fact card"
+          },
+          "answerText": "She mixes red and yellow to make orange.",
+          "hint": "With She, use mixes.",
+          "explanation": "Use She mixes. On this card, red and yellow make orange.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "She"
+            },
+            {
+              "id": "w1",
+              "text": "mixes"
+            },
+            {
+              "id": "w2",
+              "text": "red"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "yellow"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w6",
+              "text": "make"
+            },
+            {
+              "id": "w7",
+              "text": "orange"
+            },
+            {
+              "id": "x0",
+              "text": "mix"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w1",
+              "w4",
+              "w3",
+              "w2",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-try-2-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "mixing-paints-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the paint result.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Paint card: blue + yellow = green; red + yellow = orange; red + blue = purple",
+            "heading": "Fact card"
+          },
+          "answerText": "We mix red and blue to make purple.",
+          "hint": "Find red plus blue on the paint card.",
+          "explanation": "On this paint card, red and blue make purple.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "We"
+            },
+            {
+              "id": "w1",
+              "text": "mix"
+            },
+            {
+              "id": "w2",
+              "text": "red"
+            },
+            {
+              "id": "w3",
+              "text": "and"
+            },
+            {
+              "id": "w4",
+              "text": "blue"
+            },
+            {
+              "id": "w5",
+              "text": "to"
+            },
+            {
+              "id": "w6",
+              "text": "make"
+            },
+            {
+              "id": "w7",
+              "text": "green."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "purple."
+            },
+            {
+              "id": "c1",
+              "text": "orange."
+            }
+          ],
+          "answer": {
+            "wordId": "w7",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-try-3-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "mixing-paints-say-1",
+          "prompt": "Tell how you make orange paint.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Paint card: blue + yellow = green; red + yellow = orange; red + blue = purple",
+            "heading": "Fact card"
+          },
+          "answerText": "I mix red and yellow to make orange.",
+          "accepted": [
+            "I mix yellow and red to make orange.",
+            "I make orange by mixing red and yellow."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-say-1-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "mixing-paints-say-2",
+          "prompt": "Tell how we make green paint.",
+          "instruction": "We …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Paint card: blue + yellow = green; red + yellow = orange; red + blue = purple",
+            "heading": "Fact card"
+          },
+          "answerText": "We mix blue and yellow to make green.",
+          "accepted": [
+            "We mix yellow and blue to make green.",
+            "We make green by mixing blue and yellow."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-say-2-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "mixing-paints-say-3",
+          "prompt": "Tell how you make purple paint.",
+          "instruction": "I …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Paint card: blue + yellow = green; red + yellow = orange; red + blue = purple",
+            "heading": "Fact card"
+          },
+          "answerText": "I mix red and blue to make purple.",
+          "accepted": [
+            "I mix blue and red to make purple.",
+            "I make purple by mixing red and blue."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-mixing-paints-say-3-q.mp3",
+            "answer": "audio/2026-09-30-mixing-paints-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "predicting-topics",
+      "title": "Predict the topic",
+      "try": [
+        {
+          "id": "predicting-topics-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do you think the text is about?",
+          "instruction": "Build a full sentence. Start with I think the text. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Title: Busy Birds / First words: wings and nests",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about birds.",
+          "hint": "Use both the title and the first words.",
+          "explanation": "Wings and nests support a prediction about birds.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "text"
+            },
+            {
+              "id": "w4",
+              "text": "is"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "birds"
+            },
+            {
+              "id": "x0",
+              "text": "fruit"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-try-1-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "predicting-topics-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Predict the topic of the new text.",
+          "instruction": "Build a full sentence. Start with I think the text. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Busy Birds / Now: Orange All Around / orange walls and hats",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about a color.",
+          "hint": "Think about what orange tells us about the walls and hats.",
+          "explanation": "Here, orange describes a color. The clues are walls and hats, not fruit.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "text"
+            },
+            {
+              "id": "w4",
+              "text": "is"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "a"
+            },
+            {
+              "id": "w7",
+              "text": "color"
+            },
+            {
+              "id": "x0",
+              "text": "fruit"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-try-2-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "predicting-topics-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the topic.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Title: Busy Birds / First words: wings and nests",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about birds.",
+          "hint": "Wings and nests belong with which topic?",
+          "explanation": "The title and first words support birds as the topic.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "think"
+            },
+            {
+              "id": "w2",
+              "text": "the"
+            },
+            {
+              "id": "w3",
+              "text": "text"
+            },
+            {
+              "id": "w4",
+              "text": "is"
+            },
+            {
+              "id": "w5",
+              "text": "about"
+            },
+            {
+              "id": "w6",
+              "text": "books."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "paints."
+            },
+            {
+              "id": "c1",
+              "text": "birds."
+            }
+          ],
+          "answer": {
+            "wordId": "w6",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-try-3-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "predicting-topics-say-1",
+          "prompt": "What do you think the text is about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Title: Life Under Water / First words: jellyfish and starfish",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about ocean animals.",
+          "accepted": [
+            "I think it is about animals in the ocean.",
+            "I think the text is about sea animals."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-say-1-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "predicting-topics-say-2",
+          "prompt": "What do you think the text is about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Title: Purple in the Park / First words: purple flowers and shirts",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about the color purple.",
+          "accepted": [
+            "I think it is about purple things.",
+            "I think the text is about a color."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-say-2-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "predicting-topics-say-3",
+          "prompt": "What do you think the text is about?",
+          "instruction": "I think …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Title: All About Wall Art / First words: large paintings on walls",
+            "heading": "Fact card"
+          },
+          "answerText": "I think the text is about murals.",
+          "accepted": [
+            "I think it is about wall paintings.",
+            "I think the text is about paintings on walls."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-predicting-topics-say-3-q.mp3",
+            "answer": "audio/2026-09-30-predicting-topics-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparing-colors",
+      "title": "Compare the colors",
+      "try": [
+        {
+          "id": "comparing-colors-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Compare the two colors.",
+          "instruction": "Build a full sentence. Start with The ball. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ball: red / Kite: red",
+            "heading": "Fact card"
+          },
+          "answerText": "The ball and the kite are the same color.",
+          "hint": "Both are red. Use the same color.",
+          "explanation": "Two red things have the same color.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "ball"
+            },
+            {
+              "id": "w2",
+              "text": "and"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "kite"
+            },
+            {
+              "id": "w5",
+              "text": "are"
+            },
+            {
+              "id": "w6",
+              "text": "the"
+            },
+            {
+              "id": "w7",
+              "text": "same"
+            },
+            {
+              "id": "w8",
+              "text": "color"
+            },
+            {
+              "id": "x0",
+              "text": "different"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8"
+            ],
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w6",
+              "w4",
+              "w5",
+              "w3",
+              "w7",
+              "w8"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-try-1-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "comparing-colors-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now the kite is blue. Compare the colors.",
+          "instruction": "Build a full sentence. Start with The ball. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: ball red, kite red / Now: ball red, kite blue",
+            "heading": "Fact card"
+          },
+          "answerText": "The ball and the kite are different colors.",
+          "hint": "Red and blue do not match.",
+          "explanation": "Red and blue are different colors.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "ball"
+            },
+            {
+              "id": "w2",
+              "text": "and"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "kite"
+            },
+            {
+              "id": "w5",
+              "text": "are"
+            },
+            {
+              "id": "w6",
+              "text": "different"
+            },
+            {
+              "id": "w7",
+              "text": "colors"
+            },
+            {
+              "id": "x0",
+              "text": "same"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-try-2-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "comparing-colors-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix one word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Hat 1: pink / Hat 2: pink",
+            "heading": "Fact card"
+          },
+          "answerText": "The hats are the same color.",
+          "hint": "There are two hats. Check is or are.",
+          "explanation": "Use are for more than one hat.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "hats"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "the"
+            },
+            {
+              "id": "w4",
+              "text": "same"
+            },
+            {
+              "id": "w5",
+              "text": "color."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "are"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-try-3-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "comparing-colors-say-1",
+          "prompt": "Compare the ball and the kite.",
+          "instruction": "The ball and the kite …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ball: red / Kite: red",
+            "heading": "Fact card"
+          },
+          "answerText": "The ball and the kite are the same color.",
+          "accepted": [
+            "The ball and the kite are both red.",
+            "The ball and the kite have the same color."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-say-1-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "comparing-colors-say-2",
+          "prompt": "Compare the ball and the kite.",
+          "instruction": "The ball and the kite …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Ball: red / Kite: blue",
+            "heading": "Fact card"
+          },
+          "answerText": "The ball and the kite are different colors.",
+          "accepted": [
+            "The ball and the kite are not the same color.",
+            "The ball and the kite have different colors."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-say-2-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "comparing-colors-say-3",
+          "prompt": "Compare the two shells.",
+          "instruction": "The shells …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Shell 1: gray / Shell 2: gray",
+            "heading": "Fact card"
+          },
+          "answerText": "The shells are the same color.",
+          "accepted": [
+            "The shells are both gray.",
+            "The shells have the same color."
+          ],
+          "audio": {
+            "question": "audio/2026-09-30-comparing-colors-say-3-q.mp3",
+            "answer": "audio/2026-09-30-comparing-colors-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

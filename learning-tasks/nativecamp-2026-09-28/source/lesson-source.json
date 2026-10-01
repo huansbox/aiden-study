@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-28",
+  "date": "2026-09-28",
+  "title": "Animal groups and body parts",
+  "concepts": [
+    {
+      "id": "animal-groups",
+      "title": "Name the animal group",
+      "try": [
+        {
+          "id": "animal-groups-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What group is the cat in?",
+          "instruction": "Start with The cat. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "cat: mammal / frog: amphibian"
+          },
+          "answerText": "The cat is a mammal.",
+          "spokenQuestion": "Use the fact card. What animal group is the cat in?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "cat"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "mammal"
+            },
+            {
+              "id": "x0",
+              "text": "skin"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "A group is a kind of animal. Skin is a body covering.",
+          "explanation": "Mammal is a group name. Skin is not a group name."
+        },
+        {
+          "id": "animal-groups-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now a frog. Is it a mammal?",
+          "instruction": "Start with The frog. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: a cat / Now: a frog / frog: amphibian"
+          },
+          "answerText": "The frog is not a mammal.",
+          "spokenQuestion": "Now look at a frog instead of a cat. Is it a mammal? Make a sentence starting with The frog.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "frog"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "not"
+            },
+            {
+              "id": "w4",
+              "text": "a"
+            },
+            {
+              "id": "w5",
+              "text": "mammal"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "The animal changed. Check its group before answering.",
+          "explanation": "A frog is an amphibian, so the mammal claim does not fit."
+        },
+        {
+          "id": "animal-groups-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the group.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "orangutans: mammals / frogs: amphibians"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "Frogs"
+            },
+            {
+              "id": "s1",
+              "text": "are"
+            },
+            {
+              "id": "s2",
+              "text": "mammals."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "birds."
+            },
+            {
+              "id": "c1",
+              "text": "amphibians."
+            }
+          ],
+          "answer": {
+            "wordId": "s2",
+            "choiceId": "c1"
+          },
+          "answerText": "Frogs are amphibians.",
+          "spokenQuestion": "Use the card to find and fix one wrong group word.",
+          "hint": "Check the frog row. Change the group word.",
+          "explanation": "Amphibian names the frog group."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-groups-say-1",
+          "prompt": "What group is the elephant in?",
+          "instruction": "The elephant …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "elephant: mammal"
+          },
+          "answerText": "The elephant is a mammal.",
+          "accepted": [
+            "The elephant is a mammal.",
+            "It is a mammal.",
+            "An elephant is a mammal."
+          ],
+          "spokenQuestion": "Use the fact card. What group is the elephant in? Say a full sentence."
+        },
+        {
+          "id": "animal-groups-say-2",
+          "prompt": "Is the frog a mammal?",
+          "instruction": "The frog …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "frog: amphibian"
+          },
+          "answerText": "The frog is not a mammal.",
+          "accepted": [
+            "The frog is not a mammal.",
+            "No, it is not a mammal.",
+            "The frog is an amphibian.",
+            "No, the frog is an amphibian."
+          ],
+          "spokenQuestion": "Use the fact card. Is the frog a mammal? Say a full sentence."
+        },
+        {
+          "id": "animal-groups-say-3",
+          "prompt": "What group are the orangutans in?",
+          "instruction": "The orangutans …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "orangutans: mammals"
+          },
+          "answerText": "The orangutans are mammals.",
+          "accepted": [
+            "The orangutans are mammals.",
+            "They are mammals.",
+            "Orangutans are mammals."
+          ],
+          "spokenQuestion": "Use the fact card. What group are the orangutans in? Say a full sentence."
+        }
+      ]
+    },
+    {
+      "id": "animal-coverings",
+      "title": "What covers the body?",
+      "try": [
+        {
+          "id": "animal-coverings-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What covers the birds?",
+          "instruction": "Start with Birds. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "birds: feathers / cats: fur"
+          },
+          "answerText": "Birds have feathers.",
+          "spokenQuestion": "Use the fact card. What covers the birds?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Birds"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "feathers"
+            },
+            {
+              "id": "x0",
+              "text": "fur"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "hint": "Look for the bird row, not the cat row.",
+          "explanation": "Feathers cover birds. Fur covers cats."
+        },
+        {
+          "id": "animal-coverings-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now one lizard. Describe its covering.",
+          "instruction": "Start with This lizard. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: birds / Now: 1 lizard / lizard: scales"
+          },
+          "answerText": "This lizard has scales.",
+          "spokenQuestion": "Now describe one lizard instead of the birds. Use the card for its body covering.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "lizard"
+            },
+            {
+              "id": "w2",
+              "text": "has"
+            },
+            {
+              "id": "w3",
+              "text": "scales"
+            },
+            {
+              "id": "x0",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "hint": "One lizard needs has. Check its covering too.",
+          "explanation": "One lizard has scales. Both the animal and the number changed."
+        },
+        {
+          "id": "animal-coverings-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the covering.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "cat: fur / bird: feathers"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "The"
+            },
+            {
+              "id": "s1",
+              "text": "cat"
+            },
+            {
+              "id": "s2",
+              "text": "has"
+            },
+            {
+              "id": "s3",
+              "text": "feathers."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "fur."
+            },
+            {
+              "id": "c1",
+              "text": "eggs."
+            }
+          ],
+          "answer": {
+            "wordId": "s3",
+            "choiceId": "c0"
+          },
+          "answerText": "The cat has fur.",
+          "spokenQuestion": "Use the card to fix one body-covering word.",
+          "hint": "Choose what covers the cat, not what an animal lays.",
+          "explanation": "Fur is a body covering. Eggs are not."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-coverings-say-1",
+          "prompt": "What covers the bird?",
+          "instruction": "The bird …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "bird: feathers"
+          },
+          "answerText": "The bird has feathers.",
+          "accepted": [
+            "The bird has feathers.",
+            "It has feathers.",
+            "Feathers cover the bird."
+          ],
+          "spokenQuestion": "Use the card. What covers the bird? Say a full sentence."
+        },
+        {
+          "id": "animal-coverings-say-2",
+          "prompt": "What covers the two cats?",
+          "instruction": "The cats …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "2 cats / body covering: fur"
+          },
+          "answerText": "The cats have fur.",
+          "accepted": [
+            "The cats have fur.",
+            "They have fur.",
+            "The two cats have fur.",
+            "Fur covers the cats."
+          ],
+          "spokenQuestion": "Use the card. What covers the two cats? Say a full sentence."
+        },
+        {
+          "id": "animal-coverings-say-3",
+          "prompt": "What covers the lizard?",
+          "instruction": "The lizard …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "lizard: scales"
+          },
+          "answerText": "The lizard has scales.",
+          "accepted": [
+            "The lizard has scales.",
+            "It has scales.",
+            "Scales cover the lizard."
+          ],
+          "spokenQuestion": "Use the card. What covers the lizard? Say a full sentence."
+        }
+      ]
+    },
+    {
+      "id": "animal-wings",
+      "title": "Wings or no wings?",
+      "try": [
+        {
+          "id": "animal-wings-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do the birds have?",
+          "instruction": "Start with Birds. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "bird: 2 wings / orangutan: no wings"
+          },
+          "answerText": "Birds have two wings.",
+          "spokenQuestion": "Use the card. Tell the body part and its number for birds.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Birds"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "two"
+            },
+            {
+              "id": "w3",
+              "text": "wings"
+            },
+            {
+              "id": "x0",
+              "text": "fur"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "hint": "Tell the body part and its number.",
+          "explanation": "Wings are body parts. Fur is a covering."
+        },
+        {
+          "id": "animal-wings-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now orangutans. Do they have wings?",
+          "instruction": "Start with Orangutans. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: birds / Now: orangutans / orangutans: no wings"
+          },
+          "answerText": "Orangutans do not have wings.",
+          "spokenQuestion": "Now think about orangutans instead of birds. Do they have wings? Make a full sentence.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Orangutans"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "have"
+            },
+            {
+              "id": "w4",
+              "text": "wings"
+            },
+            {
+              "id": "x0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "The new animals do not have this body part.",
+          "explanation": "Use do not have for this group of animals."
+        },
+        {
+          "id": "animal-wings-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the body part.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "bird: 2 wings / fish: gills"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "The"
+            },
+            {
+              "id": "s1",
+              "text": "bird"
+            },
+            {
+              "id": "s2",
+              "text": "has"
+            },
+            {
+              "id": "s3",
+              "text": "two"
+            },
+            {
+              "id": "s4",
+              "text": "gills."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "eggs."
+            },
+            {
+              "id": "c1",
+              "text": "wings."
+            }
+          ],
+          "answer": {
+            "wordId": "s4",
+            "choiceId": "c1"
+          },
+          "answerText": "The bird has two wings.",
+          "spokenQuestion": "Use the card to fix one body-part word.",
+          "hint": "Use the bird row. Find the body part.",
+          "explanation": "The bird has wings. Gills are the breathing parts on the fish card."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-wings-say-1",
+          "prompt": "What does the bird have?",
+          "instruction": "The bird …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "1 bird / 2 wings"
+          },
+          "answerText": "The bird has two wings.",
+          "accepted": [
+            "The bird has two wings.",
+            "It has two wings.",
+            "A bird has two wings."
+          ],
+          "spokenQuestion": "Use the card. What does the bird have? Include the number."
+        },
+        {
+          "id": "animal-wings-say-2",
+          "prompt": "Do orangutans have wings?",
+          "instruction": "Orangutans …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "orangutans: no wings"
+          },
+          "answerText": "Orangutans do not have wings.",
+          "accepted": [
+            "Orangutans do not have wings.",
+            "Orangutans don't have wings.",
+            "No, they do not have wings.",
+            "They don't have wings."
+          ],
+          "spokenQuestion": "Use the card. Do orangutans have wings? Answer with a full sentence."
+        },
+        {
+          "id": "animal-wings-say-3",
+          "prompt": "Do these birds have wings?",
+          "instruction": "These birds …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "these birds: wings"
+          },
+          "answerText": "These birds have wings.",
+          "accepted": [
+            "These birds have wings.",
+            "Yes, these birds have wings.",
+            "They have wings.",
+            "The birds have wings."
+          ],
+          "spokenQuestion": "Use the card. Do these birds have wings? Say a full sentence."
+        }
+      ]
+    },
+    {
+      "id": "animal-eggs",
+      "title": "Which animals lay eggs?",
+      "try": [
+        {
+          "id": "animal-eggs-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do chickens lay?",
+          "instruction": "Start with Chickens. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "chickens: eggs / cats: live babies"
+          },
+          "answerText": "Chickens lay eggs.",
+          "spokenQuestion": "Use the card. What do chickens lay? Say what they do.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Chickens"
+            },
+            {
+              "id": "w1",
+              "text": "lay"
+            },
+            {
+              "id": "w2",
+              "text": "eggs"
+            },
+            {
+              "id": "x0",
+              "text": "fur"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2"
+            ]
+          ],
+          "hint": "Look for what chickens lay, not their covering.",
+          "explanation": "Eggs are different from body coverings."
+        },
+        {
+          "id": "animal-eggs-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now cats. Correct the egg claim.",
+          "instruction": "Start with Cats. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: Chickens lay eggs. / Now: cats / cats: live babies"
+          },
+          "answerText": "Cats do not lay eggs.",
+          "spokenQuestion": "Now talk about cats instead of chickens. Correct the egg claim using the card.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Cats"
+            },
+            {
+              "id": "w1",
+              "text": "do"
+            },
+            {
+              "id": "w2",
+              "text": "not"
+            },
+            {
+              "id": "w3",
+              "text": "lay"
+            },
+            {
+              "id": "w4",
+              "text": "eggs"
+            },
+            {
+              "id": "x0",
+              "text": "lays"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "hint": "The new animals have live babies. Make the sentence negative.",
+          "explanation": "This card is about cats. It does not make a rule about every mammal."
+        },
+        {
+          "id": "animal-eggs-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix what chickens lay.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "chickens: eggs / body covering: feathers"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "Chickens"
+            },
+            {
+              "id": "s1",
+              "text": "lay"
+            },
+            {
+              "id": "s2",
+              "text": "feathers."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "eggs."
+            },
+            {
+              "id": "c1",
+              "text": "fur."
+            }
+          ],
+          "answer": {
+            "wordId": "s2",
+            "choiceId": "c0"
+          },
+          "answerText": "Chickens lay eggs.",
+          "spokenQuestion": "Use the card. Fix one word about what chickens lay.",
+          "hint": "One word names what chickens lay. Another names their covering.",
+          "explanation": "Chickens lay eggs and have feathers. These are different facts."
+        }
+      ],
+      "say": [
+        {
+          "id": "animal-eggs-say-1",
+          "prompt": "What do chickens lay?",
+          "instruction": "Chickens …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "chickens: eggs"
+          },
+          "answerText": "Chickens lay eggs.",
+          "accepted": [
+            "Chickens lay eggs.",
+            "They lay eggs."
+          ],
+          "spokenQuestion": "Use the card. What do chickens lay? Say a full sentence."
+        },
+        {
+          "id": "animal-eggs-say-2",
+          "prompt": "Do cats lay eggs?",
+          "instruction": "Cats …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "cats: live babies"
+          },
+          "answerText": "Cats do not lay eggs.",
+          "accepted": [
+            "Cats do not lay eggs.",
+            "Cats don't lay eggs.",
+            "No, cats do not lay eggs.",
+            "No, they have live babies."
+          ],
+          "spokenQuestion": "Use the card. Do cats lay eggs? Say a full sentence."
+        },
+        {
+          "id": "animal-eggs-say-3",
+          "prompt": "What do these birds lay?",
+          "instruction": "These birds …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "birds: eggs / body covering: feathers"
+          },
+          "answerText": "These birds lay eggs.",
+          "accepted": [
+            "These birds lay eggs.",
+            "They lay eggs.",
+            "The birds lay eggs."
+          ],
+          "spokenQuestion": "Use the card. What do these birds lay? Say a full sentence."
+        }
+      ]
+    },
+    {
+      "id": "gills-breathing",
+      "title": "What are gills for?",
+      "try": [
+        {
+          "id": "gills-breathing-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What do gills help fish do?",
+          "instruction": "Start with Gills. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "gills: help with breathing / wings: help with flying"
+          },
+          "answerText": "Gills help fish breathe.",
+          "spokenQuestion": "Use the fact card. What do gills help fish do?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Gills"
+            },
+            {
+              "id": "w1",
+              "text": "help"
+            },
+            {
+              "id": "w2",
+              "text": "fish"
+            },
+            {
+              "id": "w3",
+              "text": "breathe"
+            },
+            {
+              "id": "x0",
+              "text": "fly"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "hint": "Ask what fish need to do under water.",
+          "explanation": "Gills help fish breathe in water."
+        },
+        {
+          "id": "gills-breathing-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Only fish? Add the crab fact.",
+          "instruction": "Start with Crabs. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Old claim: Only fish have gills. / crabs: gills"
+          },
+          "answerText": "Crabs have gills too.",
+          "spokenQuestion": "The old claim says only fish have gills. Use the crab fact to add another animal. End with too.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Crabs"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "gills"
+            },
+            {
+              "id": "w3",
+              "text": "too"
+            },
+            {
+              "id": "x0",
+              "text": "wings"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "hint": "More than one kind of animal can have gills. Add the new fact.",
+          "explanation": "Crabs have gills as well as fish, so the old claim is too narrow."
+        },
+        {
+          "id": "gills-breathing-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix what gills help fish do.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "gills: help with breathing"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "Gills"
+            },
+            {
+              "id": "s1",
+              "text": "help"
+            },
+            {
+              "id": "s2",
+              "text": "fish"
+            },
+            {
+              "id": "s3",
+              "text": "fly."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "breathe."
+            },
+            {
+              "id": "c1",
+              "text": "paint."
+            }
+          ],
+          "answer": {
+            "wordId": "s3",
+            "choiceId": "c0"
+          },
+          "answerText": "Gills help fish breathe.",
+          "spokenQuestion": "Use the card to fix one action word.",
+          "hint": "Choose what gills help an animal do in water.",
+          "explanation": "Breathing is the job of gills."
+        }
+      ],
+      "say": [
+        {
+          "id": "gills-breathing-say-1",
+          "prompt": "What do gills help fish do?",
+          "instruction": "Gills …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "gills: help with breathing"
+          },
+          "answerText": "Gills help fish breathe.",
+          "accepted": [
+            "Gills help fish breathe.",
+            "Fish use gills to breathe.",
+            "Gills help fish breathe in water."
+          ],
+          "spokenQuestion": "Use the fact card. What do gills help fish do? Say a full sentence."
+        },
+        {
+          "id": "gills-breathing-say-2",
+          "prompt": "Do only fish have gills? Name another animal.",
+          "instruction": "Crabs …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "fish: gills / crabs: gills"
+          },
+          "answerText": "Crabs have gills too.",
+          "accepted": [
+            "Crabs have gills too.",
+            "Crabs also have gills.",
+            "No, crabs have gills too.",
+            "Fish and crabs have gills."
+          ],
+          "spokenQuestion": "Use the two facts. Do only fish have gills? Name another animal in a full sentence."
+        },
+        {
+          "id": "gills-breathing-say-3",
+          "prompt": "What helps these baby frogs breathe?",
+          "instruction": "These baby frogs …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "these baby frogs: gills"
+          },
+          "answerText": "These baby frogs use gills to breathe.",
+          "accepted": [
+            "These baby frogs use gills to breathe.",
+            "Gills help these baby frogs breathe.",
+            "These baby frogs breathe with gills."
+          ],
+          "spokenQuestion": "Use the fact card. What helps these baby frogs breathe? Say a full sentence."
+        }
+      ]
+    },
+    {
+      "id": "frog-habitats",
+      "title": "Water and land",
+      "try": [
+        {
+          "id": "frog-habitats-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Where can this frog live?",
+          "instruction": "Start with This frog. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "this frog / place: water"
+          },
+          "answerText": "This frog can live in water.",
+          "spokenQuestion": "Use the fact card. Where can this frog live?",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "frog"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "live"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "water"
+            },
+            {
+              "id": "x0",
+              "text": "on"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "hint": "Use in for water. Keep the whole sentence.",
+          "explanation": "The card gives one place this frog can live."
+        },
+        {
+          "id": "frog-habitats-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Where else can it live? End with too.",
+          "instruction": "Start with This frog. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: water / Another place: land"
+          },
+          "answerText": "This frog can live on land too.",
+          "spokenQuestion": "The frog can live in water. The new card adds another place. Where else can it live? End with too.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "frog"
+            },
+            {
+              "id": "w2",
+              "text": "can"
+            },
+            {
+              "id": "w3",
+              "text": "live"
+            },
+            {
+              "id": "w4",
+              "text": "on"
+            },
+            {
+              "id": "w5",
+              "text": "land"
+            },
+            {
+              "id": "w6",
+              "text": "too"
+            },
+            {
+              "id": "x0",
+              "text": "in"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "hint": "Use on for land. Add the second place.",
+          "explanation": "Too adds another place; it does not remove the first place."
+        },
+        {
+          "id": "frog-habitats-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix one place word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "frog / place: land"
+          },
+          "sentence": [
+            {
+              "id": "s0",
+              "text": "The"
+            },
+            {
+              "id": "s1",
+              "text": "frog"
+            },
+            {
+              "id": "s2",
+              "text": "can"
+            },
+            {
+              "id": "s3",
+              "text": "live"
+            },
+            {
+              "id": "s4",
+              "text": "in"
+            },
+            {
+              "id": "s5",
+              "text": "land."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "on"
+            },
+            {
+              "id": "c1",
+              "text": "under"
+            }
+          ],
+          "answer": {
+            "wordId": "s4",
+            "choiceId": "c0"
+          },
+          "answerText": "The frog can live on land.",
+          "spokenQuestion": "Use the fact card. Find and fix the small word before the place.",
+          "hint": "Check the small word before land.",
+          "explanation": "Use on land and in water."
+        }
+      ],
+      "say": [
+        {
+          "id": "frog-habitats-say-1",
+          "prompt": "Where can this frog live?",
+          "instruction": "This frog …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "this frog / place: water"
+          },
+          "answerText": "This frog can live in water.",
+          "accepted": [
+            "This frog can live in water.",
+            "It can live in water.",
+            "The frog can live in water."
+          ],
+          "spokenQuestion": "Use the card. Where can this frog live? Say a full sentence."
+        },
+        {
+          "id": "frog-habitats-say-2",
+          "prompt": "Where else can this frog live?",
+          "instruction": "This frog …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "Before: water / Another place: land"
+          },
+          "answerText": "This frog can live on land too.",
+          "accepted": [
+            "This frog can live on land too.",
+            "It can also live on land.",
+            "This frog can also live on land.",
+            "It can live on land too."
+          ],
+          "spokenQuestion": "The first place was water. Use the new card to say where else this frog can live."
+        },
+        {
+          "id": "frog-habitats-say-3",
+          "prompt": "Where can this frog live?",
+          "instruction": "This frog …",
+          "scene": {
+            "kind": "word-card",
+            "heading": "Animal facts",
+            "text": "this frog / place: land"
+          },
+          "answerText": "This frog can live on land.",
+          "accepted": [
+            "This frog can live on land.",
+            "It can live on land.",
+            "The frog can live on land."
+          ],
+          "spokenQuestion": "Use the card. Where can this frog live? Say a full sentence."
+        }
+      ]
+    }
+  ]
+}

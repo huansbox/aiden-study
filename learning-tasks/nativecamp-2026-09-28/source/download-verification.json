@@ -1,0 +1,43 @@
+{
+  "lessonId": "2026-09-28",
+  "audioUploaded": false,
+  "humanListening": false,
+  "files": [
+    {
+      "track": 1,
+      "relativeFile": "../assets/audio/2026-09-28-track-1.webm",
+      "bytes": 7752399,
+      "sha256": "840dabd70dba58d88aef7e3d55bf3e8fce334c2e33c72123bd820c9a9cb9433b",
+      "durationSeconds": 1064.543,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "track": 2,
+      "relativeFile": "../assets/audio/2026-09-28-track-2.webm",
+      "bytes": 15128,
+      "sha256": "9073f18b43273c0d916411abe404226b3bdb598aad3b8daec09fce4503a0b1fe",
+      "durationSeconds": 1.76,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    },
+    {
+      "track": 3,
+      "relativeFile": "../assets/audio/2026-09-28-track-3.webm",
+      "bytes": 3036819,
+      "sha256": "96a3fd525b29d8b5d293e0a2e93940fd8abfedbbacea3289af53547d3062e5ba",
+      "durationSeconds": 417.075,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ]
+}

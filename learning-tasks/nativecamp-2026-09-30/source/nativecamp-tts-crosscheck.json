@@ -1,0 +1,54 @@
+{
+  "lessonId": "2026-09-30",
+  "engine": "faster-whisper 1.2.1",
+  "model": "large-v2",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "samples": [
+    {
+      "file": "audio/2026-09-30-friendly-invitations-say-2-q.mp3",
+      "sha256": "c5dd2c7bca9b933f5813322c5e7dbab5821e1773e60c607f690ae87d1a07a824",
+      "expectedText": "Your friend agrees to color with you. Suggest the activity in a full sentence. Start with Let's.",
+      "recognizedText": "your friend agrees to color with you. Suggest the activity in a full sentence. Start with let's.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-1-q.mp3",
+      "sha256": "460494dfafa9a51aaad6bd5f77c5317ec677d79b5671ed24e968c499b828379a",
+      "expectedText": "One wall painting has seaweed in it. What does the mural show? Use a full sentence. Start with The mural.",
+      "recognizedText": "One wall painting has seaweed in it. What does the mural show? Use a full sentence. Start with the mural.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mural-descriptions-say-3-q.mp3",
+      "sha256": "221d40b226c8e821f24d2932cfb0ea90d99f6821d0dde2a46f71ee7a13055a68",
+      "expectedText": "One mural has two jellyfish in it. Tell what the mural shows, including the number. Start with The mural.",
+      "recognizedText": "One mural has two jellyfish in it. Tell what the mural shows, including the number. Start with the mural.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-mixing-paints-try-2-q.mp3",
+      "sha256": "1fce3ee296a806e34fc730966c5bca198dd932d038059e28b1af9af2665448c0",
+      "expectedText": "Before, we made green paint. Now Ava makes orange with red and yellow. Describe Ava. Start with She.",
+      "recognizedText": "Before, we made green paint. Now Ava makes orange with red and yellow. Describe Ava. Start with she.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-1-q.mp3",
+      "sha256": "df3353c51d4c2e7dcd4daaa7a081f4328dd3c84dd7c6451c908183f1dc95163d",
+      "expectedText": "The title is Life Under Water. The first words are jellyfish and starfish. Predict the topic. Start with I think.",
+      "recognizedText": "The title is Life Under Water. The first words are jellyfish and starfish. Predict the topic. Start with I think.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-09-30-predicting-topics-say-2-q.mp3",
+      "sha256": "3f122f901183c0f0df9324915dabc8c631fc5c1f23368babedc9890651f5cb73",
+      "expectedText": "The title is Purple in the Park. It begins with purple flowers and shirts. Predict the topic. Start with I think.",
+      "recognizedText": "The title is Purple in the Park. It begins with purple flowers and shirts. Predict the topic. Start with, I think.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}
