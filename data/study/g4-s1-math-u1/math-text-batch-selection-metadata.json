@@ -3,7 +3,7 @@
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/148",
   "sourceTask": "learning-tasks/grade4-sem1-math-exam1",
   "countUnit": "complete_activity",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "baseline": {
     "revision": 8,
     "packCount": 97,
@@ -37,7 +37,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-anh114-I-03-v1",
@@ -51,7 +51,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-c-anho-112-final-III-4-v1",
@@ -65,7 +65,7 @@
       "answerSlots": 1,
       "sourceGroup": "C",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-c-tyk-112-midterm-I-4-v1",
@@ -79,7 +79,7 @@
       "answerSlots": 1,
       "sourceGroup": "C",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-c-tyk-114-midterm-II-6-v1",
@@ -93,7 +93,7 @@
       "answerSlots": 1,
       "sourceGroup": "C",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-mq114-II-04-v1",
@@ -107,7 +107,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_solved_twice_no_official_answer",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-tyk113-I-01-v1",
@@ -121,7 +121,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     }
   ]
 }

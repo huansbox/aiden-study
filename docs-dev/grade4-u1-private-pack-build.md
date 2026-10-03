@@ -1,8 +1,10 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-[#134 自然第四批](grade4-science-study-fourth-batch.md)三個核准 activity、5 個原卷作答格已隨 revision 8 正式發布：全包 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；以此 rev8 計算尚餘 131,896 bytes。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。本次不重建或重新發布題包，revision、內容與孩子進度均不變。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
+[#148 數學文字補題](grade4-math-text-batch.md)的 revision 9 已正式發布：全包 104 題（數學 64／自然 40）、135,176 bytes、SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。正式 KV 的 immediate 與相隔 108.539 秒的傳播後 readback 均精確吻合；現行 256 KiB 上限下尚餘 126,968 bytes。發布證據與本批收尾結果回查 #148。
 
-本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 8 共 97 題，包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題；rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
+歷史基線：[#134 自然第四批](grade4-science-study-fourth-batch.md)隨 revision 8 正式發布 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；當時以 rev8 計算尚餘 131,896 bytes，該次只改容量上限，沒有重建或重新發布題包，也沒有改孩子進度。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
+
+本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。已發布的服務內容基線是 revision 9 的 104 題；先前 revision 8 的 97 題包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題。rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
 [#119 第二批](grade4-science-study-second-batch.md)已依「新版 Worker → 合併並讀回 Pages → 一次前向 KV 寫入與兩階段讀回」順序正式發布 revision 6；候選建置、覆核與歸檔本身仍不等於發布。以下通用步驟是後續批次的操作契約，不能把 #119 的既有發布授權套用到新工作。
 
@@ -72,10 +74,10 @@ if ($LASTEXITCODE -ne 0) { throw '題包驗證失敗，停止發布' }
 ```
 
 4. 在任何寫入前，由管理端 capture 固定 `c:study:g4-s1-math-u1` 的原始 bytes 到 canonical ignored archive，不 echo raw payload；核對 count／bytes／revision／SHA256 精確等於 issue 核准的 production baseline。任一值不符就停止，不把未知 live 狀態覆蓋掉。
-5. 再次確認本機核准檔案未變更，只從檔案對固定內容 key 執行一次 put；不寫入任何 `p:` key，不將題文當成 command argument：
+5. 再次確認本機核准檔案未變更，只從檔案對固定內容 key 執行一次 put；把下例版本替換成該 issue 核准的 Wrangler 版本，不寫入任何 `p:` key，不將題文當成 command argument：
 
 ```powershell
-npx wrangler@4.120.1 kv key put c:study:g4-s1-math-u1 --binding KV --path data/private/study/g4-s1-math-u1/pack.json --remote --config worker/wrangler.jsonc
+npx wrangler@<核准版本> kv key put c:study:g4-s1-math-u1 --binding KV --path data/private/study/g4-s1-math-u1/pack.json --remote --config worker/wrangler.jsonc
 if ($LASTEXITCODE -ne 0) { throw '內容發布未成功，停止後續操作' }
 ```
 

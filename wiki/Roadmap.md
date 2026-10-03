@@ -41,6 +41,7 @@
 | 2026-09-29 | #137 閱讀心智圖〈愛的分享〉 |
 | 2026-09-30 | #127 台灣高鐵 700T 與日本新幹線 N700S 加入收藏，共五款列車；#138 Native Camp 私人資料歸檔與 Wiki 保存／恢復頁 |
 | 2026-10-01～03 | #140 Native Camp 9/28～9/30 三堂（動物內容分步設計）、#142 10/2 Denny；#144 收整十月工作副本 |
+| 2026-10-03 | #145 家庭題包容量提高至 256 KiB；#148 沿用既有 iPad 操作補入歷屆數學文字題，交付與封存見該 issue |
 
 各列只記發布事實。多數交付未做實體 iPad 驗收，限制記在對應 issue 與 `docs-dev/` 紀錄。
 
@@ -48,7 +49,7 @@
 
 ### 題庫內容
 
-- **家庭題包容量**：#145 已核准提高至 256 KiB；現行規則與發布狀態見 [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
+- **家庭題包容量**：#145 已提高至 256 KiB；現行規則與發布證據見 [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 - 自然：後續優先補風力比較、地表控制變因實驗等缺口；校方公布正式範圍後回頭校準，不把教學計畫推定寫成學校公告。
 - 數學：以[概念／出題方法覆蓋報告](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-math-pattern-counts.md)決定後續擴題，先核現有歷屆來源能否補零題或單題模式；U3 `angle-v1` 角圖呈現留作選項，不推定已授權。
 - 社會同為康軒版，日後按需要沿用「來源查證 → 概念對齊 → 小批驗收」流程；本輪未規劃。既有 backlog（社會看圖題等）不為題數本身擴張。

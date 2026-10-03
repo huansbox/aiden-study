@@ -1,10 +1,10 @@
 # 四上數學文字題補充（#148）
 
-2026-10-03：[本批追蹤與發布證據](https://github.com/huansbox/aiden-study/issues/148)。家長授權先補可用既有 iPad 選答、數字及比較符號輸入的歷屆題，包含 E2E 與 housekeeping。本頁先記錄已核准內容；正式發布以 issue 的管理端讀回為準。
+2026-10-03：[本批追蹤與發布證據](https://github.com/huansbox/aiden-study/issues/148)。家長授權先補可用既有 iPad 選答、數字及比較符號輸入的歷屆題，包含 E2E 與 housekeeping。revision 9 已正式發布，管理端兩階段讀回均符合核准指紋。
 
 ## 內容與界線
 
-從既有八份原卷選出 7 個新 activity：U1 2、U2 2、U4 2、U5 1；全數屬暫定核心。數學由 57 增為 64，U1～U5 為 20／14／5／14／11；自然 40 題保留，候選 revision 9 共 104 個 activity。新增格式為五道四選一、一道數字填空及一道比較符號填空，沒有 agent 變式。
+從既有八份原卷選出 7 個新 activity：U1 2、U2 2、U4 2、U5 1；全數屬暫定核心。數學由 57 增為 64，U1～U5 為 20／14／5／14／11；自然 40 題保留，已發布 revision 9 共 104 個 activity。新增格式為五道四選一、一道數字填空及一道比較符號填空，沒有 agent 變式。
 
 五題有官方答案；桃子腳 114 與民權 114 的兩題沒有官方答案，由作者與獨立 reviewer 分別解題後一致，`answerPage` 保持 `null`，不捏造答案來源。七題原卷相關完整頁、大題指示、選項、單位、概念範圍及機器答案／解說均核對；精確集合及來源見[選題 metadata](../data/study/g4-s1-math-u1/math-text-batch-selection-metadata.json)。私人作者稿與獨立推理不放進 Git。
 
@@ -29,12 +29,14 @@ node scripts/build-study-pattern-report.mjs --check --pack data/private/study/g4
 
 ## 驗證與發布
 
-核准候選為 revision 9、104 題、135176 bytes，SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。距離 256 KiB 上限尚餘 126968 bytes。
+正式題包為 revision 9、104 題、135176 bytes，SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。距離 256 KiB 上限尚餘 126968 bytes。
 
 已通過 774 項 Node 測試、274 項 Python 測試（1 項既有缺 PDF 跳過）、catalog 與報表一致性、核准閘門負向測試及獨立技術 review。驗證使用隔離的 test-child、memory KV 與 Chromium 的 iPad 768×1024／1024×768 尺寸，阻擋非 localhost 連線；新題逐題錯答、重試、重載、答對與批末，數字及比較輸入、既有多空、rev8 升版保留進度、每題 `family.record()` 與批次結束才 `family.finishRound()`、家長試玩不寫孩子資料均通過。代表畫面已目視核對。這不等於實體 iPad／Safari 實測；私人證據隨本批歸檔。
 
-本批預設為 content-only：公開 metadata 與相關程式檢查合併後，重新核對現役 Worker 及固定 KV 的 rev8 基線，再對 `c:study:g4-s1-math-u1` 一次前向寫入核准題包；立即與傳播後讀回比對 revision／題數／bytes／SHA256。未改動的 Worker 不重新部署；不使用正式家庭 session，不讀寫孩子 `p:` 資料。發布後將分類與 selection 狀態更新並記錄交付。
+本批採 content-only：[PR #149](https://github.com/huansbox/aiden-study/pull/149) 以 `62e2115152eab913615b71a5f0aa8e2da2aa7af3` 合併；PR 與主線 CI 通過，主線 test run `37120221982`、Pages run `37120236630` 及 catalog run `37120221999` 均 success。發布前再次精確核對 rev8 基線後，只對 `c:study:g4-s1-math-u1` 一次前向寫入。2026-10-03 11:38:27.411 UTC 與 11:40:15.950 UTC 的管理端讀回相隔 108.539 秒，revision／題數／bytes／SHA256 皆精確符合上述 rev9。現役 100% Worker version `06f9ac35-6ef7-46a0-96b5-95070d099218` 前後相同；沒有重新部署 Worker，沒有使用正式家庭 session 或讀寫孩子 `p:` 資料。分類與 selection 已投影為已發布；此文件不是即時服務探測器。
 
 ## 收尾
 
-私人來源、核准產物、覆核、E2E 與發布證據保存至 canonical ignored `rev9-release/`，逐檔 manifest 核對後才封存本批工作目錄。上一批容量工作目錄也在確認只有可重建 cache 後封存；其他含私人原件的自然工作目錄保留。實際封存、分支與測試程序處理結果見 #148 結案留言。
+私人來源、核准產物、覆核、E2E 與發布證據保存至 canonical ignored `data/private/study/g4-s1-math-u1/rev9-release/`：`private/` 為私人來源及產物，`public-snapshot/` 是相對應的公開資料，根目錄 `manifest.json` 供逐檔核對。恢復方式見該歸檔 `private/RESTORE.md`；在新 worktree 還原相對路徑，不在歸檔內直接執行 builder。原始 14 份題／答 PDF 仍保留於原 task 的私人 papers 目錄。
+
+逐檔 manifest 核對後才封存本批工作目錄。上一批容量工作目錄也在確認只有可重建 cache 後封存；其他含私人原件的自然工作目錄保留。本批專屬 E2E server 已退出；實際封存及分支處理結果見 #148 結案留言。Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack) 保存容量與題目等價轉入原則，Plan／Roadmap 提供最新入口。
