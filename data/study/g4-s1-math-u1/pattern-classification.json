@@ -15,7 +15,7 @@
   "snapshot": {
     "packId": "g4-s1-math-u1",
     "revision": 9,
-    "status": "frozen_unreleased",
+    "status": "released_documented",
     "evidence": "docs-dev/grade4-math-text-batch.md",
     "packBytes": 135176,
     "packSha256": "B1817152BD4B8EA067DE7D8D9CB663870C9A836072DABD9675A113DCB399D346"
