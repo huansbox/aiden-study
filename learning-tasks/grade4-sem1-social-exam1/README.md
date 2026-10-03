@@ -1,6 +1,6 @@
 # 四上社會第一次段考候選卷
 
-狀態：**已收首輪 3 份題卷、2 份校方答案；U1 首批 19 題已在 iPad 題庫上線**（2026-10-03；追蹤 [#154](https://github.com/huansbox/aiden-study/issues/154)）。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集歷屆社會科原卷與校方答案，按今年康軒課程與概念逐題判讀，供後續 iPad 練習使用。[115-1 校方行事曆](https://www.tykjh.ntpc.edu.tw/var/file/0/1000/img/139/254648692.pdf)列 2026/11/5–11/6 國小第一次定期評量；**正式考試範圍尚未取得**，不能以舊卷單元號替代今年範圍。詳細證據見[課程對照](source/curriculum-comparison.md)，首批交付契約見[社會首批 Study 文件](../../docs-dev/grade4-social-study-first-batch.md)。
+狀態：**已收首輪 3 份題卷、2 份校方答案；U1 共 24 活動已在 iPad 題庫上線**（2026-10-04；追蹤 [#157](https://github.com/huansbox/aiden-study/issues/157)）。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集歷屆社會科原卷與校方答案，按今年康軒課程與概念逐題判讀，供後續 iPad 練習使用。[115-1 校方行事曆](https://www.tykjh.ntpc.edu.tw/var/file/0/1000/img/139/254648692.pdf)列 2026/11/5–11/6 國小第一次定期評量；**正式考試範圍尚未取得**，不能以舊卷單元號替代今年範圍。詳細證據見[課程對照](source/curriculum-comparison.md)，首批交付契約見[社會首批 Study 文件](../../docs-dev/grade4-social-study-first-batch.md)。
 
 ## 來源與保存
 
@@ -12,7 +12,7 @@
 
 ## 進度與交付界線
 
-第二批由 [#157](https://github.com/huansbox/aiden-study/issues/157) 接續，選定地形剖面、地形高度曲線、雨量圖與地圖／生活方式配對，共 5 個候選活動。配對題組各計一個活動，iPad 一次呈現一小題，圖表保留原卷資訊並可放大。候選不等於已上線；精確收錄集合、測試與發布狀態見[第二批紀錄](../../docs-dev/grade4-social-study-second-batch.md)。
+第二批由 [#157](https://github.com/huansbox/aiden-study/issues/157) 接續，選定地形剖面、地形高度曲線、雨量圖與地圖／生活方式配對，新增 5 個活動，累計 24 個。配對題組各計一個活動，iPad 一次呈現一小題，圖表保留原卷資訊並可放大。第二批已正式上線；精確收錄集合、測試與發布證據見[第二批紀錄](../../docs-dev/grade4-social-study-second-batch.md)。
 
 113 VIII-04 題目卷及校方答案卷的出發月份不一致，官方標答對應另一個題版，本批保留整組待釐清；不將題答版本差異當成孩子答錯。112 混合填答／行政區題與 114 未取得答案卷的題也留待後續。上述原件都已保存，保留不代表遺失。
 
