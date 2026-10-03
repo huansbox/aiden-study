@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "lessons": [
+    {"id":"2026-10-02","date":"2026-10-02","teacher":"Denny"},
     {"id":"2026-09-30","date":"2026-09-30","teacher":"Edon"},
     {"id":"2026-09-29","date":"2026-09-29","teacher":"Zibuyile"},
     {"id":"2026-09-28","date":"2026-09-28","teacher":"Alex"},

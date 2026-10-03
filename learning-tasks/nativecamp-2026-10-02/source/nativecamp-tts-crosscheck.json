@@ -1,0 +1,125 @@
+{
+  "lessonId": "2026-10-02",
+  "engine": "faster-whisper 1.2.1",
+  "model": "large-v2",
+  "audioUploaded": false,
+  "initialPrompt": null,
+  "humanListening": false,
+  "pronunciationAssessment": false,
+  "decoder": "ffmpeg full-file mono 16000 Hz float32 input",
+  "samples": [
+    {
+      "file": "audio/2026-10-02-farm-places-say-1-q.mp3",
+      "sha256": "5d06ed4d7a4ef17dfcc66e1c985370415bf7a20082306e91f1a97e2328658982",
+      "expectedText": "Begin your answer with the words This is. What kind of place has rows of fruit trees?",
+      "recognizedText": "Begin your answer with the words, this is. What kind of place has rows of fruit trees?",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-compare-characters-try-1-q.mp3",
+      "sha256": "546a3f20278db2e8da0e32b35e67ed681447afd9b5551f9af697bc1fb0053ff3",
+      "expectedText": "Mia has a cat. Tom has a dog. Use but to tell how their pets are different, starting with Mia.",
+      "recognizedText": "Mia has a cat. Tom has a dog. Use but to tell how their pets are different, starting with Mia.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-compare-characters-say-1-q.mp3",
+      "sha256": "a4fecf33d6e58912c7161d5d3a9b167fa1be98c610fe77bc98a65123a2b2903f",
+      "expectedText": "Mia has a cat and Tom has a dog. Use but to compare their pets. Start with Mia.",
+      "recognizedText": "Mia has a cat, and Tom has a dog. Use but to compare their pets. Start with Mia.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-compare-characters-say-2-q.mp3",
+      "sha256": "ad623fcd8241b84ac1ce38e64c61fa3b54a6f9caa59c5bee6e7060feef7ef606",
+      "expectedText": "Mia's favorite color is red, and Tom's is blue. Compare their favorite colors using but. Start with Mia's.",
+      "recognizedText": "Mia's favorite color is red, and Tom's is blue. Compare their favorite colors using But. Start with Mia's.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-compare-characters-say-3-q.mp3",
+      "sha256": "2ae5f7712d8c182dd6199844ddb1e3359f5c3f75cb09a35e6929cf2f329baa12",
+      "expectedText": "Mia has a dog and Tom has a cat. Use but to tell us about both pets. Start with Mia.",
+      "recognizedText": "Mia has a dog and Tom has a cat. Use but to tell us about both pets. Start with Mia.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-try-1-q.mp3",
+      "sha256": "a8beed121d8fbc6f6efa7331402fbd8e35053e2ba39ae9ea7ca3c7d3042bc27a",
+      "expectedText": "Lina has a home in a small apartment. Tell us where she lives in a full sentence.",
+      "recognizedText": "Lina has a home in a small apartment. Tell us where she lives in a full sentence.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-try-2-a.mp3",
+      "sha256": "cc6f393079f8a245b0ec9a64613c22aec620cbf231da3a971b3dcfcc0c5627e5",
+      "expectedText": "Lina and Noah live in a small apartment.",
+      "recognizedText": "Lena and Noah live in a small apartment.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-try-3-a.mp3",
+      "sha256": "aab13469927fb81dc071c658917c55ff594e808991fcc84a16960e8581a45077",
+      "expectedText": "Lina lives in a big house.",
+      "recognizedText": "Lena lives in a big house.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-say-1-q.mp3",
+      "sha256": "909ec4545c809663266e0d363d921c662c3e8ff592d65726d7f0fd77c4fadfb8",
+      "expectedText": "The home card says small apartment. Where does Lina live? Start with Lina and use a full sentence.",
+      "recognizedText": "The home card says, small apartment. Where does Lena live? Start with Lena and use a full sentence.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-say-1-a.mp3",
+      "sha256": "30c0a7280fb61a1d35bfdbc3471f56e15449571c70597f29c626138fe64ac424",
+      "expectedText": "Lina lives in a small apartment.",
+      "recognizedText": "Lina lives in a small apartment.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-where-they-live-say-2-a.mp3",
+      "sha256": "32efc6bcec7cc6ae07f4b32148c57989f21aaad58faed0ce15531872af161907",
+      "expectedText": "Lina lives on a quiet street.",
+      "recognizedText": "Lina lives on a quiet street.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-too-for-me-try-1-q.mp3",
+      "sha256": "0d19014117e82683182008aab145b0eb2902a07e804fd8923b325549ea85cdfb",
+      "expectedText": "Cars are loud all night, and you cannot sleep. Describe the problem with this street. Use too and end with for me.",
+      "recognizedText": "Cars are loud all night, and you cannot sleep. Describe the problem with this street. Use two and end with for me.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-too-for-me-try-2-q.mp3",
+      "sha256": "6e0c55284d54abe86ea4338bb649d5566261f4d18c49cd66347f600ff47908e4",
+      "expectedText": "Now the street is quiet at night, and you sleep well. Change the old sentence to show that the noise is not a problem. Use too in your answer.",
+      "recognizedText": "Now the street is quiet at night, and you sleep well. Change the old sentence to show that the noise is not a problem. Use to in your answer.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-too-for-me-say-2-q.mp3",
+      "sha256": "a6044fe672446c25fff392675511b85d7c035c48edf50f52c27be30d3a761bd5",
+      "expectedText": "Nothing happens in this game, and you feel bored. Start with It is too and end with for me.",
+      "recognizedText": "Nothing happens in this game and you feel bored. Start with It is 2 and end with For Me.",
+      "normalizedMatch": false
+    },
+    {
+      "file": "audio/2026-10-02-food-likes-say-1-q.mp3",
+      "sha256": "a480b3d28f7f77dd8bd8597265cb2f35113e22ea765af835eb394c999ba38312",
+      "expectedText": "You enjoy apples, but you do not enjoy cheese. Tell us both choices, starting with I like. Use but.",
+      "recognizedText": "You enjoy apples, but you do not enjoy cheese. Tell us both choices, starting with I like. Use but.",
+      "normalizedMatch": true
+    },
+    {
+      "file": "audio/2026-10-02-food-likes-say-2-q.mp3",
+      "sha256": "015cbb0a5240e770fada7a5f78362dd937142c20f9bd9c221963f071a0b72b0c",
+      "expectedText": "You enjoy cookies, but you do not enjoy corn. Tell us both choices, starting with I like. Use but.",
+      "recognizedText": "You enjoy cookies, but you do not enjoy corn. Tell us both choices, starting with I like. Use but.",
+      "normalizedMatch": true
+    }
+  ],
+  "status": "complete"
+}

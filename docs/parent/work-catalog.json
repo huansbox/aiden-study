@@ -370,6 +370,46 @@
       }
     },
     {
+      "id": "task:nativecamp-2026-10-02",
+      "type": "task",
+      "name": "Native Camp 2026-10-02 Denny",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "status": "complete",
+      "statusNote": "原創題文、OpenAI 語音與隔離驗證完成；正式發布追蹤 #142。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/nativecamp-2026-10-02",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/nativecamp-2026-10-02"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/nativecamp-2026-10-02",
+      "links": [
+        {
+          "label": "不計分預覽",
+          "url": "../nativecamp/preview.html?lesson=2026-10-02"
+        }
+      ],
+      "description": "城鄉、地點、比較與完整句",
+      "eventDate": "2026-10-02",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:nativecamp-2026-09-30",
       "type": "task",
       "name": "Native Camp 2026-09-30 Edon",
