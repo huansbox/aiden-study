@@ -1,10 +1,10 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-[#148 數學文字補題](grade4-math-text-batch.md)的 revision 9 已正式發布：全包 104 題（數學 64／自然 40）、135,176 bytes、SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。正式 KV 的 immediate 與相隔 108.539 秒的傳播後 readback 均精確吻合；現行 256 KiB 上限下尚餘 126,968 bytes。發布證據與本批收尾結果回查 #148。[#151 角度看圖題](grade4-math-angle-batch.md) 以此 rev9／104 題作已發布基線；統籌已核准四道 U3 PNG 候選題包，預期 rev10／108 題（數學 68／自然 40）、186,717 bytes、SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`。這是本機候選指紋，尚無正式 KV 讀回，不視為已發布。
+[#151 角度看圖題](grade4-math-angle-batch.md)的 revision 10 已正式發布：全包 108 題（數學 68／自然 40）、186,717 bytes、SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`，現行 256 KiB 上限下尚餘 75,427 bytes。正式 KV 的兩階段讀回相隔 99.128 秒，均與核准指紋相同；PR、Worker version、驗證及封存見本批紀錄。先前 [#148 數學文字補題](grade4-math-text-batch.md)發布 revision 9：104 題（數學 64／自然 40）、135,176 bytes、SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。
 
 歷史基線：[#134 自然第四批](grade4-science-study-fourth-batch.md)隨 revision 8 正式發布 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；當時以 rev8 計算尚餘 131,896 bytes，該次只改容量上限，沒有重建或重新發布題包，也沒有改孩子進度。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
 
-本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。已發布的服務內容基線是 revision 9 的 104 題；先前 revision 8 的 97 題包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題。rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
+本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。已發布的服務內容基線是 revision 10 的 108 題；先前 revision 8 的 97 題包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題。rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
 [#119 第二批](grade4-science-study-second-batch.md)已依「新版 Worker → 合併並讀回 Pages → 一次前向 KV 寫入與兩階段讀回」順序正式發布 revision 6；候選建置、覆核與歸檔本身仍不等於發布。以下通用步驟是後續批次的操作契約，不能把 #119 的既有發布授權套用到新工作。
 
@@ -60,7 +60,7 @@ node -e "const fs=require('fs'),crypto=require('crypto');require('./docs/study/p
 
 #59 曾因 Worker import 的 validator 與 Study loader 一起改動，使用「新版 Worker → 新版 Pages → expanded KV」順序。那是歷史 runtime-changing release，不是每次擴題的預設步驟。
 
-若本批修改 `worker/`、`docs/study/index.html`、`docs/study/private-pack.js`、route、cache／progress contract 或其他 runtime，必須另在 issue 核准新發布順序，不能套用下方 content-only 流程。若這些檔案與正式版本都不變，才使用 content-only 流程；不得因舊文件曾記錄某個 Worker version，就把 repo 中較舊 Worker 重新 deploy 到現役服務。 #151 只放寬數學 unit 17 的 PNG 驗證，沿用 Study 既有圖片放大介面；Worker bundle 也包含新版 parser，屬 runtime-changing。預定依核准順序執行新版 Worker → 新版 Pages 合併並讀回 → 核准 rev10 題包一次前向 KV 寫入與兩階段讀回。完成這些讀回前，四題只算候選，不將 rev10 寫成正式基線。
+若本批修改 `worker/`、`docs/study/index.html`、`docs/study/private-pack.js`、route、cache／progress contract 或其他 runtime，必須另在 issue 核准新發布順序，不能套用下方 content-only 流程。若這些檔案與正式版本都不變，才使用 content-only 流程；不得因舊文件曾記錄某個 Worker version，就把 repo 中較舊 Worker 重新 deploy 到現役服務。 #151 已只放寬數學 unit 17 的 PNG 驗證，沿用 Study 既有圖片放大介面；Worker bundle 包含新版 parser，屬 runtime-changing。已依核准順序完成新版 Worker → 新版 Pages 合併並讀回 → 核准 rev10 題包一次前向 KV 寫入與兩階段讀回，細節見[本批紀錄](grade4-math-angle-batch.md)。
 
 ### Content-only revision
 
