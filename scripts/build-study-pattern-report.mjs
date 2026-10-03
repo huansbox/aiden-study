@@ -46,6 +46,11 @@ export function summarize(classification, mapping, sourceDocuments) {
   requireThat(["released_documented", "frozen_unreleased"].includes(classification.snapshot?.status), "發布狀態無效");
   requireThat(classification.snapshot.status !== "released_documented" || nonempty(classification.snapshot.evidence), "已發布快照缺少證據入口");
   requireThat(Number.isSafeInteger(classification.snapshot.packBytes) && classification.snapshot.packBytes > 0 && /^[A-F0-9]{64}$/.test(classification.snapshot.packSha256), "題包指紋無效");
+  for (const historic of classification.historicalSnapshots ?? []) {
+    requireThat(Number.isSafeInteger(historic.revision) && historic.revision > 0 && historic.revision < classification.snapshot.revision, "歷史快照 revision 無效");
+    requireThat(Number.isSafeInteger(historic.mathActivities) && historic.mathActivities > 0, "歷史數學題數無效");
+    requireThat(nonempty(historic.evidence), "歷史快照缺少證據入口");
+  }
   const patterns = uniqueMap(classification.patterns, "id", "pattern");
   const items = uniqueMap(classification.assignments, "appId", "assignment");
   const mapped = uniqueMap(mapping.items.filter(row => !row.appId.startsWith("science-g4s1-")), "appId", "mapping");
@@ -127,10 +132,12 @@ export function verifyPack(bytes, classification, mapping) {
     requireThat(bytes.length === classification.snapshot.packBytes && createHash("sha256").update(bytes).digest("hex").toUpperCase() === classification.snapshot.packSha256, "私有題包 bytes／SHA256 不一致");
 }
 
-export function renderReport(classification, summary) {
+export function renderReport(classification, summary, mapping) {
   const released = classification.snapshot.status === "released_documented";
   const count = summary.reduce((n, chapter) => n + chapter.activities, 0);
   const types = summary.reduce((n, chapter) => n + chapter.observedPatterns, 0);
+  const mathCount = mapping?.items.filter(row => row.unit >= 15 && row.unit <= 19).length;
+  const scienceCount = mapping?.items.filter(row => row.unit >= 20 && row.unit <= 21).length;
   const conceptRows = summary.flatMap(chapter => [...new Set(chapter.rows.map(row => row.conceptId))].map(id => {
     const patterns = chapter.rows.filter(row => row.conceptId === id);
     return `| ${chapter.chapter} | ${md(patterns[0].concept)} | ${patterns.filter(row => row.count > 0).length} | ${patterns.reduce((sum, row) => sum + row.count, 0)} | ${patterns.map(row => `${md(row.label)}：${row.count}`).join("；")} |`;
@@ -138,6 +145,8 @@ export function renderReport(classification, summary) {
   const lines = ["# 四上數學題型與題數", "",
     `此報告由公開分類與逐題對照產生，請勿手改。快照：rev${classification.snapshot.revision}／${classification.taxonomyVersion}，${count} 個數位 activity、${types} 種本批已辨識模式。`, "",
     released ? `狀態：已發布內容的封存統計；發布依據見[發布紀錄](../${classification.snapshot.evidence})。本腳本不連正式服務，不能當作即時上線查核。` : "狀態：已凍結但尚未發布的候選統計，不能計入已上線題數。", "",
+    ...(mapping ? [`公開 mapping rev${mapping.revision} 共 ${mapping.items.length} 個 activity（數學 ${mathCount}／自然 ${scienceCount}）；本報告只統計數學 ${count} 個 activity，自然題不列入下表。`, ""] : []),
+    ...(classification.historicalSnapshots ?? []).flatMap(historic => [`歷史封存：rev${historic.revision} 數學 ${historic.mathActivities} 個 activity，發布依據見[當時紀錄](../${historic.evidence})；此數字不併入本次題數。`, ""]),
     "一個 activity 就是一個完整作答題組；相依多空只算一次。每題只有一個主要模式，次要概念不重複計數。模式不是選擇／填空介面，也不因只換數字或情境而拆分。", "",
     "以下只說明本批內容覆蓋，不是數學全部題型，也不是孩子的精熟度；沒有讀取孩子作答紀錄。", "",
     `內容來源：歷屆題 ${summary.reduce((sum, row) => sum + row.sourceKindCounts.historical_exam, 0)} 個 activity；agent 變式 ${summary.reduce((sum, row) => sum + row.sourceKindCounts.agent_variant, 0)} 個 activity。本報告只做分類與統計，不生成題目。`, "",
@@ -170,7 +179,7 @@ export function build({ root = ROOT, check = false, packPath } = {}) {
   const sourceDocuments = Object.fromEntries(Object.entries(classification.sourceReferences).map(([kind, source]) => [kind, { manifest: read(source.manifest), review: read(source.review) }]));
   const summary = summarize(classification, mapping, sourceDocuments);
   if (packPath) verifyPack(readFileSync(resolve(root, packPath)), classification, mapping);
-  const output = renderReport(classification, summary), target = resolve(root, REPORT);
+  const output = renderReport(classification, summary, mapping), target = resolve(root, REPORT);
   if (check) requireThat(readFileSync(target, "utf8").replace(/\r\n/g, "\n") === output, "題型報告已過期，請重建");
   else writeFileSync(target, output);
   return summary;
