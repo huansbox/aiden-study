@@ -237,6 +237,7 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
     C.homeEntries(settings, "aiden", registry).map((e) => e.id),
     [
       "study:math",
+      "study:social",
       "study:science",
       "spelling",
       "math",
@@ -254,6 +255,7 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
   );
   assert.equal(entries.filter((e) => e.id === "study:math").length, 1);
   assert.equal(entries.find((e) => e.id === "study:math").term, "g4-s1");
+  assert.equal(entries.find((e) => e.id === "study:social").term, "g4-s1");
   assert.equal(
     C.taskLabel({ app: "study", unit: 10, quantity: 5 }),
     "第 4 單元 · 5 題",
@@ -271,8 +273,13 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
     [19, "math"],
     [20, "science"],
     [21, "science"],
+    [22, "social"],
   ])
     assert.equal(C.taskEntryId({ app: "study", unit }), "study:" + subject);
+  assert.equal(C.taskLabel({ app: "study", unit: 22, quantity: 5 }), "第 1 單元 · 5 題");
+  assert.deepEqual(C.validateTask({ id: "social-task", app: "study", unit: 22, quantity: 5 }), { id: "social-task", app: "study", unit: 22, quantity: 5 });
+  assert.throws(() => C.validateTask({ id: "unknown", app: "study", unit: 23, quantity: 5 }), /題庫單元/);
+  assert.throws(() => C.taskEntryId({ app: "study", unit: 23 }), /題庫單元/);
   settings.websites[0].children = ["bingpu"];
   p.mindMap.enabled = false;
   assert.ok(

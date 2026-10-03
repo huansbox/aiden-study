@@ -89,6 +89,25 @@ export function scienceSyntheticPack() {
   return pack;
 }
 
+export function socialSyntheticPack() {
+  const pack = scienceSyntheticPack();
+  pack.revision = 11;
+  const questions = [
+    { id: "social-g4s1-synthetic-map-01-v1", subject: "social", unit: 22, type: "multiple_choice",
+      text: "合成社會練習：依文字線索，哪個位置在北方？", subtopic: "地圖與位置", source: "synthetic fixture only",
+      options: ["甲", "乙", "丙", "丁"], answer: "2" },
+    { id: "social-g4s1-synthetic-land-01-v1", subject: "social", unit: 22, type: "true_false",
+      text: "合成社會練習：不同地形會影響生活方式。", subtopic: "地形與生活", source: "synthetic fixture only",
+      options: [], answer: "true" },
+    { id: "social-g4s1-synthetic-water-01-v1", subject: "social", unit: 22, type: "true_false",
+      text: "合成社會練習：所有地方的降雨量都完全相同。", subtopic: "氣候與水資源", source: "synthetic fixture only",
+      options: [], answer: "false" },
+  ];
+  pack.questions.push(...questions);
+  for (const q of questions) pack.explanations[q.id] = "合成解說：依題目中的文字線索判斷。";
+  return pack;
+}
+
 export function groupedSyntheticPack() {
   const pack = scienceSyntheticPack();
   pack.revision = 6;

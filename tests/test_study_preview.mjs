@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -118,6 +118,29 @@ test("subject switch reaches science true_false and choice without touching chil
   assert.equal(app.state.unit, 15);
   assert.equal(h.forbiddenTouches, 0);
   assert.equal(h.requests.length, 1);
+  app.destroy();
+});
+
+test("social preview uses exact unit membership and three broad topics without progress writes", async () => {
+  const h = harness({ pack: socialSyntheticPack() }), app = await h.boot();
+  app.handle("subject", { value: "social" });
+  assert.equal(app.state.unit, 22);
+  assert.match(h.host.innerHTML, /家鄉的自然環境/);
+  for (const topic of ["地圖與位置", "地形與生活", "氣候與水資源"]) assert.match(h.host.innerHTML, new RegExp(topic));
+  assert.doesNotMatch(h.host.innerHTML, /value="20"|value="21"/);
+  app.handle("subtopic", { value: "地形與生活" });
+  assert.match(h.host.innerHTML, /是非題/);
+  app.handle("answer-choice", { value: "false" });
+  app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("retry-answer");
+  assert.equal(app.state.result, "");
+  app.handle("answer-choice", { value: "true" });
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
+  app.handle("subject", { value: "science" });
+  assert.equal(app.state.unit, 20);
+  assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
 
@@ -407,7 +430,7 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
-  assert.match(source("preview.html"), /preview\.js\?v=20260926-practice-topics/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261003-social-u1-r1/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
@@ -415,7 +438,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
   assert.match(source("../parent/parent.js"), /study\/preview\.html\?child=\$\{child\}/);
-  assert.match(source("../parent/parent.js"), /四上數學／自然試玩/);
+  assert.match(source("../parent/parent.js"), /四上數學／自然／社會試玩/);
 });
 
 test("shared answer seam retains Study number and comparison equivalence rules", () => {

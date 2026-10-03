@@ -1,14 +1,16 @@
 # 四上數學題型與題數
 
-此報告由公開分類與逐題對照產生，請勿手改。快照：rev10／v1.3，68 個數位 activity、45 種本批已辨識模式。
+此報告由公開分類與逐題對照產生，請勿手改。快照：rev11／v1.3，68 個數位 activity、45 種本批已辨識模式。
 
-狀態：已發布內容的封存統計；發布依據見[發布紀錄](../docs-dev/grade4-math-angle-batch.md)。本腳本不連正式服務，不能當作即時上線查核。
+狀態：已凍結但尚未發布的候選統計，不能計入已上線題數。
 
-公開 mapping rev10 共 108 個 activity（數學 68／自然 40）；本報告只統計數學 68 個 activity，自然題不列入下表。
+公開 mapping rev11 共 127 個 activity（數學 68／自然 40／社會 19）；本報告只統計數學 68 個 activity，自然與社會題不列入下表。
 
 歷史封存：rev4 數學 57 個 activity，發布依據見[當時紀錄](../docs-dev/grade4-math-expansion-plan.md)；此數字不併入本次題數。
 
 歷史封存：rev9 數學 64 個 activity，發布依據見[當時紀錄](../docs-dev/grade4-math-text-batch.md)；此數字不併入本次題數。
+
+歷史封存：rev10 數學 68 個 activity，發布依據見[當時紀錄](../docs-dev/grade4-math-angle-batch.md)；此數字不併入本次題數。
 
 一個 activity 就是一個完整作答題組；相依多空只算一次。每題只有一個主要模式，次要概念不重複計數。模式不是選擇／填空介面，也不因只換數字或情境而拆分。
 
@@ -76,4 +78,4 @@
 
 重建：`node scripts/build-study-pattern-report.mjs`；檢查報告未過期：`node scripts/build-study-pattern-report.mjs --check`。可加 `--pack <私有 pack.json 路徑>`，唯讀核對完整 ID、unit、revision 與指紋；不輸出題文，亦不取代既有題包內容驗證。
 
-題包封存指紋：186717 bytes，SHA256 `FE6AB5874454E88FEDFDF8F56305D8D52FD1BAB188B311A8588F4884F5A65FD1`。
+題包封存指紋：200737 bytes，SHA256 `4AFBC74258F47D41489CD109D9119240D44844C4B0F73EB414831DFF73B9784B`。

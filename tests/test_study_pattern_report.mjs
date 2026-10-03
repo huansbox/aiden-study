@@ -8,13 +8,14 @@ import { summarize, renderReport, verifyPack, build } from "../scripts/build-stu
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = path => JSON.parse(readFileSync(new URL("../" + path, import.meta.url), "utf8"));
 function fixture() {
-  const mapping = { packId: "synthetic", revision: 1, items: ["a", "b", "c"].map(appId => ({ appId, unit: 15, paperId: "paper-b", originalId: appId === "a" ? "tyk113-II-03" : appId })) };
+  const appIds = ["a", "b", "c"].map(id => `math-g4s1-${id}-v1`);
+  const mapping = { packId: "synthetic", revision: 1, items: appIds.map((appId, i) => ({ appId, unit: 15, paperId: "paper-b", originalId: i === 0 ? "tyk113-II-03" : ["b", "c"][i - 1] })) };
   const classification = {
     schemaVersion: 1, taxonomyVersion: "test", countUnit: "digital_activity",
     snapshot: { packId: "synthetic", revision: 1, status: "frozen_unreleased", evidence: null, packBytes: 1, packSha256: "A".repeat(64) },
     sourceReferences: { B: { manifest: "synthetic-manifest.json", review: "synthetic-review.json", countUnit: "answer_unit" }, C: { manifest: "synthetic-c-manifest.json", review: "synthetic-c-review.json", countUnit: "review_item" } },
     patterns: ["first", "second", "empty"].map(id => ({ id, chapter: "U1", conceptId: "synthetic", concept: "合成概念", label: id, definition: "合成定義", boundary: "合成邊界" })),
-    assignments: ["a", "b", "c"].map((appId, i) => ({ appId, primaryPattern: i < 2 ? "first" : "second", secondaryTags: [], sourceKind: "historical_exam", sourceGroup: "B" })),
+    assignments: appIds.map((appId, i) => ({ appId, primaryPattern: i < 2 ? "first" : "second", secondaryTags: [], sourceKind: "historical_exam", sourceGroup: "B" })),
   };
   classification.assignments[0].sourceUnits = ["tyk113-II-03a", "tyk113-II-03b", "tyk113-II-03c"];
   const sourceDocuments = { B: { review: { papers: [{ paper_id: "paper-b", record_id: "record-b", review_groups: [{ ids: ["b", "c", "tyk113-II-03a", "tyk113-II-03b", "tyk113-II-03c"] }] }] }, manifest: { papers: [{ record_id: "record-b" }] } }, C: { review: { papers: [{ paper_id: "paper-c", items: [{ id: "c-item" }] }] }, manifest: { targets: [{ paper_id: "paper-c" }] } } };
@@ -42,6 +43,22 @@ test("rev5 mapping 追加自然時，數學分類仍只統計既有題", () => {
   assert.match(renderReport(classification, summary, mapping), /mapping rev5 共 4 個 activity（數學 3／自然 1）；本報告只統計數學 3 個 activity/);
 });
 
+test("rev11 social mapping and pack stay outside math pattern assignments", () => {
+  const { classification, mapping, sourceDocuments } = fixture();
+  mapping.revision = 11;
+  mapping.items.push({ appId: "science-g4s1-synthetic-v1", unit: 20 });
+  mapping.items.push({ appId: "social-g4s1-synthetic-v1", unit: 22 });
+  const summary = summarize(classification, mapping, sourceDocuments);
+  assert.equal(summary.reduce((n, row) => n + row.activities, 0), 3);
+  const report = renderReport(classification, summary, mapping);
+  assert.match(report, /mapping rev11 共 5 個 activity（數學 3／自然 1／社會 1）/);
+  assert.match(report, /自然與社會題不列入下表/);
+  const pack = { packId: "synthetic", revision: 11,
+    questions: mapping.items.map(row => ({ id: row.appId, unit: row.unit, text: "PRIVATE_SENTINEL" })) };
+  assert.doesNotThrow(() => verifyPack(Buffer.from(JSON.stringify(pack)), classification, mapping));
+  assert.doesNotMatch(report, /PRIVATE_SENTINEL/);
+});
+
 test("新版數學快照保留 rev4 歷史題數，且不把自然題併入數學", () => {
   const { classification, mapping, sourceDocuments } = fixture();
   classification.snapshot.revision = 9;
@@ -55,7 +72,7 @@ test("新版數學快照保留 rev4 歷史題數，且不把自然題併入數�
 });
 
 test("漏 ID、多 ID、重複 assignment ID 都拒絕，不能產生低估或重計的報告", () => {
-  for (const mutate of [c => c.assignments.pop(), c => c.assignments.push({ ...c.assignments[0], appId: "extra" }), c => c.assignments.push({ ...c.assignments[0] })]) {
+  for (const mutate of [c => c.assignments.pop(), c => c.assignments.push({ ...c.assignments[0], appId: "math-g4s1-extra-v1" }), c => c.assignments.push({ ...c.assignments[0] })]) {
     const { classification, mapping, sourceDocuments } = fixture();
     mutate(classification);
     assert.throws(() => summarize(classification, mapping, sourceDocuments), /ID 集合不一致|識別碼重複/);
