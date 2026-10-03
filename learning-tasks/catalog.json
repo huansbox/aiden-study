@@ -3,6 +3,21 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "nativecamp-2026-10-02",
+      "name": "Native Camp 2026-10-02 Denny",
+      "status": "complete",
+      "statusNote": "原創題文、OpenAI 語音與隔離驗證完成；正式發布追蹤 #142。",
+      "eventDate": "2026-10-02",
+      "audience": ["aiden"],
+      "audienceLabel": "兒童英語；家長陪同口說",
+      "description": "城鄉、地點、比較與完整句",
+      "reusable": "Build／Change／Fix、可選提示、完整句口說及 OpenAI 預製語音",
+      "groupId": "nativecamp",
+      "groupName": "Native Camp",
+      "availability": "available",
+      "links": [{"label": "不計分預覽", "url": "../nativecamp/preview.html?lesson=2026-10-02"}]
+    },
+    {
       "id": "nativecamp-2026-09-30",
       "name": "Native Camp 2026-09-30 Edon",
       "status": "complete",

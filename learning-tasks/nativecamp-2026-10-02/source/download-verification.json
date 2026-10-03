@@ -1,0 +1,19 @@
+{
+  "lessonId": "2026-10-02",
+  "audioUploaded": false,
+  "humanListening": false,
+  "files": [
+    {
+      "track": 1,
+      "relativeFile": "../assets/audio/2026-10-02-1930-lesson.webm",
+      "bytes": 5476527,
+      "sha256": "95eecc3a20b6c3bbe20023a8424aca335816035827e5e2a496ce3936498a2510",
+      "durationSeconds": 1529.28,
+      "codec": "opus",
+      "channels": 2,
+      "sampleRate": 48000,
+      "fullDecode": "passed",
+      "decodeTimestampFilter": "asetpts=N/SR/TB"
+    }
+  ]
+}

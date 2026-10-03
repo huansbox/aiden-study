@@ -1,0 +1,1490 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-10-02",
+  "date": "2026-10-02",
+  "title": "Places, people, and choices",
+  "concepts": [
+    {
+      "id": "farm-places",
+      "title": "Name the place",
+      "try": [
+        {
+          "id": "farm-places-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "What kind of place is this?",
+          "instruction": "Start with This. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Rows of fruit trees / apples on the trees",
+            "heading": "Fact card"
+          },
+          "answerText": "This is an orchard.",
+          "hint": "An orchard has fruit trees.",
+          "explanation": "An orchard is a place where fruit trees grow.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "an"
+            },
+            {
+              "id": "w3",
+              "text": "orchard"
+            },
+            {
+              "id": "x0",
+              "text": "apartment"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-try-1-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "farm-places-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe the new place.",
+          "instruction": "Start with This. Two words stay.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: This is an old cornfield. / Now: new farm, fruit trees",
+            "heading": "Fact card"
+          },
+          "answerText": "This is a new orchard.",
+          "hint": "Think about both the plants and the age.",
+          "explanation": "Fruit trees make this an orchard. The card says it is new.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "is"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "new"
+            },
+            {
+              "id": "w4",
+              "text": "orchard"
+            },
+            {
+              "id": "x0",
+              "text": "old"
+            },
+            {
+              "id": "x1",
+              "text": "cornfield"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-try-2-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "farm-places-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the place.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Rows of fruit trees / apples on the trees",
+            "heading": "Fact card"
+          },
+          "answerText": "The trees are in the orchard.",
+          "hint": "Fruit trees grow together in an orchard.",
+          "explanation": "The fruit trees belong in the orchard, not the cornfield.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "trees"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "in"
+            },
+            {
+              "id": "w4",
+              "text": "the"
+            },
+            {
+              "id": "w5",
+              "text": "cornfield."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "hotel."
+            },
+            {
+              "id": "c1",
+              "text": "orchard."
+            }
+          ],
+          "answer": {
+            "wordId": "w5",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-try-3-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "farm-places-say-1",
+          "prompt": "What kind of place is this?",
+          "instruction": "This is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Rows of fruit trees / apples on the trees",
+            "heading": "Fact card"
+          },
+          "answerText": "This is an orchard.",
+          "accepted": [
+            "This is an apple orchard.",
+            "This is a place where fruit trees grow."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-say-1-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "farm-places-say-2",
+          "prompt": "What kind of place is this?",
+          "instruction": "This is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Corn plants / a new farm field",
+            "heading": "Fact card"
+          },
+          "answerText": "This is a new cornfield.",
+          "accepted": [
+            "This is a cornfield that is new."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-say-2-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "farm-places-say-3",
+          "prompt": "What kind of place is this?",
+          "instruction": "This is …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Fruit trees / an old farm",
+            "heading": "Fact card"
+          },
+          "answerText": "This is an old orchard.",
+          "accepted": [
+            "This is an orchard that is old."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-farm-places-say-3-q.mp3",
+            "answer": "audio/2026-10-02-farm-places-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building-descriptions",
+      "title": "Describe the buildings",
+      "try": [
+        {
+          "id": "building-descriptions-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Describe this hotel.",
+          "instruction": "Start with The hotel. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 hotel / tall",
+            "heading": "Fact card"
+          },
+          "answerText": "The hotel is tall.",
+          "hint": "One hotel needs is.",
+          "explanation": "Use is for one hotel.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "hotel"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "tall"
+            },
+            {
+              "id": "x0",
+              "text": "are"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-try-1-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "building-descriptions-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now describe two hotels.",
+          "instruction": "Start with The hotels. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The hotel is tall. / Now: 2 hotels, both tall",
+            "heading": "Fact card"
+          },
+          "answerText": "The hotels are tall.",
+          "hint": "More than one hotel needs are.",
+          "explanation": "Hotels is plural, so use are.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "hotels"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "tall"
+            },
+            {
+              "id": "x0",
+              "text": "is"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-try-2-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "building-descriptions-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the building sentence.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 building / short",
+            "heading": "Fact card"
+          },
+          "answerText": "The building is short.",
+          "hint": "There is only one building.",
+          "explanation": "Use is with one building.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "building"
+            },
+            {
+              "id": "w2",
+              "text": "are"
+            },
+            {
+              "id": "w3",
+              "text": "short."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "am"
+            }
+          ],
+          "answer": {
+            "wordId": "w2",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-try-3-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "building-descriptions-say-1",
+          "prompt": "Describe this building.",
+          "instruction": "The building …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 building / tall",
+            "heading": "Fact card"
+          },
+          "answerText": "The building is tall.",
+          "accepted": [
+            "The building is a tall building."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-say-1-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "building-descriptions-say-2",
+          "prompt": "Describe these buildings.",
+          "instruction": "The buildings …",
+          "scene": {
+            "kind": "word-card",
+            "text": "3 buildings / all short",
+            "heading": "Fact card"
+          },
+          "answerText": "The buildings are short.",
+          "accepted": [
+            "The buildings are all short."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-say-2-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "building-descriptions-say-3",
+          "prompt": "Describe this hotel.",
+          "instruction": "The hotel …",
+          "scene": {
+            "kind": "word-card",
+            "text": "1 hotel / old",
+            "heading": "Fact card"
+          },
+          "answerText": "The hotel is old.",
+          "accepted": [
+            "The hotel is an old building."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-building-descriptions-say-3-q.mp3",
+            "answer": "audio/2026-10-02-building-descriptions-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "compare-characters",
+      "title": "Compare two friends",
+      "try": [
+        {
+          "id": "compare-characters-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "How are their pets different?",
+          "instruction": "Start with Mia has a cat. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: cat / Tom: dog",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia has a cat, but Tom has a dog.",
+          "hint": "Talk about Mia first, then Tom.",
+          "explanation": "Use has for each person. But joins the two different facts.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "has"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "cat,"
+            },
+            {
+              "id": "w4",
+              "text": "but"
+            },
+            {
+              "id": "w5",
+              "text": "Tom"
+            },
+            {
+              "id": "w6",
+              "text": "has"
+            },
+            {
+              "id": "w7",
+              "text": "a"
+            },
+            {
+              "id": "w8",
+              "text": "dog"
+            },
+            {
+              "id": "x0",
+              "text": "have"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7",
+              "w8"
+            ],
+            [
+              "w0",
+              "w1",
+              "w7",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w2",
+              "w8"
+            ],
+            [
+              "w0",
+              "w6",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w1",
+              "w7",
+              "w8"
+            ],
+            [
+              "w0",
+              "w6",
+              "w7",
+              "w3",
+              "w4",
+              "w5",
+              "w1",
+              "w2",
+              "w8"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-try-1-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "compare-characters-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now they both have cats.",
+          "instruction": "Start with Mia and Tom. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Mia has a cat. Tom has a dog. / Now: a cat for each friend",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia and Tom have cats.",
+          "hint": "Two people together need have.",
+          "explanation": "Mia and Tom are two people, so use have.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w2",
+              "text": "Tom"
+            },
+            {
+              "id": "w3",
+              "text": "have"
+            },
+            {
+              "id": "w4",
+              "text": "cats"
+            },
+            {
+              "id": "x0",
+              "text": "has"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-try-2-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "compare-characters-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the pet sentence.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: cat",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia has a cat.",
+          "hint": "For one person, use has.",
+          "explanation": "Use has when telling what Mia has.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Mia"
+            },
+            {
+              "id": "w1",
+              "text": "have"
+            },
+            {
+              "id": "w2",
+              "text": "a"
+            },
+            {
+              "id": "w3",
+              "text": "cat."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "is"
+            },
+            {
+              "id": "c1",
+              "text": "has"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-try-3-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "compare-characters-say-1",
+          "prompt": "How are their pets different?",
+          "instruction": "Mia … but Tom …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: cat / Tom: dog",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia has a cat, but Tom has a dog.",
+          "accepted": [
+            "Mia has a pet cat, but Tom has a pet dog."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-say-1-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "compare-characters-say-2",
+          "prompt": "How are their favorite colors different?",
+          "instruction": "Mia's … but Tom's …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Favorite colors / Mia: red / Tom: blue",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia's favorite color is red, but Tom's is blue.",
+          "accepted": [
+            "Mia's favorite color is red, but Tom's favorite color is blue."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-say-2-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "compare-characters-say-3",
+          "prompt": "Tell us about both pets.",
+          "instruction": "Mia … but Tom …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Mia: dog / Tom: cat",
+            "heading": "Fact card"
+          },
+          "answerText": "Mia has a dog, but Tom has a cat.",
+          "accepted": [
+            "Mia has a pet dog, but Tom has a pet cat."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-compare-characters-say-3-q.mp3",
+            "answer": "audio/2026-10-02-compare-characters-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "where-they-live",
+      "title": "Say where they live",
+      "try": [
+        {
+          "id": "where-they-live-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Where does Lina live?",
+          "instruction": "Start with Lina. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lina / small apartment",
+            "heading": "Fact card"
+          },
+          "answerText": "Lina lives in a small apartment.",
+          "hint": "One person needs lives.",
+          "explanation": "Use lives in for one person and a home.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Lina"
+            },
+            {
+              "id": "w1",
+              "text": "lives"
+            },
+            {
+              "id": "w2",
+              "text": "in"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "small"
+            },
+            {
+              "id": "w5",
+              "text": "apartment"
+            },
+            {
+              "id": "x0",
+              "text": "live"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-try-1-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "where-they-live-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now talk about both children.",
+          "instruction": "Start with Lina and Noah. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: Lina lives in a small apartment. / Now: Lina and Noah share this home",
+            "heading": "Fact card"
+          },
+          "answerText": "Lina and Noah live in a small apartment.",
+          "hint": "Two people together need live.",
+          "explanation": "Use live when the subject is Lina and Noah.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "Lina"
+            },
+            {
+              "id": "w1",
+              "text": "and"
+            },
+            {
+              "id": "w2",
+              "text": "Noah"
+            },
+            {
+              "id": "w3",
+              "text": "live"
+            },
+            {
+              "id": "w4",
+              "text": "in"
+            },
+            {
+              "id": "w5",
+              "text": "a"
+            },
+            {
+              "id": "w6",
+              "text": "small"
+            },
+            {
+              "id": "w7",
+              "text": "apartment"
+            },
+            {
+              "id": "x0",
+              "text": "lives"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-try-2-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "where-they-live-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the home sentence.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lina / big house",
+            "heading": "Fact card"
+          },
+          "answerText": "Lina lives in a big house.",
+          "hint": "Lina is one person.",
+          "explanation": "Use lives for Lina.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "Lina"
+            },
+            {
+              "id": "w1",
+              "text": "live"
+            },
+            {
+              "id": "w2",
+              "text": "in"
+            },
+            {
+              "id": "w3",
+              "text": "a"
+            },
+            {
+              "id": "w4",
+              "text": "big"
+            },
+            {
+              "id": "w5",
+              "text": "house."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "lives"
+            },
+            {
+              "id": "c1",
+              "text": "living"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-try-3-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "where-they-live-say-1",
+          "prompt": "Where does Lina live?",
+          "instruction": "Lina …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lina / small apartment",
+            "heading": "Fact card"
+          },
+          "answerText": "Lina lives in a small apartment.",
+          "accepted": [
+            "Lina has a home in a small apartment."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-say-1-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "where-they-live-say-2",
+          "prompt": "What kind of street is her home on?",
+          "instruction": "Lina lives …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Lina / quiet street",
+            "heading": "Fact card"
+          },
+          "answerText": "Lina lives on a quiet street.",
+          "accepted": [
+            "Lina lives in a quiet street."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-say-2-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "where-they-live-say-3",
+          "prompt": "Where does Noah live?",
+          "instruction": "Noah …",
+          "scene": {
+            "kind": "word-card",
+            "text": "Noah / big house",
+            "heading": "Fact card"
+          },
+          "answerText": "Noah lives in a big house.",
+          "accepted": [
+            "Noah has a home in a big house."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-where-they-live-say-3-q.mp3",
+            "answer": "audio/2026-10-02-where-they-live-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "too-for-me",
+      "title": "Say what is a problem",
+      "try": [
+        {
+          "id": "too-for-me-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Why can you not sleep here?",
+          "instruction": "Start with The street. End with for me. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Loud cars all night / I cannot sleep",
+            "heading": "Fact card"
+          },
+          "answerText": "The street is too noisy for me.",
+          "hint": "Too noisy means the noise is a problem.",
+          "explanation": "The noise keeps you awake, so the street is too noisy for you.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "street"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "too"
+            },
+            {
+              "id": "w4",
+              "text": "noisy"
+            },
+            {
+              "id": "w5",
+              "text": "for"
+            },
+            {
+              "id": "w6",
+              "text": "me"
+            },
+            {
+              "id": "x0",
+              "text": "quiet"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-try-1-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "too-for-me-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now the noise is not a problem.",
+          "instruction": "Start with The street. Use too. End with for me. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: The street is too noisy for me. / Now: quiet at night, I sleep well",
+            "heading": "Fact card"
+          },
+          "answerText": "The street is not too noisy for me.",
+          "hint": "Add not to change the meaning.",
+          "explanation": "Not too noisy means the noise is not a problem for you.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "The"
+            },
+            {
+              "id": "w1",
+              "text": "street"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "not"
+            },
+            {
+              "id": "w4",
+              "text": "too"
+            },
+            {
+              "id": "w5",
+              "text": "noisy"
+            },
+            {
+              "id": "w6",
+              "text": "for"
+            },
+            {
+              "id": "w7",
+              "text": "me"
+            },
+            {
+              "id": "x0",
+              "text": "very"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-try-2-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "too-for-me-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the problem word.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Cars move very fast / crossing here is not safe",
+            "heading": "Fact card"
+          },
+          "answerText": "This road is too dangerous for me.",
+          "hint": "Dangerous means not safe.",
+          "explanation": "The road is dangerous because crossing here is not safe.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "This"
+            },
+            {
+              "id": "w1",
+              "text": "road"
+            },
+            {
+              "id": "w2",
+              "text": "is"
+            },
+            {
+              "id": "w3",
+              "text": "too"
+            },
+            {
+              "id": "w4",
+              "text": "boring"
+            },
+            {
+              "id": "w5",
+              "text": "for"
+            },
+            {
+              "id": "w6",
+              "text": "me."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "quiet"
+            },
+            {
+              "id": "c1",
+              "text": "dangerous"
+            }
+          ],
+          "answer": {
+            "wordId": "w4",
+            "choiceId": "c1"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-try-3-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "too-for-me-say-1",
+          "prompt": "Why can you not sleep here?",
+          "instruction": "It is too … for me.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Loud cars all night / I cannot sleep",
+            "heading": "Fact card"
+          },
+          "answerText": "It is too noisy for me.",
+          "accepted": [
+            "It is too loud for me."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-say-1-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "too-for-me-say-2",
+          "prompt": "Why do you want a different game?",
+          "instruction": "It is too … for me.",
+          "scene": {
+            "kind": "word-card",
+            "text": "This game: nothing happens / I feel bored",
+            "heading": "Fact card"
+          },
+          "answerText": "It is too boring for me.",
+          "accepted": [
+            "It is too dull for me."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-say-2-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "too-for-me-say-3",
+          "prompt": "Why can you not cross here?",
+          "instruction": "It is too … for me.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Cars move very fast / crossing here is not safe",
+            "heading": "Fact card"
+          },
+          "answerText": "It is too dangerous for me.",
+          "accepted": [
+            "It is too unsafe for me."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-too-for-me-say-3-q.mp3",
+            "answer": "audio/2026-10-02-too-for-me-say-3-a.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "food-likes",
+      "title": "Tell what you like",
+      "try": [
+        {
+          "id": "food-likes-try-1",
+          "stage": "build",
+          "type": "order",
+          "prompt": "Tell us both food choices.",
+          "instruction": "Start with I like apples. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I like: apples / I do not like: cheese",
+            "heading": "Fact card"
+          },
+          "answerText": "I like apples, but I don't like cheese.",
+          "hint": "Use but to join the different choices.",
+          "explanation": "Use like for the food you enjoy and do not like for the other food.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "like"
+            },
+            {
+              "id": "w2",
+              "text": "apples,"
+            },
+            {
+              "id": "w3",
+              "text": "but"
+            },
+            {
+              "id": "w4",
+              "text": "I"
+            },
+            {
+              "id": "w5",
+              "text": "don't"
+            },
+            {
+              "id": "w6",
+              "text": "like"
+            },
+            {
+              "id": "w7",
+              "text": "cheese"
+            },
+            {
+              "id": "x0",
+              "text": "doesn't"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w0",
+              "w6",
+              "w2",
+              "w3",
+              "w4",
+              "w5",
+              "w1",
+              "w7"
+            ],
+            [
+              "w4",
+              "w1",
+              "w2",
+              "w3",
+              "w0",
+              "w5",
+              "w6",
+              "w7"
+            ],
+            [
+              "w4",
+              "w6",
+              "w2",
+              "w3",
+              "w0",
+              "w5",
+              "w1",
+              "w7"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-try-1-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-try-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-likes-try-2",
+          "stage": "change",
+          "type": "order",
+          "prompt": "Now say no to cheese.",
+          "instruction": "Start with I. One word stays.",
+          "scene": {
+            "kind": "word-card",
+            "text": "Before: I like cheese. / Now: cheese is not a food I enjoy",
+            "heading": "Fact card"
+          },
+          "answerText": "I don't like cheese.",
+          "hint": "Use don't before like.",
+          "explanation": "Don't means do not. Use don't like for a food you do not enjoy.",
+          "tokens": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "don't"
+            },
+            {
+              "id": "w2",
+              "text": "like"
+            },
+            {
+              "id": "w3",
+              "text": "cheese"
+            },
+            {
+              "id": "x0",
+              "text": "likes"
+            }
+          ],
+          "acceptedOrders": [
+            [
+              "w0",
+              "w1",
+              "w2",
+              "w3"
+            ]
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-try-2-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-try-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-likes-try-3",
+          "stage": "fix",
+          "type": "repair",
+          "prompt": "Fix the food sentence.",
+          "instruction": "Tap the mistake. Choose a word.",
+          "scene": {
+            "kind": "word-card",
+            "text": "I do not enjoy corn",
+            "heading": "Fact card"
+          },
+          "answerText": "I don't like corn.",
+          "hint": "Use do with I.",
+          "explanation": "Use do not, not does not, with I.",
+          "sentence": [
+            {
+              "id": "w0",
+              "text": "I"
+            },
+            {
+              "id": "w1",
+              "text": "doesn't"
+            },
+            {
+              "id": "w2",
+              "text": "like"
+            },
+            {
+              "id": "w3",
+              "text": "corn."
+            }
+          ],
+          "choices": [
+            {
+              "id": "c0",
+              "text": "don't"
+            },
+            {
+              "id": "c1",
+              "text": "isn't"
+            }
+          ],
+          "answer": {
+            "wordId": "w1",
+            "choiceId": "c0"
+          },
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-try-3-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-try-3-a.mp3"
+          }
+        }
+      ],
+      "say": [
+        {
+          "id": "food-likes-say-1",
+          "prompt": "Tell us both food choices.",
+          "instruction": "I like … but I don't like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "I like: apples / I do not like: cheese",
+            "heading": "Fact card"
+          },
+          "answerText": "I like apples, but I don't like cheese.",
+          "accepted": [
+            "I like apples, but I do not like cheese."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-say-1-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-say-1-a.mp3"
+          }
+        },
+        {
+          "id": "food-likes-say-2",
+          "prompt": "Tell us both food choices.",
+          "instruction": "I like … but I don't like …",
+          "scene": {
+            "kind": "word-card",
+            "text": "I like: cookies / I do not like: corn",
+            "heading": "Fact card"
+          },
+          "answerText": "I like cookies, but I don't like corn.",
+          "accepted": [
+            "I like cookies, but I do not like corn."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-say-2-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-say-2-a.mp3"
+          }
+        },
+        {
+          "id": "food-likes-say-3",
+          "prompt": "What food do you not like?",
+          "instruction": "I don't …",
+          "scene": {
+            "kind": "word-card",
+            "text": "I do not enjoy cheese",
+            "heading": "Fact card"
+          },
+          "answerText": "I don't like cheese.",
+          "accepted": [
+            "I do not like cheese."
+          ],
+          "audio": {
+            "question": "audio/2026-10-02-food-likes-say-3-q.mp3",
+            "answer": "audio/2026-10-02-food-likes-say-3-a.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [Native Camp 2026-10-02 Denny](learning-tasks/nativecamp-2026-10-02/) | 城鄉、地點、比較與完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-10-02) |
 | [Native Camp 2026-09-30 Edon](learning-tasks/nativecamp-2026-09-30/) | 顏色、名詞分類、邀請與預測主題 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-30) |
 | [Native Camp 2026-09-29 Zibuyile](learning-tasks/nativecamp-2026-09-29/) | 互相幫助、禮貌與社區工作者 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-29) |
 | [Native Camp 2026-09-28 Alex](learning-tasks/nativecamp-2026-09-28/) | 動物分類、特徵與完整句分步練習 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-28) |
