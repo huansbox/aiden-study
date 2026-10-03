@@ -182,6 +182,47 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
     assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
 
 
+def test_social_unit_22_text_choice_and_true_false_require_completed_review(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 11
+    for index, (adaptation, answer, options) in enumerate((
+        ("multiple_choice", "2", ["東", "西", "南", "北"]),
+        ("true_false", "true", []),
+    ), 1):
+        app_id = f"social-g4s1-synthetic-{index}-v1"
+        practice_id = f"S1-SYNTHETIC-{index}"
+        common = {"practiceId": practice_id, "originalId": f"synthetic-{index}", "paperId": "synthetic-paper",
+                  "questionPage": 1, "answerPage": 2, "concept": "Synthetic social concept",
+                  "sourceAdaptation": "Synthetic text adaptation",
+                  "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED}
+        question = {"id": app_id, "subject": "social", "unit": 22, "type": adaptation,
+                    "text": f"Synthetic social question {index}?", "subtopic": "地圖與位置",
+                    "options": options, "answer": answer}
+        curated["items"].append({**{key: common[key] for key in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                                 "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
+        metadata["items"].append({**common, "appId": app_id, "unit": 22, "contextPolicy": "Synthetic text only",
+                                  "digitalAdaptation": adaptation})
+        explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    pack = build_pack(*_paths(tmp_path / "valid", values))
+    assert [q["subject"] for q in pack["questions"][-2:]] == ["social", "social"]
+    assert [q["unit"] for q in pack["questions"][-2:]] == [22, 22]
+
+    def rejects(label, change):
+        broken = copy.deepcopy(values)
+        change(broken[0], broken[2])
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / label, broken))
+
+    rejects("unit23", lambda c, m: (c["items"][-1]["question"].update(unit=23), m["items"][-1].update(unit=23)))
+    rejects("pending", lambda c, m: (c["items"][-1].update(verification="pending"), m["items"][-1].update(reviewStatus="pending")))
+    rejects("grouped", lambda c, m: m["items"][-1].update(digitalAdaptation="grouped_choice"))
+    rejects("fill", lambda c, m: m["items"][-1].update(digitalAdaptation="fill_in_blank:number"))
+    rejects("material", lambda c, m: c["items"][-1]["question"].update(material={"kind": "table", "caption": "Synthetic", "columns": ["A", "B"], "rows": [["1", "2"]]}))
+    rejects("bad-truth", lambda c, m: c["items"][-1]["question"].update(options=["O", "X"]))
+
+
 def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:
     def chunk(kind: bytes, data: bytes) -> bytes:
         return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")

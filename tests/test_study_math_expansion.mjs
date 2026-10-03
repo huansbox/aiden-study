@@ -27,7 +27,7 @@ test("six-question cache upgrades to fourteen activities with chapter counts, or
     assert.equal(e.st.getItem(progressKey), before);
     assert.equal(e.app.State.doneCount(15), done);
     assert.match(e.node("page-home").innerHTML, new RegExp(`已答對 ${done} / 7`));
-    assert.match(e.node("page-home").innerHTML, /四上數學 14 題、自然 0 題，版本 2/);
+    assert.match(e.node("page-home").innerHTML, /四上數學 14 題、自然 0 題、社會 0 題，版本 2/);
     assert.deepEqual([15,16,17,18,19].map(unit => e.app.activePack.questions.filter(q => q.unit === unit).length), [7,2,2,1,2]);
     e = await boot(e.st);
     e.app.startQuiz("full", 15);

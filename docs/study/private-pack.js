@@ -4,8 +4,8 @@
   const KEY = "study:private-pack:g4-s1-math-u1";
   const MAX_BYTES = 256 * 1024;
   const IDS = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(id => `math-g4s1-${id}-v1`);
-  const UNITS = [15, 16, 17, 18, 19, 20, 21];
-  const ID_RE = /^(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
+  const UNITS = [15, 16, 17, 18, 19, 20, 21, 22];
+  const ID_RE = /^(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
   const object = x => x !== null && typeof x === "object" && !Array.isArray(x);
   const text = x => typeof x === "string" && x.trim().length > 0;
   const boundedText = (x, limit) => text(x) && Array.from(x).length <= limit;
@@ -102,7 +102,7 @@
       if (q.type === "fill_in_blank") fields.push("blanks");
       if (q.type === "grouped_choice") fields.push("parts");
       if (Object.hasOwn(q, "material")) fields.push("material");
-      const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : [];
+      const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : q.subject === "social" ? [22] : [];
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (Object.hasOwn(q, "material")) {
@@ -112,7 +112,7 @@
       if (q.type === "multiple_choice") {
         if (q.options.length !== 4 || !q.options.every(text) || !/^[1-4]$/.test(q.answer) || typeof q.answer !== "string") throw new Error("選擇題需四個選項與 1–4 字串答案。");
       } else if (q.type === "true_false") {
-        if (q.subject !== "science" || q.options.length || !["true", "false"].includes(q.answer)) throw new Error("是非題需空選項與 true/false 字串答案。");
+        if (!["science", "social"].includes(q.subject) || q.options.length || !["true", "false"].includes(q.answer)) throw new Error("是非題需空選項與 true/false 字串答案。");
       } else if (q.type === "grouped_choice") {
         if (q.subject !== "science" || q.options.length < 2 || q.options.length > 4 || !q.options.every(x => boundedText(x, 300)) ||
             !Array.isArray(q.parts) || q.parts.length < 2 || q.parts.length > 8 ||

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-03",
+  "task": "grade4-sem1-social-exam1",
+  "target": {
+    "school": "新北市立桃子腳國民中小學國小部",
+    "academic_year": 115,
+    "grade": 4,
+    "semester": 1,
+    "subject": "社會",
+    "publisher": "康軒",
+    "publisher_evidence_url": "https://www.tykjh.ntpc.edu.tw/p/426-1000-71.php",
+    "formal_exam_range": "unconfirmed"
+  },
+  "school_source_chain": {
+    "school_question_bank": "https://www.tykjh.ntpc.edu.tw/p/426-1000-57.php",
+    "year_112_first_exam_folder": "https://drive.google.com/drive/folders/1fwY3xUEUZd2hD7vDkZkn2cg9el6pVLJk",
+    "year_113_first_exam_folder": "https://drive.google.com/drive/folders/1IeFeej3HglUmNCPwd_Hcl3btfKkRSNet",
+    "year_114_first_exam_folder": "https://drive.google.com/drive/folders/17LhNrCnLdsyC9-7AeCX4TyIyzUaiyg4R",
+    "year_114_social_folder": "https://drive.google.com/drive/folders/1yT7bZvzPzDm7Ee1qXGJMeYjZiwcamY_n"
+  },
+  "papers": [
+    {
+      "paper_id": "tyk112",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "社會",
+      "face_range": "單元1～單元3-1",
+      "publisher": "unknown",
+      "publisher_evidence": "卷面未印出版社；本次未取得112學年度同校四年級社會版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1lEYNweFcpnsKb78nsK_TsJ4_ttxanoqs/view",
+      "question_file": "source/papers/tyk-112-q-g4s1-social-exam1.pdf",
+      "question_pdf": {
+        "pages": 3,
+        "bytes": 475666,
+        "sha256": "38600B77C654B374D022F881609BAA3DE0B241DDDA2D8A7E20EBF3CD5F4271FE",
+        "inspection": "前兩頁為四年級社會題卷，第三頁為附圖；三頁均已渲染核對。"
+      },
+      "answer_source_url": "https://drive.google.com/file/d/1bJ_Cum3vKtSaKaD5xTh_MpAaa6YRLPRa/view",
+      "answer_file": "source/papers/tyk-112-a-g4s1-social-exam1.pdf",
+      "answer_identity": "同一校方112上第1次資料夾，檔名標示四年級社會期中答案卷；卷面與題卷前兩頁對應，紅筆標答。",
+      "answer_pdf": {
+        "pages": 2,
+        "bytes": 671708,
+        "sha256": "89397BB4738D3DB907BB54A6040654106D002112D740F7B1CE14FD7897A2244E",
+        "inspection": "兩頁均已渲染核對來源身分與題卷版面；未逐題驗算標答。"
+      }
+    },
+    {
+      "paper_id": "tyk113",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "社會",
+      "face_range": "單元1～單元2",
+      "publisher": "unknown",
+      "publisher_evidence": "卷面未印出版社；本次未取得113學年度同校四年級社會版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1iTLTKo544tAp7plS44gwc6iPmSbeEzD4/view",
+      "question_file": "source/papers/tyk-113-q-g4s1-social-exam1.pdf",
+      "question_pdf": {
+        "pages": 5,
+        "bytes": 809607,
+        "sha256": "7B176168C2F71AC3DADF5EBAF405E2610384791412F9107076E7281EAFC3350A",
+        "inspection": "四頁為題卷，第五頁近乎空白、只有續頁文字；五頁均已渲染核對。"
+      },
+      "answer_source_url": "https://drive.google.com/file/d/1ehZgMwAM5Cl5wgKRKEl3Wu467DVZ7i1s/view",
+      "answer_file": "source/papers/tyk-113-a-g4s1-social-exam1.pdf",
+      "answer_identity": "同一校方113上第1次資料夾，檔名標示四年級社會期中考解答；四頁掃描版與題卷前四頁對應，紅筆標答。",
+      "answer_pdf": {
+        "pages": 4,
+        "bytes": 5342495,
+        "sha256": "65CF100F8F4B034EB51DE6AC1771F35FCCB0A253678C64F8316ADE3B61EDD036",
+        "inspection": "四頁皆已渲染核對來源身分及與題卷對應；掃描頁側轉，讀答案時需轉正並放大；未逐題驗算標答。"
+      }
+    },
+    {
+      "paper_id": "tyk114",
+      "school": "新北市立桃子腳國民中小學國小部",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam_period": "第1次定期評量",
+      "subject": "社會",
+      "face_range": "單元1、單元2、單元6",
+      "publisher": "unknown",
+      "publisher_evidence": "卷面未印出版社；本次未取得114學年度同校四年級社會版本表。",
+      "question_source_url": "https://drive.google.com/file/d/1gezSkbve8OhMTR4P2jLHa3H0VZuBF5pJ/view",
+      "question_file": "source/papers/tyk-114-q-g4s1-social-exam1.pdf",
+      "question_pdf": {
+        "pages": 5,
+        "bytes": 884651,
+        "sha256": "03FBCE9B03F22D3DEA1EBD81DAD42A5AADD98875F94BA550B6DAAD58C700CF6D",
+        "inspection": "前四頁為題卷，第五頁是空白作答卷；五頁均已渲染核對。"
+      },
+      "answer_source_url": null,
+      "answer_file": null,
+      "answer_identity": "校方114上第1次社會資料夾公開列出題卷，未見對應官方答案；題卷附的空白作答卷不是答案。",
+      "answer_pdf": null
+    }
+  ],
+  "collection_limit": "本輪僅桃子腳112、113、114三份題卷；兩份同校官方答案。歷年卷面單元號不等於115學年度康軒新版單元或正式評量範圍。",
+  "private_boundary": "原題、官方答案PDF、OCR與渲染頁圖只在受ignore保護的source/papers/與source/private/；公開metadata不含題文、選項、答案、解說或原圖。"
+}

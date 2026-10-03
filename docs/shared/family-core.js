@@ -13,7 +13,7 @@
   const TERMS = ["g3-s2", "g4-s1"];
   const SUBJECTS = {
     math: { title: "數學", mark: "＋−", terms: ["g4-s1", "g3-s2"] },
-    social: { title: "社會", mark: "世", terms: ["g3-s2"] },
+    social: { title: "社會", mark: "世", terms: ["g4-s1", "g3-s2"] },
     science: { title: "自然", mark: "葉", terms: ["g4-s1", "g3-s2"] },
     chinese: { title: "國語", mark: "文", terms: ["g3-s2"] },
   };
@@ -92,7 +92,7 @@
       throw Error("任務格式不正確");
     const out = { id: task.id, app: task.app, quantity: task.quantity };
     if (task.app === "study") {
-      if (!integer(task.unit, 1, 21)) throw Error("請選擇題庫單元");
+      if (!integer(task.unit, 1, 22)) throw Error("請選擇題庫單元");
       out.unit = task.unit;
     }
     if (task.app === "spelling") {
@@ -267,14 +267,18 @@
   }
   function taskEntryId(task) {
     if (task.app !== "study") return task.app;
+    if (task.unit == null) return "study:chinese"; // 保留舊 generic record 的既有歸屬。
     const subject =
       (task.unit >= 15 && task.unit <= 19) || (task.unit >= 5 && task.unit <= 9)
         ? "math"
         : task.unit <= 4 || task.unit === 20 || task.unit === 21
           ? "science"
-          : task.unit <= 12
+          : (task.unit >= 10 && task.unit <= 12) || task.unit === 22
             ? "social"
-            : "chinese";
+            : task.unit === 13 || task.unit === 14
+              ? "chinese"
+              : null;
+    if (!subject) throw Error("請選擇題庫單元");
     return "study:" + subject;
   }
   function homeEntries(settings, child, registry) {
@@ -350,7 +354,7 @@
   }
   function taskLabel(task) {
     if (task.app === "study")
-      return `第 ${task.unit >= 20 ? task.unit - 19 : task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
+      return `第 ${task.unit === 22 ? 1 : task.unit >= 20 ? task.unit - 19 : task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
     if (task.app === "spelling")
       return `第 ${task.batch + 1} 組 · ${task.quantity} 個字`;
     if (task.app === "zhuyin")

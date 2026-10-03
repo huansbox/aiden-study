@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/154",
+  "sourceTask": "learning-tasks/grade4-sem1-social-exam1",
+  "countUnit": "complete_activity",
+  "status": "reviewed_pending_release",
+  "baseline": {
+    "revision": 10,
+    "packCount": 108,
+    "mathActivities": 68,
+    "scienceActivities": 40,
+    "packBytes": 186717
+  },
+  "revision": 11,
+  "total": 19,
+  "byUnit": {
+    "22": 19
+  },
+  "byFormat": {
+    "multiple_choice": 9,
+    "true_false": 10
+  },
+  "items": [
+    {
+      "appId": "social-g4s1-tyk112-I-01-v1",
+      "practiceId": "SOC1-N001",
+      "originalId": "tyk112-I-01",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-I-02-v1",
+      "practiceId": "SOC1-N002",
+      "originalId": "tyk112-I-02",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-I-03-v1",
+      "practiceId": "SOC1-N003",
+      "originalId": "tyk112-I-03",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-I-04-v1",
+      "practiceId": "SOC1-N004",
+      "originalId": "tyk112-I-04",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-I-08-v1",
+      "practiceId": "SOC1-N005",
+      "originalId": "tyk112-I-08",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-I-09-v1",
+      "practiceId": "SOC1-N006",
+      "originalId": "tyk112-I-09",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-I-01-v1",
+      "practiceId": "SOC1-N007",
+      "originalId": "tyk113-I-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-I-02-v1",
+      "practiceId": "SOC1-N008",
+      "originalId": "tyk113-I-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-I-04-v1",
+      "practiceId": "SOC1-N009",
+      "originalId": "tyk113-I-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-I-05-v1",
+      "practiceId": "SOC1-N010",
+      "originalId": "tyk113-I-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-I-06-v1",
+      "practiceId": "SOC1-N011",
+      "originalId": "tyk113-I-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-II-01-v1",
+      "practiceId": "SOC1-N012",
+      "originalId": "tyk113-II-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-II-02-v1",
+      "practiceId": "SOC1-N013",
+      "originalId": "tyk113-II-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-II-05-v1",
+      "practiceId": "SOC1-N014",
+      "originalId": "tyk113-II-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VII-01-v1",
+      "practiceId": "SOC1-N015",
+      "originalId": "tyk113-VII-01",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VII-02-v1",
+      "practiceId": "SOC1-N016",
+      "originalId": "tyk113-VII-02",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VII-03-v1",
+      "practiceId": "SOC1-N017",
+      "originalId": "tyk113-VII-03",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VII-04-v1",
+      "practiceId": "SOC1-N018",
+      "originalId": "tyk113-VII-04",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VII-05-v1",
+      "practiceId": "SOC1-N019",
+      "originalId": "tyk113-VII-05",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    }
+  ]
+}

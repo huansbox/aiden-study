@@ -10,8 +10,10 @@
     [19, "第 5 單元：公里"],
     [20, "第 1 單元：地表的靜與動"],
     [21, "第 2 單元：水生生物與環境"],
+    [22, "第 1 單元：家鄉的自然環境"],
   ]);
-  const SUBJECTS = new Map([["math", "數學"], ["science", "自然"]]);
+  const SUBJECTS = new Map([["math", "數學"], ["science", "自然"], ["social", "社會"]]);
+  const SUBJECT_UNITS = { math: [15, 16, 17, 18, 19], science: [20, 21], social: [22] };
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const childFrom = (search) => {
     const child = new URLSearchParams(search || "").get("child");
@@ -56,7 +58,7 @@
     if (!host) throw Error("找不到試玩頁容器。");
     let pack = initialPack;
     const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
-    const unitsForSubject = () => StudyPrivatePack.UNITS.filter((unit) => state.subject === "science" ? unit >= 20 : unit <= 19);
+    const unitsForSubject = () => SUBJECT_UNITS[state.subject].filter((unit) => StudyPrivatePack.UNITS.includes(unit));
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
     const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic));
     const current = () => filtered()[state.questionIndex] || null;

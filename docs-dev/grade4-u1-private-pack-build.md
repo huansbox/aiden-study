@@ -1,5 +1,7 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
+[#154 社會首批](grade4-social-study-first-batch.md)正在接入同一題包，新增 `subject: social`、unit 22「家鄉的自然環境」的純文字四選一／是非。候選核對與介面實作不等於正式發布；下方已發布基線仍以管理端讀回為準。社會題採自己的 stable ID，保留既有數學／自然內容與進度，數學題型報表明確排除社會。
+
 [#151 角度看圖題](grade4-math-angle-batch.md)的 revision 10 已正式發布：全包 108 題（數學 68／自然 40）、186,717 bytes、SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`，現行 256 KiB 上限下尚餘 75,427 bytes。正式 KV 的兩階段讀回相隔 99.128 秒，均與核准指紋相同；PR、Worker version、驗證及封存見本批紀錄。先前 [#148 數學文字補題](grade4-math-text-batch.md)發布 revision 9：104 題（數學 64／自然 40）、135,176 bytes、SHA256 `b1817152bd4b8ea067de7d8d9cb663870c9a836072dabd9675a113dcb399d346`。
 
 歷史基線：[#134 自然第四批](grade4-science-study-fourth-batch.md)隨 revision 8 正式發布 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；當時以 rev8 計算尚餘 131,896 bytes，該次只改容量上限，沒有重建或重新發布題包，也沒有改孩子進度。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
@@ -15,7 +17,7 @@
 - mapping 的 `sourceTask/sourceMapping` 保留原六題紙本 task 入口，僅表示 legacy provenance，不宣稱新八題也出自該紙本。新題由 row 的 paperId/originalId/題答頁追溯八卷來源；新增收錄集合由核准 mapping 決定。
 - curated row 仍為 `practiceId/originalId/paperId/questionPage/answerPage/concept/adaptation/verification/question`。`question.unit` 對 mapping.unit，question.id 對 appId；adaptation 對 sourceAdaptation，verification 對 reviewStatus，其餘來源欄位也需精確一致。source 仍由 builder 產生，原六題 source 字串不變。
 - `questionPage` 固定為正整數。有官方答案時 `answerPage` 也必須是正整數；只有官方答案確實未取得、作者與 fresh reviewer 已各自獨立解題一致，且 mapping `reviewStatus`／curated `verification` 精確為 `independently_solved_twice_no_official_answer` 時，兩邊 `answerPage` 才可同為 `null`。作者階段或其他 status 的 null 會被 builder 拒絕；不得填假答案頁，也不得用範圍狀態冒充答案審查。
-- 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。其他題型與媒體須依下方 #119 的限定契約明確加入。
+- 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。#154 社會 unit 22 只收純文字 `multiple_choice`／`true_false`，mapping／curated 也必須通過與自然相同的完整核答狀態要求，不支援其他社會單元或媒體。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。其他題型與媒體須依下方 #119 的限定契約明確加入。
 - #119 的新自然題可使用受限 `material`；#151 僅讓數學 `unit: 17` 使用同一個 `png` 契約，不開放其他數學 unit 或 `table`。`png` 僅限題包內 canonical PNG data URI，解碼後最多 32 KiB、寬高各 1～1600；`table` 僅限自然題的純文字 caption／columns／rows、2～8 欄與 1～16 列。文字上限以 Unicode code points 計：caption 300、欄名 80、儲存格 240、PNG alt 200。圖片與表格都留在私人題包，不放公開 assets；內容必須經來源等價與清晰度覆核。#151 圖片由原卷 PDF 直接裁切，題文仍採現有四選一、數字或比較符號輸入，不加入 raw SVG、作圖或互動量角器。
 - #119 的 `grouped_choice` 僅限自然：`options` 是整組共用的 2～4 個選項（每項最多 300 code points），`parts` 是 2～8 個 `{id,text}`（id 組內唯一、1～32 位英數／連字號；text 最多 600 code points）；`answer` 是按 parts 順序排列的 1-based 選項索引字串。每格可以重複選同一選項。整組全部填齊後送出，一個 q.id 只算一個 activity。缺少共同選項池的原題不硬轉此格式。
 - Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 256 KiB，不另設任意總題數上限。

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
-import { syntheticPack, scienceSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, scienceSyntheticPack, socialSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
@@ -108,7 +108,7 @@ test("scopes isolate error pool, reset and flags; unit numbers remain unique", a
   const saved = JSON.stringify(e.app.state); e.window._startFull(15); assert.equal(JSON.stringify(e.app.state),saved);
   assert.ok(e.app.Picker.forErrorPractice([5,6,7,8,9]).every(id => !ids.includes(id)));
   const units=Object.values(e.app.STUDY_TERMS).flatMap(t=>Object.values(t.subjects).flatMap(s=>Object.values(s.semesters).flatMap(s=>s.units.map(u=>u.id))));
-  assert.equal(new Set(units).size,21); assert.equal(units.length,21);
+  assert.equal(new Set(units).size,22); assert.equal(units.length,22);
   assert.deepEqual([15,16,17,18,19].map(u => e.app.unitNum(u)), [1,2,3,4,5]);
 });
 test("invalid imports and quota failures atomically retain active pack, indices and persisted progress", async () => {
@@ -187,6 +187,60 @@ test("science rev5 appends units 20/21, accepts true_false, preserves math progr
   invalid(q => { q.options = ["O", "X"]; });
   invalid(q => { q.blanks = []; });
 });
+test("social unit 22 keeps rev10 math/science progress and permits only text choice or true_false", async () => {
+  const e = await ready();
+  const old = scienceSyntheticPack(); old.revision = 10;
+  e.app.importPrivatePack(JSON.stringify(old));
+  e.app.State.addMastered(15, ids[0]);
+  e.app.State.saveBatch("15", [ids[1], ids[2]]);
+  const before = plain({ mastered: e.app.state.mastered[15], batch: e.app.state.challenge[15] });
+  const pack = socialSyntheticPack();
+  e.app.importPrivatePack(JSON.stringify(pack));
+  assert.equal(e.app.activePack.revision, 11);
+  assert.equal(e.app.activePack.questions.length, 11);
+  assert.deepEqual(plain({ mastered: e.app.state.mastered[15], batch: e.app.state.challenge[15] }), before);
+  e.app.State.setSubject("social");
+  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [22]);
+  e.window._goHome();
+  const home = e.node("page-home").innerHTML;
+  assert.match(home, /家鄉的自然環境/);
+  assert.match(home, /社會第 1 單元 3 題/);
+  for (const topic of ["地圖與位置", "地形與生活", "氣候與水資源"]) assert.match(home, new RegExp(topic));
+  const invalid = (mutate) => { const changed = socialSyntheticPack(); mutate(changed.questions[8]); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed))); };
+  invalid(q => { q.unit = 23; });
+  invalid(q => { q.subject = "science"; });
+  invalid(q => { q.material = { kind: "table", caption: "合成", columns: ["甲", "乙"], rows: [["一", "二"]] }; });
+  invalid(q => { q.type = "grouped_choice"; q.parts = [{ id: "A", text: "甲" }, { id: "B", text: "乙" }]; q.answer = "12"; });
+  invalid(q => { q.options.pop(); });
+  const truth = socialSyntheticPack(); truth.questions[9].options = ["O", "X"];
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(truth)));
+  const changed = socialSyntheticPack(); changed.revision = 12; changed.questions[8].subtopic = "其他主題";
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed), [], pack), /相同 ID/);
+});
+
+test("social wrong answer survives reload and family reward appears only at batch end", async () => {
+  const events = { records: 0, finishes: 0 };
+  const family = { ...familyFor(["g4-s1"]), beginRound() {}, record() { events.records++; }, finishRound() { events.finishes++; } };
+  let e = await boot(storage(), "aiden", { search: "?child=aiden&subject=social&term=g4-s1", family });
+  const pack = socialSyntheticPack(), q = pack.questions[9];
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.saveBatch("22", [q.id]);
+  e.app.startQuiz("full", 22);
+  e.app.submitAnswer("false");
+  assert.equal(events.records, 1);
+  assert.equal(events.finishes, 0);
+  assert.equal(e.app.State.doneCount(22), 0);
+  e = await boot(e.st, "aiden", { search: "?child=aiden&subject=social&term=g4-s1", family });
+  e.app.startQuiz("full", 22);
+  assert.deepEqual(plain(e.app.quiz.queue), [q.id]);
+  e.app.submitAnswer("true");
+  assert.equal(events.records, 2);
+  assert.equal(events.finishes, 0);
+  assert.equal(e.app.State.doneCount(22), 1);
+  e.app.advance();
+  assert.equal(events.finishes, 1);
+});
+
 test("grouped science activity validates bounded material and immutable parts", async () => {
   const e = await boot();
   const pack = groupedSyntheticPack();

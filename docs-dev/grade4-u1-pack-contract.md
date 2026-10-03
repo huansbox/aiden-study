@@ -1,6 +1,18 @@
 # 四上數學私用題包契約（歷史 U1 識別碼）
 
-2026-09-15 更新；原六題基線來自已結案 #55／#56，#59 追加 U1～U5 文字題。實際 validator 為 `docs/study/private-pack.js`，private builder 須產出能通過它的 JSON。本文件與合成 fixture 均不含原卷題文、答案或解說。文末 2026-09-12 QA 為歷史證據，不代表 #59 已發布。
+原六題基線來自已結案 #55／#56，#59 追加 U1～U5 文字題。實際 validator 為 `docs/study/private-pack.js`，private builder 須產出能通過它的 JSON。本文件與合成 fixture 均不含原卷題文、答案或解說。下方早期六題／十四題 QA 為歷史證據；現在的跨科支援以下表及[重建入口](grade4-u1-private-pack-build.md)為準。
+
+## 跨科範圍（2026-10-03）
+
+packId 保留歷史名稱，`id` 的科目前綴必須與 `subject` 及單元一致，格式為 `^(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$`。
+
+| 科目 | 內部 unit | 可用題型與媒體 |
+| --- | --- | --- |
+| `math` | 15～19 | 四選一、數字／比較符號填空；只有 unit 17 可附 PNG |
+| `science` | 20、21 | 四選一、是非、grouped_choice；可附受限 PNG／文字表格 |
+| `social` | 22 | 首批只有純文字四選一／是非，不開放其他單元、填空、題組或媒體 |
+
+社會首批契約見 [#154](grade4-social-study-first-batch.md)。是非題使用 `options: []`、字串 `answer: "true"` 或 `"false"`。媒體、題組限制與答案覆核狀態見重建入口。全包仍為 schemaVersion 1、最多 256 KiB，原六題及既有 stable ID 語意不得改寫；正式內容是否發布另依各批次讀回紀錄。下表的固定 `math` 欄位描述原六題，不排除本節已列明的自然與社會。
 
 ## JSON 格式
 

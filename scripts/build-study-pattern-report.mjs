@@ -19,6 +19,7 @@ const MERGED_SOURCE_UNITS = {
 };
 const requireThat = (condition, message) => { if (!condition) throw Error(message); };
 const nonempty = value => typeof value === "string" && value.trim().length > 0;
+const isMath = id => typeof id === "string" && id.startsWith("math-g4s1-");
 const md = value => String(value).replace(/[|<>]/g, "\\$&").replace(/\r?\n/g, " ");
 function uniqueMap(items, key, label) {
   requireThat(Array.isArray(items), `${label} 必須是陣列`);
@@ -54,7 +55,7 @@ export function summarize(classification, mapping, sourceDocuments) {
   }
   const patterns = uniqueMap(classification.patterns, "id", "pattern");
   const items = uniqueMap(classification.assignments, "appId", "assignment");
-  const mapped = uniqueMap(mapping.items.filter(row => !row.appId.startsWith("science-g4s1-")), "appId", "mapping");
+  const mapped = uniqueMap(mapping.items.filter(row => isMath(row.appId)), "appId", "mapping");
   sameIds(items, mapped, "assignment／mapping");
   const concepts = new Map();
   for (const pattern of patterns.values()) {
@@ -123,10 +124,10 @@ export function verifyPack(bytes, classification, mapping) {
     sameIds(allQuestions, allMapping, "私有題包／mapping");
     for (const [id, question] of allQuestions) requireThat(question.unit === allMapping.get(id).unit, "私有題包 unit 與 mapping 不一致");
   }
-  const questions = uniqueMap(pack.questions.filter(row => !row.id.startsWith("science-g4s1-")), "id", "私有題包");
+  const questions = uniqueMap(pack.questions.filter(row => isMath(row.id)), "id", "私有題包");
   const items = uniqueMap(classification.assignments, "appId", "assignment");
   sameIds(questions, items, "私有題包／assignment");
-  const mapped = uniqueMap(mapping.items.filter(row => !row.appId.startsWith("science-g4s1-")), "appId", "mapping");
+  const mapped = uniqueMap(mapping.items.filter(row => isMath(row.appId)), "appId", "mapping");
   sameIds(questions, mapped, "私有題包／mapping");
   for (const [id, question] of questions) requireThat(question.unit === mapped.get(id).unit, "私有題包 unit 與 mapping 不一致");
   if (pack.revision === classification.snapshot.revision)
@@ -137,8 +138,9 @@ export function renderReport(classification, summary, mapping) {
   const released = classification.snapshot.status === "released_documented";
   const count = summary.reduce((n, chapter) => n + chapter.activities, 0);
   const types = summary.reduce((n, chapter) => n + chapter.observedPatterns, 0);
-  const mathCount = mapping?.items.filter(row => row.unit >= 15 && row.unit <= 19).length;
-  const scienceCount = mapping?.items.filter(row => row.unit >= 20 && row.unit <= 21).length;
+  const mathCount = mapping?.items.filter(row => isMath(row.appId)).length;
+  const scienceCount = mapping?.items.filter(row => row.appId.startsWith("science-g4s1-")).length;
+  const socialCount = mapping?.items.filter(row => row.appId.startsWith("social-g4s1-")).length;
   const conceptRows = summary.flatMap(chapter => [...new Set(chapter.rows.map(row => row.conceptId))].map(id => {
     const patterns = chapter.rows.filter(row => row.conceptId === id);
     return `| ${chapter.chapter} | ${md(patterns[0].concept)} | ${patterns.filter(row => row.count > 0).length} | ${patterns.reduce((sum, row) => sum + row.count, 0)} | ${patterns.map(row => `${md(row.label)}：${row.count}`).join("；")} |`;
@@ -146,7 +148,7 @@ export function renderReport(classification, summary, mapping) {
   const lines = ["# 四上數學題型與題數", "",
     `此報告由公開分類與逐題對照產生，請勿手改。快照：rev${classification.snapshot.revision}／${classification.taxonomyVersion}，${count} 個數位 activity、${types} 種本批已辨識模式。`, "",
     released ? `狀態：已發布內容的封存統計；發布依據見[發布紀錄](../${classification.snapshot.evidence})。本腳本不連正式服務，不能當作即時上線查核。` : "狀態：已凍結但尚未發布的候選統計，不能計入已上線題數。", "",
-    ...(mapping ? [`公開 mapping rev${mapping.revision} 共 ${mapping.items.length} 個 activity（數學 ${mathCount}／自然 ${scienceCount}）；本報告只統計數學 ${count} 個 activity，自然題不列入下表。`, ""] : []),
+    ...(mapping ? [`公開 mapping rev${mapping.revision} 共 ${mapping.items.length} 個 activity（數學 ${mathCount}／自然 ${scienceCount}${socialCount ? `／社會 ${socialCount}` : ""}）；本報告只統計數學 ${count} 個 activity，${socialCount ? "自然與社會題" : "自然題"}不列入下表。`, ""] : []),
     ...(classification.historicalSnapshots ?? []).flatMap(historic => [`歷史封存：rev${historic.revision} 數學 ${historic.mathActivities} 個 activity，發布依據見[當時紀錄](../${historic.evidence})；此數字不併入本次題數。`, ""]),
     "一個 activity 就是一個完整作答題組；相依多空只算一次。每題只有一個主要模式，次要概念不重複計數。模式不是選擇／填空介面，也不因只換數字或情境而拆分。", "",
     "以下只說明本批內容覆蓋，不是數學全部題型，也不是孩子的精熟度；沒有讀取孩子作答紀錄。", "",

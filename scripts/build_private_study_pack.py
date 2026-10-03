@@ -32,8 +32,8 @@ PUBLIC_QUESTIONS = ROOT / "docs" / "study" / "questions.json"
 PACK_ID = "g4-s1-math-u1"
 MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
-SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}}
-ID_RE = re.compile(r"(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
+SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}, "social": {22}}
+ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
 ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "true_false", "grouped_choice"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
@@ -187,7 +187,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice"}):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice"}):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -197,8 +197,8 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
                 raise PackBuildError(f"mapping digital adaptation is wrong for {practice_id}")
         for key in ("originalId", "paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
             _require_nonempty(item[key], f"mapping {practice_id} {key}")
-        if subject == "science" and item["reviewStatus"] not in {OFFICIAL_ANSWER_VERIFIED, NO_OFFICIAL_ANSWER_VERIFIED}:
-            raise PackBuildError(f"mapping {practice_id} science answer review is not complete")
+        if subject in {"science", "social"} and item["reviewStatus"] not in {OFFICIAL_ANSWER_VERIFIED, NO_OFFICIAL_ANSWER_VERIFIED}:
+            raise PackBuildError(f"mapping {practice_id} answer review is not complete")
         if type(item["questionPage"]) is not int or item["questionPage"] < 1:
             raise PackBuildError(f"mapping {practice_id} questionPage must be a positive integer")
         answer_page = item["answerPage"]
@@ -325,7 +325,8 @@ def build_pack(
         raise PackBuildError("curated source must contain exactly the approved mapping practice IDs")
     # Stable output regardless of source ordering; legacy baseline keeps its order.
     practice_order = [*EXPECTED, *sorted((pid for pid in metadata if pid not in EXPECTED and metadata[pid]["appId"].startswith("math-"))),
-                      *sorted((pid for pid in metadata if metadata[pid]["appId"].startswith("science-")))]
+                      *sorted((pid for pid in metadata if metadata[pid]["appId"].startswith("science-"))),
+                      *sorted((pid for pid in metadata if metadata[pid]["appId"].startswith("social-")))]
     expected_ids = [metadata[practice_id]["appId"] for practice_id in practice_order]
 
     explanation_source = _read_json(explanations_path)
