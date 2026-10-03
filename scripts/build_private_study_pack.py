@@ -30,7 +30,7 @@ PRIVATE_DIR = ROOT / "data" / "private" / "study" / "g4-s1-math-u1"
 PUBLIC_METADATA = ROOT / "data" / "study" / "g4-s1-math-u1" / "mapping-metadata.json"
 PUBLIC_QUESTIONS = ROOT / "docs" / "study" / "questions.json"
 PACK_ID = "g4-s1-math-u1"
-MAX_BYTES = 128 * 1024
+MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}}
 ID_RE = re.compile(r"(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")

@@ -10,6 +10,14 @@ const contentKey = "c:study:g4-s1-math-u1";
 const cacheKey = "study:private-pack:g4-s1-math-u1";
 const progressKey = "study:progress:test-child";
 const raw = p => JSON.stringify(p || syntheticPack());
+function packAtBytes(size) {
+  const pack = syntheticPack();
+  pack.explanations[ids[0]] = "語";
+  const base = Buffer.byteLength(raw(pack));
+  pack.explanations[ids[0]] += "x".repeat(size - base);
+  assert.equal(Buffer.byteLength(raw(pack)), size);
+  return pack;
+}
 const plain = x => JSON.parse(JSON.stringify(x));
 const flush = async () => { for (let i=0;i<40;i++) await Promise.resolve(); };
 const answer = q => q.blanks ? q.blanks.map(b=>b.answer) : q.answer;
@@ -52,14 +60,35 @@ test("Worker content route: auth, CORS, read-only, fixed pack, no-store, status 
   assert.deepEqual(await status.json(),{keys:[]});
   assert.equal(await kv.get(contentKey),raw()); assert.equal(await kv.get("p:test-child:study"),before);
 });
-test("Worker missing / corrupt / oversized / bad schema / KV exception never return content", async () => {
-  for(const [value,status] of [[null,404],["{private broken",500],["x".repeat(131073),500],[raw({...syntheticPack(),schemaVersion:9}),500]]) {
+test("Worker missing / corrupt / bad schema / KV exception never return content", async () => {
+  for(const [value,status] of [[null,404],["{private broken",500],[raw({...syntheticPack(),schemaVersion:9}),500]]) {
     const KV=kvStub(value===null?{}:{[contentKey]:{value}});
     const res=await worker.fetch(request(),{TOKEN:"test-token",KV});
     assert.equal(res.status,status); assert.ok(!(await res.text()).includes("private broken"));
   }
   const res=await worker.fetch(request(),{TOKEN:"test-token",KV:{get(){throw Error("sensitive upstream");}}});
   assert.equal(res.status,500); assert.deepEqual(await res.json(),{error:"internal"});
+});
+test("Worker serves authorized valid UTF-8 pack at 262144 bytes and rejects 262145 bytes", async () => {
+  for (const [size, status] of [[262144, 200], [262145, 500]]) {
+    const content = raw(packAtBytes(size));
+    const KV = kvStub({ [contentKey]: { value: content } });
+    const env = { TOKEN: "test-token", KV };
+    for (const token of [null, "wrong"]) {
+      const denied = await worker.fetch(request("GET", token), env);
+      assert.equal(denied.status, 401);
+      assert.ok(!(await denied.text()).includes("語"));
+    }
+    const result = await worker.fetch(request(), env);
+    assert.equal(result.status, status);
+    if (status === 200) {
+      assert.equal(result.headers.get("Cache-Control"), "no-store");
+      assert.deepEqual(Buffer.from(await result.arrayBuffer()), Buffer.from(content, "utf8"));
+    } else {
+      assert.deepEqual(await result.json(), { error: "corrupt pack" });
+    }
+    assert.equal(await KV.get(contentKey), content);
+  }
 });
 test("real boot auto-download → two correct one wrong → reload/resume; shared content and isolated progress", async () => {
   const net=network(); let e=await boot(seeded(),"test-child",net); await flush();
@@ -108,13 +137,44 @@ test("network/HTTP/invalid/size/revision/semantic/storage failures keep active c
   const invalid=[];
   for(const [status,hint] of [[401,/金鑰不正確/],[404,/尚未發布/],[500,/服務異常/]]) invalid.push([()=>new Response("",{status}),hint]);
   invalid.push([()=>{throw Error("do not expose upstream token");},/無法連線/]);
-  invalid.push([()=>new Response("{"),/JSON/],[()=>new Response("x".repeat(131073)),/128 KiB/]);
-  invalid.push([()=>new Response(raw(),{headers:{"Content-Length":"131073"}}),/128 KiB/]);
+  invalid.push([()=>new Response("{"),/JSON/],[()=>new Response("x".repeat(262145)),/256 KiB/]);
+  invalid.push([()=>new Response(raw(),{headers:{"Content-Length":"262145"}}),/256 KiB/]);
   for(const [change,hint] of [[p=>p.schemaVersion=9,/版本/],[p=>p.packId="other",/版本/],[p=>p.questions[0].answer="3",/相同 ID/],[p=>p.explanations[ids[0]]+="different",/revision/],[p=>p.revision=1,/較舊/]]) {
     const bad=structuredClone(p);change(bad);invalid.push([()=>new Response(raw(bad)),hint]);
   }
   for(const [fn,hint] of invalid){reply=fn;await e.app.loadPrivatePack();assert.match(e.node("pack-status").textContent,hint);assert.equal(e.app.activePack,original);assert.equal(e.st.getItem(cacheKey),cache);assert.equal(e.st.getItem(progressKey),progress);}
   reply=()=>new Response(raw(p));e.st.fail=k=>k===cacheKey;await e.app.loadPrivatePack();assert.match(e.node("pack-status").textContent,/未保存/);assert.equal(e.app.activePack,original);
+});
+
+test("256 KiB UTF-8 pack parses and downloads; actual stream size wins over absent or low Content-Length", async () => {
+  const maximum = packAtBytes(262144);
+  const tooLarge = packAtBytes(262145);
+  const streamResponse = (pack, headers = {}) => {
+    const bytes = Buffer.from(raw(pack));
+    const unicode = bytes.indexOf(Buffer.from("語"));
+    return new Response(new ReadableStream({ start(controller) {
+      controller.enqueue(bytes.subarray(0, unicode + 1));
+      controller.enqueue(bytes.subarray(unicode + 1));
+      controller.close();
+    } }), { headers });
+  };
+  const e = await boot(seeded(), "test-child", network(() => streamResponse(maximum)));
+  await flush();
+  assert.equal(e.window.StudyPrivatePack.MAX_BYTES, 262144);
+  assert.equal(e.app.activePack.questions.length, 6);
+  assert.equal(Buffer.byteLength(e.st.getItem(cacheKey)), 262144);
+  assert.equal(e.window.StudyPrivatePack.parse(raw(maximum)).questions.length, 6);
+  assert.throws(() => e.window.StudyPrivatePack.parse(raw(tooLarge)), /256 KiB/);
+
+  for (const headers of [{}, { "Content-Length": "1" }]) {
+    const st = seeded(syntheticPack());
+    const before = st.getItem(cacheKey);
+    const loaded = await boot(st, "test-child", network(() => streamResponse(tooLarge, headers)));
+    await flush();
+    assert.match(loaded.node("pack-status").textContent, /256 KiB/);
+    assert.equal(st.getItem(cacheKey), before);
+    assert.equal(loaded.app.activePack.questions.length, 6);
+  }
 });
 test("timeout includes stalled body; retry can supersede an old response without overwriting new cache", async () => {
   const timers=[]; let resolve;

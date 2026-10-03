@@ -554,7 +554,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20260923-science-collection"></script><script src="../shared/collection-core.js?v=20260926-high-speed-trains"></script>
 <script src="../shared/collection-client.js?v=20260923-train-series"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20260923-group-media"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="./private-pack.js?v=20261003-pack-256k"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script src="./science-topics.js?v=20260927-science-fourth-batch"></script>
 <script>
 (function() {
@@ -1635,7 +1635,7 @@ window._importPrivatePackFile = async input => {
   if (!file) return;
   input.disabled = true;
   try {
-    if (file.size > StudyPrivatePack.MAX_BYTES) throw new Error("題包超過 128 KiB，未匯入。");
+    if (file.size > StudyPrivatePack.MAX_BYTES) throw new Error("題包超過 256 KiB，未匯入。");
     importPrivatePack(await file.text());
   } catch (e) {
     packNotice = `未匯入：${e.message || "無法讀取檔案。"} 原題包與進度保留。`;

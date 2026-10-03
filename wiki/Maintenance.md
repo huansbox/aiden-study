@@ -128,7 +128,7 @@ uv run python scripts/build_private_study_pack.py
 node scripts/verify_private_study_pack.mjs <核准 SHA256>
 ```
 
-正式內容只在 ignored 目錄與 KV `c:study:g4-s1-math-u1`；公開 `mapping-metadata.json` 只有 ID、unit 與來源追溯。發布順序＝新版 Worker（若需）→ 合併並讀回 Pages → 一次前向 KV put → 兩階段讀回核對。**pack 上限 128 KiB，rev8 97 題已剩 824 bytes**；下一批前先處理容量，不刪舊題、不放寬契約。契約與步驟見[私用題包重建](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-private-pack-build.md)。
+正式內容只在 ignored 目錄與 KV `c:study:g4-s1-math-u1`；公開 `mapping-metadata.json` 只有 ID、unit 與來源追溯。發布順序＝新版 Worker（若需）→ 合併並讀回 Pages → 一次前向 KV put → 兩階段讀回核對。現行容量決策與發布狀態見 [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)；新增內容前核對目前上限，保留既有題目與進度。契約與步驟見[私用題包重建](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-private-pack-build.md)。
 
 Native Camp 每堂課：來源核對 → `build_lesson.py` 產題包與 speech jobs → `build_openai_audio.py` 製音（固定 model、speed 1.0、課別固定音色、私有 request journal）→ `check_openai_audio.py` ASR 抽查 → 獨立 review → PR。Weekly Review 自 2026-09-26 起只在家長明確要求時製作，heartbeat 保持 PAUSED；不得因看到 SOP 或工具就恢復排程。入口見[共用工具](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/shared/nativecamp/README.md)與[按需製作 SOP](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/shared/nativecamp/weekly-automation.md)；私人原音與工作副本的歸檔見 Wiki [Native Camp 資料保存與恢復](Native-Camp-Storage)。
 
@@ -162,7 +162,7 @@ SOP（standard operating procedure）指每次都照同一順序執行的標準�
 - **沒 `npm ci` 就跑 Node 測試**：收藏與 E500 三個檔案以 `ERR_MODULE_NOT_FOUND` 失敗，看起來像程式壞掉。
 - **改首頁沒重建 release**：CI 的 `build-home-release.mjs --check` 會失敗；就算過了，舊首頁也不會察覺新版。
 - **前端先於 Worker 發布**：新車型 ID、累計世代或題包欄位會被舊 Worker 拒絕，收藏顯示暫時無法連線。
-- **家庭題包 128 KiB 上限**：rev8 只剩 824 bytes，再加題會被 builder 拒絕。
+- **家庭題包容量**：擴題前核對 [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)，不能用舊批次歸檔的上限當現行契約。
 - **本機 browser cache 可能吃舊 ES module**：確認 script tag 與 module import 的 `?v=` 都已更新。
 - **Weekly Review 排程 PAUSED 是家長決定**：不得因週日到了或工具可用就恢復；付費 request journal 不得刪除或改名繞過阻擋。
 - **Wrangler `kv key get` 預設會把日誌寫到磁碟**：Native Camp 工具已強制關閉；更新 Wrangler 版本前重新核對。

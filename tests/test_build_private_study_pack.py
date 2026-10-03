@@ -382,6 +382,46 @@ def test_oversize_pack_fails_before_replacing_output(tmp_path):
     assert output.read_bytes() == b"previous valid output"
 
 
+def test_builder_writes_pretty_pack_above_old_limit_and_production_parser_accepts_it(tmp_path):
+    values = _fixture()
+    values[0]["items"][0]["question"]["text"] += "語" + "x" * 140000
+    output = tmp_path / "pack.json"
+    pack, payload = private_builder._build_synthetic_to_path_for_test(
+        *_paths(tmp_path, values), output, test_output_root=tmp_path
+    )
+    assert 131072 < len(payload) <= 262144
+    assert output.read_bytes() == payload
+    assert payload == (json.dumps(pack, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "6"
+
+
+@pytest.mark.parametrize("size, accepted", [(262144, True), (262145, False)])
+def test_pretty_builder_enforces_utf8_byte_boundary(tmp_path, size, accepted):
+    values = _fixture()
+    values[0]["items"][0]["question"]["text"] += "語"
+    baseline_pack = build_pack(*_paths(tmp_path, values))
+    baseline = len((json.dumps(baseline_pack, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+    values[0]["items"][0]["question"]["text"] += "x" * (size - baseline)
+    output = tmp_path / "pack.json"
+    if accepted:
+        pack, payload = private_builder._build_synthetic_to_path_for_test(
+            *_paths(tmp_path, values), output, test_output_root=tmp_path
+        )
+        assert len(payload) == size
+        assert output.read_bytes() == payload
+        assert payload == (json.dumps(pack, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    else:
+        output.write_bytes(b"previous valid output")
+        with pytest.raises(PackBuildError, match="limit is 262144 bytes"):
+            private_builder._build_synthetic_to_path_for_test(
+                *_paths(tmp_path, values), output, test_output_root=tmp_path
+            )
+        assert output.read_bytes() == b"previous valid output"
+
+
 def test_output_inside_repo_must_be_private():
     with pytest.raises(PackBuildError, match="must stay under"):
         ensure_safe_output_path(Path(__file__).resolve().parents[1] / "docs" / "study" / "private-pack.json")

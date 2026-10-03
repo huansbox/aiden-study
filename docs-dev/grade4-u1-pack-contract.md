@@ -4,7 +4,7 @@
 
 ## JSON 格式
 
-採 UTF-8 JSON object，原始檔最多 **128 KiB（131072 bytes）**。檔案選擇器先檢查檔案大小，validator 再以 UTF-8 bytes 檢查文字；空白與換行也計入。下表欄位全部必填；不接受額外欄位。
+採 UTF-8 JSON object，原始檔最多 **256 KiB（262144 bytes）**；2026-10-03 依 [#145](https://github.com/huansbox/aiden-study/issues/145) 調整，容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。檔案選擇器先檢查檔案大小，validator 再以 UTF-8 bytes 檢查文字；空白與換行也計入。下表欄位全部必填；不接受額外欄位。
 
 | 欄位 | 型別／限制 |
 | --- | --- |
@@ -80,7 +80,7 @@
 
 家庭授權唯讀 API 為 `GET /v1/packs/g4-s1-math-u1`，沿用既有 family token（Study 使用 `Authorization: Bearer ...`）與 endpoint，回傳原始 pack JSON、`Cache-Control: no-store`。缺 token／錯 token 為 401，未部署為 404，損毀／服務異常為 500，其他內容操作為 405；其他 packId 為 404。OPTIONS 沿用全域 204 CORS preflight，不讀題包。`/v1/status` 仍只列 `p:` 進度 metadata，不列內容。
 
-開啟 Study、選四上、保存家庭金鑰後會自動取得，亦可按「重試取得題包」。整輪下載含 body 最多等待 8 秒，逐段 UTF-8 接收且限制 128 KiB；無 token、401、404、網路／服務異常與逾時分別提示。下載先驗契約，回到首頁安全時點再以既有 `save` 核對最新持久包並原子保存；作答途中不替換 map、題包 cache 或批次。重試的新請求使先前回應失效。所有失敗保留原有效包與進度，不用 fixtures fallback。手動 JSON 匯入保留為家長備援。
+開啟 Study、選四上、保存家庭金鑰後會自動取得，亦可按「重試取得題包」。整輪下載含 body 最多等待 8 秒，逐段 UTF-8 接收且限制 256 KiB；無 token、401、404、網路／服務異常與逾時分別提示。下載先驗契約，回到首頁安全時點再以既有 `save` 核對最新持久包並原子保存；作答途中不替換 map、題包 cache 或批次。重試的新請求使先前回應失效。所有失敗保留原有效包與進度，不用 fixtures fallback。手動 JSON 匯入保留為家長備援。
 
 進度仍為 `study:progress:<child>`，同步仍是 `study:sync:<child>`；`appId: study`、`schemaVersion: 1`、legacy key／歸屬不變。新增單一選擇欄位 `studyTerm`：`g3-s2` 或 `g4-s1`，缺省三下；原 `semester` 仍保留 `mid/final` 的意義。
 

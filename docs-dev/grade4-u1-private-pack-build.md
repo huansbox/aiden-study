@@ -1,6 +1,6 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-[#134 自然第四批](grade4-science-study-fourth-batch.md)三個核准 activity、5 個原卷作答格已隨 revision 8 正式發布：全包 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。容量距 128 KiB 上限僅剩 824 bytes，下一批擴題前先處理容量；本輪沒有放寬契約。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
+[#134 自然第四批](grade4-science-study-fourth-batch.md)三個核准 activity、5 個原卷作答格已隨 revision 8 正式發布：全包 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；以此 rev8 計算尚餘 131,896 bytes。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。本次不重建或重新發布題包，revision、內容與孩子進度均不變。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
 
 本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學與自然。目前已發布 revision 8 共 97 題，包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題；rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
@@ -16,7 +16,7 @@
 - 數學 digitalAdaptation 只收 `multiple_choice`、`fill_in_blank:number`、`fill_in_blank:comparison`；自然首批另收 `true_false`。MC 固定四選一；是非題固定空 options 與 `"true"`／`"false"` answer；填空 1～9 格、同型、順序明確，每格有全形標記。其他題型與媒體須依下方 #119 的限定契約明確加入。
 - #119 的新自然題可使用受限 `material`：`png` 僅限題包內 canonical PNG data URI，解碼後最多 32 KiB、寬高各 1～1600；`table` 僅限純文字 caption／columns／rows、2～8 欄與 1～16 列。文字上限以 Unicode code points 計：caption 300、欄名 80、儲存格 240、PNG alt 200。圖片與表格都留在私人題包，不放公開 assets；內容必須經來源等價與清晰度覆核。
 - #119 的 `grouped_choice` 僅限自然：`options` 是整組共用的 2～4 個選項（每項最多 300 code points），`parts` 是 2～8 個 `{id,text}`（id 組內唯一、1～32 位英數／連字號；text 最多 600 code points）；`answer` 是按 parts 順序排列的 1-based 選項索引字串。每格可以重複選同一選項。整組全部填齊後送出，一個 q.id 只算一個 activity。缺少共同選項池的原題不硬轉此格式。
-- Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 128 KiB，不另設任意總題數上限。
+- Builder 從核准 mapping 驗證 curated 與 explanations 精確覆蓋，不再硬編完整六題集合。原六個 practiceId/appId/originalId/adaptation 是必要基線；新 ID 明確登錄、不因重排序改名，不以自動尾碼消解碰撞。完整 pack 最多 256 KiB，不另設任意總題數上限。
 - 覆寫既有 pack.json 前，檢查新 ID 集合包含所有舊題，且各既有 ID 的作答內容、subject/unit/subtopic 不變。新增或 source/解說更新需更高 revision；同 revision 比較排序後的完整 ID 集合。拒絕刪題、降版或同 ID 偷換題。
 - `material` 全內容與 `parts` 原順序／文字都受同 ID 語意守衛保護。#119 的 rev6 另拿已核 rev5 歸檔逐值核對舊 77 題及解說；後續升版也須與當時已發布基線逐值比對，因一般升版規則允許修改解說，不能只憑語意守衛認定舊解說不變。
 

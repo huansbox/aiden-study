@@ -365,7 +365,7 @@ test("401, 404, offline, oversized, invalid UTF-8, bad JSON and invalid contract
     [() => response({ error: "unauthorized" }, { status: 401 }), /家庭連線已失效/],
     [() => response({ error: "missing" }, { status: 404 }), /尚未發布/],
     [() => { throw Error("offline"); }, /無法連線取得題包/],
-    [() => response("{}", { headers: { "Content-Length": String(129 * 1024) } }), /超過 128 KiB/],
+    [() => response("{}", { headers: { "Content-Length": String(256 * 1024 + 1) } }), /超過 256 KiB/],
     [() => response(new Uint8Array([0xff, 0xfe])), /不是有效 UTF-8/],
     [() => response("{"), /JSON 格式無法讀取/],
     [() => response({ schemaVersion: 1, packId: "wrong", revision: 1, questions: [], explanations: {} }), /版本或欄位不支援/],
