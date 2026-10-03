@@ -3,13 +3,28 @@ import assert from "node:assert/strict";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 import { boot, storage } from "./helpers/study-harness.mjs";
-import { syntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
 
 const url = "https://sync.test/v1/packs/g4-s1-math-u1";
 const contentKey = "c:study:g4-s1-math-u1";
 const cacheKey = "study:private-pack:g4-s1-math-u1";
 const progressKey = "study:progress:test-child";
 const raw = p => JSON.stringify(p || syntheticPack());
+function anglePack() {
+  const pack = syntheticPack();
+  pack.revision = 10;
+  const image = { kind: "png", data: syntheticPngData(8, 6, 550, 304), alt: "合成角度圖" };
+  const choice = { id: "math-g4s1-synthetic-angle-choice-v1", subject: "math", unit: 17, type: "multiple_choice", text: "合成角度圖：選出直角。",
+    subtopic: "合成角度", source: "synthetic fixture only", options: ["30°", "60°", "90°", "120°"], answer: "3",
+    material: image };
+  const number = { id: "math-g4s1-synthetic-angle-number-v1", subject: "math", unit: 17, type: "fill_in_blank", text: "合成角度圖：輸入角度（１）。",
+    subtopic: "合成角度", source: "synthetic fixture only", options: [], answer: "", blanks: [{ input: "number", answer: "90" }], material: image };
+  const comparison = { id: "math-g4s1-synthetic-angle-comparison-v1", subject: "math", unit: 17, type: "fill_in_blank", text: "合成角度圖：比較兩角（１）。",
+    subtopic: "合成角度", source: "synthetic fixture only", options: [], answer: "", blanks: [{ input: "comparison", answer: ">" }], material: image };
+  pack.questions.push(choice, number, comparison);
+  for (const q of [choice, number, comparison]) pack.explanations[q.id] = "合成解說：依圖判斷。";
+  return pack;
+}
 function packAtBytes(size) {
   const pack = syntheticPack();
   pack.explanations[ids[0]] = "語";
@@ -59,6 +74,47 @@ test("Worker content route: auth, CORS, read-only, fixed pack, no-store, status 
   const status=await worker.fetch(request("GET","test-token","https://sync.test/v1/status"),env);
   assert.deepEqual(await status.json(),{keys:[]});
   assert.equal(await kv.get(contentKey),raw()); assert.equal(await kv.get("p:test-child:study"),before);
+});
+test("math unit 17 PNG passes production Worker GET and browser import; other material stays blocked", async () => {
+  const valid = anglePack();
+  const progress = "synthetic-progress-sentinel";
+  const fetchPack = async pack => {
+    const KV = kvStub({ [contentKey]: { value: raw(pack) }, "p:test-child:study": { value: progress } });
+    const response = await worker.fetch(request(), { TOKEN: "test-token", KV });
+    assert.equal(await KV.get("p:test-child:study"), progress);
+    return response;
+  };
+  const response = await fetchPack(valid);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("Cache-Control"), "no-store");
+  assert.deepEqual(await response.json(), valid);
+  const e = await boot();
+  assert.doesNotThrow(() => e.app.importPrivatePack(raw(valid)));
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math");
+  const angleQuestions = valid.questions.slice(-3);
+  e.app.State.saveBatch("17", angleQuestions.map(q => q.id)); e.app.startQuiz("full", 17);
+  assert.match(e.node("page-quiz").innerHTML, /data-material-open/);
+  assert.match(e.node("page-quiz").innerHTML, /合成角度圖/);
+  for (const [index, q] of angleQuestions.entries()) {
+    assert.equal(e.app.quiz.queue[0], q.id);
+    e.app.submitAnswer(q.type === "multiple_choice" ? q.answer : q.blanks.map(blank => blank.answer));
+    if (index < angleQuestions.length - 1) e.app.advance();
+  }
+  assert.equal(e.app.State.doneCount(17), 3);
+  for (const mutate of [
+    q => { q.unit = 16; },
+    q => { q.unit = 18; },
+    q => { q.material = { kind: "table", caption: "Angles", columns: ["A", "B"], rows: [["30", "60"]] }; },
+    q => { q.material.data = "https://outside.invalid/angle.png"; },
+    q => { q.material.data = syntheticPngData(8, 6, 1601, 1); },
+    q => { q.material.alt = "😀".repeat(201); },
+  ]) {
+    const bad = anglePack(); mutate(bad.questions.at(-1));
+    assert.throws(() => e.window.StudyPrivatePack.parse(raw(bad)));
+    const rejected = await fetchPack(bad);
+    assert.equal(rejected.status, 500);
+    assert.deepEqual(await rejected.json(), { error: "corrupt pack" });
+  }
 });
 test("Worker missing / corrupt / bad schema / KV exception never return content", async () => {
   for(const [value,status] of [[null,404],["{private broken",500],[raw({...syntheticPack(),schemaVersion:9}),500]]) {
