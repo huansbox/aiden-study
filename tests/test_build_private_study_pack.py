@@ -182,7 +182,7 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
     assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
 
 
-def test_social_unit_22_text_choice_and_true_false_require_completed_review(tmp_path):
+def test_social_unit_22_choice_and_true_false_require_completed_review(tmp_path):
     values = list(_fixture())
     curated, explanations, metadata, _ = values
     for value in (curated, explanations, metadata):
@@ -217,10 +217,68 @@ def test_social_unit_22_text_choice_and_true_false_require_completed_review(tmp_
 
     rejects("unit23", lambda c, m: (c["items"][-1]["question"].update(unit=23), m["items"][-1].update(unit=23)))
     rejects("pending", lambda c, m: (c["items"][-1].update(verification="pending"), m["items"][-1].update(reviewStatus="pending")))
-    rejects("grouped", lambda c, m: m["items"][-1].update(digitalAdaptation="grouped_choice"))
+    rejects("grouped-shape", lambda c, m: m["items"][-1].update(digitalAdaptation="grouped_choice"))
     rejects("fill", lambda c, m: m["items"][-1].update(digitalAdaptation="fill_in_blank:number"))
     rejects("material", lambda c, m: c["items"][-1]["question"].update(material={"kind": "table", "caption": "Synthetic", "columns": ["A", "B"], "rows": [["1", "2"]]}))
     rejects("bad-truth", lambda c, m: c["items"][-1]["question"].update(options=["O", "X"]))
+
+
+def test_social_unit_22_png_two_choice_and_five_option_group_contract(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 12
+    additions = (
+        ("group", "grouped_choice", ["山地", "丘陵", "台地", "盆地", "平原"], "12345",
+         [{"id": str(i), "text": f"Synthetic location {i}"} for i in range(1, 6)]),
+        ("rain", "multiple_choice", ["甲", "乙"], "2", None),
+    )
+    for suffix, adaptation, options, answer, parts in additions:
+        app_id = f"social-g4s1-synthetic-{suffix}-v1"
+        practice_id = f"S1-SYNTHETIC-{suffix}"
+        question = {"id": app_id, "subject": "social", "unit": 22, "type": adaptation,
+                    "text": "Synthetic social image question", "subtopic": "地形與生活",
+                    "options": options, "answer": answer,
+                    "material": {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic social chart"}}
+        if parts is not None:
+            question["parts"] = parts
+        common = {"practiceId": practice_id, "originalId": f"synthetic-{suffix}",
+                  "paperId": "synthetic-paper", "questionPage": 1, "answerPage": 2,
+                  "concept": "Synthetic concept", "sourceAdaptation": "Synthetic chart adaptation",
+                  "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED}
+        curated["items"].append({**{key: common[key] for key in
+                                    ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                                 "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"],
+                                 "question": question})
+        metadata["items"].append({**common, "appId": app_id, "unit": 22,
+                                  "contextPolicy": "Synthetic complete chart", "digitalAdaptation": adaptation})
+        explanations["entries"].append({"id": app_id, "text": "Synthetic chart explanation。"})
+
+    output = tmp_path / "pack.json"
+    pack, _ = private_builder._build_synthetic_to_path_for_test(
+        *_paths(tmp_path, values), output, test_output_root=tmp_path
+    )
+    assert [(q["type"], len(q["options"])) for q in pack["questions"][-2:]] == [
+        ("grouped_choice", 5), ("multiple_choice", 2)]
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT,
+                            capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "8"
+
+    def rejects(label, mutate):
+        broken = copy.deepcopy(values)
+        mutate(broken[0]["items"][-2]["question"], broken[0]["items"][-1]["question"])
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / label, broken))
+
+    rejects("six-group-options", lambda group, choice: group["options"].append("河谷"))
+    rejects("group-answer-out-of-range", lambda group, choice: group.update(answer="12346"))
+    rejects("three-choice", lambda group, choice: choice["options"].append("丙"))
+    rejects("five-choice", lambda group, choice: choice["options"].extend(["丙", "丁", "戊"]))
+    rejects("two-choice-answer-out-of-range", lambda group, choice: choice.update(answer="3"))
+    rejects("social-table", lambda group, choice: choice.update(material={"kind": "table", "caption": "Synthetic", "columns": ["A", "B"], "rows": [["1", "2"]]}))
+    rejects("social-unit-23", lambda group, choice: group.update(unit=23))
 
 
 def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:

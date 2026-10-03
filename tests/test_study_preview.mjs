@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -140,6 +140,36 @@ test("social preview uses exact unit membership and three broad topics without p
   assert.equal(app.state.result, "correct");
   app.handle("subject", { value: "science" });
   assert.equal(app.state.unit, 20);
+  assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
+test("social second preview shows one of five parts and labels two-choice image questions", async () => {
+  const h = harness({ pack: socialSecondSyntheticPack() }), app = await h.boot();
+  app.handle("subject", { value: "social" });
+  app.handle("subtopic", { value: "地形與生活" });
+  app.handle("question", { index: "1" });
+  assert.match(h.host.innerHTML, /整組選答（5 小題）/);
+  assert.match(h.host.innerHTML, /合成地形剖面圖/);
+  assert.equal((h.host.innerHTML.match(/data-action="answer-group"/g) || []).length, 5);
+  assert.equal((h.host.innerHTML.match(/class="preview-group-question"/g) || []).length, 1);
+  for (let index = 0; index < 5; index++) {
+    app.handle("answer-group", { index, value: String(index + 1) });
+    if (index < 4) app.handle("next-part");
+  }
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
+  app.handle("subtopic", { value: "氣候與水資源" });
+  app.handle("question", { index: "1" });
+  assert.match(h.host.innerHTML, /二選一/);
+  assert.equal((h.host.innerHTML.match(/data-action="answer-choice"/g) || []).length, 2);
+  app.handle("answer-choice", { value: "1" });
+  app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("retry-answer");
+  app.handle("answer-choice", { value: "2" });
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
   assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
@@ -430,7 +460,7 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
-  assert.match(source("preview.html"), /preview\.js\?v=20261003-social-u1-r1/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261004-social-u1-r2/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);

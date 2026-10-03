@@ -108,6 +108,25 @@ export function socialSyntheticPack() {
   return pack;
 }
 
+export function socialSecondSyntheticPack() {
+  const pack = socialSyntheticPack();
+  pack.revision = 12;
+  const questions = [
+    { id: "social-g4s1-synthetic-land-group-v1", subject: "social", unit: 22, type: "grouped_choice",
+      text: "合成社會練習：依地形剖面圖選出位置。", subtopic: "地形與生活", source: "synthetic fixture only",
+      options: ["山地", "丘陵", "台地", "盆地", "平原"], answer: "12345",
+      parts: Array.from({ length: 5 }, (_, i) => ({ id: String(i + 1), text: `合成位置 ${i + 1}` })),
+      material: { kind: "png", data: syntheticPngData(8, 6, 550, 304), alt: "合成地形剖面圖" } },
+    { id: "social-g4s1-synthetic-rain-compare-v1", subject: "social", unit: 22, type: "multiple_choice",
+      text: "合成社會練習：比較兩張雨量圖。", subtopic: "氣候與水資源", source: "synthetic fixture only",
+      options: ["甲", "乙"], answer: "2",
+      material: { kind: "png", data: syntheticPngData(8, 6, 550, 304), alt: "合成雨量比較圖" } },
+  ];
+  pack.questions.push(...questions);
+  for (const q of questions) pack.explanations[q.id] = "合成解說：依圖中的線索判讀。";
+  return pack;
+}
+
 export function groupedSyntheticPack() {
   const pack = scienceSyntheticPack();
   pack.revision = 6;
