@@ -106,7 +106,7 @@
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (Object.hasOwn(q, "material")) {
-        if (q.subject !== "science" || !object(q.material)) throw new Error("題目媒體格式無效。");
+        if (!object(q.material) || (q.subject !== "science" && !(q.subject === "math" && q.unit === 17 && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
         validateMaterial(q.material);
       }
       if (q.type === "multiple_choice") {

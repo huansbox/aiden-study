@@ -210,6 +210,45 @@ def test_png_ihdr_rejects_invalid_depth_and_color_with_valid_crc():
             private_builder._validate_material(material, "synthetic image")
 
 
+def test_math_unit_17_png_builder_contract_and_production_parser(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 10
+    app_id = "math-g4s1-synthetic-angle-v1"
+    practice = "U3-SYNTHETIC-ANGLE"
+    image = {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic angle diagram"}
+    question = {"id": app_id, "subject": "math", "unit": 17, "type": "multiple_choice",
+                "text": "Synthetic angle: select the value.", "subtopic": "Synthetic angles",
+                "options": ["30", "60", "90", "120"], "answer": "3", "material": image}
+    common = {"practiceId": practice, "originalId": "synthetic-angle", "paperId": "synthetic-paper",
+              "questionPage": 1, "answerPage": 2, "concept": "Synthetic angle",
+              "reviewStatus": "synthetic_only", "sourceAdaptation": "Synthetic image adaptation"}
+    curated["items"].append({**{k: common[k] for k in ("practiceId", "originalId", "paperId", "questionPage", "answerPage", "concept")},
+                             "adaptation": common["sourceAdaptation"], "verification": common["reviewStatus"], "question": question})
+    metadata["items"].append({**common, "appId": app_id, "unit": 17, "contextPolicy": "Synthetic only",
+                              "digitalAdaptation": "multiple_choice"})
+    explanations["entries"].append({"id": app_id, "text": "合成說明：直角是九十度。"})
+    pack = build_pack(*_paths(tmp_path / "valid", values))
+    assert pack["questions"][-1]["material"] == image
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.length)"
+    output = tmp_path / "synthetic-pack.json"
+    output.write_bytes(serialize_pack(pack))
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "7"
+    for mutate in (
+        lambda row: row.update(unit=16),
+        lambda row: row.update(material={"kind": "table", "caption": "Values", "columns": ["A", "B"], "rows": [["1", "2"]]}),
+        lambda row: row["material"].update(data="https://outside.invalid/angle.png"),
+    ):
+        broken = copy.deepcopy(values)
+        row = broken[0]["items"][-1]["question"]
+        mutate(row)
+        if row["unit"] != 17:
+            broken[2]["items"][-1]["unit"] = row["unit"]
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / f"invalid-{len(list(tmp_path.iterdir()))}", broken))
 def test_grouped_choice_png_table_builder_and_production_parser(tmp_path):
     values = list(_fixture())
     curated, explanations, metadata, _ = values

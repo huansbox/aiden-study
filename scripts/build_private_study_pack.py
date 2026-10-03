@@ -233,8 +233,8 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     if not isinstance(question["options"], list) or not isinstance(question["answer"], str):
         raise PackBuildError(f"question {practice_id} options or answer has the wrong type")
     if "material" in question:
-        if subject != "science":
-            raise PackBuildError(f"question {practice_id} material is only allowed for science")
+        if subject != "science" and not (subject == "math" and question["unit"] == 17 and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
+            raise PackBuildError(f"question {practice_id} material is only allowed for science or math unit 17 PNG")
         _validate_material(question["material"], f"question {practice_id} material")
 
     if adaptation == "multiple_choice":

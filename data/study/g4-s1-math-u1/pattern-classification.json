@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "taxonomyVersion": "v1.2",
+  "taxonomyVersion": "v1.3",
   "countUnit": "digital_activity",
   "scope": "目前已辨識的主要推理模式，並非所有可能數學題型。",
   "rules": [
@@ -14,11 +14,11 @@
   ],
   "snapshot": {
     "packId": "g4-s1-math-u1",
-    "revision": 9,
-    "status": "released_documented",
-    "evidence": "docs-dev/grade4-math-text-batch.md",
-    "packBytes": 135176,
-    "packSha256": "B1817152BD4B8EA067DE7D8D9CB663870C9A836072DABD9675A113DCB399D346"
+    "revision": 10,
+    "status": "frozen_unreleased",
+    "evidence": "docs-dev/grade4-math-angle-batch.md",
+    "packBytes": 186717,
+    "packSha256": "FE6AB5874454E88FEDFDF8F56305D8D52FD1BAB188B311A8588F4884F5A65FD1"
   },
   "sourceReferences": {
     "B": {
@@ -410,6 +410,33 @@
       "label": "由已知乘積推相鄰因數乘積",
       "definition": "已知一個乘積，當其中一個因數增加或減少 1，便增加或減少一份另一因數以求新乘積。",
       "boundary": "須給既有乘積與相鄰因數；整十百縮放歸 U2.scale，沒有已知乘積可沿用的一般乘法歸 U2.product。"
+    },
+    {
+      "id": "U3.protractor-reading",
+      "chapter": "U3",
+      "conceptId": "U3.measurement",
+      "concept": "角度單位與刻度",
+      "label": "對齊基準判讀量角器刻度",
+      "definition": "在角的頂點和一邊對準量角器後，依起始零刻度選對刻度方向並讀出角度。",
+      "boundary": "需要從量角器圖判斷對齊與讀值；只判斷量角器用途或角的基本原則歸 U3.measurement-rules，均分已知角求每份歸 U3.equal-part。"
+    },
+    {
+      "id": "U3.figure-compare",
+      "chapter": "U3",
+      "conceptId": "U3.figure-comparison",
+      "concept": "角圖大小比較",
+      "label": "依角圖比較角的大小",
+      "definition": "觀察兩個已畫出的角，以開口大小判斷大小關係，不以邊長決定角的大小。",
+      "boundary": "目標是比較圖中角的大小；讀量角器刻度歸 U3.protractor-reading，先計算未知角再比較則歸相應計算模式。"
+    },
+    {
+      "id": "U3.angle-decompose",
+      "chapter": "U3",
+      "conceptId": "U3.composition",
+      "concept": "角的合成與分類",
+      "label": "由直角或平角合成／分解求未知角",
+      "definition": "從圖中已知直角或平角與部分角度，用加減關係求出同一整體中的未知角。",
+      "boundary": "目標是求未知角度；合併角度後只判斷角類歸 U3.compose-classify，均分已知角求每份歸 U3.equal-part。"
     }
   ],
   "assignments": [
@@ -995,6 +1022,38 @@
       "secondaryTags": [],
       "sourceKind": "historical_exam",
       "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-04-v1",
+      "primaryPattern": "U3.protractor-reading",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-V-04-v1",
+      "primaryPattern": "U3.figure-compare",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-V-2-v1",
+      "primaryPattern": "U3.angle-decompose",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-anh114-II-02-v1",
+      "primaryPattern": "U3.angle-decompose",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B",
+      "sourceUnits": [
+        "anh114-II-02a",
+        "anh114-II-02b"
+      ]
     }
   ],
   "historicalSnapshots": [
@@ -1004,6 +1063,13 @@
       "packBytes": 40358,
       "packSha256": "72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6",
       "evidence": "docs-dev/grade4-math-expansion-plan.md"
+    },
+    {
+      "revision": 9,
+      "mathActivities": 64,
+      "packBytes": 135176,
+      "packSha256": "B1817152BD4B8EA067DE7D8D9CB663870C9A836072DABD9675A113DCB399D346",
+      "evidence": "docs-dev/grade4-math-text-batch.md"
     }
   ]
 }
