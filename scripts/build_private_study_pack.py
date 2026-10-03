@@ -187,7 +187,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice"}):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice"}):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -233,25 +233,27 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     if not isinstance(question["options"], list) or not isinstance(question["answer"], str):
         raise PackBuildError(f"question {practice_id} options or answer has the wrong type")
     if "material" in question:
-        if subject != "science" and not (subject == "math" and question["unit"] == 17 and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
-            raise PackBuildError(f"question {practice_id} material is only allowed for science or math unit 17 PNG")
+        if subject != "science" and not ((subject == "math" and question["unit"] == 17 or subject == "social" and question["unit"] == 22) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
+            raise PackBuildError(f"question {practice_id} material is only allowed for science, math unit 17 PNG, or social unit 22 PNG")
         _validate_material(question["material"], f"question {practice_id} material")
 
     if adaptation == "multiple_choice":
-        if question["type"] != "multiple_choice" or len(question["options"]) != 4:
-            raise PackBuildError(f"question {practice_id} must be a four-option multiple choice question")
+        allowed_counts = {2, 4} if subject == "social" else {4}
+        if question["type"] != "multiple_choice" or len(question["options"]) not in allowed_counts:
+            raise PackBuildError(f"question {practice_id} has an unsupported multiple choice option count")
         if any(not isinstance(option, str) or not option.strip() for option in question["options"]):
             raise PackBuildError(f"question {practice_id} has an empty option")
-        if question["answer"] not in {"1", "2", "3", "4"}:
+        if question["answer"] not in {str(index) for index in range(1, len(question["options"]) + 1)}:
             raise PackBuildError(f"question {practice_id} answer must be a 1-based string")
     elif adaptation == "true_false":
         if question["type"] != "true_false" or question["options"] != [] or question["answer"] not in {"true", "false"}:
             raise PackBuildError(f"question {practice_id} must use true_false with empty options and a true/false string answer")
     elif adaptation == "grouped_choice":
         options, parts, answer = question["options"], question["parts"], question["answer"]
-        if question["type"] != "grouped_choice" or not 2 <= len(options) <= 4 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options):
+        max_options = 5 if subject == "social" else 4
+        if question["type"] != "grouped_choice" or not 2 <= len(options) <= max_options or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options):
             raise PackBuildError(f"question {practice_id} group options are invalid")
-        if not isinstance(parts, list) or not 2 <= len(parts) <= 8 or len(answer) != len(parts) or any(digit not in "1234" or int(digit) > len(options) for digit in answer):
+        if not isinstance(parts, list) or not 2 <= len(parts) <= 8 or len(answer) != len(parts) or any(digit not in "12345" or int(digit) > len(options) for digit in answer):
             raise PackBuildError(f"question {practice_id} group parts or answer are invalid")
         ids = set()
         for part in parts:

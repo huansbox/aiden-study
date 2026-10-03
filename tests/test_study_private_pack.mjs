@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { boot, storage, publicQuestions, rewardManifest } from "./helpers/study-harness.mjs";
-import { syntheticPack, scienceSyntheticPack, socialSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, groupedSyntheticPack, syntheticPngData, ids } from "./helpers/synthetic-study-pack.mjs";
 const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
@@ -187,7 +187,7 @@ test("science rev5 appends units 20/21, accepts true_false, preserves math progr
   invalid(q => { q.options = ["O", "X"]; });
   invalid(q => { q.blanks = []; });
 });
-test("social unit 22 keeps rev10 math/science progress and permits only text choice or true_false", async () => {
+test("social unit 22 keeps rev10 math/science progress and validates existing choice or true_false", async () => {
   const e = await ready();
   const old = scienceSyntheticPack(); old.revision = 10;
   e.app.importPrivatePack(JSON.stringify(old));
@@ -210,7 +210,7 @@ test("social unit 22 keeps rev10 math/science progress and permits only text cho
   invalid(q => { q.unit = 23; });
   invalid(q => { q.subject = "science"; });
   invalid(q => { q.material = { kind: "table", caption: "合成", columns: ["甲", "乙"], rows: [["一", "二"]] }; });
-  invalid(q => { q.type = "grouped_choice"; q.parts = [{ id: "A", text: "甲" }, { id: "B", text: "乙" }]; q.answer = "12"; });
+  invalid(q => { q.type = "grouped_choice"; q.parts = [{ id: "A", text: "甲" }]; q.answer = "1"; });
   invalid(q => { q.options.pop(); });
   const truth = socialSyntheticPack(); truth.questions[9].options = ["O", "X"];
   assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(truth)));
@@ -239,6 +239,66 @@ test("social wrong answer survives reload and family reward appears only at batc
   assert.equal(e.app.State.doneCount(22), 1);
   e.app.advance();
   assert.equal(events.finishes, 1);
+});
+
+test("social second batch permits PNG, two-choice MC and five-option group within unit 22 only", async () => {
+  const e = await boot();
+  const pack = socialSecondSyntheticPack();
+  assert.equal(e.window.StudyPrivatePack.parse(JSON.stringify(pack)).questions.length, 13);
+  const invalid = mutate => {
+    const changed = socialSecondSyntheticPack();
+    mutate(changed.questions[11], changed.questions[12]);
+    assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed)));
+  };
+  invalid(group => { group.options.push("河谷"); });
+  invalid(group => { group.answer = "12346"; });
+  invalid(group => { group.unit = 23; });
+  invalid(group => { group.material = { kind: "table", caption: "合成表", columns: ["甲", "乙"], rows: [["1", "2"]] }; });
+  invalid((group, choice) => { choice.options.push("丙"); });
+  invalid((group, choice) => { choice.options.push("丙", "丁", "戊"); });
+  invalid((group, choice) => { choice.answer = "3"; });
+  const science = groupedSyntheticPack(); science.questions[8].options.push("丁", "戊");
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(science)));
+  const math = syntheticPack(); math.questions[0].options.pop(); math.questions[0].options.pop();
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(math)));
+  const changed = socialSecondSyntheticPack(); changed.revision++; changed.questions[11].parts[0].text += "變";
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed), [], pack), /相同 ID/);
+});
+
+test("social five-part activity saves once, survives reload, and finishes reward at batch end", async () => {
+  const events = { records: 0, finishes: 0 };
+  const family = { ...familyFor(["g4-s1"]), beginRound() {}, record() { events.records++; }, finishRound() { events.finishes++; } };
+  let e = await boot(storage(), "aiden", { search: "?child=aiden&subject=social&term=g4-s1", family });
+  const old = socialSyntheticPack(), pack = socialSecondSyntheticPack();
+  e.app.importPrivatePack(JSON.stringify(old));
+  e.app.State.addMastered(22, old.questions[8].id);
+  const before = e.app.State.doneCount(22);
+  e.app.importPrivatePack(JSON.stringify(pack));
+  assert.equal(e.app.State.doneCount(22), before);
+  const q = pack.questions[11];
+  e.app.State.setSubject("social");
+  e.app.State.saveBatch("22", [q.id]);
+  e.app.startQuiz("full", 22);
+  assert.equal(e.app.quiz.queue[0], q.id);
+  assert.match(e.node("page-quiz").innerHTML, /整組選答（5 小題）/);
+  e.app.submitAnswer(["1", "2", "3", "4", "4"]);
+  assert.equal(events.records, 1);
+  assert.equal(events.finishes, 0);
+  assert.equal(e.app.State.doneCount(22), before);
+  e = await boot(e.st, "aiden", { search: "?child=aiden&subject=social&term=g4-s1", family });
+  e.app.startQuiz("full", 22);
+  assert.deepEqual(plain(e.app.quiz.queue), [q.id]);
+  e.app.submitAnswer(["1", "2", "3", "4", "5"]);
+  assert.equal(events.records, 2);
+  assert.equal(events.finishes, 0);
+  assert.equal(e.app.State.doneCount(22), before + 1);
+  e.app.advance();
+  assert.equal(events.finishes, 1);
+  e.app.State.saveBatch("22", [pack.questions[12].id]);
+  e.app.startQuiz("full", 22);
+  assert.equal(e.app.quiz.queue[0], pack.questions[12].id);
+  e.app.submitAnswer("2");
+  assert.equal(e.app.State.doneCount(22), before + 2);
 });
 
 test("grouped science activity validates bounded material and immutable parts", async () => {

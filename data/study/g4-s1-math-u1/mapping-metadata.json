@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "packId": "g4-s1-math-u1",
-  "revision": 11,
+  "revision": 12,
   "sourceTask": "learning-tasks/grade4-math-first-practice",
   "sourceMapping": "learning-tasks/grade4-math-first-practice/source/mapping-metadata.json",
   "items": [
@@ -1781,6 +1781,76 @@
       "contextPolicy": "逐題保留完整文字導言；卷面示意圖不提供判答必要資訊。",
       "digitalAdaptation": "true_false",
       "sourceAdaptation": "移除紙本題號與配分；保留完整題意、原四選項或是非敘述及必要的大題導言；紙本作答改數位作答。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk112-II-01-map-matching-v1",
+      "practiceId": "SOC1-N020",
+      "originalId": "tyk112-II-01",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "concept": "地圖與位置",
+      "unit": 22,
+      "contextPolicy": "完整保留四個需求及 A–D 四種地圖；不得拆成四個 activity。",
+      "digitalAdaptation": "grouped_choice",
+      "sourceAdaptation": "保留原大題的四人需求與四種地圖、原順序和一對一配對條件；紙本連線改為共用選項的逐小題作答，整組算一個 activity。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-III-01-05-terrain-profile-v1",
+      "practiceId": "SOC1-N021",
+      "originalId": "tyk113-III-01-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "concept": "地形與生活",
+      "unit": 22,
+      "contextPolicy": "A–E 代號共用同一張圖，五小題只算一個 activity，不重畫圖。",
+      "digitalAdaptation": "grouped_choice",
+      "sourceAdaptation": "保留一張原剖面圖、A–E 代號、五段原情境與配對指示；紙本填代號改共用選項逐小題作答，整組算一個 activity。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-III-06-climate-life-v1",
+      "practiceId": "SOC1-N022",
+      "originalId": "tyk113-III-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 2,
+      "concept": "氣候與水資源",
+      "unit": 22,
+      "contextPolicy": "此題有自己的配對指示，與 III-01～05 地形剖面題分開；五小題只算一個 activity。",
+      "digitalAdaptation": "grouped_choice",
+      "sourceAdaptation": "保留原五個情境與五個生活方式、原順序和一對一配對條件；紙本連線改共用選項逐小題作答，整組算一個 activity。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-01-elevation-v1",
+      "practiceId": "SOC1-N023",
+      "originalId": "tyk113-VI-01",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "concept": "地形與生活",
+      "unit": 22,
+      "contextPolicy": "照片（1）與文字共同判答；原圖路線起伏、高度軸與圖名不可刪。",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "保留南竿馬拉松共享背景、照片（1）原高度曲線圖與四個原選項；移除只供未選題使用的照片（2）石頭屋提示。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-02-rainfall-v1",
+      "practiceId": "SOC1-N024",
+      "originalId": "tyk113-VI-02",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "concept": "氣候與水資源",
+      "unit": 22,
+      "contextPolicy": "兩張長條圖必須同時呈現，各月橫軸、雨量縱軸及原①②標籤不可刪。",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "保留馬祖南竿、澎湖同屬離島的背景、雨季條件與原兩張長條圖；原圖①②改為兩個選項標籤，不增造選項。",
       "reviewStatus": "independently_recomputed_and_matches_official"
     }
   ]

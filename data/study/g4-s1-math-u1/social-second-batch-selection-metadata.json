@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/157",
+  "sourceTask": "learning-tasks/grade4-sem1-social-exam1",
+  "countUnit": "complete_activity",
+  "status": "reviewed_pending_release",
+  "baseline": {
+    "revision": 11,
+    "packCount": 127,
+    "mathActivities": 68,
+    "scienceActivities": 40,
+    "socialActivities": 19,
+    "packBytes": 200737
+  },
+  "revision": 12,
+  "total": 5,
+  "answerSlots": 16,
+  "byUnit": {
+    "22": 5
+  },
+  "byFormat": {
+    "grouped_choice": 3,
+    "multiple_choice": 2
+  },
+  "withPng": 3,
+  "items": [
+    {
+      "appId": "social-g4s1-tyk112-II-01-map-matching-v1",
+      "practiceId": "SOC1-N020",
+      "originalId": "tyk112-II-01",
+      "paperId": "tyk112",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-III-01-05-terrain-profile-v1",
+      "practiceId": "SOC1-N021",
+      "originalId": "tyk113-III-01-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-III-06-climate-life-v1",
+      "practiceId": "SOC1-N022",
+      "originalId": "tyk113-III-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 2,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-01-elevation-v1",
+      "practiceId": "SOC1-N023",
+      "originalId": "tyk113-VI-01",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-02-rainfall-v1",
+      "practiceId": "SOC1-N024",
+      "originalId": "tyk113-VI-02",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    }
+  ]
+}

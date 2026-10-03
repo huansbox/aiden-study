@@ -14,11 +14,11 @@
   ],
   "snapshot": {
     "packId": "g4-s1-math-u1",
-    "revision": 11,
-    "status": "released_documented",
-    "evidence": "docs-dev/grade4-social-study-first-batch.md",
-    "packBytes": 200737,
-    "packSha256": "4AFBC74258F47D41489CD109D9119240D44844C4B0F73EB414831DFF73B9784B"
+    "revision": 12,
+    "status": "frozen_unreleased",
+    "evidence": "docs-dev/grade4-social-study-second-batch.md",
+    "packBytes": 229503,
+    "packSha256": "2E2C94E743C8EB31D9D658B1177A7EBF87C27429AA468FDC611FB3CF136F3D2F"
   },
   "sourceReferences": {
     "B": {
@@ -1077,6 +1077,13 @@
       "packBytes": 186717,
       "packSha256": "FE6AB5874454E88FEDFDF8F56305D8D52FD1BAB188B311A8588F4884F5A65FD1",
       "evidence": "docs-dev/grade4-math-angle-batch.md"
+    },
+    {
+      "revision": 11,
+      "mathActivities": 68,
+      "packBytes": 200737,
+      "packSha256": "4AFBC74258F47D41489CD109D9119240D44844C4B0F73EB414831DFF73B9784B",
+      "evidence": "docs-dev/grade4-social-study-first-batch.md"
     }
   ]
 }
