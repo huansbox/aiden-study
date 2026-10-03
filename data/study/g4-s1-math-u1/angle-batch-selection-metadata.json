@@ -3,7 +3,7 @@
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/151",
   "sourceTask": "learning-tasks/grade4-sem1-math-exam1",
   "countUnit": "complete_activity",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "baseline": {
     "revision": 9,
     "packCount": 104,
@@ -41,7 +41,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-anh114-II-02-v1",
@@ -55,7 +55,7 @@
       "answerSlots": 2,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-c-tyk-112-midterm-V-2-v1",
@@ -69,7 +69,7 @@
       "answerSlots": 1,
       "sourceGroup": "C",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     },
     {
       "appId": "math-g4s1-tyk113-V-04-v1",
@@ -83,7 +83,7 @@
       "answerSlots": 1,
       "sourceGroup": "B",
       "reviewStatus": "independently_recomputed_and_matches_official",
-      "status": "reviewed_pending_release"
+      "status": "published"
     }
   ]
 }

@@ -15,7 +15,7 @@
   "snapshot": {
     "packId": "g4-s1-math-u1",
     "revision": 10,
-    "status": "frozen_unreleased",
+    "status": "released_documented",
     "evidence": "docs-dev/grade4-math-angle-batch.md",
     "packBytes": 186717,
     "packSha256": "FE6AB5874454E88FEDFDF8F56305D8D52FD1BAB188B311A8588F4884F5A65FD1"

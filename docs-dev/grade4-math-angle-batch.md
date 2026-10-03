@@ -1,6 +1,6 @@
 # 四上數學角度看圖題（#151）
 
-2026-10-03：[本批追蹤](https://github.com/huansbox/aiden-study/issues/151)。家長核准從既有歷屆卷挑選 3～5 個完整 activity，補角大小、角度分解與量角器相關判讀，完成獨立核答、E2E、正式發布與 housekeeping。候選與實際收錄分開記錄；未經管理端發布讀回不列為已上線。
+2026-10-03：[本批追蹤](https://github.com/huansbox/aiden-study/issues/151)。家長核准從既有歷屆卷挑選 3～5 個完整 activity，補角大小、角度分解與量角器相關判讀。本批四題已隨 revision 10 正式發布，完成獨立核答、E2E 與兩階段管理端讀回；housekeeping 的逐項結果記於 #151 結案留言。
 
 ## 原卷與作答目標
 
@@ -24,7 +24,7 @@
 
 候選需核舊 104 題、解說與 mapping 完整逐值保留，舊 64 題數學分類不變；作者原稿、PNG 出處與指紋、獨立解題、官方答案可用性、核准集合及可重建來源隨 private archive 保存。公開只保留 provenance、分類與批次狀態。
 
-統籌核准的 revision 10 候選為 108 個 activity（數學 68／自然 40）、186717 bytes，SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`；距 256 KiB 上限尚餘 75427 bytes。U1～U5 題數為 20／14／9／14／11，共 45 種主要題型；本批新增三種，兩道角度加減活動共用一種，不把每個填空獨立算題型。正式發布前仍以 rev9 為已上線版本。
+正式發布的 revision 10 為 108 個 activity（數學 68／自然 40）、186717 bytes，SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`；距 256 KiB 上限尚餘 75427 bytes。U1～U5 題數為 20／14／9／14／11，共 45 種主要題型；本批新增三種，兩道角度加減活動共用一種，不把每個填空獨立算題型。
 
 `angle-batch/approval.json` 精確綁定四個核准 ID、16 份作者／原圖／來源／雙重 review 輸入指紋與上述候選包指紋。五份作者候選含排除項保留原稿；PNG 實檔、嵌入 bytes、provenance、source PDF 與 reviewer 證據交叉核對，不能只改外部圖檔就通過。重建入口為私人 `angle-batch/integration/rebuild_rev10.py --check`／`--promote`，候選驗證為 `verify_rev10.py --candidate`；先依封存的 RESTORE.md 恢復至新 worktree，再執行，不直接改寫歸檔。
 
@@ -37,3 +37,9 @@ E2E 使用隔離 test-child、fake KV 及 Chromium 768×1024／1024×768，阻�
 本批修改 runtime 白名單，Worker bundle 也會包含新版 parser。順序為核准 PR／CI → 核對現役 Worker 與 Git 基線 → 部署新版 Worker → 合併並等 Pages 完成 → 首次請求 HTML 精確引用的新 loader URL 並核 bytes → 再核 live rev9 基線 → 一次前向發布核准新版題包 → 立即與超過 60 秒管理端讀回。Pages 完成前不請求新 query，避免 CDN 將舊檔快取到新 URL。
 
 不使用正式家庭 session 或孩子 `p:` 進度資料。出現問題停在該階段，保留原有效內容與進度；題包不回退 revision。私人可重建資料與證據逐檔 manifest 核對後才封存本批 worktree；其他原卷、rev9 歸檔及 session 保留。長期決策以 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack) 為正本。
+
+[PR #152](https://github.com/huansbox/aiden-study/pull/152) 經 CI 通過，以 `cab67c5d9c194f0bdcc94340e1c7d4cb8dfcb493` 合併。部署來源為已審查 commit `915bfb2aaca8b337cb2a93e4fac08be18f2bdcd5`，現役 Worker 從 `06f9ac35-6ef7-46a0-96b5-95070d099218` 前向更新為 `b2db46b1-5f4a-41b5-abce-aebd7ef411f1`、100%。主線 test `37125279643`、catalog `37125279646` 與 Pages `37125294001` 均 success；孩子頁、家長試玩頁及 HTML 精確引用的 `private-pack.js?v=20261003-math-angle-r1` 已逐 byte 與 merge commit 核對。
+
+一次前向寫入固定內容 key 後，2026-10-03 13:12:50.363 UTC 與 13:14:29.491 UTC 管理端讀回相隔 99.128 秒，revision／題數／bytes／SHA256 均精確符合核准 rev10。讀回後現役 Worker 仍為上述新版；未使用正式家庭 session 或讀寫孩子 `p:` 資料。內容 readback 不等於實體 iPad／Safari 驗收。
+
+私人來源、五個候選與勘誤、四題核准產物、baseline、覆核、E2E、Worker／Pages／KV 證據保存至 canonical ignored `data/private/study/g4-s1-math-u1/rev10-release/`；`private/RESTORE.md` 說明恢復至新 worktree 的順序，根目錄 `manifest.json` 供逐檔 bytes／SHA256 核對，`public-snapshot/` 保存對應公開 metadata。原始 14 份題／答 PDF 留在原 task 私人 papers 目錄，rev9 歸檔與其他含原件的工作目錄保留。此歸檔不宣稱跨裝置同步完成。
