@@ -241,8 +241,13 @@ test("expanded cache and all chapter progress survive HTTP/UTF8/size/quota failu
   const e = await boot(st, "test-child", { fetch }); await flush();
   e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("math"); e.app.State.addMastered(17, addedIds[3]); e.app.State.saveBatch("19", addedIds.slice(-2));
   const cache = st.getItem(cacheKey), progress = st.getItem(progressKey);
-  for (const response of [() => new Response("", { status: 401 }), () => new Response(new Uint8Array([0xff])), () => new Response("x".repeat(131073))]) {
+  for (const [response, hint] of [
+    [() => new Response("", { status: 401 }), /金鑰不正確/],
+    [() => new Response(new Uint8Array([0xff])), /不是有效 UTF-8/],
+    [() => new Response("x".repeat(262145)), /超過 256 KiB/],
+  ]) {
     reply = response; await e.app.loadPrivatePack();
+    assert.match(e.node("pack-status").textContent, hint);
     assert.equal(st.getItem(cacheKey), cache); assert.equal(st.getItem(progressKey), progress); assert.equal(e.app.activePack.questions.length, 14);
   }
   const next = expandedSyntheticPack(); next.revision = 3; next.explanations[addedIds[0]] += "new";

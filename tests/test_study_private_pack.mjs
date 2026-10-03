@@ -113,7 +113,7 @@ test("scopes isolate error pool, reset and flags; unit numbers remain unique", a
 });
 test("invalid imports and quota failures atomically retain active pack, indices and persisted progress", async () => {
   const e=await ready(); const original=e.app.activePack; const saved=e.st.getItem(packKey); const progress=e.st.getItem(key(e.child));
-  const invalids=["{", "x".repeat(131073)];
+  const invalids=["{", "x".repeat(262145)];
   for(const mutate of [p=>p.schemaVersion=2,p=>p.revision=0,p=>p.questions.pop(),p=>p.questions[1].id=ids[0],p=>p.questions[0].unit=5,p=>p.questions[0].answer="5",p=>p.questions[0].answer=2,p=>p.questions[1].blanks[0].answer="100000000",p=>p.questions[4].blanks[0].answer="＞",p=>p.questions[1].blanks[0].input="text",p=>delete p.explanations[ids[0]],p=>p.explanations[ids[0]]=" ",p=>p.questions[0].image="https://example.invalid/a",p=>{p.revision++;p.questions[0].text+="changed";},p=>p.explanations[ids[0]]+="changed"]){const p=syntheticPack();mutate(p);invalids.push(JSON.stringify(p));}
   for(const raw of invalids){ assert.throws(()=>e.app.importPrivatePack(raw)); assert.equal(e.app.activePack,original); assert.equal(e.st.getItem(packKey),saved);assert.equal(e.st.getItem(key(e.child)),progress); }
   e.st.fail=k=>k===packKey;assert.throws(()=>e.app.importPrivatePack(JSON.stringify(syntheticPack())),/未保存/);
@@ -125,7 +125,7 @@ test("file UI reports size/read/storage failure safely; invalid stored pack does
   const pack = e.app.activePack;
   const progress = e.st.getItem(key(e.child));
   let read = false;
-  await e.window._importPrivatePackFile({ files: [{ size: 131073, text() { read = true; } }] });
+  await e.window._importPrivatePackFile({ files: [{ size: 262145, text() { read = true; } }] });
   assert.equal(read, false);
   assert.match(e.node("page-home").innerHTML, /未匯入/);
   await e.window._importPrivatePackFile({ files: [{ size: 1, text() { throw Error('<img src=x>'); } }] });
@@ -137,6 +137,22 @@ test("file UI reports size/read/storage failure safely; invalid stored pack does
   assert.equal(rebooted.app.activePack, null);
   assert.match(rebooted.node("page-home").innerHTML, /本機題包無法載入/);
   assert.equal(e.st.getItem(key(e.child)), progress);
+});
+test("manual file import accepts a valid pack above the former 128 KiB limit", async () => {
+  const e = await ready();
+  const before = e.st.getItem(key(e.child));
+  const pack = syntheticPack();
+  pack.revision = 2;
+  pack.explanations[ids[0]] += "語" + "x".repeat(140000);
+  const content = JSON.stringify(pack);
+  const size = Buffer.byteLength(content);
+  assert.ok(size > 131072 && size <= 262144);
+  let read = false;
+  await e.window._importPrivatePackFile({ files: [{ size, text() { read = true; return content; } }] });
+  assert.equal(read, true);
+  assert.equal(e.app.activePack.revision, 2);
+  assert.equal(e.st.getItem(packKey), content);
+  assert.equal(e.st.getItem(key(e.child)), before);
 });
 test("same pack reorder is idempotent; higher revision explanation update preserves progress; downgrade rejected", async()=>{
   const e=await ready();e.app.State.addMastered(15,ids[0]);const before=e.st.getItem(key(e.child));

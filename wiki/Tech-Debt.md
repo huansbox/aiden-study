@@ -10,12 +10,6 @@
 - Native Camp Weekly Review 停用自動排程、付費製音需人工確認，是家長決定與成本保護，不是待修功能。
 - 私用題包、老師原音與原始考卷不進 Git 是設計；clone 缺這些檔不是缺檔 bug。
 
-## 高利息
-
-| 債 | 成本（利息） | 償還策略／條件 | 證據 |
-|---|---|---|---|
-| 家庭私用題包單包 128 KiB 上限已用盡 | rev8 共 97 題、130,248 bytes，只剩 824 bytes。數學與自然共用同一包，任何新題批次都會被 builder 拒絕；內嵌 PNG 的圖表題尤其耗容量 | 下一次擴題前先定方案：按科目或單元拆包、精簡或外置圖像、或調整上限契約。任一方案都涉及 Worker 題包端點、Study loader 與 cache，要走「Worker → Pages → KV」順序並保住既有 ID 與進度；不靠刪舊題騰空間 | [自然第四批紀錄](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-science-study-fourth-batch.md)、[私用題包重建](https://github.com/huansbox/aiden-study/blob/master/docs-dev/grade4-u1-private-pack-build.md)、#134 結案留言 |
-
 ## 中利息
 
 | 債 | 成本（利息） | 償還策略／條件 | 證據 |
@@ -47,6 +41,8 @@
 | `docs-dev/` 根目錄混放設計稿與 E2E 截圖／結果 JSON | 找設計文件時要略過數十個驗收產物 | 低優先；下次整理文件時把驗收產物移到子資料夾並更新連結 |
 
 ## 償還紀錄
+
+- **2026-10-03**：#145 將家庭題包上限提高至 256 KiB，builder、瀏覽器與 Worker 共用 validator 同步；不改題目或孩子進度。決策與發布證據見 [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)／[#145](https://github.com/huansbox/aiden-study/issues/145)。
 
 - **2026-09-30／10-03**：Native Camp 私人原音、逐字稿、request journal 與已完成工作副本歸檔到 Dropbox，附逐檔 SHA256 manifest 與 Git bundle；恢復順序寫入 Wiki（#138、#144）。
 - **2026-09-26**：Weekly Review 自動排程停用，改為家長要求才製作，移除無人看管的付費 API 風險（#125）。

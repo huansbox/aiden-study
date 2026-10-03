@@ -2,7 +2,7 @@
 (function(root) {
   "use strict";
   const KEY = "study:private-pack:g4-s1-math-u1";
-  const MAX_BYTES = 128 * 1024;
+  const MAX_BYTES = 256 * 1024;
   const IDS = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(id => `math-g4s1-${id}-v1`);
   const UNITS = [15, 16, 17, 18, 19, 20, 21];
   const ID_RE = /^(math|science)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
@@ -89,7 +89,7 @@
     } else throw new Error("題目媒體格式無效。");
   }
   function parse(raw, publicQuestions = [], previous = null) {
-    if (typeof raw !== "string" || new TextEncoder().encode(raw).length > MAX_BYTES) throw new Error("題包超過 128 KiB 或不是文字檔。");
+    if (typeof raw !== "string" || new TextEncoder().encode(raw).length > MAX_BYTES) throw new Error("題包超過 256 KiB 或不是文字檔。");
     let pack;
     try { pack = JSON.parse(raw); } catch { throw new Error("JSON 格式無法讀取。"); }
     if (!keys(pack, ["schemaVersion", "packId", "revision", "questions", "explanations"]) || pack.schemaVersion !== 1 || pack.packId !== "g4-s1-math-u1" || !Number.isSafeInteger(pack.revision) || pack.revision < 1) throw new Error("題包版本或欄位不支援。");
@@ -173,7 +173,7 @@
     if (response.status === 401) throw new Error(auth ? "家庭連線已失效，請回首頁讓家長重新連接。" : "家庭金鑰不正確。請在家庭設定重新輸入。");
     if (response.status === 404) throw new Error("家庭題包尚未發布，請家長確認部署後重試。");
     if (!response.ok) throw new Error("題包服務異常，請稍後重試或請家長檢查服務。");
-    if (Number(response.headers.get("Content-Length")) > MAX_BYTES) throw new Error("題包超過 128 KiB，未載入。");
+    if (Number(response.headers.get("Content-Length")) > MAX_BYTES) throw new Error("題包超過 256 KiB，未載入。");
     // 串流逐段限額：不先把無上限的 response.text() 全收進記憶體。
     if (!response.body) throw new Error("題包回應沒有內容，未載入。");
     const reader = response.body.getReader();
@@ -187,7 +187,7 @@
         const { done, value } = chunk;
         if (done) break;
         size += value.byteLength;
-        if (size > MAX_BYTES) throw new Error("題包超過 128 KiB，未載入。");
+        if (size > MAX_BYTES) throw new Error("題包超過 256 KiB，未載入。");
         try { raw += decoder.decode(value, { stream: true }); }
         catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
       }
