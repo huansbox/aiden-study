@@ -1,6 +1,6 @@
 # 四上社會首批 Study 題庫（#154）
 
-本批承接 [#154](https://github.com/huansbox/aiden-study/issues/154)，數學後續補題暫緩，先建立「四上社會歷屆題庫 → iPad 練習」。來源與課程核對見[收卷任務](../learning-tasks/grade4-sem1-social-exam1/README.md)及[課程對照](../learning-tasks/grade4-sem1-social-exam1/source/curriculum-comparison.md)。本文件在正式發布前只記候選與驗收契約；實際發布依 Issue 的最新交接與管理端讀回證據。
+本批承接 [#154](https://github.com/huansbox/aiden-study/issues/154)，數學後續補題暫緩，先建立「四上社會歷屆題庫 → iPad 練習」。來源與課程核對見[收卷任務](../learning-tasks/grade4-sem1-social-exam1/README.md)及[課程對照](../learning-tasks/grade4-sem1-social-exam1/source/curriculum-comparison.md)。本批已於 2026-10-03 正式發布 revision 11；發布指紋、讀回與驗證記於下文，housekeeping 結果另見 Issue 的結案留言。
 
 ## 範圍與呈現
 
@@ -14,9 +14,9 @@
 
 本批基線為 revision 10、108 個 activity、186717 bytes、SHA256 `fe6ab5874454e88fedfdf8f56305d8d52fd1bab188b311a8588f4884f5a65fd1`。容量維持 256 KiB。候選、轉寫、官方答案核對、獨立覆核、整合與測試證據只放私人目錄；公開僅保存來源定位、課程對照、分類及數量。
 
-已核准的首批候選為 19 個完整 activity：112 年 6 題、113 年 13 題；9 題四選一、10 題是非，地圖與位置 11 題、地形與生活 3 題、氣候與水資源 5 題。19 題皆有校方答案，作者與 reviewer 分別自行解題後核對一致。113 年原題「正確打勾、錯誤留白」已按原指示核對，轉成兩個是非按鈕。114 年原卷保存供後續，本批未使用。原卷需圖表、地方連續線索或跨單元的題不硬轉。
+已發布的首批為 19 個完整 activity：112 年 6 題、113 年 13 題；9 題四選一、10 題是非，地圖與位置 11 題、地形與生活 3 題、氣候與水資源 5 題。19 題皆有校方答案，作者與 reviewer 分別自行解題後核對一致。113 年原題「正確打勾、錯誤留白」已按原指示核對，轉成兩個是非按鈕。114 年原卷保存供後續，本批未使用。原卷需圖表、地方連續線索或跨單元的題不硬轉。
 
-候選 revision 11 共 127 個 activity（數學 68／自然 40／社會 19）、200737 bytes、SHA256 `4afbc74258f47d41489cd109d9119240d44844c4b0f73eb414831dff73b9784b`，距 256 KiB 上限尚餘 61407 bytes。公開[選題 metadata](../data/study/g4-s1-math-u1/social-first-batch-selection-metadata.json)記精確集合，核准不代表已發布。私人 `social-first-batch/approval.json` 綁定作者稿、selection、QA、獨立內容審查與候選指紋；`integration/rebuild_rev11.py --check`／`--promote` 另核四份原題／答案 PDF、校卷 manifest 身分、舊 108 題逐值保留及三科數量。
+正式 revision 11 共 127 個 activity（數學 68／自然 40／社會 19）、200737 bytes、SHA256 `4afbc74258f47d41489cd109d9119240d44844c4b0f73eb414831dff73b9784b`，距 256 KiB 上限尚餘 61407 bytes。公開[選題 metadata](../data/study/g4-s1-math-u1/social-first-batch-selection-metadata.json)記精確已發布集合。私人 `social-first-batch/approval.json` 綁定作者稿、selection、QA、獨立內容審查與候選指紋；`integration/rebuild_rev11.py --check`／`--promote` 另核四份原題／答案 PDF、校卷 manifest 身分、舊 108 題逐值保留及三科數量。
 
 內容作者與獨立 reviewer 各自解題，再核對官方答案及原卷相關整頁。Root 核准精確集合、review 與來源指紋、預期 pack SHA256 後才提升為可發布內容。不以候選數、原卷作答格數或下載完成宣稱已上線。
 
@@ -29,3 +29,15 @@ Builder、瀏覽器 parser 與 Worker 同步放行社會 unit 22 的文字四選
 Runtime 有改動，Worker 亦 import 新 parser，因此採核准 PR／CI → 核對現役 Worker 與遠端基線 → 新版 Worker → 合併並等待 Pages 成功 → 精確 HTML 與新版資產 URL bytes 核對 → 再核正式 rev10 基線 → 一次前向寫入核准 rev11 → 立即與超過 60 秒讀回。Pages 完成前不先請求新 cache query，避免舊檔被快取到新 URL。不使用正式家庭 session 或孩子 `p:` 資料。
 
 收尾保留可重建題包、官方 PDF、課程來源、作者與覆核、發布及 QA 證據，逐檔 manifest 核對後才封存本批 worktree。其他 session 與既有歷史原件保留。長期契約以 Wiki [Study 私用題包](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack) 為正本。
+
+## 正式發布與保存
+
+[PR #155](https://github.com/huansbox/aiden-study/pull/155) 由已審查來源 `acb614a13d66c42c821368e62d9c2fce66307830` 合併為 `25f138d0ece87d8a8a6c8e725c760233669ddc38`。目錄自動更新另產生 `1b3c1e6935868e890232b151bda2362a23173f5a`，只變更 work-catalog；Pages run `37130117390`、主線 test `37130097610` 與 catalog `37130097597` 全部 success。網站 16 個 HTML／精確引用資產 URL／目錄檔的 bytes 與該 Pages commit 相符，包含新版 Study loader、preview、家長頁及 family-core。未在 Pages 成功前請求新 cache query。
+
+Worker 以 Wrangler 4.132.0 從上述已審查來源部署；現役 version 由 `b2db46b1-5f4a-41b5-abce-aebd7ef411f1` 前向更新為 `17e6bc64-f97d-4759-967c-8d2058985f5b`、100%。寫入前管理端再次讀回 rev10 精確基線，然後對固定內容 key 一次前向寫入 rev11。2026-10-03 14:37:53.341 UTC 與 14:39:27.858 UTC 兩次讀回相隔 94.517 秒，revision／127 題／200737 bytes／SHA256 均與核准包相同；最後 Worker 仍為上述版本。未讀寫孩子正式進度或使用家庭 session。
+
+作者與未撰寫題文／程式的 reviewer 分別核答；獨立審查未見 material finding。完整 Node 779／Python 276 通過（1 項既有缺 PDF skip），catalog／首頁版本／數學報表／production validator 通過。真包 9 個 E2E 情境、6 個核准 gate 負向案例、舊 108 題逐值守衛均通過；最長 111 字題目在橫向仍完整可讀，作答選項與家長試玩由 root 及 reviewer 目視。測試 server／browser 已退出；此為 Chromium 模擬尺寸，不代表實體 Safari 驗收。
+
+可重建來源與證據保存於 canonical ignored `data/private/study/g4-s1-math-u1/rev11-release/`；`private/RESTORE.md` 描述新 worktree 恢復順序，根 `manifest.json` 逐檔記 bytes／SHA256。`private-source/` 包含本批收集的五份原題／答 PDF、官方課程 PDF 與視核資料；`public-snapshot/` 保存當時 mapping／分類／selection／校卷 manifest 的精確 bytes，避免跨平台換行改寫破壞審查指紋。是否已完成逐檔歸檔與獨立 housekeeping 核對，以 #154 結案留言為準。Dropbox 專案任務資料夾另保留本機核驗副本，不宣稱接收端已同步。
+
+後續優先補 U1 的地形與氣候判讀，並處理保留的地圖／圖表題；先核完整原件與答案，再決定是否需要額外圖表介面。U2 以後及正式段考範圍待學校資訊，不把首批完成寫成社會全部收齊。
