@@ -37,7 +37,7 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-10-01",
+      "updated": "2026-10-03",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -401,8 +401,8 @@
       "eventDate": "2026-10-02",
       "groupId": "nativecamp",
       "groupName": "Native Camp",
-      "created": null,
-      "updated": null,
+      "created": "2026-10-03",
+      "updated": "2026-10-03",
       "freshness": {
         "state": "current",
         "checkedAt": null,
