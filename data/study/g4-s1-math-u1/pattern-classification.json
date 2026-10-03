@@ -15,7 +15,7 @@
   "snapshot": {
     "packId": "g4-s1-math-u1",
     "revision": 12,
-    "status": "frozen_unreleased",
+    "status": "released_documented",
     "evidence": "docs-dev/grade4-social-study-second-batch.md",
     "packBytes": 229503,
     "packSha256": "2E2C94E743C8EB31D9D658B1177A7EBF87C27429AA468FDC611FB3CF136F3D2F"
