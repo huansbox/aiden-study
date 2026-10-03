@@ -39,6 +39,19 @@ test("rev5 mapping 追加自然時，數學分類仍只統計既有題", () => {
   const summary = summarize(classification, mapping, sourceDocuments);
   assert.equal(summary.reduce((n, row) => n + row.activities, 0), 3);
   assert.equal(summary.reduce((n, row) => n + row.observedPatterns, 0), 2);
+  assert.match(renderReport(classification, summary, mapping), /mapping rev5 共 4 個 activity（數學 3／自然 1）；本報告只統計數學 3 個 activity/);
+});
+
+test("新版數學快照保留 rev4 歷史題數，且不把自然題併入數學", () => {
+  const { classification, mapping, sourceDocuments } = fixture();
+  classification.snapshot.revision = 9;
+  classification.historicalSnapshots = [{ revision: 4, mathActivities: 57, evidence: "docs-dev/grade4-math-expansion-plan.md" }];
+  mapping.revision = 9;
+  mapping.items.push({ appId: "science-g4s1-synthetic-S1-01-v1", unit: 20 });
+  const output = renderReport(classification, summarize(classification, mapping, sourceDocuments), mapping);
+  assert.match(output, /mapping rev9 共 4 個 activity（數學 3／自然 1）/);
+  assert.match(output, /歷史封存：rev4 數學 57 個 activity/);
+  assert.doesNotMatch(output, /97 個數學/);
 });
 
 test("漏 ID、多 ID、重複 assignment ID 都拒絕，不能產生低估或重計的報告", () => {

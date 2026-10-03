@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "packId": "g4-s1-math-u1",
-  "revision": 8,
+  "revision": 9,
   "sourceTask": "learning-tasks/grade4-math-first-practice",
   "sourceMapping": "learning-tasks/grade4-math-first-practice/source/mapping-metadata.json",
   "items": [
@@ -1362,6 +1362,104 @@
       "digitalAdaptation": "grouped_choice",
       "sourceAdaptation": "保留原共同題幹與完整手持澆水器、水流、土堆坡度、石粒、A/B/C位置及三格；原圖等尺寸裁切後二值化壓縮，不重畫或增加粒徑；原文三類材料作共用選項，寫國字改為逐格選答。",
       "reviewStatus": "independently_solved_twice_no_official_answer"
+    },
+    {
+      "appId": "math-g4s1-anh112-IV-03-v1",
+      "practiceId": "U4-N014",
+      "originalId": "anh112-IV-03",
+      "paperId": "anh112",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 18,
+      "concept": "M4b 餘數情境全部載完須進一",
+      "contextPolicy": "保留路跑活動、6400 名跑者、每車最多 42 人及全部載完的問句",
+      "digitalAdaptation": "fill_in_blank:number",
+      "sourceAdaptation": "原大題為應用題，未要求列式或直式；保留完整情境與問句，將答案改為固定「次」單位的數字輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-03-v1",
+      "practiceId": "U1-N014",
+      "originalId": "anh114-I-03",
+      "paperId": "anh114",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 15,
+      "concept": "M1a 含零大數讀法",
+      "contextPolicy": "保留退休存款情境、完整數字、讀法問句與四個原選項",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除卷面題號與配分；原數、元單位與四個讀法選項未改，紙本括號改為數位單選。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-III-4-v1",
+      "practiceId": "U5-N011",
+      "originalId": "c-anho-112-final-III-4",
+      "paperId": "c-anho-112-final",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 19,
+      "concept": "M5a 公尺與公里公尺比較",
+      "contextPolicy": "保留大題的比較符號指示、兩邊完整長度與單位",
+      "digitalAdaptation": "fill_in_blank:comparison",
+      "sourceAdaptation": "補上原大題比較符號指示；兩邊長度與單位未改，紙本方框改為數位比較符號輸入。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-4-v1",
+      "practiceId": "U2-N013",
+      "originalId": "c-tyk-112-midterm-I-4",
+      "paperId": "c-tyk-112-midterm",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 16,
+      "concept": "M2a/M4b 倍數與乘除互逆反推",
+      "contextPolicy": "保留甲、乙兩個數量條件及四個完整敘述選項",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除卷面題號與配分；甲乙條件、運算符號與四個原選項未改，紙本括號改為數位單選。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-114-midterm-II-6-v1",
+      "practiceId": "U2-N014",
+      "originalId": "c-tyk-114-midterm-II-6",
+      "paperId": "c-tyk-114-midterm",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 16,
+      "concept": "M2a/M2b 已知乘積求相鄰乘數的乘積",
+      "contextPolicy": "保留已知 80×150 的乘積、80×151 問句與四個原選項",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除卷面題號與配分；已知等式、相鄰乘數與四個原選項未改，紙本括號改為數位單選。",
+      "reviewStatus": "independently_solved_twice_no_official_answer"
+    },
+    {
+      "appId": "math-g4s1-mq114-II-04-v1",
+      "practiceId": "U4-N015",
+      "originalId": "mq114-II-04",
+      "paperId": "mq114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 18,
+      "concept": "M4b 餘數小於除數的規則",
+      "contextPolicy": "保留完整除法規則問句與四個原選項",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除卷面題號與配分；問句與四個原選項未改，紙本括號改為數位單選。",
+      "reviewStatus": "independently_solved_twice_no_official_answer"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-01-v1",
+      "practiceId": "U1-N013",
+      "originalId": "tyk113-I-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 15,
+      "concept": "M1a 六位數最小值與位值敘述",
+      "contextPolicy": "保留四個完整敘述及單選正確敘述的要求",
+      "digitalAdaptation": "multiple_choice",
+      "sourceAdaptation": "移除卷面題號與配分；四個敘述及單選目標未改，紙本括號改為數位單選。",
+      "reviewStatus": "independently_recomputed_and_matches_official"
     }
   ]
 }

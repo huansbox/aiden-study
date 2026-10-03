@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "taxonomyVersion": "v1.1",
+  "taxonomyVersion": "v1.2",
   "countUnit": "digital_activity",
   "scope": "目前已辨識的主要推理模式，並非所有可能數學題型。",
   "rules": [
@@ -14,11 +14,11 @@
   ],
   "snapshot": {
     "packId": "g4-s1-math-u1",
-    "revision": 4,
-    "status": "released_documented",
-    "evidence": "docs-dev/grade4-math-expansion-plan.md",
-    "packBytes": 40358,
-    "packSha256": "72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6"
+    "revision": 9,
+    "status": "frozen_unreleased",
+    "evidence": "docs-dev/grade4-math-text-batch.md",
+    "packBytes": 135176,
+    "packSha256": "B1817152BD4B8EA067DE7D8D9CB663870C9A836072DABD9675A113DCB399D346"
   },
   "sourceReferences": {
     "B": {
@@ -383,6 +383,33 @@
       "label": "判斷生活長度與單位是否合理",
       "definition": "結合物件尺度、數值與單位，判斷長度敘述的合理性。",
       "boundary": "需要生活尺度判斷；僅給精確量做單位換算或大小比較另歸換算／比較型。"
+    },
+    {
+      "id": "U1.statement-validation",
+      "chapter": "U1",
+      "conceptId": "U1.claims",
+      "concept": "大數敘述判斷",
+      "label": "綜合判斷位值敘述",
+      "definition": "逐一檢查關於位數、讀法、各位數字與位數極值的多個敘述，選出唯一正確者。",
+      "boundary": "同題跨數種位值主張且須逐一判真；只求位數極值歸 U1.digit-extreme，單純讀法歸 U1.read。"
+    },
+    {
+      "id": "U2.inverse-conditions",
+      "chapter": "U2",
+      "conceptId": "U2.product-relation",
+      "concept": "乘積關係",
+      "label": "由倍數與除法條件反推兩量再比較",
+      "definition": "先從一量的倍數及另一量除以指定數的商，分別反推兩量，再判斷兩量的倍數或敘述關係。",
+      "boundary": "至少兩量須由不同反向條件還原後再比較；單一乘積缺位歸 U2.missing-factor，一般一個等組總量歸 U2.product。"
+    },
+    {
+      "id": "U2.adjacent-product",
+      "chapter": "U2",
+      "conceptId": "U2.product-relation",
+      "concept": "乘積關係",
+      "label": "由已知乘積推相鄰因數乘積",
+      "definition": "已知一個乘積，當其中一個因數增加或減少 1，便增加或減少一份另一因數以求新乘積。",
+      "boundary": "須給既有乘積與相鄰因數；整十百縮放歸 U2.scale，沒有已知乘積可沿用的一般乘法歸 U2.product。"
     }
   ],
   "assignments": [
@@ -919,6 +946,64 @@
       ],
       "sourceKind": "historical_exam",
       "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh112-IV-03-v1",
+      "primaryPattern": "U4.ceiling",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-anh114-I-03-v1",
+      "primaryPattern": "U1.read",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-c-anho-112-final-III-4-v1",
+      "primaryPattern": "U5.compare",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-112-midterm-I-4-v1",
+      "primaryPattern": "U2.inverse-conditions",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-c-tyk-114-midterm-II-6-v1",
+      "primaryPattern": "U2.adjacent-product",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "C"
+    },
+    {
+      "appId": "math-g4s1-mq114-II-04-v1",
+      "primaryPattern": "U4.rules",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    },
+    {
+      "appId": "math-g4s1-tyk113-I-01-v1",
+      "primaryPattern": "U1.statement-validation",
+      "secondaryTags": [],
+      "sourceKind": "historical_exam",
+      "sourceGroup": "B"
+    }
+  ],
+  "historicalSnapshots": [
+    {
+      "revision": 4,
+      "mathActivities": 57,
+      "packBytes": 40358,
+      "packSha256": "72D77B98221ABA497B8C50F78BAD89DFC79BCB0AC6D7A5FE39B1AAEBF59CF1A6",
+      "evidence": "docs-dev/grade4-math-expansion-plan.md"
     }
   ]
 }
