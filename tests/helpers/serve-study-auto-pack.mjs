@@ -69,7 +69,7 @@ const server=createServer(async(req,res)=>{
       const controls=`<aside>隔離 synthetic 測試：<a href="/test-control?mode=failed">服務失敗</a> | <a href="/test-control?mode=ok">服務恢復</a> | <a href="/test-control?mode=expanded">發布合成十四題</a></aside>`;
       bytes=Buffer.from(bytes.toString().replace("<body>",`<body>${controls}`));
     }
-    const mime={".html":"text/html; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"};
+    const mime={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"};
     res.writeHead(200,{"Content-Type":mime[extname(path)]||"application/octet-stream","Cache-Control":"no-store","Content-Security-Policy":"connect-src 'self'"});res.end(bytes);
   } catch {res.writeHead(404);res.end();}
 });
