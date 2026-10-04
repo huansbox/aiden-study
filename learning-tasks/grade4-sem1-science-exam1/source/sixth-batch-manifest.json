@@ -101,7 +101,8 @@
     "cumulative_official_answer_papers": 3,
     "cumulative_official_answer_pages": 10,
     "formal_target_range_verified": false,
-    "reviewed_candidates_pending_release": 4,
-    "new_published_activities": 0
+    "new_published_activities": 4,
+    "current_published_science_activities": 45,
+    "current_published_global_activities": 137
   }
 }
