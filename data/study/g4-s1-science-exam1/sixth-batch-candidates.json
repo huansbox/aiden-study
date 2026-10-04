@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/169",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "status": "reviewed_pending_release",
+  "countUnit": "complete_activity",
+  "total": 4,
+  "originalAnswerSlots": 4,
+  "newPublishedCount": 0,
+  "previousPublishedScienceCount": 41,
+  "expectedScienceCountAfterRelease": 45,
+  "items": [
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-1-v1",
+      "practiceId": "S1-P20",
+      "originalId": "sixth-smps-114-g6-s1-final-3-1-table-1-1",
+      "paperId": "sixth-smps-114-g6-s1-final",
+      "questionPage": 1,
+      "printedLocator": "3-1配合題1(1)",
+      "unit": 20,
+      "scope": "core-provisional-concept-only",
+      "concept": "S1b 地表材料與侵蝕抵抗",
+      "method": "根據三地條件資料表判斷",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "officialAnswerAvailable": true,
+      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
+      "status": "reviewed_pending_release"
+    },
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-2-v1",
+      "practiceId": "S1-P21",
+      "originalId": "sixth-smps-114-g6-s1-final-3-1-table-1-2",
+      "paperId": "sixth-smps-114-g6-s1-final",
+      "questionPage": 1,
+      "printedLocator": "3-1配合題1(2)",
+      "unit": 20,
+      "scope": "core-provisional-concept-only",
+      "concept": "S1b 坡度、降雨與流水搬運",
+      "method": "根據同類地表的坡度與降雨資料推論",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "officialAnswerAvailable": true,
+      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
+      "status": "reviewed_pending_release"
+    },
+    {
+      "appId": "science-g4s1-sixth-yap-113-g3-s2-final-wind-1-1-v1",
+      "practiceId": "S1-P22",
+      "originalId": "sixth-yap-113-g3-s2-final-wind-1-1",
+      "paperId": "sixth-yap-113-g3-s2-final",
+      "questionPage": 2,
+      "printedLocator": "四、勾選題1(1)",
+      "unit": 20,
+      "scope": "cross-grade-concept-only",
+      "concept": "S1b 測風計風力強弱判讀",
+      "method": "根據同一套簡易測風計的甲乙丙三地原圖比較風力",
+      "format": "true_false",
+      "answerSlots": 1,
+      "materialKind": "png",
+      "materialSha256": "54789db9f20932f03c484ee44ebdd1c310ec402d569105795e34b622892c87d9",
+      "officialAnswerAvailable": false,
+      "coverageClaim": "測風計圖像判讀候選；非風蝕條件因果題",
+      "status": "reviewed_pending_release"
+    },
+    {
+      "appId": "science-g4s1-sixth-yap-113-g3-s2-final-wind-1-2-v1",
+      "practiceId": "S1-P23",
+      "originalId": "sixth-yap-113-g3-s2-final-wind-1-2",
+      "paperId": "sixth-yap-113-g3-s2-final",
+      "questionPage": 2,
+      "printedLocator": "四、勾選題1(2)",
+      "unit": 20,
+      "scope": "cross-grade-concept-only",
+      "concept": "S1b 測風計風力強弱判讀",
+      "method": "根據同一套簡易測風計的甲乙丙三地原圖比較風力",
+      "format": "true_false",
+      "answerSlots": 1,
+      "materialKind": "png",
+      "materialSha256": "54789db9f20932f03c484ee44ebdd1c310ec402d569105795e34b622892c87d9",
+      "officialAnswerAvailable": false,
+      "coverageClaim": "測風計圖像判讀候選；非風蝕條件因果題",
+      "status": "reviewed_pending_release"
+    }
+  ],
+  "excludedAfterAuthorQa": [
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-choice-2-v1",
+      "wouldBePracticeId": "S1-P19",
+      "reason": "官方解答將該題標為NO／本題送分，不納入候選，也不算填補操縱變因缺口。"
+    }
+  ],
+  "scopeNote": "深美114六上期末南一原卷與永安113三下期末出版社未知原卷只作跨年級同概念對照；桃子腳115四上正式考試範圍仍未取得。深美表格只有比較條件，非地表侵蝕實測結果，兩小題各保留完整表格與自身三選項；永安兩題各附原卷完整三格測風計圖，僅補風力圖像判讀，非風蝕因果。rev14本機候選已建，尚未發布。",
+  "remainingGaps": [
+    "必要比較條件完整的風蝕因果比較；測風計風力強弱圖像判讀已有候選",
+    "地表實驗操縱變因辨識",
+    "地表實驗後實測數據表判讀"
+  ]
+}

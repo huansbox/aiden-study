@@ -121,6 +121,26 @@ test("subject switch reaches science true_false and choice without touching chil
   app.destroy();
 });
 
+test("science three-choice preview labels and scores all three options without child writes", async () => {
+  const pack = scienceSyntheticPack();
+  pack.questions[7].options = ["甲", "乙", "丙"];
+  pack.questions[7].answer = "3";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "science" });
+  app.handle("unit", { value: "21" });
+  assert.match(h.host.innerHTML, /三選一/);
+  assert.equal((h.host.innerHTML.match(/data-action="answer-choice"/g) || []).length, 3);
+  app.handle("answer-choice", { value: "2" });
+  app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("retry-answer");
+  app.handle("answer-choice", { value: "3" });
+  app.handle("check");
+  assert.equal(app.state.result, "correct");
+  assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
 test("social preview uses exact unit membership and three broad topics without progress writes", async () => {
   const h = harness({ pack: socialSyntheticPack() }), app = await h.boot();
   app.handle("subject", { value: "social" });
@@ -461,7 +481,7 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
   // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
-  assert.match(source("preview.html"), /preview\.js\?v=20261004-shards-preview-r2/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261004-science-sixth-choice/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);

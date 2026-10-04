@@ -98,3 +98,16 @@ test("fourth- and fifth-batch fine tags stay in the existing ground-change and e
   }
   assert.equal(topics.topicsForUnit(20).length + topics.topicsForUnit(21).length, 7);
 });
+
+test("sixth-batch fine tags stay under ground change while old fine selectors remain exact", async () => {
+  const e = await boot();
+  const topics = e.window.StudyScienceTopics;
+  for (const subtopic of ["S1b 地表材料與侵蝕抵抗", "S1b 坡度、降雨與流水搬運", "S1b 測風計風力強弱判讀"]) {
+    const question = { unit: 20, subtopic };
+    assert.equal(topics.topicForQuestion(question)?.key, "@science-topic:S1b");
+    assert.equal(topics.matches(question, "@science-topic:S1b"), true);
+    assert.equal(topics.matches(question, subtopic), true);
+    assert.equal(topics.matches(question, "@science-topic:S1a"), false);
+  }
+  assert.equal(topics.topicsForUnit(20).length + topics.topicsForUnit(21).length, 7);
+});

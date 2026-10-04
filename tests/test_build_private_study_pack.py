@@ -182,6 +182,31 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
     assert len(build_pack(*_paths(tmp_path / "no-official", no_official))["questions"]) == 8
 
 
+def test_multiple_choice_option_counts_and_one_based_answers_by_subject():
+    for subject, unit, allowed in (("math", 15, (4,)), ("science", 20, (3, 4)), ("social", 22, (2, 4))):
+        app_id = f"{subject}-g4s1-synthetic-choice-v1"
+        mapping = {"appId": app_id, "unit": unit, "digitalAdaptation": "multiple_choice"}
+        question = {"id": app_id, "subject": subject, "unit": unit, "type": "multiple_choice",
+                    "text": "Synthetic choice?", "subtopic": "Synthetic topic", "options": [], "answer": "1"}
+        for count in allowed:
+            candidate = {**question, "options": [f"option {i}" for i in range(count)], "answer": str(count)}
+            assert private_builder._validate_question(candidate, "synthetic", mapping) == candidate
+        for count in ({2, 3, 4, 5} - set(allowed)):
+            candidate = {**question, "options": [f"option {i}" for i in range(count)]}
+            with pytest.raises(PackBuildError, match="option count"):
+                private_builder._validate_question(candidate, "synthetic", mapping)
+        for options, answer in ((["A", "", "C", "D"], "1"), (["A", "B", "C", "D"], "0"),
+                                (["A", "B", "C", "D"], "5")):
+            candidate = {**question, "options": options, "answer": answer}
+            with pytest.raises(PackBuildError):
+                private_builder._validate_question(candidate, "synthetic", mapping)
+    science = {"id": "science-g4s1-synthetic-choice-v1", "subject": "science", "unit": 20,
+               "type": "multiple_choice", "text": "Synthetic choice?", "subtopic": "Synthetic topic",
+               "options": ["A", "B", "C"], "answer": "4"}
+    with pytest.raises(PackBuildError, match="1-based"):
+        private_builder._validate_question(science, "synthetic", {"appId": science["id"], "unit": 20, "digitalAdaptation": "multiple_choice"})
+
+
 def test_social_unit_22_choice_and_true_false_require_completed_review(tmp_path):
     values = list(_fixture())
     curated, explanations, metadata, _ = values

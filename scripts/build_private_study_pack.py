@@ -238,7 +238,7 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
         _validate_material(question["material"], f"question {practice_id} material")
 
     if adaptation == "multiple_choice":
-        allowed_counts = {2, 4} if subject == "social" else {4}
+        allowed_counts = {"math": {4}, "science": {3, 4}, "social": {2, 4}}[subject]
         if question["type"] != "multiple_choice" or len(question["options"]) not in allowed_counts:
             raise PackBuildError(f"question {practice_id} has an unsupported multiple choice option count")
         if any(not isinstance(option, str) or not option.strip() for option in question["options"]):

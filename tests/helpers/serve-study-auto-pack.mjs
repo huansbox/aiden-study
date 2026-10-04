@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { syntheticPack, expandedSyntheticPack, socialSecondSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
+import { syntheticPack, expandedSyntheticPack, scienceSyntheticPack, socialSecondSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
 
 import { buildCatalog } from "../../scripts/build_private_study_catalog.mjs";
 const root=resolve(fileURLToPath(new URL("../../docs/",import.meta.url)));
@@ -23,13 +23,21 @@ const server=createServer(async(req,res)=>{
       res.writeHead(302,{Location:"/study/?child=test-child"});res.end();return;
     }
     if(url.pathname==="/test-start"){
-      catalogMode = url.searchParams.get("scenario") === "catalog";
+      const scenario = url.searchParams.get("scenario");
+      catalogMode = scenario === "catalog" || scenario === "science-three";
       const partialReset = url.searchParams.get("scenario") === "partial-cache-reset";
       const upgrade = url.searchParams.get("scenario") === "upgrade" || partialReset;
       failed = false;
       await KV.put("c:study:g4-s1-math-u1", JSON.stringify(syntheticPack()));
       if(catalogMode) {
-        const pack=socialSecondSyntheticPack();
+        const pack=scenario === "science-three" ? scienceSyntheticPack() : socialSecondSyntheticPack();
+        if (scenario === "science-three") {
+          const question=pack.questions.find(q=>q.subject==="science"&&q.type==="multiple_choice");
+          question.unit=20;
+          question.subtopic="S1b 地表材料與侵蝕抵抗";
+          question.options=["甲", "乙", "丙"];
+          question.answer="3";
+        }
         const built=await buildCatalog(pack,pack,[],65536);
         for(const [hash,raw] of built.shards) await KV.put(`c:study:shard:${hash}`,raw);
         await KV.put("c:study:catalog:v2",JSON.stringify(built.manifest));
@@ -61,7 +69,7 @@ const server=createServer(async(req,res)=>{
       const controls=`<aside>隔離 synthetic 測試：<a href="/test-control?mode=failed">服務失敗</a> | <a href="/test-control?mode=ok">服務恢復</a> | <a href="/test-control?mode=expanded">發布合成十四題</a></aside>`;
       bytes=Buffer.from(bytes.toString().replace("<body>",`<body>${controls}`));
     }
-    const mime={".html":"text/html; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"};
+    const mime={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"};
     res.writeHead(200,{"Content-Type":mime[extname(path)]||"application/octet-stream","Cache-Control":"no-store","Content-Security-Policy":"connect-src 'self'"});res.end(bytes);
   } catch {res.writeHead(404);res.end();}
 });
