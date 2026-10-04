@@ -10,11 +10,11 @@ const m = html.match(/\/\/ <zhuyin-core-pure>([\s\S]*?)\/\/ <\/zhuyin-core-pure>
 if (!m) throw new Error("docs/zhuyin/index.html 找不到 <zhuyin-core-pure> 區塊");
 const {
   zyCardId, zySylId, zyLoadProgress, zyCardState, zyShuffle,
-  zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices,
+  zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices, zyPickBuildChoices,
   zyOnQuizResult, zyAdvanceQueue, zyDemoChain, zyToneOptions, zyBuildStep,
 } = new Function('"use strict";' + m[1] + `
 return { zyCardId, zySylId, zyLoadProgress, zyCardState, zyShuffle,
-  zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices,
+  zyBuildPool, zyBuildBatch, zyEnteredGlyphs, zyCardKind, zyPickChoices, zyPickBuildChoices,
   zyOnQuizResult, zyAdvanceQueue, zyDemoChain, zyToneOptions, zyBuildStep };`)();
 
 const zero = () => 0;       // 洗牌成固定序、選位取 0
@@ -86,16 +86,16 @@ test("題池：全部進場 → 全音節入池", () => {
 
 // ── zyBuildBatch ──
 
-test("組批：全新進度 → 新卡按池序、上限 max", () => {
+test("組批：全新進度 → 只介紹一張新卡、按池序", () => {
   const pool = zyBuildPool(["ㄅ", "ㄇ", "ㄚ", "ㄈ", "ㄨ", "ㄆ"], AUDIO, [], prog({}));
   const b = zyBuildBatch({ pool, progress: prog({}), hasAudio: allAudio, max: 5, rng: zero });
-  assert.deepEqual(b.map((c) => c.glyph), ["ㄅ", "ㄇ", "ㄚ", "ㄈ", "ㄨ"]);
+  assert.deepEqual(b.map((c) => c.glyph), ["ㄅ"]);
 });
 
-test("組批：可出卡數 N＜max 時 batch＝N（順序保持池序）", () => {
+test("組批：全新進度不重複補滿：可用三張時仍只出一張新卡", () => {
   const pool = zyBuildPool(ORDER3, AUDIO, [], prog({}));
   const b = zyBuildBatch({ pool, progress: prog({}), hasAudio: allAudio, max: 5, rng: zero });
-  assert.deepEqual(b.map((c) => c.glyph), ["ㄅ", "ㄇ", "ㄚ"]);
+  assert.deepEqual(b.map((c) => c.glyph), ["ㄅ"]);
 });
 
 test("組批：純複習批（無錯無新）洗牌不丟卡不重複", () => {
@@ -115,7 +115,7 @@ test("組批：題目提示音缺檔的卡不入批（符號與音節同規則�
   const ids = b.map((c) => c.id);
   assert.ok(!ids.includes("sym:ㄇ"), ids.join(","));
   assert.ok(!ids.includes("syl:ㄅㄚ2"), ids.join(","));
-  assert.equal(b.length, pool.length - 2);
+  assert.equal(b.length, 3, "兩張熟悉符號＋一張新音節，不超新卡配額");
 });
 
 test("組批：全缺檔 → 空批", () => {
@@ -134,11 +134,12 @@ test("組批：錯題優先 → 新卡 → 複習卡", () => {
   assert.deepEqual(b.map((c) => c.glyph), ["ㄇ", "ㄚ", "ㄅ"]);
 });
 
-test("組批：符號全學會後 → 新音節卡（示範）按池序優先於複習符號", () => {
+test("組批：符號全學會後 → 一張新音節卡（示範），其餘熟悉符號", () => {
   const p = introducedAll(ORDER3);
   const pool = zyBuildPool(ORDER3, AUDIO, SYLS, p);
   const b = zyBuildBatch({ pool, progress: p, hasAudio: allAudio, max: 5, rng: zero });
-  assert.deepEqual(b.map((c) => c.id), ["syl:ㄅㄚ1", "syl:ㄅㄚ2", "syl:ㄅㄚ3", "syl:ㄅㄚ4", "syl:ㄇㄚ1"]);
+  assert.equal(b[0].id, "syl:ㄅㄚ1");
+  assert.deepEqual(b.slice(1).map((c) => c.glyph).sort(), [...ORDER3].sort());
 });
 
 // ── zyCardKind／zyEnteredGlyphs ──
@@ -283,11 +284,24 @@ test("判分映射：未知欄位原樣保留（擴充批新欄位不被判分�
 
 // ── zyAdvanceQueue ──
 
-test("批內佇列：答對移出、答錯排批尾、單卡答錯留著重出", () => {
-  assert.deepEqual(zyAdvanceQueue(["a", "b"], true), ["b"]);
-  assert.deepEqual(zyAdvanceQueue(["a", "b"], false), ["b", "a"]);
-  assert.deepEqual(zyAdvanceQueue(["a"], false), ["a"]);
-  assert.deepEqual(zyAdvanceQueue(["a"], true), []);
+test("批內佇列：首次錯排批尾，第二次不論對錯都移出", () => {
+  const a = symCard("ㄅ"), b = symCard("ㄇ");
+  assert.deepEqual(zyAdvanceQueue([a, b], true), [b]);
+  assert.deepEqual(zyAdvanceQueue([a, b], false), [b, { ...a, repractice: true }]);
+  const retry = zyAdvanceQueue([a], false);
+  for (const correct of [true, false]) assert.deepEqual(zyAdvanceQueue(retry, correct), []);
+  assert.equal(a.repractice, undefined, "不修改原批卡");
+});
+
+test("整批全部答錯：每張最多兩次，最遲原批題數兩倍結束", () => {
+  const batch = ORDER3.map(symCard);
+  let queue = batch, seen = [];
+  while (queue.length && seen.length < 20) {
+    seen.push(queue[0].id);
+    queue = zyAdvanceQueue(queue, false);
+  }
+  assert.deepEqual(seen, batch.concat(batch).map((c) => c.id));
+  assert.equal(queue.length, 0);
 });
 
 // ── zyShuffle／zyCardState 基本行為 ──
@@ -301,4 +315,89 @@ test("zyShuffle：不改原陣列、元素不變", () => {
 
 test("zyCardState：無記錄回預設值", () => {
   assert.deepEqual(zyCardState(prog({}), zyCardId("ㄅ")), card({}));
+});
+
+test("混合配題：弱項最多兩張、新卡最多一張、熟悉題補至五張且不同卡", () => {
+  const order = Object.keys(AUDIO);
+  const p = introducedAll(order.slice(0, 5));
+  for (const g of order.slice(0, 3)) p.cards[zyCardId(g)].wrong = true;
+  const pool = zyBuildPool(order, AUDIO, [], p);
+  const batch = zyBuildBatch({ pool, progress: p, hasAudio: allAudio, max: 99, rng: zero });
+  assert.equal(batch.length, 5);
+  assert.equal(new Set(batch.map((c) => c.id)).size, 5);
+  assert.equal(batch.filter((c) => zyCardState(p, c.id).wrong).length, 2);
+  assert.equal(batch.filter((c) => !zyCardState(p, c.id).introduced).length, 1);
+});
+
+test("全弱項批只取兩張，持續答錯仍輪到其餘弱項（含跨存檔重載）", () => {
+  const order = Object.keys(AUDIO);
+  let p = introducedAll(order);
+  for (const st of Object.values(p.cards)) st.wrong = true;
+  const seen = new Set();
+  for (let i = 0; i < 3; i++) {
+    const pool = zyBuildPool(order, AUDIO, [], p);
+    const batch = zyBuildBatch({ pool, progress: p, hasAudio: allAudio, max: 5, rng: zero });
+    assert.equal(batch.length, 2);
+    for (const c of batch) {
+      seen.add(c.id);
+      p.cards[c.id] = zyOnQuizResult(p.cards[c.id], false, true);
+      p.cards[c.id] = zyOnQuizResult(p.cards[c.id], false, true);
+    }
+    p = zyLoadProgress(JSON.stringify(p));
+  }
+  assert.equal(seen.size, order.length);
+});
+
+test("全新進度每批一張仍可依序介紹全部符號，之後新音節入池", () => {
+  const p = prog({});
+  for (const glyph of ORDER3) {
+    const pool = zyBuildPool(ORDER3, AUDIO, SYLS, p);
+    const batch = zyBuildBatch({ pool, progress: p, hasAudio: allAudio, max: 5, rng: zero });
+    assert.equal(batch.filter((c) => !zyCardState(p, c.id).introduced).length, 1);
+    const fresh = batch.find((c) => !zyCardState(p, c.id).introduced);
+    assert.equal(fresh.glyph, glyph);
+    p.cards[fresh.id] = card({ introduced: true });
+  }
+  const pool = zyBuildPool(ORDER3, AUDIO, SYLS, p);
+  assert.ok(pool.some((c) => c.kind === "syl"));
+});
+
+test("組字共同選項：必含聲韻、無重複且不超四張；重新出題避開上一排列", () => {
+  for (const entered of [["ㄅ", "ㄚ"], ORDER3, Object.keys(AUDIO)]) {
+    const before = [...entered];
+    for (const rng of [zero, high, Math.random]) {
+      const first = zyPickBuildChoices(SYLS[0], entered, rng);
+      const second = zyPickBuildChoices(SYLS[0], entered, rng, first);
+      for (const choices of [first, second]) {
+        assert.ok(choices.includes("ㄅ") && choices.includes("ㄚ"));
+        assert.equal(choices.length, Math.min(4, entered.length));
+        assert.equal(new Set(choices).size, choices.length);
+        assert.ok(choices.every((g) => entered.includes(g)));
+      }
+      assert.notDeepEqual(second, first);
+      assert.deepEqual(entered, before);
+    }
+  }
+  assert.equal(zyPickBuildChoices(SYLS[0], ["ㄅ"], zero), null);
+  assert.equal(zyPickBuildChoices(SYLS[0], ["ㄅ", "ㄇ"], zero), null);
+});
+
+test("重練聲符、韻符、聲調任一步錯：一次示範完整卡後 done，不接受第三次判分", () => {
+  for (const phase of ["onset", "rime", "tone"]) {
+    const result = zyBuildStep({ phase, hadWrong: false }, false, true);
+    assert.deepEqual(result, { phase: "done", hadWrong: true, effect: "demonstrate" });
+    assert.deepEqual(zyBuildStep(result, true, true), { phase: "done", hadWrong: true, effect: "noop" });
+  }
+});
+
+test("首次錯、重練全對：本批 wrong 保留，下批獨立全對才清除", () => {
+  let state = card({ introduced: true });
+  state = zyOnQuizResult(state, false, true);
+  state = zyOnQuizResult(state, true, true);
+  assert.equal(state.wrong, true);
+  assert.equal(state.practiced, 2);
+  assert.equal(state.correct, 1);
+  state = zyOnQuizResult(state, true, false);
+  assert.equal(state.wrong, false);
+  assert.equal(state.practiced, 3);
 });
