@@ -34,6 +34,7 @@
   #dots { display: flex; gap: 8px; justify-content: center; min-height: 14px; }
   .dot { width: 12px; height: 12px; border-radius: 50%; background: #e3d9c8; }
   .dot.on { background: #43a047; }
+  #batch-progress { font-size: 1rem; color: #667; text-align: center; margin: 0; }
 
   /* 重聽鈕 */
   .btn-replay {
@@ -248,6 +249,7 @@
   </div>
   <div id="screen-card" class="screen hidden">
     <div id="dots"></div>
+    <p id="batch-progress" aria-live="polite"></p>
     <div id="card-area" class="screen" style="flex:1; width:100%"></div>
   </div>
   <div id="screen-break" class="screen hidden">
@@ -290,8 +292,7 @@ function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(
 // <zhuyin-core-pure>
 // 注意：此區塊到 </zhuyin-core-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
 // 對應測試：node --test tests/test_zhuyin_core.mjs。
-// 排程＝MVP 簡化版（issue #17）：錯題優先 → 新卡按進場序 → 複習卡（rng 洗牌）；
-// 三檔優先權佇列／配額／熟練抽查／suspend 留擴充批（父 spec #15）。
+// #167：每批最多 2 張弱項、1 張新卡，其餘熟悉卡；每卡同批至多首次＋一次重練。
 
 function zyCardId(glyph) { return "sym:" + glyph; }
 function zySylId(syl) { return "syl:" + syl.onset + syl.rime + syl.tone; }
@@ -340,7 +341,8 @@ function zyBuildPool(entryOrder, symbolAudio, syllables, progress) {
 }
 
 // 組批：題目提示音缺檔的卡直接過濾（聲音導向 app 不出無聲題）。
-// 錯題優先 → 新卡按池序 → 複習卡（已學無錯，rng 洗牌）；上限 max、可出卡數不足時批就這麼大。
+// 弱項按已練次數由少到多，避免固定挑池頭兩張；同次數依池序。
+// 新卡仍按進場序。配額內可出卡數不足時縮短，不用更多弱項／新卡或重複卡補滿。
 function zyBuildBatch({ pool, progress, hasAudio, max, rng }) {
   const wrong = [], fresh = [], review = [];
   for (const c of pool) {
@@ -350,14 +352,15 @@ function zyBuildBatch({ pool, progress, hasAudio, max, rng }) {
     else if (st.wrong) wrong.push(c);
     else review.push(c);
   }
-  return wrong.concat(fresh, zyShuffle(review, rng)).slice(0, max);
+  wrong.sort((a, b) => zyCardState(progress, a.id).practiced - zyCardState(progress, b.id).practiced);
+  return wrong.slice(0, 2).concat(fresh.slice(0, 1), zyShuffle(review, rng)).slice(0, Math.min(max, 5));
 }
 
 // 卡片呈現型態：
 // 符號卡：首次＝不判分介紹卡；判分題只在已進場池 ≥2 時出（湊不出選擇題就再看一次介紹卡）。
 // 音節卡：首次＝不判分示範卡（demo）；第二次起＝聽音組字（build）。
 // 音節卡不看 enteredCount：zyBuildPool 入池條件（聲韻皆已進場）已保證組字選符步池 ≥2；
-// 改入池規則時此不變量必須一起檢視，否則 build 步的 zyPickChoices 可能回 null。
+// 改入池規則時此不變量必須一起檢視，否則 build 步的 zyPickBuildChoices 可能回 null。
 function zyCardKind(card, progress, enteredCount) {
   const introduced = zyCardState(progress, card.id).introduced;
   if (card.kind === "sym") {
@@ -385,9 +388,11 @@ function zyToneOptions(syl, syllables, hasAudio) {
 
 // 聽音組字判分狀態機：狀態×事件全枚舉（issue #18）。
 // 狀態＝phase（onset→rime→tone→done）×hadWrong；事件＝pick(correct)。
-// 中途語意：任一步選錯＝留在原步續選（答錯迴圈同聽音辨認）、整題記 hadWrong；
+// 首次任一步選錯＝留在原步續選、整題記 hadWrong；重練任一步錯＝示範整題並結束；
 // 三步全程第一下都對才算「第一下就對」（!hadWrong）。done 後任何事件不再轉移。
-function zyBuildStep(state, correct) {
+function zyBuildStep(state, correct, repractice = false) {
+  if (state.phase === "done") return { phase: "done", hadWrong: state.hadWrong, effect: "noop" };
+  if (repractice && !correct) return { phase: "done", hadWrong: true, effect: "demonstrate" };
   const hadWrong = state.hadWrong || !correct;
   if (state.phase === "onset") {
     return correct ? { phase: "rime", hadWrong, effect: "confirm-onset" }
@@ -415,6 +420,18 @@ function zyPickChoices(target, entered, rng, maxChoices = 4) {
   return others;
 }
 
+// 同一次組字共用選項，必含聲符與韻符；下次抽到同排列時輪轉一次，避免沿用。
+function zyPickBuildChoices(syl, entered, rng, previous = []) {
+  const required = [...new Set([syl.onset, syl.rime])];
+  if (entered.length < 2 || required.some((g) => !entered.includes(g))) return null;
+  const extras = zyShuffle(entered.filter((g) => !required.includes(g)), rng)
+    .slice(0, Math.min(4, entered.length) - required.length);
+  const choices = zyShuffle(required.concat(extras), rng);
+  if (choices.length > 1 && choices.length === previous.length && choices.every((g, i) => g === previous[i]))
+    choices.push(choices.shift());
+  return choices;
+}
+
 // 答完一題的狀態轉移。wrongThisBatch＝本批對此卡曾點錯過（含本次）：
 // 批尾複驗答對「計一次答對」但不洗掉 wrong——錯過的卡下一批仍優先重出，
 // 直到某批第一下就對才清除（否則跨批錯題優先永遠踩不到）。
@@ -427,10 +444,10 @@ function zyOnQuizResult(state, firstTapCorrect, wrongThisBatch) {
   };
 }
 
-// 批內佇列前進：第一下就對→移出；否則排批尾複驗（直到某次第一下就對）
+// 批內佇列前進：首次錯才排一次批尾；重練不論結果都移出，不產生第三次。
 function zyAdvanceQueue(queue, firstTapCorrect) {
   const rest = queue.slice(1);
-  return firstTapCorrect ? rest : rest.concat(queue[0]);
+  return firstTapCorrect || queue[0].repractice ? rest : rest.concat({ ...queue[0], repractice: true });
 }
 // </zhuyin-core-pure>
 
@@ -633,7 +650,12 @@ const app = {
   hasAudio: new Set(),
   progress: null,
   queue: [],         // 本批剩餘卡（zyBuildPool 的卡物件）
-  doneCount: 0,      // 本批已完成題數（含複驗）
+  batchSize: 0,      // 原批不同卡數，答錯不增加
+  doneCount: 0,      // 原批已完成卡數（不含重練）
+  retryDone: 0,      // 批尾已完成重練數
+  buildChoices: [],  // 本次組字聲韻步共用的選項與排列
+  previousBuildChoices: new Map(), // 本次開啟記住每張卡上次排列，不入存檔
+  resultRecorded: false, // 每次出題只能記一次結果（含示範路徑）
   wrongThisBatch: new Set(), // 本批曾點錯過的卡 id（複驗答對不洗 wrong 用）
   answered: false,   // 當前判分題已出結果（防 auto-advance 期間再點）
   firstTap: true,    // 當前聽音辨認題還沒點錯過（組字題由 buildState.hadWrong 追蹤）
@@ -686,10 +708,14 @@ function clearTimers() {
 }
 
 function renderDots() {
-  const total = app.doneCount + app.queue.length;
+  const total = app.batchSize;
   let html = "";
   for (let i = 0; i < total; i++) html += `<div class="dot${i < app.doneCount ? " on" : ""}"></div>`;
   document.getElementById("dots").innerHTML = html;
+  const retryTotal = app.retryDone + app.queue.filter((card) => card.repractice).length;
+  document.getElementById("batch-progress").textContent = app.queue[0]?.repractice
+    ? `原本 ${total} 題已完成 · 再練一次 ${app.retryDone + 1} / ${retryTotal}`
+    : `原本題目 ${app.doneCount + 1} / ${total}${retryTotal ? ` · ${retryTotal} 題會再練一次` : ""}`;
 }
 
 function startBatch() {
@@ -703,7 +729,9 @@ function startBatch() {
     max: BATCH_MAX,
     rng: Math.random,
   });
+  app.batchSize = app.queue.length;
   app.doneCount = 0;
+  app.retryDone = 0;
   app.wrongThisBatch = new Set();
   if (!app.queue.length) {
     document.getElementById("msg-text").textContent =
@@ -724,6 +752,7 @@ function renderCard() {
   const entered = zyEnteredGlyphs(app.entryOrder, app.progress);
   const kind = zyCardKind(card, app.progress, entered.length);
   app.answered = false;
+  app.resultRecorded = false;
   app.firstTap = true;
   app.buildState = null;
   app.stepLock = false;
@@ -827,7 +856,8 @@ function renderQuiz(card, entered) {
       app.advanceTimer = setTimeout(() => completeScored(card, firstTap), 1100);
     } else {
       app.firstTap = false;
-      retryFeedback(el, app.symbolAudio[glyph]);
+      if (card.repractice) demonstrateCorrection(card);
+      else retryFeedback(el, app.symbolAudio[glyph]);
     }
   });
   playVoice(app.symbolAudio[glyph]);
@@ -842,13 +872,37 @@ function retryFeedback(el, replayKey) {
 }
 
 // 判分卡（聽音辨認／聽音組字）完成：記錄結果＋批推進
-function completeScored(card, firstTapCorrect) {
+function recordScored(card, firstTapCorrect) {
+  if (app.queue[0] !== card || app.resultRecorded) return false;
+  app.resultRecorded = true;
   family?.record({mode:card.kind === "sym" ? "listen" : "build",answered:true,correct:firstTapCorrect});
   if (!firstTapCorrect) app.wrongThisBatch.add(card.id);
   app.progress.cards[card.id] = zyOnQuizResult(
     zyCardState(app.progress, card.id), firstTapCorrect, app.wrongThisBatch.has(card.id));
   saveProgress();
-  advanceCard(firstTapCorrect);
+  return true;
+}
+function completeScored(card, firstTapCorrect) {
+  if (recordScored(card, firstTapCorrect)) advanceCard(firstTapCorrect);
+}
+
+// 重練一錯就示範完整卡；這是同次作答的回饋，不另記教學卡或答對。
+function demonstrateCorrection(card) {
+  if (app.queue[0] !== card || app.resultRecorded) return;
+  clearTimers();
+  app.answered = true;
+  if (!recordScored(card, false)) return;
+  const area = document.getElementById("card-area");
+  const display = card.kind === "syl" ? syllableHtml(card.syl) : card.glyph;
+  area.innerHTML = `<div class="intro-label">一起聽一次，下一題再試</div>
+    <div class="intro-card${card.kind === "syl" ? " multi" : ""}" id="correction-card">${display}</div>`;
+  const root = document.getElementById("correction-card");
+  const keys = card.kind === "syl"
+    ? zyDemoChain(card.syl, app.symbolAudio, (k) => app.hasAudio.has(k)) : [card.promptKey];
+  const onCue = card.kind === "syl" ? syllableCue(root, card.syl) : (key) => setVoiceFocus(root, key ? [root] : []);
+  playChain(keys, { onCue, onDone: () => {
+    app.advanceTimer = setTimeout(() => advanceCard(false), 700);
+  } });
 }
 
 // 聽音組字：播完整音節（有分段素材時接一次分段慢速）→ 依序選聲符、韻符（選對即播該符號音確認）
@@ -858,6 +912,9 @@ function renderBuild(card) {
   const y = card.syl;
   const has = (k) => app.hasAudio.has(k);
   app.buildState = { phase: "onset", hadWrong: false };
+  app.buildChoices = zyPickBuildChoices(y, zyEnteredGlyphs(app.entryOrder, app.progress), Math.random,
+    app.previousBuildChoices.get(card.id));
+  app.previousBuildChoices.set(card.id, app.buildChoices);
   const area = document.getElementById("card-area");
   area.innerHTML = `
     <div class="build-controls">
@@ -885,14 +942,13 @@ function renderBuildStep(card) {
   app.shownAt = performance.now(); // 每個子步驟各有 400ms 防呆
   if (st.phase === "onset" || st.phase === "rime") {
     const target = st.phase === "onset" ? y.onset : y.rime;
-    const entered = zyEnteredGlyphs(app.entryOrder, app.progress);
-    const choices = zyPickChoices(target, entered, Math.random);
+    const choices = app.buildChoices;
     buildArea.innerHTML = `<div class="choices">${
       choices.map((g) => `<div class="zycard small" data-g="${g}">${g}</div>`).join("")
     }</div>`;
     buildArea.querySelector(".choices").addEventListener("click", (ev) => {
       const el = ev.target.closest(".zycard");
-      if (!el || app.stepLock || tapGuarded()) return;
+      if (!el || app.answered || app.stepLock || el.classList.contains("dim") || tapGuarded()) return;
       onBuildPick(card, target, el);
     });
   } else {
@@ -913,8 +969,9 @@ function renderBuildStep(card) {
 function onBuildPick(card, target, el) {
   const y = card.syl;
   const g = el.dataset.g;
-  const r = zyBuildStep(app.buildState, g === target);
+  const r = zyBuildStep(app.buildState, g === target, card.repractice);
   app.buildState = { phase: r.phase, hadWrong: r.hadWrong };
+  if (r.effect === "demonstrate") { demonstrateCorrection(card); return; }
   if (r.effect === "retry") {
     retryFeedback(el, y.audio);
     return;
@@ -940,8 +997,9 @@ function onTonePick(card, el) {
     if (toneKey) playVoice(toneKey, { onCue: selectedCue });
     return;
   }
-  const r = zyBuildStep(app.buildState, tone === y.tone);
+  const r = zyBuildStep(app.buildState, tone === y.tone, card.repractice);
   app.buildState = { phase: r.phase, hadWrong: r.hadWrong };
+  if (r.effect === "demonstrate") { demonstrateCorrection(card); return; }
   if (r.effect === "retry") {
     if (toneKey) {
       el.classList.add("dim");
@@ -994,7 +1052,8 @@ function renderWordCard(card, firstTapCorrect) {
 
 // 完成一張卡後的批推進（intro/quiz 共用；#18 加新卡型也走這裡）
 function advanceCard(firstTapCorrect) {
-  app.doneCount++;
+  if (app.queue[0].repractice) app.retryDone++;
+  else app.doneCount++;
   app.queue = zyAdvanceQueue(app.queue, firstTapCorrect);
   if (app.queue.length) renderCard();
   else finishBatch();
