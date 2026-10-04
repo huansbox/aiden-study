@@ -2,13 +2,12 @@
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/169",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "countUnit": "complete_activity",
   "total": 4,
   "originalAnswerSlots": 4,
-  "newPublishedCount": 0,
+  "newPublishedCount": 4,
   "previousPublishedScienceCount": 41,
-  "expectedScienceCountAfterRelease": 45,
   "items": [
     {
       "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-1-v1",
@@ -25,8 +24,10 @@
       "answerSlots": 1,
       "materialKind": "table",
       "officialAnswerAvailable": true,
-      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
-      "status": "reviewed_pending_release"
+      "coverageClaim": "地表條件資料表判讀；非實測結果表",
+      "status": "published",
+      "coverageApplied": true,
+      "reviewStatus": "independent-content-review-pass"
     },
     {
       "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-2-v1",
@@ -43,8 +44,10 @@
       "answerSlots": 1,
       "materialKind": "table",
       "officialAnswerAvailable": true,
-      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
-      "status": "reviewed_pending_release"
+      "coverageClaim": "地表條件資料表判讀；非實測結果表",
+      "status": "published",
+      "coverageApplied": true,
+      "reviewStatus": "independent-content-review-pass"
     },
     {
       "appId": "science-g4s1-sixth-yap-113-g3-s2-final-wind-1-1-v1",
@@ -62,8 +65,10 @@
       "materialKind": "png",
       "materialSha256": "54789db9f20932f03c484ee44ebdd1c310ec402d569105795e34b622892c87d9",
       "officialAnswerAvailable": false,
-      "coverageClaim": "測風計圖像判讀候選；非風蝕條件因果題",
-      "status": "reviewed_pending_release"
+      "coverageClaim": "測風計圖像判讀；非風蝕條件因果題",
+      "status": "published",
+      "coverageApplied": true,
+      "reviewStatus": "independent-content-review-pass"
     },
     {
       "appId": "science-g4s1-sixth-yap-113-g3-s2-final-wind-1-2-v1",
@@ -81,8 +86,10 @@
       "materialKind": "png",
       "materialSha256": "54789db9f20932f03c484ee44ebdd1c310ec402d569105795e34b622892c87d9",
       "officialAnswerAvailable": false,
-      "coverageClaim": "測風計圖像判讀候選；非風蝕條件因果題",
-      "status": "reviewed_pending_release"
+      "coverageClaim": "測風計圖像判讀；非風蝕條件因果題",
+      "status": "published",
+      "coverageApplied": true,
+      "reviewStatus": "independent-content-review-pass"
     }
   ],
   "excludedAfterAuthorQa": [
@@ -92,10 +99,20 @@
       "reason": "官方解答將該題標為NO／本題送分，不納入候選，也不算填補操縱變因缺口。"
     }
   ],
-  "scopeNote": "深美114六上期末南一原卷與永安113三下期末出版社未知原卷只作跨年級同概念對照；桃子腳115四上正式考試範圍仍未取得。深美表格只有比較條件，非地表侵蝕實測結果，兩小題各保留完整表格與自身三選項；永安兩題各附原卷完整三格測風計圖，僅補風力圖像判讀，非風蝕因果。rev14本機候選已建，尚未發布。",
+  "scopeNote": "深美114六上期末南一原卷與永安113三下期末出版社未知原卷只作跨年級同概念對照；桃子腳115四上正式考試範圍仍未取得。深美表格只有比較條件，非地表侵蝕實測結果，兩小題各保留完整表格與自身三選項；永安兩題各附原卷完整三格測風計圖，僅補風力圖像判讀，非風蝕因果。rev14 已正式發布，來源年級、出版社和範圍限制不變。",
   "remainingGaps": [
-    "必要比較條件完整的風蝕因果比較；測風計風力強弱圖像判讀已有候選",
     "地表實驗操縱變因辨識",
     "地表實驗後實測數據表判讀"
-  ]
+  ],
+  "currentPublishedScienceCount": 45,
+  "currentPublishedGlobalCount": 137,
+  "byUnit": {
+    "20": 4,
+    "21": 0
+  },
+  "byFormat": {
+    "multiple_choice": 2,
+    "true_false": 2
+  },
+  "uncoveredExtension": "風蝕條件因果比較尚未收錄；本批測風計題只補原指定的風力強弱圖像判讀。"
 }

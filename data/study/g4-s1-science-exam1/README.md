@@ -1,6 +1,6 @@
 # 四上自然首批練習選題
 
-[第六批 #169](../../../docs-dev/grade4-science-study-sixth-batch.md)已從 2 份新官方題卷凍結 4 個候選活動：深美 2 題三選一條件表、永安 2 題原圖測風計是非。公開來源與缺口見[第六批缺口](sixth-batch-gap-analysis.md)、[候選清單](sixth-batch-candidates.json)；本機 rev14 候選包與內容複核已通過，等待發布。本批新增上線 0，現役自然仍 41 活動，不能把候選 4 題計入孩子練習。
+[第六批 #169](../../../docs-dev/grade4-science-study-sixth-batch.md)從 2 份新官方題卷發布 4 個活動：深美 2 題三選一條件表、永安 2 題原圖測風計是非。公開來源與缺口見[第六批缺口](sixth-batch-gap-analysis.md)、[選題清單](sixth-batch-candidates.json)；rev14 正式讀回完成，現役自然 45 活動、全科 137 活動。桃子腳正式範圍仍未取得，後續主要缺口是地表操縱變因與實測結果表。
 
 [第五批 #162](../../../docs-dev/grade4-science-study-fifth-batch.md)從新增3份官方原卷中，只有明義110六上期末的1個坡度流水定性情境題通過獨立內容審查；明義109的操縱變因題因原卷選項殘缺排除。revision 13 分包已正式啟用：共133活動（數學68／自然41／社會24），舊132題與解說逐值不變；只新增1題，未改寫孩子進度。來源、排除與未補缺口見[第五批缺口](fifth-batch-gap-analysis.md)，逐題公開定位見[第五批selection](fifth-batch-selection-metadata.json)。以下保留先前批次的發布歷史。
 
