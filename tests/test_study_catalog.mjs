@@ -74,6 +74,49 @@ test("all-error practice loads every requested unit; flagged metadata remains re
   e.app.State.setSubject("math");await e.window._startError("15,16");
   assert.deepEqual(new Set(e.app.quiz.queue),new Set([a.id,b.id]));
 });
+test("cached reload: equal background catalog keeps the first practice click; a real upgrade cancels stale preparation",async()=>{
+  for(const upgrade of [false,true]) {
+    const {e,env,pack}=await setup();
+    await e.window._startFull(20);
+    e.app.State.addMastered(15,ids[0]);
+    const before=e.st.getItem("study:progress:test-child");
+    const next=structuredClone(pack);
+    if(upgrade) {
+      next.revision++;
+      const q={...next.questions.find(q=>q.unit===20),id:"science-g4s1-catalog-upgrade-extra-v1"};
+      next.questions.push(q);next.explanations[q.id]="合成升版解說";
+    }
+    const built=await buildCatalog(next,pack,[],2200);
+    for(const [hash,raw] of built.shards)await env.KV.put(`c:study:shard:${hash}`,raw);
+    await env.KV.put("c:study:catalog:v2",JSON.stringify(built.manifest));
+    let releaseCatalog,releaseUnit,startedUnit;
+    const catalogGate=new Promise(resolve=>{releaseCatalog=resolve;});
+    const unitGate=new Promise(resolve=>{releaseUnit=resolve;});
+    const unitStarted=new Promise(resolve=>{startedUnit=resolve;});
+    const fetch=async(url,init)=>{
+      if(url.endsWith("/catalog"))await catalogGate;
+      return worker.fetch(new Request(url,init),env);
+    };
+    const cache={...C.cache,unit:async unit=>{startedUnit();await unitGate;return C.cache.unit(unit);}};
+    const reloaded=await boot(e.st,"test-child",{fetch,catalogCache:cache});
+    reloaded.app.State.setStudyTerm("g4-s1");reloaded.app.State.setSubject("science");reloaded.app.renderHome();
+    const starting=reloaded.window._startFull(20);
+    await unitStarted;
+    releaseCatalog();await wait(); // Background response finishes while the user's first click is preparing.
+    releaseUnit();await starting;
+    assert.equal(!reloaded.node("page-quiz").classList.contains("hidden"),!upgrade);
+    if(upgrade) {
+      assert.equal(reloaded.app.activePack,null,"old preparation must not activate after a newer catalog");
+      await reloaded.window._startFull(20);
+      assert.equal(reloaded.app.activePack.revision,next.revision);
+      assert.ok(reloaded.app.activePack.questions.some(q=>q.id==="science-g4s1-catalog-upgrade-extra-v1"));
+    } else {
+      assert.equal(reloaded.app.activePack.revision,pack.revision);
+      assert.ok(reloaded.app.quiz.queue.length>0,"the original click must start the cached practice");
+    }
+    assert.deepEqual(JSON.parse(reloaded.st.getItem("study:progress:test-child")).mastered[15],JSON.parse(before).mastered[15]);
+  }
+});
 test("Worker requires family authorization, is read-only, hashes immutable shards and never writes progress",async()=>{
   const {env,built}=await setup();const base="https://test/v1/packs/g4-s1-math-u1";
   for(const path of ["/catalog",`/shards/${built.manifest.shards[0].hash}`]) {

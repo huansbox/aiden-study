@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[練習量擴充 #175](../../../docs-dev/grade4-science-study-volume-batch.md)已完成獨立內容審查：從原四卷新增核准 114 活動／119 作答格，rev15 候選為自然 159、全科 251 活動，目前 `reviewed_pending_release`；現役仍為自然 45／全科 137。最終來源與延期見[本批 selection](volume-selection-metadata.json)，完整四卷剩餘狀態見[backlog metadata](volume-backlog-metadata.json)：暫定核心仍有51格（33需材料／18有歧義），另有future97格及範圍待確認23格。作者兩份 inventory 保存審查前凍結稿，最終狀態以本批 selection／backlog 為準。練習量與題型覆蓋的長期原則見 [Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
+
 [第六批 #169](../../../docs-dev/grade4-science-study-sixth-batch.md)從 2 份新官方題卷發布 4 個活動：深美 2 題三選一條件表、永安 2 題原圖測風計是非。公開來源與缺口見[第六批缺口](sixth-batch-gap-analysis.md)、[選題清單](sixth-batch-candidates.json)；rev14 正式讀回完成，現役自然 45 活動、全科 137 活動。桃子腳正式範圍仍未取得，後續主要缺口是地表操縱變因與實測結果表。
 
 [第五批 #162](../../../docs-dev/grade4-science-study-fifth-batch.md)從新增3份官方原卷中，只有明義110六上期末的1個坡度流水定性情境題通過獨立內容審查；明義109的操縱變因題因原卷選項殘缺排除。revision 13 分包已正式啟用：共133活動（數學68／自然41／社會24），舊132題與解說逐值不變；只新增1題，未改寫孩子進度。來源、排除與未補缺口見[第五批缺口](fifth-batch-gap-analysis.md)，逐題公開定位見[第五批selection](fifth-batch-selection-metadata.json)。以下保留先前批次的發布歷史。

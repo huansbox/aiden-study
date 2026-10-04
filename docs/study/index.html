@@ -555,7 +555,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/collection-client.js?v=20260923-train-series"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
 <script src="./private-pack.js?v=20261004-science-sixth-choice"></script><script src="pack-catalog.js?v=20261004-shards"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
-<script src="./science-topics.js?v=20261004-science-sixth-batch"></script>
+<script src="./science-topics.js?v=20261004-science-volume-batch"></script>
 <script>
 (function() {
 "use strict";
@@ -1153,7 +1153,9 @@ async function loadPrivatePack() {
       try { await StudyPackCatalog.cache.saveManifest(result.manifest); }
       catch(e) { if (e.code === "conflict") throw e; packCacheNotice = "本機題庫暫時無法保存，本次使用已驗證的線上題目。"; }
       if (request !== packRequest) return;
-      pendingManifest = result.manifest;
+      // 儲存期間可能已套用其他目錄；重新核對。已驗證的同版同內容保留物件，避免取消準備中的練習。
+      StudyPackCatalog.parseManifest(JSON.stringify(result.manifest),packManifest);
+      pendingManifest = packManifest?.revision === result.manifest.revision ? null : result.manifest;
     } else {
       StudyPrivatePack.parse(result.legacy, publicQuestions, activePack);
       pendingPackRaw = result.legacy;
