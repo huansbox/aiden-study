@@ -1,5 +1,7 @@
 # 四上自然第一次段考候選卷
 
+[練習量擴充 #175](../../docs-dev/grade4-science-study-volume-batch.md)重用最初四卷，已獨立核准114完整活動／119作答格，尚待rev15正式發布；沒有新增原卷或校方答案。最終逐題決策見[selection](../../data/study/g4-s1-science-exam1/volume-selection-metadata.json)，全部353筆來源記錄（桃子腳200格＋永安153個小項）、合計355作答格與剩餘工作見[backlog](../../data/study/g4-s1-science-exam1/volume-backlog-metadata.json)，原future與範圍待確認各自保留。現役仍為rev14自然45活動。
+
 狀態：**有限來源收集累計 11 份題目原卷、3 份校方答案**（2026-10-04）；題卷 30 頁、答案 10 頁，不代表所有年度／學校已收齊。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集自然科歷屆卷，按概念逐題判讀，作為後續 iPad 練習題庫的來源。首批見 [#115](https://github.com/huansbox/aiden-study/issues/115)，第二輪見 [#129](https://github.com/huansbox/aiden-study/issues/129)，第五批見 [#162](https://github.com/huansbox/aiden-study/issues/162)；第六批 [#169](https://github.com/huansbox/aiden-study/issues/169) 的[新來源 manifest](source/sixth-batch-manifest.json)新增 2 份題卷 7 頁與校方答案 1 份 5 頁，4 個活動已隨 rev14 發布。
 
 這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)、[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)與[第三批 #129 的 5 個完整 activity／13 個作答位置](../../docs-dev/grade4-science-study-third-batch.md)均已正式上線；[第四批 #134](../../docs-dev/grade4-science-study-fourth-batch.md)再從翰林卷增加 3 個活動／5 個作答格，家庭題包 revision 8 時自然共 40 題。[第五批](../../docs-dev/grade4-science-study-fifth-batch.md)新增3份官方原卷，只有1個地表坡度題通過內容審查，已隨 rev13 分包正式發布，自然累計 **41 個活動**。第六批新增 4 個活動並經 rev14 分包讀回，現役自然 **45 個活動**。

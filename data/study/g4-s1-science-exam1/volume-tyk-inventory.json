@@ -1,0 +1,2776 @@
+{
+  "schemaVersion": 1,
+  "status": "pending_independent_review",
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/175",
+  "sourceInventory": "learning-tasks/grade4-sem1-science-exam1/source/school-question-review.json",
+  "scopeEvidence": "learning-tasks/grade4-sem1-science-exam1/source/curriculum-comparison.md",
+  "countUnit": "source_answer_slot; activities_counted_separately",
+  "totals": {
+    "originalSlots": 200,
+    "existingSlots": 32,
+    "candidateActivities": 56,
+    "candidateSlots": 61,
+    "byStatus": {
+      "needs_confirmation": 11,
+      "candidate_pending_review": 61,
+      "already_included": 32,
+      "deferred_ambiguity": 10,
+      "deferred_material": 29,
+      "future": 57
+    },
+    "byPaper": {
+      "tyk113": {
+        "originalSlots": 100,
+        "newActivities": 37,
+        "newSlots": 42
+      },
+      "tyk114": {
+        "originalSlots": 100,
+        "newActivities": 19,
+        "newSlots": 19
+      }
+    }
+  },
+  "items": [
+    {
+      "originalId": "tyk113-01-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(1)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "陸域棲地（待確認）",
+      "method": "判斷敘述",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-01-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-01-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-01-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-01-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-01-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(4)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "陸域棲地（待確認）",
+      "method": "判斷敘述",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-01-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-01-05-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-01-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第1題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-01-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-02-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第2題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-02-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-02-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第2題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-02-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-02-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第2題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-02-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-02-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第2題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-02-04-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-03-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-03-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-03-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-03-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-04-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-03-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-03-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第3題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-03-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-04-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-04-01-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-04-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-04-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-04-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-04-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-04-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "deferred_ambiguity",
+      "reason": "原題未指定睡蓮種類／品系；睡蓮存在日開與夜開類型，不能由泛稱推定一律晚上閉花。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-04-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-04-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-04-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第4題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "deferred_ambiguity",
+      "reason": "作者初答與校答不一致；實際觀察教材對睡蓮葉面不沾水有相反描述，需品系或115教材證據，不能僅照校答。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-07",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-05-08",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第5題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-06-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第6題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "圖像二分分類",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-07-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-07-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-07-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-07-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-07-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-07-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第7題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-07-06-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-08-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-08-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-08-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-08-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-08-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-05-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-08-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第8題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-08-06-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-09-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-07",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-07-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-09-08",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第9題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-09-08-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-10-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-10-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-10-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-10-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-04-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-10-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-10-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-10-07",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-07-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-10-08",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "第10題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "流水搬運與堆積",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-10-08-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-11-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(1)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "圖表擷取數值",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-11-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(2)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "圖表擷取數值",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-11-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(3)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "圖表擷取位置",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-11-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(4)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "圖表比較",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-11-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(5)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "單選判讀",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-11-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第11題(6)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "圖像單選",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-12-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "1"
+      }
+    },
+    {
+      "originalId": "tyk113-12-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "2"
+      }
+    },
+    {
+      "originalId": "tyk113-12-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "3"
+      }
+    },
+    {
+      "originalId": "tyk113-12-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "4"
+      }
+    },
+    {
+      "originalId": "tyk113-12-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "5"
+      }
+    },
+    {
+      "originalId": "tyk113-12-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第12題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "影響二分分類",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-12-v1",
+        "kind": "new_candidate",
+        "partId": "6"
+      }
+    },
+    {
+      "originalId": "tyk113-13-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-13-07",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第13題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "時序分類代碼",
+      "status": "deferred_ambiguity",
+      "reason": "原組防災時序缺少場所／避難時機條件，沿用第三批歧義結論；保留完整七格，不删疑義格硬湊活動。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-14-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-14-01-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-14-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-14-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-14-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "deferred_ambiguity",
+      "reason": "原大題使用「可能造成」而未限定直接作用；未提供點火條件，無法排除地震次生火災，校答不足以消除條件歧義。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-14-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-14-04-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-14-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-14-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-14-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第14題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "地震報告、防災與地表變動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-14-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk113-15-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-15-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-15-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-15-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-15-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-15-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第15題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "行為二分分類",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk113-15-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk113-16-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第16題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-16-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第16題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-16-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第16題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-16-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第16題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk113-16-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "printedLocator": "第16題(5)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "跨領域閱讀資訊（待確認）",
+      "method": "閱讀後判斷",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-01-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-01-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-01-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-01-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-03-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-01-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-01-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-01-06",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-06-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-01-07",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-07-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-01-08",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第1題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-01-08-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-02-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-06",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-07",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-02-08",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第2題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生動物構造與分類",
+      "method": "表格判讀後判斷",
+      "status": "already_included",
+      "reason": "已比對既有selection原ID／constituentSourceIds；不重收同一原作答格。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-02-v1",
+        "kind": "existing_activity"
+      }
+    },
+    {
+      "originalId": "tyk114-03-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-06",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-06-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-07",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-07-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-08",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-08-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-03-09",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第3題(9)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-03-09-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-04-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.1)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.2)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.3)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.4)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.5)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-06",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(1.6)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-07",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(2.1)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-08",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(2.2)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-09",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(2.3)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-10",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(3.1)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-11",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(3.2)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-12",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(3.3)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-13",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(3.4)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-04-14",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第4題(4)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "圖像估測填答",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(1)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(2)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(3)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(4)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(5)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-05-06",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第5題(6)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "單選判讀",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-06-01",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第6題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-06-01-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-06-02",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第6題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-06-02-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-06-03",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第6題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-06-03-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-06-04",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第6題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-06-04-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-06-05",
+      "paperId": "tyk114",
+      "questionPage": 1,
+      "printedLocator": "第6題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "判斷敘述",
+      "status": "candidate_pending_review",
+      "reason": "暫定核心；完整原題文字與必要共同指示可獨立呈現，作者轉寫及初核完成。",
+      "selectedMapping": {
+        "appId": "science-g4s1-tyk114-06-05-v1",
+        "kind": "new_candidate",
+        "partId": null
+      }
+    },
+    {
+      "originalId": "tyk114-07-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第7題(1)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-07-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第7題(2)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-07-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第7題(3)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-07-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第7題(4)",
+      "scope": "future",
+      "conceptCluster": "月亮觀測方法、高度角與方位",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-07-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第7題(5)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(1)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(4)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(5)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-06",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(6)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-07",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(7)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-08-08",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第8題(8)",
+      "scope": "core-provisional",
+      "conceptCluster": "水生植物構造與分類",
+      "method": "圖像分類代碼",
+      "status": "deferred_material",
+      "reason": "須保留原圖與完整共用分類／呼吸材料；本批先消化不需必要圖像的文字題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-09-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第9題(1)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-09-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第9題(2)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-09-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第9題(3)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-09-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第9題(4)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-09-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第9題(5)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(1.1)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(1.2)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(1.3)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(2.1)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(2.2)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-10-06",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第10題(2.3)",
+      "scope": "future",
+      "conceptCluster": "月亮位置與日夜天空",
+      "method": "圖表判讀後判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第1空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第2空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第3空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第4空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第5空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-06",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第6空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-11-07",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第11題(自既印A起沿箭頭第7空)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像序列填代碼",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(1)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(2)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(3)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(4)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(5)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-12-06",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第12題(6)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "圖像配對判斷",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(1)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(2)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(3)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(4)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(5)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-06",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(6)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-07",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(7)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-13-08",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第13題(8)",
+      "scope": "future",
+      "conceptCluster": "月相圖像與週期",
+      "method": "判斷敘述",
+      "status": "future",
+      "reason": "月亮、日夜天空與高度角等位於本批暫定核心以外；保留原題組依賴。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-14-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第14題(1.1)",
+      "scope": "core-provisional",
+      "conceptCluster": "地表物質、坡地與人類活動",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-14-02",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第14題(1.2)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-14-03",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第14題(1.3)",
+      "scope": "core-provisional",
+      "conceptCluster": "水域環境、調查、保育與閱讀",
+      "method": "閱讀後判斷",
+      "status": "deferred_material",
+      "reason": "須完整保留原短文與共用材料；本批不去掉閱讀材料改成知識記憶題。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-14-04",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第14題(1.4)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "跨領域閱讀資訊（待確認）",
+      "method": "閱讀後判斷",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    },
+    {
+      "originalId": "tyk114-14-05",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "printedLocator": "第14題(1.5)",
+      "scope": "needs-confirmation",
+      "conceptCluster": "跨領域閱讀資訊（待確認）",
+      "method": "閱讀後判斷",
+      "status": "needs_confirmation",
+      "reason": "115課程／正式範圍未證實此細目；沿用curriculum-comparison逐格界線。",
+      "selectedMapping": null
+    }
+  ]
+}
