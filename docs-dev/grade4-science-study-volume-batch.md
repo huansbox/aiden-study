@@ -40,7 +40,11 @@ rev15 候選為全科 **251 活動**（數學 68／自然 159／社會 24）；�
 
 Production builder／catalog validator 已通過，舊 **137 個活動與全部解說逐值不變**，原 curated／mapping 137 列也逐值保留。新 `practiceId` 使用 `S1-V###`／`S2-V###`，避開歷史 reserved IDs。七個自然主題維持原分類，只新增三個細標籤對應；每個自然活動恰好屬於一個主題，孩子頁與家長試玩引用相同新版本 URL。
 
-本機 Playwright 使用 loopback、fake identity 與合成進度；768×1024／1024×768 的家長試玩共 **228 次新題全量檢查**，題數、選項、題組一次一小題與橫向溢出守衛通過。代表五種 unit／格式組合覆蓋錯答、reload 接續、答對與下一批，舊數學／自然進度哨兵保持；沒有連到正式家庭資料。這是桌面 Chromium 的 iPad 尺寸隔離驗證，並非實體 iPad Safari 驗收。快速啟動與背景 catalog 更新的時序另由整合 QA 追查，不以等待 ready 的成功結果取代該行為核對。
+本機 Playwright 使用 loopback、fake identity 與合成進度；768×1024／1024×768 的家長試玩共 **228 次新題全量檢查**，題數、選項、題組一次一小題與橫向溢出守衛通過。代表五種 unit／格式組合覆蓋錯答、reload 接續、答對與下一批，舊數學／自然進度哨兵保持；沒有連到正式家庭資料。這是桌面 Chromium 的 iPad 尺寸隔離驗證，並非實體 iPad Safari 驗收。
+
+隔離 QA 另外重現了快速啟動的既有載入問題：cached reload 的練習按鈕已可按，但同版 catalog 背景重驗若在單元準備期間完成，會因目錄物件被替換而取消第一次點擊，畫面留在首頁；再次點擊可開始。孩子頁現在於快取儲存返回後重新使用既有 production manifest validator 核對，只有已驗證的同版同內容保留原目錄物件與 ready 狀態；真正升版／同版異內容仍遵守原有守衛。Node 行為回歸修前失敗、修後通過；真 DOM 確定性交錯檢查覆蓋同版首次點擊成功、真正升版不啟用舊準備且進度保持、同版異目錄拒收。22 次 cached reload／背景回應延遲壓測修前 2 次取消、修後 0 次；修後完整新題 E2E 也通過。證據在 ignored `delivery/e2e/rev15/`，沒有更改 Worker、parser 或進度格式。
+
+本輪 Python 全套為 278 passed／1 skipped；Node 首輪 814 passed／1 failed，失敗是公開數學 generated report 隨 mapping revision 更新後尚未重建。重建後相關 14 項檢查全通，45 patterns／68 assignments 逐值不變；新增載入回歸後 loader／catalog／preview 50 項通過，最終完整結果仍由精確 PR head CI 核對。
 
 正式管理端唯讀查核已確認 rev14 manifest 137 活動／12,611 bytes、SHA256 `e5826ae159f4a02287744d4335d09bee85fd4befa56bebcc61ae4bab1bc7f8fb`，legacy rev12 132 活動／229,503 bytes、SHA256 `2e2c94e743c8eb31d9d658b1177a7ebf87c27429aa468fdc611fb3cf136f3d2f`；現役 Worker 為 `808dccba-a4d0-4b4a-afa4-5b6c8789c990`、100%。本次沒有 Worker／parser 變更，不重新 deploy 舊 Worker。正式寫入仍須等 root 的最終 count／revision／hash 核准、PR／CI 與 Pages 精確資產讀回，再依新 immutable shards → 兩階段讀回 → manifest → 兩階段讀回順序發布。
 
