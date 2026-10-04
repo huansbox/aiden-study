@@ -82,11 +82,12 @@ test("third-batch fine tags map to the existing seven science topics", async () 
   assert.equal(topics.matches(excludedWindTag, "@science-topic:S1b"), false);
 });
 
-test("fourth-batch fine tags stay in the existing ground-change and earthquake topics", async () => {
+test("fourth- and fifth-batch fine tags stay in the existing ground-change and earthquake topics", async () => {
   const e = await boot();
   const topics = e.window.StudyScienceTopics;
   for (const [subtopic, key] of [
     ["S1b 流水搬運圖示", "@science-topic:S1b"],
+    ["S1b 坡度與流水侵蝕比較", "@science-topic:S1b"],
     ["S1c 地震當下行動", "@science-topic:S1c"],
     ["S1c 地震保命步驟", "@science-topic:S1c"]
   ]) {

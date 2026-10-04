@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "source_issue": "https://github.com/huansbox/aiden-study/issues/162",
+  "checked_at": "2026-10-04",
+  "target_scope": "桃子腳115四上第一次評量；康軒地表與水生環境僅為暫定範圍",
+  "official_question_papers": [
+    {
+      "paper_id": "fifth-smps-114-s1-mid",
+      "school": "基隆市深美國小",
+      "academic_year": 114,
+      "grade": 4,
+      "semester": 1,
+      "exam": "期中評量",
+      "subject": "自然",
+      "publisher": "康軒",
+      "publisher_evidence": "原卷第1、3頁卷首明載版本與範圍：康軒第1～2單元",
+      "question_source_url": "https://smps.kl.edu.tw/images/files/smps012/%E8%87%AA.pdf",
+      "question_file": "source/papers/fifth-smps-114-s1-mid-q.pdf",
+      "bytes": 508234,
+      "sha256": "42CEF4EBEEC17D6914B0BAD8E04213B01DA43B25CA02C033B5AEC5A712B46F40",
+      "pdf_magic": "%PDF-",
+      "pages": 4,
+      "page_size": "A4",
+      "page_review": "4頁均已render與目視核對；頁1卷首、地表題；頁2地震與水域；頁3～4水生題；題號、選項及圖表可辨",
+      "visual_reference_prefix": "source/private/science-fifth-batch/fifth-smps-114-s1-mid-q-",
+      "official_answer_found": false,
+      "relevant_locations": ["PDF第1頁五、選擇2", "PDF第2頁五、選擇8"],
+      "limits": "四上期中且卷首明載康軒，但非桃子腳115正式範圍；所見風題不是完整控制條件的風力強弱比較；本批僅留來源，不採題。"
+    },
+    {
+      "paper_id": "fifth-myps-110-g6-s1-final",
+      "school": "花蓮縣花蓮市明義國民小學",
+      "academic_year": 110,
+      "grade": 6,
+      "semester": 1,
+      "exam": "期末定期評量",
+      "subject": "自然科",
+      "publisher": "unknown",
+      "publisher_evidence": null,
+      "question_source_url": "https://www.myps.hlc.edu.tw/modules/tad_uploader/index.php?cat_sn=539&cfsn=5573&fn=%E8%8A%B1%E8%93%AE%E7%B8%A3%E8%8A%B1%E8%93%AE%E5%B8%82%E6%98%8E%E7%BE%A9%E5%9C%8B%E6%B0%91%E5%B0%8F%E5%AD%B8110%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E5%85%AD%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E6%9C%9F%E6%9C%AB%E5%AE%9A%E6%9C%9F%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7++%28%E5%AE%8C%297.pdf&op=dlfile",
+      "question_file": "source/papers/fifth-myps-110-g6-s1-final-q.pdf",
+      "bytes": 585584,
+      "sha256": "B9B11A38EC1C05194D09E4E1638818D5054AEDC6382596D31B7A46DB9A40729E",
+      "pdf_magic": "%PDF-",
+      "pages": 4,
+      "page_size": "729 × 1032 pt",
+      "page_review": "4頁均已render與目視核對；第1頁卷首與坡度實驗題；第2頁河道題；第3頁電磁鐵數據表；第4頁閱讀題",
+      "visual_reference_prefix": "source/private/science-fifth-batch/fifth-myps-110-g6-s1-final-q-",
+      "official_answer_found": false,
+      "relevant_locations": ["PDF第1頁二、選擇3"],
+      "limits": "六上期末僅以相同流水與坡度變化概念對照；出版社無同年校證，維持unknown；不得稱為四上段考原卷。"
+    },
+    {
+      "paper_id": "fifth-myps-109-g6-s1-final",
+      "school": "花蓮縣花蓮市明義國民小學",
+      "academic_year": 109,
+      "grade": 6,
+      "semester": 1,
+      "exam": "期末定期評量",
+      "subject": "自然科",
+      "publisher": "unknown",
+      "publisher_evidence": null,
+      "question_source_url": "https://www.myps.hlc.edu.tw/modules/tad_uploader/index.php?cat_sn=484&cfsn=5152&fn=109%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E5%85%AD%E5%B9%B4%E7%B4%9A%E8%87%AA%E7%84%B6%E7%A7%91%E6%9C%9F%E6%9C%AB%E5%AE%9A%E6%9C%9F%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "question_file": "source/papers/fifth-myps-109-g6-s1-final-q.pdf",
+      "bytes": 409579,
+      "sha256": "FFDAB5D9964875BCEF56B7F9E41595E58B2480FE2A7AE5FC1350942CEEEE197B",
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_size": "A3",
+      "page_review": "2頁均已render與目視核對；第1頁卷首、坡度實驗變因題及電磁鐵數據表；第2頁續題；題號與四選項可辨",
+      "visual_reference_prefix": "source/private/science-fifth-batch/fifth-myps-109-g6-s1-final-q-",
+      "official_answer_found": false,
+      "relevant_locations": ["PDF第1頁二、選擇6"],
+      "limits": "六上期末；出版社無同年校證，維持unknown。第1頁二、選擇6第④選項在官方PDF語意殘缺，作者原候選曾擅補字，fresh review未核准，現排除。卷上數據表屬電磁鐵，不能算地表數據判讀。"
+    }
+  ],
+  "screened_not_collected": [
+    {
+      "school": "基隆市東光國小",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 2,
+      "exam": "第二次定期評量",
+      "question_url": "https://olddgps.kl.edu.tw/index/file/202/%E7%AC%AC2%E6%AC%A1%E8%A9%95%E9%87%8F%E8%A9%A6%E9%A1%8C_%E8%87%AA%E7%84%B6%E7%A7%91%E5%AD%B8%E9%A0%98%E5%9F%9F.pdf",
+      "result": "搜尋索引與web PDF可讀，含水量操縱變因題；本機old站HTTP/HTTPS無法取得原PDF bytes與SHA256，新站相同路徑404，未列已收。"
+    },
+    {
+      "school": "基隆市深美國小",
+      "academic_year": 112,
+      "grade": 4,
+      "semester": 1,
+      "question_url": "https://oldsmps.kl.edu.tw/books/file/135/%E8%87%AA.pdf",
+      "result": "搜尋索引可讀搧風題，但old站本機HTTP/HTTPS無法取得原PDF bytes，且題型未證明補風力比較缺口；未列已收。"
+    },
+    {
+      "school": "臺南市和順國小",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 2,
+      "result": "校網下載回傳HTML而非PDF，未列已收。"
+    },
+    {
+      "school": "花蓮縣花蓮市明義國民小學",
+      "academic_year": 113,
+      "grade": 4,
+      "semester": 1,
+      "result": "官方原卷可下載且已篩讀，目標缺口題型未見；不列本批具增量原卷。"
+    },
+    {
+      "school": "基隆市深美國小",
+      "academic_year": 109,
+      "grade": 6,
+      "semester": 1,
+      "exam": "期末評量",
+      "question_url": "https://oldsmps.kl.edu.tw/books/file/71/%E8%87%AA.pdf",
+      "result": "官方搜尋索引顯示第1頁另有完整的流水水量操縱變因題；但old站本機HTTPS逾時、HTTP拒連，當前smps同路徑404，未取得原PDF bytes與SHA256。不同題幹不能修補明義109題，也不列本批候選。"
+    }
+  ],
+  "counts": {
+    "new_relevant_official_question_papers": 3,
+    "new_relevant_question_pages": 10,
+    "candidate_source_papers": 1,
+    "candidate_activities_pending_integration": 1,
+    "new_official_answer_papers": 0,
+    "formal_target_range_verified": false
+  }
+}

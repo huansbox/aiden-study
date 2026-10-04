@@ -14,11 +14,11 @@
   ],
   "snapshot": {
     "packId": "g4-s1-math-u1",
-    "revision": 12,
-    "status": "released_documented",
-    "evidence": "docs-dev/grade4-social-study-second-batch.md",
-    "packBytes": 229503,
-    "packSha256": "2E2C94E743C8EB31D9D658B1177A7EBF87C27429AA468FDC611FB3CF136F3D2F"
+    "revision": 13,
+    "status": "frozen_unreleased",
+    "evidence": "docs-dev/grade4-science-study-fifth-batch.md",
+    "packBytes": 230552,
+    "packSha256": "BDA159291CC97D2CB98D65B6103ABCF748CD065061FAF30659C686F3535BF6D8"
   },
   "sourceReferences": {
     "B": {
@@ -1084,6 +1084,13 @@
       "packBytes": 200737,
       "packSha256": "4AFBC74258F47D41489CD109D9119240D44844C4B0F73EB414831DFF73B9784B",
       "evidence": "docs-dev/grade4-social-study-first-batch.md"
+    },
+    {
+      "revision": 12,
+      "mathActivities": 68,
+      "packBytes": 229503,
+      "packSha256": "2E2C94E743C8EB31D9D658B1177A7EBF87C27429AA468FDC611FB3CF136F3D2F",
+      "evidence": "docs-dev/grade4-social-study-second-batch.md"
     }
   ]
 }
