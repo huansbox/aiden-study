@@ -1,5 +1,7 @@
 # 四上自然第一次段考候選卷
 
+[最新歧義研究](../../docs-dev/grade4-science-ambiguity-audit.md)：18格歧義已於2026-10-05逐一完成處置查核：9格可保留原句、6格需改寫、2格原單選不採、1格未解；改寫草案未核定。本輪新增0，正式rev16自然仍168活動／224作答位置。後續9格與6格完成核題後按完整題組接入，新增活動數未定。下方發布紀錄與backlog保留歷史快照。
+
 [圖文材料補題 #178](../../docs-dev/grade4-science-study-material-batch.md)延續既有四卷的33個 `deferred_material` 原格，整理為9個完整活動，已於2026-10-04正式發布。保留完整原圖、共同閱讀與觀察表；現役 rev16 全科260活動、自然168活動／224格，舊251活動與解說保持。獨立核答、root 批准、iPad 尺寸隔離驗證與兩階段正式讀回完成。最新逐題決策見 [material selection](../../data/study/g4-s1-science-exam1/material-selection-metadata.json)，剩餘工作見 [material backlog](../../data/study/g4-s1-science-exam1/material-backlog-metadata.json)。沒有新增原卷或校答，18格歧義／97格future／23格範圍待確認不在本批處理範圍。下方 #175 保留發布當時快照。
 
 [練習量擴充 #175](../../docs-dev/grade4-science-study-volume-batch.md)重用最初四卷，114 完整活動／119 作答格已於 2026-10-04 隨 rev15 正式發布；沒有新增原卷或校方答案。當時自然 **159 活動／191 作答格**、全科 **251 活動**。最終逐題決策見[selection](../../data/study/g4-s1-science-exam1/volume-selection-metadata.json)，全部353筆來源記錄（桃子腳200格＋永安153個小項）、合計355作答格與剩餘工作見[backlog](../../data/study/g4-s1-science-exam1/volume-backlog-metadata.json)，原future與範圍待確認各自保留。本來源收集任務仍在進行；本批已發布不代表歷屆卷、正式範圍或題型缺口已收齊。

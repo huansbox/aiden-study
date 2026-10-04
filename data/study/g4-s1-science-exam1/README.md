@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[最新歧義研究](../../../docs-dev/grade4-science-ambiguity-audit.md)：18格歧義已於2026-10-05逐一完成處置查核：9格可保留原句、6格需改寫、2格原單選不採、1格未解；改寫草案未核定。本輪新增0，正式rev16自然仍168活動／224作答位置。後續9格與6格完成核題後按完整題組接入，新增活動數未定。下方發布紀錄與backlog保留歷史快照。
+
 兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以本批 material selection 及 #178 紀錄為準。
 
 [圖文材料補題 #178](../../../docs-dev/grade4-science-study-material-batch.md)已從原四卷 backlog 的33個必要材料格整理為9個完整活動，於2026-10-04正式發布。現役 rev16 全科260活動、自然168活動／224格；舊251活動與解說保持。獨立核答、root 批准、兩種 iPad 尺寸隔離驗證，以及新 shard／manifest 的兩階段正式讀回完成；最新決策見 [material selection](material-selection-metadata.json)，全四卷剩餘狀態見 [material backlog](material-backlog-metadata.json)。本批保留完整原圖／閱讀／觀察表，題組每次一小題；必要材料待補0格，18格歧義、97格future與23格範圍待確認另留。下文 #175 的33格快照保留為歷史。
