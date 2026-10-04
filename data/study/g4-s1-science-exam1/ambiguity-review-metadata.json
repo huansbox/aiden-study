@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-10-05",
+  "reviewStatus": "complete",
+  "scope": "deferred_ambiguity_18_original_items",
+  "originalItemCount": 18,
+  "answerSlots": 18,
+  "decisionCounts": {
+    "preserve_original_ready": 9,
+    "reword_required": 6,
+    "reject_original": 2,
+    "unresolved": 1
+  },
+  "publicationStatus": "not_published",
+  "publishedDelta": 0,
+  "adaptationDraftsApproved": false,
+  "formalSciencePack": {
+    "revision": 16,
+    "activities": 168,
+    "answerSlots": 224
+  },
+  "items": [
+    {
+      "originalId": "tyk113-04-04",
+      "paperId": "tyk113",
+      "page": 1,
+      "locator": "第4題(4)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "scope_unspecified"
+      ],
+      "researchSourceUrls": [
+        "https://plants.ces.ncsu.edu/plants/nymphaea/common-name/water-lily/"
+      ]
+    },
+    {
+      "originalId": "tyk113-04-06",
+      "paperId": "tyk113",
+      "page": 1,
+      "locator": "第4題(6)",
+      "answerSlots": 1,
+      "decision": "unresolved",
+      "reasonCodes": [
+        "evidence_conflict",
+        "specimen_condition_unknown"
+      ],
+      "researchSourceUrls": [
+        "https://www.sciencedirect.com/science/article/abs/pii/S1672652914601037",
+        "https://ws-proj.moe.edu.tw/001/Upload/568/relfile/13271/13248/080ee792-664c-4ec8-8a56-b94e603476e3.pdf"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-01",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(1)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/earthquake_check2/download1.pdf"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-02",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(2)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/earthquake_check2/download1.pdf"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-03",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(3)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "safety_context_required",
+        "official_key_conflict"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=132&code=list&flag=detail&ids=53"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-04",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(4)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52",
+        "https://scweb.cwa.gov.tw/webdata/PDF/Earthquake_precautions/index.html"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-05",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(5)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=132&code=list&flag=detail&ids=53"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-06",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(6)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=132&code=list&flag=detail&ids=53"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-07",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(7)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "timing_unspecified"
+      ],
+      "researchSourceUrls": [
+        "https://www.tfdp.com.tw/cht/index.php?article_id=122&code=list&flag=detail&ids=52",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=130&code=list&flag=detail&ids=53"
+      ]
+    },
+    {
+      "originalId": "tyk113-14-03",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第14題(3)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "secondary_effect_scope",
+        "original_truth_undetermined"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/guidance/faqdetail/85"
+      ]
+    },
+    {
+      "originalId": "tyk114-01-05",
+      "paperId": "tyk114",
+      "page": 1,
+      "locator": "第1題(5)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://ihc.cip.gov.tw/EJournal/EJournalCat/167",
+        "https://fishdb.sinica.edu.tw/chi/culture/a6.php"
+      ]
+    },
+    {
+      "originalId": "tyk114-03-07",
+      "paperId": "tyk114",
+      "page": 1,
+      "locator": "第3題(7)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "terminology_mismatch"
+      ],
+      "researchSourceUrls": [
+        "https://www.nmns.edu.tw/ch/exhibitions/galleries/botanical-garden/flowers/Theme-000275/",
+        "https://extension.oregonstate.edu/catalog/em-9904-vegetative-plant-parts",
+        "https://landscapeplants.oregonstate.edu/glossary"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-2",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第2小題",
+      "answerSlots": 1,
+      "decision": "reject_original",
+      "reasonCodes": [
+        "single_choice_no_unique_answer",
+        "secondary_effect_scope"
+      ],
+      "researchSourceUrls": [
+        "https://www.epa.gov/acidrain/what-acid-rain",
+        "https://www.usgs.gov/mission-areas/water-resources/science/acid-rain"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-6",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第6小題",
+      "answerSlots": 1,
+      "decision": "reject_original",
+      "reasonCodes": [
+        "single_choice_no_unique_answer",
+        "secondary_effect_scope"
+      ],
+      "researchSourceUrls": [
+        "https://www.usgs.gov/publications/earthquake-induced-chains-geologic-hazards-patterns-mechanisms-and-impacts",
+        "https://pubs.usgs.gov/fs/2004/3072/fs-2004-3072.html"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-13",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第13小題",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "classification_scope_unspecified",
+        "species_unspecified"
+      ],
+      "researchSourceUrls": [
+        "https://uwm.edu/field-station/bug-of-the-week/pond-snail/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC7062013/",
+        "https://pubmed.ncbi.nlm.nih.gov/741106/"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-4",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(4)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://www.tfdp.com.tw/cht/index.php?article_id=118&code=list&flag=detail&ids=52",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://scweb.cwa.gov.tw/webdata/PDF/Earthquake_precautions/index.html"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-5",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(5)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "safety_context_required"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52",
+        "https://scweb.cwa.gov.tw/webdata/PDF/Earthquake_precautions/index.html"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-6",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(6)",
+      "answerSlots": 1,
+      "decision": "preserve_original_ready",
+      "reasonCodes": [
+        "original_supported"
+      ],
+      "researchSourceUrls": [
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=118&code=list&flag=detail&ids=52",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52"
+      ]
+    }
+  ],
+  "reviewedItemCount": 18,
+  "materialFindingCount": 0,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/178"
+}
