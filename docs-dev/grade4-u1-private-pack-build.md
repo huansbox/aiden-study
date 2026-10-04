@@ -2,7 +2,7 @@
 
 [#160／#161 分包交付](study-private-catalog.md)已啟用 schemaVersion 2 manifest／shards；新內容依該頁的 `--catalog-dir` 入口重建，按單元取得，不再把三科全部內容塞進一份 256 KiB 單包。原 `c:study:g4-s1-math-u1` 固定保留 revision 12 作 legacy 相容，不能用 manifest 覆寫。容量與載入決策正本見 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
-目前新版內容基線為 [#162 自然第五批](grade4-science-study-fifth-batch.md)的 manifest revision 13：133 活動（數學 68／自然 41／社會 24）、8 個單元 shard。manifest 為 12175 bytes，SHA256 `2d4d4d93b4044f524314a3da88bfa358643666a2634e3192a84247463dc0e6a1`；完整 authoring snapshot 與 legacy 單包的指紋不能混用。正式讀回及封存入口見該批紀錄。
+目前新版內容基線為 [#162 自然第五批](grade4-science-study-fifth-batch.md)的 manifest revision 13：133 活動（數學 68／自然 41／社會 24）、8 個單元 shard。manifest 為 12175 bytes，SHA256 `2d4d4d93b4044f524314a3da88bfa358643666a2634e3192a84247463dc0e6a1`；完整 authoring snapshot 與 legacy 單包的指紋不能混用。下批 `--previous` 使用 canonical ignored `data/private/study/g4-s1-math-u1/rev13-release/catalog/source.json`，還原先看同封存的 `RESTORE.md`；正式讀回及封存證據見該批紀錄。
 
 下方為 legacy schemaVersion 1 的來源、重建與歷史發布紀錄；「全包 256 KiB／首六題／localStorage」不套用於新 shard 或完整 authoring snapshot。分包切換與正式讀回見[交付紀錄](study-private-catalog.md#2026-10-04-分包切換交付)。
 

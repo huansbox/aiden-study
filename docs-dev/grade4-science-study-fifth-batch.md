@@ -22,6 +22,12 @@ rev12 canonical基線132題、229,503 bytes、SHA256 `2e2c94e743c8eb31d9d658b117
 
 8 份 shards 已於 `2026-10-04T03:27:33.843Z`、`2026-10-04T03:28:55.785Z` 兩次逐份讀回一致，相隔 81.942 秒；除 unit 20 外的七份 hash 與 rev12 完全相同。manifest 啟用後兩次管理端讀回完成於 `2026-10-04T03:29:44.790Z`、`2026-10-04T03:30:49.285Z`，相隔 64.495 秒；manifest 與 legacy 兩次均符合上表，rev13 發布完成。第二輪單獨 catalog 讀回時間為 `2026-10-04T03:30:46.445Z`。
 
-## 封存待確認
+## 封存與下批重建
 
-封存目的地已指定為 canonical `data/private/study/g4-s1-math-u1/rev13-release/`，Dropbox 內相對路徑為 `mywork/aiden-study/study-shards-science5-2026-10-04/rev13-release/`。此處先記目的地，尚未確認複製、逐檔核對或跨裝置同步完成。
+canonical 封存位於 `data/private/study/g4-s1-math-u1/rev13-release/`，共 416 檔（415 份 payload 加 archive manifest），payload 合計 275217033 bytes；archive manifest SHA256 為 `74bbca1388c6cf604ba56e6a03e266208f90977521c9c577cf8c7ec1b976c7a5`。這是整份封存的清單指紋，與正式題庫 `catalog/manifest.json` 的指紋不同。
+
+統籌已獨立逐檔核對，並從 `source-code.zip` 與私人輸入還原，依 reviewed source commit `8a0478a6565dde8f0c5817d44a621ec094afaca6` 重跑 gate，仍產出同一份 133 活動來源快照（230552 bytes、SHA256 `bda159291cc97d2cb98d65b6103abcf748cd065061faf30659c686f3535bf6d8`）。核題 code／frozen source 與後續公開發布狀態分開保存；下批新增內容使用 archive 的 `catalog/source.json` 作 `--previous` 完整基線，依 `RESTORE.md` 還原，不拿 legacy rev12 當最新內容。
+
+Dropbox 內相對路徑為 `mywork/aiden-study/study-shards-science5-2026-10-04/rev13-release/`。2026-10-04 已補齊 Windows 長路徑造成的 20 個缺檔，原有 396 檔保持不變；統籌另以唯讀 dry-run 重新核對 canonical 與本機 Dropbox 副本，檔案集合及每檔 hash 全部相同、missing 0。兩處均為 416 檔、含 manifest 共 275318241 bytes，archive manifest 指紋符合上文。這只確認本機 Dropbox 副本完整，尚未在接收端驗證跨裝置同步。
+
+Windows 複製或還原須使用支援 extended-length paths 的工具，不能以複製程序結束代替逐檔 hash 核對；參照補充驗證目錄的 `LONG-PATH-RESTORE.md`。修復與還原證據由統籌另存 canonical `data/private/study/g4-s1-math-u1/rev13-release-verification/`，以及 Dropbox 相對 `mywork/aiden-study/study-shards-science5-2026-10-04/release-verification/`；這些是 frozen archive 外的補充資料，不更動封存清單或核題輸入。
