@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[第六批 #169](../../../docs-dev/grade4-science-study-sixth-batch.md)已從 2 份新官方題卷凍結 4 個候選活動：深美 2 題三選一條件表、永安 2 題原圖測風計是非。公開來源與缺口見[第六批缺口](sixth-batch-gap-analysis.md)、[候選清單](sixth-batch-candidates.json)；本機 rev14 候選包與內容複核已通過，等待發布。本批新增上線 0，現役自然仍 41 活動，不能把候選 4 題計入孩子練習。
+
 [第五批 #162](../../../docs-dev/grade4-science-study-fifth-batch.md)從新增3份官方原卷中，只有明義110六上期末的1個坡度流水定性情境題通過獨立內容審查；明義109的操縱變因題因原卷選項殘缺排除。revision 13 分包已正式啟用：共133活動（數學68／自然41／社會24），舊132題與解說逐值不變；只新增1題，未改寫孩子進度。來源、排除與未補缺口見[第五批缺口](fifth-batch-gap-analysis.md)，逐題公開定位見[第五批selection](fifth-batch-selection-metadata.json)。以下保留先前批次的發布歷史。
 
 [#134 第四批](../../../docs-dev/grade4-science-study-fourth-batch.md)從已收翰林卷新增三個完整活動、5 個原卷作答格，revision 8 已正式發布：全包 97 題（數學 57／自然 40）、130,248 bytes。三題均通過核題，流水圖以一般教學示意呈現，沒有當成控制變因實驗。先前兩個排除候選仍維持排除；[第三批紀錄](../../../docs-dev/grade4-science-study-third-batch.md)保留其決策。尚未取得校方正式範圍，收錄僅屬暫定核心。本頁下方保留首批 revision 5 的歷史快照。

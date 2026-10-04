@@ -27,12 +27,39 @@
       "answer_file": "data/private/study/g4-s1-math-u1/science-sixth-batch/papers/smps-final-g6-114-a.pdf",
       "answer_bytes": 528999,
       "answer_sha256": "028d9701f0bb7ded991b1dd3c0b9e46c71cdadafe72c7e8c368bdabd4d91dc6b",
+      "answer_pages": 5,
       "answer_identity": "深美校網同年度、同學期、同年級、同考次官方解答附件；第1頁對應題卷版式與題號，已目視核對。",
       "relevant_locations": [
         "PDF第1頁3-1配合題1小題1",
         "PDF第1頁3-1配合題1小題2"
       ],
-      "limits": "六上期末南一卷僅按相同地表概念對照四上暫定核心。配合題表格是地表、坡度與累積降雨量的條件資料，未提供實驗後量測結果，不可稱為地表實測結果表。兩小題各只有三個不同選項，待自然三選一最小runtime支援後才可接入。"
+      "limits": "六上期末南一卷僅按相同地表概念對照四上暫定核心。配合題表格是地表、坡度與累積降雨量的條件資料，未提供實驗後量測結果，不可稱為地表實測結果表。兩小題各只有三個不同選項。"
+    },
+    {
+      "paper_id": "sixth-yap-113-g3-s2-final",
+      "school": "高雄市永安國小",
+      "academic_year": 113,
+      "grade": 3,
+      "semester": 2,
+      "exam": "期末評量",
+      "subject": "自然與生活科技領域",
+      "publisher": "unknown",
+      "source_page_url": "https://www.yap.kh.edu.tw/view/index.php?MainMenuId=44061&MainType=104&SubMenuId=0&SubType=0&TypeChange=&WebID=33&page=10",
+      "question_source_url": "https://www.yap.kh.edu.tw/upload/33/104_44061/113%E4%B8%8B%E4%B8%89%E8%87%AA%E6%9C%9F%E6%9C%AB%E8%A9%95%E9%87%8F.pdf",
+      "question_file": "data/private/study/g4-s1-math-u1/science-sixth-batch/papers/yap-113-g3-s2-final-q.pdf",
+      "bytes": 857208,
+      "sha256": "3dad7c084707caf251d61247ac71dc9486afbe8734fe12b1150457a450d02190",
+      "pdf_magic": "%PDF-",
+      "pages": 2,
+      "page_review": "卷首第1頁與第2頁相關題均已渲染目視核對；第2頁三地測風計完整三格原圖裁切封存，未重繪。",
+      "answer_source_url": null,
+      "answer_file": null,
+      "answer_pages": 0,
+      "relevant_locations": [
+        "PDF第2頁四、勾選題1小題1",
+        "PDF第2頁四、勾選題1小題2"
+      ],
+      "limits": "113三下期末卷僅作測風計風力強弱跨年級概念對照；出版社未證實、桃子腳115四上正式範圍未取得。三格圖只可判讀風力，沒有風蝕條件因果或地表實驗後量測結果。"
     }
   ],
   "duplicate_or_screened_not_collected": [
@@ -60,10 +87,21 @@
     }
   ],
   "counts": {
-    "new_relevant_official_question_papers": 1,
-    "candidate_source_papers": 1,
+    "prior_question_papers": 9,
+    "prior_question_pages": 23,
+    "prior_official_answer_papers": 2,
+    "prior_official_answer_pages": 5,
+    "new_relevant_official_question_papers": 2,
+    "new_relevant_official_question_pages": 7,
+    "candidate_source_papers": 2,
     "new_official_answer_papers": 1,
-    "author_candidates_pending_independent_review": 2,
-    "formal_target_range_verified": false
+    "new_official_answer_pages": 5,
+    "cumulative_question_papers": 11,
+    "cumulative_question_pages": 30,
+    "cumulative_official_answer_papers": 3,
+    "cumulative_official_answer_pages": 10,
+    "formal_target_range_verified": false,
+    "reviewed_candidates_pending_release": 4,
+    "new_published_activities": 0
   }
 }
