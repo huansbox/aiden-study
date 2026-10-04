@@ -460,7 +460,8 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 });
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
-  assert.match(source("preview.html"), /preview\.js\?v=20261004-social-u1-r2/);
+  // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
+  assert.match(source("preview.html"), /preview\.js\?v=20261004-shards-preview-r2/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
