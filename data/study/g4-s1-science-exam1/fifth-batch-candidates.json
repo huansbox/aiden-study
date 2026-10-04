@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/162",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "status": "reviewed_pending_release",
+  "countUnit": "complete_activity",
+  "total": 1,
+  "originalAnswerSlots": 1,
+  "items": [
+    {
+      "appId": "science-g4s1-fifth-myps-110-g6-s1-final-II-3-v1",
+      "practiceId": "S1-P17",
+      "originalId": "fifth-myps-110-g6-s1-final-II-3",
+      "paperId": "fifth-myps-110-g6-s1-final",
+      "questionPage": 1,
+      "printedLocator": "二、選擇題 3",
+      "unit": 20,
+      "scope": "core-provisional-concept-only",
+      "concept": "S1b 坡度與流水侵蝕比較",
+      "method": "由實驗情境推論坡度與流水作用的關係",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": null,
+      "officialAnswerAvailable": false,
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "sourceAdaptation": "保留完整原題幹與四選項、原順序；僅將紙本圈選轉成數位單選。不是實驗數據判讀。",
+      "reviewStatus": "independent-content-review-pass"
+    }
+  ],
+  "scopeNote": "候選來自明義國小110學年六上期末自然；出版社unknown。只依坡度與流水概念對照桃子腳115四上暫定核心，非同年、同年級或同考次原卷；正式範圍尚未取得。明義109卷操縱變因題因原卷選項殘缺而排除，詳見私人審查紀錄。",
+  "remainingGaps": [
+    "有必要比較條件且前提清楚的風力強弱比較",
+    "地表實驗數據表判讀",
+    "地表實驗操縱變因辨識"
+  ]
+}

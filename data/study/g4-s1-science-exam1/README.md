@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[第五批 #162](../../../docs-dev/grade4-science-study-fifth-batch.md)從新增3份官方原卷中，只有明義110六上期末的1個坡度流水定性情境題通過獨立內容審查；明義109的操縱變因題因原卷選項殘缺排除。工作樹已重建revision 13候選題包：共133活動（數學68／自然41／社會24），舊132題與解說逐值不變；**尚未正式發布或套用家庭進度**。來源、排除與未補缺口見[第五批缺口](fifth-batch-gap-analysis.md)，逐題公開定位見[第五批selection](fifth-batch-selection-metadata.json)。以下保留先前批次的發布歷史。
+
 [#134 第四批](../../../docs-dev/grade4-science-study-fourth-batch.md)從已收翰林卷新增三個完整活動、5 個原卷作答格，revision 8 已正式發布：全包 97 題（數學 57／自然 40）、130,248 bytes。三題均通過核題，流水圖以一般教學示意呈現，沒有當成控制變因實驗。先前兩個排除候選仍維持排除；[第三批紀錄](../../../docs-dev/grade4-science-study-third-batch.md)保留其決策。尚未取得校方正式範圍，收錄僅屬暫定核心。本頁下方保留首批 revision 5 的歷史快照。
 
 這份公開索引記錄 [#117](https://github.com/huansbox/aiden-study/issues/117) 首批凍結的 **20 個完整、可獨立作答的 activity**。原卷題文、選項、答案、解說和逐題 QA 都保存在 Git 排除的私人資料夾，不在這裡。選題、內容轉寫與獨立覆核完成後，77 題 revision 5 家庭題包已於 **2026-09-23 正式發布**；實體 iPad 尚未驗證。
