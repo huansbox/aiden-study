@@ -1,6 +1,6 @@
 # 注音 App：現況與交接
 
-更新：2026-10-04。狀態：[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題實作已備妥，正在驗收；PR／CI／發布與最新交接以該 issue 為準。既有 MVP 已交付。
+更新：2026-10-04。[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題已完成實作、獨立 review 及隔離 E2E 驗收；整合／CI／發布證據與最新交接以該 issue 及 [PR #171](https://github.com/huansbox/aiden-study/pull/171) 為準。既有 MVP 已交付。
 
 這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁保留實作及驗收入口與證據索引，不另維護一份待辦清單；長期學習規則正本為 [Wiki：Zhuyin Learning](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning)。全 repo 的本次交接見 [HANDOFF](../HANDOFF.md)。
 
@@ -14,7 +14,9 @@
 - 原批 dots 固定不增長；原題進度與批尾「再練一次」分開呈現。第一次錯後重練答對保留本批 `wrong`，下一批獨立答對才清除。任務／徽章／獎勵仍只在批末。
 - 全新進度先在混合／認符號模式每批介紹一張，聲韻都進場後才有音節卡；「只拼音節」仍沿用此入池前提，不跳過符號介紹。
 
-本次已實際執行 `node --test tests/test_zhuyin*.mjs`：63 項通過。新增純函式與實際事件處理測試涵蓋配額、全新／全弱項路徑、最多兩次、聲韻共同排列、三步重練錯誤示範、單次結果、拒播／卡住恢復、換題取消及固定原批進度。測試使用記憶體狀態及假 Audio／DOM，**不等於瀏覽器 E2E 或 iPad 真機驗收**；獨立 review、隔離 E2E、全 repo gate 與發布結果由 #167 補上。
+本輪注音測試 63 項、全 repo Node 812 項通過；Python 274 項通過、4 項依既有條件略過，catalog `--check` 與 CI 通過。獨立 code review 與隔離 browser E2E 均無 finding；整合與發布證據見 [#167](https://github.com/huansbox/aiden-study/issues/167)／[PR #171](https://github.com/huansbox/aiden-study/pull/171)。
+
+E2E 在本機測試服務、測試身分及記憶體 KV 實際驗證 listen／build／all、全新至音節的學習路徑、配額與弱項輪替、最多兩次、固定原批進度、重練全對仍保留本批錯誤、符號與組字三步的完整錯誤示範、連點單次結果及批末獎勵／下批收起。14 段親錄均觀察到實際 `playing`／`ended`；重播取消舊鏈、HTTP 404 造成 media error 4 時仍能結束並保留正確結果。這是隔離桌面瀏覽器驗證，**不等於 iPad 真機或人耳重新驗聽**；既有 iPad checklist 豁免與親錄接受決定保持有效。
 
 ## 已交付範圍
 
