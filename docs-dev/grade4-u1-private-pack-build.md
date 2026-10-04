@@ -1,5 +1,7 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
+[#178 自然圖文材料補題](grade4-science-study-material-batch.md)已從完整 rev15 baseline 建置9個已核准候選活動／33格，尚未正式發布。ignored `science-material-batch/rev15-baseline/` 固定全251題的 authoring與八份 shard；兩份 fresh review 與 root 內容批准 v2 綁定 `science-material-batch/delivery/build_rev16.py` 的正式候選。完整候選入口為 `science-material-batch/rev16-candidate/catalog/source.json`，543409 bytes、SHA256 `c8e3200f75bc0768345b61cee6a32c6e2d49e3c7b653d02b25e33e2e5b263daf`；manifest 23414 bytes、SHA256 `6db58001ae845a241fbe17116a5a2922c5febe7e3b7d275b3e3245f1a5c75766`，全科260活動／自然168活動224格。舊251活動逐值保留，八份 shard 僅 unit 21 改變。下一批完整 baseline 在正式發布／封存前仍使用下方已發布 rev15入口。
+
 [#160／#161 分包交付](study-private-catalog.md)已啟用 schemaVersion 2 manifest／shards；新內容依該頁的 `--catalog-dir` 入口重建，按單元取得，不再把三科全部內容塞進一份 256 KiB 單包。原 `c:study:g4-s1-math-u1` 固定保留 revision 12 作 legacy 相容，不能用 manifest 覆寫。容量與載入決策正本見 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
 目前現役內容基線為 [#175 自然練習量擴充](grade4-science-study-volume-batch.md)的 manifest revision 15：251 活動（數學 68／自然 159／社會 24）、自然 191 作答格、8 個單元 shard。manifest 為 22598 bytes，SHA256 `073b911be60bfceb910bac6de144ff6b15b381894c4af43c9b56d53df0dca13e`；完整 authoring source 為 391746 bytes、SHA256 `cda959295214019913a509577c527e51b2260612d4433df328c07ac44354305a`，與 legacy 單包的指紋不能混用。

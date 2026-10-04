@@ -1,0 +1,445 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/178",
+  "status": "reviewed_pending_release",
+  "countUnit": "complete_activity",
+  "items": [
+    {
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "originalId": "tyk113-05-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "printedLocator": "第5題(1)～(8)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生植物圖像分類",
+      "method": "原8格圖像分類代碼",
+      "format": "grouped_choice",
+      "officialAnswerAvailable": true,
+      "constituentSourceIds": [
+        "tyk113-05-01",
+        "tyk113-05-02",
+        "tyk113-05-03",
+        "tyk113-05-04",
+        "tyk113-05-05",
+        "tyk113-05-06",
+        "tyk113-05-07",
+        "tyk113-05-08"
+      ],
+      "materialKind": "png",
+      "sourceConcepts": [
+        {
+          "originalId": "tyk113-05-01",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-02",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-03",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-04",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-05",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-06",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-07",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk113-05-08",
+          "concept": "水生植物構造與分類"
+        }
+      ],
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 8,
+      "author": "tyk113",
+      "practiceId": "S2-M001"
+    },
+    {
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "originalId": "tyk113-06-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "printedLocator": "第6題(1)～(6)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生動物呼吸構造",
+      "method": "原6格圖像呼吸二分分類",
+      "format": "grouped_choice",
+      "officialAnswerAvailable": true,
+      "constituentSourceIds": [
+        "tyk113-06-01",
+        "tyk113-06-02",
+        "tyk113-06-03",
+        "tyk113-06-04",
+        "tyk113-06-05",
+        "tyk113-06-06"
+      ],
+      "materialKind": "png",
+      "sourceConcepts": [
+        {
+          "originalId": "tyk113-06-01",
+          "concept": "水生動物構造與分類"
+        },
+        {
+          "originalId": "tyk113-06-02",
+          "concept": "水生動物構造與分類"
+        },
+        {
+          "originalId": "tyk113-06-03",
+          "concept": "水生動物構造與分類"
+        },
+        {
+          "originalId": "tyk113-06-04",
+          "concept": "水生動物構造與分類"
+        },
+        {
+          "originalId": "tyk113-06-05",
+          "concept": "水生動物構造與分類"
+        },
+        {
+          "originalId": "tyk113-06-06",
+          "concept": "水生動物構造與分類"
+        }
+      ],
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 6,
+      "author": "tyk113",
+      "practiceId": "S2-M002"
+    },
+    {
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "originalId": "tyk113-16-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "printedLocator": "第16題(1)～(4)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2c 人類行為與水域後果",
+      "method": "原共同文章閱讀後4格判斷",
+      "format": "grouped_choice",
+      "officialAnswerAvailable": true,
+      "constituentSourceIds": [
+        "tyk113-16-01",
+        "tyk113-16-02",
+        "tyk113-16-03",
+        "tyk113-16-04"
+      ],
+      "materialKind": "text",
+      "sourceConcepts": [
+        {
+          "originalId": "tyk113-16-01",
+          "concept": "水域環境、調查、保育與閱讀"
+        },
+        {
+          "originalId": "tyk113-16-02",
+          "concept": "水域環境、調查、保育與閱讀"
+        },
+        {
+          "originalId": "tyk113-16-03",
+          "concept": "水域環境、調查、保育與閱讀"
+        },
+        {
+          "originalId": "tyk113-16-04",
+          "concept": "水域環境、調查、保育與閱讀"
+        }
+      ],
+      "sourceSubset": {
+        "policy": "core_provisional_subset_with_full_common_reading",
+        "selectedSourceIds": [
+          "tyk113-16-01",
+          "tyk113-16-02",
+          "tyk113-16-03",
+          "tyk113-16-04"
+        ],
+        "originalSourceAnswerSlots": 5,
+        "unselectedSourceIds": [
+          "tyk113-16-05"
+        ]
+      },
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 4,
+      "author": "tyk113",
+      "practiceId": "S2-M003"
+    },
+    {
+      "appId": "science-g4s1-tyk114-08-v1",
+      "originalId": "tyk114-08-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "第8題(1)至(8)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生植物圖像分類",
+      "method": "圖像分類代碼",
+      "format": "grouped_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "tyk114-08-01",
+        "tyk114-08-02",
+        "tyk114-08-03",
+        "tyk114-08-04",
+        "tyk114-08-05",
+        "tyk114-08-06",
+        "tyk114-08-07",
+        "tyk114-08-08"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "tyk114-08-01",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-02",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-03",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-04",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-05",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-06",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-07",
+          "concept": "水生植物構造與分類"
+        },
+        {
+          "originalId": "tyk114-08-08",
+          "concept": "水生植物構造與分類"
+        }
+      ],
+      "materialKind": "png",
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 8,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M004"
+    },
+    {
+      "appId": "science-g4s1-tyk114-14-core-v1",
+      "originalId": "tyk114-14-01",
+      "paperId": "tyk114",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "第14題(1)①至③（核心子集）",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2c 水域保護與破壞行為",
+      "method": "閱讀後判斷",
+      "format": "grouped_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "tyk114-14-01",
+        "tyk114-14-02",
+        "tyk114-14-03"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "tyk114-14-01",
+          "concept": "地表物質、坡地與人類活動"
+        },
+        {
+          "originalId": "tyk114-14-02",
+          "concept": "水域環境、調查、保育與閱讀"
+        },
+        {
+          "originalId": "tyk114-14-03",
+          "concept": "水域環境、調查、保育與閱讀"
+        }
+      ],
+      "materialKind": "png",
+      "sourceSubset": {
+        "policy": "core_provisional_subset_with_full_common_reading",
+        "selectedSourceIds": [
+          "tyk114-14-01",
+          "tyk114-14-02",
+          "tyk114-14-03"
+        ],
+        "originalSourceAnswerSlots": 5,
+        "unselectedSourceIds": [
+          "tyk114-14-04",
+          "tyk114-14-05"
+        ]
+      },
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 3,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M005"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-VII-1-1-v1",
+      "originalId": "supp-yap-113-midterm-VII-1-1",
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "七、1(1)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 動物呼吸、運動與棲地",
+      "method": "觀察紀錄四選一",
+      "format": "multiple_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-VII-1-1"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "supp-yap-113-midterm-VII-1-1",
+          "concept": "S2-animal-motion"
+        }
+      ],
+      "materialKind": "table",
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 1,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M006"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-VII-1-2-v1",
+      "originalId": "supp-yap-113-midterm-VII-1-2",
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "七、1(2)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 動物呼吸、運動與棲地",
+      "method": "觀察紀錄四選一",
+      "format": "multiple_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-VII-1-2"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "supp-yap-113-midterm-VII-1-2",
+          "concept": "S2-animal-motion"
+        }
+      ],
+      "materialKind": "table",
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 1,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M007"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-VII-1-3-v1",
+      "originalId": "supp-yap-113-midterm-VII-1-3",
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "七、1(3)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 動物呼吸、運動與棲地",
+      "method": "觀察紀錄四選一",
+      "format": "multiple_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-VII-1-3"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "supp-yap-113-midterm-VII-1-3",
+          "concept": "S2-animal-motion"
+        }
+      ],
+      "materialKind": "table",
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 1,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M008"
+    },
+    {
+      "appId": "science-g4s1-supp-yap-113-midterm-VII-1-4-v1",
+      "originalId": "supp-yap-113-midterm-VII-1-4",
+      "paperId": "supp-yap-113-midterm",
+      "questionPage": 2,
+      "answerPage": null,
+      "printedLocator": "七、1(4)",
+      "unit": 21,
+      "scope": "core-provisional",
+      "concept": "S2b 水生動物呼吸構造",
+      "method": "觀察紀錄四選一",
+      "format": "multiple_choice",
+      "officialAnswerAvailable": false,
+      "constituentSourceIds": [
+        "supp-yap-113-midterm-VII-1-4"
+      ],
+      "sourceConcepts": [
+        {
+          "originalId": "supp-yap-113-midterm-VII-1-4",
+          "concept": "S2-animal-breathing"
+        }
+      ],
+      "materialKind": "table",
+      "status": "reviewed_pending_release",
+      "coverageApplied": false,
+      "reviewStatus": "independent-content-review-pass",
+      "decisionCode": "approved_source_answer_checked",
+      "answerSlots": 1,
+      "author": "tyk114-yap",
+      "practiceId": "S2-M009"
+    }
+  ],
+  "newActivityCount": 9,
+  "newAnswerSlots": 33,
+  "previousPublishedScienceCount": 159,
+  "previousPublishedGlobalCount": 251,
+  "currentPublishedScienceCount": 159,
+  "currentPublishedGlobalCount": 251,
+  "reviewedCandidateScienceCount": 168,
+  "reviewedCandidateGlobalCount": 260,
+  "newByFormat": {
+    "grouped_choice": 5,
+    "multiple_choice": 4
+  }
+}

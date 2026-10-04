@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "status": "pending_independent_review",
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/178",
+  "author": "material_tyk113_author",
+  "countUnit": "source_answer_slot; activities_counted_separately",
+  "totals": {
+    "assignedSourceAnswerSlots": 18,
+    "candidateActivities": 3,
+    "candidateAnswerSlots": 18,
+    "deferredAnswerSlots": 0,
+    "duplicateAnswerSlots": 0
+  },
+  "groups": [
+    {
+      "paperId": "tyk113",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "digitalType": "grouped_choice",
+      "answerSlots": 8,
+      "status": "pending_independent_review",
+      "constituentSourceIds": [
+        "tyk113-05-01",
+        "tyk113-05-02",
+        "tyk113-05-03",
+        "tyk113-05-04",
+        "tyk113-05-05",
+        "tyk113-05-06",
+        "tyk113-05-07",
+        "tyk113-05-08"
+      ]
+    },
+    {
+      "paperId": "tyk113",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "digitalType": "grouped_choice",
+      "answerSlots": 6,
+      "status": "pending_independent_review",
+      "constituentSourceIds": [
+        "tyk113-06-01",
+        "tyk113-06-02",
+        "tyk113-06-03",
+        "tyk113-06-04",
+        "tyk113-06-05",
+        "tyk113-06-06"
+      ]
+    },
+    {
+      "paperId": "tyk113",
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "digitalType": "grouped_choice",
+      "answerSlots": 4,
+      "status": "pending_independent_review",
+      "constituentSourceIds": [
+        "tyk113-16-01",
+        "tyk113-16-02",
+        "tyk113-16-03",
+        "tyk113-16-04"
+      ]
+    }
+  ],
+  "sourceSelection": {
+    "originalGroup": "tyk113-16",
+    "originalAnswerSlots": 5,
+    "selectedAnswerSlots": 4,
+    "outsideBatchSourceIds": [
+      "tyk113-16-05"
+    ],
+    "outsideBatchStatus": "scope_needs_confirmation"
+  },
+  "items": [
+    {
+      "originalId": "tyk113-05-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p01",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p02",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p03",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p04",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p05",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p06",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-07",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p07",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-05-08",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-05-group-v1",
+      "partId": "p08",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-01",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p01",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-02",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p02",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-03",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p03",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p04",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-05",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p05",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-06-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-06-group-v1",
+      "partId": "p06",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-16-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "partId": "p01",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-16-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "partId": "p02",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-16-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "partId": "p03",
+      "reasonCode": "material_candidate_author_checked"
+    },
+    {
+      "originalId": "tyk113-16-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerSlots": 1,
+      "disposition": "includeCandidate",
+      "status": "pending_independent_review",
+      "digitalType": "grouped_choice",
+      "appId": "science-g4s1-tyk113-16-group-v1",
+      "partId": "p04",
+      "reasonCode": "material_candidate_author_checked"
+    }
+  ]
+}

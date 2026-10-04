@@ -1,5 +1,9 @@
 # 四上自然首批練習選題
 
+兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以本批 material selection 及 #178 紀錄為準。
+
+[圖文材料補題 #178](../../../docs-dev/grade4-science-study-material-batch.md)已從原四卷 backlog 的33個必要材料格整理為9個已核准候選活動，獨立核答、root 內容批准與兩種 iPad 尺寸隔離驗證完成。rev16 候選全科260活動、自然168活動／224格，仍待最終發布 gate；最新決策見 [material selection](material-selection-metadata.json)，全四卷剩餘狀態見 [material backlog](material-backlog-metadata.json)。本批保留完整原圖／閱讀／觀察表，題組每次一小題；必要材料待補0格，18格歧義、97格future與23格範圍待確認另留。下文 #175 的33格快照保留為歷史，現役仍為 rev15。
+
 [練習量擴充 #175](../../../docs-dev/grade4-science-study-volume-batch.md)已於 2026-10-04 正式發布：從原四卷新增 114 活動／119 作答格，現役 rev15 為自然 **159 活動／191 作答格**、全科 **251 活動**，舊 137 活動與解說逐值保留。最終來源與延期見[本批 selection](volume-selection-metadata.json)，完整四卷剩餘狀態見[backlog metadata](volume-backlog-metadata.json)：暫定核心仍有51格（33需材料／18有歧義），另有future97格及範圍待確認23格。作者兩份 inventory 保存審查前凍結稿，最終狀態以本批 selection／backlog 為準。練習量與題型覆蓋的長期原則見 [Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
 [第六批 #169](../../../docs-dev/grade4-science-study-sixth-batch.md)從 2 份新官方題卷發布 4 個活動：深美 2 題三選一條件表、永安 2 題原圖測風計是非。公開來源與缺口見[第六批缺口](sixth-batch-gap-analysis.md)、[選題清單](sixth-batch-candidates.json)；rev14 正式讀回完成時，自然 45 活動、全科 137 活動。桃子腳正式範圍仍未取得，後續主要缺口是地表操縱變因與實測結果表。
