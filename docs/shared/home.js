@@ -96,7 +96,7 @@
           ? ' target="_blank" rel="noopener noreferrer"'
           : "";
         return `<article class="family-activity" data-entry="${esc(entry.id)}">
-        <a class="activity-heading" href="${esc(href)}"${target}><h2>${esc(entry.title)}</h2>${entry.id === "nativecamp" ? `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="${esc(new URL("nativecamp/icons.svg#book-open", F.base).href)}"></use></svg>` : entry.mark ? `<span class="symbol" aria-hidden="true">${esc(entry.mark)}</span>` : ""}</a>
+        <a class="activity-heading" href="${esc(href)}"${target}><h2>${esc(entry.title)}</h2>${entry.id === "nativecamp" ? `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="${esc(new URL("nativecamp/icons.svg#book-open", F.base).href)}"></use></svg>` : entry.mark && !["study:social", "study:science"].includes(entry.id) ? `<span class="symbol" aria-hidden="true">${esc(entry.mark)}</span>` : ""}</a>
         ${entry.id === "mind-map" ? '<button class="activity-history" data-view="mind-maps">過去文章</button>' : ""}
         ${
           assigned.length
