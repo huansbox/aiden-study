@@ -21,7 +21,7 @@
 | 長除法練習 | [aiden-study/docs/math](docs/math/) | [網頁](docs/math/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
 | 英文拼字 | [aiden-study/docs/spelling](docs/spelling/) | [網頁](docs/spelling/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
 | 數織解謎 | [aiden-study/docs/math/nonogram](docs/math/nonogram/) | [網頁](docs/math/nonogram/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
-| 注音練習 | [aiden-study/docs/zhuyin](docs/zhuyin/) | [網頁](docs/zhuyin/) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
+| 注音練習 | [aiden-study/docs/zhuyin](docs/zhuyin/) | [家長試玩](docs/zhuyin/?preview=1) | 未標記；App 上下架：啟用；未另標記工作狀態。 |
 | 動物守護者 | [animal-fight](https://github.com/huansbox/animal-fight/tree/master) | [探險卡 PDF](https://github.com/huansbox/animal-fight/blob/master/output/pdf/storm-forest-rescue-reveal-cards-half-label-a4.pdf)、[任務狀態卡 PDF](https://github.com/huansbox/animal-fight/blob/master/output/pdf/team-mission-status-zone-cards-quarter-label-a4.pdf)、[規則與用法](https://github.com/huansbox/animal-fight/blob/master/README.md) | 未標記；列印作品；舊 GitHub Pages 網址已失效，改用公開 PDF 與規則。未另標記工作狀態。 |
 | 英文閱讀 | [aiden-english](https://github.com/huansbox/aiden-english/tree/master) | [外部網頁](https://huansbox.github.io/aiden-english/) | 未標記；App 上下架：草稿；未另標記工作狀態。 |
 | 隕石數學防衛隊 | [99-meteor](https://github.com/huansbox/99-meteor/tree/main) | [外部網頁](https://huansbox.github.io/99-meteor/) | 未標記；App 上下架：暫不上架；未另標記工作狀態。 |
