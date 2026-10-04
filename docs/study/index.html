@@ -1149,7 +1149,7 @@ async function loadPrivatePack() {
       StudyPrivatePack.parse(result.legacy, publicQuestions, activePack);
       pendingPackRaw = result.legacy;
     }
-    packNotice = "家庭題包已取得，回首頁後載入；目前作答不受影響。";
+    packNotice = "家庭題包已取得，回首頁後載入；目前作答不受影響。" + (packCacheNotice ? " " + packCacheNotice : "");
   } catch (e) {
     if (request !== packRequest) return;
     packNotice = `未載入：${e.message || "題包回應無法讀取。"} 原題包與進度保留。`;
@@ -1211,7 +1211,7 @@ async function prepareUnits(units) {
       for (const {part,complete} of loaded) if (complete) readyUnits.set(part.questions[0].unit,manifest.revision);
       rebuildQuestionIndices();
       if (state._needMasteredBackfill) State.backfillMastered();
-      packNotice = fallback ? "新題暫時無法取得，使用已保存的舊題；原進度保留。" : "題目已準備好。";
+      packNotice = (fallback ? "新題暫時無法取得，使用已保存的舊題；原進度保留。" : "題目已準備好。") + (packCacheNotice ? " " + packCacheNotice : "");
       return true;
     };
     return await Promise.race([work(),new Promise((_,reject) => { timer=setTimeout(() => { controller.abort(); reject(Error("準備題目逾時，請再按一次練習。")); },30000); })]);

@@ -147,6 +147,7 @@ test("unavailable IndexedDB still permits authenticated online practice without 
   const e=await boot(st,"test-child",{catalogCache:cache,fetch:async url=>{requests.push(url);return url.endsWith("/catalog")?new Response(JSON.stringify(built.manifest)):url.includes("/shards/")?new Response(built.shards.get(url.split("/").at(-1))):new Response(JSON.stringify({rev:0,data:null}));}});
   await wait();e.app.State.setStudyTerm("g4-s1");e.app.State.setSubject("math");await e.window._startFull(16);
   assert.ok(e.app.quiz.queue.length>0);assert.equal(e.app.activePack.questions.length,14);
+  assert.match(e.node("pack-status").textContent,/未能保存|無法保存|下次需要連線/);
 });
 test("corrupt cached answers are rejected by shard fingerprint and recover online",async()=>{
   const {e,fetch}=await setup();await e.window._startFull(16);e.window._goHome();
