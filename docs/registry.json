@@ -87,7 +87,7 @@
       "sync": true,
       "owner": "bingpu",
       "order": { "bingpu": 1 },
-      "work": { "source": { "paths": ["docs/zhuyin", "docs-dev/zhuyin-handoff.md"] } }
+      "work": { "source": { "paths": ["docs/zhuyin", "docs-dev/zhuyin-handoff.md"] }, "links": [{ "label": "家長試玩", "url": "../zhuyin/?preview=1" }] }
     },
     {
       "id": "animal-fight",

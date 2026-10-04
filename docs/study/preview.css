@@ -86,3 +86,6 @@ button:focus-visible, select:focus-visible, input:focus-visible, a.preview-butto
   .preview-top { padding: 14px 18px; }
   .preview-card { padding: 18px; }
 }
+
+.preview-entry { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding-bottom: 0; }
+.preview-entry span { line-height: 1.6; color: #475569; }

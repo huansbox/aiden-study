@@ -1,8 +1,18 @@
 # 注音 App：現況與交接
 
-更新：2026-10-04。[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題已完成實作、獨立 review 及隔離 E2E 驗收；整合／CI／發布證據與最新交接以該 issue 及 [PR #171](https://github.com/huansbox/aiden-study/pull/171) 為準。既有 MVP 已交付。
+更新：2026-10-04。[#179](https://github.com/huansbox/aiden-study/issues/179) 接入既有家長試玩，驗收／整合／發布狀態以該 issue 最新交接為準。[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題已完成實作、獨立 review 及隔離 E2E 驗收；整合／CI／發布證據與最新交接以該 issue 及 [PR #171](https://github.com/huansbox/aiden-study/pull/171) 為準。既有 MVP 已交付。
 
 這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁保留實作及驗收入口與證據索引，不另維護一份待辦清單；長期學習規則正本為 [Wiki：Zhuyin Learning](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning)。全 repo 的本次交接見 [HANDOFF](../HANDOFF.md)。
+
+## 家長試玩（#179）
+
+入口為 [既有四上家長試玩](../docs/study/preview.html) 的「注音家長試玩」、家長後台「內容與維護」的「注音試玩」，或 [注音試玩](../docs/zhuyin/?preview=1)。四上入口導覽位於題包 UI 外，家庭題包未連線或載入失敗時仍看得見；注音與公開親錄不需家庭登入。這是原注音 App 的試玩模式，registry 仍只登錄同一作品。
+
+`?preview=1` 在 parser 載入階段排除 device-auth、wiring、sync、family 及 collection scripts；App 的 wiring／family 也保持 null，初始化與保存不接正式 storage。即使帶 child／k／parent 參數或既有家庭 cookie，試玩只用頁面內的合成進度；重設、重載、切背景都不會觸碰孩子進度、累計、任務或收藏。**`?parent=1` 仍是正式維護模式，不能拿來隔離試玩。**
+
+首頁可選混合／認符號／拼音節，以及全新／已學／要加強起點；預設已學可直接作答。全新起點保持正式符號入池規則，先認符號才能拼音節；要加強提供合成弱項與一張新音節，沿用配題配額。每次作答、固定選項、有限重練、完整錯誤示範與親錄播放都走正式頁面原有函式，沒有第二套模擬學習流程。常駐標示、返回入口及重新開始只操作本次試玩；音檔檢查期間切換起點，也會在就緒時採用最新選擇。
+
+自動驗證入口為 [test_zhuyin_preview.mjs](../tests/test_zhuyin_preview.mjs)：執行整份 inline 啟動與 App scripts，讓 storage／cookie／正式 adapter 任何存取立即失敗，核對公開內容／音檔請求、合成配額、首次錯→一次重練→錯誤示範、重設／重載與初始化 race；另以正式 adapter 驗證原有存檔、同步 dirty、身分拒開與批末掛載。瀏覽器合成哨兵 E2E、獨立 review、完整 gate 與正式發布證據集中在 [#179](https://github.com/huansbox/aiden-study/issues/179)，未完成的步驟不以本文件推定通過。
 
 ## #167 實作與驗收入口
 
@@ -50,7 +60,7 @@ E2E 在本機測試服務、測試身分及記憶體 KV 實際驗證 listen／bu
 - 繼續使用已接受的親錄；不要因歷史 PRD／comments 的待辦文字，重新要求錄音或改回 TTS。
 - 使用者已免除逐項 iPad checklist。未執行項目不得冒充通過，也不重新作為收尾門檻。
 - 家長維護模式 `?parent=1` 會停用共用累計掛載，但仍使用真實 App 學習存檔及同步，**不是隔離試玩模式**。開發驗證使用 `tests/helpers/serve-family.mjs` 的本機測試服務、測試憑證與記憶體 KV，不在正式孩子資料上作答。
-- 獨立「家長試玩」曾提出建議，目前尚未實作，也未確認實作範圍。擴充其餘注音符號、親子評分、更多學習圈同樣屬未啟動的方向，不是本輪漏做的驗收項。
+- 家長試玩接入與隔離範圍見上方 #179；擴充其餘注音符號、親子評分與更多學習圈仍屬未啟動方向，不是本輪漏做的驗收項。
 - 首頁安排由獨立家長後台控制；Safari 與 iPad 主畫面入口各自取得設定與同步。已安裝圖示不需因今天的更新重裝。
 
 ## 程式與驗證入口
@@ -69,4 +79,4 @@ E2E 在本機測試服務、測試身分及記憶體 KV 實際驗證 listen／bu
 
 ## 下次從哪裡開始
 
-接續本輪先讀 [#167](https://github.com/huansbox/aiden-study/issues/167) 最新交接 comment，再核對實際 branch／HEAD 與驗收狀態。其他新需求先讀本頁、[Wiki](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning) 及 #15 已確認 MVP 範圍，再以 `/grill-me` 對齊並另開 issue；不要重開已完成的 MVP，或把歷史建議當成已授權待辦。
+接續家長試玩先讀 [#179](https://github.com/huansbox/aiden-study/issues/179) 最新交接 comment；有限重練規則仍回查 [#167](https://github.com/huansbox/aiden-study/issues/167)，再核對實際 branch／HEAD 與驗收狀態。其他新需求先讀本頁、[Wiki](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning) 及 #15 已確認 MVP 範圍，再以 `/grill-me` 對齊並另開 issue；不要重開已完成的 MVP，或把歷史建議當成已授權待辦。

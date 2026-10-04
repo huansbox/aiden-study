@@ -19,6 +19,18 @@
   #app { width: 100%; max-width: 720px; padding: 16px; flex: 1; display: flex; flex-direction: column; }
   .screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
   .hidden { display: none !important; }
+  .preview-bar { width: 100%; max-width: 720px; padding: 12px 16px; background: #fff3cc; border-bottom: 2px solid #ddc36a; }
+  .preview-bar p { margin: 0 0 8px; font-weight: 700; line-height: 1.5; }
+  .preview-nav { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  .preview-nav a, .preview-nav button { min-height: 44px; display: inline-flex; align-items: center; color: #334; }
+  .preview-nav button { border: 1px solid #baaa7d; border-radius: 8px; padding: 8px 12px; background: #fff; font: inherit; cursor: pointer; }
+  .preview-options { width: min(100%, 420px); display: grid; gap: 12px; }
+  .preview-options label { display: grid; gap: 6px; font-weight: 700; }
+  .preview-options select { width: 100%; min-height: 44px; background: #fff; border: 1px solid #a99; border-radius: 8px; padding: 8px; font: inherit; }
+  .preview-options p { margin: 0; font-size: .9rem; line-height: 1.6; color: #556; }
+  body.preview-mode .home-title { font-size: 1.7rem; }
+  body.preview-mode .btn-start { padding: 20px 36px; }
+
 
   /* 首頁 */
   .home-title { font-size: 2rem; font-weight: 800; color: #e07b39; margin: 0; }
@@ -204,10 +216,23 @@
 <link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
+<aside id="preview-bar" class="preview-bar hidden" aria-label="家長試玩">
+  <p>家長試玩，不影響孩子進度</p>
+  <nav class="preview-nav" aria-label="試玩導覽">
+    <a href="../study/preview.html">返回家長試玩</a>
+    <a href="../parent/">回家長後台</a>
+    <button type="button" id="btn-preview-reset">重新開始試玩</button>
+  </nav>
+</aside>
 <div id="app">
   <div id="screen-home" class="screen">
     <h1 class="home-title">ㄅㄆㄇ 拼字小遊戲</h1>
     <p class="home-sub">給弟弟的注音練習（家長按開始）</p>
+    <div id="preview-options" class="preview-options hidden">
+      <label>練習範圍<select id="preview-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>
+      <label>試玩起點<select id="preview-start"><option value="learned">已學：直接作答</option><option value="new">全新：從示範開始</option><option value="weak">要加強：錯題優先</option></select></label>
+      <p id="preview-help">進度只放在這個頁面的記憶體。重載或重新開始會清除本次試玩；全新起點須先認符號，才能拼音節。</p>
+    </div>
     <button class="btn-start" id="btn-start">▶ 開始練習</button>
     <button class="parent-link" id="btn-parent">家長區</button>
   </div>
@@ -225,7 +250,7 @@
       <div class="parent-label">進度總覽</div>
       <table class="overview" id="parent-overview"></table>
     </div>
-    <div class="parent-block">
+    <div class="parent-block" data-live-only>
       <div class="parent-label">雲端同步</div>
       <div id="sync-block"></div>
     </div>
@@ -234,14 +259,14 @@
       <button class="parent-btn" id="btn-audit">開始自檢</button>
       <div class="parent-status" id="audit-status"></div>
     </div>
-    <div class="parent-block">
+    <div class="parent-block" data-live-only>
       <div class="parent-label">進度備份／還原（只含這個 app、當前使用者的進度）</div>
       <button class="parent-btn" id="btn-export">匯出</button>
       <button class="parent-btn" id="btn-import">還原貼上的備份</button>
       <textarea id="backup-box" rows="4" placeholder="匯出後複製保存；還原時把備份貼進來再按還原"></textarea>
       <div class="parent-status" id="backup-status"></div>
     </div>
-    <div class="parent-block">
+    <div class="parent-block" data-live-only>
       <button class="parent-btn danger" id="btn-reset">重置全部進度</button>
       <div class="parent-status" id="reset-status"></div>
     </div>
@@ -265,10 +290,23 @@
     <button class="btn-quiet" id="btn-msg-home">回首頁</button>
   </div>
 </div>
-<script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261003-social-u1-r1"></script><script src="../shared/collection-core.js?v=20260926-high-speed-trains"></script>
-<script src="../shared/collection-client.js?v=20260923-train-series"></script>
-<script src="../shared/family-client.js?v=20260922-collection"></script><script src="../shared/family-app.js?v=20260922-collection"></script>
+<script>
+// Parser 階段先決定隔離：試玩連正式 scripts 都不載入，不能用 parent=1 代替。
+const ZHUYIN_PREVIEW = new URLSearchParams(window.location.search).get("preview") === "1";
+if (!ZHUYIN_PREVIEW) {
+  // 維持正式 classic scripts 的同步執行順序，再執行下方共用 App。
+  document.write([
+    "../shared/device-auth.js?v=20260916-session",
+    "../shared/sync-v1.js?v=20260918-shared-ack",
+    "../shared/wiring-v1.js?v=20260916-session",
+    "../shared/family-core.js?v=20261003-social-u1-r1",
+    "../shared/collection-core.js?v=20260926-high-speed-trains",
+    "../shared/collection-client.js?v=20260923-train-series",
+    "../shared/family-client.js?v=20260922-collection",
+    "../shared/family-app.js?v=20260922-collection",
+  ].map((src) => '<script src="' + src + '"><\/script>').join(""));
+}
+</script>
 <script>
 "use strict";
 
@@ -278,16 +316,32 @@
 // ════════════════════════════════════════════════════
 // wiring 沒載到 → init 拒開站（ADR-0006：不再沉默降級）；
 // sync-v1.js 沒載到（wiring 有載到）的語意由 wiring 處理：指名 child 拒開站、legacy 網址可練不持久
-const KidsWiring = window.KidsWiringV1 || null;
+const KidsWiring = ZHUYIN_PREVIEW ? null : window.KidsWiringV1 || null;
 // <wiring-config>
 const WIRING_CONFIG = { appId: "zhuyin", schemaVersion: 1, legacyChild: "bingpu", legacyKey: "aiden_zhuyin_v1", btnClass: "parent-btn" };
 // </wiring-config>
-const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
+const wiring = !ZHUYIN_PREVIEW && KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
-const family = window.KidsFamily?.mount("zhuyin", currentChild) || null;
+const family = ZHUYIN_PREVIEW ? null : window.KidsFamily?.mount("zhuyin", currentChild) || null;
 let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建立；沒同步時保持 null）
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
-function identityUnresolvable() { return !wiring || wiring.identityUnresolvable(); }
+function identityUnresolvable() { return !ZHUYIN_PREVIEW && (!wiring || wiring.identityUnresolvable()); }
+
+// 試玩只產生合成起點，卡片仍由正式 content／配題／判分流程處理。
+function zyPreviewProgress(content, start) {
+  const progress = zyLoadProgress(null);
+  if (start === "new") return progress;
+  const ids = [...content.symbols.map((s) => zyCardId(s.glyph)), ...content.syllables.map(zySylId)];
+  for (const id of ids) progress.cards[id] = { introduced: true, wrong: false, practiced: 2, correct: 2 };
+  if (start === "weak") {
+    for (const id of [...content.symbols.slice(0, 2).map((s) => zyCardId(s.glyph)), ...content.syllables.slice(0, 2).map(zySylId)]) {
+      progress.cards[id] = { introduced: true, wrong: true, practiced: 2, correct: 0 };
+    }
+    // 混合／音節可同時觀察 2 弱項＋1 新卡，熟悉卡再補至最多 5 張。
+    delete progress.cards[zySylId(content.syllables.at(-1))];
+  }
+  return progress;
+}
 
 // <zhuyin-core-pure>
 // 注意：此區塊到 </zhuyin-core-pure> 為止不得引用外部全域變數，才能被 node 測試抽出獨立 eval。
@@ -669,6 +723,7 @@ const app = {
 
 // 讀寫走 wiring.safeGet／safeSet（封鎖 Cookie 類設定下 localStorage 取值即拋，safe* 吞掉＝可練不持久）
 function saveProgress() {
+  if (ZHUYIN_PREVIEW) return; // app.progress 就是唯一的試玩記憶體，不接正式 storage／sync
   const json = JSON.stringify(app.progress);
   const prev = wiring.safeGet(STORAGE_KEY);
   // 真有寫入且真有變更才標 dirty：擋掉等值 save 造成的空推雲；
@@ -690,6 +745,7 @@ function adoptRemoteData(data) {
 }
 function initSyncClient() {
   // init 失敗重試會再進來：wiring.initSync 有 guard，lifecycle 監聽不重複掛
+  if (ZHUYIN_PREVIEW) return;
   sync = wiring.initSync({ onAdopt: adoptRemoteData }); // onHealth 預設＝wiring 刷新健康燈
 }
 
@@ -735,7 +791,9 @@ function startBatch() {
   app.wrongThisBatch = new Set();
   if (!app.queue.length) {
     document.getElementById("msg-text").textContent =
-      family ? "聲音卡片還在準備中，先回首頁吧。" : "題目音檔還沒錄好，請先用 recorder.html 錄音並放進 assets/audio/。";
+      ZHUYIN_PREVIEW && app.practiceMode === "build" && !zyEnteredGlyphs(app.entryOrder, app.progress).length
+        ? "全新起點請先認符號，或選「已學」直接試拼音節。"
+        : family || ZHUYIN_PREVIEW ? "聲音卡片還在準備中，先回首頁吧。" : "題目音檔還沒錄好，請先用 recorder.html 錄音並放進 assets/audio/。";
     document.getElementById("msg-emoji").textContent = "🎙️"; // init 失敗路徑可能殘留 😢
     showScreen("screen-msg");
     return;
@@ -1085,17 +1143,19 @@ async function init() {
   // content.json 是外部資料邊界：連形狀壞掉（合法 JSON 但缺欄位）也要進錯誤畫面，
   // 不能讓 ready reject 把「開始練習」變成無聲死按鈕。
   try {
-    wiring.renderChildBadge();
-    await family?.ready;
-    if (family && !family.allowed()) {family.block();return;}
-    if (family?.task()) app.practiceMode=family.task().mode;
-    // child 維度播種：複製不搬移（aiden_zhuyin_v1 原樣保留、歸弟弟——ADR-0004）；計畫與寫入在 wiring
-    const seeded = wiring.seedLegacy();
-    initSyncClient();
-    // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
-    // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
-    // （sync-v1 沒載到也不丟定錨：anchorLocalWrite 內建 fallback，播種只此一次）
-    if (seeded) wiring.anchorLocalWrite(false);
+    if (!ZHUYIN_PREVIEW) {
+      wiring.renderChildBadge();
+      await family?.ready;
+      if (family && !family.allowed()) {family.block();return;}
+      if (family?.task()) app.practiceMode=family.task().mode;
+      // child 維度播種：複製不搬移（aiden_zhuyin_v1 原樣保留、歸弟弟——ADR-0004）；計畫與寫入在 wiring
+      const seeded = wiring.seedLegacy();
+      initSyncClient();
+      // legacy 播種視同手動匯入：定錨後以 LWW 新寫入身分上雲——
+      // 否則雲端已被其他裝置的近空進度佔住 rev 時，boot 會 adopt 空資料蓋掉既有 legacy
+      // （sync-v1 沒載到也不丟定錨：anchorLocalWrite 內建 fallback，播種只此一次）
+      if (seeded) wiring.anchorLocalWrite(false);
+    }
     // content 抓取與同步 boot 平行（boot 只碰進度存檔）；先裁決 content——
     // 離線時立即進錯誤畫面，不被 boot 的 5s timeout 拖住（boot 的 .catch 掛在建立當下，不留
     // unhandled rejection 窗口；boot 完成與否在下方讀進度前才 await）
@@ -1111,7 +1171,7 @@ async function init() {
     for (const s of content.symbols) app.symbolAudio[s.glyph] = s.audio;
     // 開啟時 pull 完成才讀進度（adopt 直寫本機存檔；離線／無 token 靜默走本機）
     if (bootPromise) await bootPromise;
-    app.progress = zyLoadProgress(wiring.safeGet(STORAGE_KEY));
+    if (!ZHUYIN_PREVIEW) app.progress = zyLoadProgress(wiring.safeGet(STORAGE_KEY));
 
     // 音檔可用性探測（HEAD content.json 宣告的全部 key；失敗＝缺檔，組批時過濾）
     const keys = [];
@@ -1125,11 +1185,16 @@ async function init() {
       } catch (e) { /* 探不到＝缺檔 */ }
     }));
     // 批末獎勵 manifest（哥哥版共用資產；缺檔/壞檔＝批末靜默無獎圖，不擋任何流程）
-    try {
+    if (!ZHUYIN_PREVIEW) try {
       const rr = await fetch("../shared/rewards.json");
       if (rr.ok) app.rewards = await rr.json();
     } catch (e) { /* 靜默 */ }
 
+    // HEAD 探測期間仍可改選起點；等所有非同步初始化完成才採目前選擇。
+    if (ZHUYIN_PREVIEW) {
+      app.progress = zyPreviewProgress(content, document.getElementById("preview-start").value);
+      app.practiceMode = document.getElementById("preview-mode").value;
+    }
     app.content = content; // 最後才標記成功，兼作「init 完成」旗標
   } catch (e) {
     app.content = null;
@@ -1137,6 +1202,33 @@ async function init() {
     document.getElementById("msg-emoji").textContent = "😢";
     showScreen("screen-msg");
   }
+}
+function resetPreview() {
+  if (!ZHUYIN_PREVIEW || !app.content) return;
+  clearTimers();
+  app.progress = zyPreviewProgress(app.content, document.getElementById("preview-start").value);
+  app.practiceMode = document.getElementById("preview-mode").value;
+  app.queue = [];
+  app.previousBuildChoices = new Map();
+  app.wrongThisBatch = new Set();
+  document.getElementById("break-reward").replaceChildren();
+  showScreen("screen-home");
+}
+if (ZHUYIN_PREVIEW) {
+  document.body.classList.add("preview-mode");
+  document.title = "注音家長試玩";
+  document.getElementById("preview-bar").classList.remove("hidden");
+  document.getElementById("preview-options").classList.remove("hidden");
+  document.querySelector(".home-sub").textContent = "共用正式練習與親錄，試玩成果只留在本頁";
+  document.getElementById("btn-start").textContent = "開始試玩";
+  document.getElementById("btn-parent").textContent = "試玩進度／音效自檢";
+  document.querySelector(".parent-title").textContent = "試玩進度與音效";
+  for (const el of document.querySelectorAll("[data-live-only]")) el.classList.add("hidden");
+  document.getElementById("btn-preview-reset").addEventListener("click", resetPreview);
+  document.getElementById("preview-start").addEventListener("change", resetPreview);
+  document.getElementById("preview-mode").addEventListener("change", () => {
+    app.practiceMode = document.getElementById("preview-mode").value;
+  });
 }
 let ready = init();
 
@@ -1169,7 +1261,7 @@ function renderParent() {
   for (const chip of document.querySelectorAll(".chip")) {
     chip.classList.toggle("on", chip.dataset.mode === app.practiceMode);
   }
-  wiring.refreshSyncStatus();
+  wiring?.refreshSyncStatus();
   const rows = [];
   const row = (label, kind, st) => {
     const status = !st.introduced
@@ -1197,6 +1289,7 @@ document.querySelector(".mode-chips").addEventListener("click", (ev) => {
   const chip = ev.target.closest(".chip");
   if (!chip) return;
   app.practiceMode = chip.dataset.mode;
+  if (ZHUYIN_PREVIEW) document.getElementById("preview-mode").value = app.practiceMode;
   renderParent();
 });
 
@@ -1213,6 +1306,7 @@ document.getElementById("btn-audit").addEventListener("click", () => {
 });
 
 document.getElementById("btn-export").addEventListener("click", () => {
+  if (ZHUYIN_PREVIEW) return;
   const raw = wiring.safeGet(STORAGE_KEY); // 讀不到照樣提示
   document.getElementById("backup-box").value = raw || "";
   document.getElementById("backup-status").textContent = raw
@@ -1232,6 +1326,7 @@ function parseZhuyinBackup(text) {
 }
 
 document.getElementById("btn-import").addEventListener("click", () => {
+  if (ZHUYIN_PREVIEW) return;
   const $st = document.getElementById("backup-status");
   const text = document.getElementById("backup-box").value.trim();
   if (!text) { $st.textContent = "請先把備份內容貼進文字框。"; return; }
@@ -1264,6 +1359,7 @@ document.getElementById("btn-import").addEventListener("click", () => {
 });
 
 document.getElementById("btn-reset").addEventListener("click", async () => {
+  if (ZHUYIN_PREVIEW) return;
   if (!confirm(`確定要清掉 ${wiring.childInfo(currentChild).label} 的全部練習進度嗎？此動作無法復原。`)) return;
   // 重置＝匯入一份空進度：走同一條定錨路徑把雲端也重置——
   // 只清本機的話，meta.syncedRev 仍對齊雲端 rev、不會 adopt，但雲端殘留舊進度會誤導他機。
