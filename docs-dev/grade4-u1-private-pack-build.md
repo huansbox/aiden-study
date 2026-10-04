@@ -2,9 +2,11 @@
 
 [#160／#161 分包交付](study-private-catalog.md)已啟用 schemaVersion 2 manifest／shards；新內容依該頁的 `--catalog-dir` 入口重建，按單元取得，不再把三科全部內容塞進一份 256 KiB 單包。原 `c:study:g4-s1-math-u1` 固定保留 revision 12 作 legacy 相容，不能用 manifest 覆寫。容量與載入決策正本見 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
-目前現役內容基線為 [#169 自然第六批](grade4-science-study-sixth-batch.md)的 manifest revision 14：137 活動（數學 68／自然 45／社會 24）、8 個單元 shard。manifest 為 12611 bytes，SHA256 `e5826ae159f4a02287744d4335d09bee85fd4befa56bebcc61ae4bab1bc7f8fb`；完整 authoring snapshot 與 legacy 單包的指紋不能混用。`--previous` 使用 canonical ignored `data/private/study/g4-s1-math-u1/rev14-release/private/rev14-candidate/catalog/source.json`，完整curated／explanations／mapping在同一 `rev14-candidate/`；正式讀回及封存證據見該批紀錄。
+目前現役內容基線為 [#175 自然練習量擴充](grade4-science-study-volume-batch.md)的 manifest revision 15：251 活動（數學 68／自然 159／社會 24）、自然 191 作答格、8 個單元 shard。manifest 為 22598 bytes，SHA256 `073b911be60bfceb910bac6de144ff6b15b381894c4af43c9b56d53df0dca13e`；完整 authoring source 為 391746 bytes、SHA256 `cda959295214019913a509577c527e51b2260612d4433df328c07ac44354305a`，與 legacy 單包的指紋不能混用。
 
-[#175 練習量擴充](grade4-science-study-volume-batch.md)的 rev15 候選已核准114新活動／119格，總251活動、自然159活動，仍為 `reviewed_pending_release`。本批最新重建入口為 ignored `science-volume-batch/delivery/build_rev15.py`，使用已核准兩份fresh review與凍結作者稿及 `rev14-baseline/`；完整候選保存在 `science-volume-batch/rev15-candidate/catalog/source.json`。正式發布與封存完成前，不把這份候選當成下一批正式baseline；legacy rev12不變。
+本批正式新增 114 活動／119 格；舊 137 活動與全部解說逐值保留，legacy rev12 不變。最新重建入口為 ignored `science-volume-batch/delivery/build_rev15.py`，使用已核准兩份 fresh review、凍結作者稿與完整 `rev14-baseline/`，本批工作來源為 `science-volume-batch/rev15-candidate/catalog/source.json`。封存完成狀態與逐檔核對結果以 [#175](https://github.com/huansbox/aiden-study/issues/175) 最新交接 comment 為準，使用前核對該證據。封存核對後的 canonical 入口是 `data/private/study/g4-s1-math-u1/rev15-release/private/rev15-candidate/catalog/source.json`，curated／explanations／mapping 在同一 `rev15-candidate/`，恢復步驟見 `rev15-release/private/ops/RESTORE.md`。下一批 `--previous` 必須使用這份完整 rev15 source，不能回用 legacy rev12 或只含新題的 delta。
+
+歷史 [#169 自然第六批](grade4-science-study-sixth-batch.md)的 rev14 為 137 活動（數學 68／自然 45／社會 24）；其完整來源仍保存於 `rev14-release/private/rev14-candidate/catalog/source.json`，只作本批先前基線與歷史重建使用。
 
 下方為 legacy schemaVersion 1 的來源、重建與歷史發布紀錄；「全包 256 KiB／首六題／localStorage」不套用於新 shard 或完整 authoring snapshot。分包切換與正式讀回見[交付紀錄](study-private-catalog.md#2026-10-04-分包切換交付)。
 
