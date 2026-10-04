@@ -1,8 +1,20 @@
 # 注音 App：現況與交接
 
-更新：2026-09-17。狀態：本輪已完成，依使用者要求收工；目前沒有待接續實作的注音工作。
+更新：2026-10-04。狀態：[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題實作已備妥，正在驗收；PR／CI／發布與最新交接以該 issue 為準。既有 MVP 已交付。
 
-這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁集中已交付功能、已定案原則及證據索引，不另維護一份待辦清單。全 repo 的本次交接見 [HANDOFF](../HANDOFF.md)。
+這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁保留實作及驗收入口與證據索引，不另維護一份待辦清單；長期學習規則正本為 [Wiki：Zhuyin Learning](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning)。全 repo 的本次交接見 [HANDOFF](../HANDOFF.md)。
+
+## #167 實作與驗收入口
+
+本輪限定 `docs/zhuyin/`、注音測試與維護文件；不修改 study／spelling／shared／worker，也不新增符號、音檔或家長試玩功能。沿用 schemaVersion 1、既有進度與已接受親錄。
+
+- 原批至多 5 張不同卡：弱項至多 2 張、新卡至多 1 張，其餘熟悉卡；不足就縮短。弱項以既有 `practiced` 次數由少到多抽，持續答錯仍會輪到其餘卡，存檔重載也保留此依據。
+- 每張卡同批至多首次加一次批尾重練。首次錯誤仍在當題淘汰錯項直到完成；重練任何一步錯，立即記一次錯誤、顯示完整正確符號／拼法並播親錄，播完換題。示範不算第三次或獨立答對；播放拒絕、缺音或卡住也能結束。
+- 組字每次出題只抽一次共同選項，必含聲符與韻符正解；同次聲韻步、答錯與重聽保持排列。下次出同卡重新抽，若恰巧和上次相同且有至少兩項，就輪轉一次。聲調仍固定 1～4 聲。
+- 原批 dots 固定不增長；原題進度與批尾「再練一次」分開呈現。第一次錯後重練答對保留本批 `wrong`，下一批獨立答對才清除。任務／徽章／獎勵仍只在批末。
+- 全新進度先在混合／認符號模式每批介紹一張，聲韻都進場後才有音節卡；「只拼音節」仍沿用此入池前提，不跳過符號介紹。
+
+本次已實際執行 `node --test tests/test_zhuyin*.mjs`：63 項通過。新增純函式與實際事件處理測試涵蓋配額、全新／全弱項路徑、最多兩次、聲韻共同排列、三步重練錯誤示範、單次結果、拒播／卡住恢復、換題取消及固定原批進度。測試使用記憶體狀態及假 Audio／DOM，**不等於瀏覽器 E2E 或 iPad 真機驗收**；獨立 review、隔離 E2E、全 repo gate 與發布結果由 #167 補上。
 
 ## 已交付範圍
 
@@ -16,6 +28,7 @@
 
 | 工作 | 狀態與來源 |
 | --- | --- |
+| 有限重練與低壓配題 | [#167](https://github.com/huansbox/aiden-study/issues/167)；本輪實作／驗收／發布追蹤入口。 |
 | MVP 規劃 | [#15](https://github.com/huansbox/aiden-study/issues/15) 已結案；子票 #16–#20 全數結案。閱讀 issue 頂端的目前狀態，早期 PRD 與 comments 是歷史決策。 |
 | 親錄音檔與 MVP 收尾 | [#20](https://github.com/huansbox/aiden-study/issues/20)、[收尾與發布紀錄](zhuyin-mvp-ipad-checklist.md)、[音檔來源與接受紀錄](zhuyin-parent-audio/README.md)；實作 `87b76aa`。 |
 | 直排與批末獎勵 | [commit 72f1603](https://github.com/huansbox/aiden-study/commit/72f16039c02f2159c8217c44d276196a20850172)，已合併並部署。 |
@@ -46,6 +59,7 @@
 | [音檔目錄](../docs/zhuyin/assets/audio/) | 正式親錄資產；來源與重建方法見上方親錄交付文件 |
 | [sync-v1.js](../docs/shared/sync-v1.js)／[wiring-v1.js](../docs/shared/wiring-v1.js) | App 原有進度同步與孩子身分接線 |
 | [family-client.js](../docs/shared/family-client.js)／[worker/family.mjs](../worker/family.mjs) | 首頁累計、任務與重置世代 |
+| [test_zhuyin_core.mjs](../tests/test_zhuyin_core.mjs)／[test_zhuyin_practice.mjs](../tests/test_zhuyin_practice.mjs) | 配題、有限重練、共同選項、示範記分與固定批進度 |
 | [test_zhuyin_voice.mjs](../tests/test_zhuyin_voice.mjs) | 播放順序、取消、失敗恢復與凸顯時機 |
 | [test_family_client.mjs](../tests/test_family_client.mjs)／[test_family.mjs](../tests/test_family.mjs) | 批末獎勵、重置、離線／延遲回傳與跨孩子隔離 |
 
@@ -53,4 +67,4 @@
 
 ## 下次從哪裡開始
 
-目前沒有已承諾、尚未完成的注音工作。下次收到實際使用問題或要擴充內容時，先讀本頁及 #15 的已確認 MVP 範圍；有新需求再使用 `/grill-me` 對齊並另開 issue。不要重開已完成的 MVP，或把上述建議當成已授權待辦。
+接續本輪先讀 [#167](https://github.com/huansbox/aiden-study/issues/167) 最新交接 comment，再核對實際 branch／HEAD 與驗收狀態。其他新需求先讀本頁、[Wiki](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning) 及 #15 已確認 MVP 範圍，再以 `/grill-me` 對齊並另開 issue；不要重開已完成的 MVP，或把歷史建議當成已授權待辦。
