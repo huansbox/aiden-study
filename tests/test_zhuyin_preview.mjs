@@ -202,6 +202,11 @@ test('changing start and mode while audio HEAD is pending uses latest selections
   let release;
   const headGate = new Promise((resolve) => { release = resolve; });
   const h = await harness('?preview=1&child=aiden&parent=1&k=synthetic', { headGate });
+  // Wait for content parsing and all HEAD starts, exactly where the former seed-before-HEAD race lived.
+  for (let i = 0; i < 10 && h.requests.filter((r) => r.method === 'HEAD').length < 14; i++) {
+    await new Promise((resolve) => setImmediate(resolve));
+  }
+  assert.equal(h.requests.filter((r) => r.method === 'HEAD').length, 14);
   assert.equal(h.app.content, null);
   h.get('preview-start').value = 'new'; h.get('preview-start').handlers.change();
   h.get('preview-mode').value = 'listen'; h.get('preview-mode').handlers.change();
