@@ -2,7 +2,7 @@
 
 2026-10-04，[#162](https://github.com/huansbox/aiden-study/issues/162)。本批新收官方題卷3份、10頁，累計9份題卷、23頁；已取得的校方答案仍為2份、5頁。新來源見[manifest](../../../learning-tasks/grade4-sem1-science-exam1/source/fifth-batch-manifest.json)。明義110與109均為**六上期末**且同校同年出版社無證據，標`unknown`；深美114為四上期中康軒，但三卷都不是桃子腳115第一次評量原卷。正式校方範圍仍未取得。
 
-獨立審查與統籌只核准明義110卷PDF第1頁二、選擇3的一個完整活動（S1-P17）。它要求根據原卷提供的澆水條件和不同坡度土堆，推論一般流水侵蝕趨勢；分類為**定性情境比較**。rev13候選題包有自然41題，但尚未正式發布，故公開selection的`coverageApplied`仍為false。選題定位與排除紀錄見[selection](fifth-batch-selection-metadata.json)。
+獨立審查與統籌只核准明義110卷PDF第1頁二、選擇3的一個完整活動（S1-P17）。它要求根據原卷提供的澆水條件和不同坡度土堆，推論一般流水侵蝕趨勢；分類為**定性情境比較**。rev13 分包已正式啟用，自然累計41題，公開selection的`coverageApplied`已標為true；它只補定性坡度／流水情境比較，不填平下列三類缺口。選題定位與排除紀錄見[selection](fifth-batch-selection-metadata.json)。
 
 明義109卷第1頁二、選擇6本可練操縱變因，但第④選項在官方原卷語意殘缺。作者初稿曾擅補文字，fresh reviewer發現後排除；原稿、PDF、獨立審查與更正留在精確ignored私人資料，不以推測修復。深美114題卷只有一般風作用／移動方向辨識，未補足比較風力強弱所需條件，也不為湊數收入。
 

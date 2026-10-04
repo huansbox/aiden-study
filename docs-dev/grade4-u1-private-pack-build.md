@@ -2,6 +2,8 @@
 
 [#160／#161 分包交付](study-private-catalog.md)已啟用 schemaVersion 2 manifest／shards；新內容依該頁的 `--catalog-dir` 入口重建，按單元取得，不再把三科全部內容塞進一份 256 KiB 單包。原 `c:study:g4-s1-math-u1` 固定保留 revision 12 作 legacy 相容，不能用 manifest 覆寫。容量與載入決策正本見 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
+目前新版內容基線為 [#162 自然第五批](grade4-science-study-fifth-batch.md)的 manifest revision 13：133 活動（數學 68／自然 41／社會 24）、8 個單元 shard。manifest 為 12175 bytes，SHA256 `2d4d4d93b4044f524314a3da88bfa358643666a2634e3192a84247463dc0e6a1`；完整 authoring snapshot 與 legacy 單包的指紋不能混用。正式讀回及封存入口見該批紀錄。
+
 下方為 legacy schemaVersion 1 的來源、重建與歷史發布紀錄；「全包 256 KiB／首六題／localStorage」不套用於新 shard 或完整 authoring snapshot。分包切換與正式讀回見[交付紀錄](study-private-catalog.md#2026-10-04-分包切換交付)。
 
 [#157 社會第二批](grade4-social-study-second-batch.md)已正式發布 revision 12：全包 132 活動（數學 68／自然 40／社會 24）、229503 bytes、SHA256 `2e2c94e743c8eb31d9d658b1177a7ebf87c27429aa468fdc611fb3cf136f3d2f`，餘 32641 bytes。社會 unit 22 現支援文字是非、二／四選一、2～5 個共用選項且 2～8 個小題的 grouped_choice，以及既有上限的 PNG；社會 table 仍不開放。舊 127 活動逐值保留，數學分類不變。下文 #154 的純文字限制保留首批歷史，現行社會格式以本段與 #157 為準。

@@ -1575,8 +1575,8 @@
         "aiden"
       ],
       "audienceLabel": "9 歲；四年級",
-      "status": "in-progress",
-      "statusNote": "自然 40 活動已上線，六份原卷已收。#160 統籌題庫分包與第五批擴充；#162 正核對風力比較與地表實驗新來源，正式範圍尚未取得。原卷只存本機。",
+      "status": "complete",
+      "statusNote": "#160 分包與 #162 第五批已交付，自然累計 41 活動上線。已收 9 份題卷 23 頁、校方答案 2 份 5 頁；正式範圍、風力比較、地表操縱變因及實測數據題仍待補。原卷只存本機。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/grade4-sem1-science-exam1",
       "source": {

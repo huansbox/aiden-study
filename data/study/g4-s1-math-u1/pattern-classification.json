@@ -15,7 +15,7 @@
   "snapshot": {
     "packId": "g4-s1-math-u1",
     "revision": 13,
-    "status": "frozen_unreleased",
+    "status": "released_documented",
     "evidence": "docs-dev/grade4-science-study-fifth-batch.md",
     "packBytes": 230552,
     "packSha256": "BDA159291CC97D2CB98D65B6103ABCF748CD065061FAF30659C686F3535BF6D8"

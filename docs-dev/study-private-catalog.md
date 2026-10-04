@@ -17,7 +17,7 @@
 
 manifest 與 legacy 的管理端讀回時間為 `2026-10-04T03:18:56.224Z`、`2026-10-04T03:20:30.254Z`，相隔 94.030 秒，兩次皆與上表一致。發佈核准、精確 URL、逐 shard 指紋及兩階段證據保存在 ignored `data/private/study/g4-s1-math-u1/sharding-release/`；rev12 可重建來源與分包產物位於同根目錄的 `rev12-catalog-python/`。後續內容發布另提高 manifest revision；本表保留切換當時的事實。
 
-[#165 自然補題](https://github.com/huansbox/aiden-study/pull/165) 是後續內容候選，尚未包含在上述正式分包切換紀錄；其正式 revision、內容指紋與讀回需另待發布確認。
+[#165 自然補題](https://github.com/huansbox/aiden-study/pull/165) 已合併並通過 exact-head CI、獨立 review 與隔離 E2E；它是後續 rev13 內容，不包含在上表 rev12 切換紀錄。rev13 manifest 已正式啟用（133 活動），內容基線、讀回與封存見[自然第五批紀錄](grade4-science-study-fifth-batch.md)。
 
 ## 內容與路由
 
