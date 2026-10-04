@@ -588,12 +588,31 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--metadata", type=Path, default=PUBLIC_METADATA)
     parser.add_argument("--public-questions", type=Path, default=PUBLIC_QUESTIONS)
     parser.add_argument("--output", type=Path, default=PRIVATE_DIR / "pack.json")
+    parser.add_argument("--catalog-dir", type=Path, help="Build bounded v2 catalog/shards instead of legacy single pack")
+    parser.add_argument("--previous", type=Path, help="Approved previous aggregate (required for catalog build)")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     try:
+        if args.catalog_dir:
+            if not args.previous or not args.previous.is_file():
+                raise PackBuildError("catalog build requires --previous approved aggregate")
+            manifest_path = ensure_safe_output_path(args.catalog_dir / "manifest.json")
+            pack = build_pack(args.curated, args.explanations, args.metadata, args.public_questions)
+            # Full authoring snapshot is private, never served to children; no legacy byte cap.
+            snapshot = manifest_path.parent / "source.json"
+            payload = (json.dumps(pack, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            # Node validates all questions and baseline before producing publishable output.
+            pending = snapshot.with_suffix(".pending.json")
+            write_pack_atomic(pending, payload)
+            result = subprocess.run(["node", str(ROOT / "scripts/build_private_study_catalog.mjs"),
+                                     str(pending), str(args.previous), str(manifest_path.parent)], cwd=ROOT)
+            if result.returncode:
+                raise PackBuildError("catalog validation failed; previous output retained")
+            os.replace(pending, snapshot)
+            return 0
         pack, payload = build_to_path(
             args.curated, args.explanations, args.metadata, args.public_questions, args.output
         )

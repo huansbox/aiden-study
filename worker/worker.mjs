@@ -11,6 +11,7 @@
 // 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
 
 import "../docs/study/private-pack.js";
+import "../docs/study/pack-catalog.js";
 import { familyRoute } from "./family.mjs";
 import { collectionRoute } from "./collection.mjs";
 import { authorizeSession } from "./session.mjs";
@@ -110,6 +111,24 @@ async function handle(request, env, url, cors, sessionAuthorized = false) {
       } catch {
         return json(500, { error: "invalid audio" }, cors);
       }
+    }
+
+    if (parts[1] === "packs" && parts[2] === "g4-s1-math-u1" && parts.length > 3) {
+      const isCatalog = parts.length === 4 && parts[3] === "catalog";
+      const isShard = parts.length === 5 && parts[3] === "shards" && /^[a-f0-9]{64}$/.test(parts[4]);
+      if (!isCatalog && !isShard) return json(404, { error: "not found" }, cors);
+      if (request.method !== "GET") return json(405, { error: "method" }, cors);
+      const key = isCatalog ? "c:study:catalog:v2" : `c:study:shard:${parts[4]}`;
+      const raw = await env.KV.get(key);
+      if (raw === null) return json(404, { error: "content missing" }, cors);
+      try {
+        if (isCatalog) globalThis.StudyPackCatalog.parseManifest(raw);
+        else {
+          globalThis.StudyPrivatePack.parse(raw, [], null, true);
+          if (await globalThis.StudyPackCatalog.hash(raw) !== parts[4]) throw Error();
+        }
+      } catch { return json(500, { error: "corrupt content" }, cors); }
+      return new Response(raw, { headers: { "Content-Type": "application/json", "Cache-Control": "private, no-store", ...cors } });
     }
 
     // 題目只由管理端部署；不能經由 progress 或此路由寫入，status 也不列內容。

@@ -463,7 +463,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
   assert.match(source("preview.html"), /preview\.js\?v=20261004-social-u1-r2/);
   assert.match(source("preview.html"), /preview\.css\?v=20260923-group-stepwise/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);

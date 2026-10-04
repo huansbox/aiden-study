@@ -43,6 +43,7 @@ function network(reply = () => new Response(raw())) {
   const requests = [];
   return { requests, fetch: async (url, init) => {
     requests.push({ url, init });
+    if (url.endsWith("/catalog")) return new Response("",{status:404});
     if (url.includes("/v1/packs/")) return reply(url, init);
     // Sync stays on its real protocol, with entirely synthetic progress.
     return new Response(JSON.stringify({ rev: 0, data: null }));
@@ -239,7 +240,7 @@ test("timeout includes stalled body; retry can supersede an old response without
   const e=await boot(seeded(syntheticPack()),"test-child",{...net,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length;}});
   await flush(); timers.findLast(t=>t.ms===8000).fn();await flush();
   assert.match(e.node("pack-status").textContent,/逾時/);assert.equal(e.app.activePack.revision,1);
-  reply=()=>new Promise(r=>resolve=r);const old=e.app.loadPrivatePack();
+  reply=()=>new Promise(r=>resolve=r);const old=e.app.loadPrivatePack();await flush();
   const p=syntheticPack();p.revision=2;reply=()=>new Response(raw(p));await e.app.loadPrivatePack();
   resolve(new Response(raw()));await old;
   assert.equal(e.app.activePack.revision,2);
