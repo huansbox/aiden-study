@@ -3,7 +3,7 @@
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/162",
   "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
   "countUnit": "complete_activity",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "total": 1,
   "originalAnswerSlots": 1,
   "byUnit": {
@@ -29,8 +29,8 @@
       "answerSlots": 1,
       "materialKind": null,
       "officialAnswerAvailable": false,
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "sourceAdaptation": "保留完整原題幹與四選項、原順序；僅將紙本圈選轉成數位單選。不是實驗數據判讀。",
       "reviewStatus": "independent-content-review-pass"
     }

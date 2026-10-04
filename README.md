@@ -96,7 +96,7 @@ docs/                 GitHub Pages 部署根目錄
   index.html          child 首頁；未指定孩子時選擇入口
   parent/             家長設定、練習安排與維護入口
   registry.json       hub app registry
-  study/              1,924 題公開題庫 app；家庭權限自動讀取私用題包，另有不記錄進度的家長試玩
+  study/              1,924 題公開題庫 app；家庭權限按單元讀取私用分包，另有不記錄進度的家長試玩
   math/               長除法與 nonogram
   spelling/           英文拼字 app
   nativecamp/          全英文課後複習；首次表現、口說與每週新題
@@ -151,7 +151,9 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55](https://github.com/huansbox/aiden-study/issues/55) 建立最初六題 private pack 與家庭權限讀取；[#59](https://github.com/huansbox/aiden-study/issues/59)、[#60](https://github.com/huansbox/aiden-study/issues/60)、[#101](https://github.com/huansbox/aiden-study/issues/101) 依序擴題，[#117](https://github.com/huansbox/aiden-study/issues/117)、[#119](https://github.com/huansbox/aiden-study/issues/119)、[#129](https://github.com/huansbox/aiden-study/issues/129)、[#134](https://github.com/huansbox/aiden-study/issues/134) 加入自然題。[#148 數學文字補題](docs-dev/grade4-math-text-batch.md) 曾發布 revision 9、104 題；[#151 角度看圖題](docs-dev/grade4-math-angle-batch.md) 已加入四道有官方答案的 PNG 圖題，正式發布 revision 10，共 108 題（數學 68／自然 40）；[#154 社會首批](docs-dev/grade4-social-study-first-batch.md)再加入 19 題，revision 11 共 127 題（數學 68／自然 40／社會 19）。精確發布基線與重建方式見[私用題包重建說明](docs-dev/grade4-u1-private-pack-build.md)。[#103 Study 家長試玩](https://github.com/huansbox/aiden-study/issues/103) 提供不寫入孩子進度的獨立試玩頁。後續選題依[概念／出題方法覆蓋報告](docs-dev/grade4-math-pattern-counts.md)及[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)評估；既有進度與三下題目保護仍沿用。[家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)與[執行狀態](wiki/Plan.md)保存其他背景。
 
-題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上家庭私人題包已發布 revision 11，共 127 題（數學 U1～U5 68 題、自然 S1～S2 40 題、社會 U1 19 題），不加入 public data；最新正式版本與重建方式以[私用題包重建說明](docs-dev/grade4-u1-private-pack-build.md)及對應 issue 的讀回紀錄為準。ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，正式 pack 部署在獨立 Cloudflare KV，由 Study 以家庭連線自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
+題庫 app 的 public static data 目前共 1,924 題：自然 1,099、數學 307、社會 452、國語 66。四上家庭私用內容不加入 public data；[#160 分包交付](docs-dev/study-private-catalog.md)改為先讀目錄、開始練習才讀所選單元，保留 stable IDs、既有進度與舊單包相容。最新正式內容基線與重建入口見[私用題包重建說明](docs-dev/grade4-u1-private-pack-build.md)，長期容量與載入決策維護於 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。ignored 路徑 `data/private/study/g4-s1-math-u1/` 保存可重建 source／QA，正式 pack 部署在獨立 Cloudflare KV，由 Study 以家庭連線自動唯讀取得。內容不進 progress KV 或同步 payload，既有本機手動匯入保留為備援。後續擴題狀態見 [`docs-dev/grade4-math-expansion-plan.md`](docs-dev/grade4-math-expansion-plan.md)。詳細公開題庫來源、人工策展規則與踩坑記錄見 [`docs-dev/期末-實作經驗筆記.md`](docs-dev/期末-實作經驗筆記.md)。
+
+私人封存的 Windows 長路徑複製／還原須使用 extended-length paths，並核對完整檔案集合與 hash；見[第五批封存入口](docs-dev/grade4-science-study-fifth-batch.md#封存與下批重建)及封存旁補充驗證目錄的 `LONG-PATH-RESTORE.md`。本機 Dropbox 副本核對不代表跨裝置同步已完成。
 
 [#117 四上自然首批 Study 練習](https://github.com/huansbox/aiden-study/issues/117) 已完成 20 題內容覆核與 revision 5 正式發布，原數學 57 題逐值維持不變；[自然首批選題](data/study/g4-s1-science-exam1/README.md)與[整合紀錄](docs-dev/grade4-science-study-first-batch.md)保留首批歷史。[#119 第二批](https://github.com/huansbox/aiden-study/issues/119) 新增 12 個完整活動、29 個原卷作答位置，revision 6 共 89 題已正式發布；見[第二批狀態](data/study/g4-s1-science-exam1/second-batch.md)。[#129 第三批](https://github.com/huansbox/aiden-study/issues/129) 新增 5 個完整活動、13 個原卷作答位置，revision 7 共 94 題已正式發布；見[第三批整合與發布紀錄](docs-dev/grade4-science-study-third-batch.md)。[#134 第四批](https://github.com/huansbox/aiden-study/issues/134) 從翰林卷增加 3 個完整活動、5 個原卷作答格，revision 8 已正式發布；見[第四批整合紀錄](docs-dev/grade4-science-study-fourth-batch.md)。實體 iPad 尚未驗收，尚未取得校方正式範圍。
 

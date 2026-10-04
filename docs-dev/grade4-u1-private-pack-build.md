@@ -1,6 +1,10 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-#161 新版按單元載入的 schemaVersion 2 manifest／shard 契約、重建與發布順序見 [Study 私用題庫分包](study-private-catalog.md)。下方 256 KiB、首六題與 localStorage 描述保留給 legacy schemaVersion 1；不適用於新版單一 shard 或完整 authoring snapshot。
+[#160／#161 分包交付](study-private-catalog.md)已啟用 schemaVersion 2 manifest／shards；新內容依該頁的 `--catalog-dir` 入口重建，按單元取得，不再把三科全部內容塞進一份 256 KiB 單包。原 `c:study:g4-s1-math-u1` 固定保留 revision 12 作 legacy 相容，不能用 manifest 覆寫。容量與載入決策正本見 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
+
+目前新版內容基線為 [#162 自然第五批](grade4-science-study-fifth-batch.md)的 manifest revision 13：133 活動（數學 68／自然 41／社會 24）、8 個單元 shard。manifest 為 12175 bytes，SHA256 `2d4d4d93b4044f524314a3da88bfa358643666a2634e3192a84247463dc0e6a1`；完整 authoring snapshot 與 legacy 單包的指紋不能混用。下批 `--previous` 使用 canonical ignored `data/private/study/g4-s1-math-u1/rev13-release/catalog/source.json`，還原先看同封存的 `RESTORE.md`；正式讀回及封存證據見該批紀錄。
+
+下方為 legacy schemaVersion 1 的來源、重建與歷史發布紀錄；「全包 256 KiB／首六題／localStorage」不套用於新 shard 或完整 authoring snapshot。分包切換與正式讀回見[交付紀錄](study-private-catalog.md#2026-10-04-分包切換交付)。
 
 [#157 社會第二批](grade4-social-study-second-batch.md)已正式發布 revision 12：全包 132 活動（數學 68／自然 40／社會 24）、229503 bytes、SHA256 `2e2c94e743c8eb31d9d658b1177a7ebf87c27429aa468fdc611fb3cf136f3d2f`，餘 32641 bytes。社會 unit 22 現支援文字是非、二／四選一、2～5 個共用選項且 2～8 個小題的 grouped_choice，以及既有上限的 PNG；社會 table 仍不開放。舊 127 活動逐值保留，數學分類不變。下文 #154 的純文字限制保留首批歷史，現行社會格式以本段與 #157 為準。
 
@@ -10,7 +14,7 @@
 
 歷史基線：[#134 自然第四批](grade4-science-study-fourth-batch.md)隨 revision 8 正式發布 97 題（數學 57／自然 40）、130,248 bytes、SHA256 `ca46fc48b990a43e4c104488b85b83a4fbbbd138d21b01844039cef6b4b8ab29`。2026-10-03 [#145](https://github.com/huansbox/aiden-study/issues/145) 將 builder 與瀏覽器上限同步提高至 256 KiB；當時以 rev8 計算尚餘 131,896 bytes，該次只改容量上限，沒有重建或重新發布題包，也沒有改孩子進度。容量決策正本見 Wiki [Study 私用題包容量](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。revision 7 見[第三批紀錄](grade4-science-study-third-batch.md)，下方 #119 段落保留 revision 6 的歷史發布流程。
 
-本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學、自然與社會。已發布的服務內容基線是 revision 12 的 132 個活動；先前 revision 8 的 97 題包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題。rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21，社會首批 U1 使用 unit 22。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
+本流程建立同一個 `g4-s1-math-u1` 家庭 Study 題包；歷史名稱已包含數學、自然與社會。legacy 單包保留的內容基線是 revision 12 的 132 個活動；先前 revision 8 的 97 題包含原數學 57 題、自然首批 20 題、第二批 12 題、第三批 5 題與第四批 3 題。rev6 與 rev5 歷史分別見[自然第二批整合紀錄](grade4-science-study-second-batch.md)及[首批整合紀錄](grade4-science-study-first-batch.md)。數學 U1～U5 使用 unit 15～19，自然 S1～S2 使用 unit 20～21，社會首批 U1 使用 unit 22。完整題文、答案、解說與 QA 報告固定放在已精確忽略的 `data/private/study/g4-s1-math-u1/`；公開的 `mapping-metadata.json` 只有 stable ID、unit 與來源追溯，不含題文或答案。
 
 [#119 第二批](grade4-science-study-second-batch.md)已依「新版 Worker → 合併並讀回 Pages → 一次前向 KV 寫入與兩階段讀回」順序正式發布 revision 6；候選建置、覆核與歸檔本身仍不等於發布。以下通用步驟是後續批次的操作契約，不能把 #119 的既有發布授權套用到新工作。
 

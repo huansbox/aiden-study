@@ -2,13 +2,13 @@
 
 狀態：**有限來源收集累計 9 份題目原卷、2 份校方答案**（2026-10-04）；題卷23頁、答案5頁，不代表所有年度／學校已收齊。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集自然科歷屆卷，按概念逐題判讀，作為後續 iPad 練習題庫的來源。首批見 [#115](https://github.com/huansbox/aiden-study/issues/115)，第二輪見 [#129](https://github.com/huansbox/aiden-study/issues/129)，第五批見 [#162](https://github.com/huansbox/aiden-study/issues/162) 的[新來源manifest](source/fifth-batch-manifest.json)。
 
-這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)、[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)與[第三批 #129 的 5 個完整 activity／13 個作答位置](../../docs-dev/grade4-science-study-third-batch.md)均已正式上線；[第四批 #134](../../docs-dev/grade4-science-study-fourth-batch.md)再從翰林卷增加 3 個活動／5 個作答格，家庭題包 revision 8 時自然共 40 題。[第五批](../../docs-dev/grade4-science-study-fifth-batch.md)新增3份官方原卷，只有1個地表坡度題通過內容審查，rev13題包已在工作樹準備，**尚未正式發布**。校方正式範圍仍未取得。
+這頁記錄**原卷收集階段**；下文「本次 App 新增／上線 0」只指當時未轉題。後續[自然首批 20 個 activity](../../data/study/g4-s1-science-exam1/README.md)、[第二批 #119 的 12 個完整 activity／29 個作答位置](../../data/study/g4-s1-science-exam1/second-batch.md)與[第三批 #129 的 5 個完整 activity／13 個作答位置](../../docs-dev/grade4-science-study-third-batch.md)均已正式上線；[第四批 #134](../../docs-dev/grade4-science-study-fourth-batch.md)再從翰林卷增加 3 個活動／5 個作答格，家庭題包 revision 8 時自然共 40 題。[第五批](../../docs-dev/grade4-science-study-fifth-batch.md)新增3份官方原卷，只有1個地表坡度題通過內容審查，已隨 rev13 分包正式發布，自然累計 **41 個活動**。本批來源收集與接入完成；校方正式範圍及三類缺題仍待後續補齊。
 
 今年採康軒版；「地表的靜與動」「水生生物與環境」是本批**暫定收題核心**，不是校方已公布的正式考試範圍。舊卷依實際概念對照，月亮題留供後續使用。卷面未證實的出版社標為未知。
 
 ## 第五批與累計來源
 
-第五批新增深美114四上期中4頁、明義110與109六上期末各4頁及2頁，共3份10頁；加上前兩輪6份13頁後為9份23頁。新增來源沒有取得校方答案，既有2份5頁不變。深美114原卷只供篩選，明義109候選因原卷選項殘缺而排除；明義110僅1題進rev13待發布題包。三份來源的原卷URL、檔案身分與限制見[第五批manifest](source/fifth-batch-manifest.json)，轉題決策見[第五批缺口](../../data/study/g4-s1-science-exam1/fifth-batch-gap-analysis.md)。明義兩份出版社無同校同年證據，標為unknown。
+第五批新增深美114四上期中4頁、明義110與109六上期末各4頁及2頁，共3份10頁；加上前兩輪6份13頁後為9份23頁。新增來源沒有取得校方答案，既有2份5頁不變。深美114原卷只供篩選，明義109候選因原卷選項殘缺而排除；明義110僅1題隨rev13分包發布。三份來源的原卷URL、檔案身分與限制見[第五批manifest](source/fifth-batch-manifest.json)，轉題決策見[第五批缺口](../../data/study/g4-s1-science-exam1/fifth-batch-gap-analysis.md)。明義兩份出版社無同校同年證據，標為unknown。
 
 ## 第二輪來源（歷史快照）
 
