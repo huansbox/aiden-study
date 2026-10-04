@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/169",
+  "sourceTask": "learning-tasks/grade4-sem1-science-exam1",
+  "status": "author-frozen-pending-independent-review",
+  "countUnit": "complete_activity",
+  "total": 2,
+  "originalAnswerSlots": 2,
+  "items": [
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-1-v1",
+      "practiceId": "S1-P20",
+      "originalId": "sixth-smps-114-g6-s1-final-3-1-table-1-1",
+      "paperId": "sixth-smps-114-g6-s1-final",
+      "questionPage": 1,
+      "printedLocator": "3-1配合題1(1)",
+      "unit": 20,
+      "scope": "core-provisional-concept-only",
+      "concept": "S1b 地表材料與侵蝕抵抗",
+      "method": "根據三地條件資料表判斷",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "officialAnswerAvailable": true,
+      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
+      "status": "author-frozen-pending-independent-review"
+    },
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-table-1-2-v1",
+      "practiceId": "S1-P21",
+      "originalId": "sixth-smps-114-g6-s1-final-3-1-table-1-2",
+      "paperId": "sixth-smps-114-g6-s1-final",
+      "questionPage": 1,
+      "printedLocator": "3-1配合題1(2)",
+      "unit": 20,
+      "scope": "core-provisional-concept-only",
+      "concept": "S1b 坡度、降雨與流水搬運",
+      "method": "根據同類地表的坡度與降雨資料推論",
+      "format": "multiple_choice",
+      "answerSlots": 1,
+      "materialKind": "table",
+      "officialAnswerAvailable": true,
+      "coverageClaim": "地表條件資料表判讀候選；非實測結果表",
+      "status": "author-frozen-pending-independent-review"
+    }
+  ],
+  "excludedAfterAuthorQa": [
+    {
+      "appId": "science-g4s1-sixth-smps-114-g6-s1-final-3-1-choice-2-v1",
+      "wouldBePracticeId": "S1-P19",
+      "reason": "官方解答將該題標為NO／本題送分，不納入候選，也不算填補操縱變因缺口。"
+    }
+  ],
+  "scopeNote": "深美114六上期末南一原卷跨年級概念對照；桃子腳115四上正式考試範圍仍未取得。原題表格只有比較條件，沒有測得的侵蝕、搬運或堆積數值，不可稱作地表實測結果表。兩小題原選項池不同，現行grouped_choice只有共用選項池，因此保留成兩個各自帶完整表格與指示的multiple_choice活動。",
+  "remainingGaps": [
+    "必要比較條件完整的風力強弱比較",
+    "地表實驗操縱變因辨識",
+    "地表實驗後實測數據表判讀"
+  ]
+}

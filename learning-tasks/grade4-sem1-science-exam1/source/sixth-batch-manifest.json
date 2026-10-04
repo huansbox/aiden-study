@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "source_issue": "https://github.com/huansbox/aiden-study/issues/169",
+  "checked_at": "2026-10-04",
+  "target_scope": "桃子腳115四上第一次評量；康軒地表與水生環境仍為暫定範圍，正式範圍未取得",
+  "official_question_papers": [
+    {
+      "paper_id": "sixth-smps-114-g6-s1-final",
+      "school": "基隆市深美國小",
+      "academic_year": 114,
+      "grade": 6,
+      "semester": 1,
+      "exam": "期末評量",
+      "subject": "自然領域",
+      "publisher": "南一",
+      "publisher_evidence": "原卷第1頁卷首明載『南一六上自然三、四單元』",
+      "source_page_url": "https://smps.kl.edu.tw/%E7%B7%9A%E4%B8%8A%E6%95%99%E6%9D%90/114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E4%B8%8A%E5%AD%B8%E6%9C%9F%E6%9C%9F%E6%9C%AB%E8%A9%95%E9%87%8F%E5%85%AD%E5%B9%B4%E7%B4%9A%E8%A9%A6%E5%8D%B7",
+      "question_source_url": "https://smps.kl.edu.tw/images/files/smps012/1141%E6%9C%AB6%E8%87%AA.pdf",
+      "question_file": "data/private/study/g4-s1-math-u1/science-sixth-batch/papers/smps-final-g6-114-q.pdf",
+      "bytes": 518681,
+      "sha256": "7c5bb882229e112dce171449c6053e4cf9ba3031eebbf856ae16a4e725c7d97f",
+      "pdf_magic": "%PDF-",
+      "pages": 5,
+      "page_review": "卷首與相關第1頁已渲染目視核對；文字層與原頁題號、表格、選項一致。",
+      "answer_source_page_url": "https://smps.kl.edu.tw/%E7%B7%9A%E4%B8%8A%E6%95%99%E6%9D%90/114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E4%B8%8A%E5%AD%B8%E6%9C%9F%E6%9C%9F%E6%9C%AB%E8%A9%95%E9%87%8F%E5%85%AD%E5%B9%B4%E7%B4%9A%E8%A7%A3%E7%AD%94",
+      "answer_source_url": "https://smps.kl.edu.tw/images/files/smps012/1141%E6%9C%AB6%E8%87%AA%E8%A7%A3.pdf",
+      "answer_file": "data/private/study/g4-s1-math-u1/science-sixth-batch/papers/smps-final-g6-114-a.pdf",
+      "answer_bytes": 528999,
+      "answer_sha256": "028d9701f0bb7ded991b1dd3c0b9e46c71cdadafe72c7e8c368bdabd4d91dc6b",
+      "answer_identity": "深美校網同年度、同學期、同年級、同考次官方解答附件；第1頁對應題卷版式與題號，已目視核對。",
+      "relevant_locations": [
+        "PDF第1頁3-1配合題1小題1",
+        "PDF第1頁3-1配合題1小題2"
+      ],
+      "limits": "六上期末南一卷僅按相同地表概念對照四上暫定核心。配合題表格是地表、坡度與累積降雨量的條件資料，未提供實驗後量測結果，不可稱為地表實測結果表。"
+    }
+  ],
+  "duplicate_or_screened_not_collected": [
+    {
+      "paper": "深美114上期末六年級自然",
+      "location": "PDF第1頁3-1選擇題2",
+      "result": "作者先行獨立解題後才下載校方解答，發現官方解答將本題標為NO／送分。題目可能有設計瑕疵，排除且不計操縱變因缺口。"
+    },
+    {
+      "paper": "深美114上期中五年級自然",
+      "result": "當前校網附件URL的PDF SHA256與第五批已收深美114四上期中原卷相同，屬重複檔，不計新增。"
+    },
+    {
+      "paper": "深美114上期中六年級自然",
+      "result": "已下載篩讀；相關字詞屬其他單元，未見本批三類目標題型，不列增量來源。"
+    },
+    {
+      "paper": "深美114上期末四年級自然",
+      "result": "已下載篩讀；未見本批三類目標題型，不列增量來源。"
+    },
+    {
+      "paper": "深美110上期末六年級自然",
+      "question_url": "https://oldsmps.kl.edu.tw/books/file/91/%E8%87%AA.pdf",
+      "result": "官方搜尋索引可見流水實驗題，惟舊站HTTPS逾時、HTTP拒連；當前網站同路徑不可取得。無原PDF bytes與SHA，不列已收或候選。"
+    }
+  ],
+  "counts": {
+    "new_relevant_official_question_papers": 1,
+    "candidate_source_papers": 1,
+    "new_official_answer_papers": 1,
+    "author_candidates_pending_independent_review": 2,
+    "formal_target_range_verified": false
+  }
+}
