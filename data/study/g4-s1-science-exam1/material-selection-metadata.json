@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/178",
-  "status": "reviewed_pending_release",
+  "status": "published",
   "countUnit": "complete_activity",
   "items": [
     {
@@ -62,8 +62,8 @@
           "concept": "水生植物構造與分類"
         }
       ],
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 8,
@@ -118,8 +118,8 @@
           "concept": "水生動物構造與分類"
         }
       ],
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 6,
@@ -177,8 +177,8 @@
           "tyk113-16-05"
         ]
       },
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 4,
@@ -243,8 +243,8 @@
         }
       ],
       "materialKind": "png",
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 8,
@@ -297,8 +297,8 @@
           "tyk114-14-05"
         ]
       },
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 3,
@@ -328,8 +328,8 @@
         }
       ],
       "materialKind": "table",
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 1,
@@ -359,8 +359,8 @@
         }
       ],
       "materialKind": "table",
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 1,
@@ -390,8 +390,8 @@
         }
       ],
       "materialKind": "table",
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 1,
@@ -421,8 +421,8 @@
         }
       ],
       "materialKind": "table",
-      "status": "reviewed_pending_release",
-      "coverageApplied": false,
+      "status": "published",
+      "coverageApplied": true,
       "reviewStatus": "independent-content-review-pass",
       "decisionCode": "approved_source_answer_checked",
       "answerSlots": 1,
@@ -434,8 +434,8 @@
   "newAnswerSlots": 33,
   "previousPublishedScienceCount": 159,
   "previousPublishedGlobalCount": 251,
-  "currentPublishedScienceCount": 159,
-  "currentPublishedGlobalCount": 251,
+  "currentPublishedScienceCount": 168,
+  "currentPublishedGlobalCount": 260,
   "reviewedCandidateScienceCount": 168,
   "reviewedCandidateGlobalCount": 260,
   "newByFormat": {
