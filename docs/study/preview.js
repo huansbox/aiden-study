@@ -54,9 +54,11 @@
       <a class="preview-button secondary" href="${parentHref(child)}">返回家長後台</a></div></section>`;
   }
 
-  function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document }) {
+  function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document, manifest = null, loadUnit = null }) {
     if (!host) throw Error("找不到試玩頁容器。");
     let pack = initialPack;
+    let selectionRequest = 0, loading = false, loadError = "";
+    const loadedUnits = new Set();
     const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const unitsForSubject = () => SUBJECT_UNITS[state.subject].filter((unit) => StudyPrivatePack.UNITS.includes(unit));
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
@@ -103,6 +105,16 @@
       const target = enabled || host.querySelector?.('[data-action="question"]');
       target?.focus?.({ preventScroll: true });
     }
+    async function selectUnit() {
+      if (!manifest || !loadUnit || loadedUnits.has(state.unit)) return;
+      const request=++selectionRequest, unit=state.unit; loading=true; loadError=""; render();
+      try {
+        const next=await loadUnit(unit);
+        if (state.destroyed || request!==selectionRequest || state.unit!==unit) return;
+        pack=StudyPackCatalog.merge(pack,next); state.pack=pack; loadedUnits.add(unit);
+      } catch(e) { if (request===selectionRequest) loadError=e.message; }
+      finally { if (!state.destroyed && request===selectionRequest) { loading=false; render(); } }
+    }
     function render(focusAction = "") {
       if (state.destroyed) return;
       normalizeSelection();
@@ -118,9 +130,10 @@
         <div class="preview-actions"><a class="preview-button secondary" href="${parentHref(child)}">返回家長後台</a><button type="button" class="danger" data-action="reset">重設本頁作答</button></div></header>
         <section class="preview-filters" aria-label="選擇試玩題目">
           <label>科目<select data-action="subject">${[...SUBJECTS].map(([subject, label]) => `<option value="${subject}" ${state.subject === subject ? "selected" : ""}>${label}</option>`).join("")}</select></label>
-          <label>單元<select data-action="unit">${unitsForSubject().map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}</option>`).join("")}</select></label>
+          <label>單元<select data-action="unit">${unitsForSubject().map((unit) => `<option value="${unit}" ${state.unit === unit ? "selected" : ""}>${esc(UNITS.get(unit))}${manifest ? `（${StudyPackCatalog.count(manifest,unit)} 題）` : ""}</option>`).join("")}</select></label>
           <label>${scienceTopics.length ? "練習主題" : "概念"}<select data-action="subtopic"><option value="">${scienceTopics.length ? "整單元練習" : "全部概念"}</option>${concepts.map(([key, label]) => `<option value="${esc(key)}" ${state.subtopic === key ? "selected" : ""}>${esc(label)}</option>`).join("")}</select></label>
         </section>
+        ${loading ? '<p role="status">正在準備所選單元⋯</p>' : loadError ? `<p role="alert">${esc(loadError)} <button data-action="retry-unit">重試</button></p>` : ""}
         ${list.length ? `<nav class="preview-question-nav" aria-label="題目導覽">
           <button type="button" class="secondary" data-action="previous-question" ${state.questionIndex === 0 ? "disabled" : ""}>上一題</button>
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
@@ -147,8 +160,8 @@
     }
     function handle(action, data = {}) {
       if (state.destroyed) return;
-      if (action === "subject") { state.subject = SUBJECTS.has(data.value) ? data.value : "math"; state.unit = unitsForSubject()[0]; state.subtopic = ""; resetQuestion(); render(); }
-      else if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); }
+      if (action === "subject") { state.subject = SUBJECTS.has(data.value) ? data.value : "math"; state.unit = unitsForSubject()[0]; state.subtopic = ""; resetQuestion(); render(); selectUnit(); }
+      else if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); selectUnit(); }
       else if (action === "subtopic") { state.subtopic = String(data.value || ""); resetQuestion(); render(); }
       else if (action === "question") { resetQuestion(Number(data.value ?? data.index)); render("question"); }
       else if (action === "previous-question") { if (state.questionIndex > 0) resetQuestion(state.questionIndex - 1); render("previous-question"); }
@@ -161,6 +174,7 @@
       else if (action === "check") check();
       else if (action === "reveal") { state.revealed = true; render(); }
       else if (action === "retry-answer" || action === "reset") { resetQuestion(action === "reset" ? 0 : state.questionIndex); render(); }
+      else if (action === "retry-unit") selectUnit();
       else if (action === "retry") onRetry?.();
     }
     const onClick = (event) => {
@@ -186,6 +200,7 @@
     host.addEventListener("change", onChange);
     host.addEventListener("input", onInput);
     render();
+    if (manifest) selectUnit();
     return { handle, render, get state() { return state; }, destroy() {
       if (state.destroyed) return;
       state.destroyed = true;
@@ -243,13 +258,20 @@
         }, timeoutMs);
       });
       const raw = await Promise.race([
-        parser.fetchRemote(auth.endpoint, null, controller.signal),
+        root.StudyPackCatalog ? root.StudyPackCatalog.catalog(auth.endpoint, null, controller.signal) : parser.fetchRemote(auth.endpoint, null, controller.signal),
         timeout,
       ]);
       if (sequence !== bootSequence) return null;
-      const pack = parser.parse(raw);
+      const manifest = raw?.manifest;
+      const pack = manifest ? {schemaVersion:2,packId:manifest.packId,revision:manifest.revision,questions:[],explanations:{}} : parser.parse(raw?.legacy || raw);
       if (sequence !== bootSequence) return null;
-      currentController = mount({ root: host, pack, child, onRetry: () => boot(options), documentRef: options.documentRef || document });
+      currentController = mount({ root: host, pack, child, manifest, loadUnit: manifest ? async unit => {
+        const abort = new AbortController();
+        currentAbort?.abort(); currentAbort = abort;
+        let timeout;
+        try { return await Promise.race([StudyPackCatalog.loadUnit(manifest,unit,auth.endpoint,null,abort.signal),new Promise((_,reject) => { timeout=(options.setTimer || setTimeout)(() => { abort.abort(); reject(Error("準備題目逾時，請重試。")); },30000); })]); }
+        finally { (options.clearTimer || clearTimeout)(timeout); abort.abort(); if (currentAbort===abort) currentAbort=null; }
+      } : null, onRetry: () => boot(options), documentRef: options.documentRef || document });
       return currentController;
     } catch (error) {
       if (sequence !== bootSequence) return null;
@@ -263,7 +285,7 @@
       return null;
     } finally {
       (options.clearTimer || clearTimeout)(timer);
-      if (sequence === bootSequence) currentAbort = null;
+      if (sequence === bootSequence && currentAbort === controller) currentAbort = null;
       controller.abort();
     }
   }

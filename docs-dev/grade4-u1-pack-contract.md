@@ -1,5 +1,7 @@
 # 四上數學私用題包契約（歷史 U1 識別碼）
 
+#161 新版按單元載入的 schemaVersion 2 manifest／shard 契約、重建與發布順序見 [Study 私用題庫分包](study-private-catalog.md)。下方 256 KiB、首六題與 localStorage 描述保留給 legacy schemaVersion 1；不適用於新版單一 shard 或完整 authoring snapshot。
+
 原六題基線來自已結案 #55／#56，#59 追加 U1～U5 文字題。實際 validator 為 `docs/study/private-pack.js`，private builder 須產出能通過它的 JSON。本文件與合成 fixture 均不含原卷題文、答案或解說。下方早期六題／十四題 QA 為歷史證據；現在的跨科支援以下表及[重建入口](grade4-u1-private-pack-build.md)為準。
 
 ## 跨科範圍（2026-10-03）
