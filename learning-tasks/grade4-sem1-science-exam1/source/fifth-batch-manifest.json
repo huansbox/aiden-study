@@ -25,7 +25,7 @@
       "visual_reference_prefix": "source/private/science-fifth-batch/fifth-smps-114-s1-mid-q-",
       "official_answer_found": false,
       "relevant_locations": ["PDF第1頁五、選擇2", "PDF第2頁五、選擇8"],
-      "limits": "四上期中且卷首明載康軒，但非桃子腳115正式範圍；所見風題不是完整控制條件的風力強弱比較。"
+      "limits": "四上期中且卷首明載康軒，但非桃子腳115正式範圍；所見風題不是完整控制條件的風力強弱比較；本批僅留來源，不採題。"
     },
     {
       "paper_id": "fifth-myps-110-g6-s1-final",
@@ -71,7 +71,7 @@
       "visual_reference_prefix": "source/private/science-fifth-batch/fifth-myps-109-g6-s1-final-q-",
       "official_answer_found": false,
       "relevant_locations": ["PDF第1頁二、選擇6"],
-      "limits": "六上期末僅以地表實驗辨識操縱變因的探究方法對照；出版社無同年校證，維持unknown；卷上數據表屬電磁鐵，不能算地表數據判讀。"
+      "limits": "六上期末；出版社無同年校證，維持unknown。第1頁二、選擇6第④選項在官方PDF語意殘缺，作者原候選曾擅補字，fresh review未核准，現排除。卷上數據表屬電磁鐵，不能算地表數據判讀。"
     }
   ],
   "screened_not_collected": [
@@ -105,11 +105,22 @@
       "grade": 4,
       "semester": 1,
       "result": "官方原卷可下載且已篩讀，目標缺口題型未見；不列本批具增量原卷。"
+    },
+    {
+      "school": "基隆市深美國小",
+      "academic_year": 109,
+      "grade": 6,
+      "semester": 1,
+      "exam": "期末評量",
+      "question_url": "https://oldsmps.kl.edu.tw/books/file/71/%E8%87%AA.pdf",
+      "result": "官方搜尋索引顯示第1頁另有完整的流水水量操縱變因題；但old站本機HTTPS逾時、HTTP拒連，當前smps同路徑404，未取得原PDF bytes與SHA256。不同題幹不能修補明義109題，也不列本批候選。"
     }
   ],
   "counts": {
     "new_relevant_official_question_papers": 3,
     "new_relevant_question_pages": 10,
+    "candidate_source_papers": 1,
+    "candidate_activities_pending_integration": 1,
     "new_official_answer_papers": 0,
     "formal_target_range_verified": false
   }
