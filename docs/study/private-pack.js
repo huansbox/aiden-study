@@ -110,7 +110,7 @@
         validateMaterial(q.material);
       }
       if (q.type === "multiple_choice") {
-        if (!(q.subject === "social" ? [2, 4] : [4]).includes(q.options.length) || !q.options.every(text) ||
+        if (!({ math: [4], science: [3, 4], social: [2, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
             typeof q.answer !== "string" || !/^[1-4]$/.test(q.answer) || Number(q.answer) > q.options.length) throw new Error("選擇題選項數量或答案無效。");
       } else if (q.type === "true_false") {
         if (!["science", "social"].includes(q.subject) || q.options.length || !["true", "false"].includes(q.answer)) throw new Error("是非題需空選項與 true/false 字串答案。");

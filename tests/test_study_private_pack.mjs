@@ -187,6 +187,46 @@ test("science rev5 appends units 20/21, accepts true_false, preserves math progr
   invalid(q => { q.options = ["O", "X"]; });
   invalid(q => { q.blanks = []; });
 });
+test("science three-choice validates scope, answer bounds and real scoring without changing progress shape", async () => {
+  const e = await boot();
+  const three = () => {
+    const pack = scienceSyntheticPack();
+    const question = pack.questions[7];
+    question.unit = 20;
+    question.subtopic = "S1b 地表材料與侵蝕抵抗";
+    question.options = ["甲", "乙", "丙"];
+    question.answer = "3";
+    return pack;
+  };
+  const pack = three(), q = pack.questions[7];
+  assert.equal(e.window.StudyPrivatePack.parse(JSON.stringify(pack)).questions.length, 8);
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.setStudyTerm("g4-s1");
+  e.app.State.setSubject("science");
+  e.app.State.saveBatch(`20/@science-topic:S1b`, [q.id]);
+  e.app.startQuiz("full", 20, "@science-topic:S1b");
+  assert.equal((e.node("page-quiz").innerHTML.match(/class="opt-btn/g) || []).length, 3);
+  e.app.submitAnswer("2");
+  assert.equal(e.app.quiz.answered.at(-1).correct, false);
+  e.app.advance();
+  e.app.submitAnswer("3");
+  assert.equal(e.app.quiz.answered.at(-1).correct, true);
+  assert.equal(e.app.State.doneCount(20, "@science-topic:S1b"), 1);
+  assert.equal(e.st.getItem(key(e.child)).includes(q.text), false);
+  const invalid = mutate => { const candidate = three(); mutate(candidate.questions[7]); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(candidate))); };
+  invalid(q => { q.unit = 22; });
+  invalid(q => { q.subject = "social"; });
+  invalid(q => { q.options.pop(); });
+  invalid(q => { q.options.push("丁", "戊"); });
+  invalid(q => { q.options[1] = " "; });
+  invalid(q => { q.answer = "0"; });
+  invalid(q => { q.answer = "4"; });
+  invalid(q => { q.answer = 3; });
+  const math = syntheticPack(); math.questions[0].options.pop();
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(math)));
+  const social = socialSyntheticPack(); social.questions[8].options.pop();
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(social)));
+});
 test("social unit 22 keeps rev10 math/science progress and validates existing choice or true_false", async () => {
   const e = await ready();
   const old = scienceSyntheticPack(); old.revision = 10;
