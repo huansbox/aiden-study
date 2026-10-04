@@ -1040,7 +1040,16 @@ const State = {
       const unit = Number(slash === -1 ? key : key.slice(0, slash));
       const subtopic = slash === -1 ? null : key.slice(slash + 1);
       if (!unit) continue;
-      if (StudyPrivatePack.UNITS.includes(unit) && !activePack?.questions.some(q => q.unit === unit)) { pending.push(key); continue; }
+      if (StudyPrivatePack.UNITS.includes(unit)) {
+        const loadedIds = new Set((activePack?.questions || []).filter(q => q.unit === unit).map(q => q.id));
+        const expectedIds = packManifest ? StudyPackCatalog.descriptors(packManifest,unit).flatMap(shard => shard.ids) : null;
+        // Legacy cache may contain only an older subset. Do not finalize queue migration
+        // until every ID advertised for this unit is available, including completed IDs.
+        const complete = expectedIds
+          ? expectedIds.length > 0 && loadedIds.size === expectedIds.length && expectedIds.every(id => loadedIds.has(id))
+          : loadedIds.size > 0;
+        if (!complete) { pending.push(key); continue; }
+      }
       const remaining = new Set(ch.queue);
       const knownIds = StudyPrivatePack.UNITS.includes(unit) ? allQuestions.filter(q => q.unit === unit && StudyScienceTopics.matches(q,subtopic) && !State.isFlagged(q.id)).map(q => q.id) : questionIdsFor(unit, subtopic);
       for (const id of knownIds) {

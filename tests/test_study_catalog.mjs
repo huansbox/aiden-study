@@ -173,3 +173,27 @@ test("legacy queue migration waits for unloaded private unit then preserves alre
   assert.ok(again.app.state._needMasteredBackfill);await again.window._startFull(16);
   assert.equal(again.app.State.doneCount(16),2);assert.ok(!again.app.quiz.queue.includes(selected[0]));assert.equal(again.app.state._needMasteredBackfill,undefined);
 });
+
+test("legacy subset cache cannot finish backfill before all manifest unit IDs are loaded",async()=>{
+  const {fetch,pack}=await setup();
+  const selected=pack.questions.filter(q=>q.unit===16).map(q=>q.id);
+  const partial=structuredClone(pack);
+  partial.questions=partial.questions.filter(q=>q.unit!==16 || selected.slice(0,2).includes(q.id));
+  partial.explanations=Object.fromEntries(partial.questions.map(q=>[q.id,pack.explanations[q.id]]));
+  const st=storage();st.map.set("kids_sync_token","test-token");
+  st.map.set("study:private-pack:g4-s1-math-u1",JSON.stringify(partial));
+  st.map.set("study:progress:test-child",JSON.stringify({schemaVersion:1,studyTerm:"g4-s1",semester:"final",subject:"math",challenge:{16:{queue:selected.slice(3)}},stats:{},errorBank:[],flagged:[]}));
+  let online=false;
+  const ports={catalogCache:C.cache,fetch:(...args)=>online ? fetch(...args) : Promise.reject(Error("offline"))};
+  const e=await boot(st,"test-child",ports);await wait();
+  assert.deepEqual([...e.app.state._needMasteredBackfill],["16"]);
+  assert.equal(e.app.State.doneCount(16),0);
+  assert.deepEqual([...e.app.state.challenge[16].queue],selected.slice(3));
+  // Pending migration must also survive a reload that now has an empty mastered object.
+  const reloaded=await boot(st,"test-child",ports);await wait();
+  assert.deepEqual([...reloaded.app.state._needMasteredBackfill],["16"]);
+  online=true;await reloaded.window._startFull(16);
+  assert.equal(reloaded.app.State.doneCount(16),3);
+  for(const id of selected.slice(0,3)) assert.ok(!reloaded.app.quiz.queue.includes(id));
+  assert.equal(reloaded.app.state._needMasteredBackfill,undefined);
+});
