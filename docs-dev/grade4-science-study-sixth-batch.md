@@ -19,6 +19,6 @@
 
 新 shard 第一次讀回為 `2026-10-04T04:55:40.475951+00:00`，傳播後為 `2026-10-04T04:57:15.146002+00:00`，相隔 94.669757 秒。rev14 manifest 第一次讀回為 `2026-10-04T04:57:45.250253+00:00`，傳播後為 `2026-10-04T04:59:07.695777+00:00`，相隔 82.445245 秒；兩次均為 rev14／137 活動。新舊其他七份 shard 的內容維持不變。
 
-可恢復封存規劃放在 canonical `D:/mywork/aiden-study/data/private/study/g4-s1-math-u1/rev14-release/`，其中完整來源預定為 `private/rev14-candidate/catalog/source.json`；Dropbox 相對路徑預定 `mywork/aiden-study/science6-2026-10-04/`。封存與 Dropbox 副本尚待建立、逐檔驗證，不能從本次正式讀回推定已完成。
+本批可恢復封存採用 canonical `D:/mywork/aiden-study/data/private/study/g4-s1-math-u1/rev14-release/`，完整來源位於其 `private/rev14-candidate/catalog/source.json`；Dropbox 相對路徑為 `mywork/aiden-study/science6-2026-10-04/`。實際封存、逐檔指紋與恢復核對結果以 [#169 收尾紀錄](https://github.com/huansbox/aiden-study/issues/169) 為準；正式題庫讀回和私人封存分別驗證，Dropbox 跨裝置同步另需接收端確認。
 
 深美同卷另有操縱變因題，官方解答標「NO／本題送分」，未採用。深美條件表沒有侵蝕後測量值，A/B 還同時改變坡度與降雨量；不能當成單一操縱變因實驗或實測結果表。地表操縱變因與實測數據表仍是後續兩個主要缺口。自然三選一僅在本批 runtime 增加最小支援，不延伸其他題型或科目。
