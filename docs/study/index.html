@@ -554,7 +554,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261003-social-u1-r1"></script><script src="../shared/collection-core.js?v=20260926-high-speed-trains"></script>
 <script src="../shared/collection-client.js?v=20260923-train-series"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261004-social-u1-r2"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="./private-pack.js?v=20261004-shards"></script><script src="pack-catalog.js?v=20261004-shards"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script src="./science-topics.js?v=20261004-science-fifth-batch"></script>
 <script>
 (function() {
@@ -932,7 +932,7 @@ const State = {
   },
   // ErrorBank（unitFilter 可為 單一 unit、unit 陣列，或 null=全部）
   getErrorBank(unitFilter, mode = DEFAULT_PRACTICE_MODE) {
-    return filterModeErrorBank(state.errorBank, unitFilter, mode).filter(e => questionMap.has(e.questionId));
+    return filterModeErrorBank(state.errorBank, unitFilter, mode).filter(e => questionMap.has(e.questionId) || (packManifest && StudyPackCatalog.metadata(packManifest).some(q => q.id === e.questionId)));
   },
   addToErrorBank(qId, unit, mode = DEFAULT_PRACTICE_MODE) {
     state.errorBank = addModeError(state.errorBank, qId, unit, mode);
@@ -946,7 +946,7 @@ const State = {
   // ── Flagged（回報有問題的題目：排除於所有題池與通關分母，可從首頁還原）
   getFlagged() {
     const units = currentScope().units.map(u => u.id);
-    return state.flagged.filter(f => units.includes(f.unit) && questionMap.has(f.questionId));
+    return state.flagged.filter(f => units.includes(f.unit) && (questionMap.has(f.questionId) || (packManifest && StudyPackCatalog.metadata(packManifest).some(q => q.id === f.questionId))));
   },
   isFlagged(qId) {
     return state.flagged.some(f => f.questionId === qId);
@@ -1032,18 +1032,32 @@ const State = {
   },
   // v2→v3 反推：每個 challenge queue 的「範圍題 \ queue」＝已答對（無損、與舊顯示等價）
   backfillMastered() {
+    const pending = [];
+    const requested = Array.isArray(state._needMasteredBackfill) ? new Set(state._needMasteredBackfill) : null;
     for (const [key, ch] of Object.entries(state.challenge || {})) {
-      if (!ch || !ch.queue) continue; // null = 未開始，無貢獻
+      if (!ch || !ch.queue || (requested && !requested.has(key))) continue; // null = 未開始，無貢獻
       const slash = key.indexOf("/");
       const unit = Number(slash === -1 ? key : key.slice(0, slash));
       const subtopic = slash === -1 ? null : key.slice(slash + 1);
       if (!unit) continue;
+      if (StudyPrivatePack.UNITS.includes(unit)) {
+        const loadedIds = new Set((activePack?.questions || []).filter(q => q.unit === unit).map(q => q.id));
+        const expectedIds = packManifest ? StudyPackCatalog.descriptors(packManifest,unit).flatMap(shard => shard.ids) : null;
+        // Legacy cache may contain only an older subset. Do not finalize queue migration
+        // until every ID advertised for this unit is available, including completed IDs.
+        const complete = expectedIds
+          ? expectedIds.length > 0 && loadedIds.size === expectedIds.length && expectedIds.every(id => loadedIds.has(id))
+          : loadedIds.size > 0;
+        if (!complete) { pending.push(key); continue; }
+      }
       const remaining = new Set(ch.queue);
-      for (const id of questionIdsFor(unit, subtopic)) {
+      const knownIds = StudyPrivatePack.UNITS.includes(unit) ? allQuestions.filter(q => q.unit === unit && StudyScienceTopics.matches(q,subtopic) && !State.isFlagged(q.id)).map(q => q.id) : questionIdsFor(unit, subtopic);
+      for (const id of knownIds) {
         if (!remaining.has(id)) state.mastered = addModeMastered(state.mastered, unit, id, DEFAULT_PRACTICE_MODE);
       }
     }
-    delete state._needMasteredBackfill;
+    if (pending.length) state._needMasteredBackfill = pending;
+    else delete state._needMasteredBackfill;
     Storage.save(state);
   }
 };
@@ -1076,7 +1090,8 @@ function updatedChallenge(key, nextBatch = null) {
 
 // 取某單元（可選 subtopic）的題目 id；flagged 題排除（題池與通關分母的共同入口）
 function questionIdsFor(unit, subtopic) {
-  return allQuestions
+  const pool = packManifest && StudyPrivatePack.UNITS.includes(unit) ? StudyPackCatalog.metadata(packManifest) : allQuestions;
+  return pool
     .filter(q => q.unit === unit && StudyScienceTopics.matches(q, subtopic) && !State.isFlagged(q.id))
     .map(q => q.id);
 }
@@ -1087,6 +1102,11 @@ function questionIdsFor(unit, subtopic) {
 let publicQuestions = [];
 let publicExplanations = {};
 let activePack = null;
+let packManifest = null;
+let pendingManifest = null;
+const readyUnits = new Map();
+let rangeRequest = 0;
+let rangeController = null;
 let privateQuestionIds = new Set();
 let packNotice = "";
 let packCacheNotice = "";
@@ -1096,6 +1116,7 @@ let packController = null;
 let currentPage = null;
 
 function applyPendingPack() {
+  if (pendingManifest) { packManifest = pendingManifest; pendingManifest = null; readyUnits.clear(); }
   if (pendingPackRaw === null) return;
   const raw = pendingPackRaw;
   pendingPackRaw = null;
@@ -1121,14 +1142,23 @@ async function loadPrivatePack() {
         controller.abort();
       }, 8000);
     });
-    const raw = await Promise.race([
-      StudyPrivatePack.fetchRemote(window.KidsSyncV1.DEFAULT_ENDPOINT, token, controller.signal),
+    const result = await Promise.race([
+      StudyPackCatalog.catalog(window.KidsSyncV1.DEFAULT_ENDPOINT, token, controller.signal),
       timeout,
     ]);
     if (request !== packRequest) return;
-    StudyPrivatePack.parse(raw, publicQuestions, activePack);
-    pendingPackRaw = raw;
-    packNotice = "家庭題包已取得，回首頁後載入；目前作答不受影響。";
+    if (result.manifest) {
+      StudyPackCatalog.parseManifest(JSON.stringify(result.manifest),packManifest);
+      if (activePack && activePack.questions.some(q => !StudyPackCatalog.metadata(result.manifest).some(m => m.id === q.id && m.unit === q.unit && m.subtopic === q.subtopic))) throw Error("目錄缺少本機既有題目。");
+      try { await StudyPackCatalog.cache.saveManifest(result.manifest); }
+      catch(e) { if (e.code === "conflict") throw e; packCacheNotice = "本機題庫暫時無法保存，本次使用已驗證的線上題目。"; }
+      if (request !== packRequest) return;
+      pendingManifest = result.manifest;
+    } else {
+      StudyPrivatePack.parse(result.legacy, publicQuestions, activePack);
+      pendingPackRaw = result.legacy;
+    }
+    packNotice = "家庭題包已取得，回首頁後載入；目前作答不受影響。" + (packCacheNotice ? " " + packCacheNotice : "");
   } catch (e) {
     if (request !== packRequest) return;
     packNotice = `未載入：${e.message || "題包回應無法讀取。"} 原題包與進度保留。`;
@@ -1140,6 +1170,62 @@ async function loadPrivatePack() {
       if (currentPage === "page-home") renderHome(true);
     }
   }
+}
+function needsUnits(units) {
+  return !!packManifest && units.some(unit => StudyPackCatalog.count(packManifest,unit) && readyUnits.get(unit) !== packManifest.revision);
+}
+async function prepareUnits(units) {
+  if (currentPage === "page-quiz") return false;
+  rangeController?.abort();
+  if (currentPage !== "page-home") { showPage("page-home"); renderHome(); }
+  const request = ++rangeRequest, manifest = packManifest;
+  const controller = new AbortController();
+  rangeController = controller;
+  let timer;
+  packNotice = "正在準備這次練習的題目⋯";
+  renderHome(true);
+  try {
+    const work = async () => {
+      StudyPackCatalog.checkBudget(manifest,units);
+      let candidate = activePack;
+      const loaded = [];
+      let fallback = false;
+      for (const unit of units) {
+        if (!StudyPackCatalog.count(manifest,unit) || readyUnits.get(unit) === manifest.revision) continue;
+        let snapshot = null, part = null, invalidSnapshot = null, complete = true;
+        try {
+          snapshot = await StudyPackCatalog.cache.unit(unit);
+          part = snapshot ? await StudyPackCatalog.validateCached(snapshot,unit,publicQuestions) : null;
+        } catch { invalidSnapshot = snapshot; packCacheNotice = "本機題庫無法讀取，改用重新驗證的線上題目。"; }
+        if (controller.signal.aborted) return false;
+        if (part && StudyPackCatalog.descriptors(snapshot.manifest,unit).map(s=>s.hash).join() === StudyPackCatalog.descriptors(manifest,unit).map(s=>s.hash).join()) part = { ...part, revision: manifest.revision };
+        if (!part || part.revision !== manifest.revision) {
+          try { part = await StudyPackCatalog.loadUnit(manifest,unit,window.KidsSyncV1.DEFAULT_ENDPOINT,wiring.getToken(),controller.signal,publicQuestions); }
+          catch(e) {
+            if (!part && activePack?.questions.some(q => q.unit === unit)) part = { ...activePack, questions: activePack.questions.filter(q => q.unit === unit), explanations: Object.fromEntries(activePack.questions.filter(q => q.unit === unit).map(q => [q.id,activePack.explanations[q.id]])) };
+            if (!part || controller.signal.aborted) throw e;
+            fallback = true; complete = false;
+          }
+        }
+        candidate = StudyPackCatalog.merge(candidate,part);
+        loaded.push({part,complete,invalidSnapshot});
+      }
+      if (request !== rangeRequest || currentPage !== "page-home" || manifest !== packManifest || controller.signal.aborted) return false;
+      for (const {part,complete,invalidSnapshot} of loaded) if (complete) {
+        try { await StudyPackCatalog.cache.saveUnit(manifest,part,invalidSnapshot); }
+        catch(e) { if (e.code === "conflict") throw e; packCacheNotice = "題目未能保存，本次可繼續練習；下次需要連線。"; }
+      }
+      if (request !== rangeRequest || currentPage !== "page-home" || manifest !== packManifest || controller.signal.aborted) return false;
+      activePack = candidate;
+      for (const {part,complete} of loaded) if (complete) readyUnits.set(part.questions[0].unit,manifest.revision);
+      rebuildQuestionIndices();
+      if (state._needMasteredBackfill) State.backfillMastered();
+      packNotice = (fallback ? "新題暫時無法取得，使用已保存的舊題；原進度保留。" : "題目已準備好。") + (packCacheNotice ? " " + packCacheNotice : "");
+      return true;
+    };
+    return await Promise.race([work(),new Promise((_,reject) => { timer=setTimeout(() => { controller.abort(); reject(Error("準備題目逾時，請再按一次練習。")); },30000); })]);
+  } catch(e) { packNotice = `未載入：${e.message} 原題目與進度保留。`; return false; }
+  finally { clearTimeout(timer); controller.abort(); if (rangeController === controller) rangeController = null; if (currentPage === "page-home") renderHome(true); }
 }
 window._retryPrivatePack = loadPrivatePack;
 window._openFamilySettings = () => {
@@ -1176,10 +1262,11 @@ function canPracticeUnits(unit) {
   return requested.length > 0 && requested.every(id => allowed.includes(id) && privateUnitAvailable(id));
 }
 function privateUnitAvailable(unit) {
+  if (packManifest && StudyPackCatalog.count(packManifest,unit)) return true;
   return !StudyPrivatePack.UNITS.includes(unit) || !!activePack?.questions.some(q => q.unit === unit);
 }
 function isPrivateQuestion(q) {
-  return privateQuestionIds.has(q.id);
+  return privateQuestionIds.has(q.id) || !!packManifest?.shards.some(s => s.ids.includes(q.id));
 }
 let questionMap = new Map();
 let explanations = {};   // question id → 作答後說明（缺檔/缺題時靜默不顯示）
@@ -1338,7 +1425,7 @@ const Picker = {
   forErrorPractice(unitFilter, practiceMode = DEFAULT_PRACTICE_MODE) {
     const errors = State.getErrorBank(unitFilter || null, practiceMode);
     const ids = errors.map(e => e.questionId).filter(id => questionMap.has(id));
-    return shuffle(ids);
+    return shuffle(ids).slice(0,10);
   }
 };
 
@@ -1584,9 +1671,9 @@ function renderFlaggedSection() {
   if (flagged.length === 0) return "";
   let rows = "";
   for (const f of flagged) {
-    const q = questionMap.get(f.questionId);
+    const q = questionMap.get(f.questionId) || (packManifest && StudyPackCatalog.metadata(packManifest).find(q => q.id === f.questionId));
     if (!q) continue;
-    const snippet = q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text;
+    const snippet = q.text ? (q.text.length > 30 ? q.text.slice(0, 30) + "…" : q.text) : q.id;
     rows += `
       <div class="flagged-row">
         <span class="flagged-text">[第 ${unitNum(q.unit)} 單元] ${escapeHtml(snippet)}</span>
@@ -1597,7 +1684,7 @@ function renderFlaggedSection() {
     <details class="flagged-section">
       <summary>已回報題目（${flagged.length}）</summary>
       ${rows}
-      ${flagged.some(f => privateQuestionIds.has(f.questionId)) ? '<p class="backup-hint">私用題目不公開，GitHub 回報只附題號與題包版本。</p>' : ""}
+      ${flagged.some(f => (privateQuestionIds.has(f.questionId) || packManifest?.shards.some(s => s.ids.includes(f.questionId)))) ? '<p class="backup-hint">私用題目不公開，GitHub 回報只附題號與題包版本。</p>' : ""}
       <div class="flagged-actions">
         <button class="st-btn" onclick="window._reportToGitHub()">回報到 GitHub</button>
         <button class="st-btn" onclick="window._unflagAll()">全部還原</button>
@@ -1608,13 +1695,14 @@ function renderFlaggedSection() {
 // 首頁底部「進度備份／還原」：純前端匯出/匯入 localStorage 存檔＋雲端同步狀態（家長用）
 // （iPad 主畫面 App 的儲存可能被 iOS 清掉；雲端同步為主載體，手動備份為備援）
 function packAvailabilityText() {
+  if (packManifest) return `四上題庫版本 ${packManifest.revision}，共 ${StudyPackCatalog.metadata(packManifest).length} 題。開始練習時自動取得所選單元；已保存的題目可再次使用。`;
   if (!activePack) return "這個容器尚未載入題包。";
   const counts = StudyPrivatePack.UNITS.map(unit => {
     const count = activePack.questions.filter(q => q.unit === unit).length;
     const subject = unit === 22 ? "社會" : unit >= 20 ? "自然" : "數學";
     return count ? `${subject}第 ${unitNum(unit)} 單元 ${count} 題` : `${subject}第 ${unitNum(unit)} 單元尚未載入`;
   });
-  return `本機已有四上數學 ${activePack.questions.filter(q => q.subject === "math").length} 題、自然 ${activePack.questions.filter(q => q.subject === "science").length} 題、社會 ${activePack.questions.filter(q => q.subject === "social").length} 題，版本 ${activePack.revision}。${counts.join("；")}。`;
+  return `本機已有四上數學 ${activePack.questions.filter(q => q.subject === "math").length} 題、自然 ${activePack.questions.filter(q => q.subject === "science").length} 題、社會 ${activePack.questions.filter(q => q.subject === "social").length} 題，版本 ${activePack?.revision || packManifest.revision}。${counts.join("；")}。`;
 }
 function renderPrivatePackSection() {
   return `<details class="flagged-section" id="private-pack-details" ${packNotice ? "open" : ""}>
@@ -1671,7 +1759,7 @@ function renderSubtopics(u) {
   const topics = StudyScienceTopics.topicsForUnit(u.id);
   const selections = topics.length
     ? topics.map(topic => ({ key: topic.key, label: topic.label }))
-    : (u.subtopics || (StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []))
+    : (u.subtopics || (packManifest && StudyPrivatePack.UNITS.includes(u.id) ? [...new Set(StudyPackCatalog.metadata(packManifest).filter(q => q.unit === u.id).map(q => q.subtopic))] : StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []))
       .map(st => ({ key: st, label: st }));
   if (!selections.length) return "";
   let rows = "";
@@ -1880,7 +1968,8 @@ function renderHome(preserveParentForms = false) {
 }
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
-window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE, prepared = false) => {
+  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) window._startFull(unit,subtopic,practiceMode,true); });
   if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   if (State.isCleared(unit, subtopic, mode)) {
@@ -1892,6 +1981,7 @@ window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE
 };
 window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
+  if (needsUnits(units)) return prepareUnits(units).then(ok => { if (ok) startQuiz("error", units, null, normalizePracticeMode(practiceMode)); });
   startQuiz("error", units, null, normalizePracticeMode(practiceMode));
 };
 window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); if (term === "g4-s1") loadPrivatePack(); };
@@ -1903,7 +1993,8 @@ window._setSubject = (s) => {
   State.setSubject(s);
   renderHome();
 };
-window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
+window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE, prepared = false) => {
+  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) window._resetChallenge(unit,subtopic,practiceMode,true); });
   if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   State.resetMastered(unit, subtopic, mode);
@@ -2197,12 +2288,12 @@ function formatAnswer(q) {
 }
 
 function buildReportUrl() {
-  const qs = State.getFlagged().map(f => questionMap.get(f.questionId)).filter(Boolean);
+  const qs = State.getFlagged().map(f => questionMap.get(f.questionId) || packManifest && StudyPackCatalog.metadata(packManifest).find(q => q.id === f.questionId)).filter(Boolean);
   const today = new Date().toISOString().slice(0, 10);
   const title = `題目回報：${qs.length} 題（${today}）`;
 
   const full = qs.map(q => {
-    if (isPrivateQuestion(q)) return `### ${q.id}\n- packId: ${activePack.packId}\n- revision: ${activePack.revision}\n- 類型：家長標記題目有問題（內容不公開）`;
+    if (isPrivateQuestion(q)) return `### ${q.id}\n- packId: ${activePack?.packId || packManifest.packId}\n- revision: ${activePack?.revision || packManifest.revision}\n- 類型：家長標記題目有問題（內容不公開）`;
     let s = `### ${q.id}\n`;
     s += `- 單元：第 ${unitNum(q.unit)} 單元／${q.subtopic}\n`;
     s += `- 題目：${q.text}\n`;
@@ -2214,7 +2305,7 @@ function buildReportUrl() {
     s += `- 來源：${q.source}`;
     return s;
   }).join("\n\n");
-  const compact = qs.map(q => isPrivateQuestion(q) ? `- ${q.id} (${activePack.packId} revision ${activePack.revision})` : `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
+  const compact = qs.map(q => isPrivateQuestion(q) ? `- ${q.id} (${activePack?.packId || packManifest.packId} revision ${activePack?.revision || packManifest.revision})` : `- ${q.id}：${q.text.slice(0, 40)}`).join("\n");
   const idsOnly = qs.map(q => `- ${q.id}`).join("\n");
 
   // 題數多時逐級降格，避免超出 URL 長度上限
@@ -3391,8 +3482,9 @@ function renderSummary() {
     title = "通關！";
     scoreLabel = "所有題目都答對了";
   } else {
-    title = "錯題清除！";
-    scoreLabel = "所有錯題都答對了";
+    const remainingErrors = State.getErrorBank(quiz.unit,quiz.practiceMode).length;
+    title = remainingErrors ? "這批錯題完成！" : "錯題清除！";
+    scoreLabel = remainingErrors ? "這批題目都答對了" : "所有錯題都答對了";
   }
 
   const stArg = quiz.subtopic ? `decodeURIComponent('${encodeURIComponent(quiz.subtopic).replace(/'/g, "%27")}')` : "null";
@@ -3483,6 +3575,7 @@ async function init() {
       try { activePack = StudyPrivatePack.parse(rawPack, publicQuestions); }
       catch { packCacheNotice = "本機題包無法載入，進度保留。請保留原始題包檔並請家長協助處理。"; }
     }
+    try { packManifest = await StudyPackCatalog.cache.manifest(); } catch { /* legacy cache remains available */ }
     rebuildQuestionIndices();
     // 可選題包缺席不代表紀錄無效；僅整理既有公開題目的歷史錯題規則。
     const publicIds = new Set(publicQuestions.map(q => q.id));

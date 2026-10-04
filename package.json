@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "esbuild": "0.28.2",
+    "fake-indexeddb": "^6.2.5",
     "miniflare": "4.20260730.0",
     "sharp": "0.35.4",
     "three": "0.186.0"

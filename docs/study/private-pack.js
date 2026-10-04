@@ -88,11 +88,11 @@
           !material.rows.every(row => Array.isArray(row) && row.length === material.columns.length && row.every(x => boundedText(x, 240)))) throw new Error("題目表格格式無效。");
     } else throw new Error("題目媒體格式無效。");
   }
-  function parse(raw, publicQuestions = [], previous = null) {
+  function parse(raw, publicQuestions = [], previous = null, shard = false) {
     if (typeof raw !== "string" || new TextEncoder().encode(raw).length > MAX_BYTES) throw new Error("題包超過 256 KiB 或不是文字檔。");
     let pack;
     try { pack = JSON.parse(raw); } catch { throw new Error("JSON 格式無法讀取。"); }
-    if (!keys(pack, ["schemaVersion", "packId", "revision", "questions", "explanations"]) || pack.schemaVersion !== 1 || pack.packId !== "g4-s1-math-u1" || !Number.isSafeInteger(pack.revision) || pack.revision < 1) throw new Error("題包版本或欄位不支援。");
+    if (!keys(pack, ["schemaVersion", "packId", "revision", "questions", "explanations"]) || pack.schemaVersion !== (shard ? 2 : 1) || pack.packId !== "g4-s1-math-u1" || !Number.isSafeInteger(pack.revision) || pack.revision < 1) throw new Error("題包版本或欄位不支援。");
     if (!Array.isArray(pack.questions) || !object(pack.explanations)) throw new Error("題包必須包含題目與每題解說。");
     const seen = new Set(publicQuestions.map(q => q.id));
     for (const q of pack.questions) {
@@ -135,7 +135,7 @@
       if (old && semantic(old) !== semantic(q)) throw new Error("相同 ID 的作答內容或章節分類已改變，未替換原題包。");
     }
     const questionIds = pack.questions.map(q => q.id);
-    if (!IDS.every(id => questionIds.includes(id)) || !keys(pack.explanations, questionIds)) throw new Error("題包必須保留首批六題，每題各有一份解說。");
+    if ((!shard && !IDS.every(id => questionIds.includes(id))) || !pack.questions.length || !keys(pack.explanations, questionIds)) throw new Error("題包必須保留首批六題，每題各有一份解說。");
     if (previous) {
       if (pack.revision < previous.revision) throw new Error("不能匯入較舊版本。");
       if (previous.questions.some(q => !questionIds.includes(q.id))) throw new Error("新版題包不能移除既有題目，原題包與進度保留。");
@@ -161,20 +161,21 @@
     if (!safeSet(KEY, JSON.stringify(pack))) throw new Error("題包未保存：本機儲存空間不足或遭封鎖，原題包與進度保留。");
     return pack;
   }
-  async function fetchRemote(endpoint, token, signal) {
+  async function fetchRemote(endpoint, token, signal, path = "", limit = MAX_BYTES, allowMissing = false) {
     const auth = root.KidsAuth;
     if (auth) await auth.ready;
     if (!auth && !token) throw new Error("尚未設定家庭金鑰。請開啟下方家庭設定，儲存後會自動重試。");
     let response;
     try {
-      response = await (auth ? auth.fetch : fetch)(`${(auth?.endpoint || endpoint).replace(/\/+$/, "")}/v1/packs/g4-s1-math-u1`, {
+      response = await (auth ? auth.fetch : fetch)(`${(auth?.endpoint || endpoint).replace(/\/+$/, "")}/v1/packs/g4-s1-math-u1${path}`, {
         method: "GET", headers: auth ? {} : { Authorization: `Bearer ${token}` }, cache: "no-store", signal,
       });
     } catch { throw new Error("無法連線取得題包，請檢查網路後重試。"); }
+    if (response.status === 404 && allowMissing) return null;
     if (response.status === 401) throw new Error(auth ? "家庭連線已失效，請回首頁讓家長重新連接。" : "家庭金鑰不正確。請在家庭設定重新輸入。");
     if (response.status === 404) throw new Error("家庭題包尚未發布，請家長確認部署後重試。");
     if (!response.ok) throw new Error("題包服務異常，請稍後重試或請家長檢查服務。");
-    if (Number(response.headers.get("Content-Length")) > MAX_BYTES) throw new Error("題包超過 256 KiB，未載入。");
+    if (Number(response.headers.get("Content-Length")) > limit) throw new Error("題包超過 256 KiB，未載入。");
     // 串流逐段限額：不先把無上限的 response.text() 全收進記憶體。
     if (!response.body) throw new Error("題包回應沒有內容，未載入。");
     const reader = response.body.getReader();
@@ -188,7 +189,7 @@
         const { done, value } = chunk;
         if (done) break;
         size += value.byteLength;
-        if (size > MAX_BYTES) throw new Error("題包超過 256 KiB，未載入。");
+        if (size > limit) throw new Error("題包超過 256 KiB，未載入。");
         try { raw += decoder.decode(value, { stream: true }); }
         catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
       }
@@ -196,5 +197,5 @@
       catch { throw new Error("題包文字不是有效 UTF-8，未載入。"); }
     } finally { reader.cancel().catch(() => {}); }
   }
-  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, UNITS, parse, save, fetchRemote };
+  root.StudyPrivatePack = { KEY, MAX_BYTES, IDS, UNITS, parse, save, fetchRemote, semantic };
 })(globalThis);

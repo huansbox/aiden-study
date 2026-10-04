@@ -1,5 +1,7 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
+#161 新版按單元載入的 schemaVersion 2 manifest／shard 契約、重建與發布順序見 [Study 私用題庫分包](study-private-catalog.md)。下方 256 KiB、首六題與 localStorage 描述保留給 legacy schemaVersion 1；不適用於新版單一 shard 或完整 authoring snapshot。
+
 [#157 社會第二批](grade4-social-study-second-batch.md)已正式發布 revision 12：全包 132 活動（數學 68／自然 40／社會 24）、229503 bytes、SHA256 `2e2c94e743c8eb31d9d658b1177a7ebf87c27429aa468fdc611fb3cf136f3d2f`，餘 32641 bytes。社會 unit 22 現支援文字是非、二／四選一、2～5 個共用選項且 2～8 個小題的 grouped_choice，以及既有上限的 PNG；社會 table 仍不開放。舊 127 活動逐值保留，數學分類不變。下文 #154 的純文字限制保留首批歷史，現行社會格式以本段與 #157 為準。
 
 [#154 社會首批](grade4-social-study-first-batch.md)已正式發布 revision 11：全包 127 題（數學 68／自然 40／社會 19）、200737 bytes、SHA256 `4afbc74258f47d41489cd109d9119240d44844c4b0f73eb414831dff73b9784b`，距 256 KiB 上限尚餘 61407 bytes。兩階段管理端讀回相隔 94.517 秒且指紋一致。社會 unit 22「家鄉的自然環境」目前只收純文字四選一／是非；既有數學與自然逐值保留，社會不計入數學題型報表。可重建資料保存至 `rev11-release/`，細節與交付證據見本批紀錄。

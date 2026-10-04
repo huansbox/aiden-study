@@ -45,6 +45,8 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
   ctx.KidsSyncV1.createSyncClient = cfg => { syncConfig = cfg; return originalClient(cfg); };
   vm.runInContext(read("docs/shared/wiring-v1.js"), ctx);
   vm.runInContext(read("docs/study/private-pack.js"), ctx);
+  vm.runInContext(read("docs/study/pack-catalog.js"), ctx);
+  if (ports.catalogCache) ctx.StudyPackCatalog.cache = ports.catalogCache;
   vm.runInContext(read("docs/study/material.js"), ctx);
   vm.runInContext(read("docs/study/answer.js"), ctx);
   vm.runInContext(read("docs/study/science-topics.js"), ctx);
