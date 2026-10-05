@@ -1,6 +1,6 @@
 # 四上自然第一次段考候選卷
 
-[最新歧義研究](../../docs-dev/grade4-science-ambiguity-audit.md)：18格歧義已於2026-10-05逐一完成處置查核：9格可保留原句、6格需改寫、2格原單選不採、1格未解；改寫草案未核定。本輪新增0，正式rev16自然仍168活動／224作答位置。後續9格與6格完成核題後按完整題組接入，新增活動數未定。下方發布紀錄與backlog保留歷史快照。
+[最新教材判準重判](../../docs-dev/grade4-science-ambiguity-audit.md)：18格重判已獨立覆核與root核定：15格可依年級情境使用、3格需最小修正、0格未解。三格改寫方向已核對；實際新題尚未接入或驗收核定。本輪新增0，18格仍未入包，正式rev16自然仍168活動／224作答位置。後續按本輪核定結果與完整題組接入，不沿用第一輪9／6／2／1作為收題門檻。下方發布紀錄與backlog保留歷史快照。
 
 [圖文材料補題 #178](../../docs-dev/grade4-science-study-material-batch.md)延續既有四卷的33個 `deferred_material` 原格，整理為9個完整活動，已於2026-10-04正式發布。保留完整原圖、共同閱讀與觀察表；現役 rev16 全科260活動、自然168活動／224格，舊251活動與解說保持。獨立核答、root 批准、iPad 尺寸隔離驗證與兩階段正式讀回完成。最新逐題決策見 [material selection](../../data/study/g4-s1-science-exam1/material-selection-metadata.json)，剩餘工作見 [material backlog](../../data/study/g4-s1-science-exam1/material-backlog-metadata.json)。沒有新增原卷或校答，18格歧義／97格future／23格範圍待確認不在本批處理範圍。下方 #175 保留發布當時快照。
 
