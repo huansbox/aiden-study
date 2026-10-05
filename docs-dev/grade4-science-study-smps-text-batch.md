@@ -22,7 +22,7 @@ V-05 經 source-first 獨立審查與最新 root v2 決策，沿用原題的一�
 
 unit21兩份shard全部取得後才標ready；缺其中一份時停在首頁、未標ready，補齊重試後才進入答題，reload重用已驗證完整cache。初次新增檢查把 runtime Map當成普通陣列，已修正QA判斷；實際請求200／503→200／200及ready Map狀態證據另存，正式runtime未改。兩種方向均無水平溢出，pageErrors與外部請求為空。
 
-Node全套823 tests通過；Python278通過、1個既有regression skip。worktree沿用canonical既有Node依賴，缺少的fake-indexeddb6.2.5只置本批ignored測試目錄，以本批loader供測試，不改production或canonical依賴。
+檢查範圍包含公開mapping rev18、作品目錄與數學題型報告全部定稿後的Node全套823 tests；最終結果與凍結指紋保存於本批ignored `delivery/node-tests-post-projection.log`及v2 freeze。數學題型報告只更新mapping總數行，數學68活動／45種模式保持。Python278通過、1個既有regression skip。worktree沿用canonical既有Node依賴，缺少的fake-indexeddb6.2.5只置本批ignored測試目錄，以本批loader供測試，不改production或canonical依賴。
 
 本次仍是Playwright隔離容器驗證，未做實體iPad Safari或主畫面容器效能實測。
 
