@@ -1,5 +1,7 @@
 # Study 私用題庫分包（#160／#161）
 
+[最新深美文字題補題](grade4-science-study-smps-text-batch.md)已建立 reviewed rev18 候選，尚未發布：全科309活動、自然217活動／281格，新增39活動／39格。舊270題及解說逐值保持，unit21容量自動拆成兩份shard（全包9份）。完整重建入口在 ignored `science-smps-text-batch/rev18-candidate/`，完整前版在同批 `baseline/`；現役仍rev17，legacy rev12與Worker不變。正式 release／two-target archive仍待獨立review、merge CI／Pages讀回及root正式發布授權。
+
 此契約接替「三科共用 256 KiB 單包」的成長限制。原單包、cache key、132 個 stable IDs 和孩子進度格式保留；新前端先取得目錄，按既有練習按鈕才取得該單元內容。家長試玩按科目／單元選單取題，不讀寫孩子資料。
 
 長期容量、分包與發布決策以 [GitHub Wiki：Study 私用題包](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack) 為正本；本頁保存實作契約、重建入口與本次交付證據。
