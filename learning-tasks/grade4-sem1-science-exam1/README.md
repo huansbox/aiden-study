@@ -1,6 +1,6 @@
 # 四上自然第一次段考候選卷
 
-[深美文字題補題](../../docs-dev/grade4-science-study-smps-text-batch.md)已完成 39 個獨立活動／39 格轉寫、核答與隔離驗證，rev18 候選待發布。候選全科 309 活動、自然 217 活動／281 格；現役仍為 rev17 全科270、自然178／242。七卷剩餘127候選（文字63／材料49／改寫15），39格為 reviewed_pending_release；現有已發布10格／8活動。最新定位見[selection](../../data/study/g4-s1-science-exam1/smps-text-selection-metadata.json)與[backlog overlay](../../data/study/g4-s1-science-exam1/smps-text-backlog-metadata.json)。來源仍11卷30頁、3答10頁，115正式範圍尚未取得。
+[深美文字題補題](../../docs-dev/grade4-science-study-smps-text-batch.md)39 個獨立活動／39 格已於2026-10-05隨rev18正式發布。現役全科309活動、自然217活動／281格；原270題及解說保持。七卷剩餘127候選（文字63／材料49／改寫15）；七卷累計已發布49格／47活動。最新定位見[selection](../../data/study/g4-s1-science-exam1/smps-text-selection-metadata.json)與[backlog overlay](../../data/study/g4-s1-science-exam1/smps-text-backlog-metadata.json)。來源仍11卷30頁、3答10頁，115正式範圍尚未取得。
 
 [rev17 既有七卷盤點歷史](../../docs-dev/grade4-science-seven-paper-audit.md)：其餘7份既有原卷的537個作答位置已完成逐頁盤點與獨立review；已發布10格對應8活動，另有166候選格尚待轉寫／核答，沒有新增發布活動。下一批優先核對深美114四上39個獨立文字候選；森林等混合待核組保留完整依賴，必要圖表另批。原定位與中立決策見[七卷metadata](../../data/study/g4-s1-science-exam1/seven-paper-inventory-metadata.json)。現役維持rev17自然178活動／242格、全科270活動；來源仍是11卷30頁、3答10頁，正式範圍未取得。
 

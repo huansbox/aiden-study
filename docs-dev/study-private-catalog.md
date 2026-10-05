@@ -1,6 +1,6 @@
 # Study 私用題庫分包（#160／#161）
 
-[最新深美文字題補題](grade4-science-study-smps-text-batch.md)已建立 reviewed rev18 候選，尚未發布：全科309活動、自然217活動／281格，新增39活動／39格。舊270題及解說逐值保持，unit21容量自動拆成兩份shard（全包9份）。完整重建入口在 ignored `science-smps-text-batch/rev18-candidate/`，完整前版在同批 `baseline/`；現役仍rev17，legacy rev12與Worker不變。正式 release／two-target archive仍待獨立review、merge CI／Pages讀回及root正式發布授權。
+[最新深美文字題補題](grade4-science-study-smps-text-batch.md)已於2026-10-05正式發布rev18：全科309活動、自然217活動／281格，新增39活動／39格。舊270題及解說逐值保持，unit21容量自動拆成兩份shard（全包9份）；實際merge CI、Pages19資產比對及new shards／manifest兩階段讀回完成，legacy rev12與Worker不變。下一批完整基線入口採canonical `data/private/study/g4-s1-math-u1/rev18-release/private/science-smps-text-batch/rev18-candidate/`（curated／explanations／mapping在此，source／manifest／9shards在其catalog/）；本文件於封存前建立；本機／Dropbox副本與housekeeping完成狀態、最後文件merge、plan SHA及收據以#178最新封存checkpoint為準，使用前核逐檔hash及各副本獨立重建。現有完整工作來源仍在ignored `science-smps-text-batch/rev18-candidate/`，前版在同批 `baseline/`。
 
 此契約接替「三科共用 256 KiB 單包」的成長限制。原單包、cache key、132 個 stable IDs 和孩子進度格式保留；新前端先取得目錄，按既有練習按鈕才取得該單元內容。家長試玩按科目／單元選單取題，不讀寫孩子資料。
 

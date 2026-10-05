@@ -1,33 +1,28 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/178",
-  "status": "pending-release",
-  "publicationStatus": "not_published",
+  "status": "published",
+  "publicationStatus": "published",
   "countUnit": "source_answer_slot",
   "baselineInventory": "seven-paper-inventory-metadata.json",
   "baselineInventorySha256": "5993ec209e6ef1c1eb3df8d4ce967386ac222491cf41536423b9597cbeaa6004",
-  "overlayPolicy": "未列在 statusOverlay 的 source locator 沿用 rev17 七卷盤點；原 groups/materials 依賴與所有排除仍保持。待發布不算已發布。",
+  "overlayPolicy": "未列在 statusOverlay 的 source locator 沿用 rev17 七卷盤點；原 groups/materials 依賴與所有排除仍保持。本批39格已隨rev18發布。",
   "sourceAnswerSlots": 537,
   "paperCount": 7,
   "counts": {
     "later_or_other_topic": 317,
     "core_candidate_text": 63,
     "source_defect_not_candidate": 7,
-    "published": 10,
+    "published": 49,
     "scope_unconfirmed": 37,
-    "reviewed_pending_release": 39,
     "core_candidate_reword": 15,
     "core_candidate_material": 49
   },
-  "currentlyPublishedSourceAnswerSlots": 10,
-  "currentlyPublishedActivityCount": 8,
-  "reviewedPendingReleaseAnswerSlots": 39,
-  "reviewedPendingReleaseActivityCount": 39,
+  "currentlyPublishedSourceAnswerSlots": 49,
+  "currentlyPublishedActivityCount": 47,
+  "reviewedPendingReleaseAnswerSlots": 0,
+  "reviewedPendingReleaseActivityCount": 0,
   "remainingCandidateSourceAnswerSlots": 127,
-  "afterSuccessfulRelease": {
-    "publishedSourceAnswerSlots": 49,
-    "publishedActivityCount": 47
-  },
   "formalTargetRangeVerified": false,
   "scope": "康軒地表與水生環境暫定核心；115四上第一次正式範圍尚未取得",
   "statusOverlay": [
@@ -36,390 +31,390 @@
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-01-v1",
       "practiceId": "SMPS114-I-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-I-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-02-v1",
       "practiceId": "SMPS114-I-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-I-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-03-v1",
       "practiceId": "SMPS114-I-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-I-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-04-v1",
       "practiceId": "SMPS114-I-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-I-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-05-v1",
       "practiceId": "SMPS114-I-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-I-06",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-I-06-v1",
       "practiceId": "SMPS114-I-06",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-II-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-II-01-v1",
       "practiceId": "SMPS114-II-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-II-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-II-02-v1",
       "practiceId": "SMPS114-II-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-II-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-II-04-v1",
       "practiceId": "SMPS114-II-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-II-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-II-05-v1",
       "practiceId": "SMPS114-II-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-III-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-III-01-v1",
       "practiceId": "SMPS114-III-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-III-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-III-02-v1",
       "practiceId": "SMPS114-III-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-III-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-III-03-v1",
       "practiceId": "SMPS114-III-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-III-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-III-04-v1",
       "practiceId": "SMPS114-III-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-01-v1",
       "practiceId": "SMPS114-V-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-02-v1",
       "practiceId": "SMPS114-V-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-03-v1",
       "practiceId": "SMPS114-V-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-04-v1",
       "practiceId": "SMPS114-V-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-05-v1",
       "practiceId": "SMPS114-V-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-06",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-06-v1",
       "practiceId": "SMPS114-V-06",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-07",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-07-v1",
       "practiceId": "SMPS114-V-07",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-V-08",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-V-08-v1",
       "practiceId": "SMPS114-V-08",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-01-v1",
       "practiceId": "SMPS114-VII-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-02-v1",
       "practiceId": "SMPS114-VII-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-03-v1",
       "practiceId": "SMPS114-VII-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-04-v1",
       "practiceId": "SMPS114-VII-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-05-v1",
       "practiceId": "SMPS114-VII-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-VII-06",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-VII-06-v1",
       "practiceId": "SMPS114-VII-06",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XI-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XI-01-v1",
       "practiceId": "SMPS114-XI-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XI-02",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XI-02-v1",
       "practiceId": "SMPS114-XI-02",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XI-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XI-03-v1",
       "practiceId": "SMPS114-XI-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XI-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XI-04-v1",
       "practiceId": "SMPS114-XI-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XI-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XI-05-v1",
       "practiceId": "SMPS114-XI-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-01",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-01-v1",
       "practiceId": "SMPS114-XII-01",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-03",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-03-v1",
       "practiceId": "SMPS114-XII-03",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-04",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-04-v1",
       "practiceId": "SMPS114-XII-04",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-05",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-05-v1",
       "practiceId": "SMPS114-XII-05",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-06",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-06-v1",
       "practiceId": "SMPS114-XII-06",
-      "coverageApplied": false
+      "coverageApplied": true
     },
     {
       "originalId": "fifth-smps-114-s1-mid-XII-07",
       "paperId": "fifth-smps-114-s1-mid",
       "answerSlots": 1,
       "inventoryStatus": "core_candidate_text",
-      "status": "reviewed_pending_release",
+      "status": "published",
       "appId": "science-g4s1-fifth-smps-114-s1-mid-XII-07-v1",
       "practiceId": "SMPS114-XII-07",
-      "coverageApplied": false
+      "coverageApplied": true
     }
   ],
   "remainingCandidateIndex": [
@@ -2778,5 +2773,9 @@
     "scopeNeedsConfirmationAnswerSlots": 23,
     "previouslyExcludedAnswerSlots": 3,
     "reference": "curriculum-backlog-metadata.json"
-  }
+  },
+  "newPublishedSourceAnswerSlots": 39,
+  "newPublishedActivityCount": 39,
+  "releaseMergeCommit": "1ce270e2901eeaa355eb3e0d2f4e1ab057a9b7ac",
+  "releaseVerifiedAt": "2026-10-05T06:59:42.186194+00:00"
 }
