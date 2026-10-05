@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "reassessmentDate": "2026-10-05",
+  "reviewStatus": "complete",
+  "scope": "curriculum_reassessment_18_original_items",
+  "criterionPolicyUrl": "https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack",
+  "previousReview": "ambiguity-review-metadata.json",
+  "originalItemCount": 18,
+  "answerSlots": 18,
+  "decisionCounts": {
+    "curriculum_ready": 15,
+    "reword_required": 3,
+    "unresolved": 0
+  },
+  "publicationStatus": "not_published",
+  "publishedDelta": 0,
+  "adaptationDraftsApproved": false,
+  "formalSciencePack": {
+    "revision": 16,
+    "activities": 168,
+    "answerSlots": 224
+  },
+  "evidenceBoundary": "課綱界定年級範圍與學習深度，不逐題指定答案；115教材直接證據限主題層級，舊同版課程、校答與教學推定分開標示。",
+  "items": [
+    {
+      "originalId": "tyk113-04-04",
+      "paperId": "tyk113",
+      "page": 1,
+      "locator": "第4題(4)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://digitalmaster.knsh.com.tw/el/nature/digital1-midterm/"
+      ]
+    },
+    {
+      "originalId": "tyk113-04-06",
+      "paperId": "tyk113",
+      "page": 1,
+      "locator": "第4題(6)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://digitalmaster.knsh.com.tw/el/nature/digital1-midterm/"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-01",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(1)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-02",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(2)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-03",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(3)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "safety_conditions_required"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-04",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(4)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-05",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(5)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-06",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(6)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-13-07",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第13題(7)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    },
+    {
+      "originalId": "tyk113-14-03",
+      "paperId": "tyk113",
+      "page": 2,
+      "locator": "第14題(3)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "school_key_support",
+      "basisLevels": [
+        "school_key_support",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf"
+      ]
+    },
+    {
+      "originalId": "tyk114-01-05",
+      "paperId": "tyk114",
+      "page": 1,
+      "locator": "第1題(5)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "teaching_scope_ambiguous"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://ihc.cip.gov.tw/EJournal/EJournalCat/167"
+      ]
+    },
+    {
+      "originalId": "tyk114-03-07",
+      "paperId": "tyk114",
+      "page": 1,
+      "locator": "第3題(7)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://www.nmns.edu.tw/ch/exhibitions/galleries/botanical-garden/flowers/Theme-000275/"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-2",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第2小題",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://stv.naer.edu.tw/data/course_outline/pta_18538_240851_60502.pdf"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-6",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第6小題",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://stv.naer.edu.tw/data/course_outline/pta_18538_240851_60502.pdf"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-II-13",
+      "paperId": "supp-yap-113-midterm",
+      "page": 1,
+      "locator": "二、選擇題第13小題",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://stv.naer.edu.tw/data/course_outline/pta_18538_240851_60502.pdf"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-4",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(4)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=118&code=list&flag=detail&ids=52"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-5",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(5)",
+      "answerSlots": 1,
+      "decision": "reword_required",
+      "reasonCodes": [
+        "safety_conditions_required"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=121&code=list&flag=detail&ids=52"
+      ]
+    },
+    {
+      "originalId": "supp-yap-113-midterm-VI-1-6",
+      "paperId": "supp-yap-113-midterm",
+      "page": 2,
+      "locator": "VI第1題(6)",
+      "answerSlots": 1,
+      "decision": "curriculum_ready",
+      "reasonCodes": [
+        "grade_appropriate_teaching_context"
+      ],
+      "basisLevel": "teaching_context_inference",
+      "basisLevels": [
+        "teaching_context_inference",
+        "older_same_edition_course"
+      ],
+      "currentYearExactAnswerVerified": false,
+      "researchSourceUrls": [
+        "https://www.cp.ptc.edu.tw/storage/134652/134652_113_B-06_4A.pdf",
+        "https://www.tfdp.com.tw/cht/index.php?article_id=118&code=list&flag=detail&ids=52",
+        "https://scweb.cwa.gov.tw/zh-tw/page/intro/11"
+      ]
+    }
+  ],
+  "rootApprovalStatus": "approved",
+  "independentReviewStatus": "pass",
+  "openMaterialFindings": 0,
+  "rewordDirectionsReviewed": true,
+  "adaptationApprovalBoundary": "三格最小改寫方向已獨立覆核並核定處置；實際新題尚未接入或驗收核定。"
+}
