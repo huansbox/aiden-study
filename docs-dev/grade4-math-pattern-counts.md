@@ -4,7 +4,7 @@
 
 狀態：已發布內容的封存統計；發布依據見[發布紀錄](../docs-dev/grade4-science-study-fifth-batch.md)。本腳本不連正式服務，不能當作即時上線查核。
 
-公開 mapping rev16 共 260 個 activity（數學 68／自然 168／社會 24）；本報告只統計數學 68 個 activity，自然與社會題不列入下表。
+公開 mapping rev17 共 270 個 activity（數學 68／自然 178／社會 24）；本報告只統計數學 68 個 activity，自然與社會題不列入下表。
 
 歷史封存：rev4 數學 57 個 activity，發布依據見[當時紀錄](../docs-dev/grade4-math-expansion-plan.md)；此數字不併入本次題數。
 

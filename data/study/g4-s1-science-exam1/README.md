@@ -1,6 +1,6 @@
 # 四上自然首批練習選題
 
-[最新教材判準重判](../../../docs-dev/grade4-science-ambiguity-audit.md)：18格重判已獨立覆核與root核定：15格可依年級情境使用、3格需最小修正、0格未解。三格改寫方向已核對；實際新題尚未接入或驗收核定。本輪新增0，18格仍未入包，正式rev16自然仍168活動／224作答位置。後續按本輪核定結果與完整題組接入，不沿用第一輪9／6／2／1作為收題門檻。下方發布紀錄與backlog保留歷史快照。
+[最新教材判準補題](../../../docs-dev/grade4-science-study-curriculum-batch.md)：10個新活動／18原格已完成實際轉寫、獨立覆核與rev17候選建置，尚待正式發布。候選為全科270活動、自然178活動／242格；現役仍rev16。逐活動見[curriculum selection](curriculum-selection-metadata.json)，四卷剩餘狀態見[curriculum backlog](curriculum-backlog-metadata.json)。先前重判、material及volume資料保留歷史快照；15格可用、3格最小修正的已核判準不重開。
 
 兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以本批 material selection 及 #178 紀錄為準。
 
