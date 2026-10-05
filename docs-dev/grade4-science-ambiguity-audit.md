@@ -1,6 +1,8 @@
 # 四上自然18格歧義研究
 
-## 2026-10-05：國小教材判準重判（現行）
+最新接入進度見[教材判準補題](grade4-science-study-curriculum-batch.md)與[curriculum selection](../data/study/g4-s1-science-exam1/curriculum-selection-metadata.json)。以下兩輪研究保存交付時點快照；「本輪新增0／未入包」只表示當時研究未發布題包。
+
+## 2026-10-05：國小教材判準重判（核定研究快照）
 
 以[Wiki：國小教材判準](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)為正本：課綱界定四年級範圍與學習深度，答案按康軒教材教學情境與題目條件判讀，接受合理簡化，不以未教的罕見例外、進階術語或間接因果拒題。課綱不是逐題答案清單；本年教材、舊同版課程、可見校答與教學推定分開標示。
 
