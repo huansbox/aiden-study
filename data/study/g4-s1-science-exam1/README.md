@@ -1,10 +1,10 @@
 # 四上自然首批練習選題
 
-[最新教材判準補題](../../../docs-dev/grade4-science-study-curriculum-batch.md)：10個新活動／18原格已完成實際轉寫、獨立覆核與rev17候選建置，尚待正式發布。候選為全科270活動、自然178活動／242格；現役仍rev16。逐活動見[curriculum selection](curriculum-selection-metadata.json)，四卷剩餘狀態見[curriculum backlog](curriculum-backlog-metadata.json)。先前重判、material及volume資料保留歷史快照；15格可用、3格最小修正的已核判準不重開。
+[最新教材判準補題](../../../docs-dev/grade4-science-study-curriculum-batch.md)：10個新活動／18原格已隨rev17正式發布。現役為全科270活動、自然178活動／242格；原歧義18格已入包、待處理0格，97格future、23格範圍待確認與既有3格排除保持。逐活動見[curriculum selection](curriculum-selection-metadata.json)，四卷剩餘狀態見[curriculum backlog](curriculum-backlog-metadata.json)。先前重判、material及volume資料保留歷史快照；15格可用、3格最小修正的已核判準不重開。
 
-兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以本批 material selection 及 #178 紀錄為準。
+兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以 curriculum selection 及 #178 紀錄為準。
 
-[圖文材料補題 #178](../../../docs-dev/grade4-science-study-material-batch.md)已從原四卷 backlog 的33個必要材料格整理為9個完整活動，於2026-10-04正式發布。現役 rev16 全科260活動、自然168活動／224格；舊251活動與解說保持。獨立核答、root 批准、兩種 iPad 尺寸隔離驗證，以及新 shard／manifest 的兩階段正式讀回完成；最新決策見 [material selection](material-selection-metadata.json)，全四卷剩餘狀態見 [material backlog](material-backlog-metadata.json)。本批保留完整原圖／閱讀／觀察表，題組每次一小題；必要材料待補0格，18格歧義、97格future與23格範圍待確認另留。下文 #175 的33格快照保留為歷史。
+[圖文材料補題 #178](../../../docs-dev/grade4-science-study-material-batch.md)已從原四卷 backlog 的33個必要材料格整理為9個完整活動，於2026-10-04正式發布。當時 rev16 全科260活動、自然168活動／224格；舊251活動與解說保持。獨立核答、root 批准、兩種 iPad 尺寸隔離驗證，以及新 shard／manifest 的兩階段正式讀回完成；當時決策見 [material selection](material-selection-metadata.json)，當時四卷剩餘快照見 [material backlog](material-backlog-metadata.json)。本批保留完整原圖／閱讀／觀察表，題組每次一小題；必要材料待補0格，18格歧義、97格future與23格範圍待確認另留。下文 #175 的33格快照保留為歷史。
 
 [練習量擴充 #175](../../../docs-dev/grade4-science-study-volume-batch.md)已於 2026-10-04 正式發布：從原四卷新增 114 活動／119 作答格，當時 rev15 為自然 **159 活動／191 作答格**、全科 **251 活動**，舊 137 活動與解說逐值保留。最終來源與延期見[本批 selection](volume-selection-metadata.json)，完整四卷剩餘狀態見[backlog metadata](volume-backlog-metadata.json)：暫定核心仍有51格（33需材料／18有歧義），另有future97格及範圍待確認23格。作者兩份 inventory 保存審查前凍結稿，最終狀態以本批 selection／backlog 為準。練習量與題型覆蓋的長期原則見 [Wiki](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 

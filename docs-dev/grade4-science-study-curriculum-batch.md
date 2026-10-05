@@ -1,6 +1,6 @@
 # 四上自然教材判準補題（#178）
 
-本批依已核定的[國小教材判準重判](grade4-science-ambiguity-audit.md)，把既有四卷 backlog 的 **18 個原卷作答格**轉入 **10 個新增活動**。15 格保留合理年級情境，3 格採已核定的最小修正。實際作者稿已完成獨立核答與 root 內容核准，正式 rev17 候選建置完成；本批狀態為 **ready_not_published**，現役仍是 rev16。沒有新增原卷或校方答案。
+本批依已核定的[國小教材判準重判](grade4-science-ambiguity-audit.md)，把既有四卷 backlog 的 **18 個原卷作答格**轉入 **10 個新增活動**。15 格保留合理年級情境，3 格採已核定的最小修正。實際作者稿已完成獨立核答與 root 內容核准，rev17已於2026-10-05正式發布；本批狀態為 **published**，現役全科270活動、自然178活動／242格。原歧義18格已入包、待處理0格。沒有新增原卷或校方答案。
 
 最新逐活動狀態見 [curriculum selection](../data/study/g4-s1-science-exam1/curriculum-selection-metadata.json)，四卷剩餘狀態見 [curriculum backlog](../data/study/g4-s1-science-exam1/curriculum-backlog-metadata.json)。先前 ambiguity／curriculum review、material／volume selection 與 backlog 都保留當時快照。
 
@@ -47,6 +47,6 @@ rev17 正式候選為全包 **270 活動**（數學68／自然178／社會24）�
 
 draft 原始證據維持 `delivery/e2e/draft-unreviewed/` 身分，正式候選另跑完整流程，保存於 `delivery/e2e/rev17/`；不把draft報告複製成正式內容已受測的證據。截圖目視核對與報告指紋集中在私人 `delivery/validation-summary.json`。
 
-發布仍由 root 在新作者稿獨立覆核、正式建置與行為／目視證據完成後核准；新 immutable shards 先逐份 immediate／傳播後讀回，最後才前向更新 manifest，再兩階段讀回。legacy、舊 shard、Worker 與孩子進度保持原契約。本頁不代表遠端寫入已完成。
+root已核准並完成正式發布：新immutable shards先逐份立即／傳播後讀回，再前向更新manifest；manifest兩次讀回於`2026-10-05T01:46:18.343734+00:00`及`2026-10-05T01:47:46.950014+00:00`通過，均為上表rev17指紋。legacy、舊shard、Worker與孩子進度保持原契約。實際merge為`ebbdd7e8e96e130b1adbddd7af559a137f2128b1`；CI、Pages與正式讀回證據保存在私人`ops/`。本輪可重建備份與各副本獨立重建仍待root收尾，完成狀態以#178最新收據為準。最新完整基線與archive布局見[重建入口](grade4-u1-private-pack-build.md)。
 
 四卷 backlog 的97格 future、23格範圍待確認及既有3格排除保持。正式考試範圍、其他原卷收集、地表操縱變因與實測結果表缺口仍另行追蹤；本批增加練習量，不宣稱全部能力已補齊。
