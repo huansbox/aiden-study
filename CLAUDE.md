@@ -126,7 +126,7 @@ learning-tasks/    一次性家庭學習任務庫；catalog.json 是任務資料
 skipped_questions.md  跳過題目清單（供手動確認）
 ```
 
-`wiki/` + `.github/workflows/publish-wiki.yml` = GitHub wiki 唯一編輯處，CI 自動發佈到 `.wiki.git`，不要在網頁上編輯。穩定頁（Home/Maintenance）跟機制變更的 PR 順手改；快照頁（Plan/Roadmap/Tech-Debt）標快照日期，milestone 或每月用 /repo-wiki refresh 刷新。
+專案長期知識以 [GitHub Wiki](https://github.com/huansbox/aiden-study/wiki) 的 `aiden-study.wiki.git` 為正本，直接在 Wiki 網頁或其 clone 編輯。Repo 的 `wiki/` 只保留對應頁面連結，不同步或覆寫 Wiki，也不另維護知識副本。當前進度、待決問題與交接記於對應 GitHub Issue；Wiki 保存可重用原則與入口。
 
 ## 技術決策
 

@@ -108,7 +108,7 @@ data/                 題庫中間資料與人工策展資料
 tests/                pytest 與 Node.js test runner 測試
 docs-dev/             ADR、設計稿與人工驗收文件
 learning-tasks/       一次性家庭學習任務、可重建成品與重用經驗
-wiki/                 GitHub Wiki 的版本控制真相源
+wiki/                 GitHub Wiki 頁面連結；知識正本在 aiden-study.wiki.git
 ```
 
 ## 開發環境
