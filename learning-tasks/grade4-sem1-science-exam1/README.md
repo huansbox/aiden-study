@@ -1,5 +1,7 @@
 # 四上自然第一次段考候選卷
 
+[最新既有七卷盤點](../../docs-dev/grade4-science-seven-paper-audit.md)：其餘7份既有原卷的537個作答位置已完成逐頁盤點與獨立review；已發布10格對應8活動，另有166候選格尚待轉寫／核答，沒有新增發布活動。下一批優先核對深美114四上39個獨立文字候選；森林等混合待核組保留完整依賴，必要圖表另批。原定位與中立決策見[七卷metadata](../../data/study/g4-s1-science-exam1/seven-paper-inventory-metadata.json)。現役維持rev17自然178活動／242格、全科270活動；來源仍是11卷30頁、3答10頁，正式範圍未取得。
+
 [最新教材判準補題](../../docs-dev/grade4-science-study-curriculum-batch.md)：10個新活動／18原格已隨rev17正式發布。現役為全科270活動、自然178活動／242格；原歧義18格已入包、待處理0格，97格future、23格範圍待確認與既有3格排除保持。逐活動見[curriculum selection](../../data/study/g4-s1-science-exam1/curriculum-selection-metadata.json)，四卷剩餘狀態見[curriculum backlog](../../data/study/g4-s1-science-exam1/curriculum-backlog-metadata.json)。先前重判、material及volume資料保留歷史快照；15格可用、3格最小修正的已核判準不重開。
 
 [圖文材料補題 #178](../../docs-dev/grade4-science-study-material-batch.md)延續既有四卷的33個 `deferred_material` 原格，整理為9個完整活動，已於2026-10-04正式發布。保留完整原圖、共同閱讀與觀察表；當時 rev16 全科260活動、自然168活動／224格，舊251活動與解說保持。獨立核答、root 批准、iPad 尺寸隔離驗證與兩階段正式讀回完成。當時逐題決策見 [material selection](../../data/study/g4-s1-science-exam1/material-selection-metadata.json)，當時剩餘快照見 [material backlog](../../data/study/g4-s1-science-exam1/material-backlog-metadata.json)。沒有新增原卷或校答，18格歧義／97格future／23格範圍待確認不在本批處理範圍。下方 #175 保留發布當時快照。

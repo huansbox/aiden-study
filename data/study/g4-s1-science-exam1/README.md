@@ -1,5 +1,7 @@
 # 四上自然首批練習選題
 
+[最新既有七卷盤點](../../../docs-dev/grade4-science-seven-paper-audit.md)：其餘7份既有原卷的537個作答位置已完成逐頁盤點與獨立review；已發布10格對應8活動，另有166候選格尚待轉寫／核答，沒有新增發布活動。下一批優先核對深美114四上39個獨立文字候選；森林等混合待核組保留完整依賴，必要圖表另批。原定位與中立決策見[七卷metadata](seven-paper-inventory-metadata.json)。現役維持rev17自然178活動／242格、全科270活動；來源仍是11卷30頁、3答10頁，正式範圍未取得。
+
 [最新教材判準補題](../../../docs-dev/grade4-science-study-curriculum-batch.md)：10個新活動／18原格已隨rev17正式發布。現役為全科270活動、自然178活動／242格；原歧義18格已入包、待處理0格，97格future、23格範圍待確認與既有3格排除保持。逐活動見[curriculum selection](curriculum-selection-metadata.json)，四卷剩餘狀態見[curriculum backlog](curriculum-backlog-metadata.json)。先前重判、material及volume資料保留歷史快照；15格可用、3格最小修正的已核判準不重開。
 
 兩份本批作者 inventory／notes 保留交付時點快照，pending／未 review 字樣不是目前判定；最新決策與發布以 curriculum selection 及 #178 紀錄為準。
