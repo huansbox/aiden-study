@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/191",
-  "publicationStatus": "not_published",
+  "publicationStatus": "published",
   "publishedDelta": 0,
   "formalTargetRangeVerified": false,
   "baselineRevision": 18,
@@ -11,7 +11,7 @@
   "authorArtifactSha256": "40fb63404aac4e3e5c42fa9df8f7ffe054ca3aae60f3f94d2cef3f8dcf744b63",
   "authorInventorySha256": "46356d9720e0c4cd7365a9ef072256aa7bb47b4b1a4c72cc972456979f7ae2a5",
   "independentSourceLedgerSha256": "85ce98f4ebbd9681f5612a51a7dc03b7f236a794eba0191944c727775d619ac6",
-  "status": "root_content_approved_candidate_pending_release",
+  "status": "current_backlog_after_rev19_release",
   "countUnit": "source_answer_slot",
   "sourceAnswerSlots": 76,
   "paperSourceAnswerSlots": {
@@ -1322,5 +1322,22 @@
     }
   ],
   "completeInventory": "social-existing-paper-inventory-metadata.json",
-  "totalOriginalSourceAnswerSlots": 177
+  "totalOriginalSourceAnswerSlots": 177,
+  "publishedRevision": 19,
+  "publishedAllSubjectActivities": 352,
+  "publishedSocialActivities": 67,
+  "publishedSocialSourceAnswerSlots": 101,
+  "releaseEvidence": {
+    "releasedAt": "2026-10-06T08:04:33.765249+00:00",
+    "releaseMergeCommit": "16164e530b6b8c07b148fd5172dda97da6d88fc2",
+    "pagesAssetCommit": "06a5fd8f2a81ad333e2dd1c5d6fbbea21b59adf1",
+    "reviewedRuntimeCommit": "16164e530b6b8c07b148fd5172dda97da6d88fc2",
+    "workerVersionId": "19deb315-74c9-47c6-a667-26eba035b1bc",
+    "sourceSha256": "8e341c7afc7ab45c65671da67e81ed63062ebcf0b4d690522f92e4b834a9a6c3",
+    "manifestSha256": "72560b9a2e932d6155dc2ff8bd449b4893178c11cc346a693a9a1f7aaa741107",
+    "completionProofSha256": "fe3e7fc2c47266311f0c2f49a2c8a61251844d5c57a3820076e1a8d6d10c2f40",
+    "backupStatus": "pending",
+    "canonicalAuthoringRelativePath": "data/private/study/g4-s1-math-u1/rev19-release/private/social-existing-paper-batch/rev19-candidate/"
+  },
+  "batchPublishedDelta": 43
 }

@@ -1,10 +1,10 @@
 # 四上社會第一次段考候選卷
 
-最新[#191完整三卷擴量](https://github.com/huansbox/aiden-study/issues/191)：177原格＝35已發布＋66核定新格＋4整組hold＋72後續範圍。新66格轉為43完整候選活動，rev19候選社會67活動／101格、全科352活動；**本批尚未發布，新增上線0**，正式rev18仍309／社會24。見[本批紀錄](../../docs-dev/grade4-social-study-existing-paper-batch.md)、[完整inventory](../../data/study/g4-s1-math-u1/social-existing-paper-inventory-metadata.json)與[backlog](../../data/study/g4-s1-math-u1/social-existing-paper-backlog-metadata.json)。
+最新[#191完整三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已於2026-10-06正式發布rev19：177原格＝101已發布（原35＋本批66）＋4整組hold＋72後續範圍。新增43完整活動，現役社會67活動／101格、全科352活動（數學68／自然217）。本機／Dropbox雙副本尚待建立；完整canonical入口與實際merge／Pages／Worker／source SHA見[本批紀錄](../../docs-dev/grade4-social-study-existing-paper-batch.md)，另見[完整inventory](../../data/study/g4-s1-math-u1/social-existing-paper-inventory-metadata.json)與[backlog](../../data/study/g4-s1-math-u1/social-existing-paper-backlog-metadata.json)。
 
 完整盤點所有可用U1核心位置，同概念不同問法都收，不抽代表、不設題數上限；圖表、閱讀、勾選、配合及等價點選均保留完整條件。115康軒U1是暫定教材範圍，正式校方範圍未取得。原題／答卷依語意、條件及原選項逐項核對；既有N009/N023本次只更正來源聲明，不改原題、答案、圖、解說或IDs。113 VIII四格整組hold，不裁掉末題。歷史發布紀錄與封存產物保持。
 
-狀態：**已收首輪 3 份題卷、2 份校方答案；U1 共 24 活動已在 iPad 題庫上線**（2026-10-04；追蹤 [#157](https://github.com/huansbox/aiden-study/issues/157)）。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集歷屆社會科原卷與校方答案，按今年康軒課程與概念逐題判讀，供後續 iPad 練習使用。[115-1 校方行事曆](https://www.tykjh.ntpc.edu.tw/var/file/0/1000/img/139/254648692.pdf)列 2026/11/5–11/6 國小第一次定期評量；**正式考試範圍尚未取得**，不能以舊卷單元號替代今年範圍。詳細證據見[課程對照](source/curriculum-comparison.md)，首批交付契約見[社會首批 Study 文件](../../docs-dev/grade4-social-study-first-batch.md)。
+2026-10-04歷史狀態：**已收首輪 3 份題卷、2 份校方答案；U1 共 24 活動已在 iPad 題庫上線**（2026-10-04；追蹤 [#157](https://github.com/huansbox/aiden-study/issues/157)）。本任務供桃子腳國小 115 學年度四年級上學期第一次定期評量前，收集歷屆社會科原卷與校方答案，按今年康軒課程與概念逐題判讀，供後續 iPad 練習使用。[115-1 校方行事曆](https://www.tykjh.ntpc.edu.tw/var/file/0/1000/img/139/254648692.pdf)列 2026/11/5–11/6 國小第一次定期評量；**正式考試範圍尚未取得**，不能以舊卷單元號替代今年範圍。詳細證據見[課程對照](source/curriculum-comparison.md)，首批交付契約見[社會首批 Study 文件](../../docs-dev/grade4-social-study-first-batch.md)。
 
 ## 來源與保存
 
