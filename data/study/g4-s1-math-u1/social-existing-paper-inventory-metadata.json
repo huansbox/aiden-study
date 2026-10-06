@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/191",
-  "publicationStatus": "not_published",
-  "publishedDelta": 0,
+  "publicationStatus": "published",
+  "publishedDelta": 43,
   "formalTargetRangeVerified": false,
   "baselineRevision": 18,
   "candidateRevision": 19,
@@ -11,13 +11,12 @@
   "authorArtifactSha256": "40fb63404aac4e3e5c42fa9df8f7ffe054ca3aae60f3f94d2cef3f8dcf744b63",
   "authorInventorySha256": "46356d9720e0c4cd7365a9ef072256aa7bb47b4b1a4c72cc972456979f7ae2a5",
   "independentSourceLedgerSha256": "85ce98f4ebbd9681f5612a51a7dc03b7f236a794eba0191944c727775d619ac6",
-  "status": "root_content_approved_candidate_pending_release",
+  "status": "published_rev19_backups_pending",
   "countUnit": "source_answer_slot",
   "sourceAnswerSlots": 177,
   "counts": {
-    "published": 35,
+    "published": 101,
     "later_or_other_topic": 72,
-    "candidate_pending_release": 66,
     "whole_group_held": 4
   },
   "paperSourceAnswerSlots": {
@@ -131,13 +130,14 @@
       "sourceLedgerId": "tyk112-I-06",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-06",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-I-06-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-I-07",
@@ -150,13 +150,14 @@
       "sourceLedgerId": "tyk112-I-07",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-07",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-I-07-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-I-08",
@@ -402,13 +403,14 @@
       "sourceLedgerId": "tyk112-II-02-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-02-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-2-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-2-1-02",
@@ -421,13 +423,14 @@
       "sourceLedgerId": "tyk112-II-02-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-02-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-2-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-2-1-03",
@@ -440,13 +443,14 @@
       "sourceLedgerId": "tyk112-II-02-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-02-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-2-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-2-1-04",
@@ -459,13 +463,14 @@
       "sourceLedgerId": "tyk112-II-02-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-02-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-2-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-2-2-01",
@@ -478,13 +483,14 @@
       "sourceLedgerId": "tyk112-II-02-2",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-02-2",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-2-2-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-01",
@@ -497,13 +503,14 @@
       "sourceLedgerId": "tyk112-II-03-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-02",
@@ -516,13 +523,14 @@
       "sourceLedgerId": "tyk112-II-03-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-03",
@@ -535,13 +543,14 @@
       "sourceLedgerId": "tyk112-II-03-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-04",
@@ -554,13 +563,14 @@
       "sourceLedgerId": "tyk112-II-03-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-05",
@@ -573,13 +583,14 @@
       "sourceLedgerId": "tyk112-II-03-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-05-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-06",
@@ -592,13 +603,14 @@
       "sourceLedgerId": "tyk112-II-03-06",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-06",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-06-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-3-07",
@@ -611,13 +623,14 @@
       "sourceLedgerId": "tyk112-II-03-07",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03-07",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk112-II-3-07-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk112-II-4-01",
@@ -1110,13 +1123,14 @@
       "sourceLedgerId": "tyk113-I-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk113-I-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk113-I-04",
@@ -1224,13 +1238,14 @@
       "sourceLedgerId": "tyk113-II-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk113-II-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk113-II-04",
@@ -1243,13 +1258,14 @@
       "sourceLedgerId": "tyk113-II-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk113-II-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk113-II-05",
@@ -1917,13 +1933,14 @@
       "sourceLedgerId": "tyk113-VI-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk113-VI-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk113-VI-04",
@@ -2150,13 +2167,14 @@
       "sourceLedgerId": "tyk114-I-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-I-1-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-I-1-02",
@@ -2169,13 +2187,14 @@
       "sourceLedgerId": "tyk114-I-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-I-1-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-I-1-03",
@@ -2188,13 +2207,14 @@
       "sourceLedgerId": "tyk114-I-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-I-1-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-I-1-04",
@@ -2207,13 +2227,14 @@
       "sourceLedgerId": "tyk114-I-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "I-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-I-1-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-01",
@@ -2226,13 +2247,14 @@
       "sourceLedgerId": "tyk114-II-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-02",
@@ -2245,13 +2267,14 @@
       "sourceLedgerId": "tyk114-II-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-03",
@@ -2264,13 +2287,14 @@
       "sourceLedgerId": "tyk114-II-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-04",
@@ -2283,13 +2307,14 @@
       "sourceLedgerId": "tyk114-II-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-05",
@@ -2302,13 +2327,14 @@
       "sourceLedgerId": "tyk114-II-1-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-1-06",
@@ -2321,13 +2347,14 @@
       "sourceLedgerId": "tyk114-II-1-06",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-1-06",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-1-climate-chart-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-2-01",
@@ -2340,13 +2367,14 @@
       "sourceLedgerId": "tyk114-II-2-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-2-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-2-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-II-2-02",
@@ -2359,13 +2387,14 @@
       "sourceLedgerId": "tyk114-II-2-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "II-2-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-II-2-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-1-01",
@@ -2378,13 +2407,14 @@
       "sourceLedgerId": "tyk114-III-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-1-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-1-02",
@@ -2397,13 +2427,14 @@
       "sourceLedgerId": "tyk114-III-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-1-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-1-03",
@@ -2416,13 +2447,14 @@
       "sourceLedgerId": "tyk114-III-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-1-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-01",
@@ -2435,13 +2467,14 @@
       "sourceLedgerId": "tyk114-III-2-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-02",
@@ -2454,13 +2487,14 @@
       "sourceLedgerId": "tyk114-III-2-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-03",
@@ -2473,13 +2507,14 @@
       "sourceLedgerId": "tyk114-III-2-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-04",
@@ -2492,13 +2527,14 @@
       "sourceLedgerId": "tyk114-III-2-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-05",
@@ -2511,13 +2547,14 @@
       "sourceLedgerId": "tyk114-III-2-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-06",
@@ -2530,13 +2567,14 @@
       "sourceLedgerId": "tyk114-III-2-06",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-06",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-2-07",
@@ -2549,13 +2587,14 @@
       "sourceLedgerId": "tyk114-III-2-07",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-2-07",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-2-flat-trip-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-3-01",
@@ -2568,13 +2607,14 @@
       "sourceLedgerId": "tyk114-III-3-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-3-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-3-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-3-02",
@@ -2587,13 +2627,14 @@
       "sourceLedgerId": "tyk114-III-3-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-3-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-3-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-3-03",
@@ -2606,13 +2647,14 @@
       "sourceLedgerId": "tyk114-III-3-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-3-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-3-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-3-04",
@@ -2625,13 +2667,14 @@
       "sourceLedgerId": "tyk114-III-3-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-3-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-3-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-III-3-05",
@@ -2644,13 +2687,14 @@
       "sourceLedgerId": "tyk114-III-3-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "III-3-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": false,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-III-3-05-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-1-01",
@@ -2663,13 +2707,14 @@
       "sourceLedgerId": "tyk114-IV-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-1-02",
@@ -2682,13 +2727,14 @@
       "sourceLedgerId": "tyk114-IV-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-1-03",
@@ -2701,13 +2747,14 @@
       "sourceLedgerId": "tyk114-IV-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-1-04",
@@ -2720,13 +2767,14 @@
       "sourceLedgerId": "tyk114-IV-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-1-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-2-01",
@@ -2739,13 +2787,14 @@
       "sourceLedgerId": "tyk114-IV-2-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-2-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-2-map-tools-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-2-02",
@@ -2758,13 +2807,14 @@
       "sourceLedgerId": "tyk114-IV-2-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-2-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-2-map-tools-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-IV-2-03",
@@ -2777,13 +2827,14 @@
       "sourceLedgerId": "tyk114-IV-2-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "IV-2-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-IV-2-map-tools-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-1-01",
@@ -2796,13 +2847,14 @@
       "sourceLedgerId": "tyk114-V-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-1-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-1-02",
@@ -2849,13 +2901,14 @@
       "sourceLedgerId": "tyk114-V-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-1-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-2-01",
@@ -2868,13 +2921,14 @@
       "sourceLedgerId": "tyk114-V-2-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-2-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-2-climate-sentences-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-2-02",
@@ -2887,13 +2941,14 @@
       "sourceLedgerId": "tyk114-V-2-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-2-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-2-climate-sentences-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-2-03",
@@ -2906,13 +2961,14 @@
       "sourceLedgerId": "tyk114-V-2-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-2-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-2-climate-sentences-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-2-04",
@@ -2925,13 +2981,14 @@
       "sourceLedgerId": "tyk114-V-2-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-2-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-2-climate-sentences-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-V-2-05",
@@ -2944,13 +3001,14 @@
       "sourceLedgerId": "tyk114-V-2-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "V-2-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-V-2-climate-sentences-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VI-1-01",
@@ -2963,13 +3021,14 @@
       "sourceLedgerId": "tyk114-VI-1-01",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-1-01",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VI-1-01-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VI-1-02",
@@ -2982,13 +3041,14 @@
       "sourceLedgerId": "tyk114-VI-1-02",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-1-02",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VI-1-02-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VI-1-03",
@@ -3001,13 +3061,14 @@
       "sourceLedgerId": "tyk114-VI-1-03",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-1-03",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VI-1-03-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VI-1-04",
@@ -3020,13 +3081,14 @@
       "sourceLedgerId": "tyk114-VI-1-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-1-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VI-1-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VI-1-05",
@@ -3039,13 +3101,14 @@
       "sourceLedgerId": "tyk114-VI-1-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "VI-1-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VI-1-05-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VII-1-01",
@@ -3126,13 +3189,14 @@
       "sourceLedgerId": "tyk114-VII-2-04",
       "sourceAnswerSlots": 1,
       "printedLocator": "VII-2-04",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VII-2-04-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VII-2-05",
@@ -3145,13 +3209,14 @@
       "sourceLedgerId": "tyk114-VII-2-05",
       "sourceAnswerSlots": 1,
       "printedLocator": "VII-2-05",
-      "status": "candidate_pending_release",
-      "reasonCode": "reviewed_u1_complete_source",
+      "status": "published",
+      "reasonCode": "published_in_rev19",
       "hasSharedMaterialDependency": true,
-      "candidateAppIds": [
+      "candidateAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-tyk114-VII-2-05-v1"
       ],
-      "publishedAppIds": []
+      "publishedRevision": 19
     },
     {
       "originalId": "tyk114-VII-3-01",
@@ -3240,5 +3305,23 @@
     }
   ],
   "checkedAt": "2026-10-06",
-  "rootContentApproved": true
+  "rootContentApproved": true,
+  "publishedRevision": 19,
+  "publishedAllSubjectActivities": 352,
+  "publishedSocialActivities": 67,
+  "publishedSocialSourceAnswerSlots": 101,
+  "releaseEvidence": {
+    "releasedAt": "2026-10-06T08:04:33.765249+00:00",
+    "releaseMergeCommit": "16164e530b6b8c07b148fd5172dda97da6d88fc2",
+    "pagesAssetCommit": "06a5fd8f2a81ad333e2dd1c5d6fbbea21b59adf1",
+    "reviewedRuntimeCommit": "16164e530b6b8c07b148fd5172dda97da6d88fc2",
+    "workerVersionId": "19deb315-74c9-47c6-a667-26eba035b1bc",
+    "sourceSha256": "8e341c7afc7ab45c65671da67e81ed63062ebcf0b4d690522f92e4b834a9a6c3",
+    "manifestSha256": "72560b9a2e932d6155dc2ff8bd449b4893178c11cc346a693a9a1f7aaa741107",
+    "completionProofSha256": "fe3e7fc2c47266311f0c2f49a2c8a61251844d5c57a3820076e1a8d6d10c2f40",
+    "backupStatus": "pending",
+    "canonicalAuthoringRelativePath": "data/private/study/g4-s1-math-u1/rev19-release/private/social-existing-paper-batch/rev19-candidate/"
+  },
+  "baselinePublishedSourceAnswerSlots": 35,
+  "newPublishedSourceAnswerSlots": 66
 }

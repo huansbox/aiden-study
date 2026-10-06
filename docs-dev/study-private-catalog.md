@@ -1,8 +1,8 @@
 # Study 私用題庫分包（#160／#161）
 
-[最新社會三卷擴量候選](grade4-social-study-existing-paper-batch.md)：root核定rev19全科352活動、社會67活動／101格（新增43活動／66格），14shards／social unit22六片；本批尚未發布新增0，正式rev18仍309活動。完整私有入口與中立集合見本批紀錄；下方較早批次保留各自發布歷史。
+[最新社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整canonical封存入口為 `data/private/study/g4-s1-math-u1/rev19-release/private/social-existing-paper-batch/rev19-candidate/`，curated／explanations／mapping在此，完整source／manifest／14shards在其catalog/。**本機／Dropbox雙副本仍待建立**；建立前使用本批ignored工作資料及正式讀回SHA，不能將預定入口當成備份已完成。下方較早批次及其當時的基線入口保留歷史，後續完整基線採本段rev19；副本完成與逐檔重建收據回查[#191](https://github.com/huansbox/aiden-study/issues/191)。
 
-[#191 既有社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)的工作分支新增社會 unit 22 原生三選一契約，與既有二／四選一並列；保留原三個選項，不另補干擾項。Python builder 與 JS parser 同步驗證，孩子頁及家長試玩沿用既有選項按鈕。此契約修補尚未發布；現役仍 rev18 全科309活動、社會24活動。題組、題圖與其他格式依完整來源審查及 root 核定，不能用現有格式限制排除核心候選。
+[#191 既有社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已發布社會 unit22 原生三選一契約，與既有二／四選一並列；保留原三個選項，不補干擾項。Python builder與JS parser同步驗證，孩子頁及家長試玩沿用既有選項按鈕。完整題組、題圖與可靠U1集合經獨立review、root核定與實際發布讀回；其他範圍仍另核，不以目前renderer限制排除核心來源。
 
 同批僅將 **social unit 22 的 PNG decoded bytes 上限改為192 KiB**，保留原卷站名、括號細字及完整圖形的清晰度；math／science PNG仍32 KiB。JS與Python先嚴格核對科目、unit及ID，再依scope選容量。每圖雙邊1600px、每shard256 KiB、每unit4 MiB、單次操作16 MiB、manifest512 KiB與cache16 MiB防護保持；未新增社會table、JPEG或外部媒體。原圖實際bytes與放大可讀性須另經review，容量合格不代表內容核定。長期原則見[Wiki正本](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
