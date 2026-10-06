@@ -69,11 +69,12 @@
     if (!state?.daily) return '<section class="family-panel daily-goals"><h2>今天的目標</h2><p role="status">正在讀取每日目標⋯</p></section>';
     const entries = C.homeEntries(config, child.id, reg);
     const goals = state.daily.targets || [];
-    const earned = Number(Boolean(state.daily.first)) + Number(Boolean(state.daily.all));
+    const earned = state.grants.filter((g) => g.date === state.daily.date).length;
+    const limit = Math.max(goals.length || 1, earned);
     const build = state.activeBuild;
     const title = window.KidsBrickModels?.get(build?.modelId)?.title;
     const totalParts = window.KidsCollectionCore.PACK_COUNTS[build?.modelId] * 3;
-    return `<section class="family-panel daily-goals"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日拼裝包 ${earned} / ${goals.length ? 2 : 1}</span></div><p class="daily-explanation">${goals.length ? "完成一項領一包，全部完成再領一包。內容由你選。" : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
+    return `<section class="family-panel daily-goals"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日拼裝包 ${earned} / ${limit}</span></div><p class="daily-explanation">${goals.length ? `每完成一種目標領一包，${goals.length} 種目標共可領 ${goals.length} 包。內容由你選。` : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
       const entry = entries.find(e => e.id === goal.entryId);
       const label = entry?.title || goal.label || names[goal.entryId] || goal.entryId;
       const content = `<span>${esc(label)}</span><strong>${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${goal.metric === "answered" ? "題" : "輪"}${goal.done ? " · 完成" : ""}</strong>`;

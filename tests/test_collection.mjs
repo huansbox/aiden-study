@@ -8,6 +8,122 @@ import { collectionRuntime } from "./helpers/collection-runtime.mjs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 const C = globalThis.KidsCollectionCore;
+const fourGoals = [
+  { entryId: "study:math", metric: "answered", quantity: 2 },
+  { entryId: "study:science", metric: "answered", quantity: 1 },
+  { entryId: "study:social", metric: "answered", quantity: 1 },
+  { entryId: "spelling", metric: "rounds", quantity: 1 },
+];
+
+test("四種目標按份量逐項領 1 包，重練及全部完成不額外加發，臺灣午夜重算", () => {
+  const now = new Date("2026-10-06T15:59:00Z");
+  let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: fourGoals }, now);
+  const record = (entryId, at = now) => { state = C.apply(state, { type: "record", event: { entryId, answered: true, occurredAt: at.toISOString() } }, at); };
+  assert.equal(C.snapshot(state, "2026-10-06").daily.limit, 4);
+  record("study:math");
+  assert.equal(state.grants.length, 0, "兩題目標尚未達標");
+  record("study:math");
+  assert.equal(state.grants.length, 1);
+  record("study:math");
+  assert.equal(state.grants.length, 1, "同種超量不多領");
+  record("study:social");
+  assert.equal(state.grants.length, 2);
+  record("study:science");
+  assert.equal(state.grants.length, 3);
+  record("spelling");
+  assert.equal(state.grants.length, 3, "輪數目標須完成整輪");
+  state = C.apply(state, { type: "round", hasPractice: true, event: { entryId: "spelling", roundId: "fourth", occurredAt: now.toISOString() } }, now);
+  assert.equal(state.grants.length, 4);
+  assert.equal(C.snapshot(state, "2026-10-06").daily.earned, 4);
+  assert.equal(new Set(state.grants.map((g) => g.id)).size, 4);
+  const midnight = new Date("2026-10-06T16:00:00Z");
+  record("study:science", midnight);
+  const nextDay = C.snapshot(state, "2026-10-07").daily;
+  assert.equal(nextDay.earned, 1);
+  assert.equal(nextDay.limit, 4);
+  assert.equal(nextDay.targets.find((t) => t.entryId === "study:math").progress, 0);
+  assert.equal(state.grants.length, 5, "前一天的包永久保留");
+});
+
+test("當天增加、減少、清空與恢復目標，保留已領數且只補新增達標的差額", () => {
+  const now = new Date("2026-10-06T12:00:00Z");
+  let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: fourGoals.slice(1, 3) }, now);
+  for (const entryId of ["study:science", "study:social"]) state = C.apply(state, { type: "record", event: { entryId, answered: true, occurredAt: now.toISOString() } }, now);
+  assert.equal(state.grants.length, 2);
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 1, targets: fourGoals }, now);
+  assert.equal(C.snapshot(state, "2026-10-06").daily.limit, 4);
+  for (let i = 0; i < 2; i++) state = C.apply(state, { type: "record", event: { entryId: "study:math", answered: true, occurredAt: now.toISOString() } }, now);
+  assert.equal(state.grants.length, 3);
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 2, targets: [fourGoals[0]] }, now);
+  assert.equal(state.grants.length, 3);
+  assert.equal(C.snapshot(state, "2026-10-06").daily.limit, 3, "減少目標不收回包，也不顯示超過分母");
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 3, targets: [] }, now);
+  state = C.apply(state, { type: "round", hasPractice: true, event: { entryId: "spelling", roundId: "free", occurredAt: now.toISOString() } }, now);
+  assert.equal(state.grants.length, 3, "清空後自由練習不能額外領");
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 4, targets: fourGoals }, now);
+  assert.equal(state.grants.length, 4, "恢復目標計入已保存的第四種完整一輪，只補一包");
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 5, targets: fourGoals }, now);
+  assert.equal(state.grants.length, 4, "重複儲存不加發");
+});
+
+test("舊單項兩包保留，舊 first/all 包計入新目標額度且歷史日期不回溯補發", () => {
+  const now = new Date("2026-10-06T12:00:00Z"), day = "2026-10-06";
+  let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: [fourGoals[1]] }, now);
+  state.days[day] = { targets: [fourGoals[1]], counts: { "study:science": { answered: 1, rounds: 0 } }, rounds: 0 };
+  state.grants = ["first", "all"].map((kind) => ({ id: `${day}:${kind}`, date: day, kind, buildId: "e500", packIndex: kind === "first" ? 0 : 1 }));
+  state = C.reconcile(state, now);
+  assert.equal(state.grants.length, 2);
+  state = C.apply(state, { type: "goals", expectedGoalRevision: 1, targets: fourGoals }, now);
+  assert.equal(state.grants.length, 2);
+  state.days[day].counts = Object.fromEntries(fourGoals.map((t) => [t.entryId, { [t.metric]: t.quantity }]));
+  state = C.reconcile(state, now);
+  assert.equal(state.grants.length, 4);
+  assert.deepEqual(state.grants.slice(0, 2).map((g) => [g.id, g.buildId, g.packIndex]), [[`${day}:first`, "e500", 0], [`${day}:all`, "e500", 1]]);
+  assert.equal(C.reconcile(state, now).grants.length, 4);
+  state.days["2026-10-05"] = structuredClone(state.days[day]);
+  assert.equal(C.snapshot(C.reconcile(state, now), "2026-10-05").daily.earned, 0, "讀取歷史不補發");
+});
+
+test("SQLite 首次讀取只補當天舊包差額，重讀與重新啟動保留補包及拼裝位置", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "aiden-collection-legacy-"));
+  let runtime = await collectionRuntime({ persist: dir });
+  const day = C.dateKey(), before = C.dateKey(Date.now() - 86400000);
+  const state = C.empty();
+  state.configs = [{ revision: 1, effectiveDate: before, targets: fourGoals }]; state.goalRevision = 1;
+  for (const date of [before, day]) state.days[date] = { targets: fourGoals, counts: Object.fromEntries(fourGoals.map((t) => [t.entryId, { [t.metric]: t.quantity }])), rounds: 1 };
+  state.grants = [before, day].flatMap((date, index) => ["first", "all"].map((kind, n) => ({ id: `${date}:${kind}`, date, kind, buildId: "e500", packIndex: index * 2 + n })));
+  state.builds = [{ id: "e500", modelId: "e500", placed: ["p1-1"], completedAt: null }]; state.activeBuildId = "e500";
+  const read = async (date = day, child = "aiden") => {
+    const response = await runtime.fetch(new Request(`http://local/v1/collection/${child}?date=${date}`, { headers: { Authorization: "Bearer test-token" } }));
+    assert.equal(response.status, 200); return response.json();
+  };
+  try {
+    await runtime.restoreFixture(state);
+    assert.equal((await read(before)).grants.length, 4, "讀歷史不觸發新版補包");
+    const updated = await read();
+    assert.equal(updated.grants.length, 6); assert.equal(updated.daily.earned, 4); assert.equal(updated.daily.limit, 4);
+    assert.deepEqual(updated.grants.slice(0, 4), state.grants);
+    assert.deepEqual(updated.activeBuild.placed, ["p1-1"]);
+    assert.equal((await read()).revision, updated.revision, "重讀不重複補發或增加版本");
+    await runtime.dispose(); runtime = await collectionRuntime({ persist: dir });
+    assert.equal((await read()).grants.length, 6);
+    assert.equal((await read(day, "bingpu")).grants.length, 0);
+  } finally { await runtime.dispose(); await rm(dir, { recursive: true, force: true }); }
+});
+
+test("舊日期延遲作答沿用舊上限，新規則日期跨日補送仍按每種一包", () => {
+  const yesterday = new Date("2026-10-05T12:00:00Z"), now = new Date("2026-10-06T12:00:00Z"), day = "2026-10-05";
+  const counts = Object.fromEntries(fourGoals.map((t) => [t.entryId, { [t.metric]: t.quantity }]));
+  const legacy = C.empty();
+  legacy.days[day] = { targets: fourGoals, counts, rounds: 1 };
+  legacy.grants = ["first", "all"].map((kind) => ({ id: `${day}:${kind}`, date: day, kind, buildId: null, packIndex: null }));
+  const unchanged = C.apply(legacy, { type: "record", event: { entryId: "nonogram", answered: true, occurredAt: yesterday.toISOString() } }, now);
+  assert.deepEqual(unchanged.grants, legacy.grants, "無關補送不能把昨天兩包補成四包");
+  let fresh = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: fourGoals }, yesterday);
+  for (const entryId of ["study:science", "study:social"]) fresh = C.apply(fresh, { type: "record", event: { entryId, answered: true, occurredAt: yesterday.toISOString() } }, now);
+  assert.equal(fresh.grants.length, 2, "新規則日期即使延遲上傳，第二種仍立即發第二包");
+  assert.equal(fresh.days[day].rewardVersion, 2);
+});
 test("E500 can begin with a pack while an existing train build keeps its original identity and placed part", () => {
   const now = new Date("2026-09-22T12:00:00Z");
   const event = { entryId: "spelling", roundId: "first", occurredAt: now.toISOString() };
@@ -24,27 +140,27 @@ test("E500 can begin with a pack while an existing train build keeps its origina
   assert.deepEqual(restored.activeBuild.placed, ["p1-1"]);
   assert.equal(restored.grants[0].buildId, "train");
 });
-test("每日份量、單項兩包、空目標只有完整回合一包", () => {
+test("每日份量、單項一包、空目標只有完整回合一包", () => {
   const now = new Date("2026-09-22T12:00:00Z");
   let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: [{ entryId: "study:math", metric: "answered", quantity: 2 }] }, now);
   for (let i=0;i<2;i++) state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
-  assert.equal(state.grants.length,2);
+  assert.equal(state.grants.length,1);
   state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
-  assert.equal(state.grants.length,2);
+  assert.equal(state.grants.length,1);
   let empty=C.apply(C.empty(),{type:"record",event:{entryId:"spelling",answered:true,occurredAt:now.toISOString()}},now);
   assert.equal(empty.grants.length,0);
   assert.throws(()=>C.apply(empty,{type:"round",event:{entryId:"spelling",roundId:"r",occurredAt:now.toISOString()}},now));
   empty=C.apply(empty,{type:"round",hasPractice:true,event:{entryId:"spelling",roundId:"r",occurredAt:now.toISOString()}},now);
   assert.deepEqual(empty.grants.map(g=>g.kind),["first"]);
 });
-test("設定修改即時生效，跨日保留已發包且清空不補全完成獎",()=>{
+test("設定修改即時生效，跨日保留已發包且清空不加發",()=>{
   const now=new Date("2026-09-22T12:00:00Z");
   let s=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"math",metric:"answered",quantity:1}]},now);
   s=C.apply(s,{type:"record",event:{entryId:"math",answered:true,occurredAt:now.toISOString()}},now);
   s=C.apply(s,{type:"goals",expectedGoalRevision:1,targets:[]},now);
   assert.equal(C.snapshot(s,"2026-09-22").daily.targets.length,0);
   assert.equal(C.snapshot(s,"2026-09-23").daily.targets.length,0);
-  assert.equal(s.grants.length,2);
+  assert.equal(s.grants.length,1);
 });
 test("真 SQLite DO：重送、跨裝置分包衝突、round去重、世代與孩子隔離",async()=>{
   const runtime=await collectionRuntime();
@@ -79,7 +195,7 @@ test("真 SQLite DO：重送、跨裝置分包衝突、round去重、世代與�
 });
 test("14包42零件完成永久收藏；後續重送不回退，可以選下一件",()=>{
   let s=C.empty();
-  for(let day=1;day<=7;day++) {
+  for(let day=1;day<=14;day++) {
     const now=new Date(`2026-09-${String(day).padStart(2,"0")}T12:00:00Z`);
     if(day===1)s=C.apply(s,{type:"goals",expectedGoalRevision:0,targets:[{entryId:"math",metric:"answered",quantity:1}]},now);
     s=C.apply(s,{type:"record",event:{entryId:"math",answered:true,occurredAt:now.toISOString()}},now);
@@ -168,7 +284,7 @@ test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>
     await send("place",{commandId:"persist-place",grantId:selected.grants[0].id,buildId:"car",packIndex:0,partId:"p1-1"});
     await runtime.dispose();runtime=await collectionRuntime({persist:dir});
     const state=await send("record",record);
-    assert.equal(state.grants.length,2);assert.equal(state.daily.targets[0].progress,1);
+    assert.equal(state.grants.length,1);assert.equal(state.daily.targets[0].progress,1);
     assert.deepEqual(state.activeBuild.placed,["p1-1"]);
   }finally{await runtime.dispose();await rm(dir,{recursive:true,force:true});}
 });
@@ -234,7 +350,7 @@ test("DO只接受同世代回合作答證據，舊client不得以新世代完成
     const fresh={...event,roundId:"fresh-evidence"};
     await send("record",{generation:1,event:fresh});
     const completed=await send("round",{generation:1,event:fresh});
-    assert.equal(completed.status,200);assert.equal(completed.body.snapshot.grants.length,2);
+    assert.equal(completed.status,200);assert.equal(completed.body.snapshot.grants.length,1);
     assert.equal(completed.body.snapshot.daily.targets[0].progress,1);
   }finally{await runtime.dispose();}
 });

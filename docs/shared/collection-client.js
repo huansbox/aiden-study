@@ -17,7 +17,7 @@
     }
     function snapshot() {
       const view = JSON.parse(JSON.stringify(base));
-      if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false })), first: false, all: false };
+      if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false })), earned: 0, limit: view.goals?.targets?.length || 1, first: false, all: false };
       for (const command of pending()) if (command.type === "place") {
         const build = view.builds.find((b) => b.id === command.buildId);
         if (build && !build.placed.includes(command.partId)) build.placed.push(command.partId);
