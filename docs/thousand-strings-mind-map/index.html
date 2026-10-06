@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ee">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="一千根琴弦">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="../assets/fonts/BpmfZihiSans-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <title>一千根琴弦 · 拼出閱讀心智圖</title>
+</head>
+<body>
+<header><a href="../index.html">回學習首頁</a><span>閱讀小工坊</span></header>
+<main>
+  <h1>一千根琴弦 · 我的心智圖</h1>
+  <p id="font-status" class="muted" role="status">注音字型載入中。</p>
+  <div class="workspace">
+    <section id="guide" class="card" aria-label="選擇重點"></section>
+    <section class="card map-card" aria-label="我的心智圖">
+      <h2 id="map-title">五條主枝，一步一步拼</h2>
+      <div id="map" class="mind-map"></div>
+      <p id="save-status" class="muted" role="status"></p>
+    </section>
+  </div>
+  <section id="finish" class="card" hidden></section>
+  <details class="parent-note"><summary>給陪讀的大人</summary>
+    <p>先請孩子說說文章裡發生什麼事，再選自己看得懂的短詞。每一步選一組，各選項都有文章依據，不計分。想不起來時，可以打開「回頭讀一小段」。</p>
+    <p>五條主枝保留小雅的處境、師徒的生活與練琴、師父的約定、白紙與希望的道理，以及老師邀請小雅運動的結尾。完成後請孩子說說：秘方是白紙，為什麼徒弟仍練了那麼多年？</p>
+    <p>讀後可以聊聊，如果你是小雅的同學，想怎麼陪伴她？這是自己的想法；圖中「鼓勵」先記老師的邀請，文章沒有說小雅的行動不便被治好。</p>
+    <p>先寫中間的原題，再往外畫五條線。圖上的每個短詞就是要抄的內容。進度只記在此瀏覽器，與上次作業分開。</p>
+  </details>
+</main>
+<script src="../mind-map-reading.js"></script>
+<script src="content.js"></script>
+<script src="app.js"></script>
+<script src="../shared/task-home.js?v=20260916-home"></script>
+</body>
+</html>

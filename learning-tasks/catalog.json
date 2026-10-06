@@ -524,10 +524,22 @@
       ]
     },
     {
+      "id": "thousand-strings",
+      "name": "一千根琴弦閱讀心智圖",
+      "status": "complete",
+      "statusNote": "內容、注音、獨立審查與隔離驗證完成；發布證據見 #194。額外驗收依家長決定略過。",
+      "eventDate": "2026-10-06",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "小雅的困境、盲師徒練琴、白紙秘方與希望、老師邀請運動。",
+      "reusable": "故事與現實對照、關鍵轉折直接留在抄寫圖",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available", "links": [{"label": "網頁", "url": "../thousand-strings-mind-map/"}]
+    },
+    {
       "id": "love-sharing",
       "name": "愛的分享閱讀心智圖",
       "status": "complete",
-      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "statusNote": "已上線；家長於 2026-10-06 回報老師沒有修正。額外驗收依家長決定略過。",
       "eventDate": "2026-09-29",
       "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
       "description": "奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。",

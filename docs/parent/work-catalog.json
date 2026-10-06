@@ -1418,6 +1418,46 @@
       }
     },
     {
+      "id": "task:thousand-strings",
+      "type": "task",
+      "name": "一千根琴弦閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "內容、注音、獨立審查與隔離驗證完成；發布證據見 #194。額外驗收依家長決定略過。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/thousand-strings",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/thousand-strings"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/thousand-strings",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../thousand-strings-mind-map/"
+        }
+      ],
+      "description": "小雅的困境、盲師徒練琴、白紙秘方與希望、老師邀請運動。",
+      "eventDate": "2026-10-06",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": "2026-10-06",
+      "updated": "2026-10-06",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:love-sharing",
       "type": "task",
       "name": "愛的分享閱讀心智圖",
@@ -1426,7 +1466,7 @@
       ],
       "audienceLabel": "9 歲；成人可陪讀",
       "status": "complete",
-      "statusNote": "內容、流程、版面與獨立審查完成；沿用前篇老師未修正的五枝短詞做法。",
+      "statusNote": "已上線；家長於 2026-10-06 回報老師沒有修正。額外驗收依家長決定略過。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/love-sharing",
       "source": {
@@ -1450,7 +1490,7 @@
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
       "created": "2026-09-29",
-      "updated": "2026-09-29",
+      "updated": "2026-10-06",
       "freshness": {
         "state": "current",
         "checkedAt": null,

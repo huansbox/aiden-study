@@ -58,6 +58,7 @@
 | [Native Camp 2026-09-16 Edon](learning-tasks/nativecamp-2026-09-16/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-16) |
 | [Native Camp 2026-09-14 Edon](learning-tasks/nativecamp-2026-09-14/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-14) |
 | [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 紙本口說；另供 App 自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-15)、[孩子版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf)、[家長版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf) |
+| [一千根琴弦閱讀心智圖](learning-tasks/thousand-strings/) | 小雅的困境、盲師徒練琴、白紙秘方與希望、老師邀請運動。 | [網頁](docs/thousand-strings-mind-map/) |
 | [愛的分享閱讀心智圖](learning-tasks/love-sharing/) | 奶奶的轉變、狗醫生訓練與服務、陪伴復健、分享愛。 | [網頁](docs/love-sharing-mind-map/) |
 | [悠閒午後閱讀心智圖](learning-tasks/leisure-afternoon/) | 五枝放射圖、各段重點保留、iPad 選詞。 | [網頁](docs/leisure-mind-map/) |
 | [四上數學第一份短練習](learning-tasks/grade4-math-first-practice/) | U1「一億以內的數」15～20 分鐘紙本練習；孩子作答、家長分卷核對。 | 私用成品 |
