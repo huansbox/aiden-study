@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { collectionRuntime } from "./collection-runtime.mjs";
-import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack } from "./synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack } from "./synthetic-study-pack.mjs";
 import { loadPrivateStudyQaPack } from "./private-study-qa-pack.mjs";
 import { lessonFixture } from "./nativecamp-weekly.mjs";
 import "../../docs/nativecamp/core.js";
@@ -53,6 +53,12 @@ createServer(async (req, res) => {
     }
     if (url.pathname === "/test/study-science-pack") {
       await KV.put("c:study:g4-s1-math-u1", JSON.stringify(scienceSyntheticPack()));
+      res.writeHead(302, { Location: "/?child=aiden" });
+      res.end();
+      return;
+    }
+    if (url.pathname === "/test/study-social-pack") {
+      await KV.put("c:study:g4-s1-math-u1", JSON.stringify(socialSyntheticPack()));
       res.writeHead(302, { Location: "/?child=aiden" });
       res.end();
       return;

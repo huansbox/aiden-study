@@ -412,12 +412,12 @@ async function verifyUnavailableActivity() {
   await browser.waitFor('document.querySelector("[data-daily-entry=nativecamp]")?.checked');
   await browser.click('[data-daily-entry="nativecamp"]');
   await browser.click('#save-daily-goals');
-  await browser.waitFor('KidsCollection.create("bingpu").snapshot().grants.length===2');
+  await browser.waitFor('KidsCollection.create("bingpu").snapshot().daily.targets.length===1');
   const adjusted=await browser.evaluate('KidsCollection.create("bingpu").snapshot()');
   assert.equal(adjusted.daily.targets.length,1);
   assert.equal(adjusted.daily.targets[0].progress,1);
   await browser.click('#save-daily-goals');
   await browser.waitFor('KidsCollection.create("bingpu").snapshot().goalRevision>'+adjusted.goalRevision);
-  assert.equal((await browser.evaluate('KidsCollection.create("bingpu").snapshot()')).grants.length,2);
-  passed('finished Native Camp grants nothing; parent removes unavailable goal and preserved spelling progress completes today without a third pack');
+  assert.equal((await browser.evaluate('KidsCollection.create("bingpu").snapshot()')).grants.length,1);
+  passed('finished Native Camp grants nothing; removing an unavailable goal preserves spelling progress and its one pack without a bonus');
 }

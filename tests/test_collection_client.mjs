@@ -23,6 +23,32 @@ function client(runtime,{storage=new Map(),child="aiden"}={}) {
   vm.runInContext(code("collection-core.js"),ctx);vm.runInContext(code("collection-client.js"),ctx);
   return {collection:ctx.KidsCollection.create(child),storage,requests,setOffline:v=>offline=v,setFailWrites:v=>failWrites=v,setLoseResponse:v=>loseResponse=v,setStatus:v=>forcedStatus=v};
 }
+
+test("四種每日目標離線完成後重開補送，各一包且多裝置重讀不加發", async () => {
+  const runtime = await collectionRuntime();
+  try {
+    const h = client(runtime); await h.collection.ready;
+    const entries = ["study:math", "study:science", "study:social", "spelling"];
+    await h.collection.saveGoals(entries.map((entryId) => ({ entryId, metric: entryId === "spelling" ? "rounds" : "answered", quantity: 1 })));
+    h.setOffline(true);
+    for (const entryId of entries) {
+      const round = { entryId, roundId: entryId.replace(":", "-") };
+      h.collection.beginRound(round); h.collection.record({ ...round, answered: true });
+      await h.collection.finishRound(round); await h.collection.finishRound(round);
+    }
+    assert.equal(h.collection.snapshot().grants.length, 0, "雲端確認後才發包");
+    const reopened = client(runtime, { storage: h.storage }); await reopened.collection.ready;
+    assert.equal(reopened.collection.snapshot().daily.earned, 4);
+    assert.equal(reopened.collection.snapshot().daily.limit, 4);
+    assert.equal(reopened.collection.snapshot().sync.pending, 0);
+    const other = client(runtime); await other.collection.ready;
+    other.collection.record({ entryId: "study:science", answered: true }); await other.collection.flush();
+    await reopened.collection.refresh();
+    assert.equal(reopened.collection.snapshot().grants.length, 4);
+    const sibling = client(runtime, { child: "bingpu" }); await sibling.collection.ready;
+    assert.equal(sibling.collection.snapshot().grants.length, 0);
+  } finally { await runtime.dispose(); }
+});
 test("離線record/round重開補送、重複finish不加發、回應遺失重試保留同一包",async()=>{
   const runtime=await collectionRuntime();
   try{
@@ -37,14 +63,14 @@ test("離線record/round重開補送、重複finish不加發、回應遺失重�
     await h.collection.finishRound({roundId:"one",entryId:"spelling"});
     assert.equal(h.collection.snapshot().sync.pending,2);
     const reopened=client(runtime,{storage:h.storage});await reopened.collection.ready;
-    assert.equal(reopened.collection.snapshot().grants.length,2);
+    assert.equal(reopened.collection.snapshot().grants.length,1);
     assert.equal(reopened.collection.snapshot().sync.pending,0);
     reopened.setLoseResponse(true);
     await assert.rejects(reopened.collection.selectModel("car"));
     assert.equal(reopened.collection.snapshot().sync.pending,1);
     await reopened.collection.flush();
     assert.equal(reopened.collection.snapshot().activeBuild.modelId,"car");
-    assert.equal(reopened.collection.snapshot().grants.length,2);
+    assert.equal(reopened.collection.snapshot().grants.length,1);
   }finally{await runtime.dispose();}
 });
 test("回合不能跨統計重置借用舊作答；重新開始的新世代回合才可發包",async()=>{
@@ -67,7 +93,7 @@ test("回合不能跨統計重置借用舊作答；重新開始的新世代回�
     const fresh={roundId:"after-reset",entryId:"spelling"};
     h.collection.beginRound(fresh);h.collection.record({...fresh,answered:true,generation:1});
     await h.collection.finishRound(fresh);
-    assert.equal(h.collection.snapshot().grants.length,2);
+    assert.equal(h.collection.snapshot().grants.length,1);
     assert.equal(h.requests.at(-1).body.generation,1);
   }finally{await runtime.dispose();}
 });
