@@ -80,7 +80,7 @@ def _require_nonempty(value: Any, label: str) -> str:
     return value.strip()
 
 
-def _validate_material(material: Any, label: str) -> None:
+def _validate_material(material: Any, label: str, max_png_bytes: int = 32 * 1024) -> None:
     if not isinstance(material, dict):
         raise PackBuildError(f"{label} must be a material object")
     if material.get("kind") == "table":
@@ -106,11 +106,13 @@ def _validate_material(material: Any, label: str) -> None:
     data = material["data"]
     if not isinstance(data, str) or not re.fullmatch(r"data:image/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?", data):
         raise PackBuildError(f"{label} PNG data URI is invalid")
+    if len(data[22:]) > ((max_png_bytes + 2) // 3) * 4:
+        raise PackBuildError(f"{label} PNG base64 is oversized or noncanonical")
     try:
         image = base64.b64decode(data[22:], validate=True)
     except binascii.Error as exc:
         raise PackBuildError(f"{label} PNG base64 is invalid") from exc
-    if not image or len(image) > 32768 or base64.b64encode(image).decode("ascii") != data[22:]:
+    if not image or len(image) > max_png_bytes or base64.b64encode(image).decode("ascii") != data[22:]:
         raise PackBuildError(f"{label} PNG base64 is oversized or noncanonical")
     if image[:8] != b"\x89PNG\r\n\x1a\n":
         raise PackBuildError(f"{label} PNG signature is invalid")
@@ -235,10 +237,12 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     if "material" in question:
         if subject != "science" and not ((subject == "math" and question["unit"] == 17 or subject == "social" and question["unit"] == 22) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
             raise PackBuildError(f"question {practice_id} material is only allowed for science, math unit 17 PNG, or social unit 22 PNG")
-        _validate_material(question["material"], f"question {practice_id} material")
+        # Identity/scope was checked above, before selecting the PNG byte limit.
+        max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] == 22 else 32 * 1024
+        _validate_material(question["material"], f"question {practice_id} material", max_png_bytes)
 
     if adaptation == "multiple_choice":
-        allowed_counts = {"math": {4}, "science": {3, 4}, "social": {2, 4}}[subject]
+        allowed_counts = {"math": {4}, "science": {3, 4}, "social": {2, 3, 4}}[subject]
         if question["type"] != "multiple_choice" or len(question["options"]) not in allowed_counts:
             raise PackBuildError(f"question {practice_id} has an unsupported multiple choice option count")
         if any(not isinstance(option, str) or not option.strip() for option in question["options"]):

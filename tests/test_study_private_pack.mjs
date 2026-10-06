@@ -8,6 +8,47 @@ const plain = x => JSON.parse(JSON.stringify(x));
 const key = child => `study:progress:${child}`;
 const packKey = "study:private-pack:g4-s1-math-u1";
 const answer = q => q.type === "fill_in_blank" ? q.blanks.map(b => b.answer) : q.answer;
+function sizedPng(size = 172724, width = 1, corruptCrc = false) {
+  let raw = Buffer.from(syntheticPngData(8, 6, width).slice(22), "base64");
+  const payload = Buffer.concat([Buffer.from("comment\0"), Buffer.alloc(size - raw.length - 20, 120)]);
+  const kind = Buffer.from("tEXt"), chunk = Buffer.alloc(payload.length + 12);
+  chunk.writeUInt32BE(payload.length); kind.copy(chunk, 4); payload.copy(chunk, 8);
+  let crc = 0xffffffff;
+  for (const byte of Buffer.concat([kind, payload])) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+  }
+  chunk.writeUInt32BE(((crc ^ 0xffffffff) ^ (corruptCrc ? 1 : 0)) >>> 0, chunk.length - 4);
+  raw = Buffer.concat([raw.subarray(0, -12), chunk, raw.subarray(-12)]);
+  assert.equal(raw.length, size);
+  return "data:image/png;base64," + raw.toString("base64");
+}
+test("detailed social PNG fits a production shard while other subjects and immutable IDs retain guards", async () => {
+  const e = await boot(); const pack = socialSyntheticPack();
+  const q = pack.questions[8]; q.material = { kind: "png", data: sizedPng(), alt: "Synthetic detailed map" };
+  assert.equal(e.window.StudyPrivatePack.parse(JSON.stringify(pack)).questions[8].material.data, q.material.data);
+  const { buildCatalog } = await import("../scripts/build_private_study_catalog.mjs");
+  const built = await buildCatalog(pack, pack, []);
+  const shard = built.manifest.shards.find(s => s.ids.includes(q.id));
+  assert.ok(shard.bytes <= 256 * 1024);
+  assert.equal(JSON.parse(built.shards.get(shard.hash)).questions.find(x => x.id === q.id).material.data, q.material.data);
+  const reject = mutate => { const changed = plain(pack); mutate(changed.questions[8]); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed))); };
+  for (const [subject, unit] of [["math", 17], ["science", 20], ["science", 21]]) reject(x => {
+    x.subject = subject; x.unit = unit; x.id = `${subject}-g4s1-capacity-v1`;
+    // This rejection must be the media scope gate, not a missing explanation.
+    const changed = plain(pack); changed.questions[8] = x;
+    delete changed.explanations[q.id]; changed.explanations[x.id] = "Synthetic explanation";
+    assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed)), /32 KiB/);
+  });
+  reject(x => { x.material.data = sizedPng(192 * 1024 + 1); });
+  reject(x => { x.material.data = sizedPng(172724, 1601); });
+  reject(x => { x.material.data = sizedPng(172724, 1, true); });
+  reject(x => { x.unit = "22"; });
+  reject(x => { x.unit = 23; });
+  reject(x => { x.material = {kind:"table",caption:"Synthetic",columns:["A","B"],rows:[["1","2"]]}; });
+  const changed = plain(pack); changed.revision++; changed.questions[8].material.data = sizedPng(172723);
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed), [], pack), /相同 ID/);
+});
 function oldProgress() {
   const q = publicQuestions.find(q => q.unit === 5);
   return { schemaVersion: 1, semester: "final", subject: "math", mastered: { 5: [q.id] }, challenge: { 5: { batch: [q.id] } }, stats: { [q.id]: { practiced: 3, correct: 1 } }, errorBank: [{ questionId: q.id, unit: 5 }], flagged: [{ questionId: "missing-old-id", unit: 5 }] };
@@ -224,8 +265,6 @@ test("science three-choice validates scope, answer bounds and real scoring witho
   invalid(q => { q.answer = 3; });
   const math = syntheticPack(); math.questions[0].options.pop();
   assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(math)));
-  const social = socialSyntheticPack(); social.questions[8].options.pop();
-  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(social)));
 });
 test("social unit 22 keeps rev10 math/science progress and validates existing choice or true_false", async () => {
   const e = await ready();
@@ -251,7 +290,7 @@ test("social unit 22 keeps rev10 math/science progress and validates existing ch
   invalid(q => { q.subject = "science"; });
   invalid(q => { q.material = { kind: "table", caption: "合成", columns: ["甲", "乙"], rows: [["一", "二"]] }; });
   invalid(q => { q.type = "grouped_choice"; q.parts = [{ id: "A", text: "甲" }]; q.answer = "1"; });
-  invalid(q => { q.options.pop(); });
+  invalid(q => { q.options.splice(1); });
   const truth = socialSyntheticPack(); truth.questions[9].options = ["O", "X"];
   assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(truth)));
   const changed = socialSyntheticPack(); changed.revision = 12; changed.questions[8].subtopic = "其他主題";
@@ -294,7 +333,6 @@ test("social second batch permits PNG, two-choice MC and five-option group withi
   invalid(group => { group.answer = "12346"; });
   invalid(group => { group.unit = 23; });
   invalid(group => { group.material = { kind: "table", caption: "合成表", columns: ["甲", "乙"], rows: [["1", "2"]] }; });
-  invalid((group, choice) => { choice.options.push("丙"); });
   invalid((group, choice) => { choice.options.push("丙", "丁", "戊"); });
   invalid((group, choice) => { choice.answer = "3"; });
   const science = groupedSyntheticPack(); science.questions[8].options.push("丁", "戊");
@@ -302,6 +340,36 @@ test("social second batch permits PNG, two-choice MC and five-option group withi
   const math = syntheticPack(); math.questions[0].options.pop(); math.questions[0].options.pop();
   assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(math)));
   const changed = socialSecondSyntheticPack(); changed.revision++; changed.questions[11].parts[0].text += "變";
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed), [], pack), /相同 ID/);
+});
+
+test("social original three-choice renders three buttons, scores the third, and preserves old progress through reload", async () => {
+  const st = storage(); st.map.set(key("test-child"), JSON.stringify(oldProgress()));
+  let e = await boot(st);
+  const pack = socialSyntheticPack(), q = pack.questions[8];
+  q.options = ["甲", "乙", "丙"]; q.answer = "3";
+  const before = oldPart(e.app.state);
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("social");
+  e.app.State.saveBatch("22", [q.id]); e.app.startQuiz("full", 22);
+  assert.equal((e.node("page-quiz").innerHTML.match(/class="opt-btn/g) || []).length, 3);
+  e.app.submitAnswer("2");
+  assert.equal(e.app.quiz.answered.at(-1).correct, false);
+  assert.equal(e.app.State.doneCount(22), 0);
+  e = await boot(e.st);
+  e.app.State.setSubject("social"); e.app.startQuiz("full", 22);
+  assert.deepEqual(plain(e.app.quiz.queue), [q.id]);
+  e.app.submitAnswer("3");
+  assert.equal(e.app.quiz.answered.at(-1).correct, true);
+  assert.equal(e.app.State.doneCount(22), 1);
+  const after = oldPart(e.app.state); delete after.stats[q.id];
+  assert.deepEqual(after, before);
+  assert.equal(e.st.getItem(key(e.child)).includes(q.text), false);
+  for (const mutate of [p => { p.answer = "4"; }, p => { p.answer = "0"; }, p => { p.options[1] = " "; }, p => { p.options.push("丁", "戊"); }]) {
+    const invalid = structuredClone(pack); mutate(invalid.questions[8]);
+    assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(invalid)));
+  }
+  const changed = structuredClone(pack); changed.revision++; changed.questions[8].options[2] = "改題";
   assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed), [], pack), /相同 ID/);
 });
 

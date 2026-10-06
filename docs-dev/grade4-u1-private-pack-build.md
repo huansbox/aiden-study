@@ -1,5 +1,11 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
+[最新社會三卷擴量候選](grade4-social-study-existing-paper-batch.md)：root核定rev19全科352活動、社會67活動／101格（新增43活動／66格），14shards／social unit22六片；本批尚未發布新增0，正式rev18仍309活動。完整私有入口與中立集合見本批紀錄；下方較早批次保留各自發布歷史。
+
+[#191 社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)的工作分支將社會 unit 22 的 `multiple_choice` 選項數驗證擴為 2／3／4，答案仍為原選項的 1-based 字串索引；原三選項不補第四個干擾項。Python builder、JS parser 與作答／重載／舊進度守衛同步驗證。此修補尚未發布，現役 rev18 全科309活動及社會24活動保持；下文 #154／#157 的選項規則保留各批歷史，最新三選一契約以本段為準。其他格式延伸及完整新增集合仍待 root 核定。
+
+本批原卷路線圖的括號站名需要保留細字，故僅social unit22 PNG容量上限改192 KiB；math／science仍32 KiB。Python／JS先核科目、unit與ID，再套容量，圖雙邊1600px及既有shard／unit／操作／manifest／cache總量限制不變。原crop與實際PNG逐檔SHA、放大圖review和原題條件都要核對，不能以壓低色盤掉字換取小檔。未開社會table或新媒體格式；下方歷史各批契約保持原發布事實。長期原則見[Wiki正本](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
+
 [最新深美文字題補題](grade4-science-study-smps-text-batch.md)已於2026-10-05正式發布rev18：全科309活動、自然217活動／281格，新增39活動／39格。舊270題及解說逐值保持，unit21容量自動拆成兩份shard（全包9份）；實際merge CI、Pages19資產比對及new shards／manifest兩階段讀回完成，legacy rev12與Worker不變。下一批完整基線入口採canonical `data/private/study/g4-s1-math-u1/rev18-release/private/science-smps-text-batch/rev18-candidate/`（curated／explanations／mapping在此，source／manifest／9shards在其catalog/）；本文件於封存前建立；本機／Dropbox副本與housekeeping完成狀態、最後文件merge、plan SHA及收據以#178最新封存checkpoint為準，使用前核逐檔hash及各副本獨立重建。現有完整工作來源仍在ignored `science-smps-text-batch/rev18-candidate/`，前版在同批 `baseline/`。
 
 [#178 教材判準補題](grade4-science-study-curriculum-batch.md)已於2026-10-05正式發布rev17：全科270活動（數學68／自然178／社會24）、自然242作答格，新增10活動／18格；舊260活動與解說逐值保持。完整source為551461 bytes、SHA256 `5d8c47335d1914da543aafab1b7263f3cad37b13dc2b3e6d450e14728813cb99`；manifest為24271 bytes、SHA256 `f82a7201e54b1852f5035ad2b8fe66b422fa65ca9870ad4472244068c60623e2`。正式兩階段讀回完成，legacy rev12與Worker `808dccba-a4d0-4b4a-afa4-5b6c8789c990`保持。內容merge為`ebbdd7e8e96e130b1adbddd7af559a137f2128b1`。

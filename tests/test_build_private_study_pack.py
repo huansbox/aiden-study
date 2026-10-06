@@ -183,7 +183,7 @@ def test_science_rows_keep_legacy_mapping_shape_and_validate_subject_unit_type(t
 
 
 def test_multiple_choice_option_counts_and_one_based_answers_by_subject():
-    for subject, unit, allowed in (("math", 15, (4,)), ("science", 20, (3, 4)), ("social", 22, (2, 4))):
+    for subject, unit, allowed in (("math", 15, (4,)), ("science", 20, (3, 4)), ("social", 22, (2, 3, 4))):
         app_id = f"{subject}-g4s1-synthetic-choice-v1"
         mapping = {"appId": app_id, "unit": unit, "digitalAdaptation": "multiple_choice"}
         question = {"id": app_id, "subject": subject, "unit": unit, "type": "multiple_choice",
@@ -299,7 +299,12 @@ def test_social_unit_22_png_two_choice_and_five_option_group_contract(tmp_path):
 
     rejects("six-group-options", lambda group, choice: group["options"].append("河谷"))
     rejects("group-answer-out-of-range", lambda group, choice: group.update(answer="12346"))
-    rejects("three-choice", lambda group, choice: choice["options"].append("丙"))
+    three_choice = copy.deepcopy(values)
+    three_choice[0]["items"][-1]["question"].update(options=["甲", "乙", "丙"], answer="3")
+    three_pack = build_pack(*_paths(tmp_path / "three-choice", three_choice))
+    assert three_pack["questions"][-1]["options"] == ["甲", "乙", "丙"]
+    assert three_pack["questions"][-1]["answer"] == "3"
+    rejects("three-choice-answer-out-of-range", lambda group, choice: choice.update(options=["甲", "乙", "丙"], answer="4"))
     rejects("five-choice", lambda group, choice: choice["options"].extend(["丙", "丁", "戊"]))
     rejects("two-choice-answer-out-of-range", lambda group, choice: choice.update(answer="3"))
     rejects("social-table", lambda group, choice: choice.update(material={"kind": "table", "caption": "Synthetic", "columns": ["A", "B"], "rows": [["1", "2"]]}))
@@ -316,6 +321,48 @@ def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entrie
     pixels = bytes([0, 0]) if color_type == 3 else bytes([0, 12, 34, 56, 255])
     image = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + palette + chunk(b"IDAT", zlib.compress(pixels)) + chunk(b"IEND", b"")
     return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
+
+
+def _sized_png(size=172724):
+    image = base64.b64decode(_synthetic_png()[22:])
+    kind = b"tEXt"
+    payload = b"comment\0" + b"x" * (size - len(image) - 20)
+    chunk = len(payload).to_bytes(4, "big") + kind + payload + zlib.crc32(kind + payload).to_bytes(4, "big")
+    image = image[:-12] + chunk + image[-12:]
+    assert len(image) == size
+    return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
+
+
+def test_original_social_png_capacity_is_scoped_after_identity_validation():
+    material = {"kind": "png", "data": _sized_png(), "alt": "Synthetic detailed map"}
+    def question(subject, unit):
+        return {"id": f"{subject}-g4s1-capacity-v1", "subject": subject, "unit": unit,
+                "type": "multiple_choice", "text": "Synthetic map question", "subtopic": "Synthetic concept",
+                "options": ["A", "B", "C", "D"], "answer": "1", "material": copy.deepcopy(material)}
+    def check(q):
+        return private_builder._validate_question(q, "SYNTHETIC", {"appId": q["id"], "unit": q["unit"], "digitalAdaptation": "multiple_choice"})
+    assert check(question("social", 22))["material"] == material
+    for subject, unit in (("math", 17), ("science", 20), ("science", 21)):
+        with pytest.raises(PackBuildError, match="oversized"):
+            check(question(subject, unit))
+    oversized = question("social", 22)
+    oversized["material"]["data"] = _sized_png(192 * 1024 + 1)
+    with pytest.raises(PackBuildError, match="oversized"):
+        check(oversized)
+    for subject, unit in (("social", 23), ("social", "22"), ("math", 22), ("science", 22)):
+        with pytest.raises(PackBuildError, match="outside the frozen contract"):
+            check(question(subject, unit))
+    malformed = question("social", 22)
+    data = bytearray(base64.b64decode(material["data"][22:]))
+    data[16:20] = (1601).to_bytes(4, "big")
+    data[29:33] = zlib.crc32(data[12:29]).to_bytes(4, "big")
+    malformed["material"]["data"] = "data:image/png;base64," + base64.b64encode(data).decode()
+    with pytest.raises(PackBuildError, match="chunks are invalid"):
+        check(malformed)
+    data[29] ^= 1
+    malformed["material"]["data"] = "data:image/png;base64," + base64.b64encode(data).decode()
+    with pytest.raises(PackBuildError, match="chunks are invalid"):
+        check(malformed)
 
 
 def test_png_ihdr_rejects_invalid_depth_and_color_with_valid_crc():
