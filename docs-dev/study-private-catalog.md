@@ -1,5 +1,11 @@
 # Study 私用題庫分包（#160／#161）
 
+[最新社會三卷擴量候選](grade4-social-study-existing-paper-batch.md)：root核定rev19全科352活動、社會67活動／101格（新增43活動／66格），14shards／social unit22六片；本批尚未發布新增0，正式rev18仍309活動。完整私有入口與中立集合見本批紀錄；下方較早批次保留各自發布歷史。
+
+[#191 既有社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)的工作分支新增社會 unit 22 原生三選一契約，與既有二／四選一並列；保留原三個選項，不另補干擾項。Python builder 與 JS parser 同步驗證，孩子頁及家長試玩沿用既有選項按鈕。此契約修補尚未發布；現役仍 rev18 全科309活動、社會24活動。題組、題圖與其他格式依完整來源審查及 root 核定，不能用現有格式限制排除核心候選。
+
+同批僅將 **social unit 22 的 PNG decoded bytes 上限改為192 KiB**，保留原卷站名、括號細字及完整圖形的清晰度；math／science PNG仍32 KiB。JS與Python先嚴格核對科目、unit及ID，再依scope選容量。每圖雙邊1600px、每shard256 KiB、每unit4 MiB、單次操作16 MiB、manifest512 KiB與cache16 MiB防護保持；未新增社會table、JPEG或外部媒體。原圖實際bytes與放大可讀性須另經review，容量合格不代表內容核定。長期原則見[Wiki正本](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
+
 [最新深美文字題補題](grade4-science-study-smps-text-batch.md)已於2026-10-05正式發布rev18：全科309活動、自然217活動／281格，新增39活動／39格。舊270題及解說逐值保持，unit21容量自動拆成兩份shard（全包9份）；實際merge CI、Pages19資產比對及new shards／manifest兩階段讀回完成，legacy rev12與Worker不變。下一批完整基線入口採canonical `data/private/study/g4-s1-math-u1/rev18-release/private/science-smps-text-batch/rev18-candidate/`（curated／explanations／mapping在此，source／manifest／9shards在其catalog/）；本文件於封存前建立；本機／Dropbox副本與housekeeping完成狀態、最後文件merge、plan SHA及收據以#178最新封存checkpoint為準，使用前核逐檔hash及各副本獨立重建。現有完整工作來源仍在ignored `science-smps-text-batch/rev18-candidate/`，前版在同批 `baseline/`。
 
 此契約接替「三科共用 256 KiB 單包」的成長限制。原單包、cache key、132 個 stable IDs 和孩子進度格式保留；新前端先取得目錄，按既有練習按鈕才取得該單元內容。家長試玩按科目／單元選單取題，不讀寫孩子資料。
@@ -28,7 +34,7 @@ manifest 與 legacy 的管理端讀回時間為 `2026-10-04T03:18:56.224Z`、`20
 - shard 為 `{schemaVersion:2,packId,revision:1,questions,explanations}`，revision 固定 1 是 envelope 格式相容欄位；**發布 revision 只以 manifest 為準**。內容以 SHA-256 唯一識別，無內容變動的單元跨發布維持相同 hash。每 shard 只含同 subject/unit，可沒有 legacy 首六題。一個單元可有多 shard。
 - client 完整取得所選單元全部 shard、驗 bytes/hash/題型/範圍/ID/subtopic 後，才建立本輪題池。manifest metadata 可在未下載題文時顯示單元／自然七主題的題數、mastered 分母、錯題和已回報題。尚未取得的 ID 不會進作答畫面，不因缺題被當成通關或刪除。
 - 原 GET 單包路由與 localStorage `study:private-pack:g4-s1-math-u1` 不變。catalog 404 才回退單包；服務失敗不自動拿 public fixture 補題。舊 client 可繼續使用凍結的 legacy 題包。
-- PNG 仍內嵌私人 shard，單張最多 32 KiB、既有像素／格式守衛不變。現階段沒有另做媒體 URL、公開 assets 或圖片外置。
+- PNG 仍內嵌私人 shard：math／science單張最多32 KiB，social unit22最多192 KiB；每圖雙邊1600px及格式／CRC守衛不變。現階段沒有另做媒體 URL、公開 assets 或圖片外置。
 
 ## 資源與儲存
 

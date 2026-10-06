@@ -21,10 +21,10 @@
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null]);
   }
-  function pngBytes(data) {
+  function pngBytes(data, maxBytes) {
     if (typeof data !== "string" || !/^data:image\/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(data)) throw new Error("PNG 格式無效。");
     const base64 = data.slice(22);
-    if (!base64 || base64.length > Math.ceil(32768 / 3) * 4) throw new Error("PNG 超過 32 KiB。");
+    if (!base64 || base64.length > Math.ceil(maxBytes / 3) * 4) throw new Error(`PNG 超過 ${maxBytes / 1024} KiB。`);
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     const bytes = [];
     for (let i = 0; i < base64.length; i += 4) {
@@ -36,11 +36,11 @@
       if (base64[i + 2] !== "=") bytes.push(((b & 15) << 4) | (c >> 2));
       if (base64[i + 3] !== "=") bytes.push(((c & 3) << 6) | d);
     }
-    if (bytes.length > 32768) throw new Error("PNG 超過 32 KiB。");
+    if (bytes.length > maxBytes) throw new Error(`PNG 超過 ${maxBytes / 1024} KiB。`);
     return Uint8Array.from(bytes);
   }
-  function pngValid(data) {
-    const bytes = pngBytes(data);
+  function pngValid(data, maxBytes) {
+    const bytes = pngBytes(data, maxBytes);
     const signature = [137, 80, 78, 71, 13, 10, 26, 10];
     if (signature.some((byte, i) => bytes[i] !== byte)) return false;
     const view = new DataView(bytes.buffer);
@@ -78,9 +78,9 @@
     }
     return ihdr && idat && iend;
   }
-  function validateMaterial(material) {
+  function validateMaterial(material, maxPngBytes) {
     if (material.kind === "png") {
-      if (!keys(material, ["kind", "data", "alt"]) || !boundedText(material.alt, 200) || !pngValid(material.data)) throw new Error("PNG 題圖格式無效。");
+      if (!keys(material, ["kind", "data", "alt"]) || !boundedText(material.alt, 200) || !pngValid(material.data, maxPngBytes)) throw new Error("PNG 題圖格式無效。");
     } else if (material.kind === "table") {
       if (!keys(material, ["kind", "caption", "columns", "rows"]) || !boundedText(material.caption, 300) ||
           !Array.isArray(material.columns) || material.columns.length < 2 || material.columns.length > 8 || !material.columns.every(x => boundedText(x, 80)) ||
@@ -107,10 +107,11 @@
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (Object.hasOwn(q, "material")) {
         if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && q.unit === 17 || q.subject === "social" && q.unit === 22) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
-        validateMaterial(q.material);
+        // subject/unit 身分已在上方驗證；僅四上社會原圖細字需要較大 PNG。
+        validateMaterial(q.material, q.subject === "social" && q.unit === 22 ? 192 * 1024 : 32 * 1024);
       }
       if (q.type === "multiple_choice") {
-        if (!({ math: [4], science: [3, 4], social: [2, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
+        if (!({ math: [4], science: [3, 4], social: [2, 3, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
             typeof q.answer !== "string" || !/^[1-4]$/.test(q.answer) || Number(q.answer) > q.options.length) throw new Error("選擇題選項數量或答案無效。");
       } else if (q.type === "true_false") {
         if (!["science", "social"].includes(q.subject) || q.options.length || !["true", "false"].includes(q.answer)) throw new Error("是非題需空選項與 true/false 字串答案。");

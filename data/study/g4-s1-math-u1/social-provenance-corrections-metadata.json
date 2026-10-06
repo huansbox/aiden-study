@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/191",
+  "checkedAt": "2026-10-06",
+  "publicationStatus": "not_published",
+  "publishedDelta": 0,
+  "status": "root_approved_current_provenance_correction_pending_release",
+  "baselineRevision": 18,
+  "allSubjectActivities": 309,
+  "socialActivities": 24,
+  "socialSourceAnswerSlots": 35,
+  "questionAnswerExplanationChanged": false,
+  "historyPolicy": "rev11／rev12歷史selection及所有封存原件保持；目前mapping的本次來源聲明更正列於items，不改過往發布事實。",
+  "items": [
+    {
+      "practiceId": "SOC1-N009",
+      "appId": "social-g4s1-tyk113-I-04-v1",
+      "originalId": "tyk113-I-04",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "printedLocator": "I-04",
+      "comparedAnswerPage": 1,
+      "comparedAnswerLocator": "I-04",
+      "reasonCode": "official_text_version_mismatch",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "answerPage": null,
+      "questionAnswerExplanationChanged": false
+    },
+    {
+      "practiceId": "SOC1-N023",
+      "appId": "social-g4s1-tyk113-VI-01-elevation-v1",
+      "originalId": "tyk113-VI-01",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "printedLocator": "VI-01",
+      "comparedAnswerPage": 3,
+      "comparedAnswerLocator": "VI-01",
+      "reasonCode": "official_text_version_mismatch",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "answerPage": null,
+      "questionAnswerExplanationChanged": false
+    }
+  ],
+  "semanticAnswerCrossReference": [
+    {
+      "practiceId": "SOC1-N014",
+      "originalId": "tyk113-II-05",
+      "questionPage": 1,
+      "printedLocator": "II-05",
+      "officialAnswerPage": 1,
+      "officialPrintedLocator": "II-03",
+      "reasonCode": "official_semantic_match_different_locator",
+      "questionAnswerExplanationChanged": false
+    }
+  ],
+  "candidateRevision": 19,
+  "candidateAllSubjectActivities": 352,
+  "candidateSocialActivities": 67
+}

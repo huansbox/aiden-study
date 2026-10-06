@@ -164,6 +164,24 @@ test("social preview uses exact unit membership and three broad topics without p
   app.destroy();
 });
 
+test("social original three-choice preview keeps three choices, retries a wrong answer and reveals the third", async () => {
+  const pack = socialSyntheticPack(), q = pack.questions[8];
+  q.options = ["甲", "乙", "丙"]; q.answer = "3";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "social" });
+  app.handle("subtopic", { value: "地圖與位置" });
+  assert.match(h.host.innerHTML, /三選一/);
+  assert.equal((h.host.innerHTML.match(/data-action="answer-choice"/g) || []).length, 3);
+  app.handle("answer-choice", { value: "2" }); app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("retry-answer");
+  app.handle("answer-choice", { value: "3" }); app.handle("check");
+  assert.equal(app.state.result, "correct");
+  assert.match(h.host.innerHTML, /<h2>答案<\/h2><p>3\. 丙<\/p>/);
+  assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
 test("social second preview shows one of five parts and labels two-choice image questions", async () => {
   const h = harness({ pack: socialSecondSyntheticPack() }), app = await h.boot();
   app.handle("subject", { value: "social" });
