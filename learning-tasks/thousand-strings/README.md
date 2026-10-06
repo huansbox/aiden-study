@@ -4,6 +4,7 @@
 - 來源：使用者提供的 `Huan - 127.jpg`，課文〈一千根琴弦〉第 16～17 頁。原照與完整課文不公開入庫。
 - 狀態：完成；沿用前篇的短詞選擇、粗體注音與五枝放射圖。
 - [孩子入口](https://kids.linshuhuan.com/thousand-strings-mind-map/?child=aiden)；[陪讀入口](https://kids.linshuhuan.com/thousand-strings-mind-map/)。
+- 整合與發布紀錄：[PR #194](https://github.com/huansbox/aiden-study/pull/194)。
 
 ## 使用與設計
 

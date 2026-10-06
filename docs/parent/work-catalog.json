@@ -1426,7 +1426,7 @@
       ],
       "audienceLabel": "9 歲；成人可陪讀",
       "status": "complete",
-      "statusNote": "內容、注音、獨立審查與隔離驗證完成；保留白紙秘方與希望力量的轉折。額外驗收依家長決定略過。",
+      "statusNote": "內容、注音、獨立審查與隔離驗證完成；發布證據見 #194。額外驗收依家長決定略過。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/thousand-strings",
       "source": {
@@ -1449,8 +1449,8 @@
       "eventDate": "2026-10-06",
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
-      "created": null,
-      "updated": null,
+      "created": "2026-10-06",
+      "updated": "2026-10-06",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -1490,7 +1490,7 @@
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
       "created": "2026-09-29",
-      "updated": "2026-09-29",
+      "updated": "2026-10-06",
       "freshness": {
         "state": "current",
         "checkedAt": null,
