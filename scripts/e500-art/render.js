@@ -9,13 +9,16 @@ const definitions = {
  r200: {title:'台鐵 R200 型柴電機車', packs:12, create:async material=>(await import('./model-r200.js')).createR200Model(material)},
  '700t': {title:'台灣高鐵 700T', series:'臺灣高速鐵路', packs:12, create:async material=>(await import('./model-700t.js')).create700TModel(material)},
  n700s: {title:'日本新幹線 N700S', series:'日本新幹線', packs:12, create:async material=>(await import('./model-n700s.js')).createN700SModel(material)},
+ emu900: {title:'台鐵 EMU900 型通勤電聯車', packs:12, create:async material=>(await import('./model-emu900.js')).createEmu900Model(material)},
+ 'breezy-blue': {title:'藍皮解憂號・復古客車', packs:12, create:async material=>(await import('./model-breezy-blue.js')).createBreezyBlueModel(material)},
+ ct273: {title:'台鐵 CT273 蒸汽機車', packs:14, create:async material=>(await import('./model-ct273.js')).createCT273Model(material)},
 };
 const requested = new URLSearchParams(location.search).get('model') || 'e500';
 const modelId = Object.hasOwn(definitions, requested) ? requested : 'e500';
 const definition = definitions[modelId], total = definition.packs * 3;
 document.title = definition.title + '積木模型';
-document.querySelector('h1').textContent = '一包一包，拼出 ' + modelId.toUpperCase();
-document.querySelector('#model-description').textContent = `${definition.packs} 包、${total} 組，逐步加上輪子、車身與車頂。${['emu3000','700t','n700s'].includes(modelId) ? '以一節先頭車呈現。' : ''}`;
+document.querySelector('h1').textContent = '一包一包，拼出 ' + definition.title;
+document.querySelector('#model-description').textContent = `${definition.packs} 包、${total} 組，逐步加上輪子、車身與車頂。${['emu3000','700t','n700s','emu900'].includes(modelId) ? '以一節先頭車呈現。' : ''}`;
 document.querySelector('#progress').max = total;
 document.querySelector('[data-count="42"]').dataset.count = total;
 document.querySelector('#celebration-link').href = './celebration.html?model=' + modelId;
@@ -94,3 +97,5 @@ window.trainArt={renderer,scene,camera,model,assemblyGroups,descriptor,home,setC
 // Retain the original authoring console entry point for E500 tooling.
 window.e500=window.trainArt;
 window.renderReady=true;
+
+await import('./export-ui.js');

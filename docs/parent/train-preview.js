@@ -55,7 +55,7 @@
     for (const model of models) {
       const option = document.createElement("option");
       option.value = model.id;
-      option.textContent = `${model.id.toUpperCase()} · ${model.steps.length} 包`;
+      option.textContent = `${model.id === "breezy-blue" ? "藍皮解憂號" : model.id.toUpperCase()} · ${model.steps.length} 包`;
       select.append(option);
     }
     select.value = models.find(model => model.id === params.get("model"))?.id || models[0].id;

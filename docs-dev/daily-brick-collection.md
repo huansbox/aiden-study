@@ -2,11 +2,11 @@
 
 主規格 [#110](https://github.com/huansbox/aiden-study/issues/110)，實作拆分為每日目標 [#111](https://github.com/huansbox/aiden-study/issues/111)、拼裝 [#112](https://github.com/huansbox/aiden-study/issues/112) 與整合驗收 [#113](https://github.com/huansbox/aiden-study/issues/113)。
 
-目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊。700T／N700S 已於 2026-09-30 透過 [PR #127](https://github.com/huansbox/aiden-study/pull/127) 合併及發布；下列使用說明對應正式版本。主規格及三個原實作 issues 已結案，歷史驗收紀錄保留當時狀態。
+目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊，700T／N700S 由 [PR #127](https://github.com/huansbox/aiden-study/pull/127) 發布。EMU900、藍皮解憂號與 CT273 的最新交付及發布證據見 [#197](https://github.com/huansbox/aiden-study/issues/197)；下列使用說明涵蓋八款。歷史驗收紀錄保留當時狀態。
 
 ## 使用方式
 
-家長後台的「孩子設定與練習 → 每日目標與拼裝包」提供「火車試拼」，開啟獨立的 [試拼頁](../docs/parent/train-preview.html)。五款車都能從第一包開始，逐包試到完工；也能直接保留最後一組，試拖曳、六秒慶祝、音效、略過、重播及示範展示架。從家長入口開啟後，返回時保留原本管理的孩子。
+家長後台的「孩子設定與練習 → 每日目標與拼裝包」提供「火車試拼」，開啟獨立的 [試拼頁](../docs/parent/train-preview.html)。八款車都能從第一包開始，逐包試到完工；也能直接保留最後一組，試拖曳、六秒慶祝、音效、略過、重播及示範展示架。從家長入口開啟後，返回時保留原本管理的孩子。
 
 試拼頁只掛記憶體 adapter，沿用正式工作台與素材，不載入家庭登入、收藏 client 或同步程式，不讀寫家庭 API、localStorage／sessionStorage，也不消耗任何孩子的拼裝包。頁面的 `connect-src 'none'` 另阻擋 API 連線。切換模型、重新開始或重新整理會重置示範進度；離開／結束／重設會停止音效及動畫。入口 `docs/parent/train-preview.html`，行為在 `train-preview.js`；共用工作台的 `preview` 選項只調整試拼文案，孩子版預設不變。
 
@@ -18,7 +18,7 @@
 
 首頁只有「我的成果」入口，內分「我的收藏／學習紀錄」。學習紀錄保留今日、累計、活動明細及八個里程碑。收藏內的工作台支援點零件再點空位、或拖曳靠近吸附；稍後再拼會保留各零件位置。收藏室同頁顯示展示架與系列內容。
 
-收藏圖鑑統稱「積木列車收藏」：E500 需 14 包、42 組；EMU3000、R200、台灣高鐵 700T 與日本新幹線 N700S 各需 12 包、36 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
+收藏圖鑑統稱「積木列車收藏」：E500、CT273 各需 14 包、42 組；EMU3000、R200、台灣高鐵 700T、日本新幹線 N700S、EMU900 與藍皮解憂號各需 12 包、36 組。八款合計 100 包、300 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
 
 ## E500 造型與組裝
 
@@ -32,7 +32,7 @@
 
 造型在開發時由 3D 幾何預先渲染成 42 張基本透明 PNG 與 29 張遮擋變體，共約 3.42 MB；正式頁面只組合圖片，不載入 Three.js 或執行 WebGL。同包三組可以任意順序拼，依實際已放置部件選擇變體，避免背面的窗戶與踏階透出。每組按自身範圍裁切，變體共用拖曳與吸附位置，仍只有 42 次操作。重建方式見 [E500 圖像來源](../scripts/e500-art/README.md)。獨立部件之間的互投陰影略有簡化，這份模型也不是實體積木套件的可購買零件清單。
 
-可選模型包含 E500、EMU3000、R200、700T 與 N700S；完成一台後可選下一台，收齊目前五台後額外拼裝包繼續保留。舊版小汽車、蒸汽火車與飛機以原 ID、原素材保留既有半成品及完成收藏，不把舊火車進度直接改成 E500；舊客戶端的已支援模型操作仍可接續。
+可選模型包含 E500、EMU3000、R200、700T、N700S、EMU900、藍皮解憂號與 CT273；完成一台後可選下一台，收齊目前八台後額外拼裝包繼續保留。舊版小汽車、蒸汽火車與飛機以原 ID、原素材保留既有半成品及完成收藏，不把舊火車進度直接改成 E500；舊客戶端的已支援模型操作仍可接續。
 
 ## EMU3000 與 R200
 
@@ -64,9 +64,25 @@
 
 ![N700S 實際工作台素材合成](n700s-complete-preview.png)
 
+## EMU900、藍皮解憂號與 CT273
+
+2026-10-11 使用者看過外觀小樣後，授權接續製作；範圍與發布狀態見 [#197](https://github.com/huansbox/aiden-study/issues/197)。三款沿用現有固定視角、小磚凸點與軌道，不改每日發包規則。
+
+- `emu900`：一節先頭車，12 包、36 組。依[臺鐵官方介紹](https://www.railway.gov.tw/tra-tip-web/tip/tip00A/tipA11/discountDetl/8ae4cac3754aa62401754f6b9b0e0156)保留銀灰車身、綠色微笑車頭、三組雙開車門及兩組雙軸轉向架。
+- `breezy-blue`：一節復古客車，12 包、36 組。依[藍皮解憂號官方介紹](https://www.railway.gov.tw/tra-tip-web/tip/tip00N/tipN01/blue/index)保留藍色車身、米白腰線、八扇銀框開窗、兩端車門與灰色弧頂。
+- `ct273`：完整蒸汽機車與煤水車，14 包、42 組。依[臺鐵修復實錄](https://www.railway.gov.tw/tra-tip-web/tip/file/570c896a-63fb-4c5b-91fe-14685cbe203d)保留黑色分段鍋爐、除煙板、三組大型輻條動輪與銀色連桿、前二軸導輪／後一軸從輪，以及煤堆和黃銅號牌。
+
+三款新增 38 包、114 次放置。每組含近側可見部件，最後一組集中在前端車鉤；幾何正本分別為 `model-emu900.js`、`model-breezy-blue.js`、`model-ct273.js`，共用 `train-parts.js`。正式頁面只用透明 PNG；小樣僅供方向參考，不作實體套件零件表。
+
+![EMU900 實際工作台素材合成](emu900-complete-preview.png)
+
+![藍皮解憂號實際工作台素材合成](breezy-blue-complete-preview.png)
+
+![CT273 實際工作台素材合成](ct273-complete-preview.png)
+
 ## 完工試車慶祝
 
-本次工作台拼上最後一組，待吸附動畫結束、伺服器確認完成且圖片載妥後，自動播放一次 6 秒試車，五款列車皆支援。沿用正式 LEGO style 圖片，E500 的 39 組車體、或其餘車型的 33 組車體從右後方進場，經過中央後向左前方駛出，全程單向、不倒退；原本三組展示軌道沿投影方向延伸為九張固定素材，列車駛過時灑下少量彩色小積木。正式頁面仍不使用 WebGL。
+本次工作台拼上最後一組，待吸附動畫結束、伺服器確認完成且圖片載妥後，自動播放一次 6 秒試車，八款列車皆支援。沿用正式 LEGO style 圖片，E500／CT273 的 39 組車體、或其餘車型的 33 組車體從右後方進場，經過中央後向左前方駛出，全程單向、不倒退；原本三組展示軌道沿投影方向延伸為九張固定素材，列車駛過時灑下少量彩色小積木。正式頁面仍不使用 WebGL。
 
 最後一組還沒拿起來前，就會在實際放置位置顯示金色外框、箭頭及「最後一片，放這裡」；框可點擊，也涵蓋拖曳吸附範圍。其他部件在選取或拿起時顯示相應提示，拖曳期間不重建 DOM，保留 pointer capture。
 
@@ -109,7 +125,7 @@ node scripts/verify-collection-e2e.mjs <上一行的本機 websocket URL> http:/
 
 每次完整驗收使用新啟動的隔離服務。驗收程式只接受 loopback 測試站，清空該測試 origin 的瀏覽器儲存，再以 test-token 連線；不接觸正式家庭進度。數學題文與答案為 synthetic fixture，英文走實際拼字畫面。
 
-完整流程先真正練習領兩包，再透過只存在測試服務的 `/test/collection-fixture` 補十二個過去日期的包，以免等待多日。E500 完成後累計補至六十一個過去日期、合計 63 包，再依序完成 EMU3000、R200、700T 與 N700S，留下 1 包未分配。186 組均逐件經畫面操作和正式收藏 API 保存。另用獨立 browser context 驗證另一台裝置、離線重開，以及維運同型的 activity generation 重置。
+完整流程 runner 先真正練習領兩包，再透過只存在測試服務的 `/test/collection-fixture` 補十二個過去日期的包，以免等待多日。E500 完成後累計補至九十九個過去日期、合計 101 包，再依序完成其餘七台，留下 1 包未分配。runner 設計逐件操作 300 組，另檢查另一台裝置、離線重開與 activity generation 重置；實際執行範圍與限制以各次驗收紀錄為準。
 
 無內容情境使用測試服務產生的已完成 Native Camp 課程：確認瀏覽已完成內容不發包，完成另一個英文活動取得一包，家長取消無可練內容的目標後保留當日進度與一包；取消與重複儲存不加發。
 
@@ -200,3 +216,12 @@ CDP 測試的 touch drag 按畫面 frame 分送移動，完成後保留 500 ms �
 - 主線 [test](https://github.com/huansbox/aiden-study/actions/runs/36679538399)、[work-catalog](https://github.com/huansbox/aiden-study/actions/runs/36679538409) 與 [GitHub Pages](https://github.com/huansbox/aiden-study/actions/runs/36679567075) 全數成功。首頁 release hash 為 `9e9b5b4248aaa72d0b31171f9245bbf01851e35a0d8f22eb6944592c5a2c0d4b`。
 - 14:49 從正式 HTTPS 站逐檔核對 357 個檔案（含全部 338 張 PNG，共 15,572,387 bytes），SHA-256 均與發布 commit 一致。未登入的 session、收藏與題庫 API 回傳 401／`no-store`；正式家長試拼可載入兩台新車並完成最後一組，N700S 六秒慶祝可正常結束，瀏覽器無 JavaScript 錯誤。
 - 正式環境檢查僅使用公開素材、未登入 API 與獨立家長示範頁，未讀寫孩子的學習或收藏紀錄。自動化採 Chromium 觸控；實體 iPad 與孩子單包操作時間仍未實測。
+
+## 2026-10-11 三款臺灣列車驗收
+
+- 新增 EMU900／藍皮解憂號各 12 包、CT273 機車與煤水車 14 包，合計 114 組；現行八款共 100 包、300 組。前三款與高速兩款的幾何、PNG 及既有收藏 ID 均未改動。
+- 新增 207 張 PNG：EMU900 36＋32、藍皮 36＋35、CT273 42＋26，合計 9,689,924 bytes。八款共 545 張 PNG 的解碼、透明度、hash、裁切、runtime 一致性及 1,800 次任意順序放置檢查通過。EMU900 前擋風玻璃經像素檢查發現遮擋後，已前移並加窄框，再次驗證通過。
+- 本機 Node 全套 859 項通過；Python 279 項通過、1 項原有略過。首頁版本、作品目錄與 Worker dry-run 通過。新增 SQLite DO 測試經真實 Worker API 完成八款共 300 組，重啟後收藏、展示及剩餘 1 包保留，另一孩子未受影響。
+- 使用提供的瀏覽器工具，在本機家長試拼逐件完成三款全部 114 組；確認新車名稱／分母、逐包開啟、最後一片提示、完工與慶祝。CT273 最後一組以滑鼠拖曳完成；768px／390px 視窗無水平溢出，重播包含完整 39 組車體。家長試拼仍採原有記憶體 adapter；測試未讀寫正式孩子資料。
+- 獨立唯讀 agent review 找到 E2E runner 對藍皮名稱、CT273 慶祝組數的兩處舊假設，已修正並複核；無未解決 finding。原 CDP 全收藏 runner 本輪未執行：命令列啟動測試瀏覽器被自動審查以 blocked by policy 拒絕，改用提供的瀏覽器操作及 Node／SQLite 測試。本輪未重測原有 native WebAudio 訊號、離線多裝置或實體 iPad。
+- Worker 已先部署新增車型 allowlist，version `1d5ed40a-4658-4c06-a20a-749dd311bd3f`；前端 PR／Pages 與逐檔核對結果接續保存於 #197。

@@ -1,0 +1,1177 @@
+{
+  "id": "ct273",
+  "title": "台鐵 CT273 蒸汽機車",
+  "series": "臺灣火車系列",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "鋪好展示軌道",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前段展示軌道",
+          "z": 0,
+          "box": {
+            "x": 78,
+            "y": 351.25,
+            "width": 287,
+            "height": 103.25
+          },
+          "imageBox": {
+            "x": 78,
+            "y": 351.25,
+            "width": 287,
+            "height": 103.25
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "9cedb1abe0b8fbd3f6cee30b12e87813d821a8039ebe92451f4601d330e13ebc",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中段展示軌道",
+          "z": 1,
+          "box": {
+            "x": 256.5,
+            "y": 305.25,
+            "width": 287,
+            "height": 103.25
+          },
+          "imageBox": {
+            "x": 256.5,
+            "y": 305.25,
+            "width": 287,
+            "height": 103.25
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "df9c73c401828b72c344eb154153f225fb4dae5b9c9c46153f838ec1528ba06b",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-2-v0.png",
+              "sha256": "ba99ce40b9e267309c2569d36996b5ac8b3f947f470bc94bb793a8c95131cad3"
+            }
+          ]
+        },
+        {
+          "id": "p1-3",
+          "name": "後段展示軌道",
+          "z": 2,
+          "box": {
+            "x": 435,
+            "y": 259.5,
+            "width": 287,
+            "height": 103.25
+          },
+          "imageBox": {
+            "x": 435,
+            "y": 259.5,
+            "width": 287,
+            "height": 103.25
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "a97e62b0ccffb672d5b1c8f2d786a15addaa5c31b3478681b5f9e363ab48d874",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-3-v0.png",
+              "sha256": "39b574aae884dadd6547056c25791a9ab6edaeefbb223b3af73a9e272c8395c5"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p1-3-v1.png",
+              "sha256": "39b574aae884dadd6547056c25791a9ab6edaeefbb223b3af73a9e272c8395c5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組裝前後小輪組",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "前方兩軸導輪組",
+          "z": 3,
+          "box": {
+            "x": 147,
+            "y": 335.5,
+            "width": 128.25,
+            "height": 81.75
+          },
+          "imageBox": {
+            "x": 147,
+            "y": 335.5,
+            "width": 128.25,
+            "height": 81.75
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "0bddf453142d84c423a3f6c4810f9b7e0b1cc5a1ab1d9bc26cf39cc115a75d50",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "駕駛室下方從輪組",
+          "z": 4,
+          "box": {
+            "x": 416,
+            "y": 260.25,
+            "width": 105,
+            "height": 87
+          },
+          "imageBox": {
+            "x": 416,
+            "y": 260.25,
+            "width": 105,
+            "height": 87
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "8ccc2b7e84990fb94ca62cde7814178173325e1c2506219896501b25842dd62a",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p2-3",
+          "name": "前後小輪支架與汽缸座",
+          "z": 5,
+          "box": {
+            "x": 181,
+            "y": 249.25,
+            "width": 324.75,
+            "height": 126.25
+          },
+          "imageBox": {
+            "x": 181,
+            "y": 249.25,
+            "width": 324.75,
+            "height": 126.25
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "fafac2916cd1026e247bd92d0a7b5fa86df63a6e1e9602d29828fd0c222c8808",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "913c625caf6b3dd17cb7a88ebc271bf6cd1bbbcad1fd2bf6e7fcb8939c2c0679"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p2-3-v2.png",
+              "sha256": "913c625caf6b3dd17cb7a88ebc271bf6cd1bbbcad1fd2bf6e7fcb8939c2c0679"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上三組大動輪",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "第一組大型輻條動輪",
+          "z": 6,
+          "box": {
+            "x": 234.5,
+            "y": 291.5,
+            "width": 115,
+            "height": 103.5
+          },
+          "imageBox": {
+            "x": 234.5,
+            "y": 291.5,
+            "width": 115,
+            "height": 103.5
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "4ca47bd0bcb74456ae1092e1ea11e4da5a5ced430d020fab400de572103808e3",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "第二組大型輻條動輪",
+          "z": 7,
+          "box": {
+            "x": 280,
+            "y": 276.25,
+            "width": 128.5,
+            "height": 103.5
+          },
+          "imageBox": {
+            "x": 280,
+            "y": 276.25,
+            "width": 128.5,
+            "height": 103.5
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "053cec327346c715cc6b224cfe1f010a21fbc9cc8aaac048bb9c7fa8e9a27428",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "5aab42f57ee248c529041b25d31aa1f107cf4d8825b58aef20cb9978c38f4842"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "第三組大型輻條動輪",
+          "z": 8,
+          "box": {
+            "x": 339,
+            "y": 261.25,
+            "width": 128.5,
+            "height": 103.5
+          },
+          "imageBox": {
+            "x": 339,
+            "y": 261.25,
+            "width": 128.5,
+            "height": 103.5
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "3888a0f76dbb032dc4ed9c0b0111da1d08de4e447e645e9c7a121ca33f6eddf2",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "10e4168188880444b03ba024dbb8811735b3b82d37944ebcd6e812d190d9468a"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "10e4168188880444b03ba024dbb8811735b3b82d37944ebcd6e812d190d9468a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "接起機車與煤水車底盤",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "前半段機車厚底盤",
+          "z": 9,
+          "box": {
+            "x": 137,
+            "y": 262,
+            "width": 239,
+            "height": 89.75
+          },
+          "imageBox": {
+            "x": 137,
+            "y": 262,
+            "width": 239,
+            "height": 89.75
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "5f3bad77ece11af7648cfde990793c22136dbe396dfc58c0b855370ae7b1bb23",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "後半段機車厚底盤",
+          "z": 10,
+          "box": {
+            "x": 296.5,
+            "y": 221,
+            "width": 239,
+            "height": 89.75
+          },
+          "imageBox": {
+            "x": 296.5,
+            "y": 221,
+            "width": 239,
+            "height": 89.75
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "f8461b964159b33a09ca7cc17b94b01c0778dd5e801dac9e082e24147f11e453",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "38bdacd00374338fb2d68eb1eeb656ae194bd29969a1d3301a75d3547da4ddc1"
+            }
+          ]
+        },
+        {
+          "id": "p4-3",
+          "name": "煤水車底盤與連結梁",
+          "z": 11,
+          "box": {
+            "x": 468.75,
+            "y": 204,
+            "width": 207,
+            "height": 83.25
+          },
+          "imageBox": {
+            "x": 468.75,
+            "y": 204,
+            "width": 207,
+            "height": 83.25
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "7ca0868a0305f331f65043a30ae51cc80e49c83fb0c0aabfeb002bc8c9472edb",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-3-v0.png",
+              "sha256": "cd4208a66d2e99e541b51c93bc16f3611ef79680204e3754c9250b4d722d950b"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p4-3-v1.png",
+              "sha256": "cd4208a66d2e99e541b51c93bc16f3611ef79680204e3754c9250b4d722d950b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組起分段圓弧鍋爐",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "鍋爐前段厚弧形磚",
+          "z": 12,
+          "box": {
+            "x": 234,
+            "y": 198.75,
+            "width": 109,
+            "height": 99.75
+          },
+          "imageBox": {
+            "x": 234,
+            "y": 198.75,
+            "width": 109,
+            "height": 99.75
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "1af4c78b4ca3306f892feb308a846524011ae34096c18285d7eb7d3046af2fe7",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "鍋爐中段厚弧形磚",
+          "z": 13,
+          "box": {
+            "x": 291.25,
+            "y": 184,
+            "width": 109,
+            "height": 99.75
+          },
+          "imageBox": {
+            "x": 291.25,
+            "y": 184,
+            "width": 109,
+            "height": 99.75
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "77cfafdba75580e9422d045183f128ed94c59099ca1310626385dccbcf8de297",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-2-v0.png",
+              "sha256": "a0dfce81940edfd658b514d22886454592dfe736d5fc7d4e73567355a458bc31"
+            }
+          ]
+        },
+        {
+          "id": "p5-3",
+          "name": "鍋爐後段厚弧形磚",
+          "z": 14,
+          "box": {
+            "x": 348.75,
+            "y": 169.25,
+            "width": 109,
+            "height": 99.75
+          },
+          "imageBox": {
+            "x": 348.75,
+            "y": 169.25,
+            "width": 109,
+            "height": 99.75
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "c32e5915efc84642e05eee343deda4fdf323ae067b6757a5e8d5f64f419aaaef",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-3-v0.png",
+              "sha256": "4d64edabaf2e9afbeb6416b1a0a2369aada2ac660f0785c5c2a21138de123e20"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p5-3-v1.png",
+              "sha256": "4d64edabaf2e9afbeb6416b1a0a2369aada2ac660f0785c5c2a21138de123e20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝好煙箱與除煙板",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "車頭圓形煙箱筒",
+          "z": 15,
+          "box": {
+            "x": 209,
+            "y": 209.25,
+            "width": 76.75,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 209,
+            "y": 209.25,
+            "width": 76.75,
+            "height": 96.5
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "29540311b7d370657acf6db19677db11bbe474ae6d3fb5d635d975daa08b3939",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "圓形煙箱門與中央把手",
+          "z": 16,
+          "box": {
+            "x": 200.75,
+            "y": 221.75,
+            "width": 61.25,
+            "height": 86
+          },
+          "imageBox": {
+            "x": 200.75,
+            "y": 221.75,
+            "width": 61.25,
+            "height": 86
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "70477175259462ee606619d66a45ee3c3aea735ad9a6c998b5ac267e25e45be0",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p6-3",
+          "name": "左右直立除煙板",
+          "z": 17,
+          "box": {
+            "x": 188.25,
+            "y": 189,
+            "width": 138.25,
+            "height": 135.75
+          },
+          "imageBox": {
+            "x": 188.25,
+            "y": 189,
+            "width": 138.25,
+            "height": 135.75
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "f6c98372b40651661bc58637da785e414c5ea3e64baad077e777ad28b63ff13a",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "5bf151442a44a12d00690fbe9c82a8857ee8974599b54a83d0b4b987fa7784cc"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "12a594a0031faddb11e61ca49d3f2e0777afd69a61ca3ac2bf02509e8f0462a1"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p6-3-v2.png",
+              "sha256": "f7daa314016238453cad0c5486d8c66d22ebb18c43255bc0e59c89f7ba279b3b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上汽缸與側面走道",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "左右粗汽缸與活塞導架",
+          "z": 18,
+          "box": {
+            "x": 250.75,
+            "y": 326.875,
+            "width": 84.25,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 250.75,
+            "y": 327.5,
+            "width": 84.25,
+            "height": 42.75
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "0552e91fa1b0a4fe7d1de8527fa2ecc5b1b8ba351c81ebd6f29316d83337e06d",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "前半段雙側積木走道",
+          "z": 19,
+          "box": {
+            "x": 320.25,
+            "y": 273.375,
+            "width": 84.25,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 320.25,
+            "y": 276.75,
+            "width": 84.25,
+            "height": 37.25
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "a16d98bb21585b6313552dfb8577cf6e873b621b3fc87972452d866692592b0c",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p7-3",
+          "name": "後半段雙側積木走道",
+          "z": 20,
+          "box": {
+            "x": 387.75,
+            "y": 253.625,
+            "width": 93.25,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 387.75,
+            "y": 257,
+            "width": 93.25,
+            "height": 37.25
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "7c8d9ea7b8af50c97d18a073cfa10b5251f3b598c9dd6ad7c84a1f78d46a28a2",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "0381ae7c40623272b5bda159a8ed6fe3b8ce52e530386faaae1ba310968df59a"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p7-3-v1.png",
+              "sha256": "0381ae7c40623272b5bda159a8ed6fe3b8ce52e530386faaae1ba310968df59a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "搭起黑色駕駛室",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "駕駛室雙側磚牆與方窗",
+          "z": 21,
+          "box": {
+            "x": 398.5,
+            "y": 120.5,
+            "width": 130.5,
+            "height": 151.5
+          },
+          "imageBox": {
+            "x": 398.5,
+            "y": 120.5,
+            "width": 130.5,
+            "height": 151.5
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "60f05faff1fea7cc2ff161e706fa565589e491b39ddcb91405543b3778f854f9",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "駕駛室前牆與後端門框",
+          "z": 22,
+          "box": {
+            "x": 391.25,
+            "y": 117.25,
+            "width": 144.25,
+            "height": 152.5
+          },
+          "imageBox": {
+            "x": 391.25,
+            "y": 117.25,
+            "width": 144.25,
+            "height": 152.5
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "37e253291fa11e46994019cf0d40f28e07bb3ff8f5c83dd2bedd794b27a1e4cc",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-2-v0.png",
+              "sha256": "9daa575f25c5cfefe8adf902085c5d66325b2e38f414940cc30817996b483319"
+            }
+          ]
+        },
+        {
+          "id": "p8-3",
+          "name": "駕駛室厚磚弧形屋頂",
+          "z": 23,
+          "box": {
+            "x": 385.5,
+            "y": 103.25,
+            "width": 156.5,
+            "height": 74
+          },
+          "imageBox": {
+            "x": 385.5,
+            "y": 103.25,
+            "width": 156.5,
+            "height": 74
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "1c26b6351b960029f93d01247538f44e5f06e751a1b9eccb962cd537178e2ee6",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "872d559e59cefee8fbcaa96656654181cd90032bad3f8041ca57cce01bf2fd33"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "912b2e0b164b331355532910efb7608a4b85d1e97ef00bad4810b4eefd348895"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p8-3-v2.png",
+              "sha256": "c07345c7314f954cd25ffab4a34906382add9ccb42cf8eedd1f7041837fe1b25"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組裝煤水車四軸輪組",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "煤水車前兩組輪軸",
+          "z": 24,
+          "box": {
+            "x": 477.75,
+            "y": 270,
+            "width": 124.5,
+            "height": 62.5
+          },
+          "imageBox": {
+            "x": 477.75,
+            "y": 270,
+            "width": 124.5,
+            "height": 62.5
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "9820e2513b330fa8699cafe52bb48ff3f48aa40dd88b398b7f7f07292d4d6c97",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "煤水車後兩組輪軸",
+          "z": 25,
+          "box": {
+            "x": 555,
+            "y": 261.75,
+            "width": 117.5,
+            "height": 52.75
+          },
+          "imageBox": {
+            "x": 555,
+            "y": 261.75,
+            "width": 117.5,
+            "height": 52.75
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "b631eb6d2a9aa79d3971e12ea38128863aca5c4a74ee12acb53c4e133624f837",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p9-2-v0.png",
+              "sha256": "129bea3dc0b5f77fd91d87a0e3a636d00f37989e871b893b28bf9750ac091e14"
+            }
+          ]
+        },
+        {
+          "id": "p9-3",
+          "name": "煤水車轉向架側梁",
+          "z": 26,
+          "box": {
+            "x": 541.75,
+            "y": 252.75,
+            "width": 131.75,
+            "height": 62
+          },
+          "imageBox": {
+            "x": 541.75,
+            "y": 252.75,
+            "width": 131.75,
+            "height": 62
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "3fd3f1d1a42cf021e42485b4078a1cca0cc63b32bef488bee0a2a90f3c1cee51",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "疊出煤水車車身",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "煤水車下層厚磚箱",
+          "z": 27,
+          "box": {
+            "x": 526.75,
+            "y": 159,
+            "width": 149,
+            "height": 116
+          },
+          "imageBox": {
+            "x": 526.75,
+            "y": 159,
+            "width": 149,
+            "height": 116
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "a48afb43ede6fe8dc9eb0fffb35a7695e17be28bd66811f8c1b94754909b7296",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "煤水車上層箱壁",
+          "z": 28,
+          "box": {
+            "x": 519.75,
+            "y": 110,
+            "width": 156,
+            "height": 120.75
+          },
+          "imageBox": {
+            "x": 519.75,
+            "y": 110,
+            "width": 156,
+            "height": 120.75
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "eabbb24d7325ac9c1c4a242ae7962afaa9d7f1fabaccab3deeef7031bb5f9a38",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p10-3",
+          "name": "煤水車黑色凸點煤堆",
+          "z": 29,
+          "box": {
+            "x": 521.75,
+            "y": 110.5,
+            "width": 142.75,
+            "height": 78.5
+          },
+          "imageBox": {
+            "x": 521.75,
+            "y": 110.5,
+            "width": 142.75,
+            "height": 78.5
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "5c227ccdb759f567ad5f98a41cafa0aee7b317f77412fc6914cec53a4cbac7e6",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-3-v0.png",
+              "sha256": "2b522b09d34f0a8a9ef62576d97b2723cdc52008a045fb3d0ff4c287ce58032b"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p10-3-v1.png",
+              "sha256": "2b522b09d34f0a8a9ef62576d97b2723cdc52008a045fb3d0ff4c287ce58032b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "豎起煙囪與蒸汽圓頂",
+      "parts": [
+        {
+          "id": "p11-1",
+          "name": "分段高煙囪",
+          "z": 30,
+          "box": {
+            "x": 229.75,
+            "y": 171.75,
+            "width": 44,
+            "height": 57
+          },
+          "imageBox": {
+            "x": 233.75,
+            "y": 171.75,
+            "width": 36,
+            "height": 57
+          },
+          "file": "assets/p11-1.png",
+          "sha256": "f32695a7f17c9c0d2b7fa92e73f0362fcec341890d5b8ca3f573451eca719940",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p11-2",
+          "name": "前方蒸汽圓頂",
+          "z": 31,
+          "box": {
+            "x": 304.5,
+            "y": 158.25,
+            "width": 55.5,
+            "height": 53.75
+          },
+          "imageBox": {
+            "x": 304.5,
+            "y": 158.25,
+            "width": 55.5,
+            "height": 53.75
+          },
+          "file": "assets/p11-2.png",
+          "sha256": "645a65aaa35f58be04f1a57201492e905539b5be24cbdb6a3fe00785de350986",
+          "occlusionPeers": [
+            "p11-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p11-3",
+          "name": "後方砂箱與汽笛",
+          "z": 32,
+          "box": {
+            "x": 362,
+            "y": 142.5,
+            "width": 58.25,
+            "height": 51.5
+          },
+          "imageBox": {
+            "x": 362,
+            "y": 142.5,
+            "width": 58.25,
+            "height": 51.5
+          },
+          "file": "assets/p11-3.png",
+          "sha256": "c3e013aff4fd4affd525ea06ca6df0c06a60e5ead07d01010711c75e0e619f1f",
+          "occlusionPeers": [
+            "p11-1",
+            "p11-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "連起動輪與鍋爐管線",
+      "parts": [
+        {
+          "id": "p12-1",
+          "name": "左右三大動輪連桿",
+          "z": 33,
+          "box": {
+            "x": 316.25,
+            "y": 330.25,
+            "width": 138,
+            "height": 51.25
+          },
+          "imageBox": {
+            "x": 316.25,
+            "y": 330.25,
+            "width": 138,
+            "height": 51.25
+          },
+          "file": "assets/p12-1.png",
+          "sha256": "11e277ae1051b5f86f58d903bf16804e105f46681af7e7e81e30e6b37e15153e",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p12-2",
+          "name": "鍋爐雙側銀灰扶手",
+          "z": 34,
+          "box": {
+            "x": 322.25,
+            "y": 205,
+            "width": 138.25,
+            "height": 44.5
+          },
+          "imageBox": {
+            "x": 322.25,
+            "y": 205,
+            "width": 138.25,
+            "height": 44.5
+          },
+          "file": "assets/p12-2.png",
+          "sha256": "d30465c9c035409de962e15879f7265e4eeda84dd4ea16f80144a1a8318766da",
+          "occlusionPeers": [
+            "p12-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p12-3",
+          "name": "駕駛室上車梯與扶手",
+          "z": 35,
+          "box": {
+            "x": 507.875,
+            "y": 178.25,
+            "width": 44,
+            "height": 134.75
+          },
+          "imageBox": {
+            "x": 514.25,
+            "y": 178.25,
+            "width": 31.25,
+            "height": 134.75
+          },
+          "file": "assets/p12-3.png",
+          "sha256": "a582728bb1b3960230992a8eead7290c513bf0b8c239a2490a79f1668e2815dd",
+          "occlusionPeers": [
+            "p12-1",
+            "p12-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "加上 CT273 專屬細節",
+      "parts": [
+        {
+          "id": "p13-1",
+          "name": "煤水車上沿與水箱蓋",
+          "z": 36,
+          "box": {
+            "x": 512.5,
+            "y": 101.5,
+            "width": 165.5,
+            "height": 80.5
+          },
+          "imageBox": {
+            "x": 512.5,
+            "y": 101.5,
+            "width": 165.5,
+            "height": 80.5
+          },
+          "file": "assets/p13-1.png",
+          "sha256": "b1b54e6b03f86eeed3fb999b6c8fdcdfff30be8df4a9c2d845ce2141be4a32db",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p13-2",
+          "name": "煤水車後端平台與手把",
+          "z": 37,
+          "box": {
+            "x": 651.125,
+            "y": 161.5,
+            "width": 44,
+            "height": 89
+          },
+          "imageBox": {
+            "x": 660.25,
+            "y": 161.5,
+            "width": 25.75,
+            "height": 89
+          },
+          "file": "assets/p13-2.png",
+          "sha256": "2ceae09ed71f1153073fd8294c0da61ee0d5de4b3ca465889739017514dd6bf9",
+          "occlusionPeers": [
+            "p13-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p13-3",
+          "name": "雙側 CT273 黃銅號牌",
+          "z": 38,
+          "box": {
+            "x": 479.375,
+            "y": 217.25,
+            "width": 44,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 481,
+            "y": 220.5,
+            "width": 40.75,
+            "height": 37.5
+          },
+          "file": "assets/p13-3.png",
+          "sha256": "0581b154b8e76b14a4a4cf1298f293ed3259ab7dea748c612d198733c1bd3dbe",
+          "occlusionPeers": [
+            "p13-1",
+            "p13-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "CT273 蒸汽機車出發",
+      "parts": [
+        {
+          "id": "p14-1",
+          "name": "車頭前端厚踏板與排障板",
+          "z": 39,
+          "box": {
+            "x": 139.75,
+            "y": 293.75,
+            "width": 122.75,
+            "height": 114.5
+          },
+          "imageBox": {
+            "x": 139.75,
+            "y": 293.75,
+            "width": 122.75,
+            "height": 114.5
+          },
+          "file": "assets/p14-1.png",
+          "sha256": "f6875873f10ba1eba07a70eb2b01b58b6bac0076ed78c23726bb7ff0d52e9f08",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p14-2",
+          "name": "車頭上方金框大燈",
+          "z": 40,
+          "box": {
+            "x": 198,
+            "y": 205.875,
+            "width": 44,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 201.5,
+            "y": 210.5,
+            "width": 37,
+            "height": 34.75
+          },
+          "file": "assets/p14-2.png",
+          "sha256": "7561e034df9f3d23d7744cda48b41c4f7c1b55026de47ad5b0e2df4a1c7c4dfd",
+          "occlusionPeers": [
+            "p14-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p14-3",
+          "name": "車頭中央連結鉤與防撞梁",
+          "z": 41,
+          "box": {
+            "x": 138.25,
+            "y": 331.25,
+            "width": 82,
+            "height": 50.25
+          },
+          "imageBox": {
+            "x": 138.25,
+            "y": 331.25,
+            "width": 82,
+            "height": 50.25
+          },
+          "file": "assets/p14-3.png",
+          "sha256": "dda4a8e74f48ef8536ee620a7861bea0ffbbcaa59858e53db0bb57d1597903d5",
+          "occlusionPeers": [
+            "p14-1",
+            "p14-2"
+          ],
+          "variants": []
+        }
+      ]
+    }
+  ],
+  "assetDigest": "cb9c93294787fde2fe193cbc0f3c0bc3be960f0fe5dcc919f05dd6caeb08383d"
+}

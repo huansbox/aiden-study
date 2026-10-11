@@ -60,7 +60,7 @@ try {
   assert.equal(await count(),0);
   pass('parent trial link opens isolated first-pack mode and preserves return child');
 
-  for(const model of ['e500','emu3000','r200','700t','n700s']) {
+  for(const model of ['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','ct273']) {
     if(model!=='e500'){
       await assertIsolated();
       await browser.navigate(origin+'/parent/train-preview.html?child=bingpu&model='+model);
@@ -95,7 +95,7 @@ try {
 
     await browser.click('#start-last',true);
     await browser.waitFor('document.querySelector(".brick-part:not(:disabled)")');
-    const total=model==='e500'?42:36, last=model==='e500'?'p14-3':'p12-3';
+    const total=['e500','ct273'].includes(model)?42:36, last=['e500','ct273'].includes(model)?'p14-3':'p12-3';
     assert.equal(await count(),total-1);
     assert.match(await browser.evaluate('document.querySelector(".brick-target-guide").textContent'),/最後一片，放這裡/);
     await browser.send('Emulation.setDeviceMetricsOverride',{width:768,height:1024,deviceScaleFactor:1,mobile:true});
