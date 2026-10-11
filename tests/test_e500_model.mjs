@@ -13,6 +13,9 @@ for (const [modelId, globalName, packs, series] of [
   ['r200', 'KidsBrickR200', 12, '臺灣火車系列'],
   ['700t', 'KidsBrick700T', 12, '臺灣高速鐵路'],
   ['n700s', 'KidsBrickN700S', 12, '日本新幹線'],
+  ['emu900', 'KidsBrickEmu900', 12, '臺灣火車系列'],
+  ['breezy-blue', 'KidsBrickBreezyBlue', 12, '臺灣火車系列'],
+  ['ct273', 'KidsBrickCT273', 14, '臺灣火車系列'],
 ]) {
 const source = fs.readFileSync(new URL(`docs/shared/brick-${modelId}.js`, root), "utf8");
 const context = vm.createContext({});

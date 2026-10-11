@@ -240,7 +240,7 @@ test("EMU3000 與 R200 各在 12 包、36 組完成，剩餘包留給下一件�
   assert.equal(C.PACK_COUNTS.plane,14);
 });
 test("12 包車型拒絕第 13、14 包，即使持久資料意外含有該包授權",()=>{
-  for(const modelId of ["emu3000","r200","700t","n700s"]){
+  for(const modelId of ["emu3000","r200","700t","n700s","emu900","breezy-blue"]){
     let state=C.apply(C.empty(),{type:"select-model",modelId});
     for(const index of [12,13]){
       const grant={id:`invalid-${index}`,buildId:modelId,packIndex:index,date:"2026-09-01",kind:"first"};
@@ -269,6 +269,46 @@ test("五台列車用 62 包完成 186 組，剩下 1 包不分配並保留展�
   assert.equal(state.grants.filter(g=>!g.buildId).length,1);
   assert.deepEqual(C.snapshot(state).displayedBuildIds,["e500","emu3000","r200","700t","n700s"]);
 });
+test("新增三台可在既有五台之後完成，SQLite 重啟保留 300 組、展示與多餘包",async()=>{
+  const dir=await mkdtemp(join(tmpdir(),"aiden-eight-trains-"));
+  let runtime=await collectionRuntime({persist:dir}),seq=0;
+  const call=async(type,data={},child="aiden")=>{
+    const response=await runtime.fetch(new Request(`http://local/v1/collection/${child}${type?"/"+type:""}`,{
+      method:type?"POST":"GET",headers:{Authorization:"Bearer test-token"},
+      ...(type?{body:JSON.stringify({commandId:`eight-trains-${++seq}`,...data})}:{})
+    }));
+    const body=await response.json();assert.equal(response.status,200,JSON.stringify(body));
+    return type?body.snapshot:body;
+  };
+  try {
+    await runtime.seedFixtures({days:101});
+    for(const [modelId,packs] of [["e500",14],["emu3000",12],["r200",12],["700t",12],["n700s",12],["emu900",12],["breezy-blue",12],["ct273",14]]) {
+      const before=await call("");
+      const selected=await call("select-model",{modelId});
+      const grants=selected.grants.filter(g=>g.buildId===modelId);
+      assert.equal(grants.length,packs);
+      // Exercise the actual Worker/DO contract in a nonsequential within-pack order.
+      for(const grant of grants)for(const part of [3,1,2])await call("place",{
+        grantId:grant.id,buildId:modelId,packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${part}`
+      });
+      const done=await call("display",{buildId:modelId,displayed:true});
+      assert.equal(done.builds.at(-1).placed.length,packs*3);
+      assert.ok(done.builds.at(-1).completedAt);
+      assert.deepEqual(done.builds.slice(0,-1),before.builds,"existing collections are unchanged");
+    }
+    const complete=await call("");
+    assert.equal(complete.builds.reduce((sum,b)=>sum+b.placed.length,0),300);
+    assert.equal(complete.grants.filter(g=>!g.buildId).length,1);
+    assert.equal(complete.displayedBuildIds.length,8);
+    await runtime.dispose();runtime=await collectionRuntime({persist:dir});
+    const restored=await call("");
+    assert.deepEqual(restored.builds,complete.builds);
+    assert.deepEqual(restored.grants,complete.grants);
+    assert.deepEqual(restored.displayedBuildIds,complete.displayedBuildIds);
+    assert.equal((await call("",{},"bingpu")).builds.length,0);
+  } finally { await runtime.dispose();await rm(dir,{recursive:true,force:true}); }
+});
+
 test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>{
   const dir=await mkdtemp(join(tmpdir(),"aiden-collection-"));
   let runtime=await collectionRuntime({persist:dir});

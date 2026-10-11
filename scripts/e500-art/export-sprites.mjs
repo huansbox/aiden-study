@@ -6,25 +6,38 @@ import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 const modelId=process.argv.find(arg=>arg.startsWith('--model='))?.slice(8)||'e500';
-const packCounts={e500:14,emu3000:12,r200:12,'700t':12,n700s:12};
+const packCounts={e500:14,emu3000:12,r200:12,'700t':12,n700s:12,emu900:12,'breezy-blue':12,ct273:14};
 if(!Object.hasOwn(packCounts,modelId))throw Error('Unknown model: '+modelId);
 const total=packCounts[modelId]*3;
 const base=path.dirname(fileURLToPath(import.meta.url)),out=path.resolve(base,'../../.scratch/e500-art/candidates',modelId==='e500'?'':modelId);
 await fs.mkdir(path.join(out,'assets'),{recursive:true});
 const endpoint=process.argv[2];
 const origin=process.argv.find(a=>/^http:\/\/127\.0\.0\.1:\d+$/.test(a))||'http://127.0.0.1:8877';
-const first=await connectBrowser(endpoint);
-const {targetId}=await first.send('Target.createTarget',{url:origin+'/index.html?sprites=1&model='+modelId},false);first.close();
-const tab=await connectBrowser(endpoint,{targetId});
+const bundlePath=process.argv.find(arg=>arg.startsWith('--bundle='))?.slice(9);
+const bundle=bundlePath?JSON.parse(await fs.readFile(bundlePath,'utf8')):null;
+let tab,targetId;
+if(!bundle){
+ const first=await connectBrowser(endpoint);
+ ({targetId}=await first.send('Target.createTarget',{url:origin+'/index.html?sprites=1&model='+modelId},false));first.close();
+ tab=await connectBrowser(endpoint,{targetId});
+}
+const frame=async(indices,occludeWith=[])=>{
+ if(bundle){
+  const encoded=bundle.frames[JSON.stringify([indices,occludeWith])];
+  if(typeof encoded!=='string')throw Error('Render bundle is missing a frame');
+  return encoded;
+ }
+ return tab.evaluate(`window.trainArt.renderSelection(${JSON.stringify(indices)},{occludeWith:${JSON.stringify(occludeWith)}})`);
+};
 try{
- await tab.send('Page.bringToFront');
- await tab.waitFor('window.renderReady===true',60000);
- const model=await tab.evaluate('window.trainArt.descriptor'),parts=model.steps.flatMap(s=>s.parts);
+ if(tab){await tab.send('Page.bringToFront');await tab.waitFor('window.renderReady===true',60000);}
+ if(bundle)assert.equal(bundle.version,1);
+ const model=bundle?.descriptor||await tab.evaluate('window.trainArt.descriptor'),parts=model.steps.flatMap(s=>s.parts);
  assert.equal(model.id,modelId);
  assert.equal(parts.length,total);
  parts.forEach((p,i)=>assert.equal(p.id,`p${Math.floor(i/3)+1}-${i%3+1}`));
  const metadata={id:model.id,title:model.title,series:model.series,viewBox:model.viewBox,scale:2,steps:[]};
- const raw=Buffer.from(await tab.evaluate(`window.trainArt.renderSelection(Array.from({length:${total}},(_,i)=>i))`),'base64');
+ const raw=Buffer.from(await frame(Array.from({length:total},(_,i)=>i)),'base64');
  await sharp(raw).resize(1600,1000).png().toFile(path.join(out,'full-3d.png'));
  for(let i=0;i<parts.length;i++){
   const p=parts[i],packStart=i-i%3,fullMask=(1<<(i%3))-1,images=[];
@@ -33,7 +46,7 @@ try{
   for(let mask=0;mask<=fullMask;mask++){
    const occludeWith=Array.from({length:packStart},(_,n)=>n);
    for(let bit=0;bit<i%3;bit++)if(mask&(1<<bit))occludeWith.push(packStart+bit);
-   images.push(Buffer.from(await tab.evaluate(`window.trainArt.renderSelection([${i}],{occludeWith:${JSON.stringify(occludeWith)}})`),'base64'));
+   images.push(Buffer.from(await frame([i],occludeWith),'base64'));
   }
   const png=images[0];
   const {data,info}=await sharp(png).ensureAlpha().raw().toBuffer({resolveWithObject:true});
@@ -79,7 +92,7 @@ try{
   const indices=[...Array.from({length:24},(_,i)=>i),...siblings.map(i=>24+i)];
   const name='window-order-'+siblings.map(i=>i+1).join('-');
   await compose(indices.map(i=>flat[i]),name+'.png');
-  const reference=Buffer.from(await tab.evaluate(`window.trainArt.renderSelection(${JSON.stringify(indices)})`),'base64');
+  const reference=Buffer.from(await frame(indices),'base64');
   await sharp(reference).resize(1600,1000).png().toFile(path.join(out,name+'-3d.png'));
  }
  for(const file of ['full-3d','composited','stage-3','stage-6','stage-21'])await sharp(path.join(out,file+'.png')).flatten({background:'#eee3d1'}).png().toFile(path.join(out,file+'-on-beige.png'));
@@ -98,4 +111,4 @@ try{
   await fs.copyFile(path.join(out,'metadata.json'),path.join(published,'metadata.json'));
   console.log('Published '+total+' groups and metadata: '+published);
  }
-}finally{await tab.send('Target.closeTarget',{targetId},false);tab.close();}
+}finally{if(tab){await tab.send('Target.closeTarget',{targetId},false);tab.close();}}

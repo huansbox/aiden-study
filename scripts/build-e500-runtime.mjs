@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 
 const modelId = process.argv.find(arg => arg.startsWith('--model='))?.slice(8) || 'e500';
-const definitions = { e500: {packs:14, global:'KidsBrickE500'}, emu3000: {packs:12, global:'KidsBrickEmu3000'}, r200: {packs:12, global:'KidsBrickR200'}, '700t': {packs:12, global:'KidsBrick700T'}, n700s: {packs:12, global:'KidsBrickN700S'} };
+const definitions = { e500: {packs:14, global:'KidsBrickE500'}, emu3000: {packs:12, global:'KidsBrickEmu3000'}, r200: {packs:12, global:'KidsBrickR200'}, '700t': {packs:12, global:'KidsBrick700T'}, n700s: {packs:12, global:'KidsBrickN700S'}, emu900: {packs:12, global:'KidsBrickEmu900'}, 'breezy-blue': {packs:12, global:'KidsBrickBreezyBlue'}, ct273: {packs:14, global:'KidsBrickCT273'} };
 if (!Object.hasOwn(definitions, modelId)) throw Error('Unknown train model: ' + modelId);
 const definition = definitions[modelId];
 const directory = new URL(`../docs/shared/bricks/${modelId}-v1/`, import.meta.url);
