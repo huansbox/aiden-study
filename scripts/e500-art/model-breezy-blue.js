@@ -95,4 +95,3 @@ export function createBreezyBlueModel(material) {
   ]);
   return model;
 }
-

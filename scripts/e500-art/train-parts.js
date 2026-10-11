@@ -82,4 +82,3 @@ export function trainParts(material, name) {
   }
   return { model, pack, track, wheel, bogie, chassis, wall, belt, roof, vent, coupler, ...t };
 }
-

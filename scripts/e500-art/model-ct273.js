@@ -216,4 +216,3 @@ export function createCT273Model(material) {
   ]);
   return model;
 }
-

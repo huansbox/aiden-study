@@ -120,4 +120,3 @@ export function createEmu900Model(material) {
   ]);
   return model;
 }
-
