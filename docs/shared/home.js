@@ -64,6 +64,27 @@
         .join("") || '<tr><td colspan="4">完成練習就會出現在這裡。</td></tr>'
     }</tbody></table></section><h2 style="margin:26px 0 16px">里程碑</h2><div class="family-badges">${C.BADGES.map((b) => `<div class="family-badge ${earned.has(b.id) ? "" : "locked"}"><span class="family-brick ${b.color}" aria-hidden="true"></span><strong>${b.label}</strong><small>${earned.has(b.id) ? "已達成" : `${b.goal} ${b.metric === "tasks" ? "個任務" : "題"}`}</small></div>`).join("")}</div>`;
   }
+  function packInventory() {
+    const state = collectionState();
+    return (state?.grants || []).map((grant) => {
+      const build = state.builds.find((b) => b.id === grant.buildId);
+      const placed = build && Number.isInteger(grant.packIndex)
+        ? [1, 2, 3].filter((n) => build.placed.includes(`p${grant.packIndex + 1}-${n}`)).length : 0;
+      return { ...grant, modelId: build?.modelId, placed };
+    });
+  }
+  function packHistory() {
+    const state = collectionState(), packs = packInventory();
+    const dates = [...new Set(packs.map((p) => p.date))].sort().reverse();
+    return `<section class="family-panel pack-history"><h2>拼裝包紀錄</h2><p>達標後自動存入，不用另外領取。未拼完的包會保留到隔天。</p>${state?.sync?.status !== "ready" ? '<p role="status">以下是這台裝置已保存的紀錄；連線完成後會更新。</p>' : ""}${dates.map((date) => {
+      const daily = packs.filter((p) => p.date === date);
+      const available = daily.filter((p) => p.placed < 3).length;
+      return `<section class="pack-history-day"><h3><time datetime="${esc(date)}">${esc(date.replaceAll("-", "/"))}</time> · 已獲得 ${daily.length} 包</h3><p>還有 ${available} 包未拼完 · ${daily.length - available} 包已拼好</p><ul>${daily.map((pack) => {
+        const title = window.KidsBrickModels?.get(pack.modelId)?.title || "積木作品";
+        return `<li>${pack.buildId ? `${esc(title)} 第 ${pack.packIndex + 1} 包 · ${pack.placed === 3 ? "已拼好" : pack.placed ? `拼裝中（${pack.placed} / 3 組）` : "待拼（0 / 3 組）"}` : "未拆開 · 保留在零件盒"}</li>`;
+      }).join("")}</ul></section>`;
+    }).join("") || '<p>目前還沒有發包紀錄。</p>'}</section>`;
+  }
   function dailyGoals() {
     const state = collectionState();
     if (!state?.daily) return '<section class="family-panel daily-goals"><h2>今天的目標</h2><p role="status">正在讀取每日目標⋯</p></section>';
@@ -74,15 +95,19 @@
     const build = state.activeBuild;
     const title = window.KidsBrickModels?.get(build?.modelId)?.title;
     const totalParts = window.KidsCollectionCore.PACK_COUNTS[build?.modelId] * 3;
+    const available = packInventory().filter((p) => p.placed < 3).length;
+    const models = window.KidsBrickModels?.models || [];
+    const allCollected = models.length > 0 && models.every((model) => state.builds.some((b) => b.modelId === model.id && b.completedAt)) && (!build || build.completedAt);
+    const packsAction = `<div class="daily-pack-actions">${available ? allCollected ? `<p>零件盒保留 ${available} 包，等新作品再拼。</p>` : `<button type="button" data-view="results">還有 ${available} 包可以拼 →</button>` : '<p>目前沒有待拼的包；已拼好的成果會保留。</p>'}<button type="button" class="secondary" data-pack-history>拼裝包紀錄</button></div>`;
     return `<section class="family-panel daily-goals"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日拼裝包 ${earned} / ${limit}</span></div><p class="daily-explanation">${goals.length ? `每完成一種目標領一包，${goals.length} 種目標共可領 ${goals.length} 包。內容由你選。` : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
       const entry = entries.find(e => e.id === goal.entryId);
       const label = entry?.title || goal.label || names[goal.entryId] || goal.entryId;
       const content = `<span>${esc(label)}</span><strong>${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${goal.metric === "answered" ? "題" : "輪"}${goal.done ? " · 完成" : ""}</strong>`;
       return entry ? `<a class="daily-goal ${goal.done ? "done" : ""}" href="${esc(F.entryHref(entry, child.id))}">${content}</a>` : `<div class="daily-goal unavailable">${content}<small>活動未開放，請家長調整每日目標。</small></div>`;
-    }).join("")}</div>${build ? `<p class="daily-build">${build.completedAt ? "已完成" : "正在拼"}：${esc(title || "積木作品")} · 已放上 ${build.placed.length} / ${totalParts} 組部件</p>` : ""}${state.sync?.status === "offline" || state.sync?.status === "error" ? `<p class="family-connection-notice" role="status">${esc(state.sync.message || "目前離線，已保存的成果會在連線後同步。")}</p>` : ""}</section>`;
+    }).join("")}</div>${packsAction}${build ? `<p class="daily-build">${build.completedAt ? "已完成" : "正在拼"}：${esc(title || "積木作品")} · 已放上 ${build.placed.length} / ${totalParts} 組部件</p>` : ""}${state.sync?.status === "offline" || state.sync?.status === "error" ? `<p class="family-connection-notice" role="status">${esc(state.sync.message || "目前離線，已保存的成果會在連線後同步。")}</p>` : ""}</section>`;
   }
   function results() {
-    return `<div class="family-row"><button data-view="home">← 首頁</button><h1>我的成果</h1></div><nav class="results-tabs" aria-label="成果分類"><button data-results-tab="collection" aria-pressed="${resultsTab === "collection"}">我的收藏</button><button data-results-tab="records" aria-pressed="${resultsTab === "records"}">學習紀錄</button></nav>${resultsTab === "records" ? stats() : '<div id="collection-workshop"></div>'}`;
+    return `<div class="family-row"><button data-view="home">← 首頁</button><h1>我的成果</h1></div><nav class="results-tabs" aria-label="成果分類"><button data-results-tab="collection" aria-pressed="${resultsTab === "collection"}">我的收藏</button><button data-results-tab="packs" aria-pressed="${resultsTab === "packs"}">拼裝包紀錄</button><button data-results-tab="records" aria-pressed="${resultsTab === "records"}">學習紀錄</button></nav>${resultsTab === "records" ? stats() : resultsTab === "packs" ? packHistory() : '<div id="collection-workshop"></div>'}`;
   }
   function home() {
     const s = F.summary(child.id),
@@ -179,6 +204,12 @@
       resultsTab = button.dataset.resultsTab;
       render();
     }));
+    root.querySelector("[data-pack-history]")?.addEventListener("click", () => {
+      view = "results";
+      resultsTab = "packs";
+      render();
+      window.scrollTo(0, 0);
+    });
     if (settingsState.offline) {
       const notice = document.createElement("p");
       notice.className = "family-connection-notice";
@@ -193,6 +224,7 @@
     root.querySelectorAll("[data-view]:not([data-action])").forEach((b) =>
       b.addEventListener("click", () => {
         view = b.dataset.view;
+        if (view === "results") resultsTab = "collection";
         render();
         window.scrollTo(0, 0);
       }),
