@@ -39,12 +39,49 @@
   function miniature(ids, label) {
     return `<svg viewBox="45 80 720 420" role="img" aria-label="${esc(label)}">${pieces(ids)}</svg>`;
   }
+  function icon(name) {
+    const paths = {
+      check: '<path d="m5 12 4 4L19 6"/>',
+      arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
+      left: '<path d="M20 12H4m6-6-6 6 6 6"/>',
+      down: '<path d="M12 3v16m-6-6 6 6 6-6"/>',
+      pause: '<path d="M8 5v14M16 5v14"/>',
+      play: '<path d="m8 4 12 8-12 8Z"/>',
+      history: '<path d="M4 9a8 8 0 1 1 0 7M4 3v6h6m2-2v6l4 2"/>',
+      bag: '<path d="M5 7h14l2 14H3ZM9 7V3h6v4"/>',
+      sound: '<path d="M3 9h4l5-5v16l-5-5H3Zm13-2a7 7 0 0 1 0 10m3-13a11 11 0 0 1 0 16"/>',
+      muted: '<path d="M3 9h4l5-5v16l-5-5H3Zm13 0 6 6m0-6-6 6"/>',
+      hand: '<path d="M9 12V4a2 2 0 0 1 4 0v7-3a2 2 0 0 1 4 0v3-1a2 2 0 0 1 4 0v5c0 4-3 7-7 7h-1c-3 0-4-2-6-4l-3-4a2 2 0 0 1 3-3l2 2"/>',
+      block: '<path d="M3 9h18v12H3Zm4 0V4h4v5m2 0V4h4v5"/>',
+    };
+    return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+  }
+  function partPicture(part, ids = placed()) {
+    const b = part.box;
+    return `<svg class="part-art" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" aria-hidden="true">${artwork(part, ids)}</svg>`;
+  }
+  function instructionGraphic() {
+    const part = partById(selected) || pack().find(item => !placed().has(item.id));
+    if (!part) return "";
+    return `<div class="picture-instructions" role="img" aria-label="1 選零件；2 拖到虛線接點，或點一下接點；3 接好">
+      <div class="picture-step"><b>1</b>${partPicture(part)}<span class="gesture">${icon("hand")}</span></div>${icon("arrow")}
+      <div class="picture-step target-step"><b>2</b>${partPicture(part)}<span class="gesture">${icon("down")}</span></div>${icon("arrow")}
+      <div class="picture-step"><b>3</b>${partPicture(part)}<span class="gesture success">${icon("check")}</span></div></div>`;
+  }
+  function pushGraphic() {
+    return `<span class="push-gesture" role="img" aria-label="按住模型，左右拖動">${icon("left")}${icon("hand")}${icon("arrow")}</span>`;
+  }
+  function nextPackGraphic() {
+    const next = model.steps[trial().packIndex + 1];
+    return next ? `<div class="next-pack" role="img" aria-label="${esc(preset().next)}"><span>下一包</span><div>${icon("arrow")}${next.parts.map(part => partPicture(part)).join("")}</div></div>` : `<div class="finished-mark" role="img" aria-label="E500 全部完成">${icon("check")}<span>42 / 42</span></div>`;
+  }
   function guide(part) {
     if (!part) return "";
     const b = part.box, x = b.x + b.width / 2, y = b.y + b.height / 2;
     return `<g class="join-guide"><g class="ghost-part">${artwork(part, placed())}</g>
       <rect class="destination" x="${b.x - 7}" y="${b.y - 7}" width="${b.width + 14}" height="${b.height + 14}" rx="9"/>
       <circle class="contact-ring" cx="${x}" cy="${y}" r="18"/><circle class="contact-dot" cx="${x}" cy="${y}" r="5"/>
+      <path class="join-arrow" d="M${x} ${y-60}v30m-9-9 9 9 9-9"/>
       </g><rect data-place-target tabindex="0" role="button" aria-label="接上：${esc(part.name)}" x="${b.x - 15}" y="${b.y - 15}" width="${Math.max(44, b.width + 30)}" height="${Math.max(44, b.height + 30)}" fill="transparent"/>`;
   }
   function statusText() {
@@ -60,35 +97,35 @@
     }
     const ids = placed(), completed = doneCount() === 3;
     if (paused) {
-      host.innerHTML = `<section class="pause-card">${miniature(ids,"留在工作台的 E500 半成品")}<p class="eyebrow">工作台替你留著</p><h2>你的 E500 已經造到這裡。</h2><p>${completed ? preset().next : `這包還有 ${3 - doneCount()} 組零件。`}<br>回到此頁可以接著拼；重新整理會重置這份示範。</p><button class="primary" data-action="resume">回工作台接著拼</button></section>`;
+      host.innerHTML = `<section class="pause-card">${miniature(ids,"留在工作台的 E500 半成品")}<p class="pause-count">${ids.size} / 42</p><button class="primary" data-action="resume" aria-label="回工作台接著拼">${icon("play")}繼續</button></section>`;
       return;
     }
     const shown = before ? new Set(trial().initial) : ids;
     // A trial pack can finish before a structural chapter does: suspension
     // follows the chassis, and glazing follows the cab frames.
     const chapter = shown.size < 15 ? 0 : shown.size < 21 ? 1 : shown.size < 27 ? 2 : shown.size < 36 ? 3 : 4;
-    const chapters = ["底盤", "橘色車身", "駕駛室", "車頂設備", "車頭收尾"];
-    const all = new Set(parts.map(part => part.id));
+    const chapters = [["底盤","p4-2"], ["橘色車身","p7-2"], ["駕駛室","p8-3"], ["車頂設備","p12-1"], ["車頭收尾","p14-2"]];
     host.innerHTML = `<section class="workshop" aria-label="E500 改善版工作台">
-      <div class="workshop-top"><div><p class="eyebrow">TAIWAN RAILWAY / E500</p><h2>${completed ? preset().done : preset().label}</h2><p class="subtle">${ids.size} / 42 組已裝好 · 本包 ${doneCount()} / 3</p></div><div class="tool-actions"><button class="quiet-button" data-action="sound" aria-pressed="${audioEnabled}">${audioEnabled ? "音效開" : "音效關"}</button><button class="quiet-button" data-action="pause">稍後再拼</button></div></div>
-      <ol class="chapters" aria-label="整台建造階段">${chapters.map((name,index) => `<li class="${shown.size === 42 || index < chapter ? "done" : index === chapter ? "active" : ""}" ${index === chapter && shown.size < 42 ? 'aria-current="step"' : ""}>${index + 1} ${name}</li>`).join("")}</ol>
-      <div class="bench-grid"><div class="model-area"><div class="scene-note">${before ? "本包開始前" : pushing ? "試車台 · 親手推動" : "施工中 · 已裝的零件都留在這裡"}</div>
+      <div class="workshop-top"><div class="model-heading"><h2>E500</h2><span class="model-count" aria-label="${shown.size} / 42 組已裝好">${shown.size}<small> / 42</small></span></div><div class="tool-actions"><button class="quiet-button icon-button" data-action="sound" aria-label="${audioEnabled ? "音效開" : "音效關"}" aria-pressed="${audioEnabled}">${icon(audioEnabled ? "sound" : "muted")}</button><button class="quiet-button" data-action="pause" aria-label="稍後再拼">${icon("pause")}休息</button></div></div>
+      <ol class="chapters" aria-label="整台建造階段">${chapters.map(([name,id],index) => {
+        const done = shown.size === 42 || index < chapter;
+        return `<li class="${done ? "done" : index === chapter ? "active" : ""}" aria-label="${index+1} ${name}${done ? "已完成" : index === chapter ? "組裝中" : "尚未完成"}" ${index === chapter && shown.size < 42 ? 'aria-current="step"' : ""}><span class="chapter-number">${done ? icon("check") : index+1}</span>${partPicture(partById(id))}</li>`;
+      }).join("")}</ol>
+      <div class="bench-grid"><div class="model-area">${before ? `<div class="scene-note">${icon("history")}回看</div>` : ""}
         <svg class="scene${pushing ? " is-pushing" : ""}" id="lab-scene" viewBox="${preset().viewBox}" role="group" aria-label="E500 ${before ? "本包開始前" : "施工模型"}">
           <path class="ground-line" d="M65 445L745 270 M65 470L745 295"/>${pieces(shown, {rail:true})}
           <g id="movable-train" transform="translate(${offset} ${-offset * .257})">${pieces(shown,{rail:false,highlight:completed && !before})}</g>
           <g id="placement-guide">${!before && !pushing && selected ? guide(partById(selected)) : ""}</g>
         </svg>
-        <div class="scene-caption"><div><p id="scene-message">${statusText()}</p><small>${completed && !before ? preset().after : preset().before}</small></div></div>
-        <div class="reference">${miniature(all,"E500 完成外觀參考")}<p><strong>它會長成這樣</strong>完成參考</p></div>
-      </div><aside class="tray" aria-label="改善版本包零件"><p class="eyebrow">第 ${trial().packIndex + 1} 包 / 14</p><h3>${completed ? "這一包，完成了。" : "今天接上這三組"}</h3><p class="subtle">${completed ? "看看這次多了什麼，再決定何時繼續。" : "拿起零件拖曳，或點零件再點接點。"}</p>
-        <div class="part-list">${pack().map((part,index) => {
-          const isPlaced = ids.has(part.id), b = part.box;
-          return `<button class="part-button" data-part="${part.id}" aria-label="${esc(part.name)}" aria-pressed="${selected === part.id}" ${isPlaced || before || pushing ? "disabled" : ""}><svg viewBox="${b.x} ${b.y} ${b.width} ${b.height}" aria-hidden="true">${artwork(part, ids)}</svg><span>${preset().shortNames[index]}<small>${isPlaced ? "已接好" : before ? "正在回看" : pushing ? "試推中" : "拿起來"}</small></span></button>`;
+        <div class="scene-caption"><div id="picture-guide">${pushing ? pushGraphic() : completed ? `<span class="pack-done" role="img" aria-label="這一包三組已接好">${icon("check")}${icon("check")}${icon("check")}</span>` : instructionGraphic()}</div><p id="scene-message" class="sr-only">${statusText()}</p></div>
+      </div><aside class="tray" aria-label="改善版本包零件"><div class="pack-heading"><span aria-label="第 ${trial().packIndex+1} 包，共 14 包">${icon("bag")}${trial().packIndex + 1} / 14</span><span class="pack-dots" role="img" aria-label="本包 ${doneCount()} / 3 組已接好">${pack().map(part => `<i class="${ids.has(part.id) ? "done" : ""}">${ids.has(part.id) ? icon("check") : ""}</i>`).join("")}</span></div>
+        <div class="part-list">${pack().map(part => {
+          const isPlaced = ids.has(part.id);
+          return `<button class="part-button" data-part="${part.id}" aria-label="${esc(part.name)}${isPlaced ? "，已接好" : ""}" aria-pressed="${selected === part.id}" ${isPlaced || before || pushing ? "disabled" : ""}>${partPicture(part,ids)}<span class="part-state">${icon(isPlaced ? "check" : "hand")}</span></button>`;
         }).join("")}</div>
-        ${!completed ? `<button class="primary place-button" data-action="place" ${!selected || before || pushing ? "disabled" : ""}>${selected ? "接上選好的零件" : "先選一組零件"}</button><p class="ready-status" id="ready-status">${before || pushing ? "回到組裝就能繼續。" : "位置會提示，不用猜。"}</p><p class="tray-tip">靠近接點會自動對準。<br>放到空白處即可取消；隨時能再拿起來。</p>` : `<div class="round-end"><strong>${preset().next}</strong><p>你剛才親手接上的三組，已留在模型上。</p><button class="quiet-button" data-action="before" aria-pressed="${before}">${before ? "回到現在" : "看看本包開始前"}</button><button class="primary" data-action="pause">先把作品留在這裡</button></div>`}
+        ${!completed ? `<button class="primary place-button" data-action="place" aria-label="接上選好的零件" ${!selected || before || pushing ? "disabled" : ""}>${icon("down")}接上</button><p class="sr-only" id="ready-status">${before || pushing ? "回到組裝就能繼續。" : "靠近接點會對準，放到空白處會取消。"}</p>` : `<div class="round-end"><button class="quiet-button compare-button" data-action="before" aria-label="${before ? "回到現在" : "看看本包開始前"}" aria-pressed="${before}">${miniature(before ? ids : new Set(trial().initial),before ? "本包完成後" : "本包開始前")}<span>${icon(before ? "arrow" : "history")}${before ? "現在" : "回看"}</span></button>${nextPackGraphic()}</div>`}
       </aside></div>
-      ${ids.size >= 12 ? `<div class="milestone"><span class="milestone-number">↔</span><p><strong>${presetId === "chassis" ? "輪架與底盤連起來了。" : "造好的部分，已經可以動。"}</strong><small>親手推一推，試玩不會增加組裝進度。</small></p><button class="quiet-button" data-action="push" aria-pressed="${pushing}" ${before ? "disabled" : ""}>${pushing ? "回到組裝" : "試推看看"}</button></div>` : ""}
-      ${pushing ? '<div class="push-controls"><button class="quiet-button" data-action="push-left">往左推</button><label>車的位置 <input id="push-position" type="range" min="-45" max="45" value="0" step="1"></label><button class="quiet-button" data-action="push-right">往右推</button></div>' : ""}
+      ${ids.size >= 12 ? `<div class="milestone"><button class="push-button" data-action="push" aria-label="${pushing ? "回到組裝" : "試推看看"}" aria-pressed="${pushing}" ${before ? "disabled" : ""}>${pushing ? icon("block") : pushGraphic()}<span>${pushing ? "組裝" : "試推"}</span></button>${pushing ? `<div class="push-controls"><button class="quiet-button icon-button" data-action="push-left" aria-label="往左推">${icon("left")}</button><input id="push-position" type="range" aria-label="車的位置" min="-45" max="45" value="0" step="1"><button class="quiet-button icon-button" data-action="push-right" aria-label="往右推">${icon("arrow")}</button></div>` : ""}</div>` : ""}
     </section>`;
     if (pushing) updateOffset(offset);
   }
@@ -100,7 +137,8 @@
     host.querySelector("#placement-guide").innerHTML = guide(partById(id));
     host.querySelector("#scene-message").textContent = statusText();
     const button = host.querySelector('[data-action="place"]');
-    button.disabled = false; button.textContent = "接上選好的零件";
+    button.disabled = false;
+    host.querySelector("#picture-guide").innerHTML = instructionGraphic();
     announce(statusText());
   }
   function destination(part) {
@@ -181,7 +219,7 @@
     const action = event.target.closest("[data-action]")?.dataset.action;
     if (!action) return;
     if (action === "retry") { loadAssets(); return; }
-    if (action === "sound") { audioEnabled = !audioEnabled; sound.setEnabled(audioEnabled); if (audioEnabled) sound.unlock(); const button=event.target.closest("button");button.textContent=audioEnabled ? "音效開" : "音效關";button.setAttribute("aria-pressed",String(audioEnabled));return; }
+    if (action === "sound") { audioEnabled = !audioEnabled; sound.setEnabled(audioEnabled); if (audioEnabled) sound.unlock(); const button=event.target.closest("button");button.innerHTML=icon(audioEnabled ? "sound" : "muted");button.setAttribute("aria-label",audioEnabled ? "音效開" : "音效關");button.setAttribute("aria-pressed",String(audioEnabled));return; }
     if (action === "place") { if (selected) install(selected); return; }
     if (action === "push-left" || action === "push-right") { updateOffset(offset + (action === "push-left" ? -20 : 20)); return; }
     cancelInteraction(); selected = null;
