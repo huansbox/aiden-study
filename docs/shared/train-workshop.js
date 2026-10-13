@@ -39,6 +39,8 @@
     const parts = model.steps.flatMap(step => step.parts).sort((a, b) => a.z - b.z);
     const byId = id => parts.find(part => part.id === id);
     const buildId = collection.snapshot().activeBuild.id;
+    const name = model.id === "ct273" ? "CT273" : "E500";
+    const ct = model.id === "ct273" ? global.KidsCT273Mechanism?.create() : null;
     let snapshot = collection.snapshot(), heldPack = null, selected = null;
     let paused = false, before = false, pushing = false, offset = 0;
     let disposed = false, busy = false, localError = "", ready = false, assetError = false;
@@ -46,9 +48,12 @@
     let pointerTap = null, renderPending = false;
     const imageTimers = new Set(), listeners = [];
     const view = () => describe(model, snapshot, heldPack);
+    let mechanismView = !!ct && view().packIndex === 2;
+    const displayPart = part => mechanismView && ct?.part(part.id) ? { ...part, ...ct.part(part.id) } : part;
     const reduced = () => global.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     const listen = (target, name, handler) => { target?.addEventListener?.(name, handler); listeners.push(() => target?.removeEventListener?.(name, handler)); };
     const picture = (part, ids = view().placed) => {
+      part = displayPart(part);
       const b = part.box;
       return `<svg class="part-art" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" aria-hidden="true">${artwork(part, ids)}</svg>`;
     };
@@ -67,6 +72,7 @@
     }
     function guide(part) {
       if (!part) return "";
+      part = displayPart(part);
       const b = part.box, x = b.x + b.width/2, y = b.y + b.height/2;
       return `<g class="join-guide"><g class="ghost-part">${artwork(part, view().placed)}</g>
         <rect class="destination" x="${b.x-7}" y="${b.y-7}" width="${b.width+14}" height="${b.height+14}" rx="9"/>
@@ -80,50 +86,59 @@
       return `<div class="e500-save" role="status">${icon(localError || ["offline","error"].includes(sync.status) ? "history" : "check")}<span>${esc(text)}</span>${["offline","error"].includes(sync.status) ? button("flush", "重試", "重試同步") : ""}</div>`;
     }
     function paint(html) {
-      const focused = document.activeElement?.closest?.("[data-e500-action]");
+      const focused = document.activeElement?.closest?.("[data-e500-action], [data-ct-wheel], [data-ct-angle]");
       const action = focused && host.contains?.(focused) ? focused.dataset.e500Action : null;
       const part = focused?.dataset.part;
+      const ctFocus = focused && host.contains?.(focused) ? focused.hasAttribute?.("data-ct-angle") ? "[data-ct-angle]" : focused.dataset.ctWheel !== undefined ? `[data-ct-wheel="${focused.dataset.ctWheel}"]` : null : null;
       host.innerHTML = html;
+      if (ctFocus) host.querySelector(ctFocus)?.focus?.({preventScroll:true});
       if (action) {
         const target = host.querySelector(`[data-e500-action="${action}"]${part ? `[data-part="${part}"]` : ""}:not(:disabled)`)
           || host.querySelector('.part-button:not(:disabled)') || host.querySelector('[data-e500-action="next"]');
         target?.focus?.({preventScroll:true});
       }
     }
-    function render() {
+    function render(force = false) {
       if (disposed) return;
-      if (busy || drag || pointerTap !== null) { renderPending = true; return; }
+      if (!force && (busy || drag || pointerTap !== null)) { renderPending = true; return; }
       renderPending = false;
       const v = view(), ids = v.placed, shown = before ? v.before : ids;
-      const chapters = [["底盤","p4-2",0,5],["橘色車身","p7-2",5,7],["駕駛室","p8-3",7,9],["車頂設備","p12-1",9,12],["車頭收尾","p14-2",12,14]];
+      ct?.sync(ids);
+      const chapters = ct ? [["輪組與底盤","p3-2",0,4],["鍋爐與車頭","p5-2",4,7],["駕駛室","p8-3",7,8],["煤水車","p10-2",8,10],["連桿與收尾","p12-1",10,14]] : [["底盤","p4-2",0,5],["橘色車身","p7-2",5,7],["駕駛室","p8-3",7,9],["車頂設備","p12-1",9,12],["車頭收尾","p14-2",12,14]];
       const completedChapters = chapters.map(([, , from, to]) => model.steps.slice(from,to).every(step => step.parts.every(part => shown.has(part.id))));
       const activeChapter = completedChapters.indexOf(false);
-      const top = `<div class="workshop-top"><div class="model-heading"><h2>E500</h2><span class="model-count" aria-label="${shown.size} / 42 組已裝好">${shown.size}<small> / 42</small></span></div><div class="tool-actions">${button("sound",icon(audioEnabled ? "sound":"muted"),audioEnabled ? "關閉拼裝音效":"開啟拼裝音效",`aria-pressed="${audioEnabled}"`)}${button("shelf",icon("shelf"),"收藏室")}${button("pause",icon("pause")+"休息","稍後再拼")}</div></div>`;
-      const shell = content => `<section class="e500-workshop" aria-label="E500 拼裝工作台">${top}${content}${syncStatus()}</section>`;
+      const top = `<div class="workshop-top"><div class="model-heading"><h2>${name}</h2><span class="model-count" aria-label="${shown.size} / 42 組已裝好">${shown.size}<small> / 42</small></span></div><div class="tool-actions">${button("sound",icon(audioEnabled ? "sound":"muted"),audioEnabled ? "關閉拼裝音效":"開啟拼裝音效",`aria-pressed="${audioEnabled}"`)}${button("shelf",icon("shelf"),"收藏室")}${button("pause",icon("pause")+"休息","稍後再拼")}</div></div>`;
+      const shell = content => `<section class="e500-workshop" aria-label="${name} 拼裝工作台">${top}${content}${syncStatus()}</section>`;
       if (!ready) { paint(shell(`<div class="asset-notice" role="status"><h3>${assetError ? "圖片暫時沒載好" : "準備中…"}</h3>${assetError ? button("retry","重新載入","重新載入圖片") : ""}</div>`)); return; }
-      if (paused) { paint(shell(`<div class="pause-card">${miniature(ids,"留在工作台的 E500 半成品")}<div>${button("resume",icon("play")+"繼續","回工作台接著拼",'class="primary"')}${button("close",icon("left")+"首頁","回首頁")}</div></div>`)); return; }
+      if (paused) { paint(shell(`<div class="pause-card">${miniature(ids,`留在工作台的 ${name} 半成品`)}<div>${button("resume",icon("play")+"繼續","回工作台接著拼",'class="primary"')}${button("close",icon("left")+"首頁","回首頁")}</div></div>`)); return; }
       const hasNext = v.packDone && v.nextGrant;
       const unassigned = snapshot.grants?.some(grant => grant.buildId == null);
-      const viewBox = shown.size < 15 && !v.pack?.some(part => part.box.y < 220) ? "65 220 680 270" : "65 80 680 410";
+      const viewBox = mechanismView ? "0 75 900 295" : shown.size < 15 && !v.pack?.some(part => part.box.y < 220) ? "65 220 680 270" : "65 80 680 410";
       paint(shell(`<ol class="chapters" aria-label="整台建造階段">${chapters.map(([name,id],i) => `<li class="${completedChapters[i] ? "done" : i === activeChapter ? "active":""}" aria-label="${i+1} ${name}${completedChapters[i] ? "已完成": i === activeChapter ? "組裝中":"尚未完成"}" ${i === activeChapter ? 'aria-current="step"':""}><span class="chapter-number">${completedChapters[i] ? icon("check"):i+1}</span>${picture(byId(id))}</li>`).join("")}</ol>
         <div class="bench-grid"><div class="model-area">${before ? `<div class="scene-note">${icon("history")}回看</div>`:""}
-          <svg class="scene${pushing ? " is-pushing":""}" data-e500-scene viewBox="${viewBox}" role="group" aria-label="E500 ${before ? "本包開始前":"施工模型"}">
-            <path class="ground-line" d="M65 445L745 270 M65 470L745 295"/>${pieces(shown,true)}
-            <g data-movable-train transform="translate(${offset} ${-offset*.257})">${pieces(shown,false,v.packDone && !before ? v.before : shown)}</g>
+          <svg class="scene${pushing ? " is-pushing":""}${mechanismView ? " ct-mechanism-scene":""}" data-e500-scene viewBox="${viewBox}" role="group" aria-label="${name} ${mechanismView ? "輪組側面特寫，" : ""}${before ? "本包開始前":"施工模型"}">
+            ${mechanismView ? ct.scene(shown, { disabled:before || !!selected }) : `<path class="ground-line" d="M65 445L745 270 M65 470L745 295"/>${pieces(shown,true)}
+            <g data-movable-train transform="translate(${offset} ${-offset*.257})">${pieces(shown,false,v.packDone && !before ? v.before : shown)}</g>`}
             <g data-placement-guide>${!before && !pushing && selected ? guide(byId(selected)):""}</g>
-          </svg><div class="scene-caption"><div data-picture-guide>${pushing ? pushGraphic():instructions(byId(selected) || v.remaining[0])}</div></div>
+          </svg><div class="scene-caption"><div data-picture-guide>${mechanismView && !selected && ct.hasWheel(shown) ? ct.gesture() : pushing ? pushGraphic():instructions(byId(selected) || v.remaining[0])}</div></div>
         </div><aside class="tray" aria-label="本包零件">
           ${v.packIndex !== null ? `<div class="pack-heading"><span aria-label="第 ${v.packIndex+1} 包，共 14 包">${icon("bag")}${v.packIndex+1} / 14</span><span class="pack-dots" role="img" aria-label="本包 ${3-v.remaining.length} / 3 組已接好">${v.pack.map(part => `<i class="${ids.has(part.id)?"done":""}">${ids.has(part.id)?icon("check"):""}</i>`).join("")}</span></div>
             <div class="part-list">${v.pack.map(part => button("part",picture(part,ids)+`<span class="part-state">${icon(ids.has(part.id)?"check":"hand")}</span>`,part.name+(ids.has(part.id)?"，已接好":""),`class="part-button" data-part="${part.id}" aria-pressed="${selected === part.id}" ${ids.has(part.id)||before||pushing?"disabled":""}`)).join("")}</div>
             ${v.packDone ? `<div class="round-end">${button("before",miniature(before?ids:v.before,before?"本包完成後":"本包開始前")+`<span>${icon(before?"arrow":"history")}${before?"現在":"回看"}</span>`,before?"回到現在":"看看本包開始前",`class="compare-button" aria-pressed="${before}"`)}</div>` : button("place",icon("down")+"接上","接上選好的零件",`class="primary place-button" ${!selected||before||pushing?"disabled":""}`)}` : ""}
           ${hasNext ? button("next",`<span>下一包 ${icon("arrow")}</span><span>${model.steps[v.nextGrant.packIndex].parts.map(part=>picture(part)).join("")}</span>`,"打開下一包",'class="next-pack"') : !v.remaining.length ? unassigned ? button("allocate",icon("bag")+"開一包","打開下一包",'class="primary next-pack"') : `<div class="rest-mark">${icon("pause")}<span>下次繼續</span>${button("close",icon("left")+"首頁","回首頁")}</div>` : ""}
         </aside></div>
-        ${canPush(ids) ? `<div class="milestone">${button("push",(pushing?icon("block"):pushGraphic())+`<span>${pushing?"組裝":"試推"}</span>`,pushing?"回到組裝":"試推看看",`class="push-button" aria-pressed="${pushing}" ${before?"disabled":""}`)}${pushing?`<div class="push-controls">${button("push-left",icon("left"),"往左推")}<input data-push-position type="range" aria-label="車的位置" min="-45" max="45" value="${offset}" step="1">${button("push-right",icon("arrow"),"往右推")}</div>`:""}</div>`:""}`));
+        ${ct && (v.packIndex === 2 || ct.hasWheel(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : ct.gesture()+"輪組", mechanismView ? "查看全車半成品" : "查看輪組並試轉",`aria-pressed="${mechanismView}" ${before ? "disabled":""}`)}${mechanismView ? ct.controls(shown,{disabled:before || !!selected}):""}</div>`:""}
+        ${!ct && canPush(ids) ? `<div class="milestone">${button("push",(pushing?icon("block"):pushGraphic())+`<span>${pushing?"組裝":"試推"}</span>`,pushing?"回到組裝":"試推看看",`class="push-button" aria-pressed="${pushing}" ${before?"disabled":""}`)}${pushing?`<div class="push-controls">${button("push-left",icon("left"),"往左推")}<input data-push-position type="range" aria-label="車的位置" min="-45" max="45" value="${offset}" step="1">${button("push-right",icon("arrow"),"往右推")}</div>`:""}</div>`:""}`));
     }
     function selectPart(id) {
       const v = view();
       if (!ready || busy || paused || before || pushing || !v.remaining.some(part => part.id === id)) return;
       selected = id;
+      if (ct) {
+        const side = ct.isPart(id);
+        if (id === "p12-1") ct.align();
+        mechanismView = side; render(true);
+      }
       // Keep the captured touch node alive while choosing a piece.
       for (const button of host.querySelectorAll('[data-e500-action="part"]')) button.setAttribute("aria-pressed",String(button.dataset.part === id));
       host.querySelector("[data-placement-guide]").innerHTML = guide(byId(id));
@@ -134,7 +149,7 @@
     function destination(part) {
       const matrix = host.querySelector("[data-e500-scene]")?.getScreenCTM?.();
       if (!matrix || !global.DOMPoint) return null;
-      const b = part.box, a = new global.DOMPoint(b.x,b.y).matrixTransform(matrix), z = new global.DOMPoint(b.x+b.width,b.y+b.height).matrixTransform(matrix);
+      const b = displayPart(part).box, a = new global.DOMPoint(b.x,b.y).matrixTransform(matrix), z = new global.DOMPoint(b.x+b.width,b.y+b.height).matrixTransform(matrix);
       return { x:a.x,y:a.y,width:z.x-a.x,height:z.y-a.y };
     }
     function makeFloating(part, dest) {
@@ -190,6 +205,16 @@
         }
       }
     }
+    function wheelAngle(event,index) {
+      const matrix=host.querySelector("[data-e500-scene]")?.getScreenCTM?.();
+      if (!matrix || !global.DOMPoint) return null;
+      const point=new global.DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());
+      return ct.pointerAngle(point,index);
+    }
+    function turnWheel(index,delta) {
+      if (!ct || !mechanismView || before || selected || busy || paused) return;
+      ct.sync(view().placed); ct.turn(index,delta); ct.update(host);
+    }
     function updateOffset(value) {
       offset = Math.max(-45,Math.min(45,value));
       host.querySelector("[data-movable-train]")?.setAttribute("transform",`translate(${offset} ${-offset*.257})`);
@@ -217,19 +242,22 @@
       if (!control || control.disabled) return;
       const action = control.dataset.e500Action;
       if (busy && !motion && ["allocate","flush"].includes(action)) return;
-      if (action === "part") { selectPart(control.dataset.part); return; }
+      if (action === "part") { if (event.detail === 0) selectPart(control.dataset.part); return; }
       if (action === "place") { if (selected) void install(selected); return; }
+      if (action === "ct-prev" || action === "ct-next") { turnWheel(ct.chosen, action === "ct-prev" ? -90 : 90); return; }
+      if (action === "ct-detach") { if (ct && mechanismView && !before && !selected && !busy) { ct.trial(); render(); } return; }
       if (action === "sound") { audioEnabled=!audioEnabled; onSound?.(audioEnabled); render(); return; }
       if (action === "push-left" || action === "push-right") { updateOffset(offset+(action === "push-left"?-20:20)); return; }
       cancelInteraction(); selected = null;
+      if (action === "mechanism") { mechanismView=!mechanismView; ct.endTrial(); pushing=false; }
       if (action === "retry") { void loadAssets(); return; }
       if (action === "close") { onClose?.(); return; }
       if (action === "shelf") { onShelf?.(); return; }
       if (action === "pause") { paused=true; pushing=false; before=false; offset=0; }
       if (action === "resume") paused=false;
-      if (action === "before") { before=!before; pushing=false; offset=0; }
+      if (action === "before") { before=!before; pushing=false; offset=0; ct?.endTrial(); }
       if (action === "push") { pushing=!pushing; before=false; offset=0; }
-      if (action === "next") { heldPack=null; before=false; pushing=false; offset=0; }
+      if (action === "next") { heldPack=null; before=false; pushing=false; offset=0; mechanismView=!!ct && view().packIndex===2; ct?.endTrial(); }
       if (action === "allocate" || action === "flush") {
         busy=true;
         Promise.resolve().then(()=>action === "allocate" ? collection.allocate():collection.flush()).catch(error=>{localError=error?.message || "請再試一次";}).finally(()=>{busy=false;snapshot=collection.snapshot();render();});
@@ -238,13 +266,26 @@
       (action === "next" ? host.querySelector('.part-button:not(:disabled)') : host.querySelector(`[data-e500-action="${paused?"resume":action === "resume"?"pause":action}"]`))?.focus?.({preventScroll:true});
     });
     listen(host,"keydown",event => {
+      const wheel=event.target.closest?.("[data-ct-wheel]");
+      if(wheel && ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)) {
+        event.preventDefault(); turnWheel(Number(wheel.dataset.ctWheel),["ArrowLeft","ArrowDown"].includes(event.key)?-15:15);return;
+      }
       if (event.key === "Escape") { event.preventDefault();cancelInteraction();selected=null;render();host.querySelector('.part-button:not(:disabled)')?.focus?.({preventScroll:true}); }
       if ((event.key === "Enter" || event.key === " ") && event.target.closest?.('rect[data-e500-action="place"]')) { event.preventDefault(); if (selected) void install(selected); }
     });
-    listen(host,"input",event => {if (event.target.matches?.("[data-push-position]")) updateOffset(Number(event.target.value));});
+    listen(host,"input",event => {
+      if (event.target.matches?.("[data-push-position]")) updateOffset(Number(event.target.value));
+      if (event.target.matches?.("[data-ct-angle]")) turnWheel(ct.chosen,Number(event.target.value)-ct.angle);
+    });
     listen(host,"pointerdown",event => {
       if (event.button > 0 || event.isPrimary === false || busy || drag) return;
-      if (event.target.closest?.("[data-e500-action]")) pointerTap = event.pointerId;
+      if (event.target.closest?.("[data-e500-action], [data-ct-angle]")) pointerTap = event.pointerId;
+      const wheel = event.target.closest?.("[data-ct-wheel]");
+      if (wheel && mechanismView && !before && !selected) {
+        const index = Number(wheel.dataset.ctWheel); ct.choose(index); ct.update(host);
+        drag={kind:"ct-turn",pointerId:event.pointerId,index,last:wheelAngle(event,index)};
+        host.setPointerCapture?.(event.pointerId);return;
+      }
       if (pushing && event.target.closest?.("[data-e500-scene]")) {
         drag={kind:"push",pointerId:event.pointerId,startX:event.clientX,offset,scale:host.querySelector("[data-e500-scene]").getScreenCTM().a};
         host.setPointerCapture?.(event.pointerId);return;
@@ -258,6 +299,11 @@
     });
     listen(host,"pointermove",event => {
       if (!drag || drag.pointerId !== event.pointerId) return;
+      if (drag.kind === "ct-turn") {
+        event.preventDefault(); const angle=wheelAngle(event,drag.index);
+        if (angle !== null && drag.last !== null) turnWheel(drag.index,ct.delta(drag.last,angle));
+        drag.last=angle;return;
+      }
       if (drag.kind === "push") {event.preventDefault();updateOffset(drag.offset+(event.clientX-drag.startX)/drag.scale);return;}
       if (!drag.moved && Math.hypot(event.clientX-drag.startX,event.clientY-drag.startY)<8) return;
       const dest=destination(byId(drag.id)); if (!dest) return;
@@ -277,7 +323,7 @@
       if (!drag || drag.pointerId !== event.pointerId) return;
       const released=drag;drag=null;
       if (host.hasPointerCapture?.(event.pointerId)) host.releasePointerCapture(event.pointerId);
-      if (released.kind === "push") {suppressClickUntil=Date.now()+400;return;}
+      if (released.kind === "push" || released.kind === "ct-turn") {suppressClickUntil=Date.now()+400;if(renderPending)render();return;}
       if (!released.moved) return;
       suppressClickUntil=Date.now()+400;
       if (released.near) void install(released.id,released.position);
@@ -295,5 +341,5 @@
       destroy() {disposed=true;assetAttempt++;cancelInteraction();for(const timer of imageTimers)global.clearTimeout(timer);imageTimers.clear();for(const remove of listeners)remove();},
     };
   }
-  global.KidsE500Workshop = Object.freeze({ describe, mount });
+  global.KidsTrainWorkshop = Object.freeze({ describe, mount });
 })();

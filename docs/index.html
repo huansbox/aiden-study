@@ -8,16 +8,17 @@
 <link rel="manifest" href="platform.webmanifest">
 <title>全家學習平台</title>
 <meta name="robots" content="noindex">
-<meta name="kids-home-release" content="c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
+<meta name="kids-home-release" content="b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
 <!-- hub（票 #31）：registry.json 驅動的入口頁——小孩選人進 app、家長看全目錄與同步健康。
      #35 真機修正：manifest 明定全站 scope，省略 start_url／id，保留圖示的 child／k query。
      name／short_name 也不固定，兩個首頁沿用各自 document.title 作為圖示預設名稱。
      站內連結一律相對路徑：GH Pages 專案頁（/aiden-study/）與自訂網域（/）兩邊都要對。 -->
-<link rel="stylesheet" href="shared/family.css?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
-<link rel="stylesheet" href="shared/brick-workshop.css?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
-<link rel="stylesheet" href="shared/e500-workshop.css?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
-<link rel="stylesheet" href="shared/brick-celebration.css?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
-<link rel="stylesheet" href="shared/results.css?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b">
+<link rel="stylesheet" href="shared/family.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
+<link rel="stylesheet" href="shared/brick-workshop.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
+<link rel="stylesheet" href="shared/ct273-mechanism.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
+<link rel="stylesheet" href="shared/e500-workshop.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
+<link rel="stylesheet" href="shared/brick-celebration.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
+<link rel="stylesheet" href="shared/results.css?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482">
 </head>
 <body class="family-page">
 <script>
@@ -103,25 +104,26 @@ window.addEventListener("hashchange", forwardRestore);
 </script>
 <main class="family-shell" id="hub"><p>載入中⋯</p></main>
 <noscript><p class="hint">需要開啟 JavaScript 才能使用。題庫在 <a href="study/">study/</a>。</p></noscript>
-<script src="shared/device-auth.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script><script src="shared/sync-v1.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/family-core.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/collection-core.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/collection-client.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/family-client.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-e500.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-emu3000.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-r200.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-  <script src="shared/brick-700t.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-  <script src="shared/brick-n700s.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-emu900.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-  <script src="shared/brick-breezy-blue.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-  <script src="shared/brick-ct273.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-  <script src="shared/brick-models.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-celebration.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-audio.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/e500-workshop.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/brick-workshop.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/home.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
-<script src="shared/home-update.js?v=c8075e150f67f233c38b7910cfe37ac509dd0183404ef48c9c1fe43bc601896b"></script>
+<script src="shared/device-auth.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script><script src="shared/sync-v1.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/family-core.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/collection-core.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/collection-client.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/family-client.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-e500.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-emu3000.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-r200.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+  <script src="shared/brick-700t.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+  <script src="shared/brick-n700s.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-emu900.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+  <script src="shared/brick-breezy-blue.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+  <script src="shared/brick-ct273.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+  <script src="shared/brick-models.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-celebration.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-audio.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/ct273-mechanism.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/train-workshop.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/brick-workshop.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/home.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
+<script src="shared/home-update.js?v=b03fb594c4f37676a034b075f00c227547f5eac445cfda2c2f06a8d7c8dc9482"></script>
 </body>
 </html>

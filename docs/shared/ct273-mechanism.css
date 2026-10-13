@@ -1,0 +1,25 @@
+.e500-workshop .ct-mechanism-scene { touch-action:none; }
+.ct-mechanism-scene [data-ct-rod] { pointer-events:none; }
+.ct-wheel { cursor:grab; touch-action:none; }
+.ct-wheel:active { cursor:grabbing; }
+.ct-wheel[aria-disabled=true] { cursor:default; }
+.ct-wheel-focus { fill:none; stroke:none; }
+.ct-wheel.is-chosen .ct-wheel-focus { stroke:#24867d; stroke-width:3; stroke-dasharray:5 6; }
+.ct-wheel:focus { outline:none; }
+.ct-wheel:focus-visible .ct-wheel-focus { stroke:#147fbc; stroke-width:5; stroke-dasharray:none; }
+.ct-tools { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; padding:12px 18px; border-top:1px solid #d8e0d1; background:#eef3e8; }
+.ct-tools>button>svg { width:100px; height:56px; }
+.ct-gesture { display:inline-flex; align-items:center; vertical-align:middle; }
+.ct-gesture svg { width:118px; height:65px; pointer-events:none; }
+.ct-turn-controls { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; }
+.ct-turn-controls>span { font-size:14px; color:#216c68; }
+.ct-turn-controls>input { width:160px; min-width:100px; min-height:48px; accent-color:#216c68; }
+.ct-turn-controls>button { font-size:18px; }
+.ct-turn-controls>button:disabled { opacity:.5; }
+@media(max-width:520px) {
+  .ct-tools { padding:12px 8px; gap:8px; }
+  .ct-tools>button { padding:4px 10px; }
+  .ct-turn-controls { gap:5px; }
+  .ct-turn-controls>input { width:100px; }
+  .ct-turn-controls>span { flex-basis:100%; text-align:center; }
+}
