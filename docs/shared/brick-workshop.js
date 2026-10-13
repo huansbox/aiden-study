@@ -120,6 +120,8 @@
     const sound = global.KidsBrickAudio?.create();
     let placementAnimationTimer = null;
     let celebration = null;
+    let e500 = null;
+    let e500BuildId = null;
     const completionCandidates = new Set();
     const celebratedBuilds = new Set();
     const optimisticPlaced = new Set();
@@ -451,7 +453,7 @@
                 .map((build) => {
                   const model = getModel(build.modelId);
                   return model
-                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
+                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, ghosts: model.id !== "e500" })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
                     : "";
                 })
                 .join("")}</div>`
@@ -492,6 +494,23 @@
       renderDeferred = false;
       const snapshot = currentSnapshot();
       const build = snapshot.activeBuild;
+      const model = getModel(build?.modelId);
+      if (global.KidsE500Workshop && model?.id === "e500" && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < allParts(model).length) {
+        if (e500BuildId !== build.id) {
+          e500?.destroy();
+          element.innerHTML = '<div data-e500-host></div>';
+          e500BuildId = build.id;
+          e500 = global.KidsE500Workshop.mount(element.querySelector("[data-e500-host]"), {
+            model, collection, sound, audioEnabled,
+            onSound(enabled) { audioEnabled = enabled; sound?.setEnabled(enabled); if (enabled) sound?.unlock(); },
+            onClose: closeWorkshop,
+            onShelf() { view = "shelf"; render(); },
+            onFinalPlacement(id, accepted = true) { if (accepted) completionCandidates.add(id); else completionCandidates.delete(id); },
+          });
+        } else e500.update(snapshot);
+        return;
+      }
+      if (e500) { e500.destroy(); e500 = null; e500BuildId = null; }
       if (celebration && (view !== "workshop" || choosingNext || build?.id !== celebration.buildId || !build.completedAt)) stopCelebration();
       // Keep the same animation DOM through save/image callbacks. Replacing it
       // would restart a six-second celebration on every collection update.
@@ -969,6 +988,7 @@
       destroy() {
         if (disposed) return;
         disposed = true;
+        e500?.destroy();
         stopCelebration();
         sound?.destroy();
         if (placementAnimationTimer) global.clearTimeout(placementAnimationTimer);
