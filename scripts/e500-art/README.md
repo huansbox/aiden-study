@@ -115,3 +115,17 @@ node --test tests/test_e500_model.mjs
 ```
 
 匯出 bundle 保存完整模型、每組所有遮擋組合及第九包三種順序的參考影格；圖片處理、裁切、digest 與原 CDP 途徑共用。bundle 是可重建的開發暫存，不納入 Git；正式來源仍為幾何檔。渲染與素材測試通過後才交付。正式發布需先部署 Worker 車型 allowlist，再合併前端。
+
+## 藍皮客車門窗特寫素材
+
+正式工作台採用家長接受的積木特寫，來源 `model-breezy-lab.js` 沿用 `brick-geometry.js`、正式藍皮配色與塑膠材質。固定正交鏡頭保留上下開窗、左右拉門的平面操作軸。特寫是門窗模組代表圖，不重複整組所有窗戶；全車仍以原始 36 組模型顯示實際位置。body 圖層只畫車身與洞口，不畫車頂、輪組、踏階，以免半成品提前出現其他組件。
+
+```sh
+node scripts/e500-art/serve.mjs 8881
+# 開啟 http://127.0.0.1:8881/breezy-lab-art.html，點「下載門窗素材」
+node scripts/e500-art/import-breezy-lab-art.mjs /absolute/path/breezy-lab-art.json
+node --test tests/test_breezy_workshop.mjs
+node scripts/build-home-release.mjs
+```
+
+匯入器將六張 1800×940 透明 PNG 寫到 `docs/shared/breezy-art/`，並記錄 sha256 manifest；SVG 顯示座標為 900×470。正式頁面只用 PNG，不載入 Three.js／WebGL。修改已發布 PNG 時同步增加 `breezy-mechanism.js` 的圖片版本，以更新首頁 release 與瀏覽器快取。原型 draft PR #210 留作比較，正式素材來源以本分支／合併後主線為準。

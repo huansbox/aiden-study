@@ -9,6 +9,7 @@ import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, s
 import { loadPrivateStudyQaPack } from "./private-study-qa-pack.mjs";
 import { lessonFixture } from "./nativecamp-weekly.mjs";
 import "../../docs/nativecamp/core.js";
+import "../../docs/shared/collection-core.js";
 const root = resolve(fileURLToPath(new URL("../../docs/", import.meta.url)));
 const port = Number(process.argv[2] || 8788),
   endpoint = `http://127.0.0.1:${port}`;
@@ -44,6 +45,18 @@ createServer(async (req, res) => {
       res.writeHead(302, { Location: "/parent/?k=test-token" });
       res.end();
       return;
+    }
+    if (url.pathname === "/test/breezy-fixture") {
+      const C=globalThis.KidsCollectionCore;
+      let state=C.empty();
+      for(let i=1;i<=12;i++) {const occurredAt=new Date(Date.now()-86400000*i).toISOString();state=C.apply(state,{type:"round",hasPractice:true,event:{entryId:"spelling",roundId:`breezy-${i}`,occurredAt}});}
+      state=C.apply(state,{type:"select-model",modelId:"breezy-blue"});
+      const stage=url.searchParams.get("stage"),count=stage==="finish"?35:stage==="doors"?21:18;
+      const ids=Array.from({length:count},(_,i)=>`p${Math.floor(i/3)+1}-${i%3+1}`);
+      if(stage!=="finish")ids.push(stage==="doors"?"p8-2":"p7-3");
+      for(const partId of ids){const packIndex=Number(partId.split("-")[0].slice(1))-1,grant=state.grants.find(g=>g.packIndex===packIndex);state=C.apply(state,{type:"place",buildId:state.activeBuildId,grantId:grant.id,packIndex,partId});}
+      await runtime.restoreFixture(state,"bingpu");
+      res.writeHead(302,{Location:"/parent/?k=test-token&child=bingpu"});res.end();return;
     }
     if (url.pathname === "/test/collection-fixture") {
       const state = await runtime.seedFixtures({ child: url.searchParams.get("child") || "aiden", days: Number(url.searchParams.get("days") || 12) });

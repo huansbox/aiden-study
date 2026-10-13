@@ -453,7 +453,7 @@
                 .map((build) => {
                   const model = getModel(build.modelId);
                   return model
-                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, ghosts: !["e500","ct273"].includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
+                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, ghosts: !["e500","ct273","breezy-blue"].includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
                     : "";
                 })
                 .join("")}</div>`
@@ -495,7 +495,7 @@
       const snapshot = currentSnapshot();
       const build = snapshot.activeBuild;
       const model = getModel(build?.modelId);
-      if (global.KidsTrainWorkshop && ["e500","ct273"].includes(model?.id) && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < allParts(model).length) {
+      if (global.KidsTrainWorkshop && ["e500","ct273","breezy-blue"].includes(model?.id) && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < allParts(model).length) {
         if (pictureBuildId !== build.id) {
           pictureWorkshop?.destroy();
           element.innerHTML = '<div data-picture-workshop-host></div>';
