@@ -7,17 +7,16 @@ const partById=id=>PARTS.find(part=>part.id===id);
 const svg=(body,box='0 0 100 100')=>`<svg viewBox="${box}" aria-hidden="true">${body}</svg>`;
 const hand=`<path d="M18 38V14c0-7 10-7 10 0v17-5c0-6 9-6 9 0v7-5c0-6 9-6 9 0v7c0-6 9-6 9 0v15c0 12-8 20-20 20-9 0-12-5-18-13L6 43c-4-7 3-11 8-5l8 10" fill="#fff1d5" stroke="#47757a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
 const lock=svg('<rect x="25" y="43" width="50" height="43" rx="8" fill="none" stroke="currentColor" stroke-width="7"/><path d="M35 43V28a15 15 0 0 1 30 0v15" fill="none" stroke="currentColor" stroke-width="7"/>');
-function frameArt(kind) {
-  const b=partById(`${kind}-frame`).box;
-  return `<rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" rx="10" fill="none" stroke="#415a61" stroke-width="17"/><rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" rx="10" fill="none" stroke="#b6c8c7" stroke-width="11"/><path d="M${b.x+12} ${b.y+15}V${b.y+b.height-15}M${b.x+b.width-12} ${b.y+15}V${b.y+b.height-15}" stroke="#637f85" stroke-width="6"/>${[b.x,b.x+b.width].flatMap(x=>[b.y+28,b.y+b.height-28].map(y=>`<circle cx="${x}" cy="${y}" r="4" fill="#f5f2db" stroke="#668089" stroke-width="2"/>`)).join('')}${kind==='window'?'<path d="M152 241H422" stroke="#b1c5c5" stroke-width="8"/>':''}`;
-}
-const glass=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#91b4b7" fill-opacity=".82" stroke="#cedad2" stroke-width="6"/><path d="M${x+17} ${y+10}l-10 ${h-20}m20-${h-20}-10 ${h-20}" fill="none" stroke="#d6e8df" stroke-opacity=".65" stroke-width="5"/>`;
-const upperGlass=()=>glass(169,155,236,82);
-const lowerGlass=()=>glass(169,247,236,82)+'<rect x="263" y="307" width="48" height="10" rx="5" fill="#e3e3d3" stroke="#69858a" stroke-width="3"/>';
-const doorArt=()=>`<rect x="594" y="119" width="152" height="258" rx="5" fill="#377f9d" stroke="#c0cfcc" stroke-width="8"/>${glass(609,140,120,95)}<rect x="610" y="255" width="116" height="101" rx="5" fill="#2d718e" stroke="#5395ac" stroke-width="3"/><path d="M723 258v47" stroke="#183f56" stroke-width="15" stroke-linecap="round"/><path d="M725 258v47" stroke="#dbe1d1" stroke-width="8" stroke-linecap="round"/>`;
+// Pre-rendered with the formal train's Three.js brick geometry and materials.
+// The child-facing prototype still needs only six small PNG layers, not WebGL.
+const brickImage=name=>`<image x="0" y="0" width="900" height="470" href="breezy-art/${name}.png?v=3"/>`;
+const frameArt=kind=>brickImage(`${kind}-frame`);
+const upperGlass=()=>brickImage('window-upper');
+const lowerGlass=()=>brickImage('window-lower');
+const doorArt=()=>brickImage('door-pane');
 const art=part=>part.endsWith('-frame')?frameArt(partById(part).kind):part==='window-pane'?upperGlass()+lowerGlass():doorArt();
-const partArt=part=>{const b=partById(part).box;return svg(art(part),`${b.x-14} ${b.y-14} ${b.width+28} ${b.height+28}`);};
-const gesture=kind=>svg(`<rect x="13" y="11" width="65" height="68" rx="5" fill="#5a91a2" stroke="#9eafb0" stroke-width="7"/><g transform="translate(49 27) scale(.6)">${hand}</g><path d="${kind==='window'?'M102 13V71m-9-9 9 9 9-9m-18-40 9-9 9 9':'M91 44H143m-9-9 9 9-9 9m-34-18-9 9 9 9'}" fill="none" stroke="#39796b" stroke-width="5" stroke-linecap="round"/>`,kind==='window'?'0 0 126 90':'0 0 155 90');
+const partArt=part=>{const b=partById(part).box;return svg(art(part),`${b.x-22} ${b.y-28} ${b.width+44} ${b.height+50}`);};
+const gesture=kind=>{const b=partById(`${kind}-pane`).box;return svg(`<svg x="8" y="3" width="73" height="80" viewBox="${b.x-8} ${b.y-8} ${b.width+16} ${b.height+16}">${art(`${kind}-pane`)}</svg><g transform="translate(49 27) scale(.6)">${hand}</g><path d="${kind==='window'?'M102 13V71m-9-9 9 9 9-9m-18-40 9-9 9 9':'M91 44H143m-9-9 9 9-9 9m-34-18-9 9 9 9'}" fill="none" stroke="#39796b" stroke-width="5" stroke-linecap="round"/>`,kind==='window'?'0 0 126 90':'0 0 155 90');};
 const icons={frame:partArt('window-frame'),pane:partArt('window-pane'),play:gesture('window'),'window-play':gesture('window'),'door-play':gesture('door'),before:svg('<rect x="13" y="13" width="74" height="74" rx="9" fill="none" stroke="#789794" stroke-width="7" stroke-dasharray="9 7"/>')};
 for(const el of document.querySelectorAll('[data-art]'))el.innerHTML=icons[el.dataset.art];
 for(const el of document.querySelectorAll('[data-part]'))el.innerHTML=partArt(el.dataset.part)+'<span class="part-mark" aria-hidden="true"></span>';
@@ -25,12 +24,8 @@ const model=window.KidsBrickBreezyBlue;
 $('#train-preview').innerHTML=model.steps.flatMap(step=>step.parts).sort((a,b)=>a.z-b.z).map(part=>part.svg).join('');
 
 scene.innerHTML=`<defs><clipPath id="window-hole"><rect x="165" y="151" width="244" height="182"/></clipPath><clipPath id="door-hole"><rect x="590" y="115" width="160" height="266"/></clipPath></defs>
-  <g aria-hidden="true"><ellipse cx="450" cy="434" rx="378" ry="16" fill="#24465018"/><rect x="57" y="68" width="786" height="334" rx="15" fill="#4386a2" stroke="#25647f" stroke-width="5"/><path d="M57 90l23-35h741l22 35Z" fill="#b6bdb6" stroke="#899d9c" stroke-width="4"/><path d="M60 356H841M60 369H841" stroke="#9ec3c6" stroke-width="5"/><path d="M88 402H815v18H88Z" fill="#33505b"/>
-  ${[116,493,811].map(x=>`<path d="M${x} 92V351" stroke="#387791" stroke-width="3"/>`).join('')}
-  ${Array.from({length:16},(_,i)=>`<ellipse cx="${91+i*46}" cy="67" rx="13" ry="5" fill="#d3d9cd" stroke="#8b9c9b" stroke-width="2"/>`).join('')}
-  ${[135,190,709,764].map(x=>`<circle cx="${x}" cy="421" r="22" fill="#34464d"/><circle cx="${x}" cy="421" r="12" fill="#829596"/><circle cx="${x}" cy="421" r="5" fill="#d3d9ce"/>`).join('')}
-  <rect x="159" y="146" width="255" height="192" rx="9" fill="#dce3ce"/><path d="M162 259h250v75H162Z" fill="#6e9b80"/><path d="M176 299H395" stroke="#a9c3a1" stroke-width="6"/><rect x="585" y="110" width="170" height="280" rx="7" fill="#dce3ce"/><path d="M587 346h165v42H587Z" fill="#a3aba0"/><path d="M591 349H751M591 365H751M591 381H751" stroke="#6c8a8a" stroke-width="4"/>
-  <g id="empty-window"><rect x="148" y="135" width="278" height="214" rx="10" fill="#8faeaa70" stroke="#d7e4d4" stroke-width="5" stroke-dasharray="9 8"/></g><g id="empty-door"><rect x="574" y="99" width="192" height="298" rx="10" fill="#8faeaa70" stroke="#d7e4d4" stroke-width="5" stroke-dasharray="9 8"/></g></g>
+  <g aria-hidden="true"><ellipse cx="450" cy="445" rx="375" ry="12" fill="#28344316"/>${brickImage('body')}
+  <g id="empty-window"><rect x="148" y="135" width="278" height="214" rx="3" fill="#f8f1d512" stroke="#efca77" stroke-width="3" stroke-dasharray="9 8"/></g><g id="empty-door"><rect x="574" y="99" width="192" height="298" rx="3" fill="#f8f1d512" stroke="#efca77" stroke-width="3" stroke-dasharray="9 8"/></g></g>
   <g id="window-frame" aria-hidden="true">${frameArt('window')}</g><g id="door-frame" aria-hidden="true">${frameArt('door')}</g>
   <g id="window-pane" data-operate="window" class="moving" role="slider" aria-label="上下拖動車窗；方向鍵也可開合" aria-valuemin="0" aria-valuemax="100"><g clip-path="url(#window-hole)"><g id="window-slide">${lowerGlass()}</g>${upperGlass()}</g><rect class="focus-ring" x="148" y="135" width="278" height="214" rx="8"/><rect x="148" y="135" width="278" height="214" fill="transparent"/></g>
   <g id="door-pane" data-operate="door" class="moving" role="slider" aria-label="左右拖動車門；方向鍵也可開合" aria-valuemin="0" aria-valuemax="100"><g clip-path="url(#door-hole)"><g id="door-slide">${doorArt()}</g></g><rect class="focus-ring" x="574" y="99" width="192" height="298" rx="8"/><rect x="574" y="99" width="192" height="298" fill="transparent"/></g>
@@ -70,7 +65,7 @@ function paintGuide(){
   if(selected){
     const part=partById(selected),b=part.box,vertical=part.kind==='window',arrow=part.frame?`M${b.x+b.width/2} ${b.y-54}v38m-10-10 10 10 10-10`:vertical?`M${b.x+b.width+38} ${b.y-25}v80m-10-10 10 10 10-10`:`M${b.x-66} ${b.y+b.height/2}h48m-10-10 10 10-10 10`;
     node.innerHTML=`<g class="ghost">${art(selected)}</g><g data-target role="button" tabindex="${busy?-1:0}" aria-disabled="${busy}" aria-label="${part.frame?'接上':'嵌入'}${part.name}"><rect class="join-target" x="${b.x-8}" y="${b.y-8}" width="${b.width+16}" height="${b.height+16}" rx="12"/><path class="guide-arrow" d="${arrow}"/></g>`;
-    picture.innerHTML=svg(`<g transform="translate(10 5) scale(.65)">${hand}</g><g transform="translate(92 10)"><rect width="54" height="58" rx="5" fill="none" stroke="#8bacae" stroke-width="8"/>${part.frame?'':'<path d="M6 6h42v45H6Z" fill="#4e90a8"/>'}</g><path d="M165 38h30m-8-8 8 8-8 8" stroke="#c9873b" stroke-width="4" fill="none"/><rect x="216" y="9" width="62" height="60" rx="5" fill="none" stroke="#c9873b" stroke-width="3" stroke-dasharray="7 6"/><path d="${part.frame?'M247 20v35m-9-9 9 9 9-9':vertical?'M292 7v54m-8-8 8 8 8-8':'M229 39h39m-8-8 8 8-8 8'}" stroke="#c9873b" stroke-width="4" fill="none"/>`,'0 0 320 80')+`<span>${part.frame?'接上':'滑入'}</span>`;
+    picture.innerHTML=svg(`<g transform="translate(10 5) scale(.65)">${hand}</g><svg x="85" y="3" width="75" height="74" viewBox="${b.x-22} ${b.y-28} ${b.width+44} ${b.height+50}">${art(selected)}</svg><path d="M165 38h30m-8-8 8 8-8 8" stroke="#c9873b" stroke-width="4" fill="none"/><rect x="216" y="9" width="62" height="60" rx="5" fill="none" stroke="#c9873b" stroke-width="3" stroke-dasharray="7 6"/><path d="${part.frame?'M247 20v35m-9-9 9 9 9-9':vertical?'M292 7v54m-8-8 8 8 8-8':'M229 39h39m-8-8 8 8-8 8'}" stroke="#c9873b" stroke-width="4" fill="none"/>`,'0 0 320 80')+`<span>${part.frame?'接上':'滑入'}</span>`;
     picture.setAttribute('aria-label',`${part.name}：${part.frame?'對準框的接點':vertical?'從上方滑入窗框軌道':'由左側滑入門框軌道'}；可拖曳或點接點`);return;
   }
   node.innerHTML='';
