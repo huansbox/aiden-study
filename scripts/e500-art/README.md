@@ -18,6 +18,20 @@ EMU3000、R200、700T、N700S、EMU900、藍皮解憂號與 CT273 沿用同一�
 
 EMU3000 是單節先頭車，R200 是完整機車。外觀參考、範圍與照片來源見 [使用規格](../../docs-dev/daily-brick-collection.md#emu3000-與-r200)。每台前三組展示軌道、尺寸、網格與相機相容，故可共用完成慶祝；最後一組集中於前端，落點框不橫跨整車。
 
+## 門窗隔離原型的積木素材
+
+`model-breezy-lab.js` 是 #209／PR #210 的一組門窗特寫，沿用 `brick-geometry.js`、正式藍皮客車配色與塑膠材質；不是正式 12 包／36 組素材的替代來源。固定正交視角保留既有上下開窗、左右拉門的操作軸線。
+
+執行 `node scripts/e500-art/serve.mjs 8880`，開啟 `http://127.0.0.1:8880/breezy-lab-art.html`，確認造型後點「下載門窗素材」。再執行：
+
+```sh
+node scripts/e500-art/import-breezy-lab-art.mjs /absolute/path/breezy-lab-art.json
+```
+
+匯入器先驗證六張透明 PNG 的尺寸，再寫入 `docs/parent/breezy-art/` 與 hash manifest。每張都是 1800 × 940、共用 900 × 470 座標；窗框、上下窗扇、門框與門扇獨立渲染，runtime 只移動／裁切 PNG，不需要 Three.js 或 WebGL。車身、托盤與操作圖示使用同一份零件圖。
+
+重新產圖後更新 `docs/parent/breezy-lab.js` 的圖片版本並重整原型，確認 0／4、2／4、4／4 的缺件與組裝畫面，以及開合兩端的遮擋、框上凸點與托盤裁切。以 `uv run python -m http.server 8799 --bind 127.0.0.1 --directory docs` 開啟 `/parent/breezy-lab.html`。原型僅保存記憶體進度，不讀寫孩子正式收藏。
+
 ## 重建素材
 
 在 repo 根目錄安裝依賴並啟動本機預覽：

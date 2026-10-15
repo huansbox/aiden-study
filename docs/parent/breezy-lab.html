@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>藍皮客車 · 門窗組裝試作</title>
+  <link rel="stylesheet" href="breezy-lab.css">
+  <script src="../shared/brick-breezy-blue.js"></script>
+  <script type="module" src="breezy-lab.js"></script>
+</head>
+<body>
+<main id="lab">
+  <header class="page-head">
+    <div class="title-group"><svg id="train-preview" viewBox="45 80 720 420" role="img" aria-label="藍皮客車模型"></svg><div><span class="eyebrow">門窗試作</span><h1>藍皮客車</h1></div></div>
+    <button id="reset" class="quiet" aria-label="全部拆下，重新試拼">↺ <span>重拼</span></button>
+  </header>
+  <section class="workshop" aria-label="藍皮客車門窗組裝實驗">
+    <ol class="steps" aria-label="組裝與試玩階段">
+      <li id="step-frame"><b>1</b><span data-art="frame"></span><span>裝框</span></li>
+      <li id="step-pane"><b>2</b><span data-art="pane"></span><span>嵌入</span></li>
+      <li id="step-play"><b>3</b><span data-art="play"></span><span>開合</span></li>
+    </ol>
+    <div class="bench">
+      <div class="model-area">
+        <div class="scene-heading"><span id="view-caption">車側特寫</span><button id="compare" class="quiet" aria-label="回看尚未安裝門窗的車身" aria-pressed="false"><span data-art="before"></span> 回看</button></div>
+        <svg id="scene" viewBox="0 0 900 470" role="group" aria-label="藍皮客車半成品，門窗側面特寫"></svg>
+        <div id="picture-guide" class="picture-guide" role="img"></div>
+      </div>
+      <aside class="tray" aria-label="待裝零件">
+        <div class="tray-heading"><span>零件</span><span id="part-count">0 / 4</span></div>
+        <div class="part-list">
+          <button class="part" data-part="window-frame" aria-label="拿起銀色窗框" aria-pressed="false"></button>
+          <button class="part" data-part="window-pane" aria-label="拿起上下窗扇，先裝窗框" aria-pressed="false" disabled></button>
+          <button class="part" data-part="door-frame" aria-label="拿起車門框" aria-pressed="false"></button>
+          <button class="part" data-part="door-pane" aria-label="拿起藍色門扇，先裝門框" aria-pressed="false" disabled></button>
+        </div>
+        <div class="place-controls"><button id="place" class="primary" disabled>↓ 接上</button><button id="cancel" class="quiet" hidden>放回</button></div>
+      </aside>
+    </div>
+    <div class="play-controls" id="play-controls" hidden>
+      <div class="play-unit" data-control="window" hidden><span data-art="window-play"></span><strong>開窗</strong><button data-move="window:1" aria-label="把車窗往上推開">↑</button><input data-range="window" type="range" min="0" max="100" step="1" value="0" aria-label="車窗開啟程度"><button data-move="window:-1" aria-label="把車窗往下拉回">↓</button><button data-remove="window" class="quiet" aria-label="拆下窗扇，保留窗框">拆下</button></div>
+      <div class="play-unit" data-control="door" hidden><span data-art="door-play"></span><strong>拉門</strong><button data-move="door:1" aria-label="把車門往左拉開">←</button><input data-range="door" type="range" min="0" max="100" step="1" value="0" aria-label="車門開啟程度"><button data-move="door:-1" aria-label="把車門往右關上">→</button><button data-remove="door" class="quiet" aria-label="拆下門扇，保留門框">拆下</button></div>
+    </div>
+  </section>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+  <details class="parent-notes">
+    <summary>家長說明・隔離原型</summary>
+    <label><input id="reduce-motion" type="checkbox"> 減少接合動畫</label>
+    <p>先裝窗框或門框，再嵌入對應的窗扇／門扇。完成一組就能試開合：窗扇上下推拉、車門左右推拉。可先完成一組，再回來拼另一組。</p>
+    <p>零件可拖到亮起的接點，或先點零件再點接點／接上。裝好的門窗可直接拖動，或用下方按鈕、滑桿與鍵盤方向鍵；Esc 放回零件。「回看」顯示開始前，「拆下」保留框再裝一次。</p>
+    <p>車身與門窗特寫沿用正式列車的積木幾何、藍色及塑膠材質，做成可操作的簡化模型；縮圖是既有藍皮客車。真車特色參考<a href="https://www.railway.gov.tw/tra-tip-web/tip/tip00N/tipN01/blue/index" target="_blank" rel="noopener noreferrer">臺鐵官方列車介紹</a>，不是實車維修或精密構造示範。</p>
+    <p>只用記憶體假進度，不讀寫孩子收藏、不發獎勵。重新整理會重置。請觀察：孩子是否知道框裝好後要滑入門窗？能否看出哪一組完成、哪一組缺件？是否感覺與推車、轉輪不同？</p>
+  </details>
+  <footer>原型・重新整理會重置</footer>
+</main>
+</body>
+</html>
