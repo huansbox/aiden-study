@@ -1,0 +1,32 @@
+.e500-workshop .bb-scene { touch-action:none; }
+.bb-moving { cursor:grab; touch-action:none; }
+.bb-moving:active { cursor:grabbing; }
+.bb-moving[aria-disabled=true] { cursor:default; }
+.bb-focus { fill:none; stroke:none; }
+.bb-moving:focus { outline:none; }
+.bb-moving:focus-visible .bb-focus { stroke:#147fbc; stroke-width:5; }
+.bb-instructions { display:flex; justify-content:center; align-items:center; gap:6px; }
+.bb-instructions>span { position:relative; display:flex; align-items:center; justify-content:center; width:110px; height:84px; border:2px solid transparent; border-radius:12px; }
+.bb-instructions>span.active { background:#fff3cc; border-color:#cd9a39; }
+.bb-instructions>span>svg { width:66px; height:70px; }
+.bb-instructions b { position:absolute; top:0; left:5px; font-size:16px; }
+.bb-instructions em { position:absolute; right:1px; font-style:normal; color:#996722; font-size:26px; }
+.bb-instructions i { font-style:normal; color:#647c73; }
+.bb-gesture { display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; }
+.bb-gesture>svg { width:42px; height:58px; }
+.bb-gesture>svg+svg { width:29px; margin-left:-15px; transform:translateY(8px); }
+.bb-gesture>b { font-size:26px; color:#377568; position:static; }
+.bb-controls { display:grid; gap:12px; max-width:100%; }
+.bb-unit-controls,.bb-slide-controls { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:7px; }
+.bb-unit-controls>button { display:flex; align-items:center; padding:3px 6px; }
+.bb-unit-controls>button svg { width:35px; height:42px; }
+.bb-unit-controls>button[aria-pressed=true] { border-color:#298376; background:#e4f1e5; }
+.bb-slide-controls input { width:130px; min-height:48px; accent-color:#216c68; }
+.bb-slide-controls button { font-size:18px; }
+@media(max-width:520px) {
+  .bb-instructions { gap:2px; }
+  .bb-instructions>span { width:86px; height:80px; }
+  .bb-instructions>span>svg { width:58px; }
+  .bb-slide-controls { flex-basis:100%; }
+  .bb-slide-controls input { width:90px; }
+}
