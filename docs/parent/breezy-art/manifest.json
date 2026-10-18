@@ -1,0 +1,30 @@
+{
+  "source": "scripts/e500-art/model-breezy-lab.js",
+  "viewBox": "0 0 900 470",
+  "images": {
+    "body": {
+      "file": "body.png",
+      "sha256": "4edaf4e9ddd9a06aafcdb75063fa22e3e39bbf1c58c850aae53890c1b83fc29f"
+    },
+    "window-frame": {
+      "file": "window-frame.png",
+      "sha256": "1284e7252db5bd0a5e977ec8d4378cacd250174f7c8c54033cf3ec98b45520b4"
+    },
+    "window-upper": {
+      "file": "window-upper.png",
+      "sha256": "c90ad0704319ec32eabb2ad2dbb9a7aac7eb09b89c0fa87cd3ebf28480c271a8"
+    },
+    "window-lower": {
+      "file": "window-lower.png",
+      "sha256": "e4467c97786e18025ef7841b0123bf64b73dcb0e8270d06b7d3a2c2dd527bcda"
+    },
+    "door-frame": {
+      "file": "door-frame.png",
+      "sha256": "3de24b983d0bc629da934bd1e0fad0bd4f1573bc4669cf5cbeb221b5f5599858"
+    },
+    "door-pane": {
+      "file": "door-pane.png",
+      "sha256": "a93ec7d18fcd27f391d0cf6b02708a8648dd5b97d82eb13f0d0c35356161b2cd"
+    }
+  }
+}
