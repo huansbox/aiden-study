@@ -1,5 +1,6 @@
 // Local synthetic collection fixtures; never imported by the production Worker.
 import { execFileSync } from "node:child_process";
+import { withExistingBuild } from "./existing-collection.mjs";
 let assetMode = { from:99, delay:0, fail:false }, baseline = false;
 const integer = (value, fallback, max) => /^\d+$/.test(value || "") ? Math.min(max,Number(value)) : fallback;
 export async function workshopFixture({url,res,runtime}) {
@@ -14,11 +15,7 @@ export async function workshopFixture({url,res,runtime}) {
     state.grants = Array.from({length:packs},(_,i)=>({id:`synthetic-workshop-${i}`,date:C.dateKey(),kind:"first",buildId:null,packIndex:null}));
     const stage = url.searchParams.get("stage") || "start";
     if (stage !== "picker") {
-      state = C.apply(state,{type:"select-model",modelId,commandId:`synthetic-${modelId}-${version}`});
-      if (version === 1) {
-        state.builds[0].contentVersion=1;
-        state.grants.forEach((grant,i)=>{grant.buildId=i<count?state.activeBuildId:null;grant.packIndex=i<count?i:null;});
-      }
+      state = withExistingBuild(state,modelId,{id:`${modelId}:synthetic-${modelId}-${version}`,contentVersion:version});
       const end = stage === "finish" ? count*3-1 : integer(url.searchParams.get("placed"),0,count*3);
       for(let i=0;i<end;i++) {
         const index=start+Math.floor(i/3), partId=`p${index+1}-${i%3+1}`, grant=state.grants.find(g=>g.packIndex===index);

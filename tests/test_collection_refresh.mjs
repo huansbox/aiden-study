@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import "../docs/shared/collection-core.js";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
+import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C = globalThis.KidsCollectionCore;
 const now = new Date("2026-10-19T12:00:00Z");
 const target = (entryId = "study:science", quantity = 20) => ({ entryId, quantity, metric:C.ENTRIES[entryId].metric });
@@ -100,7 +101,7 @@ test("跨臺灣午夜補送新日期按份量發包，既有舊日 v2 保持每�
 test("v2 固定鐵軌不配包；首次來源為 p2，最後來源 ID 與 legacy 完全相同", () => {
   for (const modelId of C.MODERN_MODELS) {
     const state = C.empty(); state.grants = Array.from({length:15},(_,n)=>({id:`g${n}`,date:"2026-10-18",buildId:null,packIndex:null}));
-    const next = C.apply(state,{type:"select-model",modelId,commandId:`select-${modelId}`},now), build = next.builds[0];
+    const next = withExistingBuild(state,modelId,{id:`${modelId}:select-${modelId}`,now}), build = next.builds[0];
     assert.equal(build.contentVersion,2); assert.equal(build.id,`${modelId}:select-${modelId}`);
     assert.equal(C.packStart(build),1); assert.equal(C.packCount(build),C.PACK_COUNTS[modelId]-1);
     assert.equal(C.packNumber(build,1),1); assert.equal(C.packSourceIndex(build,1),1);
@@ -151,7 +152,7 @@ test("真 SQLite：退包重送／重新啟動不再退新作品，舊 select/pl
     const practice={entryId:"spelling",answered:true,roundId:"new-pack-between-retries",occurredAt:new Date().toISOString()};
     assert.equal((await call("record",{generation:0,event:practice})).status,200);
     assert.equal((await call("round",{generation:0,event:practice})).status,200,"退包成功後合法領一個新包");
-    const chosen=await call("select-model",{modelId:"emu3000",commandId:"new-select",expectedSelectionGeneration:released.body.snapshot.selectionGeneration}), buildId=chosen.body.snapshot.activeBuild.id;
+    const chosen=await call("select-model",{modelId:"ct273",commandId:"new-select",expectedSelectionGeneration:released.body.snapshot.selectionGeneration}), buildId=chosen.body.snapshot.activeBuild.id;
     assert.notEqual(buildId,first.activeBuild.id); assert.equal(chosen.body.snapshot.grants.filter((g)=>g.buildId===buildId).length,7);
     const placed=await call("place",{commandId:"new-place",buildId,grantId:"source-14",packIndex:1,partId:"p2-2"}); assert.equal(placed.status,200);
     const previous=structuredClone(placed.body.snapshot);
@@ -177,8 +178,8 @@ test("舊狀態預設選車世代0，撤回後未曾送達的舊 client select �
   assert.equal(released.selectionGeneration,1);
   for(const old of [{type:"select-model",modelId:"r200",commandId:"old-missing-generation"},{type:"select-model",modelId:"r200",commandId:"old-explicit-zero",expectedSelectionGeneration:0}])assert.throws(()=>C.apply(released,old,now),error=>error.status===409);
   assert.equal(released.activeBuildId,null);
-  const fresh=C.apply(released,{type:"select-model",modelId:"r200",commandId:"fresh-choice",expectedSelectionGeneration:1},now);
-  assert.equal(fresh.selectionGeneration,2);assert.equal(fresh.builds.at(-1).modelId,"r200");
+  const fresh=C.apply(released,{type:"select-model",modelId:"ct273",commandId:"fresh-choice",expectedSelectionGeneration:1},now);
+  assert.equal(fresh.selectionGeneration,2);assert.equal(fresh.builds.at(-1).modelId,"ct273");
 });
 
 test("真 SQLite：自然 20／40／60 題各一包，重送同事件不增加進度或包，兩孩子份量隔離", async () => {

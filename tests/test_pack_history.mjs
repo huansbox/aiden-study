@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import "../docs/shared/collection-core.js";
+import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C = globalThis.KidsCollectionCore;
 const source = (path) => readFileSync(new URL("../docs/" + path, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -95,9 +96,33 @@ test("已完成車款仍有未拆包時保留入口；紀錄依日期區分且�
   h.update();
   assert.match(h.root.innerHTML, /這台裝置已保存的紀錄/);
   assert.match(h.root.innerHTML, /已獲得 3 包/);
-  const allCollected = await home(state, ["r200"]);
-  assert.doesNotMatch(allCollected.root.innerHTML, /包可以拼/);
-  assert.match(allCollected.root.innerHTML, /零件盒保留 1 包，等新作品再拼/);
+});
+
+test("八款模型中只收齊開放三款就保留餘包等新作，隱藏 R200 收藏與紀錄保持", async () => {
+  const state=C.empty();
+  for (const modelId of ["e500","ct273","breezy-blue","r200"]) {
+    const build={id:`saved-${modelId}`,modelId,contentVersion:2,placed:[],completedAt:"2026-10-18T12:00:00Z"};
+    build.placed=C.requiredParts(build).map(part=>part.id);state.builds.push(build);
+    for(let index=C.packStart(build);index<C.PACK_COUNTS[modelId];index++)
+      state.grants.push({id:`${modelId}-pack-${index}`,date:"2026-10-18",kind:"first",buildId:build.id,packIndex:index});
+  }
+  state.activeBuildId="saved-breezy-blue";state.displayedBuildIds=["saved-r200"];
+  state.grants.push(...[1,2].map(n=>({id:`spare-${n}`,date:"2026-10-19",kind:"first",buildId:null,packIndex:null})));
+  const snapshot={...C.snapshot(state),sync:{status:"ready"}}, before=structuredClone(snapshot);
+  const h=await home(snapshot,C.MODERN_MODELS);
+  assert.match(h.root.innerHTML,/零件盒保留 2 包，等新作品再拼/);
+  assert.doesNotMatch(h.root.innerHTML,/包可以拼/);
+  h.click("[data-pack-history]");
+  assert.match(h.root.innerHTML,/模型 r200 第 1 包 · 已拼好/);
+  assert.match(h.root.innerHTML,/未拆開 · 保留在零件盒/);
+  assert.deepEqual(snapshot,before,"首頁與紀錄不改 R200 收藏、展示或已配包");
+
+  const partial={id:"saved-emu3000",modelId:"emu3000",contentVersion:2,placed:[],completedAt:null};
+  snapshot.builds.push(partial);snapshot.activeBuild=partial;
+  snapshot.grants.at(-1).buildId=partial.id;snapshot.grants.at(-1).packIndex=1;
+  const continuing=await home(snapshot,C.MODERN_MODELS);
+  assert.match(continuing.root.innerHTML,/還有 2 包可以拼/);
+  assert.match(continuing.root.innerHTML,/正在拼：模型 emu3000/);
 });
 
 test("沒有發包資料時不出現可拼按鈕或虛構領取紀錄", async () => {
@@ -123,7 +148,7 @@ test("必做完成保留，原卡提供自選加碼與目前進度，已領包�
 
 test("v2 首頁與包紀錄以33組、第一包顯示，來源p2不冒充第二包",async()=>{
   let state=C.empty();state.grants=[{id:"modern-grant",date:"2026-10-19",buildId:null,packIndex:null}];
-  state=C.apply(state,{type:"select-model",modelId:"emu3000",commandId:"home-modern"});
+  state=withExistingBuild(state,"emu3000",{id:"emu3000:home-modern"});
   state=C.apply(state,{type:"place",buildId:state.activeBuildId,grantId:"modern-grant",packIndex:1,partId:"p2-1"});
   const h=await home({...C.snapshot(state),sync:{status:"ready"}},["emu3000"]);
   assert.match(h.root.innerHTML,/已放上 1 \/ 33 組部件/);

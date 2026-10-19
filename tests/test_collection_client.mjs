@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
+import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const code=(name)=>readFileSync(new URL("../docs/shared/"+name,import.meta.url),"utf8");
 function client(runtime,{storage=new Map(),child="aiden"}={}) {
   let offline=false,failWrites=false,loseResponse=false,forcedStatus=0;
@@ -66,13 +67,13 @@ test("離線record/round重開補送、重複finish不加發、回應遺失重�
     assert.equal(reopened.collection.snapshot().grants.length,1);
     assert.equal(reopened.collection.snapshot().sync.pending,0);
     reopened.setLoseResponse(true);
-    await assert.rejects(reopened.collection.selectModel("car"),(error)=>error.code==="selection-pending" && error.pendingSelection.modelId==="car");
+    await assert.rejects(reopened.collection.selectModel("e500"),(error)=>error.code==="selection-pending" && error.pendingSelection.modelId==="e500");
     assert.equal(reopened.collection.snapshot().sync.pending,1);
-    assert.equal(reopened.collection.snapshot().pendingSelection.modelId,"car");
+    assert.equal(reopened.collection.snapshot().pendingSelection.modelId,"e500");
     assert.equal(reopened.collection.snapshot().pendingSelection.commandId,reopened.requests.at(-1).body.commandId);
     assert.equal(reopened.requests.at(-1).body.expectedSelectionGeneration,0);
     await reopened.collection.flush();
-    assert.equal(reopened.collection.snapshot().activeBuild.modelId,"car");
+    assert.equal(reopened.collection.snapshot().activeBuild.modelId,"e500");
     assert.equal(reopened.collection.snapshot().selectionGeneration,1);
     assert.equal(reopened.collection.snapshot().pendingSelection,null);
     assert.equal(reopened.collection.snapshot().grants.length,1);
@@ -108,27 +109,27 @@ test("已分包零件離線持久化並與另一裝置合併；暫時storage失�
     const h=client(runtime);await h.collection.ready;
     await h.collection.saveGoals([{entryId:"math",metric:"answered",quantity:1}]);
     h.collection.record({entryId:"math",answered:true});await h.collection.flush();
-    await h.collection.selectModel("car");
-    const grant=h.collection.snapshot().grants[0],part={grantId:grant.id,buildId:grant.buildId,packIndex:0,partId:"p1-1"};
+    await h.collection.selectModel("e500");
+    const grant=h.collection.snapshot().grants[0],part={grantId:grant.id,buildId:grant.buildId,packIndex:1,partId:"p2-1"};
     const other=client(runtime);await other.collection.ready;
     h.setOffline(true);await h.collection.placePart(part);await h.collection.flush();
-    assert.deepEqual([...h.collection.snapshot().activeBuild.placed],["p1-1"]);
-    await other.collection.placePart({...part,partId:"p1-2"});await other.collection.flush();
+    assert.deepEqual([...h.collection.snapshot().activeBuild.placed],["p2-1"]);
+    await other.collection.placePart({...part,partId:"p2-2"});await other.collection.flush();
     h.setOffline(false);h.setStatus(503);await h.collection.flush();
     assert.equal(h.collection.snapshot().sync.pending,1);
     h.setStatus(0);await h.collection.flush();
-    assert.deepEqual([...h.collection.snapshot().activeBuild.placed].sort(),["p1-1","p1-2"]);
+    assert.deepEqual([...h.collection.snapshot().activeBuild.placed].sort(),["p2-1","p2-2"]);
     h.setFailWrites(true);
-    await assert.rejects(h.collection.placePart({...part,partId:"p1-3"}),/無法保存/);
-    assert.equal(h.collection.snapshot().activeBuild.placed.includes("p1-3"),false);
+    await assert.rejects(h.collection.placePart({...part,partId:"p2-3"}),/無法保存/);
+    assert.equal(h.collection.snapshot().activeBuild.placed.includes("p2-3"),false);
   }finally{await runtime.dispose();}
 });
 test("EMU3000 新版第 11 包可離線保存並重開同步，第 13、14 包不進 outbox",async()=>{
   const runtime=await collectionRuntime();
   try{
-    await runtime.seedFixtures({days:12});
+    const seeded=await runtime.seedFixtures({days:12});
+    await runtime.restoreFixture(withExistingBuild({...globalThis.KidsCollectionCore.empty(),...seeded},"emu3000"));
     const h=client(runtime);await h.collection.ready;
-    await h.collection.selectModel("emu3000");
     const buildId=h.collection.snapshot().activeBuild.id;
     const grants=h.collection.snapshot().grants.filter(g=>g.buildId===buildId);
     assert.equal(grants.length,11);
@@ -182,7 +183,7 @@ test("未送達選車可重開看見 pending，release 推進世代後拒絕舊�
     const reopened=client(runtime,{storage:old.storage});reopened.setOffline(true);await reopened.collection.ready;
     assert.equal(reopened.collection.snapshot().pendingSelection.commandId,pendingError.pendingSelection.commandId);
     const other=client(runtime);await other.collection.ready;
-    await other.collection.selectModel("emu3000");
+    await other.collection.selectModel("ct273");
     const active=other.collection.snapshot();
     await other.collection.releaseBuild(active.activeBuild.id,active.revision);
     assert.equal(other.collection.snapshot().selectionGeneration,2);
@@ -191,9 +192,9 @@ test("未送達選車可重開看見 pending，release 推進世代後拒絕舊�
     assert.equal(rejected.pendingSelection,null);assert.equal(rejected.activeBuild,null);assert.equal(rejected.sync.pending,0);
     assert.equal(rejected.sync.status,"error");assert.match(rejected.sync.message,/選車狀態已更新/);
     assert.equal(rejected.selectionGeneration,2,"明確拒絕後同步最新世代");
-    await reopened.collection.selectModel("r200");
+    await reopened.collection.selectModel("breezy-blue");
     assert.equal(reopened.requests.at(-1).body.expectedSelectionGeneration,2);
-    assert.equal(reopened.collection.snapshot().activeBuild.modelId,"r200");
+    assert.equal(reopened.collection.snapshot().activeBuild.modelId,"breezy-blue");
   } finally {await runtime.dispose();}
 });
 
@@ -201,14 +202,29 @@ test("等待選車期間新練習只改 revision、不改 selectionGeneration，
   const runtime=await collectionRuntime();
   try {
     const selecting=client(runtime);await selecting.collection.ready;selecting.setOffline(true);
-    await assert.rejects(selecting.collection.selectModel("emu900"),(error)=>error.code==="selection-pending");
+    await assert.rejects(selecting.collection.selectModel("ct273"),(error)=>error.code==="selection-pending");
     const learner=client(runtime);await learner.collection.ready;
     await learner.collection.saveGoals([{entryId:"math",metric:"answered",quantity:1}]);
     learner.collection.record({entryId:"math",answered:true});await learner.collection.flush();
     assert.ok(learner.collection.snapshot().revision>0);assert.equal(learner.collection.snapshot().selectionGeneration,0);
     selecting.setOffline(false);await selecting.collection.flush();
     assert.equal(selecting.collection.snapshot().pendingSelection,null);
-    assert.equal(selecting.collection.snapshot().activeBuild.modelId,"emu900");
+    assert.equal(selecting.collection.snapshot().activeBuild.modelId,"ct273");
     assert.equal(selecting.collection.snapshot().selectionGeneration,1);
+  } finally {await runtime.dispose();}
+});
+
+test("舊離線尚未送達的未開放選車被明確拒絕，清除 pending 後可新選開放車款",async()=>{
+  const runtime=await collectionRuntime();
+  try {
+    const h=client(runtime);await h.collection.ready;h.setOffline(true);
+    await assert.rejects(h.collection.selectModel("r200"),error=>error.code==="selection-pending");
+    const reopened=client(runtime,{storage:h.storage});await reopened.collection.ready;
+    const rejected=reopened.collection.snapshot();
+    assert.equal(rejected.pendingSelection,null);assert.equal(rejected.activeBuild,null);
+    assert.equal(rejected.sync.pending,0);assert.equal(rejected.sync.status,"error");
+    assert.match(rejected.sync.message,/尚未開放新選/);
+    await reopened.collection.selectModel("e500");
+    assert.equal(reopened.collection.snapshot().activeBuild.modelId,"e500");
   } finally {await runtime.dispose();}
 });

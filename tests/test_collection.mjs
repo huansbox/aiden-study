@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import "../docs/shared/collection-core.js";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
+import { withExistingBuild } from "./helpers/existing-collection.mjs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 const C = globalThis.KidsCollectionCore;
@@ -133,7 +134,7 @@ test("E500 can begin with a pack while an existing train build keeps its origina
   assert.equal(fresh.grants[0].buildId, fresh.activeBuildId);
   assert.equal(fresh.grants[0].packIndex, 1);
 
-  let legacy = C.apply(C.apply(C.empty(), { type: "round", hasPractice: true, event }, now), { type: "select-model", modelId: "train" }, now);
+  let legacy = withExistingBuild(C.apply(C.empty(), { type: "round", hasPractice: true, event }, now), "train", { contentVersion: 1, now });
   const grant = legacy.grants[0], legacyId = legacy.activeBuildId;
   legacy = C.apply(legacy, { type: "place", grantId: grant.id, buildId: legacyId, packIndex: 0, partId: "p1-1" }, now);
   const restored = C.snapshot(C.apply(legacy, { type: "allocate" }, now), "2026-09-22");
@@ -180,11 +181,11 @@ test("真 SQLite DO：重送、跨裝置分包衝突、round去重、世代與�
     await call("aiden","round",{generation:0,event});
     const view=(await call("aiden")).body;
     assert.equal(view.grants.length,1);
-    const selected=await Promise.all([call("aiden","select-model",{modelId:"car"}),call("aiden","select-model",{modelId:"train"})]);
+    const selected=await Promise.all([call("aiden","select-model",{modelId:"e500"}),call("aiden","select-model",{modelId:"ct273"})]);
     assert.equal(selected.filter(r=>r.status===200).length,1);
     const current=(await call("aiden")).body,grant=current.grants[0];
     assert.ok(grant.buildId);
-    const part={grantId:grant.id,buildId:grant.buildId,packIndex:0,partId:"p1-1"};
+    const part={grantId:grant.id,buildId:grant.buildId,packIndex:1,partId:"p2-1"};
     await Promise.all([call("aiden","place",part),call("aiden","place",part)]);
     assert.equal((await call("aiden")).body.activeBuild.placed.length,1);
     assert.equal((await call("bingpu")).body.grants.length,0);
@@ -201,16 +202,16 @@ test("14包42零件完成永久收藏；後續重送不回退，可以選下一�
     if(day===1)s=C.apply(s,{type:"goals",expectedGoalRevision:0,targets:[{entryId:"math",metric:"answered",quantity:1}]},now);
     s=C.apply(s,{type:"record",event:{entryId:"math",answered:true,occurredAt:now.toISOString()}},now);
   }
-  s=C.apply(s,{type:"select-model",modelId:"car",commandId:"car-build"});
+  s=withExistingBuild(s,"car",{id:"car:car-build",contentVersion:1});
   assert.equal(s.grants.filter(g=>g.buildId==="car:car-build").length,14);
   for(const g of s.grants)for(let n=1;n<=3;n++)s=C.apply(s,{type:"place",grantId:g.id,buildId:"car:car-build",packIndex:g.packIndex,partId:`p${g.packIndex+1}-${n}`});
   assert.equal(s.builds[0].placed.length,42);assert.ok(s.builds[0].completedAt);
   const completedAt=s.builds[0].completedAt;
   s=C.apply(s,{type:"display",buildId:"car:car-build",displayed:true});
-  s=C.apply(s,{type:"select-model",modelId:"train",commandId:"train-build",expectedSelectionGeneration:s.selectionGeneration});
+  s=C.apply(s,{type:"select-model",modelId:"e500",commandId:"e500-build",expectedSelectionGeneration:s.selectionGeneration});
   s=C.apply(s,{type:"place",grantId:s.grants[0].id,buildId:"car:car-build",packIndex:0,partId:"p1-1"});
   assert.equal(s.builds[0].completedAt,completedAt);
-  assert.deepEqual(s.displayedBuildIds,["car:car-build"]);assert.equal(s.activeBuildId,"train:train-build");
+  assert.deepEqual(s.displayedBuildIds,["car:car-build"]);assert.equal(s.activeBuildId,"e500:e500-build");
 });
 test("v1 EMU3000 半成品仍用 12 包，完整舊收藏與 grant 對應不改寫",()=>{
   let state=C.empty();
@@ -219,12 +220,12 @@ test("v1 EMU3000 半成品仍用 12 包，完整舊收藏與 grant 對應不改�
   const original=structuredClone(state.grants);
   for(const grant of state.grants.filter(g=>g.buildId))for(const n of [3,1,2])state=C.apply(state,{type:"place",grantId:grant.id,buildId:"emu3000",packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${n}`});
   assert.equal(state.builds[0].placed.length,36);assert.ok(state.builds[0].completedAt);assert.deepEqual(state.grants,original);
-  state=C.apply(state,{type:"select-model",modelId:"r200",commandId:"new-r200"});
-  assert.equal(state.builds[1].contentVersion,2);assert.equal(state.grants.filter(g=>g.buildId==="r200:new-r200").length,2);
+  state=C.apply(state,{type:"select-model",modelId:"e500",commandId:"new-e500"});
+  assert.equal(state.builds[1].contentVersion,2);assert.equal(state.grants.filter(g=>g.buildId==="e500:new-e500").length,2);
   assert.deepEqual(state.grants.slice(0,12),original.slice(0,12));
 });
 
-test("八款 v2 列車從車身開始，SQLite 重啟保留 276 組、展示與多餘包",async()=>{
+test("八款既有 v2 列車仍可拼完，SQLite 重啟保留 276 組、展示與多餘包",async()=>{
   const dir=await mkdtemp(join(tmpdir(),"aiden-eight-trains-"));
   let runtime=await collectionRuntime({persist:dir}),seq=0;
   const call=async(type,data={},child="aiden")=>{
@@ -239,7 +240,8 @@ test("八款 v2 列車從車身開始，SQLite 重啟保留 276 組、展示與�
     await runtime.seedFixtures({days:93});
     for(const [modelId,packs] of [["e500",13],["emu3000",11],["r200",11],["700t",11],["n700s",11],["emu900",11],["breezy-blue",11],["ct273",13]]) {
       const before=await call("");
-      const selected=await call("select-model",{modelId,expectedSelectionGeneration:before.selectionGeneration});
+      await runtime.restoreFixture(withExistingBuild({...C.empty(),...before},modelId));
+      const selected=await call("");
       const buildId=selected.activeBuild.id;
       const grants=selected.grants.filter(g=>g.buildId===buildId);
       assert.equal(grants[0].packIndex,1);
@@ -278,12 +280,12 @@ test("SQLite持久化重啟後保留命令去重及已配包半成品",async()=>
   try{
     await send("goals",{commandId:"persist-goals",expectedGoalRevision:0,targets:[{entryId:"math",metric:"answered",quantity:1}]});
     await send("record",record);
-    const selected=await send("select-model",{commandId:"persist-model",modelId:"car"});
-    await send("place",{commandId:"persist-place",grantId:selected.grants[0].id,buildId:selected.activeBuild.id,packIndex:0,partId:"p1-1"});
+    const selected=await send("select-model",{commandId:"persist-model",modelId:"e500"});
+    await send("place",{commandId:"persist-place",grantId:selected.grants[0].id,buildId:selected.activeBuild.id,packIndex:1,partId:"p2-1"});
     await runtime.dispose();runtime=await collectionRuntime({persist:dir});
     const state=await send("record",record);
     assert.equal(state.grants.length,1);assert.equal(state.daily.targets[0].progress,1);
-    assert.deepEqual(state.activeBuild.placed,["p1-1"]);
+    assert.deepEqual(state.activeBuild.placed,["p2-1"]);
   }finally{await runtime.dispose();await rm(dir,{recursive:true,force:true});}
 });
 test("SQLite 重啟保留 EMU3000 的 11 包分配，餘下包可給下一車型",async()=>{
@@ -298,11 +300,12 @@ test("SQLite 重啟保留 EMU3000 的 11 包分配，餘下包可給下一車型
     return {status:response.status,body:await response.json()};
   };
   try{
-    await runtime.seedFixtures({days:14});
-    const selected=await call("select-model",{modelId:"emu3000"});
+    const seeded=await runtime.seedFixtures({days:14});
+    await runtime.restoreFixture(withExistingBuild({...C.empty(),...seeded},"emu3000"));
+    const selected=await call();
     assert.equal(selected.status,200);
-    assert.equal(selected.body.snapshot.grants.filter(g=>g.buildId===selected.body.snapshot.activeBuild.id).length,11);
-    assert.equal(selected.body.snapshot.grants.filter(g=>!g.buildId).length,3);
+    assert.equal(selected.body.grants.filter(g=>g.buildId===selected.body.activeBuild.id).length,11);
+    assert.equal(selected.body.grants.filter(g=>!g.buildId).length,3);
     await runtime.dispose();runtime=await collectionRuntime({persist:dir});
     const restored=(await call()).body;
     assert.equal(restored.activeBuild.modelId,"emu3000");
