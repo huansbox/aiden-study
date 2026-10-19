@@ -3,14 +3,14 @@
 
   // The workshop receives only this in-memory adapter, never a family client.
   function createCollection(model, mode = "first") {
-    const parts = model.steps.flatMap(step => step.parts.map(part => part.id));
-    const build = { id: "preview-" + model.id, modelId: model.id, completedAt: null,
+    const parts = model.steps.slice(1).flatMap(step => step.parts.map(part => part.id));
+    const build = { id: "preview-" + model.id, modelId: model.id, contentVersion: 2, completedAt: null,
       placed: mode === "last" ? parts.slice(0, -1) : [] };
     const state = {
       version: 1, revision: 1, activeBuild: build, builds: [build], displayedBuildIds: [],
-      grants: model.steps.map((_, packIndex) => ({ id: "preview-pack-" + packIndex,
-        buildId: mode === "last" || packIndex === 0 ? build.id : null,
-        packIndex: mode === "last" || packIndex === 0 ? packIndex : null })),
+      grants: model.steps.slice(1).map((_, index) => ({ id: "preview-pack-" + (index+1),
+        buildId: mode === "last" || index === 0 ? build.id : null,
+        packIndex: mode === "last" || index === 0 ? index+1 : null })),
       sync: { status: "ready", pending: 0, message: "" },
     };
     const subscribers = new Set();
@@ -33,7 +33,7 @@
         const grant = state.grants.find(grant => grant.buildId === null);
         if (!grant) return;
         grant.buildId = build.id;
-        grant.packIndex = assigned.length;
+        grant.packIndex = assigned.length+1;
         notify();
       },
       async setDisplayed(buildId, displayed) {
@@ -55,7 +55,7 @@
     for (const model of models) {
       const option = document.createElement("option");
       option.value = model.id;
-      option.textContent = `${model.id === "breezy-blue" ? "藍皮解憂號" : model.id.toUpperCase()} · ${model.steps.length} 包`;
+      option.textContent = `${model.id === "breezy-blue" ? "藍皮解憂號" : model.id.toUpperCase()} · ${model.steps.length-1} 包`;
       select.append(option);
     }
     select.value = models.find(model => model.id === params.get("model"))?.id || models[0].id;
@@ -69,7 +69,7 @@
       last.setAttribute("aria-pressed", String(mode === "last"));
       document.getElementById("preview-mode").textContent = mode === "last"
         ? "把最後一組放進金色框，就能試看約 6 秒的火車慶祝動畫與音效。"
-        : `已備好 ${model.steps.length} 包示範零件。每包拼完按「打開一包」，可以一路試到完成。`;
+        : `展示鐵軌已備好；另有 ${model.steps.length-1} 包車體示範零件。每包拼完按「打開一包」，可以一路試到完成。`;
       mounted = window.KidsBrickWorkshop.mount(host, {
         collection: createCollection(model, mode), preview: true,
         onClose() {

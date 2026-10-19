@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { collectionRuntime } from "./collection-runtime.mjs";
+import { workshopFixture, workshopBaseline, workshopMeasurement } from "./workshop-fixture.mjs";
+import { bonusFixture } from "./bonus-fixture.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack } from "./synthetic-study-pack.mjs";
 import { loadPrivateStudyQaPack } from "./private-study-qa-pack.mjs";
 import { lessonFixture } from "./nativecamp-weekly.mjs";
@@ -40,6 +42,8 @@ await KV.put("m:aiden:study:preview-sentinel", previewActivity);
 createServer(async (req, res) => {
   try {
     const url = new URL(req.url, endpoint);
+    if (await workshopFixture({url,res,runtime})) return;
+    if (await bonusFixture({url,res,runtime})) return;
     if (!url.pathname.startsWith("/test/")) requestLog.push({ method: req.method, pathname: url.pathname });
     if (url.pathname === "/test/start") {
       res.writeHead(302, { Location: "/parent/?k=test-token" });
@@ -51,6 +55,9 @@ createServer(async (req, res) => {
       let state=C.empty();
       for(let i=1;i<=12;i++) {const occurredAt=new Date(Date.now()-86400000*i).toISOString();state=C.apply(state,{type:"round",hasPractice:true,event:{entryId:"spelling",roundId:`breezy-${i}`,occurredAt}});}
       state=C.apply(state,{type:"select-model",modelId:"breezy-blue"});
+      // This established close-up fixture deliberately represents a legacy v1 save.
+      state.builds.find(build=>build.id===state.activeBuildId).contentVersion=1;
+      state.grants.forEach((grant,packIndex)=>{grant.buildId=packIndex<12?state.activeBuildId:null;grant.packIndex=packIndex<12?packIndex:null;});
       const stage=url.searchParams.get("stage"),count=stage==="finish"?35:stage==="doors"?21:18;
       const ids=Array.from({length:count},(_,i)=>`p${Math.floor(i/3)+1}-${i%3+1}`);
       if(stage!=="finish")ids.push(stage==="doors"?"p8-2":"p7-3");
@@ -250,7 +257,9 @@ createServer(async (req, res) => {
       url.pathname.endsWith("/") ? "index.html" : "",
     );
     if (!path.startsWith(root + sep)) throw Error("path");
-    let bytes = await readFile(path);
+    let bytes = workshopBaseline(url.pathname) || await readFile(path);
+    if (["/","/index.html"].includes(url.pathname) && url.searchParams.has("workshopMeasure"))
+      bytes=Buffer.from(bytes.toString().replace('<main class="family-shell" id="hub"><p>載入中⋯</p></main>','<main class="family-shell" id="hub"><p>載入中⋯</p></main>'+workshopMeasurement));
     if (release && url.pathname === "/home-release.json")
       bytes = Buffer.from(JSON.stringify({ version: release.repeat(64) }));
     if (release && ["/", "/index.html"].includes(url.pathname))
@@ -277,6 +286,7 @@ createServer(async (req, res) => {
       ".css": "text/css",
       ".json": "application/json",
       ".png": "image/png",
+      ".webp": "image/webp",
       ".svg": "image/svg+xml",
       ".mp3": "audio/mpeg",
       ".webmanifest": "application/manifest+json",

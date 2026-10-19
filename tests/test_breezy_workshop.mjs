@@ -31,7 +31,7 @@ test('all 12 earned packs finish exactly 36 original groups; frames never consum
         if(twoSteps){assert.equal(h.calls.length,before);assert.match(h.host.innerHTML,/接好後保存/);h.click('place');await settle();}
         assert.equal(h.calls.length,before+1);h.click('place');await settle();assert.equal(h.calls.length,before+1);
       }
-      if(pack<12)h.click('next');
+      if(pack<12){h.click('next');await settle();}
     }
     assert.equal(new Set(h.state.activeBuild.placed).size,36);assert.equal(h.state.grants.length,12);
     assert.equal(h.finalCandidate,true);
@@ -107,4 +107,26 @@ test('unearned packs and unavailable mechanism images cannot accept frame or pan
 test('formal brick art is reproducibly identified by the checked-in manifest',()=>{
   const base=new URL('../docs/shared/breezy-art/',import.meta.url),manifest=JSON.parse(readFileSync(new URL('manifest.json',base),'utf8'));
   for(const image of Object.values(manifest.images))assert.equal(createHash('sha256').update(readFileSync(new URL(image.file,base))).digest('hex'),image.sha256);
+});
+
+
+test('v2 Breezy keeps frame and pane operations while completing only 33 body groups',async()=>{
+  const h=harness([],{contentVersion:2,packs:11});await settle();
+  try {
+    assert.match(h.host.innerHTML,/data-placed="p1-1"/);
+    for(let pack=2;pack<=12;pack++) {
+      for(const part of [3,1,2]) {
+        const id=`p${pack}-${part}`,twoSteps=pack===7 || pack===8&&part<3,before=h.calls.length;
+        h.click('part',id);h.click('place');await settle();
+        if(twoSteps){assert.equal(h.calls.length,before);h.click('place');await settle();}
+        assert.equal(h.calls.length,before+1);
+      }
+      if(pack===7){h.click('bb-open',null,'window');assert.match(h.host.innerHTML,/data-bb-operate="window"/);}
+      if(pack===8){h.click('bb-open',null,'door');assert.match(h.host.innerHTML,/data-bb-operate="door"/);}
+      if(pack<12){h.click('next');await settle();}
+    }
+    assert.equal(h.calls.length,33);assert.equal(h.finalCandidate,true);
+    assert.match(h.host.innerHTML,/33<small> \/ 33/);
+    assert.ok(h.calls.every(call=>call.packIndex>=1));
+  } finally {h.mounted.destroy();}
 });

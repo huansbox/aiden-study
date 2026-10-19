@@ -5,7 +5,7 @@
   const trainNames = { e500: "E500", emu3000: "EMU3000", r200: "R200", '700t': "700T", n700s: "N700S", emu900: "EMU900", "breezy-blue": "藍皮解憂號", ct273: "CT273" };
   const supports = (model) => Object.hasOwn(trainNames, model?.id);
 
-  function render(model, { audioEnabled = true } = {}) {
+  function render(model, { audioEnabled = true, build = null } = {}) {
     if (!supports(model)) return "";
     const parts = model.steps.flatMap((step) => step.parts)
       .slice().sort((a, b) => a.z - b.z);
@@ -32,7 +32,7 @@
     const name = trainNames[model.id];
     return `<section class="brick-celebration" data-celebration style="--celebration-duration:${duration}ms" aria-label="${name} 完成慶祝">
       <div class="brick-celebration__heading" role="status">
-        <p class="brick-kicker">${parts.length} 組積木，全部完成</p>
+        <p class="brick-kicker">${build?.contentVersion === 2 ? train.length : parts.length} 組積木，全部完成</p>
         <h2>${name}，出發！</h2>
         <p class="brick-celebration__message">你完成的積木列車，出發了。</p>
       </div>

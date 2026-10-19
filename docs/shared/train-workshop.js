@@ -2,6 +2,13 @@
   "use strict";
   const global = typeof window === "undefined" ? globalThis : window;
 
+  const packStart = build => global.KidsCollectionCore?.packStart?.(build) ?? (build?.contentVersion === 2 ? 1 : 0);
+  const packCount = (build, model) => global.KidsCollectionCore?.packCount?.(build) ?? model.steps.length - packStart(build);
+  const fixedParts = (build, model) => model.steps.slice(0, packStart(build)).flatMap(step => step.parts);
+  const requiredParts = (build, model) => model.steps.slice(packStart(build)).flatMap(step => step.parts);
+  const packNumber = (build, index) => index - packStart(build) + 1;
+  const sourcesIn = svg => [...(svg || "").matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+
   // Presentation only. Grants, placed IDs and completion remain collection-owned.
   function describe(model, snapshot, heldPack = null) {
     const build = snapshot.activeBuild;
@@ -36,7 +43,10 @@
   };
 
   function mount(host, { model, collection, sound, audioEnabled = true, onSound, onClose, onShelf, onFinalPlacement } = {}) {
+    const initialBuild = collection.snapshot().activeBuild;
     const parts = model.steps.flatMap(step => step.parts).sort((a, b) => a.z - b.z);
+    const required = requiredParts(initialBuild, model), fixed = fixedParts(initialBuild, model);
+    const visibleIds = ids => new Set([...ids, ...fixed.map(part => part.id)]);
     const byId = id => parts.find(part => part.id === id);
     const buildId = collection.snapshot().activeBuild.id;
     const name = model.id === "breezy-blue" ? "藍皮客車" : model.id === "ct273" ? "CT273" : "E500";
@@ -45,9 +55,10 @@
     let snapshot = collection.snapshot(), heldPack = null, selected = null;
     let paused = false, before = false, pushing = false, offset = 0;
     let disposed = false, busy = false, localError = "", ready = false, assetError = false;
-    let drag = null, floating = null, motion = null, epoch = 0, suppressClickUntil = 0, assetAttempt = 0;
+    let drag = null, floating = null, motion = null, epoch = 0, suppressClickUntil = 0;
     let pointerTap = null, renderPending = false;
-    const imageTimers = new Set(), listeners = [];
+    const imageTimers = new Set(), listeners = [], imageLoads = new Map();
+    let assetRenderQueued = false;
     const view = () => describe(model, snapshot, heldPack);
     const autoMechanism = () => !!ct && view().packIndex === 2 || !!bb && [6,7].includes(view().packIndex);
     let mechanismView = autoMechanism();
@@ -61,14 +72,18 @@
       const b = part.box;
       return `<svg class="part-art" viewBox="${b.x} ${b.y} ${b.width} ${b.height}" aria-hidden="true">${artwork(part, ids)}</svg>`;
     };
-    const pieces = (ids, rail = null, initial = ids) => parts.filter(part => ids.has(part.id) && (rail === null || (part.z < 3) === rail)).map(part =>
-      `<g class="placed-part${!initial.has(part.id) ? " placed-new" : ""}" data-placed="${part.id}">${artwork(part, ids)}</g>`).join("");
+    const pieces = (ids, rail = null, initial = ids) => {
+      const visible = visibleIds(ids), original = visibleIds(initial);
+      return parts.filter(part => visible.has(part.id) && (rail === null || (part.z < 3) === rail)).map(part =>
+        `<g class="placed-part${!original.has(part.id) ? " placed-new" : ""}" data-placed="${part.id}">${artwork(part, visible)}</g>`).join("");
+    };
     const miniature = (ids, label) => `<svg viewBox="45 80 720 420" role="img" aria-label="${esc(label)}">${pieces(ids)}</svg>`;
     const pushGraphic = () => `<span class="push-gesture" role="img" aria-label="按住模型，左右拖動">${icon("left")}${icon("hand")}${icon("arrow")}</span>`;
     const button = (action, content, label, extra = "") => `<button type="button" data-e500-action="${action}" aria-label="${esc(label)}" ${extra}>${content}</button>`;
-    const canPush = ids => model.steps.slice(0, 4).every(step => step.parts.every(part => ids.has(part.id)));
+    const canPush = ids => model.steps.slice(packStart(initialBuild), 4).every(step => step.parts.every(part => ids.has(part.id)));
     function instructions(part) {
       if(bb && mechanismView) return bb.instructions(selected || bb.current);
+      if (!part && view().packIndex === null) return `<span class="pack-wait">${icon("bag")}<span>${snapshot.grants?.some(grant=>grant.buildId == null) ? "打開一包就能繼續" : "零件盒是空的，等新拼裝包再繼續"}</span></span>`;
       if (!part) return `<span class="pack-done" role="img" aria-label="這包接好了">${icon("check")}${icon("check")}${icon("check")}</span>`;
       return `<div class="picture-instructions" role="img" aria-label="1 選零件；2 拖到虛線接點，或點一下接點；3 接好">
         <div class="picture-step"><b>1</b>${picture(part)}<span class="gesture">${icon("hand")}</span></div>${icon("arrow")}
@@ -112,11 +127,12 @@
       if (!force && (busy || drag || pointerTap !== null)) { renderPending = true; return; }
       renderPending = false;
       const v = view(), ids = v.placed, shown = before ? v.before : ids;
+      ensureAssets(v);
       ct?.sync(ids); bb?.sync(ids);
       const chapters = bb ? [["輪組與底盤","p4-2",0,5],["藍色車身","p6-2",5,6],["窗戶與車門","p7-2",6,8],["車頂","p9-2",8,10],["端面收尾","p12-3",10,12]] : ct ? [["輪組與底盤","p3-2",0,4],["鍋爐與車頭","p5-2",4,7],["駕駛室","p8-3",7,8],["煤水車","p10-2",8,10],["連桿與收尾","p12-1",10,14]] : [["底盤","p4-2",0,5],["橘色車身","p7-2",5,7],["駕駛室","p8-3",7,9],["車頂設備","p12-1",9,12],["車頭收尾","p14-2",12,14]];
-      const completedChapters = chapters.map(([, , from, to]) => model.steps.slice(from,to).every(step => step.parts.every(part => shown.has(part.id))));
+      const completedChapters = chapters.map(([, , from, to]) => model.steps.slice(Math.max(from, packStart(initialBuild)),to).every(step => step.parts.every(part => shown.has(part.id))));
       const activeChapter = completedChapters.indexOf(false);
-      const top = `<div class="workshop-top"><div class="model-heading"><h2>${name}</h2><span class="model-count" aria-label="${shown.size} / ${parts.length} 組已裝好">${shown.size}<small> / ${parts.length}</small></span></div><div class="tool-actions">${button("sound",icon(audioEnabled ? "sound":"muted"),audioEnabled ? "關閉拼裝音效":"開啟拼裝音效",`aria-pressed="${audioEnabled}"`)}${button("shelf",icon("shelf"),"收藏室")}${button("pause",icon("pause")+"休息","稍後再拼")}</div></div>`;
+      const top = `<div class="workshop-top"><div class="model-heading"><h2>${name}</h2><span class="model-count" aria-label="${shown.size} / ${required.length} 組已裝好">${shown.size}<small> / ${required.length}</small></span></div><div class="tool-actions">${button("sound",icon(audioEnabled ? "sound":"muted"),audioEnabled ? "關閉拼裝音效":"開啟拼裝音效",`aria-pressed="${audioEnabled}"`)}${button("shelf",icon("shelf"),"收藏室")}${button("pause",icon("pause")+"休息","稍後再拼")}</div></div>`;
       const shell = content => `<section class="e500-workshop" aria-label="${name} 拼裝工作台">${top}${content}${syncStatus()}</section>`;
       if (!ready) { paint(shell(`<div class="asset-notice" role="status"><h3>${assetError ? "圖片暫時沒載好" : "準備中…"}</h3>${assetError ? button("retry","重新載入","重新載入圖片") : ""}</div>`)); return; }
       if (paused) { paint(shell(`<div class="pause-card">${miniature(ids,`留在工作台的 ${name} 半成品`)}<div>${button("resume",icon("play")+"繼續","回工作台接著拼",'class="primary"')}${button("close",icon("left")+"首頁","回首頁")}</div></div>`)); return; }
@@ -131,10 +147,10 @@
             <g data-placement-guide>${!before && !pushing && selected ? guide(byId(selected)):""}</g>
           </svg><div class="scene-caption"><div data-picture-guide>${mechanismView && !selected && ct?.hasWheel(shown) ? ct.gesture() : pushing ? pushGraphic():instructions(byId(selected) || v.remaining[0])}</div></div>
         </div><aside class="tray" aria-label="本包零件">
-          ${v.packIndex !== null ? `<div class="pack-heading"><span aria-label="第 ${v.packIndex+1} 包，共 ${model.steps.length} 包">${icon("bag")}${v.packIndex+1} / ${model.steps.length}</span><span class="pack-dots" role="img" aria-label="本包 ${3-v.remaining.length} / 3 組已接好">${v.pack.map(part => `<i class="${ids.has(part.id)?"done":""}">${ids.has(part.id)?icon("check"):""}</i>`).join("")}</span></div>
+          ${v.packIndex !== null ? `<div class="pack-heading"><span aria-label="第 ${packNumber(initialBuild,v.packIndex)} 包，共 ${packCount(initialBuild,model)} 包">${icon("bag")}${packNumber(initialBuild,v.packIndex)} / ${packCount(initialBuild,model)}</span><span class="pack-dots" role="img" aria-label="本包 ${3-v.remaining.length} / 3 組已接好">${v.pack.map(part => `<i class="${ids.has(part.id)?"done":""}">${ids.has(part.id)?icon("check"):""}</i>`).join("")}</span></div>
             <div class="part-list">${v.pack.map(part => button("part",picture(part,ids)+`<span class="part-state">${icon(ids.has(part.id)?"check":"hand")}</span>`,part.name+(ids.has(part.id)?"，已接好":""),`class="part-button" data-part="${part.id}" aria-pressed="${selected === part.id}" ${ids.has(part.id)||before||pushing?"disabled":""}`)).join("")}</div>
             ${v.packDone ? `<div class="round-end">${button("before",miniature(before?ids:v.before,before?"本包完成後":"本包開始前")+`<span>${icon(before?"arrow":"history")}${before?"現在":"回看"}</span>`,before?"回到現在":"看看本包開始前",`class="compare-button" aria-pressed="${before}"`)}</div>` : button("place",icon(bb?.arrow(selected)==="right"?"arrow":"down")+"接上","接上選好的零件",`class="primary place-button" ${!selected||before||pushing?"disabled":""}`)}` : ""}
-          ${hasNext ? button("next",`<span>下一包 ${icon("arrow")}</span><span>${model.steps[v.nextGrant.packIndex].parts.map(part=>picture(part)).join("")}</span>`,"打開下一包",'class="next-pack"') : !v.remaining.length ? unassigned ? button("allocate",icon("bag")+"開一包","打開下一包",'class="primary next-pack"') : `<div class="rest-mark">${icon("pause")}<span>下次繼續</span>${button("close",icon("left")+"首頁","回首頁")}</div>` : ""}
+          ${hasNext ? button("next",`<span>下一包 ${icon("arrow")}</span><span>${model.steps[v.nextGrant.packIndex].parts.map(part=>picture(part)).join("")}</span>`,"打開下一包",'class="next-pack"') : !v.remaining.length ? unassigned ? button("allocate",icon("bag")+"開一包","打開下一包",'class="primary next-pack"') : `<div class="rest-mark">${icon("pause")}<span>等新拼裝包再繼續</span>${button("close",icon("left")+"首頁","回首頁")}</div>` : ""}
         </aside></div>
         ${ct && (v.packIndex === 2 || ct.hasWheel(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : ct.gesture()+"輪組", mechanismView ? "查看全車半成品" : "查看輪組並試轉",`aria-pressed="${mechanismView}" ${before ? "disabled":""}`)}${mechanismView ? ct.controls(shown,{disabled:before || !!selected}):""}</div>`:""}
         ${bb && ([6,7].includes(v.packIndex) || bb.hasPart(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : bb.gesture()+"門窗",mechanismView ? "查看全車半成品" : "查看門窗並試拉",`aria-pressed="${mechanismView}" ${before?"disabled":""}`)}${mechanismView?bb.controls(shown,{disabled:before || !!selected}):""}</div>`:""}
@@ -193,7 +209,7 @@
         const entry=bb?.isPart(id)?bb.entry(id):{x:0,y:-13};
         const scale=host.querySelector("[data-e500-scene]")?.getScreenCTM?.().a || 1;
         if (ghost.animate) {
-          motion = ghost.animate([{transform:`translate(${start.x}px,${start.y}px)`},{transform:`translate(${dest.x+entry.x*scale}px,${dest.y+entry.y*scale}px)`,offset:.75},{transform:`translate(${dest.x}px,${dest.y}px)`}], {duration:from?240:520,easing:"cubic-bezier(.2,.65,.3,1)",fill:"forwards"});
+          motion = ghost.animate([{transform:`translate(${start.x}px,${start.y}px)`},{transform:`translate(${dest.x+entry.x*scale}px,${dest.y+entry.y*scale}px)`,offset:.75},{transform:`translate(${dest.x}px,${dest.y}px)`}], {duration:from?180:220,easing:"cubic-bezier(.2,.65,.3,1)",fill:"forwards"});
           try { await motion.finished; } catch { return; }
         }
       }
@@ -210,7 +226,7 @@
         host.querySelector('button[data-e500-action="place"]')?.focus?.({preventScroll:true});return;
       }
       try {
-        if (fresh.placed.size === parts.length-1) onFinalPlacement?.(buildId);
+        if (required.every(part => part.id === id || fresh.placed.has(part.id))) onFinalPlacement?.(buildId);
         await collection.placePart({ buildId, grantId:grant.id, packIndex:grant.packIndex, partId:id });
         sound?.place();
       } catch (error) { onFinalPlacement?.(buildId, false); localError = error?.message || "沒有保存成功，請再試一次"; }
@@ -241,19 +257,45 @@
       host.querySelector("[data-movable-train]")?.setAttribute("transform",`translate(${offset} ${-offset*.257})`);
       const slider = host.querySelector("[data-push-position]"); if (slider) slider.value = String(Math.round(offset));
     }
-    async function loadAssets() {
-      const attempt = ++assetAttempt; ready = false; assetError = false; render();
-      const sources = new Set(parts.flatMap(part => [part.svg,...(part.variants || []).map(variant=>variant.svg)]).flatMap(svg=>[...svg.matchAll(/href="([^"]+)"/g)].map(match=>match[1])));
-      for(const src of bb?.sources || []) sources.add(src);
-      try {
-        await Promise.all([...sources].map(src => new Promise((resolve,reject) => {
-          const image = new global.Image();
-          const timer = global.setTimeout(() => finish(false),15000); imageTimers.add(timer);
-          function finish(ok) { global.clearTimeout(timer); imageTimers.delete(timer); image.onload=null; image.onerror=null; ok?resolve():reject(new Error("image failed")); }
-          image.onload=()=>finish(true); image.onerror=()=>finish(false); image.src=src;
-        })));
-        if (attempt !== assetAttempt || disposed) return; ready = true;
-      } catch { if (attempt !== assetAttempt || disposed) return; assetError = true; }
+    function queueAssetRender() {
+      if (assetRenderQueued || disposed) return;
+      assetRenderQueued = true;
+      (global.requestAnimationFrame || queueMicrotask)(() => {
+        assetRenderQueued = false;
+        if (!disposed) render();
+      });
+    }
+    function loadSource(src) {
+      if (imageLoads.has(src)) return imageLoads.get(src);
+      const load = { status:"pending" };
+      imageLoads.set(src,load);
+      if (typeof global.Image !== "function") { load.status="error"; return load; }
+      const image = new global.Image();
+      const timer = global.setTimeout(() => finish(false),15000); imageTimers.add(timer);
+      function finish(ok) {
+        global.clearTimeout(timer); imageTimers.delete(timer); image.onload=null; image.onerror=null;
+        if (disposed || imageLoads.get(src) !== load) return;
+        load.status = ok ? "ready" : "error";
+        queueAssetRender();
+      }
+      image.onload=()=>finish(true); image.onerror=()=>finish(false); image.src=src;
+      if (image.complete && image.naturalWidth > 0) finish(true);
+      return load;
+    }
+    function ensureAssets(v) {
+      // The current pack's variants allow any placement order. Future packs and
+      // unused occlusion variants must not block an earned, visible pack.
+      const ids = visibleIds(v.placed);
+      const sources = new Set(parts.filter(part=>ids.has(part.id)).flatMap(part=>sourcesIn(artwork(part,ids))));
+      for (const part of v.pack) for (const svg of [part.svg,...(part.variants || []).map(variant=>variant.svg)])
+        for (const src of sourcesIn(svg)) sources.add(src);
+      if (bb && mechanismView) for (const src of bb.sources) sources.add(src);
+      const statuses = [...sources].map(src=>loadSource(src).status);
+      assetError = statuses.includes("error");
+      ready = !assetError && !statuses.includes("pending");
+    }
+    function retryAssets() {
+      for (const [src,load] of imageLoads) if (load.status === "error") imageLoads.delete(src);
       render();
     }
     listen(host,"click",event => {
@@ -275,7 +317,7 @@
       if (action === "push-left" || action === "push-right") { updateOffset(offset+(action === "push-left"?-20:20)); return; }
       cancelInteraction(); selected = null;
       if (action === "mechanism") { mechanismView=!mechanismView; mechanism.endTrial(); pushing=false; }
-      if (action === "retry") { void loadAssets(); return; }
+      if (action === "retry") { retryAssets(); return; }
       if (action === "close") { onClose?.(); return; }
       if (action === "shelf") { onShelf?.(); return; }
       if (action === "pause") { paused=true; pushing=false; before=false; offset=0; }
@@ -376,10 +418,10 @@
     // click/after-paint; only an unexpected capture loss cancels an active drag.
     listen(host,"lostpointercapture",event=>{if(drag?.pointerId === event.pointerId)cancelPointer(event);});
     for (const event of ["blur","resize","pagehide"]) listen(global,event,()=>{if(drag || motion || pointerTap !== null){cancelInteraction();selected=null;render();}});
-    void loadAssets();
+    render();
     return {
       update(next) {snapshot=next;render();},
-      destroy() {disposed=true;assetAttempt++;cancelInteraction();for(const timer of imageTimers)global.clearTimeout(timer);imageTimers.clear();for(const remove of listeners)remove();},
+      destroy() {disposed=true;cancelInteraction();for(const timer of imageTimers)global.clearTimeout(timer);imageTimers.clear();for(const remove of listeners)remove();},
     };
   }
   global.KidsTrainWorkshop = Object.freeze({ describe, mount });

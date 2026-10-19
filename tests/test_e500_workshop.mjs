@@ -70,7 +70,7 @@ test("all 14 real packs accept arbitrary part order once and stop between packs"
       }
       assert.equal(h.calls.length,(pack+1)*3);
       assert.match(h.host.innerHTML,/看看本包開始前/);
-      if(pack<13) {assert.match(h.host.innerHTML,/打開下一包/);h.click("next");}
+      if(pack<13) {assert.match(h.host.innerHTML,/打開下一包/);h.click("next");await settle();}
     }
     assert.equal(h.finalCandidate,true);
     assert.equal(h.soundCount,42);
@@ -142,4 +142,67 @@ test("finishing each earned pack holds its before/after until next; never opens 
       assert.equal(context.KidsTrainWorkshop.describe(model, saved, pack).nextGrant.packIndex, pack+1);
     }
   }
+});
+
+
+test("v2 starts with fixed rails, consumes only 13 body packs and keeps source part IDs", async () => {
+  const h=uiHarness([],{contentVersion:2,packs:13});await settle();
+  try {
+    assert.match(h.host.innerHTML,/data-placed="p1-1"/);
+    assert.match(h.host.innerHTML,/0<small> \/ 39/);
+    assert.match(h.host.innerHTML,/第 1 包，共 13 包/);
+    assert.doesNotMatch(h.host.innerHTML,/data-e500-action="part"[^>]*data-part="p1-/);
+    for(let pack=2;pack<=14;pack++) {
+      for(const number of [3,1,2]) {
+        h.click("part",`p${pack}-${number}`);h.click("place");await settle();
+      }
+      if(pack<14){h.click("next");await settle();}
+    }
+    assert.equal(h.calls.length,39);
+    assert.equal(h.finalCandidate,true);
+    assert.ok(h.calls.every(call=>!call.partId.startsWith("p1-")));
+    assert.equal(h.state.grants.length,13);
+    assert.equal(h.state.activeBuild.placed.length,39);
+  } finally {h.mounted.destroy();}
+});
+
+test("only fixed rails and the current earned pack block readiness; future assets are not requested", async () => {
+  const h=uiHarness([],{contentVersion:2,packs:13,manualImages:true});
+  try {
+    assert.equal(h.images.length,9,"three fixed rails plus six first body-pack masks");
+    assert.ok(h.images.every(image=>/\/p[12]-/.test(image.url)));
+    for(const image of h.images)image.onload();await settle();
+    assert.match(h.host.innerHTML,/data-e500-action="part"[^>]*data-part="p2-1"/);
+    h.click("part","p2-3");h.click("place");await settle();
+    assert.equal(h.calls.length,1);
+    assert.ok(h.images.every(image=>/\/p[12]-/.test(image.url)));
+  } finally {h.mounted.destroy();}
+});
+
+test("a newly earned pack waits visibly for its own images and retries only failed current art", async () => {
+  const h=uiHarness([],{contentVersion:2,packs:13,manualImages:true});
+  try {
+    for(const image of h.images)image.onload();await settle();
+    for(const number of [1,2,3]){h.click("part",`p2-${number}`);h.click("place");await settle();}
+    const firstCount=h.images.length;h.click("next");
+    assert.match(h.host.innerHTML,/準備中/);
+    h.click("part","p3-1");h.click("place");await settle();
+    assert.equal(h.calls.length,3);
+    const current=h.images.slice(firstCount);current[0].onerror();for(const image of current.slice(1))image.onload();await settle();
+    assert.match(h.host.innerHTML,/圖片暫時沒載好/);
+    const count=h.images.length;h.click("retry");assert.equal(h.images.length,count+1);
+    h.images.at(-1).onload();await settle();
+    h.click("part","p3-1");h.click("place");await settle();
+    assert.equal(h.calls.length,4);
+  } finally {h.mounted.destroy();}
+});
+
+
+test("an empty v2 parts box waits for a new pack without claiming that a pack is complete", async () => {
+  const h=uiHarness([],{contentVersion:2,packs:0});await settle();
+  try {
+    assert.match(h.host.innerHTML,/零件盒是空的，等新拼裝包再繼續/);
+    assert.doesNotMatch(h.host.innerHTML,/這包接好了|class="pack-done"/);
+    assert.match(h.host.innerHTML,/0<small> \/ 39/);
+  } finally {h.mounted.destroy();}
 });

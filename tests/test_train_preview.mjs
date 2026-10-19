@@ -22,8 +22,10 @@ for(const id of ['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','
     assert.equal(c.snapshot().grants.filter(g=>g.buildId).length,1);
     await c.allocate();
     assert.equal(c.snapshot().grants.filter(g=>g.buildId).length,1,'finish this pack before opening the next');
-    await assert.rejects(c.placePart({packIndex:1,partId:'p2-1'}));
-    for(const [packIndex,step] of model.steps.entries()){
+    await assert.rejects(c.placePart({packIndex:0,partId:'p1-1'}));
+    await assert.rejects(c.placePart({packIndex:2,partId:'p3-1'}));
+    for(const [index,step] of model.steps.slice(1).entries()){
+      const packIndex=index+1;
       for(const part of [...step.parts].reverse()){
         await c.placePart({packIndex,partId:part.id});
         await c.placePart({packIndex,partId:part.id});
@@ -31,7 +33,7 @@ for(const id of ['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','
       await c.allocate();
     }
     const completed=c.snapshot().activeBuild;
-    assert.equal(completed.placed.length,model.steps.length*3);
+    assert.equal(completed.placed.length,(model.steps.length-1)*3);
     assert.ok(completed.completedAt);
     await c.setDisplayed(completed.id,true);
     assert.deepEqual(c.snapshot().displayedBuildIds,[completed.id]);
@@ -42,7 +44,7 @@ for(const id of ['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','
   test(`${id}: final-piece trial completes independently of another trial`,async()=>{
     const h=harness(), model=h.models.find(m=>m.id===id), a=h.create(model,'last'), b=h.create(model,'last');
     const before=b.snapshot(), last=model.steps.at(-1).parts.at(-1);
-    assert.equal(before.activeBuild.placed.length,model.steps.length*3-1);
+    assert.equal(before.activeBuild.placed.length,(model.steps.length-1)*3-1);
     let changes=0;
     const unsubscribe=a.subscribe(()=>changes++);
     await a.placePart({packIndex:model.steps.length-1,partId:last.id});
@@ -53,7 +55,7 @@ for(const id of ['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','
     await a.setDisplayed(a.snapshot().activeBuild.id,true);
     assert.equal(changes,1,'unmounted trial stops receiving updates');
     const copy=a.snapshot();copy.activeBuild.placed.length=0;
-    assert.equal(a.snapshot().activeBuild.placed.length,model.steps.length*3);
+    assert.equal(a.snapshot().activeBuild.placed.length,(model.steps.length-1)*3);
   });
 }
 

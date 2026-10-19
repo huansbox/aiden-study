@@ -25,7 +25,7 @@ test("all 14 CT273 packs save the original 42 IDs once in arbitrary within-pack 
       for(const part of [3,1,2]){h.click("part",`p${pack+1}-${part}`);h.click("place");h.click("place");await settle();}
       assert.equal(h.calls.length,(pack+1)*3);
       assert.match(h.host.innerHTML,/看看本包開始前/);
-      if(pack<13)h.click("next");
+      if(pack<13){h.click("next");await settle();}
     }
     assert.equal(new Set(h.state.activeBuild.placed).size,42);
     assert.equal(h.state.grants.length,14);
@@ -122,5 +122,22 @@ test("background progress waits for wheel dragging to end, then updates the half
     h.fire("pointerup",{target,pointerId:1});
     assert.match(h.host.innerHTML,/data-ct-frame="p4-1"/);
     assert.equal(h.calls.length,0);
+  } finally {h.mounted.destroy();}
+});
+
+
+test("v2 CT273 starts at wheels, retains wheel and rod operation, and completes 39 body groups",async()=>{
+  const h=uiHarness([],{modelId:"ct273",contentVersion:2,packs:13});await settle();
+  try {
+    assert.match(h.host.innerHTML,/data-placed="p1-1"/);
+    for(let pack=2;pack<=14;pack++) {
+      for(const part of [3,1,2]){h.click("part",`p${pack}-${part}`);h.click("place");await settle();}
+      if(pack===3){assert.match(h.host.innerHTML,/data-ct-wheel=/);h.click("ct-next");assert.equal(h.calls.length,6);}
+      if(pack===12){h.click("mechanism");assert.match(h.host.innerHTML,/data-ct-rod/);h.click("ct-next");assert.equal(h.calls.length,33);}
+      if(pack<14){h.click("next");await settle();}
+    }
+    assert.equal(h.calls.length,39);assert.equal(h.finalCandidate,true);
+    assert.match(h.host.innerHTML,/39<small> \/ 39/);
+    assert.ok(h.calls.every(call=>call.packIndex>=1));
   } finally {h.mounted.destroy();}
 });

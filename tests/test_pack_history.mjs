@@ -54,7 +54,8 @@ function fixture() {
   const entries = ["study:math", "study:science", "study:social"];
   let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: entries.map((entryId) => ({ entryId, metric: "answered", quantity: 1 })) }, yesterday);
   for (const entryId of entries) state = C.apply(state, { type: "record", event: { entryId, answered: true, occurredAt: yesterday.toISOString() } }, yesterday);
-  state = C.apply(state, { type: "select-model", modelId: "r200" }, yesterday);
+  state.builds = [{id:"r200",modelId:"r200",contentVersion:1,placed:[],completedAt:null}]; state.activeBuildId="r200";
+  state = C.apply(state, { type: "allocate" }, yesterday);
   for (const [packIndex, parts] of [[0, [1, 2, 3]], [1, [3]]]) for (const n of parts) {
     state = C.apply(state, { type: "place", buildId: "r200", grantId: state.grants[packIndex].id, packIndex, partId: `p${packIndex + 1}-${n}` }, yesterday);
   }
@@ -63,7 +64,7 @@ function fixture() {
 
 test("隔天今日歸零仍看見兩包待拼，紀錄保留昨天三包及各包實際零件位置", async () => {
   const state = fixture(), before = structuredClone(state), h = await home(state);
-  assert.match(h.root.innerHTML, /今日拼裝包 0 \/ 3/);
+  assert.match(h.root.innerHTML, /今日已領 0 包/);
   assert.match(h.root.innerHTML, /還有 2 包可以拼/);
   h.click("[data-pack-history]");
   assert.match(h.root.innerHTML, /2026\/10\/11<\/time> · 已獲得 3 包/);
@@ -104,4 +105,46 @@ test("沒有發包資料時不出現可拼按鈕或虛構領取紀錄", async ()
   assert.doesNotMatch(h.root.innerHTML, /包可以拼/);
   h.click("[data-pack-history]");
   assert.match(h.root.innerHTML, /目前還沒有發包紀錄/);
+});
+
+test("必做完成保留，原卡提供自選加碼與目前進度，已領包不顯示固定上限", async () => {
+  const now=new Date("2026-10-19T12:00:00Z");
+  let state=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"study:math",metric:"answered",quantity:2}]},now);
+  for(let n=0;n<7;n++)state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
+  const snapshot={...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}};
+  const h=await home(snapshot);
+  assert.match(h.root.innerHTML,/今日已領 3 包/);
+  assert.match(h.root.innerHTML,/必做 2 \/ 2 題 · 已完成/);
+  assert.match(h.root.innerHTML,/今日累積 7 題/);
+  assert.match(h.root.innerHTML,/<a class="daily-bonus" href="https:\/\/kids.test\/study\/">加碼再做 1 題，可再得 1 包 →<\/a>/);
+  assert.match(h.root.innerHTML,/目前加碼進度 1 \/ 2 題/);
+  assert.doesNotMatch(h.root.innerHTML,/今日已領 3 \/|共可領/);
+});
+
+test("v2 首頁與包紀錄以33組、第一包顯示，來源p2不冒充第二包",async()=>{
+  let state=C.empty();state.grants=[{id:"modern-grant",date:"2026-10-19",buildId:null,packIndex:null}];
+  state=C.apply(state,{type:"select-model",modelId:"emu3000",commandId:"home-modern"});
+  state=C.apply(state,{type:"place",buildId:state.activeBuildId,grantId:"modern-grant",packIndex:1,partId:"p2-1"});
+  const h=await home({...C.snapshot(state),sync:{status:"ready"}},["emu3000"]);
+  assert.match(h.root.innerHTML,/已放上 1 \/ 33 組部件/);
+  h.click("[data-pack-history]");
+  assert.match(h.root.innerHTML,/第 1 包 · 拼裝中（1 \/ 3 組）/);
+  assert.doesNotMatch(h.root.innerHTML,/第 2 包/);
+});
+
+test("同日份量調整抵扣已領包後，首頁誠實顯示45題才有下一包，且不把完成份數當實領",async()=>{
+  const now=new Date("2026-10-19T12:00:00Z");
+  let state=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"study:math",metric:"answered",quantity:20}]},now);
+  for(let n=0;n<45;n++)state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
+  state=C.apply(state,{type:"goals",expectedGoalRevision:1,targets:[{entryId:"study:math",metric:"answered",quantity:30}]},now);
+  const snapshot={...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}}, h=await home(snapshot);
+  assert.match(h.root.innerHTML,/今日已領 2 包/);
+  assert.match(h.root.innerHTML,/加碼再做 45 題，可再得 1 包/);
+  assert.match(h.root.innerHTML,/距離下一包還差 45 題/);
+  assert.match(h.root.innerHTML,/已領額度抵扣 1 包/);
+  assert.doesNotMatch(h.root.innerHTML,/已完成加碼|加碼再做 30 題，可再得 1 包|目前加碼進度 15 \/ 30/);
+  state=C.apply(state,{type:"goals",expectedGoalRevision:2,targets:[{entryId:"study:math",metric:"answered",quantity:100}]},now);
+  const unfinished=await home({...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}});
+  assert.match(unfinished.root.innerHTML,/必做 45 \/ 100 題/);
+  assert.match(unfinished.root.innerHTML,/距離下一包還差 255 題/);
 });

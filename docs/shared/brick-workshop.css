@@ -235,3 +235,10 @@
   .brick-workshop *::before,
   .brick-workshop *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.brick-model-confirm { max-width:720px; margin:0 auto; padding:24px; text-align:center; }
+.brick-model-confirm__picture { display:block; width:100%; max-height:360px; object-fit:contain; }
+.brick-model-confirm__available { font-weight:700; font-size:1.2rem; }
+.brick-shelf-next { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin:0 0 24px; padding:20px; background:#edf3e8; border:1px solid #acbda5; border-radius:16px; }
+.brick-shelf-next p { margin:0; }
+@media(max-width:520px) { .brick-model-confirm { padding:16px 8px; } .brick-model-confirm__picture { max-height:220px; } }

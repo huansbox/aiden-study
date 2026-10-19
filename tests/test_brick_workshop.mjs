@@ -96,7 +96,7 @@ function controlledClock() {
 
 function harness(placed = [], {
   modelIds = ["car", "train", "plane"], imageArtwork = false, variantArtwork = false, packCount = 1,
-  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false, withAudio = false, preview = false,
+  withCelebration = false, initialCompleted = false, reducedMotion = false, controlledTimers = false, withAudio = false, preview = false, contentVersion = 1, initialPendingSelection = null,
 } = {}) {
   const callbacks = new Set();
   const windowListeners = new Map();
@@ -111,6 +111,7 @@ function harness(placed = [], {
   const activeModelId = modelIds[0];
   const activeBuild = {
     id: `${activeModelId}-build`,
+    contentVersion,
     modelId: activeModelId,
     placed: [...placed],
     completedAt: initialCompleted ? "2026-09-23T12:00:00.000Z" : null,
@@ -125,7 +126,7 @@ function harness(placed = [], {
         date: "2026-09-22",
         kind: "first",
         buildId: activeBuild.id,
-        packIndex: 0,
+        packIndex: contentVersion === 2 ? 1 : 0,
       },
     ],
     activeBuild,
@@ -133,6 +134,12 @@ function harness(placed = [], {
     displayedBuildIds: [],
     sync: { status: "ready", message: "", pending: 0 },
   };
+  if (initialPendingSelection) {
+    state.activeBuild=null;state.builds=[];
+    state.grants=[{id:"unassigned-selection",buildId:null,packIndex:null}];
+    state.pendingSelection={...initialPendingSelection};
+    state.sync={status:"offline",message:"網路中斷",pending:1};
+  }
   const placements = [], selectCalls = [], allocateCalls = [];
   const collection = {
     ready: Promise.resolve(),
@@ -852,6 +859,9 @@ test("selecting a model sends one server-confirmed operation and does not alloca
   h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
   h.mounted.render();
   h.element.fire("click", action({ action: "start-model", model: "train" }));
+  assert.deepEqual(h.selectCalls, []);
+  assert.match(h.element.innerHTML, /確認這次的作品/);
+  h.element.fire("click", action({ action: "confirm-model", model: "train" }));
   await Promise.resolve();
   await Promise.resolve();
   assert.deepEqual(h.selectCalls, ["train"]);
@@ -890,6 +900,7 @@ test("all five trains are selectable and spare packs stay in the box after compl
     assert.match(h.element.innerHTML, new RegExp(`data-model="${id}"`));
   assert.doesNotMatch(h.element.innerHTML, /data-model="(?:car|train|plane)"/);
   h.element.fire("click", action({ action: "start-model", model: "e500" }));
+  h.element.fire("click", action({ action: "confirm-model", model: "e500" }));
   await Promise.resolve();
   assert.deepEqual(h.selectCalls, ["e500"]);
 
@@ -1058,4 +1069,140 @@ test("window blur releases an active touch drag without leaving rendering blocke
   assert.equal(released, true, "blur actively releases the implicit capture");
   assert.ok(h.element.renderCount > beforeBlur, "blur finalizes the canceled drag");
   h.mounted.destroy();
+});
+
+
+test("v2 generic trains keep fixed rails outside progress and await confirmation on the final body part", async () => {
+  const h=harness([],{modelIds:["emu3000","r200"],packCount:3,contentVersion:2,reducedMotion:true});
+  try {
+    assert.equal(placedCount(h.element.innerHTML),3);
+    assert.match(h.element.innerHTML,/0<small> \/ 6 組部件/);
+    assert.match(h.element.innerHTML,/第 1 包/);
+    assert.doesNotMatch(h.element.innerHTML,/data-action="part"[^>]*data-part="p1-/);
+    h.state.grants.push({...h.state.grants[0],id:"grant-2",packIndex:2});
+    for(const pack of [2,3])for(const number of [3,1,2]) {
+      const part=`p${pack}-${number}`;
+      h.element.fire("click",action({action:"part",part}));
+      h.element.fire("click",action({action:"target",part}));
+      await Promise.resolve();
+    }
+    assert.equal(h.placements.length,6);
+    assert.equal(h.state.activeBuild.placed.length,6);
+    assert.match(h.element.innerHTML,/最後一片已放好/);
+    assert.doesNotMatch(h.element.innerHTML,/data-action="choose-next"|放上展示架/);
+    h.state.activeBuild.completedAt="2026-10-19T00:00:00.000Z";h.notify();
+    assert.match(h.element.innerHTML,/data-action="choose-next"/);
+    h.element.fire("click",action({action:"display",build:h.state.activeBuild.id,displayed:"true"}));
+    await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/作品已收進收藏室/);
+    assert.match(h.element.innerHTML,/data-action="choose-next"/);
+    h.element.fire("click",action({action:"choose-next"}));
+    assert.match(h.element.innerHTML,/這次想拼哪一台/);
+    h.element.fire("click",action({action:"start-model",model:"r200"}));
+    assert.match(h.element.innerHTML,/共 2 包 · 6 組部件；展示鐵軌已備好/);
+    assert.match(h.element.innerHTML,/現在可以拼 0 包/);
+    assert.match(h.element.innerHTML,/先選好這台，拿到新包後就能開始拼/);
+    assert.deepEqual(h.selectCalls,[]);
+    h.element.fire("click",action({action:"confirm-model",model:"r200"}));
+    await Promise.resolve();
+    assert.deepEqual(h.selectCalls,["r200"]);
+  } finally {h.mounted.destroy();}
+});
+
+test("viewing and cancelling a model card never selects it, even with an empty parts box", () => {
+  const h=harness();
+  try {
+    h.state.activeBuild=null;h.state.builds=[];h.state.grants=[];h.mounted.render();
+    assert.match(h.element.innerHTML,/這次想拼哪一台/);
+    h.element.fire("click",action({action:"start-model",model:"train"}));
+    assert.match(h.element.innerHTML,/返回換一台/);
+    assert.deepEqual(h.selectCalls,[]);
+    h.element.fire("click",action({action:"cancel-model"}));
+    assert.match(h.element.innerHTML,/這次想拼哪一台/);
+    assert.deepEqual(h.selectCalls,[]);
+    assert.equal(h.state.activeBuild,null);
+    assert.equal(h.state.grants.length,0);
+  } finally {h.mounted.destroy();}
+});
+
+
+function selectIntoPending(h, modelId="train") {
+  h.state.activeBuild=null;h.state.builds=[];
+  h.state.grants=[{id:"free-selection-pack",buildId:null,packIndex:null}];
+  h.collection.selectModel=async selected=>{
+    h.selectCalls.push(selected);
+    h.state.pendingSelection={modelId:selected,commandId:"pending-select-one"};
+    h.state.sync={status:"offline",message:"網路中斷",pending:1};h.notify();
+    throw Object.assign(Error("回應沒有收到"),{code:"selection-pending",pendingSelection:h.state.pendingSelection});
+  };
+  h.mounted.render();
+  h.element.fire("click",action({action:"start-model",model:modelId}));
+  h.element.fire("click",action({action:"confirm-model",model:modelId}));
+}
+
+function confirmPendingSelection(h,modelId="train") {
+  const build={id:"confirmed-select-one",modelId,placed:[],completedAt:null};
+  h.state.activeBuild=build;h.state.builds=[build];
+  h.state.grants[0].buildId=build.id;h.state.grants[0].packIndex=0;
+  h.state.pendingSelection=null;h.state.sync={status:"ready",message:"",pending:0};h.notify();
+}
+
+test("lost selection response stays pending, blocks false cancellation, and reconnects into the chosen workshop",async()=>{
+  const h=harness();
+  try {
+    selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/<h2 id="brick-pending-title">火車<\/h2>/);
+    assert.match(h.element.innerHTML,/先確認結果，才能返回換車/);
+    assert.doesNotMatch(h.element.innerHTML,/回應沒有收到|返回換一台|data-action="confirm-model"|data-action="cancel-model"/);
+    h.element.fire("click",action({action:"cancel-model"}));
+    h.element.fire("click",action({action:"start-model",model:"plane"}));
+    h.element.fire("click",action({action:"confirm-model",model:"plane"}));
+    assert.deepEqual(h.selectCalls,["train"]);
+    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    confirmPendingSelection(h);
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車|確認這次的作品/);
+    assert.match(h.element.innerHTML,/data-action="part"/);
+    assert.equal(h.state.activeBuild.modelId,"train");
+    assert.deepEqual(h.selectCalls,["train"]);
+  } finally {h.mounted.destroy();}
+});
+
+test("reopened pending selection retries the original command without another select",async()=>{
+  const h=harness([],{initialPendingSelection:{modelId:"train",commandId:"persisted-pending-select"}});
+  let attempts=0;
+  h.collection.flush=async()=>{attempts++;if(attempts===2)confirmPendingSelection(h);return h.state;};
+  try {
+    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.equal(h.state.pendingSelection.commandId,"persisted-pending-select");
+    h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
+    assert.equal(attempts,2);assert.deepEqual(h.selectCalls,[]);
+    assert.match(h.element.innerHTML,/data-action="part"/);
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車/);
+  } finally {h.mounted.destroy();}
+});
+
+test("a server-rejected pending selection explains rejection and permits returning to another model",async()=>{
+  const h=harness();
+  try {
+    selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
+    h.collection.flush=async()=>{
+      h.state.pendingSelection=null;
+      h.state.sync={status:"error",message:"選車狀態已更新，請重新選擇。",pending:0};h.notify();return h.state;
+    };
+    h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/選車狀態已更新，請重新選擇/);
+    assert.match(h.element.innerHTML,/返回換一台/);
+    h.element.fire("click",action({action:"cancel-model"}));
+    assert.match(h.element.innerHTML,/這次想拼哪一台/);
+    h.element.fire("click",action({action:"start-model",model:"plane"}));
+    assert.match(h.element.innerHTML,/<h2 id="brick-confirm-title">飛機<\/h2>/);
+    h.collection.selectModel=async modelId=>h.selectCalls.push(modelId);
+    h.element.fire("click",action({action:"confirm-model",model:"plane"}));await new Promise(resolve=>setImmediate(resolve));
+    assert.deepEqual(h.selectCalls,["train","plane"]);
+    assert.equal(h.state.pendingSelection,null);
+  } finally {h.mounted.destroy();}
 });

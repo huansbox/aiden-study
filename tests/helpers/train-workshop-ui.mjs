@@ -6,9 +6,11 @@ const models={e500:context.KidsBrickE500,ct273:context.KidsBrickCT273,"breezy-bl
 function snapshot(placed,packs,modelId) {
   return {activeBuild:{id:`existing-${modelId}`,modelId,placed},grants:Array.from({length:packs},(_,packIndex)=>({id:`earned-${packIndex}`,buildId:`existing-${modelId}`,packIndex}))};
 }
-export function uiHarness(placed = [], { packs = 14, motion = false, failImages = false, modelId = "e500" } = {}) {
+export function uiHarness(placed = [], { packs = 14, motion = false, failImages = false, modelId = "e500", contentVersion = 1, manualImages = false } = {}) {
   const model = models[modelId];
   const state = snapshot(placed, packs, modelId), calls = [], windows = new Map(), events = new Map(), images = [], animations = [], ghosts = [];
+  state.activeBuild.contentVersion=contentVersion;
+  if(contentVersion === 2) state.grants.forEach(grant=>{grant.packIndex++;});
   let rejectSave = false, finalCandidate = false, soundCount = 0;
   const node = { innerHTML:"", disabled:false, value:"0", setAttribute(){}, focus(){}, classList:{toggle(){}}, getScreenCTM:()=>({a:1,inverse:()=>({a:1})}), getBoundingClientRect:()=>({x:10,y:10,width:100,height:70}) };
   const host = { innerHTML:"", addEventListener:(name,fn)=>events.set(name,fn), removeEventListener:name=>events.delete(name),
@@ -18,7 +20,7 @@ export function uiHarness(placed = [], { packs = 14, motion = false, failImages 
     calls.push(details); if(rejectSave) throw Error("無法保存，請再試一次");
     state.activeBuild.placed.push(details.partId); mounted.update(state);
   } };
-  class TestImage { set src(value) {this.url=value;images.push(this);queueMicrotask(()=>failImages?this.onerror?.():this.onload?.());} }
+  class TestImage { set src(value) {this.url=value;images.push(this);if(!manualImages)queueMicrotask(()=>failImages?this.onerror?.():this.onload?.());} }
   const ctx = vm.createContext({console,Set,Promise,Date,queueMicrotask,setTimeout,clearTimeout,
     Image:TestImage,matchMedia:()=>({matches:!motion}),DOMPoint:class {constructor(x,y){this.x=x;this.y=y;}matrixTransform(){return this;}},
     document:{body:{append(){}},createElement(){const ghost = {style:{},setAttribute(){},remove(){this.removed=true;},animate(){

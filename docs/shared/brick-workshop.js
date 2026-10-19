@@ -20,12 +20,20 @@
         ? value
         : [],
     );
-  const allParts = (model) =>
-    (model?.steps || [])
-      .flatMap((step, packIndex) =>
-        (step.parts || []).map((part) => ({ ...part, packIndex })),
-      )
-      .sort((left, right) => (left.z || 0) - (right.z || 0));
+  const modelParts = new WeakMap();
+  const allParts = (model) => {
+    if (!model) return [];
+    if (!modelParts.has(model)) modelParts.set(model, (model.steps || [])
+      .flatMap((step, packIndex) => (step.parts || []).map(part => ({...part,packIndex})))
+      .sort((left,right) => (left.z || 0)-(right.z || 0)));
+    return modelParts.get(model);
+  };
+  const packStart = build => global.KidsCollectionCore?.packStart?.(build) ?? (build?.contentVersion === 2 ? 1 : 0);
+  const requiredParts = (model, build) => allParts(model).filter(part => part.packIndex >= packStart(build));
+  const packCount = (model, build) => global.KidsCollectionCore?.packCount?.(build) ?? model.steps.length - packStart(build);
+  const packNumber = (build, index) => index - packStart(build) + 1;
+  const fixedIds = (model, build) => allParts(model).filter(part => part.packIndex < packStart(build)).map(part => part.id);
+  const nextBuild = model => ({modelId:model.id,contentVersion:["e500","emu3000","r200","700t","n700s","emu900","breezy-blue","ct273"].includes(model.id)?2:1});
   const catalogTitle = () => global.KidsBrickModels?.title || "拼裝系列";
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
   const partArtwork = (part, placed, complete = false) => {
@@ -42,6 +50,11 @@
     typeof error?.message === "string" && error.message.trim()
       ? error.message.trim()
       : fallback;
+
+  const previewSource = model => model?.assetVersion
+    ? imageSources(model.steps[0].parts[0])[0]?.replace(/\/assets\/[^/?]+(?:\?[^"']*)?$/, `/preview.webp?v=${model.assetVersion}`)
+    : null;
+  const previewParts = model => previewSource(model) ? [{svg:`<image href="${previewSource(model)}"/>`}] : allParts(model).map(part=>({svg:part.svg}));
 
   function modelSvg(model, placedIds, { targets = [], complete = false, animatedPartId = null } = {}) {
     if (!model) return "";
@@ -60,12 +73,14 @@
 
   function thumbnail(
     modelId,
-    { placed = [], complete = false, ghosts = true, className = "", animatedPartId = null } = {},
+    { placed = [], complete = false, ghosts = true, className = "", animatedPartId = null, build = null } = {},
   ) {
     const model = modelFrom(modelId);
     if (!model)
       return '<span class="brick-thumbnail brick-thumbnail--missing" aria-hidden="true"></span>';
-    const placedIds = asSet(placed);
+    const preview = complete && previewSource(model);
+    if (preview) return `<img class="brick-thumbnail ${escapeHtml(className)}" src="${escapeHtml(preview)}" width="800" height="500" loading="lazy" decoding="async" alt="${escapeHtml(model.title)}">`;
+    const placedIds = new Set([...placed, ...fixedIds(model, build)]);
     const parts = allParts(model)
       .map((part) => {
         const visible = complete || placedIds.has(part.id);
@@ -106,6 +121,9 @@
     let disposed = false;
     let view = "workshop";
     let choosingNext = false;
+    let candidateModelId = null;
+    let observedPendingSelection = null;
+    let imageRenderQueued = false;
     let selectedPart = null;
     let localError = "";
     let busy = "";
@@ -128,6 +146,15 @@
     const imageLoads = new Map();
     const listeners = [];
 
+    function queueImageRender() {
+      if (imageRenderQueued || disposed) return;
+      imageRenderQueued = true;
+      (global.requestAnimationFrame || queueMicrotask)(() => {
+        imageRenderQueued = false;
+        render({ deferForPlacement:true });
+      });
+    }
+
     function imageState(parts) {
       let pending = false;
       let failed = false;
@@ -141,12 +168,12 @@
             image.onload = () => {
               if (imageLoads.get(source) !== load || disposed) return;
               load.status = "ready";
-              queueMicrotask(() => render({ deferForPlacement: true }));
+              queueImageRender();
             };
             image.onerror = () => {
               if (imageLoads.get(source) !== load || disposed) return;
               load.status = "error";
-              queueMicrotask(() => render({ deferForPlacement: true }));
+              queueImageRender();
             };
             image.src = source;
             if (image.complete && image.naturalWidth > 0) load.status = "ready";
@@ -159,7 +186,7 @@
     }
 
     function artworkNotice(models) {
-      const status = imageState(models.flatMap(allParts));
+      const status = imageState(models.flatMap(previewParts));
       if (status === "ready") return "";
       return `<div class="brick-art-notice" role="${status === "error" ? "alert" : "status"}">
         <span>${status === "error" ? "拼裝圖片載入失敗，作品與進度仍會保留。" : "正在載入拼裝圖片…"}</span>
@@ -186,6 +213,7 @@
       allParts(model).find((part) => part.id === partId);
     const statusText = (snapshot) => {
       if (preview) return "示範進度只留在此頁，不會保存到孩子的收藏。";
+      if (snapshot.pendingSelection) return "正在等連線確認選車";
       const sync = snapshot.sync || {};
       if (sync.status === "offline")
         return sync.message || "目前離線，拼裝進度會留在這台裝置並稍後送出。";
@@ -212,10 +240,43 @@
         </div>
       </header>
       <nav class="brick-tabs" aria-label="拼裝收藏頁面">
-        <button type="button" data-action="view" data-view="workshop" aria-current="${view === "workshop" ? "page" : "false"}">工作台</button>
-        <button type="button" data-action="view" data-view="shelf" aria-current="${view === "shelf" ? "page" : "false"}">收藏室</button>
+        <button type="button" data-action="view" data-view="workshop" aria-current="${view === "workshop" ? "page" : "false"}" ${snapshot.pendingSelection ? "disabled" : ""}>工作台</button>
+        <button type="button" data-action="view" data-view="shelf" aria-current="${view === "shelf" ? "page" : "false"}" ${snapshot.pendingSelection ? "disabled" : ""}>收藏室</button>
       </nav>
       <p class="brick-sync${statusClass(snapshot)}" role="status"><span aria-hidden="true"></span>${escapeHtml(localError || statusText(snapshot))}</p>`;
+    }
+
+    function renderPendingSelection(snapshot) {
+      const pending = snapshot.pendingSelection, model = getModel(pending.modelId);
+      return `<section class="brick-model-confirm" aria-labelledby="brick-pending-title">
+        ${model ? thumbnail(model.id,{complete:true,ghosts:false,className:"brick-model-confirm__picture"}) : ""}
+        <p class="brick-kicker" role="status">正在等連線確認選車</p>
+        <h2 id="brick-pending-title">${escapeHtml(model?.title || pending.modelId)}</h2>
+        <p>你已確認選這台。需要先確認結果，才能返回換車。</p>
+        <p>可以稍後回來，這筆選車會繼續確認；重試不會另外選一台。</p>
+        <div class="brick-complete__actions"><button type="button" data-action="retry-selection" ${busy ? "disabled" : ""}>${busy ? "正在確認選車…" : "重試確認選車"}</button></div>
+      </section>`;
+    }
+
+    function reconcilePendingSelection(snapshot) {
+      if (snapshot.pendingSelection) {
+        observedPendingSelection = {...snapshot.pendingSelection};
+        localError = "";
+        return;
+      }
+      if (!observedPendingSelection) return;
+      const selected = observedPendingSelection;
+      observedPendingSelection = null;
+      view = "workshop";
+      if (snapshot.activeBuild && !snapshot.activeBuild.completedAt) {
+        choosingNext = false;
+        candidateModelId = null;
+        localError = snapshot.activeBuild.modelId === selected.modelId ? "" : snapshot.sync?.message || "另一個入口已選好作品，先接著目前這台。";
+      } else {
+        choosingNext = true;
+        candidateModelId = selected.modelId;
+        localError = snapshot.sync?.message || "這筆選車沒有確認成功，請重新選擇。";
+      }
     }
 
     function renderPicker(snapshot) {
@@ -230,6 +291,22 @@
       );
       if (snapshot.activeBuild?.completedAt)
         ownedModelIds.add(snapshot.activeBuild.modelId);
+      const candidate = models.find(model => model.id === candidateModelId && !ownedModelIds.has(model.id));
+      if (candidate) {
+        const planned = nextBuild(candidate), count = packCount(candidate,planned);
+        const candidateArt = imageState(previewParts(candidate));
+        return `<section class="brick-model-confirm" aria-labelledby="brick-confirm-title">
+          ${thumbnail(candidate.id,{complete:true,ghosts:false,className:"brick-model-confirm__picture"})}
+          ${artworkNotice([candidate])}
+          <p class="brick-kicker">確認這次的作品</p>
+          <h2 id="brick-confirm-title">${escapeHtml(candidate.title)}</h2>
+          <p>共 ${count} 包 · ${requiredParts(candidate,planned).length} 組部件${packStart(planned) ? "；展示鐵軌已備好" : ""}</p>
+          <p class="brick-model-confirm__available">零件盒有 ${unassigned} 包，現在可以拼 ${Math.min(unassigned,count)} 包。</p>
+          ${unassigned ? "" : '<p>先選好這台，拿到新包後就能開始拼。</p>'}
+          <div class="brick-complete__actions"><button type="button" data-action="confirm-model" data-model="${escapeHtml(candidate.id)}" ${busy || candidateArt !== "ready" ? "disabled" : ""}>${busy ? "正在準備這台…" : "確定，開始拼這台"}</button>
+          <button type="button" class="secondary" data-action="cancel-model" ${busy ? "disabled" : ""}>返回換一台</button></div>
+        </section>`;
+      }
       const notice = artworkNotice(models);
       if (models.length && models.every((model) => ownedModelIds.has(model.id)))
         return `${notice}<section class="brick-series-complete">
@@ -253,7 +330,7 @@
               const owned = ownedModelIds.has(model.id);
               return `<button class="brick-model-card${owned ? " is-owned" : ""}" type="button" data-action="start-model" data-model="${escapeHtml(model.id)}" ${busy || owned ? "disabled" : ""}>
                 ${thumbnail(model.id, { complete: true, ghosts: false })}
-                <span><strong>${escapeHtml(model.title)}</strong><small>${model.steps.length} 包 · ${allParts(model).length} 組部件</small></span>
+                <span><strong>${escapeHtml(model.title)}</strong><small>${packCount(model,nextBuild(model))} 包 · ${requiredParts(model,nextBuild(model)).length} 組部件</small></span>
                 <b>${owned ? "已收藏" : busy === `model:${model.id}` ? "正在準備…" : "選這台"}</b>
               </button>`;
             })
@@ -302,11 +379,7 @@
         (grant) => grant.buildId == null,
       );
       if (!build || choosingNext) {
-        const models = global.KidsBrickModels?.models || [];
-        const collected = models.length && models.every((model) =>
-          (snapshot.builds || []).some((entry) => entry.modelId === model.id && entry.completedAt),
-        );
-        return unassigned.length || collected ? renderPicker(snapshot) : renderEmpty(snapshot);
+        return renderPicker(snapshot);
       }
       const model = getModel(build.modelId);
       if (!model)
@@ -328,9 +401,11 @@
         : null;
       const currentParts = currentStep?.parts || [];
       const remaining = currentParts.filter((part) => !placed.has(part.id));
-      const placedArtwork = imageState(allParts(model).filter((part) => placed.has(part.id)));
+      const shown = new Set([...placed, ...fixedIds(model, build)]);
+      const wantsCelebration = build.completedAt && completionCandidates.has(build.id) && !celebratedBuilds.has(build.id);
+      const placedArtwork = imageState(build.completedAt && !wantsCelebration ? previewParts(model) : allParts(model).filter((part) => shown.has(part.id)).map(part => ({svg:partArtwork(part,shown)})));
       const trayArtwork = imageState(currentParts);
-      const total = allParts(model).length;
+      const total = requiredParts(model,build).length;
       const locallyComplete = placed.size >= total;
       const completed = Boolean(build.completedAt);
       const ownedModelIds = new Set(
@@ -357,7 +432,7 @@
       }
       if (completed && celebration?.buildId === build.id) {
         celebration.rendered = true;
-        return global.KidsBrickCelebration.render(model, { audioEnabled });
+        return global.KidsBrickCelebration.render(model, { audioEnabled, build });
       }
 
       if (completed)
@@ -368,9 +443,9 @@
           <h2>${escapeHtml(model.title)}已經可以上展示架了</h2>
           ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(catalogTitle())}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
           <div class="brick-complete__actions">
-            <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true">放上展示架</button>
+            <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true" ${busy ? "disabled" : ""}>${busy?.startsWith("display:") ? "正在放上展示架…" : "放上展示架"}</button>
             ${global.KidsBrickCelebration?.supports(model) ? '<button type="button" class="secondary brick-celebration-replay" data-action="celebration-replay">再開一次</button>' : ""}
-            ${unassigned.length && hasAnotherModel ? '<button type="button" class="secondary" data-action="choose-next">選下一件作品</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
+            ${hasAnotherModel && typeof collection.selectModel === "function" ? '<button type="button" class="secondary" data-action="choose-next">選下一台</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
           </div>
         </section>`;
 
@@ -392,7 +467,7 @@
           <div class="brick-progress" role="progressbar" aria-label="${escapeHtml(model.title)}拼裝進度" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${placed.size}"><span style="width:${Math.min(100, (placed.size / total) * 100)}%"></span></div>
           <div class="brick-stage" data-stage>
             <svg viewBox="${escapeHtml(model.viewBox)}" role="img" aria-label="${escapeHtml(model.title)}半成品">
-              ${modelSvg(model, placed, { targets: trayArtwork === "ready" ? remaining.map((part) => part.id) : [], animatedPartId })}
+              ${modelSvg(model, shown, { targets: trayArtwork === "ready" ? remaining.map((part) => part.id) : [], animatedPartId })}
               ${trayArtwork === "ready" ? remaining.map((part) => `<g data-target-guide="${escapeHtml(part.id)}" ${selectedPart === part.id || (!selectedPart && remaining.length === 1) ? "" : 'style="display:none"'}>${targetGuide(model, part, placed.size === total - 1 ? "最後一片，放這裡" : "放這裡")}</g>`).join("") : ""}
             </svg>
             ${trayArtwork === "ready" && selectedPart ? `<button class="brick-stage__hint brick-stage__place" type="button" data-action="target" data-part="${escapeHtml(selectedPart)}">放到亮起位置：${escapeHtml(partById(model, selectedPart)?.name || "零件")}</button>` : trayArtwork === "ready" ? `<p class="brick-stage__hint">${remaining.length === 1 ? "把零件拖進金色框，也可以點零件再點位置" : "點一下或拿起零件，就會標出要放的位置"}</p>` : ""}
@@ -402,8 +477,8 @@
           ${
             currentStep
               ? trayArtwork !== "ready"
-                ? `<div class="brick-art-tray" role="${trayArtwork === "error" ? "alert" : "status"}"><p class="brick-kicker">第 ${currentGrant.packIndex + 1} 包</p><h3>${trayArtwork === "error" ? "這包圖片載入失敗" : "正在載入這包圖片…"}</h3><p>已拼好的半成品會留在工作台。</p>${trayArtwork === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}</div>`
-                : `<div class="brick-tray__heading"><div><p class="brick-kicker">第 ${currentGrant.packIndex + 1} 包</p><h3>${escapeHtml(currentStep.title || "今天的零件")}</h3></div><span>${3 - remaining.length} / 3</span></div>
+                ? `<div class="brick-art-tray" role="${trayArtwork === "error" ? "alert" : "status"}"><p class="brick-kicker">第 ${packNumber(build,currentGrant.packIndex)} 包</p><h3>${trayArtwork === "error" ? "這包圖片載入失敗" : "正在載入這包圖片…"}</h3><p>已拼好的半成品會留在工作台。</p>${trayArtwork === "error" ? '<button type="button" data-action="retry-art">重試載入圖片</button>' : ""}</div>`
+                : `<div class="brick-tray__heading"><div><p class="brick-kicker">第 ${packNumber(build,currentGrant.packIndex)} 包</p><h3>${escapeHtml(currentStep.title || "今天的零件")}</h3></div><span>${3 - remaining.length} / 3</span></div>
                 <div class="brick-parts">
                   ${currentParts
                     .map((part) => {
@@ -428,7 +503,9 @@
       const builds = snapshot.builds || [];
       const displayed = asSet(snapshot.displayedBuildIds);
       const completed = builds.filter((build) => build.completedAt);
+      const canChoose = typeof collection.selectModel === "function" && (!snapshot.activeBuild || Boolean(snapshot.activeBuild.completedAt));
       return `<section class="brick-shelf-view">
+        ${canChoose ? '<div class="brick-shelf-next"><p>作品已收進收藏室，可以選下一台了。</p><button type="button" data-action="choose-next">選下一台</button></div>' : ""}
         <div class="brick-section-heading"><div><p class="brick-kicker">我的收藏</p><h2>展示架</h2></div><span>${completed.length} 件完成</span></div>
         ${
           completed.length
@@ -453,7 +530,7 @@
                 .map((build) => {
                   const model = getModel(build.modelId);
                   return model
-                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, ghosts: !["e500","ct273","breezy-blue"].includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${allParts(model).length} 組部件</small></span><b>繼續拼</b></button>`
+                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, build, ghosts: !["e500","ct273","breezy-blue"].includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${requiredParts(model,build).length} 組部件</small></span><b>繼續拼</b></button>`
                     : "";
                 })
                 .join("")}</div>`
@@ -477,7 +554,7 @@
             );
             return `<article class="brick-catalog-card${owned ? " is-owned" : ""}">
               ${thumbnail(model.id, { complete: true, ghosts: !owned })}
-              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "待解鎖"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / ${allParts(model).length} 組部件` : "取得拼裝包後可以選擇"}</small></div>
+              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "可以選這台"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / ${requiredParts(model,active).length} 組部件` : "先選好車，拿到新包後開始拼"}</small></div>
             </article>`;
           })
           .join("")}</div>
@@ -493,9 +570,16 @@
       }
       renderDeferred = false;
       const snapshot = currentSnapshot();
+      reconcilePendingSelection(snapshot);
+      if (snapshot.pendingSelection) {
+        pictureWorkshop?.destroy(); pictureWorkshop = null; pictureBuildId = null;
+        stopCelebration();
+        element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}${renderPendingSelection(snapshot)}</section>`;
+        return;
+      }
       const build = snapshot.activeBuild;
       const model = getModel(build?.modelId);
-      if (global.KidsTrainWorkshop && ["e500","ct273","breezy-blue"].includes(model?.id) && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < allParts(model).length) {
+      if (global.KidsTrainWorkshop && ["e500","ct273","breezy-blue"].includes(model?.id) && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < requiredParts(model,build).length) {
         if (pictureBuildId !== build.id) {
           pictureWorkshop?.destroy();
           element.innerHTML = '<div data-picture-workshop-host></div>';
@@ -555,7 +639,7 @@
       try {
         await operation();
       } catch (error) {
-        localError = safeError(error, fallback);
+        localError = error?.code === "selection-pending" || currentSnapshot().pendingSelection ? "" : safeError(error, fallback);
       } finally {
         busy = "";
         render();
@@ -591,7 +675,7 @@
       // A stale unfinished cache can become complete during the initial refresh.
       // Celebrate only a final placement made in this mounted workshop.
       const placed = new Set([...(build.placed || []), ...optimisticPlaced]);
-      if (allParts(model).every((entry) => placed.has(entry.id))) completionCandidates.add(build.id);
+      if (requiredParts(model,build).every((entry) => placed.has(entry.id))) completionCandidates.add(build.id);
       busy = `part:${partId}`;
       localError = "";
       playPlacedSound();
@@ -632,8 +716,11 @@
       finishPointerInteraction();
       queueMicrotask(flushDeferredRender);
       const button = event.target?.closest?.("[data-action]");
-      if (!button || !element.contains?.(button)) return;
+      if (!button || button.disabled || !element.contains?.(button)) return;
       const action = button.dataset.action;
+      if (currentSnapshot().pendingSelection && ["start-model","confirm-model","cancel-model","choose-next","allocate","display","part","target"].includes(action)) return;
+      if (action === "retry-selection")
+        return run("selection-retry", () => collection.flush?.(), "選車結果暫時無法確認，請再試一次。");
       if (["part", "target", "celebration-replay"].includes(action)) sound?.unlock();
       if (action === "part" && Date.now() < suppressClickUntil) return;
       if (action === "close") return closeWorkshop();
@@ -646,7 +733,7 @@
       if (action === "celebration-replay") {
         const build = currentSnapshot().activeBuild;
         const model = getModel(build?.modelId);
-        if (build?.completedAt && imageState(allParts(model)) === "ready") {
+        if (build?.completedAt && imageState(previewParts(model)) === "ready") {
           startCelebration(build, model);
           render();
         }
@@ -675,6 +762,7 @@
         return render();
       }
       if (action === "choose-next") {
+        candidateModelId = null;
         view = "workshop";
         choosingNext = true;
         selectedPart = null;
@@ -698,12 +786,28 @@
           () => collection.flush?.(),
           "作品還沒有保存完成，請檢查連線後再試。",
         );
-      if (action === "start-model")
+      if (action === "start-model") {
+        if (busy) return;
+        const snapshot = currentSnapshot();
+        if ((snapshot.builds || []).some(build => build.modelId === button.dataset.model && build.completedAt)) return;
+        candidateModelId = button.dataset.model;
+        render();
+        element.querySelector?.('[data-action="confirm-model"]')?.focus?.({preventScroll:true});
+        return;
+      }
+      if (action === "cancel-model") {
+        if (busy) return;
+        candidateModelId = null;
+        render();
+        return;
+      }
+      if (action === "confirm-model" && candidateModelId === button.dataset.model)
         return run(
           `model:${button.dataset.model}`,
           async () => {
             await collection.selectModel(button.dataset.model);
             choosingNext = false;
+            candidateModelId = null;
           },
           "這件作品還沒準備好，請再試一次。",
         );
@@ -721,7 +825,11 @@
               button.dataset.build,
               button.dataset.displayed === "true",
             );
-            if (button.dataset.displayed === "true") view = "shelf";
+            if (button.dataset.displayed === "true") {
+              view = "shelf";
+              choosingNext = Boolean(currentSnapshot().activeBuild?.completedAt);
+              candidateModelId = null;
+            }
           },
           "展示架沒有更新，請再試一次。",
         );
