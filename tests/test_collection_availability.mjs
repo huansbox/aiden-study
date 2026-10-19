@@ -7,10 +7,10 @@ import "../docs/shared/collection-core.js";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
 import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C = globalThis.KidsCollectionCore;
-const ready = ["e500", "ct273", "breezy-blue"];
-const hidden = ["emu3000", "emu900", "700t", "n700s", "r200", "car", "train", "plane"];
+const ready = ["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"];
+const hidden = ["r200", "car", "train", "plane"];
 
-test("新選只開放已交付的三款；拒絕舊入口時不改 grant、作品或世代", () => {
+test("新選開放七款重設計車；R200 與舊模型的新選仍拒絕且不改 grant、作品或世代", () => {
   assert.deepEqual([...C.AVAILABLE_MODELS], ready);
   const state = C.empty();
   state.grants = [{ id: "saved-reward", date: "2026-10-18", kind: "first", buildId: null, packIndex: null }];
@@ -70,15 +70,15 @@ test("真 SQLite API：拒絕未送達新選；舊半成品續拼、已成功選
     }
     saved = C.apply(saved, { type: "display", buildId: "finished-r200", displayed: true });
     const finished = structuredClone(saved.builds[0]);
-    saved = withExistingBuild(saved, "emu3000", { id: "saved-emu3000" });
+    saved = withExistingBuild(saved, "train", { id: "saved-legacy-train", contentVersion: 1 });
     await runtime.restoreFixture(saved);
     const before = (await call()).body;
-    const confirmation = { commandId: "old-offline-selection", modelId: "emu3000" };
+    const confirmation = { commandId: "old-offline-selection", modelId: "train" };
     const confirmed = await call("select-model", confirmation);
     assert.equal(confirmed.status, 200);
     assert.deepEqual(confirmed.body.snapshot.builds, before.builds);
     assert.deepEqual(confirmed.body.snapshot.grants, before.grants);
-    for (const grant of before.grants.filter(g => g.buildId === "saved-emu3000")) for (const n of [2, 3, 1]) {
+    for (const grant of before.grants.filter(g => g.buildId === "saved-legacy-train")) for (const n of [2, 3, 1]) {
       assert.equal((await call("place", { buildId: grant.buildId, grantId: grant.id, packIndex: grant.packIndex, partId: `p${grant.packIndex + 1}-${n}` })).status, 200);
     }
     const complete = (await call()).body;
@@ -96,4 +96,34 @@ test("真 SQLite API：拒絕未送達新選；舊半成品續拼、已成功選
     assert.equal(chosen.status, 200);
     assert.deepEqual(chosen.body.snapshot.builds.slice(0, 2), complete.builds);
   } finally { await runtime.dispose(); await rm(dir, { recursive: true, force: true }); }
+});
+
+test("真 SQLite API：七款開放車都能建立 v2 作品、從原 p2 配包，重送不重建", async () => {
+  const runtime=await collectionRuntime();
+  const call=async(command)=>{
+    const response=await runtime.fetch(new Request("http://local/v1/collection/aiden/select-model",{
+      method:"POST",headers:{Authorization:"Bearer test-token"},body:JSON.stringify(command),
+    }));
+    return {status:response.status,body:await response.json()};
+  };
+  try {
+    for(const modelId of ready) {
+      const before=C.empty();
+      before.grants=[{id:`earned-${modelId}`,date:"2026-10-18",kind:"first",buildId:null,packIndex:null}];
+      await runtime.restoreFixture(before);
+      const command={commandId:`ready-selection-${modelId}`,modelId,expectedSelectionGeneration:0};
+      const selected=await call(command);
+      assert.equal(selected.status,200,modelId);
+      const snapshot=selected.body.snapshot;
+      assert.equal(snapshot.activeBuild.modelId,modelId);
+      assert.equal(snapshot.activeBuild.contentVersion,2);
+      assert.equal(snapshot.selectionGeneration,1);
+      assert.equal(snapshot.grants[0].id,`earned-${modelId}`);
+      assert.equal(snapshot.grants[0].packIndex,1);
+      assert.equal(snapshot.grants[0].buildId,snapshot.activeBuild.id);
+      const repeated=await call(command);
+      assert.equal(repeated.body.duplicate,true);
+      assert.deepEqual(repeated.body.snapshot,snapshot);
+    }
+  } finally {await runtime.dispose();}
 });

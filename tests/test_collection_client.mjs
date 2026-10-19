@@ -228,3 +228,29 @@ test("舊離線尚未送達的未開放選車被明確拒絕，清除 pending �
     assert.equal(reopened.collection.snapshot().activeBuild.modelId,"e500");
   } finally {await runtime.dispose();}
 });
+
+test("四款新開放車的 client 選車可離線重開確認，僅建立同一作品並保留原配包",async()=>{
+  const runtime=await collectionRuntime();
+  try {
+    for(const modelId of ["emu3000","emu900","700t","n700s"]) {
+      const before=globalThis.KidsCollectionCore.empty();
+      before.grants=[{id:`original-${modelId}`,date:"2026-10-18",kind:"first",buildId:null,packIndex:null}];
+      await runtime.restoreFixture(before);
+      const h=client(runtime);await h.collection.ready;h.setOffline(true);
+      await assert.rejects(h.collection.selectModel(modelId),error=>error.code==="selection-pending");
+      const pendingId=h.collection.snapshot().pendingSelection.commandId;
+      const reopened=client(runtime,{storage:h.storage});await reopened.collection.ready;
+      const chosen=reopened.collection.snapshot();
+      assert.equal(chosen.pendingSelection,null);
+      assert.equal(chosen.activeBuild.modelId,modelId);
+      assert.equal(chosen.activeBuild.contentVersion,2);
+      assert.equal(chosen.builds.length,1);
+      assert.equal(chosen.selectionGeneration,1);
+      assert.equal(chosen.grants[0].id,`original-${modelId}`);
+      assert.equal(chosen.grants[0].packIndex,1);
+      assert.equal(reopened.requests.find(request=>request.path.endsWith("/select-model")).body.commandId,pendingId);
+      await reopened.collection.flush();
+      assert.equal(reopened.collection.snapshot().builds.length,1);
+    }
+  } finally {await runtime.dispose();}
+});
