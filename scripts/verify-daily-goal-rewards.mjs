@@ -13,8 +13,8 @@ const settled = () => browser.waitFor('KidsCollection.create("aiden").snapshot()
 const passed = (label) => { checks.push(label); console.log("PASS " + label); };
 async function checkHome(earned) {
   await browser.navigate(origin + "/?child=aiden");
-  await browser.waitFor(`document.querySelector(".daily-pack-count")?.textContent==="今日拼裝包 ${earned} / 4"`);
-  assert.match(await browser.evaluate('document.querySelector(".daily-explanation").textContent'), /4 種目標共可領 4 包/);
+  await browser.waitFor(`document.querySelector(".daily-pack-count")?.textContent==="今日已領 ${earned} 包"`);
+  assert.match(await browser.evaluate('document.querySelector(".daily-explanation").textContent'), /加碼次數不限/);
 }
 async function study(entryId, unit, earned) {
   await browser.click(`[data-entry="${entryId}"] a`);
@@ -46,7 +46,7 @@ async function study(entryId, unit, earned) {
   await browser.waitFor('document.querySelector("#family-reward")?.textContent.includes("拼裝")');
   assert.equal((await state()).daily.earned, earned);
   await checkHome(earned);
-  passed(`${entryId}: one pack at threshold, notification only at batch end, home ${earned}/4`);
+  passed(`${entryId}: one pack at threshold, notification only at batch end, home earned ${earned}`);
 }
 try {
   await mkdir(".scratch/daily-goal-rewards", { recursive: true });
@@ -59,11 +59,11 @@ try {
   const goals = ["study:math", "study:science", "study:social", "spelling"];
   const available = await browser.evaluate('Array.from(document.querySelectorAll("[data-daily-entry]")).map(el=>({id:el.dataset.dailyEntry,checked:el.checked}))');
   for (const { id, checked } of available) if (checked !== goals.includes(id)) await browser.click(`[data-daily-entry="${id}"]`);
-  for (const id of goals) await browser.evaluate(`(() => { const el=document.querySelector('[data-daily-quantity="${id}"]'); el.value=1; el.dispatchEvent(new Event("input",{bubbles:true})); })()`);
+  for (const id of goals) await browser.evaluate(`(() => { const el=document.querySelector('[data-daily-quantity="${id}"]'); el.value=${id === "study:math" ? 6 : id === "study:social" ? 3 : 1}; el.dispatchEvent(new Event("input",{bubbles:true})); })()`);
   await browser.click("#save-daily-goals");
   await browser.waitFor('document.querySelector("#daily-goals-status").textContent.startsWith("已儲存")');
-  assert.equal((await state()).daily.limit, 4);
-  passed("parent saves four kinds of daily goals, dynamic limit four");
+  assert.equal((await state()).daily.limit, null);
+  passed("parent saves four kinds of daily goals, unlimited additional portions");
   await checkHome(0);
   await study("study:math", 15, 1);
   await study("study:science", 20, 2);
@@ -80,7 +80,7 @@ try {
   await browser.waitFor('document.querySelector("#family-reward")?.textContent.includes("拼裝")');
   assert.equal((await state()).daily.earned, 4);
   await checkHome(4);
-  passed("fourth goal spelling full round awards exactly fourth pack, home 4/4");
+  passed("fourth goal spelling full round awards exactly fourth pack, home earned four");
   await browser.screenshot(".scratch/daily-goal-rewards/home-four-packs.png");
   assert.equal(await browser.evaluate('document.documentElement.scrollWidth<=innerWidth'), true, "portrait page has no horizontal overflow");
   await browser.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -92,8 +92,9 @@ try {
   while (await browser.evaluate('Boolean(document.querySelector("#spell-next"))')) {
     await browser.click("#spell-next"); if (++cards > 60) throw Error("Repeat spelling round did not end");
   }
-  await settled(); assert.equal((await state()).daily.earned, 4);
-  await checkHome(4);
-  passed("repeat practice keeps exactly four packs; portrait and narrow home render without overflow");
+  await settled(); assert.equal((await state()).daily.earned, 5);
+  await checkHome(5);
+  assert.match(await browser.evaluate('document.querySelector(".daily-goal.done").parentElement.textContent'), /加碼再做/);
+  passed("repeat spelling earns fifth pack while daily required goal stays complete; portrait and narrow home have no overflow");
   await writeFile(".scratch/daily-goal-rewards/result.json", JSON.stringify({ checks, finalDaily: (await state()).daily }, null, 2) + "\n");
 } finally { browser.close(); }

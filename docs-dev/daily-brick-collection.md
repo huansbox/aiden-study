@@ -4,6 +4,12 @@
 
 目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊，700T／N700S 由 [PR #127](https://github.com/huansbox/aiden-study/pull/127) 發布。EMU900、藍皮解憂號與 CT273 的最新交付及發布證據見 [#197](https://github.com/huansbox/aiden-study/issues/197)；下列使用說明涵蓋八款。歷史驗收紀錄保留當時狀態。
 
+## 目前規則（2026-10-19）
+
+本輪追蹤 [#213](https://github.com/huansbox/aiden-study/issues/213)／[#214](https://github.com/huansbox/aiden-study/issues/214)。八款**新選作品**使用 `contentVersion: 2`，展示鐵軌是固定場景，不消耗拼裝包；從輪組／底盤開始。E500、CT273 各 13 包／39 組，其餘六款各 11 包／33 組，共 92 包／276 組。舊 `contentVersion: 1` 或未標版本的半成品仍依原包數接續，既有完成收藏不改寫。下方依日期保存的歷史驗收段落描述當時版本，不能當成目前包數。固定場景、圖片載入與縮圖量測見 [工作台效能與驗證](workshop-performance.md)。
+
+每日必做完成後，原卡保留「已完成」，孩子可自行點「加碼再做 N 題／輪，可再得 1 包」進入原活動；不自動開始下一輪。每完成相同份量多得一包，不限次數，例如自然 20／40／60 題各一包。獎勵照舊只在回合或批次結束提示。
+
 ## 使用方式
 
 家長後台的「孩子設定與練習 → 每日目標與拼裝包」提供「火車試拼」，開啟獨立的 [試拼頁](../docs/parent/train-preview.html)。八款車都能從第一包開始，逐包試到完工；也能直接保留最後一組，試拖曳、六秒慶祝、音效、略過、重播及示範展示架。從家長入口開啟後，返回時保留原本管理的孩子。
@@ -12,9 +18,9 @@
 
 家長後台的「每日目標與拼裝包」設定一次活動和份量，每天按臺灣日期重新計算。題庫數學預設建議 10 題，英文建議一輪；按儲存後才生效。新增活動不會自動加進每日必做量，孩子仍自行選內容，不指定單元或複習。
 
-每完成一種目標得到一包，每日上限隨目標種類數決定。例如設定四種，全部完成共四包；只有一種時共一包。沒有安排目標時，自由練習完整一輪得到一包。重送與同一目標當天再練不加發。數學題庫是 `study:math`、長除法是 `math`，英文拼字和 Native Camp 各自計算。
+每完成設定的一份目標得到一包；必做完成後可自選不限次加碼，每再完成同份量多一包。不同活動與兩個孩子使用各自設定的份量。沒有安排目標時，自由練習完整一輪仍每日只有一包。重送同一作答或回合不重複計算。數學題庫是 `study:math`、長除法是 `math`，英文拼字和 Native Camp 各自計算。
 
-若某活動沒有可練內容，家長可取消該目標或調整份量，儲存後立即生效。當日已練進度與已領包保留；取消或清空不加發。當日已領包算入目前達標數，新增目標後達標數超過已領數才發下一包；減少目標不收回已領包，首頁分母至少保留已領數。舊規則當日已領的 `first`／`all` 包也算入額度，首次讀取或新操作只補當日差額，過去日期不因讀取而補發。
+若某活動沒有可練內容，家長可取消該目標或調整份量，儲存後立即生效。當日已練進度與已領包保留；取消或清空不加發。當日已領包抵扣目前各目標 `floor(累積進度 / 份量)` 的合計，只有合計超過已領數才發差額；調大份量或減少目標不收回已領包，取消再加回、重複儲存不重複發包。調小份量可能補當日差額。調大份量或刪目標後，舊已領包可能抵扣後續進度；首頁依「只練這項活動」顯示距離下一包的實際剩餘數，不將完成份數當成實領包數。例如自然 20 題已做 45 題、領 2 包後改成 30 題，還需 45 題，到 90 題才有下一包；另一科達標會同步減少抵扣差額。舊規則當日的 `first`／`all`／`goal` 包也算入已領數，上線當天可補當日差額；過去日期不因讀取或新規則上線補發。2026-10-19 起的新日期使用 `rewardVersion: 3`，離線首次跨日補送仍按原練習日期的份量計算；已存在的舊日 v1／v2 照其原規則。
 
 首頁「還有 N 包可以拼」直接開啟工作台，計入所有日期尚未拼完的包；「今日拼裝包」仍只計今天獲得的數量。收齊所有現有車款後，額外包改顯示保留在零件盒，不承諾立即可拼。
 
@@ -22,7 +28,19 @@
 
 學習紀錄保留今日、累計、活動明細及八個里程碑。收藏內的工作台支援點零件再點空位、或拖曳靠近吸附；稍後再拼會保留各零件位置。收藏室同頁顯示展示架與系列內容。
 
-收藏圖鑑統稱「積木列車收藏」：E500、CT273 各需 14 包、42 組；EMU3000、R200、台灣高鐵 700T、日本新幹線 N700S、EMU900 與藍皮解憂號各需 12 包、36 組。八款合計 100 包、300 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
+收藏圖鑑統稱「積木列車收藏」：新選的 E500、CT273 各需 13 包、39 組；EMU3000、R200、台灣高鐵 700T、日本新幹線 N700S、EMU900 與藍皮解憂號各需 11 包、33 組。八款新作合計 92 包、276 組。舊 v1 仍各需 14／12 包、42／36 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
+
+## Collection 資料契約與退包維護
+
+`PACK_COUNTS`、既有 v1 的 grant `packIndex`、part ID 保持不變。新 v2 的 `packIndex` 從 1 開始，直接對應原本的 `model.steps[1]`／`p2-*`；後續仍是原 `p3-*`，沒有重新編 part ID。畫面第一包使用 `packNumber(build, index)` 顯示；`packStart(build)` 為 v2 的 1／v1 的 0，`packCount(build)` 回傳實際所需包數，`requiredParts(build)` 回傳 `{id, packIndex}`，完成判定只認這份清單。新建 `build.id` 含 `commandId`，撤回後重選同車也不重用 ID。`selectionGeneration` 在舊資料與空狀態預設 0，每次成功建立新作品及撤回作品各加 1；新 client 選車帶 `expectedSelectionGeneration`，舊 client 未帶則視為 0。練習新領包只增加一般 revision，不改選車世代。未曾送達的舊選車命令在撤回後會被 409 拒絕；已成功命令仍由 SQLite 先去重。
+
+待確認選車以 outbox 保存同一命令；`snapshot.pendingSelection` 提供 `{modelId, commandId}`，暫時連線失敗的例外帶 `code: "selection-pending"` 與相同資料。工作台顯示等候連線與重試，不提供會被誤認為取消的返回／換車。明確拒絕後清除待送選車、讀回最新選車世代，同時保留錯誤訊息，讓下一次重新選擇可正確提交。
+
+退包是一次性維護命令 `release-build`，不放在孩子 UI。命令帶 `expectedActiveBuildId` 與 `expectedRevision`，只撤回當前未完成作品；其所有已拼完整包、部分包、已配未拼包一併回到零件盒，保留 grant ID／日期／總數及所有完成收藏。舊裝置補送 `place` 因原 build 已移除而不能復活；SQLite 先依 `commandId` 去重，同一退包重送不影響後來新選的作品。
+
+家長已登入的瀏覽器可直接開 `/parent/collection-maintenance.html?child=aiden`（另一孩子為 `bingpu`）。此頁不掛孩子或一般家長入口：先讀取並核對孩子、車款、完整／部分／待拼包與 grant 總數；下載當下 snapshot JSON，確認檔案已保存後，按「退回目前作品的 N 包並重新選車」。頁面保存同一筆命令身分，回應遺失可重試，再從 API 讀回核對原作品移除、所有原 grant ID／日期／獎勵內容保留；允許期間新領包或孩子另選車、原包重新配給新作品，不要求讀回總數與備份相等，也不對新作品做事。頁面與 CLI 共用 `verifyRelease(before, after, buildId)` 核對，不代孩子選新車。下載內容只含 collection snapshot，不含家庭憑證。收藏若在備份後有新進度，revision 核對會拒絕，需重新讀取與備份。
+
+命令列替代入口：`node scripts/release-collection-build.mjs --snapshot <當下備份JSON>` 預設 dry run。套用另須 `--apply --endpoint <API根網址> --child aiden --expected-build <ID> --expected-revision <數字>`；憑證只從 `COLLECTION_TOKEN` 環境變數取得，不接受命令列或備份中的 token，也不印出憑證。預設 commandId 由孩子和備份內容雜湊固定，重送同一備份仍是同一操作。正式退包需先保存備份，合成驗證不能代替正式讀回核對。
 
 ## E500 造型與組裝
 
@@ -117,23 +135,40 @@
 
 ## 可重現驗證
 
+目前使用 Node／SQLite 測試與隔離 fixture，瀏覽器操作使用提供的 CUA browser 工具。本輪 [#213](https://github.com/huansbox/aiden-study/issues/213)／[#214](https://github.com/huansbox/aiden-study/issues/214) 沒有執行 `scripts/verify-collection-e2e.mjs`。
+
 ```powershell
 npm ci
 node --test tests/*.mjs
 uv run pytest -q
-node tests/helpers/serve-family.mjs 8797
-npx --yes agent-browser --session brick-e2e open http://127.0.0.1:8797/test/start
-npx --yes agent-browser --session brick-e2e get cdp-url
-node scripts/verify-collection-e2e.mjs <上一行的本機 websocket URL> http://127.0.0.1:8797
+node scripts/build-brick-previews.mjs --check
+node tests/helpers/serve-family.mjs 8817
 ```
 
-每次完整驗收使用新啟動的隔離服務。驗收程式只接受 loopback 測試站，清空該測試 origin 的瀏覽器儲存，再以 test-token 連線；不接觸正式家庭進度。數學題文與答案為 synthetic fixture，英文走實際拼字畫面。
+每次瀏覽器驗收使用新啟動的 loopback 隔離服務、`test-token` 與 synthetic 題目／收藏，不接觸正式家庭進度。工坊的延遲、失敗、v1／v2 與最後一片入口、量測方法及本輪數據，見 [拼裝工坊效能與隔離量測](workshop-performance.md)。`/test/bonus-fixture` 提供數學每份 2 題、單元 16 恰兩題（皆為合成選擇題，答案 8），可從原卡自選加碼，連續三批各領一包。
 
-完整流程 runner 先真正練習領兩包，再透過只存在測試服務的 `/test/collection-fixture` 補十二個過去日期的包，以免等待多日。E500 完成後累計補至九十九個過去日期、合計 101 包，再依序完成其餘七台，留下 1 包未分配。runner 設計逐件操作 300 組，另檢查另一台裝置、離線重開與 activity generation 重置；實際執行範圍與限制以各次驗收紀錄為準。
+本輪 Node／SQLite 證據在 `tests/test_collection_refresh.mjs`、`tests/test_collection_client.mjs`、`tests/test_brick_workshop.mjs`、`tests/test_e500_workshop.mjs`、`tests/test_ct273_workshop.mjs`、`tests/test_breezy_workshop.mjs` 與 `tests/test_train_preview.mjs`，涵蓋不限次發包、離線補送與退包去重、新舊契約、工坊操作、確認選車、素材失敗重試及隔離試拼。測試通過不能代替實際瀏覽器操作或實體 iPad 驗收。
 
-無內容情境使用測試服務產生的已完成 Native Camp 課程：確認瀏覽已完成內容不發包，完成另一個英文活動取得一包，家長取消無可練內容的目標後保留當日進度與一包；取消與重複儲存不加發。
+### 2026-10-19 本輪 CUA 瀏覽器證據
 
-每日動態額度另以 `scripts/verify-daily-goal-rewards.mjs` 在新啟動的隔離服務驗證：家長設定題庫數學、自然、社會與拼字四種，孩子透過真實控制逐批／輪完成，首頁從 0/4 到 4/4，作答中不出現獎勵提示；當日重練拼字仍共四包。
+以下皆由主統籌在本機 synthetic fixture 實際操作並讀回狀態：
+
+- 連續三批各 2 題共得 3 包，經原卡自選加碼；用三包選 EMU3000，拼好第一包三組，再放第二包一組。
+- 維護頁下載備份並讀回後，退回上述 3 包：1 包完整、1 包部分完成、1 包已分配未拼；grant 總數仍為 3。
+- E500 完整 13 包／39 組包含試推、伺服器完成、上架；零餘包仍可選下一台，檢查 EMU3000 確認、返回、CT273 確認。
+- 藍皮 v2 從 15／33 到 16／33，先接框再嵌窗扇，開窗至 100；重新載入仍保留 16 組。
+- CT273 v2 在 36／39 時，連桿使三輪同步到 90°；試拆後第一輪 105°，另兩輪維持 90°；再用 CUA 實際拖動大輪，第一輪到 194°，另兩輪仍為 90°。
+- 390px、768px 視窗的實際 geometry 檢查無橫向溢出；新版流程的瀏覽器 warning／error 為空。
+
+本輪 CUA 拖曳屬實際瀏覽器 pointer 操作，未確認 `pointerType` 為 `touch`，不能宣稱已做 touch input 或實體 iPad 觸控驗收。也未藉這些合成流程證明孩子自主理解、真人操作時間或長期跨裝置使用。
+
+### 歷史 runner
+
+`scripts/verify-collection-e2e.mjs` 保留舊版完整收藏驗收的實作與脈絡；它的 selector、點卡即選、build ID 及 42／36 組假設，已不相容目前的圖形工坊與 v2 契約，不能當作現行完整可重現入口，也不能把下列歷史執行紀錄算成本輪已執行。
+
+該 runner 原設計先透過實際數學與拼字練習領兩包，再用 `/test/collection-fixture` 補過去日期的包，逐件完成八台共 300 組，另檢查另一台裝置、離線重開與 activity generation 重置。歷史無內容情境使用已完成 Native Camp 課程，檢查取消目標保留進度且不補發。各次實際範圍與限制仍以下方對應日期的驗收紀錄為準。
+
+`scripts/verify-daily-goal-rewards.mjs` 已更新不限次加碼預期，但不能只因腳本已更新就宣稱驗收通過；本輪的實際操作證據是上列 CUA fixture 流程，Node／SQLite 證據則由對應測試提供。
 
 ## 2026-10-06 每種目標各一包
 

@@ -17,13 +17,15 @@
     }
     function snapshot() {
       const view = JSON.parse(JSON.stringify(base));
-      if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false })), earned: 0, limit: view.goals?.targets?.length || 1, first: false, all: false };
+      if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false, portions: 0, bonusProgress: 0, bonusCompleted: 0, rewardOffset:0, nextRewardRemaining:t.quantity })), earned: 0, rewardOffset:0, repeatable: C.dateKey() >= C.REPEAT_REWARDS_FROM, limit: view.goals?.targets?.length && C.dateKey() >= C.REPEAT_REWARDS_FROM ? null : 1, first: false, all: false };
       for (const command of pending()) if (command.type === "place") {
         const build = view.builds.find((b) => b.id === command.buildId);
         if (build && !build.placed.includes(command.partId)) build.placed.push(command.partId);
         // 離線可以拼好；永久完成章等雲端確認，不假裝已同步。
       }
       view.activeBuild = view.builds.find((b) => b.id === view.activeBuild?.id) || null;
+      const selection = pending().find((command) => command.type === "select-model");
+      view.pendingSelection = selection ? { modelId:selection.modelId, commandId:selection.commandId } : null;
       view.sync = { status, message, pending: pending().length };
       return view;
     }
@@ -61,6 +63,10 @@
               if (e.status === 400 || e.status === 409 || e.status === 404) {
                 rejected.set(command.commandId, e);
                 localStorage.removeItem(outPrefix + command.commandId);
+                if (command.type === "select-model" && e.status === 409) {
+                  // 明確拒絕後讀回最新選車世代；仍保留原拒絕訊息，不用舊世代反覆重選。
+                  try { adopt(await F.request(`/v1/collection/${child}`)); } catch { /* 先保留明確拒絕；稍後可重新讀取。 */ }
+                }
               }
               throw e;
             }
@@ -77,14 +83,28 @@
       if (!F.write(outPrefix + command.commandId, command)) { status = "error"; message = "這台裝置無法保存新的成果，請家長協助。"; changed(); throw Error(message); }
       changed(); void flush(); return command;
     }
+    function selectionPending(command) {
+      const error = Error("正在等連線確認選車；此選擇已保存，連線後會重試同一筆操作。");
+      error.code = "selection-pending";
+      error.pendingSelection = { modelId:command.modelId, commandId:command.commandId };
+      return error;
+    }
     async function online(type, details = {}) {
       await flush();
+      if (type === "select-model") {
+        const selection = pending().find((command) => command.type === "select-model");
+        if (selection) throw selectionPending(selection);
+        details = { ...details, expectedSelectionGeneration:base.selectionGeneration || 0 };
+      }
       const command = { ...details, commandId: uuid(), type };
       // 線上操作也先保存操作身分；回應遺失時必須重送同一份內容。
       queue(command);
       await flush();
       if (rejected.has(command.commandId)) throw rejected.get(command.commandId);
-      if (pending().some((c) => c.commandId === command.commandId)) throw Error(message || "請連線後再選作品或分包。");
+      if (pending().some((c) => c.commandId === command.commandId)) {
+        if (type === "select-model") throw selectionPending(command);
+        throw Error(message || "請連線後再選作品或分包。");
+      }
       return snapshot();
     }
     function beginRound({ roundId, entryId }) {
@@ -114,11 +134,12 @@
       saveGoals: (targets) => online("goals", { expectedGoalRevision: base.goalRevision, targets: C.targets(targets) }),
       selectModel: (modelId) => online("select-model", { modelId }),
       allocate: () => online("allocate"),
+      releaseBuild: (expectedActiveBuildId, expectedRevision) => online("release-build", { expectedActiveBuildId, expectedRevision }),
       async placePart(details) {
         // 檢查伺服器已確認分配的包，避免未取得使用權就顯示成功。
         const grant = base.grants.find((g) => g.id === details.grantId);
         const build = base.builds.find((b) => b.id === details.buildId);
-        C.check(build && Number.isInteger(details.packIndex) && details.packIndex >= 0 && details.packIndex < C.PACK_COUNTS[build.modelId] && grant && grant.buildId === build.id && grant.packIndex === details.packIndex && [1, 2, 3].some((n) => details.partId === `p${details.packIndex + 1}-${n}`), "請先連線取得這包零件。");
+        C.check(build && Number.isInteger(details.packIndex) && details.packIndex >= C.packStart(build) && details.packIndex < C.PACK_COUNTS[build.modelId] && grant && grant.buildId === build.id && grant.packIndex === details.packIndex && C.requiredParts(build).some((part) => part.id === details.partId && part.packIndex === details.packIndex), "請先連線取得這包零件。");
         queue({ type: "place", ...details }); return snapshot();
       },
       setDisplayed: (buildId, displayed) => online("display", { buildId, displayed }),

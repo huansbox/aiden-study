@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>目前作品退包 · 家長維護</title>
+  <link rel="stylesheet" href="../shared/family.css">
+</head>
+<body class="family-page family-parent">
+  <main class="family-shell">
+    <h1>目前作品退包</h1>
+    <p>此維護操作會撤回目前未完成的作品，讓原有拼裝包回到零件盒；孩子之後自己選車。</p>
+    <p><a href="./">回家長後台</a></p>
+    <label>孩子 <select id="maintenance-child"><option value="aiden">Aiden</option><option value="bingpu">Bingpu</option></select></label>
+    <button id="maintenance-read" type="button">重新讀取</button>
+    <section id="maintenance-summary" class="family-panel"></section>
+    <button id="maintenance-backup" type="button" disabled>下載當下收藏備份 JSON</button>
+    <button id="maintenance-release" type="button" disabled>先備份，再退回拼裝包</button>
+    <p id="maintenance-status" role="status">讀取中⋯</p>
+  </main>
+  <script src="../shared/device-auth.js"></script>
+  <script src="../shared/family-core.js"></script>
+  <script src="../shared/collection-core.js?v=20261019-repeat-fixed-track"></script>
+  <script src="../shared/family-client.js"></script>
+  <script src="collection-maintenance.js?v=20261019-release-build"></script>
+</body>
+</html>
