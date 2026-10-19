@@ -9,5 +9,8 @@
 .e500-workshop .train-feature-guide small { flex-basis:100%; text-align:center; font-size:12px; }
 .e500-workshop .train-feature-scene .train-operate { cursor:ew-resize; touch-action:none; }
 .e500-workshop .train-feature-scene [role=slider]:focus-visible { outline:none; stroke:#147fbc; stroke-width:3px; }
-.e500-workshop .train-feature-scene { min-height:210px; }
+/* Give the SVG a viewport rather than letting a tall viewBox determine the
+   page height. The default xMidYMid meet keeps the PNG geometry and CTM scale.
+   Reserve touch gestures on the outer SVG too, including vertical feature drags. */
+.e500-workshop .scene.train-feature-scene { width:100%; height:clamp(210px,46vh,420px); height:clamp(210px,46dvh,420px); max-height:58vh; max-height:58dvh; touch-action:none; }
 @media (max-width:550px) { .e500-workshop .train-feature-guide { gap:3px; } .e500-workshop .train-feature-controls { gap:6px; } }

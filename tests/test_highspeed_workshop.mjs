@@ -209,3 +209,27 @@ for (const [id, kind] of [['700t', 'layers'], ['700t', 'cover'], ['n700s', 'wing
     } finally { h.mounted.destroy(); }
   });
 }
+
+test('feature drags reserve touch on the outer SVG while the full-train scene keeps page panning', async () => {
+  const declarations = (css, selector) => {
+    const rule = [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+      .find(match => match[1].split(',').some(value => value.trim() === selector));
+    assert.ok(rule, selector);
+    return Object.fromEntries(rule[2].split(';').filter(value => value.includes(':')).map(value => value.split(':').map(item => item.trim())));
+  };
+  const featureCss=readFileSync(new URL('../docs/shared/train-features.css', import.meta.url),'utf8');
+  const workshopCss=readFileSync(new URL('../docs/shared/e500-workshop.css', import.meta.url),'utf8');
+  assert.equal(declarations(featureCss,'.e500-workshop .scene.train-feature-scene')['touch-action'],'none');
+  assert.equal(declarations(workshopCss,'.e500-workshop .scene')['touch-action'],'pan-y');
+  for (const id of ['700t','n700s','emu3000','emu900']) {
+    for (const inspection of [false,true]) {
+      const placed=inspection?Array.from({length:36},(_,i)=>`p${Math.floor(i/3)+1}-${i%3+1}`):Array.from({length:id==='emu900'?21:18},(_,i)=>`p${Math.floor(i/3)+1}-${i%3+1}`);
+      const h=uiHarness(placed,{modelId:id,packs:12,inspection});await settle();
+      try {
+        assert.match(h.host.innerHTML,/<svg class="scene train-feature-scene"[^>]*data-e500-scene/);
+        h.click('mechanism');
+        assert.match(h.host.innerHTML,/<svg class="scene"[^>]*data-e500-scene/);
+      } finally {h.mounted.destroy();}
+    }
+  }
+});
