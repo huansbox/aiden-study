@@ -5,7 +5,7 @@
   const MODELS = Object.keys(PACK_COUNTS);
   const MODERN_MODELS = MODELS.filter((id) => !["car", "train", "plane"].includes(id));
   // 新作品只開放已交付圖形工坊的車款；歷史模型與資料仍完整保留。
-  const AVAILABLE_MODELS = Object.freeze(["e500", "ct273", "breezy-blue"]);
+  const AVAILABLE_MODELS = Object.freeze(["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"]);
   const isModelAvailable = (modelId) => AVAILABLE_MODELS.includes(modelId);
   // 此日期之前的離線事件維持當時規則；不能因新版上線補發歷史獎勵。
   const REPEAT_REWARDS_FROM = "2026-10-19";

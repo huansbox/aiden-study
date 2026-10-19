@@ -98,9 +98,9 @@ test("已完成車款仍有未拆包時保留入口；紀錄依日期區分且�
   assert.match(h.root.innerHTML, /已獲得 3 包/);
 });
 
-test("八款模型中只收齊開放三款就保留餘包等新作，隱藏 R200 收藏與紀錄保持", async () => {
+test("收齊開放七款才保留餘包等新作，R200 收藏與紀錄保持且不列新選條件", async () => {
   const state=C.empty();
-  for (const modelId of ["e500","ct273","breezy-blue","r200"]) {
+  for (const modelId of ["e500","ct273","breezy-blue","emu3000","emu900","700t","n700s","r200"]) {
     const build={id:`saved-${modelId}`,modelId,contentVersion:2,placed:[],completedAt:"2026-10-18T12:00:00Z"};
     build.placed=C.requiredParts(build).map(part=>part.id);state.builds.push(build);
     for(let index=C.packStart(build);index<C.PACK_COUNTS[modelId];index++)
@@ -109,6 +109,19 @@ test("八款模型中只收齊開放三款就保留餘包等新作，隱藏 R200
   state.activeBuildId="saved-breezy-blue";state.displayedBuildIds=["saved-r200"];
   state.grants.push(...[1,2].map(n=>({id:`spare-${n}`,date:"2026-10-19",kind:"first",buildId:null,packIndex:null})));
   const snapshot={...C.snapshot(state),sync:{status:"ready"}}, before=structuredClone(snapshot);
+  const firstStage=structuredClone(snapshot);
+  firstStage.builds=firstStage.builds.filter(build=>["e500","ct273","breezy-blue","r200"].includes(build.modelId));
+  firstStage.grants=firstStage.grants.filter(grant=>!grant.buildId||firstStage.builds.some(build=>build.id===grant.buildId));
+  const newlyAvailable=await home(firstStage,C.MODERN_MODELS);
+  assert.match(newlyAvailable.root.innerHTML,/還有 2 包可以拼/);
+  assert.doesNotMatch(newlyAvailable.root.innerHTML,/等新作品再拼/);
+  const withoutR200=structuredClone(snapshot);
+  withoutR200.builds=withoutR200.builds.filter(build=>build.modelId!=="r200");
+  withoutR200.grants=withoutR200.grants.filter(grant=>grant.buildId!=="saved-r200");
+  withoutR200.displayedBuildIds=[];
+  const allOpen=await home(withoutR200,C.MODERN_MODELS);
+  assert.match(allOpen.root.innerHTML,/零件盒保留 2 包，等新作品再拼/);
+  assert.doesNotMatch(allOpen.root.innerHTML,/包可以拼/);
   const h=await home(snapshot,C.MODERN_MODELS);
   assert.match(h.root.innerHTML,/零件盒保留 2 包，等新作品再拼/);
   assert.doesNotMatch(h.root.innerHTML,/包可以拼/);
@@ -117,12 +130,12 @@ test("八款模型中只收齊開放三款就保留餘包等新作，隱藏 R200
   assert.match(h.root.innerHTML,/未拆開 · 保留在零件盒/);
   assert.deepEqual(snapshot,before,"首頁與紀錄不改 R200 收藏、展示或已配包");
 
-  const partial={id:"saved-emu3000",modelId:"emu3000",contentVersion:2,placed:[],completedAt:null};
+  const partial={id:"saved-legacy-train",modelId:"train",contentVersion:1,placed:[],completedAt:null};
   snapshot.builds.push(partial);snapshot.activeBuild=partial;
-  snapshot.grants.at(-1).buildId=partial.id;snapshot.grants.at(-1).packIndex=1;
+  snapshot.grants.at(-1).buildId=partial.id;snapshot.grants.at(-1).packIndex=0;
   const continuing=await home(snapshot,C.MODERN_MODELS);
   assert.match(continuing.root.innerHTML,/還有 2 包可以拼/);
-  assert.match(continuing.root.innerHTML,/正在拼：模型 emu3000/);
+  assert.match(continuing.root.innerHTML,/正在拼：模型 train/);
 });
 
 test("沒有發包資料時不出現可拼按鈕或虛構領取紀錄", async () => {

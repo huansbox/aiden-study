@@ -4,7 +4,7 @@ import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import "../docs/shared/collection-core.js";
 const availability = { isModelAvailable: globalThis.KidsCollectionCore.isModelAvailable };
-const readyIds = ["e500", "ct273", "breezy-blue"];
+const readyIds = ["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"];
 
 const source = (name) =>
   readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
@@ -278,11 +278,23 @@ for (const modelId of ["emu3000", "r200", "700t", "n700s"]) {
     const h = harness(ids.slice(0, -1), { modelIds: [modelId], packCount: 12, withCelebration: true, controlledTimers: true, withAudio: true });
     try {
       h.state.grants.push({ id: "last-pack", buildId: h.state.activeBuild.id, packIndex: 11 });
+      let pictureFinal;
+      if (modelId !== "r200") {
+        h.context.KidsEmuMechanism = { create() {} };
+        h.context.KidsHighspeedMechanism = { create() {} };
+        h.element.querySelector = () => ({});
+        h.context.KidsTrainWorkshop = { mount(_host, options) { pictureFinal = options.onFinalPlacement; return { update() {}, destroy() {} }; } };
+      }
       h.mounted.render();
-      assert.match(h.element.innerHTML, /最後一片，放這裡/);
-      assert.equal(h.element.guideNodes.find(node => node.dataset.targetGuide === "p12-3").style.display, "");
-      h.element.fire("click", action({ action: "part", part: "p12-3" }));
-      h.element.fire("click", action({ action: "target", part: "p12-3" }));
+      if (modelId === "r200") {
+        assert.match(h.element.innerHTML, /最後一片，放這裡/);
+        assert.equal(h.element.guideNodes.find(node => node.dataset.targetGuide === "p12-3").style.display, "");
+        h.element.fire("click", action({ action: "part", part: "p12-3" }));
+        h.element.fire("click", action({ action: "target", part: "p12-3" }));
+      } else {
+        pictureFinal(h.state.activeBuild.id);
+        await h.collection.placePart({buildId:h.state.activeBuild.id,grantId:"last-pack",packIndex:11,partId:"p12-3"});
+      }
       await Promise.resolve();
       h.clock.advance(320);
       assert.equal(h.state.activeBuild.placed.length, 36);
@@ -918,7 +930,7 @@ test("model picker disables owned models and routes a completed series back to t
 });
 
 test("only ready trains are selectable and spare packs stay after completing the open series", async () => {
-  const h = harness([], { modelIds: [...readyIds, "emu3000", "r200", "700t", "n700s", "emu900"] });
+  const h = harness([], { modelIds: [...readyIds, "r200"] });
   h.state.activeBuild = null;
   h.state.builds = [];
   h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
@@ -926,7 +938,7 @@ test("only ready trains are selectable and spare packs stay after completing the
   assert.match(h.element.innerHTML, /積木列車收藏/);
   for (const id of readyIds)
     assert.match(h.element.innerHTML, new RegExp(`data-model="${id}"`));
-  assert.doesNotMatch(h.element.innerHTML, /data-model="(?:emu3000|r200|700t|n700s|emu900|car|train|plane)"/);
+  assert.doesNotMatch(h.element.innerHTML, /data-model="(?:r200|car|train|plane)"/);
   h.element.fire("click", action({ action: "start-model", model: "e500" }));
   h.element.fire("click", action({ action: "confirm-model", model: "e500" }));
   await Promise.resolve();
@@ -942,8 +954,24 @@ test("only ready trains are selectable and spare packs stay after completing the
   h.mounted.destroy();
 });
 
-test("hidden catalog entries remain only when saved; R200 display and hidden partial builds are preserved", () => {
-  const h=harness(["p1-1"],{modelIds:["emu3000","r200",...readyIds,"700t","n700s","emu900"]});
+test("each newly ready model reaches its own confirmation and selects without needing an earned pack", async () => {
+  for(const modelId of ["emu3000","emu900","700t","n700s"]) {
+    const h=harness([],{modelIds:readyIds,packCount:12});
+    try {
+      h.state.activeBuild=null;h.state.builds=[];h.state.grants=[];h.mounted.render();
+      assert.ok(h.element.innerHTML.includes(`data-model="${modelId}"`));
+      h.element.fire("click",action({action:"start-model",model:modelId}));
+      assert.match(h.element.innerHTML,/共 11 包 · 33 組部件；展示鐵軌已備好/);
+      assert.match(h.element.innerHTML,/先選好這台，拿到新包後就能開始拼/);
+      h.element.fire("click",action({action:"confirm-model",model:modelId}));
+      await Promise.resolve();
+      assert.deepEqual(h.selectCalls,[modelId]);
+    } finally {h.mounted.destroy();}
+  }
+});
+
+test("hidden catalog entries remain only when saved; R200 display and a legacy partial build are preserved", () => {
+  const h=harness(["p1-1"],{modelIds:["train","r200",...readyIds,"car","plane"]});
   try {
     const partial=h.state.activeBuild;
     h.state.builds.push({id:"finished-r200",modelId:"r200",placed:["p1-1","p1-2","p1-3"],completedAt:"2026-10-18T12:00:00.000Z"});
@@ -951,19 +979,19 @@ test("hidden catalog entries remain only when saved; R200 display and hidden par
     h.element.fire("click",action({action:"view",view:"shelf"}));
     assert.match(h.element.innerHTML,/台鐵 R200 型柴電機車/);
     assert.match(h.element.innerHTML,/展示中/);
-    assert.match(h.element.innerHTML,/EMU3000/);
+    for(const name of ["EMU3000","EMU900","台灣高鐵 700T","日本新幹線 N700S"])
+      assert.ok(h.element.innerHTML.includes(name),`${name} is visible before ownership`);
     assert.match(h.element.innerHTML,/繼續拼/);
-    assert.doesNotMatch(h.element.innerHTML,/台灣高鐵 700T|日本新幹線 N700S|EMU900/);
-    assert.match(h.element.innerHTML,/5 件作品/);
+    assert.doesNotMatch(h.element.innerHTML,/小汽車|飛機/);
+    assert.match(h.element.innerHTML,/9 件作品/);
     h.element.fire("click",action({action:"view",view:"workshop"}));
-    assert.match(h.element.innerHTML,/台鐵 EMU3000 型電聯車/);
     assert.match(h.element.innerHTML,/data-action="part"/);
     assert.equal(h.state.activeBuild,partial);
   } finally {h.mounted.destroy();}
 });
 
 test("stale hidden model cards cannot enter confirmation or send a new selection", async () => {
-  const h=harness([],{modelIds:[...readyIds,"r200","emu3000"]});
+  const h=harness([],{modelIds:[...readyIds,"r200"]});
   try {
     h.state.activeBuild=null;h.state.builds=[];h.mounted.render();
     h.element.fire("click",action({action:"start-model",model:"r200"}));
@@ -980,8 +1008,8 @@ test("stale hidden model cards cannot enter confirmation or send a new selection
   } finally {h.mounted.destroy();}
 });
 
-test("completing only the open three models removes next-model prompts from the workbench and shelf", () => {
-  const h=harness(["p1-1","p1-2","p1-3"],{modelIds:[...readyIds,"r200","emu3000","700t","n700s","emu900"]});
+test("completing the seven open models removes next-model prompts without requiring R200", () => {
+  const h=harness(["p1-1","p1-2","p1-3"],{modelIds:[...readyIds,"r200"]});
   try {
     h.state.activeBuild.completedAt="2026-10-18T12:00:00.000Z";
     h.state.builds=readyIds.map(modelId=>({...h.state.activeBuild,id:`done-${modelId}`,modelId}));
@@ -990,7 +1018,7 @@ test("completing only the open three models removes next-model prompts from the 
     assert.doesNotMatch(h.element.innerHTML,/data-action="choose-next"/);
     h.element.fire("click",action({action:"view",view:"shelf"}));
     assert.doesNotMatch(h.element.innerHTML,/可以選下一台|data-action="choose-next"/);
-    assert.match(h.element.innerHTML,/3 件作品/);
+    assert.match(h.element.innerHTML,/7 件作品/);
   } finally {h.mounted.destroy();}
 });
 
@@ -1165,7 +1193,7 @@ test("window blur releases an active touch drag without leaving rendering blocke
 
 
 test("v2 generic trains keep fixed rails outside progress and await confirmation on the final body part", async () => {
-  const h=harness([],{modelIds:["emu3000","ct273"],packCount:3,contentVersion:2,reducedMotion:true});
+  const h=harness([],{modelIds:["r200","ct273"],packCount:3,contentVersion:2,reducedMotion:true});
   try {
     assert.equal(placedCount(h.element.innerHTML),3);
     assert.match(h.element.innerHTML,/0<small> \/ 6 組部件/);
