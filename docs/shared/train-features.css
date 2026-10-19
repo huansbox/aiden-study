@@ -1,0 +1,13 @@
+.e500-workshop .train-feature-controls { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:10px; min-width:0; padding:12px; }
+.e500-workshop .train-feature-controls input { min-width:90px; max-width:160px; accent-color:var(--teal); }
+.e500-workshop .train-feature-controls span[role=status] { font-size:13px; color:var(--muted); }
+.e500-workshop .train-feature-gesture { display:inline-flex; align-items:center; justify-content:center; min-width:90px; font-size:24px; color:var(--teal); }
+.e500-workshop .train-feature-guide { display:flex; align-items:center; justify-content:center; gap:10px; }
+.e500-workshop .train-feature-guide > span { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:4px; padding:5px; }
+.e500-workshop .train-feature-guide > span.active { border:2px solid var(--orange); border-radius:8px; background:#fff9e7; }
+.e500-workshop .train-feature-guide svg { width:44px; height:64px; }
+.e500-workshop .train-feature-guide small { flex-basis:100%; text-align:center; font-size:12px; }
+.e500-workshop .train-feature-scene .train-operate { cursor:ew-resize; touch-action:none; }
+.e500-workshop .train-feature-scene [role=slider]:focus-visible { outline:none; stroke:#147fbc; stroke-width:3px; }
+.e500-workshop .train-feature-scene { min-height:210px; }
+@media (max-width:550px) { .e500-workshop .train-feature-guide { gap:3px; } .e500-workshop .train-feature-controls { gap:6px; } }

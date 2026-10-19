@@ -4,9 +4,11 @@
 
 目前狀態：每日目標與臺鐵三車已透過 [PR #114](https://github.com/huansbox/aiden-study/pull/114) 發布至[正式網站](https://kids.linshuhuan.com/)，家長試拼由 [PR #121](https://github.com/huansbox/aiden-study/pull/121) 補齊，700T／N700S 由 [PR #127](https://github.com/huansbox/aiden-study/pull/127) 發布。EMU900、藍皮解憂號與 CT273 的最新交付及發布證據見 [#197](https://github.com/huansbox/aiden-study/issues/197)；下列使用說明涵蓋八款。歷史驗收紀錄保留當時狀態。
 
-## 目前規則（2026-10-19）
+## 目前規則（2026-10-20）
 
-本輪追蹤 [#213](https://github.com/huansbox/aiden-study/issues/213)／[#214](https://github.com/huansbox/aiden-study/issues/214)。八款**新選作品**使用 `contentVersion: 2`，展示鐵軌是固定場景，不消耗拼裝包；從輪組／底盤開始。E500、CT273 各 13 包／39 組，其餘六款各 11 包／33 組，共 92 包／276 組。舊 `contentVersion: 1` 或未標版本的半成品仍依原包數接續，既有完成收藏不改寫。下方依日期保存的歷史驗收段落描述當時版本，不能當成目前包數。固定場景、圖片載入與縮圖量測見 [工作台效能與驗證](workshop-performance.md)。
+新選作品依 [#216](https://github.com/huansbox/aiden-study/issues/216) 僅開放已交付圖形工坊的 E500、CT273、藍皮客車。EMU3000、EMU900、700T、N700S 等重設計完成後再逐款開放；R200 本輪不重做，也不提供新選。未擁有圖鑑、確認選車與收齊目前開放系列都使用同一名單。已有任何車款的半成品、完成收藏和展示完整保留，不退包、不改 ID 或包數；家長的獨立記憶體試拼仍保留全部歷史模型。
+
+新作品依 [#213](https://github.com/huansbox/aiden-study/issues/213)／[#214](https://github.com/huansbox/aiden-study/issues/214) 使用 `contentVersion: 2`，展示鐵軌是固定場景，不消耗拼裝包；從輪組／底盤開始。E500、CT273 各 13 包／39 組，藍皮客車 11 包／33 組。舊 `contentVersion: 1` 或未標版本的半成品仍依原包數接續，既有完成收藏不改寫。下方依日期保存的歷史驗收段落描述當時版本，不能當成目前包數。固定場景、圖片載入與縮圖量測見 [工作台效能與驗證](workshop-performance.md)。
 
 每日必做完成後，原卡保留「已完成」，孩子可自行點「加碼再做 N 題／輪，可再得 1 包」進入原活動；不自動開始下一輪。每完成相同份量多得一包，不限次數，例如自然 20／40／60 題各一包。獎勵照舊只在回合或批次結束提示。
 
@@ -28,9 +30,11 @@
 
 學習紀錄保留今日、累計、活動明細及八個里程碑。收藏內的工作台支援點零件再點空位、或拖曳靠近吸附；稍後再拼會保留各零件位置。收藏室同頁顯示展示架與系列內容。
 
-收藏圖鑑統稱「積木列車收藏」：新選的 E500、CT273 各需 13 包、39 組；EMU3000、R200、台灣高鐵 700T、日本新幹線 N700S、EMU900 與藍皮解憂號各需 11 包、33 組。八款新作合計 92 包、276 組。舊 v1 仍各需 14／12 包、42／36 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
+收藏圖鑑統稱「積木列車收藏」：目前開放三款新作合計 37 包、111 組。八款歷史模型資料仍保留；既有 v2 的 E500、CT273 各需 13 包、39 組，其餘車款各需 11 包、33 組；舊 v1 仍各需 14／12 包、42／36 組。每包三組可操作部件；每天完成四種目標時，約三至四個達標日完成一件，漏日不扣除成果。每組由多顆積木組成，並非要求孩子每次只放一顆最小積木。各模型保留自身系列名稱，避免把日本新幹線歸為臺灣火車。
 
 ## Collection 資料契約與退包維護
+
+`CollectionCore.AVAILABLE_MODELS` 是孩子新選的唯一名單，`isModelAvailable(modelId)` 供工作台與 Worker 共用；`MODELS`、`MODERN_MODELS` 及模型 `get()` 仍包含所有舊作品。限制只套用於新建 build；既有 active 同款可確認與接續，成功命令仍先依 SQLite command ID 去重。尚未送達的未開放新選回傳 409 與「尚未開放新選」，client 清除 pending 並保留錯誤，讓孩子重選開放作品。
 
 `PACK_COUNTS`、既有 v1 的 grant `packIndex`、part ID 保持不變。新 v2 的 `packIndex` 從 1 開始，直接對應原本的 `model.steps[1]`／`p2-*`；後續仍是原 `p3-*`，沒有重新編 part ID。畫面第一包使用 `packNumber(build, index)` 顯示；`packStart(build)` 為 v2 的 1／v1 的 0，`packCount(build)` 回傳實際所需包數，`requiredParts(build)` 回傳 `{id, packIndex}`，完成判定只認這份清單。新建 `build.id` 含 `commandId`，撤回後重選同車也不重用 ID。`selectionGeneration` 在舊資料與空狀態預設 0，每次成功建立新作品及撤回作品各加 1；新 client 選車帶 `expectedSelectionGeneration`，舊 client 未帶則視為 0。練習新領包只增加一般 revision，不改選車世代。未曾送達的舊選車命令在撤回後會被 409 拒絕；已成功命令仍由 SQLite 先去重。
 

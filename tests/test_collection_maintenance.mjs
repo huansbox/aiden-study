@@ -3,19 +3,20 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import "../docs/shared/collection-core.js";
+import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C=globalThis.KidsCollectionCore;
 const now=new Date("2026-10-19T12:00:00Z");
 function fixture() {
   let state=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"math",metric:"answered",quantity:1}]},now);
   state.grants=[{id:"original-a",date:"2026-10-18",kind:"first",buildId:null,packIndex:null},{id:"original-b",date:"2026-10-17",kind:"first",buildId:null,packIndex:null}];
-  return C.apply(state,{type:"select-model",modelId:"emu3000",commandId:"initial"},now);
+  return withExistingBuild(state,"emu3000",{id:"emu3000:initial",now});
 }
 
 test("維護共用核對允許新增包與原包已配新作，拒絕原包遺失、改日期及舊作品殘留",()=>{
   const original=fixture(), before=C.snapshot(original,"2026-10-19"), id=before.activeBuild.id;
   let state=C.apply(original,{type:"release-build",expectedActiveBuildId:id,expectedRevision:original.revision},now);
   state=C.apply(state,{type:"record",event:{entryId:"math",answered:true,occurredAt:now.toISOString()}},now);
-  state=C.apply(state,{type:"select-model",modelId:"r200",commandId:"later-selection",expectedSelectionGeneration:state.selectionGeneration},now);
+  state=C.apply(state,{type:"select-model",modelId:"ct273",commandId:"later-selection",expectedSelectionGeneration:state.selectionGeneration},now);
   const after=C.snapshot(state,"2026-10-19"), result=C.verifyRelease(before,after,id);
   assert.equal(result.originalTotal,2);assert.equal(result.total,3);assert.equal(result.added,1);assert.equal(result.released,2);
   assert.equal(result.unassigned,0,"原包合理配給新作也可核對成功");
@@ -43,7 +44,7 @@ test("維護頁退包成功但回應遺失，期間新增一包及新選車，�
   const pendingKey="collection:maintenance:release:aiden";
   assert.ok(storage.has(pendingKey));assert.equal(state.activeBuildId,null,"伺服器已成功退包");
   state=C.apply(state,{type:"record",event:{entryId:"math",answered:true,occurredAt:now.toISOString()}},now);
-  state=C.apply(state,{type:"select-model",modelId:"r200",commandId:"child-chooses",expectedSelectionGeneration:state.selectionGeneration},now);
+  state=C.apply(state,{type:"select-model",modelId:"ct273",commandId:"child-chooses",expectedSelectionGeneration:state.selectionGeneration},now);
   const nextBuild=state.activeBuildId, beforeRetry=structuredClone(state);
   await events.get("maintenance-release:click")();
   assert.equal(storage.has(pendingKey),false,"新增包不會造成永久 pending");

@@ -1,0 +1,34 @@
+.hs-moving { cursor:grab; touch-action:none; }
+.hs-moving:active { cursor:grabbing; }
+.hs-moving[aria-disabled=true] { cursor:default; }
+.hs-moving:focus { outline:none; }
+.hs-focus { fill:none; stroke:none; pointer-events:none; }
+.hs-moving:focus-visible>.hs-focus { stroke:#147fbc; stroke-width:4; }
+.hs-seat { fill:#f3e3b955; stroke:#a98143; stroke-width:1.7; stroke-dasharray:4 3; pointer-events:none; }
+.hs-controls { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px 18px; max-width:100%; }
+.hs-unit { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:7px; }
+.hs-unit strong { font-size:15px; }
+.hs-unit input { width:108px; min-height:48px; accent-color:#216c68; }
+.hs-unit button { min-height:44px; }
+.hs-note { flex-basis:100%; color:#63756a; text-align:center; }
+.hs-instructions { display:flex; justify-content:center; align-items:center; gap:5px; }
+.hs-instructions>span { position:relative; width:105px; height:88px; border:2px solid transparent; border-radius:12px; }
+.hs-instructions>span.active { border-color:#cd9a39; background:#fff3cc; }
+.hs-instructions>span>svg { width:100%; height:69px; }
+.hs-instructions b { position:absolute; top:0; left:4px; font-size:15px; }
+.hs-instructions small { display:block; margin-top:-6px; color:#476056; text-align:center; font-size:12px; }
+.hs-instructions i { font-style:normal; color:#647c73; }
+.hs-gesture { display:inline-flex; justify-content:center; align-items:center; vertical-align:middle; }
+.hs-gesture>svg:first-child { width:80px; height:65px; }
+.hs-gesture>svg+svg { width:26px; height:41px; margin-left:-17px; transform:translateY(7px); }
+.hs-gesture>b { color:#377568; font-size:22px; }
+@media(max-width:520px) {
+  .hs-instructions { gap:2px; }
+  .hs-instructions>span { width:81px; height:84px; }
+  .hs-unit { gap:5px; }
+  .hs-unit strong { flex-basis:100%; text-align:center; }
+  .hs-unit input { width:94px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hs-moving,.hs-controls * { transition:none; animation:none; }
+}

@@ -2,6 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
+import "../docs/shared/collection-core.js";
+const availability = { isModelAvailable: globalThis.KidsCollectionCore.isModelAvailable };
+const readyIds = ["e500", "ct273", "breezy-blue"];
 
 const source = (name) =>
   readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
@@ -172,6 +175,7 @@ function harness(placed = [], {
     Image: TestImage,
     Set,
     Math,
+    KidsCollectionCore: availability,
     addEventListener(name, listener) {
       if (!windowListeners.has(name)) windowListeners.set(name, new Set());
       windowListeners.get(name).add(listener);
@@ -185,7 +189,10 @@ function harness(placed = [], {
     train: ["火車", "#2779a7"],
     plane: ["飛機", "#e7b84b"],
     e500: ["台鐵 E500 型電力機車", "#d94a3d"],
+    ct273: ["台鐵 CT273 蒸汽機車", "#282b29"],
+    "breezy-blue": ["藍皮解憂號", "#2a6fa2"],
     emu3000: ["台鐵 EMU3000 型電聯車", "#f2f1e9"],
+    emu900: ["台鐵 EMU900 型電聯車", "#f2f1e9"],
     r200: ["台鐵 R200 型柴電機車", "#1c4c70"],
     "700t": ["台灣高鐵 700T", "#f2f1e9"],
     n700s: ["日本新幹線 N700S", "#f2f1e9"],
@@ -271,11 +278,23 @@ for (const modelId of ["emu3000", "r200", "700t", "n700s"]) {
     const h = harness(ids.slice(0, -1), { modelIds: [modelId], packCount: 12, withCelebration: true, controlledTimers: true, withAudio: true });
     try {
       h.state.grants.push({ id: "last-pack", buildId: h.state.activeBuild.id, packIndex: 11 });
+      let pictureFinal;
+      if (modelId !== "r200") {
+        h.context.KidsEmuMechanism = { create() {} };
+        h.context.KidsHighspeedMechanism = { create() {} };
+        h.element.querySelector = () => ({});
+        h.context.KidsTrainWorkshop = { mount(_host, options) { pictureFinal = options.onFinalPlacement; return { update() {}, destroy() {} }; } };
+      }
       h.mounted.render();
-      assert.match(h.element.innerHTML, /最後一片，放這裡/);
-      assert.equal(h.element.guideNodes.find(node => node.dataset.targetGuide === "p12-3").style.display, "");
-      h.element.fire("click", action({ action: "part", part: "p12-3" }));
-      h.element.fire("click", action({ action: "target", part: "p12-3" }));
+      if (modelId === "r200") {
+        assert.match(h.element.innerHTML, /最後一片，放這裡/);
+        assert.equal(h.element.guideNodes.find(node => node.dataset.targetGuide === "p12-3").style.display, "");
+        h.element.fire("click", action({ action: "part", part: "p12-3" }));
+        h.element.fire("click", action({ action: "target", part: "p12-3" }));
+      } else {
+        pictureFinal(h.state.activeBuild.id);
+        await h.collection.placePart({buildId:h.state.activeBuild.id,grantId:"last-pack",packIndex:11,partId:"p12-3"});
+      }
       await Promise.resolve();
       h.clock.advance(320);
       assert.equal(h.state.activeBuild.placed.length, 36);
@@ -755,6 +774,27 @@ test("a failed same-pack variant can retry before placing the third group", asyn
   h.mounted.destroy();
 });
 
+test("a saved prior pack with occlusion variants accepts the first placement without loading unused old views", async () => {
+  const h=harness(["p1-1","p1-2","p1-3"],{imageArtwork:true,variantArtwork:true,packCount:2,reducedMotion:true});
+  try {
+    h.state.grants.push({id:"grant-2",date:"2026-09-22",kind:"first",buildId:h.state.activeBuild.id,packIndex:1});
+    h.mounted.render();
+    for(const image of h.imageLoads) image.onload();
+    await Promise.resolve();
+    assert.match(h.element.innerHTML,/data-action="part" data-part="p2-1"/);
+    const readySources=h.imageLoads.map(image=>image.url);
+    assert.ok(readySources.includes("/art/car-p1-3.png"),"the actual saved view has loaded");
+    assert.ok(!readySources.includes("/art/car-p1-3-v0.png"),"unused prior-pack views need no preload");
+    h.element.fire("click",action({action:"part",part:"p2-1"}));
+    h.element.fire("click",action({action:"target",part:"p2-1"}));
+    await Promise.resolve();
+    assert.equal(h.placements.length,1,"the first attempted placement saves immediately");
+    assert.equal(h.placements[0].partId,"p2-1");
+    assert.deepEqual(h.state.activeBuild.placed,["p1-1","p1-2","p1-3","p2-1"]);
+    assert.deepEqual(h.imageLoads.map(image=>image.url),readySources,"placement does not request unused variants from already saved packs");
+  } finally {h.mounted.destroy();}
+});
+
 test("a pending next pack keeps the completed pack and its one-time placement animation visible", async () => {
   const h = harness(["p1-1", "p1-2"], { imageArtwork: true, packCount: 2 });
   h.state.grants.push({ id: "grant-2", date: "2026-09-22", kind: "all", buildId: h.state.activeBuild.id, packIndex: 1 });
@@ -853,31 +893,31 @@ test("collection room combines the display shelf and full series without a third
 });
 
 test("selecting a model sends one server-confirmed operation and does not allocate twice", async () => {
-  const h = harness();
+  const h = harness([], { modelIds: readyIds });
   h.state.activeBuild = null;
   h.state.builds = [];
   h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
   h.mounted.render();
-  h.element.fire("click", action({ action: "start-model", model: "train" }));
+  h.element.fire("click", action({ action: "start-model", model: "ct273" }));
   assert.deepEqual(h.selectCalls, []);
   assert.match(h.element.innerHTML, /確認這次的作品/);
-  h.element.fire("click", action({ action: "confirm-model", model: "train" }));
+  h.element.fire("click", action({ action: "confirm-model", model: "ct273" }));
   await Promise.resolve();
   await Promise.resolve();
-  assert.deepEqual(h.selectCalls, ["train"]);
+  assert.deepEqual(h.selectCalls, ["ct273"]);
   assert.equal(h.allocateCalls.length, 0);
   h.mounted.destroy();
 });
 
 test("model picker disables owned models and routes a completed series back to the collection room", () => {
-  const h = harness(["p1-1", "p1-2", "p1-3"]);
+  const h = harness(["p1-1", "p1-2", "p1-3"], { modelIds: readyIds });
   h.state.activeBuild.completedAt = "2026-09-22T12:00:00.000Z";
   h.state.grants.push({ id: "free-pack", date: "2026-09-22", kind: "all", buildId: null, packIndex: null });
   h.element.fire("click", action({ action: "choose-next" }));
-  assert.match(h.element.innerHTML, /brick-model-card is-owned[^>]*data-model="car"[^>]*disabled/);
-  assert.match(h.element.innerHTML, /data-model="train"(?![^>]*disabled)/);
+  assert.match(h.element.innerHTML, /brick-model-card is-owned[^>]*data-model="e500"[^>]*disabled/);
+  assert.match(h.element.innerHTML, /data-model="ct273"(?![^>]*disabled)/);
 
-  h.state.builds = ["car", "train", "plane"].map((modelId, index) => ({
+  h.state.builds = readyIds.map((modelId, index) => ({
     id: `finished-${index}`,
     modelId,
     placed: ["p1-1", "p1-2", "p1-3"],
@@ -889,29 +929,92 @@ test("model picker disables owned models and routes a completed series back to t
   h.mounted.destroy();
 });
 
-test("all five trains are selectable and spare packs stay in the box after completion", async () => {
-  const h = harness([], { modelIds: ["e500", "emu3000", "r200", "700t", "n700s"] });
+test("only ready trains are selectable and spare packs stay after completing the open series", async () => {
+  const h = harness([], { modelIds: [...readyIds, "emu3000", "r200", "700t", "n700s", "emu900"] });
   h.state.activeBuild = null;
   h.state.builds = [];
   h.state.grants = [{ id: "free-pack", date: "2026-09-22", kind: "first", buildId: null, packIndex: null }];
   h.mounted.render();
   assert.match(h.element.innerHTML, /積木列車收藏/);
-  for (const id of ["e500", "emu3000", "r200", "700t", "n700s"])
+  for (const id of readyIds)
     assert.match(h.element.innerHTML, new RegExp(`data-model="${id}"`));
-  assert.doesNotMatch(h.element.innerHTML, /data-model="(?:car|train|plane)"/);
+  assert.doesNotMatch(h.element.innerHTML, /data-model="(?:emu3000|r200|700t|n700s|emu900|car|train|plane)"/);
   h.element.fire("click", action({ action: "start-model", model: "e500" }));
   h.element.fire("click", action({ action: "confirm-model", model: "e500" }));
   await Promise.resolve();
   assert.deepEqual(h.selectCalls, ["e500"]);
 
   h.state.activeBuild = { id: "n700s", modelId: "n700s", placed: ["p1-1", "p1-2", "p1-3"], completedAt: "2026-09-22T12:00:00.000Z" };
-  h.state.builds = ["e500", "emu3000", "r200", "700t", "n700s"].map(modelId => ({ ...h.state.activeBuild, id: modelId, modelId }));
+  h.state.builds = readyIds.map(modelId => ({ ...h.state.activeBuild, id: modelId, modelId }));
   h.mounted.render();
   assert.match(h.element.innerHTML, /積木列車收藏目前的作品都收集完成了/);
   assert.match(h.element.innerHTML, /剩下的 1 包會留在零件盒/);
   assert.doesNotMatch(h.element.innerHTML, /data-model="e500"/);
   assert.match(h.element.innerHTML, /放上展示架/);
   h.mounted.destroy();
+});
+
+test("hidden catalog entries remain only when saved; R200 display and hidden partial builds are preserved", () => {
+  const h=harness(["p1-1"],{modelIds:["emu3000","r200",...readyIds,"700t","n700s","emu900"]});
+  try {
+    const partial=h.state.activeBuild;
+    h.state.builds.push({id:"finished-r200",modelId:"r200",placed:["p1-1","p1-2","p1-3"],completedAt:"2026-10-18T12:00:00.000Z"});
+    h.state.displayedBuildIds=["finished-r200"];
+    h.element.fire("click",action({action:"view",view:"shelf"}));
+    assert.match(h.element.innerHTML,/台鐵 R200 型柴電機車/);
+    assert.match(h.element.innerHTML,/展示中/);
+    assert.match(h.element.innerHTML,/EMU3000/);
+    assert.match(h.element.innerHTML,/繼續拼/);
+    assert.doesNotMatch(h.element.innerHTML,/台灣高鐵 700T|日本新幹線 N700S|EMU900/);
+    assert.match(h.element.innerHTML,/5 件作品/);
+    h.element.fire("click",action({action:"view",view:"workshop"}));
+    assert.match(h.element.innerHTML,/拼裝工作台沒有完整載入/);
+    assert.equal(h.state.activeBuild,partial);
+  } finally {h.mounted.destroy();}
+});
+
+test("stale hidden model cards cannot enter confirmation or send a new selection", async () => {
+  const h=harness([],{modelIds:[...readyIds,"r200","emu3000"]});
+  try {
+    h.state.activeBuild=null;h.state.builds=[];h.mounted.render();
+    h.element.fire("click",action({action:"start-model",model:"r200"}));
+    h.element.fire("click",action({action:"confirm-model",model:"r200"}));
+    await Promise.resolve();
+    assert.doesNotMatch(h.element.innerHTML,/brick-confirm-title|data-model="r200"/);
+    assert.deepEqual(h.selectCalls,[]);
+    h.element.fire("click",action({action:"start-model",model:"e500"}));
+    h.context.KidsCollectionCore={isModelAvailable:()=>false};
+    h.element.fire("click",action({action:"confirm-model",model:"e500"}));
+    await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/尚未開放新選/);
+    assert.deepEqual(h.selectCalls,[]);
+  } finally {h.mounted.destroy();}
+});
+
+test("completing only the open three models removes next-model prompts from the workbench and shelf", () => {
+  const h=harness(["p1-1","p1-2","p1-3"],{modelIds:[...readyIds,"r200","emu3000","700t","n700s","emu900"]});
+  try {
+    h.state.activeBuild.completedAt="2026-10-18T12:00:00.000Z";
+    h.state.builds=readyIds.map(modelId=>({...h.state.activeBuild,id:`done-${modelId}`,modelId}));
+    h.mounted.render();
+    assert.match(h.element.innerHTML,/目前的作品都收集完成了/);
+    assert.doesNotMatch(h.element.innerHTML,/data-action="choose-next"/);
+    h.element.fire("click",action({action:"view",view:"shelf"}));
+    assert.doesNotMatch(h.element.innerHTML,/可以選下一台|data-action="choose-next"/);
+    assert.match(h.element.innerHTML,/3 件作品/);
+  } finally {h.mounted.destroy();}
+});
+
+test("missing availability rules deny child selection while isolated parent preview retains old models", () => {
+  for (const preview of [false,true]) {
+    const h=harness([],{modelIds:[...readyIds,"r200"],preview});
+    try {
+      h.context.KidsCollectionCore=undefined;
+      h.state.activeBuild=null;h.state.builds=[];h.mounted.render();
+      if (preview) assert.match(h.element.innerHTML,/data-model="r200"/);
+      else assert.doesNotMatch(h.element.innerHTML,/data-action="start-model"/);
+    } finally {h.mounted.destroy();}
+  }
 });
 
 test("keyboard selection focuses the target and Escape returns focus to the same part", () => {
@@ -1073,7 +1176,7 @@ test("window blur releases an active touch drag without leaving rendering blocke
 
 
 test("v2 generic trains keep fixed rails outside progress and await confirmation on the final body part", async () => {
-  const h=harness([],{modelIds:["emu3000","r200"],packCount:3,contentVersion:2,reducedMotion:true});
+  const h=harness([],{modelIds:["r200","ct273"],packCount:3,contentVersion:2,reducedMotion:true});
   try {
     assert.equal(placedCount(h.element.innerHTML),3);
     assert.match(h.element.innerHTML,/0<small> \/ 6 組部件/);
@@ -1098,23 +1201,23 @@ test("v2 generic trains keep fixed rails outside progress and await confirmation
     assert.match(h.element.innerHTML,/data-action="choose-next"/);
     h.element.fire("click",action({action:"choose-next"}));
     assert.match(h.element.innerHTML,/這次想拼哪一台/);
-    h.element.fire("click",action({action:"start-model",model:"r200"}));
+    h.element.fire("click",action({action:"start-model",model:"ct273"}));
     assert.match(h.element.innerHTML,/共 2 包 · 6 組部件；展示鐵軌已備好/);
     assert.match(h.element.innerHTML,/現在可以拼 0 包/);
     assert.match(h.element.innerHTML,/先選好這台，拿到新包後就能開始拼/);
     assert.deepEqual(h.selectCalls,[]);
-    h.element.fire("click",action({action:"confirm-model",model:"r200"}));
+    h.element.fire("click",action({action:"confirm-model",model:"ct273"}));
     await Promise.resolve();
-    assert.deepEqual(h.selectCalls,["r200"]);
+    assert.deepEqual(h.selectCalls,["ct273"]);
   } finally {h.mounted.destroy();}
 });
 
 test("viewing and cancelling a model card never selects it, even with an empty parts box", () => {
-  const h=harness();
+  const h=harness([], {modelIds: readyIds});
   try {
     h.state.activeBuild=null;h.state.builds=[];h.state.grants=[];h.mounted.render();
     assert.match(h.element.innerHTML,/這次想拼哪一台/);
-    h.element.fire("click",action({action:"start-model",model:"train"}));
+    h.element.fire("click",action({action:"start-model",model:"ct273"}));
     assert.match(h.element.innerHTML,/返回換一台/);
     assert.deepEqual(h.selectCalls,[]);
     h.element.fire("click",action({action:"cancel-model"}));
@@ -1126,7 +1229,7 @@ test("viewing and cancelling a model card never selects it, even with an empty p
 });
 
 
-function selectIntoPending(h, modelId="train") {
+function selectIntoPending(h, modelId="ct273") {
   h.state.activeBuild=null;h.state.builds=[];
   h.state.grants=[{id:"free-selection-pack",buildId:null,packIndex:null}];
   h.collection.selectModel=async selected=>{
@@ -1148,23 +1251,23 @@ function confirmPendingSelection(h,modelId="train") {
 }
 
 test("lost selection response stays pending, blocks false cancellation, and reconnects into the chosen workshop",async()=>{
-  const h=harness();
+  const h=harness([], {modelIds: readyIds});
   try {
     selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
     assert.match(h.element.innerHTML,/正在等連線確認選車/);
-    assert.match(h.element.innerHTML,/<h2 id="brick-pending-title">火車<\/h2>/);
+    assert.match(h.element.innerHTML,/<h2 id="brick-pending-title">台鐵 CT273 蒸汽機車<\/h2>/);
     assert.match(h.element.innerHTML,/先確認結果，才能返回換車/);
     assert.doesNotMatch(h.element.innerHTML,/回應沒有收到|返回換一台|data-action="confirm-model"|data-action="cancel-model"/);
     h.element.fire("click",action({action:"cancel-model"}));
     h.element.fire("click",action({action:"start-model",model:"plane"}));
     h.element.fire("click",action({action:"confirm-model",model:"plane"}));
-    assert.deepEqual(h.selectCalls,["train"]);
+    assert.deepEqual(h.selectCalls,["ct273"]);
     assert.match(h.element.innerHTML,/正在等連線確認選車/);
-    confirmPendingSelection(h);
+    confirmPendingSelection(h,"ct273");
     assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車|確認這次的作品/);
     assert.match(h.element.innerHTML,/data-action="part"/);
-    assert.equal(h.state.activeBuild.modelId,"train");
-    assert.deepEqual(h.selectCalls,["train"]);
+    assert.equal(h.state.activeBuild.modelId,"ct273");
+    assert.deepEqual(h.selectCalls,["ct273"]);
   } finally {h.mounted.destroy();}
 });
 
@@ -1185,7 +1288,7 @@ test("reopened pending selection retries the original command without another se
 });
 
 test("a server-rejected pending selection explains rejection and permits returning to another model",async()=>{
-  const h=harness();
+  const h=harness([], {modelIds: readyIds});
   try {
     selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
     h.collection.flush=async()=>{
@@ -1198,11 +1301,11 @@ test("a server-rejected pending selection explains rejection and permits returni
     assert.match(h.element.innerHTML,/返回換一台/);
     h.element.fire("click",action({action:"cancel-model"}));
     assert.match(h.element.innerHTML,/這次想拼哪一台/);
-    h.element.fire("click",action({action:"start-model",model:"plane"}));
-    assert.match(h.element.innerHTML,/<h2 id="brick-confirm-title">飛機<\/h2>/);
+    h.element.fire("click",action({action:"start-model",model:"breezy-blue"}));
+    assert.match(h.element.innerHTML,/<h2 id="brick-confirm-title">藍皮解憂號<\/h2>/);
     h.collection.selectModel=async modelId=>h.selectCalls.push(modelId);
-    h.element.fire("click",action({action:"confirm-model",model:"plane"}));await new Promise(resolve=>setImmediate(resolve));
-    assert.deepEqual(h.selectCalls,["train","plane"]);
+    h.element.fire("click",action({action:"confirm-model",model:"breezy-blue"}));await new Promise(resolve=>setImmediate(resolve));
+    assert.deepEqual(h.selectCalls,["ct273","breezy-blue"]);
     assert.equal(h.state.pendingSelection,null);
   } finally {h.mounted.destroy();}
 });

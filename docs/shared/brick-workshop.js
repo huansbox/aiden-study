@@ -36,6 +36,18 @@
   const nextBuild = model => ({modelId:model.id,contentVersion:["e500","emu3000","r200","700t","n700s","emu900","breezy-blue","ct273"].includes(model.id)?2:1});
   const catalogTitle = () => global.KidsBrickModels?.title || "拼裝系列";
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
+  const GRAPHICAL_MODELS = Object.freeze(["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"]);
+  const GRAPHICAL_MECHANISMS = Object.freeze({
+    emu3000: "KidsEmuMechanism", emu900: "KidsEmuMechanism",
+    "700t": "KidsHighspeedMechanism", n700s: "KidsHighspeedMechanism",
+  });
+  // 家長 preview 使用獨立記憶體 adapter，保留所有舊車的隔離試拼入口。
+  const availableModels = (preview = false) => (global.KidsBrickModels?.models || [])
+    .filter((model) => preview || global.KidsCollectionCore?.isModelAvailable?.(model.id) === true);
+  const catalogModels = (snapshot, preview = false) => (global.KidsBrickModels?.models || [])
+    .filter((model) => preview || global.KidsCollectionCore?.isModelAvailable?.(model.id) === true
+      || (snapshot.builds || []).some((build) => build.modelId === model.id)
+      || snapshot.activeBuild?.modelId === model.id);
   const partArtwork = (part, placed, complete = false) => {
     const peers = part.occlusionPeers || [];
     if (complete || !peers.length) return part.svg;
@@ -140,6 +152,8 @@
     let celebration = null;
     let pictureWorkshop = null;
     let pictureBuildId = null;
+    let inspectionBuildId = null;
+    let inspectionReturnView = "workshop";
     const completionCandidates = new Set();
     const celebratedBuilds = new Set();
     const optimisticPlaced = new Set();
@@ -283,7 +297,7 @@
       const unassigned = (snapshot.grants || []).filter(
         (grant) => grant.buildId == null,
       ).length;
-      const models = global.KidsBrickModels?.models || [];
+      const models = availableModels(preview);
       const ownedModelIds = new Set(
         (snapshot.builds || [])
           .filter((build) => build.completedAt)
@@ -414,7 +428,7 @@
           .map((entry) => entry.modelId),
       );
       if (completed) ownedModelIds.add(build.modelId);
-      const hasAnotherModel = (global.KidsBrickModels?.models || []).some(
+      const hasAnotherModel = availableModels(preview).some(
         (entry) => !ownedModelIds.has(entry.id),
       );
 
@@ -444,6 +458,7 @@
           ${hasAnotherModel ? "" : `<p class="brick-complete__summary">${escapeHtml(catalogTitle())}目前的作品都收集完成了。${unassigned.length ? `剩下的 ${unassigned.length} 包` : "之後拿到的拼裝包"}會留在零件盒。</p>`}
           <div class="brick-complete__actions">
             <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="true" ${busy ? "disabled" : ""}>${busy?.startsWith("display:") ? "正在放上展示架…" : "放上展示架"}</button>
+            ${GRAPHICAL_MECHANISMS[model.id] ? `<button type="button" class="secondary" data-action="inspect-build" data-build="${escapeHtml(build.id)}">玩玩零件</button>` : ""}
             ${global.KidsBrickCelebration?.supports(model) ? '<button type="button" class="secondary brick-celebration-replay" data-action="celebration-replay">再開一次</button>' : ""}
             ${hasAnotherModel && typeof collection.selectModel === "function" ? '<button type="button" class="secondary" data-action="choose-next">選下一台</button>' : '<button type="button" class="secondary" data-action="view" data-view="shelf">看看收藏室</button>'}
           </div>
@@ -503,7 +518,10 @@
       const builds = snapshot.builds || [];
       const displayed = asSet(snapshot.displayedBuildIds);
       const completed = builds.filter((build) => build.completedAt);
-      const canChoose = typeof collection.selectModel === "function" && (!snapshot.activeBuild || Boolean(snapshot.activeBuild.completedAt));
+      const ownedModelIds = new Set(completed.map((build) => build.modelId));
+      const canChoose = typeof collection.selectModel === "function"
+        && (!snapshot.activeBuild || Boolean(snapshot.activeBuild.completedAt))
+        && availableModels(preview).some((model) => !ownedModelIds.has(model.id));
       return `<section class="brick-shelf-view">
         ${canChoose ? '<div class="brick-shelf-next"><p>作品已收進收藏室，可以選下一台了。</p><button type="button" data-action="choose-next">選下一台</button></div>' : ""}
         <div class="brick-section-heading"><div><p class="brick-kicker">我的收藏</p><h2>展示架</h2></div><span>${completed.length} 件完成</span></div>
@@ -518,6 +536,7 @@
                     <div class="brick-shelf-item__stage">${thumbnail(model.id, { complete: true, ghosts: false })}</div>
                     <div><strong>${escapeHtml(model.title)}</strong><small>${isDisplayed ? "展示中" : "已收藏"}</small></div>
                     <button type="button" data-action="display" data-build="${escapeHtml(build.id)}" data-displayed="${isDisplayed ? "false" : "true"}" ${busy ? "disabled" : ""}>${isDisplayed ? "收回收藏" : "放上展示架"}</button>
+                    ${GRAPHICAL_MECHANISMS[model.id] ? `<button type="button" class="secondary" data-action="inspect-build" data-build="${escapeHtml(build.id)}">玩玩零件</button>` : ""}
                   </article>`;
                 })
                 .join("")}</div>`
@@ -530,7 +549,7 @@
                 .map((build) => {
                   const model = getModel(build.modelId);
                   return model
-                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, build, ghosts: !["e500","ct273","breezy-blue"].includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${requiredParts(model,build).length} 組部件</small></span><b>繼續拼</b></button>`
+                    ? `<button type="button" data-action="view" data-view="workshop">${thumbnail(model.id, { placed: build.placed, build, ghosts: !GRAPHICAL_MODELS.includes(model.id) })}<span><strong>${escapeHtml(model.title)}</strong><small>${(build.placed || []).length} / ${requiredParts(model,build).length} 組部件</small></span><b>繼續拼</b></button>`
                     : "";
                 })
                 .join("")}</div>`
@@ -541,7 +560,7 @@
 
     function renderCatalog(snapshot) {
       const builds = snapshot.builds || [];
-      const models = global.KidsBrickModels?.models || [];
+      const models = catalogModels(snapshot, preview);
       return `<section class="brick-catalog">
         <div class="brick-section-heading"><div><p class="brick-kicker">作品圖鑑</p><h2>${escapeHtml(catalogTitle())}</h2></div><span>${models.length} 件作品</span></div>
         <div class="brick-catalog-grid">${models
@@ -577,21 +596,34 @@
         element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}${renderPendingSelection(snapshot)}</section>`;
         return;
       }
-      const build = snapshot.activeBuild;
+      const inspectionBuild = (snapshot.builds || []).find((entry) => entry.id === inspectionBuildId && entry.completedAt);
+      if (inspectionBuildId && !inspectionBuild) inspectionBuildId = null;
+      const inspecting = Boolean(inspectionBuild);
+      const build = inspectionBuild || snapshot.activeBuild;
       const model = getModel(build?.modelId);
-      if (global.KidsTrainWorkshop && ["e500","ct273","breezy-blue"].includes(model?.id) && view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < requiredParts(model,build).length) {
-        if (pictureBuildId !== build.id) {
+      const pictureEligible = GRAPHICAL_MODELS.includes(model?.id) && (inspecting || view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < requiredParts(model,build).length);
+      if (pictureEligible && (inspecting || global.KidsTrainWorkshop || GRAPHICAL_MECHANISMS[model.id])) {
+        const mechanism = GRAPHICAL_MECHANISMS[model.id];
+        if (!global.KidsTrainWorkshop || mechanism && typeof global[mechanism]?.create !== "function") {
+          pictureWorkshop?.destroy(); pictureWorkshop = null; pictureBuildId = null;
+          element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}<section class="brick-error" role="alert"><h2>拼裝工作台沒有完整載入</h2><p>請重新整理頁面後再繼續，已拼好的作品會保留。</p><button type="button" data-action="reload-workshop">重新載入</button></section></section>`;
+          return;
+        }
+        const pictureKey = `${inspecting ? "inspection" : "build"}:${build.id}`;
+        if (pictureBuildId !== pictureKey) {
           pictureWorkshop?.destroy();
           element.innerHTML = '<div data-picture-workshop-host></div>';
-          pictureBuildId = build.id;
+          pictureBuildId = pictureKey;
+          const inspectionSnapshot = () => ({ ...currentSnapshot(), activeBuild: (currentSnapshot().builds || []).find((entry) => entry.id === build.id) || build });
+          const returnToWork = () => { inspectionBuildId = null; view = inspectionReturnView; render(); };
           pictureWorkshop = global.KidsTrainWorkshop.mount(element.querySelector("[data-picture-workshop-host]"), {
-            model, collection, sound, audioEnabled,
+            model, collection: inspecting ? { snapshot: inspectionSnapshot } : collection, sound, audioEnabled, inspection: inspecting,
             onSound(enabled) { audioEnabled = enabled; sound?.setEnabled(enabled); if (enabled) sound?.unlock(); },
-            onClose: closeWorkshop,
-            onShelf() { view = "shelf"; render(); },
-            onFinalPlacement(id, accepted = true) { if (accepted) completionCandidates.add(id); else completionCandidates.delete(id); },
+            onClose: inspecting ? returnToWork : closeWorkshop,
+            onShelf: inspecting ? returnToWork : () => { view = "shelf"; render(); },
+            ...(!inspecting ? { onFinalPlacement(id, accepted = true) { if (accepted) completionCandidates.add(id); else completionCandidates.delete(id); } } : {}),
           });
-        } else pictureWorkshop.update(snapshot);
+        } else pictureWorkshop.update(inspecting ? { ...snapshot, activeBuild: inspectionBuild } : snapshot);
         return;
       }
       if (pictureWorkshop) { pictureWorkshop.destroy(); pictureWorkshop = null; pictureBuildId = null; }
@@ -609,7 +641,7 @@
       }
       element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}${
         view === "shelf"
-          ? artworkNotice([...(global.KidsBrickModels?.models || []), ...(snapshot.builds || []).map((build) => getModel(build.modelId)).filter(Boolean)]) + renderShelf(snapshot) + renderCatalog(snapshot)
+          ? artworkNotice(catalogModels(snapshot, preview)) + renderShelf(snapshot) + renderCatalog(snapshot)
             : renderWorkbench(snapshot, animatedPartId)
       }</section>`;
       if (celebration?.rendered) {
@@ -656,7 +688,10 @@
       const model = getModel(build?.modelId);
       const part = partById(model, partId);
       if (!build || !part || (build.placed || []).includes(partId)) return;
-      if (imageState([...allParts(model).filter((entry) => (build.placed || []).includes(entry.id)), part]) !== "ready") {
+      const shown = new Set([...(build.placed || []), ...optimisticPlaced, ...fixedIds(model, build)]);
+      const savedArtwork = allParts(model).filter((entry) => shown.has(entry.id))
+        .map((entry) => ({ svg: partArtwork(entry, shown) }));
+      if (imageState([...savedArtwork, part]) !== "ready") {
         selectedPart = null;
         render();
         return;
@@ -718,7 +753,15 @@
       const button = event.target?.closest?.("[data-action]");
       if (!button || button.disabled || !element.contains?.(button)) return;
       const action = button.dataset.action;
-      if (currentSnapshot().pendingSelection && ["start-model","confirm-model","cancel-model","choose-next","allocate","display","part","target"].includes(action)) return;
+      if (currentSnapshot().pendingSelection && ["start-model","confirm-model","cancel-model","choose-next","allocate","display","inspect-build","part","target"].includes(action)) return;
+      if (action === "reload-workshop") return global.location?.reload?.();
+      if (action === "inspect-build") {
+        const build = (currentSnapshot().builds || []).find((entry) => entry.id === button.dataset.build && entry.completedAt);
+        if (busy || !build || !GRAPHICAL_MECHANISMS[build.modelId]) return;
+        inspectionBuildId = build.id; inspectionReturnView = view;
+        stopCelebration(); render();
+        return;
+      }
       if (action === "retry-selection")
         return run("selection-retry", () => collection.flush?.(), "選車結果暫時無法確認，請再試一次。");
       if (["part", "target", "celebration-replay"].includes(action)) sound?.unlock();
@@ -787,6 +830,7 @@
           "作品還沒有保存完成，請檢查連線後再試。",
         );
       if (action === "start-model") {
+        if (!preview && global.KidsCollectionCore?.isModelAvailable?.(button.dataset.model) !== true) return;
         if (busy) return;
         const snapshot = currentSnapshot();
         if ((snapshot.builds || []).some(build => build.modelId === button.dataset.model && build.completedAt)) return;
@@ -805,6 +849,10 @@
         return run(
           `model:${button.dataset.model}`,
           async () => {
+            if (!preview && global.KidsCollectionCore?.isModelAvailable?.(button.dataset.model) !== true) {
+              candidateModelId = null;
+              throw new Error("這台車尚未開放新選，請重新選擇目前開放的作品。");
+            }
             await collection.selectModel(button.dataset.model);
             choosingNext = false;
             candidateModelId = null;
