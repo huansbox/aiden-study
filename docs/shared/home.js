@@ -95,8 +95,8 @@
     const title = window.KidsBrickModels?.get(build?.modelId)?.title;
     const totalParts = window.KidsCollectionCore.requiredParts(build).length;
     const available = packInventory().filter((p) => p.placed < 3).length;
-    const models = window.KidsBrickModels?.models || [];
-    const allCollected = models.length > 0 && models.every((model) => state.builds.some((b) => b.modelId === model.id && b.completedAt)) && (!build || build.completedAt);
+    const models = window.KidsCollectionCore.AVAILABLE_MODELS;
+    const allCollected = models.length > 0 && models.every((modelId) => state.builds.some((b) => b.modelId === modelId && b.completedAt)) && (!build || build.completedAt);
     const packsAction = `<div class="daily-pack-actions">${available ? allCollected ? `<p>零件盒保留 ${available} 包，等新作品再拼。</p>` : `<button type="button" data-view="results">還有 ${available} 包可以拼 →</button>` : '<p>目前沒有待拼的包；已拼好的成果會保留。</p>'}<button type="button" class="secondary" data-pack-history>拼裝包紀錄</button></div>`;
     return `<section class="family-panel daily-goals"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日已領 ${earned} 包</span></div><p class="daily-explanation">${goals.length ? state.daily.rewardOffset ? "今天已領的包會抵扣調整後的份量；卡片顯示只練該活動時，下一包實際還差多少。加碼次數不限。" : "每完成一份目標領一包。必做完成後，可以自己選擇加碼；加碼次數不限，內容由你選。" : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
       const entry = entries.find(e => e.id === goal.entryId);

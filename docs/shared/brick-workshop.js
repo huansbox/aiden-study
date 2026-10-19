@@ -36,6 +36,13 @@
   const nextBuild = model => ({modelId:model.id,contentVersion:["e500","emu3000","r200","700t","n700s","emu900","breezy-blue","ct273"].includes(model.id)?2:1});
   const catalogTitle = () => global.KidsBrickModels?.title || "拼裝系列";
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
+  // 家長 preview 使用獨立記憶體 adapter，保留所有舊車的隔離試拼入口。
+  const availableModels = (preview = false) => (global.KidsBrickModels?.models || [])
+    .filter((model) => preview || global.KidsCollectionCore?.isModelAvailable?.(model.id) === true);
+  const catalogModels = (snapshot, preview = false) => (global.KidsBrickModels?.models || [])
+    .filter((model) => preview || global.KidsCollectionCore?.isModelAvailable?.(model.id) === true
+      || (snapshot.builds || []).some((build) => build.modelId === model.id)
+      || snapshot.activeBuild?.modelId === model.id);
   const partArtwork = (part, placed, complete = false) => {
     const peers = part.occlusionPeers || [];
     if (complete || !peers.length) return part.svg;
@@ -283,7 +290,7 @@
       const unassigned = (snapshot.grants || []).filter(
         (grant) => grant.buildId == null,
       ).length;
-      const models = global.KidsBrickModels?.models || [];
+      const models = availableModels(preview);
       const ownedModelIds = new Set(
         (snapshot.builds || [])
           .filter((build) => build.completedAt)
@@ -414,7 +421,7 @@
           .map((entry) => entry.modelId),
       );
       if (completed) ownedModelIds.add(build.modelId);
-      const hasAnotherModel = (global.KidsBrickModels?.models || []).some(
+      const hasAnotherModel = availableModels(preview).some(
         (entry) => !ownedModelIds.has(entry.id),
       );
 
@@ -503,7 +510,10 @@
       const builds = snapshot.builds || [];
       const displayed = asSet(snapshot.displayedBuildIds);
       const completed = builds.filter((build) => build.completedAt);
-      const canChoose = typeof collection.selectModel === "function" && (!snapshot.activeBuild || Boolean(snapshot.activeBuild.completedAt));
+      const ownedModelIds = new Set(completed.map((build) => build.modelId));
+      const canChoose = typeof collection.selectModel === "function"
+        && (!snapshot.activeBuild || Boolean(snapshot.activeBuild.completedAt))
+        && availableModels(preview).some((model) => !ownedModelIds.has(model.id));
       return `<section class="brick-shelf-view">
         ${canChoose ? '<div class="brick-shelf-next"><p>作品已收進收藏室，可以選下一台了。</p><button type="button" data-action="choose-next">選下一台</button></div>' : ""}
         <div class="brick-section-heading"><div><p class="brick-kicker">我的收藏</p><h2>展示架</h2></div><span>${completed.length} 件完成</span></div>
@@ -541,7 +551,7 @@
 
     function renderCatalog(snapshot) {
       const builds = snapshot.builds || [];
-      const models = global.KidsBrickModels?.models || [];
+      const models = catalogModels(snapshot, preview);
       return `<section class="brick-catalog">
         <div class="brick-section-heading"><div><p class="brick-kicker">作品圖鑑</p><h2>${escapeHtml(catalogTitle())}</h2></div><span>${models.length} 件作品</span></div>
         <div class="brick-catalog-grid">${models
@@ -609,7 +619,7 @@
       }
       element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}${
         view === "shelf"
-          ? artworkNotice([...(global.KidsBrickModels?.models || []), ...(snapshot.builds || []).map((build) => getModel(build.modelId)).filter(Boolean)]) + renderShelf(snapshot) + renderCatalog(snapshot)
+          ? artworkNotice(catalogModels(snapshot, preview)) + renderShelf(snapshot) + renderCatalog(snapshot)
             : renderWorkbench(snapshot, animatedPartId)
       }</section>`;
       if (celebration?.rendered) {
@@ -656,7 +666,10 @@
       const model = getModel(build?.modelId);
       const part = partById(model, partId);
       if (!build || !part || (build.placed || []).includes(partId)) return;
-      if (imageState([...allParts(model).filter((entry) => (build.placed || []).includes(entry.id)), part]) !== "ready") {
+      const shown = new Set([...(build.placed || []), ...optimisticPlaced, ...fixedIds(model, build)]);
+      const savedArtwork = allParts(model).filter((entry) => shown.has(entry.id))
+        .map((entry) => ({ svg: partArtwork(entry, shown) }));
+      if (imageState([...savedArtwork, part]) !== "ready") {
         selectedPart = null;
         render();
         return;
@@ -787,6 +800,7 @@
           "作品還沒有保存完成，請檢查連線後再試。",
         );
       if (action === "start-model") {
+        if (!preview && global.KidsCollectionCore?.isModelAvailable?.(button.dataset.model) !== true) return;
         if (busy) return;
         const snapshot = currentSnapshot();
         if ((snapshot.builds || []).some(build => build.modelId === button.dataset.model && build.completedAt)) return;
@@ -805,6 +819,10 @@
         return run(
           `model:${button.dataset.model}`,
           async () => {
+            if (!preview && global.KidsCollectionCore?.isModelAvailable?.(button.dataset.model) !== true) {
+              candidateModelId = null;
+              throw new Error("這台車尚未開放新選，請重新選擇目前開放的作品。");
+            }
             await collection.selectModel(button.dataset.model);
             choosingNext = false;
             candidateModelId = null;

@@ -4,6 +4,9 @@
   const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12, '700t': 12, n700s: 12, emu900: 12, 'breezy-blue': 12, ct273: 14 });
   const MODELS = Object.keys(PACK_COUNTS);
   const MODERN_MODELS = MODELS.filter((id) => !["car", "train", "plane"].includes(id));
+  // 新作品只開放已交付圖形工坊的車款；歷史模型與資料仍完整保留。
+  const AVAILABLE_MODELS = Object.freeze(["e500", "ct273", "breezy-blue"]);
+  const isModelAvailable = (modelId) => AVAILABLE_MODELS.includes(modelId);
   // 此日期之前的離線事件維持當時規則；不能因新版上線補發歷史獎勵。
   const REPEAT_REWARDS_FROM = "2026-10-19";
   const packStart = (build) => build?.contentVersion === 2 && MODERN_MODELS.includes(build.modelId) ? 1 : 0;
@@ -142,6 +145,7 @@
       const active = state.builds.find((b) => b.id === state.activeBuildId);
       if (active && !active.completedAt) check(active.modelId === command.modelId, "另一個入口已選好作品，先完成目前作品。", 409);
       else {
+        check(isModelAvailable(command.modelId), "這台車尚未開放新選，請重新選擇目前開放的作品。", 409);
         check(!state.builds.some((b) => b.modelId === command.modelId), "這件作品已在收藏裡");
         const contentVersion = MODERN_MODELS.includes(command.modelId) ? 2 : 1;
         // 不重用已撤回作品的身分；舊裝置補送 place 也不能寫入重選的同款車。
@@ -183,5 +187,5 @@
     check(validDate(day), "日期不正確");
     return { version: 1, revision: state.revision, goalRevision: state.goalRevision, selectionGeneration: state.selectionGeneration || 0, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
   }
-  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, dateKey, validDate, targets, empty, apply, reconcile, snapshot, check };
+  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, AVAILABLE_MODELS, isModelAvailable, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, dateKey, validDate, targets, empty, apply, reconcile, snapshot, check };
 })();
