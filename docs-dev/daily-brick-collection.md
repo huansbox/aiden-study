@@ -6,7 +6,7 @@
 
 ## 目前規則（2026-10-20）
 
-[#216](https://github.com/huansbox/aiden-study/issues/216) 第一階段先開放 E500、CT273、藍皮客車，並隱藏其他未完成重設計的車款。[#217](https://github.com/huansbox/aiden-study/issues/217) 的 release candidate 已加入 EMU3000、EMU900、700T、N700S，新選名單共七款；正式發布與內容核對仍以該 Issue 為準。R200 本輪不重做，也不提供新選。未擁有圖鑑、確認選車與收齊目前開放系列都使用同一名單。已有任何車款的半成品、完成收藏和展示完整保留，不退包、不改 ID 或包數；家長的獨立記憶體試拼仍保留全部歷史模型。
+[#216](https://github.com/huansbox/aiden-study/issues/216) 第一階段先開放 E500、CT273、藍皮客車，並隱藏其他未完成重設計的車款。完成重設計的 EMU3000、EMU900、700T、N700S 已加入新選名單，共七款；正式交付與內容核對證據見 [#217](https://github.com/huansbox/aiden-study/issues/217)。R200 本輪不重做，也不提供新選。未擁有圖鑑、確認選車與收齊目前開放系列都使用同一名單。已有任何車款的半成品、完成收藏和展示完整保留，不退包、不改 ID 或包數；家長的獨立記憶體試拼仍保留全部歷史模型。
 
 新作品依 [#213](https://github.com/huansbox/aiden-study/issues/213)／[#214](https://github.com/huansbox/aiden-study/issues/214) 使用 `contentVersion: 2`，展示鐵軌是固定場景，不消耗拼裝包；從輪組／底盤開始。E500、CT273 各 13 包／39 組，其他五款開放車各 11 包／33 組。舊 `contentVersion: 1` 或未標版本的半成品仍依原包數接續，既有完成收藏不改寫。下方依日期保存的歷史驗收段落描述當時版本，不能當成目前包數。固定場景、圖片載入與縮圖量測見 [工作台效能與驗證](workshop-performance.md)。
 
