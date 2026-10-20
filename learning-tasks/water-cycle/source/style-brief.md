@@ -16,11 +16,11 @@
 | B | 透明 watercolor＋細 graphite 輪廓、輕紙紋 | 透亮、較輕盈的自然觀察感 |
 | C | layered cut-paper＋colored-pencil 細節、淺層紙張陰影 | 材質清楚、形狀容易辨識的手作拼貼 |
 
-三張均為 AI 製作的審稿初稿，未經家長選定前不當作正式網站素材。生成時機制與外部參考 repo 的 Gemini 網頁工作流不同，本次使用 Codex 內建 imagegen；未使用外部 repo 的圖片或程式。
+三張均為 AI 製作的審稿初稿。家長已選 C「紙張拼貼」為正式製作方向，後續減少草葉、石頭等背景碎細節。生成時機制與外部參考 repo 的 Gemini 網頁工作流不同，本次使用 Codex 內建 imagegen；未使用外部 repo 的圖片或程式。
 
 ## 保存與選定
 
 - Dropbox 相對路徑：`mywork/aiden-study/water-cycle/style-review-2026-10-20/`。
 - 2026-10-20 已依 `Dropbox/info.json` 核對 huan-win-01 的 personal 根目錄為 `C:\Users\linshuhuan\Dropbox`；這只代表本機保存位置，未驗證跨裝置同步。
-- 家長比較三張後選定方向；可指定保留某張的角色、另一張的材質，再針對該方向修正。正式批量素材在選定後製作。
+- 家長已選 C；以相同紙張材質、淺陰影與簡單水滴嚮導延伸正式素材，科學圖解仍獨立用程式繪製。A、B 保留為審稿紀錄，不納入正式網站。
 - 生成與檔案核對結果、具體候選檔名及下一步，記在 Issue #220 的交接 comment；本文件只保存重建所需規格。
