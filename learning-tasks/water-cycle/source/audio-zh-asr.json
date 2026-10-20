@@ -1,0 +1,27 @@
+{
+  "language": "zh",
+  "model": "large-v3",
+  "localOnly": true,
+  "expectedTextUsedAsPrompt": false,
+  "humanListening": false,
+  "samples": [
+    {
+      "file": "zh-cloud-result.mp3",
+      "sha256": "83cb799d88ac1b1fa98b2311945e474ffb2c6c34a299303297c1fc6694c622a6",
+      "expectedText": "水蒸氣冷卻後，有些凝結成非常小的水滴，許多小水滴聚在一起，我們就看見雲。很冷的雲也可能有冰晶。這是放大示意；水蒸氣本身看不見。現在有雲，還沒有下雨。",
+      "recognizedText": "水蒸气冷却后,有些凝结成非常小的水滴,许多小水滴聚在一起,我们就看见云。 很冷的云也可能有冰晶,这是放大示意。 水蒸气本身看不见,现在有云,还没有下雨。"
+    },
+    {
+      "file": "zh-snow-warm.mp3",
+      "sha256": "3cdc4b69bee4681d928b13ee5e230582254dfa1abf02cb03fb3cec61f43ccf13",
+      "expectedText": "雪花穿過一層很厚的暖空氣，完全融化成水滴，落到地面是雨。雪不是雨滴直接結冰變成的。按冷空氣，可以再比較一次。",
+      "recognizedText": "雪、花穿过一层粉厚的暖空气,完全融化成水滴,落到地面是雨。 雪不是雨滴直接结冰变成的,按冷空气可以再比较一次。"
+    },
+    {
+      "file": "zh-hail-result.mp3",
+      "sha256": "300d183d2e3982b28637950761766ff8aedad573de18b4bb2b15453fb88f5d5c",
+      "expectedText": "往上吹的空氣托住小冰粒，過冷水滴碰上去，凍成一層又一層。冰雹變重，氣流托不住時就落下。冰雹不只是天氣變冷，這是加快、放大的示意。",
+      "recognizedText": "往上吹的空气拖住小冰粒,过冷水滴碰上去,冻成一层又一层,冰雹变重,气流拖不住时就落下。冰雹不只是天气变冷,这是加快、放大的示意。"
+    }
+  ]
+}

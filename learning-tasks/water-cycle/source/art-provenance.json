@@ -1,0 +1,16 @@
+{
+  "file": "assets/landscape.png",
+  "width": 1672,
+  "height": 941,
+  "bytes": 2632904,
+  "sha256": "b614c4f8a64ec2182ac4ce09ee4e073572a598b003ebaf8acf9292aebf66641e",
+  "origin": "Original artwork generated with Codex imagegen; edited from style C selected by the parent.",
+  "style": "layered cut-paper with colored-pencil detail and shallow paper shadows",
+  "reference": "Review candidates are in Dropbox: mywork/aiden-study/water-cycle/style-review-2026-10-20/",
+  "constraints": [
+    "No text or scientific arrows baked into the image",
+    "No visible water vapor or precipitation depicted",
+    "Story guide is a fictional character, not a water molecule"
+  ],
+  "usedBy": "Home and evaporation scene; scientific overlays are drawn separately by code"
+}

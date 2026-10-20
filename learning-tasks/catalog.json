@@ -3,6 +3,18 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "water-cycle",
+      "name": "水的循環：一起探索與深入研究",
+      "status": "complete",
+      "statusNote": "兩版六站、中文／英文語音與比較實驗已完成；工具驗證及發布紀錄見 #220，孩子試用後再調整難度。",
+      "audience": ["aiden", "bingpu"],
+      "audienceLabel": "6y、9y 親子共看；9y 英文進階",
+      "description": "中文語音互動故事與英文進階探索；蒸發、成雲、雨、雪、冰雹及回到地面。",
+      "reusable": "共用科學模型的雙語故事、預製語音、條件比較與 SVG 科學圖解。",
+      "availability": "available",
+      "links": [{"label": "開始水的旅行", "url": "../water-cycle/"}]
+    },
+    {
       "id": "nativecamp-2026-10-02",
       "name": "Native Camp 2026-10-02 Denny",
       "status": "complete",
