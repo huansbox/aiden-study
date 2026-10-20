@@ -24,9 +24,9 @@
       {id:"snow", title:"集雪與拋雪", required:[...span(7,9), "p10-3"], parts:[], motion:"cargo", open:"集雪拋出", close:"回到雪堆", packs:[9]},
     ], cargo:"p10-3", cargoUnit:"snow"},
     "mobile-crane": {name:"伸縮吊車", units:[
-      {id:"supports", title:"支撐腳", required:pack(4), parts:["p4-1","p4-2"], motion:"supports", open:"伸出", close:"收回", packs:[3]},
-      {id:"telescope", title:"伸縮臂", required:[...pack(4), ...pack(6), ...pack(7)], parts:["p7-2", "p7-3", ...pack(8)], motion:"telescope", depends:"supports", open:"伸長", close:"縮回", packs:[6]},
-      {id:"hoist", title:"吊鉤與積木箱", required:[...pack(4), ...pack(6), ...span(7,9)], parts:["p8-2","p8-3", ...pack(9)], motion:"hoist", depends:"supports", axis:"vertical", open:"吊起", close:"放下", packs:[8]},
+      {id:"supports", title:"支撐腳", required:pack(4), parts:pack(4), motion:"pose", frameCount:5, open:"伸出", close:"收回", packs:[3]},
+      {id:"telescope", title:"伸縮臂", required:[...pack(4), ...pack(6), ...pack(7)], parts:["p7-2", "p7-3", ...pack(8)], motion:"telescope", depends:"supports", dependsMin:1, open:"伸長", close:"縮回", packs:[6]},
+      {id:"hoist", title:"吊鉤與積木箱", required:[...pack(4), ...pack(6), ...span(7,9)], parts:["p8-2","p8-3", ...pack(9)], motion:"hoist", depends:"supports", dependsMin:1, axis:"vertical", open:"吊起", close:"放下", packs:[8]},
     ]},
     "cement-mixer": {name:"水泥攪拌車", units:[
       {id:"drum", title:"攪拌筒", required:[...span(5,8)], parts:span(6,7), motion:"pose", pivot:"p6-2", open:"轉筒", close:"復位", packs:[7]},
@@ -42,6 +42,10 @@
   const multiply = (a,b) => [a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]];
   const mapped = (m,p) => [m[0]*p[0]+m[2]*p[1]+m[4],m[1]*p[0]+m[3]*p[1]+m[5]];
   const matrixText = matrix => `matrix(${matrix.map(n=>Math.abs(n)<1e-10?0:Number(n.toFixed(8))).join(' ')})`;
+  function planeMatrices(motion) {
+    const [a,b,c,d]=motion.basis,[x,y]=motion.pivot,det=a*d-b*c;
+    return {forward:[a,b,c,d,x,y],inverse:[d/det,-b/det,-c/det,a/det,(c*y-d*x)/det,(b*x-a*y)/det]};
+  }
   // A * R * A^-1 turns the original projected plane around its real hinge.
   // In particular, a fan's outer projected ellipse stays on the engine axis.
   function planarRotation(motion, angle) {
@@ -49,11 +53,6 @@
     if(!Number.isFinite(det) || Math.abs(det)<1e-8) return [1,0,0,1,0,0];
     const radians=angle*Math.PI/180,cs=Math.cos(radians),sn=Math.sin(radians);
     return multiply(multiply([a,b,c,d,x,y],[cs,sn,-sn,cs,0,0]),[d/det,-b/det,-c/det,a/det,(c*y-d*x)/det,(b*x-a*y)/det]);
-  }
-  function planarScale(motion, scale) {
-    const [a,b,c,d]=motion.basis,[x,y]=motion.pivot,det=a*d-b*c;
-    if(Math.abs(det)<1e-8)return [1,0,0,1,0,0];
-    return multiply(multiply([a,b,c,d,x,y],[1,0,0,scale,0,0]),[d/det,-b/det,-c/det,a/det,(c*y-d*x)/det,(b*x-a*y)/det]);
   }
   function hingedSurface(motion,angle,face='yz') {
     const [xx,xy,yx,yy]=motion.basis,[x,y]=motion.pivot;
@@ -93,14 +92,17 @@
     const units = spec.units;
     const poseSets = model.mechanismPoses || {};
     const poseSource = frame => frame.src || sourcesIn(frame.svg)[0];
-    const posesReady = kind => Array.isArray(poseSets[kind]?.frames) && poseSets[kind].frames.length>=4 && poseSets[kind].frames.every(frame=>poseSource(frame));
+    const posesReady = kind => {
+      const frames=poseSets[kind]?.frames,expected=units.find(unit=>unit.id===kind)?.frameCount;
+      return Array.isArray(frames) && frames.length>=4 && (!expected || frames.length===expected) && frames.every(frame=>poseSource(frame));
+    };
     const values = Object.fromEntries(units.map(unit => [unit.id, 0]));
     const featureIds = new Set(units.flatMap(unit => [...unit.required, ...unit.parts]));
     if (spec.cargo) featureIds.add(spec.cargo);
     let placed = new Set(), current = units[0].required.at(-1), trialAnimation = null;
     const reduced = () => global.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
     const installed = (unit, ids = placed) => !!unit && unit.required.every(id => ids.has(id));
-    const can = (unit, ids = placed) => installed(unit, ids) && (unit.motion!=='pose' || posesReady(unit.id) && poseSets[unit.id].required.every(id=>ids.has(id))) && !(model.id==='excavator' && unit.id!=='turntable' && values.turntable>0) && (!unit.depends || installed(units.find(item=>item.id===unit.depends),ids) && values[unit.depends] > 0);
+    const can = (unit, ids = placed) => installed(unit, ids) && (unit.motion!=='pose' || posesReady(unit.id) && poseSets[unit.id].required.every(id=>ids.has(id))) && !(model.id==='excavator' && unit.id!=='turntable' && values.turntable>0) && (!unit.depends || installed(units.find(item=>item.id===unit.depends),ids) && (unit.dependsMin ? values[unit.depends] >= unit.dependsMin : values[unit.depends] > 0));
     const value = kind => can(units.find(unit => unit.id === kind)) ? values[kind] || 0 : 0;
     const center = id => {
       const b = byId(id)?.box || {x:300,y:190,width:120,height:90};
@@ -156,8 +158,9 @@
         const rotation=planarRotation(motion,amount*unit.angle);
         return matrixText(segmentTransform(linkage.base,linkage.tip,mapped(rotation,linkage.tip)));
       }
-      if(motion?.basis && ['spin','raise','tip','bin'].includes(unit.motion)) {
-        const angle=unit.motion==='spin'?amount*540:unit.motion==='bin'?-amount*135:amount*unit.angle;
+      if(unit.motion==='spin' && motion?.basis) return `rotate(${amount*540})`;
+      if(motion?.basis && ['raise','tip','bin'].includes(unit.motion)) {
+        const angle=unit.motion==='bin'?-amount*135:amount*unit.angle;
         let matrix=planarRotation(motion,angle);
         if(unit.id==='tip' && ['p7-1','p7-3'].includes(id) && byId('p7-2')?.motion) matrix=multiply(matrix,hingedSurface(byId('p7-2').motion,amount*70));
         if(unit.id==='bin' && id==='p9-2' && byId('p9-2')?.motion) matrix=multiply(matrix,hingedSurface(byId('p9-2').motion,Math.max(0,amount-.45)*-100,'xz'));
@@ -168,7 +171,6 @@
       if (unit.motion === "pose") return "translate(0 0)";
       if (unit.motion === "raise" || unit.motion === "tip") return `rotate(${amount*unit.angle} ${x} ${y})`;
       if (unit.motion === "wings") return `translate(${['p5-1','p11-1',...pack(6)].includes(id) ? -amount*25 : ['p5-2','p11-2',...pack(7)].includes(id) ? amount*25 : 0} ${id === "p5-3" ? -amount*22 : 0})`;
-      if (unit.motion === "supports") return linkage?.basis ? matrixText(planarScale(linkage,.65+amount*.35)) : 'translate(0 0)';
       if (unit.motion === "telescope") {
         const pose=telescopePose(amount);
         return id==='p7-2' ? matrixText(pose.middle) : id==='p7-3' ? matrixText(pose.outer) : `translate(${pose.end.join(' ')})`;
@@ -186,6 +188,16 @@
       }
       if (unit.motion === "bin") return `rotate(${-amount*135} ${x} ${y})`;
       return "translate(0 0)";
+    }
+    function movement(unit,id,amount,art,animate) {
+      const motion=byId(unit.pivot || unit.parts[0])?.motion;
+      const spin=unit.motion==='spin',plane=spin && motion?.basis ? planeMatrices(motion) : null;
+      const origin=plane ? '' : ` ${center(id).join(' ')}`;
+      const animation=animate && spin ? `<animateTransform data-vehicle-trial attributeName="transform" type="rotate" from="0${origin}" to="540${origin}" dur="1.1s"/>` : '';
+      const moving=`<g data-vehicle-move="${unit.id}" data-moving-part="${id}" ${spin ? `data-vehicle-spin="${unit.id}" ` : ''}transform="${transform(unit,id,amount)}">${animation}${plane ? `<g data-vehicle-plane-inverse="${unit.id}" transform="${matrixText(plane.inverse)}">${art}</g>` : art}</g>`;
+      // A fixed projected plane surrounds the rotation. SVG can animate its
+      // local angle without interpolating matrices or turning the ellipse.
+      return plane ? `<g data-vehicle-plane="${unit.id}" transform="${matrixText(plane.forward)}">${moving}</g>` : moving;
     }
     const cargoDelta = amount => {
       if(!spec.cargo)return [0,0];
@@ -259,12 +271,15 @@
         let poseImage='';
         if(poseUnit) {
           const pose=poseSets[poseUnit.id],frame=pose.frames[Math.round((before?0:value(poseUnit.id))*(pose.frames.length-1))];
-          poseImage=item.id===poseUnit.parts.at(-1) ? `<image data-vehicle-pose="${poseUnit.id}" ${poseUnit.id==='drum'?'data-vehicle-drum-pose':''} visibility="${poseUnit.id==='turntable' && !value('turntable') ? 'hidden' : 'visible'}" href="${esc(poseSource(frame))}" x="0" y="0" width="800" height="500"/>${animate===poseUnit.id ? pose.frames.map((step,index)=>`<image href="${esc(poseSource(step))}" x="0" y="0" width="800" height="500" visibility="hidden"><set attributeName="visibility" to="visible" begin="${index*.12}s" dur=".125s"/></image>`).join('') : ''}` : '';
+          const animation=animate===poseUnit.id ? pose.frames.slice(0,-1).map((step,index)=>`<set data-vehicle-trial attributeName="href" to="${esc(poseSource(step))}" begin="${index*.12}s" dur=".12s"/>`).join('') : '';
+          // A single transparent PNG is visible at a time, including during
+          // the trial; the underlying href already holds the final frame.
+          poseImage=item.id===poseUnit.parts.at(-1) ? `<image data-vehicle-pose="${poseUnit.id}" ${poseUnit.id==='drum'?'data-vehicle-drum-pose':''} visibility="${poseUnit.id==='turntable' && !value('turntable') ? 'hidden' : 'visible'}" href="${esc(poseSource(frame))}" x="0" y="0" width="800" height="500">${animation}</image>` : '';
           if(poseUnit.id!=='turntable') return poseImage;
         }
         let art = `<g data-vehicle-part="${item.id}">${resting ? artFor(item,ids) : observedArt(item,ids)}</g>`;
         if (item.id === spec.cargo) return `<g data-vehicle-cargo transform="${before ? 'translate(0 0)' : cargoTransform()}">${art}${animate===spec.cargoUnit ? `<animateTransform attributeName="transform" type="translate" values="${[0,.2,.4,.6,.8,1].map(amount=>cargoDelta(amount).join(' ')).join(';')}" dur="1.1s"/>` : ''}</g>`;
-        for (const unit of [...units].sort((a,b)=>(a.id === "tip" ? -1 : b.id === "tip" ? 1 : 0)).reverse()) if (unit.parts.includes(item.id)) art = `<g data-vehicle-move="${unit.id}" data-moving-part="${item.id}" transform="${transform(unit,item.id,before?0:value(unit.id))}">${animate===unit.id && unit.motion==='spin' ? `<animate attributeName="transform" values="${[0,.125,.25,.375,.5,.625,.75,.875,1].map(amount=>transform(unit,item.id,amount)).join(';')}" dur="1.1s"/>` : ''}${art}</g>`;
+        for (const unit of [...units].sort((a,b)=>(a.id === "tip" ? -1 : b.id === "tip" ? 1 : 0)).reverse()) if (unit.parts.includes(item.id)) art = movement(unit,item.id,before?0:value(unit.id),art,animate===unit.id);
         if(poseUnit?.id==='turntable') art=`<g data-vehicle-pose-rest="turntable" visibility="${value('turntable')?'hidden':'visible'}">${art}</g>`;
         return art+poseImage;
       }).join("");
@@ -283,6 +298,9 @@
       }).join('')}<small class="vehicle-note">拖動、按鈕或方向鍵試玩</small></div>`;
     }
     function update(host) {
+      // Direct manipulation supersedes any currently playing trial, including
+      // animated href values which would otherwise mask the new slider value.
+      for(const animation of host.querySelectorAll('[data-vehicle-trial]')) animation.remove();
       // Replace only the feature internals, keeping the captured pointer's SVG
       // and focusable controls alive through the interaction.
       for(const item of parts) {

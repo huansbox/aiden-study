@@ -28,9 +28,10 @@ button.addEventListener('click', async () => {
     const poses={},rig=art.poseDefinition;
     if(rig){
       poses[rig.bundleKey]=[];
-      for(const [index,angle] of rig.angles.entries()){
-        button.textContent=`正在匯出${rig.name}姿勢 ${index+1} / ${rig.angles.length}…`;
-        poses[rig.bundleKey].push({angle,png:art.renderMechanismPose(angle)});
+      const values=rig.values||rig.angles,parameter=rig.values?'value':'angle';
+      for(const [index,value] of values.entries()){
+        button.textContent=`正在匯出${rig.name}姿勢 ${index+1} / ${values.length}…`;
+        poses[rig.bundleKey].push({[parameter]:value,png:art.renderMechanismPose(value)});
         await new Promise(resolve=>requestAnimationFrame(resolve));
       }
     }

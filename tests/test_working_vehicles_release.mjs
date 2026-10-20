@@ -6,6 +6,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {vehicleIds,vehicleGlobals} from './helpers/working-vehicle-fixtures.mjs';
+import {spinMatrix} from './helpers/svg-spin-plane.mjs';
 const source=name=>readFileSync(new URL(`../docs/shared/${name}`,import.meta.url),'utf8');
 function contextFor(ids) {
   const ctx=vm.createContext({console,Set});ctx.window=ctx;
@@ -93,11 +94,11 @@ for(const id of vehicleIds) test(`${id}: published source/runtime counts, PNGs, 
 test('published jet-plane turbines use the geometry-projected center and keep their real plane attached',()=>{
   const ctx=contextFor(['jet-plane']),model=ctx.KidsBrickJetPlane,feature=ctx.KidsVehicleMechanism.create(model);feature.sync(saved(model));
   const part=model.steps[5].parts[2],motion=part.motion;assert.ok(motion,'real engine axis metadata required');
-  feature.move('fan-left',1/6);const scene=feature.scene(saved(model)),m=matrix(scene,'fan-left','p6-3');assert.ok(m);
+  feature.move('fan-left',1/6);const scene=feature.scene(saved(model)),m=spinMatrix(scene,'fan-left');assert.ok(m);
   const pivot=apply(m,motion.pivot);close(pivot[0],motion.pivot[0]);close(pivot[1],motion.pivot[1]);
   const u=apply(m,[motion.pivot[0]+motion.basis[0],motion.pivot[1]+motion.basis[1]]);
   close(u[0],motion.pivot[0]+motion.basis[2]);close(u[1],motion.pivot[1]+motion.basis[3]);
-  assert.deepEqual(matrix(scene,'fan-right','p7-3'),[1,0,0,1,0,0]);
+  spinMatrix(scene,'fan-right').forEach((n,i)=>close(n,[1,0,0,1,0,0][i]));
 });
 
 test('published excavator hydraulic bases stay fixed while their tips follow the joint plane',()=>{

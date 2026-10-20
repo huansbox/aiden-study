@@ -47,6 +47,8 @@
 
 新增圖仍是來源幾何的 1600×1000 透明 PNG，保存為 `mechanism-art/<part ID>.png`，不改原先三十組的拼裝圖或編號。metadata／runtime 的 `mechanismArt[part ID]` 保存 file、sha256、800×500 imageBox，runtime 加上同來源的 src／svg，hash 納入 assetDigest／assetVersion。可見下載按鈕會在一般零件之後附加這三／九張；匯入器會拒絕缺少它們的舊 bundle。離線 QA 另產生 `*-mechanism-art.png` 分件總覽。
 
+吊車支撐腳另有 `mechanismPoses.supports` 五張真姿勢，frames 的 `value` 依序為 0／.25／.5／.75／1，required 是完整 `p4-1`／`p4-2`／`p4-3`。`crane-support-poses.js` 僅在開發產圖時暫時延長黃色橫梁，缸、警示端與四塊腳墊向各側最多平移 48；缸與腳墊尺寸、y 高度、同軸接點及地面保持不變。第 0 姿勢直接沿用原 geometry／transform，其他姿勢在輸出後全部還原，不改三十組一般拼裝 PNG。正常組裝圖先輸出，再輸出五姿勢及三張完整機構圖；支撐腳全裝妥且完全伸出才開放伸臂與吊箱。幾何連接、剛體尺寸、畫布邊界及還原驗證使用 `node --test tests/test_crane_support_poses.mjs`。
+
 新六款必須從可見預覽頁正常下載 bundle，再離線匯入；不使用外接 headless browser、CDP 或 Playwright 產圖。以飛機為例：
 
 ```sh

@@ -939,6 +939,72 @@
       ]
     }
   ],
+  "mechanismPoses": {
+    "supports": {
+      "required": [
+        "p4-1",
+        "p4-2",
+        "p4-3"
+      ],
+      "frames": [
+        {
+          "value": 0,
+          "file": "mechanism-poses/supports-0.png",
+          "sha256": "ff34da83c7f02f89f6b7bbb57f516291f5d567fa05d95e819a43f7592e3c4612",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "value": 0.25,
+          "file": "mechanism-poses/supports-1.png",
+          "sha256": "657168a4efa4dfd216c5ebadda4ffd4b0758ea63dcfec4f6b04efd538648c963",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "value": 0.5,
+          "file": "mechanism-poses/supports-2.png",
+          "sha256": "9ede535464465de0e12f64bab37afabc6ea0d9e7e228cb8f468beb07a3f33cb2",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "value": 0.75,
+          "file": "mechanism-poses/supports-3.png",
+          "sha256": "0a5a32521bffbe1d1952a9790aa24d08e65cf50c0cbe152ac95f2133a2fe2781",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "value": 1,
+          "file": "mechanism-poses/supports-4.png",
+          "sha256": "c7d4a9ba74f1d5a13bb138b7913cc5d62cf2743a92053386369b186457595566",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        }
+      ]
+    }
+  },
   "mechanismArt": {
     "p7-2": {
       "file": "mechanism-art/p7-2.png",
@@ -971,5 +1037,5 @@
       }
     }
   },
-  "assetDigest": "852a64a4d456cffe5f91159f3187adcf3e86afeb380eae17edbb069796602cb2"
+  "assetDigest": "79ebd85428f35655f811f8af9d80bb8826b56197623bbd5451ef5fe4bd1be805"
 }

@@ -14,4 +14,5 @@ export const vehiclePoseDefinitions={
   'cement-mixer':{key:'drum',bundleKey:'mixerPoses',name:'攪拌筒',axis:'x',anchor:'drum',moving:indices(15,6),occludeWith:[12,13,14,21,22,23],required:partIds(indices(12,12)),angles:indices(0,8).map(index=>index*45)},
   'snow-blower':{key:'auger',bundleKey:'augerPoses',name:'螺旋集雪筒',axis:'z',anchor:'auger',moving:[21,22],occludeWith:[18,19,20,23],required:partIds(indices(18,6)),angles:indices(0,8).map(index=>index*45)},
   excavator:{key:'turntable',bundleKey:'turntablePoses',name:'怪手上車轉台',axis:'y',anchor:'turntable',moving:indices(9,21).filter(index=>index!==26),occludeWith:indices(0,9),required:partIds(indices(9,21).filter(index=>index!==26)),angles:[0,10,20,30,40]},
+  'mobile-crane':{key:'supports',bundleKey:'supportsPoses',name:'吊車支撐腳',type:'crane-supports',moving:[9,10,11],occludeWith:indices(0,9),required:['p4-1','p4-2','p4-3'],values:[0,.25,.5,.75,1]},
 };

@@ -142,12 +142,13 @@ test(`${modelId}: checked-in runtime matches the asset manifest and image bytes`
 
 if(vehiclePoseDefinitions[modelId])test(`${modelId} poses contain the actual moving geometry with the complete module requirement`,async()=>{
   const definition=vehiclePoseDefinitions[modelId],rig=model.mechanismPoses?.[definition.key];
+  const values=definition.values||definition.angles,parameter=definition.values?'value':'angle';
   assert.ok(rig);
   assert.equal(Array.from(rig.required).join(','),definition.required.join(','));
-  assert.equal(rig.frames.length,definition.angles.length);
+  assert.equal(rig.frames.length,values.length);
   assert.ok(new Set(rig.frames.map(frame=>frame.sha256)).size>=4);
   for(const [index,frame] of rig.frames.entries()){
-    assert.equal(frame.angle,definition.angles[index]);
+    assert.equal(frame[parameter],values[index]);
     assert.equal(frame.file,`mechanism-poses/${definition.key}-${index}.png`);
     assert.equal(JSON.stringify(frame.imageBox),JSON.stringify({x:0,y:0,width:800,height:500}));
     const info=await sharp(fs.readFileSync(assetPath(frame))).metadata();

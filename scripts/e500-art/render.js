@@ -3,6 +3,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createE500Model } from './model.js';
 import { vehicleArtModels, vehiclePoseDefinitions } from './vehicle-catalog.js';
+import { applyCraneSupportPose } from './crane-support-poses.js';
 
 const definitions = {
  e500: {title:'台鐵 E500 型電力機車', packs:14, create:createE500Model},
@@ -141,7 +142,12 @@ function renderMechanismPose(indices,axis,pivotValues,occludeWith,angle){
 const poseDefinition=vehiclePoseDefinitions[modelId];
 if(poseDefinition){
  window.trainArt.poseDefinition=poseDefinition;
- window.trainArt.renderMechanismPose=angle=>renderMechanismPose(poseDefinition.moving,poseDefinition.axis,model.userData.mechanismAnchors[poseDefinition.anchor],poseDefinition.occludeWith,angle);
+ window.trainArt.renderMechanismPose=value=>{
+  if(poseDefinition.type!=='crane-supports')return renderMechanismPose(poseDefinition.moving,poseDefinition.axis,model.userData.mechanismAnchors[poseDefinition.anchor],poseDefinition.occludeWith,value);
+  const restore=applyCraneSupportPose(model,value);
+  try{return window.trainArt.renderSelection(poseDefinition.moving,{occludeWith:poseDefinition.occludeWith});}
+  finally{restore();renderer.render(scene,camera);}
+ };
 }
 window.renderReady=true;
 

@@ -4,6 +4,7 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {uiHarness} from './helpers/train-workshop-ui.mjs';
 import {vehicleIds,vehicleFixture,vehicleGlobals} from './helpers/working-vehicle-fixtures.mjs';
+import {spinMatrix} from './helpers/svg-spin-plane.mjs';
 import '../docs/shared/collection-core.js';
 const C=globalThis.KidsCollectionCore;
 const ctx=vm.createContext({console,Set});ctx.window=ctx;
@@ -105,9 +106,36 @@ for(const id of vehicleIds) {
 
 test('crane supports must deploy first; retracting them resets the telescoping arm and load',()=>{
   const feature=create('mobile-crane'),saved=new Set(complete('mobile-crane'));feature.sync(saved);
-  feature.move('telescope',1);feature.move('hoist',1);assert.equal(feature.value('telescope'),0);assert.equal(feature.value('hoist'),0);
+  for(const amount of [0,.01,.5,.99]) {
+    feature.move('supports',amount);feature.move('telescope',1);feature.move('hoist',1);
+    assert.equal(feature.value('telescope'),0,`supports ${amount} is not fully deployed`);assert.equal(feature.value('hoist'),0);
+  }
   feature.move('supports',1);feature.move('telescope',1);feature.move('hoist',1);assert.equal(feature.value('hoist'),1);
-  feature.move('supports',0);assert.equal(feature.value('telescope'),0);assert.equal(feature.value('hoist'),0);
+  feature.move('supports',.99);assert.equal(feature.value('telescope'),0);assert.equal(feature.value('hoist'),0);
+});
+
+test('crane support poses replace all four beams/cylinders/pads together and missing art stays locked',()=>{
+  const model=vehicleFixture('mobile-crane'),feature=ctx.KidsVehicleMechanism.create(model),saved=new Set(complete('mobile-crane'));feature.sync(saved);
+  for(const [amount,index] of [[0,0],[.25,1],[.5,2],[.75,3],[1,4]]) {
+    feature.move('supports',amount);const scene=feature.scene(saved);
+    assert.match(scene,new RegExp(`data-vehicle-pose="supports"[^>]*href="[^"]*supports-${index}\\.png`));
+    for(const part of ids(4,4))assert.doesNotMatch(scene,new RegExp(`data-vehicle-part="${part}"`));
+  }
+  for(const missing of ids(4,4)) {
+    const partial=new Set([...saved].filter(id=>id!==missing));feature.sync(partial);
+    assert.doesNotMatch(feature.scene(partial),/data-vehicle-pose="supports"/);
+    assert.ok(feature.sourcesFor(partial).every(src=>!src.includes('mechanism-poses/supports-')));
+    assert.doesNotMatch(feature.scene(partial),new RegExp(`data-vehicle-part="${missing}"`));
+  }
+  delete model.mechanismPoses;const unavailable=ctx.KidsVehicleMechanism.create(model);unavailable.sync(saved);unavailable.trial('open','supports');
+  assert.equal(unavailable.value('supports'),0);assert.match(unavailable.controls(saved),/旋轉圖片尚未準備好/);
+  for(const part of ids(4,4))assert.match(unavailable.scene(saved),new RegExp(`data-vehicle-part="${part}"`));
+  for(let missing=0;missing<5;missing++) {
+    const incomplete=vehicleFixture('mobile-crane');incomplete.mechanismPoses.supports.frames.splice(missing,1);
+    const tool=ctx.KidsVehicleMechanism.create(incomplete);tool.sync(saved);tool.trial('open','supports');tool.move('telescope',1);tool.move('hoist',1);
+    assert.equal(tool.value('supports'),0,`pose ${missing} is required`);assert.equal(tool.value('telescope'),0);assert.equal(tool.value('hoist'),0);
+    assert.doesNotMatch(tool.scene(saved),/data-vehicle-pose="supports"/);
+  }
 });
 
 test('each source path stays inside its own model and empty scenes expose no movable PNGs',()=>{
@@ -133,14 +161,14 @@ test('projected turbine planes preserve their real pivot, ellipse basis and inde
   const model=vehicleFixture('jet-plane'),feature=ctx.KidsVehicleMechanism.create(model),saved=new Set(complete('jet-plane'));
   const part=model.steps[5].parts[2],{pivot,basis}=part.motion;
   feature.sync(saved);feature.move('fan-left',1/6);
-  const scene=feature.scene(saved),read=kind=>scene.match(new RegExp(`data-vehicle-move="${kind}"[^>]*transform="matrix\\(([^)]+)\\)"`))[1].split(' ').map(Number);
+  const scene=feature.scene(saved),read=kind=>spinMatrix(scene,kind);
   const m=read('fan-left'),apply=p=>[m[0]*p[0]+m[2]*p[1]+m[4],m[1]*p[0]+m[3]*p[1]+m[5]];
   const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} ≈ ${b}`);
   const center=apply(pivot);close(center[0],pivot[0]);close(center[1],pivot[1]);
   // A ninety-degree world-plane rotation maps its first basis to its second.
   const point=apply([pivot[0]+basis[0],pivot[1]+basis[1]]);
   close(point[0],pivot[0]+basis[2]);close(point[1],pivot[1]+basis[3]);
-  assert.deepEqual(read('fan-right'),[1,0,0,1,0,0]);
+  read('fan-right').forEach((n,i)=>close(n,[1,0,0,1,0,0][i]));
 });
 
 test('mixer uses real pose PNGs only after complete drum/support/chute; no frames means no rotation',()=>{
@@ -182,16 +210,54 @@ test('snow auger and excavator upper structure use real pose sets without moving
 
 test('trial animations play once from the same PNGs and reduced motion keeps direct manipulation',()=>{
   const id='jet-plane',feature=create(id),saved=new Set(complete(id));feature.sync(saved);
-  feature.trial('open','fan-left');assert.match(feature.scene(saved),/<animate attributeName="transform"/);
-  assert.doesNotMatch(feature.scene(saved),/<animate attributeName="transform"/,'ordinary repaint never repeats a trial');
+  feature.trial('open','fan-left');const scene=feature.scene(saved);
+  assert.match(scene,/<animateTransform data-vehicle-trial attributeName="transform" type="rotate" from="0" to="540" dur="1.1s"/);
+  assert.doesNotMatch(scene,/<animate attributeName="transform"/);
+  assert.doesNotMatch(feature.scene(saved),/data-vehicle-trial/,'ordinary repaint never repeats a trial');
   ctx.matchMedia=()=>({matches:true});
   try {
     feature.trial('open','fan-left');assert.doesNotMatch(feature.scene(saved),/<animate|<set /);
     assert.equal(feature.value('fan-left'),1);
   } finally {delete ctx.matchMedia;}
-  for(const [modelId,kind] of [['snow-blower','auger'],['cement-mixer','drum'],['excavator','turntable']]) {
+  for(const [modelId,kind] of [['snow-blower','auger'],['cement-mixer','drum'],['excavator','turntable'],['mobile-crane','supports']]) {
     const item=create(modelId),parts=new Set(complete(modelId));item.sync(parts);item.trial('open',kind);
-    assert.match(item.scene(parts),/<set attributeName="visibility"/);
-    item.endTrial();assert.doesNotMatch(item.scene(parts),/<set attributeName="visibility"/);
+    const animated=item.scene(parts),images=[...animated.matchAll(/<image[^>]*href="[^"]*mechanism-poses\/[^"]*"/g)];
+    assert.equal(images.length,1,`${kind}: transparent frames share one image, so they cannot overlap`);
+    assert.match(animated,/<set data-vehicle-trial attributeName="href"/);
+    assert.doesNotMatch(animated,/attributeName="visibility"/);
+    item.endTrial();assert.doesNotMatch(item.scene(parts),/data-vehicle-trial/);
+    ctx.matchMedia=()=>({matches:true});
+    try {
+      item.trial('open',kind);const direct=item.scene(parts);
+      assert.doesNotMatch(direct,/<set |<animate/);
+      assert.match(direct,new RegExp(`${kind}-${modelId==='excavator'||modelId==='mobile-crane'?4:7}\\.png`));
+    } finally {delete ctx.matchMedia;}
+  }
+});
+
+test('trial turbine angles stay on their projected ellipse throughout 540 degrees and affect one engine',()=>{
+  const model=vehicleFixture('jet-plane'),feature=ctx.KidsVehicleMechanism.create(model),saved=new Set(complete('jet-plane'));feature.sync(saved);feature.trial('open','fan-left');
+  const scene=feature.scene(saved),{pivot,basis}=model.steps[5].parts[2].motion;
+  const apply=(m,p)=>[m[0]*p[0]+m[2]*p[1]+m[4],m[1]*p[0]+m[3]*p[1]+m[5]];
+  for(const fraction of [0,.125,.25,.5,.75,1]) {
+    const angle=fraction*540,radians=angle*Math.PI/180,m=spinMatrix(scene,'fan-left',angle);
+    const center=apply(m,pivot),edge=apply(m,[pivot[0]+basis[0],pivot[1]+basis[1]]);
+    for(let i=0;i<2;i++) {
+      assert.ok(Math.abs(center[i]-pivot[i])<1e-5);
+      assert.ok(Math.abs(edge[i]-(pivot[i]+basis[i]*Math.cos(radians)+basis[i+2]*Math.sin(radians)))<1e-5);
+    }
+  }
+  assert.equal(feature.value('fan-right'),0);assert.equal((scene.match(/<animateTransform/g)||[]).length,1);
+});
+
+test('direct manipulation removes live trial nodes before setting the fan angle or pose href',()=>{
+  for(const [id,kind] of [['jet-plane','fan-left'],['excavator','turntable'],['snow-blower','auger'],['cement-mixer','drum'],['mobile-crane','supports']]) {
+    const feature=create(id),saved=new Set(complete(id));feature.sync(saved);feature.trial('open',kind);feature.scene(saved);feature.move(kind,.25);
+    let removed=false;const attributes={},node={dataset:{movingPart:id==='jet-plane'?'p6-3':'p4-1'},setAttribute:(name,value)=>{assert.ok(removed);attributes[name]=value;},value:'0'};
+    const host={querySelectorAll:selector=>selector==='[data-vehicle-trial]'?[{remove(){removed=true;}}]:selector===`[data-vehicle-move="${kind}"]`?[node]:[],querySelector:selector=>selector===`[data-vehicle-pose="${kind}"]`?node:null};
+    feature.update(host);assert.ok(removed);
+    if(id==='jet-plane')assert.equal(attributes.transform,'rotate(135)');
+    else assert.match(attributes.href,new RegExp(`${kind}-${id==='excavator'||id==='mobile-crane'?1:2}\\.png$`));
+    feature.trial('close',kind);assert.doesNotMatch(feature.scene(saved),/data-vehicle-trial/);
   }
 });

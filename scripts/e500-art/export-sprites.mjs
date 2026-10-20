@@ -77,17 +77,18 @@ try{
  const poseDefinition=vehiclePoseDefinitions[modelId];
  if(poseDefinition){
   const poses=bundle?.[poseDefinition.bundleKey];
-  assert.ok(Array.isArray(poses)&&poses.length===poseDefinition.angles.length,'重新整理可見預覽並下載含全部真實機構姿勢的素材渲染檔');
+  const values=poseDefinition.values||poseDefinition.angles,parameter=poseDefinition.values?'value':'angle';
+  assert.ok(Array.isArray(poses)&&poses.length===values.length,'重新整理可見預覽並下載含全部真實機構姿勢的素材渲染檔');
   await fs.mkdir(path.join(out,'mechanism-poses'),{recursive:true});
   const frames=[];
   for(const [index,pose] of poses.entries()){
-   assert.equal(pose.angle,poseDefinition.angles[index]);
+   assert.equal(pose[parameter],values[index]);
    const raw=Buffer.from(pose.png,'base64'),info=await sharp(raw).metadata();
    assert.equal(info.width,3200);assert.equal(info.height,2000);
    const bytes=await sharp(raw).resize(1600,1000).png().toBuffer();
    const file=`mechanism-poses/${poseDefinition.key}-${index}.png`,sha256=createHash('sha256').update(bytes).digest('hex');
    await fs.writeFile(path.join(out,file),bytes);
-   frames.push({angle:pose.angle,file,sha256,imageBox:{x:0,y:0,width:800,height:500}});
+   frames.push({[parameter]:pose[parameter],file,sha256,imageBox:{x:0,y:0,width:800,height:500}});
    manifestEntries.push(`mechanism:${poseDefinition.key}:${index}:${sha256}`);
   }
   assert.ok(new Set(frames.map(frame=>frame.sha256)).size>=4,'機構姿勢必須含真正可見的轉動差異');

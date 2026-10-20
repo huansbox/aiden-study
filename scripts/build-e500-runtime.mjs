@@ -53,9 +53,10 @@ const poseDefinition=vehiclePoseDefinitions[modelId];
 if(metadata.mechanismPoses){
   if(!poseDefinition||Object.keys(metadata.mechanismPoses).join()!==poseDefinition.key)throw Error('Unexpected authored mechanism pose set');
   const {required,frames}=metadata.mechanismPoses[poseDefinition.key];
-  if(JSON.stringify(required)!==JSON.stringify(poseDefinition.required)||!Array.isArray(frames)||frames.length!==poseDefinition.angles.length)throw Error('The complete mechanism module needs every authored pose');
+  const values=poseDefinition.values||poseDefinition.angles,parameter=poseDefinition.values?'value':'angle';
+  if(JSON.stringify(required)!==JSON.stringify(poseDefinition.required)||!Array.isArray(frames)||frames.length!==values.length)throw Error('The complete mechanism module needs every authored pose');
   for(const [index,frame] of frames.entries()){
-    if(frame.angle!==poseDefinition.angles[index]||JSON.stringify(frame.imageBox)!==JSON.stringify({x:0,y:0,width:800,height:500}))throw Error('Invalid mechanism pose');
+    if(frame[parameter]!==values[index]||JSON.stringify(frame.imageBox)!==JSON.stringify({x:0,y:0,width:800,height:500}))throw Error('Invalid mechanism pose');
     await checkedAsset(frame.file,frame.sha256,`mechanism-poses/${poseDefinition.key}-${index}.png`);
     manifestEntries.push(`mechanism:${poseDefinition.key}:${index}:${frame.sha256}`);
   }
