@@ -5,34 +5,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="connect-src 'none'; form-action 'none'">
-  <title>火車試拼 · 家長後台</title>
+  <title>積木試拼 · 家長後台</title>
   <link rel="stylesheet" href="../shared/brick-workshop.css?v=20261019-fixed-track">
   <link rel="stylesheet" href="../shared/brick-celebration.css?v=20260923-train-series">
   <link rel="stylesheet" href="../shared/e500-workshop.css?v=20261019-fixed-track">
   <link rel="stylesheet" href="../shared/ct273-mechanism.css?v=20261019-fixed-track">
   <link rel="stylesheet" href="../shared/breezy-mechanism.css?v=20261019-fixed-track">
   <link rel="stylesheet" href="../shared/train-features.css?v=20261020-train-features">
+  <link rel="stylesheet" href="../shared/vehicle-mechanism.css?v=20261020-working-vehicles">
   <link rel="stylesheet" href="../shared/highspeed-mechanism.css?v=20261020-train-features">
   <link rel="stylesheet" href="train-preview.css?v=20260923-parent-preview">
 </head>
 <body>
   <main class="train-preview">
     <header class="train-preview__header">
-      <div><p class="train-preview__eyebrow">家長試玩</p><h1>火車試拼</h1></div>
+      <div><p class="train-preview__eyebrow">家長試玩</p><h1>積木試拼</h1></div>
       <a id="back-parent" href="./?child=aiden">回家長後台</a>
     </header>
     <section class="train-preview__controls" aria-label="試拼設定">
       <p>自由試拼，不消耗拼裝包，也不影響任何孩子的收藏。</p>
       <div class="train-preview__actions">
-        <label for="train-model">選擇火車 <select id="train-model"></select></label>
+        <label for="train-model">選擇作品 <select id="train-model"></select></label>
         <button type="button" id="start-first">從第一包開始</button>
         <button type="button" id="start-last">試最後一片與慶祝</button>
       </div>
       <p id="preview-mode" role="status"></p>
-      <p class="train-preview__note">試拼進度只留在此頁；切換火車、重新開始或重新整理都會重置。</p>
+      <p class="train-preview__note">試拼進度只留在此頁；切換作品、重新開始或重新整理都會重置。</p>
     </section>
     <div id="train-workshop"></div>
-    <noscript>請開啟 JavaScript，才能試拼火車。</noscript>
+    <noscript>請開啟 JavaScript，才能試拼積木。</noscript>
   </main>
   <script src="../shared/brick-e500.js?v=20260923-train-series"></script>
   <script src="../shared/brick-emu3000.js?v=20260923-train-series"></script>
@@ -42,16 +43,23 @@
   <script src="../shared/brick-emu900.js?v=20261011-taiwan-trains"></script>
   <script src="../shared/brick-breezy-blue.js?v=20261011-taiwan-trains"></script>
   <script src="../shared/brick-ct273.js?v=20261011-taiwan-trains"></script>
-  <script src="../shared/brick-models.js?v=20261011-taiwan-trains"></script>
-  <script src="../shared/brick-celebration.js?v=20261019-fixed-track"></script>
+  <script src="../shared/brick-jet-plane.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-excavator.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-snow-blower.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-mobile-crane.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-cement-mixer.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-recycling-truck.js?v=20261020-working-vehicles"></script>
+<script src="../shared/brick-models.js?v=20261020-working-vehicles"></script>
+  <script src="../shared/brick-celebration.js?v=20261020-working-vehicles"></script>
   <script src="../shared/brick-audio.js?v=20260923-train-series"></script>
   <script src="../shared/breezy-mechanism.js?v=20261019-fixed-track"></script>
   <script src="../shared/ct273-mechanism.js?v=20261019-fixed-track"></script>
   <script src="../shared/emu-mechanism.js?v=20261020-train-features"></script>
   <script src="../shared/highspeed-mechanism.js?v=20261020-train-features"></script>
-  <script src="../shared/train-workshop.js?v=20261020-train-features"></script>
-  <script src="../shared/brick-workshop.js?v=20261020-train-features"></script>
-  <script src="train-preview.js?v=20261019-fixed-track"></script>
+  <script src="../shared/vehicle-mechanism.js?v=20261020-working-vehicles"></script>
+  <script src="../shared/train-workshop.js?v=20261020-working-vehicles"></script>
+  <script src="../shared/brick-workshop.js?v=20261020-working-vehicles"></script>
+  <script src="train-preview.js?v=20261020-working-vehicles"></script>
   <script>KidsTrainPreview.boot();</script>
 </body>
 </html>

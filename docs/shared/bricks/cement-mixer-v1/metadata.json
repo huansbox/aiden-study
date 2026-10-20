@@ -1,0 +1,989 @@
+{
+  "id": "cement-mixer",
+  "title": "旋轉滾筒混凝土車",
+  "series": "工作車系列",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "準備三塊工作底板",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前方工作底板",
+          "z": 0,
+          "box": {
+            "x": 126.5,
+            "y": 353.75,
+            "width": 241,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 126.5,
+            "y": 353.75,
+            "width": 241,
+            "height": 96.5
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "1e4fd2e9f47e2870cadb88345bc4297e149cb57b3213ddfc51ce70080406513c",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中央工作底板",
+          "z": 1,
+          "box": {
+            "x": 279.5,
+            "y": 314.5,
+            "width": 241,
+            "height": 96.25
+          },
+          "imageBox": {
+            "x": 279.5,
+            "y": 314.5,
+            "width": 241,
+            "height": 96.25
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "90ee13bd32534a3b398572e3d1f97104bbefad59419672e1acc00b64423d4d02",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p1-3",
+          "name": "後方工作底板",
+          "z": 2,
+          "box": {
+            "x": 432.5,
+            "y": 275,
+            "width": 241,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 432.5,
+            "y": 275,
+            "width": 241,
+            "height": 96.5
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "38804eb4e670a91858613797e21e3aba4ea0b49d4350ffec323af91b824a64d7",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "裝上三組重型輪軸",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "前方轉向輪軸",
+          "z": 3,
+          "box": {
+            "x": 236.75,
+            "y": 305.5,
+            "width": 138.5,
+            "height": 97
+          },
+          "imageBox": {
+            "x": 236.75,
+            "y": 305.5,
+            "width": 138.5,
+            "height": 97
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "d9568cc2b3e48a2d26fbd6049fd6d5544aa0078b2d18b63515da945e61ee14ab",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "後方第一承重輪軸",
+          "z": 4,
+          "box": {
+            "x": 394.5,
+            "y": 265,
+            "width": 138.5,
+            "height": 97
+          },
+          "imageBox": {
+            "x": 394.5,
+            "y": 265,
+            "width": 138.5,
+            "height": 97
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "a9865e75c38223961dda8d0aafcfcd56e6137faf0b44d2ea724e7f01c1b973a9",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p2-3",
+          "name": "後方第二承重輪軸",
+          "z": 5,
+          "box": {
+            "x": 445.5,
+            "y": 252,
+            "width": 138.5,
+            "height": 97
+          },
+          "imageBox": {
+            "x": 445.5,
+            "y": 252,
+            "width": 138.5,
+            "height": 97
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "77ffe0ce778ddf6b0b7beefef7c3edbe2516a42b715ea525004a0a2e26d4280f",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "d6c6c01011d4e86c31be83f5c7559f79a638e90fae3bf3eb316a811aea6621c8"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p2-3-v1.png",
+              "sha256": "d6c6c01011d4e86c31be83f5c7559f79a638e90fae3bf3eb316a811aea6621c8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "搭好攪拌車長底盤",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "前段藍色車架",
+          "z": 6,
+          "box": {
+            "x": 221.25,
+            "y": 262.75,
+            "width": 177.5,
+            "height": 86
+          },
+          "imageBox": {
+            "x": 221.25,
+            "y": 262.75,
+            "width": 177.5,
+            "height": 86
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "4e9b3db33d2b983d242cce8812aed4c3b12ecae978ea04456def4075fa1de368",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "中央攪拌筒車架",
+          "z": 7,
+          "box": {
+            "x": 316.75,
+            "y": 238.25,
+            "width": 177.5,
+            "height": 86
+          },
+          "imageBox": {
+            "x": 316.75,
+            "y": 238.25,
+            "width": 177.5,
+            "height": 86
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "3f7a062dbd68194e8722f7c1649391e7da1266ea24c57cfe613ab724d0bf02e2",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "b4c87067e134b847fabdd582dd6c33d19ab4d07e0539a5bd360197d775780297"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "後段卸料車架",
+          "z": 8,
+          "box": {
+            "x": 412.5,
+            "y": 213.75,
+            "width": 177.5,
+            "height": 86
+          },
+          "imageBox": {
+            "x": 412.5,
+            "y": 213.75,
+            "width": 177.5,
+            "height": 86
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "1d308a7cb3d10693f8d6bc081531c3df93416015376126657a62bdf3475c1002",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "039a96a081936b5016246fd60042b0817ab0d2e964d517b37bfe17f0e4e2e23f"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "039a96a081936b5016246fd60042b0817ab0d2e964d517b37bfe17f0e4e2e23f"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "拼起藍色駕駛室",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "駕駛室下半厚磚與踏板",
+          "z": 9,
+          "box": {
+            "x": 225.5,
+            "y": 222.75,
+            "width": 165.5,
+            "height": 119.75
+          },
+          "imageBox": {
+            "x": 225.5,
+            "y": 222.75,
+            "width": 165.5,
+            "height": 119.75
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "faabd03e64687224f54834916796e4f7686afff1bb9c4b0963498c36ed2312ce",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "獨立前窗與兩側車窗",
+          "z": 10,
+          "box": {
+            "x": 226.75,
+            "y": 159.75,
+            "width": 166.25,
+            "height": 129
+          },
+          "imageBox": {
+            "x": 226.75,
+            "y": 159.75,
+            "width": 166.25,
+            "height": 129
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "b9701cdd68fcc112ae4fdae2e82d9d2d8d9cf019691976e760603ef639dd5e25",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "54b5512e23319146dacd9f0305e13f51da764fbe2c8ae702b2be0b2810726311"
+            }
+          ]
+        },
+        {
+          "id": "p4-3",
+          "name": "凸點藍色屋頂與警示燈",
+          "z": 11,
+          "box": {
+            "x": 217.75,
+            "y": 146,
+            "width": 181.25,
+            "height": 77.25
+          },
+          "imageBox": {
+            "x": 217.75,
+            "y": 146,
+            "width": 181.25,
+            "height": 77.25
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "f8a6123ccdbad951e88c8c4a2cc7fed33ce33be85a8e70cda04a18500eac823f",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "建立攪拌筒雙端支承",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "前方三角筒座",
+          "z": 12,
+          "box": {
+            "x": 385.75,
+            "y": 225.5,
+            "width": 82.5,
+            "height": 61.5
+          },
+          "imageBox": {
+            "x": 385.75,
+            "y": 225.5,
+            "width": 82.5,
+            "height": 61.5
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "47b588d90b8dbe084178a326401c2b5a6b329c43b151a4ffebc7c9b12791cbcf",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "後方三角筒座與後平台",
+          "z": 13,
+          "box": {
+            "x": 432.25,
+            "y": 205.5,
+            "width": 155.25,
+            "height": 64.5
+          },
+          "imageBox": {
+            "x": 432.25,
+            "y": 205.5,
+            "width": 155.25,
+            "height": 64.5
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "b2e311379eea6c14bde23c02d419035570533851acca6ea47e3aee38edc11a71",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p5-3",
+          "name": "外露滾筒支承輪與傳動箱",
+          "z": 14,
+          "box": {
+            "x": 354.75,
+            "y": 183.5,
+            "width": 172.75,
+            "height": 91.25
+          },
+          "imageBox": {
+            "x": 354.75,
+            "y": 183.5,
+            "width": 172.75,
+            "height": 91.25
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "f3103063f3051bfe17fa3185a32f236275d2408e959282e4562a7141a485452c",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-3-v0.png",
+              "sha256": "b0adcdecdda1e6bf53657195b4c2a62a4204e2d316f0aec6a9ca453d27106318"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p5-3-v1.png",
+              "sha256": "0fbe191f61d7bb47be82a74654f749f4284630d509f478f26c7f3bc89ded24eb"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p5-3-v2.png",
+              "sha256": "8fd1d1cac3ac2d12f2e75ce20b0741a72ef92a76f18a36af271dfe4cec856f94"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "拼成三段攪拌筒",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "攪拌筒前方錐段",
+          "z": 15,
+          "box": {
+            "x": 367,
+            "y": 129,
+            "width": 95.25,
+            "height": 125
+          },
+          "imageBox": {
+            "x": 367,
+            "y": 129,
+            "width": 95.25,
+            "height": 125
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "eabc614144df62c0b7a6a01d1743aa0ea440c10f5d2d19cff73e2617f9c7b214",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "攪拌筒中央大肚分段筒身",
+          "z": 16,
+          "motion": {
+            "pivot": [
+              451.006065,
+              184.181545
+            ],
+            "basis": [
+              0,
+              -0.940667,
+              0.604019,
+              0.270436
+            ]
+          },
+          "box": {
+            "x": 384,
+            "y": 113.25,
+            "width": 133.25,
+            "height": 140.5
+          },
+          "imageBox": {
+            "x": 384,
+            "y": 113.25,
+            "width": 133.25,
+            "height": 140.5
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "27fdff6aaee038e317d0367997c61dadc9df9b4582be938b34c9f234e1bb284d",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-2-v0.png",
+              "sha256": "eb175ee3979f2774cc1a783a7809da5e9096d1241805f24322d377c37c9ccdee"
+            }
+          ]
+        },
+        {
+          "id": "p6-3",
+          "name": "攪拌筒後方出料錐段",
+          "z": 17,
+          "box": {
+            "x": 439,
+            "y": 114.5,
+            "width": 100.5,
+            "height": 125.25
+          },
+          "imageBox": {
+            "x": 439,
+            "y": 114.5,
+            "width": 100.5,
+            "height": 125.25
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "08a07be79c3edb26446a90b19db9b7ff2d764b58b93649bea1a6b96c0a58c41d",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "7ba4a1afa48c82bf75f0717e53b620c8ba2e7268682302349f305ea612e8f1de"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "778bd9277c77f0ec5b52d3b0681fe12770a66693b9f55e6adea8f118d40d0b6d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "扣上轉筒加強環與藍色葉紋",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "前方藍色加強環",
+          "z": 18,
+          "box": {
+            "x": 378.25,
+            "y": 121,
+            "width": 79,
+            "height": 134.75
+          },
+          "imageBox": {
+            "x": 378.25,
+            "y": 121,
+            "width": 79,
+            "height": 134.75
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "8258a02865795fc7fd3e282bc44c20bf4ba05aee94412eb545b771ea9dab70a2",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "中央藍色加強環與凸點",
+          "z": 19,
+          "box": {
+            "x": 422,
+            "y": 116,
+            "width": 73,
+            "height": 133.5
+          },
+          "imageBox": {
+            "x": 422,
+            "y": 116,
+            "width": 73,
+            "height": 133.5
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "59e71d76f8f3e4165b1b236d5ad413f899d73764a30197ba0b12fdf0225b29fb",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-2-v0.png",
+              "sha256": "cd0831af69cfd08d2fbbbae4b8d8f6d15c69a2e95d4629eb90b9bd2a1d237262"
+            }
+          ]
+        },
+        {
+          "id": "p7-3",
+          "name": "後方藍色加強環與斜紋",
+          "z": 20,
+          "box": {
+            "x": 476.25,
+            "y": 115.75,
+            "width": 48,
+            "height": 116.25
+          },
+          "imageBox": {
+            "x": 476.25,
+            "y": 115.75,
+            "width": 48,
+            "height": 116.25
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "39600418c17da2d590b2a11a9b114e02c5b0ca7770c404ddf59b955afe74b297",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "c57ee347099f805ca7a0fed124dec9bf469f364e10b84cbdda12a38ad3f2e96e"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p7-3-v1.png",
+              "sha256": "c57ee347099f805ca7a0fed124dec9bf469f364e10b84cbdda12a38ad3f2e96e"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "接上後方漏斗與卸料槽",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "後方開口進料漏斗",
+          "z": 21,
+          "box": {
+            "x": 502,
+            "y": 118.5,
+            "width": 63.75,
+            "height": 67.5
+          },
+          "imageBox": {
+            "x": 502,
+            "y": 118.5,
+            "width": 63.75,
+            "height": 67.5
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "e0c84fb1bffdc021c0fc104eee3d787196d7e588f36d7f3f6b74aecea3d0af3c",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "獨立可轉向的三段卸料槽",
+          "z": 22,
+          "motion": {
+            "pivot": [
+              533.093952,
+              194.112473
+            ],
+            "basis": [
+              0.604019,
+              0.270436,
+              0.79697,
+              -0.204962
+            ]
+          },
+          "box": {
+            "x": 527.75,
+            "y": 158,
+            "width": 90.5,
+            "height": 59
+          },
+          "imageBox": {
+            "x": 527.75,
+            "y": 158,
+            "width": 90.5,
+            "height": 59
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "bf99ac289452e04932829bb1f23855fca7ae1e126cb5643bacef9863a106c4b1",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-2-v0.png",
+              "sha256": "0abd09bea4525c9047153f7f3b89d3c0a2a8ade20b6f87a4220898482a5a51da"
+            }
+          ]
+        },
+        {
+          "id": "p8-3",
+          "name": "卸料槽轉軸與支撐架",
+          "z": 23,
+          "box": {
+            "x": 515,
+            "y": 181,
+            "width": 76.5,
+            "height": 72.5
+          },
+          "imageBox": {
+            "x": 515,
+            "y": 181,
+            "width": 76.5,
+            "height": 72.5
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "e5e2e77fd50c1bad024eb5b143f50f9dd1710c3eabc789ca625325d4f371c7b8",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "9e058a1c0316057da561da1e4bfc33f60e6286d6f5d1b8d619e7ba4fd2b3434c"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "55685a9c2bb6460de022555ce1466ba15ffb9e7ed9c8381d97bf12610e3de8dc"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p8-3-v2.png",
+              "sha256": "4c8dc2c169320909a90a018e774523dc9147c141059e879b2447e696739da942"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "完成車側扶手與爬梯",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "近側操作平台扶手",
+          "z": 24,
+          "box": {
+            "x": 540,
+            "y": 168.75,
+            "width": 52.5,
+            "height": 53
+          },
+          "imageBox": {
+            "x": 540,
+            "y": 168.75,
+            "width": 52.5,
+            "height": 53
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "e66c7cbd10cfcb47346d7ab2b1bbf862acd676178c639739c4414982aa4e3c0a",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "後方防滑爬梯",
+          "z": 25,
+          "box": {
+            "x": 497.5,
+            "y": 120.25,
+            "width": 44,
+            "height": 100.25
+          },
+          "imageBox": {
+            "x": 506,
+            "y": 120.25,
+            "width": 27,
+            "height": 100.25
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "67c5ff66ec36d106302302471eb54813810cb70497fd93c01fb32b741c7b2e88",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p9-3",
+          "name": "藍色傳動引擎與排氣管",
+          "z": 26,
+          "box": {
+            "x": 331.25,
+            "y": 207.5,
+            "width": 61.75,
+            "height": 54
+          },
+          "imageBox": {
+            "x": 331.25,
+            "y": 207.5,
+            "width": 61.75,
+            "height": 54
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "8855c4990dc2ed4b43a488fcb53bcc89d58f7fe5dc9995d59d0b49eeddd1e622",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "放好車燈輪拱與出料積木",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "卡車頭燈與前方格柵",
+          "z": 27,
+          "box": {
+            "x": 208.5,
+            "y": 258.5,
+            "width": 96,
+            "height": 84
+          },
+          "imageBox": {
+            "x": 208.5,
+            "y": 258.5,
+            "width": 96,
+            "height": 84
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "89530792c5e83fbb53bc6414b62b544b48419635ce749ca6c2ac5d4d41e11c2e",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "藍色六輪輪拱",
+          "z": 28,
+          "box": {
+            "x": 232,
+            "y": 270,
+            "width": 357.5,
+            "height": 100
+          },
+          "imageBox": {
+            "x": 232,
+            "y": 270,
+            "width": 357.5,
+            "height": 100
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "8b5c24476cf88c65c86c2cfa54cc6309cdd77cd22f0b7e57b53bb99095c134d7",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p10-3",
+          "name": "卸料槽下方灰色工作積木",
+          "z": 29,
+          "box": {
+            "x": 579.5,
+            "y": 282.5,
+            "width": 75.75,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 579.5,
+            "y": 283.5,
+            "width": 75.75,
+            "height": 42
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "6a7081752b8f95f65c5a533b0064ed2c3e35006fa1106c12fa9ce42bd3cd38ae",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p10-3-v0.png",
+              "sha256": "4bb80abf2f8244e092f6251c0160bb61ca8d852f3d3112e2c334769237c07ede"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p10-3-v1.png",
+              "sha256": "4bb80abf2f8244e092f6251c0160bb61ca8d852f3d3112e2c334769237c07ede"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mechanismPoses": {
+    "drum": {
+      "required": [
+        "p5-1",
+        "p5-2",
+        "p5-3",
+        "p6-1",
+        "p6-2",
+        "p6-3",
+        "p7-1",
+        "p7-2",
+        "p7-3",
+        "p8-1",
+        "p8-2",
+        "p8-3"
+      ],
+      "frames": [
+        {
+          "angle": 0,
+          "file": "mechanism-poses/drum-0.png",
+          "sha256": "650294938d8e5e1364d62690ce189c9bf6360278498eab292c0b90df8a8d57a9",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 45,
+          "file": "mechanism-poses/drum-1.png",
+          "sha256": "175352f96bc6ba0d9e719d51c0358a0030ca9ea06a9a8fa56180708bdaf0373a",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 90,
+          "file": "mechanism-poses/drum-2.png",
+          "sha256": "0708ffc604d663a10152b2ed86217ddcf0c773f4977429860ec1c8a8f439d2a1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 135,
+          "file": "mechanism-poses/drum-3.png",
+          "sha256": "09cdfa701312e129f618e602bfcee0b040ae08bfd3ee2fe3c455811ff0e0a2d1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 180,
+          "file": "mechanism-poses/drum-4.png",
+          "sha256": "650294938d8e5e1364d62690ce189c9bf6360278498eab292c0b90df8a8d57a9",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 225,
+          "file": "mechanism-poses/drum-5.png",
+          "sha256": "175352f96bc6ba0d9e719d51c0358a0030ca9ea06a9a8fa56180708bdaf0373a",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 270,
+          "file": "mechanism-poses/drum-6.png",
+          "sha256": "0708ffc604d663a10152b2ed86217ddcf0c773f4977429860ec1c8a8f439d2a1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 315,
+          "file": "mechanism-poses/drum-7.png",
+          "sha256": "09cdfa701312e129f618e602bfcee0b040ae08bfd3ee2fe3c455811ff0e0a2d1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        }
+      ]
+    }
+  },
+  "assetDigest": "bc5be4dba999854bc735709d7bb4d0f276b381fb76013462e7edaa12ac996435"
+}

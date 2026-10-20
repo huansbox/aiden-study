@@ -5,8 +5,9 @@ import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
+import { vehicleArtModels, vehiclePoseDefinitions } from './vehicle-catalog.js';
 const modelId=process.argv.find(arg=>arg.startsWith('--model='))?.slice(8)||'e500';
-const packCounts={e500:14,emu3000:12,r200:12,'700t':12,n700s:12,emu900:12,'breezy-blue':12,ct273:14};
+const packCounts={e500:14,emu3000:12,r200:12,'700t':12,n700s:12,emu900:12,'breezy-blue':12,ct273:14,...Object.fromEntries(Object.entries(vehicleArtModels).map(([id, definition])=>[id,definition.packs]))};
 if(!Object.hasOwn(packCounts,modelId))throw Error('Unknown model: '+modelId);
 const total=packCounts[modelId]*3;
 const base=path.dirname(fileURLToPath(import.meta.url)),out=path.resolve(base,'../../.scratch/e500-art/candidates',modelId==='e500'?'':modelId);
@@ -69,10 +70,45 @@ try{
   const box={x:imageBox.x-(Math.max(44,imageBox.width)-imageBox.width)/2,y:imageBox.y-(Math.max(44,imageBox.height)-imageBox.height)/2,width:Math.max(44,imageBox.width),height:Math.max(44,imageBox.height)};
   if(box.x<0||box.y<0||box.x+box.width>800||box.y+box.height>500)throw Error(p.id+' exceeds canvas');
   if(i%3===0)metadata.steps.push({title:model.steps[i/3].title,parts:[]});
-  metadata.steps.at(-1).parts.push({id:p.id,name:p.name,z:i,box,imageBox,file:'assets/'+p.id+'.png',sha256,occlusionPeers:parts.slice(packStart,i).map(p=>p.id),variants});
+  metadata.steps.at(-1).parts.push({id:p.id,name:p.name,z:i,...(p.motion?{motion:p.motion}:{}),box,imageBox,file:'assets/'+p.id+'.png',sha256,occlusionPeers:parts.slice(packStart,i).map(p=>p.id),variants});
   console.log(`${p.id} ${width}×${height}`);
  }
- metadata.assetDigest=createHash('sha256').update(metadata.steps.flatMap(s=>s.parts).flatMap(p=>[p.id+':'+p.sha256,...p.variants.map(v=>`${p.id}@${v.mask}:${v.sha256}`)]).join('\n')).digest('hex');
+ const manifestEntries=metadata.steps.flatMap(s=>s.parts).flatMap(p=>[p.id+':'+p.sha256,...p.variants.map(v=>`${p.id}@${v.mask}:${v.sha256}`)]);
+ const poseDefinition=vehiclePoseDefinitions[modelId];
+ if(poseDefinition){
+  const poses=bundle?.[poseDefinition.bundleKey];
+  assert.ok(Array.isArray(poses)&&poses.length===poseDefinition.angles.length,'重新整理可見預覽並下載含全部真實機構姿勢的素材渲染檔');
+  await fs.mkdir(path.join(out,'mechanism-poses'),{recursive:true});
+  const frames=[];
+  for(const [index,pose] of poses.entries()){
+   assert.equal(pose.angle,poseDefinition.angles[index]);
+   const raw=Buffer.from(pose.png,'base64'),info=await sharp(raw).metadata();
+   assert.equal(info.width,3200);assert.equal(info.height,2000);
+   const bytes=await sharp(raw).resize(1600,1000).png().toBuffer();
+   const file=`mechanism-poses/${poseDefinition.key}-${index}.png`,sha256=createHash('sha256').update(bytes).digest('hex');
+   await fs.writeFile(path.join(out,file),bytes);
+   frames.push({angle:pose.angle,file,sha256,imageBox:{x:0,y:0,width:800,height:500}});
+   manifestEntries.push(`mechanism:${poseDefinition.key}:${index}:${sha256}`);
+  }
+  assert.ok(new Set(frames.map(frame=>frame.sha256)).size>=4,'機構姿勢必須含真正可見的轉動差異');
+  metadata.mechanismPoses={[poseDefinition.key]:{required:poseDefinition.required,frames}};
+ }
+ const mechanismArtIds=vehicleArtModels[modelId]?.mechanismArt||[];
+ if(mechanismArtIds.length){
+  assert.deepEqual(Object.keys(bundle?.mechanismArt||{}),mechanismArtIds,'請重新整理預覽並下載含完整機構分件的素材渲染檔');
+  await fs.mkdir(path.join(out,'mechanism-art'),{recursive:true});
+  metadata.mechanismArt={};
+  for(const id of mechanismArtIds){
+   const raw=Buffer.from(bundle.mechanismArt[id],'base64'),info=await sharp(raw).metadata();
+   assert.equal(info.width,3200);assert.equal(info.height,2000);
+   const bytes=await sharp(raw).resize(1600,1000).png().toBuffer();
+   const file=`mechanism-art/${id}.png`,sha256=createHash('sha256').update(bytes).digest('hex');
+   await fs.writeFile(path.join(out,file),bytes);
+   metadata.mechanismArt[id]={file,sha256,imageBox:{x:0,y:0,width:800,height:500}};
+   manifestEntries.push(`mechanism-art:${id}:${sha256}`);
+  }
+ }
+ metadata.assetDigest=createHash('sha256').update(manifestEntries.join('\n')).digest('hex');
  await fs.writeFile(path.join(out,'metadata.json'),JSON.stringify(metadata,null,2)+'\n');
  const flat=metadata.steps.flatMap(s=>s.parts);
  const compose=async(list,destination)=>{
@@ -108,6 +144,14 @@ try{
   const published=path.resolve(base,'../../docs/shared/bricks/'+modelId+'-v1');
   await fs.mkdir(path.join(published,'assets'),{recursive:true});
   for(const p of metadata.steps.flatMap(s=>s.parts))for(const asset of [p,...p.variants])await fs.copyFile(path.join(out,asset.file),path.join(published,asset.file));
+  if(metadata.mechanismPoses){
+   await fs.mkdir(path.join(published,'mechanism-poses'),{recursive:true});
+   for(const rig of Object.values(metadata.mechanismPoses))for(const frame of rig.frames)await fs.copyFile(path.join(out,frame.file),path.join(published,frame.file));
+  }
+  if(metadata.mechanismArt){
+   await fs.mkdir(path.join(published,'mechanism-art'),{recursive:true});
+   for(const artwork of Object.values(metadata.mechanismArt))await fs.copyFile(path.join(out,artwork.file),path.join(published,artwork.file));
+  }
   await fs.copyFile(path.join(out,'metadata.json'),path.join(published,'metadata.json'));
   console.log('Published '+total+' groups and metadata: '+published);
  }

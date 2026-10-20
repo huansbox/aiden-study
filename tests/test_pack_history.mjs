@@ -98,9 +98,9 @@ test("已完成車款仍有未拆包時保留入口；紀錄依日期區分且�
   assert.match(h.root.innerHTML, /已獲得 3 包/);
 });
 
-test("收齊開放七款才保留餘包等新作，R200 收藏與紀錄保持且不列新選條件", async () => {
+test("收齊開放十三款才保留餘包等新作，R200 收藏與紀錄保持且不列新選條件", async () => {
   const state=C.empty();
-  for (const modelId of ["e500","ct273","breezy-blue","emu3000","emu900","700t","n700s","r200"]) {
+  for (const modelId of [...C.AVAILABLE_MODELS,"r200"]) {
     const build={id:`saved-${modelId}`,modelId,contentVersion:2,placed:[],completedAt:"2026-10-18T12:00:00Z"};
     build.placed=C.requiredParts(build).map(part=>part.id);state.builds.push(build);
     for(let index=C.packStart(build);index<C.PACK_COUNTS[modelId];index++)

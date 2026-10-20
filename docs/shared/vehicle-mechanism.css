@@ -1,0 +1,29 @@
+.e500-workshop .vehicle-controls { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; padding:10px; width:100%; }
+.e500-workshop .vehicle-inline-tools { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; margin:0 0 8px; padding:6px; background:#fffaf0; border-radius:12px; }
+.e500-workshop .vehicle-inline-tools > button { flex:0 0 auto; }
+.e500-workshop .vehicle-inline-tools > button svg { max-width:60px; max-height:40px; }
+.e500-workshop .vehicle-inline-tools .vehicle-controls { flex:1 1 260px; width:auto; padding:0; gap:5px; }
+.e500-workshop .vehicle-inline-tools .vehicle-unit { padding:4px; gap:4px; }
+.e500-workshop .vehicle-inline-tools .vehicle-unit input { width:88px; min-width:60px; }
+.e500-workshop .vehicle-inline-tools .vehicle-unit button { min-width:44px; padding:7px 9px; }
+.e500-workshop .vehicle-inline-tools .vehicle-note { display:none; }
+.e500-workshop .vehicle-unit { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:7px; max-width:100%; padding:8px; border:1px solid #bad4d6; border-radius:12px; }
+.e500-workshop .vehicle-unit strong { font-size:14px; }
+.e500-workshop .vehicle-unit input { min-width:80px; width:120px; max-width:35vw; accent-color:#397982; }
+.e500-workshop .vehicle-unit small { flex-basis:100%; text-align:center; color:#62636b; }
+.e500-workshop .vehicle-note { flex-basis:100%; text-align:center; color:#62636b; }
+.e500-workshop .vehicle-operate { cursor:grab; touch-action:none; }
+.e500-workshop .vehicle-focus { fill:none; stroke:transparent; stroke-width:3; pointer-events:none; }
+.e500-workshop .vehicle-operate:focus { outline:none; }
+.e500-workshop .vehicle-operate:focus-visible .vehicle-focus { stroke:#147fbc; }
+.e500-workshop .vehicle-hit { fill:transparent; }
+.e500-workshop .vehicle-gesture { display:inline-flex; align-items:center; gap:3px; color:#397982; }
+.e500-workshop .vehicle-gesture svg { width:62px; height:54px; }
+.e500-workshop .vehicle-gesture b { font-size:20px; }
+.e500-workshop .vehicle-guide { display:flex; align-items:center; justify-content:center; gap:8px; }
+.e500-workshop .vehicle-guide > span { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:5px; padding:5px; border-radius:9px; background:#fff8e8; }
+.e500-workshop .vehicle-guide > span > svg { width:76px; height:66px; }
+.e500-workshop .vehicle-guide small { flex-basis:100%; font-size:13px; text-align:center; }
+.e500-workshop .vehicle-guide i { color:#397982; }
+.e500-workshop .chapters.vehicle-chapters { grid-template-columns:repeat(auto-fit,minmax(50px,1fr)); }
+@media (max-width:550px) { .e500-workshop .vehicle-guide { gap:3px; } .e500-workshop .vehicle-guide > span { padding:3px; } .e500-workshop .vehicle-guide > span > svg { width:52px; height:48px; } .e500-workshop .vehicle-guide .vehicle-gesture svg { width:40px; height:44px; } }

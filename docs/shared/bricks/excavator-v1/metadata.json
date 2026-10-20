@@ -1,0 +1,1011 @@
+{
+  "id": "excavator",
+  "title": "履帶挖土機",
+  "series": "工作車系列",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "準備三塊工作底板",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前方工作底板",
+          "z": 0,
+          "box": {
+            "x": 131,
+            "y": 376.5,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 131,
+            "y": 376.5,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "640ab86a96b4c799f951ebaa9dca3af0aad1ade16c6dc00894ffbe55cb316140",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中央工作底板",
+          "z": 1,
+          "box": {
+            "x": 284,
+            "y": 337,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 284,
+            "y": 337,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "aea5f8dc5e5a6f0237ef40278393166f2b6a53696f055ec6beece71d88600b3e",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p1-3",
+          "name": "後方工作底板",
+          "z": 2,
+          "box": {
+            "x": 437,
+            "y": 297.75,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 437,
+            "y": 297.75,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "a8ab14294cde18e30095844dc3dbff93066bd822c288bca3e20bc6e640b4e769",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "拼出兩條厚履帶",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "遠側履帶與支承輪",
+          "z": 3,
+          "box": {
+            "x": 309.5,
+            "y": 259.5,
+            "width": 207.25,
+            "height": 111
+          },
+          "imageBox": {
+            "x": 309.5,
+            "y": 259.5,
+            "width": 207.25,
+            "height": 111
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "24b18e90f08b393c9cce11d39d2846f3f46d4aec481e35cf43837ba154ab4643",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "近側履帶與支承輪",
+          "z": 4,
+          "box": {
+            "x": 384.5,
+            "y": 293,
+            "width": 207.25,
+            "height": 111
+          },
+          "imageBox": {
+            "x": 384.5,
+            "y": 293,
+            "width": 207.25,
+            "height": 111
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "fc5ecc3b4959436a417ae45b819bd4b7b4d7db8aa4699b77f5d470beeeffe7b8",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p2-3",
+          "name": "履帶中央橫軸與底座",
+          "z": 5,
+          "box": {
+            "x": 353.5,
+            "y": 275.75,
+            "width": 194.25,
+            "height": 84
+          },
+          "imageBox": {
+            "x": 353.5,
+            "y": 275.75,
+            "width": 194.25,
+            "height": 84
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "a796cb95d654423c3bb490f5694e4c41999258b40cdcf5f7b78374a64cf1b83d",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "f3d5f03c0b24c1ef4ab5e73ddc7f54d4a139a00125e6d7b2afdc30d28bfb7b69"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p2-3-v1.png",
+              "sha256": "185809e05798087a900e70eaf21da8d3d79abe44b294aa4163e0710370eb22b5"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p2-3-v2.png",
+              "sha256": "304b71ec895a14964dfe048ff169a6cea5ce433e17fcd8174a19fd14c8792f34"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "搭好履帶上方平台",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "前段底座與防滑板",
+          "z": 6,
+          "box": {
+            "x": 312.25,
+            "y": 259.75,
+            "width": 155.5,
+            "height": 78.75
+          },
+          "imageBox": {
+            "x": 312.25,
+            "y": 259.75,
+            "width": 155.5,
+            "height": 78.75
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "13a6653aa5c6d0b5099e9a23ff1a14f8caf3f548e6b587600b342f108920d665",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "中央承重厚底座",
+          "z": 7,
+          "box": {
+            "x": 376,
+            "y": 243.5,
+            "width": 155.5,
+            "height": 78.5
+          },
+          "imageBox": {
+            "x": 376,
+            "y": 243.5,
+            "width": 155.5,
+            "height": 78.5
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "1e381d4dcfe60b059c9473d50ea8e8262f26a0dd381585b7ee01f1f7e54110ed",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "b5bbb5f4262769fda44022028d4d71afbad4e902eccaa0787ba6e61a0c416313"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "後段底座與踏階",
+          "z": 8,
+          "box": {
+            "x": 439.75,
+            "y": 230.25,
+            "width": 149,
+            "height": 75.5
+          },
+          "imageBox": {
+            "x": 439.75,
+            "y": 230.25,
+            "width": 149,
+            "height": 75.5
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "c0bb805019222bf3a90c9f994fcc268439010fe9758f6d833612d3d9d957c67f",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "372d0f2086cc7c0855be00fab48afaf15c257e7f813e7064be8d6fcc1c144669"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "372d0f2086cc7c0855be00fab48afaf15c257e7f813e7064be8d6fcc1c144669"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組成可旋轉上車",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "上車旋轉盤與前支架",
+          "z": 9,
+          "box": {
+            "x": 337.25,
+            "y": 222.75,
+            "width": 175.5,
+            "height": 77.5
+          },
+          "imageBox": {
+            "x": 337.25,
+            "y": 222.75,
+            "width": 175.5,
+            "height": 77.5
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "8f7226886ef832691b0296b9d76b2b30fa0ef5e421906303365f9d4b748fb1da",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "後方厚配重與紅色反光片",
+          "z": 10,
+          "box": {
+            "x": 438.75,
+            "y": 182,
+            "width": 156,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 438.75,
+            "y": 182,
+            "width": 156,
+            "height": 96.5
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "a6de02a0cce0496f777e66d914580b78129c6c03d56ca51897f7f762518079c9",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "849857a5cef4e084420b87eacdfeb818955d3a5a655e230313364a6a3cdf1903"
+            }
+          ]
+        },
+        {
+          "id": "p4-3",
+          "name": "黑灰引擎罩與散熱格柵",
+          "z": 11,
+          "box": {
+            "x": 440.25,
+            "y": 161,
+            "width": 117.5,
+            "height": 62
+          },
+          "imageBox": {
+            "x": 440.25,
+            "y": 161,
+            "width": 117.5,
+            "height": 62
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "bc938e2318c02cbfce937fd511b4b51dda038aa119079b2d6feac8b281b1278b",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-3-v0.png",
+              "sha256": "3790ba97874aaccd2cfb1d1ab7f18d71a8d7d8d2cced05f1055a837f17f68605"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p4-3-v1.png",
+              "sha256": "3790ba97874aaccd2cfb1d1ab7f18d71a8d7d8d2cced05f1055a837f17f68605"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "搭出駕駛艙骨架",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "駕駛艙地板與後牆",
+          "z": 12,
+          "box": {
+            "x": 430,
+            "y": 151.75,
+            "width": 119,
+            "height": 124.5
+          },
+          "imageBox": {
+            "x": 430,
+            "y": 151.75,
+            "width": 119,
+            "height": 124.5
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "5396b1bbbf18fe91d0831793cb4fdd349e98998413ecb17da270ea3ce1b6fa0c",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "駕駛艙粗窗柱與門檻",
+          "z": 13,
+          "box": {
+            "x": 430.75,
+            "y": 143,
+            "width": 118.25,
+            "height": 122.75
+          },
+          "imageBox": {
+            "x": 430.75,
+            "y": 143,
+            "width": 118.25,
+            "height": 122.75
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "ece754e36a782e71f18283db5849f4eb69f3c1eae9a46189fa473b455ab826cb",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-2-v0.png",
+              "sha256": "0fa1d2f4ca9a77ee1cca4ac0d6944f363dfedf04100d63e3fa7d44239986cd08"
+            }
+          ]
+        },
+        {
+          "id": "p5-3",
+          "name": "藍灰座椅與雙控制桿",
+          "z": 14,
+          "box": {
+            "x": 455.25,
+            "y": 180.5,
+            "width": 67.5,
+            "height": 65
+          },
+          "imageBox": {
+            "x": 455.25,
+            "y": 180.5,
+            "width": 67.5,
+            "height": 65
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "a750de401692d7b80ba4b72016b458ad9d2eebf8689c9c3a8dc3864d9dc5b7e8",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-3-v0.png",
+              "sha256": "7a0fbcd39abee927bdd422c7b71899618d4363def47c0dbf5745f292b38639cb"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p5-3-v1.png",
+              "sha256": "7a0fbcd39abee927bdd422c7b71899618d4363def47c0dbf5745f292b38639cb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上駕駛艙玻璃與屋頂",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "前方與近側獨立玻璃",
+          "z": 15,
+          "box": {
+            "x": 433.25,
+            "y": 176,
+            "width": 111.25,
+            "height": 75.25
+          },
+          "imageBox": {
+            "x": 433.25,
+            "y": 176,
+            "width": 111.25,
+            "height": 75.25
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "264e88d2250ec5f4d2b107da50dd298111a02b7d1197e8a6d6a9a567c9883666",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "凸點駕駛艙屋頂",
+          "z": 16,
+          "box": {
+            "x": 421.25,
+            "y": 132,
+            "width": 130,
+            "height": 58.5
+          },
+          "imageBox": {
+            "x": 421.25,
+            "y": 132,
+            "width": 130,
+            "height": 58.5
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "a78132dfacf7fbcb02d0eac966f0ba87f10d81af861b380e6148b948bd8b6633",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p6-3",
+          "name": "引擎排氣管與空濾蓋",
+          "z": 17,
+          "box": {
+            "x": 466.75,
+            "y": 122.75,
+            "width": 52.5,
+            "height": 65.75
+          },
+          "imageBox": {
+            "x": 466.75,
+            "y": 122.75,
+            "width": 52.5,
+            "height": 65.75
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "bdb77f872e4ff9344ba9e2d0f062fa70ff9295bfcb587cccb13685572fbc1760",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "c72f50551c93b9c49b623bc4c3e7b808f35c21a972688c7ca9b714d458a40da4"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "c72f50551c93b9c49b623bc4c3e7b808f35c21a972688c7ca9b714d458a40da4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "接上可抬起的大臂",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "黃色分段大臂主體",
+          "z": 18,
+          "box": {
+            "x": 282,
+            "y": 129.75,
+            "width": 105.5,
+            "height": 154
+          },
+          "imageBox": {
+            "x": 282,
+            "y": 129.75,
+            "width": 105.5,
+            "height": 154
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "cc27293345d2e6e8bb3d8eb15f63f0279f57c6643a636f3899ef0e5c40916bc2",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "大臂外露油壓缸",
+          "z": 19,
+          "motion": {
+            "pivot": [
+              422.080257,
+              265.009964
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ],
+            "base": [
+              422.080257,
+              265.009964
+            ],
+            "tip": [
+              341.58631,
+              187.881736
+            ]
+          },
+          "box": {
+            "x": 336.5,
+            "y": 182.75,
+            "width": 97.75,
+            "height": 90.75
+          },
+          "imageBox": {
+            "x": 336.5,
+            "y": 182.75,
+            "width": 97.75,
+            "height": 90.75
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "d378cb786427f2a7242f50a1f41f30ff90f39e8c97cbebbd6b1ce49ee062e880",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p7-3",
+          "name": "大臂根部與頂端轉軸",
+          "z": 20,
+          "motion": {
+            "pivot": [
+              382.055596,
+              269.025658
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ]
+          },
+          "box": {
+            "x": 275.25,
+            "y": 123,
+            "width": 135.5,
+            "height": 168
+          },
+          "imageBox": {
+            "x": 275.25,
+            "y": 123,
+            "width": 135.5,
+            "height": 168
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "7bc0e5bdfa75ac37c8755a8744053fd9d70defdad7d0947a2e31b9a294792b69",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "79e3951fcc6c67e95babb0c7e617891b8679b7ba44f9d27fdd8724e5444fdb53"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p7-3-v2.png",
+              "sha256": "81fc3d651ed8e2784514be681aad4939178a119382d43d953eae629ffb1fa925"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "連接小臂與鏟斗連桿",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "黃色小臂主體",
+          "z": 21,
+          "motion": {
+            "pivot": [
+              302.358619,
+              144.659105
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ]
+          },
+          "box": {
+            "x": 224,
+            "y": 142.5,
+            "width": 88.5,
+            "height": 155.75
+          },
+          "imageBox": {
+            "x": 224,
+            "y": 142.5,
+            "width": 88.5,
+            "height": 155.75
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "5ef7513aec4c21a4baea83a604b3065aca2dcded9b6bf9ea58a5db4690380947",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "鏟斗雙連桿與小臂軸扣",
+          "z": 22,
+          "box": {
+            "x": 206.75,
+            "y": 225.5,
+            "width": 77.25,
+            "height": 85
+          },
+          "imageBox": {
+            "x": 206.75,
+            "y": 225.5,
+            "width": 77.25,
+            "height": 85
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "4c51cc6cf3c298b0b18d5329607ef21fc69737ee343935186a688bc584f1cbdc",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-2-v0.png",
+              "sha256": "1fdda25a17e94ff5dfdd93e5c9bf7bf56c9f3b3150810efc4417b45888344b94"
+            }
+          ]
+        },
+        {
+          "id": "p8-3",
+          "name": "小臂亮銀油壓桿",
+          "z": 23,
+          "motion": {
+            "pivot": [
+              321.443948,
+              165.445872
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ],
+            "base": [
+              321.443948,
+              165.445872
+            ],
+            "tip": [
+              270.437883,
+              266.045499
+            ]
+          },
+          "box": {
+            "x": 265.25,
+            "y": 156,
+            "width": 68.5,
+            "height": 113.75
+          },
+          "imageBox": {
+            "x": 265.25,
+            "y": 156,
+            "width": 68.5,
+            "height": 113.75
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "a293ba27c5e5792dad67155a6a8e4482d3d4e7ce7ceb9ef38381085646390bc7",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "a24ee9cf83a7d190facc51384d72ada5fe05d3906bf27d5e576ea6259a2af99c"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "a24ee9cf83a7d190facc51384d72ada5fe05d3906bf27d5e576ea6259a2af99c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "裝上能挖積木的鏟斗",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "獨立厚壁開口鏟斗",
+          "z": 24,
+          "motion": {
+            "pivot": [
+              241.788917,
+              290.048304
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ]
+          },
+          "box": {
+            "x": 170.25,
+            "y": 269.5,
+            "width": 104.25,
+            "height": 80.25
+          },
+          "imageBox": {
+            "x": 170.25,
+            "y": 269.5,
+            "width": 104.25,
+            "height": 80.25
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "85b285a6aa336f6cbd8e89c1e1d72fd84450dacc6bbde555227fcbb232574a9c",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "鏟斗前緣四顆獨立斗齒",
+          "z": 25,
+          "box": {
+            "x": 161.25,
+            "y": 313.25,
+            "width": 64.5,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 161.25,
+            "y": 315,
+            "width": 64.5,
+            "height": 40.5
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "30f0a27e45f6178059f66c4a9ced717e9b16fdb1af55cd8c3e7c02476afca25b",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p9-2-v0.png",
+              "sha256": "22ace17bda12ea8a79ed96d7c95213f5ecebc0a11a74c3178010933843eb4b59"
+            }
+          ]
+        },
+        {
+          "id": "p9-3",
+          "name": "待鏟取的三塊土色積木",
+          "z": 26,
+          "box": {
+            "x": 200.75,
+            "y": 412.5,
+            "width": 73.25,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 200.75,
+            "y": 412.5,
+            "width": 73.25,
+            "height": 44
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "272dab0d6886b2148531ae9b98d8c97e832663df735bb4df779dbc965184046d",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "完成安全扶手與工作燈",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "引擎平台安全扶手",
+          "z": 27,
+          "box": {
+            "x": 492.25,
+            "y": 143.75,
+            "width": 76,
+            "height": 49.5
+          },
+          "imageBox": {
+            "x": 492.25,
+            "y": 143.75,
+            "width": 76,
+            "height": 49.5
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "d8d93b8997ac1aa3d3a2176ae5b449a753dbbbf4c8b84450d4968d2181f8b2c6",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "大臂根部雙工作燈",
+          "z": 28,
+          "box": {
+            "x": 368.25,
+            "y": 208.25,
+            "width": 60,
+            "height": 47.75
+          },
+          "imageBox": {
+            "x": 368.25,
+            "y": 208.25,
+            "width": 60,
+            "height": 47.75
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "ee3d8753994708952b6d49a5b6583dd351808ea5a88652025c644b983449a74b",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p10-3",
+          "name": "近側登車雙踏板",
+          "z": 29,
+          "box": {
+            "x": 509.5,
+            "y": 131.25,
+            "width": 73.5,
+            "height": 167.25
+          },
+          "imageBox": {
+            "x": 509.5,
+            "y": 131.25,
+            "width": 73.5,
+            "height": 167.25
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "a8c144b556468dc7218a763fafdda2b1afb88b0a0f5f94c2a1eb10a2e9176e96",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": []
+        }
+      ]
+    }
+  ],
+  "mechanismPoses": {
+    "turntable": {
+      "required": [
+        "p4-1",
+        "p4-2",
+        "p4-3",
+        "p5-1",
+        "p5-2",
+        "p5-3",
+        "p6-1",
+        "p6-2",
+        "p6-3",
+        "p7-1",
+        "p7-2",
+        "p7-3",
+        "p8-1",
+        "p8-2",
+        "p8-3",
+        "p9-1",
+        "p9-2",
+        "p10-1",
+        "p10-2",
+        "p10-3"
+      ],
+      "frames": [
+        {
+          "angle": 0,
+          "file": "mechanism-poses/turntable-0.png",
+          "sha256": "ee466e5215bd48e30b5fb8e72e29193973a30b96f84ec0c58e1fec06bb12da49",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 10,
+          "file": "mechanism-poses/turntable-1.png",
+          "sha256": "976e970246cd0614c9328380215cd1c8e64c2b376a77b70ddd29f9c70c7cbe05",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 20,
+          "file": "mechanism-poses/turntable-2.png",
+          "sha256": "fad5ac7d1e2eeea5d82f4943ad908e49c1f0a4194b8446d695b00e8ac463d85e",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 30,
+          "file": "mechanism-poses/turntable-3.png",
+          "sha256": "3b2685345f4fedef5c607c18a9ebfc7f5cc65c5a20ae50a1ad65da6e73329c6c",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 40,
+          "file": "mechanism-poses/turntable-4.png",
+          "sha256": "eeb8bf38ec0755af670880cc22cd45d6b7ce1bf5b93ac3ca4fac2dc027cafe12",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        }
+      ]
+    }
+  },
+  "assetDigest": "606592990a9d188a0f437a8363bd6fbab950059dddf1a0c3a9c14b0b742bed9d"
+}

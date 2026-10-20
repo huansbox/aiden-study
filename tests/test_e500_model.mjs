@@ -5,6 +5,7 @@ import vm from "node:vm";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { vehicleArtModels, vehiclePoseDefinitions } from '../scripts/e500-art/vehicle-catalog.js';
 
 const root = new URL("../", import.meta.url);
 for (const [modelId, globalName, packs, series] of [
@@ -16,6 +17,7 @@ for (const [modelId, globalName, packs, series] of [
   ['emu900', 'KidsBrickEmu900', 12, '臺灣火車系列'],
   ['breezy-blue', 'KidsBrickBreezyBlue', 12, '臺灣火車系列'],
   ['ct273', 'KidsBrickCT273', 14, '臺灣火車系列'],
+  ...Object.entries(vehicleArtModels).map(([id, definition])=>[id,definition.global,definition.packs,definition.series]),
 ]) {
 const source = fs.readFileSync(new URL(`docs/shared/brick-${modelId}.js`, root), "utf8");
 const context = vm.createContext({});
@@ -28,6 +30,9 @@ test(`${modelId} has ${packs} complete semantic packs and stable placement ident
   assert.equal(model.id, modelId);
   assert.equal(model.series, series);
   assert.equal(model.viewBox, "0 0 800 500");
+  if(vehicleArtModels[modelId])assert.equal(model.previewFormat,'png');
+  const movingIds=modelId==='jet-plane'?['p6-3','p7-3']:Object.keys(vehicleArtModels[modelId]?.motionUnits||{});
+  for(const id of movingIds)assert.ok(parts.find(part=>part.id===id)?.motion,`${id} keeps its actual projected hinge`);
   assert.equal(model.steps.length, packs);
   assert.equal(parts.length, packs * 3);
   assert.equal(new Set(parts.map(p => p.name)).size, packs * 3);
@@ -39,6 +44,13 @@ test(`${modelId} has ${packs} complete semantic packs and stable placement ident
       assert.deepEqual(Array.from(part.occlusionPeers), Array.from(step.parts.slice(0, j), p => p.id));
       assert.equal(new Set(part.variants.map(v => v.mask)).size, part.variants.length);
       for (const variant of part.variants) assert.ok(Number.isInteger(variant.mask) && variant.mask >= 0 && variant.mask < (1 << j) - 1);
+      if(part.motion) {
+        assert.equal(part.motion.pivot.length,2);
+        assert.equal(part.motion.basis.length,4);
+        assert.ok([...part.motion.pivot,...part.motion.basis].every(Number.isFinite));
+        const [a,b,c,d]=part.motion.basis;
+        assert.ok(Math.abs(a*d-b*c)>.001,'motion plane has an invertible perspective basis');
+      }
     });
   });
 });
@@ -114,6 +126,10 @@ test(`${modelId}: asset URLs remain local under root and repository-prefixed Pag
     for (const p of another.window[globalName].steps.flatMap(step => step.parts)) {
       for (const asset of [p, ...p.variants]) assert.ok(asset.svg.includes(`href="https://example.test${prefix}/shared/bricks/${modelId}-v1/${asset.file}?v=${model.assetVersion}"`), p.id);
     }
+    for(const rig of Object.values(another.window[globalName].mechanismPoses||{}))for(const frame of rig.frames)
+      assert.ok(frame.svg.includes(`href="https://example.test${prefix}/shared/bricks/${modelId}-v1/${frame.file}?v=${model.assetVersion}"`),frame.file);
+    for(const artwork of Object.values(another.window[globalName].mechanismArt||{}))
+      assert.ok(artwork.svg.includes(`href="https://example.test${prefix}/shared/bricks/${modelId}-v1/${artwork.file}?v=${model.assetVersion}"`),artwork.file);
   }
 });
 
@@ -122,6 +138,42 @@ test(`${modelId}: checked-in runtime matches the asset manifest and image bytes`
   const another = vm.createContext({ window: {} });
   vm.runInContext(source, another);
   assert.equal(JSON.stringify(another.window[globalName]), JSON.stringify(model));
+});
+
+if(vehiclePoseDefinitions[modelId])test(`${modelId} poses contain the actual moving geometry with the complete module requirement`,async()=>{
+  const definition=vehiclePoseDefinitions[modelId],rig=model.mechanismPoses?.[definition.key];
+  assert.ok(rig);
+  assert.equal(Array.from(rig.required).join(','),definition.required.join(','));
+  assert.equal(rig.frames.length,definition.angles.length);
+  assert.ok(new Set(rig.frames.map(frame=>frame.sha256)).size>=4);
+  for(const [index,frame] of rig.frames.entries()){
+    assert.equal(frame.angle,definition.angles[index]);
+    assert.equal(frame.file,`mechanism-poses/${definition.key}-${index}.png`);
+    assert.equal(JSON.stringify(frame.imageBox),JSON.stringify({x:0,y:0,width:800,height:500}));
+    const info=await sharp(fs.readFileSync(assetPath(frame))).metadata();
+    assert.equal(info.format,'png');assert.ok(info.hasAlpha);
+    assert.equal(info.width,1600);assert.equal(info.height,1000);
+    assert.match(frame.svg,/<image x="0" y="0" width="800" height="500"/);
+    assert.ok(frame.src.includes(`${frame.file}?v=${model.assetVersion}`));
+  }
+});
+
+if(vehicleArtModels[modelId]?.mechanismArt)test(`${modelId} keeps complete original moving-part PNGs independently of the fixed vehicle`,async()=>{
+  const ids=vehicleArtModels[modelId].mechanismArt;
+  assert.equal(Object.keys(model.mechanismArt||{}).join(','),ids.join(','));
+  for(const id of ids){
+    const artwork=model.mechanismArt[id];
+    assert.equal(artwork.file,`mechanism-art/${id}.png`);
+    assert.equal(JSON.stringify(artwork.imageBox),JSON.stringify({x:0,y:0,width:800,height:500}));
+    const raster=sharp(fs.readFileSync(assetPath(artwork))),info=await raster.metadata();
+    assert.equal(info.format,'png');assert.ok(info.hasAlpha);
+    assert.equal(info.width,1600);assert.equal(info.height,1000);
+    const pixels=await raster.ensureAlpha().raw().toBuffer();let opaque=0,transparent=0;
+    for(let index=3;index<pixels.length;index+=4){if(pixels[index]>100)opaque++;if(pixels[index]===0)transparent++;}
+    assert.ok(opaque>100&&transparent>100,`${id} retains visible source artwork and transparent surroundings`);
+    assert.match(artwork.svg,/<image x="0" y="0" width="800" height="500"/);
+    assert.ok(artwork.src.includes(`${artwork.file}?v=${model.assetVersion}`));
+  }
 });
 
 }

@@ -190,7 +190,7 @@ test("未送達選車可重開看見 pending，release 推進世代後拒絕舊�
     reopened.setOffline(false);await reopened.collection.flush();
     const rejected=reopened.collection.snapshot();
     assert.equal(rejected.pendingSelection,null);assert.equal(rejected.activeBuild,null);assert.equal(rejected.sync.pending,0);
-    assert.equal(rejected.sync.status,"error");assert.match(rejected.sync.message,/選車狀態已更新/);
+    assert.equal(rejected.sync.status,"error");assert.match(rejected.sync.message,/作品選擇狀態已更新/);
     assert.equal(rejected.selectionGeneration,2,"明確拒絕後同步最新世代");
     await reopened.collection.selectModel("breezy-blue");
     assert.equal(reopened.requests.at(-1).body.expectedSelectionGeneration,2);
@@ -229,10 +229,10 @@ test("舊離線尚未送達的未開放選車被明確拒絕，清除 pending �
   } finally {await runtime.dispose();}
 });
 
-test("四款新開放車的 client 選車可離線重開確認，僅建立同一作品並保留原配包",async()=>{
+test("十款新機構作品的 client 選擇可離線重開確認，僅建立同一作品並保留原配包",async()=>{
   const runtime=await collectionRuntime();
   try {
-    for(const modelId of ["emu3000","emu900","700t","n700s"]) {
+    for(const modelId of ["jet-plane","excavator","snow-blower","mobile-crane","cement-mixer","recycling-truck","emu3000","emu900","700t","n700s"]) {
       const before=globalThis.KidsCollectionCore.empty();
       before.grants=[{id:`original-${modelId}`,date:"2026-10-18",kind:"first",buildId:null,packIndex:null}];
       await runtime.restoreFixture(before);

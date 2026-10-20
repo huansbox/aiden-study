@@ -7,10 +7,10 @@ import "../docs/shared/collection-core.js";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
 import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C = globalThis.KidsCollectionCore;
-const ready = ["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"];
+const ready = ["jet-plane", "excavator", "snow-blower", "mobile-crane", "cement-mixer", "recycling-truck", "e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"];
 const hidden = ["r200", "car", "train", "plane"];
 
-test("新選開放七款重設計車；R200 與舊模型的新選仍拒絕且不改 grant、作品或世代", () => {
+test("新選開放十三款積木作品；R200 與舊模型的新選仍拒絕且不改 grant、作品或世代", () => {
   assert.deepEqual([...C.AVAILABLE_MODELS], ready);
   const state = C.empty();
   state.grants = [{ id: "saved-reward", date: "2026-10-18", kind: "first", buildId: null, packIndex: null }];
@@ -98,7 +98,7 @@ test("真 SQLite API：拒絕未送達新選；舊半成品續拼、已成功選
   } finally { await runtime.dispose(); await rm(dir, { recursive: true, force: true }); }
 });
 
-test("真 SQLite API：七款開放車都能建立 v2 作品、從原 p2 配包，重送不重建", async () => {
+test("真 SQLite API：十三款開放作品都能建立 v2 作品、從原 p2 配包，重送不重建", async () => {
   const runtime=await collectionRuntime();
   const call=async(command)=>{
     const response=await runtime.fetch(new Request("http://local/v1/collection/aiden/select-model",{
@@ -124,6 +124,32 @@ test("真 SQLite API：七款開放車都能建立 v2 作品、從原 p2 配包�
       const repeated=await call(command);
       assert.equal(repeated.body.duplicate,true);
       assert.deepEqual(repeated.body.snapshot,snapshot);
+    }
+  } finally {await runtime.dispose();}
+});
+
+test("真 SQLite API：六款新作品完成原始主體 IDs 並展示，固定地面不扣包且保留舊收藏原值",async()=>{
+  const runtime=await collectionRuntime();let sequence=0;
+  const call=async(type,data)=> {
+    const response=await runtime.fetch(new Request(`http://local/v1/collection/aiden/${type}`,{method:'POST',headers:{Authorization:'Bearer test-token'},body:JSON.stringify({commandId:`vehicle-complete-${++sequence}`,...data})}));
+    assert.equal(response.status,200);return (await response.json()).snapshot;
+  };
+  try {
+    for(const [modelId,packs] of [['jet-plane',10],['excavator',9],['snow-blower',9],['mobile-crane',9],['cement-mixer',9],['recycling-truck',9]]) {
+      const state=C.empty();state.builds=[{id:'historical-r200',modelId:'r200',contentVersion:1,placed:C.requiredParts({modelId:'r200',contentVersion:1}).map(part=>part.id),completedAt:'2026-10-01T01:00:00Z'}];
+      state.displayedBuildIds=['historical-r200'];
+      state.grants=Array.from({length:12},(_,n)=>({id:`original-reward-${n}`,date:'2026-10-18',kind:'first',buildId:null,packIndex:null}));
+      const original=structuredClone(state);await runtime.restoreFixture(state);
+      const selected=await call('select-model',{modelId}),build=selected.activeBuild;
+      const assigned=selected.grants.filter(grant=>grant.buildId===build.id);assert.equal(assigned.length,packs);
+      let latest=selected;
+      for(const grant of assigned) for(const number of [3,1,2]) latest=await call('place',{buildId:build.id,grantId:grant.id,packIndex:grant.packIndex,partId:`p${grant.packIndex+1}-${number}`});
+      assert.equal(latest.activeBuild.placed.length,packs*3);assert.ok(latest.activeBuild.completedAt);
+      assert.ok(latest.activeBuild.placed.every(id=>!id.startsWith('p1-')));
+      const displayed=await call('display',{buildId:build.id,displayed:true});
+      assert.deepEqual(displayed.builds[0],original.builds[0]);assert.deepEqual(displayed.displayedBuildIds,['historical-r200',build.id]);
+      assert.deepEqual(displayed.grants.map(grant=>grant.id),original.grants.map(grant=>grant.id));
+      assert.equal(displayed.grants.filter(grant=>grant.buildId===null).length,12-packs);
     }
   } finally {await runtime.dispose();}
 });

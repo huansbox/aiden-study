@@ -1,11 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import vm from "node:vm";
+import {vehicleIds,vehicleGlobals,vehicleFixture} from "./helpers/working-vehicle-fixtures.mjs";
 import { readFileSync } from "node:fs";
 
 const source = name => readFileSync(new URL(`../docs/shared/${name}`, import.meta.url), "utf8");
 const four = ["emu3000", "emu900", "700t", "n700s"];
-const seven = ["e500", "ct273", "breezy-blue", ...four];
+const seven = [...vehicleIds, "e500", "ct273", "breezy-blue", ...four];
 
 function harness(modelId, { completed = false, contentVersion = 2, missingMechanism = false, missingWorkshop = false } = {}) {
   const events = new Map(), subscribers = new Set(), mounts = [], writes = [];
@@ -24,6 +25,8 @@ function harness(modelId, { completed = false, contentVersion = 2, missingMechan
   context.window = context;
   for (const file of ["collection-core.js", ...["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s", "r200"].map(id => `brick-${id}.js`), "brick-models.js"])
     vm.runInContext(source(file), context);
+  for(const id of vehicleIds) context[vehicleGlobals[id]]=vehicleFixture(id);
+  vm.runInContext(source("brick-models.js"),context);
   const C = context.KidsCollectionCore;
   const build = { id: `saved-${modelId}`, modelId, contentVersion, placed: [], completedAt: completed ? "2026-10-18T12:00:00Z" : null };
   if (completed) build.placed = C.requiredParts(build).map(part => part.id);
@@ -40,18 +43,19 @@ function harness(modelId, { completed = false, contentVersion = 2, missingMechan
   if (!missingMechanism) {
     context.KidsEmuMechanism = { create() {} };
     context.KidsHighspeedMechanism = { create() {} };
+    vm.runInContext(source("vehicle-mechanism.js"),context);
   }
   vm.runInContext(source("brick-workshop.js"), context);
   const mounted = context.KidsBrickWorkshop.mount(element, { collection });
-  const click = (action, buildId) => {
-    const target = { dataset: { action, build: buildId }, disabled: false };
+  const click = (action, buildId, view) => {
+    const target = { dataset: { action, build: buildId, view }, disabled: false };
     target.closest = () => target;
     events.get("click")({ target });
   };
   return { context, state, element, mounts, writes, mounted, click, get reloads() { return reloads; }, notify() { for (const listener of subscribers) listener(state); } };
 }
 
-test("seven graphical models route saved v1/v2 builds to the picture workshop; R200 retains its old workshop", () => {
+test("thirteen graphical models route saved v1/v2 builds to the picture workshop; R200 retains its old workshop", () => {
   for (const modelId of [...seven, "r200"]) for (const contentVersion of [1, 2]) {
     const h = harness(modelId, { contentVersion });
     try {
@@ -69,7 +73,7 @@ test("seven graphical models route saved v1/v2 builds to the picture workshop; R
 });
 
 test("missing required feature scripts show a reload gate without consuming saved packs", () => {
-  for (const modelId of four) {
+  for (const modelId of [...four,...vehicleIds]) {
     const h = harness(modelId, { missingMechanism: true });
     try {
       assert.match(h.element.innerHTML, /拼裝工作台沒有完整載入/);
@@ -83,11 +87,23 @@ test("missing required feature scripts show a reload gate without consuming save
   }
 });
 
-test("missing the whole picture workshop blocks the new four models and preserves the older fallback", () => {
+test("a stale vehicle factory that cannot recognize a new model fails closed instead of mounting a generic train",()=>{
+  for(const id of vehicleIds) {
+    const h=harness(id),before=JSON.stringify(h.state);
+    try {
+      h.context.KidsVehicleMechanism={create:()=>null};h.notify();
+      assert.match(h.element.innerHTML,/拼裝工作台沒有完整載入/);
+      assert.equal(h.mounts[0].destroyed,true);assert.equal(h.mounts.length,1);
+      assert.equal(JSON.stringify(h.state),before);assert.deepEqual(h.writes,[]);
+    } finally {h.mounted.destroy();}
+  }
+});
+
+test("missing the whole picture workshop blocks the ten feature models and preserves the older fallback", () => {
   for (const modelId of [...seven,"r200"]) {
     const h=harness(modelId,{missingWorkshop:true});
     try {
-      if (four.includes(modelId)) {
+      if ([...four,...vehicleIds].includes(modelId)) {
         assert.match(h.element.innerHTML,/拼裝工作台沒有完整載入/);
         assert.doesNotMatch(h.element.innerHTML,/brick-bench|data-action="part"/);
         h.click("reload-workshop");assert.equal(h.reloads,1);
@@ -100,8 +116,8 @@ test("missing the whole picture workshop blocks the new four models and preserve
   }
 });
 
-test("the four redesigned partial thumbnails show saved parts without future-part ghosts", () => {
-  for (const modelId of four) {
+test("the ten feature-model partial thumbnails show saved parts without future-part ghosts", () => {
+  for (const modelId of [...four,...vehicleIds]) {
     const h = harness(modelId);
     try {
       h.state.activeBuild.placed = ["p2-1"];
@@ -114,8 +130,8 @@ test("the four redesigned partial thumbnails show saved parts without future-par
   }
 });
 
-test("all four completed models can replay their features through a read-only adapter and return to the same completed card", async () => {
-  for (const modelId of four) {
+test("all ten completed feature models can replay their features through a read-only adapter and return to the same completed card", async () => {
+  for (const modelId of [...four,...vehicleIds]) {
     const h = harness(modelId, { completed: true });
     try {
       await new Promise(resolve => setImmediate(resolve));
@@ -168,4 +184,22 @@ test("stale play buttons cannot inspect unfinished builds or R200", () => {
       assert.deepEqual(h.writes, []);
     } finally { h.mounted.destroy(); }
   }
+});
+
+
+test("collecting all thirteen open models removes next prompts without requiring R200 and keeps extra earned packs",async()=> {
+  const h=harness('jet-plane',{completed:true});
+  try {
+    const C=h.context.KidsCollectionCore,originalGrants=JSON.stringify(h.state.grants);
+    h.state.builds=Array.from(C.AVAILABLE_MODELS,modelId=> {
+      const build={id:`done-${modelId}`,modelId,contentVersion:2,completedAt:'2026-10-20T05:00:00Z'};
+      return {...build,placed:C.requiredParts(build).map(part=>part.id)};
+    });
+    h.state.activeBuild=h.state.builds[0];h.notify();await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/目前的作品都收集完成了/);
+    assert.doesNotMatch(h.element.innerHTML,/data-action="choose-next"/);
+    h.click('view',undefined,'shelf');await new Promise(resolve=>setImmediate(resolve));
+    assert.match(h.element.innerHTML,/13 件作品/);assert.doesNotMatch(h.element.innerHTML,/可以選下一台|data-action="choose-next"/);
+    assert.equal(JSON.stringify(h.state.grants),originalGrants);assert.deepEqual(h.writes,[]);
+  } finally {h.mounted.destroy();}
 });

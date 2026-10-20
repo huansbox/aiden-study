@@ -13,7 +13,7 @@ vm.runInContext(readFileSync(new URL("../docs/shared/collection-core.js", import
 
 test("catalog offers eight trains and preserves legacy model identities", () => {
   assert.equal(catalog.version, 1);
-  assert.equal(catalog.title, "積木列車收藏");
+  assert.equal(catalog.title, "積木收藏");
   assert.deepEqual(
     Array.from(catalog.models, (model) => model.id),
     ["e500", "emu3000", "r200", "700t", "n700s", "emu900", "breezy-blue", "ct273"],
