@@ -96,6 +96,11 @@
       const frames=poseSets[kind]?.frames,expected=units.find(unit=>unit.id===kind)?.frameCount;
       return Array.isArray(frames) && frames.length>=4 && (!expected || frames.length===expected) && frames.every(frame=>poseSource(frame));
     };
+    const poseFrame = (kind,amount) => {
+      const frames=poseSets[kind].frames,position=amount*(frames.length-1);
+      // The fully deployed support image must agree with its unlock gate.
+      return frames[kind==='supports' ? Math.floor(position) : Math.round(position)];
+    };
     const values = Object.fromEntries(units.map(unit => [unit.id, 0]));
     const featureIds = new Set(units.flatMap(unit => [...unit.required, ...unit.parts]));
     if (spec.cargo) featureIds.add(spec.cargo);
@@ -240,7 +245,13 @@
       const unit = units.find(item => item.id === kind);
       if (!can(unit) || !Number.isFinite(amount)) return;
       trialAnimation=null;
-      values[kind] = Math.max(0,Math.min(1,amount));
+      let next=Math.max(0,Math.min(1,amount));
+      // Ten keyboard steps of .1 can finish a few ULPs short of an endpoint.
+      if(kind==='supports') {
+        if(next<=Number.EPSILON*8)next=0;
+        else if(1-next<=Number.EPSILON*8)next=1;
+      }
+      values[kind] = next;
       if(kind==='turntable' && amount>0) for(const other of units) if(other.id!==kind) values[other.id]=0;
       for(const other of units) if (!can(other)) values[other.id]=0;
     }
@@ -270,7 +281,7 @@
         const poseUnit=activePoses.find(unit=>unit.parts.includes(item.id));
         let poseImage='';
         if(poseUnit) {
-          const pose=poseSets[poseUnit.id],frame=pose.frames[Math.round((before?0:value(poseUnit.id))*(pose.frames.length-1))];
+          const pose=poseSets[poseUnit.id],frame=poseFrame(poseUnit.id,before?0:value(poseUnit.id));
           const animation=animate===poseUnit.id ? pose.frames.slice(0,-1).map((step,index)=>`<set data-vehicle-trial attributeName="href" to="${esc(poseSource(step))}" begin="${index*.12}s" dur=".12s"/>`).join('') : '';
           // A single transparent PNG is visible at a time, including during
           // the trial; the underlying href already holds the final frame.
@@ -316,9 +327,8 @@
       }
       host.querySelector('[data-vehicle-cargo]')?.setAttribute('transform',cargoTransform());
       for(const unit of units) if(posesReady(unit.id)) {
-        const frames=poseSets[unit.id].frames;
         const pose=host.querySelector(`[data-vehicle-pose="${unit.id}"]`);
-        pose?.setAttribute('href',poseSource(frames[Math.round(value(unit.id)*(frames.length-1))]));
+        pose?.setAttribute('href',poseSource(poseFrame(unit.id,value(unit.id))));
         if(unit.id==='turntable') {pose?.setAttribute('visibility',value(unit.id)?'visible':'hidden');for(const node of host.querySelectorAll('[data-vehicle-pose-rest="turntable"]')) node.setAttribute('visibility',value(unit.id)?'hidden':'visible');}
       }
     }

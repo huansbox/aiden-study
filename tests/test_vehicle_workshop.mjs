@@ -114,6 +114,42 @@ test('crane supports must deploy first; retracting them resets the telescoping a
   feature.move('supports',.99);assert.equal(feature.value('telescope'),0);assert.equal(feature.value('hoist'),0);
 });
 
+test('ten workshop SVG arrow presses fully deploy crane supports; one reverse press changes pose and locks/reset both tools',async()=>{
+  const h=uiHarness(complete('mobile-crane'),{modelId:'mobile-crane',contentVersion:2,packs:9,inspection:true});await settle();
+  try {
+    const before=JSON.stringify(h.state),pane={dataset:{trainOperate:'supports'},getAttribute:()=>"false"};
+    const target={closest:selector=>selector==='[data-train-operate]'?pane:null,matches:()=>false};
+    const key=key=>h.fire('keydown',{key,target,preventDefault(){}});
+    const range=kind=>h.host.innerHTML.match(new RegExp(`<input data-train-range="${kind}"[^>]*>`))[0];
+    for(let press=0;press<10;press++)key('ArrowRight');
+    assert.match(range('supports'),/value="100"/);
+    for(const kind of ['telescope','hoist'])assert.doesNotMatch(range(kind),/disabled/,`${kind} unlocks after exactly ten presses`);
+    assert.match(h.host.innerHTML,/data-vehicle-pose="supports"[^>]*supports-4\.png/);
+    for(const kind of ['telescope','hoist']) {h.featureClick('open',null,kind);assert.match(range(kind),/value="100"/);}
+    key('ArrowLeft');
+    assert.match(range('supports'),/value="90"/);
+    assert.match(h.host.innerHTML,/data-vehicle-pose="supports"[^>]*supports-3\.png/);
+    for(const kind of ['telescope','hoist']) {assert.match(range(kind),/value="0"/);assert.match(range(kind),/disabled/);}
+    for(let press=0;press<9;press++)key('ArrowLeft');
+    assert.match(range('supports'),/value="0"/);assert.match(h.host.innerHTML,/data-vehicle-pose="supports"[^>]*supports-0\.png/);
+    assert.equal(JSON.stringify(h.state),before);assert.equal(h.calls.length,0);
+  } finally {h.mounted.destroy();}
+});
+
+test('only fully deployed crane supports show the final pose; scene and direct updates agree',()=>{
+  const feature=create('mobile-crane'),saved=new Set(complete('mobile-crane'));feature.sync(saved);
+  for(const [amount,index] of [[0,0],[.249,0],[.25,1],[.5,2],[.75,3],[.875,3],[.99,3],[.9999999999,3],[1,4]]) {
+    feature.move('supports',amount);const scene=feature.scene(saved);let href;
+    feature.update({querySelectorAll:()=>[],querySelector:selector=>selector==='[data-vehicle-pose="supports"]'?{setAttribute:(name,value)=>{if(name==='href')href=value;}}:null});
+    assert.match(scene,new RegExp(`data-vehicle-pose="supports"[^>]*supports-${index}\\.png`));
+    assert.match(href,new RegExp(`supports-${index}\\.png$`));
+  }
+  for(const [id,kind,index] of [['excavator','turntable',4],['snow-blower','auger',6],['cement-mixer','drum',6]]) {
+    const other=create(id),parts=new Set(complete(id));other.sync(parts);other.move(kind,.875);
+    assert.match(other.scene(parts),new RegExp(`data-vehicle-pose="${kind}"[^>]*${kind}-${index}\\.png`));
+  }
+});
+
 test('crane support poses replace all four beams/cylinders/pads together and missing art stays locked',()=>{
   const model=vehicleFixture('mobile-crane'),feature=ctx.KidsVehicleMechanism.create(model),saved=new Set(complete('mobile-crane'));feature.sync(saved);
   for(const [amount,index] of [[0,0],[.25,1],[.5,2],[.75,3],[1,4]]) {
