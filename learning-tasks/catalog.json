@@ -5,13 +5,14 @@
     {
       "id": "water-cycle",
       "name": "水的循環：一起探索與深入研究",
-      "status": "in-progress",
-      "statusNote": "已選 C 紙張拼貼；正在實作中文親子共看、英文短句進階與科學互動；追蹤 #220。",
+      "status": "complete",
+      "statusNote": "兩版六站、中文／英文語音與比較實驗已完成；工具驗證及發布紀錄見 #220，孩子試用後再調整難度。",
+      "audience": ["aiden", "bingpu"],
       "audienceLabel": "6y、9y 親子共看；9y 英文進階",
       "description": "中文語音互動故事與英文進階探索；蒸發、成雲、雨、雪、冰雹及回到地面。",
-      "reusable": "同一科學規則下的兩版腳本、素材處理與情境查核方式；待實作驗證。",
-      "availability": "source-only",
-      "links": []
+      "reusable": "共用科學模型的雙語故事、預製語音、條件比較與 SVG 科學圖解。",
+      "availability": "available",
+      "links": [{"label": "開始水的旅行", "url": "../water-cycle/"}]
     },
     {
       "id": "nativecamp-2026-10-02",

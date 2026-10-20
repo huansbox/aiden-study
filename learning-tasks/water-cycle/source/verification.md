@@ -7,7 +7,7 @@
 - `tests/test_water_cycle.mjs` 的 10 項測試涵蓋雲但無雨、雨滴合併長大、雪穿過厚暖層完全融化、冰雹兩條件四種組合、地面多路線、狀態重設隔離，以及兩語音稿／音檔可達與來源／成品一致性。科學預期依 `design.md` 的 USGS／NWS／NOAA 資料。
 - 進階額外驗證固定起始水量、時間、空氣與風的定性蒸發比較，以及保留冰雹四組實際試驗紀錄；初階沒有這兩項額外負擔。
 - `build.mjs --check` 逐檔比對網站與正式素材；語音 builder 的 `--check` 驗證 55 段中文、26 段英文 MP3 的文字指紋、hash、完整解碼與非靜音，共 81 段，不發出生成請求。
-- 整個 repo 的 Python 檢查為 279 passed、1 skipped。首次完整 Node 檢查為 978 passed、1 failed，失敗是作品目錄仍保存選風格前的狀態說明；重建目錄後的結果與 CI 記於原 Issue。
+- 整個 repo 的 Python 檢查為 279 passed、1 skipped。首次完整 Node 檢查唯一失敗是作品目錄仍保存選風格前的狀態說明；重建目錄後完整重跑為 979 passed、0 failed。PR CI 與發布結果記於原 Issue。
 
 ## 瀏覽器與操作
 

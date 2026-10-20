@@ -373,11 +373,14 @@
       "id": "task:water-cycle",
       "type": "task",
       "name": "水的循環：一起探索與深入研究",
-      "audience": [],
+      "audience": [
+        "aiden",
+        "bingpu"
+      ],
       "audienceLabel": "6y、9y 親子共看；9y 英文進階",
-      "status": "in-progress",
-      "statusNote": "需求已對齊；先交付同場景三種美術初稿與英文短句樣稿，家長選定後展開完整內容；追蹤 #220。",
-      "availability": "source-only",
+      "status": "complete",
+      "statusNote": "兩版六站、中文／英文語音與比較實驗已完成；工具驗證及發布紀錄見 #220，孩子試用後再調整難度。",
+      "availability": "available",
       "location": "aiden-study/learning-tasks/water-cycle",
       "source": {
         "repo": "huansbox/aiden-study",
@@ -389,7 +392,12 @@
         "remote": false
       },
       "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/water-cycle",
-      "links": [],
+      "links": [
+        {
+          "label": "開始水的旅行",
+          "url": "../water-cycle/"
+        }
+      ],
       "description": "中文語音互動故事與英文進階探索；蒸發、成雲、雨、雪、冰雹及回到地面。",
       "eventDate": null,
       "groupId": null,
