@@ -6,15 +6,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { vehicleArtModels } from './e500-art/vehicle-catalog.js';
 
 const repository = fileURLToPath(new URL("../", import.meta.url));
 const metadataFile = path.resolve(process.argv[3] || path.join(repository, "docs/shared/bricks/e500-v1/metadata.json"));
 const outputDirectory = path.resolve(process.argv[2] || path.join(repository, ".scratch/e500-sprite-qa"));
 const assetDirectory = path.dirname(metadataFile);
 const model = JSON.parse(await fs.readFile(metadataFile, "utf8"));
-assert.ok(["e500", "emu3000", "r200", "700t", "n700s", "emu900", "breezy-blue", "ct273"].includes(model.id));
+assert.ok(["e500", "emu3000", "r200", "700t", "n700s", "emu900", "breezy-blue", "ct273",...Object.keys(vehicleArtModels)].includes(model.id));
 assert.equal(model.viewBox, "0 0 800 500");
-assert.equal(model.steps.length, ["e500", "ct273"].includes(model.id) ? 14 : 12);
+assert.equal(model.steps.length, vehicleArtModels[model.id]?.packs || (["e500", "ct273"].includes(model.id) ? 14 : 12));
 assert.ok(Number.isInteger(model.scale) && model.scale > 0);
 const parts = model.steps.flatMap((step, packIndex) => {
   assert.equal(step.parts.length, 3);
@@ -56,15 +57,42 @@ for (const part of parts) for (const artwork of [part, ...part.variants]) {
   assert.ok(info.hasAlpha, `${artwork.file} needs transparency`);
   assets.set(artwork.file, bytes);
 }
-const digest = createHash("sha256")
-  .update(parts.flatMap((part) => [
+const manifestEntries=parts.flatMap((part) => [
     `${part.id}:${part.sha256}`,
     ...part.variants.map((variant) => `${part.id}@${variant.mask}:${variant.sha256}`),
-  ]).join("\n"))
-  .digest("hex");
+  ]);
+for(const [rigId,rig] of Object.entries(model.mechanismPoses||{}))for(const [index,frame] of rig.frames.entries()){
+  const filename=path.resolve(assetDirectory,frame.file);
+  assert.ok(filename.startsWith(assetDirectory+path.sep));
+  const bytes=await fs.readFile(filename),info=await sharp(bytes).metadata();
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),frame.sha256);
+  assert.equal(info.format,'png');assert.ok(info.hasAlpha);
+  assert.equal(info.width,1600);assert.equal(info.height,1000);
+  manifestEntries.push(`mechanism:${rigId}:${index}:${frame.sha256}`);
+}
+for(const [id,artwork] of Object.entries(model.mechanismArt||{})){
+  const filename=path.resolve(assetDirectory,artwork.file);
+  assert.ok(filename.startsWith(assetDirectory+path.sep));
+  const bytes=await fs.readFile(filename),info=await sharp(bytes).metadata();
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),artwork.sha256);
+  assert.equal(info.format,'png');assert.ok(info.hasAlpha);
+  assert.equal(info.width,1600);assert.equal(info.height,1000);
+  manifestEntries.push(`mechanism-art:${id}:${artwork.sha256}`);
+}
+const digest = createHash("sha256").update(manifestEntries.join("\n")).digest("hex");
 assert.equal(digest, model.assetDigest, "published asset digest");
 
 await fs.mkdir(outputDirectory, { recursive: true });
+for(const [rigId,rig] of Object.entries(model.mechanismPoses||{})){
+  const layers=[];
+  for(const [index,frame] of rig.frames.entries())layers.push({input:await sharp(path.join(assetDirectory,frame.file)).resize(600,375).png().toBuffer(),left:index%4*600,top:Math.floor(index/4)*375});
+  await sharp({create:{width:2400,height:Math.ceil(rig.frames.length/4)*375,channels:4,background:'#eee3d1'}}).composite(layers).png().toFile(path.join(outputDirectory,`${model.id}-mechanism-${rigId}.png`));
+}
+if(model.mechanismArt){
+  const artwork=Object.values(model.mechanismArt),layers=[];
+  for(const [index,item] of artwork.entries())layers.push({input:await sharp(path.join(assetDirectory,item.file)).resize(600,375).png().toBuffer(),left:index%3*600,top:Math.floor(index/3)*375});
+  await sharp({create:{width:1800,height:Math.ceil(artwork.length/3)*375,channels:4,background:'#eee3d1'}}).composite(layers).png().toFile(path.join(outputDirectory,`${model.id}-mechanism-art.png`));
+}
 const width = 800 * model.scale;
 const height = 500 * model.scale;
 const background = { r: 0, g: 0, b: 0, alpha: 0 };

@@ -1,0 +1,972 @@
+{
+  "id": "snow-blower",
+  "title": "雙螺旋吹雪車",
+  "series": "工作車系列",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "準備三塊工作底板",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前方工作底板",
+          "z": 0,
+          "box": {
+            "x": 141,
+            "y": 359.75,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 141,
+            "y": 359.75,
+            "width": 240.75,
+            "height": 96.5
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "311e5752c2742e1d1a7a51a3c38d02db7789136e4268d7052660fc99aa7b496b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中央工作底板",
+          "z": 1,
+          "box": {
+            "x": 294,
+            "y": 320.5,
+            "width": 241,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 294,
+            "y": 320.5,
+            "width": 241,
+            "height": 96.5
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "07b56a51a7178187b6f82bdc6e785f1da3c117228606cf42fc5468106663ce58",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p1-3",
+          "name": "後方工作底板",
+          "z": 2,
+          "box": {
+            "x": 447,
+            "y": 281,
+            "width": 241,
+            "height": 96.5
+          },
+          "imageBox": {
+            "x": 447,
+            "y": 281,
+            "width": 241,
+            "height": 96.5
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "19cea1c96e42f49608ab78bd4856df67e1162a9b73f7f0de71273cba76d9b777",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "裝好雪地寬輪胎",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "遠側前後雪地胎",
+          "z": 3,
+          "box": {
+            "x": 268.25,
+            "y": 261.5,
+            "width": 223.25,
+            "height": 107
+          },
+          "imageBox": {
+            "x": 268.25,
+            "y": 261.5,
+            "width": 223.25,
+            "height": 107
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "648bf024fccc5bb35983fcea91bc6808b344b651a1ef2fc49b94883e6f7174aa",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "近側前後雪地胎",
+          "z": 4,
+          "box": {
+            "x": 347.75,
+            "y": 297.25,
+            "width": 223.5,
+            "height": 106.75
+          },
+          "imageBox": {
+            "x": 347.75,
+            "y": 297.25,
+            "width": 223.5,
+            "height": 106.75
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "9b3ce93bd646c58b4e9ae1a827f4981ae33d62e4a47ba3cd3754fbad654e83ec",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p2-3",
+          "name": "兩根粗輪軸與差速箱",
+          "z": 5,
+          "box": {
+            "x": 293.25,
+            "y": 286,
+            "width": 252.75,
+            "height": 93.5
+          },
+          "imageBox": {
+            "x": 293.25,
+            "y": 286,
+            "width": 252.75,
+            "height": 93.5
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "77e3a5bb5aca95270ed91ea77f4d50d093a7292d64b12888cf0dc4c22aad716c",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p2-3-v0.png",
+              "sha256": "403c02825682115740cbb6d8b05a036a370255d4289058f14e08dc719f6800ff"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p2-3-v1.png",
+              "sha256": "1e20e1c8faf260e914aeda43c6fd99abd117cb13635850a6a97a3f752e7773cd"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p2-3-v2.png",
+              "sha256": "49ef6887d108de40b78b861bea782cadb2316da8dc21085f982b96d837890a58"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組裝短厚工作底盤",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "前端工具承座",
+          "z": 6,
+          "box": {
+            "x": 251.5,
+            "y": 262,
+            "width": 171.25,
+            "height": 87.75
+          },
+          "imageBox": {
+            "x": 251.5,
+            "y": 262,
+            "width": 171.25,
+            "height": 87.75
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "79ffaccf3bf4180942501ee0cf393ea17e8808ea38ef6d132ee5e89337ec7f4b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "中央車架與踏板",
+          "z": 7,
+          "box": {
+            "x": 340.75,
+            "y": 239,
+            "width": 171.25,
+            "height": 88
+          },
+          "imageBox": {
+            "x": 340.75,
+            "y": 239,
+            "width": 171.25,
+            "height": 88
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "10d965db465502b1a0fb80d8255b63c691b0a7d244729a1f25b96e4b0220d3a4",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "fe0d505e905a04d31e3cd6a79175ed9f9d1b48cfa557f8cf50f4be11edcf290d"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "後端引擎底盤",
+          "z": 8,
+          "box": {
+            "x": 430,
+            "y": 216,
+            "width": 171.25,
+            "height": 88
+          },
+          "imageBox": {
+            "x": 430,
+            "y": 216,
+            "width": 171.25,
+            "height": 88
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "2f36b452725b6b46d6e4937c4bed616d15e0ca7eb4cf1050d79154fa887b62e7",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "cca7051a36178a7f56037d4bb0b6f07377d59e5b21ced58e233bfdbf36b55df5"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "cca7051a36178a7f56037d4bb0b6f07377d59e5b21ced58e233bfdbf36b55df5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "搭好後方引擎罩",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "引擎罩中央短厚磚",
+          "z": 9,
+          "box": {
+            "x": 428.75,
+            "y": 170.5,
+            "width": 161,
+            "height": 107
+          },
+          "imageBox": {
+            "x": 428.75,
+            "y": 170.5,
+            "width": 161,
+            "height": 107
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "c4d3848570c10004f5048aef6bc19807f6882eb868a7f547778cd794f9c050ba",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "遠側引擎百葉與後燈",
+          "z": 10,
+          "box": {
+            "x": 434,
+            "y": 151.25,
+            "width": 160,
+            "height": 84.75
+          },
+          "imageBox": {
+            "x": 434,
+            "y": 151.25,
+            "width": 160,
+            "height": 84.75
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "1387c723075bb54e69428f94a462cc699f8cb7bd081d70f438665e09b54290ed",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-2-v0.png",
+              "sha256": "bad06d43abd94a55799093d19763f2cb5aaff3fd5bea69579e7fe57894184664"
+            }
+          ]
+        },
+        {
+          "id": "p4-3",
+          "name": "近側引擎百葉與凸點蓋",
+          "z": 11,
+          "box": {
+            "x": 447.5,
+            "y": 170.5,
+            "width": 133,
+            "height": 90.5
+          },
+          "imageBox": {
+            "x": 447.5,
+            "y": 170.5,
+            "width": 133,
+            "height": 90.5
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "43e809d3505f0a2f585d3baa7e91b81e008043ab9d0ba118338262921ba49999",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p4-3-v0.png",
+              "sha256": "a9f34283123dd9efb85b3fd99720250f7e511fbd3058fdc7e55298d6c9326ddb"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p4-3-v1.png",
+              "sha256": "85ddb41c89e646f08de3eaabd8bf280e58e52740bdb525e8d436bfa64f3ac2c0"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p4-3-v2.png",
+              "sha256": "c71cd0e3a4f15c32d344ed2d1230263a7303136c1ad55168cdf15649d670f8bd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "架起高視野駕駛室",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "橘紅駕駛艙底座與踏板",
+          "z": 12,
+          "box": {
+            "x": 314.25,
+            "y": 193.5,
+            "width": 174.75,
+            "height": 123
+          },
+          "imageBox": {
+            "x": 314.25,
+            "y": 193.5,
+            "width": 174.75,
+            "height": 123
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "e3069a43413d7eec9876347897abe828fab103db341de52b28da81037722a44b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "粗駕駛艙窗柱與後板",
+          "z": 13,
+          "box": {
+            "x": 315.25,
+            "y": 120,
+            "width": 171.75,
+            "height": 138.25
+          },
+          "imageBox": {
+            "x": 315.25,
+            "y": 120,
+            "width": 171.75,
+            "height": 138.25
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "4d98e4b76a4ae36d85a00ea611491c8f5816ef4ddc256b4f1499e0b159d9a7d7",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-2-v0.png",
+              "sha256": "6d8fc9692f072fbbbc486a12fb2db43b1d8de8cb0273e872722247c9544d79d0"
+            }
+          ]
+        },
+        {
+          "id": "p5-3",
+          "name": "深灰駕駛座與方向盤",
+          "z": 14,
+          "box": {
+            "x": 380.25,
+            "y": 175,
+            "width": 75.5,
+            "height": 63.75
+          },
+          "imageBox": {
+            "x": 380.25,
+            "y": 175,
+            "width": 75.5,
+            "height": 63.75
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "8a7d449219d0b41a3b6bb8d941d4a8d31edd7143e6ab8b964ca2081f246d861f",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p5-3-v0.png",
+              "sha256": "1a1b91e690368f2d0498af8618eccbe99942609f94ece74e1e1bf150b8626e72"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p5-3-v1.png",
+              "sha256": "1a1b91e690368f2d0498af8618eccbe99942609f94ece74e1e1bf150b8626e72"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "完成駕駛室車窗與頂燈",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "寬前窗與兩側玻璃",
+          "z": 15,
+          "box": {
+            "x": 315.25,
+            "y": 121.5,
+            "width": 172.5,
+            "height": 130
+          },
+          "imageBox": {
+            "x": 315.25,
+            "y": 121.5,
+            "width": 172.5,
+            "height": 130
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "b50e3b612de1a6fab3d9c2bc11a3b104a55b207ec98f93c313a3b170baa395a8",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "凸點屋頂與橘色警示燈",
+          "z": 16,
+          "box": {
+            "x": 306.25,
+            "y": 105.75,
+            "width": 187.5,
+            "height": 77.25
+          },
+          "imageBox": {
+            "x": 306.25,
+            "y": 105.75,
+            "width": 187.5,
+            "height": 77.25
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "9832087dbd940eed872ef9671a95424c58e942f06015e1584a4cf53cfd167de6",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p6-3",
+          "name": "駕駛室前方雙工作燈",
+          "z": 17,
+          "box": {
+            "x": 296.25,
+            "y": 224,
+            "width": 96,
+            "height": 74.75
+          },
+          "imageBox": {
+            "x": 296.25,
+            "y": 224,
+            "width": 96,
+            "height": 74.75
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "4b5a65668f2e2954d927e1bda0077a7c896267953df73e724b07f1c8fd220fd4",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "搭起前方集雪筒外架",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "弧形集雪筒背板與工具連接架",
+          "z": 18,
+          "box": {
+            "x": 215.25,
+            "y": 269,
+            "width": 123.5,
+            "height": 119.25
+          },
+          "imageBox": {
+            "x": 215.25,
+            "y": 269,
+            "width": 123.5,
+            "height": 119.25
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "71bf2ad0fa494c02a27db3d6e2f33090e668ce185165afdab96417405ac06608",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "遠側集雪筒圓端厚框",
+          "z": 19,
+          "box": {
+            "x": 152.25,
+            "y": 279.75,
+            "width": 80,
+            "height": 90.25
+          },
+          "imageBox": {
+            "x": 152.25,
+            "y": 279.75,
+            "width": 80,
+            "height": 90.25
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "9a9a434d24726eec953280d0dcc7de4dc0644a8e2c8cfef8d2668651c7656cde",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-2-v0.png",
+              "sha256": "2925970e6d4815db51efa7f06bbf8973dc76a0eab449a82d12179385cece558d"
+            }
+          ]
+        },
+        {
+          "id": "p7-3",
+          "name": "近側集雪筒圓端厚框",
+          "z": 20,
+          "box": {
+            "x": 255,
+            "y": 326.25,
+            "width": 74.75,
+            "height": 87
+          },
+          "imageBox": {
+            "x": 255,
+            "y": 326.25,
+            "width": 74.75,
+            "height": 87
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "7a789aa5680c0c9afc5fd0867d936cea0fff19bc6cbb1a9a1bea0e405471a9d3",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "放入真正螺旋集雪葉片",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "可旋轉螺旋葉片與粗軸",
+          "z": 21,
+          "motion": {
+            "pivot": [
+              242.309044,
+              347.374456
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ]
+          },
+          "box": {
+            "x": 176.5,
+            "y": 293.75,
+            "width": 133.75,
+            "height": 106.75
+          },
+          "imageBox": {
+            "x": 176.5,
+            "y": 293.75,
+            "width": 133.75,
+            "height": 106.75
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "243a7ce2600db87153d16af56e3aef007d05c0051cdba6f5dfaa3e858ec66f1b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "中央進雪旋轉齒盤",
+          "z": 22,
+          "box": {
+            "x": 208,
+            "y": 310,
+            "width": 61.5,
+            "height": 74.75
+          },
+          "imageBox": {
+            "x": 208,
+            "y": 310,
+            "width": 61.5,
+            "height": 74.75
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "f818fbaaf389b05d51f04870d8643ca3e805099ef06c11b5053ab7214d854869",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-2-v0.png",
+              "sha256": "50f9948142c7b25d4465432ce25d61724b7a408385ce827cc82680b79faf8fe7"
+            }
+          ]
+        },
+        {
+          "id": "p8-3",
+          "name": "集雪筒底部進雪踏條",
+          "z": 23,
+          "box": {
+            "x": 161.75,
+            "y": 355.25,
+            "width": 139,
+            "height": 66.75
+          },
+          "imageBox": {
+            "x": 161.75,
+            "y": 355.25,
+            "width": 139,
+            "height": 66.75
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "411b4941ef0e3b10631f3d71dd463a94040c9acf484a987683fd8268974027a3",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "244547af301f0f42d82a93195832eaad74072975a452199de9ae5a1c7da5e170"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "529ff743ea1ed82677fdbba14c019727bdc63061ba2a3614eb9277551fc40507"
+            },
+            {
+              "mask": 2,
+              "file": "assets/p8-3-v2.png",
+              "sha256": "0cc766694b9b51daabda6eafd18f1e5768555fb4c3c0edafb9803b5056e5e634"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "接好上方彎曲拋雪管",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "集雪筒上方直立拋雪管",
+          "z": 24,
+          "box": {
+            "x": 246.75,
+            "y": 219,
+            "width": 58,
+            "height": 85.75
+          },
+          "imageBox": {
+            "x": 246.75,
+            "y": 219,
+            "width": 58,
+            "height": 85.75
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "814b4704a47ddd31863af035e8533432bae9f5da1ea2f3e0b973776c45b1c6f7",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "朝前轉彎的厚彎管",
+          "z": 25,
+          "box": {
+            "x": 226.75,
+            "y": 186.75,
+            "width": 72,
+            "height": 58.25
+          },
+          "imageBox": {
+            "x": 226.75,
+            "y": 186.75,
+            "width": 72,
+            "height": 58.25
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "66bf063e62962470f7c8ae54211946e277a438b66367d80e5f47002e0ce47fb3",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p9-2-v0.png",
+              "sha256": "e81b6f5b93529dd09dd62708241e53fce322e8e9dc869cb00cda6d4ac0d1ebef"
+            }
+          ]
+        },
+        {
+          "id": "p9-3",
+          "name": "可轉向開口拋雪管嘴",
+          "z": 26,
+          "motion": {
+            "pivot": [
+              241.512074,
+              214.945334
+            ],
+            "basis": [
+              0.79697,
+              -0.204962,
+              0,
+              -0.940667
+            ]
+          },
+          "box": {
+            "x": 194.75,
+            "y": 180.5,
+            "width": 64,
+            "height": 68
+          },
+          "imageBox": {
+            "x": 194.75,
+            "y": 180.5,
+            "width": 64,
+            "height": 68
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "04a8e89d0c3d9d2a4b0e1ce3a6bfbf15480187b504bd140aa1800c606af9fac0",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "放好工作扶手與待清白雪",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "車側爬梯與扶手",
+          "z": 27,
+          "box": {
+            "x": 466.25,
+            "y": 202.25,
+            "width": 48.25,
+            "height": 100
+          },
+          "imageBox": {
+            "x": 466.25,
+            "y": 202.25,
+            "width": 48.25,
+            "height": 100
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "908fb0b71202be0356a392c991b4f6a8cfa8d468d5d0d2dc568d03d89a2a054d",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "後方排氣管與輪胎防滑紋",
+          "z": 28,
+          "box": {
+            "x": 373.5,
+            "y": 122.75,
+            "width": 193.75,
+            "height": 242.75
+          },
+          "imageBox": {
+            "x": 373.5,
+            "y": 122.75,
+            "width": 193.75,
+            "height": 242.75
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "7565921f5df61f423abfc3007c1a6c93a9caad3a208372c6cccce710e88a966e",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p10-3",
+          "name": "三塊待拋出的白雪積木",
+          "z": 29,
+          "box": {
+            "x": 192.5,
+            "y": 399.375,
+            "width": 81.5,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 192.5,
+            "y": 399.75,
+            "width": 81.5,
+            "height": 43.25
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "414ce804802f17582263a310d9fb28786c5d4ba6647a5ebb3cfd5ebab601ed42",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": []
+        }
+      ]
+    }
+  ],
+  "mechanismPoses": {
+    "auger": {
+      "required": [
+        "p7-1",
+        "p7-2",
+        "p7-3",
+        "p8-1",
+        "p8-2",
+        "p8-3"
+      ],
+      "frames": [
+        {
+          "angle": 0,
+          "file": "mechanism-poses/auger-0.png",
+          "sha256": "7cb2dc9d6c3d76f6b8a6dab7d38041aed4c56d14653e4f118409f6c3d7073247",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 45,
+          "file": "mechanism-poses/auger-1.png",
+          "sha256": "23d8a4a64fd91a769d9f21c92fed707334fbc2e6cb8da87b75494d011785d765",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 90,
+          "file": "mechanism-poses/auger-2.png",
+          "sha256": "92e887d558cdf15c3c0e9c87d2bfec8255bab6159fe09c76260468456b6c3656",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 135,
+          "file": "mechanism-poses/auger-3.png",
+          "sha256": "e2a203b35083bd819f211d460dcc31924bcc509be942617128d0743c264c6490",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 180,
+          "file": "mechanism-poses/auger-4.png",
+          "sha256": "0382ed97b9ce8229d481188a15c1c945419368835f3abe6c701e8aeb7de3bdd1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 225,
+          "file": "mechanism-poses/auger-5.png",
+          "sha256": "ae8abb8f80dc8dde99e6f04835402abe895f1d11da750eb28c39e92a57374ca1",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 270,
+          "file": "mechanism-poses/auger-6.png",
+          "sha256": "27238203e9fbbe0703553219cc4a5d9bf9d49806829aa44fc3702e31d99155e6",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        },
+        {
+          "angle": 315,
+          "file": "mechanism-poses/auger-7.png",
+          "sha256": "3b9c23b9275f5d45dec676c3ee49d5f6b55553a2c7c7baa548a7733dc8f2fbea",
+          "imageBox": {
+            "x": 0,
+            "y": 0,
+            "width": 800,
+            "height": 500
+          }
+        }
+      ]
+    }
+  },
+  "assetDigest": "e87e8510c0bfdeda46d509a9b41cfbc4461598719af352b4a9b0ba0236440954"
+}

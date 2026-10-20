@@ -456,11 +456,11 @@
   ]);
 
   const legacyModels = [car, train, plane];
-  const models = [root.KidsBrickE500, root.KidsBrickEmu3000, root.KidsBrickR200, root.KidsBrick700T, root.KidsBrickN700S, root.KidsBrickEmu900, root.KidsBrickBreezyBlue, root.KidsBrickCT273].filter(Boolean);
+  const models = [root.KidsBrickJetPlane, root.KidsBrickExcavator, root.KidsBrickSnowBlower, root.KidsBrickMobileCrane, root.KidsBrickCementMixer, root.KidsBrickRecyclingTruck, root.KidsBrickE500, root.KidsBrickEmu3000, root.KidsBrickR200, root.KidsBrick700T, root.KidsBrickN700S, root.KidsBrickEmu900, root.KidsBrickBreezyBlue, root.KidsBrickCT273].filter(Boolean);
 
   root.KidsBrickModels = {
     version: 1,
-    title: "積木列車收藏",
+    title: "積木收藏",
     models,
     legacyModels,
     get(id) {

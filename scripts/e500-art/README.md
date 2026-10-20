@@ -1,5 +1,73 @@
 # 積木列車圖片管線
 
+## 飛機與工作車
+
+六款新模型的名稱、來源包數、module 與 runtime global 集中在 `vehicle-catalog.js`；正式 App 只讀 PNG，Three.js 仍限開發預覽與素材輸出。原八款列車幾何、PNG 和 WebP 縮圖均保留。
+
+| model ID | 幾何來源／export | 來源包／組 | 可拼包／組 | 完成縮圖 |
+| --- | --- | --- | --- | --- |
+| `jet-plane` | `model-jet-plane.js`／`createJetPlaneModel` | 11／33 | 10／30 | `preview.png` |
+| `excavator` | `model-excavator.js`／`createExcavatorModel` | 10／30 | 9／27 | `preview.png` |
+| `snow-blower` | `model-snow-blower.js`／`createSnowBlowerModel` | 10／30 | 9／27 | `preview.png` |
+| `mobile-crane` | `model-mobile-crane.js`／`createMobileCraneModel` | 10／30 | 9／27 | `preview.png` |
+| `cement-mixer` | `model-cement-mixer.js`／`createCementMixerModel` | 10／30 | 9／27 | `preview.png` |
+| `recycling-truck` | `model-recycling-truck.js`／`createRecyclingTruckModel` | 10／30 | 9／27 | `preview.png` |
+
+六款的來源首包 `p1-1`、`p1-2`、`p1-3` 是固定展示地面；contentVersion 2 會直接顯示，不扣積木包。來源仍完整保存首包，不能從 metadata 刪除或重新編號。`build-brick-previews.mjs --model=<ID>` 只重建指定款式，避免為新增模型重輸出舊素材。
+
+飛機使用藍白短磚、真正中空的雙噴射引擎進氣殼及各自獨立風扇，不使用平面 SVG 或外置螺旋槳。機身朝 -x，保持 800×500 世界座標與正交投影；專用固定角度 `[-950,550,720]` 及 target offset `[0,-30,0]` 讓雙進氣面與整段跑道可辨識且落在畫布內。
+
+| 飛機來源包 | 三個穩定 part IDs（依序） |
+| --- | --- |
+| p1 跑道 | 前段／中段／後段展示跑道 |
+| p2 起落架 | 前起落架／左主起落架／右主起落架 |
+| p3 機腹 | 前段／中央翼盒與凸點接座／後段 |
+| p4 機身 | 左白機身／右白機身／藍白階梯機鼻 |
+| p5 主翼 | 左主翼／右主翼／中央藍色鎖扣 |
+| p6 左噴射引擎 | 左吊架／左中空殼／左獨立風扇 |
+| p7 右噴射引擎 | 右吊架／右中空殼／右獨立風扇 |
+| p8 機頂 | 前段／中央／後段 |
+| p9 尾翼 | 左水平尾翼／右水平尾翼／藍垂直尾翼 |
+| p10 窗戶 | 駕駛玻璃／前段雙側客窗列／後段雙側客窗列 |
+| p11 收尾 | 左翼尖紅燈／右翼尖綠燈／機尾排氣口 |
+
+風扇在 `p6-3`／`p7-3` 裝妥後可各自試轉；3D 轉軸是 x，pivot 分別為 `[202,77,-137]`／`[202,77,137]`。其他工作車的 part／pivot 見 [工作車幾何說明](../../docs-dev/working-vehicle-art.md)。
+
+可動組件的 optional `motion` 由固定產圖鏡頭產生並保留到正式 runtime：`pivot` 是 800×500 的軸心座標，`basis:[a,b,c,d]` 是機構旋轉平面的兩個投影基底，`vector`（若有）是伸縮方向。前端以 `A × rotation × A⁻¹` 變換，保留風扇、滾筒等斜視平面的橢圓外形。舊八款不增加此欄位、不改原輸出。
+
+`base`／`tip`（若有）保存油壓缸或吊線的固定端／移動端投影；移動時固定端保留在原接點。真實姿勢的旋轉部件、軸向、軸心 anchor、角度與 required IDs 集中在 `vehiclePoseDefinitions`，不依 UI 預覽當時的旋轉或長寬比推算。
+
+混凝土攪拌筒具有沿轉軸的長度，不能把整張 PNG 當成平面圓盤旋轉。混凝土車下載 bundle 會在一般零件之後額外渲染八個實際 3D 姿勢：`p6` 三段筒身與 `p7` 加強環／藍紋一起繞世界 x 軸、以 `[312,170,0]` 為中心每次轉 45°；`p5` 筒座與 `p8` 卸料模組保留靜態。匯入後保存為 `mechanism-poses/drum-0.png` 至 `drum-7.png`（1600×1000 透明 PNG），metadata 的 `mechanismPoses.drum` 記錄 sha256、800×500 imageBox 與完整 `p5`–`p8` required IDs；runtime 增補同來源的 `frame.src`／`frame.svg`。全模組裝妥後才在特寫切換姿勢，圖片 hash 一併納入 assetDigest／assetVersion。離線 QA 另產生 `cement-mixer-mechanism-drum.png` 八姿勢總覽。
+
+雪車的螺旋集雪葉同樣是有軸向長度的 3D 部件。`p8-1` 螺旋葉與 `p8-2` 中央齒盤一起繞 `[32,64,0]` 的世界 z 軸渲染八姿勢，`p7` 外殼與 `p8-3` 底板保持靜態；保存為 `mechanism-poses/auger-0.png` 至 `auger-7.png`，`mechanismPoses.auger.required` 是完整 `p7`／`p8`。管嘴採 `p9-3` 的 `[31,205,0]` z 軸鉸鏈調高／降低。
+
+怪手旋轉轉台另保存 `mechanism-poses/turntable-0.png` 至 `turntable-4.png` 五個實際上車姿勢（0°／10°／20°／30°／40°）。完整 `p4`–`p10` 的上車繞 `[302,103,0]` 世界 y 軸旋轉，排除地面工作積木 `p9-3`；`p1`–`p3` 固定下車只參與深度遮擋。`mechanismPoses.turntable.required` 要求全部上車完成；在轉台姿勢模式中先復位並停用三個挖臂軸，回到 0° 才恢復各軸試玩，避免把 3D 轉台姿勢與平面挖臂變換疊加。
+
+吊車與回收車另外保存 `mechanismArt`：同一原件在操作時需要露出原本被固定車身擋住的表面，不能拉伸已裁洞的拼裝 PNG。吊車 `p7-2`／`p7-3` 伸縮臂及 `p8-2` 吊線，各自完整渲染、不加入遮擋。回收車 `p5`–`p7` 九件按實際 rig 保留內部深度：車斗只受同車斗先前件遮擋，排除駕駛室；門板獨立渲染，長鉸鏈 `p7-2` 留在車斗並受車斗遮擋，鎖扣 `p7-3` 僅受門板遮擋。來源規則見 catalog 的 `mechanismArt`／`mechanismArtRigs`／`mechanismArtOccluders`。
+
+新增圖仍是來源幾何的 1600×1000 透明 PNG，保存為 `mechanism-art/<part ID>.png`，不改原先三十組的拼裝圖或編號。metadata／runtime 的 `mechanismArt[part ID]` 保存 file、sha256、800×500 imageBox，runtime 加上同來源的 src／svg，hash 納入 assetDigest／assetVersion。可見下載按鈕會在一般零件之後附加這三／九張；匯入器會拒絕缺少它們的舊 bundle。離線 QA 另產生 `*-mechanism-art.png` 分件總覽。
+
+吊車支撐腳另有 `mechanismPoses.supports` 五張真姿勢，frames 的 `value` 依序為 0／.25／.5／.75／1，required 是完整 `p4-1`／`p4-2`／`p4-3`。`crane-support-poses.js` 僅在開發產圖時暫時延長黃色橫梁，缸、警示端與四塊腳墊向各側最多平移 48；缸與腳墊尺寸、y 高度、同軸接點及地面保持不變。第 0 姿勢直接沿用原 geometry／transform，其他姿勢在輸出後全部還原，不改三十組一般拼裝 PNG。正常組裝圖先輸出，再輸出五姿勢及三張完整機構圖；支撐腳全裝妥且完全伸出才開放伸臂與吊箱。幾何連接、剛體尺寸、畫布邊界及還原驗證使用 `node --test tests/test_crane_support_poses.mjs`。
+
+新六款必須從可見預覽頁正常下載 bundle，再離線匯入；不使用外接 headless browser、CDP 或 Playwright 產圖。以飛機為例：
+
+```sh
+node scripts/e500-art/serve.mjs 8877
+# 在可見瀏覽器開啟 http://127.0.0.1:8877/index.html?model=jet-plane
+# 點「下載素材渲染檔」，等候「素材已匯出」並保存 jet-plane-render-bundle.json
+node scripts/e500-art/export-sprites.mjs --model=jet-plane --bundle=/absolute/path/jet-plane-render-bundle.json --publish
+node scripts/build-e500-runtime.mjs --model=jet-plane
+node scripts/build-brick-previews.mjs --model=jet-plane
+node scripts/render-e500-model.mjs .scratch/jet-plane-check docs/shared/bricks/jet-plane-v1/metadata.json
+node scripts/build-e500-runtime.mjs --model=jet-plane --check
+node scripts/build-brick-previews.mjs --model=jet-plane --check
+node --test tests/test_jet_plane_geometry.mjs tests/test_working_vehicle_geometry.mjs
+# 六款全數匯入後再跑素材及縮圖整合驗證
+node --test tests/test_e500_model.mjs tests/test_brick_previews.mjs
+```
+
+候選素材與比對頁各自位於 `.scratch/e500-art/candidates/<ID>/`，正式資產各自位於 `docs/shared/bricks/<ID>-v1/`。對照整機與 sprites 合成圖，並檢查來源第 3／6／21 組階段、每包六種放置順序與機構已裝妥就可操作的行為，才作造型與流程驗收。bundle 和候選圖屬可重建的暫存，不提交 Git。
+
 `model.js` 與 `brick-geometry.js` 是正式 E500 的幾何來源：使用原生 Three.js 建立 42 個獨立 assembly group，每組以 `userData` 記錄 stable ID、名稱、包名與顯示順序。正式 App 只載入由它輸出的透明 PNG 與 metadata；Three.js、WebGL、相機和光源只在開發產圖時使用。`prototype-model.js` 是已核准車頭與輪組的設計參考，不作為正式素材來源。
 
 EMU3000、R200、700T、N700S、EMU900、藍皮解憂號與 CT273 沿用同一管線；腳本保留原 E500 名稱與預設參數，重建既有素材的指令仍相容。

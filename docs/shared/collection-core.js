@@ -1,11 +1,11 @@
 /* 每日拼裝規則；只接新的練習事件，與舊累計及其重置世代分開。 */
 (() => {
   // 舊作品的 ID 仍需保留，讓既有半成品與舊版離線操作能繼續同步。
-  const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12, '700t': 12, n700s: 12, emu900: 12, 'breezy-blue': 12, ct273: 14 });
+  const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12, '700t': 12, n700s: 12, emu900: 12, 'breezy-blue': 12, ct273: 14, 'jet-plane': 11, excavator: 10, 'snow-blower': 10, 'mobile-crane': 10, 'cement-mixer': 10, 'recycling-truck': 10 });
   const MODELS = Object.keys(PACK_COUNTS);
   const MODERN_MODELS = MODELS.filter((id) => !["car", "train", "plane"].includes(id));
-  // 新作品只開放已交付圖形工坊的車款；歷史模型與資料仍完整保留。
-  const AVAILABLE_MODELS = Object.freeze(["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"]);
+  // 新作品只開放已交付素材與圖形工坊的作品；歷史模型與資料仍完整保留。
+  const AVAILABLE_MODELS = Object.freeze(["jet-plane", "excavator", "snow-blower", "mobile-crane", "cement-mixer", "recycling-truck", "e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"]);
   const isModelAvailable = (modelId) => AVAILABLE_MODELS.includes(modelId);
   // 此日期之前的離線事件維持當時規則；不能因新版上線補發歷史獎勵。
   const REPEAT_REWARDS_FROM = "2026-10-19";
@@ -141,11 +141,11 @@
     } else if (command.type === "select-model") {
       check(MODELS.includes(command.modelId), "請選擇拼裝作品");
       const generation = command.expectedSelectionGeneration ?? 0;
-      check(Number.isSafeInteger(generation) && generation >= 0 && generation === (state.selectionGeneration || 0), "選車狀態已更新，請重新讀取後再選作品。", 409);
+      check(Number.isSafeInteger(generation) && generation >= 0 && generation === (state.selectionGeneration || 0), "作品選擇狀態已更新，請重新讀取後再選作品。", 409);
       const active = state.builds.find((b) => b.id === state.activeBuildId);
       if (active && !active.completedAt) check(active.modelId === command.modelId, "另一個入口已選好作品，先完成目前作品。", 409);
       else {
-        check(isModelAvailable(command.modelId), "這台車尚未開放新選，請重新選擇目前開放的作品。", 409);
+        check(isModelAvailable(command.modelId), "這件作品尚未開放新選，請重新選擇目前開放的作品。", 409);
         check(!state.builds.some((b) => b.modelId === command.modelId), "這件作品已在收藏裡");
         const contentVersion = MODERN_MODELS.includes(command.modelId) ? 2 : 1;
         // 不重用已撤回作品的身分；舊裝置補送 place 也不能寫入重選的同款車。

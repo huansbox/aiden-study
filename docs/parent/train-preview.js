@@ -55,7 +55,7 @@
     for (const model of models) {
       const option = document.createElement("option");
       option.value = model.id;
-      option.textContent = `${model.id === "breezy-blue" ? "藍皮解憂號" : model.id.toUpperCase()} · ${model.steps.length-1} 包`;
+      option.textContent = `${model.title} · ${model.steps.length-1} 包`;
       select.append(option);
     }
     select.value = models.find(model => model.id === params.get("model"))?.id || models[0].id;
@@ -68,8 +68,8 @@
       first.setAttribute("aria-pressed", String(mode === "first"));
       last.setAttribute("aria-pressed", String(mode === "last"));
       document.getElementById("preview-mode").textContent = mode === "last"
-        ? "把最後一組放進金色框，就能試看約 6 秒的火車慶祝動畫與音效。"
-        : `展示鐵軌已備好；另有 ${model.steps.length-1} 包車體示範零件。每包拼完按「打開一包」，可以一路試到完成。`;
+        ? "把最後一組放進金色框，就能試看約 6 秒的作品慶祝動畫與音效。"
+        : `展示場景已備好；另有 ${model.steps.length-1} 包示範零件。每包拼完按「打開一包」，可以一路試到完成。`;
       mounted = window.KidsBrickWorkshop.mount(host, {
         collection: createCollection(model, mode), preview: true,
         onClose() {

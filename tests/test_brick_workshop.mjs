@@ -1271,17 +1271,17 @@ test("lost selection response stays pending, blocks false cancellation, and reco
   const h=harness([], {modelIds: readyIds});
   try {
     selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
-    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/正在等連線確認作品選擇/);
     assert.match(h.element.innerHTML,/<h2 id="brick-pending-title">台鐵 CT273 蒸汽機車<\/h2>/);
-    assert.match(h.element.innerHTML,/先確認結果，才能返回換車/);
+    assert.match(h.element.innerHTML,/先確認結果，才能返回換作品/);
     assert.doesNotMatch(h.element.innerHTML,/回應沒有收到|返回換一台|data-action="confirm-model"|data-action="cancel-model"/);
     h.element.fire("click",action({action:"cancel-model"}));
     h.element.fire("click",action({action:"start-model",model:"plane"}));
     h.element.fire("click",action({action:"confirm-model",model:"plane"}));
     assert.deepEqual(h.selectCalls,["ct273"]);
-    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/正在等連線確認作品選擇/);
     confirmPendingSelection(h,"ct273");
-    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車|確認這次的作品/);
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認作品選擇|確認這次的作品/);
     assert.match(h.element.innerHTML,/data-action="part"/);
     assert.equal(h.state.activeBuild.modelId,"ct273");
     assert.deepEqual(h.selectCalls,["ct273"]);
@@ -1293,14 +1293,14 @@ test("reopened pending selection retries the original command without another se
   let attempts=0;
   h.collection.flush=async()=>{attempts++;if(attempts===2)confirmPendingSelection(h);return h.state;};
   try {
-    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/正在等連線確認作品選擇/);
     h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
-    assert.match(h.element.innerHTML,/正在等連線確認選車/);
+    assert.match(h.element.innerHTML,/正在等連線確認作品選擇/);
     assert.equal(h.state.pendingSelection.commandId,"persisted-pending-select");
     h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
     assert.equal(attempts,2);assert.deepEqual(h.selectCalls,[]);
     assert.match(h.element.innerHTML,/data-action="part"/);
-    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車/);
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認作品選擇/);
   } finally {h.mounted.destroy();}
 });
 
@@ -1310,11 +1310,11 @@ test("a server-rejected pending selection explains rejection and permits returni
     selectIntoPending(h);await new Promise(resolve=>setImmediate(resolve));
     h.collection.flush=async()=>{
       h.state.pendingSelection=null;
-      h.state.sync={status:"error",message:"選車狀態已更新，請重新選擇。",pending:0};h.notify();return h.state;
+      h.state.sync={status:"error",message:"作品選擇狀態已更新，請重新選擇。",pending:0};h.notify();return h.state;
     };
     h.element.fire("click",action({action:"retry-selection"}));await new Promise(resolve=>setImmediate(resolve));
-    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認選車/);
-    assert.match(h.element.innerHTML,/選車狀態已更新，請重新選擇/);
+    assert.doesNotMatch(h.element.innerHTML,/正在等連線確認作品選擇/);
+    assert.match(h.element.innerHTML,/作品選擇狀態已更新，請重新選擇/);
     assert.match(h.element.innerHTML,/返回換一台/);
     h.element.fire("click",action({action:"cancel-model"}));
     assert.match(h.element.innerHTML,/這次想拼哪一台/);

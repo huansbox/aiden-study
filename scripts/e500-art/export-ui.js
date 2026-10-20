@@ -25,7 +25,28 @@ button.addEventListener('click', async () => {
     }
     for (const siblings of [[2], [2, 0], [2, 0, 1]])
       await render([...Array.from({ length: 24 }, (_, i) => i), ...siblings.map(i => 24 + i)]);
-    const file = new Blob([JSON.stringify({ version: 1, descriptor: art.descriptor, frames })], { type: 'application/json' });
+    const poses={},rig=art.poseDefinition;
+    if(rig){
+      poses[rig.bundleKey]=[];
+      const values=rig.values||rig.angles,parameter=rig.values?'value':'angle';
+      for(const [index,value] of values.entries()){
+        button.textContent=`正在匯出${rig.name}姿勢 ${index+1} / ${values.length}…`;
+        poses[rig.bundleKey].push({[parameter]:value,png:art.renderMechanismPose(value)});
+        await new Promise(resolve=>requestAnimationFrame(resolve));
+      }
+    }
+    const mechanismArt={};
+    for(const [index,id]of art.mechanismArt.entries()){
+      button.textContent=`正在匯出完整機構分件 ${index+1} / ${art.mechanismArt.length}…`;
+      const parts=art.descriptor.steps.flatMap(step=>step.parts),partIndex=parts.findIndex(part=>part.id===id);
+      if(partIndex<0)throw Error('找不到機構分件：'+id);
+      const rig=art.mechanismArtRigs.find(group=>group.includes(id));
+      const occluderIds=Object.hasOwn(art.mechanismArtOccluders,id)?art.mechanismArtOccluders[id]:rig?rig.slice(0,rig.indexOf(id)):[];
+      const occludeWith=occluderIds.map(peer=>parts.findIndex(part=>part.id===peer));
+      mechanismArt[id]=art.renderSelection([partIndex],{occludeWith});
+      await new Promise(resolve=>requestAnimationFrame(resolve));
+    }
+    const file = new Blob([JSON.stringify({ version: 1, descriptor: art.descriptor, frames, ...poses,...(Object.keys(mechanismArt).length?{mechanismArt}:{}) })], { type: 'application/json' });
     const url = URL.createObjectURL(file), link = document.createElement('a');
     link.href = url; link.download = art.descriptor.id + '-render-bundle.json';
     link.click();

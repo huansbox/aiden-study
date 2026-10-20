@@ -2,7 +2,7 @@
   "use strict";
 
   const duration = 6000;
-  const trainNames = { e500: "E500", emu3000: "EMU3000", r200: "R200", '700t': "700T", n700s: "N700S", emu900: "EMU900", "breezy-blue": "藍皮解憂號", ct273: "CT273" };
+  const trainNames = { "jet-plane":"雙引擎噴射客機", excavator:"怪手", "snow-blower":"旋轉拋雪車", "mobile-crane":"伸縮吊車", "cement-mixer":"水泥攪拌車", "recycling-truck":"資源回收車", e500: "E500", emu3000: "EMU3000", r200: "R200", '700t': "700T", n700s: "N700S", emu900: "EMU900", "breezy-blue": "藍皮解憂號", ct273: "CT273" };
   const supports = (model) => Object.hasOwn(trainNames, model?.id);
 
   function render(model, { audioEnabled = true, build = null } = {}) {
@@ -30,15 +30,16 @@
     ).join("");
 
     const name = trainNames[model.id];
+    const vehicle = ["jet-plane","excavator","snow-blower","mobile-crane","cement-mixer","recycling-truck"].includes(model.id);
     return `<section class="brick-celebration" data-celebration style="--celebration-duration:${duration}ms" aria-label="${name} 完成慶祝">
       <div class="brick-celebration__heading" role="status">
         <p class="brick-kicker">${build?.contentVersion === 2 ? train.length : parts.length} 組積木，全部完成</p>
         <h2>${name}，出發！</h2>
-        <p class="brick-celebration__message">你完成的積木列車，出發了。</p>
+        <p class="brick-celebration__message">你完成的積木${vehicle ? "作品" : "列車"}，出發了。</p>
       </div>
       <div class="brick-celebration__scene">
         <svg class="brick-celebration__art" viewBox="0 0 800 500" width="800" height="500" aria-hidden="true" focusable="false">
-          <g class="brick-celebration__rails">${extendedRails}</g>
+          <g class="brick-celebration__rails">${vehicle ? railArtwork : extendedRails}</g>
           <g class="brick-celebration__train">${train.map((part) => part.svg).join("")}</g>
           <g class="brick-celebration__sprinkles">${confetti}</g>
         </svg>

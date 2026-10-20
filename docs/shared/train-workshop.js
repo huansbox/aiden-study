@@ -53,10 +53,11 @@
     const visibleIds = ids => new Set([...ids, ...fixed.map(part => part.id)]);
     const byId = id => parts.find(part => part.id === id);
     const buildId = initialBuild.id;
-    const name = model.id === "breezy-blue" ? "藍皮客車" : model.id.toUpperCase();
+    const vehicle = global.KidsVehicleMechanism?.create(model) || null;
+    const name = vehicle?.name || (model.id === "breezy-blue" ? "藍皮客車" : model.id.toUpperCase());
     const bb = model.id === "breezy-blue" ? global.KidsBreezyMechanism?.create() : null;
     const ct = model.id === "ct273" ? global.KidsCT273Mechanism?.create() : null;
-    const feature = global.KidsEmuMechanism?.create(model) || global.KidsHighspeedMechanism?.create(model) || null;
+    const feature = vehicle || global.KidsEmuMechanism?.create(model) || global.KidsHighspeedMechanism?.create(model) || null;
     let snapshot = currentSnapshot(), heldPack = null, selected = null;
     let paused = false, before = false, pushing = false, offset = 0;
     let disposed = false, busy = false, localError = "", ready = false, assetError = false;
@@ -84,7 +85,7 @@
       return parts.filter(part => visible.has(part.id) && (rail === null || (part.z < 3) === rail)).map(part =>
         `<g class="placed-part${!original.has(part.id) ? " placed-new" : ""}" data-placed="${part.id}">${artwork(part, visible)}</g>`).join("");
     };
-    const miniature = (ids, label) => `<svg viewBox="45 80 720 420" role="img" aria-label="${esc(label)}">${pieces(ids)}</svg>`;
+    const miniature = (ids, label) => `<svg viewBox="${vehicle ? model.viewBox : "45 80 720 420"}" role="img" aria-label="${esc(label)}">${pieces(ids)}</svg>`;
     const pushGraphic = () => `<span class="push-gesture" role="img" aria-label="按住模型，左右拖動">${icon("left")}${icon("hand")}${icon("arrow")}</span>`;
     const button = (action, content, label, extra = "") => `<button type="button" data-e500-action="${action}" aria-label="${esc(label)}" ${extra}>${content}</button>`;
     const canPush = ids => model.steps.slice(packStart(initialBuild), 4).every(step => step.parts.every(part => ids.has(part.id)));
@@ -141,25 +142,28 @@
       ct?.sync(ids); bb?.sync(ids); feature?.sync(ids);
       ensureAssets(v);
       const chapters = bb ? [["輪組與底盤","p4-2",0,5],["藍色車身","p6-2",5,6],["窗戶與車門","p7-2",6,8],["車頂","p9-2",8,10],["端面收尾","p12-3",10,12]] : ct ? [["輪組與底盤","p3-2",0,4],["鍋爐與車頭","p5-2",4,7],["駕駛室","p8-3",7,8],["煤水車","p10-2",8,10],["連桿與收尾","p12-1",10,14]] : [["底盤","p4-2",0,5],["橘色車身","p7-2",5,7],["駕駛室","p8-3",7,9],["車頂設備","p12-1",9,12],["車頭收尾","p14-2",12,14]];
-      if(feature) chapters.splice(0,chapters.length,...(model.id === 'emu900' ? [["輪組與底盤","p4-2",0,4],["銀色車身","p5-2",4,5],["微笑車頭","p6-2",5,7],["雙扇車門","p8-1",7,8],["車頂與收尾","p12-1",8,12]] : [["輪組與底盤","p4-2",0,5],["車身","p6-2",5,6],["車頭模組","p7-2",6,7],["車窗與車頂","p10-2",7,11],["接合收尾","p12-1",11,12]]));
+      if(feature?.chapters) chapters.splice(0,chapters.length,...feature.chapters);
+      else if(feature) chapters.splice(0,chapters.length,...(model.id === 'emu900' ? [["輪組與底盤","p4-2",0,4],["銀色車身","p5-2",4,5],["微笑車頭","p6-2",5,7],["雙扇車門","p8-1",7,8],["車頂與收尾","p12-1",8,12]] : [["輪組與底盤","p4-2",0,5],["車身","p6-2",5,6],["車頭模組","p7-2",6,7],["車窗與車頂","p10-2",7,11],["接合收尾","p12-1",11,12]]));
       const completedChapters = chapters.map(([, , from, to]) => model.steps.slice(Math.max(from, packStart(initialBuild)),to).every(step => step.parts.every(part => shown.has(part.id))));
       const activeChapter = completedChapters.indexOf(false);
       const top = `<div class="workshop-top"><div class="model-heading"><h2>${name}</h2><span class="model-count" aria-label="${shown.size} / ${required.length} 組已裝好">${shown.size}<small> / ${required.length}</small></span></div><div class="tool-actions">${button("sound",icon(audioEnabled ? "sound":"muted"),audioEnabled ? "關閉拼裝音效":"開啟拼裝音效",`aria-pressed="${audioEnabled}"`)}${inspection ? button('close',icon('left')+'回到作品','回到作品') : button("shelf",icon("shelf"),"收藏室")+button("pause",icon("pause")+"休息","稍後再拼")}</div></div>`;
       const shell = content => `<section class="e500-workshop" aria-label="${name} ${inspection ? '完成作品零件觀察' : '拼裝工作台'}">${top}${content}${inspection ? '<div class="e500-save">已完成的作品</div>' : syncStatus()}</section>`;
       if (!ready) { paint(shell(`<div class="asset-notice" role="status"><h3>${assetError ? "圖片暫時沒載好" : "準備中…"}</h3>${assetError ? button("retry","重新載入","重新載入圖片") : ""}</div>`)); return; }
       if(inspection) {
-        const box=mechanismView ? feature?.viewBox || (bb?'30 40 840 405':'0 75 900 295') : '65 80 680 410';
-        paint(shell(`<div class="model-area"><svg class="scene${mechanismView ? ' train-feature-scene' : ''}" data-e500-scene viewBox="${box}" role="group" aria-label="${name} ${mechanismView ? feature?.label || '零件特寫' : '完成作品'}">${mechanismView ? mechanism.scene(ids,{disabled:false,before:false}) : pieces(ids)}</svg><div class="scene-caption">${mechanism.gesture()}</div></div><div class="ct-tools">${button('mechanism',mechanismView ? miniature(ids,'查看完成全車')+'全車' : mechanism.gesture()+'特寫',mechanismView ? '查看完成全車' : '查看零件特寫',`aria-pressed="${mechanismView}"`)}${mechanismView ? mechanism.controls(ids,{disabled:false}) : ''}</div>`));
+        const box=mechanismView ? feature?.viewBox || (bb?'30 40 840 405':'0 75 900 295') : vehicle ? model.viewBox : '65 80 680 410';
+        const controls=`<div class="ct-tools${vehicle ? ' vehicle-inline-tools' : ''}" ${vehicle ? 'data-vehicle-inline-controls' : ''}>${button('mechanism',mechanismView ? miniature(ids,'查看完整作品')+'全貌' : mechanism.gesture()+'特寫',mechanismView ? '查看完整作品' : '查看零件特寫',`aria-pressed="${mechanismView}"`)}${mechanismView ? mechanism.controls(ids,{disabled:false}) : ''}</div>`;
+        paint(shell(`<div class="model-area${vehicle ? ' vehicle-model-area' : ''}">${vehicle ? controls : ''}<svg class="scene${mechanismView ? ' train-feature-scene' : ''}" data-e500-scene viewBox="${box}" role="group" aria-label="${name} ${mechanismView ? feature?.label || '零件特寫' : '完成作品'}">${mechanismView ? mechanism.scene(ids,{disabled:false,before:false}) : pieces(ids)}</svg><div class="scene-caption">${mechanism.gesture()}</div></div>${vehicle ? '' : controls}`));
         return;
       }
       if (paused) { paint(shell(`<div class="pause-card">${miniature(ids,`留在工作台的 ${name} 半成品`)}<div>${button("resume",icon("play")+"繼續","回工作台接著拼",'class="primary"')}${button("close",icon("left")+"首頁","回首頁")}</div></div>`)); return; }
       const hasNext = v.packDone && v.nextGrant;
       const unassigned = snapshot.grants?.some(grant => grant.buildId == null);
-      const viewBox = mechanismView ? feature ? feature.viewBox : bb ? "30 40 840 405" : "0 75 900 295" : shown.size < 15 && !v.pack?.some(part => part.box.y < 220) ? "65 220 680 270" : "65 80 680 410";
-      paint(shell(`<ol class="chapters" aria-label="整台建造階段">${chapters.map(([name,id],i) => `<li class="${completedChapters[i] ? "done" : i === activeChapter ? "active":""}" aria-label="${i+1} ${name}${completedChapters[i] ? "已完成": i === activeChapter ? "組裝中":"尚未完成"}" ${i === activeChapter ? 'aria-current="step"':""}><span class="chapter-number">${completedChapters[i] ? icon("check"):i+1}</span>${picture(byId(id))}</li>`).join("")}</ol>
-        <div class="bench-grid"><div class="model-area">${before ? `<div class="scene-note">${icon("history")}回看</div>`:""}
+      const viewBox = mechanismView ? feature ? feature.viewBox : bb ? "30 40 840 405" : "0 75 900 295" : vehicle ? model.viewBox : shown.size < 15 && !v.pack?.some(part => part.box.y < 220) ? "65 220 680 270" : "65 80 680 410";
+      const featureToolbar = feature && (feature.autoPack(v.packIndex) || feature.hasPart(ids)) ? `<div class="ct-tools${vehicle ? ' vehicle-inline-tools' : ''}" ${vehicle ? 'data-vehicle-inline-controls' : ''}>${button("mechanism",mechanismView ? miniature(ids,"查看完整半成品")+"全貌" : feature.gesture()+"特寫",mechanismView ? "查看完整半成品" : "查看"+feature.label,`aria-pressed="${mechanismView}" ${before?'disabled':''}`)}${mechanismView ? feature.controls(shown,{disabled:before || !!selected}) : ''}</div>` : '';
+      paint(shell(`<ol class="chapters${vehicle ? " vehicle-chapters" : ""}" aria-label="整台建造階段">${chapters.map(([name,id],i) => `<li class="${completedChapters[i] ? "done" : i === activeChapter ? "active":""}" aria-label="${i+1} ${name}${completedChapters[i] ? "已完成": i === activeChapter ? "組裝中":"尚未完成"}" ${i === activeChapter ? 'aria-current="step"':""}><span class="chapter-number">${completedChapters[i] ? icon("check"):i+1}</span>${picture(byId(id))}</li>`).join("")}</ol>
+        <div class="bench-grid"><div class="model-area${vehicle ? ' vehicle-model-area' : ''}">${vehicle ? featureToolbar : ''}${before ? `<div class="scene-note">${icon("history")}回看</div>`:""}
           <svg class="scene${pushing ? " is-pushing":""}${mechanismView ? feature ? " train-feature-scene" : bb ? " bb-scene" : " ct-mechanism-scene":""}" data-e500-scene viewBox="${viewBox}" role="group" aria-label="${name} ${mechanismView ? feature ? feature.label+'，' : bb ? "門窗特寫，" : "輪組側面特寫，" : ""}${before ? "本包開始前":"施工模型"}">
-            ${mechanismView ? mechanism.scene(shown, { disabled:before || !!selected, before }) : `<path class="ground-line" d="M65 445L745 270 M65 470L745 295"/>${pieces(shown,true)}
+            ${mechanismView ? mechanism.scene(shown, { disabled:before || !!selected, before }) : `${vehicle ? "" : '<path class="ground-line" d="M65 445L745 270 M65 470L745 295"/>'}${pieces(shown,true)}
             <g data-movable-train transform="translate(${offset} ${-offset*.257})">${pieces(shown,false,v.packDone && !before ? v.before : shown)}</g>`}
             <g data-placement-guide>${!before && !pushing && selected ? guide(byId(selected)):""}</g>
           </svg><div class="scene-caption"><div data-picture-guide>${mechanismView && !selected && ct?.hasWheel(shown) ? ct.gesture() : pushing ? pushGraphic():instructions(byId(selected) || v.remaining[0])}</div></div>
@@ -171,7 +175,7 @@
         </aside></div>
         ${ct && (v.packIndex === 2 || ct.hasWheel(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : ct.gesture()+"輪組", mechanismView ? "查看全車半成品" : "查看輪組並試轉",`aria-pressed="${mechanismView}" ${before ? "disabled":""}`)}${mechanismView ? ct.controls(shown,{disabled:before || !!selected}):""}</div>`:""}
         ${bb && ([6,7].includes(v.packIndex) || bb.hasPart(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : bb.gesture()+"門窗",mechanismView ? "查看全車半成品" : "查看門窗並試拉",`aria-pressed="${mechanismView}" ${before?"disabled":""}`)}${mechanismView?bb.controls(shown,{disabled:before || !!selected}):""}</div>`:""}
-        ${feature && (feature.autoPack(v.packIndex) || feature.hasPart(ids)) ? `<div class="ct-tools">${button("mechanism",mechanismView ? miniature(ids,"查看全車半成品")+"全車" : feature.gesture()+"特寫",mechanismView ? "查看全車半成品" : "查看"+feature.label,`aria-pressed="${mechanismView}" ${before?'disabled':''}`)}${mechanismView ? feature.controls(shown,{disabled:before || !!selected}) : ''}</div>` : ''}
+        ${vehicle ? '' : featureToolbar}
         ${!ct && !bb && !feature && canPush(ids) ? `<div class="milestone">${button("push",(pushing?icon("block"):pushGraphic())+`<span>${pushing?"組裝":"試推"}</span>`,pushing?"回到組裝":"試推看看",`class="push-button" aria-pressed="${pushing}" ${before?"disabled":""}`)}${pushing?`<div class="push-controls">${button("push-left",icon("left"),"往左推")}<input data-push-position type="range" aria-label="車的位置" min="-45" max="45" value="${offset}" step="1">${button("push-right",icon("arrow"),"往右推")}</div>`:""}</div>`:""}`));
     }
     function selectPart(id) {
@@ -274,7 +278,7 @@
     }
     function moveFeature(kind,value) {
       if(!feature || !mechanismView || before || selected || busy || paused)return;
-      feature.sync(view().placed);feature.move(kind,value);feature.update(host);
+      feature.sync(view().placed);feature.move(kind,value);feature.update(host);if(vehicle)render();
     }
     function updateOffset(value) {
       offset = Math.max(-45,Math.min(45,value));

@@ -155,7 +155,7 @@ try {
   await browser.waitFor('document.querySelector("[data-action=start-model][data-model=e500]")');
   assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.dataset.model)'),['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','ct273']);
   assert.deepEqual(await browser.evaluate('[...document.querySelectorAll("[data-action=start-model]")].map(e=>e.querySelector("small").textContent)'),['14 包 · 42 組部件',...Array(6).fill('12 包 · 36 組部件'),'14 包 · 42 組部件']);
-  assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/積木列車收藏/);
+  assert.match(await browser.evaluate('document.querySelector("#hub").innerText'),/積木收藏/);
   await browser.click('[data-action="start-model"][data-model="e500"]',true);
   await browser.waitFor('document.querySelector("[data-action=retry-art]")');
   assert.equal(await browser.evaluate('document.querySelectorAll("[data-action=part]").length'),0,'missing image must not offer invisible placement');
@@ -339,7 +339,7 @@ try {
   await browser.waitFor('document.querySelector(".brick-catalog")');
   assert.equal(await browser.evaluate('document.querySelectorAll(".brick-shelf-item").length'),8);
   assert.equal(await browser.evaluate('document.querySelectorAll(".brick-catalog-card").length'),8);
-  assert.match(await browser.evaluate('document.querySelector(".brick-catalog").innerText'),/積木列車收藏/);
+  assert.match(await browser.evaluate('document.querySelector(".brick-catalog").innerText'),/積木收藏/);
   assert.deepEqual((await state()).displayedBuildIds,['e500','emu3000','r200','700t','n700s','emu900','breezy-blue','ct273']);
   assert.equal((await state()).grants.filter(g=>g.buildId==null).length,1);
   await browser.waitFor('!document.querySelector(".brick-art-notice")');

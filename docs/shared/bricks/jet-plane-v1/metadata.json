@@ -1,0 +1,910 @@
+{
+  "id": "jet-plane",
+  "title": "藍白雙引擎噴射飛機",
+  "series": "飛行交通工具",
+  "viewBox": "0 0 800 500",
+  "scale": 2,
+  "steps": [
+    {
+      "title": "鋪好飛機展示跑道",
+      "parts": [
+        {
+          "id": "p1-1",
+          "name": "前段展示跑道",
+          "z": 0,
+          "box": {
+            "x": 59.25,
+            "y": 314,
+            "width": 449.75,
+            "height": 180.25
+          },
+          "imageBox": {
+            "x": 59.25,
+            "y": 314,
+            "width": 449.75,
+            "height": 180.25
+          },
+          "file": "assets/p1-1.png",
+          "sha256": "1de04b6e657de3804985dc8a1b40e7859948bf9341056b33ec4ec37d73a8dabb",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p1-2",
+          "name": "中段展示跑道",
+          "z": 1,
+          "box": {
+            "x": 175.25,
+            "y": 249.75,
+            "width": 449.5,
+            "height": 180.5
+          },
+          "imageBox": {
+            "x": 175.25,
+            "y": 249.75,
+            "width": 449.5,
+            "height": 180.5
+          },
+          "file": "assets/p1-2.png",
+          "sha256": "0fd1fa90b3252d2c98031497efae269669b4bf33db31ce5caaf832905464e612",
+          "occlusionPeers": [
+            "p1-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-2-v0.png",
+              "sha256": "01d758bcce68a4ef92a9dd838a0ea9197f70ccc329fdad9a14d074f607661aa2"
+            }
+          ]
+        },
+        {
+          "id": "p1-3",
+          "name": "後段展示跑道",
+          "z": 2,
+          "box": {
+            "x": 291,
+            "y": 185.75,
+            "width": 449.75,
+            "height": 180.5
+          },
+          "imageBox": {
+            "x": 291,
+            "y": 185.75,
+            "width": 449.75,
+            "height": 180.5
+          },
+          "file": "assets/p1-3.png",
+          "sha256": "e9d23551baf883805aa013c1d508bdd41e9d77435fc04d9a1f3f165c9c726d17",
+          "occlusionPeers": [
+            "p1-1",
+            "p1-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p1-3-v0.png",
+              "sha256": "c418ba7e0c1220a82cc887cb1b885076e2705491d501451e261ddb8ada511106"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p1-3-v1.png",
+              "sha256": "c418ba7e0c1220a82cc887cb1b885076e2705491d501451e261ddb8ada511106"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "先裝起落架",
+      "parts": [
+        {
+          "id": "p2-1",
+          "name": "前起落架與輪組",
+          "z": 3,
+          "box": {
+            "x": 277.5,
+            "y": 311,
+            "width": 47,
+            "height": 80.25
+          },
+          "imageBox": {
+            "x": 277.5,
+            "y": 311,
+            "width": 47,
+            "height": 80.25
+          },
+          "file": "assets/p2-1.png",
+          "sha256": "ea531d6135e8df1407cf9c85c2ea67dcdba8792d6dedec3fd8ed6db6207027fc",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p2-2",
+          "name": "左主起落架與輪組",
+          "z": 4,
+          "box": {
+            "x": 366.25,
+            "y": 216,
+            "width": 47,
+            "height": 81.25
+          },
+          "imageBox": {
+            "x": 366.25,
+            "y": 216,
+            "width": 47,
+            "height": 81.25
+          },
+          "file": "assets/p2-2.png",
+          "sha256": "47679cd5be6734e42b651496a6087824ae088529692bfb4aa835de2acf479919",
+          "occlusionPeers": [
+            "p2-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p2-3",
+          "name": "右主起落架與輪組",
+          "z": 5,
+          "box": {
+            "x": 471.25,
+            "y": 249.5,
+            "width": 47.25,
+            "height": 81.25
+          },
+          "imageBox": {
+            "x": 471.25,
+            "y": 249.5,
+            "width": 47.25,
+            "height": 81.25
+          },
+          "file": "assets/p2-3.png",
+          "sha256": "acede4a1a0d76f72f585f3b7eb396c481fc8c15e67c2e21b2b77e95bec0781cf",
+          "occlusionPeers": [
+            "p2-1",
+            "p2-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "接起藍色機腹與機翼座",
+      "parts": [
+        {
+          "id": "p3-1",
+          "name": "前段藍色機腹",
+          "z": 6,
+          "box": {
+            "x": 239.75,
+            "y": 253,
+            "width": 156,
+            "height": 93
+          },
+          "imageBox": {
+            "x": 239.75,
+            "y": 253,
+            "width": 156,
+            "height": 93
+          },
+          "file": "assets/p3-1.png",
+          "sha256": "bc77a2264aa65631d0effa6e783da31417a7df9a7799935b963a8fa4c7d68814",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p3-2",
+          "name": "中央翼盒與凸點接座",
+          "z": 7,
+          "box": {
+            "x": 317.25,
+            "y": 196.25,
+            "width": 175.25,
+            "height": 107
+          },
+          "imageBox": {
+            "x": 317.25,
+            "y": 196.25,
+            "width": 175.25,
+            "height": 107
+          },
+          "file": "assets/p3-2.png",
+          "sha256": "1dbfd92fefc5dfa3beae07375ab7e6cea4cb7904a3e5e0d0b523f96f73760571",
+          "occlusionPeers": [
+            "p3-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-2-v0.png",
+              "sha256": "0d9bf132b8f0f44e82949f467104310f167149e215e1cbcdd096d2143427a8a7"
+            }
+          ]
+        },
+        {
+          "id": "p3-3",
+          "name": "後段藍色機腹",
+          "z": 8,
+          "box": {
+            "x": 413.75,
+            "y": 134.75,
+            "width": 158,
+            "height": 115
+          },
+          "imageBox": {
+            "x": 413.75,
+            "y": 134.75,
+            "width": 158,
+            "height": 115
+          },
+          "file": "assets/p3-3.png",
+          "sha256": "ca14b53bcfabbb4c28f06722fd447c29bc63ce5c5d15bd3af38fd5a7194658ba",
+          "occlusionPeers": [
+            "p3-1",
+            "p3-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p3-3-v0.png",
+              "sha256": "879088e986cf9b918238feb78219fbf1f8ddcf84b8ec5dddc48577593d812415"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p3-3-v1.png",
+              "sha256": "879088e986cf9b918238feb78219fbf1f8ddcf84b8ec5dddc48577593d812415"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "疊起白色機身與藍色機鼻",
+      "parts": [
+        {
+          "id": "p4-1",
+          "name": "左側白色機身",
+          "z": 9,
+          "box": {
+            "x": 257.75,
+            "y": 123.75,
+            "width": 219.25,
+            "height": 169
+          },
+          "imageBox": {
+            "x": 257.75,
+            "y": 123.75,
+            "width": 219.25,
+            "height": 169
+          },
+          "file": "assets/p4-1.png",
+          "sha256": "0c5b120ffea415952f6ef5724daa6b5c8ebd9a21000d045ad6625eae7d400ab2",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p4-2",
+          "name": "右側白色機身",
+          "z": 10,
+          "box": {
+            "x": 323,
+            "y": 144,
+            "width": 219.75,
+            "height": 169
+          },
+          "imageBox": {
+            "x": 323,
+            "y": 144,
+            "width": 219.75,
+            "height": 169
+          },
+          "file": "assets/p4-2.png",
+          "sha256": "51d49144367bdb0047d32d62ad9bd68cea7c6d98edde6d202cece8c1c4d4dc68",
+          "occlusionPeers": [
+            "p4-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p4-3",
+          "name": "藍白階梯機鼻與座艙",
+          "z": 11,
+          "box": {
+            "x": 212.25,
+            "y": 226.25,
+            "width": 125.75,
+            "height": 117.5
+          },
+          "imageBox": {
+            "x": 212.25,
+            "y": 226.25,
+            "width": 125.75,
+            "height": 117.5
+          },
+          "file": "assets/p4-3.png",
+          "sha256": "1ebf9d052cc5734301057933327d0c4397ef55a12f73244ffe4a5aeffc4206af",
+          "occlusionPeers": [
+            "p4-1",
+            "p4-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "展開兩側厚實主翼",
+      "parts": [
+        {
+          "id": "p5-1",
+          "name": "左側白藍主翼",
+          "z": 12,
+          "box": {
+            "x": 243.5,
+            "y": 128.25,
+            "width": 150.5,
+            "height": 92.25
+          },
+          "imageBox": {
+            "x": 243.5,
+            "y": 128.25,
+            "width": 150.5,
+            "height": 92.25
+          },
+          "file": "assets/p5-1.png",
+          "sha256": "7825d66010a2bd485b6d6ff395c4d4232018bb20de8668929ae55ce50f22e53b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p5-2",
+          "name": "右側白藍主翼",
+          "z": 13,
+          "box": {
+            "x": 404,
+            "y": 200.5,
+            "width": 235.75,
+            "height": 88.5
+          },
+          "imageBox": {
+            "x": 404,
+            "y": 200.5,
+            "width": 235.75,
+            "height": 88.5
+          },
+          "file": "assets/p5-2.png",
+          "sha256": "ccdf26c611776f8e54db6d676c15f88427934c8eb6c999ab045c62359302a9fd",
+          "occlusionPeers": [
+            "p5-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p5-3",
+          "name": "主翼中央藍色鎖扣",
+          "z": 14,
+          "box": {
+            "x": 354,
+            "y": 183.5,
+            "width": 91.25,
+            "height": 55.5
+          },
+          "imageBox": {
+            "x": 354,
+            "y": 183.5,
+            "width": 91.25,
+            "height": 55.5
+          },
+          "file": "assets/p5-3.png",
+          "sha256": "f3683d0bea77c3f04eeb661299e5f0e762387e603326eafaad18da6108783953",
+          "occlusionPeers": [
+            "p5-1",
+            "p5-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "組裝左側噴射引擎",
+      "parts": [
+        {
+          "id": "p6-1",
+          "name": "左引擎藍色吊架",
+          "z": 15,
+          "box": {
+            "x": 250.5,
+            "y": 170,
+            "width": 60.25,
+            "height": 63.75
+          },
+          "imageBox": {
+            "x": 250.5,
+            "y": 170,
+            "width": 60.25,
+            "height": 63.75
+          },
+          "file": "assets/p6-1.png",
+          "sha256": "0ad9eeabcc3f207741794886f673394383644597e957f1395c31bbce89bf32e1",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p6-2",
+          "name": "左引擎中空進氣外殼",
+          "z": 16,
+          "box": {
+            "x": 215.75,
+            "y": 197.5,
+            "width": 84.5,
+            "height": 80.25
+          },
+          "imageBox": {
+            "x": 215.75,
+            "y": 197.5,
+            "width": 84.5,
+            "height": 80.25
+          },
+          "file": "assets/p6-2.png",
+          "sha256": "395b44e2926ed59a830a939ad9c8b33efa384049e647c5fa28d6ff026ee4dbc2",
+          "occlusionPeers": [
+            "p6-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p6-3",
+          "name": "左引擎獨立銀灰風扇",
+          "z": 17,
+          "motion": {
+            "pivot": [
+              243.701644,
+              253.337912
+            ],
+            "basis": [
+              0,
+              -0.908006,
+              0.79697,
+              0.253058
+            ]
+          },
+          "box": {
+            "x": 216.875,
+            "y": 227.25,
+            "width": 44,
+            "height": 45.25
+          },
+          "imageBox": {
+            "x": 221.5,
+            "y": 227.25,
+            "width": 34.75,
+            "height": 45.25
+          },
+          "file": "assets/p6-3.png",
+          "sha256": "29d9e112d75ef54ccad2e3a85845ecee61e50bf6f60a77d5a19819930acd7955",
+          "occlusionPeers": [
+            "p6-1",
+            "p6-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p6-3-v0.png",
+              "sha256": "9191f6385a220b53944b61f87be322952b499742f1b90994c226d0274aa7cf40"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p6-3-v1.png",
+              "sha256": "9191f6385a220b53944b61f87be322952b499742f1b90994c226d0274aa7cf40"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "組裝右側噴射引擎",
+      "parts": [
+        {
+          "id": "p7-1",
+          "name": "右引擎藍色吊架",
+          "z": 18,
+          "box": {
+            "x": 468.75,
+            "y": 239.25,
+            "width": 66.25,
+            "height": 64.5
+          },
+          "imageBox": {
+            "x": 468.75,
+            "y": 239.25,
+            "width": 66.25,
+            "height": 64.5
+          },
+          "file": "assets/p7-1.png",
+          "sha256": "aae6dbf683a1ea713c1ef0e7ebdf1fbd19294f9d68d22810ddfcc0a9a58fb85b",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p7-2",
+          "name": "右引擎中空進氣外殼",
+          "z": 19,
+          "box": {
+            "x": 434,
+            "y": 266.75,
+            "width": 98.5,
+            "height": 88.75
+          },
+          "imageBox": {
+            "x": 434,
+            "y": 266.75,
+            "width": 98.5,
+            "height": 88.75
+          },
+          "file": "assets/p7-2.png",
+          "sha256": "cd68e94dba6fff17114d4ce6d41bfbe67bf75af1f0d2e3d017ff57b0766d5d65",
+          "occlusionPeers": [
+            "p7-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p7-3",
+          "name": "右引擎獨立銀灰風扇",
+          "z": 20,
+          "motion": {
+            "pivot": [
+              462.071361,
+              322.675854
+            ],
+            "basis": [
+              0,
+              -0.908006,
+              0.79697,
+              0.253058
+            ]
+          },
+          "box": {
+            "x": 440,
+            "y": 296.75,
+            "width": 45.75,
+            "height": 50.75
+          },
+          "imageBox": {
+            "x": 440,
+            "y": 296.75,
+            "width": 45.75,
+            "height": 50.75
+          },
+          "file": "assets/p7-3.png",
+          "sha256": "bb9b70e8ff92a1de35b1c489eaf0652e0dcc4f8503d3fe0cb3004b151626c499",
+          "occlusionPeers": [
+            "p7-1",
+            "p7-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p7-3-v0.png",
+              "sha256": "1a2884aef6449f8da59fc8702ee56d0b504af8cfd6e84a45fb678ed7b22a287c"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p7-3-v1.png",
+              "sha256": "1a2884aef6449f8da59fc8702ee56d0b504af8cfd6e84a45fb678ed7b22a287c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "封上凸點機頂",
+      "parts": [
+        {
+          "id": "p8-1",
+          "name": "前段白藍機頂",
+          "z": 21,
+          "box": {
+            "x": 260,
+            "y": 184.75,
+            "width": 144.75,
+            "height": 81
+          },
+          "imageBox": {
+            "x": 260,
+            "y": 184.75,
+            "width": 144.75,
+            "height": 81
+          },
+          "file": "assets/p8-1.png",
+          "sha256": "9d450360ebfc736f528aa98b02c639e64486f5fa241d78f35fa4d9b99fd2dee9",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p8-2",
+          "name": "中央白藍機頂",
+          "z": 22,
+          "box": {
+            "x": 327.75,
+            "y": 147.5,
+            "width": 144.5,
+            "height": 80.5
+          },
+          "imageBox": {
+            "x": 327.75,
+            "y": 147.5,
+            "width": 144.5,
+            "height": 80.5
+          },
+          "file": "assets/p8-2.png",
+          "sha256": "387437abf309623877a73877ed2f589529b54bff6a9f1981ec590c6d9550248c",
+          "occlusionPeers": [
+            "p8-1"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-2-v0.png",
+              "sha256": "bd9a9f6eee5a7c50f354712f2eb22250c494fb894ee98e38d9220d7a59ffb2b8"
+            }
+          ]
+        },
+        {
+          "id": "p8-3",
+          "name": "後段白藍機頂",
+          "z": 23,
+          "box": {
+            "x": 395.25,
+            "y": 107.25,
+            "width": 176.25,
+            "height": 83.5
+          },
+          "imageBox": {
+            "x": 395.25,
+            "y": 107.25,
+            "width": 176.25,
+            "height": 83.5
+          },
+          "file": "assets/p8-3.png",
+          "sha256": "335a04764f94e3c0bfc060acb04bcffde7f26fcf3e8dd07677771d65c67d469f",
+          "occlusionPeers": [
+            "p8-1",
+            "p8-2"
+          ],
+          "variants": [
+            {
+              "mask": 0,
+              "file": "assets/p8-3-v0.png",
+              "sha256": "d6cff94cf9106ed1ecd708f41f4d63b9cedf84dee324972a200fcbfc33ee9ac3"
+            },
+            {
+              "mask": 1,
+              "file": "assets/p8-3-v1.png",
+              "sha256": "d6cff94cf9106ed1ecd708f41f4d63b9cedf84dee324972a200fcbfc33ee9ac3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "接上三片尾翼",
+      "parts": [
+        {
+          "id": "p9-1",
+          "name": "左側白藍水平尾翼",
+          "z": 24,
+          "box": {
+            "x": 415.25,
+            "y": 89.75,
+            "width": 93.5,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 415.25,
+            "y": 90.25,
+            "width": 93.5,
+            "height": 43
+          },
+          "file": "assets/p9-1.png",
+          "sha256": "f4a534180ef79aa60f1350371ea5b52a7e58c3e39dec6639b547c0698ef8c605",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p9-2",
+          "name": "右側白藍水平尾翼",
+          "z": 25,
+          "box": {
+            "x": 535.25,
+            "y": 131.75,
+            "width": 116.5,
+            "height": 53.5
+          },
+          "imageBox": {
+            "x": 535.25,
+            "y": 131.75,
+            "width": 116.5,
+            "height": 53.5
+          },
+          "file": "assets/p9-2.png",
+          "sha256": "476a4dc9456ec2d75af674c1c3833844d45582d2b4de3505ac13b09c05ce830a",
+          "occlusionPeers": [
+            "p9-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p9-3",
+          "name": "藍色垂直尾翼",
+          "z": 26,
+          "box": {
+            "x": 493.5,
+            "y": 20,
+            "width": 60.5,
+            "height": 107
+          },
+          "imageBox": {
+            "x": 493.5,
+            "y": 20,
+            "width": 60.5,
+            "height": 107
+          },
+          "file": "assets/p9-3.png",
+          "sha256": "a714f884c544f53fe3fde65ee2410256d057339712a5ac8ef85a2950f046ba2c",
+          "occlusionPeers": [
+            "p9-1",
+            "p9-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "裝上座艙與客窗",
+      "parts": [
+        {
+          "id": "p10-1",
+          "name": "深藍駕駛艙玻璃",
+          "z": 27,
+          "box": {
+            "x": 238.75,
+            "y": 245.25,
+            "width": 94.5,
+            "height": 50.75
+          },
+          "imageBox": {
+            "x": 238.75,
+            "y": 245.25,
+            "width": 94.5,
+            "height": 50.75
+          },
+          "file": "assets/p10-1.png",
+          "sha256": "ed88294269fa0caa6815d637c07d0f25e24b078a1723da9dd9421043a5afed84",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p10-2",
+          "name": "前段雙側客艙圓角窗列",
+          "z": 28,
+          "box": {
+            "x": 345,
+            "y": 208.25,
+            "width": 96.5,
+            "height": 75.75
+          },
+          "imageBox": {
+            "x": 345,
+            "y": 208.25,
+            "width": 96.5,
+            "height": 75.75
+          },
+          "file": "assets/p10-2.png",
+          "sha256": "dd7008a66a0db4a37ddf8f52de6cc68788425525e1fcddd4a1b455d03bb57070",
+          "occlusionPeers": [
+            "p10-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p10-3",
+          "name": "後段雙側客艙圓角窗列",
+          "z": 29,
+          "box": {
+            "x": 441.75,
+            "y": 155,
+            "width": 96.25,
+            "height": 75.5
+          },
+          "imageBox": {
+            "x": 441.75,
+            "y": 155,
+            "width": 96.25,
+            "height": 75.5
+          },
+          "file": "assets/p10-3.png",
+          "sha256": "2568ff1fa763785a88286d5d21b5b47ab1c6c1adb48427f3b40cc7433e959786",
+          "occlusionPeers": [
+            "p10-1",
+            "p10-2"
+          ],
+          "variants": []
+        }
+      ]
+    },
+    {
+      "title": "完成翼尖與機尾細節",
+      "parts": [
+        {
+          "id": "p11-1",
+          "name": "左翼尖紅燈與翼梢",
+          "z": 30,
+          "box": {
+            "x": 233.75,
+            "y": 125.75,
+            "width": 49.75,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 233.75,
+            "y": 128.25,
+            "width": 49.75,
+            "height": 39
+          },
+          "file": "assets/p11-1.png",
+          "sha256": "4f6549cd212578b4154f43b96da63f4fd86093db5d20ef4e14e8e7dd24e34096",
+          "occlusionPeers": [],
+          "variants": []
+        },
+        {
+          "id": "p11-2",
+          "name": "右翼尖綠燈與翼梢",
+          "z": 31,
+          "box": {
+            "x": 570,
+            "y": 230.75,
+            "width": 44.25,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 570,
+            "y": 233.25,
+            "width": 44.25,
+            "height": 39
+          },
+          "file": "assets/p11-2.png",
+          "sha256": "10b018d9c7e91f0b944d8187158f31258448b67cd11af482af029c5a4facb5d9",
+          "occlusionPeers": [
+            "p11-1"
+          ],
+          "variants": []
+        },
+        {
+          "id": "p11-3",
+          "name": "機尾排氣口與藍色收口",
+          "z": 32,
+          "box": {
+            "x": 535.25,
+            "y": 110.875,
+            "width": 44,
+            "height": 44
+          },
+          "imageBox": {
+            "x": 545.25,
+            "y": 123.5,
+            "width": 24,
+            "height": 18.75
+          },
+          "file": "assets/p11-3.png",
+          "sha256": "66d9dda9651f6399ba217afc175d80fc072fdbb2b180a91de8e200eb6b57126a",
+          "occlusionPeers": [
+            "p11-1",
+            "p11-2"
+          ],
+          "variants": []
+        }
+      ]
+    }
+  ],
+  "assetDigest": "2cda7baec290a850f37ae86b87cdb7c3c2add2ba5bede9e209a62837ae6b85a4"
+}

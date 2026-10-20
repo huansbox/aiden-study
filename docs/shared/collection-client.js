@@ -64,7 +64,7 @@
                 rejected.set(command.commandId, e);
                 localStorage.removeItem(outPrefix + command.commandId);
                 if (command.type === "select-model" && e.status === 409) {
-                  // 明確拒絕後讀回最新選車世代；仍保留原拒絕訊息，不用舊世代反覆重選。
+                  // 明確拒絕後讀回最新選作品世代；仍保留原拒絕訊息，不用舊世代反覆重選。
                   try { adopt(await F.request(`/v1/collection/${child}`)); } catch { /* 先保留明確拒絕；稍後可重新讀取。 */ }
                 }
               }
@@ -84,7 +84,7 @@
       changed(); void flush(); return command;
     }
     function selectionPending(command) {
-      const error = Error("正在等連線確認選車；此選擇已保存，連線後會重試同一筆操作。");
+      const error = Error("正在等連線確認作品選擇；此選擇已保存，連線後會重試同一筆操作。");
       error.code = "selection-pending";
       error.pendingSelection = { modelId:command.modelId, commandId:command.commandId };
       return error;

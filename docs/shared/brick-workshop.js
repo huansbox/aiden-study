@@ -33,11 +33,13 @@
   const packCount = (model, build) => global.KidsCollectionCore?.packCount?.(build) ?? model.steps.length - packStart(build);
   const packNumber = (build, index) => index - packStart(build) + 1;
   const fixedIds = (model, build) => allParts(model).filter(part => part.packIndex < packStart(build)).map(part => part.id);
-  const nextBuild = model => ({modelId:model.id,contentVersion:["e500","emu3000","r200","700t","n700s","emu900","breezy-blue","ct273"].includes(model.id)?2:1});
+  const nextBuild = model => ({modelId:model.id,contentVersion:(global.KidsCollectionCore?.MODERN_MODELS || ["e500","emu3000","r200","700t","n700s","emu900","breezy-blue","ct273","jet-plane","excavator","snow-blower","mobile-crane","cement-mixer","recycling-truck"]).includes(model.id)?2:1});
   const catalogTitle = () => global.KidsBrickModels?.title || "拼裝系列";
   const modelFrom = (modelId) => global.KidsBrickModels?.get?.(modelId);
-  const GRAPHICAL_MODELS = Object.freeze(["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s"]);
+  const GRAPHICAL_MODELS = Object.freeze(["e500", "ct273", "breezy-blue", "emu3000", "emu900", "700t", "n700s", "jet-plane", "excavator", "snow-blower", "mobile-crane", "cement-mixer", "recycling-truck"]);
   const GRAPHICAL_MECHANISMS = Object.freeze({
+    "jet-plane": "KidsVehicleMechanism", excavator: "KidsVehicleMechanism", "snow-blower": "KidsVehicleMechanism",
+    "mobile-crane": "KidsVehicleMechanism", "cement-mixer": "KidsVehicleMechanism", "recycling-truck": "KidsVehicleMechanism",
     emu3000: "KidsEmuMechanism", emu900: "KidsEmuMechanism",
     "700t": "KidsHighspeedMechanism", n700s: "KidsHighspeedMechanism",
   });
@@ -63,8 +65,9 @@
       ? error.message.trim()
       : fallback;
 
+  const VEHICLES = ["jet-plane","excavator","snow-blower","mobile-crane","cement-mixer","recycling-truck"];
   const previewSource = model => model?.assetVersion
-    ? imageSources(model.steps[0].parts[0])[0]?.replace(/\/assets\/[^/?]+(?:\?[^"']*)?$/, `/preview.webp?v=${model.assetVersion}`)
+    ? imageSources(model.steps[0].parts[0])[0]?.replace(/\/assets\/[^/?]+(?:\?[^"']*)?$/, `/preview.${model.previewFormat || (VEHICLES.includes(model.id) ? "png" : "webp")}?v=${model.assetVersion}`)
     : null;
   const previewParts = model => previewSource(model) ? [{svg:`<image href="${previewSource(model)}"/>`}] : allParts(model).map(part=>({svg:part.svg}));
 
@@ -227,7 +230,7 @@
       allParts(model).find((part) => part.id === partId);
     const statusText = (snapshot) => {
       if (preview) return "示範進度只留在此頁，不會保存到孩子的收藏。";
-      if (snapshot.pendingSelection) return "正在等連線確認選車";
+      if (snapshot.pendingSelection) return "正在等連線確認作品選擇";
       const sync = snapshot.sync || {};
       if (sync.status === "offline")
         return sync.message || "目前離線，拼裝進度會留在這台裝置並稍後送出。";
@@ -245,7 +248,7 @@
     function renderHeader(snapshot) {
       return `<header class="brick-workshop__header">
         <div>
-          <p class="brick-workshop__eyebrow">${preview ? "火車試拼" : "每日拼裝收藏"}</p>
+          <p class="brick-workshop__eyebrow">${preview ? "積木試拼" : "每日拼裝收藏"}</p>
           <h1>${view === "shelf" ? (preview ? "示範收藏室" : "我的收藏室") : "拼裝工作台"}</h1>
         </div>
         <div class="brick-workshop__header-actions">
@@ -264,11 +267,11 @@
       const pending = snapshot.pendingSelection, model = getModel(pending.modelId);
       return `<section class="brick-model-confirm" aria-labelledby="brick-pending-title">
         ${model ? thumbnail(model.id,{complete:true,ghosts:false,className:"brick-model-confirm__picture"}) : ""}
-        <p class="brick-kicker" role="status">正在等連線確認選車</p>
+        <p class="brick-kicker" role="status">正在等連線確認作品選擇</p>
         <h2 id="brick-pending-title">${escapeHtml(model?.title || pending.modelId)}</h2>
-        <p>你已確認選這台。需要先確認結果，才能返回換車。</p>
-        <p>可以稍後回來，這筆選車會繼續確認；重試不會另外選一台。</p>
-        <div class="brick-complete__actions"><button type="button" data-action="retry-selection" ${busy ? "disabled" : ""}>${busy ? "正在確認選車…" : "重試確認選車"}</button></div>
+        <p>你已確認選這台。需要先確認結果，才能返回換作品。</p>
+        <p>可以稍後回來，這筆作品選擇會繼續確認；重試不會另外選一台。</p>
+        <div class="brick-complete__actions"><button type="button" data-action="retry-selection" ${busy ? "disabled" : ""}>${busy ? "正在確認作品選擇…" : "重試確認作品選擇"}</button></div>
       </section>`;
     }
 
@@ -289,7 +292,7 @@
       } else {
         choosingNext = true;
         candidateModelId = selected.modelId;
-        localError = snapshot.sync?.message || "這筆選車沒有確認成功，請重新選擇。";
+        localError = snapshot.sync?.message || "這筆作品選擇沒有確認成功，請重新選擇。";
       }
     }
 
@@ -314,7 +317,7 @@
           ${artworkNotice([candidate])}
           <p class="brick-kicker">確認這次的作品</p>
           <h2 id="brick-confirm-title">${escapeHtml(candidate.title)}</h2>
-          <p>共 ${count} 包 · ${requiredParts(candidate,planned).length} 組部件${packStart(planned) ? "；展示鐵軌已備好" : ""}</p>
+          <p>共 ${count} 包 · ${requiredParts(candidate,planned).length} 組部件${packStart(planned) ? (VEHICLES.includes(candidate.id) ? "；展示場景已備好" : "；展示鐵軌已備好") : ""}</p>
           <p class="brick-model-confirm__available">零件盒有 ${unassigned} 包，現在可以拼 ${Math.min(unassigned,count)} 包。</p>
           ${unassigned ? "" : '<p>先選好這台，拿到新包後就能開始拼。</p>'}
           <div class="brick-complete__actions"><button type="button" data-action="confirm-model" data-model="${escapeHtml(candidate.id)}" ${busy || candidateArt !== "ready" ? "disabled" : ""}>${busy ? "正在準備這台…" : "確定，開始拼這台"}</button>
@@ -573,7 +576,7 @@
             );
             return `<article class="brick-catalog-card${owned ? " is-owned" : ""}">
               ${thumbnail(model.id, { complete: true, ghosts: !owned })}
-              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "可以選這台"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / ${requiredParts(model,active).length} 組部件` : "先選好車，拿到新包後開始拼"}</small></div>
+              <div><p>${owned ? "已收藏" : active ? "拼裝中" : "可以選這台"}</p><h3>${escapeHtml(model.title)}</h3><small>${owned ? `${owned} 件完成作品` : active ? `${(active.placed || []).length} / ${requiredParts(model,active).length} 組部件` : "先選好作品，拿到新包後開始拼"}</small></div>
             </article>`;
           })
           .join("")}</div>
@@ -604,7 +607,7 @@
       const pictureEligible = GRAPHICAL_MODELS.includes(model?.id) && (inspecting || view === "workshop" && !choosingNext && !build.completedAt && (build.placed || []).length < requiredParts(model,build).length);
       if (pictureEligible && (inspecting || global.KidsTrainWorkshop || GRAPHICAL_MECHANISMS[model.id])) {
         const mechanism = GRAPHICAL_MECHANISMS[model.id];
-        if (!global.KidsTrainWorkshop || mechanism && typeof global[mechanism]?.create !== "function") {
+        if (!global.KidsTrainWorkshop || mechanism && (typeof global[mechanism]?.create !== "function" || VEHICLES.includes(model.id) && !global[mechanism].create(model))) {
           pictureWorkshop?.destroy(); pictureWorkshop = null; pictureBuildId = null;
           element.innerHTML = `<section class="brick-workshop">${renderHeader(snapshot)}<section class="brick-error" role="alert"><h2>拼裝工作台沒有完整載入</h2><p>請重新整理頁面後再繼續，已拼好的作品會保留。</p><button type="button" data-action="reload-workshop">重新載入</button></section></section>`;
           return;
@@ -763,7 +766,7 @@
         return;
       }
       if (action === "retry-selection")
-        return run("selection-retry", () => collection.flush?.(), "選車結果暫時無法確認，請再試一次。");
+        return run("selection-retry", () => collection.flush?.(), "作品選擇結果暫時無法確認，請再試一次。");
       if (["part", "target", "celebration-replay"].includes(action)) sound?.unlock();
       if (action === "part" && Date.now() < suppressClickUntil) return;
       if (action === "close") return closeWorkshop();
@@ -851,7 +854,7 @@
           async () => {
             if (!preview && global.KidsCollectionCore?.isModelAvailable?.(button.dataset.model) !== true) {
               candidateModelId = null;
-              throw new Error("這台車尚未開放新選，請重新選擇目前開放的作品。");
+              throw new Error("這件作品尚未開放新選，請重新選擇目前開放的作品。");
             }
             await collection.selectModel(button.dataset.model);
             choosingNext = false;
