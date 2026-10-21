@@ -372,14 +372,14 @@
     {
       "id": "task:water-cycle",
       "type": "task",
-      "name": "水的循環：一起探索與深入研究",
+      "name": "水的循環：一滴水的旅行",
       "audience": [
         "aiden",
         "bingpu"
       ],
-      "audienceLabel": "6y、9y 親子共看；9y 英文進階",
-      "status": "complete",
-      "statusNote": "兩版六站、中文／英文語音與比較實驗已完成；工具驗證及發布紀錄見 #220，孩子試用後再調整難度。",
+      "audienceLabel": "6y、9y 親子共看；9y 英文故事",
+      "status": "paused",
+      "statusNote": "新繪本已存分支，停電前暫停；待 CI 與發布，正式站仍舊版，見 #225。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/water-cycle",
       "source": {
@@ -398,12 +398,12 @@
           "url": "../water-cycle/"
         }
       ],
-      "description": "中文語音互動故事與英文進階探索；蒸發、成雲、雨、雪、冰雹及回到地面。",
+      "description": "滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。",
       "eventDate": null,
       "groupId": null,
       "groupName": null,
       "created": "2026-10-20",
-      "updated": "2026-10-20",
+      "updated": "2026-10-21",
       "freshness": {
         "state": "current",
         "checkedAt": null,
