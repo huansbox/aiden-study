@@ -40,6 +40,16 @@
 - 雲端在 Pages 部署前探測正式資源，原 CSS tag 首次回應為舊檔 `MISS`；部署後 HTML／模組已與 Git 一致，CSS 仍為舊檔 `HIT`、`max-age=14400`。正式瀏覽器實見封面沒有新版滿版樣式，故未將此次部署當成公開驗收完成。
 - 僅為 stylesheet URL 增加 `&release=1`，保留原 `v=20261021-storybook`；不重寫 CSS、故事、插圖、語音或共用程式。最終 Pages 與正式站 smoke 以 Issue #225 後續 checkpoint 為準。
 
+## 雲端正式站核對完成（2026-10-21）
+
+- PR #227 HEAD `4881ad1` 的 Node／Python CI run `39528581784` 成功，獨立唯讀 review 通過後合併為 `bb934c5061d099dc1a5e0952e0df753d977be70f`。主線 test `39528797574`、work-catalog `39528796219`、Pages `39528827920` 均成功；沿用 `master:/docs`，未新增 hosting 或使用本機服務／金鑰。
+- 臺灣時間 09:44:53 起的公開 HTTP 檢查：入口 HTML、CSS、app/model/art mjs、content JSON、六張背景及六段代表 MP3（中／英各 pond-intro、snow-warm、ending）共 18 個資源，全為 HTTP 200 且與該主線 Git 產物 byte／SHA-256 相同。CSS 使用 HTML 實際引用的 `?v=20261021-storybook&release=1`；其餘模組與 content 保留原 v tag。HTML SHA-256 `84c73056e67a31adaee3212d362446b25efbfc4ab945e9cafc7c6b606d633ab4`，CSS `159708e9a57c5c099f69c828edacb130da561c814137630719771bdb4a19e0a6`。
+- 正式 URL `https://kids.linshuhuan.com/water-cycle/`：雲端 Chrome 1363×936，封面與場景符合 viewport，無橫向溢出；字幕初始隱藏，實際播放狀態到 playing。
+- 中文依序實點太陽縮水窪、摸雲、水滴合併、接雪、冰粒托高／長大／落下（保留落地冰雹、新冰粒與風）、河流／土壤／水池，最後抵達結尾。
+- English 雪頁初始空手套且無暖陽，接雪後才出現暖陽，點後手套顯示水滴；家長選單顯示對應中英短句，聽中文後維持英文介面且播放狀態到 playing。回封面後頁面為 cover、選單關閉、音訊控制移除。
+- 本輪為公開 HTTP、畫面／DOM 與播放器 UI 狀態 smoke，未攔截 Audio 物件或直接量測回封面後的媒體內部狀態；單一 Audio、停止／清除 src 與錯誤復原的直接驗證沿用上列 Git 版本 helper 證據及一致的程式。沒有宣稱本輪重跑 touch／WebKit／真機或全段人耳驗聽。
+- 只在完成上述公開驗證後，才將 catalog 標為 complete；完成登錄的 PR／CI／Pages 與最終關閉紀錄見 Issue #225。實體 iPad Safari 觸控、翻頁／回封面／切背景的實際停音，以及孩子理解和英文適配，仍由家長試玩回饋。
+
 ## 尚未由上述證明
 
 - 一般流程使用 reduced motion，另有一般 motion 的雨滴合併序列測試；這不等於所有動畫的真機驗收，不能只從狀態測試推論動畫表現。
