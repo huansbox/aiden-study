@@ -34,6 +34,12 @@
 - 最後只微調 reduced motion 粒子：隱藏凍住的雪／雹裝飾粒子，保留手套雪花與落地大冰雹；雨改為 6 顆錯落短滴，不顯示長直線柵欄。1024×768 的雨、接雪與落雹三頁已實際目視，並確認雨滴 6 個不同高度、雪／雹裝飾粒子為隱藏。
 - 此 CSS 微調後重建、build --check 與 7 項作品測試通過；未重跑全 repo，沒有改動語音或主流程。
 
+## 雲端發布快取修正（2026-10-21）
+
+- PR #226 最終 HEAD `c11fc7a` 的 Node／Python CI 成功後，合併為 `99b5b7d`；該主線的 test、work-catalog 與 Pages 部署均成功。
+- 雲端在 Pages 部署前探測正式資源，原 CSS tag 首次回應為舊檔 `MISS`；部署後 HTML／模組已與 Git 一致，CSS 仍為舊檔 `HIT`、`max-age=14400`。正式瀏覽器實見封面沒有新版滿版樣式，故未將此次部署當成公開驗收完成。
+- 僅為 stylesheet URL 增加 `&release=1`，保留原 `v=20261021-storybook`；不重寫 CSS、故事、插圖、語音或共用程式。最終 Pages 與正式站 smoke 以 Issue #225 後續 checkpoint 為準。
+
 ## 尚未由上述證明
 
 - 一般流程使用 reduced motion，另有一般 motion 的雨滴合併序列測試；這不等於所有動畫的真機驗收，不能只從狀態測試推論動畫表現。
