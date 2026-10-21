@@ -378,8 +378,8 @@
         "bingpu"
       ],
       "audienceLabel": "6y、9y 親子共看；9y 英文故事",
-      "status": "paused",
-      "statusNote": "新繪本已存分支，停電前暫停；待 CI 與發布，正式站仍舊版，見 #225。",
+      "status": "in-progress",
+      "statusNote": "滿版互動繪本與分支驗證完成；雲端接續 PR／Pages 發布及正式站核對，進度見 #225。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/water-cycle",
       "source": {
