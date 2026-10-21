@@ -1,16 +1,60 @@
 {
-  "file": "assets/landscape.png",
-  "width": 1672,
-  "height": 941,
-  "bytes": 2632904,
-  "sha256": "b614c4f8a64ec2182ac4ce09ee4e073572a598b003ebaf8acf9292aebf66641e",
-  "origin": "Original artwork generated with Codex imagegen; edited from style C selected by the parent.",
-  "style": "layered cut-paper with colored-pencil detail and shallow paper shadows",
-  "reference": "Review candidates are in Dropbox: mywork/aiden-study/water-cycle/style-review-2026-10-20/",
-  "constraints": [
-    "No text or scientific arrows baked into the image",
-    "No visible water vapor or precipitation depicted",
-    "Story guide is a fictional character, not a water molecule"
-  ],
-  "usedBy": "Home and evaporation scene; scientific overlays are drawn separately by code"
+  "engine": "Codex built-in imagegen",
+  "style": "Parent-selected C: layered cut-paper, tactile fibers, shallow shadows, colored-pencil warmth.",
+  "reference": {
+    "commit": "9c360a1895c5de77f6eee5d9d98557b85f10987f",
+    "path": "learning-tasks/water-cycle/assets/landscape.png",
+    "role": "Style reference only; first-version asset retained in Git history."
+  },
+  "composition": "Backgrounds are original environmental illustrations. The consistent character and all meaningful moving objects/effects are controlled separately. Pond has no baked-in water and snow has no baked-in mitten to avoid frozen duplicate interaction targets.",
+  "assets": [
+    {
+      "file": "assets/story/pond.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2447959,
+      "sha256": "7c018b572170a7301d569f26e899ba6e846e8d520922b560447da0457f28304f",
+      "promptBrief": "Full-bleed 16:9 paper-cut picture-book meadow beside a low foreground pond; no text, people, mascot, sun, cloud or vapor. Then edit only the foreground water into smooth dry sandy ground so the real animated water surface can be drawn separately, preserving scenery and composition."
+    },
+    {
+      "file": "assets/story/clouds.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2278509,
+      "sha256": "20e53ee2afde1d36bf69ee032e636f0c39d62797834abf3b65c808a9d689f6ad",
+      "promptBrief": "Full-bleed 16:9 paper-cut sky above a mountain valley. Ivory layered cloud banks frame outer edges, generous blue center for an interactive cloud and tiny water drops. No text, faces, visible water vapor or rain."
+    },
+    {
+      "file": "assets/story/rain.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2848091,
+      "sha256": "dddd7c9984389bddee15cc5d089189e96d3cad2022fc534abbdf7e3c9640ac75",
+      "promptBrief": "Full-bleed 16:9 paper-cut gentle overcast forest clearing, round tree canopies, low stream and closed flower buds, empty central sky for interactive cloud and rain. No labels, baked-in rain or mascot."
+    },
+    {
+      "file": "assets/story/snow.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2241981,
+      "sha256": "8c552181f7bdf4388e6c857914d3441a028b6ab8da4f6fca0b8b442fe9bc7c71",
+      "promptBrief": "Full-bleed 16:9 paper-cut snowy mountain meadow, snow-covered pines, open central sky, snowy clearing and sunlit stone. Then remove the foreground red mitten only, preserving the landscape, for a separately controlled mitten and snow."
+    },
+    {
+      "file": "assets/story/storm.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2566317,
+      "sha256": "2740c8161942f835a6e538e58fb4d8a4e6bc88c8018a8ced48188c9c534e8f8f",
+      "promptBrief": "Full-bleed 16:9 paper-cut scene high beside a towering gentle slate-blue/lavender thundercloud. Sculptural cloud banks frame the edges with open center for controlled ice, water drops and wind effects. No arrows, cross-section diagram, hail, lightning, labels or mascot."
+    },
+    {
+      "file": "assets/story/river.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2930455,
+      "sha256": "b41a6943ed6d93794a56cb078b0d96188d61f7b97448760c2d14545c7dae850a",
+      "promptBrief": "Full-bleed 16:9 paper-cut low aerial green valley with broad winding turquoise stream and still foreground pool, open sandy bank with plants, a leaf and rounded hills. Distinct real river, soil and pool areas for touch interaction. No arrows, labels or mascot."
+    }
+  ]
 }
