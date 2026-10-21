@@ -1,40 +1,34 @@
-# 水的循環：一起探索與深入研究
+# 一滴水的旅行
 
-以 iPad／平板橫向使用為主的家庭學習作品。工作與交接正本：[Issue #220](https://github.com/huansbox/aiden-study/issues/220)。
+滿版紙張拼貼互動繪本，適合家長陪 6 歲、9 歲中文共看；English 使用相同簡單故事，供 9 歲自行或陪同探索。工作與交接正本：[Issue #225](https://github.com/huansbox/aiden-study/issues/225)。此版取代 #220 的六站實驗介面，並保留雨、雪、冰雹的差別。
 
-美術由家長選定 C「紙張拼貼」。兩版六站故事、回顧與預製中文／英文語音已實作於 `docs/water-cycle/`；正式發布、瀏覽器與平板驗收結果回查 Issue。英文依已確認的 Native Camp 水準作容易進入的起點，再依實際試讀調整，不代表已通過孩子理解度評估。
+## 怎麼玩
 
-## 兩個版本
+直接碰畫裡的物件：封面小水滴可以開始中文旅行；另有 English 入口。每頁先聽短旁白，再點太陽、摸雲、讓水滴碰在一起、接雪、托高冰粒，或選水在地面的路線。所有操作都可反覆玩，翻頁不需答題。
 
-| 版本 | 對象與使用方式 | 內容與語言 |
-| --- | --- | --- |
-| 一起探索 | 家長陪同 6y、9y 一起看、輪流操作 | 中文語音、圖像、動畫；不依賴識字。短旁白、操作、討論的互動故事，可回頭重玩。 |
-| 深入研究 | 9y 自己或家長陪同 | 從共同概念加深加廣；英文短句與語音，中文支援可展開。先以現有 Native Camp 水準為參考，容易進入、覺得有趣後再調高。 |
+- 8 頁：封面、池邊、雲、雨、雪、冰雹、河谷、結尾。背景與可動角色佔滿 viewport，沒有側欄、六站地圖或底排操作台。
+- 拖雲、拖水滴碰合、滑雪花、往上拖冰粒都有點選替代操作。Tab＋Enter 也能操作；左右方向鍵翻頁。
+- 角落提供重聽、暫停／繼續與家長選單。語音單一播放，切頁、回封面與切背景會停止；載入或拒播失敗可重試。
+- 字幕預設隱藏。家長選單可開字幕、0.8 倍速、換語言、跳頁，並看中文支援、科學解說、來源與 AI 揭露。
+- 雪頁從空手套開始，接到雪後才顯示雪花；English 此時多一個暖陽探索，讓手套上的雪融化。沒有長篇英文科普或實驗表。
+- 平板橫向為主；直向手機也可操作。支援系統 reduced motion。這些是產品行為；自動化驗證不等於孩子理解或 iPad 真機驗收。
 
-## 使用方式
+## 來源與成品
 
-從網站首頁選「一起探索」或「深入研究」。每站先聽一小段，再操作下方大按鈕；地圖可自由選站，上一站／下一站不設答題門檻。前往任何一站會重新開始該站的實驗；「再試一次」也會清除該次條件。兩個孩子輪流猜、輪流按，家長不必要求說出術語。
+可編輯來源在 `source/`；網站產物在 `docs/water-cycle/`。修改來源後重建，不各自編輯兩份。
 
-- 喇叭重播目前段落；暫停後可繼續；「慢慢聽」切換 0.8 倍速。切頁、回首頁、頁面進入背景會停止語音；不會多段重疊。
-- 每個核心操作有圖示與中文語音提示。「聽操作提示」重播當站操作；長按後放開或鍵盤聚焦後按 F1，可聽該按鈕的中文說明。
-- 英文版的「中文小幫手」可展開中文旁白、重要詞彙與模型解說，並播放中文旁白。英文口述可選，用操作或指圖回答也可以。
-- 雨滴需逐步合併；雪比較冷空氣與厚暖層；冰雹可分別開關上升氣流、過冷水滴再試；地面三條路可反覆比較。
-- 進階版有額外比較：水窪故事後可固定起始水量、時間、空氣與風，只改水的溫度，先預測再看較暖／較冷水的蒸發結果（定性模型，不是精確量測）；冰雹站會保留四組氣流／水滴條件的實際試驗記錄，找出缺少的條件。初階保持單純故事與輪流操作，進階以 Predict／Try／Compare 引導。
-- 音訊拒播或載入失敗時，畫面會提示「再聽一次」。檢查連線與裝置音量後重試；6 歲孩子需要家長陪同處理。
+| 檔案 | 用途 |
+| --- | --- |
+| `source/content.json` | 六個故事場景、家長解說與雙語旁白唯一來源 |
+| `source/app.mjs` | 翻頁、畫中互動、拖曳替代與單一 Audio 播放／復原 |
+| `source/art.mjs` | 可動紙張風格 SVG 角色；河谷熱區直接落在背景河流、土壤與平靜水面 |
+| `source/model.mjs` | 每頁故事結果、重玩與獨立狀態 |
+| `source/style.css` | 滿版／直向版面、局部動畫與 reduced motion |
+| `assets/story/{pond,clouds,rain,snow,storm,river}.png` | 六張原創 AI 紙張拼貼背景，無文字或操作 UI |
+| `assets/audio/{zh,en}-book-*.mp3` | 共 42 段預製 AI 語音；沒有 browser TTS |
+| `source/design.md`、`verification.md` | 目前設計基準、實際驗證與限制 |
 
-## 可編輯來源與成品
-
-- `source/design.md`：已確認需求、第一版範圍、科學依據及驗證方式。
-- `source/verification.md`：實際驗證範圍、獨立 review 修正與尚未驗證的限制。
-- `source/english-sample.md`：初次試讀的英文樣稿與對應中文共同探索腳本；不是能力評量或已採用定稿。
-- `source/style-brief.md`：同場景三種美術初稿的規格、比較方式與候選圖保存位置。
-- `source/content.json`：兩版科學文字與語音文字的唯一來源，包含穩定 audio ID、六站資料、操作提示與家長中文支援。
-- `source/index.html`、`style.css`、`app.mjs`、`art.mjs`、`model.mjs`：buildless 網站；SVG 科學圖解與獨立互動規則。系統字型為主；可沿用 repo 既有閱讀字型，不複製字型檔。
-- `source/build.mjs`：同步語音 jobs，再將網站與 `assets/` 完整複製至 `docs/water-cycle/`；`--check` 逐檔 byte 比對。
-- `assets/landscape.png`：選定紙張拼貼方向的正式環境插圖；`assets/audio/`：預製 MP3。圖片與語音為 AI 產生，網站家長資訊有揭露；科學狀態與箭頭由程式繪製。
-- `source/speech-{zh,en}.json` 為生成產物，不直接改；`audio-{zh,en}-manifest.json` 保存文字指紋、音訊 hash 與驗證結果。付費請求 journal 留在 ignored `.local/water-cycle/`。
-- 本任務登錄於 `learning-tasks/catalog.json`；分類維持 task，沒有家庭帳號、成果同步或獎勵提示。
-- 候選美術圖為審稿資料，非正式網站素材；依 Dropbox 設定保存於 `mywork/aiden-study/water-cycle/style-review-2026-10-20/`，不將每輪未採用生成圖加入 Git。家長選定後再將正式採用素材放進任務 `assets/` 並記錄來源。
+河谷的背景與熱區使用同一組百分比座標，以不重疊多邊形貼合河流、左右泥岸與平靜水面；其他背景營造環境，可動物件由程式控制。水窪整片可縮，不將看不見的水蒸氣畫成白霧。卡通水滴是故事角色。
 
 ## 重建與驗證
 
@@ -44,20 +38,25 @@ node learning-tasks/water-cycle/source/build.mjs --check
 node --test tests/test_water_cycle.mjs
 ```
 
-現成 localhost 預覽 server 開啟後，可設定 `CODEX_PLAYWRIGHT_PACKAGE` 與 `OUTPUT_DIR` 執行 `node tests/helpers/water-cycle-browser-check.mjs`。預設連到 `http://127.0.0.1:8788/water-cycle/`，可用 `WATER_CYCLE_URL` 指定另一個 loopback port；helper 不啟停 server。它以真實 HTMLAudioElement、音量 0 驗證播放、慢速、暫停與載入中暫停、切頁、首頁、故障重試；檢查四個視窗尺寸，保存代表截圖與 JSON 報告。Chromium 用延遲／503 測試載入；WebKit 原生媒體可能繞過攔截，故以真實 MPEG 解碼錯誤測試復原。背景停止用明確派送的 pagehide 事件檢查 handler，不宣稱是 iPad 背景政策驗證。
+瀏覽器 helper 使用既有隔離 localhost server；不啟停 server：
 
-不需要 API key 即可重建網站。要產生或驗證語音，沿用專案 Python 環境與共享 Native Camp 工具（需可用的 ffmpeg／ffprobe）：
+```sh
+# 設定 CODEX_PLAYWRIGHT_PACKAGE、WATER_CYCLE_URL 與 OUTPUT_DIR 後：
+node tests/helpers/water-cycle-browser-check.mjs
+# 可另設 WATER_CYCLE_WEBKIT=1 加跑 WebKit。
+```
+
+語音 jobs 由 build 產生；`speech-{zh,en}.json` 不直接改。沿用共享工具的 paid-request journal、文字指紋、完整解碼、非靜音與 hash 驗證：
 
 ```sh
 uv run learning-tasks/water-cycle/source/make_audio.py --lang zh --check
 uv run learning-tasks/water-cycle/source/make_audio.py --lang en --check
-# 修改語音文字後，先重建 jobs，再由已獲授權的操作者移除 --check 生成缺少的音訊。
 ```
 
-工具僅讀環境變數 `OPENAI_API_KEY`，不保存金鑰。固定使用共享工具的既有 model 與 cedar voice，只覆寫本次模組實例的發音 instructions。遇到不確定付費請求時，遵循共享工具 journal 的停止／復原規則，不刪 journal 重試。
+需要生成新語音時，先更新內容、重建 jobs，再由已獲授權的操作者移除 `--check`。工具只讀環境變數 `OPENAI_API_KEY`；不刪除 journal 或重送不確定請求。付費 journal 位於 ignored `.local/water-cycle/`。
 
-自動測試涵蓋雲但無雨、雨滴長大、雪在厚暖層完全融化、冰雹兩個條件的四種組合、地表／地下／湖泊路徑、重設隔離、雙語可達語音與來源／成品一致性。測試依據為 `source/design.md` 的 USGS／NWS／NOAA 資料；不把合成操作當作孩子理解的證據。
+本作品維持 task 分類，沒有家庭帳號、進度同步或獎勵提示。素材、語音生成與發布由 Issue 記錄；未採用美術候選不放入 Git。2026-10-20 的舊六站介面驗證是歷史證據，不代表此版新稿已驗聽或孩子已試玩。
 
-語音 builder 的完整解碼、非靜音與 hash 驗證，不等於全段人耳驗聽或 iPad 真機播放。工具驗證、家長審稿、孩子理解及平板真機試玩分別記錄，不互相替代。
+冰雹長大後，往上拖會繼續托住，點一下或往下拖才落下；落地仍保留大冰雹與風，雲裡另出現新小冰粒供重玩。雨頁會先讓兩滴靠攏，變成一顆較大水滴，再落雨；reduced motion 至少顯示單一合併水滴。
 
-進度及下一步更新原 Issue，不在此重複維護工作時間軸。
+本版入口 CSS／app、app 的 model／art import 與 content fetch 使用一致的 `v=20261021-storybook`，避免發布時混到先前快取的檔案。

@@ -1,222 +1,86 @@
 [
   {
-    "file": "zh-home.mp3",
-    "text": "歡迎來到一滴水的旅行。點兩個人的圖案，一起聽中文故事。點放大鏡，試試英文探索。每頁先聽一小段，再按下面的大按鈕。你們可以輪流操作。想知道按鈕做什麼，可以長按後放開，聽中文說明。"
+    "file": "zh-book-pond-intro.mp3",
+    "text": "我是小水滴。陽光暖暖的，摸摸太陽，陪我在池邊待一會兒。"
   },
   {
-    "file": "zh-start.mp3",
-    "text": "一起探索。家長和孩子一起聽中文故事，輪流按按鈕。"
+    "file": "zh-book-pond-sun.mp3",
+    "text": "過了一會兒，水窪變小了！一些水變成看不見的水蒸氣，進入空氣。"
   },
   {
-    "file": "zh-explore.mp3",
-    "text": "深入研究。聽英文短句，動手比較。需要幫忙時，打開中文小幫手。"
+    "file": "zh-book-pond-puddle.mp3",
+    "text": "咦，水面一圈一圈地搖。再碰一下，跟小水滴打個招呼吧！"
   },
   {
-    "file": "zh-replay.mp3",
-    "text": "再聽一次。按這裡，重播現在這一段。"
+    "file": "zh-book-clouds-intro.mp3",
+    "text": "我們來到涼涼的天空。摸摸這朵雲，看看裡面藏著什麼。"
   },
   {
-    "file": "zh-pause.mp3",
-    "text": "暫停或繼續。按這裡，停下來想一想，再按一次繼續聽。"
+    "file": "zh-book-clouds-touch.mp3",
+    "text": "好多小水滴！水蒸氣遇到涼空氣，變成小水滴，聚在一起成了雲。"
   },
   {
-    "file": "zh-slow.mp3",
-    "text": "慢慢聽。按這裡，切換較慢的語音速度。"
+    "file": "zh-book-rain-intro.mp3",
+    "text": "兩滴小水滴，想靠在一起。把它們拖過來碰一碰，也可以點一下。"
   },
   {
-    "file": "zh-back.mp3",
-    "text": "回到上一站，可以重新試試。"
+    "file": "zh-book-rain-merge.mp3",
+    "text": "水滴越長越大，從雲裡落下來。滴答滴答，下雨了！"
   },
   {
-    "file": "zh-next.mp3",
-    "text": "前往下一站。你隨時可以回來重玩。"
+    "file": "zh-book-rain-leaf.mp3",
+    "text": "雨點落在葉子上，葉子搖一搖。森林也喝到水了。"
   },
   {
-    "file": "zh-reset.mp3",
-    "text": "重新試試。這一站的操作會回到開始。"
+    "file": "zh-book-snow-intro.mp3",
+    "text": "冷冷的雲裡，雪花長大了。摸摸它，看它飄呀飄。"
   },
   {
-    "file": "zh-home-control.mp3",
-    "text": "回到首頁，可以重新選擇版本。"
+    "file": "zh-book-snow-touch.mp3",
+    "text": "輕輕轉，慢慢飄。白白的雪，落到地上囉！"
   },
   {
-    "file": "zh-help.mp3",
-    "text": "中文小幫手。按這裡，看看中文解說和重要詞彙。"
+    "file": "zh-book-snow-catch.mp3",
+    "text": "手套接住一片雪！找找看，它有幾個尖尖的角？"
   },
   {
-    "file": "zh-map.mp3",
-    "text": "這是旅行地圖。六個圖案是六站，按任何一個就能前往。"
+    "file": "zh-book-snow-warm.mp3",
+    "text": "陽光暖暖的。手套上的雪融化了，變成一滴水。"
   },
   {
-    "file": "zh-restart.mp3",
-    "text": "回到第一站，再旅行一次。"
+    "file": "zh-book-storm-intro.mp3",
+    "text": "雷雨雲裡有顆小冰粒。把它往上推，或點一下，讓風托住它！"
   },
   {
-    "file": "zh-finish.mp3",
-    "text": "看看我們的旅行回顧。"
+    "file": "zh-book-storm-lift.mp3",
+    "text": "呼！強強的風，把冰粒托在雲裡。再點冰粒，讓它碰到小水滴。"
   },
   {
-    "file": "zh-audio-error.mp3",
-    "text": "聲音還沒有開始。請按再聽一次。如果仍沒有聲音，請家長檢查網路和裝置音量。"
+    "file": "zh-book-storm-grow.mp3",
+    "text": "小水滴碰到冰粒，凍在上面，冰粒長大了！再點一下，看它往下落。"
   },
   {
-    "file": "zh-evap-intro.mp3",
-    "text": "這裡有一個小水窪。先看看水有多少。按下面的太陽按鈕，讓時間往前走。"
+    "file": "zh-book-storm-fall.mp3",
+    "text": "風托不住大冰粒了。它往下落，成了冰雹，咚咚咚！"
   },
   {
-    "file": "zh-evap-later.mp3",
-    "text": "過了一段時間，水變少了。水去了哪裡？先輪流猜一猜，再按放大鏡。這裡把時間加快了。"
+    "file": "zh-book-river-intro.mp3",
+    "text": "回到地面囉。點點河流、土壤或水池，水會走哪條路呢？"
   },
   {
-    "file": "zh-evap-result.mp3",
-    "text": "有些水變成看不見的水蒸氣，進入空氣裡，這叫蒸發。不用煮沸，也會蒸發。畫上的小點，是為了看清楚的示意，不是真正看得見的水蒸氣。"
+    "file": "zh-book-river-river.mp3",
+    "text": "沿著彎彎的河，水往低的地方流。嘩啦啦，我們走吧！"
   },
   {
-    "file": "zh-evap-time.mp3",
-    "text": "按下面的太陽按鈕，看看過了一段時間的小水窪。"
+    "file": "zh-book-river-soil.mp3",
+    "text": "水慢慢滲進土裡。有些水，會在地下待很久。"
   },
   {
-    "file": "zh-evap-look.mp3",
-    "text": "按放大鏡，找找水去了哪裡。"
+    "file": "zh-book-river-pool.mp3",
+    "text": "水在池子裡休息。不用急，水有好多條路，不一定走同一圈。"
   },
   {
-    "file": "zh-cloud-intro.mp3",
-    "text": "空氣裡有看不見的水蒸氣。按雪花，讓這一團潮溼空氣冷卻，看看會發生什麼事。"
-  },
-  {
-    "file": "zh-cloud-result.mp3",
-    "text": "水蒸氣冷卻後，有些凝結成非常小的水滴，許多小水滴聚在一起，我們就看見雲。很冷的雲也可能有冰晶。這是放大示意；水蒸氣本身看不見。現在有雲，還沒有下雨。"
-  },
-  {
-    "file": "zh-cloud-cool.mp3",
-    "text": "按雪花，讓潮溼空氣冷卻。"
-  },
-  {
-    "file": "zh-rain-intro.mp3",
-    "text": "這朵雲裡有許多小水滴。它們很小，還沒有落到地面。按合在一起的水滴，讓小水滴碰撞、合併。"
-  },
-  {
-    "file": "zh-rain-more.mp3",
-    "text": "水滴正在變大。再讓它們合併一次，看看會怎樣。"
-  },
-  {
-    "file": "zh-rain-result.mp3",
-    "text": "水滴長大，能從雲裡落下，落到地面就是雨。有雲不一定下雨，要有能落下的水滴。這裡是放大、加快的示意。"
-  },
-  {
-    "file": "zh-rain-grow.mp3",
-    "text": "按兩個水滴，讓小水滴合併、長大。"
-  },
-  {
-    "file": "zh-snow-intro.mp3",
-    "text": "很冷的雲裡，水蒸氣可以變成冰晶。冰晶長大成雪花。雪花要往下旅行了。先選雪花下方的空氣：冷空氣，或一層夠厚的暖空氣。"
-  },
-  {
-    "file": "zh-snow-cold.mp3",
-    "text": "一路夠冷，雪花沒有完全融化，落到地面仍是雪。按暖空氣，可以再比較一次。"
-  },
-  {
-    "file": "zh-snow-warm.mp3",
-    "text": "雪花穿過一層很厚的暖空氣，完全融化成水滴，落到地面是雨。雪不是雨滴直接結冰變成的。按冷空氣，可以再比較一次。"
-  },
-  {
-    "file": "zh-snow-cold-action.mp3",
-    "text": "按雪花，選一路冷冷的空氣。"
-  },
-  {
-    "file": "zh-snow-warm-action.mp3",
-    "text": "按太陽，選一層夠厚的暖空氣。"
-  },
-  {
-    "file": "zh-hail-intro.mp3",
-    "text": "來到高高的雷雨雲。這裡有一顆小冰粒。要讓它長成冰雹，需要強的上升氣流，還需要低於零度卻沒有結冰的過冷水滴。先各按一次，準備這兩個條件。"
-  },
-  {
-    "file": "zh-hail-wind.mp3",
-    "text": "上升氣流準備好了。它能托住冰粒，讓冰粒留在雲裡成長。"
-  },
-  {
-    "file": "zh-hail-water.mp3",
-    "text": "過冷水滴準備好了。它們碰到冰粒，會凍在表面。"
-  },
-  {
-    "file": "zh-hail-missing.mp3",
-    "text": "向上的箭頭和冰冷的水滴都要打勾，才準備好。準備好後，按三角形的播放按鈕。"
-  },
-  {
-    "file": "zh-hail-ready.mp3",
-    "text": "都準備好了，按下面三角形的播放按鈕，看看冰粒會怎樣。"
-  },
-  {
-    "file": "zh-hail-result.mp3",
-    "text": "往上吹的空氣托住小冰粒，過冷水滴碰上去，凍成一層又一層。冰雹變重，氣流托不住時就落下。冰雹不只是天氣變冷，這是加快、放大的示意。"
-  },
-  {
-    "file": "zh-hail-wind-action.mp3",
-    "text": "按向上的箭頭，準備強的上升氣流。再按可關掉，比較少了它會怎樣。"
-  },
-  {
-    "file": "zh-hail-water-action.mp3",
-    "text": "按冰冷的水滴，準備過冷水滴。再按可關掉，比較少了它會怎樣。"
-  },
-  {
-    "file": "zh-hail-test.mp3",
-    "text": "按播放，看看小冰粒能不能長成冰雹。"
-  },
-  {
-    "file": "zh-ground-intro.mp3",
-    "text": "水回到地面，旅行不只有一條路。選一條路看看：沿地面流動，滲進土裡，或暫時留在湖裡。每一條都可以試。"
-  },
-  {
-    "file": "zh-ground-river.mp3",
-    "text": "有些水沿地面流進溪流，再往湖泊或海洋前進。這叫地表逕流。雪和冰融化的水，也可以走這條路。"
-  },
-  {
-    "file": "zh-ground-soil.mp3",
-    "text": "有些水滲進土裡，填入土壤和岩石的縫隙。地下水也會慢慢移動，可能回到溪流。不是每一滴水都立刻到海裡。"
-  },
-  {
-    "file": "zh-ground-lake.mp3",
-    "text": "有些水會在湖裡停留一段時間，之後可能蒸發，也可能流到別處。水有很多條路，沒有每滴水都必走的固定圈。"
-  },
-  {
-    "file": "zh-ground-river-action.mp3",
-    "text": "按彎彎的河流，看看地面上的路。"
-  },
-  {
-    "file": "zh-ground-soil-action.mp3",
-    "text": "按往下的箭頭，看看土壤裡的路。"
-  },
-  {
-    "file": "zh-ground-lake-action.mp3",
-    "text": "按小湖，看看停留的水。"
-  },
-  {
-    "file": "zh-review.mp3",
-    "text": "我們一起走了六站。水可以蒸發成看不見的水蒸氣，再凝結成雲裡的小水滴。雨滴長大落下，雪花可能在途中融化。雷雨雲裡，冰粒靠上升氣流和過冷水滴長成冰雹。回到地面，水可以流動、滲入，也可以停留。選一站再玩，或回首頁換一個版本吧。"
-  },
-  {
-    "file": "zh-evap-compare-intro.mp3",
-    "text": "試著公平比較。兩份水一開始一樣多，經過的時間一樣，空氣和風等其他條件也相同，只有水的溫度不同。你猜，較暖的水，還是較冷的水，會失去比較多水？選一個，再看結果。"
-  },
-  {
-    "file": "zh-evap-compare-result.mp3",
-    "text": "在這個比較裡，較暖的水蒸發比較快，所以相同時間內失去比較多水。兩份水都能蒸發。這是定性的簡化模型，不是實際測量的數量。"
-  },
-  {
-    "file": "zh-evap-compare-action.mp3",
-    "text": "按兩個水窪，進入公平比較：只改變水的溫度，猜猜哪一份失去比較多水。"
-  },
-  {
-    "file": "zh-evap-warmer-action.mp3",
-    "text": "選較暖的水，猜它失去比較多，再看看兩份水的結果。"
-  },
-  {
-    "file": "zh-evap-cooler-action.mp3",
-    "text": "選較冷的水，猜它失去比較多，再看看兩份水的結果。"
-  },
-  {
-    "file": "zh-hail-compare.mp3",
-    "text": "試過的條件會留在四格記錄裡。向上箭頭表示上升氣流，水滴表示過冷水滴。每一列換一種組合，看看少了什麼，冰雹就不能在這個模型中長大。問號表示還沒試。"
+    "file": "zh-book-ending.mp3",
+    "text": "今天的旅行到這裡。你最想回哪一頁，再陪水玩一次？"
   }
 ]

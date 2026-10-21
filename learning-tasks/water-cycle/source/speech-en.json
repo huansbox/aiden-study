@@ -1,106 +1,86 @@
 [
   {
-    "file": "en-evap-compare-intro.mp3",
-    "text": "Let's compare. The same water to start. The same time. The same air and wind. Only the water temperature is different. Which loses more: warmer water or cooler water? Make a guess."
+    "file": "en-book-pond-intro.mp3",
+    "text": "I am Little Drop. It is a sunny day. Touch the sun and wait with me."
   },
   {
-    "file": "en-evap-compare-result.mp3",
-    "text": "The warmer water loses more. It evaporates faster. Both can evaporate. This is a simple model, not a measurement."
+    "file": "en-book-pond-sun.mp3",
+    "text": "After a while, the puddle is smaller! Some water goes into the air. We cannot see it."
   },
   {
-    "file": "en-hail-compare.mp3",
-    "text": "Try all four pairs. Keep your results. What is missing when the ice cannot grow?"
+    "file": "en-book-pond-puddle.mp3",
+    "text": "Hello, shiny puddle! Tap the water. Look at the ripples!"
   },
   {
-    "file": "en-home.mp3",
-    "text": "A drop of water. A big adventure. Listen, try, and look closely."
+    "file": "en-book-clouds-intro.mp3",
+    "text": "The air is cool up here. Touch the cloud. What is inside?"
   },
   {
-    "file": "en-evap-intro.mp3",
-    "text": "Look at the puddle. There is water on the ground. Tap the sun button below. Let time pass."
+    "file": "en-book-clouds-touch.mp3",
+    "text": "In cool air, water vapor becomes tiny drops. The tiny drops make a cloud!"
   },
   {
-    "file": "en-evap-later.mp3",
-    "text": "There is less water now. Where did the water go? Make a guess. Then tap the magnifying glass."
+    "file": "en-book-rain-intro.mp3",
+    "text": "Two little drops want to meet. Drag them together, or tap a drop."
   },
   {
-    "file": "en-evap-result.mp3",
-    "text": "Some water goes into the air. It becomes water vapor. We cannot see water vapor. The dots are a model. Water can evaporate without boiling."
+    "file": "en-book-rain-merge.mp3",
+    "text": "The drops join and grow. Now they are big enough to fall. Here comes the rain!"
   },
   {
-    "file": "en-cloud-intro.mp3",
-    "text": "There is water vapor in the air. We cannot see it. Cool this wet air. Tap the snowflake."
+    "file": "en-book-rain-leaf.mp3",
+    "text": "Rain lands on the leaves. Wiggle, wiggle! The forest gets a drink."
   },
   {
-    "file": "en-cloud-result.mp3",
-    "text": "Some water vapor becomes tiny drops. This is condensation. Many tiny drops make a cloud. Cold clouds can have ice crystals, too. This is a close-up model. A cloud does not always make rain."
+    "file": "en-book-snow-intro.mp3",
+    "text": "Look! Snow grows in a cold cloud. Touch a snowflake. Watch it float down."
   },
   {
-    "file": "en-rain-intro.mp3",
-    "text": "Look inside the cloud. The drops are tiny. Tap the two drops. Make them join."
+    "file": "en-book-snow-touch.mp3",
+    "text": "The snowflakes turn and float. Down to the snowy ground!"
   },
   {
-    "file": "en-rain-more.mp3",
-    "text": "The drops get bigger. Make them join again."
+    "file": "en-book-snow-catch.mp3",
+    "text": "A snowflake on my mitten! Can you count its points?"
   },
   {
-    "file": "en-rain-result.mp3",
-    "text": "The drops grow. Now they can fall from the cloud. They reach the ground as rain. This is a fast, close-up model."
+    "file": "en-book-snow-warm.mp3",
+    "text": "The sun feels warm. The snow on the mitten melts. Now it is a drop of water!"
   },
   {
-    "file": "en-snow-intro.mp3",
-    "text": "In a very cold cloud, water vapor can become ice crystals. They grow into snowflakes. Will they reach the ground as snow? Choose the air below."
+    "file": "en-book-storm-intro.mp3",
+    "text": "A little ice ball is in a storm cloud. Push it up, or tap it. Let the wind hold it!"
   },
   {
-    "file": "en-snow-cold.mp3",
-    "text": "The air stays cold. The snow does not melt away. Snow reaches the ground. Now try the warm air."
+    "file": "en-book-storm-lift.mp3",
+    "text": "Whoosh! Strong wind holds the ice ball in the cloud. Tap it again to meet the little drops."
   },
   {
-    "file": "en-snow-warm.mp3",
-    "text": "The snow falls through a thick warm layer. It melts into drops. Rain reaches the ground. Snow does not start as frozen raindrops. Now try the cold air."
+    "file": "en-book-storm-grow.mp3",
+    "text": "Little drops freeze onto the ice ball. It gets bigger! Tap it again and watch it fall."
   },
   {
-    "file": "en-hail-intro.mp3",
-    "text": "This is a tall storm cloud. Here is a small piece of ice. Add a strong updraft. Add supercooled drops. The drops are below zero, but still liquid."
+    "file": "en-book-storm-fall.mp3",
+    "text": "The wind cannot hold the big ice ball now. Down it comes. That is hail!"
   },
   {
-    "file": "en-hail-wind.mp3",
-    "text": "The updraft is ready. It holds the ice up in the cloud."
+    "file": "en-book-river-intro.mp3",
+    "text": "Back on the ground! Touch the river, the soil, or the pool. Where will water go?"
   },
   {
-    "file": "en-hail-water.mp3",
-    "text": "The supercooled drops are ready. They can freeze onto the ice."
+    "file": "en-book-river-river.mp3",
+    "text": "Down the winding river, water flows to lower ground. Here we go!"
   },
   {
-    "file": "en-hail-missing.mp3",
-    "text": "Turn on both the updraft and the cold drops. Then tap the play button."
+    "file": "en-book-river-soil.mp3",
+    "text": "Water soaks into the soil. Some water stays underground for a long time."
   },
   {
-    "file": "en-hail-ready.mp3",
-    "text": "Both are ready. Tap the play button below. Watch the ice."
+    "file": "en-book-river-pool.mp3",
+    "text": "Water rests in the pool. No rush! Water has many paths. It does not always go in one circle."
   },
   {
-    "file": "en-hail-result.mp3",
-    "text": "The updraft holds the ice up. Drops freeze onto it. Hail grows in layers. It falls when the air cannot hold it up. This is a fast, close-up model."
-  },
-  {
-    "file": "en-ground-intro.mp3",
-    "text": "Water is back on the ground. It can take different paths. Choose a river, the soil, or a lake. Try each path."
-  },
-  {
-    "file": "en-ground-river.mp3",
-    "text": "Some water flows over the ground. It joins a stream. It can reach a lake or the sea. Melting snow can take this path, too."
-  },
-  {
-    "file": "en-ground-soil.mp3",
-    "text": "Some water soaks into the soil. It fills spaces in soil and rock. Groundwater can move slowly to a stream."
-  },
-  {
-    "file": "en-ground-lake.mp3",
-    "text": "Some water stays in a lake. Later, it may evaporate or flow away. Drops can take different paths."
-  },
-  {
-    "file": "en-review.mp3",
-    "text": "Water can take many paths. It evaporates. It condenses into tiny cloud drops. Growing drops fall as rain. Snow can melt on the way down. Hail needs an updraft and supercooled drops. Water flows, soaks in, or stays. Choose a stop and try again."
+    "file": "en-book-ending.mp3",
+    "text": "Our story ends here. Where would you like to go again? Come and play with water!"
   }
 ]

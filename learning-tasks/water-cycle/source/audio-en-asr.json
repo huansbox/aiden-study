@@ -6,40 +6,22 @@
   "humanListening": false,
   "samples": [
     {
-      "file": "en-evap-result.mp3",
-      "sha256": "688411328bb7e92719b72a6abf6b1e4d28286f060ba55755078b2310e2b106e5",
-      "expectedText": "Some water goes into the air. It becomes water vapor. We cannot see water vapor. The dots are a model. Water can evaporate without boiling.",
-      "recognizedText": "Some water goes into the air. It becomes water vapor. We cannot see water vapor. The dots are a model. Water can evaporate without boiling."
+      "file": "en-book-clouds-touch.mp3",
+      "sha256": "608b5b39e8614eae5968b6cc766062209f6e8a54cfddf48ddda1fcd90620f159",
+      "expectedText": "In cool air, water vapor becomes tiny drops. The tiny drops make a cloud!",
+      "recognizedText": "In cool air, water vapor becomes tiny drops, the tiny drops make a cloud."
     },
     {
-      "file": "en-snow-warm.mp3",
-      "sha256": "ff8881c9c5d335a37715923b2fd0b3c884c1dc1825051e3ed8dc7f1ebe1e68df",
-      "expectedText": "The snow falls through a thick warm layer. It melts into drops. Rain reaches the ground. Snow does not start as frozen raindrops. Now try the cold air.",
-      "recognizedText": "The snow falls through a thick warm layer. It melts into drops. Rain reaches the ground. Snow does not start as frozen raindrops. Now try the cold air."
+      "file": "en-book-snow-intro.mp3",
+      "sha256": "1c541c891c97f9ceefc99f3f9779c4655f4d6660dd484d26c748fd4abc357e10",
+      "expectedText": "Look! Snow grows in a cold cloud. Touch a snowflake. Watch it float down.",
+      "recognizedText": "Look! Snow grows in a cold cloud. Touch a snowflake. Watch it float down."
     },
     {
-      "file": "en-hail-result.mp3",
-      "sha256": "afd007e7450a7bc6e02edb8b730e5d8ba2e506f0fa42b6ce397cdbcb98b3ddb0",
-      "expectedText": "The updraft holds the ice up. Drops freeze onto it. Hail grows in layers. It falls when the air cannot hold it up. This is a fast, close-up model.",
-      "recognizedText": "The updraft holds the ice up, drops freeze onto it, hail grows in layers, it falls when the air cannot hold it up. This is a fast, close-up model."
-    },
-    {
-      "file": "en-review.mp3",
-      "sha256": "37d991af1a37a0e9ac8cbf942c150e35c9d63b6c5599900cd8ef249e7616b14a",
-      "expectedText": "Water can take many paths. It evaporates. It condenses into tiny cloud drops. Growing drops fall as rain. Snow can melt on the way down. Hail needs an updraft and supercooled drops. Water flows, soaks in, or stays. Choose a stop and try again.",
-      "recognizedText": "Water can take many paths. It evaporates. It condenses into tiny cloud drops. Growing drops fall as rain. Snow can melt on the way down. Hail needs an updraft and supercooled drops. Water flows, soaks in, or stays. Choose a stop and try again."
-    },
-    {
-      "file": "en-evap-compare-result.mp3",
-      "sha256": "07ba43a3d8dd34fd4a4dd338502e20463b466638e88bf92e9960e65c3d26a888",
-      "expectedText": "The warmer water loses more. It evaporates faster. Both can evaporate. This is a simple model, not a measurement.",
-      "recognizedText": "The warmer water loses more. It evaporates faster. Both can evaporate. This is a simple model, not a measurement."
-    },
-    {
-      "file": "en-hail-compare.mp3",
-      "sha256": "613a88ef87bd2a08a9a39b2ed14756508a031b7d7f83605a1d6e1750cac8cce0",
-      "expectedText": "Try all four pairs. Keep your results. What is missing when the ice cannot grow?",
-      "recognizedText": "Try all four pairs. Keep your results. What is missing when the ice cannot grow?"
+      "file": "en-book-storm-grow.mp3",
+      "sha256": "047b3ba05f552ba4cbedcd371a8a15e76870474d7b26efc94bd28735e886f2a6",
+      "expectedText": "Little drops freeze onto the ice ball. It gets bigger! Tap it again and watch it fall.",
+      "recognizedText": "Little drops freeze onto the ice ball. It gets bigger. Tap it again and watch it fall."
     }
   ]
 }
