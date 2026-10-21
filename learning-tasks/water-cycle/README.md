@@ -59,4 +59,4 @@ uv run learning-tasks/water-cycle/source/make_audio.py --lang en --check
 
 冰雹長大後，往上拖會繼續托住，點一下或往下拖才落下；落地仍保留大冰雹與風，雲裡另出現新小冰粒供重玩。雨頁會先讓兩滴靠攏，變成一顆較大水滴，再落雨；reduced motion 至少顯示單一合併水滴。
 
-本版入口 CSS／app、app 的 model／art import 與 content fetch 使用一致的 `v=20261021-storybook`，避免發布時混到先前快取的檔案。
+本版入口 CSS／app、app 的 model／art import 與 content fetch 保留 `v=20261021-storybook`。CSS 另加 `&release=1`：雲端在 Pages 部署完成前的探測讓原 tag 快取到舊 CSS，部署後已實查出新 HTML／舊 CSS 混載，因此以發布修訂避開該 4 小時快取；不改樣式內容或素材。
