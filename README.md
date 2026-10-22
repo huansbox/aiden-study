@@ -32,7 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
-| [水的循環：一滴水的旅行](learning-tasks/water-cycle/) | 滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。 | [開始水的旅行](docs/water-cycle/) |
+| [水的循環：一滴水的旅行](learning-tasks/water-cycle/) | 滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。 | [試玩新版③④幕](docs/water-cycle/prototype/)、[既有水的旅行](docs/water-cycle/) |
 | [Native Camp 2026-10-02 Denny](learning-tasks/nativecamp-2026-10-02/) | 城鄉、地點、比較與完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-10-02) |
 | [Native Camp 2026-09-30 Edon](learning-tasks/nativecamp-2026-09-30/) | 顏色、名詞分類、邀請與預測主題 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-30) |
 | [Native Camp 2026-09-29 Zibuyile](learning-tasks/nativecamp-2026-09-29/) | 互相幫助、禮貌與社區工作者 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-29) |

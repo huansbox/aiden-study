@@ -378,8 +378,8 @@
         "bingpu"
       ],
       "audienceLabel": "6y、9y 親子共看；9y 英文故事",
-      "status": "complete",
-      "statusNote": "滿版互動繪本已發布，正式站資源、中文全故事與英文融雪流程核對完成，見 #225；實體 iPad 與孩子試玩待家長回饋。",
+      "status": "in-progress",
+      "statusNote": "既有繪本仍可使用；依三個 kid question 重規劃，③④幕獨立原型供親子試玩，玩法與故事後續依 #229 回饋調整。",
       "availability": "available",
       "location": "aiden-study/learning-tasks/water-cycle",
       "source": {
@@ -394,7 +394,11 @@
       "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/water-cycle",
       "links": [
         {
-          "label": "開始水的旅行",
+          "label": "試玩新版③④幕",
+          "url": "../water-cycle/prototype/"
+        },
+        {
+          "label": "既有水的旅行",
           "url": "../water-cycle/"
         }
       ],
@@ -403,7 +407,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-10-20",
-      "updated": "2026-10-21",
+      "updated": "2026-10-22",
       "freshness": {
         "state": "current",
         "checkedAt": null,

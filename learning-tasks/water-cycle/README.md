@@ -60,3 +60,31 @@ uv run learning-tasks/water-cycle/source/make_audio.py --lang en --check
 冰雹長大後，往上拖會繼續托住，點一下或往下拖才落下；落地仍保留大冰雹與風，雲裡另出現新小冰粒供重玩。雨頁會先讓兩滴靠攏，變成一顆較大水滴，再落雨；reduced motion 至少顯示單一合併水滴。
 
 本版入口 CSS／app、app 的 model／art import 與 content fetch 保留 `v=20261021-storybook`。CSS 另加 `&release=1`：雲端在 Pages 部署完成前的探測讓原 tag 快取到舊 CSS，部署後已實查出新 HTML／舊 CSS 混載，因此以發布修訂避開該 4 小時快取；不改樣式內容或素材。
+
+## ③④ 幕獨立試玩原型
+
+[開啟原型](../../docs/water-cycle/prototype/index.html)；可直接以 `file://` 開啟，也可由既有 localhost server 的 `/water-cycle/prototype/` 使用。這是 [Issue #229](https://github.com/huansbox/aiden-study/issues/229) 的中文親子試玩，供 6 歲、9 歲共同探索；既有完整繪本保持原入口，原型尚不代表正式繪本已改版。
+
+- ③拖金色風尾巴，或先點風尾巴再點目的地。空虛線圈追蹤看不見的水；暖處保持不可見，涼處先讓麻雀覺得冷，再凝成水滴與雲。
+- ④任選兩滴碰合，或先點一滴再點另一滴。合併按水量長大，夠大自己落下；金星小滴保留唯一身分，麻雀跟到它的落點。若剩下的水量不足以繼續下雨，雲裡補入可自由選取的小滴，不自動合併。
+- 自由翻頁保留兩幕狀態，「重玩這一幕」只重設當幕。字幕預設隱藏；沒有測驗、家庭資料或成就系統。重聽、翻頁、重玩與切背景會清除舊待播句。
+- 原型暫用本機 `Microsoft Hanhan Desktop`（zh-TW、Rate -1）預製短旁白，沒有 browser TTS 或執行時付費 API。③的冷感與④主角落雨／重逢語句會完整播完；聲音關閉時互動照常。
+
+原型唯一來源為 `source/prototype/`，產物為 `docs/water-cycle/prototype/`。只重建此路徑，不執行完整繪本的 build。入口引用使用 `v=20261022-prototype1` 避開網站舊快取；圖片與音檔仍為相對路徑。
+
+```sh
+node learning-tasks/water-cycle/source/prototype/build.mjs
+node learning-tasks/water-cycle/source/prototype/build.mjs --check
+node --test tests/test_water_cycle_prototype.mjs
+# Windows；不帶 ClipIds 重建全部語音，指定時只重建該段：
+powershell -NoProfile -ExecutionPolicy Bypass -File learning-tasks/water-cycle/source/prototype/make-audio.ps1 -ClipIds refill
+```
+
+瀏覽器 helper 不啟停 server，也不安裝 browser。設定 `CODEX_PLAYWRIGHT_PACKAGE` 為既有 Playwright 套件路徑、`OUTPUT_DIR` 為 QA 證據目錄；`WATER_PROTOTYPE_URL` 可指定本機原型。四尺寸 helper 未指定 URL 時使用本機 `file://`；聚焦回歸 helper 預設使用既有 `http://127.0.0.1:8794/water-cycle/prototype/`，可設定 `WATER_PROTOTYPE_WEBKIT=1` 加跑已安裝的 WebKit。
+
+```sh
+node tests/helpers/water-cycle-prototype-browser-check.mjs
+node tests/helpers/water-cycle-prototype-regression.mjs
+```
+
+驗證包含水量續玩、唯一主角、旁白順序、手勢解鎖、拖曳／點選、自由翻頁及不同 viewport；桌面 Chromium／WebKit 模擬不等於 iPad 真機驗收，音檔完整解碼與播放事件也不等於人耳驗聽或孩子理解。原型目前只含③④與中文，完整故事、English 與孩子回饋仍依 #229 追蹤。

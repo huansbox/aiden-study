@@ -5,14 +5,14 @@
     {
       "id": "water-cycle",
       "name": "水的循環：一滴水的旅行",
-      "status": "complete",
-      "statusNote": "滿版互動繪本已發布，正式站資源、中文全故事與英文融雪流程核對完成，見 #225；實體 iPad 與孩子試玩待家長回饋。",
+      "status": "in-progress",
+      "statusNote": "既有繪本仍可使用；依三個 kid question 重規劃，③④幕獨立原型供親子試玩，玩法與故事後續依 #229 回饋調整。",
       "audience": ["aiden", "bingpu"],
       "audienceLabel": "6y、9y 親子共看；9y 英文故事",
       "description": "滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。",
       "reusable": "場景 hotspot、拖曳的點選替代、可重建插圖與預製短旁白。",
       "availability": "available",
-      "links": [{"label": "開始水的旅行", "url": "../water-cycle/"}]
+      "links": [{"label": "試玩新版③④幕", "url": "../water-cycle/prototype/"}, {"label": "既有水的旅行", "url": "../water-cycle/"}]
     },
     {
       "id": "nativecamp-2026-10-02",

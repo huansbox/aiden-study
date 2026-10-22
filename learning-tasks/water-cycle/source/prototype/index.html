@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#efe4d0">
+  <title>小滴去哪了？｜③④ 試玩版</title>
+  <link rel="preload" as="image" href="assets/art/sky-warm-cool.png">
+  <link rel="preload" as="image" href="assets/art/cloud-garden.png">
+  <link rel="preload" as="image" href="assets/art/characters.png">
+  <link rel="stylesheet" href="style.css?v=20261022-prototype1">
+  <script src="narration.js?v=20261022-prototype1" defer></script>
+  <script src="model.js?v=20261022-prototype1" defer></script>
+  <script src="app.js?v=20261022-prototype1" defer></script>
+</head>
+<body>
+  <main id="book" aria-label="小滴去哪了，第三幕與第四幕互動試玩">
+    <div id="world">
+      <section id="scene3" class="scene" aria-label="第三幕，小滴又出現了">
+        <div class="background sky"></div>
+        <svg class="cool-lines" viewBox="0 0 1200 800" aria-hidden="true"><path d="M730 180q120 60 270 0M690 235q150 70 340 0M750 520q140-45 300 0"/></svg>
+        <div id="bird3" class="sprite bird" aria-hidden="true"></div>
+        <div id="formed-cloud" aria-hidden="true"></div>
+        <div id="condensed-drops" aria-hidden="true"></div>
+        <div id="tracking-ring" aria-hidden="true"></div>
+        <button id="wind" class="wind" aria-label="風尾巴：拖曳帶路，或先選它再碰天空的目的地" aria-pressed="false">
+          <svg viewBox="0 0 190 100" aria-hidden="true"><path class="wind-halo" d="M8 65C75 95 155 76 164 44C172 12 121 16 132 41C138 57 158 44 146 36"/><path d="M8 65C75 95 155 76 164 44C172 12 121 16 132 41C138 57 158 44 146 36"/></svg>
+        </button>
+        <button id="warm-place" class="sky-place" aria-label="帶風去左邊暖暖的天空"></button>
+        <button id="cool-place" class="sky-place" aria-label="帶風去右邊涼涼的天空"></button>
+      </section>
+      <section id="scene4" class="scene" aria-label="第四幕，雲裡怎麼還沒下雨" hidden>
+        <div class="background garden"></div>
+        <div id="bird4" class="sprite bird" aria-hidden="true"></div>
+        <div id="rain-drops"></div>
+        <div id="ripples" aria-hidden="true"></div>
+      </section>
+      <div id="start-cover">
+        <button id="start" aria-label="開始幫忙，開啟故事聲音"><span class="sprite bird"></span><span>開始幫忙</span></button>
+      </div>
+    </div>
+    <div class="corner tools">
+      <button id="sound" aria-label="關閉聲音" aria-pressed="true">聲音 開</button>
+      <button id="listen" aria-label="重聽這一段">重聽</button>
+      <button id="captions" aria-label="顯示字幕" aria-pressed="false">字幕</button>
+    </div>
+    <div class="corner bottom-left"><span id="edition">試玩版 ③④</span><button id="replay">重玩這一幕</button></div>
+    <nav class="corner pages" aria-label="自由翻頁"><button id="previous" aria-label="前一幕">←</button><span id="page-number">③</span><button id="next" aria-label="下一幕">→</button></nav>
+    <p id="subtitle" hidden></p>
+    <span id="status" class="sr-only" aria-live="polite"></span>
+  </main>
+</body>
+</html>
