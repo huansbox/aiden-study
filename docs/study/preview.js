@@ -11,20 +11,22 @@
     [20, "第 1 單元：地表的靜與動"],
     [21, "第 2 單元：水生生物與環境"],
     [22, "第 1 單元：家鄉的自然環境"],
+    [23, "第 2 單元：家鄉的傳統住屋與器物"],
   ]);
   const SUBJECTS = new Map([["math", "數學"], ["science", "自然"], ["social", "社會"]]);
-  const SUBJECT_UNITS = { math: [15, 16, 17, 18, 19], science: [20, 21], social: [22] };
+  const SUBJECT_UNITS = { math: [15, 16, 17, 18, 19], science: [20, 21], social: [22, 23] };
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const childFrom = (search) => {
     const child = new URLSearchParams(search || "").get("child");
     return child === "bingpu" ? "bingpu" : "aiden";
   };
   const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
+  const selectFill = q => q?.type === "fill_in_blank" && q.blanks[0]?.input === "select";
   const answerLabel = (q) => q.type === "multiple_choice"
     ? `${q.answer}. ${q.options[Number(q.answer) - 1]}`
     : q.type === "true_false" ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
     : q.type === "grouped_choice" ? q.parts.map((part, index) => `${part.id}：${q.options[Number(q.answer[index]) - 1]}`).join("；")
-    : q.blanks.map((blank, index) => `第 ${index + 1} 空：${blank.answer}`).join("；");
+    : q.blanks.map((blank, index) => `第 ${index + 1} 空：${blank.input === "select" ? q.options[Number(blank.answer) - 1] : blank.answer}`).join("；");
 
   let bootSequence = 0;
   let currentController = null;
@@ -89,6 +91,10 @@
       if (q.type === "grouped_choice") {
         const index = state.partIndex, part = q.parts[index];
         return `<div class="preview-group"><div class="preview-group-part"><span class="preview-group-question">${esc(part.text)}</span><div class="preview-options">${q.options.map((option, choice) => `<button type="button" class="preview-option" data-action="answer-group" data-index="${index}" data-value="${choice + 1}" aria-pressed="${state.values[index] === String(choice + 1)}"><span>${choice + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>${state.result ? `<span class="preview-group-feedback">${state.values[index] === q.answer[index] ? "答對" : `正解：${esc(q.options[Number(q.answer[index]) - 1])}`}</span>` : ""}</div><nav class="preview-group-nav" aria-label="小題導覽"><button type="button" class="secondary" data-action="previous-part" ${index === 0 ? "disabled" : ""}>上一小題</button><span>小題 ${index + 1}／${q.parts.length}</span><button type="button" class="secondary" data-action="next-part" ${index === q.parts.length - 1 ? "disabled" : ""}>下一小題</button></nav></div>`;
+      }
+      if (selectFill(q)) {
+        const index = state.partIndex;
+        return `<div class="preview-group"><nav class="preview-group-nav" aria-label="空格導覽"><button type="button" class="secondary" data-action="previous-part" ${index === 0 ? "disabled" : ""}>上一空格</button><span role="status">第 ${index + 1} 空／共 ${q.blanks.length} 空</span><button type="button" data-action="next-part" ${index === q.blanks.length - 1 ? "disabled" : ""}>下一空格</button></nav><div class="preview-word-bank" aria-label="完整詞庫">${q.options.map((option, choice) => `<button type="button" class="preview-option" data-action="answer-select" data-index="${index}" data-value="${choice + 1}" aria-pressed="${state.values[index] === String(choice + 1)}">${esc(option)}</button>`).join("")}</div><p>已填 ${state.values.filter(Boolean).length}／${q.blanks.length} 空；可切回前面的空格修改。</p></div>`;
       }
       return `<div class="preview-blanks">${q.blanks.map((blank, index) => `<label class="preview-blank"><span>第 ${index + 1} 空（${blank.input === "comparison" ? "比較符號" : "數字"}）</span>${blank.input === "comparison" ? `<span class="preview-compare">${[">", "<", "="].map((value) => `<button type="button" data-action="answer-compare" data-index="${index}" data-value="${value}" aria-pressed="${state.values[index] === value}">${value}</button>`).join("")}</span>` : `<input class="preview-number" data-action="answer-number" data-index="${index}" inputmode="decimal" autocomplete="off" value="${esc(state.values[index] || "")}" aria-label="第 ${index + 1} 空答案" />`}</label>`).join("")}</div>`;
     }
@@ -169,8 +175,9 @@
       else if (action === "answer-choice") { state.values[0] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-compare") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); }
       else if (action === "answer-number") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; }
-      else if (action === "previous-part" || action === "next-part") { const step = action === "previous-part" ? -1 : 1; state.partIndex = Math.max(0, Math.min(current()?.parts?.length - 1 || 0, state.partIndex + step)); render(action); }
+      else if (action === "previous-part" || action === "next-part") { const step = action === "previous-part" ? -1 : 1; const q = current(); const length = selectFill(q) ? q.blanks.length : q?.parts?.length || 0; state.partIndex = Math.max(0, Math.min(length - 1, state.partIndex + step)); render(action); }
       else if (action === "answer-group") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); host.querySelector?.('.preview-group-part [aria-pressed="true"]')?.focus?.({ preventScroll: true }); }
+      else if (action === "answer-select") { state.values[Number(data.index)] = String(data.value); state.result = ""; state.revealed = false; render(); host.querySelector?.('.preview-word-bank [aria-pressed="true"]')?.focus?.({ preventScroll: true }); }
       else if (action === "check") check();
       else if (action === "reveal") { state.revealed = true; render(); }
       else if (action === "retry-answer" || action === "reset") { resetQuestion(action === "reset" ? 0 : state.questionIndex); render(); }

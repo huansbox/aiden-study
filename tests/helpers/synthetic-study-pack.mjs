@@ -127,6 +127,28 @@ export function socialSecondSyntheticPack() {
   return pack;
 }
 
+export function socialUnitTwoSyntheticPack() {
+  const pack = socialSecondSyntheticPack();
+  pack.revision = 20;
+  const questions = [
+    { id: "social-g4s1-synthetic-U2-choice-v1", subject: "social", unit: 23, type: "multiple_choice",
+      text: "合成社會練習：依材料選出適合的器物。", subtopic: "傳統器物", source: "synthetic fixture only",
+      options: ["合成甲", "合成乙", "合成丙"], answer: "3" },
+    { id: "social-g4s1-synthetic-U2-group-v1", subject: "social", unit: 23, type: "grouped_choice",
+      text: "合成社會練習：選出符合線索的住屋。", subtopic: "傳統住屋", source: "synthetic fixture only",
+      options: ["合成甲", "合成乙", "合成丙"], answer: "312",
+      parts: Array.from({ length: 3 }, (_, i) => ({ id: String(i + 1), text: `合成住屋線索 ${i + 1}` })) },
+    { id: "social-g4s1-synthetic-U2-word-bank-v1", subject: "social", unit: 23, type: "fill_in_blank",
+      text: "合成閱讀：請從完整詞庫選出每一空的答案。\n" + Array.from({ length: 13 }, (_, i) => `合成句 ${i + 1}（${String(i + 1).replace(/[0-9]/g, digit => "０１２３４５６７８９"[Number(digit)])}）。`).join("\n"),
+      subtopic: "傳統住屋", source: "synthetic fixture only", answer: "",
+      options: Array.from({ length: 15 }, (_, i) => `${"ABCDEFGHIJKLMOP"[i]}. 合成詞語 ${i + 1}`),
+      blanks: [15, 1, 14, 2, 13, 3, 12, 4, 11, 5, 10, 6, 9].map(answer => ({ input: "select", answer: String(answer) })) },
+  ];
+  pack.questions.push(...questions);
+  for (const q of questions) pack.explanations[q.id] = "合成解說：比較題目提供的材料與線索。";
+  return pack;
+}
+
 export function groupedSyntheticPack() {
   const pack = scienceSyntheticPack();
   pack.revision = 6;

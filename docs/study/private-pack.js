@@ -4,7 +4,7 @@
   const KEY = "study:private-pack:g4-s1-math-u1";
   const MAX_BYTES = 256 * 1024;
   const IDS = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(id => `math-g4s1-${id}-v1`);
-  const UNITS = [15, 16, 17, 18, 19, 20, 21, 22];
+  const UNITS = [15, 16, 17, 18, 19, 20, 21, 22, 23];
   const ID_RE = /^(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
   const object = x => x !== null && typeof x === "object" && !Array.isArray(x);
   const text = x => typeof x === "string" && x.trim().length > 0;
@@ -102,13 +102,13 @@
       if (q.type === "fill_in_blank") fields.push("blanks");
       if (q.type === "grouped_choice") fields.push("parts");
       if (Object.hasOwn(q, "material")) fields.push("material");
-      const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : q.subject === "social" ? [22] : [];
+      const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : q.subject === "social" ? [22, 23] : [];
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (Object.hasOwn(q, "material")) {
-        if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && q.unit === 17 || q.subject === "social" && q.unit === 22) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
+        if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && q.unit === 17 || q.subject === "social" && [22, 23].includes(q.unit)) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
         // subject/unit 身分已在上方驗證；僅四上社會原圖細字需要較大 PNG。
-        validateMaterial(q.material, q.subject === "social" && q.unit === 22 ? 192 * 1024 : 32 * 1024);
+        validateMaterial(q.material, q.subject === "social" && [22, 23].includes(q.unit) ? 192 * 1024 : 32 * 1024);
       }
       if (q.type === "multiple_choice") {
         if (!({ math: [4], science: [3, 4], social: [2, 3, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
@@ -126,10 +126,13 @@
           partIds.add(part.id);
         }
       } else if (q.type === "fill_in_blank") {
-        if (q.subject !== "math" || q.options.length || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > 9) throw new Error("填空題格式無效。");
+        const select = q.subject === "social" && q.unit === 23;
+        if ((!select && q.subject !== "math") || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > (select ? 13 : 9) ||
+            (select ? q.options.length < 2 || q.options.length > 15 || !q.options.every(x => boundedText(x, 300)) : q.options.length)) throw new Error("填空題格式無效。");
         for (const [i, b] of q.blanks.entries()) {
-          if (!keys(b, ["answer", "input"]) || typeof b.answer !== "string" || !(b.input === "number" ? /^(0|[1-9][0-9]{0,7})$/.test(b.answer) : b.input === "comparison" && /^[<>=]$/.test(b.answer))) throw new Error("填空答案或輸入方式無效。");
-          if (!q.text.includes(`（${"１２３４５６７８９"[i]}）`)) throw new Error("填空題缺少對應的全形空格標記。");
+          if (!keys(b, ["answer", "input"]) || typeof b.answer !== "string" || (select ? b.input !== "select" || !/^(?:[1-9]|1[0-5])$/.test(b.answer) || Number(b.answer) > q.options.length : !(b.input === "number" ? /^(0|[1-9][0-9]{0,7})$/.test(b.answer) : b.input === "comparison" && /^[<>=]$/.test(b.answer)))) throw new Error("填空答案或輸入方式無效。");
+          const marker = String(i + 1).replace(/[0-9]/g, digit => "０１２３４５６７８９"[Number(digit)]);
+          if (!q.text.includes(`（${marker}）`)) throw new Error("填空題缺少對應的全形空格標記。");
         }
       } else throw new Error("此題型尚未支援。");
       const old = previous && previous.questions.find(p => p.id === q.id);

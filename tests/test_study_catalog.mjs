@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { IDBFactory } from "fake-indexeddb";
 import { buildCatalog } from "../scripts/build_private_study_catalog.mjs";
-import { expandedSyntheticPack, scienceSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, scienceSyntheticPack, socialUnitTwoSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
 import { boot, storage } from "./helpers/study-harness.mjs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
@@ -16,9 +16,9 @@ function fixture() {
   }
   return pack;
 }
-async function setup(pack=fixture()) {
+async function setup(pack=fixture(), maxBytes=2200) {
   globalThis.indexedDB=new IDBFactory();
-  const built=await buildCatalog(pack,pack,[],2200);
+  const built=await buildCatalog(pack,pack,[],maxBytes);
   const kv={"c:study:catalog:v2":{value:JSON.stringify(built.manifest)}};
   for(const [hash,raw] of built.shards) kv[`c:study:shard:${hash}`]={value:raw};
   const env={TOKEN:"test-token",KV:kvStub(kv)}, requests=[];
@@ -28,6 +28,24 @@ async function setup(pack=fixture()) {
   e.app.State.setStudyTerm("g4-s1");e.app.State.setSubject("math");e.app.renderHome();
   return {e,env,requests,built,pack,fetch};
 }
+test("social U2 catalog and real Worker route retain full word bank and isolate unit 22 membership", async () => {
+  const pack = socialUnitTwoSyntheticPack(), { e, built, env, requests } = await setup(pack, 65536);
+  e.app.State.setSubject("social");
+  assert.equal(C.count(built.manifest, 23), 3);
+  await e.window._startFull(23);
+  assert.equal(e.app.activePack.questions.length, 3);
+  assert.ok(e.app.activePack.questions.every(q => q.unit === 23));
+  assert.ok(requests.filter(u => u.includes("/shards/")).length > 0);
+  const q = e.app.activePack.questions.find(q => q.type === "fill_in_blank");
+  assert.equal(q.options.length, 15); assert.equal(q.blanks.length, 13);
+  const descriptor = built.manifest.shards.find(s => s.unit === 23);
+  const result = await worker.fetch(new Request(`https://family.invalid/v1/packs/g4-s1-math-u1/shards/${descriptor.hash}`, { headers: { Authorization: "Bearer test-token" } }), env);
+  assert.equal(result.status, 200);
+  assert.ok((await C.verifyShard(await result.text(), descriptor)).questions.every(q => q.unit === 23));
+  const wrong = structuredClone(built.manifest); wrong.revision++; wrong.shards.find(s => s.unit === 23).unit = 22;
+  assert.throws(() => C.parseManifest(JSON.stringify(wrong), built.manifest), /搬動/);
+});
+
 test("builder shards by unit, supports many shards and >256 KiB aggregate, preserves exact questions",async()=>{
   const p=fixture();for(const q of p.questions)p.explanations[q.id]+="說明".repeat(4000);
   const result=await buildCatalog(p,p,[],60000);
