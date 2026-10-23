@@ -1,4 +1,4 @@
-/* 四上自然練習主題。細標籤仍是題包 metadata 與舊進度的原始名稱。 */
+/* 四上自然與社會練習主題；保留既有檔名/API。細標籤仍是題包 metadata 與舊進度的原始名稱。 */
 (function(root) {
   "use strict";
   const definitions = [
@@ -33,6 +33,30 @@
     { unit: 21, key: "@science-topic:S2c", label: "水域保護", subtopics: [
       "S2c 人類行為與水域後果", "S2c 水域保護與破壞行為", "S2c 水域活動與環境破壞",
       "S2c 放生與水域生態", "S2c 肥料流入、藻類與缺氧", "S2c 捕魚季節與護魚措施"
+    ] },
+    { unit: 23, key: "@social-topic:U2-materials", label: "住屋建材與環境", subtopics: [
+      "住屋與器物的就地取材", "住屋建材與環境", "傳統住屋的材料、形式與保存",
+      "傳統材料與自然循環", "原住民族住屋與環境", "地下屋與族群", "地下屋與地點",
+      "地下屋與環境", "地下屋建材", "石板屋特徵", "土埆厝建材", "傳統住屋就地取材",
+      "傳統住屋建材", "雅美族地下屋", "石板屋特性", "石板屋建材", "石板屋功能",
+      "石板屋與族群", "漢人傳統住屋建材", "竹管仔厝建材", "傳統住屋的建材",
+      "漢人的傳統住屋", "傳統住屋的建材與環境", "傳統住屋的建築智慧"
+    ] },
+    { unit: 23, key: "@social-topic:U2-life", label: "漢人住屋與三合院生活", subtopics: [
+      "三合院的空間與倫理", "三合院空間與農業生活", "漢人傳統住屋形式", "三合院空間與倫理",
+      "三合院空間與自給自足生活", "傳統住屋形式與空間", "三合院正身與空間用途",
+      "漢人住屋形式改變", "傳統住屋空間與視角", "三合院空間用途", "三合院周遭水池用途",
+      "三合院稻埕用途", "三合院周遭竹林果樹", "三合院的環境與生活", "漢人傳統住屋的形式"
+    ] },
+    { unit: 23, key: "@social-topic:U2-preservation", label: "住屋改變與文化保存", subtopics: [
+      "傳統住屋的文化展示", "傳統住屋的改變與保存", "傳統住屋與現代改建",
+      "傳統住屋的活化與保存", "傳統住屋保存", "傳統住屋的保存與再利用", "傳統住屋的改變"
+    ] },
+    { unit: 23, key: "@social-topic:U2-utensils", label: "生活器物與環境", subtopics: [
+      "傳統器物與自然資源", "傳統器物的用途與今昔對照", "魚筌材質、構造與用途",
+      "器物用途的今昔對照", "傳統器物的功能", "傳統住屋與生活器物", "傳統生活器物",
+      "塑膠廢棄物與環境", "減塑與重複使用", "塑膠材料與減塑理由",
+      "生活器物的今昔改變與減塑", "現代生活器物與環境"
     ] }
   ];
   const byKey = new Map(definitions.map(topic => [topic.key, topic]));
@@ -44,7 +68,7 @@
     if (!selection) return true;
     const topic = byKey.get(selection);
     if (topic) return q.unit === topic.unit && topic.subtopics.includes(q.subtopic);
-    if (selection.startsWith("@science-topic:")) return false;
+    if (selection.startsWith("@science-topic:") || selection.startsWith("@social-topic:")) return false;
     return q.subtopic === selection; // 舊細標籤的進度與批次仍可精確讀取。
   }
   const labelFor = selection => byKey.get(selection)?.label || selection;

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { IDBFactory } from "fake-indexeddb";
 import { buildCatalog } from "../scripts/build_private_study_catalog.mjs";
-import { expandedSyntheticPack, scienceSyntheticPack, socialUnitTwoSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, scienceSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
 import { boot, storage } from "./helpers/study-harness.mjs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
@@ -44,6 +44,23 @@ test("social U2 catalog and real Worker route retain full word bank and isolate 
   assert.ok((await C.verifyShard(await result.text(), descriptor)).questions.every(q => q.unit === 23));
   const wrong = structuredClone(built.manifest); wrong.revision++; wrong.shards.find(s => s.unit === 23).unit = 22;
   assert.throws(() => C.parseManifest(JSON.stringify(wrong), built.manifest), /搬動/);
+});
+
+test("social topics count catalog metadata before loading and keep lazy-loaded batches in the chosen topic", async () => {
+  const { e, requests, pack } = await setup(socialTopicsSyntheticPack(), 65536);
+  e.app.State.setSubject("social"); e.app.renderHome();
+  const topic = "@social-topic:U2-materials";
+  const expected = pack.questions.filter(q => q.unit === 23 && ["住屋建材與環境", "土埆厝建材"].includes(q.subtopic)).map(q => q.id);
+  assert.equal(e.app.activePack, null);
+  assert.deepEqual([...e.app.questionIdsFor(23, topic)], expected);
+  assert.equal(e.app.questionIdsFor(23).length, 6, "unmapped activity stays available to the whole unit");
+  assert.equal(requests.filter(url => url.includes("/shards/")).length, 0);
+  assert.match(e.node("page-home").innerHTML, /漢人住屋與三合院生活/);
+  await e.window._startFull(23, topic);
+  assert.deepEqual(new Set(e.app.quiz.queue), new Set(expected));
+  assert.equal(e.app.activePack.questions.length, 6);
+  assert.ok(e.app.activePack.questions.every(q => q.unit === 23));
+  assert.ok(requests.filter(url => url.includes("/shards/")).length > 0);
 });
 
 test("builder shards by unit, supports many shards and >256 KiB aggregate, preserves exact questions",async()=>{

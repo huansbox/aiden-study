@@ -149,6 +149,25 @@ export function socialUnitTwoSyntheticPack() {
   return pack;
 }
 
+export function socialTopicsSyntheticPack() {
+  const pack = socialUnitTwoSyntheticPack();
+  const [materials, life, utensils] = pack.questions.filter(q => q.unit === 23);
+  materials.subtopic = "住屋建材與環境";
+  life.subtopic = "三合院空間與農業生活";
+  life.material = { kind: "png", data: syntheticPngData(8, 6, 550, 304), alt: "合成住屋配置圖" };
+  utensils.subtopic = "傳統住屋與生活器物";
+  for (const [suffix, subtopic] of [
+    ["material-second", "土埆厝建材"],
+    ["preservation", "傳統住屋的文化展示"],
+    ["unmapped", "新細標籤待分類"]
+  ]) {
+    const q = { ...materials, id: `social-g4s1-synthetic-U2-${suffix}-v1`, subtopic };
+    pack.questions.push(q);
+    pack.explanations[q.id] = "合成解說：依指定線索判斷。";
+  }
+  return pack;
+}
+
 export function groupedSyntheticPack() {
   const pack = scienceSyntheticPack();
   pack.revision = 6;

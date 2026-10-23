@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -161,6 +161,33 @@ test("social preview uses exact unit membership and three broad topics without p
   app.handle("subject", { value: "science" });
   assert.equal(app.state.unit, 20);
   assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
+test("social U2 preview shares four child topics while preserving grouped images, fine selectors and unmapped activities", async () => {
+  const pack = socialTopicsSyntheticPack(), h = harness({ pack }), app = await h.boot();
+  const [materials, life, utensils] = pack.questions.filter(q => q.unit === 23);
+  app.handle("subject", { value: "social" }); app.handle("unit", { value: "23" });
+  assert.match(h.host.html, /練習主題/);
+  assert.equal((h.host.html.match(/<option value="@social-topic:/g) || []).length, 4);
+  assert.doesNotMatch(h.host.html, /<option value="土埆厝建材"|<option value="新細標籤待分類"/);
+  assert.match(h.host.html, /共 6 題/);
+  app.handle("subtopic", { value: "@social-topic:U2-materials" });
+  assert.match(h.host.html, /共 2 題/);
+  assert.match(h.host.html, /／住屋建材與環境／/);
+  app.handle("subtopic", { value: materials.subtopic });
+  assert.match(h.host.html, /共 1 題/);
+  app.handle("subtopic", { value: "@social-topic:U2-life" });
+  assert.match(h.host.html, /整組選答（3 小題）/);
+  assert.match(h.host.html, /合成住屋配置圖/);
+  assert.equal(app.state.pack.questions.find(q => q.id === life.id).parts.length, 3);
+  app.handle("subtopic", { value: "@social-topic:U2-utensils" });
+  assert.equal((h.host.html.match(/data-action="answer-select"/g) || []).length, 15);
+  assert.equal(app.state.pack.questions.find(q => q.id === utensils.id).blanks.length, 13);
+  app.handle("subtopic", { value: "" }); app.handle("question", { value: "5" });
+  assert.match(h.host.html, /／整單元練習／/);
+  assert.equal(h.forbiddenTouches, 0);
+  assert.ok(h.requests.every(request => request.method === "GET"));
   app.destroy();
 });
 
