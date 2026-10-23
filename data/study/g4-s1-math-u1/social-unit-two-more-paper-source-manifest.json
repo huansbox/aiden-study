@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/235",
+  "publicationStatus": "candidate_not_published",
+  "formalTargetRangeVerified": false,
+  "papers": [
+    {
+      "paperId": "smps111",
+      "school": "基隆市深美國民小學",
+      "academicYear": 111,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "第一次評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "on_question_face",
+        "pdfPage": 1,
+        "description": "命題範圍明印康軒版。"
+      },
+      "questionSourceUrl": "https://oldsmps.kl.edu.tw/books/file/109/%E7%A4%BE.pdf",
+      "publicParentUrl": "https://oldsmps.kl.edu.tw/books/109",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "transportVerification": {
+        "status": 200,
+        "actualHost": "oldsmps.kl.edu.tw",
+        "finalUrl": "https://oldsmps.kl.edu.tw/books/file/109/%E7%A4%BE.pdf",
+        "finalUrlBasis": "HTTP200 response with no redirect Location header; initial 111 curl diagnostic also reported effective URL.",
+        "tlsClient": "Windows curl Schannel native trust store",
+        "headersReceipt": "source-archive/receipts/smps111-question-system-tls-headers.txt"
+      },
+      "questionPdf": {
+        "file": "source-archive/papers/smps-111-q-g4s1-social-exam1.pdf",
+        "bytes": 390205,
+        "sha256": "DE7C39673B4D4102AC7B6C5F1CFC1891DA312FED448A862CBB1238A314653ACB",
+        "pages": 4
+      }
+    },
+    {
+      "paperId": "smps112",
+      "school": "基隆市深美國民小學",
+      "academicYear": 112,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "第一次評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "on_question_face",
+        "pdfPage": 1,
+        "description": "命題範圍明印康軒版。"
+      },
+      "questionSourceUrl": "https://oldsmps.kl.edu.tw/books/file/135/%E7%A4%BE.pdf",
+      "publicParentUrl": "https://oldsmps.kl.edu.tw/books/135",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "transportVerification": {
+        "status": 200,
+        "actualHost": "oldsmps.kl.edu.tw",
+        "finalUrl": "https://oldsmps.kl.edu.tw/books/file/135/%E7%A4%BE.pdf",
+        "finalUrlBasis": "HTTP200 response with no redirect Location header; initial 111 curl diagnostic also reported effective URL.",
+        "tlsClient": "Windows curl Schannel native trust store",
+        "headersReceipt": "source-archive/receipts/smps112-question-system-tls-headers.txt"
+      },
+      "questionPdf": {
+        "file": "source-archive/papers/smps-112-q-g4s1-social-exam1.pdf",
+        "bytes": 582181,
+        "sha256": "A9FE2281D7F60511B8BBE7E745918656AB1D4CCC1826B82A9254AAF955FD5641",
+        "pages": 4
+      }
+    },
+    {
+      "paperId": "smps113",
+      "school": "基隆市深美國民小學",
+      "academicYear": 113,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "期中定期評量",
+      "publisher": "unknown",
+      "publisherEvidence": {
+        "type": "not_verified",
+        "description": "卷面未印出版社，未將同校其他年份推定為本年版本。"
+      },
+      "questionSourceUrl": "https://oldsmps.kl.edu.tw/books/file/161/%E7%A4%BE.pdf",
+      "publicParentUrl": "https://oldsmps.kl.edu.tw/books/161",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "transportVerification": {
+        "status": 200,
+        "actualHost": "oldsmps.kl.edu.tw",
+        "finalUrl": "https://oldsmps.kl.edu.tw/books/file/161/%E7%A4%BE.pdf",
+        "finalUrlBasis": "HTTP200 response with no redirect Location header; initial 111 curl diagnostic also reported effective URL.",
+        "tlsClient": "Windows curl Schannel native trust store",
+        "headersReceipt": "source-archive/receipts/smps113-question-system-tls-headers.txt"
+      },
+      "questionPdf": {
+        "file": "source-archive/papers/smps-113-q-g4s1-social-exam1.pdf",
+        "bytes": 270397,
+        "sha256": "CBAF13E32B7A2EBA48A91B89514249D40F3897DB4425F217750299154C5EB089",
+        "pages": 4
+      }
+    },
+    {
+      "paperId": "jdps113",
+      "school": "桃園市桃園區建德國民小學",
+      "academicYear": 113,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "期中定期評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "official_school_textbook_table",
+        "evidenceId": "jdps113-publisher",
+        "gradeColumn": 4,
+        "subjectRow": "社會領域",
+        "displayedPublisher": "康軒"
+      },
+      "questionSourceUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?cat_sn=732&cfsn=4151&name=113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E7%A4%BE%E6%9C%83%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "publicParentUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=732",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "transportVerification": {
+        "status": 200,
+        "actualHost": "www.jdps.tyc.edu.tw",
+        "finalUrl": "https://www.jdps.tyc.edu.tw/uploads/tad_uploader/tmp/4182/113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E7%A4%BE%E6%9C%83%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf",
+        "tlsClient": "Python urllib default validated TLS",
+        "receipt": "source-archive/receipts/jdps113-question.json"
+      },
+      "questionPdf": {
+        "file": "source-archive/papers/jdps-113-q-g4s1-social-exam1.pdf",
+        "bytes": 636415,
+        "sha256": "59C29E6A0D95D9616F2059E174722E9CBF80343C948CC102E503B209AFCFD367",
+        "pages": 2
+      }
+    },
+    {
+      "paperId": "jdps114",
+      "school": "桃園市桃園區建德國民小學",
+      "academicYear": 114,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "期中定期評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "official_school_textbook_table",
+        "evidenceId": "jdps114-publisher",
+        "gradeColumn": 4,
+        "subjectRow": "社會領域",
+        "displayedPublisher": "康軒"
+      },
+      "questionSourceUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?cat_sn=737&cfsn=4248&name=114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%A4%BE%E6%9C%83%E9%A0%98%E5%9F%9F%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "publicParentUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=737",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "transportVerification": {
+        "status": 200,
+        "actualHost": "www.jdps.tyc.edu.tw",
+        "finalUrl": "https://www.jdps.tyc.edu.tw/uploads/tad_uploader/tmp/4279/114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%A4%BE%E6%9C%83%E9%A0%98%E5%9F%9F%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf",
+        "tlsClient": "Python urllib default validated TLS",
+        "receipt": "source-archive/receipts/jdps114-question.json"
+      },
+      "questionPdf": {
+        "file": "source-archive/papers/jdps-114-q-g4s1-social-exam1.pdf",
+        "bytes": 226643,
+        "sha256": "21189FFB3B17B91103647F3DF2CBAA5CB7304490125008B2BDF96BAF9671CA32",
+        "pages": 2
+      }
+    }
+  ],
+  "publisherEvidence": [
+    {
+      "evidenceId": "jdps113-publisher",
+      "officialSourceUrl": "https://www.jdps.tyc.edu.tw/modules/tadnews/index.php?files_sn=13766&op=tufdl",
+      "capture": {
+        "file": "source-archive/publisher/jdps-113-textbook-versions.pdf",
+        "bytes": 82203,
+        "sha256": "1D7FAF930BB403D79420C0957AE7977A25EEBC6512AD0329DD7FD2A4FC67FE19",
+        "fileHeadHex": "255044462d312e370d0a25b5b5b5b50d",
+        "pages": 1
+      },
+      "visualInspected": true,
+      "observation": "113學年度版本表，四年級欄社會領域列康軒。",
+      "publisherConfirmed": "康軒",
+      "subject": "社會",
+      "grade": 4,
+      "academicYear": 113,
+      "render": {
+        "file": "review/render/jdps-113-textbook-versions/page-1.png",
+        "bytes": 174037,
+        "sha256": "8A7447DBF9D80E755869C9145A06642EBA79BC27E64283E4E973BE666712C170",
+        "fileHeadHex": "89504e470d0a1a0a0000000d49484452"
+      }
+    },
+    {
+      "evidenceId": "jdps114-publisher",
+      "officialSourceUrl": "https://www.jdps.tyc.edu.tw/uploads/tadnews/image/114%E6%95%99%E7%A7%91%E6%9B%B8.jpg",
+      "capture": {
+        "file": "source-archive/publisher/jdps-114-textbook-versions.jpg",
+        "bytes": 183375,
+        "sha256": "E1CD8F404376AF953565C3A41DA6586C34EA9E37C40E3CA2BE94C0F1F4BA7834",
+        "fileHeadHex": "ffd8ffe000104a464946000101010060"
+      },
+      "visualInspected": true,
+      "observation": "114學年度版本表帶建德教務處印記；四年級欄社會領域列康軒。",
+      "publisherConfirmed": "康軒",
+      "subject": "社會",
+      "grade": 4,
+      "academicYear": 114,
+      "imageDimensions": [
+        574,
+        636
+      ]
+    }
+  ],
+  "curriculumEvidence": {
+    "capture": {
+      "file": "source-archive/curriculum/115-chiayi-kangxuan-social4.pdf",
+      "bytes": 1104759,
+      "sha256": "AFEA13348093BC8316501D3C405E597ADF4EBEED9F9686A37C3894D94F5EBEED",
+      "fileHeadHex": "255044462d312e370d0a25b5b5b5b50d",
+      "pages": 93
+    },
+    "sourceUrl": "https://course.cyc.edu.tw/course/pub/cou_down.php?fn=16222710667857737015bx8637e72c7a49gh7bvndw4we4uh4pdt8rvs3r.pdf&q_year=115",
+    "acquisition": "byte-identical necessary copy from immutable rev20 source archive; SHA matches tracked curriculum-comparison.md",
+    "visuallyInspectedPdfPages": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "provisionalConceptBasis": true,
+    "representsTargetSchoolFormalRange": false
+  },
+  "retrievalConstraints": {
+    "ordinaryPublicGETOnly": true,
+    "loginUsed": false,
+    "cookiesUsed": false,
+    "tlsVerificationDisabled": false,
+    "certificateOrHostsModified": false,
+    "accessControlBypassUsed": false,
+    "pythonTLSFailureRetained": true,
+    "systemTLSExplanation": "Python 3.13 strict certificate verifier rejected missing Subject Key Identifier. Windows curl Schannel with native trust verification succeeded HTTP200; neither -k nor custom CA/hosts modification used."
+  },
+  "privateBoundary": "Only source identity, provenance, page counts and fingerprints. No original questions, options, answers, explanations or source images.",
+  "status": "content_code_e2e_approved_pending_pr_and_publication",
+  "rootContentApproved": true,
+  "rootCodeApproved": true,
+  "rootE2eApproved": true,
+  "validationEvidenceSha256": {
+    "review/content-review-metadata-recheck-v1.json": "e1e626982f5a3196ced39d06a35be2145f8c9ce2ec83d588de4906025c0558a5",
+    "review/runtime-review-recheck-v1.json": "62768f25df2b69465a10ac721488552d299f4b055f40a640ce6fa35ac4b9c792",
+    "ops/e2e-final-seal.json": "75f1d87609a0737623963368d27626e5d3886e024da15560d835f62ea2a1e605",
+    "ops/e2e-final-v3-equivalence.json": "e358aea4a6748ad7b6524318d83e7d03e5d6f6ee5ece252b35d59efbe19ea3fb",
+    "review/root-final-candidate-approval-v1.json": "1e8f87f4c89fcc3873cc888de62ae626931e2a7cdc7e740c3b4ae5a320467b13"
+  }
+}

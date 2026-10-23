@@ -168,3 +168,22 @@ export function groupedSyntheticPack() {
   for (const q of questions) pack.explanations[q.id] = "合成解說：逐項對照共同材料。";
   return pack;
 }
+
+// 原創合成題，僅供 schema／判分／瀏覽器驗證，不取材自任何原卷。
+export function socialTextVectorsSyntheticPack() {
+  const pack = socialUnitTwoSyntheticPack();
+  pack.revision = 21;
+  const questions = [
+    { id: "social-g4s1-synthetic-U2-text-v1", subject: "social", unit: 23, type: "fill_in_blank",
+      text: "合成短答：第一個標籤（１），第二個標籤（２）。", subtopic: "合成文字", source: "synthetic fixture only",
+      options: [], answer: "", blanks: [{ input: "text", answer: "Alpha", aliases: ["甲城"] }, { input: "text", answer: "<b>合成</b>", aliases: ["乙鎮"] }] },
+    { id: "social-g4s1-synthetic-U2-vectors-v1", subject: "social", unit: 23, type: "fill_in_blank",
+      text: "合成排列：前兩格可以互換（１）（２）；末兩格必須依序（３）（４）。", subtopic: "合成排列", source: "synthetic fixture only",
+      options: ["甲標籤", "乙標籤", "丙標籤", "丁標籤"], answer: "",
+      blanks: ["1", "2", "3", "4"].map(answer => ({ input: "select", answer })),
+      acceptedAnswers: [["1", "2", "3", "4"], ["2", "1", "3", "4"]] },
+  ];
+  pack.questions.push(...questions);
+  for (const q of questions) pack.explanations[q.id] = "合成解說：逐項核對本題指定的標籤與排列。";
+  return pack;
+}

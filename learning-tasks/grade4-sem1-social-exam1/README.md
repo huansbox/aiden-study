@@ -1,5 +1,7 @@
 # 四上社會第一次段考候選卷
 
+[#235 跨校社會 U2](https://github.com/huansbox/aiden-study/issues/235)已建立未發布的rev21候選：五卷384格完整盤點，新增54活動／103原格；完整候選419活動（數學68／自然217／社會134），社會231格、U2為67活動／130格。兩個完整活動共4格因原題歧義hold，另2格scope boundary保留；不改題製造唯一答案。現役仍為下述正式rev20，rev21已通過內容、code review與真包E2E，待PR與正式發布。來源、完整材料、圖號說明、有限文字填答與整組等價判分，以及最新候選指紋見[跨校批次紀錄](../../docs-dev/grade4-social-study-unit-two-more-paper-batch.md)與[五卷來源metadata](../../data/study/g4-s1-math-u1/social-unit-two-more-paper-source-manifest.json)。
+
 [#232 社會 U2](https://github.com/huansbox/aiden-study/issues/232)已於2026-10-23正式發布13活動／27原格；現役rev20全科365活動（數學68／自然217／社會80）、社會累計128格。既有76格backlog逐格處理後剩49格：44後續範圍、1開放題、4整組hold。114本批0活動；正式範圍仍未取得。完整來源、改編、讀回與重建見[U2批次紀錄](../../docs-dev/grade4-social-study-unit-two-batch.md)；原rev19發布事實如下。
 
 前版[#191完整三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已於2026-10-06正式發布rev19：當時177原格＝101已發布（原35＋該批66）＋4整組hold＋72後續範圍；社會67活動／101格、全科352活動。完整歷史封存、雙副本與實際merge／Pages／Worker／source SHA見[該批紀錄](../../docs-dev/grade4-social-study-existing-paper-batch.md)及#191最新交接；另見[歷史inventory](../../data/study/g4-s1-math-u1/social-existing-paper-inventory-metadata.json)與[backlog](../../data/study/g4-s1-math-u1/social-existing-paper-backlog-metadata.json)。

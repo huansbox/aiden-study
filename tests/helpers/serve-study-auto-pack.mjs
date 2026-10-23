@@ -5,13 +5,13 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { syntheticPack, expandedSyntheticPack, scienceSyntheticPack, socialSecondSyntheticPack, socialUnitTwoSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
+import { syntheticPack, expandedSyntheticPack, scienceSyntheticPack, socialSecondSyntheticPack, socialUnitTwoSyntheticPack, socialTextVectorsSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
 
 import { buildCatalog } from "../../scripts/build_private_study_catalog.mjs";
 const root=resolve(fileURLToPath(new URL("../../docs/",import.meta.url)));
 const port=Number(process.argv[2] || 8778);
 const endpoint=`http://127.0.0.1:${port}`;
-const KV=kvStub({"c:study:g4-s1-math-u1":{value:JSON.stringify(syntheticPack())}});
+let KV=kvStub({"c:study:g4-s1-math-u1":{value:JSON.stringify(syntheticPack())}});
 let failed=false;
 let catalogMode=false;
 const server=createServer(async(req,res)=>{
@@ -24,13 +24,15 @@ const server=createServer(async(req,res)=>{
     }
     if(url.pathname==="/test-start"){
       const scenario = url.searchParams.get("scenario");
-      catalogMode = ["catalog", "science-three", "social-u2"].includes(scenario);
+      // 此獨立合成情境每次建立新的記憶體 KV，避免前次合成作答同步回蓋本次 fixture。
+      if (scenario === "social-text-vectors") KV = kvStub();
+      catalogMode = ["catalog", "science-three", "social-u2", "social-text-vectors"].includes(scenario);
       const partialReset = url.searchParams.get("scenario") === "partial-cache-reset";
       const upgrade = url.searchParams.get("scenario") === "upgrade" || partialReset;
       failed = false;
       await KV.put("c:study:g4-s1-math-u1", JSON.stringify(syntheticPack()));
       if(catalogMode) {
-        const pack=scenario === "social-u2" ? socialUnitTwoSyntheticPack() : scenario === "science-three" ? scienceSyntheticPack() : socialSecondSyntheticPack();
+        const pack=scenario === "social-text-vectors" ? socialTextVectorsSyntheticPack() : scenario === "social-u2" ? socialUnitTwoSyntheticPack() : scenario === "science-three" ? scienceSyntheticPack() : socialSecondSyntheticPack();
         if (scenario === "science-three") {
           const question=pack.questions.find(q=>q.subject==="science"&&q.type==="multiple_choice");
           question.unit=20;
@@ -46,6 +48,11 @@ const server=createServer(async(req,res)=>{
       if (scenario === "social-u2") {
         progress.subject = "social";
         progress.challenge = { 23: { batch: [socialUnitTwoSyntheticPack().questions.at(-1).id] } };
+      }
+      if (scenario === "social-text-vectors") {
+        progress.subject = "social";
+        const index = url.searchParams.get("activity") === "vectors" ? -1 : -2;
+        progress.challenge = { 23: { batch: [socialTextVectorsSyntheticPack().questions.at(index).id] } };
       }
       if (upgrade) { progress.mastered[15] = ids.slice(0,2); progress.challenge[15].batch = ids.slice(2); }
       if (partialReset) { progress.mastered[15] = [...ids, addedIds[0]]; progress.challenge[15] = { batch: [ids[0], addedIds[0]], queue: [addedIds[0]] }; }
