@@ -37,6 +37,7 @@ ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v
 ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "true_false", "grouped_choice"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
+SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
     "U1-P02": ("math-g4s1-tyk113-II-11a-v1", "tyk113-II-11a", "fill_in_blank:number"),
@@ -199,7 +200,10 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
                 raise PackBuildError(f"mapping digital adaptation is wrong for {practice_id}")
         for key in ("originalId", "paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
             _require_nonempty(item[key], f"mapping {practice_id} {key}")
-        if subject in {"science", "social"} and item["reviewStatus"] not in {OFFICIAL_ANSWER_VERIFIED, NO_OFFICIAL_ANSWER_VERIFIED}:
+        allowed_reviews = {OFFICIAL_ANSWER_VERIFIED, NO_OFFICIAL_ANSWER_VERIFIED}
+        if subject == "social" and item["unit"] == 23:
+            allowed_reviews.add(SEMANTIC_OFFICIAL_VERIFIED)
+        if (subject in {"science", "social"} and item["reviewStatus"] not in allowed_reviews) or (item["reviewStatus"] == SEMANTIC_OFFICIAL_VERIFIED and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping {practice_id} answer review is not complete")
         if type(item["questionPage"]) is not int or item["questionPage"] < 1:
             raise PackBuildError(f"mapping {practice_id} questionPage must be a positive integer")

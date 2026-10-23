@@ -311,6 +311,33 @@ def test_social_unit_22_png_two_choice_and_five_option_group_contract(tmp_path):
     rejects("social-unit-24", lambda group, choice: group.update(unit=24))
 
 
+def test_semantic_official_comparison_requires_social_u2_and_real_answer_page(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    app_id = "social-g4s1-synthetic-semantic-v1"
+    common = {"practiceId": "S2-SEMANTIC", "originalId": "synthetic", "paperId": "synthetic-paper",
+              "questionPage": 1, "answerPage": 2, "concept": "Synthetic concept"}
+    curated["items"].append({**common, "adaptation": "Synthetic semantic comparison", "verification": private_builder.SEMANTIC_OFFICIAL_VERIFIED,
+                             "question": {"id": app_id, "subject": "social", "unit": 23, "type": "multiple_choice", "text": "Synthetic question?", "subtopic": "Synthetic", "options": ["A", "B", "C", "D"], "answer": "1"}})
+    metadata["items"].append({**common, "appId": app_id, "unit": 23, "contextPolicy": "Synthetic", "digitalAdaptation": "multiple_choice",
+                              "sourceAdaptation": "Synthetic semantic comparison", "reviewStatus": private_builder.SEMANTIC_OFFICIAL_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    assert build_pack(*_paths(tmp_path / "valid", values))["questions"][-1]["unit"] == 23
+    for subject, unit in (("social", 22), ("science", 20), ("math", 15)):
+        broken = copy.deepcopy(values)
+        changed_id = f"{subject}-g4s1-synthetic-semantic-v1"
+        broken[0]["items"][-1]["question"].update(id=changed_id, subject=subject, unit=unit)
+        broken[2]["items"][-1].update(appId=changed_id, unit=unit)
+        broken[1]["entries"][-1]["id"] = changed_id
+        with pytest.raises(PackBuildError, match="answer review"):
+            build_pack(*_paths(tmp_path / subject, broken))
+    broken = copy.deepcopy(values)
+    broken[0]["items"][-1]["answerPage"] = None
+    broken[2]["items"][-1]["answerPage"] = None
+    with pytest.raises(PackBuildError, match="answerPage"):
+        build_pack(*_paths(tmp_path / "no-page", broken))
+
+
 def test_social_u2_full_word_bank_has_strict_scope_and_parser_parity(tmp_path):
     values = list(_fixture())
     curated, explanations, metadata, _ = values
