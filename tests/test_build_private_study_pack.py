@@ -240,7 +240,7 @@ def test_social_unit_22_choice_and_true_false_require_completed_review(tmp_path)
         with pytest.raises(PackBuildError):
             build_pack(*_paths(tmp_path / label, broken))
 
-    rejects("unit23", lambda c, m: (c["items"][-1]["question"].update(unit=23), m["items"][-1].update(unit=23)))
+    rejects("unit24", lambda c, m: (c["items"][-1]["question"].update(unit=24), m["items"][-1].update(unit=24)))
     rejects("pending", lambda c, m: (c["items"][-1].update(verification="pending"), m["items"][-1].update(reviewStatus="pending")))
     rejects("grouped-shape", lambda c, m: m["items"][-1].update(digitalAdaptation="grouped_choice"))
     rejects("fill", lambda c, m: m["items"][-1].update(digitalAdaptation="fill_in_blank:number"))
@@ -308,7 +308,80 @@ def test_social_unit_22_png_two_choice_and_five_option_group_contract(tmp_path):
     rejects("five-choice", lambda group, choice: choice["options"].extend(["丙", "丁", "戊"]))
     rejects("two-choice-answer-out-of-range", lambda group, choice: choice.update(answer="3"))
     rejects("social-table", lambda group, choice: choice.update(material={"kind": "table", "caption": "Synthetic", "columns": ["A", "B"], "rows": [["1", "2"]]}))
-    rejects("social-unit-23", lambda group, choice: group.update(unit=23))
+    rejects("social-unit-24", lambda group, choice: group.update(unit=24))
+
+
+def test_semantic_official_comparison_requires_social_u2_and_real_answer_page(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    app_id = "social-g4s1-synthetic-semantic-v1"
+    common = {"practiceId": "S2-SEMANTIC", "originalId": "synthetic", "paperId": "synthetic-paper",
+              "questionPage": 1, "answerPage": 2, "concept": "Synthetic concept"}
+    curated["items"].append({**common, "adaptation": "Synthetic semantic comparison", "verification": private_builder.SEMANTIC_OFFICIAL_VERIFIED,
+                             "question": {"id": app_id, "subject": "social", "unit": 23, "type": "multiple_choice", "text": "Synthetic question?", "subtopic": "Synthetic", "options": ["A", "B", "C", "D"], "answer": "1"}})
+    metadata["items"].append({**common, "appId": app_id, "unit": 23, "contextPolicy": "Synthetic", "digitalAdaptation": "multiple_choice",
+                              "sourceAdaptation": "Synthetic semantic comparison", "reviewStatus": private_builder.SEMANTIC_OFFICIAL_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    assert build_pack(*_paths(tmp_path / "valid", values))["questions"][-1]["unit"] == 23
+    for subject, unit in (("social", 22), ("science", 20), ("math", 15)):
+        broken = copy.deepcopy(values)
+        changed_id = f"{subject}-g4s1-synthetic-semantic-v1"
+        broken[0]["items"][-1]["question"].update(id=changed_id, subject=subject, unit=unit)
+        broken[2]["items"][-1].update(appId=changed_id, unit=unit)
+        broken[1]["entries"][-1]["id"] = changed_id
+        with pytest.raises(PackBuildError, match="answer review"):
+            build_pack(*_paths(tmp_path / subject, broken))
+    broken = copy.deepcopy(values)
+    broken[0]["items"][-1]["answerPage"] = None
+    broken[2]["items"][-1]["answerPage"] = None
+    with pytest.raises(PackBuildError, match="answerPage"):
+        build_pack(*_paths(tmp_path / "no-page", broken))
+
+
+def test_social_u2_full_word_bank_has_strict_scope_and_parser_parity(tmp_path):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    for value in (curated, explanations, metadata):
+        value["revision"] = 20
+    app_id = "social-g4s1-synthetic-U2-word-bank-v1"
+    common = {"practiceId": "S2-SYNTHETIC", "originalId": "synthetic-IV", "paperId": "synthetic-paper",
+              "questionPage": 1, "answerPage": 2, "concept": "Synthetic concept"}
+    marker = lambda number: "（" + str(number).translate(str.maketrans("0123456789", "０１２３４５６７８９")) + "）"
+    question = {"id": app_id, "subject": "social", "unit": 23, "type": "fill_in_blank",
+                "text": "Synthetic complete passage " + " ".join(marker(i) for i in range(1, 14)),
+                "subtopic": "Synthetic concept", "options": [f"Synthetic word {i}" for i in range(1, 16)],
+                "answer": "", "blanks": [{"input": "select", "answer": str(i)} for i in [15, 1, 14, 2, 13, 3, 12, 4, 11, 5, 10, 6, 9]]}
+    curated["items"].append({**common, "adaptation": "Synthetic full word bank", "verification": private_builder.OFFICIAL_ANSWER_VERIFIED, "question": question})
+    metadata["items"].append({**common, "appId": app_id, "unit": 23, "contextPolicy": "Synthetic complete passage",
+                              "digitalAdaptation": "fill_in_blank:select", "sourceAdaptation": "Synthetic full word bank",
+                              "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    output = tmp_path / "valid" / "pack.json"
+    pack, _ = private_builder._build_synthetic_to_path_for_test(
+        *_paths(tmp_path / "valid", values), output, test_output_root=tmp_path
+    )
+    assert pack["questions"][-1]["options"] == question["options"]
+    assert pack["questions"][-1]["blanks"] == question["blanks"]
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');console.log(StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8')).questions.at(-1).blanks.length)"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "13"
+
+    def rejects(label, mutate):
+        broken = copy.deepcopy(values)
+        mutate(broken[0]["items"][-1]["question"], broken[2]["items"][-1])
+        with pytest.raises(PackBuildError):
+            build_pack(*_paths(tmp_path / label, broken))
+
+    rejects("wrong-unit", lambda q, m: (q.update(unit=22), m.update(unit=22)))
+    rejects("math", lambda q, m: (q.update(id="math-g4s1-synthetic-U2-word-bank-v1", subject="math", unit=15), m.update(appId="math-g4s1-synthetic-U2-word-bank-v1", unit=15)))
+    rejects("sixteen-options", lambda q, m: q["options"].append("Synthetic word 16"))
+    rejects("fourteen-blanks", lambda q, m: q["blanks"].append({"input": "select", "answer": "1"}))
+    rejects("missing-marker", lambda q, m: q.update(text=q["text"].replace("（１３）", "(13)")))
+    rejects("mixed-input", lambda q, m: q["blanks"][0].update(input="number"))
+    rejects("blank-option", lambda q, m: q["options"].__setitem__(0, " "))
+    for value in ("0", "16", "01", "A", 1):
+        rejects(f"invalid-answer-{value}", lambda q, m, value=value: q["blanks"][0].update(answer=value))
 
 
 def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:
@@ -342,6 +415,7 @@ def test_original_social_png_capacity_is_scoped_after_identity_validation():
     def check(q):
         return private_builder._validate_question(q, "SYNTHETIC", {"appId": q["id"], "unit": q["unit"], "digitalAdaptation": "multiple_choice"})
     assert check(question("social", 22))["material"] == material
+    assert check(question("social", 23))["material"] == material
     for subject, unit in (("math", 17), ("science", 20), ("science", 21)):
         with pytest.raises(PackBuildError, match="oversized"):
             check(question(subject, unit))
@@ -349,7 +423,7 @@ def test_original_social_png_capacity_is_scoped_after_identity_validation():
     oversized["material"]["data"] = _sized_png(192 * 1024 + 1)
     with pytest.raises(PackBuildError, match="oversized"):
         check(oversized)
-    for subject, unit in (("social", 23), ("social", "22"), ("math", 22), ("science", 22)):
+    for subject, unit in (("social", 24), ("social", "22"), ("math", 22), ("science", 22)):
         with pytest.raises(PackBuildError, match="outside the frozen contract"):
             check(question(subject, unit))
     malformed = question("social", 22)

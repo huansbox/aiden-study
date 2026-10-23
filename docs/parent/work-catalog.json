@@ -37,7 +37,7 @@
       "groupId": "nativecamp",
       "groupName": "Native Camp",
       "created": "2026-09-17",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -77,7 +77,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-12",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -119,7 +119,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -159,7 +159,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -199,7 +199,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-15",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -240,7 +240,7 @@
       "groupId": null,
       "groupName": null,
       "created": "2026-07-11",
-      "updated": "2026-10-06",
+      "updated": "2026-10-23",
       "freshness": {
         "state": "current",
         "checkedAt": null,
@@ -1696,14 +1696,18 @@
       ],
       "audienceLabel": "9 歲；四年級",
       "status": "in-progress",
-      "statusNote": "#191三卷177原格可靠U1已完整處理並於2026-10-06正式發布rev19：101格已發布（原35＋新66）、4整組hold、72留後續。新增43活動，現役全科352（數學68／自然217／社會67）、社會101格。原圖與題組完整，115U1暫定、正式範圍未取得；本機／Dropbox雙副本仍待建立，完整canonical入口與實際讀回見本批紀錄／Issue。",
+      "statusNote": "#232已逐格處理既有76格backlog：U2核准候選13活動／27格（112為1／1、113為12／26、114為0），rev20完整候選365活動（數學68／自然217／社會80）／社會128格，尚未發布。另49格保留（44後續範圍、1開放題、4整組hold）；正式範圍未取得。現役仍rev19全科352／社會67，既有發布與封存狀態依#191。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/grade4-sem1-social-exam1",
       "source": {
         "repo": "huansbox/aiden-study",
         "ref": "master",
         "paths": [
-          "learning-tasks/grade4-sem1-social-exam1"
+          "learning-tasks/grade4-sem1-social-exam1",
+          "docs-dev/grade4-social-study-unit-two-batch.md",
+          "data/study/g4-s1-math-u1/social-unit-two-selection-metadata.json",
+          "data/study/g4-s1-math-u1/social-unit-two-inventory-metadata.json",
+          "data/study/g4-s1-math-u1/social-unit-two-backlog-metadata.json"
         ],
         "excludePaths": [],
         "remote": false

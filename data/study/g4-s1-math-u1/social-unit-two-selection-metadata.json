@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/232",
+  "publicationStatus": "candidate_unreleased",
+  "publishedDelta": 0,
+  "formalTargetRangeVerified": false,
+  "targetEvidenceKind": "115康軒第一學期課程計畫；不是校方正式考試範圍",
+  "baselineRevision": 19,
+  "candidateRevision": 20,
+  "baselineAllSubjectActivities": 352,
+  "candidateAllSubjectActivities": 365,
+  "authorArtifactSha256": "1126a9671b87f70428d6c6828f6a8310677f747b24e49985ffe17c730623c111",
+  "independentSourceLedgerSha256": "ca12a45cf18283b87031abfa45deed7b415db03f923247caf8e1241fea6e1e63",
+  "contentReviewPacketSha256": "1b2b7a50fd9bebe470fb24d8fcf82a8a091f911d31b30cee33e86e57b7028eb3",
+  "status": "content_approved_candidate_pending_release",
+  "rootContentApproved": true,
+  "countUnit": "complete_activity",
+  "newActivities": 13,
+  "newSourceAnswerSlots": 27,
+  "baselineSocialActivities": 67,
+  "baselineSocialSourceAnswerSlots": 101,
+  "candidateSocialActivities": 80,
+  "candidateSocialSourceAnswerSlots": 128,
+  "items": [
+    {
+      "appId": "social-g4s1-tyk112-IV-02-v1",
+      "practiceId": "SOC2-tyk112-002",
+      "originalId": "tyk112-IV-02",
+      "paperId": "tyk112",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_recomputed_and_matches_official",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk112-IV-02"
+      ],
+      "optionCount": 3,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-tyk113-II-06-v1",
+      "practiceId": "SOC2-tyk113-004",
+      "originalId": "tyk113-II-06",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-II-06"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-tyk113-II-07-v1",
+      "practiceId": "SOC2-tyk113-005",
+      "originalId": "tyk113-II-07",
+      "paperId": "tyk113",
+      "questionPage": 1,
+      "answerPage": 1,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-II-07"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-tyk113-IV-v1",
+      "practiceId": "SOC2-tyk113-006",
+      "originalId": "tyk113-IV",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "fill_in_blank:select",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 13,
+      "constituentSourceIds": [
+        "tyk113-IV-01",
+        "tyk113-IV-02",
+        "tyk113-IV-03",
+        "tyk113-IV-04",
+        "tyk113-IV-05",
+        "tyk113-IV-06",
+        "tyk113-IV-07",
+        "tyk113-IV-08",
+        "tyk113-IV-09",
+        "tyk113-IV-10",
+        "tyk113-IV-11",
+        "tyk113-IV-12",
+        "tyk113-IV-13"
+      ],
+      "optionCount": 15,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-01-v1",
+      "practiceId": "SOC2-tyk113-007",
+      "originalId": "tyk113-V-1-01",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-01"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-02-v1",
+      "practiceId": "SOC2-tyk113-008",
+      "originalId": "tyk113-V-1-02",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-02"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-03-v1",
+      "practiceId": "SOC2-tyk113-009",
+      "originalId": "tyk113-V-1-03",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-03"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-04-v1",
+      "practiceId": "SOC2-tyk113-010",
+      "originalId": "tyk113-V-1-04",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-04"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-05-v1",
+      "practiceId": "SOC2-tyk113-011",
+      "originalId": "tyk113-V-1-05",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-05"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-1-06-v1",
+      "practiceId": "SOC2-tyk113-012",
+      "originalId": "tyk113-V-1-06",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 2,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-V-1-06"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-V-7-v1",
+      "practiceId": "SOC2-tyk113-013",
+      "originalId": "tyk113-V-7",
+      "paperId": "tyk113",
+      "questionPage": 2,
+      "answerPage": 3,
+      "unit": 23,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 3,
+      "constituentSourceIds": [
+        "tyk113-V-7-01",
+        "tyk113-V-7-02",
+        "tyk113-V-7-03"
+      ],
+      "optionCount": 3,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-04-v1",
+      "practiceId": "SOC2-tyk113-014",
+      "originalId": "tyk113-VI-04",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-VI-04"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-tyk113-VI-05-v1",
+      "practiceId": "SOC2-tyk113-015",
+      "originalId": "tyk113-VI-05",
+      "paperId": "tyk113",
+      "questionPage": 3,
+      "answerPage": 3,
+      "unit": 23,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_with_semantic_official_comparison",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "tyk113-VI-05"
+      ],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    }
+  ]
+}

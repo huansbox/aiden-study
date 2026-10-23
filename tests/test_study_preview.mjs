@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
@@ -162,6 +162,29 @@ test("social preview uses exact unit membership and three broad topics without p
   assert.equal(app.state.unit, 20);
   assert.equal(h.forbiddenTouches, 0);
   app.destroy();
+});
+
+test("social U2 preview retains all fifteen words, navigates thirteen blanks and retries without touching child storage", async () => {
+  const pack = socialUnitTwoSyntheticPack(), q = pack.questions.at(-1);
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "social" }); app.handle("unit", { value: "23" });
+  app.handle("question", { value: "2" });
+  assert.match(h.host.html, /第 2 單元：家鄉的傳統住屋與器物/);
+  assert.equal((h.host.html.match(/data-action="answer-select"/g) || []).length, 15);
+  assert.match(h.host.html, /（１３）/);
+  for (let i = 0; i < 13; i++) {
+    app.handle("answer-select", { index: i, value: i === 12 ? "15" : q.blanks[i].answer });
+    if (i < 12) app.handle("next-part");
+  }
+  assert.equal(app.state.partIndex, 12);
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  app.handle("previous-part"); assert.equal(app.state.partIndex, 11);
+  app.handle("next-part"); app.handle("answer-select", { index: 12, value: q.blanks[12].answer });
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.match(h.host.html, /第 1 空：P\. 合成詞語 15/);
+  assert.equal(h.forbiddenTouches, 0);
+  app.handle("unit", { value: "22" }); assert.equal(app.state.partIndex, 0);
+  assert.doesNotMatch(h.host.html, /data-action="answer-select"/);
 });
 
 test("social original three-choice preview keeps three choices, retries a wrong answer and reveals the third", async () => {
@@ -499,8 +522,8 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
   // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
-  assert.match(source("preview.html"), /preview\.js\?v=20261004-science-sixth-choice/);
-  assert.match(source("preview.html"), /preview\.css\?v=20261004-zhuyin-entry/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261023-social-u2/);
+  assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
   assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");

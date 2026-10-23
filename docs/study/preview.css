@@ -39,6 +39,9 @@ button:focus-visible, select:focus-visible, input:focus-visible, a.preview-butto
 .preview-option[aria-pressed="true"] { border-color: #155e75; background: #ecfeff; }
 .preview-option span:first-child { display: grid; place-items: center; flex: 0 0 30px; min-height: 30px; border-radius: 50%; background: #e2e8f0; font-weight: 800; }
 .preview-blanks { display: grid; gap: 12px; }
+.preview-word-bank { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.preview-word-bank .preview-option { overflow-wrap: anywhere; }
+@media (max-width: 520px) { .preview-word-bank { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .preview-group-card { display: grid; gap: 10px; align-content: start; }
 .preview-group-card .preview-meta { margin: 0; }
 .preview-group-context, .preview-group-work { min-width: 0; }

@@ -92,7 +92,7 @@
       throw Error("任務格式不正確");
     const out = { id: task.id, app: task.app, quantity: task.quantity };
     if (task.app === "study") {
-      if (!integer(task.unit, 1, 22)) throw Error("請選擇題庫單元");
+      if (!integer(task.unit, 1, 23)) throw Error("請選擇題庫單元");
       out.unit = task.unit;
     }
     if (task.app === "spelling") {
@@ -273,7 +273,7 @@
         ? "math"
         : task.unit <= 4 || task.unit === 20 || task.unit === 21
           ? "science"
-          : (task.unit >= 10 && task.unit <= 12) || task.unit === 22
+          : (task.unit >= 10 && task.unit <= 12) || task.unit === 22 || task.unit === 23
             ? "social"
             : task.unit === 13 || task.unit === 14
               ? "chinese"
@@ -354,7 +354,7 @@
   }
   function taskLabel(task) {
     if (task.app === "study")
-      return `第 ${task.unit === 22 ? 1 : task.unit >= 20 ? task.unit - 19 : task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
+      return `第 ${task.unit >= 22 ? task.unit - 21 : task.unit >= 20 ? task.unit - 19 : task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
     if (task.app === "spelling")
       return `第 ${task.batch + 1} 組 · ${task.quantity} 個字`;
     if (task.app === "zhuyin")

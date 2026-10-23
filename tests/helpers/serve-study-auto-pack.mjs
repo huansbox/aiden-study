@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "../../worker/worker.mjs";
 import { kvStub } from "../../worker/kv-stub.mjs";
-import { syntheticPack, expandedSyntheticPack, scienceSyntheticPack, socialSecondSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
+import { syntheticPack, expandedSyntheticPack, scienceSyntheticPack, socialSecondSyntheticPack, socialUnitTwoSyntheticPack, ids, addedIds } from "./synthetic-study-pack.mjs";
 
 import { buildCatalog } from "../../scripts/build_private_study_catalog.mjs";
 const root=resolve(fileURLToPath(new URL("../../docs/",import.meta.url)));
@@ -24,13 +24,13 @@ const server=createServer(async(req,res)=>{
     }
     if(url.pathname==="/test-start"){
       const scenario = url.searchParams.get("scenario");
-      catalogMode = scenario === "catalog" || scenario === "science-three";
+      catalogMode = ["catalog", "science-three", "social-u2"].includes(scenario);
       const partialReset = url.searchParams.get("scenario") === "partial-cache-reset";
       const upgrade = url.searchParams.get("scenario") === "upgrade" || partialReset;
       failed = false;
       await KV.put("c:study:g4-s1-math-u1", JSON.stringify(syntheticPack()));
       if(catalogMode) {
-        const pack=scenario === "science-three" ? scienceSyntheticPack() : socialSecondSyntheticPack();
+        const pack=scenario === "social-u2" ? socialUnitTwoSyntheticPack() : scenario === "science-three" ? scienceSyntheticPack() : socialSecondSyntheticPack();
         if (scenario === "science-three") {
           const question=pack.questions.find(q=>q.subject==="science"&&q.type==="multiple_choice");
           question.unit=20;
@@ -43,6 +43,10 @@ const server=createServer(async(req,res)=>{
         await KV.put("c:study:catalog:v2",JSON.stringify(built.manifest));
       }
       const progress={schemaVersion:1,studyTerm:"g4-s1",semester:"final",subject:"math",mastered:{},challenge:{15:{batch:ids}},stats:{},errorBank:[],flagged:[]};
+      if (scenario === "social-u2") {
+        progress.subject = "social";
+        progress.challenge = { 23: { batch: [socialUnitTwoSyntheticPack().questions.at(-1).id] } };
+      }
       if (upgrade) { progress.mastered[15] = ids.slice(0,2); progress.challenge[15].batch = ids.slice(2); }
       if (partialReset) { progress.mastered[15] = [...ids, addedIds[0]]; progress.challenge[15] = { batch: [ids[0], addedIds[0]], queue: [addedIds[0]] }; }
       const flaggedCount = Number(url.searchParams.get("flags"));

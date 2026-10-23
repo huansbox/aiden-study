@@ -6,7 +6,7 @@
   const MAX_CACHE_BYTES = 16 * 1024 * 1024;
   const MAX_MANIFEST_BYTES = 512 * 1024;
   const HASH = /^[a-f0-9]{64}$/;
-  const units = { math: [15,16,17,18,19], science: [20,21], social: [22] };
+  const units = { math: [15,16,17,18,19], science: [20,21], social: [22,23] };
   const exact = (x, fields) => x && typeof x === "object" && !Array.isArray(x) && Object.keys(x).length === fields.length && fields.every(k => Object.hasOwn(x,k));
   const encode = x => new TextEncoder().encode(x);
   const hash = async raw => [...new Uint8Array(await root.crypto.subtle.digest("SHA-256", encode(raw)))].map(x => x.toString(16).padStart(2,"0")).join("");

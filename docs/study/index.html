@@ -372,6 +372,16 @@ body {
   font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; cursor: pointer;
 }
 .blank-box.active { border-color: #4361ee; background: #f0f4ff; }
+.select-blank-list, .select-word-bank { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.select-blank, .select-choice, .select-blank-nav button { min-height: 48px; padding: 10px; border: 2px solid #cbd5e1; border-radius: 10px; background: white; color: #172033; font: inherit; overflow-wrap: anywhere; cursor: pointer; }
+.select-blank[aria-pressed="true"], .select-choice[aria-pressed="true"] { border-color: #4361ee; background: #f0f4ff; }
+.select-blank.b-correct { border-color: #2ecc71; }
+.select-blank.b-wrong { border-color: #e74c3c; }
+.select-blank-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.select-blank-nav span { text-align: center; }
+.select-blank-marker { min-height: 44px; font: inherit; vertical-align: baseline; }
+.select-blank:focus-visible, .select-choice:focus-visible, .select-blank-nav button:focus-visible, .select-blank-marker:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+@media(max-width: 520px) { .select-word-bank { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .blank-box.b-correct { border-color: #2ecc71; background: #e8faf0; }
 .blank-box.b-wrong { border-color: #e74c3c; background: #fdecea; }
 .blank-correct-val { font-size: 0.95rem; color: #1a7a42; font-weight: 600; white-space: nowrap; }
@@ -551,10 +561,10 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261003-social-u1-r1"></script><script src="../shared/collection-core.js?v=20261006-daily-goal-packs"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261023-social-u2"></script><script src="../shared/collection-core.js?v=20261006-daily-goal-packs"></script>
 <script src="../shared/collection-client.js?v=20261006-daily-goal-packs"></script>
 <script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261006-social-original-png"></script><script src="pack-catalog.js?v=20261004-shards"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
+<script src="./private-pack.js?v=20261023-social-u2"></script><script src="pack-catalog.js?v=20261023-social-u2"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20260919-parent-preview"></script>
 <script src="./science-topics.js?v=20261004-science-volume-batch"></script>
 <script>
 (function() {
@@ -1646,7 +1656,8 @@ const STUDY_TERMS = {
       { id: 21, num: 2, name: "第 2 單元：水生生物與環境" }
     ] } } },
     social: { label: "社會", semesters: { final: { label: "", units: [
-      { id: 22, num: 1, name: "第 1 單元：家鄉的自然環境" }
+      { id: 22, num: 1, name: "第 1 單元：家鄉的自然環境" },
+      { id: 23, num: 2, name: "第 2 單元：家鄉的傳統住屋與器物" }
     ] } } }
   } }
 };
@@ -1701,7 +1712,7 @@ function packAvailabilityText() {
   if (!activePack) return "這個容器尚未載入題包。";
   const counts = StudyPrivatePack.UNITS.map(unit => {
     const count = activePack.questions.filter(q => q.unit === unit).length;
-    const subject = unit === 22 ? "社會" : unit >= 20 ? "自然" : "數學";
+    const subject = unit >= 22 ? "社會" : unit >= 20 ? "自然" : "數學";
     return count ? `${subject}第 ${unitNum(unit)} 單元 ${count} 題` : `${subject}第 ${unitNum(unit)} 單元尚未載入`;
   });
   return `本機已有四上數學 ${activePack.questions.filter(q => q.subject === "math").length} 題、自然 ${activePack.questions.filter(q => q.subject === "science").length} 題、社會 ${activePack.questions.filter(q => q.subject === "social").length} 題，版本 ${activePack?.revision || packManifest.revision}。${counts.join("；")}。`;
@@ -2278,7 +2289,7 @@ function formatAnswer(q) {
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
   if (q.type === "chinese_correction") return `「${q.wrong}」改成「${q.answer}」`;
   if (q.type === "fill_in_blank") {
-    return q.blanks.map((b, i) => `（${i + 1}）${COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
+    return q.blanks.map((b, i) => `（${i + 1}）${b.input === "select" ? q.options[Number(b.answer) - 1] : COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
   if (q.type === "grouped_choice") return q.parts.map((part, i) => `${part.id}：${q.options[Number(q.answer[i]) - 1]}`).join("；");
   if (q.type === "vertical_calc") {
@@ -2740,13 +2751,14 @@ function renderQuiz() {
   // Question type
   const isTF = q.type === "true_false";
   const isFill = q.type === "fill_in_blank";
+  const isSelectFill = isFill && q.blanks[0]?.input === "select";
   const isGroup = q.type === "grouped_choice";
   const isVc = q.type === "vertical_calc";
   const isChinese = q.type === "chinese_correction";
   let typeClass = "q-type", typeLabel = "選擇題";
   if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isGroup) { typeClass += " tf"; typeLabel = `整組選答（${q.parts.length} 小題）`; }
-  else if (isFill) { typeClass += " fib"; typeLabel = "填充題"; }
+  else if (isFill) { typeClass += " fib"; typeLabel = isSelectFill ? `詞庫填空（${q.blanks.length} 空）` : "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
   else if (isChinese) { typeClass += " chinese"; typeLabel = quiz.practiceMode === HANDWRITING_PRACTICE_MODE ? "改錯：手寫" : "改錯：選擇"; }
 
@@ -2791,6 +2803,15 @@ function renderQuiz() {
   } else if (isGroup) {
     if (!quiz._groupValues || quiz._groupValues.length !== q.parts.length) quiz._groupValues = q.parts.map(() => "");
     answerHtml = `<div class="group-parts" id="group-parts"></div><div class="group-nav" aria-label="小題導覽"><button type="button" id="group-prev">上一小題</button><span id="group-position"></span><button type="button" id="group-next">下一小題</button></div><button class="next-btn" id="group-submit" disabled>確認整組答案</button>`;
+  } else if (isSelectFill) {
+    quiz._fillValues = q.blanks.map(() => "");
+    quiz._fillActive = 0;
+    displayText = displayText.replace(/（([０-９]+)）/g, (marker, digits) => {
+      const index = Number(digits.replace(/[０-９]/g, digit => String("０１２３４５６７８９".indexOf(digit)))) - 1;
+      return index >= 0 && index < q.blanks.length
+        ? `<button type="button" class="q-chip select-blank-marker" data-select-blank="${index}" aria-label="選擇第 ${index + 1} 空">${marker}</button>` : marker;
+    });
+    answerHtml = `<div class="select-blank-list" aria-label="空格導覽">${q.blanks.map((_, index) => `<button type="button" class="select-blank" data-select-blank="${index}"></button>`).join("")}</div><div id="fill-input-panel"></div><button class="next-btn" id="fib-submit" disabled>確認整組答案</button>`;
   } else if (isFill) {
     quiz._fillValues = q.blanks.map(() => "");
     quiz._fillActive = 0;
@@ -3073,6 +3094,7 @@ const COMPARE_DISPLAY = { ">": "＞", "<": "＜", "=": "＝" };
 
 // 填充題互動：點空格選取、輸入面板依空格型態切換（number/comparison/code/text）
 function bindFillEvents(q) {
+  if (q.blanks[0]?.input === "select") { bindSelectFillEvents(q); return; }
   const boxes = [...document.querySelectorAll(".blank-box")];
   const chips = [...document.querySelectorAll(".q-chip[data-chip]")];
   const rowChips = [...document.querySelectorAll(".q-chip[data-chip-row]")];
@@ -3168,6 +3190,52 @@ function bindFillEvents(q) {
   renderPanel();
 }
 
+// 大詞庫保留原順序與全部選項；一次操作一空，整組填齊才算一個活動。
+function bindSelectFillEvents(q) {
+  const panel = document.getElementById("fill-input-panel");
+  const submit = document.getElementById("fib-submit");
+  const blankButtons = [...document.querySelectorAll("[data-select-blank]")];
+  const label = value => q.options[Number(value) - 1] || "未填";
+  function render() {
+    const index = quiz._fillActive;
+    blankButtons.forEach(button => {
+      const i = Number(button.dataset.selectBlank), value = quiz._fillValues[i];
+      button.setAttribute("aria-pressed", String(i === index));
+      button.textContent = button.classList.contains("select-blank-marker") ? (value ? label(value) : `（${i + 1}）`) : `第 ${i + 1} 空：${label(value)}`;
+      if (quiz.isAnswered) button.classList.add(quiz._fillResults[i] ? "b-correct" : "b-wrong");
+    });
+    submit.disabled = quiz._fillValues.some(value => !value);
+    panel.innerHTML = `<nav class="select-blank-nav" aria-label="目前空格"><button type="button" id="select-blank-prev" ${index === 0 ? "disabled" : ""}>上一空格</button><span role="status">第 ${index + 1} 空／共 ${q.blanks.length} 空</span><button type="button" id="select-blank-next" ${index === q.blanks.length - 1 ? "disabled" : ""}>下一空格</button></nav><div class="select-word-bank" aria-label="完整詞庫">${q.options.map((option, i) => `<button type="button" class="select-choice" data-select-value="${i + 1}" aria-pressed="${quiz._fillValues[index] === String(i + 1)}" ${quiz.isAnswered ? "disabled" : ""}>${escapeHtml(option)}</button>`).join("")}</div>${quiz.isAnswered ? `<p class="group-feedback">${quiz._fillResults[index] ? "答對" : `正解：${escapeHtml(label(q.blanks[index].answer))}`}</p>` : ""}`;
+    for (const [id, step] of [["select-blank-prev", -1], ["select-blank-next", 1]]) {
+      document.getElementById(id).onclick = () => {
+        quiz._fillActive = Math.max(0, Math.min(q.blanks.length - 1, index + step));
+        render();
+        const target = document.getElementById(id);
+        (target.disabled ? document.getElementById(step < 0 ? "select-blank-next" : "select-blank-prev") : target).focus({ preventScroll: true });
+      };
+    }
+    panel.querySelectorAll("[data-select-value]").forEach(button => { button.onclick = () => {
+      if (quiz.isAnswered) return;
+      const value = button.dataset.selectValue;
+      quiz._fillValues[index] = value;
+      for (let step = 1; step < q.blanks.length; step++) {
+        const next = (index + step) % q.blanks.length;
+        if (!quiz._fillValues[next]) { quiz._fillActive = next; break; }
+      }
+      render();
+      panel.querySelector(`[data-select-value="${value}"]`)?.focus({ preventScroll: true });
+    }; });
+  }
+  blankButtons.forEach(button => { button.onclick = () => {
+    quiz._fillActive = Number(button.dataset.selectBlank);
+    render();
+    button.focus({ preventScroll: true });
+  }; });
+  submit.onclick = () => { if (!submit.disabled && !quiz.isAnswered) submitAnswer([...quiz._fillValues]); };
+  quiz._renderSelectBlank = render;
+  render();
+}
+
 function renderProgress() {
   if (quiz.mode === "full") {
     return renderBarProgress();
@@ -3228,6 +3296,10 @@ function renderFeedback(correct, q) {
   if (q.type === "vertical_calc") {
     document.querySelectorAll("#fill-input-panel button").forEach(b => { b.disabled = true; });
     wrongHint = `完成了！但填錯過 ${quiz._vc.errors} 次，這題之後會再練一次`;
+  } else if (q.type === "fill_in_blank" && q.blanks[0]?.input === "select") {
+    quiz._renderSelectBlank();
+    document.getElementById("fib-submit").classList.add("hidden");
+    wrongHint = "答錯了，可以切換空格查看正確答案";
   } else if (q.type === "fill_in_blank") {
     // 標出每格對錯；錯格旁顯示正解（家長定案：對小孩友善優先）
     document.querySelectorAll("#fill-input-panel button, #fill-input-panel input")
