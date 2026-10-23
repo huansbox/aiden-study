@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/235",
-  "publicationStatus": "candidate_not_published",
+  "publicationStatus": "published",
   "formalTargetRangeVerified": false,
   "papers": [
     {
@@ -251,7 +251,7 @@
     "systemTLSExplanation": "Python 3.13 strict certificate verifier rejected missing Subject Key Identifier. Windows curl Schannel with native trust verification succeeded HTTP200; neither -k nor custom CA/hosts modification used."
   },
   "privateBoundary": "Only source identity, provenance, page counts and fingerprints. No original questions, options, answers, explanations or source images.",
-  "status": "content_code_e2e_approved_pending_pr_and_publication",
+  "status": "published_rev21",
   "rootContentApproved": true,
   "rootCodeApproved": true,
   "rootE2eApproved": true,
@@ -260,6 +260,7 @@
     "review/runtime-review-recheck-v1.json": "62768f25df2b69465a10ac721488552d299f4b055f40a640ce6fa35ac4b9c792",
     "ops/e2e-final-seal.json": "75f1d87609a0737623963368d27626e5d3886e024da15560d835f62ea2a1e605",
     "ops/e2e-final-v3-equivalence.json": "e358aea4a6748ad7b6524318d83e7d03e5d6f6ee5ece252b35d59efbe19ea3fb",
-    "review/root-final-candidate-approval-v1.json": "1e8f87f4c89fcc3873cc888de62ae626931e2a7cdc7e740c3b4ae5a320467b13"
+    "review/root-final-candidate-approval-v1.json": "1e8f87f4c89fcc3873cc888de62ae626931e2a7cdc7e740c3b4ae5a320467b13",
+    "release-prep/rev21-v4/final-verification.json": "80737b04c902b48a3876cedf8735d13855bf9849c6f360d0d840e20387d7029e"
   }
 }
