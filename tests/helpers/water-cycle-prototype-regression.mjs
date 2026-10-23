@@ -30,19 +30,20 @@ for(const engine of (process.env.WATER_PROTOTYPE_WEBKIT==='1'?['chromium','webki
         return audio;
       }});
       const NativeContext=window.AudioContext||window.webkitAudioContext;
-      const WrappedContext=new Proxy(NativeContext,{construct(Target,args){
+      if(NativeContext){const WrappedContext=new Proxy(NativeContext,{construct(Target,args){
         const ctx=Reflect.construct(Target,args);window.__qa.contexts.push({type:'create',click:window.__qa.inClick});
         const resume=ctx.resume.bind(ctx);ctx.resume=()=>{window.__qa.contexts.push({type:'resume',click:window.__qa.inClick});return resume();};
         const oscillator=ctx.createOscillator.bind(ctx);ctx.createOscillator=()=>{window.__qa.effects.push({state:ctx.state,time:performance.now()});return oscillator();};
         return ctx;
       }});
-      if(window.AudioContext)window.AudioContext=WrappedContext;else window.webkitAudioContext=WrappedContext;
+      if(window.AudioContext)window.AudioContext=WrappedContext;else window.webkitAudioContext=WrappedContext;}
     });
     await page.goto(base);await page.locator('#start').click();
     await page.waitForFunction(()=>window.__qa.audio.some(e=>e.type==='playing'));
     await page.locator('#sound').click();await page.locator('#sound').click();await page.locator('#listen').click();
     const unlock=await page.evaluate(()=>window.__qa.contexts);
-    assert.equal(unlock.filter(e=>e.type==='create').length,1);assert.ok(unlock.length>=4&&unlock.every(e=>e.click),'AudioContext creation and resumes occur synchronously in clicks');
+    const hasWebAudio=await page.evaluate(()=>!!(window.AudioContext||window.webkitAudioContext));
+    if(hasWebAudio){assert.equal(unlock.filter(e=>e.type==='create').length,1);assert.ok(unlock.length>=4&&unlock.every(e=>e.click),'AudioContext creation and resumes occur synchronously in clicks');}
     const screen=async(x,y)=>{const b=await page.locator('#world').boundingBox();return{x:b.x+x*b.width/1200,y:b.y+y*b.height/800};};
     const dragTo=async(locator,x,y)=>{const b=await locator.boundingBox(),p=await screen(x,y);await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(p.x,p.y,{steps:8});await page.mouse.up();};
     const sky=async(x,y)=>{await page.locator('#wind').click();const p=await screen(x,y);await page.mouse.click(p.x,p.y);};
@@ -55,6 +56,10 @@ for(const engine of (process.env.WATER_PROTOTYPE_WEBKIT==='1'?['chromium','webki
     const coldEnd=coldLog.find(e=>e.cue==='cool'&&e.type==='ended'),condense=coldLog.find(e=>e.cue==='condense'&&e.type==='request');
     assert.ok(coldEnd&&condense&&coldEnd.time<=condense.time,'complete cold sentence precedes visible condensation narration');
     assert.ok(coldEnd.duration>4.3&&coldEnd.position>=coldEnd.duration-.05,'decoder reached the end of the full clip (MP3 padding differs by engine)');
+    assert.equal(await page.locator('#page-ending').isVisible(),false,'cloud forms while its complete explanation is still playing');
+    await page.waitForSelector('#page-ending',{state:'visible',timeout:16000});
+    const cloudLog=await page.evaluate(()=>window.__qa.audio);
+    assert.ok(cloudLog.find(e=>e.cue==='condense'&&e.type==='ended').time<=cloudLog.find(e=>e.cue==='cloudNext'&&e.type==='request').time);
     await page.locator('#next').click();await page.locator('#previous').click();await page.locator('#next').click();
     assert.match(await page.locator('#status').textContent(),/到剛才那朵雲/,'an untouched revisited cloud does not claim growth');
     const clickDrop=async id=>page.locator(`[data-drop="${id}"]`).click();
@@ -80,28 +85,41 @@ for(const engine of (process.env.WATER_PROTOTYPE_WEBKIT==='1'?['chromium','webki
       id=await merge(friend,hero);if(i<2)await floating(id);
     }
     await page.waitForSelector('.landed-hero');
-    assert.equal(await page.locator('.drop.floating').count(),4,'the star can rain and four new friends remain');
+    assert.equal(await page.locator('.drop.floating').count(),0,'the final friends fall with the star; arrivals have an end');
+    assert.equal(await page.locator('.puddle').count(),3,'every landing leaves water on the ground');
     const reunionPosition=await page.evaluate(()=>({hero:parseFloat(document.querySelector('.landed-hero').style.left),bird:parseFloat(document.querySelector('#bird4').style.left)}));
     assert.ok(reunionPosition.hero>800);assert.ok(Math.abs(reunionPosition.hero-(reunionPosition.bird+125))<130,'sparrow follows the actual right-side landing');
     await page.screenshot({path:resolve(output,`${engine}-right-reunion.png`)});
-    // Cause another rain during the star's protected speech/reunion.
-    const friends=await page.locator('.drop').evaluateAll(nodes=>nodes.map(n=>n.dataset.drop));
-    const a=await merge(friends[0],friends[1]),b=await merge(friends[2],friends[3]);await floating(a);await floating(b);await merge(a,b);
     await page.waitForFunction(()=>window.__qa.audio.some(e=>e.cue==='reunion'&&e.type==='ended'),null,{timeout:25000});
     const storyLog=await page.evaluate(()=>window.__qa.audio);
     const heroRequest=storyLog.find(e=>e.cue==='heroFall'&&e.type==='request'),heroEnd=storyLog.find(e=>e.cue==='heroFall'&&e.type==='ended');
     const reunionRequest=storyLog.find(e=>e.cue==='reunion'&&e.type==='request'),reunionEnd=storyLog.find(e=>e.cue==='reunion'&&e.type==='ended');
     assert.ok(heroRequest&&heroEnd&&reunionRequest&&reunionEnd&&heroEnd.time<=reunionRequest.time);
     assert.deepEqual(storyLog.slice(storyLog.indexOf(heroRequest),storyLog.indexOf(reunionEnd)).filter(e=>e.type==='request').map(e=>e.cue),['heroFall','reunion']);
-    await page.waitForFunction(()=>{const log=window.__qa.audio;return log.slice(log.findIndex(e=>e.cue==='reunion'&&e.type==='ended')+1).some(e=>e.cue==='refill'&&e.type==='request');});
-    const effects=await page.evaluate(()=>window.__qa.effects);assert.ok(effects.length>0&&effects.every(e=>e.state==='running'));
-    assert.equal(await page.evaluate(()=>window.__qa.contexts.filter(e=>e.type==='create').length),1,'rAF effects never create another context');
+    assert.equal(storyLog.slice(storyLog.indexOf(heroRequest)).filter(e=>e.cue==='refill'&&e.type==='request').length,0,'no new arrivals after the star falls');
+    await page.waitForSelector('#page-ending',{state:'visible'});await page.locator('#continue').click();
+    assert.equal(await page.locator('#end-remaining').isVisible(),false);
+    assert.equal(await page.locator('.puddle').count(),3);
+    await page.screenshot({path:resolve(output,`${engine}-finite-end.png`)});
+    await page.locator('#back-to-cloud').click();
+    // A separate route leaves ordinary friends, which rain during the reunion.
+    await page.locator('#replay').click();const concurrentStart=await page.evaluate(()=>performance.now());
+    id=await merge('d1','d2');await floating(id);await merge(id,'d3');await page.waitForSelector('.drop.hero.falling');
+    await merge('d5','d7');await page.waitForSelector('.landed-hero');
+    await page.waitForFunction(t=>window.__qa.audio.some(e=>e.cue==='reunion'&&e.type==='ended'&&e.time>t),concurrentStart,{timeout:25000});
+    const concurrentLog=await page.evaluate(t=>window.__qa.audio.filter(e=>e.time>t),concurrentStart);
+    const heroStart=concurrentLog.findIndex(e=>e.cue==='heroFall'&&e.type==='request');
+    const complete=concurrentLog.findIndex(e=>e.cue==='reunion'&&e.type==='ended');
+    assert.deepEqual(concurrentLog.slice(heroStart,complete).filter(e=>e.type==='request').map(e=>e.cue),['heroFall','reunion']);
+    assert.equal(await page.locator('.puddle').count(),2);
+    if(hasWebAudio){const effects=await page.evaluate(()=>window.__qa.effects);assert.ok(effects.length>0&&effects.every(e=>e.state==='running'));
+    assert.equal(await page.evaluate(()=>window.__qa.contexts.filter(e=>e.type==='create').length),1,'rAF effects never create another context');}
     await page.locator('#replay').click();id=await merge('d1','d2');await floating(id);await merge('d3',id);await page.waitForSelector('.landed-hero');
     await page.locator('#previous').click();const resetTime=await page.evaluate(()=>performance.now());
     await page.waitForTimeout(7000);
     assert.equal(await page.evaluate(t=>window.__qa.audio.some(e=>e.type==='request'&&e.cue==='reunion'&&e.time>t),resetTime),false,'page changes discard the waiting reunion');
     assert.deepEqual(errors,[]);
-    report.results.push({engine,passed:true,coolEndedBeforeCondense:true,heroFallEndedBeforeReunion:true,contextUnlockedInClick:true,rightLanding:reunionPosition,audio:await page.evaluate(()=>window.__qa.audio)});
+    report.results.push({engine,passed:true,coolEndedBeforeCondense:true,heroFallEndedBeforeReunion:true,contextUnlockedInClick:hasWebAudio?true:'AudioContext unavailable in this engine',rightLanding:reunionPosition,audio:await page.evaluate(()=>window.__qa.audio)});
     console.log(`PASS focused ${engine}`);await context.close();
   }finally{await browser.close();}
 }
