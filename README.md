@@ -149,7 +149,7 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 ## 題庫 pipeline
 
-[#240 跨校社會U1追加候選](docs-dev/grade4-social-study-unit-one-more-paper-batch.md)已核定46完整活動／84原格，另6格整組保留；rev22候選全科465活動（數學68／自然217／社會180），社會315格。目前正式仍為rev21的419活動，尚未把本批候選發布；U1三大類、U2四主題、自然七主題與舊題／進度保持，精確來源及重建見本批紀錄。
+[#240 跨校社會U1追加](docs-dev/grade4-social-study-unit-one-more-paper-batch.md)已於2026-10-24正式發布rev22：新增46完整活動／84原格，另6格整組保留；全科465活動（數學68／自然217／社會180）、社會315格，U1為113活動／185格，U2仍67活動／130格。U1三大類、U2四主題、自然七主題與原419題／解說／進度契約保持；Worker、Pages、全部26片及legacy讀回已核，獨立審查、隔離真包E2E與本機／Dropbox雙副本獨立重建均通過。精確來源、正式指紋、重建入口及實體Safari未驗限制見本批紀錄。
 
 紙本練習只在孩子實際需要時製作，沿用 [四上第一份短練習](learning-tasks/grade4-math-first-practice/) 的來源與再製方式，不按章自動產生 PDF。
 

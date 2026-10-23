@@ -1,6 +1,6 @@
 # 四上社會第一次段考候選卷
 
-[#240 跨校社會U1追加](https://github.com/huansbox/aiden-study/issues/240)已核定精確90格的去向：46完整活動／84格列rev22候選，另6格完整活動保留；目前未發布。候選全科465活動（數學68／自然217／社會180）、社會315格，U1為113活動／185格，U2仍67活動／130格；正式環境保持下段rev21。來源、原90格定位、三大類、最小select接點與重建／驗證界線見[本批紀錄](../../docs-dev/grade4-social-study-unit-one-more-paper-batch.md)及[90格inventory](../../data/study/g4-s1-math-u1/social-unit-one-more-paper-inventory-metadata.json)。五卷歷史384格在候選後保留197格，較早三卷49格另計；歷史rev19／20／21投影不覆寫，正式考試範圍仍未取得。
+[#240 跨校社會U1追加](https://github.com/huansbox/aiden-study/issues/240)已於2026-10-24正式發布rev22：新增46完整活動／84原格，另6格整組保留；全科465活動（數學68／自然217／社會180）、社會315格，U1為113活動／185格，U2仍67活動／130格。原90格已逐格對帳，六格分屬深美D-II分類歧義與建德114 III開放設計，均維持完整活動hold。三大類、來源核答、正式Worker／Pages／KV讀回、獨立審查、隔離真包E2E及可重建雙副本入口見[本批紀錄](../../docs-dev/grade4-social-study-unit-one-more-paper-batch.md)及[90格inventory](../../data/study/g4-s1-math-u1/social-unit-one-more-paper-inventory-metadata.json)。五卷384格＝rev21已發布103格＋rev22已發布84格＋仍保留197格，較早三卷49格另計；歷史rev19／20／21投影不覆寫。本批三卷未取得同版校方答案；正式考試範圍仍未取得，收集任務維持進行中；以下各批段落保留當時歷史。
 
 [#235 跨校社會 U2](https://github.com/huansbox/aiden-study/issues/235)已於2026-10-23正式發布rev21：五卷384格完整盤點，新增54活動／103原格；現役419活動（數學68／自然217／社會134），社會231格、U2為67活動／130格。兩個完整活動共4格因原題歧義hold，另2格scope boundary保留；不改題製造唯一答案。內容、code review、兩種Chromium iPad viewport真包E2E與正式24分包讀回均通過；本機與Dropbox新正式封存仍待建立，狀態依#235最新交接。來源、完整材料、圖號說明、有限文字填答、整組等價判分與正式指紋見[跨校批次紀錄](../../docs-dev/grade4-social-study-unit-two-more-paper-batch.md)及[五卷來源metadata](../../data/study/g4-s1-math-u1/social-unit-two-more-paper-source-manifest.json)。
 

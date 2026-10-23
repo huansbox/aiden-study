@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/240",
-  "publicationStatus": "candidate_not_published",
+  "publicationStatus": "published",
   "formalTargetRangeVerified": false,
   "targetEvidenceKind": "115_kangxuan_course_plan_concept_comparison",
   "baselineRevision": 21,
@@ -10,7 +10,7 @@
   "candidateAllSubjectActivities": 465,
   "rootSelectionApproved": true,
   "rootContentApproved": true,
-  "status": "root_approved_rev22_candidate",
+  "status": "published_rev22",
   "countUnit": "original_answer_slot",
   "privatePayloadIncluded": false,
   "selectionSha256": "63c3b5d7dfc1a52423e0f8654928e6e2c18d8f77858d1b5e06930039a3a8b678",
