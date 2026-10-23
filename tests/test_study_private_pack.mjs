@@ -33,7 +33,9 @@ test("social U2 keeps full fifteen-word bank and thirteen blanks scoped, immutab
   e.app.advance();
   assert.equal(events.filter(e => e[0] === "finish").length, 1);
   const reject = mutate => { const changed = plain(pack); mutate(changed.questions.at(-1)); assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(changed))); };
-  for (const unit of [22, 24, "23"]) reject(q => { q.unit = unit; });
+  for (const unit of [24, "23"]) reject(q => { q.unit = unit; });
+  const moved = plain(pack); moved.revision++; moved.questions.at(-1).unit = 22;
+  assert.throws(() => e.window.StudyPrivatePack.parse(JSON.stringify(moved), [], pack), /相同 ID/);
   reject(q => { q.subject = "math"; q.unit = 15; });
   reject(q => { q.options.push("Q. Too many"); });
   reject(q => { q.options[0] = " "; });
