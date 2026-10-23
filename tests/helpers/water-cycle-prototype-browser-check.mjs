@@ -43,8 +43,10 @@ try{
     await page.waitForTimeout(1000);assert.equal(await page.locator('.small-drop.show').count(),0);
     await page.waitForSelector('#formed-cloud.show',{timeout:6500});
     assert.equal(await page.locator('.small-drop.show').count(),8);
+    await page.waitForSelector('#page-ending',{state:'visible',timeout:16000});
+    assert.match(await page.locator('#continue').textContent(),/一起進雲裡/);
     await page.screenshot({path:resolve(output,`cloud-${width}x${height}.png`)});
-    await page.locator('#next').click();
+    await page.locator('#continue').click();
     assert.equal(await page.locator('#scene4 .drop').count(),8);
     const targets=await page.locator('#scene4 .drop').evaluateAll(nodes=>nodes.map(n=>{const b=n.getBoundingClientRect();return{w:b.width,h:b.height,hit:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)?.closest('button')===n};}));
     assert.ok(targets.every(t=>t.w>=47.9&&t.h>=47.9&&t.hit),'All water-drop centers reachable with 48px hit targets');
@@ -63,7 +65,14 @@ try{
       await page.mouse.move(a.x+a.width/2,a.y+a.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2,b.y+b.height/2,{steps:12});await page.mouse.up();
       await page.waitForSelector('.landed-hero');assert.equal(await page.locator('.drop.hero').count(),0);
       assert.equal(await page.locator('#bird4.follow').count(),1);
+      await page.waitForSelector('#page-ending',{state:'visible',timeout:22000});
+      assert.equal(await page.locator('.puddle').count(),2);
       await page.screenshot({path:resolve(output,'rain-hero-landed.png')});
+      await page.locator('#continue').click();assert.equal(await page.locator('#end-panel').isVisible(),true);
+      assert.equal(await page.locator('.puddle').count(),2);assert.equal(await page.locator('#end-remaining').isVisible(),true);
+      await page.screenshot({path:resolve(output,'end-with-remaining-friends.png')});
+      await page.locator('#back-to-cloud').click();assert.equal(await page.locator('.puddle').count(),2);
+      assert.equal(await page.locator('#page-ending').isVisible(),true,'a completed return needs no second audio wait');
       await page.locator('#previous').click();assert.equal(await page.locator('#formed-cloud.show').count(),1);
       await page.locator('#replay').click();assert.equal(await page.locator('.small-drop.show').count(),0);
       await page.locator('#next').click();assert.equal(await page.locator('.landed-hero').count(),1,'replaying scene 3 preserves scene 4');
@@ -76,6 +85,11 @@ try{
       await page.waitForTimeout(1800);assert.equal(await page.evaluate(()=>window.__testAudio[0].paused),true);
     }
     await page.screenshot({path:resolve(output,`rain-${width}x${height}.png`)});
+    await page.locator('#next').click();assert.equal(await page.locator('#end-panel').isVisible(),true);
+    assert.match(await page.locator('#end-story').textContent(),/還沒到地面/);
+    assert.equal(await page.locator('.puddle').count(),0);
+    await page.screenshot({path:resolve(output,`end-unfinished-${width}x${height}.png`)});
+    await page.locator('#back-to-cloud').click();assert.equal(await page.locator('#scene4').isVisible(),true);
     assert.deepEqual(errors,[]);
     report.results.push({width,height,passed:true});await context.close();console.log(`PASS ${width}x${height}`);
   }

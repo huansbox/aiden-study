@@ -8,10 +8,10 @@
   <link rel="preload" as="image" href="assets/art/sky-warm-cool.png">
   <link rel="preload" as="image" href="assets/art/cloud-garden.png">
   <link rel="preload" as="image" href="assets/art/characters.png">
-  <link rel="stylesheet" href="style.css?v=20261022-prototype1">
-  <script src="narration.js?v=20261022-prototype1" defer></script>
-  <script src="model.js?v=20261022-prototype1" defer></script>
-  <script src="app.js?v=20261022-prototype1" defer></script>
+  <link rel="stylesheet" href="style.css?v=20261023-endings1">
+  <script src="narration.js?v=20261023-endings1" defer></script>
+  <script src="model.js?v=20261023-endings1" defer></script>
+  <script src="app.js?v=20261023-endings1" defer></script>
 </head>
 <body>
   <main id="book" aria-label="小滴去哪了，第三幕與第四幕互動試玩">
@@ -39,6 +39,18 @@
         <button id="start" aria-label="開始幫忙，開啟故事聲音"><span class="sprite bird"></span><span>開始幫忙</span></button>
       </div>
     </div>
+    <aside id="page-ending" class="page-ending" aria-label="這一頁的故事完成了" hidden>
+      <p id="page-ending-copy"></p>
+      <button id="continue">下一頁：一起進雲裡</button>
+    </aside>
+    <section id="end-panel" aria-labelledby="end-title" hidden>
+      <span class="end-label">END</span>
+      <h1 id="end-title">這次試玩到這裡</h1>
+      <p id="end-story"></p>
+      <p id="end-water"></p>
+      <p id="end-remaining" hidden>還有朋友在雲裡或正在往下落，可以回去看看。</p>
+      <div class="end-actions"><button id="back-to-cloud">回雲裡，繼續玩</button><button id="restart-story">從頭再玩</button></div>
+    </section>
     <div class="corner tools">
       <button id="sound" aria-label="關閉聲音" aria-pressed="true">聲音 開</button>
       <button id="listen" aria-label="重聽這一段">重聽</button>

@@ -66,11 +66,12 @@ uv run learning-tasks/water-cycle/source/make_audio.py --lang en --check
 [開啟原型](../../docs/water-cycle/prototype/index.html)；可直接以 `file://` 開啟，也可由既有 localhost server 的 `/water-cycle/prototype/` 使用。這是 [Issue #229](https://github.com/huansbox/aiden-study/issues/229) 的中文親子試玩，供 6 歲、9 歲共同探索；既有完整繪本保持原入口，原型尚不代表正式繪本已改版。
 
 - ③拖金色風尾巴，或先點風尾巴再點目的地。空虛線圈追蹤看不見的水；暖處保持不可見，涼處先讓麻雀覺得冷，再凝成水滴與雲。
-- ④任選兩滴碰合，或先點一滴再點另一滴。合併按水量長大，夠大自己落下；金星小滴保留唯一身分，麻雀跟到它的落點。若剩下的水量不足以繼續下雨，雲裡補入可自由選取的小滴，不自動合併。
-- 自由翻頁保留兩幕狀態，「重玩這一幕」只重設當幕。字幕預設隱藏；沒有測驗、家庭資料或成就系統。重聽、翻頁、重玩與切背景會清除舊待播句。
-- 原型暫用本機 `Microsoft Hanhan Desktop`（zh-TW、Rate -1）預製短旁白，沒有 browser TTS 或執行時付費 API。③的冷感與④主角落雨／重逢語句會完整播完；聲音關閉時互動照常。
+- ④任選兩滴碰合，或先點一滴再點另一滴。合併按水量長大，夠大自己落下；金星小滴保留唯一身分，麻雀跟到它的落點。初始只有 8 滴；若主角尚未落雨，且所有碰合／下落穩定後剩下水量不足，最多補最後一批 1～3 滴朋友，恰好讓主角仍能繼續碰合長大，不自動合併。主角落雨後不再補滴。
+- 每一滴落雨都在實際落點留下持續水窪，面積隨水量改變。③成雲與④主角重逢的完整旁白後，出現清楚的「下一頁」提示；④接到本次試玩的 END 收尾，沿用實際水窪與剩餘水滴，沒有實作完整⑤。
+- 自由翻頁保留兩幕狀態，角落可直接看結尾；未完成時會說明小滴還沒到地面。結尾可回雲裡保留成果，或「從頭再玩」清除兩幕；「重玩這一幕」只重設當幕。字幕預設隱藏；沒有測驗、家庭資料或成就系統。重聽保留當幕必要的後續敘事；翻頁與重玩清除舊頁待播句。切背景立即停止聲音，返回後續接中斷敘事；返回尚未凝結的涼區會重新完整呈現冷感，聲音關閉時也保留停留時間。
+- 原型暫用本機 `Microsoft Hanhan Desktop`（zh-TW、Rate -1）預製短旁白，沒有 browser TTS 或執行時付費 API。③的成雲與④主角落雨／重逢語句會完整播完，再邀請翻頁；聲音關閉、拒播／載入失敗與返回已完成頁時仍能看到收尾。播放逾時也會放行，不會永遠等待音訊結束。
 
-原型唯一來源為 `source/prototype/`，產物為 `docs/water-cycle/prototype/`。只重建此路徑，不執行完整繪本的 build。入口引用使用 `v=20261022-prototype1` 避開網站舊快取；圖片與音檔仍為相對路徑。
+原型唯一來源為 `source/prototype/`，產物為 `docs/water-cycle/prototype/`。只重建此路徑，不執行完整繪本的 build。入口與音檔引用使用 `v=20261023-endings1` 避開網站舊快取；圖片與音檔仍為相對路徑。
 
 ```sh
 node learning-tasks/water-cycle/source/prototype/build.mjs
@@ -85,6 +86,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File learning-tasks/water-cycle/s
 ```sh
 node tests/helpers/water-cycle-prototype-browser-check.mjs
 node tests/helpers/water-cycle-prototype-regression.mjs
+node tests/helpers/water-cycle-prototype-endings.mjs
+node tests/helpers/water-cycle-prototype-review-fixes.mjs
 ```
 
-驗證包含水量續玩、唯一主角、旁白順序、手勢解鎖、拖曳／點選、自由翻頁及不同 viewport；桌面 Chromium／WebKit 模擬不等於 iPad 真機驗收，音檔完整解碼與播放事件也不等於人耳驗聽或孩子理解。原型目前只含③④與中文，完整故事、English 與孩子回饋仍依 #229 追蹤。
+驗證包含有限水量的各種碰合順序與並行操作、唯一主角、持續水窪、收尾／返回／重玩、重聽及背景恢復的旁白順序、涼區返回的冷感停留、靜音／拒播、字幕與地面成果／操作區的版面重疊、手勢解鎖、拖曳／點選、自由翻頁及不同 viewport；桌面 Chromium／WebKit 模擬不等於 iPad 真機驗收，音檔完整解碼與播放事件也不等於人耳驗聽或孩子理解。review-fixes helper 以受控的 lifecycle event 與 document.hidden 驗證返回流程，不代表 OS 實際切背景驗收。Windows WebKit 若沒有 AudioContext，只驗證其可用的 HTMLAudioElement，不能宣稱完成 WebAudio／iPad 驗收。原型目前只含③④與試玩收尾、中文，完整故事、English 與孩子回饋仍依 #229 追蹤。

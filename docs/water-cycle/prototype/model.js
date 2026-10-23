@@ -46,7 +46,7 @@
       [1000, 280, 1], [360, 430, 2], [700, 440, 1],
       [950, 470, 2], [1010, 155, 2]
     ];
-    return { nextId: 9, drops: specs.map(([x,y,volume,hero],i) => ({id:'d'+(i+1),x,y,volume,hero:!!hero,status:'floating',age:0})), meetings: [], landed: [], heroLanded: false, mergeCount: 0, addedVolume: 0 };
+    return { nextId: 9, drops: specs.map(([x,y,volume,hero],i) => ({id:'d'+(i+1),x,y,volume,hero:!!hero,status:'floating',age:0})), meetings: [], landed: [], heroLanded: false, mergeCount: 0, helperUsed: false, addedVolume: 0 };
   }
   function movable(rain, id) { return rain.drops.find(d => d.id === id && d.status === 'floating'); }
   function moveDrop(rain, id, x, y) {
@@ -68,11 +68,16 @@
       .sort((a,b)=>Math.hypot(d.x-a.x,d.y-a.y)-Math.hypot(d.x-b.x,d.y-b.y))
       .find(o=>Math.hypot(d.x-o.x,d.y-o.y)<(radius(d.volume)+radius(o.volume))*.78)?.id || null;
   }
-  function refillRain(rain) {
-    // Falling water has already left the cloud. A large growing drop will
-    // also leave by itself, so neither can help the remaining small drops.
-    const available = rain.drops.filter(d=>d.status!=='falling' && !(d.status==='growing' && d.volume>=RAIN_VOLUME));
-    const missing = Math.max(0,RAIN_VOLUME-available.reduce((sum,d)=>sum+d.volume,0));
+  function finalHelpers(rain) {
+    // Wait for all simultaneous choices to settle before counting water.
+    // The one remaining star needs at most three units. Once the total is
+    // four, ordinary friends cannot rain without including that star.
+    if(rain.helperUsed || rain.heroLanded || rain.meetings.length || rain.drops.some(d=>d.status!=='floating'))return 0;
+    const hero=rain.drops.find(d=>d.hero);
+    if(!hero || hero.volume>=RAIN_VOLUME)return 0;
+    const missing = Math.max(0,RAIN_VOLUME-rain.drops.reduce((sum,d)=>sum+d.volume,0));
+    if(!missing)return 0;
+    rain.helperUsed=true;
     const places = [[360,210],[560,195],[780,200],[1000,230],[360,430],[570,455],[800,440],[1000,470]];
     for(let i=0;i<missing;i++) {
       // Choose open space; incoming friends never auto-merge or duplicate the star.
@@ -111,16 +116,16 @@
         if(t===1){rain.drops=rain.drops.filter(item=>item!==d);rain.landed.push({...d,status:'landed',age:0});if(d.hero)rain.heroLanded=true;events.push({type:'land',hero:d.hero});}
       }
     }
-    if(events.some(event=>event.type==='land')) {
-      const count=refillRain(rain);
-      if(count)events.push({type:'refill',count});
-    }
+    const count=finalHelpers(rain);
+    if(count)events.push({type:'refill',count});
     for(const d of rain.landed)d.age+=ms;
     return events;
   }
   function createSession(){return{scene:3,wind:createWind(),rain:createRain(),visited:{3:false,4:false}};}
   function replayScene(session){if(session.scene===3)session.wind=createWind();else session.rain=createRain();}
-  function setScene(session,scene){if(scene===3||scene===4)session.scene=scene;}
+  function setScene(session,scene){if(scene===3||scene===4||scene==='end')session.scene=scene;}
+  function pageComplete(session,scene){return scene===3?session.wind.phase==='cloud':scene===4&&session.rain.heroLanded;}
+  function endingState(rain){return {complete:rain.heroLanded,remaining:rain.drops.length>0,landed:rain.landed.length>0};}
   function rainIntro(rain, madeCloud) {
     if(rain.heroLanded)return 'reunion';
     const hero=rain.drops.find(d=>d.hero);
@@ -130,26 +135,27 @@
   }
   // At most a short story continuation plus one current piece of feedback.
   // Ordinary simultaneous rain cannot overwrite the star's fall or reunion.
-  const protectedCues=new Set(['cool','heroFall','reunion']);
-  const storyCues=new Set(['heroFall','reunion','condense']);
+  const protectedCues=new Set(['cool','condense','cloudNext','heroFall','reunion','rainNext']);
+  const heroCues=new Set(['heroFall','reunion','rainNext']);
+  const storyCues=new Set(['heroFall','reunion','rainNext','condense','cloudNext']);
   function createNarration(){return {active:null,pending:[]};}
   function clearNarration(voice){voice.active=null;voice.pending=[];}
   function requestNarration(voice,id) {
     if(voice.active && (protectedCues.has(voice.active) || id==='refill' || (voice.active==='merge' && id==='small'))) {
       if(voice.active===id || voice.pending.includes(id))return null;
-      const heroStory=['heroFall','reunion'].includes(voice.active) || voice.pending.some(cue=>['heroFall','reunion'].includes(cue));
-      if(heroStory && !storyCues.has(id) && id!=='refill')return null;
+      const heroStory=heroCues.has(voice.active) || voice.pending.some(cue=>heroCues.has(cue));
+      if(heroStory && !heroCues.has(id))return null;
       if(storyCues.has(id)) {
-        voice.pending=voice.pending.filter(cue=>storyCues.has(cue)||cue==='refill');
+        voice.pending=voice.pending.filter(cue=>storyCues.has(cue)||(!heroCues.has(id)&&cue==='refill'));
         const feedback=voice.pending.indexOf('refill');
         voice.pending.splice(feedback<0?voice.pending.length:feedback,0,id);
       } else voice.pending=[...voice.pending.filter(cue=>storyCues.has(cue)),id];
       return null;
     }
-    voice.active=id;voice.pending=voice.pending.filter(cue=>cue==='refill'&&id!=='refill');return id;
+    voice.active=id;voice.pending=voice.pending.filter(cue=>cue==='refill'&&id!=='refill'&&!heroCues.has(id));return id;
   }
   function finishNarration(voice){voice.active=voice.pending.shift()||null;return voice.active;}
-  const api={COOLING_MS,CLOUD_MS,RAIN_VOLUME,radius,createWind,isCool,moveWind,settleWind,tickWind,createRain,movable,moveDrop,beginMerge,collision,tickRain,createSession,replayScene,setScene,rainIntro,createNarration,clearNarration,requestNarration,finishNarration};
+  const api={COOLING_MS,CLOUD_MS,RAIN_VOLUME,radius,createWind,isCool,moveWind,settleWind,tickWind,createRain,movable,moveDrop,beginMerge,collision,tickRain,createSession,replayScene,setScene,pageComplete,endingState,rainIntro,createNarration,clearNarration,requestNarration,finishNarration};
   if(typeof module==='object'&&module.exports)module.exports=api;
   else root.WaterPrototype=api;
 })(typeof globalThis==='object'?globalThis:this);
