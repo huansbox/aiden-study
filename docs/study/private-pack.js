@@ -16,10 +16,11 @@
     // 不自行判定文字改動是否仍是同一道題；只忽略 JSON 欄位順序。
     // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
     return JSON.stringify([q.subject, q.unit, q.subtopic, q.type, q.text, q.options, q.answer,
-      q.blanks ? q.blanks.map(b => [b.input, b.answer]) : null,
+      q.blanks ? q.blanks.map(b => Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
       q.parts ? q.parts.map(part => [part.id, part.text]) : null,
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
-        : ["table", q.material.caption, q.material.columns, q.material.rows] : null]);
+        : ["table", q.material.caption, q.material.columns, q.material.rows] : null,
+      ...(Object.hasOwn(q, "acceptedAnswers") ? [q.acceptedAnswers] : [])]);
   }
   function pngBytes(data, maxBytes) {
     if (typeof data !== "string" || !/^data:image\/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(data)) throw new Error("PNG 格式無效。");
@@ -100,6 +101,7 @@
       seen.add(q.id);
       const fields = ["id", "subject", "unit", "type", "text", "subtopic", "source", "options", "answer"];
       if (q.type === "fill_in_blank") fields.push("blanks");
+      if (q.type === "fill_in_blank" && q.subject === "social" && q.unit === 23 && Object.hasOwn(q, "acceptedAnswers")) fields.push("acceptedAnswers");
       if (q.type === "grouped_choice") fields.push("parts");
       if (Object.hasOwn(q, "material")) fields.push("material");
       const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : q.subject === "social" ? [22, 23] : [];
@@ -126,13 +128,28 @@
           partIds.add(part.id);
         }
       } else if (q.type === "fill_in_blank") {
-        const select = q.subject === "social" && q.unit === 23;
-        if ((!select && q.subject !== "math") || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > (select ? 13 : 9) ||
+        const social = q.subject === "social" && q.unit === 23;
+        const written = social && q.blanks?.[0]?.input === "text";
+        const select = social && !written;
+        if ((!social && q.subject !== "math") || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > (social ? 13 : 9) ||
             (select ? q.options.length < 2 || q.options.length > 15 || !q.options.every(x => boundedText(x, 300)) : q.options.length)) throw new Error("填空題格式無效。");
         for (const [i, b] of q.blanks.entries()) {
-          if (!keys(b, ["answer", "input"]) || typeof b.answer !== "string" || (select ? b.input !== "select" || !/^(?:[1-9]|1[0-5])$/.test(b.answer) || Number(b.answer) > q.options.length : !(b.input === "number" ? /^(0|[1-9][0-9]{0,7})$/.test(b.answer) : b.input === "comparison" && /^[<>=]$/.test(b.answer)))) throw new Error("填空答案或輸入方式無效。");
+          const blankFields = written && object(b) && Object.hasOwn(b, "aliases") ? ["answer", "input", "aliases"] : ["answer", "input"];
+          if (!keys(b, blankFields) || typeof b.answer !== "string" || (written ? b.input !== "text" : select ? b.input !== "select" || !/^(?:[1-9]|1[0-5])$/.test(b.answer) || Number(b.answer) > q.options.length : !(b.input === "number" ? /^(0|[1-9][0-9]{0,7})$/.test(b.answer) : b.input === "comparison" && /^[<>=]$/.test(b.answer)))) throw new Error("填空答案或輸入方式無效。");
+          if (written) {
+            if (Object.hasOwn(b, "aliases") && (!Array.isArray(b.aliases) || b.aliases.length > 8)) throw new Error("文字別名格式無效。");
+            const terms = [b.answer, ...(b.aliases || [])];
+            if (!terms.every(term => typeof term === "string" && Array.from(term).length >= 1 && Array.from(term).length <= 20 && term.normalize("NFKC").trim()) ||
+                new Set(terms.map(term => term.normalize("NFKC").trim())).size !== terms.length) throw new Error("文字答案或別名無效或重複。");
+          }
           const marker = String(i + 1).replace(/[0-9]/g, digit => "０１２３４５６７８９"[Number(digit)]);
           if (!q.text.includes(`（${marker}）`)) throw new Error("填空題缺少對應的全形空格標記。");
+        }
+        if (Object.hasOwn(q, "acceptedAnswers")) {
+          const vectors = q.acceptedAnswers;
+          if (!select || !Array.isArray(vectors) || vectors.length < 1 || vectors.length > 8 ||
+              !vectors.every(vector => Array.isArray(vector) && vector.length === q.blanks.length && vector.every(value => typeof value === "string" && /^(?:[1-9]|1[0-5])$/.test(value) && Number(value) <= q.options.length)) ||
+              new Set(vectors.map(vector => JSON.stringify(vector))).size !== vectors.length || JSON.stringify(vectors[0]) !== JSON.stringify(q.blanks.map(blank => blank.answer))) throw new Error("完整答案向量格式無效。");
         }
       } else throw new Error("此題型尚未支援。");
       const old = previous && previous.questions.find(p => p.id === q.id);

@@ -606,12 +606,12 @@
     {
       "id": "grade4-sem1-social-exam1",
       "name": "四上第一次段考社會候選卷",
-      "status": "in-progress", "statusNote": "#232已逐格處理既有76格backlog，並正式發布U2的13活動／27格（112為1／1、113為12／26、114為0）；現役rev20全科365活動（數學68／自然217／社會80）／社會128格。另49格保留（44後續範圍、1開放題、4整組hold）；正式範圍未取得。完整發布與新封存狀態依#232，歷史rev19依#191。",
+      "status": "in-progress", "statusNote": "正式現役仍為#232的rev20全科365活動（數學68／自然217／社會80）／社會128格；歷史49格保留不變。#235跨校五卷384格已完整盤點，rev21候選新增54活動／103格，完整419活動／社會134活動231格，U2為67活動130格；兩個完整活動4格因原題歧義hold、另2格scope boundary保留。rev21內容、code與真包E2E已通過，尚未發布，待PR與正式發布；正式範圍仍未取得。",
       "eventDate": null,
       "audience": ["aiden"], "audienceLabel": "9 歲；四年級",
       "description": "桃子腳第一次段考前，依今年康軒課程與正式範圍篩選歷屆社會卷。",
       "reusable": "來源身分、年度概念對照與私人原件驗證",
-      "source": { "paths": ["learning-tasks/grade4-sem1-social-exam1", "docs-dev/grade4-social-study-unit-two-batch.md", "data/study/g4-s1-math-u1/social-unit-two-selection-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-inventory-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-backlog-metadata.json"] },
+      "source": { "paths": ["learning-tasks/grade4-sem1-social-exam1", "docs-dev/grade4-social-study-unit-two-batch.md", "data/study/g4-s1-math-u1/social-unit-two-selection-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-inventory-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-backlog-metadata.json", "docs-dev/grade4-social-study-unit-two-more-paper-batch.md", "data/study/g4-s1-math-u1/social-unit-two-more-paper-source-manifest.json", "data/study/g4-s1-math-u1/social-unit-two-more-paper-selection-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-more-paper-inventory-metadata.json", "data/study/g4-s1-math-u1/social-unit-two-more-paper-backlog-metadata.json"] },
       "availability": "private", "links": []
     },
     {

@@ -16,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import re
+import unicodedata
 import subprocess
 import tempfile
 from typing import Any
@@ -34,7 +35,7 @@ MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}, "social": {22, 23}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "true_false", "grouped_choice"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
@@ -51,6 +52,13 @@ EXPECTED_IDS = tuple(details[0] for details in EXPECTED.values())
 
 class PackBuildError(ValueError):
     """The private source cannot produce a valid, complete pack."""
+
+
+def _normalize_text_answer(value: str) -> str:
+    # Match JavaScript String.normalize("NFKC").trim(), including BOM and
+    # excluding Python-only whitespace controls, so both validators agree.
+    trim_chars = "\u0009\u000a\u000b\u000c\u000d\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
+    return unicodedata.normalize("NFKC", value).strip(trim_chars)
 
 
 def _pairs_without_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -190,7 +198,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] != 23)):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] in {"fill_in_blank:select", "fill_in_blank:text"} and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -230,6 +238,8 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
     if isinstance(question, dict) and "material" in question:
         expected_fields.add("material")
+    if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select":
+        expected_fields.add("acceptedAnswers")
     _require_exact_keys(question, expected_fields, f"question {practice_id}")
     subject = mapping["appId"].split("-", 1)[0]
     if question["id"] != expected_id or question["subject"] != subject or type(question["unit"]) is not int or question["unit"] != mapping["unit"] or question["unit"] not in SUBJECT_UNITS[subject]:
@@ -269,19 +279,37 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
             if not isinstance(part["id"], str) or not re.fullmatch(r"[A-Za-z0-9-]{1,32}", part["id"]) or part["id"] in ids or not isinstance(part["text"], str) or not part["text"].strip() or len(part["text"]) > 600:
                 raise PackBuildError(f"question {practice_id} group part is invalid")
             ids.add(part["id"])
-    elif adaptation == "fill_in_blank:select":
+    elif adaptation in {"fill_in_blank:select", "fill_in_blank:text"}:
         blanks, options = question.get("blanks"), question["options"]
-        if subject != "social" or question["unit"] != 23 or question["type"] != "fill_in_blank" or question["answer"] != "" or not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options):
+        written = adaptation == "fill_in_blank:text"
+        if subject != "social" or question["unit"] != 23 or question["type"] != "fill_in_blank" or question["answer"] != "" or (options != [] if written else not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options)):
             raise PackBuildError(f"question {practice_id} select word bank is invalid")
         if not isinstance(blanks, list) or not 1 <= len(blanks) <= 13:
             raise PackBuildError(f"question {practice_id} must contain 1-13 select blanks")
         for index, blank in enumerate(blanks, 1):
-            _require_exact_keys(blank, {"input", "answer"}, f"question {practice_id} blank {index}")
-            if blank["input"] != "select" or not isinstance(blank["answer"], str) or blank["answer"] not in {str(i) for i in range(1, len(options) + 1)}:
+            fields = {"input", "answer"} | ({"aliases"} if written and isinstance(blank, dict) and "aliases" in blank else set())
+            _require_exact_keys(blank, fields, f"question {practice_id} blank {index}")
+            if written:
+                aliases = blank.get("aliases", [])
+                if blank["input"] != "text" or not isinstance(aliases, list) or len(aliases) > 8:
+                    raise PackBuildError(f"question {practice_id} text aliases are invalid")
+                terms = [blank["answer"], *aliases]
+                if not all(isinstance(term, str) and 1 <= len(term) <= 20 and _normalize_text_answer(term) for term in terms):
+                    raise PackBuildError(f"question {practice_id} text answers must contain 1-20 codepoints")
+                if len({_normalize_text_answer(term) for term in terms}) != len(terms):
+                    raise PackBuildError(f"question {practice_id} text aliases repeat an answer")
+            elif blank["input"] != "select" or not isinstance(blank["answer"], str) or blank["answer"] not in {str(i) for i in range(1, len(options) + 1)}:
                 raise PackBuildError(f"question {practice_id} select answer is outside its word bank")
             marker = "（" + str(index).translate(str.maketrans("0123456789", "０１２３４５６７８９")) + "）"
             if marker not in question["text"]:
                 raise PackBuildError(f"question {practice_id} is missing the full-width blank marker {marker}")
+        if "acceptedAnswers" in question:
+            vectors = question["acceptedAnswers"]
+            legal = {str(i) for i in range(1, len(options) + 1)}
+            if not isinstance(vectors, list) or not 1 <= len(vectors) <= 8 or not all(isinstance(vector, list) and len(vector) == len(blanks) and all(isinstance(value, str) and value in legal for value in vector) for vector in vectors):
+                raise PackBuildError(f"question {practice_id} accepted answer vectors are invalid")
+            if len({tuple(vector) for vector in vectors}) != len(vectors) or vectors[0] != [blank["answer"] for blank in blanks]:
+                raise PackBuildError(f"question {practice_id} accepted answer vectors repeat or omit canonical first")
     else:
         input_type = adaptation.split(":", 1)[1]
         if question["type"] != "fill_in_blank" or question["options"] != [] or question["answer"] != "":
@@ -449,7 +477,7 @@ def write_pack_atomic(
 def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
     blanks = question.get("blanks")
     blank_semantic = (
-        tuple((blank.get("input"), blank.get("answer")) for blank in blanks)
+        tuple((blank.get("input"), blank.get("answer"), tuple(blank["aliases"])) if "aliases" in blank else (blank.get("input"), blank.get("answer")) for blank in blanks)
         if isinstance(blanks, list)
         else None
     )
@@ -459,6 +487,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         question.get("answer"), blank_semantic,
         tuple((part.get("id"), part.get("text")) for part in question.get("parts", [])) if "parts" in question else None,
         json.dumps(question.get("material"), ensure_ascii=False, sort_keys=True) if "material" in question else None,
+        *([tuple(tuple(vector) for vector in question["acceptedAnswers"])] if "acceptedAnswers" in question else []),
     )
 
 
