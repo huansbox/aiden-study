@@ -4,7 +4,7 @@
 
 [前版社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整歷史封存與雙副本核對見[#191](https://github.com/huansbox/aiden-study/issues/191)。rev20以此完整基線接續，legacy rev12不改。
 
-[#191 社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已發布社會 unit22 `multiple_choice` 2／3／4選項契約，答案仍為原選項的1-based字串索引；不補第四個干擾項。Python builder、JS parser與錯答／重載／舊進度守衛已核驗。下文#154／#157的規則保留各批歷史，現行三選一契約以本段為準；新增43活動的完整authoring與productionbuilder輸入採頁首rev19入口。
+[#191 社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已發布社會 unit22 `multiple_choice` 2／3／4選項契約，答案仍為原選項的1-based字串索引；不補第四個干擾項。Python builder、JS parser與錯答／重載／舊進度守衛已核驗。下文#154／#157的規則保留各批歷史，現行三選一契約以本段為準；新增43活動的完整authoring與production builder輸入採[前版社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)的rev19歷史入口。
 
 本批原卷路線圖的括號站名需要保留細字，故僅social unit22 PNG容量上限改192 KiB；math／science仍32 KiB。Python／JS先核科目、unit與ID，再套容量，圖雙邊1600px及既有shard／unit／操作／manifest／cache總量限制不變。原crop與實際PNG逐檔SHA、放大圖review和原題條件都要核對，不能以壓低色盤掉字換取小檔。未開社會table或新媒體格式；下方歷史各批契約保持原發布事實。長期原則見[Wiki正本](https://github.com/huansbox/aiden-study/wiki/Study-Private-Pack)。
 
