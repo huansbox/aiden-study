@@ -128,8 +128,8 @@
           partIds.add(part.id);
         }
       } else if (q.type === "fill_in_blank") {
-        const social = q.subject === "social" && q.unit === 23;
-        const written = social && q.blanks?.[0]?.input === "text";
+        const social = q.subject === "social" && [22, 23].includes(q.unit);
+        const written = social && q.unit === 23 && q.blanks?.[0]?.input === "text";
         const select = social && !written;
         if ((!social && q.subject !== "math") || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > (social ? 13 : 9) ||
             (select ? q.options.length < 2 || q.options.length > 15 || !q.options.every(x => boundedText(x, 300)) : q.options.length)) throw new Error("填空題格式無效。");

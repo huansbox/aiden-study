@@ -198,7 +198,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] in {"fill_in_blank:select", "fill_in_blank:text"} and (subject != "social" or item["unit"] != 23)):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] not in {22, 23})) or (item["digitalAdaptation"] == "fill_in_blank:text" and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -238,7 +238,7 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
     if isinstance(question, dict) and "material" in question:
         expected_fields.add("material")
-    if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select":
+    if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select" and mapping["unit"] == 23:
         expected_fields.add("acceptedAnswers")
     _require_exact_keys(question, expected_fields, f"question {practice_id}")
     subject = mapping["appId"].split("-", 1)[0]
@@ -282,7 +282,7 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     elif adaptation in {"fill_in_blank:select", "fill_in_blank:text"}:
         blanks, options = question.get("blanks"), question["options"]
         written = adaptation == "fill_in_blank:text"
-        if subject != "social" or question["unit"] != 23 or question["type"] != "fill_in_blank" or question["answer"] != "" or (options != [] if written else not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options)):
+        if subject != "social" or question["unit"] not in ({23} if written else {22, 23}) or question["type"] != "fill_in_blank" or question["answer"] != "" or (options != [] if written else not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options)):
             raise PackBuildError(f"question {practice_id} select word bank is invalid")
         if not isinstance(blanks, list) or not 1 <= len(blanks) <= 13:
             raise PackBuildError(f"question {practice_id} must contain 1-13 select blanks")

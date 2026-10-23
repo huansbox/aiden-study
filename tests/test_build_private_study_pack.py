@@ -373,7 +373,7 @@ def test_social_u2_full_word_bank_has_strict_scope_and_parser_parity(tmp_path):
         with pytest.raises(PackBuildError):
             build_pack(*_paths(tmp_path / label, broken))
 
-    rejects("wrong-unit", lambda q, m: (q.update(unit=22), m.update(unit=22)))
+    rejects("wrong-unit", lambda q, m: (q.update(unit=24), m.update(unit=24)))
     rejects("math", lambda q, m: (q.update(id="math-g4s1-synthetic-U2-word-bank-v1", subject="math", unit=15), m.update(appId="math-g4s1-synthetic-U2-word-bank-v1", unit=15)))
     rejects("sixteen-options", lambda q, m: q["options"].append("Synthetic word 16"))
     rejects("fourteen-blanks", lambda q, m: q["blanks"].append({"input": "select", "answer": "1"}))
