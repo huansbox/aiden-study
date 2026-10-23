@@ -1,6 +1,8 @@
 # 四上數學私用題包重建（歷史 U1 路徑）
 
-[最新社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整canonical封存入口為 `data/private/study/g4-s1-math-u1/rev19-release/private/social-existing-paper-batch/rev19-candidate/`，curated／explanations／mapping在此，完整source／manifest／14shards在其catalog/。**本機／Dropbox雙副本仍待建立**；建立前使用本批ignored工作資料及正式讀回SHA，不能將預定入口當成備份已完成。下方較早批次及其當時的基線入口保留歷史，後續完整基線採本段rev19；副本完成與逐檔重建收據回查[#191](https://github.com/huansbox/aiden-study/issues/191)。
+[最新社會U2接續](grade4-social-study-unit-two-batch.md)已於2026-10-23正式發布rev20：全科365活動（數學68／自然217／社會80），新增13活動／27格；social unit23三片，完整17shards。完整source SHA256 `9a01912be42a9cf6df41dfc2d0510166fcfdffae6e4422b8e3e80053e1868af0`，manifest 33896 bytes、SHA256 `6eee4e5b3b29921c28caf4a0414bb845a96f74ed13193b068d921a5aaf9b0179`。下一批完整基線固定入口為ignored `data/private/study/g4-s1-math-u1/rev20-release/private/social-u2-existing-paper-batch/rev20-candidate/`，authoring在此、source／manifest／17片shards在其`catalog/`；封存根目錄的`verify_release.py`可獨立核對與重建。正式封存與Dropbox核對情況依[#232最新交接](https://github.com/huansbox/aiden-study/issues/232)。
+
+[前版社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整歷史封存與雙副本核對見[#191](https://github.com/huansbox/aiden-study/issues/191)。rev20以此完整基線接續，legacy rev12不改。
 
 [#191 社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已發布社會 unit22 `multiple_choice` 2／3／4選項契約，答案仍為原選項的1-based字串索引；不補第四個干擾項。Python builder、JS parser與錯答／重載／舊進度守衛已核驗。下文#154／#157的規則保留各批歷史，現行三選一契約以本段為準；新增43活動的完整authoring與productionbuilder輸入採頁首rev19入口。
 

@@ -1,8 +1,8 @@
 # 四上社會第一次段考候選卷
 
-[#232 社會 U2](https://github.com/huansbox/aiden-study/issues/232)已核准13活動／27原格，完整rev20候選為365活動（數學68／自然217／社會80），尚未發布。既有76格backlog逐格處理後剩49格：44後續範圍、1開放題、4整組hold。114本批0活動；正式範圍仍未取得。完整來源、改編與重建見[U2批次紀錄](../../docs-dev/grade4-social-study-unit-two-batch.md)；原rev19發布事實如下。
+[#232 社會 U2](https://github.com/huansbox/aiden-study/issues/232)已於2026-10-23正式發布13活動／27原格；現役rev20全科365活動（數學68／自然217／社會80）、社會累計128格。既有76格backlog逐格處理後剩49格：44後續範圍、1開放題、4整組hold。114本批0活動；正式範圍仍未取得。完整來源、改編、讀回與重建見[U2批次紀錄](../../docs-dev/grade4-social-study-unit-two-batch.md)；原rev19發布事實如下。
 
-最新[#191完整三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已於2026-10-06正式發布rev19：177原格＝101已發布（原35＋本批66）＋4整組hold＋72後續範圍。新增43完整活動，現役社會67活動／101格、全科352活動（數學68／自然217）。本機／Dropbox雙副本尚待建立；完整canonical入口與實際merge／Pages／Worker／source SHA見[本批紀錄](../../docs-dev/grade4-social-study-existing-paper-batch.md)，另見[完整inventory](../../data/study/g4-s1-math-u1/social-existing-paper-inventory-metadata.json)與[backlog](../../data/study/g4-s1-math-u1/social-existing-paper-backlog-metadata.json)。
+前版[#191完整三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已於2026-10-06正式發布rev19：當時177原格＝101已發布（原35＋該批66）＋4整組hold＋72後續範圍；社會67活動／101格、全科352活動。完整歷史封存、雙副本與實際merge／Pages／Worker／source SHA見[該批紀錄](../../docs-dev/grade4-social-study-existing-paper-batch.md)及#191最新交接；另見[歷史inventory](../../data/study/g4-s1-math-u1/social-existing-paper-inventory-metadata.json)與[backlog](../../data/study/g4-s1-math-u1/social-existing-paper-backlog-metadata.json)。
 
 完整盤點所有可用U1核心位置，同概念不同問法都收，不抽代表、不設題數上限；圖表、閱讀、勾選、配合及等價點選均保留完整條件。115康軒U1是暫定教材範圍，正式校方範圍未取得。原題／答卷依語意、條件及原選項逐項核對；既有N009/N023本次只更正來源聲明，不改原題、答案、圖、解說或IDs。113 VIII四格整組hold，不裁掉末題。歷史發布紀錄與封存產物保持。
 
