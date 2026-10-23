@@ -1,6 +1,8 @@
 # Study 私用題庫分包（#160／#161）
 
-[最新社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整canonical封存入口為 `data/private/study/g4-s1-math-u1/rev19-release/private/social-existing-paper-batch/rev19-candidate/`，curated／explanations／mapping在此，完整source／manifest／14shards在其catalog/。**本機／Dropbox雙副本仍待建立**；建立前使用本批ignored工作資料及正式讀回SHA，不能將預定入口當成備份已完成。下方較早批次及其當時的基線入口保留歷史，後續完整基線採本段rev19；副本完成與逐檔重建收據回查[#191](https://github.com/huansbox/aiden-study/issues/191)。
+[最新社會U2接續](grade4-social-study-unit-two-batch.md)已於2026-10-23正式發布rev20：全科365活動（數學68／自然217／社會80）、社會128原格；新增13活動／27格，unit23三片，完整17shards。完整source SHA256 `9a01912be42a9cf6df41dfc2d0510166fcfdffae6e4422b8e3e80053e1868af0`；正式manifest 33896 bytes、SHA256 `6eee4e5b3b29921c28caf4a0414bb845a96f74ed13193b068d921a5aaf9b0179`。下一批完整基線固定入口為ignored `data/private/study/g4-s1-math-u1/rev20-release/private/social-u2-existing-paper-batch/rev20-candidate/`，authoring在此、source／manifest／17片shards在其`catalog/`，封存根目錄的`verify_release.py`可獨立核對與重建；新封存與Dropbox副本實際完成情況依[#232最新交接](https://github.com/huansbox/aiden-study/issues/232)，不能以預定路徑冒充已驗副本。
+
+[前版社會三卷完整擴量](grade4-social-study-existing-paper-batch.md)已於2026-10-06正式發布rev19：全科352活動（數學68／自然217／社會67），社會101格，新增43活動／66格；14shards／social unit22六片。完整封存入口與副本核對見[#191](https://github.com/huansbox/aiden-study/issues/191)，其歷史source、manifest與作者資料保留，不以rev20覆寫。
 
 [#191 既有社會三卷擴量](https://github.com/huansbox/aiden-study/issues/191)已發布社會 unit22 原生三選一契約，與既有二／四選一並列；保留原三個選項，不補干擾項。Python builder與JS parser同步驗證，孩子頁及家長試玩沿用既有選項按鈕。完整題組、題圖與可靠U1集合經獨立review、root核定與實際發布讀回；其他範圍仍另核，不以目前renderer限制排除核心來源。
 
@@ -34,7 +36,7 @@ manifest 與 legacy 的管理端讀回時間為 `2026-10-04T03:18:56.224Z`、`20
 - shard 為 `{schemaVersion:2,packId,revision:1,questions,explanations}`，revision 固定 1 是 envelope 格式相容欄位；**發布 revision 只以 manifest 為準**。內容以 SHA-256 唯一識別，無內容變動的單元跨發布維持相同 hash。每 shard 只含同 subject/unit，可沒有 legacy 首六題。一個單元可有多 shard。
 - client 完整取得所選單元全部 shard、驗 bytes/hash/題型/範圍/ID/subtopic 後，才建立本輪題池。manifest metadata 可在未下載題文時顯示單元／自然七主題的題數、mastered 分母、錯題和已回報題。尚未取得的 ID 不會進作答畫面，不因缺題被當成通關或刪除。
 - 原 GET 單包路由與 localStorage `study:private-pack:g4-s1-math-u1` 不變。catalog 404 才回退單包；服務失敗不自動拿 public fixture 補題。舊 client 可繼續使用凍結的 legacy 題包。
-- PNG 仍內嵌私人 shard：math／science單張最多32 KiB，social unit22最多192 KiB；每圖雙邊1600px及格式／CRC守衛不變。現階段沒有另做媒體 URL、公開 assets 或圖片外置。
+- PNG 仍內嵌私人 shard：math／science單張最多32 KiB，social unit22／23最多192 KiB；每圖雙邊1600px及格式／CRC守衛不變。現階段沒有另做媒體 URL、公開 assets 或圖片外置。
 
 ## 資源與儲存
 

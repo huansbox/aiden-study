@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/232",
-  "publicationStatus": "candidate_unreleased",
+  "publicationStatus": "published",
   "publishedDelta": 0,
   "formalTargetRangeVerified": false,
   "targetEvidenceKind": "115康軒第一學期課程計畫；不是校方正式考試範圍",
@@ -12,7 +12,7 @@
   "authorArtifactSha256": "1126a9671b87f70428d6c6828f6a8310677f747b24e49985ffe17c730623c111",
   "independentSourceLedgerSha256": "ca12a45cf18283b87031abfa45deed7b415db03f923247caf8e1241fea6e1e63",
   "contentReviewPacketSha256": "1b2b7a50fd9bebe470fb24d8fcf82a8a091f911d31b30cee33e86e57b7028eb3",
-  "status": "content_approved_candidate_pending_release",
+  "status": "current_backlog_after_rev20_release",
   "rootContentApproved": true,
   "countUnit": "source_answer_slot",
   "sourceAnswerSlots": 49,
@@ -21,7 +21,7 @@
     "u2_open_response_deferred": 1,
     "whole_group_held": 4
   },
-  "scopeNote": "扣除27格已核准候選後仍需追蹤49格；尚未發布不將候選誤算已發布。",
+  "scopeNote": "rev20已發布27格後仍需追蹤49格；44格後續範圍、1格開放題、4格整組hold。",
   "rows": [
     {
       "originalId": "tyk112-I-05",
