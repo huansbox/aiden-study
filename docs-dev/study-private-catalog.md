@@ -1,6 +1,6 @@
 # Study 私用題庫分包（#160／#161）
 
-[跨校社會U1追加候選](grade4-social-study-unit-one-more-paper-batch.md)追蹤[#240](https://github.com/huansbox/aiden-study/issues/240)：精確90原格中，46完整活動／84格列rev22候選、6格整組保留；候選全科465活動（數學68／自然217／社會180）、社會315格，U1為113活動／185格，U2仍67活動／130格。目前正式題庫仍為下段rev21，未將候選視為已發布。最小runtime只讓social unit22沿用select完整詞庫填空，文字alias與完整等價向量仍限unit23；原419題／解說／subtopics及24片shards保持，重建與最新驗證見本批紀錄。
+[跨校社會U1追加](grade4-social-study-unit-one-more-paper-batch.md)（[#240](https://github.com/huansbox/aiden-study/issues/240)）已於2026-10-24正式發布rev22：新增46完整活動／84原格，另6格整組保留；全科465活動（數學68／自然217／社會180）、社會315格，U1為113活動／185格，U2仍67活動／130格。正式manifest為43192 bytes、SHA256 `aa56845a26b1ccc835b4386c454939fccdf74e7a8e9566c975124fd804cae59d`，共26片；兩片新immutable shards與manifest依序單次PUT、兩階段讀回，全26片及legacy固定key核對通過。原419題／解說／subtopics及24片shards保持；Worker／Pages、獨立審查、隔離真包E2E與雙副本重建證據見本批紀錄。以下各版段落保留當批歷史，目前完整基線採rev22。
 
 [最新跨校社會U2追加](grade4-social-study-unit-two-more-paper-batch.md)已於2026-10-23正式發布rev21：全科419活動（數學68／自然217／社會134）、社會231原格；新增54活動／103格，U2合計67活動／130格，完整24shards。完整source SHA256 `855ba59376a8684f8fb5a09175caabb05c36178a1b3fd282724afd1a9f03a2f2`；正式manifest 39656 bytes、SHA256 `00a3a888cd6f441712ff73f9e712aea1d5625a5301be73715b797ef7102e10c9`。目前完整authoring入口為ignored `data/private/study/g4-s1-math-u1/social-u2-more-paper-batch/integration/authoring-v4/`，source／manifest／24片shards在同批`integration/rev21-candidate-v3/catalog/`；重建步驟見本批紀錄。本機與Dropbox新正式封存仍待建立，實際完成情況依[#235最新交接](https://github.com/huansbox/aiden-study/issues/235)。
 

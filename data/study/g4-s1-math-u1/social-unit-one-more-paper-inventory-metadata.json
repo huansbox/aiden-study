@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceIssue": "https://github.com/huansbox/aiden-study/issues/240",
-  "publicationStatus": "candidate_not_published",
+  "publicationStatus": "published",
   "formalTargetRangeVerified": false,
   "targetEvidenceKind": "115_kangxuan_course_plan_concept_comparison",
   "baselineRevision": 21,
@@ -10,7 +10,7 @@
   "candidateAllSubjectActivities": 465,
   "rootSelectionApproved": true,
   "rootContentApproved": true,
-  "status": "root_approved_rev22_candidate",
+  "status": "published_rev22",
   "countUnit": "original_answer_slot",
   "privatePayloadIncluded": false,
   "selectionSha256": "63c3b5d7dfc1a52423e0f8654928e6e2c18d8f77858d1b5e06930039a3a8b678",
@@ -21,7 +21,7 @@
   "historicalScopeDisposition": "earlier_u1_outside_batch",
   "sourceAnswerSlots": 90,
   "counts": {
-    "candidate_rev22": 84,
+    "published_rev22": 84,
     "hold_complete_activity_source_ambiguity": 4,
     "hold_complete_activity_open_design": 2
   },
@@ -40,7 +40,7 @@
       "hold_complete_activity_source_ambiguity": 8,
       "open_response_outside_u2": 1,
       "u2_scope_boundary_requires_review": 2,
-      "candidate_rev22": 84,
+      "published_rev22": 84,
       "hold_complete_activity_open_design": 2
     }
   },
@@ -66,12 +66,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -98,12 +98,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -130,12 +130,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -162,12 +162,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -194,12 +194,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "5",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -226,12 +226,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "6",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -258,12 +258,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-I-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "7",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -422,12 +422,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-III-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -454,12 +454,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-III-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -486,12 +486,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-III-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -518,12 +518,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-smps112-D-III-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -548,12 +548,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -578,12 +578,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-02-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -608,12 +608,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -638,12 +638,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-04-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -668,12 +668,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-05-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -698,12 +698,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-06-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -728,12 +728,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-I-10-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -758,12 +758,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -788,12 +788,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-02-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -818,12 +818,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -848,12 +848,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-05-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -878,12 +878,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-06-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -908,12 +908,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-07-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -938,12 +938,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-II-09-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -968,12 +968,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -998,12 +998,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1028,12 +1028,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1058,12 +1058,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1088,12 +1088,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "5",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1118,12 +1118,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "6",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1150,12 +1150,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1182,12 +1182,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1214,12 +1214,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1246,12 +1246,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1278,12 +1278,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "5",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1310,12 +1310,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-III-3-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "6",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1342,12 +1342,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 1,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1374,12 +1374,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 2,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1406,12 +1406,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 3,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1438,12 +1438,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 4,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1470,12 +1470,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 5,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1502,12 +1502,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 6,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1534,12 +1534,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-IV-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": 7,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1564,12 +1564,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-V-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1594,12 +1594,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-V-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1624,12 +1624,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps113-V-04-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1654,12 +1654,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1684,12 +1684,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-02-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1714,12 +1714,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1744,12 +1744,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-04-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1774,12 +1774,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-05-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1804,12 +1804,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-06-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1834,12 +1834,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-09-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1864,12 +1864,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-i-13-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1894,12 +1894,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1926,12 +1926,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-02-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1956,12 +1956,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -1986,12 +1986,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-04-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2016,12 +2016,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-05-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2046,12 +2046,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-06-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2076,12 +2076,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-ii-07-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2166,12 +2166,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2198,12 +2198,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2230,12 +2230,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2262,12 +2262,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2294,12 +2294,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p5",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2326,12 +2326,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2358,12 +2358,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2390,12 +2390,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-iv-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2420,12 +2420,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2450,12 +2450,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2480,12 +2480,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2510,12 +2510,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2540,12 +2540,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-1-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p5",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2570,12 +2570,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p1",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2600,12 +2600,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p2",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2630,12 +2630,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p3",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2660,12 +2660,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-v-2-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": "p4",
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2692,12 +2692,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-vi-01-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2724,12 +2724,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-vi-02-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2756,12 +2756,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-vi-03-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2788,12 +2788,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-vi-04-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
@@ -2820,12 +2820,12 @@
       "curriculumReferences": [],
       "scopeStatus": "u1_exact_batch",
       "historicalDisposition": "earlier_u1_outside_batch",
-      "disposition": "candidate_rev22",
-      "candidateAppIds": [
+      "disposition": "published_rev22",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [
         "social-g4s1-jdps114-vi-05-v1"
       ],
-      "heldAppIds": [],
-      "publishedAppIds": [],
       "activityPartId": null,
       "activityBlankNumber": null,
       "answerStatus": "independently_solved_twice_no_official_answer",
