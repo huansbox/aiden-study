@@ -1,0 +1,963 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/240",
+  "publicationStatus": "candidate_not_published",
+  "formalTargetRangeVerified": false,
+  "targetEvidenceKind": "115_kangxuan_course_plan_concept_comparison",
+  "baselineRevision": 21,
+  "candidateRevision": 22,
+  "baselineAllSubjectActivities": 419,
+  "candidateAllSubjectActivities": 465,
+  "rootSelectionApproved": true,
+  "rootContentApproved": true,
+  "status": "root_approved_rev22_candidate",
+  "countUnit": "original_answer_slot",
+  "privatePayloadIncluded": false,
+  "selectionSha256": "63c3b5d7dfc1a52423e0f8654928e6e2c18d8f77858d1b5e06930039a3a8b678",
+  "sourceSha256": "1a9d70fb9e4c300b620f8e0889c481a48793af9bc6bc1d98c4417341c1c6c2e4",
+  "manifestSha256": "aa56845a26b1ccc835b4386c454939fccdf74e7a8e9566c975124fd804cae59d",
+  "independentExpectedSha256": "99516d3a39238878045f106e65c6905f7b3f18de329f0b192eb55fcd2c970d4e",
+  "newActivities": 46,
+  "newSourceAnswerSlots": 84,
+  "heldCompleteActivities": 2,
+  "heldSourceAnswerSlots": 6,
+  "exactFullQuestionDedupCount": 0,
+  "baselineSocialActivities": 134,
+  "baselineSocialSourceAnswerSlots": 231,
+  "candidateSocialActivities": 180,
+  "candidateSocialSourceAnswerSlots": 315,
+  "baselineU1Activities": 67,
+  "baselineU1SourceAnswerSlots": 101,
+  "candidateU1Activities": 113,
+  "candidateU1SourceAnswerSlots": 185,
+  "unchangedU2Activities": 67,
+  "unchangedU2SourceAnswerSlots": 130,
+  "topicCounts": {
+    "地圖與位置": {
+      "newActivities": 18,
+      "newSourceAnswerSlots": 34
+    },
+    "地形與生活": {
+      "newActivities": 10,
+      "newSourceAnswerSlots": 20
+    },
+    "氣候與水資源": {
+      "newActivities": 18,
+      "newSourceAnswerSlots": 30
+    }
+  },
+  "items": [
+    {
+      "appId": "social-g4s1-jdps113-I-01-v1",
+      "practiceId": "SU1-JDPS113-I-01",
+      "originalId": "jdps113-I-01",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-02-v1",
+      "practiceId": "SU1-JDPS113-I-02",
+      "originalId": "jdps113-I-02",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-02"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-03-v1",
+      "practiceId": "SU1-JDPS113-I-03",
+      "originalId": "jdps113-I-03",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-04-v1",
+      "practiceId": "SU1-JDPS113-I-04",
+      "originalId": "jdps113-I-04",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-05-v1",
+      "practiceId": "SU1-JDPS113-I-05",
+      "originalId": "jdps113-I-05",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-06-v1",
+      "practiceId": "SU1-JDPS113-I-06",
+      "originalId": "jdps113-I-06",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-I-10-v1",
+      "practiceId": "SU1-JDPS113-I-10",
+      "originalId": "jdps113-I-10",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-I-10"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-01-v1",
+      "practiceId": "SU1-JDPS113-II-01",
+      "originalId": "jdps113-II-01",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-02-v1",
+      "practiceId": "SU1-JDPS113-II-02",
+      "originalId": "jdps113-II-02",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-02"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-03-v1",
+      "practiceId": "SU1-JDPS113-II-03",
+      "originalId": "jdps113-II-03",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-05-v1",
+      "practiceId": "SU1-JDPS113-II-05",
+      "originalId": "jdps113-II-05",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-06-v1",
+      "practiceId": "SU1-JDPS113-II-06",
+      "originalId": "jdps113-II-06",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-07-v1",
+      "practiceId": "SU1-JDPS113-II-07",
+      "originalId": "jdps113-II-07",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-07"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-II-09-v1",
+      "practiceId": "SU1-JDPS113-II-09",
+      "originalId": "jdps113-II-09",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-II-09"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-III-1-v1",
+      "practiceId": "SU1-JDPS113-III-1",
+      "originalId": "jdps113-III-1",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 6,
+      "constituentSourceIds": [
+        "jdps113-III-1-01",
+        "jdps113-III-1-02",
+        "jdps113-III-1-03",
+        "jdps113-III-1-04",
+        "jdps113-III-1-05",
+        "jdps113-III-1-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 2,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-III-3-v1",
+      "practiceId": "SU1-JDPS113-III-3",
+      "originalId": "jdps113-III-3",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 6,
+      "constituentSourceIds": [
+        "jdps113-III-3-01",
+        "jdps113-III-3-02",
+        "jdps113-III-3-03",
+        "jdps113-III-3-04",
+        "jdps113-III-3-05",
+        "jdps113-III-3-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 2,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps113-IV-1-v1",
+      "practiceId": "SU1-JDPS113-IV-1",
+      "originalId": "jdps113-IV-1",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "fill_in_blank:select",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 7,
+      "constituentSourceIds": [
+        "jdps113-IV-1-1a",
+        "jdps113-IV-1-1b",
+        "jdps113-IV-1-2",
+        "jdps113-IV-1-3",
+        "jdps113-IV-1-4a",
+        "jdps113-IV-1-4b",
+        "jdps113-IV-1-5"
+      ],
+      "sourceAliases": [],
+      "optionCount": 10,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-V-01-v1",
+      "practiceId": "SU1-JDPS113-V-01",
+      "originalId": "jdps113-V-01",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-V-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-V-03-v1",
+      "practiceId": "SU1-JDPS113-V-03",
+      "originalId": "jdps113-V-03",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-V-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps113-V-04-v1",
+      "practiceId": "SU1-JDPS113-V-04",
+      "originalId": "jdps113-V-04",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps113-V-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-01-v1",
+      "practiceId": "social-g4s1-jdps114-i-01-v1",
+      "originalId": "jdps114-I-01",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-02-v1",
+      "practiceId": "social-g4s1-jdps114-i-02-v1",
+      "originalId": "jdps114-I-02",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-02"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-03-v1",
+      "practiceId": "social-g4s1-jdps114-i-03-v1",
+      "originalId": "jdps114-I-03",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-04-v1",
+      "practiceId": "social-g4s1-jdps114-i-04-v1",
+      "originalId": "jdps114-I-04",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-05-v1",
+      "practiceId": "social-g4s1-jdps114-i-05-v1",
+      "originalId": "jdps114-I-05",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-06-v1",
+      "practiceId": "social-g4s1-jdps114-i-06-v1",
+      "originalId": "jdps114-I-06",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-09-v1",
+      "practiceId": "social-g4s1-jdps114-i-09-v1",
+      "originalId": "jdps114-I-09",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-09"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-i-13-v1",
+      "practiceId": "social-g4s1-jdps114-i-13-v1",
+      "originalId": "jdps114-I-13",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "true_false",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-I-13"
+      ],
+      "sourceAliases": [],
+      "optionCount": 0,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-01-v1",
+      "practiceId": "social-g4s1-jdps114-ii-01-v1",
+      "originalId": "jdps114-II-01",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-02-v1",
+      "practiceId": "social-g4s1-jdps114-ii-02-v1",
+      "originalId": "jdps114-II-02",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-02"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-03-v1",
+      "practiceId": "social-g4s1-jdps114-ii-03-v1",
+      "originalId": "jdps114-II-03",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-04-v1",
+      "practiceId": "social-g4s1-jdps114-ii-04-v1",
+      "originalId": "jdps114-II-04",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-05-v1",
+      "practiceId": "social-g4s1-jdps114-ii-05-v1",
+      "originalId": "jdps114-II-05",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-06-v1",
+      "practiceId": "social-g4s1-jdps114-ii-06-v1",
+      "originalId": "jdps114-II-06",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-06"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-ii-07-v1",
+      "practiceId": "social-g4s1-jdps114-ii-07-v1",
+      "originalId": "jdps114-II-07",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-II-07"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-iv-1-v1",
+      "practiceId": "social-g4s1-jdps114-iv-1-v1",
+      "originalId": "jdps114-IV-1-01;jdps114-IV-1-02;jdps114-IV-1-03;jdps114-IV-1-04;jdps114-IV-1-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 5,
+      "constituentSourceIds": [
+        "jdps114-IV-1-01",
+        "jdps114-IV-1-02",
+        "jdps114-IV-1-03",
+        "jdps114-IV-1-04",
+        "jdps114-IV-1-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 5,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-iv-2-v1",
+      "practiceId": "social-g4s1-jdps114-iv-2-v1",
+      "originalId": "jdps114-IV-2-01;jdps114-IV-2-02;jdps114-IV-2-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 3,
+      "constituentSourceIds": [
+        "jdps114-IV-2-01",
+        "jdps114-IV-2-02",
+        "jdps114-IV-2-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-v-1-v1",
+      "practiceId": "social-g4s1-jdps114-v-1-v1",
+      "originalId": "jdps114-V-1-01;jdps114-V-1-02;jdps114-V-1-03;jdps114-V-1-04;jdps114-V-1-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 5,
+      "constituentSourceIds": [
+        "jdps114-V-1-01",
+        "jdps114-V-1-02",
+        "jdps114-V-1-03",
+        "jdps114-V-1-04",
+        "jdps114-V-1-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 2,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-v-2-v1",
+      "practiceId": "social-g4s1-jdps114-v-2-v1",
+      "originalId": "jdps114-V-2-01;jdps114-V-2-02;jdps114-V-2-03;jdps114-V-2-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 4,
+      "constituentSourceIds": [
+        "jdps114-V-2-01",
+        "jdps114-V-2-02",
+        "jdps114-V-2-03",
+        "jdps114-V-2-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 2,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-jdps114-vi-01-v1",
+      "practiceId": "social-g4s1-jdps114-vi-01-v1",
+      "originalId": "jdps114-VI-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地形與生活",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-VI-01"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps114-vi-02-v1",
+      "practiceId": "social-g4s1-jdps114-vi-02-v1",
+      "originalId": "jdps114-VI-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-VI-02"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps114-vi-03-v1",
+      "practiceId": "social-g4s1-jdps114-vi-03-v1",
+      "originalId": "jdps114-VI-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-VI-03"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps114-vi-04-v1",
+      "practiceId": "social-g4s1-jdps114-vi-04-v1",
+      "originalId": "jdps114-VI-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-VI-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-jdps114-vi-05-v1",
+      "practiceId": "social-g4s1-jdps114-vi-05-v1",
+      "originalId": "jdps114-VI-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "multiple_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "氣候與水資源",
+      "answerSlots": 1,
+      "constituentSourceIds": [
+        "jdps114-VI-05"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": true
+    },
+    {
+      "appId": "social-g4s1-smps112-D-I-v1",
+      "practiceId": "SU1-SMPS112-D-I",
+      "originalId": "smps112-D-I",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 7,
+      "constituentSourceIds": [
+        "smps112-D-I-01",
+        "smps112-D-I-02",
+        "smps112-D-I-03",
+        "smps112-D-I-04",
+        "smps112-D-I-05",
+        "smps112-D-I-06",
+        "smps112-D-I-07"
+      ],
+      "sourceAliases": [],
+      "optionCount": 3,
+      "requiresOriginalPng": false
+    },
+    {
+      "appId": "social-g4s1-smps112-D-III-v1",
+      "practiceId": "SU1-SMPS112-D-III",
+      "originalId": "smps112-D-III",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "answerPage": null,
+      "unit": 22,
+      "digitalAdaptation": "grouped_choice",
+      "reviewStatus": "independently_solved_twice_no_official_answer",
+      "subtopic": "地圖與位置",
+      "answerSlots": 4,
+      "constituentSourceIds": [
+        "smps112-D-III-01",
+        "smps112-D-III-02",
+        "smps112-D-III-03",
+        "smps112-D-III-04"
+      ],
+      "sourceAliases": [],
+      "optionCount": 4,
+      "requiresOriginalPng": false
+    }
+  ]
+}

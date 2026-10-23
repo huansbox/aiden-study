@@ -1,0 +1,2835 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/240",
+  "publicationStatus": "candidate_not_published",
+  "formalTargetRangeVerified": false,
+  "targetEvidenceKind": "115_kangxuan_course_plan_concept_comparison",
+  "baselineRevision": 21,
+  "candidateRevision": 22,
+  "baselineAllSubjectActivities": 419,
+  "candidateAllSubjectActivities": 465,
+  "rootSelectionApproved": true,
+  "rootContentApproved": true,
+  "status": "root_approved_rev22_candidate",
+  "countUnit": "original_answer_slot",
+  "privatePayloadIncluded": false,
+  "selectionSha256": "63c3b5d7dfc1a52423e0f8654928e6e2c18d8f77858d1b5e06930039a3a8b678",
+  "sourceSha256": "1a9d70fb9e4c300b620f8e0889c481a48793af9bc6bc1d98c4417341c1c6c2e4",
+  "manifestSha256": "aa56845a26b1ccc835b4386c454939fccdf74e7a8e9566c975124fd804cae59d",
+  "independentExpectedSha256": "99516d3a39238878045f106e65c6905f7b3f18de329f0b192eb55fcd2c970d4e",
+  "historicalScopeMetadata": "data/study/g4-s1-math-u1/social-unit-two-more-paper-backlog-metadata.json",
+  "historicalScopeDisposition": "earlier_u1_outside_batch",
+  "sourceAnswerSlots": 90,
+  "counts": {
+    "candidate_rev22": 84,
+    "hold_complete_activity_source_ambiguity": 4,
+    "hold_complete_activity_open_design": 2
+  },
+  "currentFivePaperReconciliation": {
+    "historicalInventory": "data/study/g4-s1-math-u1/social-unit-two-more-paper-inventory-metadata.json",
+    "historicalInventorySha256": "f3df3fbf8eff28640f6d278c2ef99fdfe0518f8d01c1642a2d92fbfc79df02be",
+    "historicalRowsUnchanged": true,
+    "originalSourceAnswerSlots": 384,
+    "publishedRev21SourceAnswerSlots": 103,
+    "candidateRev22U1SourceAnswerSlots": 84,
+    "retainedAfterCandidateSourceAnswerSlots": 197,
+    "counts": {
+      "later_u4": 152,
+      "published_rev21": 103,
+      "later_u3": 32,
+      "hold_complete_activity_source_ambiguity": 8,
+      "open_response_outside_u2": 1,
+      "u2_scope_boundary_requires_review": 2,
+      "candidate_rev22": 84,
+      "hold_complete_activity_open_design": 2
+    }
+  },
+  "rows": [
+    {
+      "sourceId": "smps112-D-I-01",
+      "originalId": "smps112-D-I-01",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-01",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-02",
+      "originalId": "smps112-D-I-02",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-02",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-03",
+      "originalId": "smps112-D-I-03",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-03",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-04",
+      "originalId": "smps112-D-I-04",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-04",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-05",
+      "originalId": "smps112-D-I-05",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-05",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "5",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-06",
+      "originalId": "smps112-D-I-06",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-06",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "6",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-I-07",
+      "originalId": "smps112-D-I-07",
+      "paperId": "smps112",
+      "questionPage": 3,
+      "pdfPage": 3,
+      "printedLocator": "D-I-07",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-I",
+      "materialDependencyIds": [
+        "smps112-D-I-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-I-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "7",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-II-01",
+      "originalId": "smps112-D-II-01",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-II-01",
+      "sourceAnswerSlots": 1,
+      "format": "image_matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-II",
+      "materialDependencyIds": [
+        "smps112-D-II-map-images-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_source_ambiguity",
+      "candidateAppIds": [],
+      "heldAppIds": [
+        "social-g4s1-smps112-D-II-v1"
+      ],
+      "publishedAppIds": [],
+      "activityPartId": "1",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "map_classification_not_uniquely_supported"
+    },
+    {
+      "sourceId": "smps112-D-II-02",
+      "originalId": "smps112-D-II-02",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-II-02",
+      "sourceAnswerSlots": 1,
+      "format": "image_matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-II",
+      "materialDependencyIds": [
+        "smps112-D-II-map-images-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_source_ambiguity",
+      "candidateAppIds": [],
+      "heldAppIds": [
+        "social-g4s1-smps112-D-II-v1"
+      ],
+      "publishedAppIds": [],
+      "activityPartId": "2",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "map_classification_not_uniquely_supported"
+    },
+    {
+      "sourceId": "smps112-D-II-03",
+      "originalId": "smps112-D-II-03",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-II-03",
+      "sourceAnswerSlots": 1,
+      "format": "image_matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-II",
+      "materialDependencyIds": [
+        "smps112-D-II-map-images-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_source_ambiguity",
+      "candidateAppIds": [],
+      "heldAppIds": [
+        "social-g4s1-smps112-D-II-v1"
+      ],
+      "publishedAppIds": [],
+      "activityPartId": "3",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "map_classification_not_uniquely_supported"
+    },
+    {
+      "sourceId": "smps112-D-II-04",
+      "originalId": "smps112-D-II-04",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-II-04",
+      "sourceAnswerSlots": 1,
+      "format": "image_matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-II",
+      "materialDependencyIds": [
+        "smps112-D-II-map-images-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_source_ambiguity",
+      "candidateAppIds": [],
+      "heldAppIds": [
+        "social-g4s1-smps112-D-II-v1"
+      ],
+      "publishedAppIds": [],
+      "activityPartId": "4",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "map_classification_not_uniquely_supported"
+    },
+    {
+      "sourceId": "smps112-D-III-01",
+      "originalId": "smps112-D-III-01",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-III-01",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-III",
+      "materialDependencyIds": [
+        "smps112-D-III-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-III-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-III-02",
+      "originalId": "smps112-D-III-02",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-III-02",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-III",
+      "materialDependencyIds": [
+        "smps112-D-III-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-III-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-III-03",
+      "originalId": "smps112-D-III-03",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-III-03",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-III",
+      "materialDependencyIds": [
+        "smps112-D-III-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-III-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "smps112-D-III-04",
+      "originalId": "smps112-D-III-04",
+      "paperId": "smps112",
+      "questionPage": 4,
+      "pdfPage": 4,
+      "printedLocator": "D-III-04",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "smps112-D-III",
+      "materialDependencyIds": [
+        "smps112-D-III-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-smps112-D-III-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-01",
+      "originalId": "jdps113-I-01",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-01",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-I-01",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-02",
+      "originalId": "jdps113-I-02",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-02",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-I-02",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-02-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-03",
+      "originalId": "jdps113-I-03",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-03",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-I-03",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-04",
+      "originalId": "jdps113-I-04",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-04",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-I-04",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-04-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-05",
+      "originalId": "jdps113-I-05",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-05",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-I-05",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-05-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-06",
+      "originalId": "jdps113-I-06",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-06",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-I-06",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-06-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-I-10",
+      "originalId": "jdps113-I-10",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-10",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-I-10",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-I-10-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-01",
+      "originalId": "jdps113-II-01",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-01",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-II-01",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-02",
+      "originalId": "jdps113-II-02",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-02",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-II-02",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-02-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-03",
+      "originalId": "jdps113-II-03",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-03",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-II-03",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-05",
+      "originalId": "jdps113-II-05",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-05",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-II-05",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-05-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-06",
+      "originalId": "jdps113-II-06",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-06",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-II-06",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-06-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-07",
+      "originalId": "jdps113-II-07",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-07",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-II-07",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-07-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-II-09",
+      "originalId": "jdps113-II-09",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-09",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-II-09",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-II-09-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-01",
+      "originalId": "jdps113-III-1-01",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-01",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-02",
+      "originalId": "jdps113-III-1-02",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-02",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-03",
+      "originalId": "jdps113-III-1-03",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-03",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-04",
+      "originalId": "jdps113-III-1-04",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-04",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-05",
+      "originalId": "jdps113-III-1-05",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-05",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "5",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-1-06",
+      "originalId": "jdps113-III-1-06",
+      "paperId": "jdps113",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-1-06",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-III-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "6",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-01",
+      "originalId": "jdps113-III-3-01",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-01",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-02",
+      "originalId": "jdps113-III-3-02",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-02",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-03",
+      "originalId": "jdps113-III-3-03",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-03",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-04",
+      "originalId": "jdps113-III-3-04",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-04",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-05",
+      "originalId": "jdps113-III-3-05",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-05",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "5",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-III-3-06",
+      "originalId": "jdps113-III-3-06",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "III-3-06",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-III-3",
+      "materialDependencyIds": [
+        "jdps113-III-3-chart"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-III-3-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "6",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-1a",
+      "originalId": "jdps113-IV-1-1a",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-1a",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 1,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-1b",
+      "originalId": "jdps113-IV-1-1b",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-1b",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 2,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-2",
+      "originalId": "jdps113-IV-1-2",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-2",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 3,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-3",
+      "originalId": "jdps113-IV-1-3",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-3",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 4,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-4a",
+      "originalId": "jdps113-IV-1-4a",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-4a",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 5,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-4b",
+      "originalId": "jdps113-IV-1-4b",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-4b",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 6,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-IV-1-5",
+      "originalId": "jdps113-IV-1-5",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-5",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps113-IV-1",
+      "materialDependencyIds": [
+        "jdps113-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-IV-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": 7,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-V-01",
+      "originalId": "jdps113-V-01",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-01",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-V-01",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-V-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-V-03",
+      "originalId": "jdps113-V-03",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-03",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps113-V-03",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-V-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps113-V-04",
+      "originalId": "jdps113-V-04",
+      "paperId": "jdps113",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-04",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps113-V-04",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps113-V-04-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-01",
+      "originalId": "jdps114-I-01",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-01",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-I-01",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-02",
+      "originalId": "jdps114-I-02",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-02",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-I-02",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-02-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-03",
+      "originalId": "jdps114-I-03",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-03",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-I-03",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-04",
+      "originalId": "jdps114-I-04",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-04",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-I-04",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-04-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-05",
+      "originalId": "jdps114-I-05",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-05",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-I-05",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-05-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-06",
+      "originalId": "jdps114-I-06",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-06",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-I-06",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-06-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-09",
+      "originalId": "jdps114-I-09",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-09",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-I-09",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-09-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-I-13",
+      "originalId": "jdps114-I-13",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "I-13",
+      "sourceAnswerSlots": 1,
+      "format": "true_false",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-I-13",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-i-13-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-01",
+      "originalId": "jdps114-II-01",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-01",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-II-01",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-02",
+      "originalId": "jdps114-II-02",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-02",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-II-02",
+      "materialDependencyIds": [
+        "jdps114-II-02-map"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-02-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-03",
+      "originalId": "jdps114-II-03",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-03",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-II-03",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-04",
+      "originalId": "jdps114-II-04",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-04",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-II-04",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-04-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-05",
+      "originalId": "jdps114-II-05",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-05",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-II-05",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-05-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-06",
+      "originalId": "jdps114-II-06",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-06",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-II-06",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-06-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-II-07",
+      "originalId": "jdps114-II-07",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "II-07",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-II-07",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-ii-07-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-III-01",
+      "originalId": "jdps114-III-01",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-01",
+      "sourceAnswerSlots": 1,
+      "format": "draw_symbol",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-III",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_open_design",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p1",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "open_symbol_design_requires_separate_interaction"
+    },
+    {
+      "sourceId": "jdps114-III-02",
+      "originalId": "jdps114-III-02",
+      "paperId": "jdps114",
+      "questionPage": 1,
+      "pdfPage": 1,
+      "printedLocator": "III-02",
+      "sourceAnswerSlots": 1,
+      "format": "draw_symbol",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-III",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "hold_complete_activity_open_design",
+      "candidateAppIds": [],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p2",
+      "activityBlankNumber": null,
+      "answerStatus": "not_approved_for_automatic_scoring",
+      "officialAnswerAvailable": false,
+      "holdReasonCode": "open_symbol_design_requires_separate_interaction"
+    },
+    {
+      "sourceId": "jdps114-IV-1-01",
+      "originalId": "jdps114-IV-1-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-01",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-IV-1",
+      "materialDependencyIds": [
+        "jdps114-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-1-02",
+      "originalId": "jdps114-IV-1-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-02",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-IV-1",
+      "materialDependencyIds": [
+        "jdps114-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-1-03",
+      "originalId": "jdps114-IV-1-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-03",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-IV-1",
+      "materialDependencyIds": [
+        "jdps114-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-1-04",
+      "originalId": "jdps114-IV-1-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-04",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-IV-1",
+      "materialDependencyIds": [
+        "jdps114-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-1-05",
+      "originalId": "jdps114-IV-1-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-1-05",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-TERRAIN"
+      ],
+      "sourceGroupId": "jdps114-IV-1",
+      "materialDependencyIds": [
+        "jdps114-IV-1-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p5",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-2-01",
+      "originalId": "jdps114-IV-2-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-2-01",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-IV-2",
+      "materialDependencyIds": [
+        "jdps114-IV-2-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-2-02",
+      "originalId": "jdps114-IV-2-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-2-02",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-IV-2",
+      "materialDependencyIds": [
+        "jdps114-IV-2-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-IV-2-03",
+      "originalId": "jdps114-IV-2-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "IV-2-03",
+      "sourceAnswerSlots": 1,
+      "format": "matching",
+      "conceptAxes": [
+        "U1-MAP"
+      ],
+      "sourceGroupId": "jdps114-IV-2",
+      "materialDependencyIds": [
+        "jdps114-IV-2-wordbank"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-iv-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-1-01",
+      "originalId": "jdps114-V-1-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-1-01",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-1-02",
+      "originalId": "jdps114-V-1-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-1-02",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-1-03",
+      "originalId": "jdps114-V-1-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-1-03",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-1-04",
+      "originalId": "jdps114-V-1-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-1-04",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-1-05",
+      "originalId": "jdps114-V-1-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-1-05",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-1",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-1-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p5",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-2-01",
+      "originalId": "jdps114-V-2-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-2-01",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-2",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p1",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-2-02",
+      "originalId": "jdps114-V-2-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-2-02",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-2",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p2",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-2-03",
+      "originalId": "jdps114-V-2-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-2-03",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-2",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p3",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-V-2-04",
+      "originalId": "jdps114-V-2-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "V-2-04",
+      "sourceAnswerSlots": 1,
+      "format": "check_each_statement",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-V-2",
+      "materialDependencyIds": [],
+      "hasSharedMaterialDependency": false,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-v-2-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": "p4",
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-VI-01",
+      "originalId": "jdps114-VI-01",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "VI-01",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-VI",
+      "materialDependencyIds": [
+        "jdps114-VI-reading"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-vi-01-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-VI-02",
+      "originalId": "jdps114-VI-02",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "VI-02",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-VI",
+      "materialDependencyIds": [
+        "jdps114-VI-reading"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-vi-02-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-VI-03",
+      "originalId": "jdps114-VI-03",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "VI-03",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-VI",
+      "materialDependencyIds": [
+        "jdps114-VI-reading"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-vi-03-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-VI-04",
+      "originalId": "jdps114-VI-04",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "VI-04",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-VI",
+      "materialDependencyIds": [
+        "jdps114-VI-reading"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-vi-04-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    },
+    {
+      "sourceId": "jdps114-VI-05",
+      "originalId": "jdps114-VI-05",
+      "paperId": "jdps114",
+      "questionPage": 2,
+      "pdfPage": 2,
+      "printedLocator": "VI-05",
+      "sourceAnswerSlots": 1,
+      "format": "multiple_choice",
+      "conceptAxes": [
+        "U1-CLIMATE-WATER"
+      ],
+      "sourceGroupId": "jdps114-VI",
+      "materialDependencyIds": [
+        "jdps114-VI-reading"
+      ],
+      "hasSharedMaterialDependency": true,
+      "publisher": "康軒",
+      "curriculumReferences": [],
+      "scopeStatus": "u1_exact_batch",
+      "historicalDisposition": "earlier_u1_outside_batch",
+      "disposition": "candidate_rev22",
+      "candidateAppIds": [
+        "social-g4s1-jdps114-vi-05-v1"
+      ],
+      "heldAppIds": [],
+      "publishedAppIds": [],
+      "activityPartId": null,
+      "activityBlankNumber": null,
+      "answerStatus": "independently_solved_twice_no_official_answer",
+      "officialAnswerAvailable": false
+    }
+  ]
+}

@@ -149,6 +149,8 @@ localhost 不在正式 Worker 的 CORS 白名單，一般靜態伺服器上的�
 
 ## 題庫 pipeline
 
+[#240 跨校社會U1追加候選](docs-dev/grade4-social-study-unit-one-more-paper-batch.md)已核定46完整活動／84原格，另6格整組保留；rev22候選全科465活動（數學68／自然217／社會180），社會315格。目前正式仍為rev21的419活動，尚未把本批候選發布；U1三大類、U2四主題、自然七主題與舊題／進度保持，精確來源及重建見本批紀錄。
+
 紙本練習只在孩子實際需要時製作，沿用 [四上第一份短練習](learning-tasks/grade4-math-first-practice/) 的來源與再製方式，不按章自動產生 PDF。
 
 目前學習內容主軸是把已核歷屆題小批加入 iPad 題庫。[#55](https://github.com/huansbox/aiden-study/issues/55) 建立最初六題 private pack 與家庭權限讀取；[#59](https://github.com/huansbox/aiden-study/issues/59)、[#60](https://github.com/huansbox/aiden-study/issues/60)、[#101](https://github.com/huansbox/aiden-study/issues/101) 依序擴題，[#117](https://github.com/huansbox/aiden-study/issues/117)、[#119](https://github.com/huansbox/aiden-study/issues/119)、[#129](https://github.com/huansbox/aiden-study/issues/129)、[#134](https://github.com/huansbox/aiden-study/issues/134) 加入自然題。[#148 數學文字補題](docs-dev/grade4-math-text-batch.md) 曾發布 revision 9、104 題；[#151 角度看圖題](docs-dev/grade4-math-angle-batch.md) 已加入四道有官方答案的 PNG 圖題，正式發布 revision 10，共 108 題（數學 68／自然 40）；[#154 社會首批](docs-dev/grade4-social-study-first-batch.md)再加入 19 題，revision 11 共 127 題（數學 68／自然 40／社會 19）。精確發布基線與重建方式見[私用題包重建說明](docs-dev/grade4-u1-private-pack-build.md)。[#103 Study 家長試玩](https://github.com/huansbox/aiden-study/issues/103) 提供不寫入孩子進度的獨立試玩頁。後續選題依[概念／出題方法覆蓋報告](docs-dev/grade4-math-pattern-counts.md)及[擴題路線圖](docs-dev/grade4-math-expansion-plan.md)評估；既有進度與三下題目保護仍沿用。[家庭端驗收紀錄](docs-dev/grade4-u1-ipad-acceptance.md)與[執行狀態](wiki/Plan.md)保存其他背景。

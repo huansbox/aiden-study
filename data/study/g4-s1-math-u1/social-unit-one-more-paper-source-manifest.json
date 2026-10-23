@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/huansbox/aiden-study/issues/240",
+  "publicationStatus": "candidate_not_published",
+  "formalTargetRangeVerified": false,
+  "targetEvidenceKind": "115_kangxuan_course_plan_concept_comparison",
+  "baselineRevision": 21,
+  "candidateRevision": 22,
+  "baselineAllSubjectActivities": 419,
+  "candidateAllSubjectActivities": 465,
+  "rootSelectionApproved": true,
+  "rootContentApproved": true,
+  "status": "root_approved_rev22_candidate",
+  "countUnit": "original_answer_slot",
+  "privatePayloadIncluded": false,
+  "selectionSha256": "63c3b5d7dfc1a52423e0f8654928e6e2c18d8f77858d1b5e06930039a3a8b678",
+  "sourceSha256": "1a9d70fb9e4c300b620f8e0889c481a48793af9bc6bc1d98c4417341c1c6c2e4",
+  "manifestSha256": "aa56845a26b1ccc835b4386c454939fccdf74e7a8e9566c975124fd804cae59d",
+  "independentExpectedSha256": "99516d3a39238878045f106e65c6905f7b3f18de329f0b192eb55fcd2c970d4e",
+  "historicalSourceManifest": "data/study/g4-s1-math-u1/social-unit-two-more-paper-source-manifest.json",
+  "historicalSourceManifestSha256": "e77d4c39863afd611314bfce02814084881ff4b20e663add98ac27d47452f408",
+  "sourceAnswerSlots": 90,
+  "originalPdfPages": 8,
+  "scopePdfPages": 6,
+  "papers": [
+    {
+      "paperId": "smps112",
+      "school": "基隆市深美國民小學",
+      "academicYear": 112,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "第一次評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "on_question_face",
+        "pdfPage": 1,
+        "description": "命題範圍明印康軒版。"
+      },
+      "questionSourceUrl": "https://oldsmps.kl.edu.tw/books/file/135/%E7%A4%BE.pdf",
+      "publicParentUrl": "https://oldsmps.kl.edu.tw/books/135",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "questionPdf": {
+        "bytes": 582181,
+        "sha256": "a9fe2281d7f60511b8bbe7e745918656ab1d4ccc1826b82a9254aaf955fd5641",
+        "pages": 4
+      },
+      "scopePdfPages": [
+        3,
+        4
+      ],
+      "exactBatchSourceAnswerSlots": 15
+    },
+    {
+      "paperId": "jdps113",
+      "school": "桃園市桃園區建德國民小學",
+      "academicYear": 113,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "期中定期評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "official_school_textbook_table",
+        "evidenceId": "jdps113-publisher",
+        "gradeColumn": 4,
+        "subjectRow": "社會領域",
+        "displayedPublisher": "康軒"
+      },
+      "questionSourceUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?cat_sn=732&cfsn=4151&name=113%E5%AD%B8%E5%B9%B4%E5%BA%A6%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E7%A4%BE%E6%9C%83%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "publicParentUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=732",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "questionPdf": {
+        "bytes": 636415,
+        "sha256": "59c29e6a0d95d9616f2059e174722e9cbf80343c948cc102e503b209afcfd367",
+        "pages": 2
+      },
+      "scopePdfPages": [
+        1,
+        2
+      ],
+      "exactBatchSourceAnswerSlots": 36
+    },
+    {
+      "paperId": "jdps114",
+      "school": "桃園市桃園區建德國民小學",
+      "academicYear": 114,
+      "grade": 4,
+      "semester": 1,
+      "subject": "社會",
+      "examPeriod": "期中定期評量",
+      "publisher": "康軒",
+      "publisherEvidence": {
+        "type": "official_school_textbook_table",
+        "evidenceId": "jdps114-publisher",
+        "gradeColumn": 4,
+        "subjectRow": "社會領域",
+        "displayedPublisher": "康軒"
+      },
+      "questionSourceUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?cat_sn=737&cfsn=4248&name=114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E7%AC%AC%E4%B8%80%E5%AD%B8%E6%9C%9F%E5%9B%9B%E5%B9%B4%E7%B4%9A%E7%A4%BE%E6%9C%83%E9%A0%98%E5%9F%9F%E6%9C%9F%E4%B8%AD%E8%A9%95%E9%87%8F%E8%A9%A6%E5%8D%B7.pdf&op=dlfile",
+      "publicParentUrl": "https://www.jdps.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=737",
+      "officialAnswerStatus": "not_found_in_checked_official_listing",
+      "officialAnswerSearchScope": "只查本卷官方父頁下載列表；不宣稱全網無答案。",
+      "questionPdf": {
+        "bytes": 226643,
+        "sha256": "21189ffb3b17b91103647f3df2cbaa5cb7304490125008b2bdf96baf9671ca32",
+        "pages": 2
+      },
+      "scopePdfPages": [
+        1,
+        2
+      ],
+      "exactBatchSourceAnswerSlots": 39
+    }
+  ]
+}
