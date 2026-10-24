@@ -206,9 +206,17 @@ async function previewChecks(browser,width,height,route,{keyboard=false,prefix='
   for(const name of ['transition','independent','answers']){const response=await h.context.request.get(`${base}/number-line-difference/print/${name}.pdf`);assert.equal(response.status(),200);assert.equal((await response.body()).subarray(0,5).toString(),'%PDF-');}
   await h.page.screenshot({path:resolve(output,`${prefix}preview-finish-${width}.png`),fullPage:true});safeRecord(h.record);report.checks.push({preview:true,engine:keyboard?'webkit':'chromium',width,height,mode:keyboard?'keyboard':'tap',completeSix:true,storageAccesses:0,v1V2CollectionSentinelsUnchanged:true,forbiddenRequests:[],pdfs:3});
 }
+async function scrollChecks(browser){
+  for(const [width,height]of [[768,1024],[1024,768]]){
+    const h=await newPage(browser,{width,height,init:{script:legacy=>localStorage.setItem('learning-task:number-line-difference:v1:aiden',legacy),arg:JSON.stringify(legacyLog(6))}});
+    await waitStage(h.page,'finished');assert.equal(await checkScroll(h.page),true,'六題總覽溢出時仍可用原生touch捲動');assert.equal(await stage(h.page),'finished');safeRecord(h.record);
+    report.checks.push({nativePageScroll:true,width,height,statePreserved:true});
+  }
+}
 try{
   const browser=await engines.chromium.launch({headless:true});browsers.push(browser);report.engineVersions.chromium=browser.version();
   if(process.env.NUMBER_LINE_FORMAT_ONLY==='1')await migrationChecks(browser);
+  else if(process.env.NUMBER_LINE_SCROLL_ONLY==='1')await scrollChecks(browser);
   else if(process.env.NUMBER_LINE_QUICK==='1'){
     if(process.env.NUMBER_LINE_QUICK_WIDTH!=='1024')await previewChecks(browser,768,1024,'outer',{prefix:'quick-768-'});if(process.env.NUMBER_LINE_QUICK_WIDTH!=='768')await previewChecks(browser,1024,768,'left',{prefix:'quick-1024-'});
   }else{
@@ -237,6 +245,7 @@ try{
   assert.deepEqual([...new Set(report.coverage.routes.filter(x=>x.problem==='p6').map(x=>x.route))].sort(),problems[5].routes.map(x=>x.id).sort(),'browser 必須走過全部五條進階最短路');
   assert.deepEqual([...new Set(report.coverage.routes.filter(x=>x.problem==='p5').map(x=>x.route))].sort(),['left','right'],'browser 必須走過中階自選左右兩路');
   await migrationChecks(browser);
+  await scrollChecks(browser);
   const home=await contexts[0].newPage();await home.goto(base+'/?child=aiden');await home.locator('[data-learning-task="number-line-difference"]').waitFor();assert.match(await home.locator('[data-learning-task="number-line-difference"]').getAttribute('href'),/number-line-difference\/\?child=aiden/);await home.screenshot({path:resolve(output,'home-aiden.png'),fullPage:true});await home.goto(base+'/?child=bingpu');await home.locator('.family-header').waitFor();assert.equal(await home.locator('[data-learning-task="number-line-difference"]').count(),0);report.checks.push({home:true,aidenVisible:true,bingpuHidden:true});
   }
   if(process.env.NUMBER_LINE_WEBKIT==='1'){const webkit=await engines.webkit.launch({headless:true});browsers.push(webkit);report.engineVersions.webkit=webkit.version();await previewChecks(webkit,768,1024,'outer',{keyboard:true,prefix:'webkit-keyboard-'});}
