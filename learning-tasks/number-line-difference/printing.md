@@ -8,13 +8,15 @@
 
 | 成品 | 頁數與內容 | 用法 |
 | --- | --- | --- |
-| [過渡卷](output/pdf/number-line-transition.pdf) | 3 頁，6 題；初階 2＋中階 3＋進階 1 | 先沿著預畫弧線作答，再逐題自行補圖、段名與算式。 |
-| [獨立卷](output/pdf/number-line-independent.pdf) | 3 頁，6 題；初階 2＋中階 3＋進階 1 | 只提供題幹與端點數線，孩子自己畫弧線、標長度、列式。 |
+| [過渡卷](output/pdf/number-line-transition.pdf) | 5 頁，6 題；初階 2＋中階 3＋進階 1 | 預畫部分弧線、目標橫線與下框；逐題減少預填段名與圖，讓孩子自己接手。 |
+| [獨立卷](output/pdf/number-line-independent.pdf) | 5 頁，6 題；初階 2＋中階 3＋進階 1 | 只提供題幹與端點數線，孩子自己畫弧線、選每一步目標、標長度與列式。 |
 | [家長解答](output/pdf/number-line-parent-answers.pdf) | 8 頁，紙本全部 12 題 | 與孩子卷分開；中階含左右兩路，進階列出全部五條最短合法減法路線。 |
 
-每個算式的數字上方或旁邊，都要寫出它代表的段名。例如 `甲丁 24 - 乙丁 15 = 甲乙 9`。過渡卷逐步減少預填的段名，獨立卷由孩子自行寫。孩子算出新長度後，要把段名與數字標回原圖，下一步才用得到。
+兩份孩子卷的初階兩題同頁，中階與進階每題各用一頁，保留畫線與書寫空間。圖採上下分側的淺弧線：先畫已知段與長度，再選這一步要算的段，畫粗橫線與下框；找出共端點的長段、短段後，自己計算，將結果填回下框，再補成後續可用的弧線。
 
-核答先看段名，再看數字：長、短兩段必須共用一個端點，而且短段包含在長段內。數值相同的另一段不能代替；數線沒有單位，也不必按比例，不能量圖猜答案。家長圖以實線表示題目已知、虛線表示算出的新段、粗線表示題目要求的段，黑白列印也能分辨。
+算式一律由目標開始：`甲乙 9 = 甲丁 24 - 乙丁 15`。每個數字上方或旁邊都寫出段名，不能只填三個數字。過渡卷上排是段名、下排是數字，依「目標段 = 長段 - 短段」填寫；第 1 題預填三個段名，第 2 題留一個段名自行寫，第 3 題只預填第一步目標，第 4 題起段名自行寫。預畫已知弧線由三條、兩條、一條退到零條；第 1 至 4 題先畫好第一步目標粗線與下框，第 5、6 題由孩子自行選路與補圖。第 3 題先求左側、第 4 題先求右側，第 5 題自選；獨立卷不預填中間解法。
+
+核答先看段名，再看數字：長、短兩段必須共用一個端點，而且短段包含在長段內。數值相同的另一段不能代替；數線沒有單位，也不按比例，不能量圖猜答案。家長圖以實線弧表示題目已知、虛線弧表示算出的新段、粗橫線與下框表示題目要求的段，黑白列印也能分辨。完整圖標出所有合法路線會用到的段名與數字；中階保留左右兩路，進階保留五條最短路線。
 
 ## 唯一題目來源
 
@@ -32,6 +34,7 @@
 uv run learning-tasks/number-line-difference/source/build_paper.py
 uv run learning-tasks/number-line-difference/source/build_paper.py --check
 node --test tests/test_number_line_problems.mjs
+uv run pytest tests/test_number_line_paper.py -q
 ```
 
 產生器以 PEP 723 宣告 Python 3.13 與 ReportLab，沿用 `uv` 執行，不修改 repo 根目錄的 dependencies。三份 PDF 產生在本 task 的 `output/pdf/`；固定的 PDF metadata 可讓 `--check` 比對來源與產物，該選項不改檔。
@@ -42,11 +45,11 @@ node --test tests/test_number_line_problems.mjs
 
 ## 紙本驗證
 
-改過題目或排版後，先跑數學測試、重建與 `--check`，再用 Poppler 的 `pdftoppm` 將三份 PDF 的全部 14 頁 render 成 PNG，逐頁確認：
+改過題目或排版後，先跑數學測試、重建與 `--check`，再用 Poppler 的 `pdftoppm` 將三份 PDF 的全部 18 頁 render 成 PNG，逐頁確認：
 
-- 弧線端點、段名與數字一致，標籤不互壓。
+- 上下弧線端點、段名與數字一致，標籤、端點文字、粗目標橫線與下框不互壓。
 - 過渡卷每個數字有段名欄，獨立卷保留自行畫圖、列式的空間。
 - 中階兩路及進階五路的每一步都能對回圖上的同一段。
 - 黑白、A4、頁碼、中文字型與邊界正常，沒有裁字或缺字。
 
-私人來源照片不隨 Git 公開。這次逐頁渲染證據放在 Dropbox 相對路徑 `mywork/aiden-study/number-line-difference/qa/paper/`；本機 Dropbox 根目錄與查核日期依 Issue #243，不把同機副本宣稱為已跨機同步。
+私人來源照片不隨 Git 公開。直接操作數線改版與本輪逐頁渲染證據見 [#245](https://github.com/huansbox/aiden-study/issues/245)，證據放在 Dropbox 相對路徑 `mywork/aiden-study/number-line-difference/direct-touch/qa/paper/`；本機於 2026-10-24 查核 Dropbox 根目錄為 `C:/Users/linshuhuan/Dropbox`，只確認本機副本，不宣稱已跨機同步。首次紙本交付仍保留在 [#243](https://github.com/huansbox/aiden-study/issues/243)。

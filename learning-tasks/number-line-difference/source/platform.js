@@ -9,7 +9,8 @@ export async function openPlatform(preview) {
   await window.KidsAuth.ready;
   if (window.KidsAuth.state.status === 'required') throw Error('請回孩子首頁，讓家長重新連接家庭。');
   const collection=window.KidsCollection.create(child);
-  const key='learning-task:number-line-difference:v1:'+child;
+  const key='learning-task:number-line-difference:v2:'+child,legacyKey='learning-task:number-line-difference:v1:'+child;
+  const read=key=>{try{const raw=localStorage.getItem(key);if(raw===null)return null;return JSON.parse(raw)??{version:'unreadable'};}catch{return {version:'unreadable'};}};
   const reward=()=>{
     const snapshot=collection.snapshot(), task=snapshot.taskRewards?.['number-line-difference'] || {status:'unearned'};
     // 明拒會移除 outbox；訂閱也要看 sync，才能呈現稍後自動補送的拒絕。
@@ -19,8 +20,8 @@ export async function openPlatform(preview) {
   };
   return {
     preview:false,child,
-    load(){try{return JSON.parse(localStorage.getItem(key));}catch{return null;}},
-    save(value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}},
+    load(){return read(key);},loadLegacy(){return read(legacyKey);},
+    save(value){try{const existing=read(key);if(existing!==null&&(existing.version!==2||!Array.isArray(existing.log)))return false;localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}},
     reward,subscribe:fn=>collection.subscribe(fn),ready:collection.ready,
     async finish(ids){await collection.ready;return collection.completeTask({taskId:'number-line-difference',completedQuestionIds:ids});},
     async retry(){await window.KidsAuth.refresh();await collection.refresh();return collection.flush();},
