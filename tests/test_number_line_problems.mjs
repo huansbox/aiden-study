@@ -87,21 +87,21 @@ function positions(problem) {
   return values;
 }
 
-test('the three fixed sets each contain 2 + 3 + 1 questions with distinct numerical instances', () => {
+test('the three fixed sets each contain 2 + 3 questions with distinct numerical instances', () => {
   assert.equal(bank.schemaVersion, 1);
   assert.deepEqual(Object.keys(bank.sets), ['pad', 'transition', 'independent']);
   const ids = new Set();
   for (const [name, problems] of Object.entries(bank.sets)) {
-    assert.equal(problems.length, 6);
-    assert.deepEqual(problems.map(p => p.level), ['beginner', 'beginner', 'intermediate', 'intermediate', 'intermediate', 'advanced']);
+    assert.equal(problems.length, 5);
+    assert.deepEqual(problems.map(p => p.level), ['beginner', 'beginner', 'intermediate', 'intermediate', 'intermediate']);
     for (const [index, problem] of problems.entries()) {
-      assert.equal(problem.points.length, index === 5 ? 5 : 4);
+      assert.equal(problem.points.length, 4);
       assert.ok(!ids.has(problem.id));
       ids.add(problem.id);
       if (name === 'pad') assert.equal(problem.id, `p${index + 1}`);
     }
   }
-  for (let index = 0; index < 6; index++) {
+  for (let index = 0; index < 5; index++) {
     const instances = Object.values(bank.sets).map(set => JSON.stringify(set[index].givens));
     assert.equal(new Set(instances).size, 3, `question ${index + 1} needs new numbers in each set`);
   }

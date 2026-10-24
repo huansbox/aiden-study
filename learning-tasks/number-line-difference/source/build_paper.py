@@ -23,15 +23,15 @@ PAGE_W, PAGE_H = A4
 LEFT, RIGHT = 38, PAGE_W - 38
 FONT, BOLD = "NumberLineCJK", "NumberLineCJKBold"
 SET_NAMES = {"transition": "過渡卷", "independent": "獨立卷"}
-LEVEL_NAMES = {"beginner": "初階", "intermediate": "中階", "advanced": "三次減法挑戰"}
+LEVEL_NAMES = {"beginner": "初階", "intermediate": "中階"}
 # Fixed sides and heights for the union of every accepted route.
 # The band directly below the baseline is reserved for the target box.
-HEIGHTS_FOUR = {"AD": 64, "AC": 38, "BD": -82, "AB": 22, "BC": -52, "CD": 22}
-HEIGHTS_FIVE = {
-    "AE": 92, "AD": 58, "BE": -82, "AC": -54, "AB": 22,
-    "BC": -40, "CD": -40, "DE": 22, "CE": 58, "BD": 22,
-}
-CHILD_PAGES = ((0, 1), (2,), (3,), (4,), (5,))
+HEIGHTS_FOUR = {"AD": 67, "AC": 38, "BD": -82, "AB": 22, "BC": -52, "CD": 22}
+# Short-segment labels sit inside their own curves, clear of the longer arcs
+# and the band used by the target box immediately below the baseline.
+LABEL_HEIGHTS_FOUR = {"AB": 6, "BC": -45, "CD": 6}
+CHILD_PAGES = ((0, 1), (2,), (3,), (4,))
+PARENT_PAGES_PER_SET = ((0, 1), (2, 3), (4,))
 
 
 def text(pdf, x, y, value, size=12, bold=False, center=False):
@@ -94,8 +94,8 @@ def draw_arc(pdf, x1, x2, baseline, height, dashed=False):
     pdf.restoreState()
 
 
-def arc_label(pdf, x1, x2, baseline, height, label):
-    label_y = baseline + height + (6 if height > 0 else -15)
+def arc_label(pdf, x1, x2, baseline, height, label, label_height=None):
+    label_y = baseline + (height + (6 if height > 0 else -15) if label_height is None else label_height)
     width = pdfmetrics.stringWidth(label, FONT, 11) + 8
     pdf.setFillColor(colors.white)
     pdf.rect((x1 + x2 - width) / 2, label_y - 2, width, 15, fill=1, stroke=0)
@@ -120,12 +120,11 @@ def target_line(pdf, x1, x2, baseline, value=None):
 def number_line(pdf, problem, baseline, mode="bare", prefilled=(), target=None):
     start, end = LEFT + 34, RIGHT - 34
     ids = [point["id"] for point in problem["points"]]
-    # Wider middle intervals keep the five-point short curves shallow as well.
-    fractions = (0, 0.2, 0.5, 0.8, 1) if len(ids) == 5 else (0, 1 / 3, 2 / 3, 1)
+    fractions = (0, 1 / 3, 2 / 3, 1)
     x = {point: start + (end - start) * fractions[index] for index, point in enumerate(ids)}
     given = {item["segment"] for item in problem["givens"]}
     lengths = all_lengths(problem)
-    heights = HEIGHTS_FIVE if len(ids) == 5 else HEIGHTS_FOUR
+    heights = HEIGHTS_FOUR
     arcs = list(lengths) if mode == "answer" else list(prefilled)
     for segment in arcs:
         a, b = segment
@@ -133,7 +132,7 @@ def number_line(pdf, problem, baseline, mode="bare", prefilled=(), target=None):
     # Labels are painted last, so later curves cannot cut through earlier text.
     for segment in arcs:
         a, b = segment
-        arc_label(pdf, x[a], x[b], baseline, heights[segment], f"{segment_name(problem, segment)} {lengths[segment]}")
+        arc_label(pdf, x[a], x[b], baseline, heights[segment], f"{segment_name(problem, segment)} {lengths[segment]}", LABEL_HEIGHTS_FOUR.get(segment))
     pdf.setStrokeColor(colors.black)
     pdf.setLineWidth(1)
     pdf.line(start, baseline, end, baseline)
@@ -170,9 +169,9 @@ def transition_instruction(problem, index):
     if index <= 2:
         return f"先選 {segment_name(problem, problem['target'])}；補齊弧線與長度，再找長段、短段。"
     if index in (3, 4):
-        first = preferred_route(problem)["steps"][0]["result"]
-        return f"先選 {segment_name(problem, first)}，算完標回圖，再求 {segment_name(problem, problem['target'])}。"
-    return f"自己選第一段；用 {problem['minSubtractions']} 次相減求出 {segment_name(problem, problem['target'])}。"
+        side = "左側" if index == 3 else "右側"
+        return f"先想最後要的段；這題從{side}找一段，算完標回圖，再求目標。"
+    return "自己選路；先想還缺哪一段，再畫圖、列式。"
 
 
 def child_question(pdf, problem, index, top, transition, compact=False):
@@ -181,6 +180,8 @@ def child_question(pdf, problem, index, top, transition, compact=False):
     text(pdf, LEFT, top - 49, f"{segment_name(problem, problem['target'])} 有多長？", 13, bold=True)
     instruction = transition_instruction(problem, index) if transition else "先選要算的段，再找長段、短段，算完標回圖。"
     text(pdf, LEFT, top - 72, instruction, 10.5)
+    if transition and problem["level"] == "intermediate":
+        text(pdf, LEFT, top - 106, "為了求＿＿＿＿＿＿，要先求＿＿＿＿＿＿。", 12)
     prefilled, target = [], None
     route = preferred_route(problem)
     if transition:
@@ -225,34 +226,22 @@ def children_pdf(problems, name):
 def parent_question(pdf, problem, set_name, index, top):
     text(pdf, LEFT, top, f"{SET_NAMES[set_name]} 第 {index} 題｜{segment_name(problem, problem['target'])} = {problem['answer']}", 14, bold=True)
     text(pdf, LEFT, top - 24, given_text(problem), 11)
-    number_line(pdf, problem, top - 147, mode="answer")
+    number_line(pdf, problem, top - 130, mode="answer")
     if problem["level"] == "beginner":
-        text(pdf, LEFT + 16, top - 267, equation(problem, problem["routes"][0]["steps"][0]), 12)
-        text(pdf, LEFT + 16, top - 294, "先選目標段；長、短兩段共用端點，短段在長段裡。", 10.5)
+        text(pdf, LEFT + 16, top - 250, equation(problem, problem["routes"][0]["steps"][0]), 12)
+        text(pdf, LEFT + 16, top - 277, "先選目標段；長、短兩段共用端點，短段在長段裡。", 10.5)
         return
     for column, route in enumerate(problem["routes"]):
         x = LEFT + column * 264
-        text(pdf, x, top - 254, "先求左側" if route["id"] == "left" else "先求右側", 11, bold=True)
+        first, last = route["steps"][0], route["steps"][-1]
+        target = segment_name(problem, problem["target"])
+        middle = segment_name(problem, first["result"])
+        known = segment_name(problem, last["long"])
+        text(pdf, x, top - 244, "先求左側" if route["id"] == "left" else "先求右側", 11, bold=True)
+        text(pdf, x, top - 265, f"為了求{target}，要先求{middle}。", 10)
+        text(pdf, x, top - 284, f"已知{known}，扣掉{middle}就有{target}。", 9.5)
         for row, step in enumerate(route["steps"]):
-            text(pdf, x, top - 278 - row * 23, equation(problem, step), 10.5)
-
-
-def advanced_parent(pdf, problem, set_name, page, total):
-    page_header(pdf, "數線長短差｜家長解答", "實線弧是已知；虛線弧是新結果；粗橫線與下框是本題目標。", page, total)
-    top = PAGE_H - 107
-    text(pdf, LEFT, top, f"{SET_NAMES[set_name]} 第 6 題｜BC = {problem['answer']}", 15, bold=True)
-    text(pdf, LEFT, top - 25, given_text(problem), 12)
-    number_line(pdf, problem, PAGE_H - 281, mode="answer")
-    text(pdf, LEFT, PAGE_H - 395, "以下五條都合法；先選每一步的目標段，每條最少三次相減。", 11, bold=True)
-    titles = {"left": "路線 1：先找 AB、AC", "left-reordered": "路線 2：先找 AC、AB", "right": "路線 3：先找 DE、BD", "outer": "路線 4：先找 AC、CE", "left-chain": "路線 5：先找 AB、BD"}
-    y = PAGE_H - 426
-    for route in problem["routes"]:
-        text(pdf, LEFT, y, titles[route["id"]], 10.5, bold=True)
-        for row, step in enumerate(route["steps"]):
-            text(pdf, LEFT + 205, y - row * 17, equation(problem, step), 11)
-        y -= 64
-    text(pdf, LEFT, 64, "核對段名與共端包含關係；數字剛好相同，不能換用另一段。", 10)
-    pdf.showPage()
+            text(pdf, x, top - 307 - row * 23, equation(problem, step), 10.5)
 
 
 def parent_pdf(sets):
@@ -260,12 +249,12 @@ def parent_pdf(sets):
     pdf = canvas.Canvas(stream, pagesize=A4, invariant=1, pageCompression=1)
     pdf.setTitle("數線長短差 - 家長解答")
     pdf.setAuthor("Aiden Study")
-    page = 0
+    page, total = 0, len(SET_NAMES) * len(PARENT_PAGES_PER_SET)
     for name in SET_NAMES:
         problems = sets[name]
-        for pair in ((0, 1), (2, 3), (4,)):
+        for pair in PARENT_PAGES_PER_SET:
             page += 1
-            page_header(pdf, "數線長短差｜家長解答", "實線弧是已知；虛線弧是新結果；粗橫線與下框是本題目標。", page, 8)
+            page_header(pdf, "數線長短差｜家長解答", "實線弧是已知；虛線弧是新結果；粗橫線與下框是本題目標。", page, total)
             for row, index in enumerate(pair):
                 parent_question(pdf, problems[index], name, index + 1, PAGE_H - 108 - row * 347)
             if len(pair) == 1:
@@ -273,6 +262,7 @@ def parent_pdf(sets):
                 for line in (
                     "核答先看段名，再看數字：目標段 = 長段 - 短段。",
                     "每次相減：兩段共用一個端點，短段包含於長段。",
+                    "中階先看最後的減法還缺哪一段，再決定第一步。",
                     "算出的新段要標回圖，下一步才有依據。",
                     "圖不按比例，不能用尺量或看畫得多長來猜答案。",
                     "過渡卷第 3 題先左、第 4 題先右；第 5 題自行選路。",
@@ -280,8 +270,6 @@ def parent_pdf(sets):
                     text(pdf, LEFT, y, line, 12)
                     y -= 32
             pdf.showPage()
-        page += 1
-        advanced_parent(pdf, problems[5], name, page, 8)
     pdf.save()
     return stream.getvalue()
 

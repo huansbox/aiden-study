@@ -4,6 +4,26 @@
 .number-line{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .diagram-card{align-self:start}
 .empty-name{paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}
+.current-target{background:transparent;border-radius:6px;box-shadow:0 0 0 3px #d6a44c,0 0 10px 3px #d6a44c66;padding:0 .16em;display:inline-block;line-height:1.35}
+svg .current-target{box-shadow:none;padding:0}
+.name-frame{fill:transparent;stroke:transparent;pointer-events:none}
+svg .current-target .name-frame,svg .current-target.segment-label rect{stroke:#b27c27;stroke-width:3;fill:var(--paper);filter:drop-shadow(0 0 3px #d6a44c88)}
+.final-target{font-size:1rem;font-weight:550;color:#60736d;border-left:3px solid #becac0;padding-left:.55rem}
+.why{font-size:.78rem;line-height:1.7;color:#4e625c;max-width:56rem;margin:.45rem 0 .1rem}
+.why .current-target{margin:0 .12em}
+.step-heading h2 .current-target{margin:0 .15em}
+.given .current-target{margin:0 .15em}
+.equation-target .current-target{margin:.12rem .1rem}
+.equation-slot.active{background:transparent;box-shadow:0 0 0 3px #d6a44c66,0 0 12px 3px #d6a44c44}
+.answer-blank{display:inline-block;width:58px;height:58px;border:2px solid #dfe3da;border-radius:10px}
+.answer-result{font-size:1.5rem;min-width:56px;text-align:center}
+.equation.updated,.written-equation.updated{border-radius:8px;animation:equation-update 2.2s ease-out}
+.segment.updated .arc{animation:arc-update 2.2s ease-out}
+.segment.updated .segment-label rect{animation:label-update 2.2s ease-out}
+@keyframes equation-update{0%,35%{box-shadow:0 0 0 3px #d6a44c,0 0 12px 3px #d6a44c77}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes arc-update{0%,35%{stroke:#b27c27;stroke-width:6}100%{stroke:#756494;stroke-width:2.6}}
+@keyframes label-update{0%,35%{stroke:#b27c27;stroke-width:4}100%{stroke:#dde5dc;stroke-width:1.2}}
+@media(prefers-reduced-motion:reduce){.equation.updated,.written-equation.updated,.segment.updated .arc,.segment.updated .segment-label rect{animation:none}.segment.updated .segment-label rect{stroke:#b27c27;stroke-width:3}}
 @media(max-width:900px){.lesson-space{grid-template-columns:1fr}.lesson-card{padding:.8rem}.step-heading{min-height:92px}.givens{margin:.5rem 0 0}.action-card{padding:.1rem .2rem}.action-note{display:none}.equation{margin:.2rem 0;min-height:68px;gap:.55rem}.equation-slot{min-width:68px}.keypad{grid-template-columns:repeat(6,minmax(0,1fr));max-width:570px;margin:.5rem auto}.submit{display:block;max-width:570px;margin:.4rem auto}.diagram-note{margin-top:0}.work{margin-top:.5rem}}
 @media(min-width:901px) and (max-height:850px){.lesson-card{padding:.8rem}.step-heading{min-height:64px}.lesson-space{grid-template-columns:minmax(0,1fr) 280px}.number-line{max-height:340px}.givens{margin-top:.5rem}.work{margin-top:.5rem}header{padding:.5rem 1rem}}
 @media(max-width:550px){:root{font-size:17px}header{gap:.4rem;flex-wrap:wrap}main{padding:0 .6rem}.lesson-card{padding:.55rem}h1{font-size:1.2rem}progress{width:65px}.givens{gap:.3rem}.given{font-size:.7rem}.number-chip{min-width:42px;min-height:44px}.equation{gap:.2rem}.equation-slot{min-width:48px}.keypad{grid-template-columns:repeat(3,minmax(0,1fr));max-width:330px}.submit{max-width:330px}.review-grid{grid-template-columns:1fr}footer{display:block}.step-heading{min-height:75px}}

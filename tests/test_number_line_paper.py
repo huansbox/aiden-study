@@ -22,7 +22,7 @@ def segment_name(problem, segment):
     return "".join(labels[point] for point in segment)
 
 
-@pytest.mark.parametrize("name,pages", [("transition", 5), ("independent", 5), ("parent-answers", 8)])
+@pytest.mark.parametrize("name,pages", [("transition", 4), ("independent", 4), ("parent-answers", 6)])
 def test_paper_is_a4_with_embedded_traditional_chinese_fonts(name, pages):
     with pdfplumber.open(TASK / "output" / "pdf" / f"number-line-{name}.pdf") as pdf:
         assert len(pdf.pages) == pages
@@ -39,10 +39,13 @@ def test_paper_is_a4_with_embedded_traditional_chinese_fonts(name, pages):
 
 
 @pytest.mark.parametrize("name", ["transition", "independent"])
-def test_children_keep_the_original_six_questions_and_values(name):
+def test_children_keep_five_questions_and_their_original_values(name):
     with pdfplumber.open(TASK / "output" / "pdf" / f"number-line-{name}.pdf") as pdf:
         content = compact("\n".join(page.extract_text() for page in pdf.pages))
-        assert len(re.findall(r"第[1-6]題", content)) == 6
+        assert len(re.findall(r"第[1-5]題", content)) == 5
+        assert "第6題" not in content
+        assert "挑戰" not in content
+        assert "□" not in content
         for index, problem in enumerate(BANK[name], 1):
             assert f"第{index}題" in content
             assert f"{segment_name(problem, problem['target'])}有多長？" in content
@@ -64,28 +67,52 @@ def test_independent_paper_does_not_predraw_a_solution():
 def test_transition_fades_prepared_arcs_and_target_lines():
     with pdfplumber.open(TASK / "output" / "pdf" / "number-line-transition.pdf") as pdf:
         # The first page has two beginner questions; the remaining pages one each.
-        assert [sum(line["linewidth"] >= 2.5 for line in page.lines) for page in pdf.pages] == [2, 1, 1, 0, 0]
-        assert [sum(len(curve["path"]) == 2 for curve in page.curves) for page in pdf.pages] == [5, 1, 0, 0, 0]
+        assert [sum(line["linewidth"] >= 2.5 for line in page.lines) for page in pdf.pages] == [2, 1, 1, 0]
+        assert [sum(len(curve["path"]) == 2 for curve in page.curves) for page in pdf.pages] == [5, 1, 0, 0]
         for page in pdf.pages:
             content = page.extract_text()
             assert "目標段" in content and "長段" in content and "短段" in content
 
 
+def test_transition_intermediate_questions_ask_why_before_calculating():
+    with pdfplumber.open(TASK / "output" / "pdf" / "number-line-transition.pdf") as pdf:
+        for page in pdf.pages[1:]:
+            content = compact(page.extract_text())
+            assert "為了求＿＿＿＿＿＿，要先求＿＿＿＿＿＿。" in content
+            assert "第1步" in content and "第2步" in content
+        assert "這題從左側" in compact(pdf.pages[1].extract_text())
+        assert "這題從右側" in compact(pdf.pages[2].extract_text())
+        assert "自己選路" in compact(pdf.pages[3].extract_text())
+
+
 def test_parent_answers_include_every_original_route_with_segment_identity():
     with pdfplumber.open(TASK / "output" / "pdf" / "number-line-parent-answers.pdf") as pdf:
         content = compact("\n".join(page.extract_text() for page in pdf.pages))
-        assert content.count("路線1：") == content.count("路線5：") == 2
+        assert content.count("先求左側") == content.count("先求右側") == 6
+        assert "第6題" not in content and "挑戰" not in content
         for name in ("transition", "independent"):
             for problem in BANK[name]:
-                lengths = {given["segment"]: given["length"] for given in problem["givens"]}
+                # Derive all lengths from endpoint coordinates, rather than
+                # trusting the route values or sharing the PDF implementation.
+                givens = {given["segment"]: given["length"] for given in problem["givens"]}
+                coordinates = {"A": 0, "B": givens["AD"] - givens["BD"], "C": givens["AC"], "D": givens["AD"]}
+                lengths = {a + b: coordinates[b] - coordinates[a] for a in coordinates for b in coordinates if a < b}
+                assert problem["answer"] == lengths[problem["target"]]
+                assert f"{segment_name(problem, problem['target'])}={problem['answer']}" in content
                 for route in problem["routes"]:
                     for step in route["steps"]:
-                        lengths[step["result"]] = step["value"]
-                for route in problem["routes"]:
-                    for step in route["steps"]:
+                        assert step["value"] == lengths[step["result"]]
+                        assert lengths[step["result"]] == lengths[step["long"]] - lengths[step["short"]]
                         expected = (
                             f"{segment_name(problem, step['result'])}{step['value']}="
                             f"{segment_name(problem, step['long'])}{lengths[step['long']]}-"
                             f"{segment_name(problem, step['short'])}{lengths[step['short']]}"
                         )
                         assert expected in content
+                    if problem["level"] == "intermediate":
+                        first, last = route["steps"][0], route["steps"][-1]
+                        target = segment_name(problem, problem["target"])
+                        middle = segment_name(problem, first["result"])
+                        known = segment_name(problem, last["long"])
+                        assert f"為了求{target}，要先求{middle}。" in content
+                        assert f"已知{known}，扣掉{middle}就有{target}。" in content

@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
-const taskId = "number-line-difference", completedQuestionIds = ["p1", "p2", "p3", "p4", "p5", "p6"];
+const taskId = "number-line-difference", completedQuestionIds = ["p1", "p2", "p3", "p4", "p5"];
+const legacyQuestionIds = [...completedQuestionIds, "p6"];
 const complete = (collection) => collection.completeTask({ taskId, completedQuestionIds });
 
 function client(runtime, { storage = new Map() } = {}) {
@@ -58,8 +59,8 @@ test("Pad platform 真正連接正式收藏 client，只有 finish 才排任務�
     const platform = await context.openPlatform(false); await platform.ready;
     assert.ok(loadedScripts.some((src) => src.includes("collection-client.js")));
     assert.equal(platform.reward().status, "unearned");
-    assert.equal(platform.save({ runId: "one", question: 5 }), true);
-    assert.equal(platform.load().question, 5);
+    assert.equal(platform.save({ version: 3, log: [], runId: "one", question: 4 }), true);
+    assert.equal(platform.load().question, 4);
     assert.equal(h.requests.length, 0, "題內存檔不發包");
     await platform.finish(completedQuestionIds);
     assert.equal(platform.reward().status, "earned");
@@ -119,12 +120,58 @@ test("未完成不排命令，本機寫入失敗會明確拒絕，修復後才�
   const runtime = await collectionRuntime();
   try {
     const h = client(runtime); await h.collection.ready;
-    await assert.rejects(h.collection.completeTask({ taskId, completedQuestionIds: ["p1"] }), /全部六題/);
+    await assert.rejects(h.collection.completeTask({ taskId, completedQuestionIds: ["p1"] }), /全部五題/);
     assert.equal(h.requests.length, 0); assert.equal(h.collection.snapshot().sync.pending, 0);
     h.failWrites(true);
     await assert.rejects(complete(h.collection), /無法保存新的成果/);
     assert.equal(h.requests.length, 0); assert.equal(h.collection.snapshot().taskRewards[taskId].status, "unearned");
     h.failWrites(false); await complete(h.collection);
     assert.equal(h.collection.snapshot().taskRewards[taskId].status, "earned");
+  } finally { await runtime.dispose(); }
+});
+
+test("client 與 SQLite server 對缺題、重複、陌生及紙本 ID 採同一拒絕契約", async () => {
+  const runtime = await collectionRuntime();
+  try {
+    const h = client(runtime); await h.collection.ready;
+    const invalid = [[], ["p1"], ["p1", "p2", "p3", "p4"], ["p1", "p2", "p3", "p4", "p4"],
+      ["p1", "p2", "p3", "p4", "p6"], ["p1", "p2", "p3", "p4", "transition-5"],
+      [...completedQuestionIds, "transition-6"], [...legacyQuestionIds, "p7"], [...completedQuestionIds, "p5"]];
+    for (const ids of invalid) {
+      let clientMessage;
+      await assert.rejects(h.collection.completeTask({ taskId, completedQuestionIds: ids }), (error) => {
+        clientMessage = error.message; assert.equal(error.status, 400); return true;
+      });
+      const response = await runtime.fetch(new Request("http://local/v1/collection/test-number-line-client/task-complete", {
+        method: "POST", headers: { Authorization: "Bearer test-token", "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "task-complete", commandId: crypto.randomUUID(), event: { taskId, completedQuestionIds: ids, occurredAt: new Date().toISOString() } }),
+      }));
+      assert.equal(response.status, 400);
+      assert.equal((await response.json()).error, clientMessage);
+    }
+    assert.equal(h.requests.length, 0, "client 無效 payload 不應進 outbox 或發送");
+    assert.equal(h.collection.snapshot().sync.pending, 0);
+    assert.equal(h.collection.snapshot().grants.length, 0);
+  } finally { await runtime.dispose(); }
+});
+
+test("舊六題離線 outbox 與新五題跨裝置完成共用首次 grant，補送不影響 daily", async () => {
+  const runtime = await collectionRuntime();
+  try {
+    const old = client(runtime); await old.collection.ready; old.offline(true);
+    await old.collection.completeTask({ taskId, completedQuestionIds: legacyQuestionIds });
+    const pendingEntries = [...old.storage.entries()].filter(([key]) => key.startsWith("collection:outbox:"));
+    assert.equal(pendingEntries.length, 1);
+    assert.deepEqual(JSON.parse(pendingEntries[0][1]).event.completedQuestionIds, legacyQuestionIds);
+    const fresh = client(runtime); await fresh.collection.ready; await complete(fresh.collection);
+    const awarded = JSON.stringify(fresh.collection.snapshot().grants);
+    const reopened = client(runtime, { storage: old.storage }); await reopened.collection.ready;
+    assert.equal(reopened.requests.length, 1, "舊 outbox 會真正送入新 Worker");
+    assert.deepEqual(reopened.requests[0].body.event.completedQuestionIds, legacyQuestionIds);
+    assert.equal(reopened.collection.snapshot().sync.pending, 0);
+    assert.equal(JSON.stringify(reopened.collection.snapshot().grants), awarded);
+    assert.equal(reopened.collection.snapshot().daily.earned, 0);
+    await complete(reopened.collection);
+    assert.equal(reopened.requests.length, 1);
   } finally { await runtime.dispose(); }
 });
