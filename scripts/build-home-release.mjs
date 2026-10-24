@@ -11,7 +11,7 @@ const refs = [...html.matchAll(/(?:src|href)="(shared\/[^"?]+\.(?:js|css))(?:\?v
 const assets = [...new Set(refs.map((m) => m[1]))].sort();
 const canonical = html.replace(meta, "$1VERSION$2").replace(/((?:src|href)="shared\/[^"?]+\.(?:js|css))\?v=[^"&]*(")/g, "$1$2");
 const hash = createHash("sha256");
-for (const [path, content] of [["index.html", canonical], ...[...assets, "registry.json", "platform.webmanifest"].map((p) => [p, read(p)])])
+for (const [path, content] of [["index.html", canonical], ...[...assets, "registry.json", "learning-tasks.json", "platform.webmanifest"].map((p) => [p, read(p)])])
   hash.update(path + "\0" + content + "\0");
 const version = hash.digest("hex");
 let output = html.replace(meta, "$1" + version + "$2");

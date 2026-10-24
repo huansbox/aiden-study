@@ -3,6 +3,21 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "number-line-difference",
+      "name": "數線長短差",
+      "status": "complete",
+      "statusNote": "固定六題、兩階段紙本與 iPad 尺寸隔離 E2E 完成；發布見 #243。",
+      "eventDate": null,
+      "audience": ["aiden"],
+      "audienceLabel": "9 歲；四年級",
+      "description": "點端點、畫弧線、標數與長段減短段；中間結果標回數線，再帶到紙本。",
+      "reusable": "逐步聚焦、兩錯提示、線段身分判斷與三次合法減法挑戰。",
+      "availability": "available",
+      "homePath": "number-line-difference/",
+      "source": { "paths": ["learning-tasks/number-line-difference", "docs/number-line-difference"] },
+      "links": [{ "label": "Pad 教學", "url": "../number-line-difference/?child=aiden" }, { "label": "家長試玩", "url": "../number-line-difference/?preview=1" }]
+    },
+    {
       "id": "water-cycle",
       "name": "水的循環：一滴水的旅行",
       "status": "in-progress",

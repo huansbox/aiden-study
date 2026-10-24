@@ -40,6 +40,20 @@ function merge(root, branch, date) {
   return git(root, ["-c", "user.name=Catalog Test", "-c", "user.email=catalog-test@example.invalid", "merge", "--no-ff", "-m", "merge fixture", branch], { GIT_AUTHOR_DATE: date, GIT_COMMITTER_DATE: date });
 }
 
+test("孩子任務入口僅從 catalog.homePath 生成，既有 task 不自動上首頁", (t) => {
+  const root = fixture(t), catalog = json(root, "learning-tasks/catalog.json");
+  const readDates = () => ({created:null,updated:null});
+  assert.deepEqual(JSON.parse(buildOutputs(root,{readDates})["docs/learning-tasks.json"]).tasks, []);
+  Object.assign(catalog.tasks[0], {availability:"available",homePath:"task-a/"});
+  file(root,"docs/task-a/index.html","task page");
+  file(root,"learning-tasks/catalog.json",catalog);
+  assert.deepEqual(JSON.parse(buildOutputs(root,{readDates})["docs/learning-tasks.json"]).tasks,[{id:"task-a",name:"任務 A",audience:["aiden"],path:"task-a/"}]);
+  for (const homePath of ["https://elsewhere.invalid/", "//elsewhere/", "../parent/", "task-a/?child=bingpu", "/task-a/", "task-a/../../"]) {
+    catalog.tasks[0].homePath=homePath;file(root,"learning-tasks/catalog.json",catalog);
+    assert.throws(()=>buildOutputs(root,{readDates}),/安全站內目錄/);
+  }
+});
+
 test("真實登錄完整列出所有 App、task 及主線外作品，不把 shared 計為作品", () => {
   const works = loadWorks(repo), registry = json(repo, "docs/registry.json"), catalog = json(repo, "learning-tasks/catalog.json");
   assert.deepEqual(works.filter((entry) => entry.type === "app").map((entry) => entry.id), registry.apps.map((entry) => "app:" + entry.id));
@@ -101,7 +115,8 @@ test("真實来源一次改名，README 與 JSON 一起更新，保留非產生�
   const catalog = json(root, "learning-tasks/catalog.json"); catalog.tasks[0].name = "同一真相源的新名稱"; file(root, "learning-tasks/catalog.json", catalog);
   assert.throws(() => build({ root, check: true }), /產物過期/);
   const outputs = buildOutputs(root);
-  for (const path of Object.keys(outputs)) assert.match(outputs[path], /同一真相源的新名稱/);
+  for (const path of Object.keys(outputs).filter(path => path !== "docs/learning-tasks.json")) assert.match(outputs[path], /同一真相源的新名稱/);
+  assert.deepEqual(JSON.parse(outputs["docs/learning-tasks.json"]).tasks, []);
   assert.match(outputs["README.md"], /^# 保留前文/); assert.match(outputs["README.md"], /## 保留後文\n$/);
   assert.match(outputs["learning-tasks/README.md"], /^# 規則保留/); assert.match(outputs["learning-tasks/README.md"], /分類規則\n$/);
   const app = JSON.parse(outputs["docs/parent/work-catalog.json"]).works.find((entry) => entry.type === "app");

@@ -68,6 +68,7 @@ export function buildOutputs(root = ROOT, options = {}) {
   const works = datedWorks(root, loadWorks(root), cache, options.readDates);
   return {
     "docs/parent/work-catalog.json": JSON.stringify({ schemaVersion: 1, works }, null, 2) + "\n",
+    "docs/learning-tasks.json": JSON.stringify({ schemaVersion: 1, tasks: works.filter(entry => entry.type === "task" && entry.homePath).map(entry => ({ id: entry.id.slice(5), name: entry.name, audience: entry.audience, path: entry.homePath })) }, null, 2) + "\n",
     "README.md": replaceSection(read(root, "README.md"), "<!-- work-catalog:start -->", "<!-- work-catalog:end -->", overview(works)),
     "learning-tasks/README.md": replaceSection(read(root, "learning-tasks/README.md"), "<!-- task-catalog:start -->", "<!-- task-catalog:end -->", taskIndex(works, JSON.parse(read(root, "learning-tasks/catalog.json")))),
   };

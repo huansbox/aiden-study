@@ -66,6 +66,10 @@ function work(root, input, childNames) {
   const groupId = input.groupId ?? null, groupName = input.groupName ?? null;
   if ((groupId === null) !== (groupName === null)) fail("系列必須同時提供 groupId 與 groupName");
   if (groupId !== null) { segment(groupId, "groupId"); text(groupName, "系列名稱"); }
+  if (input.homePath !== undefined) {
+    if (input.type !== "task" || source.remote || availability !== "available" || !/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\/$/.test(input.homePath)) fail("孩子任務入口必須是本 repo 可用成品的安全站內目錄");
+    checkLocalPath(root, "docs/" + input.homePath + "index.html");
+  }
   return {
     id: input.id, type: input.type, name: text(input.name, "作品名稱"), audience,
     audienceLabel: input.audienceLabel ?? (audience.map((id) => childNames.get(id)).join("、") || "未指定（目錄預設）"),
@@ -73,6 +77,7 @@ function work(root, input, childNames) {
     location: source.repo.split("/")[1] + (source.paths[0] === "." ? "" : "/" + source.paths[0]),
     source, sourceUrl: sourceURL(source), links: linksFor(root, input.links ?? []),
     description: input.description ?? "", eventDate: input.eventDate ?? null,
+    ...(input.homePath !== undefined ? { homePath: input.homePath } : {}),
     groupId, groupName, created: null, updated: null,
     freshness: { state: "unknown", checkedAt: null, error: null },
   };

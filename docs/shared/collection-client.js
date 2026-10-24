@@ -17,11 +17,15 @@
     }
     function snapshot() {
       const view = JSON.parse(JSON.stringify(base));
+      view.taskRewards = C.taskRewards(view);
       if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false, portions: 0, bonusProgress: 0, bonusCompleted: 0, rewardOffset:0, nextRewardRemaining:t.quantity })), earned: 0, rewardOffset:0, repeatable: C.dateKey() >= C.REPEAT_REWARDS_FROM, limit: view.goals?.targets?.length && C.dateKey() >= C.REPEAT_REWARDS_FROM ? null : 1, first: false, all: false };
       for (const command of pending()) if (command.type === "place") {
         const build = view.builds.find((b) => b.id === command.buildId);
         if (build && !build.placed.includes(command.partId)) build.placed.push(command.partId);
         // 離線可以拼好；永久完成章等雲端確認，不假裝已同步。
+      }
+      for (const command of pending()) if (command.type === "task-complete" && view.taskRewards[command.event.taskId]?.status !== "earned") {
+        view.taskRewards[command.event.taskId] = { status: "pending", completedAt: command.event.occurredAt };
       }
       view.activeBuild = view.builds.find((b) => b.id === view.activeBuild?.id) || null;
       const selection = pending().find((command) => command.type === "select-model");
@@ -130,7 +134,15 @@
       }
       return flush();
     }
-    const client = { snapshot, refresh, flush, beginRound, record, finishRound,
+    async function completeTask({ taskId, completedQuestionIds, occurredAt = new Date().toISOString() } = {}) {
+      const event = { taskId, completedQuestionIds, occurredAt };
+      C.validateTaskCompletion(event);
+      if (C.taskRewards(base)[taskId].status === "earned") return snapshot();
+      if (!pending().some((command) => command.type === "task-complete" && command.event.taskId === taskId)) queue({ type: "task-complete", event });
+      await flush();
+      return snapshot();
+    }
+    const client = { snapshot, refresh, flush, beginRound, record, finishRound, completeTask,
       saveGoals: (targets) => online("goals", { expectedGoalRevision: base.goalRevision, targets: C.targets(targets) }),
       selectModel: (modelId) => online("select-model", { modelId }),
       allocate: () => online("allocate"),

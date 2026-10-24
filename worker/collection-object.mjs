@@ -28,11 +28,14 @@ export class ChildCollection extends DurableObject {
   execute(command) {
     try { return this.ctx.storage.transactionSync(() => {
       C.check(command && typeof command.commandId === "string" && /^[a-zA-Z0-9:._-]{1,160}$/.test(command.commandId), "操作識別不正確");
-      const payload = JSON.stringify(command), id = command.type === "round" ? "round:" + command.event?.roundId : command.commandId;
+      if (command.type === "task-complete") C.validateTaskCompletion(command.event);
+      const payload = JSON.stringify(command), id = command.type === "round" ? "round:" + command.event?.roundId : command.type === "task-complete" ? C.taskGrantId(command.event.taskId) : command.commandId;
       const duplicate = this.sql.exec("SELECT payload FROM commands WHERE id=?", id).toArray()[0];
       if (duplicate) {
         // 同一回合的通知可從重開頁面再次送出，但不重算一轮。
-        C.check(duplicate.payload === payload || command.type === "round" && JSON.parse(duplicate.payload).event.entryId === command.event?.entryId, "同一操作識別不能改成另一份內容", 409);
+        const previous = JSON.parse(duplicate.payload);
+        C.check(duplicate.payload === payload || command.type === "round" && previous.event.entryId === command.event?.entryId ||
+          command.type === "task-complete" && previous.type === "task-complete" && previous.event.taskId === command.event.taskId, "同一操作識別不能改成另一份內容", 409);
         return { snapshot: C.snapshot(this.readState()), duplicate: true };
       }
       const nextCommand = { ...command };
