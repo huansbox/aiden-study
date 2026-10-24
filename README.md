@@ -32,7 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
-| [數線長短差](learning-tasks/number-line-difference/) | 直接點端點、拖曳數字片與選圖上長短段；同步算式，將中間結果標回上下弧線，再帶到紙本。 | [Pad 教學](docs/number-line-difference/?child=aiden)、[家長試玩](docs/number-line-difference/?preview=1) |
+| [數線長短差](learning-tasks/number-line-difference/) | 固定五題，先理解為何求中間段，再點圖上長短段計算；算對自動標回上下弧線，接續過渡與獨立紙本。 | [Pad 教學](docs/number-line-difference/?child=aiden)、[家長試玩](docs/number-line-difference/?preview=1) |
 | [水的循環：一滴水的旅行](learning-tasks/water-cycle/) | 滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。 | [試玩新版③④幕](docs/water-cycle/prototype/)、[既有水的旅行](docs/water-cycle/) |
 | [Native Camp 2026-10-02 Denny](learning-tasks/nativecamp-2026-10-02/) | 城鄉、地點、比較與完整句 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-10-02) |
 | [Native Camp 2026-09-30 Edon](learning-tasks/nativecamp-2026-09-30/) | 顏色、名詞分類、邀請與預測主題 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-30) |

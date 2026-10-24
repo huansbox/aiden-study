@@ -25,6 +25,12 @@ test('數線 HTML、CSS、app 與 ES module imports 共用新版 cache 參數',(
     }
   }
   assert.ok(seen.has('lesson-core.js')&&seen.has('platform.js'),'包含真正載入的 core 與 platform');
+  const bank=read('app.js').match(/fetch\('problems\.json\?v=([^']+)'/);
+  assert.ok(bank,'題庫也必須更新 cache 版本');versions.add(bank[1]);
+  const platform=read('platform.js'),shared=platform.match(/script\.src='\.\.\/shared\/'\+src\+'\?v=([^']+)'/);
+  assert.ok(shared,'家庭模組 loader 必須有 cache 版本');
+  assert.match(platform,/'collection-core\.js'/,'包括決定5題完成資格的 collection core');versions.add(shared[1]);
   assert.equal(versions.size,1,'新 app 不能混入不同版本的 ES modules');
   assert.notEqual([...versions][0],'20261024-number-line-task','不可沿用 v1 cache 參數');
+  assert.notEqual([...versions][0],'20261024-direct-touch-v2','不可混載仍以六題計算的舊核心或題庫');
 });

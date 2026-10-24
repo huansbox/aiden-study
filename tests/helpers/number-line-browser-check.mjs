@@ -17,6 +17,7 @@ const taskKey=(version,child='aiden')=>`learning-task:number-line-difference:v${
 const text=(p,s)=>[...s].map(id=>p.points.find(point=>point.id===id).label).join('');
 const stage=page=>page.locator('#app').getAttribute('data-stage');
 const waitStage=(page,value)=>page.waitForFunction(v=>document.querySelector('#app')?.dataset.stage===v,value);
+async function capture(page,options){await page.waitForTimeout(400);return page.screenshot(options);}
 const cleanHint=async page=>assert.equal((await page.locator('#hint').textContent()).trim(),'','未達兩錯不應先給具體答案提示');
 async function activate(locator,mode='tap'){if(mode==='keyboard'){await locator.focus();await locator.press('Enter');}else await locator.tap();}
 async function point(page,id,mode='tap'){await activate(page.locator(`.number-line [data-point="${id}"]`),mode);}
@@ -46,7 +47,7 @@ async function newPage(browser,{width=768,height=1024,preview=false,child='aiden
   await page.waitForFunction(()=>document.querySelector('#app')?.dataset.stage||document.querySelector('.finish-card h1'));
   return {page,context,record,child};
 }
-function safeRecord(record){assert.deepEqual(record.blocked,[],'瀏覽器不得連到任何外部來源');assert.deepEqual(record.errors,[]);const illegal=record.writes.filter(r=>!['/api/v1/session','/api/v1/collection/aiden/task-complete','/api/v1/collection/bingpu/task-complete'].includes(r.path));assert.deepEqual(illegal,[]);}
+function safeRecord(record){assert.deepEqual(record.blocked,[],'瀏覽器不得連到任何外部來源');assert.deepEqual(record.errors,[]);const illegal=record.writes.filter(r=>!['/api/v1/session','/api/v1/collection/aiden/task-complete','/api/v1/collection/bingpu/task-complete'].includes(r.path));assert.deepEqual(illegal,[]);report.receipts??=[];report.receipts.push(record);}
 async function pairInViewport(page,source,target){
   await source.waitFor({state:'visible'});await target.waitFor({state:'visible'});
   let a=await source.boundingBox(),b=await target.boundingBox();assert.ok(a&&b);
@@ -108,13 +109,71 @@ async function twoWrong(page,run,expectedStage){
   (report.layoutChecks??=[]).push({viewport:page.viewportSize(),stage:expectedStage,before,after});
   assert.equal(after.items.length,before.items.length);for(let i=0;i<before.items.length;i++)for(const name of ['x','y','width','height'])assert.ok(Math.abs(before.items[i][name]-after.items[i][name])<.5,`${expectedStage} 兩錯提示使數線 ${name} 移動`);
 }
-async function chooseTarget(page,segment,mode='tap'){assert.equal(await stage(page),'target-start');await point(page,segment[0],mode);await waitStage(page,'target-end');await point(page,segment[1],mode);await page.waitForFunction(()=>document.querySelector('#app')?.dataset.stage!=='target-end');}
+async function chooseTarget(page,segment,mode='tap'){
+  assert.equal(await stage(page),'target-start');await point(page,segment[0],mode);await waitStage(page,'target-end');
+  const questionId=await page.locator('#app').getAttribute('data-question'),p=problems.find(p=>p.id===questionId);
+  // 宣告的導引路線應在首端點選完後繼續顯示本步目標；自選題則仍讓孩子決定。
+  if(p){
+    const currentNames=await page.locator('#instruction .current-target').allTextContents();
+    if(p.preferredRoute||p.level==='beginner'){
+      const stepIndex=await page.locator('.work .written-equation').count(),route=p.routes.find(r=>r.id===p.preferredRoute)||p.routes[0];
+      assert.ok(currentNames.includes(text(p,route.steps[stepIndex].result)),'target-end 仍明示並框出導引目標');
+    }else assert.deepEqual(currentNames,[],'自選題第一端點不能先揭示路線');
+  }
+  await point(page,segment[1],mode);await page.waitForFunction(()=>document.querySelector('#app')?.dataset.stage!=='target-end');
+}
 async function checkScroll(page){
   await page.evaluate(()=>scrollTo(0,0));const before=await page.evaluate(()=>scrollY),height=page.viewportSize().height;
   if(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+5))return false;
   const session=await page.context().newCDPSession(page);
   try{await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:12,y:height-100,id:1}]});for(let i=1;i<=8;i++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:12,y:height-100-i*35,id:1}]});await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await page.waitForTimeout(500);}finally{await session.detach();}
   assert.ok(await page.evaluate(()=>scrollY)>before,'一般頁面可用 touch 手勢正常捲動');await page.evaluate(()=>scrollTo(0,0));return true;
+}
+// 教學契約以實際 DOM 驗證：本步目標、原因、空框與自動回填都必須看得見。
+async function teachingCheck(page,p,step,{completed=false}={}){
+  const view=await page.evaluate(()=>({
+    why:document.querySelector('.why')?.textContent.trim(),
+    whyLabel:document.querySelector('.why')?.getAttribute('aria-label'),
+    current:[...document.querySelectorAll('.current-target')].map(el=>({text:el.textContent.trim(),border:getComputedStyle(el).borderStyle,background:getComputedStyle(el).backgroundColor,shadow:getComputedStyle(el).boxShadow})),
+    final:document.querySelector('.final-target')?.textContent.trim(),
+    slots:[...document.querySelectorAll('.equation-slot')].map(el=>({text:el.textContent.trim(),border:getComputedStyle(el).borderStyle,width:el.getBoundingClientRect().width})),
+    resultChips:document.querySelectorAll('[data-chip="result"],.result-chip').length,
+  }));
+  if(p.level==='intermediate'){
+    assert.ok(view.why&&view.why.length>8,`${p.id} 必須有可見的先求原因`);
+    assert.equal(view.whyLabel,'為什麼先求這一段');
+    assert.ok(view.why.includes(text(p,p.target)),'原因必須連回最終目標');
+    const route=p.routes.find(route=>route.steps.some(s=>s.long===step.long&&s.short===step.short)),last=route.steps.at(-1);
+    if(!(completed&&step.result===p.target)){
+      assert.ok(view.why.includes(`從 ${text(p,last.long)} 拿掉 ${text(p,last.short)}`),'先求原因要說明最後相減的兩段');
+      if(completed)assert.match(view.why,/已算出來.*下一步.*回來找/,'中間段完成後要回扣下一步如何找到最終目標');
+    }
+  }
+  assert.ok(view.current.some(item=>item.text.includes(text(p,step.result))),`${p.id} 本步段名需有外框`);
+  assert.ok(view.current.some(item=>item.border!=='none'||item.shadow!=='none'||item.background!=='rgba(0, 0, 0, 0)'),`${p.id} 目標需有視覺區別`);
+  assert.ok(view.final?.includes(text(p,p.target)),`${p.id} 最終目標需明確`);
+  assert.equal(view.resultChips,0,'新流程不能出現 result-chip');
+  if(!completed&&await stage(page)==='long'){
+    assert.equal(view.slots.length,2);assert.ok(view.slots.every(slot=>slot.text===''&&slot.border!=='none'&&slot.width>=40),'選長段前保留兩個可見空框');
+  }
+  if(completed){
+    const result=page.locator(`.segment-label[data-segment="${step.result}"]`);
+    assert.ok((await result.textContent()).includes(String(step.value)),'答對即自動填回圖');
+    assert.equal(await result.locator('xpath=..').getAttribute('class').then(c=>c.includes('updated')),true,'自動回填需亮出新弧');
+    assert.equal(await page.locator(`[data-slot="${step.result}"]`).count(),0,'自動回填後不能留下結果空框');
+    assert.equal(await page.locator('#next').isVisible(),true,'答對停步後需由孩子按下一步');
+  }
+  report.teachingChecks??=[];report.teachingChecks.push({width:page.viewportSize().width,problem:p.id,result:step.result,completed,...view});
+  return view;
+}
+async function targetHintCheck(page,p,chosen,mode){
+  await cleanHint(page);
+  const wrong=()=>chooseTarget(page,p.givens[0].segment,mode);
+  await wrong();await cleanHint(page);await wrong();
+  const hinted=await page.evaluate(()=>({text:document.querySelector('#hint').textContent,points:[...document.querySelectorAll('.point.hinted')].map(e=>e.dataset.point).sort()}));
+  assert.equal(hinted.points.length,2);assert.ok(hinted.text.includes(text(p,hinted.points.join(''))),'兩錯才說出具體建議段名');
+  report.coverage.targetHints??=[];report.coverage.targetHints.push({problem:p.id,width:page.viewportSize().width,suggested:hinted.points.join(''),chosen});
+  if(p.id==='p5'&&chosen!==hinted.points.join(''))report.coverage.alternateAfterHint=true;
 }
 async function solve(page,{mode='drag',routes={},wrong=false,reload=false,startIndex=0,stopBeforeFinish=false,prefix='',onQuestion=async()=>{}}={}){
   for(let i=startIndex;i<problems.length;i++){
@@ -125,130 +184,149 @@ async function solve(page,{mode='drag',routes={},wrong=false,reload=false,startI
       const given=p.givens[g];await point(page,given.segment[0],inputMode);await waitStage(page,'given-end');
       if(i===0&&g===0&&reload){const before=await geometryCheck(page,key);await page.reload();await waitStage(page,'given-end');assert.equal(await page.locator('.point.selected').count(),1);assert.deepEqual((await geometryCheck(page,key)).fixed,before.fixed);}
       await point(page,given.segment[1],inputMode);await waitStage(page,'given-value');
-      if(i===0&&g===0)await page.screenshot({path:resolve(output,`${prefix}known-slot-${page.viewportSize().width}.png`),fullPage:true});
+      if(i===0&&g===0)await capture(page,{path:resolve(output,`${prefix}known-slot-${page.viewportSize().width}.png`),fullPage:true});
       await geometryCheck(page,key);
       if(i===0&&g===0&&wrong){
         const unchanged=await page.locator(`[data-slot="${given.segment}"]`).textContent();
         await drag(page,'given-'+given.segment,given.segment,{empty:true});assert.equal(await stage(page),'given-value');assert.equal(await page.locator(`[data-slot="${given.segment}"]`).textContent(),unchanged);
         await drag(page,'given-'+given.segment,given.segment,{cancel:true});assert.equal(await stage(page),'given-value');assert.equal(await page.locator(`[data-slot="${given.segment}"]`).textContent(),unchanged);
         await twoWrong(page,()=>place(page,'given-BD',given.segment,'drag'),'given-value');
-        await page.screenshot({path:resolve(output,prefix+'two-errors-chip.png'),fullPage:true});
       }
       await place(page,'given-'+given.segment,given.segment,mode);await geometryCheck(page,key);
     }
     const route=p.routes.find(r=>r.id===(routes[p.id]||p.preferredRoute))||p.routes[0];
-    for(let s=0;s<route.steps.length;s++){
-      const step=route.steps[s];await waitStage(page,'target-start');await cleanHint(page);
-      if(i===5&&route.id==='right'&&s===1&&wrong){
-        await twoWrong(page,()=>chooseTarget(page,'AC'),'target-start');assert.match(await page.locator('.feedback').textContent(),/多算一步|多做一步|超過三次/);
-        await page.screenshot({path:resolve(output,prefix+'legal-extra-step.png'),fullPage:true});
-      }
+    for(let index=0;index<route.steps.length;index++){
+      const step=route.steps[index];await waitStage(page,'target-start');await cleanHint(page);
+      if(wrong&&index===0&&['p3','p4','p5'].includes(p.id))await targetHintCheck(page,p,step.result,inputMode);
       await chooseTarget(page,step.result,inputMode);await waitStage(page,'long');await cleanHint(page);await geometryCheck(page,key);
-      if(i===0&&wrong){await twoWrong(page,()=>arc(page,'AC'),'long');}
+      await teachingCheck(page,p,step);
+      if(p.id==='p4'&&index===0)await capture(page,{path:resolve(output,`${prefix}p4-why-before-${page.viewportSize().width}.png`),fullPage:true});
+      if(p.id==='p5')await capture(page,{path:resolve(output,`${prefix}p5-${route.id}-step${index+1}-target-${page.viewportSize().width}.png`),fullPage:true});
+      if(i===0&&wrong)await twoWrong(page,()=>arc(page,'AC'),'long');
       await arc(page,step.long,inputMode);await waitStage(page,'short');await cleanHint(page);await geometryCheck(page,key);
-      if(i===0&&wrong){await twoWrong(page,()=>arc(page,'AC'),'short');}
+      if(i===0&&wrong)await twoWrong(page,()=>arc(page,'AC'),'short');
       await arc(page,step.short,inputMode);await waitStage(page,'answer');await cleanHint(page);await geometryCheck(page,key);
-      const equation=(await page.locator('.action-card').textContent());assert.ok(equation.includes(text(p,step.long))&&equation.includes(text(p,step.short)),'算式須保留長短段身分');
-      if(i===0)await page.screenshot({path:resolve(output,`${prefix}selected-operands-${page.viewportSize().width}.png`),fullPage:true});
+      const equation=await page.locator('.action-card').textContent();assert.ok(equation.includes(text(p,step.long))&&equation.includes(text(p,step.short)),'算式須保留長短段身分');
       if(i===0&&wrong)await twoWrong(page,()=>number(page,99),'answer');
-      await number(page,step.value,inputMode);await waitStage(page,'result-place');await cleanHint(page);await geometryCheck(page,key);
-      if(i===0&&wrong){await twoWrong(page,()=>activate(page.locator(`[data-slot="${step.result}"]`)),'result-place');}
-      await place(page,'result',step.result,mode);assert.notEqual(await stage(page),'result-place');await geometryCheck(page,key);
-      if(reload&&i===2&&s===0){const before=await geometryCheck(page,key);await page.reload();await waitStage(page,'target-start');assert.deepEqual((await geometryCheck(page,key)).fixed,before.fixed);}
+      await number(page,step.value,inputMode);await waitStage(page,'step-complete');await cleanHint(page);await geometryCheck(page,key);
+      await teachingCheck(page,p,step,{completed:true});
+      if(p.id==='p4'&&index===0)await capture(page,{path:resolve(output,`${prefix}p4-why-after-${page.viewportSize().width}.png`),fullPage:true});
+      if(reload&&i===2&&index===0){const before=await geometryCheck(page,key);await page.reload();await waitStage(page,'step-complete');await teachingCheck(page,p,step,{completed:true});assert.deepEqual((await geometryCheck(page,key)).fixed,before.fixed);}
+      await onQuestion(i,index);
+      if(index===route.steps.length-1){
+        assert.match(await page.locator('#instruction').textContent(),new RegExp(`${p.answer}`));
+        const checks=await geometryCheck(page,key);report.diagramChecks.push({viewport:page.viewportSize(),problem:p.id,route:route.id,mode,...checks});
+        report.coverage.routes.push({width:page.viewportSize().width,mode,problem:p.id,route:route.id});
+        if(i===problems.length-1&&stopBeforeFinish)return;
+      }
+      await activate(page.locator('#next'),inputMode);
     }
-    await waitStage(page,'question-complete');assert.match(await page.locator('#instruction').textContent(),new RegExp(`${p.answer}`));
-    await onQuestion(i);const checks=await geometryCheck(page,key);report.diagramChecks.push({viewport:page.viewportSize(),problem:p.id,route:route.id,mode,...checks});
-    if(i>=4)report.coverage.routes.push({width:page.viewportSize().width,mode,problem:p.id,route:route.id});
-    if(i===5){await page.screenshot({path:resolve(output,`${prefix}advanced-${page.viewportSize().width}.png`),fullPage:true});if(stopBeforeFinish)return;}
-    await activate(page.locator('#next'),inputMode);
   }
-  await page.locator('.finish-card h1').filter({hasText:'畫線、相減'}).waitFor();
+  await waitStage(page,'finished');assert.equal(await page.locator('.review-item').count(),5);
 }
 async function rejected(page){
   await page.waitForFunction(message=>document.querySelector('#reward')?.textContent.includes(message),rejection);
-  assert.equal(await page.locator('.review-item').count(),6);assert.equal(await page.locator('#reward.pending').count(),0);
-  const saved=await page.evaluate(key=>localStorage.getItem(key),taskKey(2,new URL(page.url()).searchParams.get('child')));
-  await page.locator('[data-review="5"]').tap();await page.locator('#close-review').tap();
+  assert.equal(await page.locator('.review-item').count(),5);assert.equal(await page.locator('#reward.pending').count(),0);
+  const key=taskKey(3,new URL(page.url()).searchParams.get('child')),saved=await page.evaluate(key=>localStorage.getItem(key),key);
+  await page.locator('[data-review="4"]').tap();await page.locator('#close-review').tap();
   assert.match(await page.locator('#reward').textContent(),/任務完成時間不正確/);assert.equal(await page.locator('[data-server-message]').count(),0);
-  assert.equal(await page.evaluate(key=>localStorage.getItem(key),taskKey(2,new URL(page.url()).searchParams.get('child'))),saved);
+  assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),saved);
 }
-// Frozen v1 protocol：不匯入新版 engine 來生成舊資料，避免測試與移轉實作互相附和。
-function legacyLog(count,{partial=false,finish=true}={}){
-  const log=[],send=(type,value)=>log.push({type,value});
-  for(let i=0;i<count;i++){const p=problems[i];for(const g of p.givens){send('point',g.segment[0]);send('point',g.segment[1]);send('number',g.length);}const route=p.routes.find(r=>r.id===p.preferredRoute)||p.routes[0];for(const s of route.steps){send('segment',s.long);send('segment',s.short);send('number',s.value);send('point',s.result[0]);send('point',s.result[1]);send('number',s.value);}if(i<count-1||count<6||finish)send('next','');}
-  if(partial)send('point',problems[count].givens[0].segment[0]);return {version:1,log};
+// Frozen v1/v2 wire protocols：只產生歷史事件，不呼叫新版狀態機。
+const legacySixth={givens:[{segment:'AE',length:14},{segment:'BE',length:11},{segment:'AD',length:12},{segment:'CD',length:5}],routes:[{id:'left',steps:[{long:'AE',short:'BE',result:'AB',value:3},{long:'AD',short:'CD',result:'AC',value:7},{long:'AC',short:'AB',result:'BC',value:4}]}],preferredRoute:'left'};
+function legacyLog(version,count,{partial=false,resultPlace=false,finish=true}={}){
+  const log=[],send=(type,value)=>log.push({type,value}),old=[...problems,legacySixth];
+  for(let i=0;i<count;i++){
+    const p=old[i];for(const g of p.givens){send('point',g.segment[0]);send('point',g.segment[1]);if(version===1)send('number',g.length);else{send('chip','given-'+g.segment);send('place',g.segment);}}
+    const route=p.routes.find(r=>r.id===p.preferredRoute)||p.routes[0];
+    for(const s of route.steps){
+      if(version===2){send('point',s.result[0]);send('point',s.result[1]);}
+      send('segment',s.long);send('segment',s.short);send('number',s.value);
+      if(resultPlace&&i===count-1)return {version,log};
+      if(version===1){send('point',s.result[0]);send('point',s.result[1]);send('number',s.value);}else{send('chip','result');send('place',s.result);}
+    }
+    if(i<count-1||finish)send('next','');
+  }
+  if(partial)send('point',old[count].givens[0].segment[0]);return {version,log};
 }
 async function migrationChecks(browser){
-  const partial=JSON.stringify(legacyLog(2,{partial:true}));
-  async function seeded(value,legacy){
-    return newPage(browser,{init:{script:({value,legacy})=>{if(sessionStorage.getItem('number-line-qa-seeded'))return;if(value!==null)localStorage.setItem('learning-task:number-line-difference:v2:aiden',value);if(legacy!==null)localStorage.setItem('learning-task:number-line-difference:v1:aiden',legacy);sessionStorage.setItem('number-line-qa-seeded','1');},arg:{value,legacy}}});
+  async function seeded(current=null,v2=null,v1=null){return newPage(browser,{init:{script:({current,v2,v1})=>{if(sessionStorage.getItem('number-line-qa-seeded'))return;for(const [version,value]of [[3,current],[2,v2],[1,v1]])if(value!==null)localStorage.setItem(`learning-task:number-line-difference:v${version}:aiden`,value);sessionStorage.setItem('number-line-qa-seeded','1');},arg:{current,v2,v1}}});}
+  for(const version of [1,2]){
+    const legacy=JSON.stringify(legacyLog(version,2,{partial:true})),h=await seeded(null,version===2?legacy:null,version===1?legacy:null);
+    await pageReady(h.page);await waitStage(h.page,version===1?'given-start':'given-end');assert.equal(await h.page.locator('progress').getAttribute('value'),'2');assert.equal(await h.page.locator('#app').getAttribute('data-question'),'p3');
+    assert.equal(await h.page.evaluate(key=>localStorage.getItem(key),taskKey(version)),legacy);assert.equal(await h.page.evaluate(key=>JSON.parse(localStorage.getItem(key)).version,taskKey(3)),3);
+    if(version===1)await point(h.page,'A');await h.page.reload();await waitStage(h.page,'given-end');assert.equal(await h.page.evaluate(key=>localStorage.getItem(key),taskKey(version)),legacy);
+    report.checks.push({migration:`v${version}-partial`,completed:2,legacyUnchanged:true,v3Resume:true});safeRecord(h.record);
   }
-  const {page}=await seeded(null,partial);await waitStage(page,'given-start');assert.match(await page.locator('h1').textContent(),/乙丙/);assert.equal(await page.locator('progress').getAttribute('value'),'2');assert.match(await page.locator('body').textContent(),/保留完成題.*重新標圖/);
-  assert.equal(await page.evaluate(key=>localStorage.getItem(key),taskKey(1)),partial);assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).version,taskKey(2)),2);
-  await page.screenshot({path:resolve(output,'v1-partial-migration.png'),fullPage:true});await point(page,'A');await page.reload();await waitStage(page,'given-end');assert.equal(await page.evaluate(key=>localStorage.getItem(key),taskKey(1)),partial);
-  const full=JSON.stringify(legacyLog(6));const finished=await seeded(null,full);await finished.page.locator('#reward').waitFor();assert.equal(await finished.page.locator('.review-item').count(),6);assert.equal(await finished.page.evaluate(key=>localStorage.getItem(key),taskKey(1)),full);
-  const before=await snapshot(finished.context);await finished.page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));const after=await snapshot(finished.context);assert.deepEqual(taskGrants(after),taskGrants(before),'v1 完成與已有首次包不重發');
-  for(const invalid of [JSON.stringify({version:99,log:[]}),JSON.stringify({version:2,log:'broken'}),'{broken-json','null']){
-    const unknown=await seeded(invalid,partial);await unknown.page.getByText('這份進度是其他版本儲存的',{exact:false}).waitFor();assert.equal(await unknown.page.locator('[data-point]').count(),0);assert.equal(await unknown.page.locator('#restart').isVisible(),false);assert.equal(await unknown.page.evaluate(key=>localStorage.getItem(key),taskKey(2)),invalid);assert.equal(await unknown.page.evaluate(key=>localStorage.getItem(key),taskKey(1)),partial);await unknown.page.reload();await unknown.page.getByText('這份進度是其他版本儲存的',{exact:false}).waitFor();assert.equal(await unknown.page.evaluate(key=>localStorage.getItem(key),taskKey(2)),invalid);
+  for(const count of [1,3]){
+    const resultPlace=JSON.stringify(legacyLog(2,count,{resultPlace:true})),pending=await seeded(null,resultPlace),p=problems[count-1],step=p.routes[0].steps[0];
+    await waitStage(pending.page,'step-complete');assert.equal(await pending.page.locator('#app').getAttribute('data-question'),p.id);await teachingCheck(pending.page,p,step,{completed:true});
+    assert.equal(await pending.page.evaluate(key=>localStorage.getItem(key),taskKey(2)),resultPlace);await pending.page.locator('#next').tap();
+    await waitStage(pending.page,count===1?'given-start':'target-start');assert.equal(await pending.page.locator('#app').getAttribute('data-question'),count===1?'p2':'p3');
+    report.checks.push({migration:'v2-result-place',problem:p.id,autoFilled:true,explicitNext:true,legacyUnchanged:true});safeRecord(pending.record);
   }
-  report.checks.push({migration:true,partialCompleted:2,currentQuestionReset:true,v1Unchanged:true,fullCompleted:6,existingGrantPreserved:true,unknownV2Preserved:4});
+  for(const [version,count,label]of [[2,5,'at-p6'],[2,6,'finished-six'],[1,6,'v1-finished-six']]){
+    const legacy=JSON.stringify(legacyLog(version,count)),h=await seeded(null,version===2?legacy:null,version===1?legacy:null);
+    await waitStage(h.page,'finished');await h.page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));assert.equal(await h.page.locator('.review-item').count(),5);
+    assert.equal(await h.page.evaluate(key=>localStorage.getItem(key),taskKey(version)),legacy);assert.equal(taskGrants(await snapshot(h.context)).length,1);
+    report.checks.push({migration:label,version,reviewCount:5,legacyUnchanged:true,taskGrants:1});safeRecord(h.record);
+  }
+  const fallback=JSON.stringify(legacyLog(1,2));
+  for(const invalid of [JSON.stringify({version:99,log:[]}),JSON.stringify({version:3,log:'broken'}),'{broken-json','null']){
+    const h=await seeded(invalid,null,fallback);await waitStage(h.page,'unavailable');assert.equal(await h.page.locator('[data-point]').count(),0);assert.equal(await h.page.locator('#restart').isVisible(),false);
+    for(let i=0;i<2;i++){assert.equal(await h.page.evaluate(key=>localStorage.getItem(key),taskKey(3)),invalid);assert.equal(await h.page.evaluate(key=>localStorage.getItem(key),taskKey(1)),fallback);await h.page.reload();await waitStage(h.page,'unavailable');}
+    report.checks.push({migration:'unknown-v3-protected',invalid,unchanged:true});safeRecord(h.record);
+  }
 }
+async function pageReady(page){await page.waitForFunction(()=>document.querySelector('#app')?.dataset.stage);}
 async function previewChecks(browser,width,height,route,{keyboard=false,prefix=''}={}){
   const h=await newPage(browser,{width,height,preview:true,init:()=>{
-    const storage=window.localStorage,values={'learning-task:number-line-difference:v1:aiden':'preview-v1-sentinel','learning-task:number-line-difference:v2:aiden':'preview-v2-sentinel','collection:v1:aiden':'preview-collection-sentinel'};
+    const storage=window.localStorage,values={'learning-task:number-line-difference:v1:aiden':'preview-v1','learning-task:number-line-difference:v2:aiden':'preview-v2','learning-task:number-line-difference:v3:aiden':'preview-v3','collection:v1:aiden':'preview-collection'};
     for(const [key,value]of Object.entries(values))storage.setItem(key,value);
-    window.__readPreviewSentinels=()=>Object.fromEntries(Object.keys(values).map(key=>[key,storage.getItem(key)]));window.__previewExpected=values;window.__previewStorageAccesses=[];
+    document.cookie='qa_preview_sentinel=unchanged; path=/';const cookie=document.cookie;
+    window.__readPreviewSentinels=()=>Object.fromEntries(Object.keys(values).map(key=>[key,storage.getItem(key)]));window.__previewExpected=values;window.__previewCookie=cookie;window.__previewStorageAccesses=[];window.__previewCookieAccesses=[];
     for(const name of ['localStorage','sessionStorage'])Object.defineProperty(window,name,{get(){window.__previewStorageAccesses.push(name);throw Error('Preview accessed '+name);}});
+    const descriptor=Object.getOwnPropertyDescriptor(Document.prototype,'cookie');
+    Object.defineProperty(document,'cookie',{get(){window.__previewCookieAccesses.push('get');return descriptor.get.call(document);},set(value){window.__previewCookieAccesses.push('set');descriptor.set.call(document,value);}});
   }});
-  await solve(h.page,{mode:keyboard?'keyboard':'tap',wrong:process.env.NUMBER_LINE_PROBE_WRONG==='1',routes:{p5:width===768?'right':'left',p6:route},prefix});assert.match(await h.page.locator('#reward').textContent(),/不會讀寫/);
-  assert.deepEqual(await h.page.evaluate(()=>window.__readPreviewSentinels()),await h.page.evaluate(()=>window.__previewExpected));assert.deepEqual(await h.page.evaluate(()=>window.__previewStorageAccesses),[]);
+  const cookies=await h.context.cookies();await solve(h.page,{mode:keyboard?'keyboard':'tap',routes:{p5:route},prefix});assert.match(await h.page.locator('#reward').textContent(),/不會讀寫/);
+  assert.deepEqual(await h.page.evaluate(()=>window.__readPreviewSentinels()),await h.page.evaluate(()=>window.__previewExpected));assert.deepEqual(await h.page.evaluate(()=>window.__previewStorageAccesses),[]);assert.deepEqual(await h.page.evaluate(()=>window.__previewCookieAccesses),[]);assert.deepEqual(await h.context.cookies(),cookies);
   assert.equal(h.record.requests.some(path=>path.startsWith('/api/')||path.startsWith('/shared/')),false);
   for(const name of ['transition','independent','answers']){const response=await h.context.request.get(`${base}/number-line-difference/print/${name}.pdf`);assert.equal(response.status(),200);assert.equal((await response.body()).subarray(0,5).toString(),'%PDF-');}
-  await h.page.screenshot({path:resolve(output,`${prefix}preview-finish-${width}.png`),fullPage:true});safeRecord(h.record);report.checks.push({preview:true,engine:keyboard?'webkit':'chromium',width,height,mode:keyboard?'keyboard':'tap',completeSix:true,storageAccesses:0,v1V2CollectionSentinelsUnchanged:true,forbiddenRequests:[],pdfs:3});
+  await capture(h.page,{path:resolve(output,`${prefix}preview-finish-${width}.png`),fullPage:true});safeRecord(h.record);report.checks.push({preview:true,engine:keyboard?'webkit':'chromium',width,height,mode:keyboard?'keyboard':'tap',completeFive:true,storageAccesses:0,cookieAccesses:0,forbiddenRequests:[],pdfs:3});
 }
-async function scrollChecks(browser){
-  for(const [width,height]of [[768,1024],[1024,768]]){
-    const h=await newPage(browser,{width,height,init:{script:legacy=>localStorage.setItem('learning-task:number-line-difference:v1:aiden',legacy),arg:JSON.stringify(legacyLog(6))}});
-    await waitStage(h.page,'finished');assert.equal(await checkScroll(h.page),true,'六題總覽溢出時仍可用原生touch捲動');assert.equal(await stage(h.page),'finished');safeRecord(h.record);
-    report.checks.push({nativePageScroll:true,width,height,statePreserved:true});
-  }
-}
+async function scrollChecks(browser){for(const [width,height]of [[768,1024],[1024,768]]){const h=await newPage(browser,{width,height,init:{script:legacy=>localStorage.setItem('learning-task:number-line-difference:v2:aiden',legacy),arg:JSON.stringify(legacyLog(2,6))}});await waitStage(h.page,'finished');assert.equal(await checkScroll(h.page),true,'五題總覽溢出時仍可原生touch捲動');assert.equal(await stage(h.page),'finished');safeRecord(h.record);report.checks.push({nativePageScroll:true,width,height,statePreserved:true});}}
 try{
+  assert.equal(problems.length,5);assert.deepEqual(problems.map(p=>p.id),['p1','p2','p3','p4','p5']);
   const browser=await engines.chromium.launch({headless:true});browsers.push(browser);report.engineVersions.chromium=browser.version();
   if(process.env.NUMBER_LINE_FORMAT_ONLY==='1')await migrationChecks(browser);
   else if(process.env.NUMBER_LINE_SCROLL_ONLY==='1')await scrollChecks(browser);
   else if(process.env.NUMBER_LINE_QUICK==='1'){
-    if(process.env.NUMBER_LINE_QUICK_WIDTH!=='1024')await previewChecks(browser,768,1024,'outer',{prefix:'quick-768-'});if(process.env.NUMBER_LINE_QUICK_WIDTH!=='768')await previewChecks(browser,1024,768,'left',{prefix:'quick-1024-'});
+    if(process.env.NUMBER_LINE_QUICK_WIDTH!=='1024')await previewChecks(browser,768,1024,'right',{prefix:'quick-768-'});
+    if(process.env.NUMBER_LINE_QUICK_WIDTH!=='768')await previewChecks(browser,1024,768,'left',{prefix:'quick-1024-'});
   }else{
-  let firstTaskBody;
-  for(const [width,height]of [[768,1024],[1024,768]]){
-    let denyTask=false;const h=await newPage(browser,{width,height,deny:()=>denyTask}),{page,context,record}=h;
-    const baseline=await snapshot(context),before=taskGrants(baseline).length;
-    await solve(page,{mode:'drag',routes:width===768?{p5:'left',p6:'left-reordered'}:{p5:'right',p6:'left-chain'},wrong:true,reload:true,stopBeforeFinish:true,prefix:`drag-${width}-`,onQuestion:async()=>assert.equal(taskGrants(await snapshot(context)).length,before,'題內不能發任務包')});
-    const touchEvents=await page.evaluate(()=>window.__numberLineTouchEvents);assert.ok(touchEvents.some(e=>e.type==='pointermove'&&e.trusted),'須有真正 browser touch pointermove');
-    assert.equal(taskGrants(await snapshot(context)).length,before,'結束畫面就緒前不能發包');
-    if(width===768)await context.request.get(base+'/test/mode?offline=1');await page.locator('#next').tap();await page.locator('#reward').waitFor();
-    if(width===768){await page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('等待同步'));await page.screenshot({path:resolve(output,'offline-pending.png'),fullPage:true});denyTask=true;await context.request.get(base+'/test/mode?offline=0');await page.evaluate(()=>window.dispatchEvent(new Event('online')));await rejected(page);assert.ok(record.denials>0);assert.equal(taskGrants(await snapshot(context)).length,0);await page.screenshot({path:resolve(output,'auto-flush-rejected-768.png'),fullPage:true});denyTask=false;await page.locator('#retry').tap();}
-    await page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));const after=await snapshot(context);assert.equal(taskGrants(after).length,1);assert.equal(taskGrants(after)[0].id,'task:number-line-difference:first');assert.equal(after.daily.earned,baseline.daily.earned);
-    if(width===768)firstTaskBody=record.taskBodies.at(-1);
-    assert.ok(firstTaskBody,'至少一次真正 UI 完成命令送進 Worker');
-    const duplicate=await context.request.post(`${base}/api/v1/collection/aiden/task-complete`,{headers:{Origin:base},data:width===768?firstTaskBody:{...firstTaskBody,commandId:'qa-second-device-'+crypto.randomUUID()}});assert.equal(duplicate.status(),200);const duplicateBody=await duplicate.json();assert.equal(duplicateBody.duplicate,true);assert.equal(taskGrants(duplicateBody.snapshot).length,1);assert.equal(duplicateBody.snapshot.daily.earned,baseline.daily.earned);
-    await page.reload();await page.waitForFunction(()=>document.querySelector('#reward')?.textContent.includes('已存入收藏'));await page.locator('[data-review="5"]').tap();assert.equal(await page.locator('path.arc').count(),7);await geometryCheck(page,`p6:${width}`);await page.locator('#close-review').tap();
-    await page.screenshot({path:resolve(output,`finish-${width}.png`),fullPage:true});await page.locator('#finish-restart').tap();await page.locator('#confirm-restart').tap();await waitStage(page,'given-start');assert.equal(taskGrants(await snapshot(context)).length,1);
-    safeRecord(record);
-    report.checks.push({flow:'child-drag',width,height,completeSix:true,reload:true,restart:true,taskGrants:1,dailyEarned:after.daily.earned,cookieSession:true,realWorkerSQLite:true,realTouch:true,offlinePending:width===768,automatic400:width===768,writes:record.writes});
+    let firstTaskBody;
+    for(const [width,height]of [[768,1024],[1024,768]]){
+      let denyTask=false;const h=await newPage(browser,{width,height,deny:()=>denyTask}),{page,context,record}=h;
+      const baseline=await snapshot(context),before=taskGrants(baseline).length;
+      await solve(page,{mode:'drag',routes:{p5:width===768?'right':'left'},wrong:true,reload:true,stopBeforeFinish:true,prefix:`drag-${width}-`,onQuestion:async()=>assert.equal(taskGrants(await snapshot(context)).length,before,'題內不能發任務包')});
+      const touchEvents=await page.evaluate(()=>window.__numberLineTouchEvents);assert.ok(touchEvents.some(e=>e.type==='pointermove'&&e.trusted),'須有真正 browser touch pointermove');
+      assert.equal(taskGrants(await snapshot(context)).length,before,'結束畫面就緒前不能發包');
+      if(width===768)await context.request.get(base+'/test/mode?offline=1');await page.locator('#next').tap();await page.locator('#reward').waitFor();
+      if(width===768){await page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('等待同步'));await capture(page,{path:resolve(output,'offline-pending.png'),fullPage:true});denyTask=true;await context.request.get(base+'/test/mode?offline=0');await page.evaluate(()=>window.dispatchEvent(new Event('online')));await rejected(page);assert.ok(record.denials>0);assert.equal(taskGrants(await snapshot(context)).length,0);await capture(page,{path:resolve(output,'auto-flush-rejected-768.png'),fullPage:true});denyTask=false;await page.locator('#retry').tap();}
+      await page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));const after=await snapshot(context);assert.equal(taskGrants(after).length,1);assert.equal(taskGrants(after)[0].id,'task:number-line-difference:first');assert.equal(after.daily.earned,baseline.daily.earned);
+      if(width===768)firstTaskBody=record.taskBodies.at(-1);assert.deepEqual(firstTaskBody.event.completedQuestionIds,['p1','p2','p3','p4','p5']);
+      const duplicate=await context.request.post(`${base}/api/v1/collection/aiden/task-complete`,{headers:{Origin:base},data:width===768?firstTaskBody:{...firstTaskBody,commandId:'qa-second-device-'+crypto.randomUUID()}});assert.equal(duplicate.status(),200);const duplicateBody=await duplicate.json();assert.equal(duplicateBody.duplicate,true);assert.equal(taskGrants(duplicateBody.snapshot).length,1);assert.equal(duplicateBody.snapshot.daily.earned,baseline.daily.earned);
+      await page.reload();await page.waitForFunction(()=>document.querySelector('#reward')?.textContent.includes('已存入收藏'));await page.locator('[data-review="4"]').tap();assert.equal(await page.locator('path.arc').count(),5);await geometryCheck(page,`p5-review:${width}`);await page.locator('#close-review').tap();
+      await capture(page,{path:resolve(output,`finish-${width}.png`),fullPage:true});await page.locator('#finish-restart').tap();await page.locator('#confirm-restart').tap();await waitStage(page,'given-start');assert.equal(taskGrants(await snapshot(context)).length,1);
+      safeRecord(record);report.checks.push({flow:'child-drag',width,height,completeFive:true,reload:true,restart:true,taskGrants:1,dailyEarned:after.daily.earned,cookieSession:true,realWorkerSQLite:true,realTouch:true,offlinePending:width===768,automatic400:width===768,writes:record.writes});
+    }
+    let denyDirect=true;const direct=await newPage(browser,{child:'bingpu',deny:()=>denyDirect});await solve(direct.page,{mode:'tap',routes:{p5:'left'},prefix:'direct-rejection-'});await rejected(direct.page);assert.ok(direct.record.denials>0);assert.equal(taskGrants(await snapshot(direct.context,'bingpu')).length,0);denyDirect=false;await direct.page.locator('#retry').tap();await direct.page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));await direct.page.reload();await direct.page.waitForFunction(()=>document.querySelector('#reward')?.textContent.includes('已存入收藏'));const recovered=await snapshot(direct.context,'bingpu');assert.equal(taskGrants(recovered).length,1);assert.equal(recovered.daily.earned,0);safeRecord(direct.record);report.checks.push({flow:'direct-rejection',status:400,fiveCompletedPreserved:true,escapedReason:true,retryRealWorker:true,reload:true,taskGrants:1});
+    await previewChecks(browser,768,1024,'left',{prefix:'tap-768-'});await previewChecks(browser,1024,768,'right',{prefix:'tap-1024-'});
+    assert.deepEqual([...new Set(report.coverage.routes.filter(x=>x.problem==='p5').map(x=>x.route))].sort(),['left','right']);assert.equal(report.coverage.alternateAfterHint,true,'p5 提示外的另一合法路徑仍可走');
+    await migrationChecks(browser);await scrollChecks(browser);
   }
-  let denyDirect=true;const direct=await newPage(browser,{child:'bingpu',deny:()=>denyDirect});
-  await solve(direct.page,{mode:'tap',routes:{p5:'left',p6:'right'},wrong:true,prefix:'direct-rejection-'});await rejected(direct.page);assert.ok(direct.record.denials>0);assert.equal(taskGrants(await snapshot(direct.context,'bingpu')).length,0);await direct.page.screenshot({path:resolve(output,'direct-rejected-768.png'),fullPage:true});
-  denyDirect=false;await direct.page.locator('#retry').tap();await direct.page.waitForFunction(()=>document.querySelector('#reward').textContent.includes('已存入收藏'));await direct.page.reload();await direct.page.waitForFunction(()=>document.querySelector('#reward')?.textContent.includes('已存入收藏'));const recovered=await snapshot(direct.context,'bingpu');assert.equal(taskGrants(recovered).length,1);assert.equal(recovered.daily.earned,0);safeRecord(direct.record);await direct.page.screenshot({path:resolve(output,'direct-recovered-768.png'),fullPage:true});report.checks.push({flow:'direct-rejection',status:400,sixCompletedPreserved:true,escapedReason:true,retryRealWorker:true,reload:true,taskGrants:1});
-  await previewChecks(browser,768,1024,'outer',{prefix:'tap-768-'});await previewChecks(browser,1024,768,'left',{prefix:'tap-1024-'});
-  assert.deepEqual([...new Set(report.coverage.routes.filter(x=>x.problem==='p6').map(x=>x.route))].sort(),problems[5].routes.map(x=>x.id).sort(),'browser 必須走過全部五條進階最短路');
-  assert.deepEqual([...new Set(report.coverage.routes.filter(x=>x.problem==='p5').map(x=>x.route))].sort(),['left','right'],'browser 必須走過中階自選左右兩路');
-  await migrationChecks(browser);
-  await scrollChecks(browser);
-  const home=await contexts[0].newPage();await home.goto(base+'/?child=aiden');await home.locator('[data-learning-task="number-line-difference"]').waitFor();assert.match(await home.locator('[data-learning-task="number-line-difference"]').getAttribute('href'),/number-line-difference\/\?child=aiden/);await home.screenshot({path:resolve(output,'home-aiden.png'),fullPage:true});await home.goto(base+'/?child=bingpu');await home.locator('.family-header').waitFor();assert.equal(await home.locator('[data-learning-task="number-line-difference"]').count(),0);report.checks.push({home:true,aidenVisible:true,bingpuHidden:true});
-  }
-  if(process.env.NUMBER_LINE_WEBKIT==='1'){const webkit=await engines.webkit.launch({headless:true});browsers.push(webkit);report.engineVersions.webkit=webkit.version();await previewChecks(webkit,768,1024,'outer',{keyboard:true,prefix:'webkit-keyboard-'});}
+  if(process.env.NUMBER_LINE_WEBKIT==='1'){const webkit=await engines.webkit.launch({headless:true});browsers.push(webkit);report.engineVersions.webkit=webkit.version();await previewChecks(webkit,768,1024,'right',{keyboard:true,prefix:'webkit-keyboard-'});}
   report.ok=true;await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({ok:true,checks:report.checks.length,coverage:report.coverage,output}));
-}catch(error){report.ok=false;report.error=error.stack;for(const [i,context]of contexts.entries()){const page=context.pages().at(-1);if(page&&!page.isClosed()){await page.screenshot({path:resolve(output,`failure-${i}.png`),fullPage:true}).catch(()=>{});report.failureInputs=await page.evaluate(()=>({stage:document.querySelector('#app')?.dataset.stage,events:window.__numberLineTouchEvents})).catch(()=>null);}}await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2)+'\n');throw error;}
+}catch(error){report.ok=false;report.error=error.stack;for(const [i,context]of contexts.entries()){const page=context.pages().at(-1);if(page&&!page.isClosed()){await capture(page,{path:resolve(output,`failure-${i}.png`),fullPage:true}).catch(()=>{});report.failureInputs=await page.evaluate(()=>({stage:document.querySelector('#app')?.dataset.stage,events:window.__numberLineTouchEvents})).catch(()=>null);}}await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2)+'\n');throw error;}
 finally{for(const context of contexts)await context.close().catch(()=>{});for(const browser of browsers)await browser.close();}

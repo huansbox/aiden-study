@@ -6,15 +6,19 @@ import { join, resolve, sep } from "node:path";
 import "../docs/shared/collection-core.js";
 import { collectionRuntime } from "./helpers/collection-runtime.mjs";
 const C = globalThis.KidsCollectionCore;
-const taskId = "number-line-difference", completedQuestionIds = ["p1", "p2", "p3", "p4", "p5", "p6"];
+const taskId = "number-line-difference", completedQuestionIds = ["p1", "p2", "p3", "p4", "p5"];
+const legacyQuestionIds = [...completedQuestionIds, "p6"];
 const now = new Date("2026-10-24T08:00:00Z"), child = "test-number-line-reward";
 const completion = (occurredAt = now.toISOString()) => ({ type: "task-complete", event: { taskId, completedQuestionIds, occurredAt } });
 
-test("只有固定六題都完成才有任務包，紙本或重複題號不構成資格", () => {
-  for (const ids of [completedQuestionIds.slice(0, 5), [...completedQuestionIds.slice(0, 5), "p5"], [...completedQuestionIds.slice(0, 5), "transition-6"]]) {
-    assert.throws(() => C.apply(C.empty(), { ...completion(), event: { ...completion().event, completedQuestionIds: ids } }, now), /全部六題/);
+test("只有完整五題或舊版完整六題構成資格，不能混入紙本、重複或陌生題號", () => {
+  const invalid = [[], ["p1"], completedQuestionIds.slice(0, 4), ["p1", "p2", "p3", "p4", "p4"],
+    ["p1", "p2", "p3", "p4", "transition-5"], [...completedQuestionIds, "transition-6"],
+    [...legacyQuestionIds, "p7"], ["p1", "p2", "p3", "p4", "p6"], [...completedQuestionIds, "p5"]];
+  for (const ids of invalid) {
+    assert.throws(() => C.apply(C.empty(), { ...completion(), event: { ...completion().event, completedQuestionIds: ids } }, now), /全部五題/);
   }
-  assert.throws(() => C.apply(C.empty(), { ...completion(), event: { ...completion().event, taskId: "toString" } }, now), /全部六題/);
+  assert.throws(() => C.apply(C.empty(), { ...completion(), event: { ...completion().event, taskId: "toString" } }, now), /全部五題/);
   assert.throws(() => C.apply(C.empty(), completion("2026-10-25T08:00:00Z"), now), /完成時間/);
   const state = C.apply(C.empty(), completion(), now);
   assert.equal(state.grants.length, 1);
@@ -22,6 +26,22 @@ test("只有固定六題都完成才有任務包，紙本或重複題號不構�
   assert.equal(state.grants[0].kind, "task");
   assert.deepEqual(state.days, {}, "任務不建立每日紀錄或 round");
   assert.equal(C.ENTRIES[taskId], undefined);
+  for (const ids of [legacyQuestionIds, [...completedQuestionIds].reverse(), [...legacyQuestionIds].reverse()]) {
+    const legacy = C.apply(C.empty(), { ...completion(), event: { ...completion().event, completedQuestionIds: ids } }, now);
+    assert.deepEqual(legacy.grants, state.grants, "題號順序與舊完整六題均沿用同一首次包");
+  }
+});
+
+test("已用舊六題領包後改五題、五題後舊 outbox 補送，都不重發或改完成時間", () => {
+  for (const firstIds of [completedQuestionIds, legacyQuestionIds]) {
+    const first = C.apply(C.empty(), { ...completion(), event: { ...completion().event, completedQuestionIds: firstIds } }, now);
+    const before = structuredClone(first.grants);
+    for (const ids of [completedQuestionIds, legacyQuestionIds]) {
+      const repeated = C.apply(first, { ...completion(), event: { ...completion().event, completedQuestionIds: ids, occurredAt: "2026-10-24T08:01:00Z" } }, now);
+      assert.deepEqual(repeated.grants, before);
+      assert.deepEqual(repeated.days, {});
+    }
+  }
 });
 
 test("任務首次包跨日重做仍一包，與同日長除法和題庫數學的應得、已領完全分開", () => {
@@ -88,6 +108,7 @@ test("SQLite 同操作、不同裝置、跨日重送與持久重啟都只有同�
   assert.ok(resolve(dir).startsWith(resolve(tmpdir()) + sep));
   let runtime = await collectionRuntime({ persist: dir });
   const first = { ...completion(new Date(Date.now() - 86400000).toISOString()), commandId: "task-device-one" };
+  first.event.completedQuestionIds = legacyQuestionIds;
   try {
     const earned = await request(runtime, "task-complete", first);
     assert.equal(earned.status, 200); assert.equal(earned.body.duplicate, false);

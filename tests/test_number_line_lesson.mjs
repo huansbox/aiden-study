@@ -3,15 +3,29 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {createLesson,current,act,restore,nextSteps,shortestRoutes,initialKnown,subtract,targetStatus,suggestedTarget,expectedPoints} from '../learning-tasks/number-line-difference/source/lesson-core.js';
+import {createLesson,current,act,restore,nextSteps,initialKnown,subtract,targetStatus,suggestedTarget,expectedPoints} from '../learning-tasks/number-line-difference/source/lesson-core.js';
 import {diagramLayout} from '../learning-tasks/number-line-difference/source/diagram-layout.js';
 const problems=JSON.parse(readFileSync(new URL('../learning-tasks/number-line-difference/source/problems.json',import.meta.url))).sets.pad;
-function perform(state,type,value){return act(state,problems,type,value);}
-function givens(state){for(const g of problems[state.index].givens)for(const [type,value] of [['point',g.segment[0]],['point',g.segment[1]],['chip','given-'+g.segment],['place',g.segment]])assert.equal(perform(state,type,value).ok,true);}
-function step(state,s){for(const [type,value] of [['point',s.result[0]],['point',s.result[1]],['segment',s.long],['segment',s.short],['number',s.value],['chip','result'],['place',s.result]])assert.equal(perform(state,type,value).ok,true,JSON.stringify({type,value,s,q:current(state)}));}
+const perform=(state,type,value)=>act(state,problems,type,value);
+function givens(state){for(const g of problems[state.index].givens)for(const e of [['point',g.segment[0]],['point',g.segment[1]],['chip','given-'+g.segment],['place',g.segment]])assert.equal(perform(state,...e).ok,true);}
+function step(state,s){for(const e of [['point',s.result[0]],['point',s.result[1]],['segment',s.long],['segment',s.short],['number',s.value]])assert.equal(perform(state,...e).ok,true,JSON.stringify({e,s,q:current(state)}));assert.equal(current(state).stage,'step-complete');}
 function jumpTo(index){const state=createLesson(problems);state.index=index;givens(state);return state;}
+const routeFor=p=>p.routes.find(r=>r.id===p.preferredRoute)||p.routes[0];
+function legacyLog(version,count=problems.length,advance=true){
+  const log=[],send=(type,value)=>log.push({type,value});
+  for(const [i,p] of problems.slice(0,count).entries()){
+    for(const g of p.givens){send('point',g.segment[0]);send('point',g.segment[1]);if(version===1)send('number',g.length);else{send('chip','given-'+g.segment);send('place',g.segment);}}
+    for(const s of routeFor(p).steps){
+      if(version===2){send('point',s.result[0]);send('point',s.result[1]);}
+      send('segment',s.long);send('segment',s.short);send('number',s.value);
+      if(version===1){send('point',s.result[0]);send('point',s.result[1]);send('number',s.value);}else{send('chip','result');send('place',s.result);}
+    }
+    if(advance||i<count-1)send('next','');
+  }
+  return log;
+}
 
-test('標圖必須用數字片；錯放兩次才提示，選片不重設同一步錯誤',()=>{
+test('標圖保留真數字片操作；錯放兩次才提示，選片不重設同一步錯誤',()=>{
   const state=createLesson(problems),q=current(state);
   perform(state,'point','B');perform(state,'point','D');assert.equal(q.errors,2);assert.equal(q.stage,'given-start');
   perform(state,'point','A');assert.equal(q.errors,0);perform(state,'point','C');
@@ -21,132 +35,75 @@ test('標圖必須用數字片；錯放兩次才提示，選片不重設同一�
   perform(state,'chip','given-AC');assert.equal(q.errors,2);assert.equal(perform(state,'place','AC').ok,true);
   assert.equal(q.arcs[0].length,10);assert.equal(q.stage,'given-start');assert.equal(q.errors,0);
 });
-test('先選未知目標，合法非最短和目前不可算分開；連續選錯目標保留兩錯提示計數',()=>{
-  const state=jumpTo(5),p=problems[5];
-  step(state,p.routes.find(r=>r.id==='right').steps[0]);
-  assert.equal(targetStatus(p,current(state),'AC'),'longer-route');
-  assert.equal(targetStatus(p,current(state),'BC'),'unavailable');
-  for(let i=0;i<2;i++){perform(state,'point','A');assert.equal(perform(state,'point','C').reason,'longer-route');assert.equal(current(state).stage,'target-start');}
-  assert.equal(current(state).errors,2);perform(state,'point','B');assert.equal(current(state).errors,2);
-  perform(state,'point','D');assert.equal(current(state).errors,0);assert.equal(current(state).target,'BD');
-});
-test('中階第1/2題是引導順序；另一條同長路線不誤稱多算一步，第3題兩路都可',()=>{
-  const left=jumpTo(2),right=jumpTo(3);
-  assert.equal(nextSteps(problems[2],current(left))[0].result,'AB');
-  assert.equal(targetStatus(problems[2],current(left),'CD'),'guided-route');
-  assert.equal(nextSteps(problems[3],current(right))[0].result,'CD');
-  assert.equal(targetStatus(problems[3],current(right),'AB'),'guided-route');
-  for(const route of problems[4].routes){const state=jumpTo(4);for(const s of route.steps)step(state,s);assert.equal(current(state).stage,'question-complete');}
-});
-test('初階指定目標、可算但較長、已知段與目前不可算各有不同原因',()=>{
-  for(const [index,other] of [[0,'CD'],[1,'AB']]){
-    const state=jumpTo(index),p=problems[index];
-    assert.equal(targetStatus(p,current(state),other),'guided-route');
-    assert.equal(targetStatus(p,current(state),'AC'),'known');
-    perform(state,'point',other[0]);assert.equal(perform(state,'point',other[1]).reason,'guided-route');
+test('第3題左路、第4題右路，第5題兩條最短路線均合法；原因不混淆',()=>{
+  for(const [index,wanted,other] of [[0,'AB','CD'],[1,'CD','AB'],[2,'AB','CD'],[3,'CD','AB']]){
+    const state=jumpTo(index),p=problems[index];assert.equal(nextSteps(p,current(state))[0].result,wanted);assert.equal(targetStatus(p,current(state),other),'guided-route');assert.equal(targetStatus(p,current(state),'AC'),'known');
   }
-  const p5=jumpTo(4);step(p5,problems[4].routes.find(r=>r.id==='left').steps[0]);
-  assert.equal(targetStatus(problems[4],current(p5),'CD'),'longer-route');
-  assert.equal(targetStatus(problems[4],current(p5),'AB'),'known','剛求出的段也已有長度');
-  const p6=jumpTo(5);step(p6,problems[5].routes.find(r=>r.id==='right').steps[0]);
-  assert.equal(targetStatus(problems[5],current(p6),'AB'),'longer-route');
-  assert.equal(targetStatus(problems[5],current(p6),'BC'),'unavailable');
+  for(const route of problems[4].routes){const state=jumpTo(4);for(const [i,s]of route.steps.entries()){if(i)perform(state,'next','');step(state,s);}assert.equal(current(state).target,'BC');assert.deepEqual(current(state).steps,route.steps);}
+  const state=jumpTo(4);assert.equal(targetStatus(problems[4],current(state),'BC'),'unavailable');step(state,problems[4].routes[0].steps[0]);perform(state,'next','');assert.equal(targetStatus(problems[4],current(state),'CD'),'longer-route');assert.equal(targetStatus(problems[4],current(state),'AB'),'known');
 });
-test('自選目標提示只建議一段、優先沿用首點，且不限制其他最短路線',()=>{
-  for(const index of [4,5]){
-    const state=jumpTo(index),p=problems[index],q=current(state);
-    for(let i=0;i<2;i++){perform(state,'point','B');assert.equal(perform(state,'point','C').reason,'unavailable');}
-    assert.equal(q.errors,2);
-    const targets=[...new Set(nextSteps(p,q).map(s=>s.result))],suggestion=suggestedTarget(p,q);
-    assert.ok(targets.includes(suggestion));assert.equal(suggestion.length,2);
-    assert.ok(expectedPoints(p,q).length>2,'完整端點集合不能被提示縮成單一路線');
-    for(const point of p.points){
-      perform(state,'point',point.id);
-      const choices=targets.filter(s=>s.includes(point.id));
-      assert.ok(choices.includes(suggestedTarget(p,q)),'提示優先接續已選首點');
-      perform(state,'point',point.id);
-    }
-    const alternate=p.routes.find(route=>route.steps[0].result!==suggestion);
-    assert.ok(alternate,'應有提示以外的合法路');
-    for(const s of alternate.steps)step(state,s);
-    assert.equal(q.stage,'question-complete');
-  }
-  const state=jumpTo(5),p=problems[5];step(state,p.routes.find(r=>r.id==='right').steps[0]);
-  perform(state,'point','A');
-  assert.equal(suggestedTarget(p,current(state)),null,'首點接不到可行目標時讓 UI 提示取消');
-  assert.deepEqual(expectedPoints(p,current(state)),[]);
+test('目標錯誤計數跨首點累積；提示沿用首點且不限制第5題另一條路',()=>{
+  const p=problems[4],state=jumpTo(4),q=current(state);
+  for(let i=0;i<2;i++){perform(state,'point','B');assert.equal(perform(state,'point','C').reason,'unavailable');}
+  assert.equal(q.errors,2);assert.ok(expectedPoints(p,q).length>2);
+  perform(state,'point','C');assert.equal(q.errors,2);assert.equal(suggestedTarget(p,q),'CD');perform(state,'point','C');
+  const alternate=p.routes.find(route=>route.steps[0].result!==suggestedTarget(p,q));for(const[i,s]of alternate.steps.entries()){if(i)perform(state,'next','');step(state,s);}assert.equal(q.target,'BC');
 });
-test('每條自選路線的每個中間狀態都能提示一段；提示不改合法路線或取消首點的操作',()=>{
-  for(const index of [4,5])for(const route of problems[index].routes){
-    const p=problems[index],state=jumpTo(index),q=current(state);
-    for(let i=0;i<route.steps.length;i++){
-      const available=p.routes.filter(candidate=>candidate.steps.slice(0,i).every((s,n)=>JSON.stringify(s)===JSON.stringify(route.steps[n]))).map(candidate=>candidate.steps[i].result);
-      assert.ok(available.includes(suggestedTarget(p,q)));
-      for(const {id}of p.points){
-        perform(state,'point',id);
-        const choices=available.filter(s=>s.includes(id));
-        if(choices.length)assert.ok(choices.includes(suggestedTarget(p,q)));
-        else assert.equal(suggestedTarget(p,q),null);
-        assert.equal(perform(state,'point',id).ok,true);assert.equal(q.stage,'target-start');
-      }
-      step(state,route.steps[i]);
-    }
-    assert.equal(q.stage,'question-complete');
-  }
+test('答對立即回填弧線與完整步驟，仍停在本次相減；只有下一步才進下一次',()=>{
+  const state=jumpTo(2),p=problems[2],q=current(state),s=p.routes[0].steps[0];step(state,s);
+  assert.equal(state.index,2);assert.equal(state.finished,false);assert.deepEqual(q.steps,[s]);assert.deepEqual(q.arcs.at(-1),{segment:s.result,length:s.value,derived:true});assert.deepEqual(q.pending,s);assert.equal(q.target,s.result);assert.equal(q.long,s.long);assert.equal(q.short,s.short);
+  assert.equal(perform(state,'chip','result').ok,false);assert.equal(perform(state,'place',s.result).ok,false);assert.equal(q.steps.length,1);
+  perform(state,'next','');assert.equal(q.stage,'target-start');assert.equal(q.target,null);assert.equal(q.pending,null);assert.equal(nextSteps(p,q)[0].result,'BC');
 });
-test('同值錯段仍不能填入；結果數字正確後還要標回原本的目標框，不再重點端點',()=>{
+test('線段以身分而非同值配對，答錯不會提交；最終相減也停步等下一題',()=>{
   assert.equal(subtract('AC','BD'),null);assert.equal(subtract('AD','BD'),'AB');
-  const state=jumpTo(5),route=problems[5].routes.find(r=>r.id==='outer');
-  step(state,route.steps[0]);step(state,route.steps[1]);
-  const s=route.steps[2];perform(state,'point','B');perform(state,'point','C');perform(state,'segment','BE');
-  assert.equal(perform(state,'segment','AC').ok,false,'AC 和 CE 同為7，必須點 CE 才有共端點且包含');
-  assert.equal(current(state).stage,'short');perform(state,'segment','CE');perform(state,'number',s.value);
-  assert.equal(current(state).stage,'result-place');assert.equal(current(state).steps.length,2);
-  assert.equal(perform(state,'point','B').ok,false);perform(state,'chip','result');
-  assert.equal(perform(state,'place','CE').ok,false);assert.equal(current(state).stage,'result-place');
-  perform(state,'chip','result');perform(state,'place','BC');assert.equal(current(state).stage,'question-complete');assert.equal(current(state).arcs.at(-1).segment,'BC');
+  const state=jumpTo(3),p=problems[3],q=current(state),s=routeFor(p).steps[0];
+  perform(state,'point',s.result[0]);perform(state,'point',s.result[1]);perform(state,'segment',s.long);
+  assert.equal(perform(state,'segment','BD').ok,false);assert.equal(q.stage,'short');perform(state,'segment',s.short);
+  assert.equal(perform(state,'number',s.value+1).ok,false);assert.equal(q.steps.length,0);assert.equal(q.arcs.length,3);
+  perform(state,'number',s.value);perform(state,'next','');step(state,routeFor(p).steps[1]);assert.equal(q.stage,'step-complete');assert.deepEqual(state.completedIds,['p4']);assert.equal(state.index,3);perform(state,'next','');assert.equal(state.index,4);
 });
-test('進階完整接受題庫列出的5條最短路線與獨立步驟換序',()=>{
-  const p=problems[5];assert.equal(shortestRoutes(initialKnown(p),p.target).length,5);
-  for(const route of p.routes){const state=jumpTo(5);for(const s of route.steps)step(state,s);assert.equal(current(state).stage,'question-complete');assert.deepEqual(current(state).steps,route.steps);}
-});
-test('只有結果回圖且六題按下一題後才 finished，v2 任一操作階段均可重載續做',()=>{
+test('只有5題末步按完成才finished，v3每一操作階段均可重載續做',()=>{
   let state=createLesson(problems);const log=[];
-  const send=(type,value)=>{assert.equal(perform(state,type,value).ok,true);log.push({type,value});const restored=restore(problems,{version:2,log});assert.equal(restored.writable,true);assert.deepEqual(restored.state,state);state=restored.state;};
+  const send=(type,value)=>{assert.equal(perform(state,type,value).ok,true);log.push({type,value});const restored=restore(problems,{version:3,log});assert.equal(restored.writable,true);assert.deepEqual(restored.state,state);state=restored.state;};
   for(const p of problems){
     for(const g of p.givens)for(const e of [['point',g.segment[1]],['point',g.segment[0]],['chip','given-'+g.segment],['place',g.segment]])send(...e);
-    while(current(state).stage!=='question-complete'){
-      const s=nextSteps(p,current(state))[0];
-      for(const e of [['point',s.result[0]],['point',s.result[1]],['segment',s.long],['segment',s.short],['number',s.value]])send(...e);
-      assert.equal(state.finished,false);assert.equal(current(state).stage,'result-place');
-      send('chip','result');send('place',s.result);
+    for(const [i,s] of routeFor(p).steps.entries()){
+      if(i)send('next','');for(const e of [['point',s.result[0]],['point',s.result[1]],['segment',s.long],['segment',s.short],['number',s.value]])send(...e);
+      assert.equal(state.finished,false);assert.equal(current(state).stage,'step-complete');
     }
     assert.equal(state.finished,false);send('next','');
   }
-  assert.equal(state.finished,true);assert.deepEqual(state.completedIds,['p1','p2','p3','p4','p5','p6']);
+  assert.equal(state.finished,true);assert.deepEqual(state.completedIds,['p1','p2','p3','p4','p5']);
 });
-function legacyLog(count=6,advance=true){
-  const log=[],send=(type,value)=>log.push({type,value});
-  for(const p of problems.slice(0,count)){
-    for(const g of p.givens){send('point',g.segment[0]);send('point',g.segment[1]);send('number',g.length);}
-    const route=p.routes.find(r=>r.id===p.preferredRoute)||p.routes[0];
-    for(const s of route.steps)for(const e of [['segment',s.long],['segment',s.short],['number',s.value],['point',s.result[0]],['point',s.result[1]],['number',s.value]])send(...e);
-    if(advance||p!==problems[count-1])send('next','');
+test('v2各標圖階段與部分算式可續做，pending result-place自動回填但保持停步',()=>{
+  const full=legacyLog(2,3,false);
+  for(const length of [0,1,2,3,4,10,12,15,18,full.length-2,full.length-1,full.length]){
+    const saved={version:2,log:full.slice(0,length)},copy=structuredClone(saved),r=restore(problems,null,saved);assert.equal(r.writable,true);assert.deepEqual(saved,copy);assert.deepEqual(restore(problems,{version:3,log:r.log}).state,r.state);
   }
-  return log;
-}
-test('v1 完成題／整份完成可遷移，部分題從標圖開始；不修改v1，v2可再次還原',()=>{
-  const saved={version:1,log:[...legacyLog(2),{type:'point',value:'A'},{type:'point',value:'C'},{type:'number',value:12}]},copy=structuredClone(saved);
-  const partial=restore(problems,null,saved);assert.deepEqual(saved,copy);assert.equal(partial.resetCurrent,true);assert.equal(partial.state.index,2);assert.deepEqual(partial.state.completedIds,['p1','p2']);assert.equal(current(partial.state).stage,'given-start');assert.deepEqual(restore(problems,{version:2,log:partial.log}).state,partial.state);
-  const completed=restore(problems,null,{version:1,log:legacyLog(2,false)});assert.equal(completed.state.index,1);assert.equal(current(completed.state).stage,'question-complete');
-  const full=restore(problems,null,{version:1,log:legacyLog()});assert.equal(full.state.finished,true);assert.equal(full.state.completedIds.length,6);
+  // 第3題第一步的正確 number，舊版後面還沒拖回結果。
+  const prefix=legacyLog(2,2),p=problems[2],s=routeFor(p).steps[0];
+  for(const g of p.givens)for(const e of [['point',g.segment[0]],['point',g.segment[1]],['chip','given-'+g.segment],['place',g.segment]])prefix.push({type:e[0],value:e[1]});
+  for(const e of [['point',s.result[0]],['point',s.result[1]],['segment',s.long],['segment',s.short],['number',s.value]])prefix.push({type:e[0],value:e[1]});
+  const r=restore(problems,null,{version:2,log:prefix});assert.equal(r.state.index,2);assert.equal(current(r.state).stage,'step-complete');assert.deepEqual(current(r.state).steps,[s]);assert.equal(current(r.state).arcs.at(-1).length,s.value);assert.deepEqual(r.state.completedIds,['p1','p2']);
+  const continued=restore(problems,null,{version:2,log:[...prefix,{type:'chip',value:'result'},{type:'place',value:s.result},{type:'point',value:'B'}]});assert.equal(current(continued.state).stage,'target-end');assert.equal(current(continued.state).point,'B');assert.equal(current(continued.state).steps.length,1);
 });
-test('未知／較新或壞掉的v2格式不可寫回；v1只接受舊版真正可完成的單端點',()=>{
-  for(const saved of [{version:3,log:[]},{version:2,log:'broken'},{version:2,log:[{type:'cheat',value:'p1'}]}])assert.equal(restore(problems,saved).writable,false);
-  for(const bad of ['', 'AC']){
-    const log=legacyLog(1);log[0]={type:'point',value:bad};
-    assert.deepEqual(restore(problems,null,{version:1,log}).state.completedIds,[]);
+test('v2已進舊p6或舊6題全完成均保留前5題並轉為finished',()=>{
+  for(const tail of [[],[{type:'point',value:'A'}],[{type:'point',value:'A'},{type:'point',value:'E'},{type:'chip',value:'given-AE'},{type:'place',value:'AE'},{type:'next',value:''}]]){
+    const saved={version:2,log:[...legacyLog(2),...tail]},copy=structuredClone(saved),r=restore(problems,null,saved);assert.equal(r.state.finished,true);assert.equal(r.state.completedIds.length,5);assert.equal(r.state.questions.length,5);assert.deepEqual(saved,copy);assert.deepEqual(restore(problems,{version:3,log:r.log}).state,r.state);
   }
+  const done=restore(problems,null,{version:2,log:legacyLog(2,5,false)});assert.equal(done.state.finished,false);assert.equal(current(done.state).stage,'step-complete');assert.equal(done.state.completedIds.length,5);
+});
+test('v1完成題可遷移、部分題重新標圖；前5題完整且已往舊第6題即可finished',()=>{
+  const saved={version:1,log:[...legacyLog(1,2),{type:'point',value:'A'},{type:'point',value:'C'},{type:'number',value:12}]},copy=structuredClone(saved),partial=restore(problems,null,saved);
+  assert.deepEqual(saved,copy);assert.equal(partial.resetCurrent,true);assert.equal(partial.state.index,2);assert.deepEqual(partial.state.completedIds,['p1','p2']);assert.equal(current(partial.state).stage,'given-start');assert.deepEqual(restore(problems,{version:3,log:partial.log}).state,partial.state);
+  const completed=restore(problems,null,{version:1,log:legacyLog(1,2,false)});assert.equal(completed.state.index,1);assert.equal(current(completed.state).stage,'step-complete');
+  const full=restore(problems,null,{version:1,log:legacyLog(1)});assert.equal(full.state.finished,true);assert.equal(full.state.completedIds.length,5);
+  for(const bad of ['', 'AC']){const log=legacyLog(1,1);log[0]={type:'point',value:bad};assert.deepEqual(restore(problems,null,{version:1,log}).state.completedIds,[]);}
+});
+test('新key只接受v3；較新、無法讀取及不明log都不能覆寫',()=>{
+  for(const saved of [{version:4,log:[]},{version:2,log:[]},{version:'unreadable'},{version:3,log:'broken'},{version:3,log:[{type:'cheat',value:'p1'}]}])assert.equal(restore(problems,saved).writable,false);
+  for(const legacy of [{version:4,log:[]},{version:'unreadable'},{version:2,log:'broken'},{version:2,log:[{type:'cheat',value:'p1'}]}])assert.equal(restore(problems,null,legacy).writable,false);
 });
 test('固定版面涵蓋所有路線、上下面都有弧線、標籤在畫布內；每個目標框不壓當時任何可能已知弧線或數字',()=>{
   for(const p of problems){
@@ -178,15 +135,16 @@ test('CI 核對 Pad 來源與部署產物，三份紙本 PDF 保持 byte 一致'
 });
 
 const platformCode=readFileSync(new URL('../learning-tasks/number-line-difference/source/platform.js',import.meta.url),'utf8').replace('export async function','async function')+';openPlatform';
-test('preview完全不碰storage或家庭模組；正式adapter只寫v2並保留v1/未知格式',async()=>{
+test('preview完全不碰storage或家庭模組；正式adapter只寫v3，v2優先、v1 fallback且舊資料不變',async()=>{
   const previewOpen=vm.runInNewContext(platformCode,{}),preview=await previewOpen(true);
-  assert.equal(preview.load(),null);assert.equal(preview.save({version:2,log:[]}),true);await preview.finish(['p1']);assert.equal(preview.reward().status,'preview');
-  const oldKey='learning-task:number-line-difference:v1:aiden',newKey='learning-task:number-line-difference:v2:aiden';
+  assert.equal(preview.load(),null);assert.equal(preview.save({version:3,log:[]}),true);await preview.finish(['p1']);assert.equal(preview.reward().status,'preview');
+  const oldKey='learning-task:number-line-difference:v1:aiden',newKey='learning-task:number-line-difference:v3:aiden';
   const old=JSON.stringify({version:1,log:legacyLog(1)}),data=new Map([[oldKey,old]]),writes=[];
   const open=vm.runInNewContext(platformCode,{URLSearchParams,location:{search:'?child=aiden'},localStorage:{getItem:key=>data.get(key)??null,setItem(key,value){writes.push(key);data.set(key,value);}},window:{KidsAuth:{ready:Promise.resolve(),state:{status:'connected'}},KidsCollection:{create:()=>({snapshot:()=>({}),ready:Promise.resolve()})}},document:{createElement:()=>({}),head:{append(script){script.onload();}}}});
   const adapter=await open(false);assert.equal(adapter.load(),null);assert.equal(adapter.loadLegacy().version,1);
-  assert.equal(adapter.save({version:2,log:[]}),true);assert.deepEqual(writes,[newKey]);assert.equal(data.get(oldKey),old);
-  for(const unsupported of ['null','{bad json',JSON.stringify({version:3,log:[]}),JSON.stringify({version:2,log:'different format'})]){data.set(newKey,unsupported);assert.equal(restore(problems,adapter.load()).writable,false);assert.equal(adapter.save({version:2,log:[]}),false);assert.equal(data.get(newKey),unsupported);}
+  const v2Key='learning-task:number-line-difference:v2:aiden',v2=JSON.stringify({version:2,log:[]});data.set(v2Key,v2);assert.equal(adapter.loadLegacy().version,2);assert.equal(adapter.loadLegacy(1).version,1);
+  assert.equal(adapter.save({version:3,log:[]}),true);assert.deepEqual(writes,[newKey]);assert.equal(data.get(oldKey),old);assert.equal(data.get(v2Key),v2);
+  for(const unsupported of ['null','{bad json',JSON.stringify({version:4,log:[]}),JSON.stringify({version:3,log:'different format'})]){data.set(newKey,unsupported);assert.equal(restore(problems,adapter.load()).writable,false);assert.equal(adapter.save({version:3,log:[]}),false);assert.equal(data.get(newKey),unsupported);}
 });
 test('task adapter 訂閱看得見明拒原因；pending 與 earned 優先，重試後可恢復',async()=>{
   let snapshot={taskRewards:{},sync:{status:'ready'}},listener;
@@ -200,7 +158,7 @@ test('task adapter 訂閱看得見明拒原因；pending 與 earned 優先，重
   // flush() 明拒會刪掉 task outbox，completeTask() 仍 resolve；稍後自動補送也走同一訂閱。
   for(const message of ['任務完成時間不正確','不支援的收藏操作','任務資格衝突']){
     snapshot={taskRewards:{'number-line-difference':{status:'unearned'}},sync:{status:'error',message}};
-    await platform.finish(['p1','p2','p3','p4','p5','p6']);listener();
+    await platform.finish(['p1','p2','p3','p4','p5']);listener();
     assert.equal(seen.at(-1).status,'error');assert.equal(seen.at(-1).message,message);
   }
   snapshot={taskRewards:{'number-line-difference':{status:'pending'}},sync:{status:'error',message:'另一筆操作失敗'}};listener();

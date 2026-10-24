@@ -53,7 +53,11 @@
   };
   // 一次性任務不加入每日目標；固定題目與固定 grant ID 讓重做及不同裝置共用首次資格。
   const TASK_REWARDS = Object.freeze({
-    "number-line-difference": Object.freeze({ questionIds: Object.freeze(["p1", "p2", "p3", "p4", "p5", "p6"]) }),
+    "number-line-difference": Object.freeze({
+      questionIds: Object.freeze(["p1", "p2", "p3", "p4", "p5"]),
+      // 舊版離線 outbox 仍可能補送完整六題；沿用同一首次資格，不能重發。
+      legacyQuestionIds: Object.freeze(["p1", "p2", "p3", "p4", "p5", "p6"]),
+    }),
   });
   const copy = (v) => JSON.parse(JSON.stringify(v));
   const dateKey = (now = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(now));
@@ -62,8 +66,10 @@
   const taskGrantId = (taskId) => `task:${taskId}:first`;
   function validateTaskCompletion(event, now = new Date()) {
     const task = event && Object.hasOwn(TASK_REWARDS, event.taskId) && TASK_REWARDS[event.taskId];
-    check(task && Array.isArray(event.completedQuestionIds) && event.completedQuestionIds.length === task.questionIds.length &&
-      new Set(event.completedQuestionIds).size === task.questionIds.length && task.questionIds.every((id) => event.completedQuestionIds.includes(id)), "請先完成這份任務的全部六題");
+    const ids = event?.completedQuestionIds;
+    const completeSet = (expected) => expected && Array.isArray(ids) && ids.length === expected.length &&
+      new Set(ids).size === expected.length && expected.every((id) => ids.includes(id));
+    check(task && (completeSet(task.questionIds) || completeSet(task.legacyQuestionIds)), "請先完成這份任務的全部五題");
     check(typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt)) && Date.parse(event.occurredAt) <= new Date(now).getTime() + 300000, "任務完成時間不正確");
     return task;
   }
