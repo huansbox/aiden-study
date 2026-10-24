@@ -10,7 +10,13 @@ export async function openPlatform(preview) {
   if (window.KidsAuth.state.status === 'required') throw Error('請回孩子首頁，讓家長重新連接家庭。');
   const collection=window.KidsCollection.create(child);
   const key='learning-task:number-line-difference:v1:'+child;
-  const reward=()=>collection.snapshot().taskRewards?.['number-line-difference'] || {status:'unearned'};
+  const reward=()=>{
+    const snapshot=collection.snapshot(), task=snapshot.taskRewards?.['number-line-difference'] || {status:'unearned'};
+    // 明拒會移除 outbox；訂閱也要看 sync，才能呈現稍後自動補送的拒絕。
+    if(task.status==='earned'||task.status==='pending')return task;
+    if(snapshot.sync?.status==='error')return {status:'error',message:snapshot.sync.message||'請稍後重新同步。'};
+    return task;
+  };
   return {
     preview:false,child,
     load(){try{return JSON.parse(localStorage.getItem(key));}catch{return null;}},
