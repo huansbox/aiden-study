@@ -46,9 +46,14 @@ export function nextSteps(p,q){
   return [...distinct.values()];
 }
 export function targetStatus(p,q,target){
+  if(target in knownFor(p,q))return 'known';
   if(nextSteps(p,q).some(s=>s.result===target))return 'ok';
-  if(legalSteps(knownFor(p,q)).some(s=>s.result===target))return p.preferredRoute&&p.preferredRoute!=='direct'?'guided-route':'longer-route';
+  if(legalSteps(knownFor(p,q)).some(s=>s.result===target))return p.preferredRoute?'guided-route':'longer-route';
   return 'unavailable';
+}
+// 提示只建議一段；nextSteps／expectedPoints 仍保留全部合法選擇。
+export function suggestedTarget(p,q){
+  return nextSteps(p,q).find(s=>!q.point||s.result.includes(q.point))?.result||null;
 }
 export function expectedPoints(p,q){
   const segments=q.stage.startsWith('given')?[p.givens[q.givenIndex]?.segment]:nextSteps(p,q).map(s=>s.result);

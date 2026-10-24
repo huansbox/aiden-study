@@ -1,4 +1,4 @@
-import {act,restore,current,label,knownFor,nextSteps,expectedPoints} from './lesson-core.js?v=20261024-direct-touch-v2';
+import {act,restore,current,label,knownFor,nextSteps,expectedPoints,suggestedTarget} from './lesson-core.js?v=20261024-direct-touch-v2';
 import {openPlatform} from './platform.js?v=20261024-direct-touch-v2';
 import {diagramLayout} from './diagram-layout.js?v=20261024-direct-touch-v2';
 
@@ -17,9 +17,14 @@ function save(){
 function written(p,q){const known=knownFor(p,q);return q.steps.map(s=>`<div class="written-equation">${label(p,s.result)} ＝ ${label(p,s.long)} <strong>${known[s.long]}</strong> − ${label(p,s.short)} <strong>${known[s.short]}</strong> ＝ <strong>${s.value}</strong></div>`).join('');}
 function hint(p,q){
   if(q.errors<2)return '';
-  if(['given-start','given-end','target-start','target-end'].includes(q.stage)){
+  if(['target-start','target-end'].includes(q.stage)){
+    const target=suggestedTarget(p,q);
+    if(!target&&q.point)return `先再點 ${label(p,q.point)} 取消。這一步可先求 ${label(p,nextSteps(p,q)[0].result)}，再選它的兩端。`;
+    if(q.point)return `已選 ${label(p,q.point)}，再點 ${label(p,[...target].find(id=>id!==q.point))}，先求 ${label(p,target)}。`;
+    return `這一步可先求 ${label(p,target)}；點 ${[...target].map(id=>label(p,id)).join('、')} 兩端。`;
+  }
+  if(['given-start','given-end'].includes(q.stage)){
     const points=expectedPoints(p,q);
-    if(!points.length&&q.point)return `先再點 ${label(p,q.point)} 取消。這一步可先求 ${label(p,nextSteps(p,q)[0].result)}，再選它的兩端。`;
     return `找 ${points.map(id=>p.points.find(point=>point.id===id).label).join('、')}，點這一步要畫的兩端。`;
   }
   if(q.stage==='given-value'){const g=p.givens[q.givenIndex];return `題目寫著 ${label(p,g.segment)}＝${g.length}，把數字片 ${g.length} 放進這條弧線的框。`;}
@@ -48,7 +53,9 @@ function instruction(p,q){
 function diagram(p,q,interactive){
   const layout=diagramLayout(p),{width,height,baseline,positions:x}=layout;
   const pointsActive=interactive&&['given-start','given-end','target-start','target-end'].includes(q.stage);
-  const expected=expectedPoints(p,q),hinted=q.errors>=2?(expected.length?expected:q.point?[q.point]:[]):[],step=nextSteps(p,q).find(s=>s.result===q.target);
+  const targetHint=['target-start','target-end'].includes(q.stage)?suggestedTarget(p,q):null;
+  const expected=q.stage.startsWith('target')?(targetHint?[...targetHint]:q.point?[q.point]:[]):expectedPoints(p,q);
+  const hinted=q.errors>=2?expected:[],step=nextSteps(p,q).find(s=>s.result===q.target);
   const segmentHint=q.errors>=2?(q.stage==='long'?step?.long:q.stage==='short'?step?.short:null):null;
   const slot=(s,cx,cy,target=false)=>`<g class="number-slot ${target?'target-slot':''} ${q.selectedChip?'ready':''}" data-slot="${s}" role="button" tabindex="0" aria-label="${label(p,s)} 的${target?'結果':'長度'}空格"><rect x="${cx-32}" y="${cy-21}" width="64" height="42" rx="9"/><text x="${cx}" y="${cy+7}" text-anchor="middle">□</text></g>`;
   const arcs=q.arcs.map(arc=>{
@@ -76,11 +83,12 @@ function controls(p,q){
 function submit(type,value){
   const result=act(state,problems,type,value);log.push({type,value});
   if(result.ok)notice='';
-  else if(result.reason==='longer-route')notice='這段算得出，但這條路會多算一步；試試三次內能到目標的路。';
+  else if(result.reason==='longer-route')notice=`這段算得出，但這條路會多算一步；試試 ${problems[state.index].minSubtractions} 次內能到目標的路。`;
   else if(result.reason==='guided-route')notice='這段也能算；這一題先照上方指示選本步要算的段。';
+  else if(result.reason==='known')notice='這段的長度已知，已標在圖上。請選這一步要算的未知段。';
   else if(type==='point'&&result.reason==='unavailable')notice='這段目前還不能直接算。看看已知段的端點，再選一次。';
   else if(type==='point')notice='這個端點不在目前要畫的已知段上，再看看段名。';
-  else if(type==='segment')notice='這一段不能填進目前的亮框。找共用一端、包含在長段裡的短段。';
+  else if(type==='segment')notice=current(state).stage==='long'?'這一段不能填進目前的亮框。找能搭配已知短段、相減後留下本步目標的長段。':'這一段不能填進目前的亮框。找共用一端、包含在長段裡，扣掉後留下本步目標的短段。';
   else if(type==='place')notice='這個數字片和空格不合，再看一次題目；已畫的線會留下。';
   else notice='再算一次，數線與算式會留在這裡。';
   save();render();

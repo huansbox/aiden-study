@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {createLesson,current,act,restore,nextSteps,shortestRoutes,initialKnown,subtract,targetStatus} from '../learning-tasks/number-line-difference/source/lesson-core.js';
+import {createLesson,current,act,restore,nextSteps,shortestRoutes,initialKnown,subtract,targetStatus,suggestedTarget,expectedPoints} from '../learning-tasks/number-line-difference/source/lesson-core.js';
 import {diagramLayout} from '../learning-tasks/number-line-difference/source/diagram-layout.js';
 const problems=JSON.parse(readFileSync(new URL('../learning-tasks/number-line-difference/source/problems.json',import.meta.url))).sets.pad;
 function perform(state,type,value){return act(state,problems,type,value);}
@@ -37,6 +37,62 @@ test('中階第1/2題是引導順序；另一條同長路線不誤稱多算一�
   assert.equal(nextSteps(problems[3],current(right))[0].result,'CD');
   assert.equal(targetStatus(problems[3],current(right),'AB'),'guided-route');
   for(const route of problems[4].routes){const state=jumpTo(4);for(const s of route.steps)step(state,s);assert.equal(current(state).stage,'question-complete');}
+});
+test('初階指定目標、可算但較長、已知段與目前不可算各有不同原因',()=>{
+  for(const [index,other] of [[0,'CD'],[1,'AB']]){
+    const state=jumpTo(index),p=problems[index];
+    assert.equal(targetStatus(p,current(state),other),'guided-route');
+    assert.equal(targetStatus(p,current(state),'AC'),'known');
+    perform(state,'point',other[0]);assert.equal(perform(state,'point',other[1]).reason,'guided-route');
+  }
+  const p5=jumpTo(4);step(p5,problems[4].routes.find(r=>r.id==='left').steps[0]);
+  assert.equal(targetStatus(problems[4],current(p5),'CD'),'longer-route');
+  assert.equal(targetStatus(problems[4],current(p5),'AB'),'known','剛求出的段也已有長度');
+  const p6=jumpTo(5);step(p6,problems[5].routes.find(r=>r.id==='right').steps[0]);
+  assert.equal(targetStatus(problems[5],current(p6),'AB'),'longer-route');
+  assert.equal(targetStatus(problems[5],current(p6),'BC'),'unavailable');
+});
+test('自選目標提示只建議一段、優先沿用首點，且不限制其他最短路線',()=>{
+  for(const index of [4,5]){
+    const state=jumpTo(index),p=problems[index],q=current(state);
+    for(let i=0;i<2;i++){perform(state,'point','B');assert.equal(perform(state,'point','C').reason,'unavailable');}
+    assert.equal(q.errors,2);
+    const targets=[...new Set(nextSteps(p,q).map(s=>s.result))],suggestion=suggestedTarget(p,q);
+    assert.ok(targets.includes(suggestion));assert.equal(suggestion.length,2);
+    assert.ok(expectedPoints(p,q).length>2,'完整端點集合不能被提示縮成單一路線');
+    for(const point of p.points){
+      perform(state,'point',point.id);
+      const choices=targets.filter(s=>s.includes(point.id));
+      assert.ok(choices.includes(suggestedTarget(p,q)),'提示優先接續已選首點');
+      perform(state,'point',point.id);
+    }
+    const alternate=p.routes.find(route=>route.steps[0].result!==suggestion);
+    assert.ok(alternate,'應有提示以外的合法路');
+    for(const s of alternate.steps)step(state,s);
+    assert.equal(q.stage,'question-complete');
+  }
+  const state=jumpTo(5),p=problems[5];step(state,p.routes.find(r=>r.id==='right').steps[0]);
+  perform(state,'point','A');
+  assert.equal(suggestedTarget(p,current(state)),null,'首點接不到可行目標時讓 UI 提示取消');
+  assert.deepEqual(expectedPoints(p,current(state)),[]);
+});
+test('每條自選路線的每個中間狀態都能提示一段；提示不改合法路線或取消首點的操作',()=>{
+  for(const index of [4,5])for(const route of problems[index].routes){
+    const p=problems[index],state=jumpTo(index),q=current(state);
+    for(let i=0;i<route.steps.length;i++){
+      const available=p.routes.filter(candidate=>candidate.steps.slice(0,i).every((s,n)=>JSON.stringify(s)===JSON.stringify(route.steps[n]))).map(candidate=>candidate.steps[i].result);
+      assert.ok(available.includes(suggestedTarget(p,q)));
+      for(const {id}of p.points){
+        perform(state,'point',id);
+        const choices=available.filter(s=>s.includes(id));
+        if(choices.length)assert.ok(choices.includes(suggestedTarget(p,q)));
+        else assert.equal(suggestedTarget(p,q),null);
+        assert.equal(perform(state,'point',id).ok,true);assert.equal(q.stage,'target-start');
+      }
+      step(state,route.steps[i]);
+    }
+    assert.equal(q.stage,'question-complete');
+  }
 });
 test('同值錯段仍不能填入；結果數字正確後還要標回原本的目標框，不再重點端點',()=>{
   assert.equal(subtract('AC','BD'),null);assert.equal(subtract('AD','BD'),'AB');
