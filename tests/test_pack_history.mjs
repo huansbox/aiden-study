@@ -63,6 +63,21 @@ function fixture() {
   return { ...C.snapshot(state, "2026-10-12"), sync: { status: "ready", pending: 0 } };
 }
 
+test("一次性任務包另外保存：今日每日領包只算目標包，待拼與紀錄保留兩包", async () => {
+  const now = new Date();
+  let state = C.apply(C.empty(), { type: "goals", expectedGoalRevision: 0, targets: [{ entryId: "math", metric: "answered", quantity: 1 }] }, now);
+  state = C.apply(state, { type: "task-complete", event: { taskId: "number-line-difference", completedQuestionIds: ["p1", "p2", "p3", "p4", "p5", "p6"], occurredAt: now.toISOString() } }, now);
+  state = C.apply(state, { type: "record", event: { entryId: "math", answered: true, occurredAt: now.toISOString() } }, now);
+  const view = { ...C.snapshot(state), sync: { status: "ready", pending: 0 } }, before = structuredClone(view), h = await home(view);
+  assert.match(h.root.innerHTML, /今日已領 1 包/);
+  assert.match(h.root.innerHTML, /還有 2 包可以拼/);
+  h.click("[data-pack-history]");
+  assert.match(h.root.innerHTML, /已獲得 2 包/);
+  assert.match(h.root.innerHTML, /任務完成包/);
+  assert.match(h.root.innerHTML, /還有 2 包未拼完/);
+  assert.deepEqual(view, before);
+});
+
 test("隔天今日歸零仍看見兩包待拼，紀錄保留昨天三包及各包實際零件位置", async () => {
   const state = fixture(), before = structuredClone(state), h = await home(state);
   assert.match(h.root.innerHTML, /今日已領 0 包/);

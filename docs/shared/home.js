@@ -38,6 +38,7 @@
     zhuyin: "注音",
     "animal-fight": "動物守護者",
   };
+  let learningTasks = [];
   let reg,
     child,
     settingsState = F.cachedSettings(),
@@ -81,7 +82,7 @@
       const available = daily.filter((p) => p.placed < 3).length;
       return `<section class="pack-history-day"><h3><time datetime="${esc(date)}">${esc(date.replaceAll("-", "/"))}</time> · 已獲得 ${daily.length} 包</h3><p>還有 ${available} 包未拼完 · ${daily.length - available} 包已拼好</p><ul>${daily.map((pack) => {
         const title = window.KidsBrickModels?.get(pack.modelId)?.title || "積木作品";
-        return `<li>${pack.buildId ? `${esc(title)} 第 ${pack.packNumber} 包 · ${pack.placed === 3 ? "已拼好" : pack.placed ? `拼裝中（${pack.placed} / 3 組）` : "待拼（0 / 3 組）"}` : "未拆開 · 保留在零件盒"}</li>`;
+        return `<li>${pack.kind === "task" ? "任務完成包 · " : ""}${pack.buildId ? `${esc(title)} 第 ${pack.packNumber} 包 · ${pack.placed === 3 ? "已拼好" : pack.placed ? `拼裝中（${pack.placed} / 3 組）` : "待拼（0 / 3 組）"}` : "未拆開 · 保留在零件盒"}</li>`;
       }).join("")}</ul></section>`;
     }).join("") || '<p>目前還沒有發包紀錄。</p>'}</section>`;
   }
@@ -90,7 +91,7 @@
     if (!state?.daily) return '<section class="family-panel daily-goals"><h2>今天的目標</h2><p role="status">正在讀取每日目標⋯</p></section>';
     const entries = C.homeEntries(config, child.id, reg);
     const goals = state.daily.targets || [];
-    const earned = state.grants.filter((g) => g.date === state.daily.date).length;
+    const earned = state.daily.earned;
     const build = state.activeBuild;
     const title = window.KidsBrickModels?.get(build?.modelId)?.title;
     const totalParts = window.KidsCollectionCore.requiredParts(build).length;
@@ -151,7 +152,7 @@
     return (
       header() +
       dailyGoals() +
-      `<div class="family-grid activity-grid">${cards}</div>${!entries.length ? '<p class="family-panel">今天先休息。</p>' : ""}<footer class="family-footer"><span>累計 ${s.total.answered} 題</span></footer>`
+      `<div class="family-grid activity-grid">${cards}</div>${!entries.length ? '<p class="family-panel">今天先休息。</p>' : ""}${learningTasks.some(task => task.audience?.includes(child.id)) ? `<section class="family-panel learning-tasks"><h2>學習任務</h2><p>固定內容，可以慢慢做。</p>${learningTasks.filter(task => task.audience?.includes(child.id)).map(task => `<a class="family-article" data-learning-task="${esc(task.id)}" href="${esc(F.entryHref(task, child.id))}"><strong>${esc(task.name)}</strong><span>開啟 →</span></a>`).join("")}</section>` : ""}<footer class="family-footer"><span>累計 ${s.total.answered} 題</span></footer>`
     );
   }
   function mindMapHistory() {
@@ -265,6 +266,11 @@
     })
     .then(async (value) => {
       reg = value;
+      try {
+        const response = await fetch("learning-tasks.json" + (release ? "?v=" + release : ""), { cache: "no-store" });
+        const data = response.ok ? await response.json() : null;
+        learningTasks = data?.schemaVersion === 1 && Array.isArray(data.tasks) ? data.tasks.filter(task => typeof task.path === "string" && /^[a-z0-9-]+(?:\/[a-z0-9-]+)*\/$/.test(task.path)) : [];
+      } catch { learningTasks = []; }
       child = reg.children.find((c) => c.id === identity.child);
       if (auth) await auth.ready;
       if (child && window.KidsCollection) {

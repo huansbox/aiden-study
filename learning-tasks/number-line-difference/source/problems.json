@@ -1,0 +1,1508 @@
+{
+  "schemaVersion": 1,
+  "sets": {
+    "pad": [
+      {
+        "id": "p1",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 10
+          },
+          {
+            "segment": "BD",
+            "length": 13
+          },
+          {
+            "segment": "AD",
+            "length": 19
+          }
+        ],
+        "target": "AB",
+        "answer": 6,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "p2",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 15
+          },
+          {
+            "segment": "BD",
+            "length": 11
+          },
+          {
+            "segment": "AD",
+            "length": 20
+          }
+        ],
+        "target": "CD",
+        "answer": 5,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "p3",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 12
+          },
+          {
+            "segment": "BD",
+            "length": 15
+          },
+          {
+            "segment": "AD",
+            "length": 24
+          }
+        ],
+        "target": "BC",
+        "answer": 3,
+        "minSubtractions": 2,
+        "preferredRoute": "left",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 9
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 12
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "p4",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 11
+          },
+          {
+            "segment": "BD",
+            "length": 13
+          },
+          {
+            "segment": "AD",
+            "length": 19
+          }
+        ],
+        "target": "BC",
+        "answer": 5,
+        "minSubtractions": 2,
+        "preferredRoute": "right",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 6
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 5
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 8
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "p5",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 14
+          },
+          {
+            "segment": "BD",
+            "length": 12
+          },
+          {
+            "segment": "AD",
+            "length": 20
+          }
+        ],
+        "target": "BC",
+        "answer": 6,
+        "minSubtractions": 2,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 8
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 6
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "p6",
+        "level": "advanced",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          },
+          {
+            "id": "E",
+            "label": "E"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AE",
+            "length": 14
+          },
+          {
+            "segment": "BE",
+            "length": 11
+          },
+          {
+            "segment": "AD",
+            "length": 12
+          },
+          {
+            "segment": "CD",
+            "length": 5
+          }
+        ],
+        "target": "BC",
+        "answer": 4,
+        "minSubtractions": 3,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 3
+              },
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 7
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "left-reordered",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 7
+              },
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 3
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "AD",
+                "result": "DE",
+                "value": 2
+              },
+              {
+                "long": "BE",
+                "short": "DE",
+                "result": "BD",
+                "value": 9
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "outer",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 7
+              },
+              {
+                "long": "AE",
+                "short": "AC",
+                "result": "CE",
+                "value": 7
+              },
+              {
+                "long": "BE",
+                "short": "CE",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "left-chain",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 3
+              },
+              {
+                "long": "AD",
+                "short": "AB",
+                "result": "BD",
+                "value": 9
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "transition": [
+      {
+        "id": "transition-1",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 11
+          },
+          {
+            "segment": "BD",
+            "length": 14
+          },
+          {
+            "segment": "AD",
+            "length": 21
+          }
+        ],
+        "target": "AB",
+        "answer": 7,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transition-2",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 13
+          },
+          {
+            "segment": "BD",
+            "length": 12
+          },
+          {
+            "segment": "AD",
+            "length": 22
+          }
+        ],
+        "target": "CD",
+        "answer": 9,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transition-3",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 13
+          },
+          {
+            "segment": "BD",
+            "length": 16
+          },
+          {
+            "segment": "AD",
+            "length": 23
+          }
+        ],
+        "target": "BC",
+        "answer": 6,
+        "minSubtractions": 2,
+        "preferredRoute": "left",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 7
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 10
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transition-4",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 15
+          },
+          {
+            "segment": "BD",
+            "length": 17
+          },
+          {
+            "segment": "AD",
+            "length": 25
+          }
+        ],
+        "target": "BC",
+        "answer": 7,
+        "minSubtractions": 2,
+        "preferredRoute": "right",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 8
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 7
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 10
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transition-5",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 16
+          },
+          {
+            "segment": "BD",
+            "length": 14
+          },
+          {
+            "segment": "AD",
+            "length": 24
+          }
+        ],
+        "target": "BC",
+        "answer": 6,
+        "minSubtractions": 2,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 10
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 8
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transition-6",
+        "level": "advanced",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          },
+          {
+            "id": "E",
+            "label": "E"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AE",
+            "length": 18
+          },
+          {
+            "segment": "BE",
+            "length": 13
+          },
+          {
+            "segment": "AD",
+            "length": 15
+          },
+          {
+            "segment": "CD",
+            "length": 6
+          }
+        ],
+        "target": "BC",
+        "answer": 4,
+        "minSubtractions": 3,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 5
+              },
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "left-reordered",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 5
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "AD",
+                "result": "DE",
+                "value": 3
+              },
+              {
+                "long": "BE",
+                "short": "DE",
+                "result": "BD",
+                "value": 10
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "outer",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AE",
+                "short": "AC",
+                "result": "CE",
+                "value": 9
+              },
+              {
+                "long": "BE",
+                "short": "CE",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "id": "left-chain",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 5
+              },
+              {
+                "long": "AD",
+                "short": "AB",
+                "result": "BD",
+                "value": 10
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "independent": [
+      {
+        "id": "independent-1",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 16
+          },
+          {
+            "segment": "BD",
+            "length": 13
+          },
+          {
+            "segment": "AD",
+            "length": 25
+          }
+        ],
+        "target": "AB",
+        "answer": 12,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 12
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "independent-2",
+        "level": "beginner",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 17
+          },
+          {
+            "segment": "BD",
+            "length": 14
+          },
+          {
+            "segment": "AD",
+            "length": 26
+          }
+        ],
+        "target": "CD",
+        "answer": 9,
+        "minSubtractions": 1,
+        "preferredRoute": "direct",
+        "routes": [
+          {
+            "id": "direct",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 9
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "independent-3",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 17
+          },
+          {
+            "segment": "BD",
+            "length": 15
+          },
+          {
+            "segment": "AD",
+            "length": 26
+          }
+        ],
+        "target": "BC",
+        "answer": 6,
+        "minSubtractions": 2,
+        "preferredRoute": "left",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 11
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 9
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "independent-4",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 16
+          },
+          {
+            "segment": "BD",
+            "length": 19
+          },
+          {
+            "segment": "AD",
+            "length": 27
+          }
+        ],
+        "target": "BC",
+        "answer": 8,
+        "minSubtractions": 2,
+        "preferredRoute": "right",
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 8
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 8
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 11
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 8
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "independent-5",
+        "level": "intermediate",
+        "points": [
+          {
+            "id": "A",
+            "label": "甲"
+          },
+          {
+            "id": "B",
+            "label": "乙"
+          },
+          {
+            "id": "C",
+            "label": "丙"
+          },
+          {
+            "id": "D",
+            "label": "丁"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AC",
+            "length": 18
+          },
+          {
+            "segment": "BD",
+            "length": 17
+          },
+          {
+            "segment": "AD",
+            "length": 28
+          }
+        ],
+        "target": "BC",
+        "answer": 7,
+        "minSubtractions": 2,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "BD",
+                "result": "AB",
+                "value": 11
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 7
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "AC",
+                "result": "CD",
+                "value": 10
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "independent-6",
+        "level": "advanced",
+        "points": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          },
+          {
+            "id": "D",
+            "label": "D"
+          },
+          {
+            "id": "E",
+            "label": "E"
+          }
+        ],
+        "givens": [
+          {
+            "segment": "AE",
+            "length": 20
+          },
+          {
+            "segment": "BE",
+            "length": 14
+          },
+          {
+            "segment": "AD",
+            "length": 17
+          },
+          {
+            "segment": "CD",
+            "length": 8
+          }
+        ],
+        "target": "BC",
+        "answer": 3,
+        "minSubtractions": 3,
+        "preferredRoute": null,
+        "routes": [
+          {
+            "id": "left",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 6
+              },
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "id": "left-reordered",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 6
+              },
+              {
+                "long": "AC",
+                "short": "AB",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "id": "right",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "AD",
+                "result": "DE",
+                "value": 3
+              },
+              {
+                "long": "BE",
+                "short": "DE",
+                "result": "BD",
+                "value": 11
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "id": "outer",
+            "steps": [
+              {
+                "long": "AD",
+                "short": "CD",
+                "result": "AC",
+                "value": 9
+              },
+              {
+                "long": "AE",
+                "short": "AC",
+                "result": "CE",
+                "value": 11
+              },
+              {
+                "long": "BE",
+                "short": "CE",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "id": "left-chain",
+            "steps": [
+              {
+                "long": "AE",
+                "short": "BE",
+                "result": "AB",
+                "value": 6
+              },
+              {
+                "long": "AD",
+                "short": "AB",
+                "result": "BD",
+                "value": 11
+              },
+              {
+                "long": "BD",
+                "short": "CD",
+                "result": "BC",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

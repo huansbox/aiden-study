@@ -1,4 +1,4 @@
-/* 每日拼裝規則；只接新的練習事件，與舊累計及其重置世代分開。 */
+/* 拼裝包規則；每日練習與一次性任務各自計算，與舊累計及其重置世代分開。 */
 (() => {
   // 舊作品的 ID 仍需保留，讓既有半成品與舊版離線操作能繼續同步。
   const PACK_COUNTS = Object.freeze({ car: 14, train: 14, plane: 14, e500: 14, emu3000: 12, r200: 12, '700t': 12, n700s: 12, emu900: 12, 'breezy-blue': 12, ct273: 14, 'jet-plane': 11, excavator: 10, 'snow-blower': 10, 'mobile-crane': 10, 'cement-mixer': 10, 'recycling-truck': 10 });
@@ -51,10 +51,28 @@
     zhuyin: { label: "注音", metric: "rounds" },
     nonogram: { label: "數織", metric: "rounds" },
   };
+  // 一次性任務不加入每日目標；固定題目與固定 grant ID 讓重做及不同裝置共用首次資格。
+  const TASK_REWARDS = Object.freeze({
+    "number-line-difference": Object.freeze({ questionIds: Object.freeze(["p1", "p2", "p3", "p4", "p5", "p6"]) }),
+  });
   const copy = (v) => JSON.parse(JSON.stringify(v));
   const dateKey = (now = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(now));
   const validDate = (v) => typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)) && new Date(v).toISOString().slice(0, 10) === v;
   function check(ok, message, status = 400) { if (!ok) { const e = Error(message); e.status = status; throw e; } }
+  const taskGrantId = (taskId) => `task:${taskId}:first`;
+  function validateTaskCompletion(event, now = new Date()) {
+    const task = event && Object.hasOwn(TASK_REWARDS, event.taskId) && TASK_REWARDS[event.taskId];
+    check(task && Array.isArray(event.completedQuestionIds) && event.completedQuestionIds.length === task.questionIds.length &&
+      new Set(event.completedQuestionIds).size === task.questionIds.length && task.questionIds.every((id) => event.completedQuestionIds.includes(id)), "請先完成這份任務的全部六題");
+    check(typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt)) && Date.parse(event.occurredAt) <= new Date(now).getTime() + 300000, "任務完成時間不正確");
+    return task;
+  }
+  function taskRewards(state) {
+    return Object.fromEntries(Object.keys(TASK_REWARDS).map((taskId) => {
+      const grant = state.grants.find((g) => g.id === taskGrantId(taskId) && g.kind === "task");
+      return [taskId, grant ? { status: "earned", grantId: grant.id, completedAt: grant.completedAt } : { status: "unearned" }];
+    }));
+  }
   function targets(value) {
     check(Array.isArray(value) && value.length <= 12, "每日目標格式不正確");
     const result = value.map((t) => {
@@ -76,7 +94,7 @@
   function daily(state, day) {
     const data = state.days[day] || { targets: configFor(state, day).targets, counts: {}, rounds: 0 };
     const repeatable = day >= REPEAT_REWARDS_FROM && (data.rewardVersion === 3 || !state.days[day]);
-    const earned = state.grants.filter((g) => g.date === day).length;
+    const earned = state.grants.filter((g) => g.date === day && g.kind !== "task").length;
     const entitled = data.targets.reduce((sum, t) => sum + Math.floor((data.counts[t.entryId]?.[t.metric] || 0) / t.quantity), 0);
     const rewardOffset = Math.max(0, earned - entitled);
     const targets = data.targets.map((t) => {
@@ -138,6 +156,11 @@
       if (command.type === "record" && event.answered === true) data.counts[event.entryId].answered++;
       if (command.type === "round") { data.counts[event.entryId].rounds++; data.rounds++; }
       award(state, day, today);
+    } else if (command.type === "task-complete") {
+      const event = command.event;
+      validateTaskCompletion(event, now);
+      const id = taskGrantId(event.taskId);
+      if (!state.grants.some((g) => g.id === id)) state.grants.push({ id, date: dateKey(event.occurredAt), kind: "task", taskId: event.taskId, completedAt: event.occurredAt, buildId: null, packIndex: null });
     } else if (command.type === "select-model") {
       check(MODELS.includes(command.modelId), "請選擇拼裝作品");
       const generation = command.expectedSelectionGeneration ?? 0;
@@ -179,13 +202,13 @@
       if (command.displayed) state.displayedBuildIds.push(command.buildId);
     } else check(false, "不支援的收藏操作");
     // 新版上線當天已有達標進度時，只補當天新規則的差額。
-    if (command.type !== "release-build" && state.days[today]) award(state, today, today);
+    if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today);
     state.revision++;
     return state;
   }
   function snapshot(state, day = dateKey()) {
     check(validDate(day), "日期不正確");
-    return { version: 1, revision: state.revision, goalRevision: state.goalRevision, selectionGeneration: state.selectionGeneration || 0, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
+    return { version: 1, revision: state.revision, goalRevision: state.goalRevision, selectionGeneration: state.selectionGeneration || 0, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day), taskRewards: taskRewards(state), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
   }
-  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, AVAILABLE_MODELS, isModelAvailable, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, dateKey, validDate, targets, empty, apply, reconcile, snapshot, check };
+  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, AVAILABLE_MODELS, isModelAvailable, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, TASK_REWARDS, taskGrantId, validateTaskCompletion, taskRewards, dateKey, validDate, targets, empty, apply, reconcile, snapshot, check };
 })();

@@ -370,6 +370,52 @@
       }
     },
     {
+      "id": "task:number-line-difference",
+      "type": "task",
+      "name": "數線長短差",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；四年級",
+      "status": "in-progress",
+      "statusNote": "固定六題 Pad 教學與兩份紙本；內容、隔離驗證及發布追蹤 #243。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/number-line-difference",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/number-line-difference",
+          "docs/number-line-difference"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/number-line-difference",
+      "links": [
+        {
+          "label": "Pad 教學",
+          "url": "../number-line-difference/?child=aiden"
+        },
+        {
+          "label": "家長試玩",
+          "url": "../number-line-difference/?preview=1"
+        }
+      ],
+      "description": "點端點、畫弧線、標數與長段減短段；中間結果標回數線，再帶到紙本。",
+      "eventDate": null,
+      "homePath": "number-line-difference/",
+      "groupId": null,
+      "groupName": null,
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:water-cycle",
       "type": "task",
       "name": "水的循環：一滴水的旅行",
