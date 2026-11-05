@@ -181,6 +181,6 @@ uv run python scripts/build_questions.py
 - [`CONTEXT.md`](CONTEXT.md)：平台詞彙與 registry 欄位語意；不存工作計畫。
 - [`learning-tasks/README.md`](learning-tasks/README.md)：家庭學習任務索引、分類邊界與歸檔規格。
 - [`docs-dev/adr/`](docs-dev/adr/)：架構決策紀錄。
-- [`wiki/Home.md`](wiki/Home.md)：給人的穩定導覽；長期方向見 [`wiki/Roadmap.md`](wiki/Roadmap.md)，執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，當前交接見 [`HANDOFF.md`](HANDOFF.md)。現況仍以 code、Git 歷史與 GitHub issues 為準。
+- [`wiki/Home.md`](wiki/Home.md)：給人的穩定導覽；長期方向見 [`wiki/Roadmap.md`](wiki/Roadmap.md)，執行順序見 [`wiki/Plan.md`](wiki/Plan.md)，當前交接記於對應 GitHub Issue 的 comment。現況仍以 code、Git 歷史與 GitHub issues 為準。
 
 family token 是 secret，只能放在 Cloudflare Worker secret、家長的密碼管理器與裝置網址，不得寫進 repo、issue、測試 fixture 或 log。

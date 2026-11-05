@@ -95,8 +95,8 @@ learning-tasks/<task>/
 - 保留重建最終交付物所需的來源、實際引用素材、最終成品與少量代表性 preview。
 - 不保存每一輪 render、未採用生成圖或重複 master；Git history 不是生成暫存區。
 - `README.md` 要讓沒看過原對話的新 session 能知道「這是什麼、適合誰、如何使用、如何重建」。
-- 建立任務時就加入 `catalog.json`，狀態使用 `in-progress`；完成後改為 `complete`。多 session 工作的進度與 blocker 仍依 repo 的 tracker／HANDOFF 規則管理，不把執行細節複製進登錄。
-- 已完成且沒有後續工作的任務不另開 issue，也不留在執行中 `HANDOFF` 或 roadmap；commit、task README 與本索引就是歷史入口。
+- 建立任務時就加入 `catalog.json`，狀態使用 `in-progress`；完成後改為 `complete`。多 session 工作的進度與 blocker 仍依 repo 的 GitHub Issue 交接規則管理，不把執行細節複製進登錄。
+- 已完成且沒有後續工作的任務不另開 issue，也不留在 roadmap；commit、task README 與本索引就是歷史入口。
 - `shared/` 只收經跨任務驗證的內容，並由使用它的任務反向連結，避免形成無人知道用途的素材堆。
 
 ## 來源與部署位置

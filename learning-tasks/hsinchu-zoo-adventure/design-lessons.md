@@ -110,7 +110,7 @@ AI 產生三合一圖後，不能假設等分裁切就是乾淨選項。本案�
 - Imagegen prompt 與重要設計決策。
 - 一張代表性 preview，方便在 GitHub 快速辨認成果。
 
-不要把每輪 render、未採用圖、重複 source master 全部塞進 Git；Git history 不是生成暫存區。若 PNG 很大，可改存高品質 WebP，再由 HTML 重新輸出 PDF並做逐頁視覺驗證。完成且沒有後續待辦的家庭素材，不應新增 issue、寫進執行中 `HANDOFF` 或 roadmap；用獨立目錄、README、commit 與 branch／PR 保存即可。
+不要把每輪 render、未採用圖、重複 source master 全部塞進 Git；Git history 不是生成暫存區。若 PNG 很大，可改存高品質 WebP，再由 HTML 重新輸出 PDF並做逐頁視覺驗證。完成且沒有後續待辦的家庭素材，不應新增 issue 或寫進 roadmap；用獨立目錄、README、commit 與 branch／PR 保存即可。
 
 ## Takeaways
 

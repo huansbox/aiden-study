@@ -2,7 +2,7 @@
 
 更新：2026-10-04。[#179](https://github.com/huansbox/aiden-study/issues/179) 接入既有家長試玩，驗收／整合／發布狀態以該 issue 最新交接為準。[#167](https://github.com/huansbox/aiden-study/issues/167) 有限重練與低壓配題已完成實作、獨立 review 及隔離 E2E 驗收；整合／CI／發布證據與最新交接以該 issue 及 [PR #171](https://github.com/huansbox/aiden-study/pull/171) 為準。既有 MVP 已交付。
 
-這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁保留實作及驗收入口與證據索引，不另維護一份待辦清單；長期學習規則正本為 [Wiki：Zhuyin Learning](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning)。全 repo 的本次交接見 [HANDOFF](../HANDOFF.md)。
+這是注音的維護入口。當前工作以 GitHub issue／PR 追蹤；本頁保留實作及驗收入口與證據索引，不另維護一份待辦清單；長期學習規則正本為 [Wiki：Zhuyin Learning](https://github.com/huansbox/aiden-study/wiki/Zhuyin-Learning)。全 repo 的交接記於對應 GitHub Issue 的 comment。
 
 ## 家長試玩（#179）
 
