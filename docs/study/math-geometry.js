@@ -82,7 +82,7 @@
   function initial(q) {
     const it=q.interaction;
     if(q.type==='bar_chart_draw') return {heights:it.bars.map(b=>b.given?(b.value-it.axis.min)/it.axis.minor:null), labels:it.bars.map(b=>b.labelGiven?b.label:''), ticks:it.axis.labels.map(v=>v===null?'':String(v)), unit:it.unit.required?'':it.unit.text, title:it.title.required?'':it.title.text, active:Math.max(0,it.bars.findIndex(b=>!b.given))};
-    const s={tool:{kind:'none',x:it.scene.width/3,y:it.scene.height/2,rotation:0}, used:[], active:0};
+    const s={tool:{kind:'none',x:it.scene.width/3,y:it.scene.height/2,rotation:0}, used:[], active:0, zoom:1};
     if(q.type==='triangle_construct') return {...s, points:[0,1,2].map(i=>clone(it.given.find(g=>g.index===i)?.point || null)), edges:edges.map(e=>e.every(i=>it.given.some(g=>g.index===i))), labels:['','',''], rights:[false,false,false], angles:['','','']};
     return {...s, outputs:it.outputs.map(o=>o.kind==='number'?'':[])};
   }
@@ -104,6 +104,7 @@
       s.tool.rotation=num(raw.tool.rotation,-360,360)?raw.tool.rotation:0;
     }
     s.used=Array.isArray(raw.used)?[...new Set(raw.used.filter(t=>allowed.includes(t)))]:[];
+    s.zoom=[1,1.5,2].includes(raw.zoom)?raw.zoom:1;
     s.active=integer(raw.active,0,2)?raw.active:0;
     if(q.type==='triangle_construct') {
       s.points=s.points.map((p,i)=>p || (point(raw.points?.[i],it.scene)?clone(raw.points[i]):null));
@@ -141,6 +142,7 @@
     }
     const allowed=q.type==='triangle_construct'?['ruler','protractor','square']:it.tools;
     if(action==='tool' && ['none',...allowed].includes(value)) s.tool.kind=value;
+    if(action==='zoom' && ['1','1.5','2'].includes(value)) s.zoom=Number(value);
     if(action==='rotate' && ['-10','-1','1','10'].includes(value) && s.tool.kind!=='none') {s.tool.rotation=(s.tool.rotation+Number(value)+360)%360; s.used=[...new Set([...s.used,s.tool.kind])];}
     if(action==='vertex' && integer(Number(value),0,2)) {s.active=Number(value);s.tool.kind='none';}
     let p=null;
@@ -247,7 +249,9 @@
     h+='</div>';
     if(tri) h+='<div class="sg-controls">'+[0,1,2].map(i=>button(`選頂點 ${i+1}${it.given.some(g=>g.index===i)?'（固定）':''}`,'vertex',i,disabled,s.active===i)).join('')+'</div>';
     h+=`<p class="sg-status">${s.tool.kind==='none'?(tri?`目前選取：頂點 ${s.active+1}`:'尚未選工具'):`工具方向：${s.tool.rotation}°`}。工具的公分以題圖比例為準。</p>`;
-    h+=`<div class="sg-scroll"><svg class="sg-canvas" viewBox="0 0 ${scene.width} ${scene.height}" width="${scene.width}" height="${scene.height}" role="img" aria-label="${tri?'三角形作圖區':'原圖量測區'}"${disabled?'':' data-geometry-action="canvas"'}><rect width="100%" height="100%" fill="white"/>${scene.image?`<image href="${esc(scene.image)}" x="0" y="0" width="${scene.width}" height="${scene.height}" preserveAspectRatio="none"/>`:''}${tri?triangleSvg(it,s):''}${toolSvg(scene,s.tool)}</svg></div>`;
+    if(s.tool.kind!=='none') h+=`<p>${{ruler:'把 0 刻度放在線段起點，旋轉尺讓尺邊貼齊線段。',protractor:'把中心放在角的頂點，直邊對齊一邊；從這一邊的 0 開始讀另一邊。',square:'把三角板的直角貼在頂點，旋轉看看兩邊是否對齊。'}[s.tool.kind]}</p>`;
+    h+='<div class="sg-controls" aria-label="圖與工具一起縮放">'+[['1','看全圖'],['1.5','放大刻度'],['2','再放大']].map(([v,l])=>button(l,'zoom',v,disabled,s.zoom===Number(v))).join('')+'</div>';
+    h+=`<div class="sg-scroll"><svg class="sg-canvas" style="min-width:${s.zoom===1?560:Math.max(560,scene.width*s.zoom)}px" viewBox="0 0 ${scene.width} ${scene.height}" width="${scene.width}" height="${scene.height}" role="img" aria-label="${tri?'三角形作圖區':'原圖量測區'}"${disabled?'':' data-geometry-action="canvas"'}><rect width="100%" height="100%" fill="white"/>${scene.image?`<image href="${esc(scene.image)}" x="0" y="0" width="${scene.width}" height="${scene.height}" preserveAspectRatio="none"/>`:''}${tri?triangleSvg(it,s):''}${toolSvg(scene,s.tool)}</svg></div>`;
     h+='<div class="sg-controls" aria-label="位置微調">'+[['left','向左'],['right','向右'],['up','向上'],['down','向下']].map(([v,l])=>button(l,'nudge',v,disabled)).join('')+'</div>';
     h+='<div class="sg-controls" aria-label="旋轉工具">'+[-10,-1,1,10].map(v=>button(`旋轉 ${v>0?'+':''}${v}°`,'rotate',v,disabled || s.tool.kind==='none')).join('')+'</div>';
     if(tri) {

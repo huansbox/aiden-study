@@ -99,6 +99,7 @@ test('measurement tools and mixed outputs retain independent decisions through r
   s=M.update(q,s,'rotate','10');assert.equal(M.grade(q,copy(s)),true);assert.equal(s.tool.rotation,10);
   s=fill(q,s,'output:0','５.１');assert.equal(M.grade(q,s),true);s=fill(q,s,'output:0','5.101');assert.equal(M.grade(q,s),false);
   s=fill(q,s,'output:0','5');s=M.update(q,s,'choice','2:1');assert.equal(M.grade(q,s),false);s=M.update(q,s,'choice','2:1');assert.equal(M.grade(q,s),true);
+  const before=copy(s.tool);s=M.update(q,s,'zoom','2');assert.deepEqual(copy(s.tool),before);assert.equal(M.grade(q,copy(s)),true);assert.equal(M.update(q,copy(s),'noop').zoom,2);assert.ok(M.render(q,s).includes('min-width:1600px'));
 });
 test('malformed states, immutable transitions, escaping, locking and no reward calls',()=>{
   for(const q of [triangle(),chart(),measure()]) for(const state of [null,[],{},'old', {tool:{x:Infinity,kind:'evil'},points:[null],outputs:[{}],heights:[NaN],labels:['<img>']}]) {
