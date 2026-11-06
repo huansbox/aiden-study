@@ -6,6 +6,21 @@ import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
 const load = (path) =>
   readFileSync(new URL("../docs/shared/" + path, import.meta.url), "utf8");
+
+test('背景設定讀取與開始前refresh共用弱網請求，完成後下次仍重新確認',async()=>{
+  let blocked=false,release,requests=0;
+  const h=harness({intercept:async(url,init,send)=>{
+    if(url.endsWith('/v1/settings')) { requests++;if(blocked) await new Promise(resolve=>{release=resolve;}); }
+    return send();
+  }});
+  const app=h.F.attach('study','aiden');await app.ready;
+  blocked=true;const count=requests;
+  const background=h.F.settings(),first=app.refreshSettings(),second=app.refreshSettings();
+  await new Promise(setImmediate);
+  assert.equal(requests,count+1);
+  release();await Promise.all([background,first,second]);
+  blocked=false;await app.refreshSettings();assert.equal(requests,count+2);
+});
 function harness({
   storageMap = new Map([["kids_sync_token", "test-token"]]),
   env = { TOKEN: "test-token", KV: kvStub() },

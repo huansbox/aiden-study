@@ -37,7 +37,7 @@ export class ChildCollection extends DurableObject {
         const previous = JSON.parse(duplicate.payload);
         C.check(duplicate.payload === payload || command.type === "round" && previous.event.entryId === command.event?.entryId ||
           command.type === "task-complete" && previous.type === "task-complete" && previous.event.taskId === command.event.taskId, "同一操作識別不能改成另一份內容", 409);
-        return { snapshot: C.snapshot(this.readState(), C.dateKey(), visibility), duplicate: true };
+        return { snapshot: this.view(C.dateKey(), visibility), duplicate: true };
       }
       const nextCommand = { ...command };
       if (["record", "round"].includes(command.type)) {

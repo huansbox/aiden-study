@@ -128,3 +128,103 @@ test('Worker/真SQLite：可信設定、舊客戶端保留欄位、重送去重�
     assert.equal(restored.daily.targets[0].quantity,10);
   }finally{await runtime.dispose();}
 });
+
+test('昨日先讀目標再離線自由練習，隔日補送沿用昨日承諾；恢復及已領不重複',()=>{
+  const yesterday=new Date('2026-11-05T04:00:00Z'), oldDate=C.dateKey(yesterday);
+  const p=F.defaults().children.aiden;
+  p.archivedStudyUnits=archived;
+  const hidden={date:oldDate,profile:p};
+  let state=C.apply(C.empty(),{type:'goals',expectedGoalRevision:0,targets:[goal('study:math')]},yesterday);
+  state=C.reconcile(state,yesterday,hidden); // server collection GET, before any practice exists
+  assert.equal(C.snapshot(state,oldDate,hidden).daily.targets.length,0);
+  const original=plain(state.configs);
+  p.archivedStudyUnits=[];
+  state=C.reconcile(state,yesterday,hidden); // restoration must preserve the earlier free-round promise
+  assert.equal(C.snapshot(state,oldDate,hidden).daily.targets.length,1);
+  const today={date,profile:p};
+  state=C.reconcile(state,now,today);
+  const round={type:'round',hasPractice:true,event:{entryId:'spelling',roundId:'offline',occurredAt:yesterday.toISOString()}};
+  state=C.apply(state,round,now,today);
+  assert.equal(C.snapshot(state,oldDate,today).daily.earned,1,'昨日自由輪應領1包');
+  assert.deepEqual(state.configs,original);
+  assert.deepEqual(state.days[oldDate].targets,original[0].targets);
+  p.archivedStudyUnits=archived;
+  state=C.reconcile(state,now,today);
+  state=C.apply(state,round,now,today);
+  assert.equal(C.snapshot(state,oldDate,today).daily.earned,1,'昨日已領不重發');
+  assert.equal(C.snapshot(state,oldDate,today).daily.targets.length,1,'今日隱藏不改昨日最後有效範圍');
+});
+
+test('未有可信昨日snapshot的補送明確沿用原targets，不推測當年隱藏狀態',()=>{
+  const yesterday=new Date('2026-11-05T04:00:00Z'),p=F.defaults().children.aiden;
+  let state=C.apply(C.empty(),{type:'goals',expectedGoalRevision:0,targets:[goal('study:math',1)]},yesterday);
+  assert.equal(state.days[C.dateKey(yesterday)],undefined);
+  p.archivedStudyUnits=archived;
+  const visibility={date,profile:p};
+  state=C.apply(state,{type:'round',hasPractice:true,event:{entryId:'spelling',roundId:'never-online',occurredAt:yesterday.toISOString()}},now,visibility);
+  assert.equal(C.snapshot(state,C.dateKey(yesterday),visibility).daily.earned,0);
+  state=C.apply(state,{type:'record',event:{entryId:'study:math',answered:true,occurredAt:yesterday.toISOString()}},now,visibility);
+  assert.equal(C.snapshot(state,C.dateKey(yesterday),visibility).daily.earned,1);
+});
+
+test('summary重新挑戰先重讀設定，隱藏後不得清通關進度；等待有回饋且連點只啟動一次',async()=>{
+  const p=F.defaults().children.aiden;
+  let pending=null,refreshes=0,starts=0;
+  const family={ready:Promise.resolve(),profile:()=>p,task:()=>null,allowed:()=>true,setActive(){},record(){},beginRound(){starts++;},finishRound(){},refreshSettings(){refreshes++;return pending||Promise.resolve();}};
+  const e=await boot(undefined,'test-child',{family,search:'?child=test-child&subject=social&term=g4-s1'});
+  e.app.importPrivatePack(JSON.stringify(socialSyntheticPack()));
+  await Promise.resolve();await Promise.resolve();
+  e.app.State.setStudyTerm('g4-s1');e.app.State.setSubject('social');
+  await e.window._startFull(22);
+  const ids=e.app.questionIdsFor(22);
+  e.app.state.mastered[22]=ids.slice();
+  const before=plain({mastered:e.app.state.mastered,challenge:e.app.state.challenge});
+  let release;pending=new Promise(resolve=>{release=resolve;});
+  const baseline=refreshes;
+  const first=e.window._resetAndStartFull(22),second=e.window._resetAndStartFull(22);
+  assert.equal(refreshes,baseline+1,'快速連點共用同一個開始檢查');
+  assert.match(e.node('study-start-status').textContent,/確認.*練習範圍/);
+  assert.equal(e.node('study-start-status').classList.contains('hidden'),false);
+  p.archivedStudyUnits=[22];release();await Promise.all([first,second]);
+  assert.deepEqual(plain({mastered:e.app.state.mastered,challenge:e.app.state.challenge}),before);
+  assert.equal(e.node('page-quiz').classList.contains('hidden'),true);
+  pending=null;p.archivedStudyUnits=[];
+  let resume;pending=new Promise(resolve=>{resume=resolve;});
+  const count=starts,a=e.window._startFull(22),b=e.window._startFull(22);
+  resume();await Promise.all([a,b]);assert.equal(starts,count+1);
+});
+
+test('真SQLite今日view無record即保存規則；隔日補送及重送不漏包不重領',async()=>{
+  const runtime=await collectionRuntime();
+  const call=async(path,body,method=body?'POST':'GET')=>{
+    const response=await runtime.fetch(new Request('http://local/v1/'+path,{method,headers:{Authorization:'Bearer test-token'},...(body?{body:JSON.stringify(body)}:{})}));
+    const result=await response.json();assert.equal(response.status,200,JSON.stringify(result));return result;
+  };
+  try {
+    const today=C.dateKey(),yesterday=C.dateKey(Date.now()-86400000);
+    const occurredAt=new Date(Date.now()-86400000).toISOString();
+    // Historical goal config is an old-client state with no daily records.
+    const original=C.empty();original.goalRevision=1;original.configs=[{revision:1,effectiveDate:yesterday,targets:[goal('study:math')]}];
+    await runtime.restoreFixture(original);
+    let settings=await call('settings');settings.data.children.aiden.archivedStudyUnits=archived;
+    settings=await call('settings',{...settings,writeId:'late-hide'},'PUT');
+    const view=await call('collection/aiden');assert.equal(view.daily.targets.length,0);assert.equal(view.daily.rulesConfirmed,true);
+    const persisted=await runtime.inspectFixture();
+    assert.equal(persisted.days[today].rounds,0);
+    assert.deepEqual(persisted.days[today].counts,{});
+    // Move the persisted, server-created day forward in the fixture clock without inventing a profile.
+    persisted.days[yesterday]=persisted.days[today];delete persisted.days[today];
+    await runtime.restoreFixture(persisted);
+    settings.data.children.aiden.archivedStudyUnits=[];
+    await call('settings',{...settings,writeId:'late-restore'},'PUT');
+    const event={entryId:'spelling',roundId:'yesterday-offline',occurredAt};
+    await call('collection/aiden/record',{commandId:'late-record',generation:0,event:{...event,answered:true},visibility:{date:yesterday,profile:{}}});
+    const command={commandId:'late-round',generation:0,event};
+    await call('collection/aiden/round',command);
+    assert.equal((await call('collection/aiden/round',command)).duplicate,true);
+    const past=await call('collection/aiden?date='+yesterday);
+    assert.equal(past.daily.earned,1);assert.equal(past.daily.targets.length,0);
+    assert.equal((await call('collection/aiden')).daily.targets.length,1);
+    assert.deepEqual((await runtime.inspectFixture()).days[yesterday].targets,original.configs[0].targets);
+  } finally {await runtime.dispose();}
+});

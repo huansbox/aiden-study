@@ -6,17 +6,23 @@
 
 Study 重開或返回入口會讀設定，開始練習再次核對；作答中不換題。離線使用上次取得的設定；另一裝置須連線回入口才能取得新設定，這不是即時推播。所有開始／錯題入口都核對範圍；跨隱藏單元的舊混合入口不會啟動。恢復後原半批及安排可繼續使用。
 
+開始、錯題與 summary「重新挑戰」共用開始鎖；等待時顯示「正在確認可練習範圍」，重複點擊只啟動一次。背景讀設定與開始前檢查共用尚未完成的 request，但每次新的開始仍檢查設定；重新挑戰的檢查在任何 mastered／challenge 重置之前。
+
 每日目標保留原 `configs`、當日 `targets`、`counts`；有效目標是投影結果，未開放的科目列為 `pausedTargets`。Worker route 從可信 KV 取得家庭設定，將當日 profile 交給 DO／共用 collection 規則，忽略 client 自報的 availability。當日 entitlement 仍包含原目標已累積完整份量；當全無有效目標時，以「原完整份量」與「已完成自由輪的每日1包」取較大值，再扣已領數，不額外相加。昨日補送沿用原日規則，今天設定不回改昨日。
+
+DO 在當日 collection GET／操作回應前保存 `days[date].availableEntryIds`，即使尚無 record 也保存，因此「先看目標→離線練習→隔日補送」有可信依據。當日曾確認全部目標暫停時，`freeRoundEligible` 保留該日一輪一包承諾；同日恢復只更新可用清單，不撤銷承諾，也不另加一包。過去日期只用該日保存清單，今天的隱藏／恢復不改昨日。
+
+舊 state 或從未連線取得該日 snapshot 的跨日事件，沿用該日原 targets 規則；沒有證據就不推測歷史隱藏設定。client 今日沒有 server `rulesConfirmed` snapshot 時，只說明「練習紀錄會保存；連線後再確認今天的目標與獎勵」，不先承諾自由包或加碼包；已確認的同日 snapshot 可離線沿用，跨日失效。此旗標只供顯示，server 不採用 client 自報的範圍或旗標。
 
 ## 驗證與限制
 
-- `node --test "tests/*.mjs"`：1201 passed。
+- `node --test "tests/*.mjs"`：1207 passed。
 - `uv run pytest`：341 passed、1 skipped（既有歷史題庫 regression）。
-- `tests/test_study_visibility.mjs` 覆蓋中立候選門檻、另一孩子／學期、原課表與進度、部分份量、隱藏已領科後另一科仍按原份量領包、全暫停與恢復去重、昨天補送、真 SQLite 的可信設定與舊客戶端保留欄位。
-- `tests/helpers/study-visibility-browser-check.mjs` 啟動本機 synthetic 家庭／KV／SQLite，768×1024 完整動線、`--layout` 的1024×768家長控制／無內容／恢復補驗均通過。依本機環境提供 `CODEX_PLAYWRIGHT_PACKAGE`、`CHROMIUM_EXECUTABLE`；`STUDY_VISIBILITY_EVIDENCE_DIR` 可指定截圖／JSON位置。只連 loopback，沒有正式家庭測試寫入。
+- `tests/test_study_visibility.mjs` 覆蓋中立候選門檻、另一孩子／學期、原課表與進度、部分份量、隱藏已領科後另一科仍按原份量領包、全暫停與恢復去重、先取得目標再離線隔日補送、無該日快照的保守規則、真 SQLite 的 view 持久化／可信設定／重送去重與舊客戶端保留欄位。
+- `tests/helpers/study-visibility-browser-check.mjs` 啟動本機 synthetic 家庭／KV／SQLite，768×1024 完整動線（含作答中隱藏→通關→重新挑戰不清 mastered、弱網連點只送一次設定請求、等待提示不被獎勵遮住、今日快照離線沿用與跨日不先承諾包數）、`--layout` 的1024×768家長控制／無內容／恢復補驗均通過。依本機環境提供 `CODEX_PLAYWRIGHT_PACKAGE`、`CHROMIUM_EXECUTABLE`；`STUDY_VISIBILITY_EVIDENCE_DIR` 可指定截圖／JSON位置。只連 loopback，沒有正式家庭測試寫入。
 - 這些是 Chromium 實際瀏覽器操作，尚未以實體 iPad／Safari 雙裝置驗證。
 
-本輪附件使用 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-planning-2026-11-06/issue-250-runtime/`。獨立審查、PR與正式發布由統籌接續，本文件不宣稱已發布。
+本輪附件使用 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-planning-2026-11-06/issue-250-runtime/`；review 修正的完整 Node／pytest log、768／1024 PASS JSON 及截圖在 `fixes/`。獨立審查、PR與正式發布由統籌接續，本文件不宣稱已發布。
 
 ## 統籌發布及哥哥設定 dry-run
 

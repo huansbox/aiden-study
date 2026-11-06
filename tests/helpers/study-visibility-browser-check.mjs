@@ -86,6 +86,33 @@ try {
  await child.goto(base+'/study/?child=aiden&subject=science&term=g4-s1');
  await child.locator('[onclick="window._startFull(20)"]').click();await child.locator('#page-quiz:not(.hidden)').waitFor();
  assert.deepEqual(await child.evaluate(()=>{const s=JSON.parse(localStorage.getItem('study:progress:aiden'));return {challenge:s.challenge,errorBank:s.errorBank,mastered:s.mastered,stats:s.stats};}),progress,'恢復可接續原半批');
+ // Last active batch survives the hide; retry from its summary must refresh before resetting mastery.
+ await parent.locator('[data-study-unit="20"]').uncheck();await parent.locator('#save').click();await parent.locator('#save-status').filter({hasText:'已儲存'}).waitFor();
+ await child.locator('#q-options .opt-btn[data-value="true"]').click();await child.locator('#next-btn').click();
+ await child.getByRole('button',{name:'重新挑戰',exact:true}).waitFor();
+ const completed=await child.evaluate(()=>{const s=JSON.parse(localStorage.getItem('study:progress:aiden'));return {mastered:s.mastered,challenge:s.challenge};});
+ let releaseSettings,settingsRequests=0;
+ await child.route('**/v1/settings',async route=>{settingsRequests++;if(settingsRequests===1)await new Promise(resolve=>{releaseSettings=resolve;});await route.continue();});
+ await child.getByRole('button',{name:'重新挑戰',exact:true}).click();
+ await child.getByText('正在確認可練習範圍，請稍候⋯').waitFor();
+ await child.getByRole('button',{name:'重新挑戰',exact:true}).click();
+ assert.equal(settingsRequests,1,'slow retry clicks share one settings request');
+ assert.equal(await child.locator('#study-start-status').evaluate(el=>{const r=el.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===el;}),true,'waiting feedback is not covered by the end-of-round reward');
+ if(evidence)await child.screenshot({path:join(evidence,'waiting-retry-768.png')});
+ releaseSettings();
+ await child.getByText('目前沒有開放的內容。原有進度仍保留。').waitFor();
+ await child.unroute('**/v1/settings');
+ assert.deepEqual(await child.evaluate(()=>{const s=JSON.parse(localStorage.getItem('study:progress:aiden'));return {mastered:s.mastered,challenge:s.challenge};}),completed);
+ // A previous-day cache cannot promise today's free pack before the server has confirmed today's rules.
+ await child.goto(base+'/?child=aiden');await child.locator('.daily-explanation').filter({hasText:'自由練習完整一輪'}).waitFor();
+ await child.route('**/v1/collection/**',route=>route.abort('internetdisconnected'));
+ await child.reload();await child.locator('.daily-explanation').filter({hasText:'自由練習完整一輪'}).waitFor();
+ assert.equal(await child.evaluate(()=>KidsCollection.create('aiden').snapshot().daily.rulesConfirmed),true,'same-day server snapshot remains confirmed while offline');
+ await child.evaluate(()=>{const k='collection:v1:aiden',s=JSON.parse(localStorage.getItem(k));s.daily.date='2026-01-01';localStorage.setItem(k,JSON.stringify(s));});
+ await child.reload();await child.getByText('練習紀錄會保存；連線後再確認今天的目標與獎勵。').waitFor();
+ assert.equal(await child.locator('.daily-explanation').filter({hasText:'自由練習完整一輪'}).count(),0);
+ if(evidence)await child.screenshot({path:join(evidence,'unconfirmed-offline-768.png')});
+ await child.unroute('**/v1/collection/**');
  assert.deepEqual(errors,[]);
  console.log('PASS: parent hide/restore; live round preserved; partial/full availability; mixed-error/direct/old-task guards; original progress and schedule restored; paused goals retained; sibling isolated; preview remains readable and read-only. Chromium 768x1024, synthetic loopback only.');
  }

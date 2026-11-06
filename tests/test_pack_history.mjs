@@ -3,10 +3,12 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import "../docs/shared/collection-core.js";
+import "../docs/shared/family-core.js";
 import { withExistingBuild } from "./helpers/existing-collection.mjs";
 const C = globalThis.KidsCollectionCore;
 const source = (path) => readFileSync(new URL("../docs/" + path, import.meta.url), "utf8");
 const settle = () => new Promise((resolve) => setImmediate(resolve));
+const confirmedSnapshot = (state, date) => C.snapshot(C.reconcile(state,new Date(date+'T04:00:00Z'),{date,profile:globalThis.KidsFamilyCore.defaults().children.aiden}),date);
 
 // Execute the real home renderer and navigation with only the DOM/services substituted.
 async function home(state, models = ["e500", "r200"]) {
@@ -164,7 +166,7 @@ test("必做完成保留，原卡提供自選加碼與目前進度，已領包�
   const now=new Date("2026-10-19T12:00:00Z");
   let state=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"study:math",metric:"answered",quantity:2}]},now);
   for(let n=0;n<7;n++)state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
-  const snapshot={...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}};
+  const snapshot={...confirmedSnapshot(state,"2026-10-19"),sync:{status:"ready"}};
   const h=await home(snapshot);
   assert.match(h.root.innerHTML,/今日已領 3 包/);
   assert.match(h.root.innerHTML,/必做 2 \/ 2 題 · 已完成/);
@@ -190,14 +192,24 @@ test("同日份量調整抵扣已領包後，首頁誠實顯示45題才有下一
   let state=C.apply(C.empty(),{type:"goals",expectedGoalRevision:0,targets:[{entryId:"study:math",metric:"answered",quantity:20}]},now);
   for(let n=0;n<45;n++)state=C.apply(state,{type:"record",event:{entryId:"study:math",answered:true,occurredAt:now.toISOString()}},now);
   state=C.apply(state,{type:"goals",expectedGoalRevision:1,targets:[{entryId:"study:math",metric:"answered",quantity:30}]},now);
-  const snapshot={...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}}, h=await home(snapshot);
+  const snapshot={...confirmedSnapshot(state,"2026-10-19"),sync:{status:"ready"}}, h=await home(snapshot);
   assert.match(h.root.innerHTML,/今日已領 2 包/);
   assert.match(h.root.innerHTML,/加碼再做 45 題，可再得 1 包/);
   assert.match(h.root.innerHTML,/距離下一包還差 45 題/);
   assert.match(h.root.innerHTML,/已領額度抵扣 1 包/);
   assert.doesNotMatch(h.root.innerHTML,/已完成加碼|加碼再做 30 題，可再得 1 包|目前加碼進度 15 \/ 30/);
   state=C.apply(state,{type:"goals",expectedGoalRevision:2,targets:[{entryId:"study:math",metric:"answered",quantity:100}]},now);
-  const unfinished=await home({...C.snapshot(state,"2026-10-19"),sync:{status:"ready"}});
+  const unfinished=await home({...confirmedSnapshot(state,"2026-10-19"),sync:{status:"ready"}});
   assert.match(unfinished.root.innerHTML,/必做 45 \/ 100 題/);
   assert.match(unfinished.root.innerHTML,/距離下一包還差 255 題/);
+});
+
+test('沒有當日可信規則時只承諾保存紀錄；不顯示自由輪或加碼獎勵保證',async()=>{
+  const snapshot=C.snapshot(C.empty());
+  const h=await home(snapshot);
+  assert.match(h.root.innerHTML,/練習紀錄會保存；連線後再確認今天的目標與獎勵/);
+  assert.doesNotMatch(h.root.innerHTML,/自由練習完整一輪，就能領一包/);
+  snapshot.daily.targets=[{entryId:'study:math',metric:'answered',quantity:1,progress:1,done:true}];
+  snapshot.daily.repeatable=true;
+  h.update();assert.doesNotMatch(h.root.innerHTML,/可再得 1 包/);
 });

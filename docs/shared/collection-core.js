@@ -97,10 +97,17 @@
     }
     return state.days[day];
   }
-  // 僅投影今天可做的目標；儲存的 targets 與已累積完整份量不刪除。
-  function projectDaily(view, profile) {
+  // 可信範圍按日期保存；讀目標時就保存，涵蓋讀完後離線、隔日才送事件。
+  function rememberVisibility(state, day, visibility) {
+    if (visibility?.date !== day || !globalThis.KidsFamilyCore) return;
+    const data = dayFor(state, day);
+    data.availableEntryIds = Object.keys(ENTRIES).filter(id => globalThis.KidsFamilyCore.availableEntry(id, visibility.profile));
+    // 曾顯示的自由輪資格不因同日恢復而撤銷；與完整目標份量取 max，不相加。
+    if (!data.targets.some(t => data.availableEntryIds.includes(t.entryId))) data.freeRoundEligible = true;
+  }
+  function projectDaily(view, profile, availableEntryIds) {
     const allTargets = view.allTargets || view.targets;
-    const available = (t) => !globalThis.KidsFamilyCore || globalThis.KidsFamilyCore.availableEntry(t.entryId, profile);
+    const available = (t) => availableEntryIds ? availableEntryIds.includes(t.entryId) : !globalThis.KidsFamilyCore || globalThis.KidsFamilyCore.availableEntry(t.entryId, profile);
     const targets = allTargets.filter(available), pausedTargets = allTargets.filter(t => !available(t));
     return {...view, allTargets, targets, pausedTargets, all:targets.length > 0 && targets.every(t => t.done),
       limit:view.repeatable && targets.length ? null : Math.max(targets.length || 1,view.earned)};
@@ -118,7 +125,8 @@
         rewardOffset, nextRewardRemaining: (rewardOffset + 1) * t.quantity - progress % t.quantity };
     });
     // 舊版 first/all 包與取消目標前已領的包保留，且計入當天額度。
-    const view = { date: day, targets, earned, repeatable, rewardOffset, limit: repeatable && targets.length ? null : Math.max(targets.length || 1, earned), first: earned > 0, all: targets.length > 0 && targets.every((t) => t.done) };
+    const view = { date: day, targets, earned, repeatable, rewardOffset, rulesConfirmed: Array.isArray(data.availableEntryIds), limit: repeatable && targets.length ? null : Math.max(targets.length || 1, earned), first: earned > 0, all: targets.length > 0 && targets.every((t) => t.done) };
+    if (data.availableEntryIds && visibility?.date !== day) return projectDaily(view, null, data.availableEntryIds);
     return visibility?.date === day ? projectDaily(view, visibility.profile) : view;
   }
   function award(state, day, today, visibility) {
@@ -135,7 +143,7 @@
     data.rewardVersion ||= 2;
     const originalTargets = view.allTargets || view.targets;
     const accumulated = originalTargets.reduce((sum, t) => sum + (data.rewardVersion === 3 ? t.portions : Number(t.done)), 0);
-    const entitled = view.targets.length ? accumulated : Math.max(accumulated, Number(data.rounds > 0));
+    const entitled = view.targets.length && !data.freeRoundEligible ? accumulated : Math.max(accumulated, Number(data.rounds > 0));
     for (let n = view.earned + 1; n <= entitled; n++) {
       const kind = view.targets.length ? "goal" : "first";
       state.grants.push({ id: kind === "goal" || n > 1 ? `${day}:goal:${n}` : `${day}:first`, date: day, kind, buildId: null, packIndex: null });
@@ -143,8 +151,9 @@
   }
   function reconcile(previous, now = new Date(), visibility) {
     const state = copy(previous), day = dateKey(now);
+    rememberVisibility(state, day, visibility);
     if (state.days[day]) award(state, day, day, visibility);
-    if (state.grants.length !== previous.grants.length || state.days[day]?.rewardVersion !== previous.days[day]?.rewardVersion) state.revision++;
+    if (state.grants.length !== previous.grants.length || JSON.stringify(state.days[day]) !== JSON.stringify(previous.days[day])) state.revision++;
     return state;
   }
   function allocate(state) {
@@ -218,6 +227,7 @@
       state.displayedBuildIds = state.displayedBuildIds.filter((id) => id !== command.buildId);
       if (command.displayed) state.displayedBuildIds.push(command.buildId);
     } else check(false, "不支援的收藏操作");
+    rememberVisibility(state, today, visibility);
     // 新版上線當天已有達標進度時，只補當天新規則的差額。
     if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today, visibility);
     state.revision++;

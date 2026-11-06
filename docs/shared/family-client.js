@@ -96,7 +96,12 @@
     } catch {}
     return { rev: 0, data: core.defaults(), available: false };
   }
-  async function settings() {
+  let settingsInFlight = null;
+  function settings() {
+    if (!settingsInFlight) settingsInFlight = loadSettings().finally(() => { settingsInFlight = null; });
+    return settingsInFlight;
+  }
+  async function loadSettings() {
     const cached = cachedSettings();
     try {
       const result = await request("/v1/settings");

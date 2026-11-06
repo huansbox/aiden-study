@@ -6,6 +6,7 @@ export async function collectionRuntime({ persist } = {}) {
   const source = `import worker from "../../worker/worker.mjs";
     import { ChildCollection } from "../../worker/collection-object.mjs";
     export class TestCollection extends ChildCollection {
+      inspectFixture() { return this.readState(); }
       restoreFixture(state) {
         return this.ctx.storage.transactionSync(() => {
           this.sql.exec("INSERT INTO state(id,json) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET json=excluded.json",JSON.stringify(state));
@@ -26,6 +27,7 @@ export async function collectionRuntime({ persist } = {}) {
     }
     export default {async fetch(request,env,ctx){
       const url=new URL(request.url);
+      if(url.pathname==="/__collection_inspect_fixture") return Response.json(await env.COLLECTIONS.getByName("aiden").inspectFixture());
       if(url.pathname==="/__collection_restore_fixture") {
         const {child,state}=await request.json();
         if(!["aiden","bingpu"].includes(child))return new Response("invalid fixture",{status:400});
@@ -43,5 +45,6 @@ export async function collectionRuntime({ persist } = {}) {
   return { mf, KV: await mf.getKVNamespace("KV"), fetch: async (request) => mf.dispatchFetch(request.url, { method: request.method, headers: Object.fromEntries(request.headers), ...(!["GET", "HEAD"].includes(request.method) ? { body: await request.arrayBuffer() } : {}) }),
     async seedFixtures({child="aiden",days=12}={}) { const response=await mf.dispatchFetch("http://local/__collection_fixture",{method:"POST",body:JSON.stringify({child,days})});if(!response.ok)throw Error("invalid fixture");return response.json(); },
     async restoreFixture(state,child="aiden") { const response=await mf.dispatchFetch("http://local/__collection_restore_fixture",{method:"POST",body:JSON.stringify({child,state})});if(!response.ok)throw Error("invalid fixture");return response.json(); },
+    async inspectFixture() { return (await mf.dispatchFetch("http://local/__collection_inspect_fixture")).json(); },
     dispose: () => mf.dispose() };
 }

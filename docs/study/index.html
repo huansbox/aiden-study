@@ -555,6 +555,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
+<p id="study-start-status" class="hidden" role="status" aria-live="polite" style="position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:10001;max-width:calc(100% - 32px);padding:12px 20px;border-radius:12px;background:#fff;color:#24324a;box-shadow:0 2px 12px #0003"></p>
 <div class="container" id="app">
   <div id="page-home" class="home"></div>
   <div id="page-quiz" class="hidden"></div>
@@ -1940,10 +1941,22 @@ function renderHome(preserveParentForms = false) {
 }
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
-window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE, prepared = false, refreshed = false) => {
-  if (!refreshed && family?.refreshSettings) return family.refreshSettings().then(() => window._startFull(unit,subtopic,practiceMode,prepared,true));
+let practiceStartPending = null;
+function checkedPracticeStart(action) {
+  if (practiceStartPending) return practiceStartPending;
+  if (!family?.refreshSettings) return action();
+  const status = document.getElementById("study-start-status");
+  status.textContent = "正在確認可練習範圍，請稍候⋯";
+  status.classList.remove("hidden");
+  practiceStartPending = family.refreshSettings().then(action).finally(() => {
+    practiceStartPending = null;
+    status.classList.add("hidden");
+  });
+  return practiceStartPending;
+}
+function startFull(unit, subtopic, practiceMode, prepared = false) {
   if (!canPracticeUnits(unit)) { renderHome(); return; }
-  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) window._startFull(unit,subtopic,practiceMode,true,true); });
+  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) return startFull(unit,subtopic,practiceMode,true); });
   if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   if (State.isCleared(unit, subtopic, mode)) {
@@ -1952,14 +1965,14 @@ window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE
     State.resetChallenge(challengeKey(unit, subtopic, mode));
   }
   startQuiz("full", unit, subtopic, mode);
-};
-window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE, refreshed = false) => {
-  if (!refreshed && family?.refreshSettings) return family.refreshSettings().then(() => window._startError(idsStr,practiceMode,true));
+}
+window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => startFull(unit,subtopic,practiceMode));
+window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
   if (!canPracticeUnits(units)) { renderHome(); return; }
   if (needsUnits(units)) return prepareUnits(units).then(ok => { if (ok) startQuiz("error", units, null, normalizePracticeMode(practiceMode)); });
   startQuiz("error", units, null, normalizePracticeMode(practiceMode));
-};
+});
 window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); if (term === "g4-s1") loadPrivatePack(); };
 window._setSemester = (s) => {
   State.setSemester(s);
@@ -3556,13 +3569,13 @@ function renderSummary() {
 }
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
-window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
-  if (!canPracticeUnits(unit)) return;
+window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => {
+  if (!canPracticeUnits(unit)) { renderHome(); return; }
   const mode = normalizePracticeMode(practiceMode);
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
   startQuiz("full", unit, subtopic, mode);
-};
+});
 
 // ════════════════════════════════════════════════════
 // Init
