@@ -19,7 +19,7 @@
     ? `${q.answer}. ${q.options[Number(q.answer) - 1]}`
     : q.type === "true_false" ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
     : q.type === "grouped_choice" ? q.parts.map((part, index) => `${part.id}：${(part.options || q.options)[Number(q.answer[index]) - 1]}`).join("；")
-    : q.blanks.map((blank, index) => `第 ${index + 1} 空：${blank.input === "select" ? q.options[Number(blank.answer) - 1] : blank.answer}`).join("；");
+    : q.blanks.map((blank, index) => `第 ${index + 1} 空：${StudyAnswer.isFinalMath(q) ? StudyAnswer.mathAnswerLabel(blank, q.options) : blank.input === "select" ? q.options[Number(blank.answer) - 1] : blank.answer}`).join("；");
 
   let bootSequence = 0;
   let currentController = null;
@@ -170,10 +170,12 @@
       if (state.destroyed) return;
       if (action === "math") {
         state.math = StudyMathInput.update(current(), state.math || StudyMathInput.initial(current()), data.mathAction, data.value ?? data.mathValue, data.mathField);
-        state.values = state.math.values; state.result = ""; state.revealed = false;
+        state.values = state.math.values;
+        if (data.mathAction !== "blank") { state.result = ""; state.revealed = false; }
         if (["input", "fraction"].includes(data.mathAction)) {
           const check = host.querySelector?.('[data-action="check"]'); if (check) check.disabled = !StudyMathInput.complete(current(), state.math);
-          host.querySelectorAll?.('.preview-feedback, .preview-reveal').forEach(node => node.remove());
+          host.querySelectorAll?.('.preview-feedback, .preview-reveal, .math-blank-feedback').forEach(node => node.remove());
+          host.querySelectorAll?.('[data-math-action="blank"]').forEach((node, i) => { const value = state.values[i]; node.textContent = `第 ${i + 1} 空${(Array.isArray(value) ? value.every(Boolean) : value) ? '（已填）' : ''}`; });
         } else render();
       }
       else if (action === "circuit") { state.circuit = StudyCircuit.update(state.circuit, data.circuitAction, data.circuitValue); state.result = ""; state.revealed = false; render(); }

@@ -187,12 +187,13 @@ test("preview math preserves mixed fields, fraction form and unordered full choi
   const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "27" });
   const act = (mathAction, value, mathField) => app.handle("math", { mathAction, value, mathField });
   act("input", "12"); act("blank", "1"); act("input", ".52"); act("blank", "2");
-  for (const [field, value] of [["whole", "3"], ["numerator", "1"], ["denominator", "2"]]) act("fraction", value, field);
+  for (const [field, value] of [["whole", "3"], ["numerator", "2"], ["denominator", "3"]]) act("fraction", value, field);
   act("blank", "3"); act("choice", "2"); act("blank", "4"); act("input", "合成別名"); act("blank", "5"); act("choice", ">");
   app.handle("check"); assert.equal(app.state.result, "wrong");
   assert.match(h.host.innerHTML, /第 3 空（要修正）/);
   assert.match(h.host.innerHTML, /第 1 空（答對）/);
-  act("blank", "2"); act("fraction", "3", "numerator"); act("fraction", "6", "denominator");
+  act("blank", "2"); assert.match(h.host.innerHTML, /第 3 空（要修正）/);
+  act("fraction", "1", "numerator"); act("fraction", "2", "denominator");
   app.handle("check"); assert.equal(app.state.result, "correct");
   app.handle("question", { index: "1" }); act("choice", "3"); app.handle("check"); assert.equal(app.state.result, "wrong");
   act("choice", "1"); app.handle("check"); assert.equal(app.state.result, "correct");
@@ -648,4 +649,18 @@ test("shared answer seam retains Study number and comparison equivalence rules",
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, " ＞ "), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, "<"), false);
   assert.deepEqual(ids.length, 6);
+});
+
+test("preview open fraction inputs and range labels use the same exact contract", async () => {
+  const pack = syntheticPack(), q = { ...finalMathQuestion(), text: "Synthetic （１）", options: [], blanks: [{ input: "fraction_interval", answer: "", form: "mixed", count: 2, distinct: true, range: { min: [2, 1], max: [5, 2], minInclusive: false, maxInclusive: false } }] };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "27" });
+  const act = (field, value) => app.handle("math", { mathAction: "fraction", value, mathField: field });
+  for (const [field, value] of [["0:whole", "2"], ["0:numerator", "1"], ["0:denominator", "3"], ["1:whole", "2"], ["1:numerator", "2"], ["1:denominator", "6"]]) act(field, value);
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  assert.match(h.host.innerHTML, /第 1 空（要修正）/);
+  act("1:numerator", "1"); act("1:denominator", "4");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.match(h.host.innerHTML, /數值不同/); assert.match(h.host.innerHTML, /2 &lt; 答案 &lt; 5\/2/);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
 });

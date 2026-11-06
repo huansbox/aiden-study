@@ -8,3 +8,5 @@
 .math-fraction > label, .math-fraction-pair { flex: 1; min-width: 0; }
 .math-fraction label { display: grid; gap: 6px; }
 .math-fraction-pair > label:first-child { border-bottom: 3px solid #172033; padding-bottom: 10px; margin-bottom: 10px; }
+
+.math-fraction-entry { min-width: 0; margin: 12px 0; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; }

@@ -36,7 +36,7 @@ MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19, 24, 25, 26, 27, 28}, "science": {20, 21, 29, 30}, "social": {22, 23, 31, 32}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:mixed"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:mixed"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
@@ -204,7 +204,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         adaptation = item["digitalAdaptation"]
         allowed = {"multiple_choice", "true_false", "grouped_choice"} if subject != "math" else {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
         if subject == "math" and item["unit"] in {24, 25, 26, 27, 28}:
-            allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:text", "fill_in_blank:mixed"}
+            allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:text", "fill_in_blank:mixed"}
         if subject == "social":
             allowed.add("fill_in_blank:select")
             if item["unit"] == 23:
@@ -255,12 +255,33 @@ def _fraction_value(value, form):
         return None
     w, n, d = match.groups()
     w, n, d = int(w) if w is not None else None, int(n), int(d)
-    if (form == "improper" and (w is not None or n < d)
+    if (form == "proper" and (w is not None or n >= d)
+            or form == "improper" and (w is not None or n < d)
             or form == "proper_or_improper" and w is not None
             or form in {"mixed", "mixed_or_whole"} and (w is None or w < 1 or not 0 < n < d)
-            or form not in {"improper", "proper_or_improper", "mixed", "mixed_or_whole"}):
+            or form not in {"proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"}):
         return None
     return ((w or 0) * d + n, d)
+
+
+def _compare_rational(a, b):
+    return a[0] * b[1] - b[0] * a[1]
+
+
+def _validate_math_range(value):
+    _require_exact_keys(value, {"min", "max", "minInclusive", "maxInclusive"}, "math range")
+    for bound in (value["min"], value["max"]):
+        if (not isinstance(bound, list) or len(bound) != 2
+                or not all(type(n) is int and 0 <= n <= 9007199254740991 for n in bound) or bound[1] == 0):
+            raise PackBuildError("math range requires safe integer rational bounds")
+    if (type(value["minInclusive"]) is not bool or type(value["maxInclusive"]) is not bool
+            or _compare_rational(value["min"], value["max"]) >= 0):
+        raise PackBuildError("math range bounds are invalid")
+
+
+def _in_math_range(value, bounds):
+    low, high = _compare_rational(value, bounds["min"]), _compare_rational(value, bounds["max"])
+    return (low >= 0 if bounds["minInclusive"] else low > 0) and (high <= 0 if bounds["maxInclusive"] else high < 0)
 
 
 def _validate_math_blanks(q, practice_id, adaptation):
@@ -282,9 +303,14 @@ def _validate_math_blanks(q, practice_id, adaptation):
             fields.add("aliases")
         if b["input"] == "fraction":
             fields.add("form")
-            if "accept" in b:
-                fields.add("accept")
+            fields.update(field for field in ("accept", "denominator") if field in b)
+        if b["input"] == "fraction_interval":
+            fields.update({"form", "count", "distinct", "range"})
+        if b["input"] == "decimal" and "range" in b:
+            fields.add("range")
         _require_exact_keys(b, fields, f"question {practice_id} math blank")
+        if "range" in b:
+            _validate_math_range(b["range"])
         answer = b["answer"]
         if not isinstance(answer, str):
             raise PackBuildError(f"question {practice_id} blank answer must be a string")
@@ -294,6 +320,10 @@ def _validate_math_blanks(q, practice_id, adaptation):
             valid = bool(re.fullmatch(r"0|[1-9][0-9]{0,7}", answer))
         elif kind == "decimal":
             valid = bool(re.fullmatch(r"(?:0|[1-9][0-9]{0,7})(?:\.[0-9]{1,2})?", answer))
+            if valid and "range" in b:
+                parts = answer.split(".")
+                value = (int("".join(parts)), 10 ** len(parts[1]) if len(parts) == 2 else 1)
+                valid = _compare_rational(b["range"]["max"], (9999999999, 100)) <= 0 and _in_math_range(value, b["range"])
         elif kind == "comparison":
             valid = answer in {"<", ">", "="}
         elif kind == "select":
@@ -304,11 +334,17 @@ def _validate_math_blanks(q, practice_id, adaptation):
                 terms = [answer, *aliases]
                 valid = all(isinstance(term, str) and 1 <= len(term) <= 20 and _normalize_text_answer(term) for term in terms)
                 valid = valid and len({_normalize_text_answer(term) for term in terms}) == len(terms)
+        elif kind == "fraction_interval":
+            valid = (answer == "" and type(b["count"]) is int and 1 <= b["count"] <= 4 and b["distinct"] is True
+                     and b["form"] in {"proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"})
         elif kind == "fraction":
             target, aliases = _fraction_value(answer, b["form"]), b.get("accept", [])
             if target and isinstance(aliases, list) and len(aliases) <= 8 and all(isinstance(term, str) for term in aliases):
                 terms = [answer, *aliases]
                 valid = len(set(terms)) == len(terms) and all((v := _fraction_value(term, b["form"])) and v[0] * target[1] == target[0] * v[1] for term in terms)
+                if valid and "denominator" in b:
+                    valid = (type(b["denominator"]) is int and 1 <= b["denominator"] <= 999999
+                             and all(_fraction_value(term, b["form"])[1] == b["denominator"] for term in terms))
         if not valid:
             raise PackBuildError(f"question {practice_id} unsupported math blank answer or form")
         marker = "（" + str(index).translate(str.maketrans("0123456789", "０１２３４５６７８９")) + "）"
@@ -590,7 +626,9 @@ def write_pack_atomic(
 def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
     blanks = question.get("blanks")
     blank_semantic = tuple(
-        (blank.get("input"), blank.get("answer"), blank.get("form"), tuple(blank.get("accept", []))) if blank.get("input") == "fraction"
+        (blank.get("input"), blank.get("answer"), blank.get("form"), blank["count"], blank["distinct"], json.dumps(blank["range"], sort_keys=True)) if blank.get("input") == "fraction_interval"
+        else (blank.get("input"), blank.get("answer"), blank.get("form"), tuple(blank.get("accept", [])), *([blank["denominator"]] if "denominator" in blank else [])) if blank.get("input") == "fraction"
+        else (blank.get("input"), blank.get("answer"), json.dumps(blank["range"], sort_keys=True)) if blank.get("input") == "decimal" and "range" in blank
         else (blank.get("input"), blank.get("answer"), tuple(blank["aliases"])) if "aliases" in blank
         else (blank.get("input"), blank.get("answer")) for blank in blanks
     ) if isinstance(blanks, list) else None

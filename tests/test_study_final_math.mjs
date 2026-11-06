@@ -43,10 +43,13 @@ test("decimal answers accept equivalent trailing zero within two places and reje
   assert.equal(A.gradeBlanks(q, ["12cm"]).correct, false);
 });
 
-test("fractions retain required form and denominator instead of silently accepting reduction", () => {
+test("fractions accept equivalent values while enforcing form and explicit denominator", () => {
   const q = { ...finalMathQuestion(), options: [], text: "Synthetic （１）", blanks: [{ input: "fraction", answer: "3 3/6", form: "mixed" }] };
-  for (const input of ["3 3/6", "03 03/06"]) assert.equal(A.gradeBlanks(q, [input]).correct, true);
-  for (const input of ["3 1/2", "21/6", "3.5", "3 3/0", "3"]) assert.equal(A.gradeBlanks(q, [input]).correct, false);
+  for (const input of ["3 3/6", "03 03/06", "3 1/2", "3 100000/200000"]) assert.equal(A.gradeBlanks(q, [input]).correct, true);
+  for (const input of ["21/6", "3.5", "3 3/0", "3", "3 1000000/2000000"]) assert.equal(A.gradeBlanks(q, [input]).correct, false);
+  q.blanks[0].denominator = 6; parse(q);
+  assert.equal(A.gradeBlanks(q, ["3 1/2"]).correct, false);
+  assert.equal(A.gradeBlanks(q, ["3 3/6"]).correct, true);
   q.blanks = [{ input: "fraction", answer: "21/6", form: "improper" }];
   assert.equal(A.gradeBlanks(q, ["21/6"]).correct, true); assert.equal(A.gradeBlanks(q, ["3 3/6"]).correct, false);
   q.blanks = [{ input: "fraction", answer: "4", form: "mixed_or_whole" }];
@@ -76,4 +79,46 @@ test("mixed math and classification save as one activity each and reward at batc
   assert.equal(e.app.quiz.queue[0], mixed.id); e.app.submitAnswer(correct);
   assert.equal(e.app.State.doneCount(27), 2); assert.equal(events.filter(e => e[0] === "finish").length, 0);
   e.app.advance(); assert.equal(events.filter(e => e[0] === "finish").length, 1);
+});
+
+const intervalQuestion = () => ({ ...finalMathQuestion(), options: [], text: "Synthetic （１）", blanks: [{ input: "fraction_interval", answer: "", form: "mixed", count: 2, distinct: true, range: { min: [2, 1], max: [5, 2], minInclusive: false, maxInclusive: false } }] });
+test("open fraction intervals require exact, distinct values and the requested form", () => {
+  const q = intervalQuestion(); parse(q);
+  for (const values of [["2 1/3", "2 1/4"], ["2 2/9", "2 4/9"], ["2 333332/999999", "2 333333/999999"]]) assert.equal(A.gradeBlanks(q, [values]).correct, true);
+  for (const values of [["2 1/3", "2 2/6"], ["2 1/2", "2 1/3"], ["2", "2 1/3"], ["7/3", "9/4"], ["2 1/3"], ["2 1/3", ""], ["2 1/0", "2 1/3"]]) assert.equal(A.gradeBlanks(q, [values]).correct, false);
+  assert.equal(A.hasCompleteBlanks(q, [["2 1/3", ""]]), false);
+  assert.match(A.gradeBlanks(q, [["2 1/3", "2 2/6"]]).answers[0], /數值不同.*2 < 答案 < 5\/2/);
+  const changed = structuredClone(q); changed.blanks[0].range.maxInclusive = true;
+  assert.notEqual(P.semantic(q), P.semantic(changed));
+  assert.equal(A.gradeBlanks(changed, [["2 1/2", "2 1/3"]]).correct, true);
+  for (const mutate of [b => b.count = 5, b => b.distinct = false, b => b.form = "any", b => b.answer = "2 1/3", b => b.range.min = [5, 2], b => b.range.max = [9007199254740992, 1], b => b.range.min = [2, 0], b => b.range.extra = true]) {
+    const invalid = intervalQuestion(); mutate(invalid.blanks[0]); assert.throws(() => parse(invalid));
+  }
+});
+test("decimal ranges accept the continuous two-place interval including explicit endpoints", () => {
+  const q = { ...intervalQuestion(), blanks: [{ input: "decimal", answer: "7.9", range: { min: [78, 10], max: [8, 1], minInclusive: true, maxInclusive: false } }] };
+  parse(q);
+  for (const v of ["7.8", "7.81", "7.90", "7.99"]) assert.equal(A.gradeBlanks(q, [v]).correct, true);
+  for (const v of ["7.79", "8", "7.999", "7.9cm", "79e-1"]) assert.equal(A.gradeBlanks(q, [v]).correct, false);
+  for (const mutate of [b => b.answer = "8", b => b.range.max = [1, 0], b => b.range.minInclusive = 1, b => b.range.max = [100000000, 1]]) {
+    const invalid = structuredClone(q); mutate(invalid.blanks[0]); assert.throws(() => parse(invalid));
+  }
+  const changed = structuredClone(q); changed.blanks[0].range.maxInclusive = true;
+  assert.notEqual(P.semantic(q), P.semantic(changed));
+});
+test("fraction interval UI keeps separate entries and cannot submit a partially filled pair", () => {
+  const q = intervalQuestion(); let state = M.initial(q);
+  for (const [field, value] of [["0:whole", "2"], ["0:numerator", "1"], ["0:denominator", "3"]]) state = M.update(q, state, "fraction", value, field);
+  assert.equal(M.complete(q, state), false);
+  for (const [field, value] of [["1:whole", "2"], ["1:numerator", "1"], ["1:denominator", "4"]]) state = M.update(q, state, "fraction", value, field);
+  assert.deepEqual(state.values, [["2 1/3", "2 1/4"]]); assert.equal(M.complete(q, state), true);
+  assert.equal(A.gradeBlanks(q, state.values).correct, true);
+  assert.match(M.render(q, state), /第 2 個答案/);
+  assert.match(M.render(q, state, true, [false]), /數值不同/);
+});
+test("proper fractions reject mixed and improper forms and equivalent written denominators remain optional", () => {
+  const q = { ...intervalQuestion(), blanks: [{ input: "fraction", answer: "2/6", form: "proper" }] }; parse(q);
+  assert.equal(A.gradeBlanks(q, ["1/3"]).correct, true);
+  for (const v of ["1 1/3", "4/3", "0.33"]) assert.equal(A.gradeBlanks(q, [v]).correct, false);
+  q.blanks[0].denominator = 2; assert.throws(() => parse(q));
 });

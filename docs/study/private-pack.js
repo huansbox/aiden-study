@@ -18,11 +18,18 @@
     const match = /^(?:(0|[1-9][0-9]{0,5}) )?(0|[1-9][0-9]{0,5})\/([1-9][0-9]{0,5})$/.exec(value);
     if (!match) return null;
     const w = match[1] === undefined ? null : BigInt(match[1]), n = BigInt(match[2]), d = BigInt(match[3]);
-    if (form === "improper" && (w !== null || n < d) || form === "proper_or_improper" && w !== null ||
+    if (form === "proper" && (w !== null || n >= d) || form === "improper" && (w !== null || n < d) || form === "proper_or_improper" && w !== null ||
         ["mixed", "mixed_or_whole"].includes(form) && (w === null || w < 1n || n < 1n || n >= d) ||
-        !["improper", "proper_or_improper", "mixed", "mixed_or_whole"].includes(form)) return null;
+        !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"].includes(form)) return null;
     return [(w || 0n) * d + n, d];
   }
+  const rational = value => Array.isArray(value) && value.length === 2 && value.every(Number.isSafeInteger) && value[0] >= 0 && value[1] > 0;
+  const compareRational = (a, b) => BigInt(a[0]) * BigInt(b[1]) - BigInt(b[0]) * BigInt(a[1]);
+  function validateRange(range) {
+    if (!keys(range, ["min", "max", "minInclusive", "maxInclusive"]) || !rational(range.min) || !rational(range.max) ||
+        typeof range.minInclusive !== "boolean" || typeof range.maxInclusive !== "boolean" || compareRational(range.min, range.max) >= 0n) throw new Error("數學範圍需有明確有理數上下界。");
+  }
+  const inRange = (v, r) => (r.minInclusive ? compareRational(v, r.min) >= 0n : compareRational(v, r.min) > 0n) && (r.maxInclusive ? compareRational(v, r.max) <= 0n : compareRational(v, r.max) < 0n);
   function validateMathBlanks(q) {
     if (q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > 9) throw new Error("數學填空格式無效。");
     const select = q.blanks.some(b => b?.input === "select");
@@ -30,21 +37,31 @@
     for (const [index, b] of q.blanks.entries()) {
       const fields = ["input", "answer"];
       if (b?.input === "text" && Object.hasOwn(b, "aliases")) fields.push("aliases");
-      if (b?.input === "fraction") { fields.push("form"); if (Object.hasOwn(b, "accept")) fields.push("accept"); }
+      if (b?.input === "fraction") { fields.push("form"); for (const field of ["accept", "denominator"]) if (Object.hasOwn(b, field)) fields.push(field); }
+      if (b?.input === "fraction_interval") fields.push("form", "count", "distinct", "range");
+      if (b?.input === "decimal" && Object.hasOwn(b, "range")) fields.push("range");
       if (!keys(b, fields) || typeof b.answer !== "string") throw new Error("數學填空欄位無效。");
+      if (Object.hasOwn(b, "range")) validateRange(b.range);
       if (b.input === "number") { if (!/^(0|[1-9][0-9]{0,7})$/.test(b.answer)) throw new Error("整數答案無效。"); }
-      else if (b.input === "decimal") { if (!/^(0|[1-9][0-9]{0,7})(?:\.[0-9]{1,2})?$/.test(b.answer)) throw new Error("小數答案限兩位小數。"); }
+      else if (b.input === "decimal") {
+        if (!/^(0|[1-9][0-9]{0,7})(?:\.[0-9]{1,2})?$/.test(b.answer)) throw new Error("小數答案限兩位小數。");
+        const [whole, part = ""] = b.answer.split(".");
+        if (b.range && (compareRational(b.range.max, [9999999999, 100]) > 0n || !inRange([BigInt(whole + part), 10n ** BigInt(part.length)], b.range))) throw new Error("小數示例或上下界超出範圍。");
+      }
       else if (b.input === "comparison") { if (!/^[<>=]$/.test(b.answer)) throw new Error("比較符號無效。"); }
       else if (b.input === "select") { if (!/^(?:[1-9]|1[0-5])$/.test(b.answer) || Number(b.answer) > q.options.length) throw new Error("原選項索引無效。"); }
       else if (b.input === "text") {
         if (Object.hasOwn(b, "aliases") && (!Array.isArray(b.aliases) || b.aliases.length > 8)) throw new Error("文字別名無效。");
         const terms = [b.answer, ...(b.aliases || [])];
         if (!terms.every(term => boundedText(term, 20) && term.normalize("NFKC").trim()) || new Set(terms.map(term => term.normalize("NFKC").trim())).size !== terms.length) throw new Error("文字答案無效。");
+      } else if (b.input === "fraction_interval") {
+        if (b.answer !== "" || !Number.isInteger(b.count) || b.count < 1 || b.count > 4 || b.distinct !== true || !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"].includes(b.form)) throw new Error("分數區間格式無效。");
       } else if (b.input === "fraction") {
         const target = fraction(b.answer, b.form);
         if (!target || Object.hasOwn(b, "accept") && (!Array.isArray(b.accept) || b.accept.length > 8)) throw new Error("分數形式無效。");
         const terms = [b.answer, ...(b.accept || [])];
         if (new Set(terms).size !== terms.length || !terms.every(term => { const v = fraction(term, b.form); return v && v[0] * target[1] === target[0] * v[1]; })) throw new Error("分數明列等值答案無效。");
+        if (Object.hasOwn(b, "denominator") && (!Number.isSafeInteger(b.denominator) || b.denominator < 1 || b.denominator > 999999 || !terms.every(term => fraction(term, b.form)[1] === BigInt(b.denominator)))) throw new Error("指定分母無效。");
       } else throw new Error("數學輸入型態尚未支援。");
       const marker = String(index + 1).replace(/[0-9]/g, digit => "０１２３４５６７８９"[Number(digit)]);
       if (!q.text.includes(`（${marker}）`)) throw new Error("數學填空標記缺漏。");
@@ -57,7 +74,7 @@
     // 不自行判定文字改動是否仍是同一道題；只忽略 JSON 欄位順序。
     // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
     return JSON.stringify([q.subject, q.unit, q.subtopic, q.type, q.text, q.options, q.answer,
-      q.blanks ? q.blanks.map(b => b.input === "fraction" ? [b.input, b.answer, b.form, b.accept || []] : Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
+      q.blanks ? q.blanks.map(b => b.input === "fraction_interval" ? [b.input, b.answer, b.form, b.count, b.distinct, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : b.input === "fraction" ? [b.input, b.answer, b.form, b.accept || [], ...(Object.hasOwn(b, "denominator") ? [b.denominator] : [])] : b.input === "decimal" && b.range ? [b.input, b.answer, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
       q.parts ? q.parts.map(part => Object.hasOwn(part, "options") ? [part.id, part.text, part.options] : [part.id, part.text]) : null,
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null,

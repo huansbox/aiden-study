@@ -206,7 +206,7 @@ def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
     assert private_builder._question_semantic(q) != private_builder._question_semantic(moved)
 
 
-@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false"])
+@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false", "interval", "range"])
 def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
     values = list(_fixture())
     curated, explanations, metadata, _ = values
@@ -215,7 +215,16 @@ def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
          "text": "Synthetic （１）（２）（３）", "subtopic": "Synthetic", "options": ["A", "B"], "answer": "",
          "blanks": [{"input": "decimal", "answer": "0.52"}, {"input": "fraction", "answer": "3 3/6", "form": "mixed"}, {"input": "select", "answer": "2"}]}
     adaptation = "fill_in_blank:mixed"
-    if kind != "mixed":
+    if kind in {"interval", "range"}:
+        q.update(options=[], text="Synthetic （１）")
+        if kind == "interval":
+            q["blanks"] = [{"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True,
+                            "range": {"min": [2, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}]
+        else:
+            q["blanks"] = [{"input": "decimal", "answer": "7.9",
+                            "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}]
+        adaptation = "fill_in_blank:" + q["blanks"][0]["input"]
+    elif kind != "mixed":
         del q["blanks"]
         q["type"] = adaptation = kind
         if kind == "choice_set":
@@ -1059,3 +1068,33 @@ def test_final_math_text_normalization_matches_javascript(answer, aliases, valid
     pack = {"schemaVersion": 2, "packId": "g4-s1-math-u1", "revision": 1, "questions": [q], "explanations": {q["id"]: "Synthetic explanation"}}
     result = subprocess.run(["node", "-e", "require('./docs/study/private-pack.js');StudyPrivatePack.parse(require('fs').readFileSync(0,'utf8'),[],null,true)"], input=json.dumps(pack), cwd=private_builder.ROOT, capture_output=True, text=True)
     assert (result.returncode == 0) == valid, result.stderr
+
+@pytest.mark.parametrize("blank,valid", [
+    ({"input": "fraction", "answer": "2/6", "form": "proper"}, True),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": 6}, True),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": 3}, False),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": True}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, True),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [5, 2], "max": [2, 1], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 0], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [True, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 1], "max": [9007199254740992, 1], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "decimal", "answer": "7.9", "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}, True),
+    ({"input": "decimal", "answer": "8", "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}, False),
+])
+def test_final_math_rational_contract_python_browser_parity(blank, valid):
+    q = {"id": "math-g4s1-synthetic-range-v1", "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）", "subtopic": "Synthetic", "options": [], "answer": "", "blanks": [blank]}
+    if valid:
+        private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:" + blank["input"])
+    else:
+        with pytest.raises(PackBuildError):
+            private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:" + blank["input"])
+    q["source"] = "Synthetic source"
+    pack = {"schemaVersion": 2, "packId": "g4-s1-math-u1", "revision": 1, "questions": [q], "explanations": {q["id"]: "Synthetic explanation"}}
+    result = subprocess.run(["node", "-e", "require('./docs/study/private-pack.js');StudyPrivatePack.parse(require('fs').readFileSync(0,'utf8'),[],null,true)"], input=json.dumps(pack), cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert (result.returncode == 0) == valid, result.stderr
+    if valid and "range" in blank:
+        changed = copy.deepcopy(q)
+        changed["blanks"][0]["range"]["maxInclusive"] = not blank["range"]["maxInclusive"]
+        assert private_builder._question_semantic(q) != private_builder._question_semantic(changed)

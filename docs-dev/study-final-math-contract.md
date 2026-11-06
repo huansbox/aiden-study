@@ -14,11 +14,12 @@
 每個 blank 都有 `input` 與字串 `answer`，其餘欄位依型態限定：
 
 - `number`：正規化非負整數，1–8 位數。不接受 `accept` 或估讀誤差。
-- `decimal`：非負十進位字串，整數部分最多八位，小數部分最多兩位。作答接受 `.52`、`7.90` 等等值寫法，拒絕單位、逗號、科學記號及超過兩位小數。
+- `decimal`：非負十進位字串，整數部分最多八位，小數部分最多兩位。作答接受 `.52`、`7.90` 等等值寫法，拒絕單位、逗號、科學記號及超過兩位小數。可選 `range` 指定連續容許區間；`answer` 是區間內示例，不能拿幾個離散示例代替連續範圍。
 - `comparison`：`<`、`>`、`=`。
 - `select`：答案是原 `options` 的 1-based 字串索引。只要題組含 select，頂層需有 2–15 個原選項；沒有 select 則 `options=[]`。不得補造干擾項。
 - `text`：答案最多20字，可有最多8個 `aliases`；比對採 NFKC 與前後空白正規化，不做子字串或模糊比對。
-- `fraction`：必須有 `form`，答案為 `n/d`、`w n/d` 或允許的整數，各數字最多六位。`improper` 要求假分數；`proper_or_improper` 要求分數形式；`mixed` 要求正整數部分加真分數；`mixed_or_whole` 另允許整數。可有最多8個明列、同值且同形式的 `accept` 字串。預設保留指定分母，不自動接受約分。`any` 與開放答案 predicate 尚未開放。
+- `fraction`：必須有 `form`，答案為 `n/d`、`w n/d` 或允許的整數，各數字最多六位。`proper` 要求真分數；`improper` 要求假分數；`proper_or_improper` 要求分數形式；`mixed` 要求正整數部分加真分數；`mixed_or_whole` 另允許整數。可有最多8個明列、同值且同形式的 `accept` 字串。預設接受同形式的有理數等值答案（包括約分），以整數交叉相乘判斷；不因浮點誤差接受近似值。只有原題明示指定分母時，才加選用的 `denominator`（1–999999 整數），其值必須與 `answer` 及各 `accept` 的書寫分母相同。`any` 尚未開放。
+- `fraction_interval`：開放分數答案。`answer` 固定為空字串，必須有 `form`、`count`（1–4）、`distinct: true`、`range`。每個答案獨立填整數／分子／分母，作答值為 `count` 個字串的陣列。各答案都要符合形式及區間，而且有理數值兩兩不同；相同數值換分母不能算兩個答案。答案提示說明完整條件，不以少數示例冒充全部答案。
 
 數學 unit 24–28 可附既有 PNG `material`，單張仍為32 KiB、雙邊1600px；不開放 table。舊數學 unit 15–19 的型態、媒體與輸入守衛保持。
 
@@ -70,3 +71,17 @@
 核答聲明依實際證據填入，不能把 available 或 pending 升格：有對版官方逐格核對者用 `independently_recomputed_and_matches_official` 與正整數 answerPage；沒有取得官方而已完成兩份獨立解答核對者用 `independently_solved_twice_no_official_answer` 與 `answerPage=null`。如有非雙盲流程，另在 ledger 如實保留，不把「獨立核答」改述為「全部雙盲」。
 
 整合前依 root 核准集合選入，保留原完整 rev22 基線。題文、選項、答案、解說或圖改動都必須附明確來源定位與獨立核對，schema 通過不等於內容核准。孩子端大主題映射由整合階段統一接入，不因新增細標籤產生大量選單。
+
+## 精確區間
+
+`range` 固定包含 `min`、`max`、`minInclusive`、`maxInclusive`。上下界使用 `[分子, 分母]`；分子是非負 safe integer，分母是正 safe integer（上限 9007199254740991），下界必須小於上界。包含端點與否由兩個 boolean 明示，拒絕額外欄位。JavaScript 用 BigInt、Python 用整數交叉相乘。小數的上下界仍不得超過 99999999.99，且 `answer` 必須位於區間。
+
+合成範例：
+
+```json
+{"input":"fraction_interval","answer":"","form":"mixed","count":2,"distinct":true,"range":{"min":[2,1],"max":[5,2],"minInclusive":false,"maxInclusive":false}}
+```
+
+這個範例接受 `2 1/3` 與 `2 1/4`，拒絕 `2 1/3` 與 `2 2/6`，也拒絕端點 `2 1/2`。這是有界資料契約，不執行題包提供的程式或任意 predicate。
+
+所有新增欄位、上下界、端點政策與輸入個數都參與 semantic revision 比對。新契約只走 math 24–28；舊單元的判分方式保持不變。Study 與家長試玩共用輸入及判分，答後每格導覽顯示「答對／要修正」；切換格子保留結果，修改答案才清除舊結果。
