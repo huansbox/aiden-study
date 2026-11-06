@@ -12,11 +12,13 @@
     let pointer = null;
     const read = () => M.read(q, element, getState());
     function render() {
-      const scroll = element.querySelector?.('.sg-scroll');
-      const left = scroll?.scrollLeft || 0, top = scroll?.scrollTop || 0;
+      // Each question keeps a stable scroller order (bar charts have a table and a canvas).
+      const scrolls = Array.from(element.querySelectorAll?.('.sg-scroll') || [], node => [node.scrollLeft, node.scrollTop]);
       element.innerHTML = M.render(q, getState(), answered(), feedback());
-      const next = element.querySelector?.('.sg-scroll');
-      if (next) { next.scrollLeft = left; next.scrollTop = top; }
+      Array.from(element.querySelectorAll?.('.sg-scroll') || []).forEach((node, index) => {
+        const [left, top] = scrolls[index] || [0, 0];
+        node.scrollLeft = left; node.scrollTop = top;
+      });
       onRender();
     }
     function dispatch(action, payload) {

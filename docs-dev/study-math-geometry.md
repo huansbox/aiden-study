@@ -51,6 +51,8 @@ for (const name of ['pointerup','pointercancel']) container.addEventListener(nam
 
 作圖／量測另提供「看全圖／放大刻度／再放大」。`zoom` state 為 1、1.5、2，只改 SVG 畫布顯示寬度，座標、尺、圖同時變換，判分不變。放大後在畫布區塊捲動；可放大讀細刻度再切回全圖。各工具附對齊起點與讀數短指引。
 
+Study 與 preview 使用 `StudyMathOperations.bind()` 共用接線。重畫時依同一題型的固定 DOM 順序，分別保存與還原所有 `.sg-scroll` 的水平／垂直位置；長條圖的資料表與畫布是兩個獨立捲動區。否則 pointerdown 重畫後畫布跳回原點，後續拖曳會映到另一根柱。以 `node tests/helpers/study-geometry-scroll-browser-check.mjs <附件目錄>` 驗證真實兩頁的 375／768px 操作、兩區位置與 triangle／measure 單區操作；可用 `CODEX_PLAYWRIGHT_PACKAGE`、`CODEX_CHROMIUM_PATH` 指向本機 browser 測試環境。
+
 ## 共通 schema
 
 精確 keys：`id,subject,unit,type,text,subtopic,source,options,answer,interaction`；可選 `material`（物件，整合端照既有規則驗證）。subject math、options 空陣列、answer 空字串。非空文字上限：id 120、text 1000、source 300、subtopic 60。type triangle_construct／measure_tool 只允許 unit 24；bar_chart_draw 只允許 unit 28。所有下列物件不接受未列 keys；所有值必須是指定型別，禁止 NaN／Infinity。
