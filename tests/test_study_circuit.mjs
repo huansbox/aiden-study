@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import "../docs/study/circuit.js";
 import "../docs/study/private-pack.js";
-import { syntheticPack } from "./helpers/synthetic-study-pack.mjs";
+import { syntheticPack, syntheticPngData } from "./helpers/synthetic-study-pack.mjs";
 import { circuitQuestion } from "./helpers/synthetic-circuit.mjs";
 import { boot, storage } from "./helpers/study-harness.mjs";
 const C = globalThis.StudyCircuit, P = globalThis.StudyPrivatePack;
@@ -36,6 +36,11 @@ test("circuit manipulation requires placing the cell and supports deleting and r
 
 test("circuit contract is limited to science 30 and keeps fixed neutral terminals immutable", () => {
   const q = circuitQuestion(); parse(q);
+  for (const [width, height] of [[1, 1], [130, 90], [180, 260], [90, 129], [89, 130]]) {
+    const invalid = structuredClone(q);
+    invalid.material.data = syntheticPngData(8, 6, width, height);
+    assert.throws(() => parse(invalid), /PNG/);
+  }
   for (const mutate of [q => { q.unit = 29; }, q => { q.answer = "open"; }, q => { q.options = ["A"]; },
     q => { delete q.material; }, q => { q.circuit.terminals.pop(); },
     q => { q.circuit.terminals[2].id = "anything"; }, q => { q.circuit.terminals[2].x = 1; },

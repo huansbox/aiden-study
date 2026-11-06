@@ -2927,7 +2927,10 @@ function renderQuiz() {
     bindFillEvents(q);
   } else if (isCircuit) {
     const renderCircuit = () => {
+      const scrollLeft = document.querySelector("#circuit-panel .circuit-scroll")?.scrollLeft || 0;
       document.getElementById("circuit-panel").innerHTML = StudyCircuit.render(q, quiz._circuitResponse, quiz.isAnswered);
+      const scroller = document.querySelector("#circuit-panel .circuit-scroll");
+      if (scroller) scroller.scrollLeft = scrollLeft;
       document.getElementById("circuit-submit").disabled = quiz.isAnswered || !StudyCircuit.complete(quiz._circuitResponse);
       document.querySelectorAll("#circuit-panel [data-circuit-action]").forEach(button => { button.onclick = () => {
         if (quiz.isAnswered || button.disabled) return;

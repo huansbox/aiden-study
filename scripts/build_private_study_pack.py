@@ -90,7 +90,7 @@ def _require_nonempty(value: Any, label: str) -> str:
     return value.strip()
 
 
-def _validate_material(material: Any, label: str, max_png_bytes: int = 32 * 1024) -> None:
+def _validate_material(material: Any, label: str, max_png_bytes: int = 32 * 1024, expected_size: tuple[int, int] | None = None) -> None:
     if not isinstance(material, dict):
         raise PackBuildError(f"{label} must be a material object")
     if material.get("kind") == "table":
@@ -143,6 +143,8 @@ def _validate_material(material: Any, label: str, max_png_bytes: int = 32 * 1024
             if kind != b"IHDR" or length != 13:
                 break
             width, height = int.from_bytes(image[start:start + 4], "big"), int.from_bytes(image[start + 4:start + 8], "big")
+            if expected_size is not None and (width, height) != expected_size:
+                raise PackBuildError(f"{label} PNG dimensions must be {expected_size[0]}x{expected_size[1]}")
             bit_depth, color_type = image[start + 8:start + 10]
             allowed_depths = {0: (1, 2, 4, 8, 16), 2: (8, 16), 3: (1, 2, 4, 8), 4: (8, 16), 6: (8, 16)}
             if not 1 <= width <= 1600 or not 1 <= height <= 1600 or bit_depth not in allowed_depths.get(color_type, ()) or image[start + 10:start + 12] != b"\x00\x00" or image[start + 12] > 1:
@@ -335,7 +337,8 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
             raise PackBuildError(f"question {practice_id} material is only allowed for science, math units 17/24-28 PNG, or social units 22-23/31-32 PNG")
         # Identity/scope was checked above, before selecting the PNG byte limit.
         max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] in {22, 23, 31, 32} else 32 * 1024
-        _validate_material(question["material"], f"question {practice_id} material", max_png_bytes)
+        _validate_material(question["material"], f"question {practice_id} material", max_png_bytes,
+                           expected_size=(90, 130) if adaptation == "circuit_connect" else None)
 
     final_math = subject == "math" and question["unit"] in {24, 25, 26, 27, 28}
     if adaptation == "choice_set":

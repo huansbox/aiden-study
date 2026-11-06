@@ -178,7 +178,7 @@ def test_per_part_choices_keep_subject_scope_bounds_and_immutable_semantics():
 def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
     q = {"id": "science-g4s1-synthetic-circuit-v1", "subject": "science", "unit": 30,
          "type": "circuit_connect", "text": "Synthetic circuit", "subtopic": "Synthetic",
-         "options": [], "answer": "closed", "material": {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic bulb"},
+         "options": [], "answer": "closed", "material": {"kind": "png", "data": _synthetic_png(width=90, height=130), "alt": "Synthetic bulb"},
          "circuit": {"terminals": [
              {"id": "battery-positive", "x": 250, "y": 280}, {"id": "battery-negative", "x": 250, "y": 460},
              {"id": "bulb-glass", "x": 735, "y": 197}, {"id": "bulb-shell", "x": 802, "y": 353},
@@ -188,6 +188,11 @@ def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
         return private_builder._validate_question(q, "SYNTHETIC", {"appId": q["id"], "unit": q["unit"], "digitalAdaptation": "circuit_connect"})
 
     validate(q)
+    for width, height in ((1, 1), (130, 90), (180, 260), (90, 129), (89, 130)):
+        invalid = copy.deepcopy(q)
+        invalid["material"]["data"] = _synthetic_png(width=width, height=height)
+        with pytest.raises(PackBuildError, match="90x130"):
+            validate(invalid)
     for mutate in (lambda q: q.update(unit=29), lambda q: q.update(answer="open"),
                    lambda q: q.pop("material"), lambda q: q["circuit"]["terminals"].pop(),
                    lambda q: q["circuit"]["terminals"][2].update(x=0),
@@ -504,14 +509,15 @@ def test_social_u2_full_word_bank_has_strict_scope_and_parser_parity(tmp_path):
         rejects(f"invalid-answer-{value}", lambda q, m, value=value: q["blanks"][0].update(answer=value))
 
 
-def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:
+def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16, width=1, height=1) -> str:
     def chunk(kind: bytes, data: bytes) -> bytes:
         return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")
-    ihdr = (1).to_bytes(4, "big") * 2 + bytes([bit_depth, color_type, 0, 0, 0])
+    ihdr = width.to_bytes(4, "big") + height.to_bytes(4, "big") + bytes([bit_depth, color_type, 0, 0, 0])
     if palette_count is None:
         palette_count = 1 if color_type == 3 else 0
     palette = chunk(b"PLTE", bytes([128] * palette_entries * 3)) * palette_count
-    pixels = bytes([0, 0]) if color_type == 3 else bytes([0, 12, 34, 56, 255])
+    row = bytes([0]) + (bytes([0]) if color_type == 3 else bytes([12, 34, 56, 255])) * width
+    pixels = row * height
     image = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + palette + chunk(b"IDAT", zlib.compress(pixels)) + chunk(b"IEND", b"")
     return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
 

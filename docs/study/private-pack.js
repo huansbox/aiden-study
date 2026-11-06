@@ -83,7 +83,7 @@
     if (bytes.length > maxBytes) throw new Error(`PNG 超過 ${maxBytes / 1024} KiB。`);
     return Uint8Array.from(bytes);
   }
-  function pngValid(data, maxBytes) {
+  function pngValid(data, maxBytes, expectedSize) {
     const bytes = pngBytes(data, maxBytes);
     const signature = [137, 80, 78, 71, 13, 10, 26, 10];
     if (signature.some((byte, i) => bytes[i] !== byte)) return false;
@@ -103,6 +103,7 @@
       if (!ihdr) {
         if (type !== "IHDR" || length !== 13) return false;
         const width = view.getUint32(start), height = view.getUint32(start + 4);
+        if (expectedSize && (width !== expectedSize[0] || height !== expectedSize[1])) return false;
         bitDepth = bytes[start + 8]; colorType = bytes[start + 9];
         const allowedDepths = { 0: [1, 2, 4, 8, 16], 2: [8, 16], 3: [1, 2, 4, 8], 4: [8, 16], 6: [8, 16] };
         if (width < 1 || width > 1600 || height < 1 || height > 1600 ||
@@ -122,9 +123,9 @@
     }
     return ihdr && idat && iend;
   }
-  function validateMaterial(material, maxPngBytes) {
+  function validateMaterial(material, maxPngBytes, expectedSize) {
     if (material.kind === "png") {
-      if (!keys(material, ["kind", "data", "alt"]) || !boundedText(material.alt, 200) || !pngValid(material.data, maxPngBytes)) throw new Error("PNG 題圖格式無效。");
+      if (!keys(material, ["kind", "data", "alt"]) || !boundedText(material.alt, 200) || !pngValid(material.data, maxPngBytes, expectedSize)) throw new Error("PNG 題圖格式無效。");
     } else if (material.kind === "table") {
       if (!keys(material, ["kind", "caption", "columns", "rows"]) || !boundedText(material.caption, 300) ||
           !Array.isArray(material.columns) || material.columns.length < 2 || material.columns.length > 8 || !material.columns.every(x => boundedText(x, 80)) ||
@@ -155,7 +156,8 @@
       if (Object.hasOwn(q, "material")) {
         if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && (q.unit === 17 || finalMath(q)) || q.subject === "social" && [22, 23, 31, 32].includes(q.unit)) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
         // subject/unit 身分已在上方驗證；僅四上社會原圖細字需要較大 PNG。
-        validateMaterial(q.material, q.subject === "social" && [22, 23, 31, 32].includes(q.unit) ? 192 * 1024 : 32 * 1024);
+        validateMaterial(q.material, q.subject === "social" && [22, 23, 31, 32].includes(q.unit) ? 192 * 1024 : 32 * 1024,
+          q.type === "circuit_connect" ? [90, 130] : undefined);
       }
       if (q.type === "choice_set") {
         if (!finalMath(q) || q.answer !== "" || q.options.length < 2 || q.options.length > 10 || !q.options.every(x => boundedText(x, 300)) ||

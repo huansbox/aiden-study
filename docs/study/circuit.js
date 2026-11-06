@@ -38,14 +38,15 @@
     return `<section class="study-circuit" aria-label="電池與燈泡連線操作">
       <p>先放入一顆電池，再點兩個接點畫一條線，共畫兩條。可刪除電線後重畫。</p>
       <div class="circuit-tools"><button type="button" data-circuit-action="place" ${value.batteryPlaced ? "disabled" : lock}>放入一顆電池</button><button type="button" data-circuit-action="clear"${lock}>全部重畫</button></div>
-      <div class="circuit-scene">
+      <p class="circuit-scroll-hint">畫面較窄時，可在下方操作區左右滑動，查看所有接點。</p>
+      <div class="circuit-scroll" role="region" aria-label="可左右滑動的電路操作區" tabindex="0"><div class="circuit-scene">
         <img class="circuit-bulb" src="${esc(q.material.data)}" alt="${esc(q.material.alt)}" />
         <svg viewBox="0 0 1000 700" aria-hidden="true">
           ${value.batteryPlaced ? `<rect x="${positive.x - 45}" y="${positive.y + 12}" width="90" height="${negative.y - positive.y - 24}" rx="8" fill="#e8eef4" stroke="#334155" stroke-width="4"/><rect x="${positive.x - 16}" y="${positive.y - 2}" width="32" height="16" fill="#64748b"/><text x="${positive.x}" y="${positive.y + 60}" text-anchor="middle" font-size="40">+</text><text x="${negative.x}" y="${negative.y - 35}" text-anchor="middle" font-size="40">−</text>` : ""}
           ${value.edges.map(edge => { const a = byId.get(edge[0]), b = byId.get(edge[1]); return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#225c88" stroke-width="7"/>`; }).join("")}
         </svg>
         ${nodes.map((node, index) => node.id.startsWith("battery-") && !value.batteryPlaced ? "" : `<button type="button" class="circuit-terminal" style="left:${node.x / 10}%;top:${node.y / 7}%" data-circuit-action="terminal" data-circuit-value="${node.id}" aria-label="接點 ${index + 1}" aria-pressed="${value.selected === node.id}" ${!value.batteryPlaced ? "disabled" : lock}><span></span><b>${index + 1}</b></button>`).join("")}
-      </div>
+      </div></div>
       <p role="status">${!value.batteryPlaced ? "尚未放入電池" : value.selected ? "再選一個接點" : `已畫 ${value.edges.length}／2 條電線`}</p>
       <div class="circuit-tools">${value.edges.map((_, index) => `<button type="button" data-circuit-action="delete" data-circuit-value="${index}"${lock}>刪除電線 ${index + 1}</button>`).join("")}</div>
     </section>`;

@@ -120,6 +120,7 @@
     }
     function render(focusAction = "") {
       if (state.destroyed) return;
+      const circuitScrollLeft = host.querySelector?.(".circuit-scroll")?.scrollLeft || 0;
       normalizeSelection();
       const unitQuestions = questionsForUnit();
       const scienceTopics = StudyScienceTopics.topicsForUnit(state.unit);
@@ -148,6 +149,8 @@
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
           ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}${q.type === "grouped_choice" ? '</div>' : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
       focusControl(focusAction);
+      const circuitScroller = host.querySelector?.(".circuit-scroll");
+      if (circuitScroller) circuitScroller.scrollLeft = circuitScrollLeft;
       StudyMaterial.bind(host);
     }
     function check() {
