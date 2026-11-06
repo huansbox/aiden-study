@@ -81,7 +81,7 @@
       if (q && state.values.length !== answerCount) state.values = Array(answerCount).fill("");
     }
     function answerArea(q) {
-      if (StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type)) { state.math ||= StudyMathInput.initial(q); return StudyMathInput.render(q, state.math); }
+      if (StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type)) { state.math ||= StudyMathInput.initial(q); return StudyMathInput.render(q, state.math, false, state.result && q.type === "fill_in_blank" ? StudyAnswer.gradeBlanks(q, state.math.values).results : null); }
       if (q.type === "circuit_connect") return StudyCircuit.render(q, state.circuit || StudyCircuit.initial());
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
       if (q.type === "true_false") return `<div class="preview-options">${[["true", "O", "正確"], ["false", "X", "錯誤"]].map(([value, label, caption]) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${value}" aria-pressed="${state.values[0] === value}"><span>${label}</span><span>${caption}</span></button>`).join("")}</div>`;

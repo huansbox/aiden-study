@@ -1044,3 +1044,18 @@ def test_expanded_previous_output_checks_full_id_set_and_immutable_progress_sema
     with pytest.raises(PackBuildError, match="revision|remove|same ID"):
         private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
     assert output.read_bytes() == before
+
+@pytest.mark.parametrize("answer,aliases,valid", [("\ufeff", [], False), ("x", ["\ufeffx"], False), ("\u001c", [], True), ("x", ["\u001cx"], True)])
+def test_final_math_text_normalization_matches_javascript(answer, aliases, valid):
+    q = {"id": "math-g4s1-synthetic-normalize-v1", "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）", "subtopic": "Synthetic", "options": [], "answer": "",
+         "blanks": [{"input": "text", "answer": answer, "aliases": aliases}]}
+    if valid:
+        private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:text")
+    else:
+        with pytest.raises(PackBuildError):
+            private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:text")
+    q["source"] = "Synthetic source"
+    pack = {"schemaVersion": 2, "packId": "g4-s1-math-u1", "revision": 1, "questions": [q], "explanations": {q["id"]: "Synthetic explanation"}}
+    result = subprocess.run(["node", "-e", "require('./docs/study/private-pack.js');StudyPrivatePack.parse(require('fs').readFileSync(0,'utf8'),[],null,true)"], input=json.dumps(pack), cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert (result.returncode == 0) == valid, result.stderr

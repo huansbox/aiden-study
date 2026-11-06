@@ -302,8 +302,8 @@ def _validate_math_blanks(q, practice_id, adaptation):
             aliases = b.get("aliases", [])
             if isinstance(aliases, list) and len(aliases) <= 8:
                 terms = [answer, *aliases]
-                valid = all(isinstance(term, str) and 1 <= len(term) <= 20 and unicodedata.normalize("NFKC", term).strip() for term in terms)
-                valid = valid and len({unicodedata.normalize("NFKC", term).strip() for term in terms}) == len(terms)
+                valid = all(isinstance(term, str) and 1 <= len(term) <= 20 and _normalize_text_answer(term) for term in terms)
+                valid = valid and len({_normalize_text_answer(term) for term in terms}) == len(terms)
         elif kind == "fraction":
             target, aliases = _fraction_value(answer, b["form"]), b.get("accept", [])
             if target and isinstance(aliases, list) and len(aliases) <= 8 and all(isinstance(term, str) for term in aliases):

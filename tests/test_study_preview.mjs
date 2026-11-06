@@ -190,6 +190,8 @@ test("preview math preserves mixed fields, fraction form and unordered full choi
   for (const [field, value] of [["whole", "3"], ["numerator", "1"], ["denominator", "2"]]) act("fraction", value, field);
   act("blank", "3"); act("choice", "2"); act("blank", "4"); act("input", "合成別名"); act("blank", "5"); act("choice", ">");
   app.handle("check"); assert.equal(app.state.result, "wrong");
+  assert.match(h.host.innerHTML, /第 3 空（要修正）/);
+  assert.match(h.host.innerHTML, /第 1 空（答對）/);
   act("blank", "2"); act("fraction", "3", "numerator"); act("fraction", "6", "denominator");
   app.handle("check"); assert.equal(app.state.result, "correct");
   app.handle("question", { index: "1" }); act("choice", "3"); app.handle("check"); assert.equal(app.state.result, "wrong");

@@ -11,6 +11,15 @@ const parse = q => P.parse(JSON.stringify({ schemaVersion: 2, packId: "g4-s1-mat
   questions: [q], explanations: { [q.id]: "Synthetic explanation" } }), [], null, true);
 const correct = ["12", ".52", "3 3/6", "2", "合成別名", ">"];
 
+test("answered math navigation identifies every correct and incorrect blank", () => {
+  const q = finalMathQuestion(), state = M.initial(q);
+  state.values = correct;
+  const html = M.render(q, state, true, [false, true, true, true, false, true]);
+  assert.match(html, /第 1 空（要修正）/);
+  assert.match(html, /第 2 空（答對）/);
+  assert.match(html, /第 5 空（要修正）/);
+});
+
 test("math mixed inputs are scoped and preserve original choices, forms and answer bounds", () => {
   const q = finalMathQuestion(); parse(q); parse(choiceSetQuestion());
   for (const mutate of [q => { q.unit = 15; }, q => { q.blanks[0].accept = ["13"]; },
