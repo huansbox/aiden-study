@@ -40,6 +40,7 @@
       if (b?.input === "fraction") { fields.push("form"); for (const field of ["accept", "denominator"]) if (Object.hasOwn(b, field)) fields.push(field); }
       if (b?.input === "fraction_interval") fields.push("form", "count", "distinct", "range");
       if (b?.input === "decimal" && Object.hasOwn(b, "range")) fields.push("range");
+      if (b?.input === "decimal_expression") fields.push("value");
       if (!keys(b, fields) || typeof b.answer !== "string") throw new Error("數學填空欄位無效。");
       if (Object.hasOwn(b, "range")) validateRange(b.range);
       if (b.input === "number") { if (!/^(0|[1-9][0-9]{0,7})$/.test(b.answer)) throw new Error("整數答案無效。"); }
@@ -47,6 +48,10 @@
         if (!/^(0|[1-9][0-9]{0,7})(?:\.[0-9]{1,2})?$/.test(b.answer)) throw new Error("小數答案限兩位小數。");
         const [whole, part = ""] = b.answer.split(".");
         if (b.range && (compareRational(b.range.max, [9999999999, 100]) > 0n || !inRange([BigInt(whole + part), 10n ** BigInt(part.length)], b.range))) throw new Error("小數示例或上下界超出範圍。");
+      }
+      else if (b.input === "decimal_expression") {
+        if (q.unit !== 25) throw new Error("小數列式限第七單元。");
+        root.StudyMathInteractions.validateDecimalExpression(b);
       }
       else if (b.input === "comparison") { if (!/^[<>=]$/.test(b.answer)) throw new Error("比較符號無效。"); }
       else if (b.input === "select") { if (!/^(?:[1-9]|1[0-5])$/.test(b.answer) || Number(b.answer) > q.options.length) throw new Error("原選項索引無效。"); }
@@ -74,7 +79,7 @@
     // 不自行判定文字改動是否仍是同一道題；只忽略 JSON 欄位順序。
     // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
     return JSON.stringify([q.subject, q.unit, q.subtopic, q.type, q.text, q.options, q.answer,
-      q.blanks ? q.blanks.map(b => b.input === "fraction_interval" ? [b.input, b.answer, b.form, b.count, b.distinct, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : b.input === "fraction" ? [b.input, b.answer, b.form, b.accept || [], ...(Object.hasOwn(b, "denominator") ? [b.denominator] : [])] : b.input === "decimal" && b.range ? [b.input, b.answer, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
+      q.blanks ? q.blanks.map(b => b.input === "decimal_expression" ? [b.input, b.answer, b.value] : b.input === "fraction_interval" ? [b.input, b.answer, b.form, b.count, b.distinct, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : b.input === "fraction" ? [b.input, b.answer, b.form, b.accept || [], ...(Object.hasOwn(b, "denominator") ? [b.denominator] : [])] : b.input === "decimal" && b.range ? [b.input, b.answer, [b.range.min, b.range.max, b.range.minInclusive, b.range.maxInclusive]] : Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
       q.parts ? q.parts.map(part => Object.hasOwn(part, "options") ? [part.id, part.text, part.options] : [part.id, part.text]) : null,
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null,

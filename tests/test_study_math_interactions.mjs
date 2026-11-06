@@ -298,3 +298,34 @@ test("companion accepts a reduced improper fraction and rejects a changed value"
   state.companion = { w: "", n: "4", d: "3" }; assert.equal(M.grade(q, state), false);
   state.companion = { w: "", n: "3", d: "0" }; assert.equal(M.grade(q, state), false);
 });
+
+test("decimal expression parser uses exact hundredths and bounded addition/subtraction grammar", () => {
+  assert.equal(M.analyzeDecimalExpression("0.1+0.2=0.3").value, 30);
+  assert.equal(M.analyzeDecimalExpression("8.2-(1.1+2.1)").value, 500);
+  assert.equal(M.analyzeDecimalExpression("9999.99").value, 999999);
+  for (const expr of ["0.001+1", "1e2-1", "1/2", "1*2", "1+-2", "1-2", "1.2+0.3=2", "00.2+1", ".2+1", "1.+2", "((((((1+2))))))", "9999.99+0.01"]) assert.equal(M.analyzeDecimalExpression(expr), null, expr);
+  const spec = { answer: "8.2-1.1-2.1", value: "5" };
+  for (const expr of ["8.20-(1.10+2.10)", "(8.2-2.1)-1.1=5.00"]) assert.equal(M.gradeDecimalExpression(spec, expr), true);
+  for (const expr of ["5", "5+0", "8.2-3.2"]) assert.equal(M.gradeDecimalExpression(spec, expr), false);
+});
+
+test("vertical setup is required, independently diagnosed, and cleared with the whole activity", () => {
+  const q = base("vertical_decimal", 25, "Synthetic original problem. Follow the stated method.", { op: "-", operands: ["18.75", "1.25"], result: "17.5", setup: [
+    { prompt: "Find the starting number with an expression.", answer: "20-1.25", value: "18.75" },
+    { prompt: "Write the final subtraction.", answer: "18.75-1.25", value: "17.5" }
+  ] });
+  M.validateQuestion(q);
+  let state = M.answerState(q); assert.equal(M.grade(q, state), true);
+  state.setup[0] = ""; assert.equal(M.complete(q, state), false); assert.equal(M.grade(q, state), false);
+  state.setup[0] = "18.75"; assert.equal(M.complete(q, state), true); assert.equal(M.grade(q, state), false);
+  assert.match(M.render(q, state, false, true), /要修正/); assert.match(M.render(q, state, false, true), /直式：答對/);
+  state = M.update(q, state, "setupClear");
+  for (const key of "20-1.25=18.75") state = M.update(q, state, "setupKey", key);
+  assert.equal(M.grade(q, state), true);
+  state = M.update(q, state, "clear"); assert.deepEqual(state.setup, ["", ""]); assert.equal(M.complete(q, state), false);
+  const changed = structuredClone(q); changed.interaction.setup[0].prompt += " First.";
+  assert.notEqual(M.semantic(q), M.semantic(changed));
+  for (const mutate of [it => it.setup = [], it => it.setup.push(it.setup[0]), it => it.setup[0].value = "18.74", it => it.setup[0].answer = "18.75", it => it.setup[0].extra = true]) {
+    const invalid = structuredClone(q); mutate(invalid.interaction); assert.throws(() => M.validateQuestion(invalid));
+  }
+});

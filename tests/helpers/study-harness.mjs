@@ -55,6 +55,7 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
   vm.runInContext(read("docs/study/answer.js"), ctx);
   vm.runInContext(read("docs/study/circuit.js"), ctx);
   vm.runInContext(read("docs/study/math-input.js"), ctx);
+  vm.runInContext(read("docs/study/math-interactions.js"), ctx);
   vm.runInContext(read("docs/study/science-topics.js"), ctx);
   const inline = read("docs/study/index.html").match(/<script>([\s\S]*?)<\/script>/)[1];
   const expose = `globalThis.app = { init, State, Storage, Picker, quiz, importPrivatePack, loadPrivatePack, currentScope, startQuiz, submitAnswer, advance, leaveQuiz, skipCurrentQuestion, renderHome, renderQuiz, buildReportUrl, renderFlaggedSection, buildBackupText, parseBackup, wiring, unitNum, STUDY_TERMS, questionIdsFor,

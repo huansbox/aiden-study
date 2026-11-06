@@ -65,3 +65,10 @@
 .study-math .smi-units svg { width: 16px; height: 16px; }
 .study-math .smi-piece.is-on { border-color: #dc2626; background: #fef2f2; }
 .study-math .smi-piece:disabled { cursor: default; }
+
+/* 前置列式在窄螢幕自動折行；回饋不擠壓算式內容。 */
+.study-math .smi-setup .smi-keypad-expr { grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); }
+.study-math .smi-setup .smi-row { flex-wrap: wrap; }
+.study-math .smi-step-feedback { font-weight: 700; }
+.study-math .smi-setup .smi-step-feedback { flex-basis: 100%; }
+.study-math .smi-setup ~ .smi-keypad { grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); }

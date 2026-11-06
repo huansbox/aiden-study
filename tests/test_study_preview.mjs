@@ -67,6 +67,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   vm.runInContext(source("answer.js"), context);
   vm.runInContext(source("circuit.js"), context);
   vm.runInContext(source("math-input.js"), context);
+  vm.runInContext(source("math-interactions.js"), context);
   vm.runInContext(source("science-topics.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
@@ -662,5 +663,18 @@ test("preview open fraction inputs and range labels use the same exact contract"
   act("1:numerator", "1"); act("1:denominator", "4");
   app.handle("check"); assert.equal(app.state.result, "correct");
   assert.match(h.host.innerHTML, /數值不同/); assert.match(h.host.innerHTML, /2 &lt; 答案 &lt; 5\/2/);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+
+test("preview rejects result-only decimal method and identifies that blank", async () => {
+  const pack = syntheticPack(), q = { ...finalMathQuestion(), unit: 25, options: [], text: "Synthetic （１）（２）", blanks: [
+    { input: "decimal", answer: "6.8" }, { input: "decimal_expression", answer: "6.8-1.25", value: "5.55" }
+  ] };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic guided method";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "25" });
+  const act = (mathAction, value) => app.handle("math", { mathAction, value });
+  act("input", "6.8"); act("blank", "1"); act("input", "5.55"); app.handle("check");
+  assert.equal(app.state.result, "wrong"); assert.match(h.host.innerHTML, /第 1 空（答對）/); assert.match(h.host.innerHTML, /第 2 空（要修正）/);
+  act("input", "6.80-(1.25)=5.55"); app.handle("check"); assert.equal(app.state.result, "correct");
   assert.equal(h.forbiddenTouches, 0); app.destroy();
 });

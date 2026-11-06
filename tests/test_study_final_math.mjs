@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import "../docs/study/private-pack.js";
 import "../docs/study/answer.js";
 import "../docs/study/math-input.js";
+import "../docs/study/math-interactions.js";
 import { finalMathQuestion, choiceSetQuestion } from "./helpers/synthetic-final-math.mjs";
 import { syntheticPack, syntheticPngData } from "./helpers/synthetic-study-pack.mjs";
 import { boot, storage } from "./helpers/study-harness.mjs";
@@ -121,4 +122,31 @@ test("proper fractions reject mixed and improper forms and equivalent written de
   assert.equal(A.gradeBlanks(q, ["1/3"]).correct, true);
   for (const v of ["1 1/3", "4/3", "0.33"]) assert.equal(A.gradeBlanks(q, [v]).correct, false);
   q.blanks[0].denominator = 2; assert.throws(() => parse(q));
+});
+
+test("decimal expression accepts a valid bounded method rather than only the final number", () => {
+  const q = { ...intervalQuestion(), unit: 25, blanks: [{ input: "decimal_expression", answer: "6.8-1.25", value: "5.55" }] };
+  parse(q);
+  for (const v of ["6.8-1.25", "（６.８０－１.２５）＝５.５５", "6.80-(1.25)=5.55"]) assert.equal(A.gradeBlanks(q, [v]).correct, true);
+  for (const v of ["5.55", "5+0.55", "6.8-1.25=5.56", "6.8-1.250", "6.8/1.25"]) assert.equal(A.gradeBlanks(q, [v]).correct, false);
+  assert.match(M.render(q, M.initial(q)), /列式/);
+  assert.match(A.gradeBlanks(q, ["5.55"]).answers[0], /6.8-1.25＝5.55/);
+  const changed = structuredClone(q); changed.blanks[0].value = "5.54";
+  assert.notEqual(P.semantic(q), P.semantic(changed)); assert.throws(() => parse(changed));
+  q.unit = 27; assert.throws(() => parse(q));
+});
+
+test("guided decimal conversion, method and result remain one Study activity", async () => {
+  const events = [], family = { allowed: () => true, ready: Promise.resolve(), profile: () => ({ terms: ["g4-s1"] }), task: () => null,
+    setActive() {}, beginRound() {}, record: e => events.push(["record", e]), finishRound: () => events.push(["finish"]) };
+  const q = { ...finalMathQuestion(), unit: 25, options: [], text: "Synthetic conversion （１）, method （２）, result （３）", blanks: [
+    { input: "decimal", answer: "6.8" }, { input: "decimal_expression", answer: "6.8-1.25", value: "5.55" }, { input: "decimal", answer: "5.55" }
+  ] };
+  const e = await boot(storage(), "aiden", { family, publishedStudyUnits: [25], search: "?child=aiden&subject=math&term=g4-s1" }), pack = syntheticPack();
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic guided conversion";
+  e.app.importPrivatePack(JSON.stringify(pack)); e.app.State.saveBatch("25", [q.id]); e.app.startQuiz("full", 25);
+  e.app.submitAnswer(["6.8", "5.55", "5.55"]); assert.equal(e.app.State.doneCount(25), 0);
+  e.app.advance(); e.app.submitAnswer(["6.8", "6.80-(1.25)=5.55", "5.55"]);
+  assert.equal(e.app.State.doneCount(25), 1); assert.equal(events.filter(e => e[0] === "finish").length, 0);
+  e.app.advance(); assert.equal(events.filter(e => e[0] === "finish").length, 1);
 });

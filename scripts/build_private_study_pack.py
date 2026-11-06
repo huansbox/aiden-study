@@ -8,6 +8,8 @@ written outside the selected output file.
 
 from __future__ import annotations
 
+from study_math_interactions import validate_decimal_expression
+
 import argparse
 import base64
 import binascii
@@ -36,7 +38,7 @@ MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19, 24, 25, 26, 27, 28}, "science": {20, 21, 29, 30}, "social": {22, 23, 31, 32}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:mixed"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:decimal_expression", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:mixed"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
@@ -204,7 +206,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         adaptation = item["digitalAdaptation"]
         allowed = {"multiple_choice", "true_false", "grouped_choice"} if subject != "math" else {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
         if subject == "math" and item["unit"] in {24, 25, 26, 27, 28}:
-            allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:text", "fill_in_blank:mixed"}
+            allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:decimal_expression", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:text", "fill_in_blank:mixed"}
         if subject == "social":
             allowed.add("fill_in_blank:select")
             if item["unit"] == 23:
@@ -308,6 +310,8 @@ def _validate_math_blanks(q, practice_id, adaptation):
             fields.update({"form", "count", "distinct", "range"})
         if b["input"] == "decimal" and "range" in b:
             fields.add("range")
+        if b["input"] == "decimal_expression":
+            fields.add("value")
         _require_exact_keys(b, fields, f"question {practice_id} math blank")
         if "range" in b:
             _validate_math_range(b["range"])
@@ -324,6 +328,14 @@ def _validate_math_blanks(q, practice_id, adaptation):
                 parts = answer.split(".")
                 value = (int("".join(parts)), 10 ** len(parts[1]) if len(parts) == 2 else 1)
                 valid = _compare_rational(b["range"]["max"], (9999999999, 100)) <= 0 and _in_math_range(value, b["range"])
+        elif kind == "decimal_expression":
+            if q["unit"] != 25:
+                raise PackBuildError("decimal expression is limited to unit 25")
+            try:
+                validate_decimal_expression(b)
+            except ValueError as exc:
+                raise PackBuildError(str(exc)) from exc
+            valid = True
         elif kind == "comparison":
             valid = answer in {"<", ">", "="}
         elif kind == "select":
@@ -626,7 +638,8 @@ def write_pack_atomic(
 def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
     blanks = question.get("blanks")
     blank_semantic = tuple(
-        (blank.get("input"), blank.get("answer"), blank.get("form"), blank["count"], blank["distinct"], json.dumps(blank["range"], sort_keys=True)) if blank.get("input") == "fraction_interval"
+        (blank.get("input"), blank.get("answer"), blank["value"]) if blank.get("input") == "decimal_expression"
+        else (blank.get("input"), blank.get("answer"), blank.get("form"), blank["count"], blank["distinct"], json.dumps(blank["range"], sort_keys=True)) if blank.get("input") == "fraction_interval"
         else (blank.get("input"), blank.get("answer"), blank.get("form"), tuple(blank.get("accept", [])), *([blank["denominator"]] if "denominator" in blank else [])) if blank.get("input") == "fraction"
         else (blank.get("input"), blank.get("answer"), json.dumps(blank["range"], sort_keys=True)) if blank.get("input") == "decimal" and "range" in blank
         else (blank.get("input"), blank.get("answer"), tuple(blank["aliases"])) if "aliases" in blank

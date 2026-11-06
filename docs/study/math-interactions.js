@@ -108,6 +108,36 @@
   const hundredths = s => { const [i, f = ""] = s.split("."); return Number(i) * 100 + Number((f + "00").slice(0, 2)); };
   const fmtHundredths = v => { const i = Math.floor(v / 100), f = v % 100; return f ? `${i}.${String(f).padStart(2, "0").replace(/0$/, "")}` : String(i); };
   const decParts = s => { const [i, f = ""] = s.split("."); return { int: i.length, frac: f.length }; };
+  // 受限小數列式：字面值轉為百分位整數後，沿用有界 AST；不做浮點計算。
+  function analyzeDecimalExpression(raw, allowEquals = true) {
+    if (typeof raw !== "string") return null;
+    const s = raw.normalize("NFKC").replace(/[−–—]/g, "-").replace(/\s+/g, "");
+    if (!s || s.length > LIMIT.exprChars || !/^[0-9.+\-()=]+$/.test(s)) return null;
+    const sides = s.split("=");
+    if (sides.length > 2 || sides.length === 2 && (!allowEquals || !DEC_RE.test(sides[1]))) return null;
+    const tokens = [];
+    for (let i = 0; i < sides[0].length;) {
+      const m = /^[0-9]+(?:\.[0-9]+)?/.exec(sides[0].slice(i));
+      if (m) {
+        if (!DEC_RE.test(m[0])) return null;
+        tokens.push({ n: hundredths(m[0]) }); i += m[0].length;
+      } else { tokens.push({ t: sides[0][i] }); i++; }
+    }
+    if (tokens.length > LIMIT.tokens) return null;
+    const parsed = parseTokens(tokens), value = parsed && evaluate(parsed.root);
+    if (!parsed || value === null || value > 999999 || sides.length === 2 && hundredths(sides[1]) !== value) return null;
+    return { value, literals: literals(parsed.root).sort((a, b) => a - b), canonical: canonical(parsed.root), hasOperator: Object.hasOwn(parsed.root, "op") };
+  }
+  function validateDecimalExpression(spec) {
+    if (!object(spec) || typeof spec.value !== "string" || !DEC_RE.test(spec.value)) fail("小數算式結果無效。");
+    const ref = analyzeDecimalExpression(spec.answer, false);
+    if (!ref || !ref.hasOperator || ref.value !== hundredths(spec.value)) fail("小數算式需包含運算且符合結果。");
+    return true;
+  }
+  function gradeDecimalExpression(spec, input) {
+    const ref = analyzeDecimalExpression(spec.answer, false), got = analyzeDecimalExpression(input);
+    return !!(ref && got && got.hasOperator && got.value === ref.value && sameList(ref.literals, got.literals));
+  }
   function verticalColumns(it) {
     const all = [...it.operands, it.result].map(decParts);
     return Math.max(...all.map(p => p.int)) + Math.max(...all.map(p => p.frac)) + 2;
@@ -162,11 +192,18 @@
     }
   }
   function validateVertical(it) {
-    if (!keys(it, ["op", "operands", "result"]) || !["+", "-"].includes(it.op) || !Array.isArray(it.operands) || it.operands.length !== 2) fail("直式題欄位無效。");
+    if (!keys(it, ["op", "operands", "result"], ["setup"]) || !["+", "-"].includes(it.op) || !Array.isArray(it.operands) || it.operands.length !== 2) fail("直式題欄位無效。");
     if (![...it.operands, it.result].every(x => typeof x === "string" && DEC_RE.test(x))) fail("直式數字需為最多四位整數、兩位小數的十進位字串。");
     const [a, b] = it.operands.map(hundredths), r = hundredths(it.result);
     if ((it.op === "+" ? a + b : a - b) !== r || r < 0) fail("直式結果與運算不符。");
     if (verticalColumns(it) > 10) fail("直式格數超過 10。");
+    if (Object.hasOwn(it, "setup")) {
+      if (!Array.isArray(it.setup) || it.setup.length < 1 || it.setup.length > 2) fail("直式前列式需 1–2 步。");
+      for (const step of it.setup) {
+        if (!keys(step, ["prompt", "answer", "value"]) || !str(step.prompt, 160)) fail("列式步驟需明確提示。");
+        validateDecimalExpression(step);
+      }
+    }
   }
   function validateShade(q, it) {
     const grid = it && it.shape === "grid";
@@ -208,7 +245,7 @@
     if (q.type === "expression_steps") return { fields: it.blanks.map(() => ""), active: 0 };
     if (q.type === "vertical_decimal") {
       const c = verticalColumns(it);
-      return { rows: [0, 1, 2].map(() => ({ cells: Array(c).fill(""), point: null })), active: [0, 0] };
+      return { rows: [0, 1, 2].map(() => ({ cells: Array(c).fill(""), point: null })), active: [0, 0], ...(it.setup ? { setup: it.setup.map(() => ""), setupActive: 0 } : {}) };
     }
     if (q.type === "fraction_shade") return it.companion ? { selected: [], companion: { w: "", n: "", d: "" }, active: it.companion.form === "mixed" ? "w" : "n" } : { selected: [] };
     return { boards: [], rods: [], units: [] };
@@ -231,7 +268,7 @@
         return { cells, point: int(row.point, 0, c - 1) && cells[row.point] !== "" ? row.point : null };
       });
       const a = Array.isArray(raw.active) && int(raw.active[0], 0, 2) && int(raw.active[1], 0, c - 1) ? [raw.active[0], raw.active[1]] : [0, 0];
-      return { rows, active: a };
+      return { rows, active: a, ...(it.setup ? { setup: it.setup.map((_, i) => typeof raw.setup?.[i] === "string" ? Array.from(raw.setup[i]).slice(0, LIMIT.exprChars).join("") : ""), setupActive: int(raw.setupActive, 0, it.setup.length - 1) ? raw.setupActive : 0 } : {}) };
     }
     if (q.type === "fraction_shade") {
       const out = { selected: intList(raw.selected, it.wholes * it.partsPerWhole) };
@@ -262,6 +299,13 @@
       return s;
     }
     if (q.type === "vertical_decimal") {
+      if (it.setup && action.startsWith("setup")) {
+        if (action === "setupFocus" && /^[01]$/.test(value) && Number(value) < it.setup.length) s.setupActive = Number(value);
+        else if (action === "setupKey" && /^[0-9.+\-()=]$/.test(value) && s.setup[s.setupActive].length < LIMIT.exprChars) s.setup[s.setupActive] += value;
+        else if (action === "setupBack") s.setup[s.setupActive] = s.setup[s.setupActive].slice(0, -1);
+        else if (action === "setupClear") s.setup[s.setupActive] = "";
+        return s;
+      }
       const c = s.rows[0].cells.length, [r, col] = s.active, row = s.rows[r];
       if (action === "focus") {
         const m = /^([0-2]):([0-9])$/.exec(value);
@@ -354,10 +398,17 @@
       return /^[1-9][0-9]{0,2}$/.test(c.w) && Number(n) > 0 && Number(n) < Number(d) && (BigInt(c.w) * BigInt(d) + BigInt(n)) * BigInt(t.denominator) === BigInt(t.numerator) * BigInt(d);
     return Number(n) >= Number(d) && BigInt(n) * BigInt(t.denominator) === BigInt(t.numerator) * BigInt(d);
   }
+  function verticalCorrect(it, state) {
+    const rows = state.rows.map(parseVerticalRow);
+    if (rows.some(row => !row) || new Set(rows.map(row => row.anchor)).size !== 1) return false;
+    const [a, b] = it.operands.map(hundredths);
+    const order = rows[0].value === a && rows[1].value === b || (it.op === "+" && rows[0].value === b && rows[1].value === a);
+    return order && rows[2].value === hundredths(it.result);
+  }
   function complete(q, state) {
     const s = sanitize(q, state), it = q.interaction;
     if (q.type === "expression_steps") return s.fields.every(f => f.length > 0);
-    if (q.type === "vertical_decimal") return s.rows.every(row => row.cells.some(ch => ch !== ""));
+    if (q.type === "vertical_decimal") return s.rows.every(row => row.cells.some(ch => ch !== "")) && (!it.setup || s.setup.every(value => value.trim()));
     if (q.type === "fraction_shade") return s.selected.length > 0 && (!it.companion || (s.companion.n !== "" && s.companion.d !== "" && (it.companion.form !== "mixed" || s.companion.w !== "")));
     return s.boards.length + s.rods.length + s.units.length > 0;
   }
@@ -366,11 +417,8 @@
     if (!complete(q, s)) return false;
     if (q.type === "expression_steps") return it.solutions.some(sol => sol.every((cell, i) => cellMatches(it.blanks[i], cell, s.fields[i])));
     if (q.type === "vertical_decimal") {
-      const rows = s.rows.map(parseVerticalRow);
-      if (rows.some(r => !r) || new Set(rows.map(r => r.anchor)).size !== 1) return false;
-      const [a, b] = it.operands.map(hundredths);
-      const order = rows[0].value === a && rows[1].value === b || (it.op === "+" && rows[0].value === b && rows[1].value === a);
-      return order && rows[2].value === hundredths(it.result);
+      if (it.setup && !it.setup.every((step, i) => gradeDecimalExpression(step, s.setup[i]))) return false;
+      return verticalCorrect(it, s);
     }
     if (q.type === "fraction_shade") return s.selected.length === it.target.numerator && companionValue(it, s.companion || {});
     return 100 * s.boards.length + 10 * s.rods.length + s.units.length === hundredths(it.target);
@@ -381,6 +429,7 @@
     const it = q.interaction, s = initial(q);
     if (q.type === "expression_steps") s.fields = it.solutions[0].map(c => Object.hasOwn(c, "expression") ? normalizeExpression(c.expression) : c.value);
     else if (q.type === "vertical_decimal") {
+      if (it.setup) s.setup = it.setup.map(step => step.answer);
       const c = s.rows[0].cells.length, frac = Math.max(...[...it.operands, it.result].map(x => decParts(x).frac));
       const anchor = c - 1 - frac; // 右側保留一格空白
       [it.operands[0], it.operands[1], it.result].forEach((num, r) => {
@@ -408,7 +457,7 @@
       const main = s.fields.map((f, i) => `${marker(i + 1)}${pretty(f)}`).join("　");
       return it.solutions.length > 1 ? `${main}（也接受其他完整算法）` : main;
     }
-    if (q.type === "vertical_decimal") return `小數點對齊寫直式：${it.operands[0]} ${it.op === "+" ? "＋" : "－"} ${it.operands[1]} ＝ ${fmtHundredths(hundredths(it.result))}`;
+    if (q.type === "vertical_decimal") return `${it.setup ? it.setup.map((step, i) => `列式 ${i + 1}：${pretty(step.answer)}＝${step.value}`).join("；") + "；" : ""}小數點對齊寫直式：${it.operands[0]} ${it.op === "+" ? "＋" : "－"} ${it.operands[1]} ＝ ${fmtHundredths(hundredths(it.result))}`;
     if (q.type === "fraction_shade") {
       const t = it.target;
       let text = `在每個 ${t.denominator} 等分的圖形中，任選 ${t.numerator} 份畫斜線（${t.numerator}/${t.denominator}）`;
@@ -424,7 +473,7 @@
     let body;
     if (q.type === "expression_steps") body = [it.blanks.map(b => [b.kind, b.requiresParentheses === true]),
       it.solutions.map(sol => sol.map(c => [c.value, c.expression ?? null, c.acceptedExpressions ?? null]))];
-    else if (q.type === "vertical_decimal") body = [it.op, it.operands, it.result];
+    else if (q.type === "vertical_decimal") body = [it.op, it.operands, it.result, ...(it.setup ? [it.setup.map(step => [step.prompt, step.answer, step.value])] : [])];
     else if (q.type === "fraction_shade") body = [it.shape, it.wholes, it.partsPerWhole, it.grid ? [it.grid.rows, it.grid.cols] : null, [it.target.numerator, it.target.denominator], it.companion ? it.companion.form : null];
     else body = [[it.pieces.boards, it.pieces.rods, it.pieces.units], it.target];
     return JSON.stringify([q.type, body]);
@@ -436,7 +485,7 @@
   function textWithChips(text) {
     return esc(text).replace(/（([０-９]+)）/g, (_, d) => `<span class="smi-chip">（${d}）</span>`);
   }
-  function render(q, state, disabled = false) {
+  function render(q, state, disabled = false, feedback = false) {
     const s = sanitize(q, state), it = q.interaction, lock = !!disabled;
     const wrap = (body, label) => `<section class="study-math" data-math-type="${esc(q.type)}" aria-label="${esc(label)}">${body}</section>`;
     if (q.type === "expression_steps") {
@@ -451,12 +500,13 @@
     }
     if (q.type === "vertical_decimal") {
       const [ar, ac] = s.active;
+      const setup = it.setup ? `<div class="smi-setup"><p class="smi-hint">先依提示列式，再完成下面的直式；整題一起確認。</p>${it.setup.map((step, i) => `<p>${esc(step.prompt)}</p><div class="smi-row"><span class="smi-label">列式 ${i + 1}</span>${btn("setupFocus", String(i), s.setup[i] ? esc(pretty(s.setup[i])) : '<span class="smi-placeholder">寫算式</span>', `smi-field${s.setupActive === i ? " is-active" : ""}`, lock)}${lock || feedback ? `<span class="smi-step-feedback">${gradeDecimalExpression(step, s.setup[i]) ? "答對" : "要修正"}</span>` : ""}</div>`).join("")}<div class="smi-keypad smi-keypad-expr">${["1","2","3","4","5","6","7","8","9","0",".","+","-","(",")","="].map(k => btn("setupKey", k, esc(pretty(k)), "smi-key", lock)).join("")}${btn("setupBack", "", "⌫ 退格", "smi-key smi-wide", lock)}${btn("setupClear", "", "清除這格", "smi-key smi-wide", lock)}</div></div>` : "";
       const rowHtml = (r, sign) => `<div class="smi-vrow${r === 2 ? " smi-vresult" : ""}"><span class="smi-sign">${sign}</span>${s.rows[r].cells.map((ch, c) =>
         `<button type="button" class="smi-cell${ar === r && ac === c ? " is-active" : ""}" data-math-action="focus" data-math-value="${r}:${c}" aria-label="第 ${r + 1} 列第 ${c + 1} 格${ch ? `，${ch}` : "，空白"}${s.rows[r].point === c ? "，後面有小數點" : ""}"${lock ? " disabled" : ""}>${esc(ch)}${s.rows[r].point === c ? '<span class="smi-dot" aria-hidden="true"></span>' : ""}</button>`).join("")}</div>`;
       const keysHtml = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].map(k => btn("key", k, k, "smi-key", lock)).join("") + btn("key", ".", "．小數點", "smi-key smi-wide", lock) + btn("back", "", "⌫ 退格", "smi-key smi-wide", lock);
-      return wrap(`<p class="smi-text">${esc(q.text)}</p><p class="smi-hint">自己把兩個數寫進格子，小數點要對齊，再寫答案。按「．」會把小數點點在前一個數字後面。</p>
+      return wrap(`<p class="smi-text">${esc(q.text)}</p>${setup}<p class="smi-hint">自己把兩個數寫進格子，小數點要對齊，再寫答案。按「．」會把小數點點在前一個數字後面。</p>
         <div class="smi-vertical">${rowHtml(0, "")}${rowHtml(1, it.op === "+" ? "＋" : "－")}<div class="smi-vline" aria-hidden="true"></div>${rowHtml(2, "")}</div>
-        <div class="smi-keypad">${keysHtml}</div>
+        ${lock || feedback ? `<p class="smi-step-feedback">直式：${verticalCorrect(it, s) ? "答對" : "要修正"}</p>` : ""}<div class="smi-keypad">${keysHtml}</div>
         <div class="smi-tools">${btn("pad", "", "小數後面補 0", "", lock)}${btn("clearRow", String(ar), "清除這一列", "", lock)}${btn("clear", "", "全部重寫", "", lock)}</div>`, "直式作答");
     }
     if (q.type === "fraction_shade") {
@@ -502,5 +552,5 @@
       <div class="smi-tools">${btn("clear", "", "全部取消", "", lock)}</div>`, "百格板圈選作答");
   }
 
-  root.StudyMathInteractions = Object.freeze({ TYPES, TYPE_UNITS, validateQuestion, initial, render, update, read, complete, grade, answerText, answerState, semantic, analyzeExpression });
+  root.StudyMathInteractions = Object.freeze({ TYPES, TYPE_UNITS, validateQuestion, initial, render, update, read, complete, grade, answerText, answerState, semantic, analyzeExpression, analyzeDecimalExpression, validateDecimalExpression, gradeDecimalExpression });
 })(globalThis);

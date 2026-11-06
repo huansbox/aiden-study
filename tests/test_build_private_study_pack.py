@@ -134,7 +134,7 @@ def test_final_unit_authoring_builder_and_browser_parity(tmp_path, subject, unit
     explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
     pack = build_pack(*_paths(tmp_path, values))
     output = _write(tmp_path / "pack.json", pack)
-    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));"
+    script = "const fs=require('node:fs');require('./docs/study/math-interactions.js');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));"
     result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert pack["questions"][-1]["unit"] == unit
@@ -206,7 +206,7 @@ def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
     assert private_builder._question_semantic(q) != private_builder._question_semantic(moved)
 
 
-@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false", "interval", "range"])
+@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false", "interval", "range", "decimal_expression"])
 def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
     values = list(_fixture())
     curated, explanations, metadata, _ = values
@@ -215,11 +215,14 @@ def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
          "text": "Synthetic （１）（２）（３）", "subtopic": "Synthetic", "options": ["A", "B"], "answer": "",
          "blanks": [{"input": "decimal", "answer": "0.52"}, {"input": "fraction", "answer": "3 3/6", "form": "mixed"}, {"input": "select", "answer": "2"}]}
     adaptation = "fill_in_blank:mixed"
-    if kind in {"interval", "range"}:
+    if kind in {"interval", "range", "decimal_expression"}:
         q.update(options=[], text="Synthetic （１）")
         if kind == "interval":
             q["blanks"] = [{"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True,
                             "range": {"min": [2, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}]
+        elif kind == "decimal_expression":
+            q["unit"] = 25
+            q["blanks"] = [{"input": "decimal_expression", "answer": "6.8-1.25", "value": "5.55"}]
         else:
             q["blanks"] = [{"input": "decimal", "answer": "7.9",
                             "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}]
@@ -233,11 +236,11 @@ def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
             q.update(options=[], answer="true")
     common = {"practiceId": "SYNTHETIC-FINAL", "originalId": "synthetic", "paperId": "synthetic-paper", "questionPage": 1, "answerPage": 2, "concept": "Synthetic"}
     curated["items"].append({**common, "adaptation": "Synthetic adaptation", "verification": private_builder.OFFICIAL_ANSWER_VERIFIED, "question": q})
-    metadata["items"].append({**common, "appId": app_id, "unit": 27, "contextPolicy": "Synthetic", "digitalAdaptation": adaptation, "sourceAdaptation": "Synthetic adaptation", "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
+    metadata["items"].append({**common, "appId": app_id, "unit": q["unit"], "contextPolicy": "Synthetic", "digitalAdaptation": adaptation, "sourceAdaptation": "Synthetic adaptation", "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
     explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
     pack = build_pack(*_paths(tmp_path, values))
     output = _write(tmp_path / "pack.json", pack)
-    result = subprocess.run(["node", "-e", "const fs=require('node:fs');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'))", str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    result = subprocess.run(["node", "-e", "const fs=require('node:fs');require('./docs/study/math-interactions.js');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'))", str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     if kind == "mixed":
         for mutate in (lambda q: q["blanks"][1].update(form="any"), lambda q: q["blanks"][0].update(answer="0.521"), lambda q: q["blanks"][1].update(accept=["3 4/6"])):

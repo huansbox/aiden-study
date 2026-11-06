@@ -56,6 +56,7 @@
   };
   const decimalValue = input => { const [whole, part = ""] = input.split("."); return [BigInt((whole || "0") + part), 10n ** BigInt(part.length)]; };
   function mathAnswerLabel(blank, options = []) {
+    if (blank.input === "decimal_expression") return `${blank.answer}＝${blank.value}`;
     if (blank.range) {
       const format = v => v[1] === 1 ? String(v[0]) : `${v[0]}/${v[1]}`;
       const condition = `${format(blank.range.min)} ${blank.range.minInclusive ? "≤" : "<"} 答案 ${blank.range.maxInclusive ? "≤" : "<"} ${format(blank.range.max)}`;
@@ -66,6 +67,7 @@
   function mathBlankCorrect(blank, value) {
     const input = String(value ?? "").trim();
     if (blank.input === "decimal") return /^(?:[0-9]{1,8}(?:\.[0-9]{1,2})?|\.[0-9]{1,2})$/.test(input) && (blank.range ? inRange(decimalValue(input), blank.range) : Number(input) === Number(blank.answer));
+    if (blank.input === "decimal_expression") return root.StudyMathInteractions.gradeDecimalExpression(blank, input);
     if (blank.input === "fraction_interval") {
       if (!Array.isArray(value) || value.length !== blank.count || !value.every(v => typeof v === "string")) return false;
       const terms = value.map(v => fractionValue(v, blank.form));

@@ -125,7 +125,7 @@ id, subject, unit, type, text, subtopic, source, options, answer, interaction, [
 
 ### Schema
 
-- `interaction` 剛好 `op`、`operands`、`result`；`op` 為 `+` 或 `-`；`operands` 恰兩個。
+- `interaction` 必須有 `op`、`operands`、`result`，可選 `setup`（見下方有引導列式）；`op` 為 `+` 或 `-`；`operands` 恰兩個。
 - 三個數字都符合 `^(0|[1-9][0-9]{0,3})(\.[0-9]{1,2})?$`（最多 4 位整數、2 位小數）。運算元照題文寫法存，**不要**為了對齊改成 `50.00`；補 0 是孩子的操作。
 - 以百分位整數計算：`a op b == result` 且結果不為負。
 - 格數 `C = 最大整數位數 + 最大小數位數 + 2`（三數一起算），需 ≤10。
@@ -207,3 +207,44 @@ Companion 以整數方塊輸入（按鍵、每格最多 3 位）：
 ## 不在本元件範圍
 
 `triangle_construct`、`bar_chart_draw`、`measure_tool`、分數開放不等式、choice_set／小數填空等其他 proposal 項目另行派工。原 proposal 的 `steps[].kind=step/single_expression`、`spec`、`acceptFinal`、`operands` 預先補 0 等寫法已由本契約取代，內容稿需投影到上列欄位。
+
+## 有引導的小數列式與直式前置步驟
+
+`vertical_decimal` 可選 `interaction.setup`，包含 1–2 個步驟，每步剛好有 `prompt`（1–160 字）、`answer`（參考算式）、`value`（精確結果）。無 `setup` 的既有題與狀態不變。
+
+```json
+{
+  "op":"-", "operands":["18.75","1.25"], "result":"17.5",
+  "setup":[
+    {"prompt":"先列式找出原來的數，再用下面直式完成最後一步。","answer":"20-1.25","value":"18.75"}
+  ]
+}
+```
+
+前置步驟與三列直式都正確，整題才通過。前置列式每格都有自己的輸入按鍵與答後回饋；直式也獨立標示「答對／要修正」。任何一步只填最後數字都不算列式。原題文保持在 `text`，引導方式放 `prompt` 或原題後的明確提示；本契約只承接明示路線，不代表支援所有原始自由算法。內容的數位引導改編記在私人 provenance。
+
+### 小數算式文法與判定
+
+- NFKC、將 `−–—` 轉為 `-`、移除 JavaScript `\s` 所定義的空白；正規化後 1–40 字元。
+- 僅數字、小數點、`+`、`-`、`(`、`)`、`=`；最多 31 tokens，括號深度最多 4。
+- 每個數字符合 `^(0|[1-9][0-9]{0,3})(\.[0-9]{1,2})?$`；拒絕科學記號、前導零、單位、`.5`、`1.`、第三位小數。
+- `expr := factor (("+"|"-") factor)*`；`factor := NUMBER | "(" expr ")"`。無一元負號、乘除；必須耗盡全部 tokens。
+- 數字先轉成百分位整數；中間結果不可為負或超過 1e12 百分位，最終結果不得超過 9999.99。最多一個等號，右側必須是同值的合法小數。參考 `answer` 不可含等號。
+- 作答需包含運算子；其結果與參考相同，數字字面值 multiset 也相同。接受同一路線的加法交換、等值小數寫法與合理括號，不接受換其他數字湊答案。
+- `analyzeDecimalExpression(raw, allowEquals=true)` 回傳 `null` 或 `{value,literals,canonical,hasOperator}`；`value` 與 `literals` 均為百分位整數。
+- `validateDecimalExpression(spec)` 檢查 `answer/value`，成功回傳 true，錯誤拋例外；外層題包驗證欄位精確集合。
+- `gradeDecimalExpression(spec,input)` 回傳 boolean，供 `StudyAnswer` 的 unit25 `decimal_expression` blank 與直式 `setup` 共用。
+
+### 整合與 Python 對等入口
+
+`scripts/study_math_interactions.py` 提供：
+
+- `validate_question(q)`：接受完整 browser-shaped question（含已產生的 `source`），支援四種操作題及 setup；成功回傳 None，失敗 raise ValueError。與 JS 同樣只檢查 material 為 object；既有 builder/pack parser 仍須執行 PNG/table 的完整驗證。
+- `question_semantic(q)`：與 `StudyMathInteractions.semantic(q)` 相同的 JSON 字串，包含 type 與所有 interaction/setup 欄位；外層 builder 另納入 ID、文字、來源／素材等既有 semantic。
+- `analyze_expression`、`analyze_decimal_expression`、`validate_decimal_expression`、`grade_decimal_expression`：與相對應 JS 函式同契約；validator 成功為 None。
+
+主 builder 的 interaction type dispatch、完整 semantic 接合與正式頁面 script 載入由整合者負責。必須在解析新 `decimal_expression` 題前載入 `math-interactions.js`；本次只直接接上主 builder 的 final-math blank 分支。
+
+含 setup 的 state 多出 `setup:[字串]`、`setupActive:index`。沿用 `update(q,state,action,payload)`，新增 `setupFocus`、`setupKey`、`setupBack`、`setupClear` actions；HTML 仍用 `data-math-action/value`。`clear` 會連直式一起清除。
+
+`render(q,state,disabled=false,feedback=false)` 新增可選第四參數：Study 答後 `disabled=true` 會顯示分步回饋；preview 保持可編輯時傳 `feedback=!!state.result`。修改答案後清除舊結果，切換前置步驟不應清除結果。這些步驟共用一次整題提交，不增加活動數或提前發獎勵。
