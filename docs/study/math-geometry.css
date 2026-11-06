@@ -1,0 +1,32 @@
+.study-geometry { color: #183348; line-height: 1.6; max-width: 100%; min-width: 0; font-size: 18px; }
+.study-geometry * { box-sizing: border-box; }
+.study-geometry p { margin: .65rem 0; }
+.study-geometry .sg-controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.study-geometry button { min-height: 44px; min-width: 44px; padding: 8px 14px; border: 2px solid #7394aa; border-radius: 9px; color: #183348; background: #fff; font: inherit; cursor: pointer; }
+.study-geometry button[aria-pressed="true"] { background: #d3edff; border-color: #176cac; box-shadow: inset 0 0 0 1px #176cac; }
+.study-geometry button:disabled { cursor: default; opacity: .6; }
+.study-geometry :focus-visible { outline: 3px solid #d65d00; outline-offset: 3px; }
+.study-geometry label { display: inline-flex; flex-direction: column; gap: 4px; max-width: 100%; margin: 7px 12px 7px 0; vertical-align: top; }
+.study-geometry input { min-height: 44px; width: 160px; max-width: 100%; border: 2px solid #7394aa; border-radius: 6px; padding: 5px 9px; font: inherit; color: #183348; background: white; }
+.study-geometry input[data-geometry-field="title"] { width: 480px; }
+.study-geometry fieldset { min-width: 0; max-width: 100%; padding: 10px; margin: 12px 0; border: 1px solid #b6c9d5; border-radius: 8px; }
+.study-geometry fieldset button { margin: 4px; }
+.study-geometry .sg-scroll { max-width: 100%; overflow: auto; overscroll-behavior: contain; border: 1px solid #a6bac7; border-radius: 8px; }
+.study-geometry .sg-canvas { display: block; width: 100%; height: auto; min-width: 560px; max-height: none; touch-action: none; user-select: none; }
+.study-geometry .sg-chart { min-width: 660px; }
+.study-geometry svg text { fill: #183348; font: 16px sans-serif; stroke: none; }
+.study-geometry .sg-tool text { font-size: 12px; }
+.study-geometry svg .sg-secondary { fill: #64438c; font-size: 10px; }
+.study-geometry .sg-tool { stroke: #775800; stroke-width: 1; }
+.study-geometry .sg-grid { fill: none; stroke: #dce5eb; stroke-width: 1; }
+.study-geometry .sg-edge { fill: none; stroke: #183348; stroke-width: 2; }
+.study-geometry .sg-reference { fill: #eef5fa; stroke: #475a68; stroke-width: 2; }
+.study-geometry .sg-point { fill: #1168ac; }
+.study-geometry .sg-active { stroke: #e89028; stroke-width: 4; }
+.study-geometry .sg-bar { fill: #4c9bd2; stroke: #164d74; stroke-width: 1; }
+.study-geometry .sg-given { fill: #a5bac9; }
+.study-geometry .sg-known { display: inline-block; margin: 14px; }
+.study-geometry .sg-status { color: #40586a; font-size: 16px; }
+.study-geometry table { border-collapse: collapse; width: 100%; min-width: 560px; text-align: center; }
+.study-geometry th, .study-geometry td { border: 1px solid #b6c9d5; padding: 8px; font-size: 16px; }
+.study-geometry caption { text-align: left; padding: 6px 10px; font-weight: bold; }
