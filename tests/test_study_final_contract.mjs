@@ -38,12 +38,12 @@ test("manual pack availability uses unit subjects and omits unloaded unpublished
 });
 
 
-test("final candidate units parse and route by subject with only reviewed science/social published", async () => {
+test("released final units parse and route by subject for math, science and social", async () => {
   const pack = syntheticPack(); pack.revision++;
   for (const [subject, ids] of Object.entries(units)) for (const unit of ids) {
     const q = question(subject, unit); parse(q);
     pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
-    assert.equal(globalThis.KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).published, subject !== "math");
+    assert.equal(globalThis.KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).published, true);
     for (const wrong of Object.keys(units).filter(s => s !== subject)) {
       assert.throws(() => parse({ ...q, subject: wrong, id: q.id.replace(subject, wrong) }));
     }

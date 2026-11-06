@@ -41,4 +41,4 @@ Python builder、瀏覽器／Worker 共用 validator、孩子畫面與家長試�
 
 `scripts/build_private_study_catalog.mjs` 的 `appendCatalog()` 接受完整前版 source、manifest 與所有 shard bytes，逐片驗證內容與來源一致，再追加新活動的 shards。既有 descriptor、題目、來源、解說及原始 bytes 都保持；缺件或舊內容變動會失敗。沒有新題時可用同一 API 核對原 manifest／shards 的精確重建。
 
-本輪從已發布完整 rev22 的 465 活動／26 shards 接續，不能回退自然歷史版或只用 delta 作基線。完整 authoring、來源、核答、整合與 E2E 證據留在 ignored 私用根；公開測試僅使用合成題。內容核准前的 schema readiness 與獨立來源核答是不同階段。
+每批從當時正式上線的完整 source、manifest 與所有 shards 接續，具體基線版本及核對證據回查該批 Issue 交接；不能回退歷史版或只用 delta 作基線。完整 authoring、來源、核答、整合與 E2E 證據留在 ignored 私用根；公開測試僅使用合成題。內容核准前的 schema readiness 與獨立來源核答是不同階段。

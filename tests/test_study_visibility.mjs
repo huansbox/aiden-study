@@ -9,7 +9,7 @@ import {socialSyntheticPack} from './helpers/synthetic-study-pack.mjs';
 import {collectionRuntime} from './helpers/collection-runtime.mjs';
 const F=globalThis.KidsFamilyCore,C=globalThis.KidsCollectionCore;
 const plain=x=>JSON.parse(JSON.stringify(x));
-const archived=[15,16,17,18,19,20,21,22,23,29,30,31,32];
+const archived=[15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32];
 const registry=JSON.parse(readFileSync(new URL('../docs/registry.json',import.meta.url)));
 const goal=(entryId,quantity=10)=>({entryId,quantity,metric:'answered'});
 const now=new Date('2026-11-06T04:00:00Z'), date=C.dateKey(now);
@@ -22,11 +22,11 @@ test('每位孩子隱藏只影響已發布單元；另一學期、原課表、�
   assert.equal(F.availableEntry('study:math',p),true,'部分隱藏仍有本科內容');
   assert.equal(F.todayTasks(p,date).length,0);
   p.archivedStudyUnits=[15,16,17,18,19,20,21,22,23];
-  assert.deepEqual(F.homeEntries(settings,'aiden',registry).filter(e=>e.app==='study').map(e=>e.id).sort(),['study:science','study:social'],'隱藏已考單元後，新發布自然與社會仍開放');
+  assert.deepEqual(F.homeEntries(settings,'aiden',registry).filter(e=>e.app==='study').map(e=>e.id).sort(),['study:math','study:science','study:social'],'隱藏已考單元後，新發布數學、自然與社會仍開放');
   p.archivedStudyUnits=archived;
   assert.equal(F.homeEntries(settings,'aiden',registry).some(e=>e.app==='study'),false);
-  assert.equal(F.availableEntry('study:math',p),false,'候選 unit24 不讓入口假開放');
-  assert.equal(F.availableStudyUnit(24),false);
+  assert.equal(F.availableEntry('study:math',p),false,'全部已發布數學隱藏後，入口關閉');
+  assert.equal(F.availableStudyUnit(24),true);
   p.terms.push('g3-s2');
   assert.equal(F.homeEntries(settings,'aiden',registry).find(e=>e.id==='study:math').term,'g3-s2');
   const sibling={...p,archivedStudyUnits:[]};
@@ -37,8 +37,10 @@ test('每位孩子隱藏只影響已發布單元；另一學期、原課表、�
   assert.throws(()=>F.validateSettings({...settings,children:{...settings.children,aiden:{...p,archivedStudyUnits:[15,15]}}}));
   const candidate=vm.createContext({});
   const source=readFileSync(new URL('../docs/shared/family-core.js',import.meta.url),'utf8');
-  vm.runInContext(source.replace(/("id":24[^\n]*"published":)false/,'$1true'),candidate);
-  assert.equal(candidate.KidsFamilyCore.availableEntry('study:math',{...p,terms:['g4-s1'],archivedStudyUnits:archived}),true,'發布新單元後，原科目與目標會自行恢復');
+  vm.runInContext(source.replace(/("id":24[^\n]*"published":)true/,'$1false'),candidate);
+  assert.equal(candidate.KidsFamilyCore.availableStudyUnit(24),false,'候選單元未發布時不開放');
+  const priorArchive=archived.filter(id=>id<24||id>28);
+  assert.equal(F.availableEntry('study:math',{...p,terms:['g4-s1'],archivedStudyUnits:priorArchive}),true,'發布新單元後，原科目與目標會自行恢復');
 });
 
 test('Study 真 State/Picker：隱藏後接續、混合錯題與直呼開始皆封鎖，原半批/錯題/標記恢復可用',async()=>{

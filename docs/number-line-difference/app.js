@@ -1,6 +1,6 @@
-import {act,restore,current,label,knownFor,nextSteps,expectedPoints,suggestedTarget} from './lesson-core.js?v=20261107-science-social-release';
-import {openPlatform} from './platform.js?v=20261107-science-social-release';
-import {diagramLayout} from './diagram-layout.js?v=20261107-science-social-release';
+import {act,restore,current,label,knownFor,nextSteps,expectedPoints,suggestedTarget} from './lesson-core.js?v=20261107-math-circuit-release';
+import {openPlatform} from './platform.js?v=20261107-math-circuit-release';
+import {diagramLayout} from './diagram-layout.js?v=20261107-math-circuit-release';
 
 const root=document.getElementById('app'),preview=new URLSearchParams(location.search).get('preview')==='1';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -180,7 +180,7 @@ document.getElementById('restart').onclick=()=>document.getElementById('restart-
 document.getElementById('cancel-restart').onclick=()=>document.getElementById('restart-dialog').close();
 document.getElementById('confirm-restart').onclick=()=>{if(!writable)return;({state,log}=restore(problems,null));reviewIndex=null;notice='';document.getElementById('restart-dialog').close();save();render();window.scrollTo(0,0);};
 try{
-  const response=await fetch('problems.json?v=20261107-science-social-release');if(!response.ok)throw Error('題目未能載入，請重新整理。');
+  const response=await fetch('problems.json?v=20261107-math-circuit-release');if(!response.ok)throw Error('題目未能載入，請重新整理。');
   problems=(await response.json()).sets.pad;platform=await openPlatform(preview);
   const saved=platform.load(),restored=restore(problems,saved,saved===null?platform.loadLegacy?.():null);
   ({state,log,writable}=restored);
