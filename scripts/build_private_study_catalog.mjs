@@ -43,6 +43,45 @@ export async function buildCatalog(pack, previous, publicQuestions = [], maxByte
   C.parseManifest(JSON.stringify(manifest));
   return {manifest,shards};
 }
+
+// Add a reviewed batch without repacking already published immutable shards.
+// The caller supplies the complete approved baseline, including every shard.
+export async function appendCatalog(pack, previous, previousManifest, previousShards, publicQuestions = [], maxBytes = P.MAX_BYTES) {
+  const manifest = C.parseManifest(JSON.stringify(previousManifest));
+  if (manifest.revision !== previous.revision || manifest.packId !== previous.packId) throw Error("前版目錄與完整來源不符。");
+  const prior = new Map(previous.questions.map(q => [q.id, q]));
+  const current = new Map(pack.questions.map(q => [q.id, q]));
+  const immutable = (a, ae, b, be) => P.semantic(a) === P.semantic(b) && a.source === b.source && ae === be;
+  const covered = new Set(), shards = new Map();
+  for (const descriptor of manifest.shards) {
+    const raw = previousShards.get(descriptor.hash);
+    if (typeof raw !== "string") throw Error("前版分包缺件。");
+    const shard = await C.verifyShard(raw, descriptor, publicQuestions);
+    for (const q of shard.questions) {
+      const old = prior.get(q.id);
+      if (!old || covered.has(q.id) || !immutable(q, shard.explanations[q.id], old, previous.explanations[q.id])) throw Error("前版分包與完整來源不符。");
+      covered.add(q.id);
+    }
+    shards.set(descriptor.hash, raw);
+  }
+  if (covered.size !== previous.questions.length) throw Error("前版目錄未包含完整來源。");
+  for (const old of previous.questions) {
+    const next = current.get(old.id);
+    if (!next || !immutable(old, previous.explanations[old.id], next, pack.explanations[old.id])) throw Error("追加內容不可修改或移除舊題、來源或解說。");
+  }
+  // Validate the full source and revision contract before selecting the delta.
+  await buildCatalog(pack, previous, publicQuestions, maxBytes);
+  const questions = pack.questions.filter(q => !prior.has(q.id));
+  const delta = { ...pack, questions, explanations: Object.fromEntries(questions.map(q => [q.id, pack.explanations[q.id]])) };
+  const added = questions.length ? await buildCatalog(delta, delta, publicQuestions, maxBytes) : { manifest: { shards: [] }, shards: new Map() };
+  const combined = { ...manifest, revision: pack.revision, shards: [...manifest.shards, ...added.manifest.shards] };
+  C.parseManifest(JSON.stringify(combined));
+  for (const [hash, raw] of added.shards) {
+    if (shards.has(hash) && shards.get(hash) !== raw) throw Error("既有 immutable shard 不符。");
+    shards.set(hash, raw);
+  }
+  return { manifest: combined, shards };
+}
 const repo = realpathSync(fileURLToPath(new URL("../",import.meta.url)));
 function safeOutput(path) {
   const root = resolve(repo,"data/private/study/g4-s1-math-u1");

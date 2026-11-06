@@ -4,7 +4,8 @@
   const KEY = "study:private-pack:g4-s1-math-u1";
   const MAX_BYTES = 256 * 1024;
   const IDS = ["tyk111-I-01", "tyk113-II-11a", "tyk113-II-11d", "tyk111-II-02", "tyk111-IV-01", "anh114-II-08"].map(id => `math-g4s1-${id}-v1`);
-  const UNITS = [15, 16, 17, 18, 19, 20, 21, 22, 23];
+  const SUBJECT_UNITS = { math: [15, 16, 17, 18, 19, 24, 25, 26, 27, 28], science: [20, 21, 29, 30], social: [22, 23, 31, 32] };
+  const UNITS = Object.values(SUBJECT_UNITS).flat().sort((a, b) => a - b);
   const ID_RE = /^(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*$/;
   const object = x => x !== null && typeof x === "object" && !Array.isArray(x);
   const text = x => typeof x === "string" && x.trim().length > 0;
@@ -17,7 +18,7 @@
     // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
     return JSON.stringify([q.subject, q.unit, q.subtopic, q.type, q.text, q.options, q.answer,
       q.blanks ? q.blanks.map(b => Object.hasOwn(b, "aliases") ? [b.input, b.answer, b.aliases] : [b.input, b.answer]) : null,
-      q.parts ? q.parts.map(part => [part.id, part.text]) : null,
+      q.parts ? q.parts.map(part => Object.hasOwn(part, "options") ? [part.id, part.text, part.options] : [part.id, part.text]) : null,
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null,
       ...(Object.hasOwn(q, "acceptedAnswers") ? [q.acceptedAnswers] : [])]);
@@ -104,13 +105,13 @@
       if (q.type === "fill_in_blank" && q.subject === "social" && q.unit === 23 && Object.hasOwn(q, "acceptedAnswers")) fields.push("acceptedAnswers");
       if (q.type === "grouped_choice") fields.push("parts");
       if (Object.hasOwn(q, "material")) fields.push("material");
-      const subjectUnits = q.subject === "math" ? [15, 16, 17, 18, 19] : q.subject === "science" ? [20, 21] : q.subject === "social" ? [22, 23] : [];
+      const subjectUnits = SUBJECT_UNITS[q.subject] || [];
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
       if (!Array.isArray(q.options)) throw new Error("選項格式無效。");
       if (Object.hasOwn(q, "material")) {
-        if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && q.unit === 17 || q.subject === "social" && [22, 23].includes(q.unit)) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
+        if (!object(q.material) || (q.subject !== "science" && !((q.subject === "math" && q.unit === 17 || q.subject === "social" && [22, 23, 31, 32].includes(q.unit)) && q.material.kind === "png"))) throw new Error("題目媒體格式無效。");
         // subject/unit 身分已在上方驗證；僅四上社會原圖細字需要較大 PNG。
-        validateMaterial(q.material, q.subject === "social" && [22, 23].includes(q.unit) ? 192 * 1024 : 32 * 1024);
+        validateMaterial(q.material, q.subject === "social" && [22, 23, 31, 32].includes(q.unit) ? 192 * 1024 : 32 * 1024);
       }
       if (q.type === "multiple_choice") {
         if (!({ math: [4], science: [3, 4], social: [2, 3, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
@@ -118,17 +119,20 @@
       } else if (q.type === "true_false") {
         if (!["science", "social"].includes(q.subject) || q.options.length || !["true", "false"].includes(q.answer)) throw new Error("是非題需空選項與 true/false 字串答案。");
       } else if (q.type === "grouped_choice") {
-        if (!["science", "social"].includes(q.subject) || q.options.length < 2 || q.options.length > (q.subject === "social" ? 5 : 4) || !q.options.every(x => boundedText(x, 300)) ||
+        const perPart = q.subject === "social" && [31, 32].includes(q.unit) && q.options.length === 0;
+        if (!["science", "social"].includes(q.subject) || (!perPart && (q.options.length < 2 || q.options.length > (q.subject === "social" ? 5 : 4) || !q.options.every(x => boundedText(x, 300)))) ||
             !Array.isArray(q.parts) || q.parts.length < 2 || q.parts.length > 8 ||
-            typeof q.answer !== "string" || q.answer.length !== q.parts.length ||
-            [...q.answer].some(answer => !/^[1-5]$/.test(answer) || Number(answer) > q.options.length)) throw new Error("整組選答格式無效。");
+            typeof q.answer !== "string" || q.answer.length !== q.parts.length) throw new Error("整組選答格式無效。");
         const partIds = new Set();
-        for (const part of q.parts) {
-          if (!keys(part, ["id", "text"]) || typeof part.id !== "string" || !/^[A-Za-z0-9-]{1,32}$/.test(part.id) || partIds.has(part.id) || !boundedText(part.text, 600)) throw new Error("整組子題格式無效。");
+        for (const [index, part] of q.parts.entries()) {
+          if (!keys(part, perPart ? ["id", "text", "options"] : ["id", "text"]) || typeof part.id !== "string" || !/^[A-Za-z0-9-]{1,32}$/.test(part.id) || partIds.has(part.id) || !boundedText(part.text, 600)) throw new Error("整組子題格式無效。");
+          const options = perPart ? part.options : q.options;
+          if (perPart && (!Array.isArray(options) || options.length < 2 || options.length > 4 || !options.every(x => boundedText(x, 300)))) throw new Error("整組子題選項無效。");
+          if (!/^[1-5]$/.test(q.answer[index]) || Number(q.answer[index]) > options.length) throw new Error("整組子題答案無效。");
           partIds.add(part.id);
         }
       } else if (q.type === "fill_in_blank") {
-        const social = q.subject === "social" && [22, 23].includes(q.unit);
+        const social = q.subject === "social" && [22, 23, 31, 32].includes(q.unit);
         const written = social && q.unit === 23 && q.blanks?.[0]?.input === "text";
         const select = social && !written;
         if ((!social && q.subject !== "math") || q.answer !== "" || !Array.isArray(q.blanks) || q.blanks.length < 1 || q.blanks.length > (social ? 13 : 9) ||

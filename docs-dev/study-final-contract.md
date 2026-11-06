@@ -1,0 +1,34 @@
+# 四上後半冊題包接入契約
+
+追蹤 [#249](https://github.com/huansbox/aiden-study/issues/249)。這是格式支援，不代表內容已核准或已發布。孩子端單元是否開放，仍由 `docs/shared/family-core.js` 的 `published` 控制；家長試玩使用同份單元名稱與科目 metadata。
+
+- 數學 U6–U10 使用 unit 24–28；目前只接入既有數值／比較／單選型態。未經具體作答需求確認，不增加圖片或其他輸入權限。
+- 自然 U3／U4 使用 unit 29／30，沿用自然單選、是非、共享選項題組及 table／PNG。PNG 上限仍 32 KiB。
+- 社會 U3／U4 使用 unit 31／32，沿用社會單選、是非、共享選項題組、詞庫填空及 PNG。PNG 上限 192 KiB；詞庫最多 15 選項／13 空。新單元尚未開文字別名或完整答案向量。
+- 圖片雙邊 1600px、shard／unit／操作／cache／manifest 容量限制維持原契約。新單元不擴大舊單元可接受的題型。
+
+## 同材料、各自選項的題組
+
+僅 social unit 31／32 的 `grouped_choice` 可用下列合成形式。頂層 `text` 與 `material` 保留完整共同材料；每次顯示一個小題，整組仍是一個活動。
+
+```json
+{
+  "type": "grouped_choice",
+  "options": [],
+  "answer": "23",
+  "parts": [
+    { "id": "a", "text": "合成小題甲", "options": ["甲一", "甲二"] },
+    { "id": "b", "text": "合成小題乙", "options": ["乙一", "乙二", "乙三"] }
+  ]
+}
+```
+
+全部 parts 都必須有各自的 2–4 選項，不能混用共享與個別選項；parts 數仍為 2–8。答案字串每格為各自選項的 1-based 索引。個別選項屬於 immutable 作答語意，不可在相同 stable ID 下改動。舊共享選項題組的格式與語意指紋保持。
+
+Python builder、瀏覽器／Worker 共用 validator、孩子畫面與家長試玩使用相同契約。作答結果仍即時保存，獎勵只在整輪結束出現。
+
+## 追加與重建
+
+`scripts/build_private_study_catalog.mjs` 的 `appendCatalog()` 接受完整前版 source、manifest 與所有 shard bytes，逐片驗證內容與來源一致，再追加新活動的 shards。既有 descriptor、題目、來源、解說及原始 bytes 都保持；缺件或舊內容變動會失敗。沒有新題時可用同一 API 核對原 manifest／shards 的精確重建。
+
+本輪從已發布完整 rev22 的 465 活動／26 shards 接續，不能回退自然歷史版或只用 delta 作基線。完整 authoring、來源、核答、整合與 E2E 證據留在 ignored 私用根；公開測試僅使用合成題。內容核准前的 schema readiness 與獨立來源核答是不同階段。

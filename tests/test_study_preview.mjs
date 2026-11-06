@@ -59,6 +59,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   context.window = context;
   for (const name of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "Storage", "State"])
     Object.defineProperty(context, name, { configurable: true, get() { forbiddenTouches++; throw Error(`preview accessed ${name}`); } });
+  vm.runInContext(readFileSync(new URL("../docs/shared/family-core.js", import.meta.url), "utf8"), context);
   vm.runInContext(source("private-pack.js"), context);
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
@@ -118,6 +119,44 @@ test("subject switch reaches science true_false and choice without touching chil
   assert.equal(app.state.unit, 15);
   assert.equal(h.forbiddenTouches, 0);
   assert.equal(h.requests.length, 1);
+  app.destroy();
+});
+
+test("preview uses family metadata for published final units without child writes", async () => {
+  const pack = scienceSyntheticPack();
+  const q = { ...pack.questions[7], id: "science-g4s1-synthetic-final-29-v1", unit: 29 };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "science" });
+  app.handle("unit", { value: "29" });
+  const meta = h.context.KidsFamilyCore.STUDY_UNITS.find(unit => unit.id === 29);
+  assert.equal(meta.published, true);
+  assert.ok(h.host.innerHTML.includes(meta.name));
+  assert.equal(app.state.unit, 29);
+  assert.equal(h.forbiddenTouches, 0);
+  app.destroy();
+});
+
+test("preview retains separate choices for each part and reveals each original choice label", async () => {
+  const pack = syntheticPack();
+  const q = { id: "social-g4s1-synthetic-final-group-v1", subject: "social", unit: 31,
+    type: "grouped_choice", text: "Synthetic shared context", subtopic: "Synthetic topic", source: "Synthetic",
+    options: [], answer: "23", parts: [
+      { id: "a", text: "First question", options: ["First A", "First B"] },
+      { id: "b", text: "Second question", options: ["Second A", "Second B", "Second C"] },
+    ] };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "social" }); app.handle("unit", { value: "31" });
+  assert.match(h.host.innerHTML, /First B/); assert.doesNotMatch(h.host.innerHTML, /Second C/);
+  app.handle("answer-group", { index: "0", value: "1" }); app.handle("next-part");
+  assert.match(h.host.innerHTML, /Second C/); assert.doesNotMatch(h.host.innerHTML, /First B/);
+  app.handle("answer-group", { index: "1", value: "1" }); app.handle("check");
+  assert.equal(app.state.result, "wrong");
+  app.handle("reveal"); assert.match(h.host.innerHTML, /First B；b：Second C/);
+  app.handle("answer-group", { index: "0", value: "2" });
+  app.handle("answer-group", { index: "1", value: "3" }); app.handle("check");
+  assert.equal(app.state.result, "correct"); assert.equal(h.forbiddenTouches, 0);
   app.destroy();
 });
 
@@ -549,12 +588,12 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
   // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
-  assert.match(source("preview.html"), /preview\.js\?v=20261023-social-u2/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261107-science-social-release/);
   assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
-  for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
+  for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily.", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
   assert.match(source("../parent/parent.js"), /study\/preview\.html\?child=\$\{child\}/);
   assert.match(source("../parent/parent.js"), /四上數學／自然／社會試玩/);
