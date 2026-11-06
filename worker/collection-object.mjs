@@ -18,10 +18,10 @@ export class ChildCollection extends DurableObject {
     }
   }
   readState() { const row = this.sql.exec("SELECT json FROM state WHERE id=1").toArray()[0]; return row ? JSON.parse(row.json) : C.empty(); }
-  view(day = C.dateKey(), visibility) {
+  view(day = C.dateKey(), visibility, options) {
     C.check(C.validDate(day), "日期不正確");
     return this.ctx.storage.transactionSync(() => {
-      const previous = this.readState(), state = day === C.dateKey() ? C.reconcile(previous, new Date(), visibility) : previous;
+      const previous = this.readState(), state = day === C.dateKey() ? C.reconcile(previous, new Date(), visibility, options) : previous;
       if (state.revision !== previous.revision) this.sql.exec("INSERT INTO state(id,json) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET json=excluded.json", JSON.stringify(state));
       return C.snapshot(state, day, visibility);
     });
@@ -37,7 +37,7 @@ export class ChildCollection extends DurableObject {
         const previous = JSON.parse(duplicate.payload);
         C.check(duplicate.payload === payload || command.type === "round" && previous.event.entryId === command.event?.entryId ||
           command.type === "task-complete" && previous.type === "task-complete" && previous.event.taskId === command.event.taskId, "同一操作識別不能改成另一份內容", 409);
-        return { snapshot: this.view(C.dateKey(), visibility), duplicate: true };
+        return { snapshot: this.view(C.dateKey(), visibility, { allowFreeRound: command.type !== "goals" }), duplicate: true };
       }
       const nextCommand = { ...command };
       if (["record", "round"].includes(command.type)) {

@@ -98,12 +98,12 @@
     return state.days[day];
   }
   // 可信範圍按日期保存；讀目標時就保存，涵蓋讀完後離線、隔日才送事件。
-  function rememberVisibility(state, day, visibility) {
+  function rememberVisibility(state, day, visibility, allowFreeRound = true) {
     if (visibility?.date !== day || !globalThis.KidsFamilyCore) return;
     const data = dayFor(state, day);
     data.availableEntryIds = Object.keys(ENTRIES).filter(id => globalThis.KidsFamilyCore.availableEntry(id, visibility.profile));
     // 曾顯示的自由輪資格不因同日恢復而撤銷；與完整目標份量取 max，不相加。
-    if (!data.targets.some(t => data.availableEntryIds.includes(t.entryId))) data.freeRoundEligible = true;
+    if (allowFreeRound && !data.targets.some(t => data.availableEntryIds.includes(t.entryId))) data.freeRoundEligible = true;
   }
   function projectDaily(view, profile, availableEntryIds) {
     const allTargets = view.allTargets || view.targets;
@@ -149,9 +149,9 @@
       state.grants.push({ id: kind === "goal" || n > 1 ? `${day}:goal:${n}` : `${day}:first`, date: day, kind, buildId: null, packIndex: null });
     }
   }
-  function reconcile(previous, now = new Date(), visibility) {
+  function reconcile(previous, now = new Date(), visibility, { allowFreeRound = true } = {}) {
     const state = copy(previous), day = dateKey(now);
-    rememberVisibility(state, day, visibility);
+    rememberVisibility(state, day, visibility, allowFreeRound);
     if (state.days[day]) award(state, day, day, visibility);
     if (state.grants.length !== previous.grants.length || JSON.stringify(state.days[day]) !== JSON.stringify(previous.days[day])) state.revision++;
     return state;
@@ -227,7 +227,8 @@
       state.displayedBuildIds = state.displayedBuildIds.filter((id) => id !== command.buildId);
       if (command.displayed) state.displayedBuildIds.push(command.buildId);
     } else check(false, "不支援的收藏操作");
-    rememberVisibility(state, today, visibility);
+    // 家長存目標的短暫空清單不是對孩子承諾自由輪；仍保存可信範圍與既有資格。
+    rememberVisibility(state, today, visibility, command.type !== "goals");
     // 新版上線當天已有達標進度時，只補當天新規則的差額。
     if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today, visibility);
     state.revision++;

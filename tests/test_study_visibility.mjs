@@ -228,3 +228,53 @@ test('真SQLite今日view無record即保存規則；隔日補送及重送不漏�
     assert.deepEqual((await runtime.inspectFixture()).days[yesterday].targets,original.configs[0].targets);
   } finally {await runtime.dispose();}
 });
+
+test('純core：短暫清空goals不承諾自由輪，今日view或練習回應的既有承諾保留',()=>{
+  const spelling={entryId:'spelling',metric:'rounds',quantity:3};
+  for(const promise of ['none','view','practice']) {
+    const visibility={date,profile:F.defaults().children.aiden};
+    let state=C.empty();
+    const goals=targets=>{state=C.apply(state,{type:'goals',expectedGoalRevision:state.goalRevision,targets},now,visibility);};
+    goals([spelling]);goals([]);
+    assert.ok(Array.isArray(state.days[date].availableEntryIds));
+    assert.notEqual(state.days[date].freeRoundEligible,true);
+    if(promise==='view')state=C.reconcile(state,now,visibility);
+    if(promise==='practice')state=C.apply(state,{type:'record',event:{entryId:'spelling',answered:true,occurredAt:now.toISOString()}},now,visibility);
+    goals([spelling]);
+    state=C.apply(state,{type:'round',hasPractice:true,event:{entryId:'spelling',roundId:'after-restore',occurredAt:now.toISOString()}},now,visibility);
+    assert.equal(state.grants.length,promise==='none'?0:1,promise);
+    assert.equal(C.snapshot(state,date,visibility).daily.targets[0].progress,1);
+  }
+});
+
+test('真SQLite：goals清空及duplicate後恢復，沒有GET不發自由包；GET承諾同日保留',async()=>{
+  const runtime=await collectionRuntime();
+  const spelling={entryId:'spelling',metric:'rounds',quantity:3};
+  const call=async(type='',body)=>{
+    const response=await runtime.fetch(new Request('http://local/v1/collection/aiden'+(type?'/'+type:''),{
+      method:body?'POST':'GET',headers:{Authorization:'Bearer test-token'},...(body?{body:JSON.stringify(body)}:{})}));
+    const value=await response.json();assert.equal(response.status,200,JSON.stringify(value));return value;
+  };
+  try {
+    for(const promise of [false,true]) {
+      await runtime.restoreFixture(C.empty());
+      const prefix='goals-promise-'+promise;
+      await call('goals',{commandId:prefix+'-initial',expectedGoalRevision:0,targets:[spelling]});
+      const empty={commandId:prefix+'-empty',expectedGoalRevision:1,targets:[]};
+      await call('goals',empty);
+      assert.equal((await call('goals',empty)).duplicate,true);
+      assert.notEqual((await runtime.inspectFixture()).days[C.dateKey()].freeRoundEligible,true,'duplicate goals cannot promise a free round');
+      if(promise)await call();
+      const restored={commandId:prefix+'-restore',expectedGoalRevision:2,targets:[spelling]};
+      await call('goals',restored);
+      assert.equal((await call('goals',restored)).duplicate,true);
+      const event={entryId:'spelling',roundId:prefix+'-round',occurredAt:new Date().toISOString()};
+      await call('record',{commandId:prefix+'-record',generation:0,event:{...event,answered:true}});
+      const round={commandId:prefix+'-finish',generation:0,event};
+      const result=await call('round',round);
+      assert.equal(result.snapshot.daily.earned,promise?1:0);
+      assert.equal(result.snapshot.daily.targets[0].progress,1);
+      assert.equal((await call('round',round)).snapshot.daily.earned,promise?1:0);
+    }
+  } finally {await runtime.dispose();}
+});
