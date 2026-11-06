@@ -201,6 +201,38 @@ def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
     assert private_builder._question_semantic(q) != private_builder._question_semantic(moved)
 
 
+@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false"])
+def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    app_id = f"math-g4s1-synthetic-final-{kind.replace('_', '-')}-v1"
+    q = {"id": app_id, "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）（２）（３）", "subtopic": "Synthetic", "options": ["A", "B"], "answer": "",
+         "blanks": [{"input": "decimal", "answer": "0.52"}, {"input": "fraction", "answer": "3 3/6", "form": "mixed"}, {"input": "select", "answer": "2"}]}
+    adaptation = "fill_in_blank:mixed"
+    if kind != "mixed":
+        del q["blanks"]
+        q["type"] = adaptation = kind
+        if kind == "choice_set":
+            q["answerSet"] = ["1", "2"]
+        else:
+            q.update(options=[], answer="true")
+    common = {"practiceId": "SYNTHETIC-FINAL", "originalId": "synthetic", "paperId": "synthetic-paper", "questionPage": 1, "answerPage": 2, "concept": "Synthetic"}
+    curated["items"].append({**common, "adaptation": "Synthetic adaptation", "verification": private_builder.OFFICIAL_ANSWER_VERIFIED, "question": q})
+    metadata["items"].append({**common, "appId": app_id, "unit": 27, "contextPolicy": "Synthetic", "digitalAdaptation": adaptation, "sourceAdaptation": "Synthetic adaptation", "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    pack = build_pack(*_paths(tmp_path, values))
+    output = _write(tmp_path / "pack.json", pack)
+    result = subprocess.run(["node", "-e", "const fs=require('node:fs');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'))", str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    if kind == "mixed":
+        for mutate in (lambda q: q["blanks"][1].update(form="any"), lambda q: q["blanks"][0].update(answer="0.521"), lambda q: q["blanks"][1].update(accept=["3 4/6"])):
+            invalid = copy.deepcopy(q)
+            mutate(invalid)
+            with pytest.raises(PackBuildError):
+                private_builder._validate_question(invalid, "SYNTHETIC", metadata["items"][-1])
+
+
 def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
     values = _fixture()
     paths = _paths(tmp_path, values)

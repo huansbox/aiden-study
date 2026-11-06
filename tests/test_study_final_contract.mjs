@@ -73,7 +73,7 @@ test("final media and selection extensions preserve old unit and type guards", (
     assert.throws(() => parse({ ...q, acceptedAnswers: [["1"]] }));
     assert.throws(() => parse({ ...q, options: [], blanks: [{ input: "text", answer: "A" }] }));
   }
-  for (const unit of units.math) assert.throws(() => parse({ ...question("math", unit), material }));
+  for (const unit of units.math) parse({ ...question("math", unit), material });
 });
 
 test("appending a batch preserves every old shard byte and rejects incomplete or changed baselines", async () => {

@@ -36,7 +36,7 @@ MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19, 24, 25, 26, 27, 28}, "science": {20, 21, 29, 30}, "social": {22, 23, 31, 32}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:mixed"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
@@ -199,10 +199,18 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] not in {22, 23, 31, 32})) or (item["digitalAdaptation"] == "fill_in_blank:text" and (subject != "social" or item["unit"] != 23)):
+        adaptation = item["digitalAdaptation"]
+        allowed = {"multiple_choice", "true_false", "grouped_choice"} if subject != "math" else {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
+        if subject == "math" and item["unit"] in {24, 25, 26, 27, 28}:
+            allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:fraction", "fill_in_blank:text", "fill_in_blank:mixed"}
+        if subject == "social":
+            allowed.add("fill_in_blank:select")
+            if item["unit"] == 23:
+                allowed.add("fill_in_blank:text")
+        if subject == "science" and item["unit"] == 30:
+            allowed.add("circuit_connect")
+        if not isinstance(adaptation, str) or adaptation not in allowed:
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
-        if item["digitalAdaptation"] == "circuit_connect" and (subject != "science" or item["unit"] != 30):
-            raise PackBuildError(f"mapping circuit scope is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
             if item["appId"] != expected_id or item["originalId"] != expected_original or item["unit"] != 15:
@@ -235,10 +243,81 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
     return by_practice
 
 
+def _fraction_value(value, form):
+    if not isinstance(value, str):
+        return None
+    if re.fullmatch(r"0|[1-9][0-9]{0,5}", value):
+        return (int(value), 1) if form == "mixed_or_whole" else None
+    match = re.fullmatch(r"(?:(0|[1-9][0-9]{0,5}) )?(0|[1-9][0-9]{0,5})/([1-9][0-9]{0,5})", value)
+    if not match:
+        return None
+    w, n, d = match.groups()
+    w, n, d = int(w) if w is not None else None, int(n), int(d)
+    if (form == "improper" and (w is not None or n < d)
+            or form == "proper_or_improper" and w is not None
+            or form in {"mixed", "mixed_or_whole"} and (w is None or w < 1 or not 0 < n < d)
+            or form not in {"improper", "proper_or_improper", "mixed", "mixed_or_whole"}):
+        return None
+    return ((w or 0) * d + n, d)
+
+
+def _validate_math_blanks(q, practice_id, adaptation):
+    blanks = q.get("blanks")
+    if q["type"] != "fill_in_blank" or q["answer"] != "" or not isinstance(blanks, list) or not 1 <= len(blanks) <= 9:
+        raise PackBuildError(f"question {practice_id} math blanks are invalid")
+    if not all(isinstance(b, dict) and isinstance(b.get("input"), str) for b in blanks):
+        raise PackBuildError(f"question {practice_id} blank input is invalid")
+    inputs = {b["input"] for b in blanks}
+    expected = "mixed" if len(inputs) > 1 else blanks[0]["input"]
+    if adaptation != "fill_in_blank:" + expected:
+        raise PackBuildError(f"question {practice_id} blank mapping disagrees")
+    if ("select" in inputs and (not 2 <= len(q["options"]) <= 15 or not all(isinstance(x, str) and x.strip() and len(x) <= 300 for x in q["options"]))
+            or "select" not in inputs and q["options"]):
+        raise PackBuildError(f"question {practice_id} math original choices are invalid")
+    for index, b in enumerate(blanks, 1):
+        fields = {"input", "answer"}
+        if b["input"] == "text" and "aliases" in b:
+            fields.add("aliases")
+        if b["input"] == "fraction":
+            fields.add("form")
+            if "accept" in b:
+                fields.add("accept")
+        _require_exact_keys(b, fields, f"question {practice_id} math blank")
+        answer = b["answer"]
+        if not isinstance(answer, str):
+            raise PackBuildError(f"question {practice_id} blank answer must be a string")
+        kind = b["input"]
+        valid = False
+        if kind == "number":
+            valid = bool(re.fullmatch(r"0|[1-9][0-9]{0,7}", answer))
+        elif kind == "decimal":
+            valid = bool(re.fullmatch(r"(?:0|[1-9][0-9]{0,7})(?:\.[0-9]{1,2})?", answer))
+        elif kind == "comparison":
+            valid = answer in {"<", ">", "="}
+        elif kind == "select":
+            valid = answer in {str(i) for i in range(1, len(q["options"]) + 1)}
+        elif kind == "text":
+            aliases = b.get("aliases", [])
+            if isinstance(aliases, list) and len(aliases) <= 8:
+                terms = [answer, *aliases]
+                valid = all(isinstance(term, str) and 1 <= len(term) <= 20 and unicodedata.normalize("NFKC", term).strip() for term in terms)
+                valid = valid and len({unicodedata.normalize("NFKC", term).strip() for term in terms}) == len(terms)
+        elif kind == "fraction":
+            target, aliases = _fraction_value(answer, b["form"]), b.get("accept", [])
+            if target and isinstance(aliases, list) and len(aliases) <= 8 and all(isinstance(term, str) for term in aliases):
+                terms = [answer, *aliases]
+                valid = len(set(terms)) == len(terms) and all((v := _fraction_value(term, b["form"])) and v[0] * target[1] == target[0] * v[1] for term in terms)
+        if not valid:
+            raise PackBuildError(f"question {practice_id} unsupported math blank answer or form")
+        marker = "（" + str(index).translate(str.maketrans("0123456789", "０１２３４５６７８９")) + "）"
+        if marker not in q["text"]:
+            raise PackBuildError(f"question {practice_id} missing math blank marker")
+
+
 def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any]) -> dict[str, Any]:
     expected_id, adaptation = mapping["appId"], mapping["digitalAdaptation"]
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
-    expected_fields = ({"circuit"} if adaptation == "circuit_connect" else set()) | base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
+    expected_fields = ({"circuit"} if adaptation == "circuit_connect" else {"answerSet"} if adaptation == "choice_set" else set()) | base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
     if isinstance(question, dict) and "material" in question:
         expected_fields.add("material")
     if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select" and mapping["unit"] == 23:
@@ -252,13 +331,21 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     if not isinstance(question["options"], list) or not isinstance(question["answer"], str):
         raise PackBuildError(f"question {practice_id} options or answer has the wrong type")
     if "material" in question:
-        if subject != "science" and not ((subject == "math" and question["unit"] == 17 or subject == "social" and question["unit"] in {22, 23, 31, 32}) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
-            raise PackBuildError(f"question {practice_id} material is only allowed for science, math unit 17 PNG, or social units 22-23/31-32 PNG")
+        if subject != "science" and not ((subject == "math" and question["unit"] in {17, 24, 25, 26, 27, 28} or subject == "social" and question["unit"] in {22, 23, 31, 32}) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
+            raise PackBuildError(f"question {practice_id} material is only allowed for science, math units 17/24-28 PNG, or social units 22-23/31-32 PNG")
         # Identity/scope was checked above, before selecting the PNG byte limit.
         max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] in {22, 23, 31, 32} else 32 * 1024
         _validate_material(question["material"], f"question {practice_id} material", max_png_bytes)
 
-    if adaptation == "circuit_connect":
+    final_math = subject == "math" and question["unit"] in {24, 25, 26, 27, 28}
+    if adaptation == "choice_set":
+        choices = question["options"]
+        answers = question["answerSet"]
+        if not final_math or question["type"] != adaptation or question["answer"] != "" or not 2 <= len(choices) <= 10 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in choices) or not isinstance(answers, list) or not 1 <= len(answers) <= len(choices) or not all(isinstance(value, str) and value in {str(i) for i in range(1, len(choices) + 1)} for value in answers) or len(set(answers)) != len(answers):
+            raise PackBuildError(f"question {practice_id} choice set is invalid")
+    elif final_math and adaptation.startswith("fill_in_blank:"):
+        _validate_math_blanks(question, practice_id, adaptation)
+    elif adaptation == "circuit_connect":
         ids = ["battery-positive", "battery-negative", "bulb-glass", "bulb-shell", "bulb-base"]
         if subject != "science" or question["unit"] != 30 or question["type"] != adaptation or question["options"] != [] or question["answer"] != "closed" or question.get("material", {}).get("kind") != "png":
             raise PackBuildError(f"question {practice_id} circuit scope or shape is invalid")
@@ -499,11 +586,11 @@ def write_pack_atomic(
 
 def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
     blanks = question.get("blanks")
-    blank_semantic = (
-        tuple((blank.get("input"), blank.get("answer"), tuple(blank["aliases"])) if "aliases" in blank else (blank.get("input"), blank.get("answer")) for blank in blanks)
-        if isinstance(blanks, list)
-        else None
-    )
+    blank_semantic = tuple(
+        (blank.get("input"), blank.get("answer"), blank.get("form"), tuple(blank.get("accept", []))) if blank.get("input") == "fraction"
+        else (blank.get("input"), blank.get("answer"), tuple(blank["aliases"])) if "aliases" in blank
+        else (blank.get("input"), blank.get("answer")) for blank in blanks
+    ) if isinstance(blanks, list) else None
     return (
         question.get("subject"), question.get("unit"), question.get("subtopic"),
         question.get("type"), question.get("text"), tuple(question.get("options", [])),
@@ -512,6 +599,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         json.dumps(question.get("material"), ensure_ascii=False, sort_keys=True) if "material" in question else None,
         *([tuple(tuple(vector) for vector in question["acceptedAnswers"])] if "acceptedAnswers" in question else []),
         *([tuple((node["id"], node["x"], node["y"]) for node in question["circuit"]["terminals"])] if "circuit" in question else []),
+        *([tuple(question["answerSet"])] if "answerSet" in question else []),
     )
 
 
@@ -575,7 +663,7 @@ def ensure_compatible_with_existing(
             blanks = question.get("blanks")
             if not isinstance(blanks, list) or not blanks or not isinstance(blanks[0], dict):
                 raise PackBuildError("existing output has invalid blanks")
-            adaptation += ":" + str(blanks[0].get("input"))
+            adaptation += ":" + ("mixed" if subject == "math" and question["unit"] in {24, 25, 26, 27, 28} and len({b.get("input") for b in blanks}) > 1 else str(blanks[0].get("input")))
         if not isinstance(adaptation, str) or adaptation not in ADAPTATIONS:
             raise PackBuildError("existing output has an unsupported adaptation")
         _validate_question(

@@ -552,7 +552,7 @@ body {
 a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
 <link rel="stylesheet" href="./material.css?v=20260923-group-media">
-<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"><link rel="stylesheet" href="circuit.css?v=20261106-circuit"></head>
+<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"><link rel="stylesheet" href="circuit.css?v=20261106-circuit"><link rel="stylesheet" href="math-input.css?v=20261106-final-math"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <p id="study-start-status" class="hidden" role="status" aria-live="polite" style="position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:10001;max-width:calc(100% - 32px);padding:12px 20px;border-radius:12px;background:#fff;color:#24324a;box-shadow:0 2px 12px #0003"></p>
@@ -567,7 +567,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261107-science-social-release"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
 <script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
 <script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261107-science-social-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="circuit.js?v=20261106-circuit"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
+<script src="./private-pack.js?v=20261107-science-social-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="math-input.js?v=20261106-final-math"></script><script src="circuit.js?v=20261106-circuit"></script><script src="./answer.js?v=20261106-final-math"></script>
 <script src="./science-topics.js?v=20261023-social-u2-topics"></script>
 <script>
 (function() {
@@ -1341,6 +1341,8 @@ function resetQuestionRuntime() {
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
   quiz.handwritingRemedialHintVisible = false;
+  quiz._mathInput = null;
+  quiz._renderMath = null;
   quiz._circuitResponse = null;
   quiz._renderCircuit = null;
   quiz._groupValues = null;
@@ -1487,6 +1489,7 @@ function submitAnswer(selected) {
   const q = getCurrentQuestion();
   if (q.type === "fill_in_blank" && !hasCompleteBlanks(q, selected)) return;
   if (q.type === "circuit_connect" && !StudyCircuit.complete(selected)) return;
+  if (q.type === "choice_set" && (!Array.isArray(selected) || !selected.length)) return;
   quiz.isAnswered = true;
   let correct;
   if (q.type === "fill_in_blank") {
@@ -1497,6 +1500,8 @@ function submitAnswer(selected) {
   } else if (q.type === "grouped_choice") {
     quiz._groupResults = q.parts.map((_, i) => selected[i] === q.answer[i]);
     correct = quiz._groupResults.every(Boolean);
+  } else if (q.type === "choice_set") {
+    correct = StudyAnswer.gradeChoiceSet(q, selected);
   } else if (q.type === "circuit_connect") {
     correct = StudyCircuit.grade(selected);
   } else if (q.type === "vertical_calc") {
@@ -2268,6 +2273,7 @@ const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
 const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
 
 function formatAnswer(q) {
+  if (q.type === "choice_set") return q.answerSet.map(value => q.options[Number(value) - 1]).join("、");
   if (q.type === "circuit_connect") return "電池兩端各用一條電線，分別連到燈泡的螺紋金屬殼與底部金屬接點，形成通路。";
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
   if (q.type === "chinese_correction") return `「${q.wrong}」改成「${q.answer}」`;
@@ -2737,10 +2743,12 @@ function renderQuiz() {
   const isSelectFill = isFill && q.blanks[0]?.input === "select";
   const isGroup = q.type === "grouped_choice";
   const isCircuit = q.type === "circuit_connect";
+  const isMathInput = StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type);
   const isVc = q.type === "vertical_calc";
   const isChinese = q.type === "chinese_correction";
   let typeClass = "q-type", typeLabel = "選擇題";
-  if (isCircuit) { typeLabel = "畫電路"; }
+  if (q.type === "choice_set") { typeLabel = "選出所有符合項目"; }
+  else if (isCircuit) { typeLabel = "畫電路"; }
   else if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isGroup) { typeClass += " tf"; typeLabel = `整組選答（${q.parts.length} 小題）`; }
   else if (isFill) { typeClass += " fib"; typeLabel = isSelectFill ? `詞庫填空（${q.blanks.length} 空）` : "填充題"; }
@@ -2785,6 +2793,9 @@ function renderQuiz() {
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
+  } else if (isMathInput) {
+    quiz._mathInput ||= StudyMathInput.initial(q);
+    answerHtml = `<div id="math-input-panel"></div><button class="next-btn" id="math-submit" disabled>確認答案</button>`;
   } else if (isCircuit) {
     quiz._circuitResponse ||= StudyCircuit.initial();
     answerHtml = `<div id="circuit-panel"></div><button class="next-btn" id="circuit-submit" disabled>確認電路</button>`;
@@ -2893,6 +2904,25 @@ function renderQuiz() {
   if (isPrivateQuestion(q)) StudyMaterial.bind(document.getElementById("page-quiz"));
   if (isVc) {
     bindVcEvents(q);
+  } else if (isMathInput) {
+    const renderMath = () => {
+      const panel = document.getElementById("math-input-panel"), submit = document.getElementById("math-submit");
+      panel.innerHTML = StudyMathInput.render(q, quiz._mathInput, quiz.isAnswered, quiz._fillResults);
+      const refresh = () => { submit.disabled = quiz.isAnswered || !StudyMathInput.complete(q, quiz._mathInput); };
+      panel.querySelectorAll("[data-math-action]").forEach(control => {
+        const act = () => {
+          if (quiz.isAnswered && control.dataset.mathAction !== "blank") return;
+          quiz._mathInput = StudyMathInput.update(q, quiz._mathInput, control.dataset.mathAction,
+            control.tagName === "INPUT" ? control.value : control.dataset.mathValue, control.dataset.mathField);
+          if (control.tagName === "INPUT") refresh(); else renderMath();
+        };
+        if (control.tagName === "INPUT") control.oninput = act; else control.onclick = act;
+      });
+      refresh();
+    };
+    quiz._renderMath = renderMath;
+    document.getElementById("math-submit").onclick = () => submitAnswer([...quiz._mathInput.values]);
+    renderMath();
   } else if (isFill) {
     bindFillEvents(q);
   } else if (isCircuit) {
@@ -3301,6 +3331,10 @@ function renderFeedback(correct, q) {
   if (q.type === "vertical_calc") {
     document.querySelectorAll("#fill-input-panel button").forEach(b => { b.disabled = true; });
     wrongHint = `完成了！但填錯過 ${quiz._vc.errors} 次，這題之後會再練一次`;
+  } else if (StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type)) {
+    quiz._renderMath();
+    document.getElementById("math-submit").classList.add("hidden");
+    wrongHint = q.type === "choice_set" ? `正確選項：${formatAnswer(q)}` : "請切換各空格查看正確答案";
   } else if (q.type === "fill_in_blank" && q.blanks[0]?.input === "select") {
     quiz._renderSelectBlank();
     document.getElementById("fib-submit").classList.add("hidden");

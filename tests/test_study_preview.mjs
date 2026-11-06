@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import { circuitQuestion } from "./helpers/synthetic-circuit.mjs";
+import { finalMathQuestion, choiceSetQuestion } from "./helpers/synthetic-final-math.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
@@ -65,6 +66,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
   vm.runInContext(source("circuit.js"), context);
+  vm.runInContext(source("math-input.js"), context);
   vm.runInContext(source("science-topics.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
@@ -176,6 +178,22 @@ test("preview circuit places the battery, rejects glass, redraws and grades with
   app.handle("check"); assert.equal(app.state.result, "correct");
   assert.match(h.host.innerHTML, /正負對調也可/);
   app.handle("retry-answer"); assert.equal(app.state.circuit.batteryPlaced, false);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+
+test("preview math preserves mixed fields, fraction form and unordered full choice sets", async () => {
+  const pack = syntheticPack(), q = finalMathQuestion(), set = { ...choiceSetQuestion(), unit: 27 };
+  pack.questions.push(q, set); pack.explanations[q.id] = pack.explanations[set.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "27" });
+  const act = (mathAction, value, mathField) => app.handle("math", { mathAction, value, mathField });
+  act("input", "12"); act("blank", "1"); act("input", ".52"); act("blank", "2");
+  for (const [field, value] of [["whole", "3"], ["numerator", "1"], ["denominator", "2"]]) act("fraction", value, field);
+  act("blank", "3"); act("choice", "2"); act("blank", "4"); act("input", "合成別名"); act("blank", "5"); act("choice", ">");
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  act("blank", "2"); act("fraction", "3", "numerator"); act("fraction", "6", "denominator");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  app.handle("question", { index: "1" }); act("choice", "3"); app.handle("check"); assert.equal(app.state.result, "wrong");
+  act("choice", "1"); app.handle("check"); assert.equal(app.state.result, "correct");
   assert.equal(h.forbiddenTouches, 0); app.destroy();
 });
 
@@ -610,7 +628,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
   assert.match(source("preview.html"), /preview\.js\?v=20261107-science-social-release/);
   assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "math-input.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily.", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
@@ -622,6 +640,7 @@ test("shared answer seam retains Study number and comparison equivalence rules",
   const context = vm.createContext({});
   vm.runInContext(source("answer.js"), context);
   vm.runInContext(source("circuit.js"), context);
+  vm.runInContext(source("math-input.js"), context);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63.0"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63abc"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, " ＞ "), true);

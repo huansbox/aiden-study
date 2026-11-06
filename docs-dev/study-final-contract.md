@@ -2,7 +2,7 @@
 
 追蹤 [#249](https://github.com/huansbox/aiden-study/issues/249)。這是格式支援，不代表內容已核准或已發布。孩子端單元是否開放，仍由 `docs/shared/family-core.js` 的 `published` 控制；家長試玩使用同份單元名稱與科目 metadata。
 
-- 數學 U6–U10 使用 unit 24–28；目前只接入既有數值／比較／單選型態。未經具體作答需求確認，不增加圖片或其他輸入權限。
+- 數學 U6–U10 使用 unit 24–28；基本輸入、原選項集合與 PNG 契約見[數學作者交付](study-final-math-contract.md)。列式、直式對齊、作圖與量測另按核定操作處理。
 - 自然 U3／U4 使用 unit 29／30，沿用自然單選、是非、共享選項題組及 table／PNG。PNG 上限仍 32 KiB。
 - 社會 U3／U4 使用 unit 31／32，沿用社會單選、是非、共享選項題組、詞庫填空及 PNG。PNG 上限 192 KiB；詞庫最多 15 選項／13 空。新單元尚未開文字別名或完整答案向量。
 - 圖片雙邊 1600px、shard／unit／操作／cache／manifest 容量限制維持原契約。新單元不擴大舊單元可接受的題型。
