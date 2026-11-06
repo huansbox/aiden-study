@@ -281,8 +281,8 @@ test("首頁依學期拆科、每科一張；網站對象與排序、心智圖�
   assert.deepEqual(C.validateTask({ id: "social-task", app: "study", unit: 22, quantity: 5 }), { id: "social-task", app: "study", unit: 22, quantity: 5 });
   assert.equal(C.taskLabel({ app: "study", unit: 23, quantity: 5 }), "第 2 單元 · 5 題");
   assert.deepEqual(C.validateTask({ id: "social-u2", app: "study", unit: 23, quantity: 5 }), { id: "social-u2", app: "study", unit: 23, quantity: 5 });
-  assert.throws(() => C.validateTask({ id: "unknown", app: "study", unit: 24, quantity: 5 }), /題庫單元/);
-  assert.throws(() => C.taskEntryId({ app: "study", unit: 24 }), /題庫單元/);
+  assert.throws(() => C.validateTask({ id: "unknown", app: "study", unit: 999, quantity: 5 }), /題庫單元/);
+  assert.throws(() => C.taskEntryId({ app: "study", unit: 999 }), /題庫單元/);
   settings.websites[0].children = ["bingpu"];
   p.mindMap.enabled = false;
   assert.ok(

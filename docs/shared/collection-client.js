@@ -19,6 +19,8 @@
       const view = JSON.parse(JSON.stringify(base));
       view.taskRewards = C.taskRewards(view);
       if (view.daily.date !== C.dateKey()) view.daily = { date: C.dateKey(), targets: (view.goals?.targets || []).map((t) => ({ ...t, label: C.ENTRIES[t.entryId].label, progress: 0, done: false, portions: 0, bonusProgress: 0, bonusCompleted: 0, rewardOffset:0, nextRewardRemaining:t.quantity })), earned: 0, rewardOffset:0, repeatable: C.dateKey() >= C.REPEAT_REWARDS_FROM, limit: view.goals?.targets?.length && C.dateKey() >= C.REPEAT_REWARDS_FROM ? null : 1, first: false, all: false };
+      const settings = F.cachedSettings?.();
+      if (settings?.available) view.daily = C.projectDaily(view.daily, settings.data.children[child]);
       for (const command of pending()) if (command.type === "place") {
         const build = view.builds.find((b) => b.id === command.buildId);
         if (build && !build.placed.includes(command.partId)) build.placed.push(command.partId);

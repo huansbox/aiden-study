@@ -561,8 +561,15 @@
         return context;
       },
     );
+    async function refreshSettings() {
+      settingsState = await settings();
+      config = settingsState.data;
+      if (currentTask && !core.availableTask(currentTask, profile())) currentTask = null;
+      return profile();
+    }
     const context = {
       ready,
+      refreshSettings,
       hasSettings: () => settingsState.available,
       profile,
       record,

@@ -97,7 +97,15 @@
     }
     return state.days[day];
   }
-  function daily(state, day) {
+  // 僅投影今天可做的目標；儲存的 targets 與已累積完整份量不刪除。
+  function projectDaily(view, profile) {
+    const allTargets = view.allTargets || view.targets;
+    const available = (t) => !globalThis.KidsFamilyCore || globalThis.KidsFamilyCore.availableEntry(t.entryId, profile);
+    const targets = allTargets.filter(available), pausedTargets = allTargets.filter(t => !available(t));
+    return {...view, allTargets, targets, pausedTargets, all:targets.length > 0 && targets.every(t => t.done),
+      limit:view.repeatable && targets.length ? null : Math.max(targets.length || 1,view.earned)};
+  }
+  function daily(state, day, visibility) {
     const data = state.days[day] || { targets: configFor(state, day).targets, counts: {}, rounds: 0 };
     const repeatable = day >= REPEAT_REWARDS_FROM && (data.rewardVersion === 3 || !state.days[day]);
     const earned = state.grants.filter((g) => g.date === day && g.kind !== "task").length;
@@ -110,12 +118,13 @@
         rewardOffset, nextRewardRemaining: (rewardOffset + 1) * t.quantity - progress % t.quantity };
     });
     // 舊版 first/all 包與取消目標前已領的包保留，且計入當天額度。
-    return { date: day, targets, earned, repeatable, rewardOffset, limit: repeatable && targets.length ? null : Math.max(targets.length || 1, earned), first: earned > 0, all: targets.length > 0 && targets.every((t) => t.done) };
+    const view = { date: day, targets, earned, repeatable, rewardOffset, limit: repeatable && targets.length ? null : Math.max(targets.length || 1, earned), first: earned > 0, all: targets.length > 0 && targets.every((t) => t.done) };
+    return visibility?.date === day ? projectDaily(view, visibility.profile) : view;
   }
-  function award(state, day, today) {
+  function award(state, day, today, visibility) {
     const data = dayFor(state, day);
     if (day === today && day >= REPEAT_REWARDS_FROM) data.rewardVersion = 3;
-    const view = daily(state, day);
+    const view = daily(state, day, visibility);
     // 舊日期的延遲事件沿用原規則；不能因補送無關作答而回溯補包。
     if (!data.rewardVersion && day < today) {
       const first = view.targets.length ? view.targets.some((t) => t.done) : data.rounds > 0;
@@ -124,15 +133,17 @@
       return;
     }
     data.rewardVersion ||= 2;
-    const entitled = view.targets.length ? view.targets.reduce((sum, t) => sum + (data.rewardVersion === 3 ? t.portions : Number(t.done)), 0) : Number(data.rounds > 0);
+    const originalTargets = view.allTargets || view.targets;
+    const accumulated = originalTargets.reduce((sum, t) => sum + (data.rewardVersion === 3 ? t.portions : Number(t.done)), 0);
+    const entitled = view.targets.length ? accumulated : Math.max(accumulated, Number(data.rounds > 0));
     for (let n = view.earned + 1; n <= entitled; n++) {
       const kind = view.targets.length ? "goal" : "first";
-      state.grants.push({ id: kind === "goal" ? `${day}:goal:${n}` : `${day}:first`, date: day, kind, buildId: null, packIndex: null });
+      state.grants.push({ id: kind === "goal" || n > 1 ? `${day}:goal:${n}` : `${day}:first`, date: day, kind, buildId: null, packIndex: null });
     }
   }
-  function reconcile(previous, now = new Date()) {
+  function reconcile(previous, now = new Date(), visibility) {
     const state = copy(previous), day = dateKey(now);
-    if (state.days[day]) award(state, day, day);
+    if (state.days[day]) award(state, day, day, visibility);
     if (state.grants.length !== previous.grants.length || state.days[day]?.rewardVersion !== previous.days[day]?.rewardVersion) state.revision++;
     return state;
   }
@@ -142,7 +153,7 @@
     let count = state.grants.filter((g) => g.buildId === build.id).length;
     for (const grant of state.grants) if (!grant.buildId && count < packCount(build)) { grant.buildId = build.id; grant.packIndex = packStart(build) + count++; }
   }
-  function apply(previous, command, now = new Date()) {
+  function apply(previous, command, now = new Date(), visibility) {
     const state = copy(previous), today = dateKey(now);
     check(command && typeof command.type === "string", "收藏操作不正確");
     if (command.type === "goals") {
@@ -152,7 +163,7 @@
       state.goalRevision++;
       state.configs.push({ revision: state.goalRevision, effectiveDate, targets: list });
       // 家長可解除今日無內容的目標；已領的包保留，清空不加發。
-      if (state.days[today]) { state.days[today].targets = list; state.days[today].goalRevision = state.goalRevision; award(state, today, today); }
+      if (state.days[today]) { state.days[today].targets = list; state.days[today].goalRevision = state.goalRevision; award(state, today, today, visibility); }
     } else if (command.type === "record" || command.type === "round") {
       const event = command.event;
       check(event && ENTRIES[event.entryId] && typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt)) && Date.parse(event.occurredAt) <= new Date(now).getTime() + 300000, "練習事件不正確");
@@ -161,7 +172,7 @@
       data.counts[event.entryId] ||= { answered: 0, rounds: 0 };
       if (command.type === "record" && event.answered === true) data.counts[event.entryId].answered++;
       if (command.type === "round") { data.counts[event.entryId].rounds++; data.rounds++; }
-      award(state, day, today);
+      award(state, day, today, visibility);
     } else if (command.type === "task-complete") {
       const event = command.event;
       validateTaskCompletion(event, now);
@@ -208,13 +219,13 @@
       if (command.displayed) state.displayedBuildIds.push(command.buildId);
     } else check(false, "不支援的收藏操作");
     // 新版上線當天已有達標進度時，只補當天新規則的差額。
-    if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today);
+    if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today, visibility);
     state.revision++;
     return state;
   }
-  function snapshot(state, day = dateKey()) {
+  function snapshot(state, day = dateKey(), visibility) {
     check(validDate(day), "日期不正確");
-    return { version: 1, revision: state.revision, goalRevision: state.goalRevision, selectionGeneration: state.selectionGeneration || 0, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day), taskRewards: taskRewards(state), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
+    return { version: 1, revision: state.revision, goalRevision: state.goalRevision, selectionGeneration: state.selectionGeneration || 0, goals: copy(state.configs.at(-1) || { revision: 0, targets: [], effectiveDate: null }), daily: daily(state, day, visibility), taskRewards: taskRewards(state), grants: copy(state.grants), activeBuild: copy(state.builds.find((b) => b.id === state.activeBuildId) || null), builds: copy(state.builds), displayedBuildIds: [...state.displayedBuildIds] };
   }
-  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, AVAILABLE_MODELS, isModelAvailable, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, TASK_REWARDS, taskGrantId, validateTaskCompletion, taskRewards, dateKey, validDate, targets, empty, apply, reconcile, snapshot, check };
+  globalThis.KidsCollectionCore = { MODELS, PACK_COUNTS, MODERN_MODELS, AVAILABLE_MODELS, isModelAvailable, REPEAT_REWARDS_FROM, packStart, packCount, packSourceIndex, packNumber, requiredParts, releaseSummary, verifyRelease, ENTRIES, TASK_REWARDS, taskGrantId, validateTaskCompletion, taskRewards, dateKey, validDate, targets, empty, apply, reconcile, snapshot, projectDaily, check };
 })();
