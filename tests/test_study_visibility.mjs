@@ -278,3 +278,49 @@ test('真SQLite：goals清空及duplicate後恢復，沒有GET不發自由包；
     }
   } finally {await runtime.dispose();}
 });
+
+test('純core：已有1/3輪後清空goals不補自由包；空目標GET才能承諾並補既有回合',()=>{
+  const spelling={entryId:'spelling',metric:'rounds',quantity:3};
+  for(const confirm of [false,true]) {
+    const visibility={date,profile:F.defaults().children.aiden};
+    let state=C.apply(C.empty(),{type:'goals',expectedGoalRevision:0,targets:[spelling]},now,visibility);
+    state=C.apply(state,{type:'round',hasPractice:true,event:{entryId:'spelling',roundId:'partial',occurredAt:now.toISOString()}},now,visibility);
+    assert.equal(state.grants.length,0);
+    state=C.apply(state,{type:'goals',expectedGoalRevision:1,targets:[]},now,visibility);
+    assert.equal(state.grants.length,0,'暫時清空不能把既有1/3進度變成自由包');
+    if(confirm)state=C.reconcile(state,now,visibility);
+    assert.equal(state.grants.length,confirm?1:0);
+    state=C.apply(state,{type:'goals',expectedGoalRevision:2,targets:[spelling]},now,visibility);
+    const view=C.snapshot(state,date,visibility);
+    assert.equal(view.daily.earned,confirm?1:0);
+    assert.equal(view.daily.targets[0].progress,1);
+    assert.equal(view.daily.targets[0].nextRewardRemaining,confirm?5:2);
+  }
+});
+
+test('真SQLite：已有1/3輪後goals清空及duplicate不補包；正常GET可補且恢復不回收',async()=>{
+  const runtime=await collectionRuntime(),spelling={entryId:'spelling',metric:'rounds',quantity:3};
+  const call=async(type='',body)=>{
+    const response=await runtime.fetch(new Request('http://local/v1/collection/aiden'+(type?'/'+type:''),{
+      method:body?'POST':'GET',headers:{Authorization:'Bearer test-token'},...(body?{body:JSON.stringify(body)}:{})}));
+    const value=await response.json();assert.equal(response.status,200,JSON.stringify(value));return value;
+  };
+  try {
+    for(const confirm of [false,true]) {
+      await runtime.restoreFixture(C.empty());const prefix='partial-goals-'+confirm;
+      await call('goals',{commandId:prefix+'-initial',expectedGoalRevision:0,targets:[spelling]});
+      const event={entryId:'spelling',roundId:prefix+'-round',occurredAt:new Date().toISOString()};
+      await call('record',{commandId:prefix+'-record',generation:0,event:{...event,answered:true}});
+      assert.equal((await call('round',{commandId:prefix+'-finish',generation:0,event})).snapshot.daily.earned,0);
+      const empty={commandId:prefix+'-empty',expectedGoalRevision:1,targets:[]};
+      assert.equal((await call('goals',empty)).snapshot.daily.earned,0);
+      const duplicate=await call('goals',empty);assert.equal(duplicate.duplicate,true);assert.equal(duplicate.snapshot.daily.earned,0);
+      if(confirm)assert.equal((await call()).daily.earned,1);
+      const restored={commandId:prefix+'-restore',expectedGoalRevision:2,targets:[spelling]};
+      await call('goals',restored);const after=await call('goals',restored);
+      assert.equal(after.duplicate,true);assert.equal(after.snapshot.daily.earned,confirm?1:0);
+      assert.equal(after.snapshot.daily.targets[0].progress,1);
+      assert.equal(after.snapshot.daily.targets[0].nextRewardRemaining,confirm?5:2);
+    }
+  } finally {await runtime.dispose();}
+});

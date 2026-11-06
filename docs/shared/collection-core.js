@@ -129,7 +129,7 @@
     if (data.availableEntryIds && visibility?.date !== day) return projectDaily(view, null, data.availableEntryIds);
     return visibility?.date === day ? projectDaily(view, visibility.profile) : view;
   }
-  function award(state, day, today, visibility) {
+  function award(state, day, today, visibility, allowFreeRound = true) {
     const data = dayFor(state, day);
     if (day === today && day >= REPEAT_REWARDS_FROM) data.rewardVersion = 3;
     const view = daily(state, day, visibility);
@@ -143,7 +143,9 @@
     data.rewardVersion ||= 2;
     const originalTargets = view.allTargets || view.targets;
     const accumulated = originalTargets.reduce((sum, t) => sum + (data.rewardVersion === 3 ? t.portions : Number(t.done)), 0);
-    const entitled = view.targets.length && !data.freeRoundEligible ? accumulated : Math.max(accumulated, Number(data.rounds > 0));
+    // 可信 goals 寫入不能把暫時空清單變成自由包；既有承諾及舊版無 snapshot 規則保留。
+    const freeRoundEligible = data.freeRoundEligible || !view.targets.length && (allowFreeRound || visibility?.date !== day);
+    const entitled = freeRoundEligible ? Math.max(accumulated, Number(data.rounds > 0)) : accumulated;
     for (let n = view.earned + 1; n <= entitled; n++) {
       const kind = view.targets.length ? "goal" : "first";
       state.grants.push({ id: kind === "goal" || n > 1 ? `${day}:goal:${n}` : `${day}:first`, date: day, kind, buildId: null, packIndex: null });
@@ -152,7 +154,7 @@
   function reconcile(previous, now = new Date(), visibility, { allowFreeRound = true } = {}) {
     const state = copy(previous), day = dateKey(now);
     rememberVisibility(state, day, visibility, allowFreeRound);
-    if (state.days[day]) award(state, day, day, visibility);
+    if (state.days[day]) award(state, day, day, visibility, allowFreeRound);
     if (state.grants.length !== previous.grants.length || JSON.stringify(state.days[day]) !== JSON.stringify(previous.days[day])) state.revision++;
     return state;
   }
@@ -172,7 +174,7 @@
       state.goalRevision++;
       state.configs.push({ revision: state.goalRevision, effectiveDate, targets: list });
       // 家長可解除今日無內容的目標；已領的包保留，清空不加發。
-      if (state.days[today]) { state.days[today].targets = list; state.days[today].goalRevision = state.goalRevision; award(state, today, today, visibility); }
+      if (state.days[today]) { state.days[today].targets = list; state.days[today].goalRevision = state.goalRevision; award(state, today, today, visibility, false); }
     } else if (command.type === "record" || command.type === "round") {
       const event = command.event;
       check(event && ENTRIES[event.entryId] && typeof event.occurredAt === "string" && Number.isFinite(Date.parse(event.occurredAt)) && Date.parse(event.occurredAt) <= new Date(now).getTime() + 300000, "練習事件不正確");
@@ -230,7 +232,7 @@
     // 家長存目標的短暫空清單不是對孩子承諾自由輪；仍保存可信範圍與既有資格。
     rememberVisibility(state, today, visibility, command.type !== "goals");
     // 新版上線當天已有達標進度時，只補當天新規則的差額。
-    if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today, visibility);
+    if (!["release-build", "task-complete"].includes(command.type) && state.days[today]) award(state, today, today, visibility, command.type !== "goals");
     state.revision++;
     return state;
   }
