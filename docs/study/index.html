@@ -564,10 +564,10 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261106-study-visibility"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261107-science-social-release"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
 <script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
 <script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261106-final-units"></script><script src="pack-catalog.js?v=20261106-final-units"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
+<script src="./private-pack.js?v=20261107-science-social-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
 <script src="./science-topics.js?v=20261023-social-u2-topics"></script>
 <script>
 (function() {
@@ -1661,10 +1661,11 @@ function renderFlaggedSection() {
 function packAvailabilityText() {
   if (packManifest) return `四上題庫版本 ${packManifest.revision}，共 ${StudyPackCatalog.metadata(packManifest).length} 題。開始練習時自動取得所選單元；已保存的題目可再次使用。`;
   if (!activePack) return "這個容器尚未載入題包。";
-  const counts = StudyPrivatePack.UNITS.map(unit => {
-    const count = activePack.questions.filter(q => q.unit === unit).length;
-    const subject = unit >= 22 ? "社會" : unit >= 20 ? "自然" : "數學";
-    return count ? `${subject}第 ${unitNum(unit)} 單元 ${count} 題` : `${subject}第 ${unitNum(unit)} 單元尚未載入`;
+  const counts = KidsFamilyCore.STUDY_UNITS.filter(unit => StudyPrivatePack.UNITS.includes(unit.id) &&
+    (unit.published || activePack.questions.some(q => q.unit === unit.id))).map(unit => {
+    const count = activePack.questions.filter(q => q.unit === unit.id).length;
+    const subject = {math:"數學", science:"自然", social:"社會"}[unit.subject];
+    return count ? `${subject}第 ${unit.num} 單元 ${count} 題` : `${subject}第 ${unit.num} 單元尚未載入`;
   });
   return `本機已有四上數學 ${activePack.questions.filter(q => q.subject === "math").length} 題、自然 ${activePack.questions.filter(q => q.subject === "science").length} 題、社會 ${activePack.questions.filter(q => q.subject === "social").length} 題，版本 ${activePack?.revision || packManifest.revision}。${counts.join("；")}。`;
 }

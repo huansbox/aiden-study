@@ -14,7 +14,7 @@ test("social U2 keeps full fifteen-word bank and thirteen blanks scoped, immutab
   const pack = socialUnitTwoSyntheticPack(), q = pack.questions.at(-1);
   e.app.importPrivatePack(JSON.stringify(pack));
   e.app.State.setStudyTerm("g4-s1"); e.app.State.setSubject("social");
-  assert.deepEqual(plain(e.app.currentScope().units.map(u => [u.id, u.num])), [[22, 1], [23, 2]]);
+  assert.deepEqual(plain(e.app.currentScope().units.map(u => [u.id, u.num])), [[22, 1], [23, 2], [31, 3], [32, 4]]);
   assert.equal(e.app.unitNum(23), 2);
   e.app.State.saveBatch("23", [q.id]); e.app.startQuiz("full", 23);
   assert.match(e.node("page-quiz").innerHTML, /詞庫填空（13 空）/);
@@ -188,7 +188,7 @@ test("scopes isolate error pool, reset and flags; unit numbers remain unique", a
   const saved = JSON.stringify(e.app.state); e.window._startFull(15); assert.equal(JSON.stringify(e.app.state),saved);
   assert.ok(e.app.Picker.forErrorPractice([5,6,7,8,9]).every(id => !ids.includes(id)));
   const units=Object.values(e.app.STUDY_TERMS).flatMap(t=>Object.values(t.subjects).flatMap(s=>Object.values(s.semesters).flatMap(s=>s.units.map(u=>u.id))));
-  assert.equal(new Set(units).size,23); assert.equal(units.length,23);
+  assert.equal(new Set(units).size,27); assert.equal(units.length,27);
   assert.deepEqual([15,16,17,18,19].map(u => e.app.unitNum(u)), [1,2,3,4,5]);
 });
 test("invalid imports and quota failures atomically retain active pack, indices and persisted progress", async () => {
@@ -251,7 +251,7 @@ test("science rev5 appends units 20/21, accepts true_false, preserves math progr
   assert.equal(e.app.State.doneCount(15), mathDone);
   assert.equal(e.app.activePack.questions.length, 8);
   e.app.State.setSubject("science");
-  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [20, 21]);
+  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [20, 21, 29, 30]);
   e.window._goHome();
   assert.match(e.node("page-home").innerHTML, /地表的靜與動/);
   e.app.startQuiz("full", 20);
@@ -318,7 +318,7 @@ test("social unit 22 keeps rev10 math/science progress and validates existing ch
   assert.equal(e.app.activePack.questions.length, 11);
   assert.deepEqual(plain({ mastered: e.app.state.mastered[15], batch: e.app.state.challenge[15] }), before);
   e.app.State.setSubject("social");
-  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [22, 23]);
+  assert.deepEqual(plain(e.app.currentScope().units.map(u => u.id)), [22, 23, 31, 32]);
   e.window._goHome();
   const home = e.node("page-home").innerHTML;
   assert.match(home, /家鄉的自然環境/);

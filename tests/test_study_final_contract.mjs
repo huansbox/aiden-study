@@ -20,12 +20,30 @@ const perPartQuestion = () => ({ ...question("social", 31), type: "grouped_choic
   parts: [{ id: "a", text: "Synthetic first question", options: ["First A", "First B"] },
     { id: "b", text: "Synthetic second question", options: ["Second A", "Second B", "Second C"] }] });
 
-test("final candidate units parse and route by subject but remain unpublished", async () => {
+test("manual pack availability uses unit subjects and omits unloaded unpublished candidates", async () => {
+  const e = await boot(), pack = syntheticPack();
+  // Keep the reviewed synthetic candidate fixture independent of publication metadata.
+  e.window.KidsFamilyCore = { ...e.window.KidsFamilyCore, STUDY_UNITS:
+    e.window.KidsFamilyCore.STUDY_UNITS.map(u => ({ ...u, published: u.id < 24 && u.published })) };
+  for (const [subject, unit] of [["math", 24], ["science", 29], ["social", 31]]) {
+    const q = question(subject, unit); pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
+  }
+  e.app.importPrivatePack(JSON.stringify(pack)); e.app.renderHome();
+  const text = e.node("page-home").innerHTML.match(/id="pack-availability">([^<]+)</)[1];
+  assert.match(text, /數學第 6 單元 1 題/);
+  assert.match(text, /自然第 3 單元 1 題/);
+  assert.match(text, /社會第 3 單元 1 題/);
+  assert.match(text, /數學第 2 單元尚未載入/);
+  assert.doesNotMatch(text, /社會第 [6-9] 單元|數學第 [7-9] 單元|自然第 4 單元|社會第 4 單元/);
+});
+
+
+test("final candidate units parse and route by subject with only reviewed science/social published", async () => {
   const pack = syntheticPack(); pack.revision++;
   for (const [subject, ids] of Object.entries(units)) for (const unit of ids) {
     const q = question(subject, unit); parse(q);
     pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
-    assert.equal(globalThis.KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).published, false);
+    assert.equal(globalThis.KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).published, subject !== "math");
     for (const wrong of Object.keys(units).filter(s => s !== subject)) {
       assert.throws(() => parse({ ...q, subject: wrong, id: q.id.replace(subject, wrong) }));
     }

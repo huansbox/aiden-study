@@ -122,7 +122,7 @@ test("subject switch reaches science true_false and choice without touching chil
   app.destroy();
 });
 
-test("preview uses family metadata for candidate final units without publishing or child writes", async () => {
+test("preview uses family metadata for published final units without child writes", async () => {
   const pack = scienceSyntheticPack();
   const q = { ...pack.questions[7], id: "science-g4s1-synthetic-final-29-v1", unit: 29 };
   pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
@@ -130,7 +130,7 @@ test("preview uses family metadata for candidate final units without publishing 
   app.handle("subject", { value: "science" });
   app.handle("unit", { value: "29" });
   const meta = h.context.KidsFamilyCore.STUDY_UNITS.find(unit => unit.id === 29);
-  assert.equal(meta.published, false);
+  assert.equal(meta.published, true);
   assert.ok(h.host.innerHTML.includes(meta.name));
   assert.equal(app.state.unit, 29);
   assert.equal(h.forbiddenTouches, 0);

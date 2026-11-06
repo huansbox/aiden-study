@@ -40,10 +40,10 @@
     {"id":26,"num":8,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 8 單元（內容準備中）"},
     {"id":27,"num":9,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 9 單元（內容準備中）"},
     {"id":28,"num":10,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 10 單元（內容準備中）"},
-    {"id":29,"num":3,"term":"g4-s1","subject":"science","semester":"final","published":false,"name":"第 3 單元：有趣的聲光現象"},
-    {"id":30,"num":4,"term":"g4-s1","subject":"science","semester":"final","published":false,"name":"第 4 單元：好玩的電路"},
-    {"id":31,"num":3,"term":"g4-s1","subject":"social","semester":"final","published":false,"name":"第 3 單元（內容準備中）"},
-    {"id":32,"num":4,"term":"g4-s1","subject":"social","semester":"final","published":false,"name":"第 4 單元（內容準備中）"}
+    {"id":29,"num":3,"term":"g4-s1","subject":"science","semester":"final","published":true,"subtopics":["聲音與光"],"name":"第 3 單元：有趣的聲光現象"},
+    {"id":30,"num":4,"term":"g4-s1","subject":"science","semester":"final","published":true,"subtopics":["電路與用電"],"name":"第 4 單元：好玩的電路"},
+    {"id":31,"num":3,"term":"g4-s1","subject":"social","semester":"final","published":true,"subtopics":["信仰與生活","老街與生活"],"name":"第 3 單元：家鄉的傳統信仰與老街"},
+    {"id":32,"num":4,"term":"g4-s1","subject":"social","semester":"final","published":true,"subtopics":["生活作息","傳統節慶","現代節日"],"name":"第 4 單元：家鄉的作息、節慶與節日"}
   ].map(Object.freeze));
   const studyUnit = (id) => STUDY_UNITS.find((unit) => unit.id === id);
   function availableStudyUnit(id, profile) {

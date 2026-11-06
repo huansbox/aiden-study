@@ -1,5 +1,5 @@
 import {act,restore,current,label,knownFor,nextSteps,expectedPoints,suggestedTarget} from './lesson-core.js?v=20261024-five-why-v3';
-import {openPlatform} from './platform.js?v=20261024-five-why-v3';
+import {openPlatform} from './platform.js?v=20261107-science-social-release';
 import {diagramLayout} from './diagram-layout.js?v=20261024-five-why-v3';
 
 const root=document.getElementById('app'),preview=new URLSearchParams(location.search).get('preview')==='1';

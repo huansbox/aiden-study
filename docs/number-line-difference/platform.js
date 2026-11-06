@@ -4,7 +4,7 @@ export async function openPlatform(preview) {
   if (!['aiden','bingpu'].includes(child)) throw Error('請從孩子首頁開啟，或使用家長試玩。');
   // preview 在這個分支之前返回，不載入家庭模組、不接觸孩子 storage。
   for (const src of ['device-auth.js','family-core.js','collection-core.js','family-client.js','collection-client.js']) {
-    await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='../shared/'+src+'?v=20261024-five-why-v3';script.onload=resolve;script.onerror=()=>reject(Error('家庭連線程式未能載入，請重新整理。'));document.head.append(script);});
+    await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='../shared/'+src+'?v='+(src==='family-core.js'?'20261107-science-social-release':'20261024-five-why-v3');script.onload=resolve;script.onerror=()=>reject(Error('家庭連線程式未能載入，請重新整理。'));document.head.append(script);});
   }
   await window.KidsAuth.ready;
   if (window.KidsAuth.state.status === 'required') throw Error('請回孩子首頁，讓家長重新連接家庭。');
