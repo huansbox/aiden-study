@@ -13,6 +13,7 @@ import base64
 import binascii
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -35,7 +36,7 @@ MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
 SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19, 24, 25, 26, 27, 28}, "science": {20, 21, 29, 30}, "social": {22, 23, 31, 32}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
-ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice"}
+ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
@@ -200,6 +201,8 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
         if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] not in {22, 23, 31, 32})) or (item["digitalAdaptation"] == "fill_in_blank:text" and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
+        if item["digitalAdaptation"] == "circuit_connect" and (subject != "science" or item["unit"] != 30):
+            raise PackBuildError(f"mapping circuit scope is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
             if item["appId"] != expected_id or item["originalId"] != expected_original or item["unit"] != 15:
@@ -235,7 +238,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
 def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any]) -> dict[str, Any]:
     expected_id, adaptation = mapping["appId"], mapping["digitalAdaptation"]
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
-    expected_fields = base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
+    expected_fields = ({"circuit"} if adaptation == "circuit_connect" else set()) | base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
     if isinstance(question, dict) and "material" in question:
         expected_fields.add("material")
     if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select" and mapping["unit"] == 23:
@@ -255,7 +258,21 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
         max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] in {22, 23, 31, 32} else 32 * 1024
         _validate_material(question["material"], f"question {practice_id} material", max_png_bytes)
 
-    if adaptation == "multiple_choice":
+    if adaptation == "circuit_connect":
+        ids = ["battery-positive", "battery-negative", "bulb-glass", "bulb-shell", "bulb-base"]
+        if subject != "science" or question["unit"] != 30 or question["type"] != adaptation or question["options"] != [] or question["answer"] != "closed" or question.get("material", {}).get("kind") != "png":
+            raise PackBuildError(f"question {practice_id} circuit scope or shape is invalid")
+        _require_exact_keys(question["circuit"], {"terminals"}, f"question {practice_id} circuit")
+        nodes = question["circuit"]["terminals"]
+        if not isinstance(nodes, list) or len(nodes) != 5:
+            raise PackBuildError(f"question {practice_id} circuit needs five terminals")
+        for index, node in enumerate(nodes):
+            _require_exact_keys(node, {"id", "x", "y"}, f"question {practice_id} terminal")
+            if node["id"] != ids[index] or type(node["x"]) is not int or type(node["y"]) is not int or not 40 <= node["x"] <= 960 or not 40 <= node["y"] <= 660 or any(math.hypot(node["x"] - other["x"], node["y"] - other["y"]) < 90 for other in nodes[:index]):
+                raise PackBuildError(f"question {practice_id} terminal position is invalid")
+        if nodes[0]["x"] != nodes[1]["x"] or nodes[1]["y"] - nodes[0]["y"] < 120:
+            raise PackBuildError(f"question {practice_id} battery position is invalid")
+    elif adaptation == "multiple_choice":
         allowed_counts = {"math": {4}, "science": {3, 4}, "social": {2, 3, 4}}[subject]
         if question["type"] != "multiple_choice" or len(question["options"]) not in allowed_counts:
             raise PackBuildError(f"question {practice_id} has an unsupported multiple choice option count")
@@ -494,6 +511,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         tuple((part.get("id"), part.get("text"), tuple(part["options"])) if "options" in part else (part.get("id"), part.get("text")) for part in question.get("parts", [])) if "parts" in question else None,
         json.dumps(question.get("material"), ensure_ascii=False, sort_keys=True) if "material" in question else None,
         *([tuple(tuple(vector) for vector in question["acceptedAnswers"])] if "acceptedAnswers" in question else []),
+        *([tuple((node["id"], node["x"], node["y"]) for node in question["circuit"]["terminals"])] if "circuit" in question else []),
     )
 
 

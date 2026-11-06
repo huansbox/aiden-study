@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import { circuitQuestion } from "./helpers/synthetic-circuit.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
@@ -63,6 +64,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   vm.runInContext(source("private-pack.js"), context);
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
+  vm.runInContext(source("circuit.js"), context);
   vm.runInContext(source("science-topics.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
@@ -158,6 +160,23 @@ test("preview retains separate choices for each part and reveals each original c
   app.handle("answer-group", { index: "1", value: "3" }); app.handle("check");
   assert.equal(app.state.result, "correct"); assert.equal(h.forbiddenTouches, 0);
   app.destroy();
+});
+
+test("preview circuit places the battery, rejects glass, redraws and grades without child writes", async () => {
+  const pack = syntheticPack(), q = circuitQuestion();
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic circuit explanation";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "science" }); app.handle("unit", { value: "30" });
+  app.handle("check"); assert.equal(app.state.result, "");
+  const act = (action, value) => app.handle("circuit", { circuitAction: action, circuitValue: value });
+  act("place");
+  for (const id of ["battery-positive", "bulb-glass", "battery-negative", "bulb-base"]) act("terminal", id);
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  act("delete", "0"); act("terminal", "battery-positive"); act("terminal", "bulb-shell");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.match(h.host.innerHTML, /正負對調也可/);
+  app.handle("retry-answer"); assert.equal(app.state.circuit.batteryPlaced, false);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
 });
 
 test("science three-choice preview labels and scores all three options without child writes", async () => {
@@ -591,7 +610,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
   assert.match(source("preview.html"), /preview\.js\?v=20261107-science-social-release/);
   assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily.", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
@@ -602,6 +621,7 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
 test("shared answer seam retains Study number and comparison equivalence rules", () => {
   const context = vm.createContext({});
   vm.runInContext(source("answer.js"), context);
+  vm.runInContext(source("circuit.js"), context);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63.0"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63abc"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, " ＞ "), true);

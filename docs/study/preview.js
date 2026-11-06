@@ -15,7 +15,7 @@
   };
   const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
   const selectFill = q => q?.type === "fill_in_blank" && q.blanks[0]?.input === "select";
-  const answerLabel = (q) => q.type === "multiple_choice"
+  const answerLabel = (q) => q.type === "circuit_connect" ? "電池兩端各用一條線，分別接到燈泡金屬殼與底部接點；正負對調也可。" : q.type === "multiple_choice"
     ? `${q.answer}. ${q.options[Number(q.answer) - 1]}`
     : q.type === "true_false" ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
     : q.type === "grouped_choice" ? q.parts.map((part, index) => `${part.id}：${(part.options || q.options)[Number(q.answer[index]) - 1]}`).join("；")
@@ -60,6 +60,7 @@
     const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic));
     const current = () => filtered()[state.questionIndex] || null;
     function clearAnswer() {
+      state.circuit = StudyCircuit.initial();
       state.partIndex = 0;
       state.values = [];
       state.result = "";
@@ -79,6 +80,7 @@
       if (q && state.values.length !== answerCount) state.values = Array(answerCount).fill("");
     }
     function answerArea(q) {
+      if (q.type === "circuit_connect") return StudyCircuit.render(q, state.circuit || StudyCircuit.initial());
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
       if (q.type === "true_false") return `<div class="preview-options">${[["true", "O", "正確"], ["false", "X", "錯誤"]].map(([value, label, caption]) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${value}" aria-pressed="${state.values[0] === value}"><span>${label}</span><span>${caption}</span></button>`).join("")}</div>`;
       if (q.type === "grouped_choice") {
@@ -138,9 +140,9 @@
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
-          ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
-          <div class="preview-answer-actions"><button type="button" data-action="check" ${(q.type === "fill_in_blank" ? StudyAnswer.hasCompleteBlanks(q, state.values) : state.values.every((value) => String(value).trim())) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
+        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "circuit_connect" ? "畫電路" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
+          ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${q.type === "circuit_connect" ? "" : StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
+          <div class="preview-answer-actions"><button type="button" data-action="check" ${(q.type === "circuit_connect" ? StudyCircuit.complete(state.circuit) : q.type === "fill_in_blank" ? StudyAnswer.hasCompleteBlanks(q, state.values) : state.values.every((value) => String(value).trim())) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
           ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}${q.type === "grouped_choice" ? '</div>' : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
       focusControl(focusAction);
@@ -148,6 +150,7 @@
     }
     function check() {
       const q = current();
+      if (q?.type === "circuit_connect") { if (!StudyCircuit.complete(state.circuit)) return; state.result = StudyCircuit.grade(state.circuit) ? "correct" : "wrong"; render(); return; }
       if (!q || state.values.some((value) => !String(value).trim()) || (q.type === "fill_in_blank" && !StudyAnswer.hasCompleteBlanks(q, state.values))) return;
       const correct = q.type === "grouped_choice"
         ? q.parts.every((_, index) => state.values[index] === q.answer[index])
@@ -159,7 +162,8 @@
     }
     function handle(action, data = {}) {
       if (state.destroyed) return;
-      if (action === "subject") { state.subject = SUBJECTS.has(data.value) ? data.value : "math"; state.unit = unitsForSubject()[0]; state.subtopic = ""; resetQuestion(); render(); selectUnit(); }
+      if (action === "circuit") { state.circuit = StudyCircuit.update(state.circuit, data.circuitAction, data.circuitValue); state.result = ""; state.revealed = false; render(); }
+      else if (action === "subject") { state.subject = SUBJECTS.has(data.value) ? data.value : "math"; state.unit = unitsForSubject()[0]; state.subtopic = ""; resetQuestion(); render(); selectUnit(); }
       else if (action === "unit") { state.unit = Number(data.value); state.subtopic = ""; resetQuestion(); render(); selectUnit(); }
       else if (action === "subtopic") { state.subtopic = String(data.value || ""); resetQuestion(); render(); }
       else if (action === "question") { resetQuestion(Number(data.value ?? data.index)); render("question"); }
@@ -178,10 +182,10 @@
       else if (action === "retry") onRetry?.();
     }
     const onClick = (event) => {
-      const button = event.target.closest?.("[data-action]");
+      const button = event.target.closest?.("[data-action], [data-circuit-action]");
       if (!button || button.disabled) return;
       if (["answer-number", "subject", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
-      handle(button.dataset.action, button.dataset);
+      handle(button.dataset.circuitAction ? "circuit" : button.dataset.action, button.dataset);
     };
     const onChange = (event) => {
       const control = event.target.closest?.("[data-action]");

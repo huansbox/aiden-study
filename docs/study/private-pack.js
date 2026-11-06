@@ -21,7 +21,8 @@
       q.parts ? q.parts.map(part => Object.hasOwn(part, "options") ? [part.id, part.text, part.options] : [part.id, part.text]) : null,
       q.material ? q.material.kind === "png" ? ["png", q.material.data, q.material.alt]
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null,
-      ...(Object.hasOwn(q, "acceptedAnswers") ? [q.acceptedAnswers] : [])]);
+      ...(Object.hasOwn(q, "acceptedAnswers") ? [q.acceptedAnswers] : []),
+      ...(q.circuit ? [q.circuit.terminals.map(node => [node.id, node.x, node.y])] : [])]);
   }
   function pngBytes(data, maxBytes) {
     if (typeof data !== "string" || !/^data:image\/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(data)) throw new Error("PNG 格式無效。");
@@ -104,6 +105,7 @@
       if (q.type === "fill_in_blank") fields.push("blanks");
       if (q.type === "fill_in_blank" && q.subject === "social" && q.unit === 23 && Object.hasOwn(q, "acceptedAnswers")) fields.push("acceptedAnswers");
       if (q.type === "grouped_choice") fields.push("parts");
+      if (q.type === "circuit_connect") fields.push("circuit");
       if (Object.hasOwn(q, "material")) fields.push("material");
       const subjectUnits = SUBJECT_UNITS[q.subject] || [];
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
@@ -113,7 +115,17 @@
         // subject/unit 身分已在上方驗證；僅四上社會原圖細字需要較大 PNG。
         validateMaterial(q.material, q.subject === "social" && [22, 23, 31, 32].includes(q.unit) ? 192 * 1024 : 32 * 1024);
       }
-      if (q.type === "multiple_choice") {
+      if (q.type === "circuit_connect") {
+        const ids = ["battery-positive", "battery-negative", "bulb-glass", "bulb-shell", "bulb-base"];
+        if (q.subject !== "science" || q.unit !== 30 || q.options.length || q.answer !== "closed" || q.material?.kind !== "png" ||
+            !keys(q.circuit, ["terminals"]) || !Array.isArray(q.circuit.terminals) || q.circuit.terminals.length !== 5) throw new Error("限定電路格式無效。");
+        const nodes = q.circuit.terminals;
+        for (const [index, node] of nodes.entries()) {
+          if (!keys(node, ["id", "x", "y"]) || node.id !== ids[index] || !Number.isInteger(node.x) || !Number.isInteger(node.y) || node.x < 40 || node.x > 960 || node.y < 40 || node.y > 660 ||
+              nodes.slice(0, index).some(other => Math.hypot(node.x - other.x, node.y - other.y) < 90)) throw new Error("電路接點格式或距離無效。");
+        }
+        if (nodes[0].x !== nodes[1].x || nodes[1].y - nodes[0].y < 120) throw new Error("電池接點位置無效。");
+      } else if (q.type === "multiple_choice") {
         if (!({ math: [4], science: [3, 4], social: [2, 3, 4] }[q.subject] || []).includes(q.options.length) || !q.options.every(text) ||
             typeof q.answer !== "string" || !/^[1-4]$/.test(q.answer) || Number(q.answer) > q.options.length) throw new Error("選擇題選項數量或答案無效。");
       } else if (q.type === "true_false") {

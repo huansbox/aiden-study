@@ -27,6 +27,14 @@
 
 Python builder、瀏覽器／Worker 共用 validator、孩子畫面與家長試玩使用相同契約。作答結果仍即時保存，獎勵只在整輪結束出現。
 
+## 一電池一燈泡連線
+
+`circuit_connect` 僅適用 science unit 30；`options=[]`、`answer="closed"`，`material` 必須是 32 KiB 內的原燈泡 PNG。`circuit.terminals` 固定五個接點，依序為 `battery-positive`、`battery-negative`、`bulb-glass`、`bulb-shell`、`bulb-base`，各含整數 `x/y`，使用 1000×700 的互動區座標。接點保留至少 90 座標單位距離；兩個電池接點同 x 且上下至少 120。位置同樣屬於 immutable 作答語意。
+
+孩子先按「放入一顆電池」，再點選兩個端點新增電線；可刪除單線或全部重畫。電池保留正負標示，燈泡接點只用相同外觀與中性編號，玻璃接點也可選。完整作答是 `batteryPlaced=true` 加兩條不同、非自接的無向 edges；電池正負兩端各接金屬殼／底接點才正確，接受線序、端點順序與正負對調。玻璃、短路、接點重用或缺線都不通關。
+
+原燈泡圖只作裁切與等比例放大；原完整題圖、crop 座標與指紋留在私人來源紀錄。這是限定材料的連線操作，不宣稱驗證自由手繪能力；自由列舉節能方法也不以少量文字別名冒充完整語意評分。
+
 ## 追加與重建
 
 `scripts/build_private_study_catalog.mjs` 的 `appendCatalog()` 接受完整前版 source、manifest 與所有 shard bytes，逐片驗證內容與來源一致，再追加新活動的 shards。既有 descriptor、題目、來源、解說及原始 bytes 都保持；缺件或舊內容變動會失敗。沒有新題時可用同一 API 核對原 manifest／shards 的精確重建。

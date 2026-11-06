@@ -175,6 +175,32 @@ def test_per_part_choices_keep_subject_scope_bounds_and_immutable_semantics():
     assert private_builder._question_semantic(changed) != private_builder._question_semantic(q)
 
 
+def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
+    q = {"id": "science-g4s1-synthetic-circuit-v1", "subject": "science", "unit": 30,
+         "type": "circuit_connect", "text": "Synthetic circuit", "subtopic": "Synthetic",
+         "options": [], "answer": "closed", "material": {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic bulb"},
+         "circuit": {"terminals": [
+             {"id": "battery-positive", "x": 250, "y": 280}, {"id": "battery-negative", "x": 250, "y": 460},
+             {"id": "bulb-glass", "x": 735, "y": 197}, {"id": "bulb-shell", "x": 802, "y": 353},
+             {"id": "bulb-base", "x": 735, "y": 439}]}}
+
+    def validate(q):
+        return private_builder._validate_question(q, "SYNTHETIC", {"appId": q["id"], "unit": q["unit"], "digitalAdaptation": "circuit_connect"})
+
+    validate(q)
+    for mutate in (lambda q: q.update(unit=29), lambda q: q.update(answer="open"),
+                   lambda q: q.pop("material"), lambda q: q["circuit"]["terminals"].pop(),
+                   lambda q: q["circuit"]["terminals"][2].update(x=0),
+                   lambda q: q["circuit"]["terminals"][2].update(id="custom")):
+        invalid = copy.deepcopy(q)
+        mutate(invalid)
+        with pytest.raises(PackBuildError):
+            validate(invalid)
+    moved = copy.deepcopy(q)
+    moved["circuit"]["terminals"][2]["x"] += 1
+    assert private_builder._question_semantic(q) != private_builder._question_semantic(moved)
+
+
 def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
     values = _fixture()
     paths = _paths(tmp_path, values)
