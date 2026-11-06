@@ -113,6 +113,68 @@ def _paths(tmp_path: Path, values):
     )
 
 
+@pytest.mark.parametrize("subject,unit", [("math", n) for n in range(24, 29)] + [("science", 29), ("science", 30), ("social", 31), ("social", 32)])
+def test_final_unit_authoring_builder_and_browser_parity(tmp_path, subject, unit):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    app_id = f"{subject}-g4s1-synthetic-final-{unit}-v1"
+    q = {"id": app_id, "subject": subject, "unit": unit, "type": "multiple_choice",
+         "text": "Synthetic question", "subtopic": "Synthetic topic", "options": ["A", "B", "C", "D"], "answer": "1"}
+    adaptation = "multiple_choice"
+    if subject == "social":
+        q.update(type="fill_in_blank", text="Synthetic （１）", answer="", blanks=[{"input": "select", "answer": "1"}])
+        adaptation = "fill_in_blank:select"
+    if subject != "math":
+        q["material"] = {"kind": "png", "data": _synthetic_png(), "alt": "Synthetic diagram"}
+    common = {"practiceId": "SYNTHETIC-FINAL", "originalId": "synthetic-final", "paperId": "synthetic-paper",
+              "questionPage": 1, "answerPage": 2, "concept": "Synthetic concept"}
+    curated["items"].append({**common, "adaptation": "Synthetic adaptation", "verification": private_builder.OFFICIAL_ANSWER_VERIFIED, "question": q})
+    metadata["items"].append({**common, "appId": app_id, "unit": unit, "contextPolicy": "Synthetic context",
+                              "digitalAdaptation": adaptation, "sourceAdaptation": "Synthetic adaptation", "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    pack = build_pack(*_paths(tmp_path, values))
+    output = _write(tmp_path / "pack.json", pack)
+    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));"
+    result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert pack["questions"][-1]["unit"] == unit
+    q["unit"] = metadata["items"][-1]["unit"] = 33
+    with pytest.raises(PackBuildError):
+        build_pack(*_paths(tmp_path / "invalid", values))
+
+
+def test_per_part_choices_keep_subject_scope_bounds_and_immutable_semantics():
+    q = {"id": "social-g4s1-synthetic-final-group-v1", "subject": "social", "unit": 31,
+         "type": "grouped_choice", "text": "Synthetic context", "subtopic": "Synthetic",
+         "options": [], "answer": "23", "parts": [
+             {"id": "a", "text": "First", "options": ["A", "B"]},
+             {"id": "b", "text": "Second", "options": ["C", "D", "E"]}]}
+
+    def validate(question):
+        return private_builder._validate_question(question, "SYNTHETIC", {
+            "appId": question["id"], "unit": question["unit"], "digitalAdaptation": "grouped_choice"})
+
+    validate(q)
+    validate({**q, "unit": 32})
+    for unit in (22, 23):
+        with pytest.raises(PackBuildError):
+            validate({**q, "unit": unit})
+    for mutate in (
+        lambda q: q.update(answer="33"),
+        lambda q: q.update(options=["A", "B"]),
+        lambda q: q["parts"][0].pop("options"),
+        lambda q: q["parts"][0].update(options=["A"]),
+        lambda q: q["parts"][0].update(options=["A", "B", "C", "D", "E"]),
+    ):
+        invalid = copy.deepcopy(q)
+        mutate(invalid)
+        with pytest.raises(PackBuildError):
+            validate(invalid)
+    changed = copy.deepcopy(q)
+    changed["parts"][0]["options"].reverse()
+    assert private_builder._question_semantic(changed) != private_builder._question_semantic(q)
+
+
 def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
     values = _fixture()
     paths = _paths(tmp_path, values)

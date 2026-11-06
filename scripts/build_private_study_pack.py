@@ -33,7 +33,7 @@ PUBLIC_QUESTIONS = ROOT / "docs" / "study" / "questions.json"
 PACK_ID = "g4-s1-math-u1"
 MAX_BYTES = 256 * 1024
 # The six original IDs are a required baseline, not the complete current set.
-SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19}, "science": {20, 21}, "social": {22, 23}}
+SUBJECT_UNITS = {"math": {15, 16, 17, 18, 19, 24, 25, 26, 27, 28}, "science": {20, 21, 29, 30}, "social": {22, 23, 31, 32}}
 ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v[1-9][0-9]*")
 ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
@@ -198,7 +198,7 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         seen_ids.add(app_id)
         if type(item["unit"]) is not int or item["unit"] not in SUBJECT_UNITS[subject]:
             raise PackBuildError(f"mapping unit is outside the frozen contract for {practice_id}")
-        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] not in {22, 23})) or (item["digitalAdaptation"] == "fill_in_blank:text" and (subject != "social" or item["unit"] != 23)):
+        if not isinstance(item["digitalAdaptation"], str) or item["digitalAdaptation"] not in ADAPTATIONS or (subject == "science" and item["digitalAdaptation"].startswith("fill_in_blank")) or (subject == "social" and item["digitalAdaptation"] not in {"multiple_choice", "true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (subject == "math" and item["digitalAdaptation"] in {"true_false", "grouped_choice", "fill_in_blank:select", "fill_in_blank:text"}) or (item["digitalAdaptation"] == "fill_in_blank:select" and (subject != "social" or item["unit"] not in {22, 23, 31, 32})) or (item["digitalAdaptation"] == "fill_in_blank:text" and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping digital adaptation is unsupported for {practice_id}")
         if practice_id in EXPECTED:
             expected_id, expected_original, expected_adaptation = EXPECTED[practice_id]
@@ -249,10 +249,10 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     if not isinstance(question["options"], list) or not isinstance(question["answer"], str):
         raise PackBuildError(f"question {practice_id} options or answer has the wrong type")
     if "material" in question:
-        if subject != "science" and not ((subject == "math" and question["unit"] == 17 or subject == "social" and question["unit"] in {22, 23}) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
-            raise PackBuildError(f"question {practice_id} material is only allowed for science, math unit 17 PNG, or social units 22-23 PNG")
+        if subject != "science" and not ((subject == "math" and question["unit"] == 17 or subject == "social" and question["unit"] in {22, 23, 31, 32}) and isinstance(question["material"], dict) and question["material"].get("kind") == "png"):
+            raise PackBuildError(f"question {practice_id} material is only allowed for science, math unit 17 PNG, or social units 22-23/31-32 PNG")
         # Identity/scope was checked above, before selecting the PNG byte limit.
-        max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] in {22, 23} else 32 * 1024
+        max_png_bytes = 192 * 1024 if subject == "social" and question["unit"] in {22, 23, 31, 32} else 32 * 1024
         _validate_material(question["material"], f"question {practice_id} material", max_png_bytes)
 
     if adaptation == "multiple_choice":
@@ -269,20 +269,26 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     elif adaptation == "grouped_choice":
         options, parts, answer = question["options"], question["parts"], question["answer"]
         max_options = 5 if subject == "social" else 4
-        if question["type"] != "grouped_choice" or not 2 <= len(options) <= max_options or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options):
+        per_part = subject == "social" and question["unit"] in {31, 32} and options == []
+        if question["type"] != "grouped_choice" or (not per_part and (not 2 <= len(options) <= max_options or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options))):
             raise PackBuildError(f"question {practice_id} group options are invalid")
-        if not isinstance(parts, list) or not 2 <= len(parts) <= 8 or len(answer) != len(parts) or any(digit not in "12345" or int(digit) > len(options) for digit in answer):
+        if not isinstance(parts, list) or not 2 <= len(parts) <= 8 or len(answer) != len(parts):
             raise PackBuildError(f"question {practice_id} group parts or answer are invalid")
         ids = set()
-        for part in parts:
-            _require_exact_keys(part, {"id", "text"}, f"question {practice_id} part")
+        for index, part in enumerate(parts):
+            _require_exact_keys(part, {"id", "text", "options"} if per_part else {"id", "text"}, f"question {practice_id} part")
             if not isinstance(part["id"], str) or not re.fullmatch(r"[A-Za-z0-9-]{1,32}", part["id"]) or part["id"] in ids or not isinstance(part["text"], str) or not part["text"].strip() or len(part["text"]) > 600:
                 raise PackBuildError(f"question {practice_id} group part is invalid")
+            choices = part["options"] if per_part else options
+            if per_part and (not isinstance(choices, list) or not 2 <= len(choices) <= 4 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in choices)):
+                raise PackBuildError(f"question {practice_id} group part options are invalid")
+            if answer[index] not in "12345" or int(answer[index]) > len(choices):
+                raise PackBuildError(f"question {practice_id} group part answer is invalid")
             ids.add(part["id"])
     elif adaptation in {"fill_in_blank:select", "fill_in_blank:text"}:
         blanks, options = question.get("blanks"), question["options"]
         written = adaptation == "fill_in_blank:text"
-        if subject != "social" or question["unit"] not in ({23} if written else {22, 23}) or question["type"] != "fill_in_blank" or question["answer"] != "" or (options != [] if written else not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options)):
+        if subject != "social" or question["unit"] not in ({23} if written else {22, 23, 31, 32}) or question["type"] != "fill_in_blank" or question["answer"] != "" or (options != [] if written else not 2 <= len(options) <= 15 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in options)):
             raise PackBuildError(f"question {practice_id} select word bank is invalid")
         if not isinstance(blanks, list) or not 1 <= len(blanks) <= 13:
             raise PackBuildError(f"question {practice_id} must contain 1-13 select blanks")
@@ -485,7 +491,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         question.get("subject"), question.get("unit"), question.get("subtopic"),
         question.get("type"), question.get("text"), tuple(question.get("options", [])),
         question.get("answer"), blank_semantic,
-        tuple((part.get("id"), part.get("text")) for part in question.get("parts", [])) if "parts" in question else None,
+        tuple((part.get("id"), part.get("text"), tuple(part["options"])) if "options" in part else (part.get("id"), part.get("text")) for part in question.get("parts", [])) if "parts" in question else None,
         json.dumps(question.get("material"), ensure_ascii=False, sort_keys=True) if "material" in question else None,
         *([tuple(tuple(vector) for vector in question["acceptedAnswers"])] if "acceptedAnswers" in question else []),
     )

@@ -39,7 +39,10 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
   });
   ctx.window = ctx;
   if (ports.family) ctx.KidsFamily = { homeHref: () => "/", mount: () => ({...ports.family, profile: () => ({apps:["study"], archivedStudyUnits:[], ...ports.family.profile()})}) };
-  vm.runInContext(read("docs/shared/family-core.js"), ctx);
+  // Test-only publication state; never changes the production metadata file.
+  const core = read("docs/shared/family-core.js").replace(/(\{"id":(\d+),[^\n]+"published":)false/g,
+    (match, prefix, id) => ports.publishedStudyUnits?.includes(Number(id)) ? `${prefix}true` : match);
+  vm.runInContext(core, ctx);
   vm.runInContext(read("docs/shared/sync-v1.js"), ctx);
   let syncConfig;
   const originalClient = ctx.KidsSyncV1.createSyncClient;

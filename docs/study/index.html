@@ -567,7 +567,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261106-study-visibility"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
 <script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
 <script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261024-social-u1-select"></script><script src="pack-catalog.js?v=20261023-social-u2"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
+<script src="./private-pack.js?v=20261106-final-units"></script><script src="pack-catalog.js?v=20261106-final-units"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
 <script src="./science-topics.js?v=20261023-social-u2-topics"></script>
 <script>
 (function() {
@@ -2267,7 +2267,7 @@ function formatAnswer(q) {
   if (q.type === "fill_in_blank") {
     return q.blanks.map((b, i) => `（${i + 1}）${b.input === "select" ? q.options[Number(b.answer) - 1] : COMPARE_DISPLAY[b.answer] || b.answer}`).join("　");
   }
-  if (q.type === "grouped_choice") return q.parts.map((part, i) => `${part.id}：${q.options[Number(q.answer[i]) - 1]}`).join("；");
+  if (q.type === "grouped_choice") return q.parts.map((part, i) => `${part.id}：${(part.options || q.options)[Number(q.answer[i]) - 1]}`).join("；");
   if (q.type === "vertical_calc") {
     return q.op === "long_division"
       ? `商 ${q.answer.quotient}、餘數 ${q.answer.remainder}`
@@ -2891,7 +2891,7 @@ function renderQuiz() {
       document.getElementById("group-position").textContent = `小題 ${i + 1}／${q.parts.length}`;
       document.getElementById("group-prev").disabled = i === 0;
       document.getElementById("group-next").disabled = i === q.parts.length - 1;
-      document.getElementById("group-parts").innerHTML = `<div class="group-part"><span class="group-part-question">${escapeHtml(part.text)}</span><div class="group-options">${q.options.map((option, index) => `<button type="button" class="group-option" data-group-value="${index + 1}" aria-pressed="${quiz._groupValues[i] === String(index + 1)}" ${quiz.isAnswered ? "disabled" : ""}><span class="opt-label">${index + 1}</span><span>${escapeHtml(option)}</span></button>`).join("")}</div>${quiz.isAnswered ? `<span class="group-feedback">${quiz._groupResults[i] ? "答對" : `正解：${escapeHtml(q.options[Number(q.answer[i]) - 1])}`}</span>` : ""}</div>`;
+      document.getElementById("group-parts").innerHTML = `<div class="group-part"><span class="group-part-question">${escapeHtml(part.text)}</span><div class="group-options">${(part.options || q.options).map((option, index) => `<button type="button" class="group-option" data-group-value="${index + 1}" aria-pressed="${quiz._groupValues[i] === String(index + 1)}" ${quiz.isAnswered ? "disabled" : ""}><span class="opt-label">${index + 1}</span><span>${escapeHtml(option)}</span></button>`).join("")}</div>${quiz.isAnswered ? `<span class="group-feedback">${quiz._groupResults[i] ? "答對" : `正解：${escapeHtml((part.options || q.options)[Number(q.answer[i]) - 1])}`}</span>` : ""}</div>`;
       document.querySelectorAll("#group-parts [data-group-value]").forEach(button => { button.onclick = () => {
         quiz._groupValues[i] = button.dataset.groupValue;
         renderPart();
