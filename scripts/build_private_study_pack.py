@@ -41,6 +41,7 @@ ID_RE = re.compile(r"(math|science|social)-g4s1-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-v
 ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison", "fill_in_blank:select", "fill_in_blank:text", "true_false", "grouped_choice", "circuit_connect", "choice_set", "fill_in_blank:decimal", "fill_in_blank:decimal_expression", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:mixed"}
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
+DOCUMENTED_OFFICIAL_CORRECTION = "independently_recomputed_with_documented_official_correction"
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
@@ -224,9 +225,12 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         for key in ("originalId", "paperId", "concept", "contextPolicy", "sourceAdaptation", "reviewStatus"):
             _require_nonempty(item[key], f"mapping {practice_id} {key}")
         allowed_reviews = {OFFICIAL_ANSWER_VERIFIED, NO_OFFICIAL_ANSWER_VERIFIED}
+        final_math = subject == "math" and item["unit"] in {24, 25, 26, 27, 28}
+        if final_math:
+            allowed_reviews.add(DOCUMENTED_OFFICIAL_CORRECTION)
         if subject == "social" and item["unit"] == 23:
             allowed_reviews.add(SEMANTIC_OFFICIAL_VERIFIED)
-        if (subject in {"science", "social"} and item["reviewStatus"] not in allowed_reviews) or (item["reviewStatus"] == SEMANTIC_OFFICIAL_VERIFIED and (subject != "social" or item["unit"] != 23)):
+        if ((subject in {"science", "social"} or final_math) and item["reviewStatus"] not in allowed_reviews) or (item["reviewStatus"] == SEMANTIC_OFFICIAL_VERIFIED and (subject != "social" or item["unit"] != 23)):
             raise PackBuildError(f"mapping {practice_id} answer review is not complete")
         if type(item["questionPage"]) is not int or item["questionPage"] < 1:
             raise PackBuildError(f"mapping {practice_id} questionPage must be a positive integer")

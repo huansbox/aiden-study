@@ -97,3 +97,15 @@
 `answer` 是不含等號的參考算式，`value` 是結果；兩者均參與 semantic。結果與各字面數字最多四位整數、兩位小數。允許加減、括號、可選 `＝結果`；以百分位整數精確計算。實際作答必須有運算子、結果正確、數字字面值的 multiset 與參考相同（`6.80` 與 `6.8` 同值）。只寫 `5.55`、用其他數字湊出結果，或寫錯等號右側都不通過。完整文法、界限與 Python API 見 [操作契約](study-math-interactions.md#有引導的小數列式與直式前置步驟)。
 
 換算題可將 `decimal` 換算格、`decimal_expression` 列式格與 `decimal` 結果格放在同一道題；每格結果明示，整題只記一次成果。保留原題文並另寫明本次數位引導路線；不可宣稱所有原始自由解法均支援。私人 provenance 記錄數位引導改編，公開測試一律使用合成資料。
+
+## Production 核答 provenance
+
+math 24–28 的 mapping `reviewStatus` 僅接受三種完成狀態；`pending`、未知字串或其他科目專用狀態不得建包。math 15–19 的既有規則不受這個新增 gate 影響。
+
+| reviewStatus | 適用證據 | answerPage |
+| --- | --- | --- |
+| `independently_recomputed_and_matches_official` | 獨立重算且與取得的官答一致 | 正整數 |
+| `independently_solved_twice_no_official_answer` | 未取得官答，已完成兩次獨立解題 | null |
+| `independently_recomputed_with_documented_official_correction` | 已取得官答，經獨立重算及具體證據確認需修正官答／定義解讀 | 正整數 |
+
+第三種不能冒充「官答一致」或「沒有官答」。修正理由摘要放既有 `sourceAdaptation`，完整證據與核定理由保存於私人內容 ledger；不增加題包中的私密資訊欄位。curated verification 仍須與 mapping reviewStatus 一致。此 gate 是資料狀態與頁碼一致性的檢查，不會自行完成內容獨立審查或 production 核准。

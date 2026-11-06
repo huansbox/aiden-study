@@ -1101,3 +1101,37 @@ def test_final_math_rational_contract_python_browser_parity(blank, valid):
         changed = copy.deepcopy(q)
         changed["blanks"][0]["range"]["maxInclusive"] = not blank["range"]["maxInclusive"]
         assert private_builder._question_semantic(q) != private_builder._question_semantic(changed)
+
+@pytest.mark.parametrize("unit", [24, 25, 26, 27, 28])
+@pytest.mark.parametrize("status,page,accepted", [
+    (private_builder.OFFICIAL_ANSWER_VERIFIED, 2, True),
+    (private_builder.NO_OFFICIAL_ANSWER_VERIFIED, None, True),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, 2, True),
+    ("pending", 2, False), ("unknown", 2, False), ("synthetic_only", 2, False),
+    (private_builder.SEMANTIC_OFFICIAL_VERIFIED, 2, False),
+    (private_builder.OFFICIAL_ANSWER_VERIFIED, None, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, None, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, True, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, 0, False),
+    (private_builder.NO_OFFICIAL_ANSWER_VERIFIED, 2, False),
+])
+def test_final_math_metadata_requires_completed_answer_review(unit, status, page, accepted):
+    metadata = copy.deepcopy(_fixture()[2])
+    row = copy.deepcopy(metadata["items"][0])
+    row.update(appId="math-g4s1-synthetic-review-v1", practiceId="SYNTHETIC-REVIEW", originalId="synthetic-review", unit=unit,
+               digitalAdaptation="multiple_choice", reviewStatus=status, answerPage=page)
+    metadata["items"].append(row)
+    if accepted:
+        assert private_builder._validate_metadata(metadata, metadata["revision"])["SYNTHETIC-REVIEW"]["reviewStatus"] == status
+    else:
+        with pytest.raises(PackBuildError): private_builder._validate_metadata(metadata, metadata["revision"])
+
+
+@pytest.mark.parametrize("unit", [15, 16, 17, 18, 19])
+def test_final_math_review_gate_does_not_change_legacy_math_metadata(unit):
+    metadata = copy.deepcopy(_fixture()[2])
+    row = copy.deepcopy(metadata["items"][0])
+    row.update(appId="math-g4s1-synthetic-legacy-review-v1", practiceId="SYNTHETIC-LEGACY", originalId="synthetic-legacy", unit=unit,
+               digitalAdaptation="multiple_choice", reviewStatus="synthetic_legacy_status", answerPage=2)
+    metadata["items"].append(row)
+    private_builder._validate_metadata(metadata, metadata["revision"])
