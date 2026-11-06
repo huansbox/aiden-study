@@ -3,6 +3,8 @@ import { readFileSync, writeFileSync, mkdirSync, realpathSync, existsSync, renam
 import { resolve, relative, isAbsolute, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
+import "../docs/study/math-interactions.js";
+import "../docs/study/math-geometry.js";
 import "../docs/study/private-pack.js";
 import "../docs/study/pack-catalog.js";
 const P = globalThis.StudyPrivatePack, C = globalThis.StudyPackCatalog;

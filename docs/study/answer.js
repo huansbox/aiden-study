@@ -33,13 +33,14 @@
   const isFinalMath = q => q.subject === "math" && [24, 25, 26, 27, 28].includes(q.unit);
   function canonicalFraction(value, form) {
     const input = String(value ?? "").trim();
-    if (/^[0-9]{1,6}$/.test(input)) return form === "mixed_or_whole" ? String(Number(input)) : null;
+    if (/^[0-9]{1,6}$/.test(input)) return ["mixed_or_whole", "any"].includes(form) ? String(Number(input)) : null;
     const match = /^(?:([0-9]{1,6})\s+)?([0-9]{1,6})\s*\/\s*([0-9]{1,6})$/.exec(input);
     if (!match) return null;
     const w = match[1] === undefined ? null : Number(match[1]), n = Number(match[2]), d = Number(match[3]);
     if (!d || form === "proper" && (w !== null || n >= d) || form === "improper" && (w !== null || n < d) || form === "proper_or_improper" && w !== null ||
         ["mixed", "mixed_or_whole"].includes(form) && (w === null || w < 1 || n < 1 || n >= d) ||
-        !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"].includes(form)) return null;
+        form === "any" && w !== null && n >= d ||
+        !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole", "any"].includes(form)) return null;
     return `${w === null ? "" : w + " "}${n}/${d}`;
   }
   function fractionValue(value, form) {

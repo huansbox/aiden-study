@@ -243,7 +243,7 @@ def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
     result = subprocess.run(["node", "-e", "const fs=require('node:fs');require('./docs/study/math-interactions.js');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'))", str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     if kind == "mixed":
-        for mutate in (lambda q: q["blanks"][1].update(form="any"), lambda q: q["blanks"][0].update(answer="0.521"), lambda q: q["blanks"][1].update(accept=["3 4/6"])):
+        for mutate in (lambda q: q["blanks"][1].update(form="unbounded"), lambda q: q["blanks"][0].update(answer="0.521"), lambda q: q["blanks"][1].update(accept=["3 4/6"])):
             invalid = copy.deepcopy(q)
             mutate(invalid)
             with pytest.raises(PackBuildError):

@@ -3,6 +3,8 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import "../../docs/study/math-interactions.js";
+import "../../docs/study/math-geometry.js";
 import "../../docs/study/private-pack.js";
 
 const baseHash = "98150515d8897c0240316d173fd8d94b47edae0804c05a271bb0431dbbe6b22c";

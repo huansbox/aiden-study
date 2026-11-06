@@ -18,7 +18,7 @@
 - `comparison`：`<`、`>`、`=`。
 - `select`：答案是原 `options` 的 1-based 字串索引。只要題組含 select，頂層需有 2–15 個原選項；沒有 select 則 `options=[]`。不得補造干擾項。
 - `text`：答案最多20字，可有最多8個 `aliases`；比對採 NFKC 與前後空白正規化，不做子字串或模糊比對。
-- `fraction`：必須有 `form`，答案為 `n/d`、`w n/d` 或允許的整數，各數字最多六位。`proper` 要求真分數；`improper` 要求假分數；`proper_or_improper` 要求分數形式；`mixed` 要求正整數部分加真分數；`mixed_or_whole` 另允許整數。可有最多8個明列、同值且同形式的 `accept` 字串。預設接受同形式的有理數等值答案（包括約分），以整數交叉相乘判斷；不因浮點誤差接受近似值。只有原題明示指定分母時，才加選用的 `denominator`（1–999999 整數），其值必須與 `answer` 及各 `accept` 的書寫分母相同。`any` 尚未開放。
+- `fraction`：必須有 `form`，答案為 `n/d`、`w n/d` 或允許的整數，各數字最多六位。`proper` 要求真分數；`improper` 要求假分數；`proper_or_improper` 要求分數形式；`mixed` 要求正整數部分加真分數；`mixed_or_whole` 另允許整數。可有最多8個明列、同值且同形式的 `accept` 字串。預設接受同形式的有理數等值答案（包括約分），以整數交叉相乘判斷；不因浮點誤差接受近似值。只有原題明示指定分母時，才加選用的 `denominator`（1–999999 整數），其值必須與 `answer` 及各 `accept` 的書寫分母相同。`any` 保留原題允許的整數、真假分數與合理帶分數，不接受小數或算式。整數含0；帶分數整數部分可為0，分數部分須0≤n<d；接受0/n及零分子的等值表示，拒絕不標準的 `2 7/3`。仍使用各數最多六位、分母非零與BigInt交叉相乘。只適用固定值 `fraction`，不擴大 `fraction_interval` 的形式守衛。
 - `fraction_interval`：開放分數答案。`answer` 固定為空字串，必須有 `form`、`count`（1–4）、`distinct: true`、`range`。每個答案獨立填整數／分子／分母，作答值為 `count` 個字串的陣列。各答案都要符合形式及區間，而且有理數值兩兩不同；相同數值換分母不能算兩個答案。答案提示說明完整條件，不以少數示例冒充全部答案。
 
 數學 unit 24–28 可附既有 PNG `material`，單張仍為32 KiB、雙邊1600px；不開放 table。舊數學 unit 15–19 的型態、媒體與輸入守衛保持。
@@ -109,3 +109,7 @@ math 24–28 的 mapping `reviewStatus` 僅接受三種完成狀態；`pending`�
 | `independently_recomputed_with_documented_official_correction` | 已取得官答，經獨立重算及具體證據確認需修正官答／定義解讀 | 正整數 |
 
 第三種不能冒充「官答一致」或「沒有官答」。修正理由摘要放既有 `sourceAdaptation`，完整證據與核定理由保存於私人內容 ledger；不增加題包中的私密資訊欄位。curated verification 仍須與 mapping reviewStatus 一致。此 gate 是資料狀態與頁碼一致性的檢查，不會自行完成內容獨立審查或 production 核准。
+
+## 操作題接入
+
+七種 `interaction` 型態由 [四種運算操作契約](study-math-interactions.md) 與 [三種幾何操作契約](study-math-geometry.md) 定義；`digitalAdaptation` 等於type。`scene.image`沿數學PNG32KiB/1600px限制，真實寬高須等於scene寬高，圖與工具共用同一校準座標。所有interaction欄位納入同ID不可變更的semantic。操作草稿只存在各孩子本機，不改已評分進度同步契約；送出或重設會清除，preview只用記憶體。

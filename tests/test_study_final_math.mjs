@@ -24,7 +24,7 @@ test("answered math navigation identifies every correct and incorrect blank", ()
 test("math mixed inputs are scoped and preserve original choices, forms and answer bounds", () => {
   const q = finalMathQuestion(); parse(q); parse(choiceSetQuestion());
   for (const mutate of [q => { q.unit = 15; }, q => { q.blanks[0].accept = ["13"]; },
-    q => { q.blanks[1].answer = "0.521"; }, q => { q.blanks[2].form = "any"; },
+    q => { q.blanks[1].answer = "0.521"; }, q => { q.blanks[2].form = "unbounded"; },
     q => { q.blanks[2].answer = "3 6/6"; }, q => { q.blanks[2].accept = ["3 4/6"]; },
     q => { q.options = ["A"]; }, q => { q.blanks[3].answer = "3"; }]) {
     const invalid = structuredClone(q); mutate(invalid); assert.throws(() => parse(invalid));
@@ -149,4 +149,22 @@ test("guided decimal conversion, method and result remain one Study activity", a
   e.app.advance(); e.app.submitAnswer(["6.8", "6.80-(1.25)=5.55", "5.55"]);
   assert.equal(e.app.State.doneCount(25), 1); assert.equal(events.filter(e => e[0] === "finish").length, 0);
   e.app.advance(); assert.equal(events.filter(e => e[0] === "finish").length, 1);
+});
+
+
+test("free fraction form retains integers, fractions and standard mixed numbers without treating blanks as zero", () => {
+  const q = { ...finalMathQuestion(), options: [], text: "Synthetic （１）", blanks: [{ input: "fraction", form: "any", answer: "7/3" }] };
+  parse(q);
+  for (const v of ["7/3", "2 1/3", "14/6", "0 7/3"]) assert.equal(A.gradeBlanks(q, [v]).correct, v !== "0 7/3");
+  for (const v of ["2 7/3", "2.333333", "7÷3", "7/0", "", " /3", "-7/3", "1/1000000"]) assert.equal(A.gradeBlanks(q, [v]).correct, false);
+  q.blanks[0].answer="2"; parse(q);
+  for(const v of ["2", "4/2", "2 0/3"]) assert.equal(A.gradeBlanks(q,[v]).correct,true);
+  q.blanks[0].answer="0";parse(q);
+  for(const v of ["0", "0/3", "0 0/7"]) assert.equal(A.gradeBlanks(q,[v]).correct,true);
+  let state=M.initial(q);state=M.update(q,state,"fraction","0","whole");assert.equal(M.complete(q,state),true);
+  state=M.update(q,state,"fraction","","whole");assert.equal(M.complete(q,state),false);
+  state=M.update(q,state,"fraction","0","numerator");assert.equal(M.complete(q,state),false);
+  state=M.update(q,state,"fraction","3","denominator");assert.deepEqual(state.values,["0/3"]);
+  assert.match(M.render(q,state),/整數部分/);assert.equal(A.gradeBlanks(q,state.values).correct,true);
+  assert.notEqual(P.semantic(q),P.semantic({...q,blanks:[{...q.blanks[0],form:"mixed_or_whole"}]}));
 });

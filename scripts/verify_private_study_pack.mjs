@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import { resolve, relative, isAbsolute, sep } from "node:path";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import "../docs/study/math-interactions.js";
+import "../docs/study/math-geometry.js";
 import "../docs/study/private-pack.js";
 
 try {

@@ -15,7 +15,7 @@
   };
   const parentHref = (child) => `../parent/?child=${encodeURIComponent(child)}`;
   const selectFill = q => q?.type === "fill_in_blank" && q.blanks[0]?.input === "select";
-  const answerLabel = (q) => q.type === "choice_set" ? q.answerSet.map(value => q.options[Number(value) - 1]).join("、") : q.type === "circuit_connect" ? "電池兩端各用一條線，分別接到燈泡金屬殼與底部接點；正負對調也可。" : q.type === "multiple_choice"
+  const answerLabel = (q) => StudyMathOperations.moduleFor(q) ? StudyMathOperations.moduleFor(q).answerText(q) : q.type === "choice_set" ? q.answerSet.map(value => q.options[Number(value) - 1]).join("、") : q.type === "circuit_connect" ? "電池兩端各用一條線，分別接到燈泡金屬殼與底部接點；正負對調也可。" : q.type === "multiple_choice"
     ? `${q.answer}. ${q.options[Number(q.answer) - 1]}`
     : q.type === "true_false" ? (q.answer === "true" ? "O（正確）" : "X（錯誤）")
     : q.type === "grouped_choice" ? q.parts.map((part, index) => `${part.id}：${(part.options || q.options)[Number(q.answer[index]) - 1]}`).join("；")
@@ -52,7 +52,7 @@
   function mount({ root: host, pack: initialPack, child = "aiden", onRetry = null, documentRef = document, manifest = null, loadUnit = null }) {
     if (!host) throw Error("找不到試玩頁容器。");
     let pack = initialPack;
-    let selectionRequest = 0, loading = false, loadError = "";
+    let selectionRequest = 0, loading = false, loadError = "", operationBinding = null;
     const loadedUnits = new Set();
     const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const unitsForSubject = () => SUBJECT_UNITS[state.subject].filter((unit) => StudyPrivatePack.UNITS.includes(unit));
@@ -60,6 +60,8 @@
     const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic));
     const current = () => filtered()[state.questionIndex] || null;
     function clearAnswer() {
+      operationBinding?.destroy(); operationBinding = null;
+      state.operation = null;
       state.math = null;
       state.circuit = StudyCircuit.initial();
       state.partIndex = 0;
@@ -81,6 +83,8 @@
       if (q && state.values.length !== answerCount) state.values = Array(answerCount).fill("");
     }
     function answerArea(q) {
+      const operation = StudyMathOperations.moduleFor(q);
+      if (operation) { state.operation ||= operation.initial(q); return '<div data-operation-panel></div>'; }
       if (StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type)) { state.math ||= StudyMathInput.initial(q); return StudyMathInput.render(q, state.math, false, state.result && q.type === "fill_in_blank" ? StudyAnswer.gradeBlanks(q, state.math.values).results : null); }
       if (q.type === "circuit_connect") return StudyCircuit.render(q, state.circuit || StudyCircuit.initial());
       if (q.type === "multiple_choice") return `<div class="preview-options">${q.options.map((option, index) => `<button type="button" class="preview-option" data-action="answer-choice" data-value="${index + 1}" aria-pressed="${state.values[0] === String(index + 1)}"><span>${index + 1}</span><span>${esc(option)}</span></button>`).join("")}</div>`;
@@ -120,6 +124,7 @@
     }
     function render(focusAction = "") {
       if (state.destroyed) return;
+      operationBinding?.destroy(); operationBinding = null;
       const circuitScrollLeft = host.querySelector?.(".circuit-scroll")?.scrollLeft || 0;
       normalizeSelection();
       const unitQuestions = questionsForUnit();
@@ -143,18 +148,32 @@
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "circuit_connect" ? "畫電路" : q.type === "choice_set" ? "選出所有符合項目" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
-          ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${q.type === "circuit_connect" ? "" : StudyMaterial.render(q.material)}<div class="preview-question">${esc(q.text)}</div>${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
-          <div class="preview-answer-actions"><button type="button" data-action="check" ${(StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type) ? StudyMathInput.complete(q, state.math) : q.type === "circuit_connect" ? StudyCircuit.complete(state.circuit) : q.type === "fill_in_blank" ? StudyAnswer.hasCompleteBlanks(q, state.values) : state.values.every((value) => String(value).trim())) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
+        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${StudyMathOperations.moduleFor(q) ? StudyMathOperations.labelFor(q) : q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "circuit_connect" ? "畫電路" : q.type === "choice_set" ? "選出所有符合項目" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
+          ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${q.type === "circuit_connect" ? "" : StudyMaterial.render(q.material)}${StudyMathOperations.moduleFor(q) === globalThis.StudyMathInteractions ? "" : `<div class="preview-question">${esc(q.text)}</div>`}${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
+          <div class="preview-answer-actions"><button type="button" data-action="check" ${(StudyMathOperations.moduleFor(q) ? StudyMathOperations.moduleFor(q).complete(q, state.operation) : StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type) ? StudyMathInput.complete(q, state.math) : q.type === "circuit_connect" ? StudyCircuit.complete(state.circuit) : q.type === "fill_in_blank" ? StudyAnswer.hasCompleteBlanks(q, state.values) : state.values.every((value) => String(value).trim())) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}
           ${state.revealed || state.result === "correct" ? `<section class="preview-reveal"><h2>答案</h2><p>${esc(answerLabel(q))}</p><h2>解說</h2><p>${esc(pack.explanations[q.id])}</p></section>` : ""}${q.type === "grouped_choice" ? '</div>' : ""}</article>` : `<section class="preview-card preview-empty" role="status"><h2>這個篩選目前沒有題目</h2><p>請改選其他單元或概念。上一題的作答與解說已清除。</p></section>`}`;
       focusControl(focusAction);
       const circuitScroller = host.querySelector?.(".circuit-scroll");
       if (circuitScroller) circuitScroller.scrollLeft = circuitScrollLeft;
       StudyMaterial.bind(host);
+      const operation = StudyMathOperations.moduleFor(q), panel = host.querySelector?.('[data-operation-panel]');
+      if (operation && panel) operationBinding = StudyMathOperations.bind({q, element:panel,
+        getState:() => state.operation, setState:value => { state.operation = value; },
+        feedback:() => !!state.result,
+        onChange:edited => {
+          if (edited) {
+            state.result = ""; state.revealed = false;
+            host.querySelectorAll?.('.preview-feedback,.preview-reveal').forEach(node => node.remove());
+          }
+        },
+        onRender:() => { const check = host.querySelector?.('[data-action="check"]'); if (check) check.disabled = !operation.complete(q, state.operation); }
+      });
     }
     function check() {
       const q = current();
+      const operation = StudyMathOperations.moduleFor(q);
+      if (operation) { state.operation = operationBinding?.read() || state.operation; if (!operation.complete(q, state.operation)) return; state.result = operation.grade(q, state.operation) ? "correct" : "wrong"; render(); return; }
       if (q?.type === "choice_set") { if (!state.math?.values.length) return; state.result = StudyAnswer.gradeChoiceSet(q, state.math.values) ? "correct" : "wrong"; render(); return; }
       if (q?.type === "circuit_connect") { if (!StudyCircuit.complete(state.circuit)) return; state.result = StudyCircuit.grade(state.circuit) ? "correct" : "wrong"; render(); return; }
       if (!q || state.values.some((value) => !String(value).trim()) || (q.type === "fill_in_blank" && !StudyAnswer.hasCompleteBlanks(q, state.values))) return;
@@ -169,6 +188,7 @@
     function handle(action, data = {}) {
       if (state.destroyed) return;
       if (action === "math") {
+        if (StudyMathOperations.moduleFor(current())) return;
         state.math = StudyMathInput.update(current(), state.math || StudyMathInput.initial(current()), data.mathAction, data.value ?? data.mathValue, data.mathField);
         state.values = state.math.values;
         if (data.mathAction !== "blank") { state.result = ""; state.revealed = false; }
@@ -198,6 +218,7 @@
       else if (action === "retry") onRetry?.();
     }
     const onClick = (event) => {
+      if (StudyMathOperations.moduleFor(current()) && event.target.closest?.("[data-operation-panel]")) return;
       const button = event.target.closest?.("[data-action], [data-circuit-action], [data-math-action]");
       if (!button || button.disabled || ["input", "fraction"].includes(button.dataset.mathAction)) return;
       if (["answer-number", "subject", "unit", "subtopic", "question"].includes(button.dataset.action)) return;
@@ -209,6 +230,7 @@
       if (["subject", "unit", "subtopic", "question"].includes(control.dataset.action)) handle(control.dataset.action, { value: control.value, index: control.dataset.index });
     };
     const onInput = (event) => {
+      if (StudyMathOperations.moduleFor(current()) && event.target.closest?.("[data-operation-panel]")) return;
       const mathInput = event.target.closest?.("input[data-math-action]");
       if (mathInput?.dataset.mathAction) { handle("math", { ...mathInput.dataset, value: mathInput.value }); return; }
       const input = event.target.closest?.('[data-action="answer-number"]');

@@ -62,6 +62,7 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   for (const name of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "Storage", "State"])
     Object.defineProperty(context, name, { configurable: true, get() { forbiddenTouches++; throw Error(`preview accessed ${name}`); } });
   vm.runInContext(readFileSync(new URL("../docs/shared/family-core.js", import.meta.url), "utf8"), context);
+  for (const name of ["math-interactions.js", "math-geometry.js", "math-operations.js"]) vm.runInContext(source(name), context);
   vm.runInContext(source("private-pack.js"), context);
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
@@ -629,10 +630,10 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
   // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
-  assert.match(source("preview.html"), /preview\.js\?v=20261107-science-social-release/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261107-math-operations/);
   assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "math-input.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "math-interactions.js", "math-geometry.js", "math-operations.js", "private-pack.js", "pack-catalog.js", "material.js", "math-input.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily.", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
@@ -677,4 +678,15 @@ test("preview rejects result-only decimal method and identifies that blank", asy
   assert.equal(app.state.result, "wrong"); assert.match(h.host.innerHTML, /第 1 空（答對）/); assert.match(h.host.innerHTML, /第 2 空（要修正）/);
   act("input", "6.80-(1.25)=5.55"); app.handle("check"); assert.equal(app.state.result, "correct");
   assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+import {operationQuestions,operationResponses,wrongOperationResponse} from './helpers/synthetic-math-operations.mjs';
+test('all seven operation previews grade locally and never route component buttons to ordinary blanks',async()=>{
+ const pack=syntheticPack();pack.revision++;const qs=operationQuestions();pack.questions.push(...qs);for(const q of qs)pack.explanations[q.id]='Synthetic feedback';
+ const h=harness({pack});const app=await h.boot();
+ for(const q of qs){await selectQuestion(app,q.unit,q.subtopic,qs.filter(v=>v.unit===q.unit).findIndex(v=>v.id===q.id));
+  app.state.operation=structuredClone(wrongOperationResponse(q.type));app.handle('check');assert.equal(app.state.result,'wrong',q.type);
+  const before=JSON.stringify(app.state.operation);app.handle('math',{mathAction:'key',mathValue:'1'});assert.equal(JSON.stringify(app.state.operation),before);
+  app.state.operation=structuredClone(operationResponses[q.type]);app.handle('check');assert.equal(app.state.result,'correct',q.type);
+ }
+ assert.equal(h.forbiddenTouches,0);app.destroy();
 });

@@ -9,6 +9,10 @@ written outside the selected output file.
 from __future__ import annotations
 
 from study_math_interactions import validate_decimal_expression
+import study_math_interactions as math_interactions
+import study_math_geometry as math_geometry
+
+OPERATION_TYPES = set(math_interactions.TYPE_UNITS) | set(math_geometry.TYPES)
 
 import argparse
 import base64
@@ -42,6 +46,7 @@ ADAPTATIONS = {"multiple_choice", "fill_in_blank:number", "fill_in_blank:compari
 NO_OFFICIAL_ANSWER_VERIFIED = "independently_solved_twice_no_official_answer"
 OFFICIAL_ANSWER_VERIFIED = "independently_recomputed_and_matches_official"
 DOCUMENTED_OFFICIAL_CORRECTION = "independently_recomputed_with_documented_official_correction"
+ADAPTATIONS |= OPERATION_TYPES
 SEMANTIC_OFFICIAL_VERIFIED = "independently_solved_twice_with_semantic_official_comparison"
 EXPECTED = {
     "U1-P01": ("math-g4s1-tyk111-I-01-v1", "tyk111-I-01", "multiple_choice"),
@@ -208,6 +213,8 @@ def _validate_metadata(metadata: Any, revision: int) -> dict[str, dict[str, Any]
         allowed = {"multiple_choice", "true_false", "grouped_choice"} if subject != "math" else {"multiple_choice", "fill_in_blank:number", "fill_in_blank:comparison"}
         if subject == "math" and item["unit"] in {24, 25, 26, 27, 28}:
             allowed |= {"true_false", "choice_set", "fill_in_blank:select", "fill_in_blank:decimal", "fill_in_blank:decimal_expression", "fill_in_blank:fraction", "fill_in_blank:fraction_interval", "fill_in_blank:text", "fill_in_blank:mixed"}
+        if subject == "math":
+            allowed |= {kind for helper in (math_interactions, math_geometry) for kind, units in helper.TYPE_UNITS.items() if item["unit"] in units}
         if subject == "social":
             allowed.add("fill_in_blank:select")
             if item["unit"] == 23:
@@ -255,7 +262,7 @@ def _fraction_value(value, form):
     if not isinstance(value, str):
         return None
     if re.fullmatch(r"0|[1-9][0-9]{0,5}", value):
-        return (int(value), 1) if form == "mixed_or_whole" else None
+        return (int(value), 1) if form in {"mixed_or_whole", "any"} else None
     match = re.fullmatch(r"(?:(0|[1-9][0-9]{0,5}) )?(0|[1-9][0-9]{0,5})/([1-9][0-9]{0,5})", value)
     if not match:
         return None
@@ -265,7 +272,8 @@ def _fraction_value(value, form):
             or form == "improper" and (w is not None or n < d)
             or form == "proper_or_improper" and w is not None
             or form in {"mixed", "mixed_or_whole"} and (w is None or w < 1 or not 0 < n < d)
-            or form not in {"proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"}):
+            or form == "any" and w is not None and n >= d
+            or form not in {"proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole", "any"}):
         return None
     return ((w or 0) * d + n, d)
 
@@ -372,6 +380,8 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
     expected_id, adaptation = mapping["appId"], mapping["digitalAdaptation"]
     base_fields = {"id", "subject", "unit", "type", "text", "subtopic", "options", "answer"}
     expected_fields = ({"circuit"} if adaptation == "circuit_connect" else {"answerSet"} if adaptation == "choice_set" else set()) | base_fields | ({"blanks"} if adaptation.startswith("fill_in_blank:") else set()) | ({"parts"} if adaptation == "grouped_choice" else set())
+    if adaptation in OPERATION_TYPES:
+        expected_fields.add("interaction")
     if isinstance(question, dict) and "material" in question:
         expected_fields.add("material")
     if isinstance(question, dict) and "acceptedAnswers" in question and adaptation == "fill_in_blank:select" and mapping["unit"] == 23:
@@ -393,7 +403,18 @@ def _validate_question(question: Any, practice_id: str, mapping: dict[str, Any])
                            expected_size=(90, 130) if adaptation == "circuit_connect" else None)
 
     final_math = subject == "math" and question["unit"] in {24, 25, 26, 27, 28}
-    if adaptation == "choice_set":
+    if adaptation in OPERATION_TYPES:
+        if question["type"] != adaptation:
+            raise PackBuildError(f"question {practice_id} operation mapping disagrees")
+        helper = math_geometry if adaptation in math_geometry.TYPES else math_interactions
+        try:
+            helper.validate_question({**question, "source": f"data/study/g4-s1-math-u1/mapping-metadata.json appId={question['id']}"})
+        except (ValueError, TypeError, KeyError) as error:
+            raise PackBuildError(f"question {practice_id} operation is invalid: {error}") from error
+        scene = question["interaction"].get("scene")
+        if scene and "image" in scene:
+            _validate_material({"kind": "png", "data": scene["image"], "alt": "校準作圖原圖"}, f"question {practice_id} calibrated PNG", 32 * 1024, expected_size=(scene["width"], scene["height"]))
+    elif adaptation == "choice_set":
         choices = question["options"]
         answers = question["answerSet"]
         if not final_math or question["type"] != adaptation or question["answer"] != "" or not 2 <= len(choices) <= 10 or not all(isinstance(option, str) and option.strip() and len(option) <= 300 for option in choices) or not isinstance(answers, list) or not 1 <= len(answers) <= len(choices) or not all(isinstance(value, str) and value in {str(i) for i in range(1, len(choices) + 1)} for value in answers) or len(set(answers)) != len(answers):
@@ -658,6 +679,7 @@ def _question_semantic(question: dict[str, Any]) -> tuple[Any, ...]:
         *([tuple(tuple(vector) for vector in question["acceptedAnswers"])] if "acceptedAnswers" in question else []),
         *([tuple((node["id"], node["x"], node["y"]) for node in question["circuit"]["terminals"])] if "circuit" in question else []),
         *([tuple(question["answerSet"])] if "answerSet" in question else []),
+        *([json.dumps(question["interaction"], ensure_ascii=False, sort_keys=True)] if "interaction" in question else []),
     )
 
 

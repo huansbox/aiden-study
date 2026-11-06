@@ -14,13 +14,14 @@
   function fraction(value, form) {
     if (typeof value !== "string") return null;
     const whole = /^(0|[1-9][0-9]{0,5})$/.exec(value);
-    if (whole) return form === "mixed_or_whole" ? [BigInt(value), 1n] : null;
+    if (whole) return ["mixed_or_whole", "any"].includes(form) ? [BigInt(value), 1n] : null;
     const match = /^(?:(0|[1-9][0-9]{0,5}) )?(0|[1-9][0-9]{0,5})\/([1-9][0-9]{0,5})$/.exec(value);
     if (!match) return null;
     const w = match[1] === undefined ? null : BigInt(match[1]), n = BigInt(match[2]), d = BigInt(match[3]);
     if (form === "proper" && (w !== null || n >= d) || form === "improper" && (w !== null || n < d) || form === "proper_or_improper" && w !== null ||
         ["mixed", "mixed_or_whole"].includes(form) && (w === null || w < 1n || n < 1n || n >= d) ||
-        !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole"].includes(form)) return null;
+        form === "any" && w !== null && n >= d ||
+        !["proper", "improper", "proper_or_improper", "mixed", "mixed_or_whole", "any"].includes(form)) return null;
     return [(w || 0n) * d + n, d];
   }
   const rational = value => Array.isArray(value) && value.length === 2 && value.every(Number.isSafeInteger) && value[0] >= 0 && value[1] > 0;
@@ -75,6 +76,9 @@
   function keys(value, required) {
     return object(value) && Object.keys(value).length === required.length && required.every(k => Object.hasOwn(value, k));
   }
+  const operationTypes = ["expression_steps", "vertical_decimal", "fraction_shade", "hundred_grid_select", "triangle_construct", "bar_chart_draw", "measure_tool"];
+  const operationModule = q => ["triangle_construct", "bar_chart_draw", "measure_tool"].includes(q.type) ? root.StudyMathGeometry : root.StudyMathInteractions;
+  const canonical = value => Array.isArray(value) ? value.map(canonical) : object(value) ? Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])])) : value;
   function semantic(q) {
     // 不自行判定文字改動是否仍是同一道題；只忽略 JSON 欄位順序。
     // unit 與 subtopic 也是進度／半批的索引，不可在同 ID 下搬動。
@@ -85,7 +89,8 @@
         : ["table", q.material.caption, q.material.columns, q.material.rows] : null,
       ...(Object.hasOwn(q, "acceptedAnswers") ? [q.acceptedAnswers] : []),
       ...(q.circuit ? [q.circuit.terminals.map(node => [node.id, node.x, node.y])] : []),
-      ...(Object.hasOwn(q, "answerSet") ? [q.answerSet] : [])]);
+      ...(Object.hasOwn(q, "answerSet") ? [q.answerSet] : []),
+      ...(Object.hasOwn(q, "interaction") ? [canonical(q.interaction)] : [])]);
   }
   function pngBytes(data, maxBytes) {
     if (typeof data !== "string" || !/^data:image\/png;base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(data)) throw new Error("PNG 格式無效。");
@@ -171,6 +176,7 @@
       if (q.type === "grouped_choice") fields.push("parts");
       if (q.type === "circuit_connect") fields.push("circuit");
       if (q.type === "choice_set") fields.push("answerSet");
+      if (operationTypes.includes(q.type)) fields.push("interaction");
       if (Object.hasOwn(q, "material")) fields.push("material");
       const subjectUnits = SUBJECT_UNITS[q.subject] || [];
       if (!keys(q, fields) || !subjectUnits.includes(q.unit) || !q.id.startsWith(`${q.subject}-g4s1-`) || (IDS.includes(q.id) && q.unit !== 15) || !["text", "subtopic", "source"].every(k => text(q[k])) || !Object.hasOwn(pack.explanations, q.id) || !text(pack.explanations[q.id])) throw new Error("題目範圍、文字或解說無效。");
@@ -181,7 +187,13 @@
         validateMaterial(q.material, q.subject === "social" && [22, 23, 31, 32].includes(q.unit) ? 192 * 1024 : 32 * 1024,
           q.type === "circuit_connect" ? [90, 130] : undefined);
       }
-      if (q.type === "choice_set") {
+      if (operationTypes.includes(q.type)) {
+        const M = operationModule(q);
+        if (!M) throw new Error("數學操作程式尚未載入，請重新整理。");
+        M.validateQuestion(q);
+        const scene = q.interaction.scene;
+        if (scene?.image && !pngValid(scene.image, 32 * 1024, [scene.width, scene.height])) throw new Error("幾何原圖格式或校準尺寸無效。");
+      } else if (q.type === "choice_set") {
         if (!finalMath(q) || q.answer !== "" || q.options.length < 2 || q.options.length > 10 || !q.options.every(x => boundedText(x, 300)) ||
             !Array.isArray(q.answerSet) || q.answerSet.length < 1 || q.answerSet.length > q.options.length || new Set(q.answerSet).size !== q.answerSet.length ||
             !q.answerSet.every(value => typeof value === "string" && /^(?:[1-9]|10)$/.test(value) && Number(value) <= q.options.length)) throw new Error("完整集合選答格式無效。");
