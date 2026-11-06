@@ -134,7 +134,7 @@ def test_final_unit_authoring_builder_and_browser_parity(tmp_path, subject, unit
     explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
     pack = build_pack(*_paths(tmp_path, values))
     output = _write(tmp_path / "pack.json", pack)
-    script = "const fs=require('node:fs');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));"
+    script = "const fs=require('node:fs');require('./docs/study/math-interactions.js');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'));"
     result = subprocess.run(["node", "-e", script, str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert pack["questions"][-1]["unit"] == unit
@@ -173,6 +173,81 @@ def test_per_part_choices_keep_subject_scope_bounds_and_immutable_semantics():
     changed = copy.deepcopy(q)
     changed["parts"][0]["options"].reverse()
     assert private_builder._question_semantic(changed) != private_builder._question_semantic(q)
+
+
+def test_circuit_contract_has_fixed_scope_and_five_distinct_bounded_terminals():
+    q = {"id": "science-g4s1-synthetic-circuit-v1", "subject": "science", "unit": 30,
+         "type": "circuit_connect", "text": "Synthetic circuit", "subtopic": "Synthetic",
+         "options": [], "answer": "closed", "material": {"kind": "png", "data": _synthetic_png(width=90, height=130), "alt": "Synthetic bulb"},
+         "circuit": {"terminals": [
+             {"id": "battery-positive", "x": 250, "y": 280}, {"id": "battery-negative", "x": 250, "y": 460},
+             {"id": "bulb-glass", "x": 735, "y": 197}, {"id": "bulb-shell", "x": 802, "y": 353},
+             {"id": "bulb-base", "x": 735, "y": 439}]}}
+
+    def validate(q):
+        return private_builder._validate_question(q, "SYNTHETIC", {"appId": q["id"], "unit": q["unit"], "digitalAdaptation": "circuit_connect"})
+
+    validate(q)
+    for width, height in ((1, 1), (130, 90), (180, 260), (90, 129), (89, 130)):
+        invalid = copy.deepcopy(q)
+        invalid["material"]["data"] = _synthetic_png(width=width, height=height)
+        with pytest.raises(PackBuildError, match="90x130"):
+            validate(invalid)
+    for mutate in (lambda q: q.update(unit=29), lambda q: q.update(answer="open"),
+                   lambda q: q.pop("material"), lambda q: q["circuit"]["terminals"].pop(),
+                   lambda q: q["circuit"]["terminals"][2].update(x=0),
+                   lambda q: q["circuit"]["terminals"][2].update(id="custom")):
+        invalid = copy.deepcopy(q)
+        mutate(invalid)
+        with pytest.raises(PackBuildError):
+            validate(invalid)
+    moved = copy.deepcopy(q)
+    moved["circuit"]["terminals"][2]["x"] += 1
+    assert private_builder._question_semantic(q) != private_builder._question_semantic(moved)
+
+
+@pytest.mark.parametrize("kind", ["mixed", "choice_set", "true_false", "interval", "range", "decimal_expression"])
+def test_final_math_production_build_matches_browser_parser(tmp_path, kind):
+    values = list(_fixture())
+    curated, explanations, metadata, _ = values
+    app_id = f"math-g4s1-synthetic-final-{kind.replace('_', '-')}-v1"
+    q = {"id": app_id, "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）（２）（３）", "subtopic": "Synthetic", "options": ["A", "B"], "answer": "",
+         "blanks": [{"input": "decimal", "answer": "0.52"}, {"input": "fraction", "answer": "3 3/6", "form": "mixed"}, {"input": "select", "answer": "2"}]}
+    adaptation = "fill_in_blank:mixed"
+    if kind in {"interval", "range", "decimal_expression"}:
+        q.update(options=[], text="Synthetic （１）")
+        if kind == "interval":
+            q["blanks"] = [{"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True,
+                            "range": {"min": [2, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}]
+        elif kind == "decimal_expression":
+            q["unit"] = 25
+            q["blanks"] = [{"input": "decimal_expression", "answer": "6.8-1.25", "value": "5.55"}]
+        else:
+            q["blanks"] = [{"input": "decimal", "answer": "7.9",
+                            "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}]
+        adaptation = "fill_in_blank:" + q["blanks"][0]["input"]
+    elif kind != "mixed":
+        del q["blanks"]
+        q["type"] = adaptation = kind
+        if kind == "choice_set":
+            q["answerSet"] = ["1", "2"]
+        else:
+            q.update(options=[], answer="true")
+    common = {"practiceId": "SYNTHETIC-FINAL", "originalId": "synthetic", "paperId": "synthetic-paper", "questionPage": 1, "answerPage": 2, "concept": "Synthetic"}
+    curated["items"].append({**common, "adaptation": "Synthetic adaptation", "verification": private_builder.OFFICIAL_ANSWER_VERIFIED, "question": q})
+    metadata["items"].append({**common, "appId": app_id, "unit": q["unit"], "contextPolicy": "Synthetic", "digitalAdaptation": adaptation, "sourceAdaptation": "Synthetic adaptation", "reviewStatus": private_builder.OFFICIAL_ANSWER_VERIFIED})
+    explanations["entries"].append({"id": app_id, "text": "Synthetic explanation。"})
+    pack = build_pack(*_paths(tmp_path, values))
+    output = _write(tmp_path / "pack.json", pack)
+    result = subprocess.run(["node", "-e", "const fs=require('node:fs');require('./docs/study/math-interactions.js');require('./docs/study/private-pack.js');StudyPrivatePack.parse(fs.readFileSync(process.argv[1],'utf8'))", str(output)], cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    if kind == "mixed":
+        for mutate in (lambda q: q["blanks"][1].update(form="unbounded"), lambda q: q["blanks"][0].update(answer="0.521"), lambda q: q["blanks"][1].update(accept=["3 4/6"])):
+            invalid = copy.deepcopy(q)
+            mutate(invalid)
+            with pytest.raises(PackBuildError):
+                private_builder._validate_question(invalid, "SYNTHETIC", metadata["items"][-1])
 
 
 def test_build_is_stable_across_reordering_and_rebuild(tmp_path):
@@ -446,14 +521,15 @@ def test_social_u2_full_word_bank_has_strict_scope_and_parser_parity(tmp_path):
         rejects(f"invalid-answer-{value}", lambda q, m, value=value: q["blanks"][0].update(answer=value))
 
 
-def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16) -> str:
+def _synthetic_png(bit_depth=8, color_type=6, palette_count=None, palette_entries=16, width=1, height=1) -> str:
     def chunk(kind: bytes, data: bytes) -> bytes:
         return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")
-    ihdr = (1).to_bytes(4, "big") * 2 + bytes([bit_depth, color_type, 0, 0, 0])
+    ihdr = width.to_bytes(4, "big") + height.to_bytes(4, "big") + bytes([bit_depth, color_type, 0, 0, 0])
     if palette_count is None:
         palette_count = 1 if color_type == 3 else 0
     palette = chunk(b"PLTE", bytes([128] * palette_entries * 3)) * palette_count
-    pixels = bytes([0, 0]) if color_type == 3 else bytes([0, 12, 34, 56, 255])
+    row = bytes([0]) + (bytes([0]) if color_type == 3 else bytes([12, 34, 56, 255])) * width
+    pixels = row * height
     image = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr) + palette + chunk(b"IDAT", zlib.compress(pixels)) + chunk(b"IEND", b"")
     return "data:image/png;base64," + base64.b64encode(image).decode("ascii")
 
@@ -980,3 +1056,82 @@ def test_expanded_previous_output_checks_full_id_set_and_immutable_progress_sema
     with pytest.raises(PackBuildError, match="revision|remove|same ID"):
         private_builder._build_synthetic_to_path_for_test(*_paths(tmp_path, values), output, test_output_root=tmp_path)
     assert output.read_bytes() == before
+
+@pytest.mark.parametrize("answer,aliases,valid", [("\ufeff", [], False), ("x", ["\ufeffx"], False), ("\u001c", [], True), ("x", ["\u001cx"], True)])
+def test_final_math_text_normalization_matches_javascript(answer, aliases, valid):
+    q = {"id": "math-g4s1-synthetic-normalize-v1", "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）", "subtopic": "Synthetic", "options": [], "answer": "",
+         "blanks": [{"input": "text", "answer": answer, "aliases": aliases}]}
+    if valid:
+        private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:text")
+    else:
+        with pytest.raises(PackBuildError):
+            private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:text")
+    q["source"] = "Synthetic source"
+    pack = {"schemaVersion": 2, "packId": "g4-s1-math-u1", "revision": 1, "questions": [q], "explanations": {q["id"]: "Synthetic explanation"}}
+    result = subprocess.run(["node", "-e", "require('./docs/study/private-pack.js');StudyPrivatePack.parse(require('fs').readFileSync(0,'utf8'),[],null,true)"], input=json.dumps(pack), cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert (result.returncode == 0) == valid, result.stderr
+
+@pytest.mark.parametrize("blank,valid", [
+    ({"input": "fraction", "answer": "2/6", "form": "proper"}, True),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": 6}, True),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": 3}, False),
+    ({"input": "fraction", "answer": "2/6", "form": "proper", "denominator": True}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, True),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [5, 2], "max": [2, 1], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 0], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [True, 1], "max": [5, 2], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "fraction_interval", "answer": "", "form": "mixed", "count": 2, "distinct": True, "range": {"min": [2, 1], "max": [9007199254740992, 1], "minInclusive": False, "maxInclusive": False}}, False),
+    ({"input": "decimal", "answer": "7.9", "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}, True),
+    ({"input": "decimal", "answer": "8", "range": {"min": [78, 10], "max": [8, 1], "minInclusive": True, "maxInclusive": False}}, False),
+])
+def test_final_math_rational_contract_python_browser_parity(blank, valid):
+    q = {"id": "math-g4s1-synthetic-range-v1", "subject": "math", "unit": 27, "type": "fill_in_blank",
+         "text": "Synthetic （１）", "subtopic": "Synthetic", "options": [], "answer": "", "blanks": [blank]}
+    if valid:
+        private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:" + blank["input"])
+    else:
+        with pytest.raises(PackBuildError):
+            private_builder._validate_math_blanks(q, "SYNTHETIC", "fill_in_blank:" + blank["input"])
+    q["source"] = "Synthetic source"
+    pack = {"schemaVersion": 2, "packId": "g4-s1-math-u1", "revision": 1, "questions": [q], "explanations": {q["id"]: "Synthetic explanation"}}
+    result = subprocess.run(["node", "-e", "require('./docs/study/private-pack.js');StudyPrivatePack.parse(require('fs').readFileSync(0,'utf8'),[],null,true)"], input=json.dumps(pack), cwd=private_builder.ROOT, capture_output=True, text=True)
+    assert (result.returncode == 0) == valid, result.stderr
+    if valid and "range" in blank:
+        changed = copy.deepcopy(q)
+        changed["blanks"][0]["range"]["maxInclusive"] = not blank["range"]["maxInclusive"]
+        assert private_builder._question_semantic(q) != private_builder._question_semantic(changed)
+
+@pytest.mark.parametrize("unit", [24, 25, 26, 27, 28])
+@pytest.mark.parametrize("status,page,accepted", [
+    (private_builder.OFFICIAL_ANSWER_VERIFIED, 2, True),
+    (private_builder.NO_OFFICIAL_ANSWER_VERIFIED, None, True),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, 2, True),
+    ("pending", 2, False), ("unknown", 2, False), ("synthetic_only", 2, False),
+    (private_builder.SEMANTIC_OFFICIAL_VERIFIED, 2, False),
+    (private_builder.OFFICIAL_ANSWER_VERIFIED, None, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, None, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, True, False),
+    (private_builder.DOCUMENTED_OFFICIAL_CORRECTION, 0, False),
+    (private_builder.NO_OFFICIAL_ANSWER_VERIFIED, 2, False),
+])
+def test_final_math_metadata_requires_completed_answer_review(unit, status, page, accepted):
+    metadata = copy.deepcopy(_fixture()[2])
+    row = copy.deepcopy(metadata["items"][0])
+    row.update(appId="math-g4s1-synthetic-review-v1", practiceId="SYNTHETIC-REVIEW", originalId="synthetic-review", unit=unit,
+               digitalAdaptation="multiple_choice", reviewStatus=status, answerPage=page)
+    metadata["items"].append(row)
+    if accepted:
+        assert private_builder._validate_metadata(metadata, metadata["revision"])["SYNTHETIC-REVIEW"]["reviewStatus"] == status
+    else:
+        with pytest.raises(PackBuildError): private_builder._validate_metadata(metadata, metadata["revision"])
+
+
+@pytest.mark.parametrize("unit", [15, 16, 17, 18, 19])
+def test_final_math_review_gate_does_not_change_legacy_math_metadata(unit):
+    metadata = copy.deepcopy(_fixture()[2])
+    row = copy.deepcopy(metadata["items"][0])
+    row.update(appId="math-g4s1-synthetic-legacy-review-v1", practiceId="SYNTHETIC-LEGACY", originalId="synthetic-legacy", unit=unit,
+               digitalAdaptation="multiple_choice", reviewStatus="synthetic_legacy_status", answerPage=2)
+    metadata["items"].append(row)
+    private_builder._validate_metadata(metadata, metadata["revision"])

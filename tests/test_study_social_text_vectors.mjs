@@ -125,7 +125,7 @@ test("preview shares grading, renders native text inputs and inert markup, and n
   const host = { innerHTML: "", addEventListener() {}, removeEventListener() {}, querySelector() { return null; } };
   const context = vm.createContext({ document: { getElementById() { return null; } }, URLSearchParams, location: { search: "" }, addEventListener() {} });
   for (const key of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "State", "Storage"]) Object.defineProperty(context, key, { get() { forbidden++; throw Error(key); } });
-  for (const file of ["../shared/family-core.js", "private-pack.js", "answer.js", "material.js", "science-topics.js", "preview.js"]) vm.runInContext(readFileSync(new URL(`../docs/study/${file}`, import.meta.url), "utf8"), context);
+  for (const file of ["../shared/family-core.js", "math-interactions.js", "math-geometry.js", "math-operations.js", "math-input.js", "circuit.js", "private-pack.js", "answer.js", "material.js", "science-topics.js", "preview.js"]) vm.runInContext(readFileSync(new URL(`../docs/study/${file}`, import.meta.url), "utf8"), context);
   const app = context.StudyPreview.mount({ root: host, pack: pack() });
   app.handle("subject", { value: "social" }); app.handle("unit", { value: "23" }); app.handle("question", { index: "3" });
   assert.match(host.innerHTML, /type="text" inputmode="text" maxlength="200"/);

@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import { circuitQuestion } from "./helpers/synthetic-circuit.mjs";
+import { finalMathQuestion, choiceSetQuestion } from "./helpers/synthetic-final-math.mjs";
 import { expandedSyntheticPack, groupedSyntheticPack, ids, navigationSyntheticPack, scienceSyntheticPack, socialSyntheticPack, socialSecondSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, syntheticPack } from "./helpers/synthetic-study-pack.mjs";
 
 const source = (name) => readFileSync(new URL(`../docs/study/${name}`, import.meta.url), "utf8");
@@ -60,9 +62,13 @@ function harness({ fetchImpl, pack = expandedSyntheticPack(), search = "?child=b
   for (const name of ["localStorage", "sessionStorage", "KidsFamily", "KidsSyncV1", "KidsWiringV1", "Storage", "State"])
     Object.defineProperty(context, name, { configurable: true, get() { forbiddenTouches++; throw Error(`preview accessed ${name}`); } });
   vm.runInContext(readFileSync(new URL("../docs/shared/family-core.js", import.meta.url), "utf8"), context);
+  for (const name of ["math-interactions.js", "math-geometry.js", "math-operations.js"]) vm.runInContext(source(name), context);
   vm.runInContext(source("private-pack.js"), context);
   vm.runInContext(source("material.js"), context);
   vm.runInContext(source("answer.js"), context);
+  vm.runInContext(source("circuit.js"), context);
+  vm.runInContext(source("math-input.js"), context);
+  vm.runInContext(source("math-interactions.js"), context);
   vm.runInContext(source("science-topics.js"), context);
   vm.runInContext(source("preview.js"), context);
   return {
@@ -158,6 +164,42 @@ test("preview retains separate choices for each part and reveals each original c
   app.handle("answer-group", { index: "1", value: "3" }); app.handle("check");
   assert.equal(app.state.result, "correct"); assert.equal(h.forbiddenTouches, 0);
   app.destroy();
+});
+
+test("preview circuit places the battery, rejects glass, redraws and grades without child writes", async () => {
+  const pack = syntheticPack(), q = circuitQuestion();
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic circuit explanation";
+  const h = harness({ pack }), app = await h.boot();
+  app.handle("subject", { value: "science" }); app.handle("unit", { value: "30" });
+  app.handle("check"); assert.equal(app.state.result, "");
+  const act = (action, value) => app.handle("circuit", { circuitAction: action, circuitValue: value });
+  act("place");
+  for (const id of ["battery-positive", "bulb-glass", "battery-negative", "bulb-base"]) act("terminal", id);
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  act("delete", "0"); act("terminal", "battery-positive"); act("terminal", "bulb-shell");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.match(h.host.innerHTML, /正負對調也可/);
+  app.handle("retry-answer"); assert.equal(app.state.circuit.batteryPlaced, false);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+
+test("preview math preserves mixed fields, fraction form and unordered full choice sets", async () => {
+  const pack = syntheticPack(), q = finalMathQuestion(), set = { ...choiceSetQuestion(), unit: 27 };
+  pack.questions.push(q, set); pack.explanations[q.id] = pack.explanations[set.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "27" });
+  const act = (mathAction, value, mathField) => app.handle("math", { mathAction, value, mathField });
+  act("input", "12"); act("blank", "1"); act("input", ".52"); act("blank", "2");
+  for (const [field, value] of [["whole", "3"], ["numerator", "2"], ["denominator", "3"]]) act("fraction", value, field);
+  act("blank", "3"); act("choice", "2"); act("blank", "4"); act("input", "合成別名"); act("blank", "5"); act("choice", ">");
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  assert.match(h.host.innerHTML, /第 3 空（要修正）/);
+  assert.match(h.host.innerHTML, /第 1 空（答對）/);
+  act("blank", "2"); assert.match(h.host.innerHTML, /第 3 空（要修正）/);
+  act("fraction", "1", "numerator"); act("fraction", "2", "denominator");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  app.handle("question", { index: "1" }); act("choice", "3"); app.handle("check"); assert.equal(app.state.result, "wrong");
+  act("choice", "1"); app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
 });
 
 test("science three-choice preview labels and scores all three options without child writes", async () => {
@@ -588,10 +630,10 @@ test("timeout clears old content and an older failure cannot replace a newer suc
 
 test("preview HTML excludes formal Study state, sync, wiring and activity runtimes", () => {
   // 分包發布必須使用新網址，不能沿用家長瀏覽器可能已快取的整包 runtime。
-  assert.match(source("preview.html"), /preview\.js\?v=20261107-science-social-release/);
+  assert.match(source("preview.html"), /preview\.js\?v=20261107-math-circuit-release/);
   assert.match(source("preview.html"), /preview\.css\?v=20261023-social-u2/);
   const scripts = [...source("preview.html").matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].split("?")[0]);
-  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "private-pack.js", "pack-catalog.js", "material.js", "answer.js", "science-topics.js", "preview.js"]);
+  assert.deepEqual(scripts, ["../shared/family-core.js", "../shared/device-auth.js", "math-interactions.js", "math-geometry.js", "math-operations.js", "private-pack.js", "pack-catalog.js", "material.js", "math-input.js", "circuit.js", "answer.js", "science-topics.js", "preview.js"]);
   const preview = source("preview.js");
   for (const forbidden of ["localStorage", "sessionStorage", "KidsFamily.", "KidsSyncV1", "KidsWiringV1", "family.record", "family.finishRound", "StudyPrivatePack.KEY"])
     assert.ok(!preview.includes(forbidden), `preview source must not include ${forbidden}`);
@@ -602,9 +644,49 @@ test("preview HTML excludes formal Study state, sync, wiring and activity runtim
 test("shared answer seam retains Study number and comparison equivalence rules", () => {
   const context = vm.createContext({});
   vm.runInContext(source("answer.js"), context);
+  vm.runInContext(source("circuit.js"), context);
+  vm.runInContext(source("math-input.js"), context);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63.0"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "number", answer: "63" }, "63abc"), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, " ＞ "), true);
   assert.equal(context.StudyAnswer.isBlankCorrect({ input: "comparison", answer: ">" }, "<"), false);
   assert.deepEqual(ids.length, 6);
+});
+
+test("preview open fraction inputs and range labels use the same exact contract", async () => {
+  const pack = syntheticPack(), q = { ...finalMathQuestion(), text: "Synthetic （１）", options: [], blanks: [{ input: "fraction_interval", answer: "", form: "mixed", count: 2, distinct: true, range: { min: [2, 1], max: [5, 2], minInclusive: false, maxInclusive: false } }] };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic explanation";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "27" });
+  const act = (field, value) => app.handle("math", { mathAction: "fraction", value, mathField: field });
+  for (const [field, value] of [["0:whole", "2"], ["0:numerator", "1"], ["0:denominator", "3"], ["1:whole", "2"], ["1:numerator", "2"], ["1:denominator", "6"]]) act(field, value);
+  app.handle("check"); assert.equal(app.state.result, "wrong");
+  assert.match(h.host.innerHTML, /第 1 空（要修正）/);
+  act("1:numerator", "1"); act("1:denominator", "4");
+  app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.match(h.host.innerHTML, /數值不同/); assert.match(h.host.innerHTML, /2 &lt; 答案 &lt; 5\/2/);
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+
+test("preview rejects result-only decimal method and identifies that blank", async () => {
+  const pack = syntheticPack(), q = { ...finalMathQuestion(), unit: 25, options: [], text: "Synthetic （１）（２）", blanks: [
+    { input: "decimal", answer: "6.8" }, { input: "decimal_expression", answer: "6.8-1.25", value: "5.55" }
+  ] };
+  pack.questions.push(q); pack.explanations[q.id] = "Synthetic guided method";
+  const h = harness({ pack }), app = await h.boot(); app.handle("unit", { value: "25" });
+  const act = (mathAction, value) => app.handle("math", { mathAction, value });
+  act("input", "6.8"); act("blank", "1"); act("input", "5.55"); app.handle("check");
+  assert.equal(app.state.result, "wrong"); assert.match(h.host.innerHTML, /第 1 空（答對）/); assert.match(h.host.innerHTML, /第 2 空（要修正）/);
+  act("input", "6.80-(1.25)=5.55"); app.handle("check"); assert.equal(app.state.result, "correct");
+  assert.equal(h.forbiddenTouches, 0); app.destroy();
+});
+import {operationQuestions,operationResponses,wrongOperationResponse} from './helpers/synthetic-math-operations.mjs';
+test('all seven operation previews grade locally and never route component buttons to ordinary blanks',async()=>{
+ const pack=syntheticPack();pack.revision++;const qs=operationQuestions();pack.questions.push(...qs);for(const q of qs)pack.explanations[q.id]='Synthetic feedback';
+ const h=harness({pack});const app=await h.boot();
+ for(const q of qs){await selectQuestion(app,q.unit,q.subtopic,qs.filter(v=>v.unit===q.unit).findIndex(v=>v.id===q.id));
+  app.state.operation=structuredClone(wrongOperationResponse(q.type));app.handle('check');assert.equal(app.state.result,'wrong',q.type);
+  const before=JSON.stringify(app.state.operation);app.handle('math',{mathAction:'key',mathValue:'1'});assert.equal(JSON.stringify(app.state.operation),before);
+  app.state.operation=structuredClone(operationResponses[q.type]);app.handle('check');assert.equal(app.state.result,'correct',q.type);
+ }
+ assert.equal(h.forbiddenTouches,0);app.destroy();
 });

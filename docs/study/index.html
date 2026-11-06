@@ -552,7 +552,7 @@ body {
 a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
 </style>
 <link rel="stylesheet" href="./material.css?v=20260923-group-media">
-<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
+<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"><link rel="stylesheet" href="circuit.css?v=20261107-math-circuit-release"><link rel="stylesheet" href="math-input.css?v=20261107-math-circuit-release"><link rel="stylesheet" href="math-interactions.css?v=20261107-math-circuit-release"><link rel="stylesheet" href="math-geometry.css?v=20261107-math-circuit-release"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <p id="study-start-status" class="hidden" role="status" aria-live="polite" style="position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:10001;max-width:calc(100% - 32px);padding:12px 20px;border-radius:12px;background:#fff;color:#24324a;box-shadow:0 2px 12px #0003"></p>
@@ -564,10 +564,10 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261107-science-social-release"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261107-math-circuit-release"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
 <script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
 <script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
-<script src="./private-pack.js?v=20261107-science-social-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
+<script src="math-interactions.js?v=20261107-math-circuit-release"></script><script src="math-geometry.js?v=20261107-math-circuit-release"></script><script src="math-operations.js?v=20261107-math-circuit-release"></script><script src="./private-pack.js?v=20261107-math-circuit-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="math-input.js?v=20261107-math-circuit-release"></script><script src="circuit.js?v=20261107-math-circuit-release"></script><script src="./answer.js?v=20261107-math-circuit-release"></script>
 <script src="./science-topics.js?v=20261023-social-u2-topics"></script>
 <script>
 (function() {
@@ -599,6 +599,24 @@ let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建
 // wiring 沒載到時為 null：init 已拒開站，任何存檔讀寫都不會發生（ADR-0006）
 const STORAGE_KEY = wiring ? wiring.store.progressKey(currentChild) : null;
 const OLD_KEY = "aiden_study_records";
+// One unfinished operation per child/device; graded progress keeps the existing sync contract.
+const OPERATION_DRAFT_KEY = `study:operation-draft:${currentChild}`;
+function operationDraft(q) {
+  const M = StudyMathOperations.moduleFor(q);
+  try {
+    const raw = wiring.safeGet(OPERATION_DRAFT_KEY);
+    const draft = raw && raw.length <= 262144 ? JSON.parse(raw) : null;
+    if (draft?.id === q.id && draft.semantic === StudyPrivatePack.semantic(q)) {
+      return q.type === "circuit_connect" ? StudyCircuit.restore(draft.state) : M.update(q, draft.state, "noop");
+    }
+  } catch { /* A damaged draft never prevents practice. */ }
+  return q.type === "circuit_connect" ? StudyCircuit.initial() : M.initial(q);
+}
+function saveOperationDraft(q, response) {
+  const raw = JSON.stringify({id:q.id, semantic:StudyPrivatePack.semantic(q), state:response});
+  if (raw.length <= 262144 && !wiring.safeSet(OPERATION_DRAFT_KEY, raw)) showSaveStatus(false);
+}
+function clearOperationDraft() { wiring.safeSet(OPERATION_DRAFT_KEY, ""); }
 
 const DEFAULT_DATA = { schemaVersion: WIRING_CONFIG.schemaVersion, challenge: { "1": null, "2": null }, mastered: {}, errorBank: [], stats: {}, flagged: [], studyTerm: "g3-s2", semester: "final", subject: "science" };
 const DEFAULT_PRACTICE_MODE = "choice";
@@ -1341,6 +1359,13 @@ function resetQuestionRuntime() {
   quiz.handwritingRemedialDataUrl = null;
   quiz.handwritingRemedial = null;
   quiz.handwritingRemedialHintVisible = false;
+  quiz._operationBinding?.destroy();
+  quiz._operationBinding = null;
+  quiz._operationState = null;
+  quiz._mathInput = null;
+  quiz._renderMath = null;
+  quiz._circuitResponse = null;
+  quiz._renderCircuit = null;
   quiz._groupValues = null;
   quiz._groupResults = null;
   quiz._groupIndex = 0;
@@ -1483,10 +1508,17 @@ function getCurrentQuestion() {
 function submitAnswer(selected) {
   if (quiz.isAnswered) return;
   const q = getCurrentQuestion();
+  const operation = StudyMathOperations.moduleFor(q);
+  if (operation && !operation.complete(q, selected)) return;
   if (q.type === "fill_in_blank" && !hasCompleteBlanks(q, selected)) return;
+  if (q.type === "circuit_connect" && !StudyCircuit.complete(selected)) return;
+  if (q.type === "choice_set" && (!Array.isArray(selected) || !selected.length)) return;
   quiz.isAnswered = true;
   let correct;
-  if (q.type === "fill_in_blank") {
+  if (operation) {
+    correct = operation.grade(q, selected);
+    clearOperationDraft();
+  } else if (q.type === "fill_in_blank") {
     const graded = gradeBlanks(q, selected);
     quiz._fillResults = graded.results;
     quiz._fillAnswers = graded.answers;
@@ -1494,6 +1526,11 @@ function submitAnswer(selected) {
   } else if (q.type === "grouped_choice") {
     quiz._groupResults = q.parts.map((_, i) => selected[i] === q.answer[i]);
     correct = quiz._groupResults.every(Boolean);
+  } else if (q.type === "choice_set") {
+    correct = StudyAnswer.gradeChoiceSet(q, selected);
+  } else if (q.type === "circuit_connect") {
+    correct = StudyCircuit.grade(selected);
+    clearOperationDraft();
   } else if (q.type === "vertical_calc") {
     correct = selected.vcErrors === 0;            // 逐格即時驗證：零失誤才算對
   } else {
@@ -1987,6 +2024,7 @@ window._resetChallenge = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE
   if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) window._resetChallenge(unit,subtopic,practiceMode,true); });
   if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
+  clearOperationDraft();
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
   renderHome();
@@ -2263,6 +2301,10 @@ const ISSUE_URL = "https://github.com/huansbox/aiden-study/issues/new";
 const ISSUE_URL_MAX = 7000; // 瀏覽器/GitHub 對 URL 長度的安全上限
 
 function formatAnswer(q) {
+  const operation = StudyMathOperations.moduleFor(q);
+  if (operation) return operation.answerText(q);
+  if (q.type === "choice_set") return q.answerSet.map(value => q.options[Number(value) - 1]).join("、");
+  if (q.type === "circuit_connect") return "電池兩端各用一條電線，分別連到燈泡的螺紋金屬殼與底部金屬接點，形成通路。";
   if (q.type === "true_false") return q.answer === "true" ? "O（正確）" : "X（錯誤）";
   if (q.type === "chinese_correction") return `「${q.wrong}」改成「${q.answer}」`;
   if (q.type === "fill_in_blank") {
@@ -2730,10 +2772,16 @@ function renderQuiz() {
   const isFill = q.type === "fill_in_blank";
   const isSelectFill = isFill && q.blanks[0]?.input === "select";
   const isGroup = q.type === "grouped_choice";
+  const isCircuit = q.type === "circuit_connect";
+  const operation = StudyMathOperations.moduleFor(q);
+  const isMathInput = StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type);
   const isVc = q.type === "vertical_calc";
   const isChinese = q.type === "chinese_correction";
   let typeClass = "q-type", typeLabel = "選擇題";
-  if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
+  if (operation) { typeLabel = StudyMathOperations.labelFor(q); }
+  else if (q.type === "choice_set") { typeLabel = "選出所有符合項目"; }
+  else if (isCircuit) { typeLabel = "畫電路"; }
+  else if (isTF) { typeClass += " tf"; typeLabel = "是非題"; }
   else if (isGroup) { typeClass += " tf"; typeLabel = `整組選答（${q.parts.length} 小題）`; }
   else if (isFill) { typeClass += " fib"; typeLabel = isSelectFill ? `詞庫填空（${q.blanks.length} 空）` : "填充題"; }
   else if (isVc) { typeClass += " vc"; typeLabel = "直式計算"; }
@@ -2777,6 +2825,15 @@ function renderQuiz() {
     } else {
       answerHtml = `<div class="chinese-inline-hint hidden" id="chinese-hint"></div>`;
     }
+  } else if (operation) {
+    quiz._operationState ||= operationDraft(q);
+    answerHtml = `<div id="operation-panel" data-operation-panel></div><button class="next-btn" id="operation-submit" disabled>確認答案</button>`;
+  } else if (isMathInput) {
+    quiz._mathInput ||= StudyMathInput.initial(q);
+    answerHtml = `<div id="math-input-panel"></div><button class="next-btn" id="math-submit" disabled>確認答案</button>`;
+  } else if (isCircuit) {
+    quiz._circuitResponse ||= operationDraft(q);
+    answerHtml = `<div id="circuit-panel"></div><button class="next-btn" id="circuit-submit" disabled>確認電路</button>`;
   } else if (isGroup) {
     if (!quiz._groupValues || quiz._groupValues.length !== q.parts.length) quiz._groupValues = q.parts.map(() => "");
     answerHtml = `<div class="group-parts" id="group-parts"></div><div class="group-nav" aria-label="小題導覽"><button type="button" id="group-prev">上一小題</button><span id="group-position"></span><button type="button" id="group-next">下一小題</button></div><button class="next-btn" id="group-submit" disabled>確認整組答案</button>`;
@@ -2853,8 +2910,8 @@ function renderQuiz() {
       <span class="${typeClass}">${typeLabel}</span>
       ${isGroup ? '<div class="group-context">' : ""}
       ${q.image ? `<img class="q-image" src="${q.image}" alt="題目附表">` : ""}
-      ${isPrivateQuestion(q) ? StudyMaterial.render(q.material) : ""}
-      <div class="q-text">${displayText}</div>
+      ${isPrivateQuestion(q) && !isCircuit ? StudyMaterial.render(q.material) : ""}
+      ${operation === globalThis.StudyMathInteractions ? "" : `<div class="q-text">${displayText}</div>`}
       ${isGroup ? '</div><div class="group-work">' : ""}
       ${answerHtml}
       <div class="result-hint hidden" id="result-hint"></div>
@@ -2882,8 +2939,55 @@ function renderQuiz() {
   if (isPrivateQuestion(q)) StudyMaterial.bind(document.getElementById("page-quiz"));
   if (isVc) {
     bindVcEvents(q);
+  } else if (operation) {
+    const panel = document.getElementById("operation-panel"), submit = document.getElementById("operation-submit");
+    quiz._operationBinding?.destroy();
+    quiz._operationBinding = StudyMathOperations.bind({q, element:panel,
+      getState:() => quiz._operationState, setState:value => { quiz._operationState = value; },
+      answered:() => quiz.isAnswered,
+      onChange:() => saveOperationDraft(q, quiz._operationState),
+      onRender:() => { submit.disabled = quiz.isAnswered || !operation.complete(q, quiz._operationState); }
+    });
+    submit.onclick = () => submitAnswer(quiz._operationBinding.read());
+  } else if (isMathInput) {
+    const renderMath = () => {
+      const panel = document.getElementById("math-input-panel"), submit = document.getElementById("math-submit");
+      panel.innerHTML = StudyMathInput.render(q, quiz._mathInput, quiz.isAnswered, quiz._fillResults);
+      const refresh = () => { submit.disabled = quiz.isAnswered || !StudyMathInput.complete(q, quiz._mathInput); };
+      panel.querySelectorAll("[data-math-action]").forEach(control => {
+        const act = () => {
+          if (quiz.isAnswered && control.dataset.mathAction !== "blank") return;
+          quiz._mathInput = StudyMathInput.update(q, quiz._mathInput, control.dataset.mathAction,
+            control.tagName === "INPUT" ? control.value : control.dataset.mathValue, control.dataset.mathField);
+          if (control.tagName === "INPUT") refresh(); else renderMath();
+        };
+        if (control.tagName === "INPUT") control.oninput = act; else control.onclick = act;
+      });
+      refresh();
+    };
+    quiz._renderMath = renderMath;
+    document.getElementById("math-submit").onclick = () => submitAnswer([...quiz._mathInput.values]);
+    renderMath();
   } else if (isFill) {
     bindFillEvents(q);
+  } else if (isCircuit) {
+    const renderCircuit = () => {
+      const scrollLeft = document.querySelector("#circuit-panel .circuit-scroll")?.scrollLeft || 0;
+      document.getElementById("circuit-panel").innerHTML = StudyCircuit.render(q, quiz._circuitResponse, quiz.isAnswered);
+      const scroller = document.querySelector("#circuit-panel .circuit-scroll");
+      if (scroller) scroller.scrollLeft = scrollLeft;
+      document.getElementById("circuit-submit").disabled = quiz.isAnswered || !StudyCircuit.complete(quiz._circuitResponse);
+      document.querySelectorAll("#circuit-panel [data-circuit-action]").forEach(button => { button.onclick = () => {
+        if (quiz.isAnswered || button.disabled) return;
+        quiz._circuitResponse = StudyCircuit.update(quiz._circuitResponse, button.dataset.circuitAction, button.dataset.circuitValue);
+        if (button.dataset.circuitAction === "clear") clearOperationDraft();
+        else saveOperationDraft(q, quiz._circuitResponse);
+        renderCircuit();
+      }; });
+    };
+    quiz._renderCircuit = renderCircuit;
+    document.getElementById("circuit-submit").onclick = () => submitAnswer(quiz._circuitResponse);
+    renderCircuit();
   } else if (isGroup) {
     const submit = document.getElementById("group-submit");
     const refresh = () => { submit.disabled = quiz._groupValues.some(value => !value); };
@@ -3277,6 +3381,14 @@ function renderFeedback(correct, q) {
   if (q.type === "vertical_calc") {
     document.querySelectorAll("#fill-input-panel button").forEach(b => { b.disabled = true; });
     wrongHint = `完成了！但填錯過 ${quiz._vc.errors} 次，這題之後會再練一次`;
+  } else if (StudyMathOperations.moduleFor(q)) {
+    quiz._operationBinding.render();
+    document.getElementById("operation-submit").classList.add("hidden");
+    wrongHint = "還需要修正。" + StudyMathOperations.moduleFor(q).answerText(q);
+  } else if (StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type)) {
+    quiz._renderMath();
+    document.getElementById("math-submit").classList.add("hidden");
+    wrongHint = q.type === "choice_set" ? `正確選項：${formatAnswer(q)}` : "請切換各空格查看正確答案";
   } else if (q.type === "fill_in_blank" && q.blanks[0]?.input === "select") {
     quiz._renderSelectBlank();
     document.getElementById("fib-submit").classList.add("hidden");
@@ -3304,6 +3416,10 @@ function renderFeedback(correct, q) {
     quiz._renderGroupPart();
     document.getElementById("group-submit").classList.add("hidden");
     wrongHint = "答錯了，請看各小題旁的正確答案";
+  } else if (q.type === "circuit_connect") {
+    quiz._renderCircuit();
+    document.getElementById("circuit-submit").classList.add("hidden");
+    wrongHint = "電路還沒有接通。兩條線需要從電池兩端，接到燈泡的兩個金屬接點。";
   } else if (q.type === "chinese_correction") {
     document.querySelectorAll(".chinese-char").forEach(btn => { btn.disabled = true; });
     // 手寫 selfCheck 的「不太會寫／我寫對了」在作答後也要失效，避免對已 mastered 的題再記錯
@@ -3573,6 +3689,7 @@ window._goHome = () => { showPage("page-home"); renderHome(); };
 window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => {
   if (!canPracticeUnits(unit)) { renderHome(); return; }
   const mode = normalizePracticeMode(practiceMode);
+  clearOperationDraft();
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
   startQuiz("full", unit, subtopic, mode);

@@ -10,6 +10,8 @@
 // 已知接受限制（家庭規模、KV 無 conditional write）：同 rev 併發 PUT 可能雙雙 200，
 // 先落地者被 LWW 靜默覆蓋且無 409 訊號——與「KV 最終一致」同屬 spec 已載明的接受風險。
 
+import "../docs/study/math-interactions.js";
+import "../docs/study/math-geometry.js";
 import "../docs/study/private-pack.js";
 import "../docs/study/pack-catalog.js";
 import { familyRoute } from "./family.mjs";

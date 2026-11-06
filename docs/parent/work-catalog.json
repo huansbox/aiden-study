@@ -378,7 +378,7 @@
       ],
       "audienceLabel": "9 歲；四年級",
       "status": "in-progress",
-      "statusNote": "依115康軒教材暫定數學U6–10、自然U3–4、社會U3–4，非校方正式範圍。自然104＋社會53活動已核准並完成隔離驗證，本批待發布；數學進行中。舊已考範圍隱藏，內容與進度保留；#178／#191 backlog 不視為完成。",
+      "statusNote": "依115康軒教材暫定數學U6–10、自然U3–4、社會U3–4，校方正式範圍仍未取得。自然104＋社會53活動已隨rev23上線；本次發布批追加數學301活動及電路操作1活動，全科合計924活動。舊已考範圍隱藏，內容與進度保留；#178／#191來源及品質backlog不視為完成。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/grade4-sem1-exam2",
       "source": {
@@ -392,7 +392,7 @@
       },
       "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/grade4-sem1-exam2",
       "links": [],
-      "description": "四上後半冊家庭複習；自然聲光與電路、社會信仰老街與作息節慶，數學另階段。",
+      "description": "四上後半冊數學U6–10、自然聲光與電路、社會信仰老街與作息節慶家庭複習。",
       "eventDate": null,
       "groupId": null,
       "groupName": null,
