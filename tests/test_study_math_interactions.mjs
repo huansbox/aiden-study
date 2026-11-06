@@ -192,14 +192,14 @@ test("fraction shading grades the total count of any parts and supports undo and
   assert.equal(M.update(q, s, "toggle", "16").selected.length, 0); // 超出 2×8
 });
 
-test("companion mixed number must match the target value with the same denominator", () => {
+test("companion mixed number accepts equivalent fractions and preserves the required form", () => {
   const q = circleShade(); M.validateQuestion(q);
   const shaded = play(q, Array.from({ length: 13 }, (_, k) => ["toggle", String(k + 1)]));
   const fill = (w, n, d) => play(q, [["focus", "w"], ...Array.from(w).map(k => ["key", k]), ["focus", "n"], ...Array.from(n).map(k => ["key", k]), ["focus", "d"], ...Array.from(d).map(k => ["key", k])], shaded);
   assert.equal(M.grade(q, fill("2", "3", "5")), true);     // 13=2×5+3
   assert.equal(M.complete(q, fill("", "13", "5")), false);  // 帶分數要有整數
   assert.equal(M.grade(q, fill("1", "8", "5")), false);     // 分子不可大於分母
-  assert.equal(M.grade(q, fill("2", "6", "10")), false);    // 不能換分母
+  assert.equal(M.grade(q, fill("2", "6", "10")), true);     // 同值同形式可換分母
   assert.equal(M.grade(q, fill("2", "4", "5")), false);
   const fewer = M.update(q, fill("2", "3", "5"), "toggle", "1");
   assert.equal(M.grade(q, fewer), false);                   // 填空對、畫斜線少一份
@@ -285,4 +285,16 @@ test("semantic fingerprint follows grading content only", () => {
   const v = sub(); v.interaction.operands[0] = "60.00"; v.interaction.result = "57.65";
   assert.notEqual(M.semantic(sub()), M.semantic(v));
   assert.deepEqual(M.TYPES, ["expression_steps", "vertical_decimal", "fraction_shade", "hundred_grid_select"]);
+});
+
+
+test("companion accepts a reduced improper fraction and rejects a changed value", () => {
+  const q = gridShade(); q.text += "（１）";
+  q.interaction.target.numerator = 12; q.interaction.companion = { form: "improper" };
+  M.validateQuestion(q);
+  const state = { selected: Array.from({ length: 12 }, (_, i) => i), companion: { w: "", n: "", d: "" }, active: "n" };
+  state.companion = { w: "", n: "3", d: "2" }; assert.equal(M.grade(q, state), true);
+  state.companion = { w: "", n: "6", d: "4" }; assert.equal(M.grade(q, state), true);
+  state.companion = { w: "", n: "4", d: "3" }; assert.equal(M.grade(q, state), false);
+  state.companion = { w: "", n: "3", d: "0" }; assert.equal(M.grade(q, state), false);
 });

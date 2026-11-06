@@ -349,10 +349,10 @@
   function companionValue(it, c) {
     if (!it.companion) return true;
     const t = it.target, n = c.n, d = c.d;
-    if (!/^[1-9][0-9]{0,2}$/.test(d) || !/^(0|[1-9][0-9]{0,2})$/.test(n) || Number(d) !== t.denominator) return false;
+    if (!/^[1-9][0-9]{0,2}$/.test(d) || !/^(0|[1-9][0-9]{0,2})$/.test(n)) return false;
     if (it.companion.form === "mixed")
-      return /^[1-9][0-9]{0,2}$/.test(c.w) && Number(n) > 0 && Number(n) < Number(d) && Number(c.w) * t.denominator + Number(n) === t.numerator;
-    return Number(n) === t.numerator;
+      return /^[1-9][0-9]{0,2}$/.test(c.w) && Number(n) > 0 && Number(n) < Number(d) && (BigInt(c.w) * BigInt(d) + BigInt(n)) * BigInt(t.denominator) === BigInt(t.numerator) * BigInt(d);
+    return Number(n) >= Number(d) && BigInt(n) * BigInt(t.denominator) === BigInt(t.numerator) * BigInt(d);
   }
   function complete(q, state) {
     const s = sanitize(q, state), it = q.interaction;
