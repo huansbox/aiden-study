@@ -11,6 +11,34 @@ const straight = [["battery-positive", "bulb-base"], ["battery-negative", "bulb-
 const crossed = [["bulb-base", "battery-negative"], ["bulb-shell", "battery-positive"]];
 const packFor = q => ({ schemaVersion: 2, packId: "g4-s1-math-u1", revision: 1, questions: [q], explanations: { [q.id]: "Synthetic explanation" } });
 const parse = q => P.parse(JSON.stringify(packFor(q)), [], null, true);
+const plain = value => JSON.parse(JSON.stringify(value));
+const draftKey = "study:operation-draft:aiden";
+const partial = { batteryPlaced: true, edges: [["battery-positive", "bulb-shell"]], selected: "battery-negative" };
+const circuitPorts = child => ({ publishedStudyUnits: [30], search: `?child=${child}&subject=science&term=g4-s1`,
+  family: { allowed: () => true, ready: Promise.resolve(), profile: () => ({ terms: ["g4-s1"] }), task: () => null, setActive() {}, beginRound() {}, record() {}, finishRound() {} } });
+async function startCircuit(st = storage(), child = "aiden", questions = [circuitQuestion()]) {
+  const e = await boot(st, child, circuitPorts(child));
+  if (!e.app.activePack) {
+    const pack = syntheticPack(); pack.revision++;
+    pack.questions.push(...questions);
+    for (const q of questions) pack.explanations[q.id] = "Synthetic circuit explanation";
+    e.app.importPrivatePack(JSON.stringify(pack));
+    e.app.State.saveBatch("30", questions.map(q => q.id));
+  }
+  e.app.startQuiz("full", 30);
+  // Exercise the real app's click handlers with DOM ports; rendering remains the real circuit renderer.
+  const controls = [["place"], ["clear"], ["delete", "0"], ...C.IDS.map(id => ["terminal", id])]
+    .map(([action, value]) => ({ disabled: false, dataset: { circuitAction: action, circuitValue: value } }));
+  const query = e.window.document.querySelectorAll;
+  e.window.document.querySelectorAll = selector => selector === "#circuit-panel [data-circuit-action]" ? controls : query(selector);
+  e.app.quiz._renderCircuit();
+  e.click = (action, value) => controls.find(button => button.dataset.circuitAction === action && button.dataset.circuitValue === value).onclick();
+  return e;
+}
+function drawPartial(e) {
+  e.click("place");
+  for (const id of ["battery-positive", "bulb-shell", "battery-negative"]) e.click("terminal", id);
+}
 
 test("circuit grading accepts reversed wires and polarity while rejecting open, glass, shorted and repeated contacts", () => {
   assert.equal(C.grade(response(straight)), true);
@@ -32,6 +60,80 @@ test("circuit manipulation requires placing the cell and supports deleting and r
   value = C.update(value, "terminal", "battery-positive"); value = C.update(value, "terminal", "bulb-glass");
   assert.equal(C.complete(value), true); assert.equal(C.grade(value), false);
   assert.deepEqual(C.update(value, "clear"), C.initial());
+});
+
+test("circuit draft restoration accepts incomplete work without sharing mutable edges and rejects impossible state", () => {
+  const saved = structuredClone(partial), restored = C.restore(saved);
+  assert.deepEqual(restored, partial);
+  restored.edges[0][0] = "bulb-glass";
+  assert.deepEqual(saved, partial);
+  for (const state of [null, {}, { ...partial, batteryPlaced: "true" }, { ...partial, edges: {} },
+    { ...partial, edges: [["battery-positive", "unknown"]] }, { ...partial, edges: [["bulb-base", "bulb-base"]] },
+    { ...partial, edges: [...straight, straight[0]] }, { ...partial, edges: [straight[0], [...straight[0]].reverse()] },
+    { ...partial, selected: "unknown" }, { ...partial, selected: undefined }, { ...partial, batteryPlaced: false },
+    { ...partial, edges: straight }]) assert.deepEqual(C.restore(state), C.initial());
+});
+
+test("Study circuit clicks preserve the battery, wire and pending endpoint across reload only for the same child", async () => {
+  let e = await startCircuit();
+  drawPartial(e);
+  assert.deepEqual(JSON.parse(e.st.getItem(draftKey)).state, partial);
+  e.app.submitAnswer(e.app.quiz._circuitResponse);
+  assert.equal(e.app.quiz.isAnswered, false, "an incomplete submission must retain the draft");
+  const sibling = await startCircuit(e.st, "bingpu");
+  assert.deepEqual(plain(sibling.app.quiz._circuitResponse), C.initial());
+  assert.deepEqual(JSON.parse(e.st.getItem(draftKey)).state, partial);
+  e = await startCircuit(e.st);
+  assert.deepEqual(plain(e.app.quiz._circuitResponse), partial);
+  assert.match(e.node("circuit-panel").innerHTML, /data-circuit-value="battery-negative"[^>]*aria-pressed="true"/);
+  e.click("terminal", "bulb-base");
+  assert.equal(e.node("circuit-submit").disabled, false);
+  e = await startCircuit(e.st);
+  assert.equal(C.grade(plain(e.app.quiz._circuitResponse)), true, "both completed wires also survive reload");
+  e.click("delete", "0");
+  e = await startCircuit(e.st);
+  assert.deepEqual(plain(e.app.quiz._circuitResponse), { batteryPlaced: true, edges: [["battery-negative", "bulb-base"]], selected: null });
+  e.click("clear");
+  assert.equal(e.st.getItem(draftKey), "");
+  e = await startCircuit(e.st);
+  assert.deepEqual(plain(e.app.quiz._circuitResponse), C.initial());
+});
+
+test("Study circuit ignores damaged, oversized, other-question and changed-semantic drafts", async () => {
+  const q = circuitQuestion(), envelope = { id: q.id, semantic: P.semantic(q), state: partial };
+  const changed = structuredClone(q); changed.circuit.terminals[2].x++;
+  const e = await startCircuit();
+  for (const raw of ["{", " ".repeat(262145), JSON.stringify({ ...envelope, id: "different-question" }),
+    JSON.stringify({ ...envelope, semantic: P.semantic(changed) }), JSON.stringify({ ...envelope, state: { ...partial, edges: [["bad", "bulb-base"]] } })]) {
+    e.st.setItem(draftKey, raw);
+    const resumed = await startCircuit(e.st);
+    assert.deepEqual(plain(resumed.app.quiz._circuitResponse), C.initial());
+  }
+});
+
+test("Study circuit clears graded drafts before retry or a new question and clears explicit practice resets", async () => {
+  const second = { ...circuitQuestion(), id: "science-g4s1-synthetic-circuit-second-v1" };
+  let e = await startCircuit(storage(), "aiden", [circuitQuestion(), second]);
+  drawPartial(e); e.click("terminal", "bulb-glass");
+  e.node("circuit-submit").onclick();
+  assert.equal(e.app.quiz.answered.at(-1).correct, false);
+  assert.equal(e.st.getItem(draftKey), "");
+  e.app.advance();
+  assert.equal(e.app.quiz.activeQuestionId, second.id);
+  assert.deepEqual(plain(e.app.quiz._circuitResponse), C.initial());
+  drawPartial(e); e.click("terminal", "bulb-base");
+  e.node("circuit-submit").onclick();
+  assert.equal(e.st.getItem(draftKey), "");
+  e.app.advance();
+  assert.equal(e.app.quiz.activeQuestionId, circuitQuestion().id);
+  assert.deepEqual(plain(e.app.quiz._circuitResponse), C.initial(), "the wrong answer must not reappear on retry");
+  for (const reset of ["_resetChallenge", "_resetAndStartFull"]) {
+    drawPartial(e);
+    await e.window[reset](30);
+    assert.equal(e.st.getItem(draftKey), "");
+    e = await startCircuit(e.st);
+    assert.deepEqual(plain(e.app.quiz._circuitResponse), C.initial());
+  }
 });
 
 test("circuit contract is limited to science 30 and keeps fixed neutral terminals immutable", () => {

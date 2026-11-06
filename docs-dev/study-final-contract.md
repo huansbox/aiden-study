@@ -31,6 +31,8 @@ Python builder、瀏覽器／Worker 共用 validator、孩子畫面與家長試�
 
 `circuit_connect` 僅適用 science unit 30；`options=[]`、`answer="closed"`，`material` 必須是 32 KiB 內、實際 PNG IHDR 尺寸為 90×130 的原燈泡 PNG。此尺寸搭配固定等比顯示框，Python 與 JS validator 都從 PNG bytes 檢查，不接受替換為不同尺寸的 crop。`circuit.terminals` 固定五個接點，依序為 `battery-positive`、`battery-negative`、`bulb-glass`、`bulb-shell`、`bulb-base`，各含整數 `x/y`，使用 1000×700 的互動區座標。接點保留至少 90 座標單位距離；兩個電池接點同 x 且上下至少 120。位置同樣屬於 immutable 作答語意。此題在窄畫面用至少 540px 的局部橫向操作區，保留 44px 命中區；不縮小接點或讓整頁橫向溢出。
 
+電路與數學操作共用每位孩子本機的一份未完成草稿；電池、已畫電線與待接端點會保留，只有題目 ID 與 semantic 都相同才還原。損壞或過長資料忽略，送出、全部重畫或重設練習會清除；草稿不進同步 payload，家長 preview 仍只用記憶體。
+
 孩子先按「放入一顆電池」，再點選兩個端點新增電線；可刪除單線或全部重畫。電池保留正負標示，燈泡接點只用相同外觀與中性編號，玻璃接點也可選。完整作答是 `batteryPlaced=true` 加兩條不同、非自接的無向 edges；電池正負兩端各接金屬殼／底接點才正確，接受線序、端點順序與正負對調。玻璃、短路、接點重用或缺線都不通關。
 
 原燈泡圖只作裁切與等比例放大；原完整題圖、crop 座標與指紋留在私人來源紀錄。這是限定材料的連線操作，不宣稱驗證自由手繪能力；自由列舉節能方法也不以少量文字別名冒充完整語意評分。

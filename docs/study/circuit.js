@@ -4,6 +4,15 @@
   const IDS = ["battery-positive", "battery-negative", "bulb-glass", "bulb-shell", "bulb-base"];
   const initial = () => ({ batteryPlaced: false, edges: [], selected: null });
   const pairKey = pair => [...pair].sort().join(":");
+  function restore(value) {
+    if (!value || typeof value.batteryPlaced !== "boolean" || !Array.isArray(value.edges) || value.edges.length > 2 ||
+      !value.edges.every(edge => Array.isArray(edge) && edge.length === 2 && edge.every(id => IDS.includes(id)) && edge[0] !== edge[1]) ||
+      new Set(value.edges.map(pairKey)).size !== value.edges.length ||
+      (value.selected !== null && !IDS.includes(value.selected)) ||
+      (!value.batteryPlaced && (value.edges.length || value.selected !== null)) ||
+      (value.edges.length === 2 && value.selected !== null)) return initial();
+    return { batteryPlaced: value.batteryPlaced, edges: value.edges.map(edge => [...edge]), selected: value.selected };
+  }
   function complete(value) {
     return value?.batteryPlaced === true && Array.isArray(value.edges) && value.edges.length === 2 &&
       value.edges.every(edge => Array.isArray(edge) && edge.length === 2 && edge.every(id => IDS.includes(id)) && edge[0] !== edge[1]) &&
@@ -51,5 +60,5 @@
       <div class="circuit-tools">${value.edges.map((_, index) => `<button type="button" data-circuit-action="delete" data-circuit-value="${index}"${lock}>刪除電線 ${index + 1}</button>`).join("")}</div>
     </section>`;
   }
-  root.StudyCircuit = { IDS, initial, complete, grade, update, render };
+  root.StudyCircuit = { IDS, initial, restore, complete, grade, update, render };
 })(globalThis);

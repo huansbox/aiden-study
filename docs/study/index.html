@@ -606,9 +606,11 @@ function operationDraft(q) {
   try {
     const raw = wiring.safeGet(OPERATION_DRAFT_KEY);
     const draft = raw && raw.length <= 262144 ? JSON.parse(raw) : null;
-    if (draft?.id === q.id && draft.semantic === StudyPrivatePack.semantic(q)) return M.update(q, draft.state, "noop");
+    if (draft?.id === q.id && draft.semantic === StudyPrivatePack.semantic(q)) {
+      return q.type === "circuit_connect" ? StudyCircuit.restore(draft.state) : M.update(q, draft.state, "noop");
+    }
   } catch { /* A damaged draft never prevents practice. */ }
-  return M.initial(q);
+  return q.type === "circuit_connect" ? StudyCircuit.initial() : M.initial(q);
 }
 function saveOperationDraft(q, response) {
   const raw = JSON.stringify({id:q.id, semantic:StudyPrivatePack.semantic(q), state:response});
@@ -1528,6 +1530,7 @@ function submitAnswer(selected) {
     correct = StudyAnswer.gradeChoiceSet(q, selected);
   } else if (q.type === "circuit_connect") {
     correct = StudyCircuit.grade(selected);
+    clearOperationDraft();
   } else if (q.type === "vertical_calc") {
     correct = selected.vcErrors === 0;            // 逐格即時驗證：零失誤才算對
   } else {
@@ -2829,7 +2832,7 @@ function renderQuiz() {
     quiz._mathInput ||= StudyMathInput.initial(q);
     answerHtml = `<div id="math-input-panel"></div><button class="next-btn" id="math-submit" disabled>確認答案</button>`;
   } else if (isCircuit) {
-    quiz._circuitResponse ||= StudyCircuit.initial();
+    quiz._circuitResponse ||= operationDraft(q);
     answerHtml = `<div id="circuit-panel"></div><button class="next-btn" id="circuit-submit" disabled>確認電路</button>`;
   } else if (isGroup) {
     if (!quiz._groupValues || quiz._groupValues.length !== q.parts.length) quiz._groupValues = q.parts.map(() => "");
@@ -2977,6 +2980,8 @@ function renderQuiz() {
       document.querySelectorAll("#circuit-panel [data-circuit-action]").forEach(button => { button.onclick = () => {
         if (quiz.isAnswered || button.disabled) return;
         quiz._circuitResponse = StudyCircuit.update(quiz._circuitResponse, button.dataset.circuitAction, button.dataset.circuitValue);
+        if (button.dataset.circuitAction === "clear") clearOperationDraft();
+        else saveOperationDraft(q, quiz._circuitResponse);
         renderCircuit();
       }; });
     };
