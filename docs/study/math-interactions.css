@@ -1,0 +1,67 @@
+/* StudyMathInteractions：只作用於 .study-math 內部。 */
+.study-math { max-width: 760px; margin: 0 auto; color: #172033; box-sizing: border-box; }
+.study-math *, .study-math *::before, .study-math *::after { box-sizing: border-box; }
+.study-math .smi-text { margin: .5rem 0; font-size: 1.15rem; line-height: 1.7; overflow-wrap: anywhere; }
+.study-math .smi-hint { margin: .25rem 0 .75rem; color: #475569; line-height: 1.5; }
+.study-math .smi-chip { display: inline-block; min-width: 2.6em; padding: 0 .2em; border: 2px dashed #64748b; border-radius: 8px; text-align: center; }
+.study-math .smi-status { margin: .5rem 0; font-weight: 700; }
+.study-math .smi-btn { min-height: 44px; min-width: 44px; padding: .4rem .8rem; border: 2px solid #64748b; border-radius: 10px; background: #fff; color: #172033; font: inherit; font-size: 1.1rem; cursor: pointer; touch-action: manipulation; }
+.study-math .smi-btn:disabled { opacity: .5; cursor: default; }
+/* 鎖定後孩子的作答仍需清楚可讀，只淡化按鍵 */
+.study-math .smi-field:disabled, .study-math .smi-fbox:disabled, .study-math .smi-cell:disabled, .study-math .smi-piece:disabled { opacity: 1; color: #172033; }
+.study-math .smi-btn:focus-visible, .study-math .smi-cell:focus-visible, .study-math .smi-piece:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+.study-math .smi-tools { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.study-math .smi-keypad { display: grid; grid-template-columns: repeat(6, minmax(44px, 1fr)); gap: .4rem; max-width: 420px; margin-top: .75rem; }
+.study-math .smi-keypad .smi-key { padding: .3rem; font-size: 1.3rem; font-weight: 700; }
+.study-math .smi-keypad .smi-op { background: #eef2ff; }
+.study-math .smi-keypad .smi-wide { grid-column: span 2; font-size: 1rem; }
+.study-math .smi-keypad-expr { grid-template-columns: repeat(7, minmax(44px, 1fr)); max-width: 480px; }
+.study-math .smi-keypad-expr .smi-wide { grid-column: span 2; }
+
+/* 算式 */
+.study-math .smi-fields { display: grid; gap: .5rem; }
+.study-math .smi-row { display: flex; align-items: center; gap: .5rem; }
+.study-math .smi-label { flex: none; font-weight: 700; }
+.study-math .smi-field { flex: 1; min-width: 0; text-align: left; font-size: 1.3rem; letter-spacing: .04em; overflow-wrap: anywhere; }
+.study-math .smi-placeholder { color: #94a3b8; font-size: 1rem; }
+.study-math .is-active { border-color: #2563eb; box-shadow: 0 0 0 3px #bfdbfe; }
+
+/* 直式 */
+.study-math .smi-vertical { display: inline-block; padding: .5rem; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; max-width: 100%; overflow-x: auto; }
+.study-math .smi-vrow { display: flex; gap: 4px; margin: 4px 0; }
+.study-math .smi-sign { flex: none; width: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 700; }
+.study-math .smi-cell { position: relative; flex: none; width: 48px; height: 52px; padding: 0; border: 1px solid #94a3b8; border-radius: 4px; background: #f8fafc; color: #172033; font: 700 1.6rem/1 ui-monospace, monospace; cursor: pointer; touch-action: manipulation; }
+.study-math .smi-cell.is-active { background: #eff6ff; }
+.study-math .smi-dot { position: absolute; right: -6px; bottom: 6px; width: 10px; height: 10px; border-radius: 50%; background: #172033; z-index: 1; }
+.study-math .smi-vline { height: 0; border-top: 3px solid #172033; margin: 6px 0 6px 48px; }
+
+/* 分數畫斜線 */
+.study-math .smi-defs { position: absolute; width: 0; height: 0; }
+.study-math .smi-shapes { display: flex; flex-wrap: wrap; gap: 12px; }
+.study-math .smi-shape { width: 150px; height: 150px; flex: none; }
+.study-math .smi-part { fill: #fff; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 3 2; cursor: pointer; }
+.study-math .smi-part.is-on { fill: url(#smi-hatch); }
+.study-math .smi-part[aria-disabled="true"] { cursor: default; }
+.study-math .smi-part:focus-visible { outline: none; stroke: #2563eb; stroke-width: 4; stroke-dasharray: none; }
+.study-math .smi-frame { fill: none; stroke: #172033; stroke-width: 3; pointer-events: none; }
+.study-math .smi-companion { display: flex; align-items: center; gap: .5rem; margin-top: .75rem; font-size: 1.2rem; }
+.study-math .smi-frac { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.study-math .smi-bar { width: 52px; border-top: 3px solid #172033; }
+.study-math .smi-fbox { width: 56px; padding: .2rem; font-weight: 700; }
+
+/* 百格板 */
+.study-math .smi-base10 { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.study-math .smi-boards { display: grid; grid-template-columns: repeat(3, 110px); gap: 10px; }
+.study-math .smi-small { display: flex; gap: 14px; align-items: flex-start; }
+.study-math .smi-rods { display: grid; grid-template-columns: repeat(6, 44px); gap: 4px; }
+.study-math .smi-units { display: grid; grid-template-columns: repeat(2, 44px); gap: 4px; }
+.study-math .smi-piece { display: flex; align-items: center; justify-content: center; padding: 0; border: 3px solid transparent; border-radius: 12px; background: transparent; cursor: pointer; touch-action: manipulation; }
+.study-math .smi-piece svg { display: block; flex: none; stroke: #334155; stroke-width: .6; overflow: visible; }
+.study-math .smi-boards .smi-piece { width: 110px; height: 110px; }
+.study-math .smi-boards svg { width: 96px; height: 96px; }
+.study-math .smi-rods .smi-piece { width: 44px; height: 110px; }
+.study-math .smi-rods svg { width: 9.6px; height: 96px; }
+.study-math .smi-units .smi-piece { width: 44px; height: 44px; }
+.study-math .smi-units svg { width: 16px; height: 16px; }
+.study-math .smi-piece.is-on { border-color: #dc2626; background: #fef2f2; }
+.study-math .smi-piece:disabled { cursor: default; }
