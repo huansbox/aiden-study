@@ -176,7 +176,6 @@ id, subject, unit, type, text, subtopic, source, options, answer, interaction, [
 Companion 以整數方塊輸入（按鍵、每格最多 3 位）：
 - `mixed`：整數 `w ≥ 1`、`0 < n < d`、`(w×d+n)×denominator == numerator×d`。
 - `improper`：`n ≥ d`、`n×denominator == numerator×d`。
-- 不接受約分或擴分後的等值分數（四年級此處以同分母表示）。
 
 填空依有理值等價判斷，接受同形式的約分與擴分；圖形仍保留原題等分數。比較採 BigInt 交叉相乘。
 
