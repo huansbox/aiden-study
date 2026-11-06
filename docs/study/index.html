@@ -555,6 +555,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
 <body>
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
+<p id="study-start-status" class="hidden" role="status" aria-live="polite" style="position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:10001;max-width:calc(100% - 32px);padding:12px 20px;border-radius:12px;background:#fff;color:#24324a;box-shadow:0 2px 12px #0003"></p>
 <div class="container" id="app">
   <div id="page-home" class="home"></div>
   <div id="page-quiz" class="hidden"></div>
@@ -563,9 +564,9 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 </div>
 
 <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
-<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261023-social-u2"></script><script src="../shared/collection-core.js?v=20261024-five-why-v3"></script>
-<script src="../shared/collection-client.js?v=20261024-number-line-task"></script>
-<script src="../shared/family-client.js?v=20260923-science-collection"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
+<script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261106-study-visibility"></script><script src="../shared/collection-core.js?v=20261106-study-visibility"></script>
+<script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
+<script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20260923-science-collection"></script>
 <script src="./private-pack.js?v=20261024-social-u1-select"></script><script src="pack-catalog.js?v=20261023-social-u2"></script><script src="./material.js?v=20260923-group-media"></script><script src="./answer.js?v=20261023-social-u2-text-vectors"></script>
 <script src="./science-topics.js?v=20261023-social-u2-topics"></script>
 <script>
@@ -1610,61 +1611,7 @@ function leaveQuiz() {
 // 科目 → 學期分組 → 單元（unit 全域唯一：自然 1-4、數學 5-9、社會 10-12、國語 13-14）
 // 數學單元正式名稱待查證（issues/010），無題單元不會渲染
 // 社會內部 unit 10/11/12 ＝ 課本第 4/5/6 單元（避開自然 unit 4）；num 為顯示用課本號
-const SUBJECTS = {
-  science: { label: "自然", semesters: {
-    mid: { label: "期中", units: [
-      { id: 1, name: "第 1 單元：田園樂" },
-      { id: 2, name: "第 2 單元：溫度變化對物質的影響" },
-    ] },
-    final: { label: "期末", units: [
-      { id: 3, name: "第 3 單元：動物", subtopics: ["動物分類", "身體構造", "生存與適應", "觀察方法"] },
-      { id: 4, name: "第 4 單元：天氣", subtopics: ["風", "氣溫測量", "雨量降雨", "天氣預報"] },
-    ] },
-  } },
-  math: { label: "數學", semesters: {
-    final: { label: "期末", units: [
-      { id: 5, name: "第 5 單元：小數", subtopics: ["小數的認識", "小數比大小", "小數加減"] },
-      { id: 6, name: "第 6 單元：圓", subtopics: ["圓的構造", "圓規與畫圓", "圓的大小比較"] },
-      { id: 7, name: "第 7 單元：乘法與除法", subtopics: ["乘除互逆", "乘除計算", "乘除應用"] },
-      { id: 8, name: "第 8 單元：時間", subtopics: ["時刻與時間單位", "時制互換", "時間計算"] },
-      { id: 9, name: "第 9 單元：統計表" },
-    ] },
-  } },
-  social: { label: "社會", semesters: {
-    final: { label: "期末", units: [
-      { id: 10, num: 4, name: "第 4 單元：消費與選擇", subtopics: ["聰明消費", "綠色消費"] },
-      { id: 11, num: 5, name: "第 5 單元：家鄉的地名", subtopics: ["地名的由來", "探索家鄉的地名"] },
-      { id: 12, num: 6, name: "第 6 單元：家鄉的故事", subtopics: ["家鄉的人物與發展", "傳說與文化保存"] },
-    ] },
-  } },
-  chinese: { label: "國語", semesters: {
-    final: { label: "期末", units: [
-      { id: 13, name: "L7-L8：改錯字", subtopics: ["L7-L8 改錯字"] },
-      { id: 14, name: "L9-L10：改錯字", subtopics: ["L9-L10 改錯字"] },
-    ] },
-  } },
-};
-
-const STUDY_TERMS = {
-  "g3-s2": { grade: 3, term: 2, label: "三下", subjects: SUBJECTS },
-  "g4-s1": { grade: 4, term: 1, label: "四上", subjects: {
-    math: { label: "數學", semesters: { final: { label: "", units: [
-      { id: 15, num: 1, name: "第 1 單元：一億以內的數" },
-      { id: 16, num: 2, name: "第 2 單元：整數的乘法" },
-      { id: 17, num: 3, name: "第 3 單元：角度" },
-      { id: 18, num: 4, name: "第 4 單元：整數的除法" },
-      { id: 19, num: 5, name: "第 5 單元：公里" }
-    ] } } },
-    science: { label: "自然", semesters: { final: { label: "", units: [
-      { id: 20, num: 1, name: "第 1 單元：地表的靜與動" },
-      { id: 21, num: 2, name: "第 2 單元：水生生物與環境" }
-    ] } } },
-    social: { label: "社會", semesters: { final: { label: "", units: [
-      { id: 22, num: 1, name: "第 1 單元：家鄉的自然環境" },
-      { id: 23, num: 2, name: "第 2 單元：家鄉的傳統住屋與器物" }
-    ] } } }
-  } }
-};
+const STUDY_TERMS = KidsFamilyCore.studyTerms();
 function currentScope() {
   const term = STUDY_TERMS[state.studyTerm] || STUDY_TERMS["g3-s2"];
   const subjects = term.subjects;
@@ -1672,7 +1619,7 @@ function currentScope() {
   const subj = subjects[subjKey];
   const semKeys = Object.keys(subj.semesters);
   const sem = subj.semesters[state.semester] ? state.semester : semKeys[0];
-  return { term, subjects, subjKey, subj, semKeys, sem, units: subj.semesters[sem].units };
+  return { term, subjects, subjKey, subj, semKeys, sem, units: subj.semesters[sem].units.filter(u => KidsFamilyCore.availableStudyUnit(u.id, family?.profile())) };
 }
 // 全域 unit id → 顯示用課本單元號（社會 10/11/12 → 4/5/6；自然/數學 預設＝id）
 const UNIT_NUM = {};
@@ -1832,17 +1779,25 @@ function applySubjectEntry() {
     (!family || family.profile().terms.includes(key)) && Object.hasOwn(STUDY_TERMS[key].subjects, subject));
   if (!terms.length || family?.task()) return;
   entrySubject = subject;
-  const term = terms.includes(params.get("term")) ? params.get("term") : terms[0];
+  const availableTerms = terms.filter(t => KidsFamilyCore.STUDY_UNITS.some(u => u.term === t && u.subject === subject && KidsFamilyCore.availableStudyUnit(u.id, family?.profile())));
+  const choices = availableTerms.length ? availableTerms : terms;
+  const term = choices.includes(params.get("term")) ? params.get("term") : choices[0];
   // 入口只選擇顯示範圍；不改寫作答、錯題或通關紀錄。
   state.studyTerm = term;
   state.subject = subject;
 }
 function renderHome(preserveParentForms = false) {
+  // 新設定在回入口取得；作答中不換題、不顯示獎勵。
+  if (!preserveParentForms && family?.refreshSettings) family.refreshSettings().then(() => {
+    if (currentPage === "page-home") renderHome(true);
+  });
   applyPendingPack();
   if (family && !family.profile().terms.includes(state.studyTerm)) State.setStudyTerm(family.profile().terms[0]);
   if (entrySubject) {
     const terms = Object.keys(STUDY_TERMS).filter(key =>
       (!family || family.profile().terms.includes(key)) && Object.hasOwn(STUDY_TERMS[key].subjects, entrySubject));
+    const availableTerms = terms.filter(t => KidsFamilyCore.STUDY_UNITS.some(u => u.term === t && u.subject === entrySubject && KidsFamilyCore.availableStudyUnit(u.id, family?.profile())));
+    if (availableTerms.length && !availableTerms.includes(state.studyTerm)) state.studyTerm = availableTerms[0];
     if (!terms.length) entrySubject = null;
     else {
       if (!terms.includes(state.studyTerm)) state.studyTerm = terms[0];
@@ -1862,7 +1817,7 @@ function renderHome(preserveParentForms = false) {
   // 科目切換
   html += '<div class="subject-toggle">';
   for (const key of Object.keys(subjects)) {
-    if (entrySubject) continue;
+    if (entrySubject || !Object.values(subjects[key].semesters).some(s => s.units.some(u => KidsFamilyCore.availableStudyUnit(u.id, family?.profile())))) continue;
     html += `<button class="${key === subjKey ? 'active' : ''}" onclick="window._setSubject('${key}')">${subjects[key].label}</button>`;
   }
   html += '</div>';
@@ -1882,6 +1837,7 @@ function renderHome(preserveParentForms = false) {
     html += `<div class="empty-state">${missingUnits.map(u => escapeHtml(u.name)).join("<br>")}<br>${activePack ? "目前題包尚未包含以上單元。" : "尚未載入家庭題包。"}已有進度保留，取得題目後即可接續。<br>${escapeHtml(packNotice)}<br><button class="st-btn" onclick="window._retryPrivatePack()">重試取得題包</button></div>`;
   }
   const visibleUnits = units.filter(u => questionIdsFor(u.id).length > 0);
+  if (!units.length) html += `<div class="empty-state">目前沒有開放的內容。原有進度仍保留。<br><a href="${KidsFamily.homeHref(currentChild)}">回首頁</a></div>`;
   if (visibleUnits.length === 0 && units.some(u => privateUnitAvailable(u.id))) {
     html += '<div class="empty-state">目前沒有可練習的題目；已回報題目可在下方還原。</div>';
   }
@@ -1985,8 +1941,22 @@ function renderHome(preserveParentForms = false) {
 }
 
 // Global handlers for onclick（subtopic 可選；省略＝整單元）
-window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE, prepared = false) => {
-  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) window._startFull(unit,subtopic,practiceMode,true); });
+let practiceStartPending = null;
+function checkedPracticeStart(action) {
+  if (practiceStartPending) return practiceStartPending;
+  if (!family?.refreshSettings) return action();
+  const status = document.getElementById("study-start-status");
+  status.textContent = "正在確認可練習範圍，請稍候⋯";
+  status.classList.remove("hidden");
+  practiceStartPending = family.refreshSettings().then(action).finally(() => {
+    practiceStartPending = null;
+    status.classList.add("hidden");
+  });
+  return practiceStartPending;
+}
+function startFull(unit, subtopic, practiceMode, prepared = false) {
+  if (!canPracticeUnits(unit)) { renderHome(); return; }
+  if (!prepared && needsUnits([unit])) return prepareUnits([unit]).then(ok => { if (ok) return startFull(unit,subtopic,practiceMode,true); });
   if (!canPracticeUnits(unit)) return;
   const mode = normalizePracticeMode(practiceMode);
   if (State.isCleared(unit, subtopic, mode)) {
@@ -1995,12 +1965,14 @@ window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE
     State.resetChallenge(challengeKey(unit, subtopic, mode));
   }
   startQuiz("full", unit, subtopic, mode);
-};
-window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => {
+}
+window._startFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => startFull(unit,subtopic,practiceMode));
+window._startError = (idsStr, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => {
   const units = String(idsStr).split(",").map(Number).filter(Boolean);
+  if (!canPracticeUnits(units)) { renderHome(); return; }
   if (needsUnits(units)) return prepareUnits(units).then(ok => { if (ok) startQuiz("error", units, null, normalizePracticeMode(practiceMode)); });
   startQuiz("error", units, null, normalizePracticeMode(practiceMode));
-};
+});
 window._setStudyTerm = (term) => { State.setStudyTerm(term); renderHome(); if (term === "g4-s1") loadPrivatePack(); };
 window._setSemester = (s) => {
   State.setSemester(s);
@@ -3597,13 +3569,13 @@ function renderSummary() {
 }
 
 window._goHome = () => { showPage("page-home"); renderHome(); };
-window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => {
-  if (!canPracticeUnits(unit)) return;
+window._resetAndStartFull = (unit, subtopic = null, practiceMode = DEFAULT_PRACTICE_MODE) => checkedPracticeStart(() => {
+  if (!canPracticeUnits(unit)) { renderHome(); return; }
   const mode = normalizePracticeMode(practiceMode);
   State.resetMastered(unit, subtopic, mode);
   State.resetChallenge(challengeKey(unit, subtopic, mode));
   startQuiz("full", unit, subtopic, mode);
-};
+});
 
 // ════════════════════════════════════════════════════
 // Init

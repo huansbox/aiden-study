@@ -10,6 +10,62 @@
     "animal-fight",
     "nativecamp",
   ];
+  // 中立單元唯一來源；候選內容需保持 published:false，內容正式可讀後才開放。
+  const STUDY_UNITS = Object.freeze([
+    {"id":1,"name":"第 1 單元：田園樂","num":1,"term":"g3-s2","subject":"science","semester":"mid","published":true},
+    {"id":2,"name":"第 2 單元：溫度變化對物質的影響","num":2,"term":"g3-s2","subject":"science","semester":"mid","published":true},
+    {"id":3,"name":"第 3 單元：動物","subtopics":["動物分類","身體構造","生存與適應","觀察方法"],"num":3,"term":"g3-s2","subject":"science","semester":"final","published":true},
+    {"id":4,"name":"第 4 單元：天氣","subtopics":["風","氣溫測量","雨量降雨","天氣預報"],"num":4,"term":"g3-s2","subject":"science","semester":"final","published":true},
+    {"id":5,"name":"第 5 單元：小數","subtopics":["小數的認識","小數比大小","小數加減"],"num":5,"term":"g3-s2","subject":"math","semester":"final","published":true},
+    {"id":6,"name":"第 6 單元：圓","subtopics":["圓的構造","圓規與畫圓","圓的大小比較"],"num":6,"term":"g3-s2","subject":"math","semester":"final","published":true},
+    {"id":7,"name":"第 7 單元：乘法與除法","subtopics":["乘除互逆","乘除計算","乘除應用"],"num":7,"term":"g3-s2","subject":"math","semester":"final","published":true},
+    {"id":8,"name":"第 8 單元：時間","subtopics":["時刻與時間單位","時制互換","時間計算"],"num":8,"term":"g3-s2","subject":"math","semester":"final","published":true},
+    {"id":9,"name":"第 9 單元：統計表","num":9,"term":"g3-s2","subject":"math","semester":"final","published":true},
+    {"id":10,"num":4,"name":"第 4 單元：消費與選擇","subtopics":["聰明消費","綠色消費"],"term":"g3-s2","subject":"social","semester":"final","published":true},
+    {"id":11,"num":5,"name":"第 5 單元：家鄉的地名","subtopics":["地名的由來","探索家鄉的地名"],"term":"g3-s2","subject":"social","semester":"final","published":true},
+    {"id":12,"num":6,"name":"第 6 單元：家鄉的故事","subtopics":["家鄉的人物與發展","傳說與文化保存"],"term":"g3-s2","subject":"social","semester":"final","published":true},
+    {"id":13,"name":"L7-L8：改錯字","subtopics":["L7-L8 改錯字"],"num":13,"term":"g3-s2","subject":"chinese","semester":"final","published":true},
+    {"id":14,"name":"L9-L10：改錯字","subtopics":["L9-L10 改錯字"],"num":14,"term":"g3-s2","subject":"chinese","semester":"final","published":true},
+    {"id":15,"num":1,"name":"第 1 單元：一億以內的數","term":"g4-s1","subject":"math","semester":"final","published":true},
+    {"id":16,"num":2,"name":"第 2 單元：整數的乘法","term":"g4-s1","subject":"math","semester":"final","published":true},
+    {"id":17,"num":3,"name":"第 3 單元：角度","term":"g4-s1","subject":"math","semester":"final","published":true},
+    {"id":18,"num":4,"name":"第 4 單元：整數的除法","term":"g4-s1","subject":"math","semester":"final","published":true},
+    {"id":19,"num":5,"name":"第 5 單元：公里","term":"g4-s1","subject":"math","semester":"final","published":true},
+    {"id":20,"num":1,"name":"第 1 單元：地表的靜與動","term":"g4-s1","subject":"science","semester":"final","published":true},
+    {"id":21,"num":2,"name":"第 2 單元：水生生物與環境","term":"g4-s1","subject":"science","semester":"final","published":true},
+    {"id":22,"num":1,"name":"第 1 單元：家鄉的自然環境","term":"g4-s1","subject":"social","semester":"final","published":true},
+    {"id":23,"num":2,"name":"第 2 單元：家鄉的傳統住屋與器物","term":"g4-s1","subject":"social","semester":"final","published":true},
+    {"id":24,"num":6,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 6 單元（內容準備中）"},
+    {"id":25,"num":7,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 7 單元（內容準備中）"},
+    {"id":26,"num":8,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 8 單元（內容準備中）"},
+    {"id":27,"num":9,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 9 單元（內容準備中）"},
+    {"id":28,"num":10,"term":"g4-s1","subject":"math","semester":"final","published":false,"name":"第 10 單元（內容準備中）"},
+    {"id":29,"num":3,"term":"g4-s1","subject":"science","semester":"final","published":false,"name":"第 3 單元：有趣的聲光現象"},
+    {"id":30,"num":4,"term":"g4-s1","subject":"science","semester":"final","published":false,"name":"第 4 單元：好玩的電路"},
+    {"id":31,"num":3,"term":"g4-s1","subject":"social","semester":"final","published":false,"name":"第 3 單元（內容準備中）"},
+    {"id":32,"num":4,"term":"g4-s1","subject":"social","semester":"final","published":false,"name":"第 4 單元（內容準備中）"}
+  ].map(Object.freeze));
+  const studyUnit = (id) => STUDY_UNITS.find((unit) => unit.id === id);
+  function availableStudyUnit(id, profile) {
+    const unit = studyUnit(id);
+    return !!unit?.published && (!profile || profile.apps.includes("study") &&
+      profile.terms.includes(unit.term) && !(profile.archivedStudyUnits || []).includes(id));
+  }
+  function availableEntry(entryId, profile) {
+    if (!profile) return true;
+    return entryId.startsWith("study:")
+      ? STUDY_UNITS.some((unit) => unit.subject === entryId.slice(6) && availableStudyUnit(unit.id, profile))
+      : profile.apps.includes(entryId);
+  }
+  function studyTerms() {
+    const terms = {"g3-s2": {grade:3,term:2,label:"三下",subjects:{}}, "g4-s1": {grade:4,term:1,label:"四上",subjects:{}}};
+    for (const unit of STUDY_UNITS.filter(u => u.published)) {
+      const subject = terms[unit.term].subjects[unit.subject] ||= {label:SUBJECTS[unit.subject].title,semesters:{}};
+      const semester = subject.semesters[unit.semester] ||= {label:unit.term === "g4-s1" ? "" : unit.semester === "mid" ? "期中" : "期末",units:[]};
+      semester.units.push(unit);
+    }
+    return terms;
+  }
   const TERMS = ["g3-s2", "g4-s1"];
   const SUBJECTS = {
     math: { title: "數學", mark: "＋−", terms: ["g4-s1", "g3-s2"] },
@@ -72,6 +128,7 @@
                 ? ["study", "spelling", "math", "nonogram"]
                 : ["zhuyin"],
             terms: child === "aiden" ? ["g4-s1"] : ["g3-s2"],
+            archivedStudyUnits: [],
             avatar: "lego",
             mindMap: defaultMindMap(child),
             homeOrder: [],
@@ -92,7 +149,7 @@
       throw Error("任務格式不正確");
     const out = { id: task.id, app: task.app, quantity: task.quantity };
     if (task.app === "study") {
-      if (!integer(task.unit, 1, 23)) throw Error("請選擇題庫單元");
+      if (!studyUnit(task.unit)) throw Error("請選擇題庫單元");
       out.unit = task.unit;
     }
     if (task.app === "spelling") {
@@ -185,7 +242,11 @@
         if (!validDate(day)) throw Error("日期設定不正確");
         overrides[day] = taskList(tasks);
       }
+      const archivedStudyUnits = Object.hasOwn(p, "archivedStudyUnits") ? p.archivedStudyUnits : [];
+      if (!Array.isArray(archivedStudyUnits) || archivedStudyUnits.some((id) => !studyUnit(id)) || new Set(archivedStudyUnits).size !== archivedStudyUnits.length)
+        throw Error("隱藏單元設定不正確");
       result.children[child] = {
+        archivedStudyUnits: [...archivedStudyUnits],
         apps: [...p.apps],
         terms: [...p.terms],
         avatar: p.avatar,
@@ -259,7 +320,7 @@
     for (const child of CHILDREN) {
       const profile = result.children?.[child];
       if (!profile) continue;
-      for (const key of ["mindMap", "homeOrder"])
+      for (const key of ["mindMap", "homeOrder", "archivedStudyUnits"])
         if (!Object.hasOwn(profile, key))
           profile[key] = current.children[child][key];
     }
@@ -268,16 +329,7 @@
   function taskEntryId(task) {
     if (task.app !== "study") return task.app;
     if (task.unit == null) return "study:chinese"; // 保留舊 generic record 的既有歸屬。
-    const subject =
-      (task.unit >= 15 && task.unit <= 19) || (task.unit >= 5 && task.unit <= 9)
-        ? "math"
-        : task.unit <= 4 || task.unit === 20 || task.unit === 21
-          ? "science"
-          : (task.unit >= 10 && task.unit <= 12) || task.unit === 22 || task.unit === 23
-            ? "social"
-            : task.unit === 13 || task.unit === 14
-              ? "chinese"
-              : null;
+    const subject = studyUnit(task.unit)?.subject;
     if (!subject) throw Error("請選擇題庫單元");
     return "study:" + subject;
   }
@@ -291,7 +343,7 @@
       if (!app) continue;
       if (id === "study") {
         for (const [subject, meta] of Object.entries(SUBJECTS)) {
-          const term = meta.terms.find((t) => profile.terms.includes(t));
+          const term = meta.terms.find((t) => STUDY_UNITS.some((u) => u.term === t && u.subject === subject && availableStudyUnit(u.id, profile)));
           if (term)
             entries.push({
               id: "study:" + subject,
@@ -339,10 +391,10 @@
     );
   }
   const taskTerm = (task) =>
-    task.app === "study" ? (task.unit >= 15 ? "g4-s1" : "g3-s2") : null;
+    task.app === "study" ? studyUnit(task.unit)?.term : null;
   const availableTask = (task, profile) =>
     profile.apps.includes(task.app) &&
-    (!taskTerm(task) || profile.terms.includes(taskTerm(task)));
+    (task.app !== "study" || availableStudyUnit(task.unit, profile));
   function todayTasks(profile, day = dateKey()) {
     const weekday = new Date(day + "T12:00:00+08:00").getUTCDay();
     const list = Object.hasOwn(profile.overrides, day)
@@ -354,7 +406,7 @@
   }
   function taskLabel(task) {
     if (task.app === "study")
-      return `第 ${task.unit >= 22 ? task.unit - 21 : task.unit >= 20 ? task.unit - 19 : task.unit >= 15 ? task.unit - 14 : task.unit >= 10 && task.unit <= 12 ? task.unit - 6 : task.unit} 單元 · ${task.quantity} 題`;
+      return `第 ${studyUnit(task.unit)?.num ?? task.unit} 單元 · ${task.quantity} 題`;
     if (task.app === "spelling")
       return `第 ${task.batch + 1} 組 · ${task.quantity} 個字`;
     if (task.app === "zhuyin")
@@ -531,6 +583,11 @@
     );
   }
   globalThis.KidsFamilyCore = {
+    STUDY_UNITS,
+    studyUnit,
+    studyTerms,
+    availableStudyUnit,
+    availableEntry,
     CHILDREN,
     APPS,
     TERMS,

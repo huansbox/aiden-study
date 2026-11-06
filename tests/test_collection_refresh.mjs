@@ -1,3 +1,4 @@
+import "../docs/shared/family-core.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, rm } from "node:fs/promises";
@@ -190,6 +191,9 @@ test("真 SQLite：自然 20／40／60 題各一包，重送同事件不增加�
   };
   try {
     await call("aiden","goals",{expectedGoalRevision:0,targets:[target()]});
+    const settings = globalThis.KidsFamilyCore.defaults();
+    settings.children.bingpu.apps.push("study");
+    await runtime.KV.put("c:family:settings",JSON.stringify({rev:1,data:settings}));
     await call("bingpu","goals",{expectedGoalRevision:0,targets:[target("study:science",3)]});
     const occurredAt=new Date().toISOString();let last;
     for(let n=1;n<=60;n++) {

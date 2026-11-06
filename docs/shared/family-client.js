@@ -96,7 +96,12 @@
     } catch {}
     return { rev: 0, data: core.defaults(), available: false };
   }
-  async function settings() {
+  let settingsInFlight = null;
+  function settings() {
+    if (!settingsInFlight) settingsInFlight = loadSettings().finally(() => { settingsInFlight = null; });
+    return settingsInFlight;
+  }
+  async function loadSettings() {
     const cached = cachedSettings();
     try {
       const result = await request("/v1/settings");
@@ -561,8 +566,15 @@
         return context;
       },
     );
+    async function refreshSettings() {
+      settingsState = await settings();
+      config = settingsState.data;
+      if (currentTask && !core.availableTask(currentTask, profile())) currentTask = null;
+      return profile();
+    }
     const context = {
       ready,
+      refreshSettings,
       hasSettings: () => settingsState.available,
       profile,
       record,

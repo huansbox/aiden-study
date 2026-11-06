@@ -30,31 +30,7 @@
     nativecamp: "Native Camp Review",
   };
   const days = ["日", "一", "二", "三", "四", "五", "六"];
-  const unitNames = {
-    1: "三下 自然 1",
-    2: "三下 自然 2",
-    3: "三下 自然 3",
-    4: "三下 自然 4",
-    5: "三下 數學 5",
-    6: "三下 數學 6",
-    7: "三下 數學 7",
-    8: "三下 數學 8",
-    9: "三下 數學 9",
-    10: "三下 社會 4",
-    11: "三下 社會 5",
-    12: "三下 社會 6",
-    13: "三下 國語 13",
-    14: "三下 國語 14",
-    15: "四上 數學 1",
-    16: "四上 數學 2",
-    17: "四上 數學 3",
-    18: "四上 數學 4",
-    19: "四上 數學 5",
-    20: "四上 自然 1：地表的靜與動",
-    21: "四上 自然 2：水生生物與環境",
-    22: "四上 社會 1：家鄉的自然環境",
-    23: "四上 社會 2：家鄉的傳統住屋與器物",
-  };
+  const unitNames = Object.fromEntries(C.STUDY_UNITS.map(u => [u.id, `${u.term === "g4-s1" ? "四上" : "三下"} ${C.SUBJECTS[u.subject].title} ${u.name}`]));
   let config = C.defaults(),
     rev = 0,
     reg,
@@ -101,9 +77,9 @@
     const options = eligible();
     if (!options.includes(taskApp)) taskApp = options[0];
     const units = Object.entries(unitNames).filter(([u]) =>
-      p().terms.includes(Number(u) >= 15 ? "g4-s1" : "g3-s2"),
+      C.availableStudyUnit(Number(u), p()),
     );
-    return `<div class="form-grid"><label class="family-field">活動<select id="task-app">${options.map((id) => `<option value="${id}" ${id === taskApp ? "selected" : ""}>${names[id]}</option>`).join("")}</select></label>${taskApp === "study" ? `<label class="family-field">單元<select id="task-unit">${units.map(([id, name]) => `<option value="${id}">${name}</option>`).join("")}</select></label>` : taskApp === "spelling" ? `<label class="family-field">單字組別<select id="task-batch">${Array.from({ length: 20 }, (_, i) => `<option value="${i}">第 ${i + 1} 組</option>`).join("")}</select></label>` : taskApp === "zhuyin" ? '<label class="family-field">內容<select id="task-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>' : ""}<label class="family-field">${taskApp === "zhuyin" ? "張卡" : taskApp === "spelling" ? "單字數" : "題數"}<input id="task-quantity" type="number" min="1" max="100" value="5"></label></div><button id="add-task" ${!options.length ? "disabled" : ""}>加入安排</button>`;
+    return `<div class="form-grid"><label class="family-field">活動<select id="task-app">${options.map((id) => `<option value="${id}" ${id === taskApp ? "selected" : ""}>${names[id]}</option>`).join("")}</select></label>${taskApp === "study" ? `<label class="family-field">單元<select id="task-unit">${units.map(([id, name]) => `<option value="${id}">${name}</option>`).join("")}</select></label>` : taskApp === "spelling" ? `<label class="family-field">單字組別<select id="task-batch">${Array.from({ length: 20 }, (_, i) => `<option value="${i}">第 ${i + 1} 組</option>`).join("")}</select></label>` : taskApp === "zhuyin" ? '<label class="family-field">內容<select id="task-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>' : ""}<label class="family-field">${taskApp === "zhuyin" ? "張卡" : taskApp === "spelling" ? "單字數" : "題數"}<input id="task-quantity" type="number" min="1" max="100" value="5"></label></div><button id="add-task" ${!options.length || taskApp === "study" && !units.length ? "disabled" : ""}>加入安排</button>`;
   }
   function needsConnection() {
     return auth &&
@@ -140,7 +116,7 @@
       root.querySelector("#settings-retry").addEventListener("click", load);
       return;
     }
-    root.innerHTML = `<section class="family-panel"><p>此入口已記住家庭連線。Safari 與主畫面圖示可能需要各連接一次。</p><button id="disconnect" type="button">中斷此入口連線</button></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label></div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section>${homeSettings()}<section class="family-panel family-stack"><h2>安排練習（選填）</h2><p class="muted">不安排也可以直接練習。有安排時，進度會顯示在該活動卡內。</p><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
+    root.innerHTML = `<section class="family-panel"><p>此入口已記住家庭連線。Safari 與主畫面圖示可能需要各連接一次。</p><button id="disconnect" type="button">中斷此入口連線</button></section><nav class="family-row" aria-label="管理哪個孩子">${reg.children.map((c) => `<button data-child="${c.id}" aria-pressed="${c.id === child}">${esc(c.name)}</button>`).join("")}<a href="${F.homeHref(child)}" style="margin-left:auto">預覽孩子首頁 →</a></nav><section class="family-panel"><h2>頭像</h2><div class="family-row">${["lego", "flat"].map((style) => `<label class="avatar-choice"><img class="family-avatar" src="${F.avatar(child, style)}" alt="${style === "lego" ? "LEGO" : "扁平角色"}"><span><input type="radio" name="avatar" value="${style}" ${profile.avatar === style ? "checked" : ""}> ${style === "lego" ? "LEGO 人偶" : "扁平角色"}</span></label>`).join("")}</div><p class="muted" style="margin-top:16px">網站頭像會套用新設定。已安裝的 iPad 圖示若未更新，需重新加入主畫面。</p></section><section class="family-panel"><h2>首頁活動</h2>${ordered.map((a) => `<div class="app-row"><label><input type="checkbox" data-app="${a.id}" ${profile.apps.includes(a.id) ? "checked" : ""}>${esc(names[a.id])}${a.url ? "<small>外部網站，未納入累計</small>" : ""}</label></div>`).join("")}</section><section class="family-panel"><h2>題庫學期</h2><div class="family-row">${C.TERMS.map((t) => `<label><input type="checkbox" data-term="${t}" ${profile.terms.includes(t) ? "checked" : ""}> ${t === "g4-s1" ? "四上" : "三下"}</label>`).join("")}</div><p class="muted">隱藏後不出現在孩子題庫；舊內容和進度仍保留。至少選一個學期。</p></section><section class="family-panel"><h2>題庫單元</h2><p class="muted">取消勾選會隱藏單元；作答、錯題及原安排保留，勾選即可恢復。家長試玩仍能查看全部題庫。</p><div class="family-stack">${C.STUDY_UNITS.filter(u => u.published).map(u => `<label><input type="checkbox" data-study-unit="${u.id}" ${(profile.archivedStudyUnits || []).includes(u.id) ? "" : "checked"}> ${esc(unitNames[u.id])}${(profile.archivedStudyUnits || []).includes(u.id) ? "（已隱藏）" : ""}</label>`).join("")}</div></section>${homeSettings()}<section class="family-panel family-stack"><h2>安排練習（選填）</h2><p class="muted">不安排也可以直接練習。有安排時，進度會顯示在該活動卡內。</p><div class="family-row"><button data-schedule="weekly" aria-pressed="${schedule === "weekly"}">固定週表</button><button data-schedule="overrides" aria-pressed="${schedule === "overrides"}">指定日期</button></div>${schedule === "weekly" ? `<label class="family-field">星期<select id="schedule-day">${days.map((d, i) => `<option value="${i}" ${day === String(i) ? "selected" : ""}>星期${d}</option>`).join("")}</select></label>` : `<label class="family-field">日期<input type="date" id="schedule-date" value="${date}"></label><p class="muted">${Object.hasOwn(profile.overrides, date) ? "當天以這份安排取代週表；留空表示休息。" : "當天沿用週表。加入任務或設定休息後，會取代當天週表。"}</p><div class="family-row"><button id="rest-day">當天休息</button><button id="restore-weekly" ${Object.hasOwn(profile.overrides, date) ? "" : "disabled"}>恢復週表</button></div>`}<div class="family-stack">${
       list()
         .map(
           (t, i) =>
@@ -189,7 +165,7 @@
       const suggestions = state.goalRevision ? [] : options.filter(([id]) => id === "study:math" || id === (p().apps.includes("nativecamp") ? "nativecamp" : "spelling")).map(([entryId, meta]) => ({ entryId, metric: meta.metric, quantity: entryId === "study:math" ? 10 : 1 }));
       const selected = chosen.length || state.goalRevision ? chosen : suggestions;
       const all = [...options, ...chosen.filter((t) => !options.some(([id]) => id === t.entryId)).map((t) => [t.entryId, window.KidsCollection.core.ENTRIES[t.entryId]])];
-      panel.innerHTML = `<h2>每日目標與拼裝包</h2><p><a class="button" href="train-preview.html?child=${owner}">積木試拼</a> <span class="muted">示範零件，不影響孩子的拼裝包與收藏。</span></p><p>設定一次，每天重新開始；內容由孩子自己選。每完成設定的一份目標得一包；必做完成後，孩子可在原任務卡自行選擇加碼。每再完成相同份量多得一包，次數不限，不自動開始下一輪。沒有目標時，自由練習完整一輪可得一包。</p><div class="family-stack">${all.map(([id,meta]) => { const target = selected.find((t)=>t.entryId===id); return `<div class="family-row"><label><input type="checkbox" data-daily-entry="${id}" ${target?"checked":""}> ${esc(meta.label)}${options.some(([available])=>available===id)?"":"（首頁已隱藏，可在此取消目標）"}</label><label class="family-field" style="margin-left:auto">每日${meta.metric==="answered"?"題數":"輪數"}<input type="number" min="1" max="100" data-daily-quantity="${id}" value="${target?.quantity || (id==="study:math"?10:1)}" style="width:100px"></label></div>`; }).join("") || "<p>先在首頁活動開放一個站內練習，再設定目標。</p>"}</div><p class="muted">現在起使用這份目標，已領拼裝包保留。不指定單元、課程或複習；新增 App 不會自動加進目標。若今天沒有可練內容，可取消該活動或調整份量，再儲存。</p><button type="button" id="save-daily-goals">儲存每日目標</button><p id="daily-goals-status" role="status">${esc(state.sync.message || (state.goalRevision ? "已儲存；每天自動使用這份目標。" : "以下是建議，尚未儲存。"))}</p>`;
+      panel.innerHTML = `<h2>每日目標與拼裝包</h2><p><a class="button" href="train-preview.html?child=${owner}">積木試拼</a> <span class="muted">示範零件，不影響孩子的拼裝包與收藏。</span></p><p>設定一次，每天重新開始；內容由孩子自己選。每完成設定的一份目標得一包；必做完成後，孩子可在原任務卡自行選擇加碼。每再完成相同份量多得一包，次數不限，不自動開始下一輪。沒有目標時，自由練習完整一輪可得一包。</p><div class="family-stack">${all.map(([id,meta]) => { const target = selected.find((t)=>t.entryId===id); return `<div class="family-row"><label><input type="checkbox" data-daily-entry="${id}" ${target?"checked":""}> ${esc(meta.label)}${options.some(([available])=>available===id)?"":"（暫停，恢復內容後自動生效）"}</label><label class="family-field" style="margin-left:auto">每日${meta.metric==="answered"?"題數":"輪數"}<input type="number" min="1" max="100" data-daily-quantity="${id}" value="${target?.quantity || (id==="study:math"?10:1)}" style="width:100px"></label></div>`; }).join("") || "<p>先在首頁活動開放一個站內練習，再設定目標。</p>"}</div><p class="muted">現在起使用這份目標，已領拼裝包保留。不指定單元、課程或複習；新增 App 不會自動加進目標。沒有可練內容的目標會暫停；原設定保留，恢復或新增內容後自動生效。</p><button type="button" id="save-daily-goals">儲存每日目標</button><p id="daily-goals-status" role="status">${esc(state.sync.message || (state.goalRevision ? "已儲存；每天自動使用這份目標。" : "以下是建議，尚未儲存。"))}</p>`;
       panel.querySelector("#save-daily-goals").onclick = async (event) => {
         event.currentTarget.disabled = true;
         const feedback = panel.querySelector("#daily-goals-status");
@@ -342,6 +318,12 @@
       `<p>${s.total.answered} 題 · ${Math.floor(s.total.seconds / 60)} 分鐘 · ${s.finishedTasks} 個任務</p><p class="muted">今天 ${s.today.answered} 題 · ${Math.floor(s.today.seconds / 60)} 分鐘</p>`;
   }
   function bind() {
+    root.querySelectorAll("[data-study-unit]").forEach(input => input.onchange = () => {
+      const id = Number(input.dataset.studyUnit);
+      p().archivedStudyUnits = (p().archivedStudyUnits || []).filter(unit => unit !== id);
+      if (!input.checked) p().archivedStudyUnits.push(id);
+      change(); render();
+    });
     root.querySelectorAll("[data-child]").forEach(
       (b) =>
         (b.onclick = () => {

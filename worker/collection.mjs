@@ -1,3 +1,4 @@
+import "../docs/shared/family-core.js";
 import "../docs/shared/collection-core.js";
 const C = globalThis.KidsCollectionCore;
 export async function collectionRoute(request, env, url, cors) {
@@ -9,7 +10,12 @@ export async function collectionRoute(request, env, url, cors) {
     C.check(["aiden", "bingpu"].includes(child) || env.LOCAL_DEV && /^test-[a-z0-9-]{1,25}$/.test(child || ""), "孩子識別不正確", 404);
     C.check(env.COLLECTIONS, "拼裝收藏暫時無法連線，練習紀錄仍會保存。", 503);
     const object = env.COLLECTIONS.getByName(child);
-    if (request.method === "GET" && parts.length === 3) return reply(200, await object.view(url.searchParams.get("date") || C.dateKey()));
+    // 家庭設定只能從伺服器取得；不採信 command 內自報的可用科目。
+    const F = globalThis.KidsFamilyCore;
+    const stored = await env.KV.get("c:family:settings");
+    const settings = F.validateSettings(stored ? JSON.parse(stored).data : F.defaults());
+    const visibility = {date:C.dateKey(), profile:settings.children[child] || settings.children.aiden};
+    if (request.method === "GET" && parts.length === 3) return reply(200, await object.view(url.searchParams.get("date") || C.dateKey(), visibility));
     C.check(["POST", "PUT"].includes(request.method) && parts.length === 4, "找不到收藏操作", 404);
     const text = await request.text();
     C.check(text.length < 20000, "操作資料過大");
@@ -21,7 +27,7 @@ export async function collectionRoute(request, env, url, cors) {
       C.check(Number.isSafeInteger(command.generation) && command.generation >= 0, "練習版本不正確");
       if (command.generation !== generation) return reply(409, { error: "累計已重置，舊練習不會再發包。", generation });
     }
-    const result = await object.execute(command);
+    const result = await object.execute(command, visibility);
     return reply(result.status || 200, result);
   } catch (error) { return reply(error.status || (error instanceof SyntaxError ? 400 : 503), { error: error.message || "收藏暫時無法儲存" }); }
 }

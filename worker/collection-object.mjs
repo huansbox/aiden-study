@@ -1,3 +1,4 @@
+import "../docs/shared/family-core.js";
 import { DurableObject } from "cloudflare:workers";
 import "../docs/shared/collection-core.js";
 const C = globalThis.KidsCollectionCore;
@@ -17,15 +18,15 @@ export class ChildCollection extends DurableObject {
     }
   }
   readState() { const row = this.sql.exec("SELECT json FROM state WHERE id=1").toArray()[0]; return row ? JSON.parse(row.json) : C.empty(); }
-  view(day = C.dateKey()) {
+  view(day = C.dateKey(), visibility, options) {
     C.check(C.validDate(day), "日期不正確");
     return this.ctx.storage.transactionSync(() => {
-      const previous = this.readState(), state = day === C.dateKey() ? C.reconcile(previous) : previous;
+      const previous = this.readState(), state = day === C.dateKey() ? C.reconcile(previous, new Date(), visibility, options) : previous;
       if (state.revision !== previous.revision) this.sql.exec("INSERT INTO state(id,json) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET json=excluded.json", JSON.stringify(state));
-      return C.snapshot(state, day);
+      return C.snapshot(state, day, visibility);
     });
   }
-  execute(command) {
+  execute(command, visibility) {
     try { return this.ctx.storage.transactionSync(() => {
       C.check(command && typeof command.commandId === "string" && /^[a-zA-Z0-9:._-]{1,160}$/.test(command.commandId), "操作識別不正確");
       if (command.type === "task-complete") C.validateTaskCompletion(command.event);
@@ -36,18 +37,18 @@ export class ChildCollection extends DurableObject {
         const previous = JSON.parse(duplicate.payload);
         C.check(duplicate.payload === payload || command.type === "round" && previous.event.entryId === command.event?.entryId ||
           command.type === "task-complete" && previous.type === "task-complete" && previous.event.taskId === command.event.taskId, "同一操作識別不能改成另一份內容", 409);
-        return { snapshot: C.snapshot(this.readState()), duplicate: true };
+        return { snapshot: this.view(C.dateKey(), visibility, { allowFreeRound: command.type !== "goals" }), duplicate: true };
       }
       const nextCommand = { ...command };
       if (["record", "round"].includes(command.type)) {
         C.check(!command.event?.roundId || typeof command.event.roundId === "string" && /^[a-zA-Z0-9:._-]{1,160}$/.test(command.event.roundId), "回合識別不正確");
       }
       if (command.type === "round") nextCommand.hasPractice = Boolean(this.sql.exec("SELECT id FROM practice WHERE round_id=? AND entry_id=? AND generation=? LIMIT 1", command.event?.roundId || "", command.event?.entryId || "", command.generation).toArray().length);
-      const state = C.apply(this.readState(), nextCommand);
+      const state = C.apply(this.readState(), nextCommand, new Date(), visibility);
       this.sql.exec("INSERT INTO state(id,json) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET json=excluded.json", JSON.stringify(state));
       this.sql.exec("INSERT INTO commands(id,payload) VALUES(?,?)", id, payload);
       if (command.type === "record") this.sql.exec("INSERT INTO practice(id,round_id,entry_id,generation) VALUES(?,?,?,?)", id, command.event.roundId || null, command.event.entryId, command.generation);
-      return { snapshot: C.snapshot(state), duplicate: false };
+      return { snapshot: C.snapshot(state, C.dateKey(), visibility), duplicate: false };
     }); } catch (error) { return { error: error.message, status: error.status || 500 }; }
   }
 }

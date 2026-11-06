@@ -38,7 +38,8 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
     fetch: async (url, init) => { requests.push(url); if (ports.fetch && String(url).startsWith("https://")) return ports.fetch(url, init); return { ok: true, json: async () => structuredClone(url === "./questions.json" ? publicQuestions : url === "../shared/rewards.json" ? rewardManifest : {}) }; },
   });
   ctx.window = ctx;
-  if (ports.family) ctx.KidsFamily = { mount: () => ports.family };
+  if (ports.family) ctx.KidsFamily = { homeHref: () => "/", mount: () => ({...ports.family, profile: () => ({apps:["study"], archivedStudyUnits:[], ...ports.family.profile()})}) };
+  vm.runInContext(read("docs/shared/family-core.js"), ctx);
   vm.runInContext(read("docs/shared/sync-v1.js"), ctx);
   let syncConfig;
   const originalClient = ctx.KidsSyncV1.createSyncClient;
