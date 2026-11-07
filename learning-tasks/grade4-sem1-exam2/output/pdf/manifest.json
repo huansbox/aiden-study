@@ -1,10 +1,13 @@
 {
+  "format": "concepts-and-toy-questions",
   "inputs": {
     "content.json": "c7f116a89eb13b4965d38dfd22bec5849ffca112dae6ca0842c78acf665796c4",
-    "quick-reference.json": "ff80a7ec6edf6826bdb57a3bf031f0767d5df61009a5d5d7c28926ef557c6e48",
-    "build-pdf.py": "e9b960dd40d84fdda548c4fad56229b6dece04e8dd742aef3e5b7e0bd1ed6f0c"
+    "toy-reference.json": "464702fb8b08b6710baf282d1813b6e4f13cc15597603339de39e6a2b384c198",
+    "build-pdf.py": "1ac1bfa830c8f8f9a71bd1470ddc411ebd0a298064151f927b71155aa549ee8a"
   },
   "reportlab": "5.1.0",
+  "legacyItemCount": 37,
+  "rowCount": 94,
   "fonts": [
     {
       "name": "MicrosoftJhengHeiRegular",
@@ -18,200 +21,1545 @@
   "pdfs": [
     {
       "file": "math-quick-reference.pdf",
-      "sha256": "7e4f27ab9eb7d3059258b8787a60ac8da92bdba75498a39e6ea843fc813d52c9",
-      "pages": 2,
+      "sha256": "23247f7b3d84561f4d2887390bd1d0738378a9bd278282635289a99d9cddd0bb",
+      "pages": 12,
+      "rowCount": 56,
       "coverage": [
         {
-          "id": "m6-classify",
+          "id": "m6-01",
+          "legacyIds": [
+            "m6-classify"
+          ],
           "page": 1,
-          "scope": "依邊、依角分類"
+          "label": "依角分類",
+          "sourceSha256": "559cec86c4936f79167fd68cb221f47d5598a5f1dd380129c863849e01e4a7c4",
+          "top": 663.89,
+          "bottom": 512.59,
+          "figure": true
+        },
+        {
+          "id": "m6-02",
+          "legacyIds": [
+            "m6-classify"
+          ],
+          "page": 1,
+          "label": "依邊分類與包含關係",
+          "sourceSha256": "881747b9cb68b3fdd46852b4da040c7fd9252825b5d95eb89eaee7aba21d858a",
+          "top": 512.59,
+          "bottom": 457.99,
+          "figure": false
+        },
+        {
+          "id": "m6-03",
+          "legacyIds": [
+            "m6-angles"
+          ],
+          "page": 1,
+          "label": "等腰的兩個底角相等",
+          "sourceSha256": "7c26bc8ff9f49661bd0a7353d59dfbd172f8898cb07e32d58fce46e69197e581",
+          "top": 457.99,
+          "bottom": 403.39,
+          "figure": false
+        },
+        {
+          "id": "m6-04",
+          "legacyIds": [
+            "m6-angles"
+          ],
+          "page": 1,
+          "label": "等腰直角的45°底角",
+          "sourceSha256": "d30067058a2202957379a965f95e6917f9b528939266075b3b01f69ed020fd1d",
+          "top": 403.39,
+          "bottom": 348.79,
+          "figure": false
+        },
+        {
+          "id": "m6-05",
+          "legacyIds": [
+            "m6-angles"
+          ],
+          "page": 1,
+          "label": "正三角形的60°角",
+          "sourceSha256": "8343984dbeceea9aa42fbebd6e2f1cc0c4a8576594bd4cb7dd2c096b20d5199b",
+          "top": 348.79,
+          "bottom": 312.49,
+          "figure": false
+        },
+        {
+          "id": "m6-06",
+          "legacyIds": [
+            "m6-sides"
+          ],
+          "page": 1,
+          "label": "等腰周長反求底邊",
+          "sourceSha256": "bb5b7a134b61fc9b0c3200e9dec88c878ca387fcc11e23320ca57212e8e034b5",
+          "top": 312.49,
+          "bottom": 257.89,
+          "figure": false
+        },
+        {
+          "id": "m6-07",
+          "legacyIds": [
+            "m6-sides"
+          ],
+          "page": 1,
+          "label": "等腰周長反求兩腰",
+          "sourceSha256": "54229abc9295cffca94b924fdb56c16eea0a9a45830dcd5fb80ab04ad801b638",
+          "top": 257.89,
+          "bottom": 203.29,
+          "figure": false
+        },
+        {
+          "id": "m6-08",
+          "legacyIds": [
+            "m6-sides"
+          ],
+          "page": 1,
+          "label": "正三角形周長與邊長",
+          "sourceSha256": "403808fd97724c709b876be3f037a0879e6e257709957da502acbc958b0b6398",
+          "top": 203.29,
+          "bottom": 148.69,
+          "figure": false
+        },
+        {
+          "id": "m6-09",
+          "legacyIds": [
+            "m6-congruent"
+          ],
+          "page": 2,
+          "label": "旋轉後的對應點、邊、角",
+          "sourceSha256": "189b6c5e86a52af3eaa4a11038e18fc6ab7de5659bd526b0eb9c3146e86694a1",
+          "top": 696.89,
+          "bottom": 492.29,
+          "figure": true
+        },
+        {
+          "id": "m6-10",
+          "legacyIds": [
+            "m6-draw"
+          ],
+          "page": 2,
+          "label": "用工具畫等腰三角形",
+          "sourceSha256": "5c3a8d83d16298034980a880b875dcfa5aceda8a92d72dea9d77089372e8dd49",
+          "top": 492.29,
+          "bottom": 437.69,
+          "figure": false
+        },
+        {
+          "id": "m6-11",
+          "legacyIds": [
+            "m6-draw"
+          ],
+          "page": 2,
+          "label": "用工具畫指定直角邊",
+          "sourceSha256": "318e769adf183b291e2f8e23a0f331891ee92e036566c28bcc031784d0a39ff5",
+          "top": 437.69,
+          "bottom": 383.09,
+          "figure": false
+        },
+        {
+          "id": "m7-01",
+          "legacyIds": [
+            "m7-place"
+          ],
+          "page": 3,
+          "label": "位值與讀數",
+          "sourceSha256": "5902ad3cf759e9c0644574a9fe8c9cb31314fa57d17ce2ffb601ffa1d66c9cd5",
+          "top": 696.89,
+          "bottom": 660.59,
+          "figure": false
+        },
+        {
+          "id": "m7-02",
+          "legacyIds": [
+            "m7-place"
+          ],
+          "page": 3,
+          "label": "1、0.1、0.01組數",
+          "sourceSha256": "e772ded501d7a16f08e033168e0833be27c715c33aba13de4860aed91144a94c",
+          "top": 660.59,
+          "bottom": 624.29,
+          "figure": false
+        },
+        {
+          "id": "m7-03",
+          "legacyIds": [
+            "m7-place"
+          ],
+          "page": 3,
+          "label": "滿10個小單位要進位",
+          "sourceSha256": "7ecf0330554a7e4d1a42b2b41557e1c19b1288480db60e947831d3c96597181d",
+          "top": 624.29,
+          "bottom": 587.99,
+          "figure": false
+        },
+        {
+          "id": "m7-04",
+          "legacyIds": [
+            "m7-place"
+          ],
+          "page": 3,
+          "label": "小數換成幾個0.01",
+          "sourceSha256": "7a57e211fff7c00be1f80ea3fb7b6c8c1e819075ee2318e37011f0bf348b80cf",
+          "top": 587.99,
+          "bottom": 551.69,
+          "figure": false
+        },
+        {
+          "id": "m7-05",
+          "legacyIds": [
+            "m7-place"
+          ],
+          "page": 3,
+          "label": "百分之一寫成小數",
+          "sourceSha256": "6b62868fe0db0c5602e1e3076d39b5cd1a1cf9eab769a4fb2313f0b2a46d084e",
+          "top": 551.69,
+          "bottom": 497.09,
+          "figure": false
+        },
+        {
+          "id": "m7-06",
+          "legacyIds": [
+            "m7-compare"
+          ],
+          "page": 3,
+          "label": "對齊位值比較大小",
+          "sourceSha256": "72218e6d9d9b5515a77048bef6915cd4dff266c7fee23fe451975d3f68d1fb74",
+          "top": 497.09,
+          "bottom": 442.49,
+          "figure": false
+        },
+        {
+          "id": "m7-07",
+          "legacyIds": [
+            "m7-compare"
+          ],
+          "page": 3,
+          "label": "找出範圍內全部數字",
+          "sourceSha256": "f006b7aea47ff5d094cad3ae21544e0724bacc7778a70b628e0a614666444c5e",
+          "top": 442.49,
+          "bottom": 387.89,
+          "figure": false
+        },
+        {
+          "id": "m7-08",
+          "legacyIds": [
+            "m7-units"
+          ],
+          "page": 3,
+          "label": "公尺、公分與小數互換",
+          "sourceSha256": "a4f169d8c746666ef11b33f902e64c4cb11e3f12f9475f1b16649fad607b6696",
+          "top": 387.89,
+          "bottom": 333.29,
+          "figure": false
+        },
+        {
+          "id": "m7-09",
+          "legacyIds": [
+            "m7-vertical"
+          ],
+          "page": 3,
+          "label": "小數加法與進位",
+          "sourceSha256": "f7694fde83e8f212bd56f8fb97638a642ee1d6c093fafd6136b0c6e897274a2e",
+          "top": 333.29,
+          "bottom": 296.99,
+          "figure": false
+        },
+        {
+          "id": "m7-10",
+          "legacyIds": [
+            "m7-vertical"
+          ],
+          "page": 3,
+          "label": "小數減法與跨0借位",
+          "sourceSha256": "2d572689bf7eafb941ff50a7c0f53ac725eae273bee766fd7a4e7ffcc7d276d1",
+          "top": 296.99,
+          "bottom": 260.69,
+          "figure": false
+        },
+        {
+          "id": "m7-11",
+          "legacyIds": [
+            "m7-application"
+          ],
+          "page": 3,
+          "label": "小數合併量",
+          "sourceSha256": "ad130097a57d268b5d1df2b5ab1e560ccecced9b0b011f13cb02db8f0b72fa40",
+          "top": 260.69,
+          "bottom": 206.09,
+          "figure": false
+        },
+        {
+          "id": "m7-12",
+          "legacyIds": [
+            "m7-application"
+          ],
+          "page": 4,
+          "label": "小數相差量",
+          "sourceSha256": "c981681d8aadc27f5cbb7c3a6014a9db8e01063e5bb0e6b39939b32d6b436022",
+          "top": 696.89,
+          "bottom": 642.29,
+          "figure": false
+        },
+        {
+          "id": "m7-13",
+          "legacyIds": [
+            "m7-application"
+          ],
+          "page": 4,
+          "label": "接起來要扣掉一次重疊",
+          "sourceSha256": "ca161ff6d8de6dcf5cf962486c15fb1a9372c1099bd66addbdcd9f623b2f9e21",
+          "top": 642.29,
+          "bottom": 425.99,
+          "figure": true
+        },
+        {
+          "id": "m8-01",
+          "legacyIds": [
+            "m8-order"
+          ],
+          "page": 5,
+          "label": "先算括號內",
+          "sourceSha256": "589153eb60031b326f232e707d70b093fc47bc844053739234255507a7e7e731",
+          "top": 696.89,
+          "bottom": 660.59,
+          "figure": false
+        },
+        {
+          "id": "m8-02",
+          "legacyIds": [
+            "m8-order"
+          ],
+          "page": 5,
+          "label": "先乘除，後加減",
+          "sourceSha256": "83cdffd06de45d24e36159f5aa8c5e81b74e140e1988600464fea5db9f861719",
+          "top": 660.59,
+          "bottom": 605.99,
+          "figure": false
+        },
+        {
+          "id": "m8-03",
+          "legacyIds": [
+            "m8-order"
+          ],
+          "page": 5,
+          "label": "同級運算\n由左到右",
+          "sourceSha256": "8503fda862395b8f2e69097b1859aa81b444afc009f9a0148ff9f5669f925345",
+          "top": 605.99,
+          "bottom": 551.39,
+          "figure": false
+        },
+        {
+          "id": "m8-04",
+          "legacyIds": [
+            "m8-combine"
+          ],
+          "page": 5,
+          "label": "把先算、再算\n合成一式",
+          "sourceSha256": "dcdbce21357fd254b4998b4ec7869c9d0c599da8f1fc8f354c5c3da9bc84ea9d",
+          "top": 551.39,
+          "bottom": 496.79,
+          "figure": false
+        },
+        {
+          "id": "m8-05",
+          "legacyIds": [
+            "m8-equivalent"
+          ],
+          "page": 5,
+          "label": "連除改成\n除以兩數的乘積",
+          "sourceSha256": "01fef27dfb788ab2f241865f8dfcc611d05c5cad6541e0875664747507042551",
+          "top": 496.79,
+          "bottom": 442.19,
+          "figure": false
+        },
+        {
+          "id": "m8-06",
+          "legacyIds": [
+            "m8-equivalent"
+          ],
+          "page": 5,
+          "label": "加上括號後\n結果會不會改變",
+          "sourceSha256": "40695d2fbdd3868e72af4bac7f40f0ab1e71570fb8be02a74026c205961c8b5f",
+          "top": 442.19,
+          "bottom": 387.59,
+          "figure": false
+        },
+        {
+          "id": "m8-07",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算總價\n再算找零",
+          "sourceSha256": "8d766742db85d660b1e347692d5668146fd3ff6e686447e733f41d1f73a9151a",
+          "top": 696.89,
+          "bottom": 605.69,
+          "figure": false
+        },
+        {
+          "id": "m8-08",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算便宜後的單價\n再算總價",
+          "sourceSha256": "63618f68aea81e8d2eead7428f4b7f6d79c079f89a553d49bc7d0f9b01dfaec6",
+          "top": 605.69,
+          "bottom": 514.49,
+          "figure": false
+        },
+        {
+          "id": "m8-09",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算總量\n再平分",
+          "sourceSha256": "8414adbda072cb525118fadd53405666a358efc80b54cae46e0ba70580a17eb8",
+          "top": 514.49,
+          "bottom": 459.89,
+          "figure": false
+        },
+        {
+          "id": "m8-10",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算有幾份\n再算收入",
+          "sourceSha256": "e9f8a3124703259b67d682714e073f83d14143d0528da51f37a43a77bd930956",
+          "top": 459.89,
+          "bottom": 405.29,
+          "figure": false
+        },
+        {
+          "id": "m8-11",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先分給各組\n再分給組員",
+          "sourceSha256": "9bb6608091f90b8194dc1542c850d925bc243c6d50dd747865dbad90843601de",
+          "top": 405.29,
+          "bottom": 350.69,
+          "figure": false
+        },
+        {
+          "id": "m8-12",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算每盒便宜多少\n再從原價扣掉",
+          "sourceSha256": "370c1ae6998a75799c0a54c55c41c058fe4b089303dc070fa91fd28081344e4f",
+          "top": 350.69,
+          "bottom": 296.09,
+          "figure": false
+        },
+        {
+          "id": "m8-13",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先合計天數\n再算存款",
+          "sourceSha256": "5df69a5ba2f8db1a9f44476656d9707ce296cd5fba892d4eeaad8e9b5cd4e14d",
+          "top": 296.09,
+          "bottom": 241.49,
+          "figure": false
+        },
+        {
+          "id": "m8-14",
+          "legacyIds": [
+            "m8-reason"
+          ],
+          "page": 6,
+          "label": "先算量滿 4 次的長度\n再扣不足的長度",
+          "sourceSha256": "cb4fd46e8eed0884b6f6d22aa9c67a37beac73146f7246ed2910a27b7a8266c8",
+          "top": 241.49,
+          "bottom": 168.59,
+          "figure": false
+        },
+        {
+          "id": "m9-01",
+          "legacyIds": [
+            "m9-types"
+          ],
+          "page": 7,
+          "label": "真分數、假分數、帶分數",
+          "sourceSha256": "900ec485915c08f662b64532591ec025e1aceec25c6f72da1aa5dde560ba2633",
+          "top": 696.89,
+          "bottom": 642.29,
+          "figure": false
+        },
+        {
+          "id": "m9-02",
+          "legacyIds": [
+            "m9-types"
+          ],
+          "page": 7,
+          "label": "由整數部分反推分子",
+          "sourceSha256": "99cba25b543254fe467e2e4b73e2c875c4d24b6d9a27cba232e7df0a558ad827",
+          "top": 642.29,
+          "bottom": 587.69,
+          "figure": false
+        },
+        {
+          "id": "m9-03",
+          "legacyIds": [
+            "m9-convert"
+          ],
+          "page": 7,
+          "label": "假分數換成帶分數",
+          "sourceSha256": "47043bc14bdc28be30bf77b1b752d11f24800e6dc301c01d28c37c47b09cce84",
+          "top": 587.69,
+          "bottom": 551.39,
+          "figure": false
+        },
+        {
+          "id": "m9-04",
+          "legacyIds": [
+            "m9-convert"
+          ],
+          "page": 7,
+          "label": "帶分數換成假分數",
+          "sourceSha256": "d9d9c03c40496f38c56568895352e1c5171b46f883ba7dfab696a0f908f56da9",
+          "top": 551.39,
+          "bottom": 515.09,
+          "figure": false
+        },
+        {
+          "id": "m9-05",
+          "legacyIds": [
+            "m9-convert"
+          ],
+          "page": 7,
+          "label": "用等分圖表示假分數",
+          "sourceSha256": "4f0e2d0700ef25ed75030e6e0c7b63909cf6bf464dc927f2028d1dbe6a17b935",
+          "top": 515.09,
+          "bottom": 365.49,
+          "figure": true
+        },
+        {
+          "id": "m9-06",
+          "legacyIds": [
+            "m9-numberline"
+          ],
+          "page": 7,
+          "label": "先看0到1分幾等份",
+          "sourceSha256": "0a8933d91b1f990b33e0d96c9ebc24ca3394bd13cc0a16dda3a0930cf8dc239c",
+          "top": 365.49,
+          "bottom": 234.19,
+          "figure": true
+        },
+        {
+          "id": "m9-07",
+          "legacyIds": [
+            "m9-addsub"
+          ],
+          "page": 7,
+          "label": "同分母相加與進位",
+          "sourceSha256": "9f918392bc0721e8aae332ada44ff3889ff5fb5fbd98b0dee3aa3dc33bb2f39f",
+          "top": 234.19,
+          "bottom": 179.59,
+          "figure": false
+        },
+        {
+          "id": "m9-08",
+          "legacyIds": [
+            "m9-addsub"
+          ],
+          "page": 7,
+          "label": "同分母相減與借1",
+          "sourceSha256": "c9dcbc6a82139c558f2823d8301c686c97f4b464ef2ff3ee451fe6d07c9ab37c",
+          "top": 179.59,
+          "bottom": 124.99,
+          "figure": false
+        },
+        {
+          "id": "m9-09",
+          "legacyIds": [
+            "m9-times"
+          ],
+          "page": 8,
+          "label": "分數乘整數",
+          "sourceSha256": "4aba659ffe24c396631af624232658d03dac19191f9a8fdb38437718c76a296d",
+          "top": 696.89,
+          "bottom": 642.29,
+          "figure": false
+        },
+        {
+          "id": "m9-10",
+          "legacyIds": [
+            "m9-times"
+          ],
+          "page": 8,
+          "label": "柱子數與間隔數",
+          "sourceSha256": "22d09d1c28514879804d7b16f70ac09dc9270f92f27649075bc9801b1bab7908",
+          "top": 642.29,
+          "bottom": 447.69,
+          "figure": true
+        },
+        {
+          "id": "m10-01",
+          "legacyIds": [
+            "m10-scale"
+          ],
+          "page": 9,
+          "label": "讀軸、單位與每格大小",
+          "sourceSha256": "d53ed39f24167699dc8a4e7203e74dfb1373a0f8b4a71e0ca7e98f4e74655752",
+          "top": 696.89,
+          "bottom": 465.59,
+          "figure": true
+        },
+        {
+          "id": "m10-02",
+          "legacyIds": [
+            "m10-scale"
+          ],
+          "page": 9,
+          "label": "省略記號與未從0開始的刻度",
+          "sourceSha256": "bf128005e82e68de3631307b7739cf2495901fb69043ded4a0083ad3f76e28b7",
+          "top": 465.59,
+          "bottom": 215.99,
+          "figure": true
+        },
+        {
+          "id": "m10-03",
+          "legacyIds": [
+            "m10-groups"
+          ],
+          "page": 10,
+          "label": "並排長條：分組、合計與差",
+          "sourceSha256": "8b2ad51180d6ec69d906336c4680fb6f5e059ac50ebc3d699f50e7328e1b9379",
+          "top": 696.89,
+          "bottom": 418.29,
+          "figure": true
+        },
+        {
+          "id": "m10-04",
+          "legacyIds": [
+            "m10-groups"
+          ],
+          "page": 10,
+          "label": "堆疊長條：總高與上段人數",
+          "sourceSha256": "f3556ca34e2b896328622f683fa6f8770154096e390559277f40422bf90bce54",
+          "top": 418.29,
+          "bottom": 139.69,
+          "figure": true
+        },
+        {
+          "id": "m10-05",
+          "legacyIds": [
+            "m10-trend"
+          ],
+          "page": 11,
+          "label": "最高、最低與數值差",
+          "sourceSha256": "0c7121cdf983a91130e7d889ed089ec670ee217a5e76b47d50f88e8b557ee668",
+          "top": 696.89,
+          "bottom": 465.59,
+          "figure": true
+        },
+        {
+          "id": "m10-06",
+          "legacyIds": [
+            "m10-trend"
+          ],
+          "page": 11,
+          "label": "折線的上升、下降與持平",
+          "sourceSha256": "ada4278c504d5ce012d723596dbe8dec4b0228f7948ccd602dc638d9f0c56f7d",
+          "top": 465.59,
+          "bottom": 234.29,
+          "figure": true
+        },
+        {
+          "id": "m10-07",
+          "legacyIds": [
+            "m10-trend"
+          ],
+          "page": 12,
+          "label": "兩條線先認圖例再比較",
+          "sourceSha256": "05e74b350be46295d19b310b14e6357d6f754fbe4bd9d40d0705fa52bdf93deb",
+          "top": 696.89,
+          "bottom": 418.29,
+          "figure": true
+        },
+        {
+          "id": "m10-08",
+          "legacyIds": [
+            "m10-draw"
+          ],
+          "page": 12,
+          "label": "由統計表畫完整長條圖",
+          "sourceSha256": "49e02bfb06fdf32f864ff25c411e9d9c26710f7fd7a99011cbcc9d14c647b160",
+          "top": 418.29,
+          "bottom": 363.69,
+          "figure": false
+        }
+      ],
+      "legacyCoverage": [
+        {
+          "id": "m6-classify",
+          "rows": [
+            "m6-01",
+            "m6-02"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "m6-sides",
-          "page": 1,
-          "scope": "邊長與周長"
+          "rows": [
+            "m6-06",
+            "m6-07",
+            "m6-08"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "m6-angles",
-          "page": 1,
-          "scope": "特殊三角形的角"
+          "rows": [
+            "m6-03",
+            "m6-04",
+            "m6-05"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "m6-congruent",
-          "page": 1,
-          "scope": "全等與對應"
+          "rows": [
+            "m6-09"
+          ],
+          "pages": [
+            2
+          ]
         },
         {
           "id": "m6-draw",
-          "page": 1,
-          "scope": "量測與作圖"
+          "rows": [
+            "m6-10",
+            "m6-11"
+          ],
+          "pages": [
+            2
+          ]
         },
         {
           "id": "m7-place",
-          "page": 1,
-          "scope": "位值與化聚"
+          "rows": [
+            "m7-01",
+            "m7-02",
+            "m7-03",
+            "m7-04",
+            "m7-05"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "m7-compare",
-          "page": 1,
-          "scope": "大小與數字範圍"
+          "rows": [
+            "m7-06",
+            "m7-07"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "m7-units",
-          "page": 1,
-          "scope": "長度單位換算"
+          "rows": [
+            "m7-08"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "m7-vertical",
-          "page": 1,
-          "scope": "小數加減直式"
+          "rows": [
+            "m7-09",
+            "m7-10"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "m7-application",
-          "page": 1,
-          "scope": "合併、差與重疊"
+          "rows": [
+            "m7-11",
+            "m7-12",
+            "m7-13"
+          ],
+          "pages": [
+            3,
+            4
+          ]
         },
         {
           "id": "m8-order",
-          "page": 2,
-          "scope": "運算順序"
+          "rows": [
+            "m8-01",
+            "m8-02",
+            "m8-03"
+          ],
+          "pages": [
+            5
+          ]
         },
         {
           "id": "m8-combine",
-          "page": 2,
-          "scope": "分步與併式"
+          "rows": [
+            "m8-04"
+          ],
+          "pages": [
+            5
+          ]
         },
         {
           "id": "m8-reason",
-          "page": 2,
-          "scope": "應用與反推"
+          "rows": [
+            "m8-07",
+            "m8-08",
+            "m8-09",
+            "m8-10",
+            "m8-11",
+            "m8-12",
+            "m8-13",
+            "m8-14"
+          ],
+          "pages": [
+            6
+          ]
         },
         {
           "id": "m8-equivalent",
-          "page": 2,
-          "scope": "算式是否等值"
+          "rows": [
+            "m8-05",
+            "m8-06"
+          ],
+          "pages": [
+            5
+          ]
         },
         {
           "id": "m9-types",
-          "page": 2,
-          "scope": "分數種類"
+          "rows": [
+            "m9-01",
+            "m9-02"
+          ],
+          "pages": [
+            7
+          ]
         },
         {
           "id": "m9-convert",
-          "page": 2,
-          "scope": "假、帶分數互換"
+          "rows": [
+            "m9-03",
+            "m9-04",
+            "m9-05"
+          ],
+          "pages": [
+            7
+          ]
         },
         {
           "id": "m9-numberline",
-          "page": 2,
-          "scope": "圖形與數線"
+          "rows": [
+            "m9-06"
+          ],
+          "pages": [
+            7
+          ]
         },
         {
           "id": "m9-addsub",
-          "page": 2,
-          "scope": "同分母加減"
+          "rows": [
+            "m9-07",
+            "m9-08"
+          ],
+          "pages": [
+            7
+          ]
         },
         {
           "id": "m9-times",
-          "page": 2,
-          "scope": "分數乘整數"
+          "rows": [
+            "m9-09",
+            "m9-10"
+          ],
+          "pages": [
+            8
+          ]
         },
         {
           "id": "m10-scale",
-          "page": 2,
-          "scope": "圖軸與刻度"
+          "rows": [
+            "m10-01",
+            "m10-02"
+          ],
+          "pages": [
+            9
+          ]
         },
         {
           "id": "m10-groups",
-          "page": 2,
-          "scope": "分組、合計與差"
+          "rows": [
+            "m10-03",
+            "m10-04"
+          ],
+          "pages": [
+            10
+          ]
         },
         {
           "id": "m10-trend",
-          "page": 2,
-          "scope": "折線變化與比較"
+          "rows": [
+            "m10-05",
+            "m10-06",
+            "m10-07"
+          ],
+          "pages": [
+            11,
+            12
+          ]
         },
         {
           "id": "m10-draw",
-          "page": 2,
-          "scope": "畫長條圖"
+          "rows": [
+            "m10-08"
+          ],
+          "pages": [
+            12
+          ]
         }
       ]
     },
     {
       "file": "science-quick-reference.pdf",
-      "sha256": "28ac9d8eb62a7f3d416684f63d7d2307cf9cbfe713dd67b0e986892f85369464",
-      "pages": 1,
+      "sha256": "782c11e98e1cc07cc6d3d743fdea136f516ecc769cdfccf6c35649c9ee7317b6",
+      "pages": 8,
+      "rowCount": 38,
       "coverage": [
         {
-          "id": "s3-vibration",
+          "id": "s3-01",
+          "legacyIds": [
+            "s3-vibration"
+          ],
           "page": 1,
-          "scope": "振動與聲音大小"
+          "label": "找出發聲時的振動",
+          "sourceSha256": "47ef81923b5b6ed407a228ddd0fb442691e30bceebf666722f23464b1aedaaea",
+          "top": 663.89,
+          "bottom": 609.29,
+          "figure": false
+        },
+        {
+          "id": "s3-02",
+          "legacyIds": [
+            "s3-vibration"
+          ],
+          "page": 1,
+          "label": "比較振動與聲音大小",
+          "sourceSha256": "6805e295dbc0e25ea6bbddff77956c014983fd33d60e05d601cebf08f5447a3b",
+          "top": 609.29,
+          "bottom": 554.69,
+          "figure": false
+        },
+        {
+          "id": "s3-03",
+          "legacyIds": [
+            "s3-vibration"
+          ],
+          "page": 1,
+          "label": "分辨聲音大小與高低",
+          "sourceSha256": "5cb7262c915d2c22602248777357ab4b1fa477a8156d6965ccf8d62d98347d1f",
+          "top": 554.69,
+          "bottom": 500.09,
+          "figure": false
+        },
+        {
+          "id": "s3-04",
+          "legacyIds": [
+            "s3-medium"
+          ],
+          "page": 1,
+          "label": "分辨傳聲的介質",
+          "sourceSha256": "7c8d8a0fa1b909f2d8d53d20a219d4fe38d42fcad131f3b72ad231d5c2d44d35",
+          "top": 500.09,
+          "bottom": 427.19,
+          "figure": false
+        },
+        {
+          "id": "s3-05",
+          "legacyIds": [
+            "s3-medium"
+          ],
+          "page": 1,
+          "label": "判斷真空能否傳聲",
+          "sourceSha256": "81f05e5e70445f5bc734b60854734d32a762c77a98112b9a28219cad19829158",
+          "top": 427.19,
+          "bottom": 354.29,
+          "figure": false
+        },
+        {
+          "id": "s3-06",
+          "legacyIds": [
+            "s3-animal"
+          ],
+          "page": 1,
+          "label": "辨認動物發聲部位",
+          "sourceSha256": "114293b50c7993611334331268cad229afe845f5ac3d139a393c8d66394a9bc4",
+          "top": 354.29,
+          "bottom": 299.69,
+          "figure": false
+        },
+        {
+          "id": "s3-07",
+          "legacyIds": [
+            "s3-animal"
+          ],
+          "page": 1,
+          "label": "判斷動物發聲目的",
+          "sourceSha256": "20fd0309e38ffdb2a80c63ddd795d75806fab3bf9f8dd0dbbe2669d765888493",
+          "top": 299.69,
+          "bottom": 245.09,
+          "figure": false
+        },
+        {
+          "id": "s3-08",
+          "legacyIds": [
+            "s3-source"
+          ],
+          "page": 1,
+          "label": "區分光源與反光物",
+          "sourceSha256": "e36f6cd6c8dda2f45a6bd53700b9f1ddd1424d19a55a6fe345a6d06b097f16a0",
+          "top": 245.09,
+          "bottom": 190.49,
+          "figure": false
+        },
+        {
+          "id": "s3-09",
+          "legacyIds": [
+            "s3-source"
+          ],
+          "page": 1,
+          "label": "判斷看見物體的條件",
+          "sourceSha256": "f325e2a42dfc44ba33239c550e5d0027a843030a7929244d6e50fb80cb5cfa8d",
+          "top": 190.49,
+          "bottom": 117.59,
+          "figure": false
+        },
+        {
+          "id": "s3-10",
+          "legacyIds": [
+            "s3-shadow"
+          ],
+          "page": 2,
+          "label": "用直進解釋影子位置",
+          "sourceSha256": "d5b0314f73b2d8eb07816e8c2202b5c16ca8edadc527560bbc7725f578712526",
+          "top": 696.89,
+          "bottom": 623.99,
+          "figure": false
+        },
+        {
+          "id": "s3-11",
+          "legacyIds": [
+            "s3-shadow"
+          ],
+          "page": 2,
+          "label": "判斷透明物與影子",
+          "sourceSha256": "ef0e7c4128fd1711c91fd117e869c39bac06940df0ca198df3b2dcea32c62fd1",
+          "top": 623.99,
+          "bottom": 569.39,
+          "figure": false
+        },
+        {
+          "id": "s3-12",
+          "legacyIds": [
+            "s3-shadow"
+          ],
+          "page": 2,
+          "label": "固定光源和牆，比影子大小",
+          "sourceSha256": "58919bc05625766665b2ac0b0474ceebbd8eba5e761d05a89cd2d9bc6d1f5088",
+          "top": 569.39,
+          "bottom": 358.49,
+          "figure": true
+        },
+        {
+          "id": "s3-13",
+          "legacyIds": [
+            "s3-reflection"
+          ],
+          "page": 3,
+          "label": "讀鏡面反射的光路",
+          "sourceSha256": "4a3d83845a664ef2baa1fe634972330ecf21178a2a27dcd9d7a25dcf2dbafe32",
+          "top": 696.89,
+          "bottom": 483.99,
+          "figure": true
+        },
+        {
+          "id": "s3-14",
+          "legacyIds": [
+            "s3-reflection"
+          ],
+          "page": 3,
+          "label": "判斷轉鏡後的光向",
+          "sourceSha256": "7b4a510b0ab24c7e4c4f06bfc76fcfbeb124eabe3fb9f890b9bfe5ad446539ed",
+          "top": 483.99,
+          "bottom": 429.39,
+          "figure": false
+        },
+        {
+          "id": "s3-15",
+          "legacyIds": [
+            "s3-reflection"
+          ],
+          "page": 3,
+          "label": "比較表面與清楚倒影",
+          "sourceSha256": "9b0767b9ec5621491781a45d3a303df944e672604f15c23aa1fe5d3fc1d053af",
+          "top": 429.39,
+          "bottom": 356.49,
+          "figure": false
+        },
+        {
+          "id": "s3-16",
+          "legacyIds": [
+            "s3-use"
+          ],
+          "page": 3,
+          "label": "依主要用途分類聲光",
+          "sourceSha256": "509b64aca0577324cc3eb5b5c2a5ce3c918e58e757998ec4c0560312ca113b95",
+          "top": 356.49,
+          "bottom": 301.89,
+          "figure": false
+        },
+        {
+          "id": "s4-01",
+          "legacyIds": [
+            "s4-path"
+          ],
+          "page": 4,
+          "label": "找出燈泡的兩個接點",
+          "sourceSha256": "cadda957672bc4324bb92db8d21e1bd0aa09118475f2f31afee30528dab8b4f4",
+          "top": 696.89,
+          "bottom": 512.29,
+          "figure": true
+        },
+        {
+          "id": "s4-02",
+          "legacyIds": [
+            "s4-path"
+          ],
+          "page": 4,
+          "label": "自己畫出發亮的電路",
+          "sourceSha256": "aa5a19dab6e448faed4e88f805faeb83b61e1ce83b7309f35468e09853a36d59",
+          "top": 512.29,
+          "bottom": 291.39,
+          "figure": true
+        },
+        {
+          "id": "s4-03",
+          "legacyIds": [
+            "s4-path"
+          ],
+          "page": 4,
+          "label": "分辨通路與斷路",
+          "sourceSha256": "3de318733995021734a60168d5b15c52ba51a3452beb8247f23a49f6acb373db",
+          "top": 291.39,
+          "bottom": 218.49,
+          "figure": false
+        },
+        {
+          "id": "s4-04",
+          "legacyIds": [
+            "s4-conductor"
+          ],
+          "page": 4,
+          "label": "依材料判斷導電性",
+          "sourceSha256": "265f1741c0c79a5a1b1706657aa3b0f2660ec51987a7232c9d035853171f641d",
+          "top": 218.49,
+          "bottom": 145.59,
+          "figure": false
+        },
+        {
+          "id": "s4-05",
+          "legacyIds": [
+            "s4-conductor"
+          ],
+          "page": 4,
+          "label": "分辨導線內外的作用",
+          "sourceSha256": "268bfbbc957bbf47267ca3e3a47603e01e9b34ef47f91dba73c49c9fb125db81",
+          "top": 145.59,
+          "bottom": 72.69,
+          "figure": false
+        },
+        {
+          "id": "s4-06",
+          "legacyIds": [
+            "s4-conductor"
+          ],
+          "page": 5,
+          "label": "用開關控制通斷",
+          "sourceSha256": "0285ad3461ebc606d61aa78d0a38dc39e127468cf439bcf6660c5f6ef80d253f",
+          "top": 696.89,
+          "bottom": 492.99,
+          "figure": true
+        },
+        {
+          "id": "s4-07",
+          "legacyIds": [
+            "s4-batteries"
+          ],
+          "page": 5,
+          "label": "看正負極辨電池接法",
+          "sourceSha256": "c9ce15b0420695794f26b98c367b78bc6071ab613d34f579e09d776f479b848a",
+          "top": 492.99,
+          "bottom": 277.39,
+          "figure": true
+        },
+        {
+          "id": "s4-08",
+          "legacyIds": [
+            "s4-batteries"
+          ],
+          "page": 5,
+          "label": "比較電池接法與亮度",
+          "sourceSha256": "a39309bf654ce705ea034b781b9d0e49c7104d19f6879add026990576fc1ca52",
+          "top": 277.39,
+          "bottom": 204.49,
+          "figure": false
+        },
+        {
+          "id": "s4-09",
+          "legacyIds": [
+            "s4-batteries"
+          ],
+          "page": 6,
+          "label": "移除電池後追查通路",
+          "sourceSha256": "d6d87e8f2f13fd3565737fba80cbbb85ed6080578b8bad366197f2352d107ac9",
+          "top": 696.89,
+          "bottom": 462.99,
+          "figure": true
+        },
+        {
+          "id": "s4-10",
+          "legacyIds": [
+            "s4-bulbs"
+          ],
+          "page": 6,
+          "label": "辨認燈泡串聯與並聯",
+          "sourceSha256": "9b3c920e8a9909b565cb56f5a028378945a46cf774c63d6e708183010aab4ba8",
+          "top": 462.99,
+          "bottom": 244.39,
+          "figure": true
+        },
+        {
+          "id": "s4-11",
+          "legacyIds": [
+            "s4-bulbs"
+          ],
+          "page": 6,
+          "label": "比較燈泡接法與亮度",
+          "sourceSha256": "c30f37e5c09429a46546e807f8d3fd26fbc87ed58b623829bd964502a6e171ad",
+          "top": 244.39,
+          "bottom": 171.49,
+          "figure": false
+        },
+        {
+          "id": "s4-12",
+          "legacyIds": [
+            "s4-bulbs"
+          ],
+          "page": 6,
+          "label": "由一燈故障反推接法",
+          "sourceSha256": "03dd97b09852fe2aa1723163ec137d6eb1f4219702c469bcda0d99bfbe3b47d1",
+          "top": 171.49,
+          "bottom": 98.59,
+          "figure": false
+        },
+        {
+          "id": "s4-13",
+          "legacyIds": [
+            "s4-motor"
+          ],
+          "page": 7,
+          "label": "判斷小馬達反接的轉向",
+          "sourceSha256": "3487010d49c038264d717742ce4c9915879a8ce874acc698e8d2dd8536ca2f8b",
+          "top": 696.89,
+          "bottom": 623.99,
+          "figure": false
+        },
+        {
+          "id": "s4-14",
+          "legacyIds": [
+            "s4-path"
+          ],
+          "page": 7,
+          "label": "判斷傳統燈泡反接",
+          "sourceSha256": "40f09110d104ea57ac66afda5b1ea05e55c97b09f446ba103f4330e3179b221e",
+          "top": 623.99,
+          "bottom": 551.09,
+          "figure": false
+        },
+        {
+          "id": "s4-15",
+          "legacyIds": [
+            "s4-motor"
+          ],
+          "page": 7,
+          "label": "保留多種故障可能",
+          "sourceSha256": "bfb64ee1f926ed6b965c59ff33fec2c86b04c5f8fefdcd806f0a8b4638457973",
+          "top": 551.09,
+          "bottom": 496.49,
+          "figure": false
+        },
+        {
+          "id": "s4-16",
+          "legacyIds": [
+            "s4-safe"
+          ],
+          "page": 7,
+          "label": "辨認安全用電行為",
+          "sourceSha256": "2e46f3878365eca7d3705cfc8f2d75a915e36e1c1824ce46b73a7bba6658d6b2",
+          "top": 496.49,
+          "bottom": 423.59,
+          "figure": false
+        },
+        {
+          "id": "s4-17",
+          "legacyIds": [
+            "s4-safe"
+          ],
+          "page": 7,
+          "label": "保存暫時不用的電池",
+          "sourceSha256": "45e468f5e8da0febd7959fed88db42b09e949db6315e981a156be4064682337e",
+          "top": 423.59,
+          "bottom": 368.99,
+          "figure": false
+        },
+        {
+          "id": "s4-18",
+          "legacyIds": [
+            "s4-safe"
+          ],
+          "page": 7,
+          "label": "判斷新舊電池能否混用",
+          "sourceSha256": "e1179ab9359db6015a47fb48ecfd8d22df7947c83a42cba4f022fb709eac20db",
+          "top": 368.99,
+          "bottom": 296.09,
+          "figure": false
+        },
+        {
+          "id": "s4-19",
+          "legacyIds": [
+            "s4-safe"
+          ],
+          "page": 8,
+          "label": "處理用完的電池",
+          "sourceSha256": "6a5405708fbba46904ef8f0f9a2cd5ec06c28fed1ef057e3d11e502fe3b63d99",
+          "top": 696.89,
+          "bottom": 642.29,
+          "figure": false
+        },
+        {
+          "id": "s4-20",
+          "legacyIds": [
+            "s4-safe"
+          ],
+          "page": 8,
+          "label": "自己舉出節電做法",
+          "sourceSha256": "7de6351a69ff7daa55a24054d2f7b9ca1a3af764663b96022f5a8b78462a015e",
+          "top": 642.29,
+          "bottom": 587.69,
+          "figure": false
+        },
+        {
+          "id": "s4-21",
+          "legacyIds": [
+            "s4-reading"
+          ],
+          "page": 8,
+          "label": "從短文找出比較證據",
+          "sourceSha256": "2c6aea650cfc6c163cb8ff274b35fff86037d54712fb30d80892af6a1ad7dd44",
+          "top": 587.69,
+          "bottom": 514.79,
+          "figure": false
+        },
+        {
+          "id": "s4-22",
+          "legacyIds": [
+            "s4-reading"
+          ],
+          "page": 8,
+          "label": "分清文中資料與未知事項",
+          "sourceSha256": "26c086873da1073386ff6120e842ea0c6b713f6c46fc7adee91bd07ae5ce7ad4",
+          "top": 514.79,
+          "bottom": 441.89,
+          "figure": false
+        }
+      ],
+      "legacyCoverage": [
+        {
+          "id": "s3-vibration",
+          "rows": [
+            "s3-01",
+            "s3-02",
+            "s3-03"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "s3-medium",
-          "page": 1,
-          "scope": "聲音的傳播"
+          "rows": [
+            "s3-04",
+            "s3-05"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "s3-animal",
-          "page": 1,
-          "scope": "動物發聲與溝通"
+          "rows": [
+            "s3-06",
+            "s3-07"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "s3-source",
-          "page": 1,
-          "scope": "光源與看見物體"
+          "rows": [
+            "s3-08",
+            "s3-09"
+          ],
+          "pages": [
+            1
+          ]
         },
         {
           "id": "s3-shadow",
-          "page": 1,
-          "scope": "光直進與影子"
+          "rows": [
+            "s3-10",
+            "s3-11",
+            "s3-12"
+          ],
+          "pages": [
+            2
+          ]
         },
         {
           "id": "s3-reflection",
-          "page": 1,
-          "scope": "反射與方向"
+          "rows": [
+            "s3-13",
+            "s3-14",
+            "s3-15"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "s3-use",
-          "page": 1,
-          "scope": "聲光的生活用途"
+          "rows": [
+            "s3-16"
+          ],
+          "pages": [
+            3
+          ]
         },
         {
           "id": "s4-path",
-          "page": 1,
-          "scope": "通路、斷路與畫圖"
+          "rows": [
+            "s4-01",
+            "s4-02",
+            "s4-03",
+            "s4-14"
+          ],
+          "pages": [
+            4,
+            7
+          ]
         },
         {
           "id": "s4-conductor",
-          "page": 1,
-          "scope": "導體、絕緣與開關"
+          "rows": [
+            "s4-04",
+            "s4-05",
+            "s4-06"
+          ],
+          "pages": [
+            4,
+            5
+          ]
         },
         {
           "id": "s4-batteries",
-          "page": 1,
-          "scope": "電池串聯、並聯"
+          "rows": [
+            "s4-07",
+            "s4-08",
+            "s4-09"
+          ],
+          "pages": [
+            5,
+            6
+          ]
         },
         {
           "id": "s4-bulbs",
-          "page": 1,
-          "scope": "燈泡串聯、並聯"
+          "rows": [
+            "s4-10",
+            "s4-11",
+            "s4-12"
+          ],
+          "pages": [
+            6
+          ]
         },
         {
           "id": "s4-motor",
-          "page": 1,
-          "scope": "馬達轉向與故障"
+          "rows": [
+            "s4-13",
+            "s4-15"
+          ],
+          "pages": [
+            7
+          ]
         },
         {
           "id": "s4-safe",
-          "page": 1,
-          "scope": "安全、回收與節電"
+          "rows": [
+            "s4-16",
+            "s4-17",
+            "s4-18",
+            "s4-19",
+            "s4-20"
+          ],
+          "pages": [
+            7,
+            8
+          ]
         },
         {
           "id": "s4-reading",
-          "page": 1,
-          "scope": "閱讀短文找證據"
+          "rows": [
+            "s4-21",
+            "s4-22"
+          ],
+          "pages": [
+            8
+          ]
         }
       ]
     }
