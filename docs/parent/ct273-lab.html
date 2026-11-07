@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>CT273 · 大輪與連桿試作</title>
+  <link rel="stylesheet" href="ct273-lab.css">
+  <script type="module" src="ct273-lab.js"></script>
+</head>
+<body>
+  <main id="lab">
+    <header class="page-head">
+      <div><span class="eyebrow">輪組試作</span><h1>CT273 <span>蒸汽機車</span></h1></div>
+      <button id="reset" class="quiet" aria-label="全部拆下，重新試拼"><span aria-hidden="true">↺</span> 重拼</button>
+    </header>
+    <section class="workshop" aria-label="CT273 大輪與連桿組裝實驗">
+      <ol class="steps" aria-label="組裝階段">
+        <li id="step-wheels"><span class="step-number">1</span><span data-art="wheels" aria-hidden="true"></span><span>裝輪</span></li>
+        <li id="step-rod"><span class="step-number">2</span><span data-art="rod" aria-hidden="true"></span><span>接連桿</span></li>
+        <li id="step-turn"><span class="step-number">3</span><span data-art="turn" aria-hidden="true"></span><span>轉轉看</span></li>
+      </ol>
+      <div class="bench">
+        <div class="model-area">
+          <div class="scene-heading"><span>輪組・側面</span><span id="coupling-state">0 / 3</span></div>
+          <svg id="scene" viewBox="0 0 900 370" role="group" aria-label="CT273 輪組側面特寫"></svg>
+          <div id="picture-guide" class="picture-guide" role="img"></div>
+        </div>
+        <aside class="tray" aria-label="待裝零件">
+          <div class="tray-heading"><span>零件</span><span id="part-count">0 / 4</span></div>
+          <div class="part-list">
+            <button class="part" data-part="0" aria-label="拿起第一個大輪" aria-pressed="false"></button>
+            <button class="part" data-part="1" aria-label="拿起第二個大輪" aria-pressed="false"></button>
+            <button class="part" data-part="2" aria-label="拿起第三個大輪" aria-pressed="false"></button>
+            <button class="part rod-part" data-part="rod" aria-label="拿起連桿，三個接點會自動對齊" aria-pressed="false" disabled></button>
+          </div>
+          <div class="place-controls"><button id="place" class="primary" disabled><span aria-hidden="true">↓</span> 接上</button><button id="cancel" class="quiet" aria-label="放回選好的零件" hidden>放回</button></div>
+          <button id="detach" class="quiet" hidden><span aria-hidden="true">↑</span> 拆連桿</button>
+        </aside>
+      </div>
+      <div id="turn-controls" class="turn-controls" hidden>
+        <div class="turn-label"><span data-art="turn" aria-hidden="true"></span><strong id="turn-caption">轉轉看</strong></div>
+        <div class="turn-inputs">
+          <button id="backward" class="quiet" aria-label="將選定輪子往回轉四分之一圈">↶</button>
+          <input id="angle" type="range" min="0" max="360" step="1" value="0" aria-label="第一個大輪的角度">
+          <button id="forward" class="quiet" aria-label="將選定輪子往前轉四分之一圈">↷</button>
+        </div>
+        <div id="wheel-choice" class="wheel-choice" role="group" aria-label="選擇要轉的輪子"></div>
+      </div>
+    </section>
+    <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+    <details class="parent-notes">
+      <summary>家長說明・隔離原型</summary>
+      <label class="motion-option"><input id="reduce-motion" type="checkbox"> 減少接合動畫</label>
+      <p>先裝三個大輪，分別轉動；再拿連桿，接點會自動對齊。接上後轉任一個輪子，三輪與連桿一起動。拆下連桿，可比較差異。</p>
+      <p>零件可拖到亮起的接點，也可先點零件，再點接點或「接上」。輪子可沿圓周拖動；點輪子可選定，再用下方滑桿、箭頭或鍵盤方向鍵轉動。Esc 放回零件。遵循系統減少動態偏好；輪組只隨手動操作移動。</p>
+      <p>這是 CT273 機構的簡化側面示意，只做三輪與單側連桿；車輪間距與色彩參考既有模型。不是完整蒸汽機車物理模擬。試拼不讀寫孩子進度，不發獎勵；重新整理會重置。</p>
+      <p>試玩時觀察：接上連桿後，孩子是否看得出輪子之間的關係？這段是否比 E500 的底盤試推更有不同的組裝感？</p>
+    </details>
+    <footer>原型・重新整理會重置</footer>
+  </main>
+</body>
+</html>
