@@ -16,7 +16,7 @@
 
 ### 家長備考速查 PDF
 
-[四上期末家長備考速查](../../docs/parent/exam2-guide/index.html) 提供數學2頁、自然1頁 PDF，以「範圍／要會什麼／考卷怎麼考」涵蓋7單元、37項原創摘要。從家長區固定入口或作品白板開啟、下載列印；網頁只提供 PDF 入口，不保存勾選。紙本作圖、直式、列式和自行舉例保留在能力欄。原稿在本任務 `output/pdf/`，公開副本由來源產生器同步至家長入口。
+[四上期末家長備考速查](../../docs/parent/exam2-guide/index.html) 提供數學12頁、自然8頁 PDF，以「觀念／技術＋玩具版考題」兩欄呈現94列（數學56、自然38），涵蓋7單元與原37項核心。U8保留已接受試閱的14列、兩頁；幾何、分數、數線、統計圖、影子與電路附原創圖。從家長區固定入口或作品白板開啟、下載列印；網頁只提供 PDF 入口，不保存勾選。題目不附答案，保留紙本作圖、直式、列式與自行舉例。原稿在本任務 `output/pdf/`，公開副本由來源產生器同步至家長入口。
 
 來源與完整重建步驟在 [source/parent-guide/](source/parent-guide/README.md)：先執行 `build-pdf.py` 產生 PDF，再執行 `node learning-tasks/grade4-sem1-exam2/source/parent-guide/build.mjs` 同步網頁，後者加 `--check` 核對來源與產物。逐項私人原卷證據與驗收在 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-parent-guide-2026-11-07/`，PDF 改版證據另存 `pdf-revision/`；本次交付由 [#255](https://github.com/huansbox/aiden-study/issues/255) 追蹤。沿用上次概念與推理方法分類，不以已數位化活動數推算學校常考率。
 
