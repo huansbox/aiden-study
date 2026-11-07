@@ -2,7 +2,7 @@
   "format": "concepts-and-toy-questions",
   "inputs": {
     "content.json": "c7f116a89eb13b4965d38dfd22bec5849ffca112dae6ca0842c78acf665796c4",
-    "toy-reference.json": "464702fb8b08b6710baf282d1813b6e4f13cc15597603339de39e6a2b384c198",
+    "toy-reference.json": "925fd24663fe2b8a594fcc8b1f3b7bf0eb1bfaf93a059d0b48bd62843edc6e77",
     "build-pdf.py": "1ac1bfa830c8f8f9a71bd1470ddc411ebd0a298064151f927b71155aa549ee8a"
   },
   "reportlab": "5.1.0",
@@ -21,7 +21,7 @@
   "pdfs": [
     {
       "file": "math-quick-reference.pdf",
-      "sha256": "23247f7b3d84561f4d2887390bd1d0738378a9bd278282635289a99d9cddd0bb",
+      "sha256": "4d1c726300a9fc471e2c303550914647f4e80b461440943a30352141b715f58f",
       "pages": 12,
       "rowCount": 56,
       "coverage": [
@@ -680,7 +680,7 @@
           ],
           "page": 12,
           "label": "兩條線先認圖例再比較",
-          "sourceSha256": "05e74b350be46295d19b310b14e6357d6f754fbe4bd9d40d0705fa52bdf93deb",
+          "sourceSha256": "b85d37c0183e3349287ff7ded815549a56925deb31003930b3905ae24c993504",
           "top": 696.89,
           "bottom": 418.29,
           "figure": true
@@ -945,7 +945,7 @@
     },
     {
       "file": "science-quick-reference.pdf",
-      "sha256": "782c11e98e1cc07cc6d3d743fdea136f516ecc769cdfccf6c35649c9ee7317b6",
+      "sha256": "c83c9d04be01ec367d612205eb02274b8a0e0c415a7743318abde8e7d069e40b",
       "pages": 8,
       "rowCount": 38,
       "coverage": [
@@ -1208,7 +1208,7 @@
           ],
           "page": 5,
           "label": "用開關控制通斷",
-          "sourceSha256": "0285ad3461ebc606d61aa78d0a38dc39e127468cf439bcf6660c5f6ef80d253f",
+          "sourceSha256": "de645ab41c5e5e370ce7b50846d03b4671af32cc27a9b4bb12cb68dab075e01d",
           "top": 696.89,
           "bottom": 492.99,
           "figure": true
@@ -1268,9 +1268,9 @@
           ],
           "page": 6,
           "label": "比較燈泡接法與亮度",
-          "sourceSha256": "c30f37e5c09429a46546e807f8d3fd26fbc87ed58b623829bd964502a6e171ad",
+          "sourceSha256": "4f73a18c18e7fd7e6fbaa11763f1d91430137841bdc6b1f6fdebe16d8df6ccaf",
           "top": 244.39,
-          "bottom": 171.49,
+          "bottom": 153.19,
           "figure": false
         },
         {
@@ -1281,8 +1281,8 @@
           "page": 6,
           "label": "由一燈故障反推接法",
           "sourceSha256": "03dd97b09852fe2aa1723163ec137d6eb1f4219702c469bcda0d99bfbe3b47d1",
-          "top": 171.49,
-          "bottom": 98.59,
+          "top": 153.19,
+          "bottom": 80.29,
           "figure": false
         },
         {
