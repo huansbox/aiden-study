@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>四上期末家長重點清單</title>
+  <link rel="stylesheet" href="guide.css?v=20261107-1">
+  <script src="guide.js?v=20261107-1" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../">回家長區</a>
+    <p class="eyebrow">四年級上學期 · 家長陪看</p>
+    <h1>期末重點掌握清單</h1>
+    <p class="intro">先選一個單元，問一個小問題。孩子能說明或做出來，再勾「已確認」。</p>
+    <p class="scope">{{SCOPE}}</p>
+  </header>
+  <section class="instructions" aria-label="使用說明">
+    <p><strong>勾選只是家長備忘。</strong>不等於精熟度或正式成績，不會寫入孩子練習紀錄。</p>
+    <p id="storage-status" role="status">勾選僅保存在這台裝置的這個瀏覽器，不會跨裝置同步；清除瀏覽資料後可能消失。</p>
+    <noscript><p>目前未啟用 JavaScript：仍可閱讀與列印全部內容，但勾選不會保存。</p></noscript>
+    <details class="scope-details">
+      <summary>這份清單的來源與限制</summary>
+      <p>沿用上次數學的「單元→概念→推理／作答方法」整理方式。逐項考法來自現有歷屆原卷回查；下方標示桃子腳或跨校、學年度與評量別。舊卷單元順序、出版社及考期可能不同，依本次概念對照，不套用舊卷的考試範圍。</p>
+      <p>確認問題與答案都是原創例子；考法是摘要，不公開原卷題文或圖片。列出的易混淆處是教學提醒，並非孩子錯誤統計。</p>
+      <p>這是現有來源支持的重點，不是完整課綱或考試預測；沒有計算出題頻率，也不以數位活動數當作學校常考率。自然的聲音與電路以跨校卷補充，不能據此宣稱桃子腳常考。未列出的能力不代表不會考。</p>
+      <p>紙本作圖、直式、列式與自行舉例需要另外確認；有提示的數位作答不等於能獨立完成。資料缺損、條件有爭議及本輪範圍外題目未拿來作重點依據。</p>
+    </details>
+  </section>
+  <div class="controls" hidden>
+    <nav class="subjects" aria-label="選擇科目">
+      <button type="button" data-subject="math" aria-pressed="true">數學 <span>U6–U10</span></button>
+      <button type="button" data-subject="science" aria-pressed="false">自然 <span>U3–U4</span></button>
+      <button type="button" data-subject="all" aria-pressed="false">全部</button>
+    </nav>
+    <div class="toolbar"><p id="progress" role="status"></p><div><button id="print-current" type="button">列印目前科目</button><button id="print-all" type="button">列印全部</button></div></div>
+  </div>
+  <nav class="unit-nav" aria-label="跳到單元">{{NAV}}</nav>
+  <p class="paper-note">紙筆項目請備妥紙、筆、直尺與三角板。自然短問可先口說或畫圖，電路操作僅使用教學用電池材料，成人陪同。</p>
+  <div id="units">{{UNITS}}</div>
+  <footer>家長可依實際課堂進度調整確認順序；正式範圍公布後，請再對照。<a href="../">回家長區</a></footer>
+</main>
+</body>
+</html>
