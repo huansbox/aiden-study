@@ -15,9 +15,10 @@ OUTPUT=SOURCE.parent.parent/'output'/'pdf'
 INPUTS=['content.json','toy-reference.json','build-pdf.py']
 W,H=A4
 MARGIN,SPLIT,BOTTOM=35,193,52
+CONTENT_TOP=H-90
 BODY_WIDTH=W-MARGIN-SPLIT-10
 INK=colors.HexColor('#1c3040'); MUTED=colors.HexColor('#52616c')
-LINE=colors.HexColor('#cbd4da'); PALE=colors.HexColor('#eaf0f3')
+LINE=colors.HexColor('#cbd4da')
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 def source_sha(name): return hashlib.sha256((SOURCE/name).read_text(encoding='utf-8').encode('utf-8')).hexdigest()
 def paragraph(text,style): return Paragraph(escape(text).replace('\n','<br/>'),style)
@@ -103,7 +104,6 @@ def main():
         assert not missing,f'Missing glyphs in {font}: {missing}'
     normal=ParagraphStyle('body',fontName='TC',fontSize=12.2,leading=18.3,textColor=INK,wordWrap='CJK')
     bold=ParagraphStyle('label',parent=normal,fontName='TCBold',fontSize=12.1,leading=18.3)
-    note=ParagraphStyle('note',parent=normal,fontSize=9.3,leading=13.5,textColor=MUTED)
     args.output.mkdir(parents=True,exist_ok=True)
     manifest={'format':'concepts-and-toy-questions','inputs':{n:source_sha(n) for n in INPUTS},'reportlab':reportlab.Version,'legacyItemCount':37,'rowCount':len(rows),'fonts':[{'name':pdfmetrics.getFont(n).face.name.decode(),'sha256':sha(Path(f))} for n,f in [('TC',args.font),('TCBold',args.bold_font)]],'pdfs':[]}
     for subject in data['subjects']:
@@ -115,6 +115,7 @@ def main():
                 _,lh=lp.wrap(SPLIT-MARGIN-22,1000); _,rh=rp.wrap(BODY_WIDTH,1000)
                 fig=r.get('figure'); height=max(lh,rh+(fig['height']+10 if fig else 0))+18
                 assert height<=H-178-BOTTOM,(r['id'],'row too tall')
+                # Preserve the accepted page groups while moving their content up.
                 capacity=H-(178 if not pages else 145)-BOTTOM
                 if page['rows'] and (page['used']+height>capacity or r.get('pageBreakBefore')):
                     pages.append(page); page={'unit':u,'rows':[],'used':0}
@@ -132,18 +133,10 @@ def main():
         c.setTitle(f"四上{subject['name']}｜觀念與玩具版考題"); c.setAuthor('Aiden Study'); c.setSubject('獨立觀念／技術與原創玩具版考題；不附答案')
         coverage=[]
         for number,page in enumerate(pages,1):
-            c.setFillColor(INK); c.setFont('TCBold',20); c.drawString(MARGIN,H-46,f"{subject['name']}｜家長備考速查")
-            c.setFillColor(MUTED); c.setFont('TC',10); c.drawString(MARGIN,H-66,f"四年級上學期　{subject['range']}　／　觀念與玩具版考題")
-            shift=0 if number==1 else 33
-            if number==1:
-                scope=paragraph(data['scope'],note); _,sh=scope.wrap(W-2*MARGIN,100); assert sh<=28
-                scope.drawOn(c,MARGIN,H-79-sh)
-            c.setFillColor(PALE); c.rect(MARGIN,H-137+shift,W-2*MARGIN,27,fill=1,stroke=0)
-            c.setFillColor(INK); c.setFont('TCBold',12)
-            continued=number>1 and pages[number-2]['unit']['id']==page['unit']['id']
-            c.drawString(MARGIN+9,H-128+shift,page['unit']['title']+('（續）' if continued else ''))
-            c.setFillColor(MUTED); c.setFont('TCBold',10); c.drawString(MARGIN+8,H-155+shift,'觀念／技術'); c.drawString(SPLIT,H-155+shift,'玩具版考題')
-            c.setStrokeColor(LINE); c.line(MARGIN,H-163+shift,W-MARGIN,H-163+shift); top=H-178+shift
+            c.setFillColor(INK); c.setFont('TCBold',14)
+            c.drawString(MARGIN,H-45,f"{subject['name']}｜{page['unit']['title']}")
+            c.setFillColor(MUTED); c.setFont('TCBold',10); c.drawString(MARGIN+8,H-67,'觀念／技術'); c.drawString(SPLIT,H-67,'玩具版考題')
+            c.setStrokeColor(LINE); c.setLineWidth(.5); c.line(MARGIN,H-75,W-MARGIN,H-75); top=CONTENT_TOP
             for r,lp,rp,lh,rh,height in page['rows']:
                 lp.drawOn(c,MARGIN+8,top-lh); rp.drawOn(c,SPLIT,top-rh)
                 if r.get('figure'): draw_figure(c,r['figure'],SPLIT,top-rh-10)
@@ -151,8 +144,7 @@ def main():
                 c.setStrokeColor(LINE); c.setLineWidth(.5); c.line(MARGIN,bottom+10,W-MARGIN,bottom+10)
                 row_sha=hashlib.sha256(json.dumps(r,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')).hexdigest()
                 coverage.append({'id':r['id'],'legacyIds':r['legacyIds'],'page':number,'label':r['label'],'sourceSha256':row_sha,'top':round(top,2),'bottom':round(bottom,2),'figure':bool(r.get('figure'))}); top=bottom
-            c.setStrokeColor(LINE); c.line(MARGIN,34,W-MARGIN,34)
-            c.setFillColor(MUTED); c.setFont('TC',9); c.drawString(MARGIN,20,'原創簡化題 · 每列一項觀念或技術 · 不附答案'); c.drawRightString(W-MARGIN,20,f'{number} / {len(pages)}'); c.showPage()
+            c.setFillColor(MUTED); c.setFont('TC',9); c.drawRightString(W-MARGIN,20,f'{number} / {len(pages)}'); c.showPage()
             print(f"{subject['id']} page {number}: {page['unit']['id']}, {len(page['rows'])} rows; bottom {top:.1f} pt")
         c.save()
         legacy_coverage=[{'id':lid,'rows':[r['id'] for r in coverage if lid in r['legacyIds']],'pages':sorted({r['page'] for r in coverage if lid in r['legacyIds']})} for lid in legacy if any(lid in r['legacyIds'] for r in coverage)]
