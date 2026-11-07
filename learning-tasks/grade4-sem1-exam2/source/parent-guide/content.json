@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "四上期末｜家長重點清單",
-  "scope": "依115康軒教材暫定：數學U6–U10、自然U3–U4。校方正式考試範圍尚未取得。",
+  "scope": "依115康軒教材暫定：數學U6–U10、自然U3–U4、社會U3–U4。校方正式考試範圍尚未取得。",
   "units": [
     {
       "id": "m6",
@@ -514,6 +514,104 @@
             "跨校明義113期末：依LED短文辨識特點與應用。"
           ],
           "mode": "口說或紙筆"
+        }
+      ]
+    },
+    {
+      "id": "soc3",
+      "subject": "social",
+      "title": "U3 家鄉的傳統信仰與老街",
+      "items": [
+        {
+          "id": "soc3-belief",
+          "title": "傳統信仰的來源與生活"
+        },
+        {
+          "id": "soc3-deities",
+          "title": "信仰活動、神明與生活需求"
+        },
+        {
+          "id": "soc3-functions",
+          "title": "信仰與宗教場所的功能"
+        },
+        {
+          "id": "soc3-respect",
+          "title": "尊重信仰與活動的改變"
+        },
+        {
+          "id": "soc3-investigate",
+          "title": "家鄉資料的蒐集與閱讀"
+        },
+        {
+          "id": "soc3-street-origin",
+          "title": "老街形成與街道變遷"
+        },
+        {
+          "id": "soc3-street-space",
+          "title": "街屋空間與騎樓功能"
+        },
+        {
+          "id": "soc3-street-symbol",
+          "title": "老街特色與裝飾意義"
+        },
+        {
+          "id": "soc3-preserve",
+          "title": "保存老街與再利用"
+        }
+      ]
+    },
+    {
+      "id": "soc4",
+      "subject": "social",
+      "title": "U4 家鄉的作息與節慶",
+      "items": [
+        {
+          "id": "soc4-nature",
+          "title": "自然節奏與傳統作息"
+        },
+        {
+          "id": "soc4-inherit",
+          "title": "生活知識的傳承"
+        },
+        {
+          "id": "soc4-almanac",
+          "title": "農曆、農民曆與用途"
+        },
+        {
+          "id": "soc4-modern-life",
+          "title": "現代生活作息與科技"
+        },
+        {
+          "id": "soc4-planner",
+          "title": "行事曆讀取與安排"
+        },
+        {
+          "id": "soc4-festival-date",
+          "title": "傳統節慶日期與先後"
+        },
+        {
+          "id": "soc4-festival-custom",
+          "title": "節慶習俗與意義"
+        },
+        {
+          "id": "soc4-indigenous",
+          "title": "原住民族祭典與尊重"
+        },
+        {
+          "id": "soc4-local-festival",
+          "title": "依資料理解地方節慶"
+        },
+        {
+          "id": "soc4-modern-date",
+          "title": "現代節日與日期"
+        },
+        {
+          "id": "soc4-modern-meaning",
+          "title": "現代節日的類別與意義"
+        },
+        {
+          "id": "soc4-exchange",
+          "title": "文化交流與國際議題"
         }
       ]
     }

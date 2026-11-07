@@ -84,7 +84,13 @@ def main():
     legacy={i['id']:u['id'] for u in original['units'] for i in u['items']}
     units={u['id']:u['subject'] for u in original['units']}
     rows=[r for s in data['subjects'] for u in s['units'] for r in u['rows']]
-    assert len(legacy)==37 and len({r['id'] for r in rows})==len(rows)
+    original_items=[i for u in original['units'] if u['subject'] in ('math','science') for i in u['items']]
+    assert len(original_items)==37, 'Retain all 37 original math/science core items'
+    assert len(legacy)==sum(len(u['items']) for u in original['units']), 'Duplicate core item ID'
+    assert len({r['id'] for r in rows})==len(rows), 'Duplicate question row ID'
+    assert len(units)==len(original['units']), 'Duplicate core unit ID'
+    assert len({s['id'] for s in data['subjects']})==len(data['subjects']), 'Duplicate subject ID'
+    assert len({s['filename'] for s in data['subjects']})==len(data['subjects']), 'Duplicate PDF filename'
     actual_units=[u['id'] for s in data['subjects'] for u in s['units']]
     assert len(set(actual_units))==len(actual_units) and set(actual_units)==set(units)
     covered=set()
@@ -105,7 +111,7 @@ def main():
     normal=ParagraphStyle('body',fontName='TC',fontSize=12.2,leading=18.3,textColor=INK,wordWrap='CJK')
     bold=ParagraphStyle('label',parent=normal,fontName='TCBold',fontSize=12.1,leading=18.3)
     args.output.mkdir(parents=True,exist_ok=True)
-    manifest={'format':'concepts-and-toy-questions','inputs':{n:source_sha(n) for n in INPUTS},'reportlab':reportlab.Version,'legacyItemCount':37,'rowCount':len(rows),'fonts':[{'name':pdfmetrics.getFont(n).face.name.decode(),'sha256':sha(Path(f))} for n,f in [('TC',args.font),('TCBold',args.bold_font)]],'pdfs':[]}
+    manifest={'format':'concepts-and-toy-questions','inputs':{n:source_sha(n) for n in INPUTS},'reportlab':reportlab.Version,'legacyItemCount':len(legacy),'rowCount':len(rows),'fonts':[{'name':pdfmetrics.getFont(n).face.name.decode(),'sha256':sha(Path(f))} for n,f in [('TC',args.font),('TCBold',args.bold_font)]],'pdfs':[]}
     for subject in data['subjects']:
         pages=[]
         for u in subject['units']:

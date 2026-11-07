@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "依115康軒教材暫定數學U6-U10、自然U3-U4；校方正式範圍尚未取得。題目為原創簡化，不代表考試頻率。",
+  "scope": "依115康軒教材暫定數學U6-U10、自然U3-U4、社會U3-U4；校方正式範圍尚未取得。題目為原創簡化，不代表考試頻率。",
   "subjects": [
     {
       "id": "math",
@@ -8755,6 +8755,1252 @@
                 "短文：某班2024年測試，兩燈都開1小時，",
                 "甲用電2單位、乙1單位；沒測亮度。",
                 "能證明乙比較亮，或全校2026年也省一半電嗎？"
+              ],
+              "figure": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "name": "社會",
+      "range": "U3–U4",
+      "filename": "social-quick-reference.pdf",
+      "units": [
+        {
+          "id": "soc3",
+          "title": "U3 家鄉的傳統信仰與老街",
+          "rows": [
+            {
+              "id": "soc3-01",
+              "legacyIds": [
+                "soc3-belief"
+              ],
+              "label": "信仰的來源",
+              "exampleLines": [
+                "配對：甲漢人傳統信仰；乙原住民族傳統信仰；丙西方傳教士傳入。",
+                "祖靈與自然崇拜（　）；供奉神明（　）；基督教、天主教（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-02",
+              "legacyIds": [
+                "soc3-belief"
+              ],
+              "label": "祭儀與生活事件",
+              "exampleLines": [
+                "某族會在播種、收成、出生及狩獵時舉行祭儀。",
+                "依資料判斷：「祭儀只和農作有關。」對或錯？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-03",
+              "legacyIds": [
+                "soc3-deities"
+              ],
+              "label": "神明與生活需求",
+              "exampleLines": [
+                "配對：甲土地公；乙媽祖；丙文昌帝君。",
+                "農夫祈求豐收（　）；有「天上聖母」稱號（　）；",
+                "準備考試時祈願（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-04",
+              "legacyIds": [
+                "soc3-deities"
+              ],
+              "label": "信仰活動與場所",
+              "exampleLines": [
+                "配對：甲教會；乙廟宇。",
+                "做禮拜、唱詩歌（　）；祭拜媽祖、參加繞境（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-05",
+              "legacyIds": [
+                "soc3-functions"
+              ],
+              "label": "信仰的心靈作用",
+              "exampleLines": [
+                "家人遇到難關，祈願後心情較安定。這表現哪種作用？",
+                "①心靈寄託　②保證事情一定成功　③取代所有努力"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-06",
+              "legacyIds": [
+                "soc3-functions"
+              ],
+              "label": "信仰與行為規範",
+              "exampleLines": [
+                "信仰提醒小林不欺騙、願意助人。最接近哪項功能？",
+                "①增加購物　②修身養性　③安排交通"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-07",
+              "legacyIds": [
+                "soc3-functions"
+              ],
+              "label": "廟宇的多種功能",
+              "exampleLines": [
+                "廟內祭神，廟埕讓居民聊天、看表演。勾出符合的功能：",
+                "□信仰中心　□居民交流場所　□只能用來買賣"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-08",
+              "legacyIds": [
+                "soc3-respect"
+              ],
+              "label": "尊重不同信仰",
+              "exampleLines": [
+                "同學和你的信仰不同。哪個做法適當？",
+                "①禁止他參加　②先了解並尊重　③嘲笑他的儀式"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-09",
+              "legacyIds": [
+                "soc3-respect"
+              ],
+              "label": "祭拜方式的改變",
+              "exampleLines": [
+                "廟方提倡雙手合掌，減少焚香。哪項判斷合理？",
+                "①一定不敬神　②兼顧敬意與減少煙霧　③香越多才越虔誠"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-10",
+              "legacyIds": [
+                "soc3-investigate"
+              ],
+              "label": "找家鄉歷史的資料",
+              "exampleLines": [
+                "想查老街的變化，勾出可用的查證方法：",
+                "□查地方誌　□訪問居民並比對紀錄　□看外觀就編出故事"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-11",
+              "legacyIds": [
+                "soc3-street-origin"
+              ],
+              "label": "老街怎麼形成",
+              "exampleLines": [
+                "把廟宇周邊形成商店街的順序排好：",
+                "甲商店街；乙人潮聚集；丙商販聚集。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-12",
+              "legacyIds": [
+                "soc3-street-space"
+              ],
+              "label": "街屋的商住空間",
+              "exampleLines": [
+                "街屋一樓前方開門做生意，後方與樓上供家人生活。",
+                "依圖填代號：店面（　）；起居空間（　、　）。"
+              ],
+              "figure": {
+                "kind": "vector",
+                "width": 330,
+                "height": 133,
+                "shapes": [
+                  {
+                    "type": "rect",
+                    "x": 82,
+                    "y": 5,
+                    "width": 228,
+                    "height": 53
+                  },
+                  {
+                    "type": "line",
+                    "x1": 82,
+                    "y1": 58,
+                    "x2": 310,
+                    "y2": 58
+                  },
+                  {
+                    "type": "line",
+                    "x1": 82,
+                    "y1": 58,
+                    "x2": 82,
+                    "y2": 113
+                  },
+                  {
+                    "type": "line",
+                    "x1": 310,
+                    "y1": 58,
+                    "x2": 310,
+                    "y2": 113
+                  },
+                  {
+                    "type": "line",
+                    "x1": 165,
+                    "y1": 58,
+                    "x2": 165,
+                    "y2": 113
+                  },
+                  {
+                    "type": "line",
+                    "x1": 82,
+                    "y1": 113,
+                    "x2": 310,
+                    "y2": 113
+                  },
+                  {
+                    "type": "rect",
+                    "x": 88,
+                    "y": 71,
+                    "width": 12,
+                    "height": 31
+                  },
+                  {
+                    "type": "rect",
+                    "x": 105,
+                    "y": 71,
+                    "width": 12,
+                    "height": 31
+                  },
+                  {
+                    "type": "text",
+                    "x": 91,
+                    "y": 67,
+                    "text": "門",
+                    "size": 9.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 130,
+                    "y": 95,
+                    "text": "甲",
+                    "size": 12,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 241,
+                    "y": 95,
+                    "text": "乙",
+                    "size": 12,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 196,
+                    "y": 35,
+                    "text": "丙",
+                    "size": 12,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 10,
+                    "y": 105,
+                    "text": "街道",
+                    "size": 11,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 119,
+                    "y": 128,
+                    "text": "前",
+                    "size": 11,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 270,
+                    "y": 128,
+                    "text": "後",
+                    "size": 11,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 304,
+                    "y": 35,
+                    "text": "二樓",
+                    "size": 10,
+                    "anchor": "end"
+                  },
+                  {
+                    "type": "text",
+                    "x": 304,
+                    "y": 108,
+                    "text": "一樓",
+                    "size": 10,
+                    "anchor": "end"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "soc3-13",
+              "legacyIds": [
+                "soc3-street-space"
+              ],
+              "label": "騎樓的功能",
+              "exampleLines": [
+                "店面前有屋頂、供人通行的騎樓，可以做什麼？（可複選）",
+                "□遮陽　□避雨　□擋住整條街不讓人走"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-14",
+              "legacyIds": [
+                "soc3-street-symbol"
+              ],
+              "label": "裝飾與祝福",
+              "exampleLines": [
+                "花瓶圖案取「瓶、平」同音，象徵平安。哪組用了相同方法？",
+                "①魚→有餘　②鴿子→和平"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-15",
+              "legacyIds": [
+                "soc3-street-symbol"
+              ],
+              "label": "依特色選老街",
+              "exampleLines": [
+                "甲街：木造舊店屋；乙街：磚牆浮雕；丙街：藍染體驗。",
+                "想體驗傳統染布技藝應選哪條街？能說各地老街都一樣嗎？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-16",
+              "legacyIds": [
+                "soc3-preserve"
+              ],
+              "label": "保存老街的理由",
+              "exampleLines": [
+                "有人提議把老店屋全部拆掉。哪個保留理由較適當？",
+                "①保存地方生活記憶　②舊房一定比新房安全　③只因拆除很麻煩"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-17",
+              "legacyIds": [
+                "soc3-preserve"
+              ],
+              "label": "保存後的再利用",
+              "exampleLines": [
+                "老米店歇業後，保留店屋，改開童玩店並介紹街區歷史。",
+                "這是①全部拆除　②保留特色並再利用　③保證永遠不變？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-18",
+              "legacyIds": [
+                "soc3-street-origin"
+              ],
+              "label": "人口移動與街道新貌",
+              "exampleLines": [
+                "某街新住民與移工增加，出現家鄉食品店、餐廳。",
+                "依資料，街道商品改變最直接和什麼有關？",
+                "①居民組成與需求　②每家店被規定賣同樣東西　③四季消失"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-19",
+              "legacyIds": [
+                "soc3-investigate"
+              ],
+              "label": "從文物資料找用途",
+              "exampleLines": [
+                "甲館：昔日鎮公所，現在展出老照片；乙園：保存染布桶。",
+                "想比較舊街景與今天的樣子，先去哪裡？說一個依據。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc3-20",
+              "legacyIds": [
+                "soc3-functions"
+              ],
+              "label": "宗教服務與社會",
+              "exampleLines": [
+                "資料：某傳教士設診所治病，又開學堂教學生。",
+                "依資料勾出他的貢獻：□醫療　□教育　□道路工程"
+              ],
+              "figure": null
+            }
+          ]
+        },
+        {
+          "id": "soc4",
+          "title": "U4 家鄉的作息與節慶",
+          "rows": [
+            {
+              "id": "soc4-01",
+              "legacyIds": [
+                "soc4-nature"
+              ],
+              "label": "日照與早期作息",
+              "exampleLines": [
+                "早期照明不方便，多數工作安排在白天。最接近哪句話？",
+                "①日出而作、日入而息　②日入而作、日出而息"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-02",
+              "legacyIds": [
+                "soc4-nature"
+              ],
+              "label": "季節與生活安排",
+              "exampleLines": [
+                "達悟族配合飛魚出現的季節捕魚。這表示作息會受什麼影響？",
+                "①季節和自然環境　②每個月天數必須一樣　③商店折扣"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-03",
+              "legacyIds": [
+                "soc4-nature"
+              ],
+              "label": "傳統作息與自然共處",
+              "exampleLines": [
+                "某部落規範只在飛魚季捕撈，季節結束就停止。",
+                "這種安排較可能有什麼意義？①避免過度捕撈　②全年捕得更多"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-04",
+              "legacyIds": [
+                "soc4-inherit"
+              ],
+              "label": "生活知識如何傳承",
+              "exampleLines": [
+                "長輩講述耕作經驗，族人再用圖形記下農事時間。",
+                "勾出使用的方法：□口耳相傳　□圖像紀錄　□只有文字紀錄"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-05",
+              "legacyIds": [
+                "soc4-inherit"
+              ],
+              "label": "木刻畫曆的用途",
+              "exampleLines": [
+                "布農族把農耕、狩獵、祭典刻成圖形。勾出合理用途：",
+                "□提醒活動時序　□傳遞知識文化　□預告每天精確氣溫"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-06",
+              "legacyIds": [
+                "soc4-almanac"
+              ],
+              "label": "農曆、農民曆的關係",
+              "exampleLines": [
+                "填入「農曆」或「農民曆」：",
+                "漢人傳統用來安排節慶的曆法是（　）；可查節氣、傳統宜忌的冊子是（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-07",
+              "legacyIds": [
+                "soc4-almanac"
+              ],
+              "label": "農民曆能查什麼",
+              "exampleLines": [
+                "某農民曆列出節氣、日出時間、農事建議。",
+                "哪件事不能只靠這些資料知道？",
+                "①哪天立春　②哪天較早日出　③明天實際氣溫"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-08",
+              "legacyIds": [
+                "soc4-almanac"
+              ],
+              "label": "讀取傳統宜忌",
+              "exampleLines": [
+                "家人依傳統習俗挑入宅日。只看表中的宜事，應選哪天？"
+              ],
+              "figure": {
+                "kind": "vector",
+                "width": 330,
+                "height": 82,
+                "shapes": [
+                  {
+                    "type": "rect",
+                    "x": 1,
+                    "y": 1,
+                    "width": 328,
+                    "height": 78
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 19,
+                    "text": "日期",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 90,
+                    "y1": 1,
+                    "x2": 90,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 95,
+                    "y": 19,
+                    "text": "宜",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 26,
+                    "x2": 329,
+                    "y2": 26
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 45,
+                    "text": "甲日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 95,
+                    "y": 45,
+                    "text": "嫁娶",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 52,
+                    "x2": 329,
+                    "y2": 52
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 71,
+                    "text": "乙日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 95,
+                    "y": 71,
+                    "text": "入宅",
+                    "size": 10.5,
+                    "anchor": "start"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "soc4-09",
+              "legacyIds": [
+                "soc4-modern-life"
+              ],
+              "label": "傳統與現代曆法並用",
+              "exampleLines": [
+                "學校用陽曆排考試，奶奶依農曆過端午。",
+                "「現代人只能用陽曆，農曆已經沒用途。」對或錯？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-10",
+              "legacyIds": [
+                "soc4-modern-life"
+              ],
+              "label": "科技與作息變化",
+              "exampleLines": [
+                "甲：農忙全靠人力；乙：用收割機收稻；丙：晚上以視訊開會。",
+                "哪些例子顯示科技改變工作方式或時間、地點限制？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-11",
+              "legacyIds": [
+                "soc4-planner"
+              ],
+              "label": "行事曆找日期與活動",
+              "exampleLines": [
+                "這是某月4日至10日的行事曆。球賽在幾日、星期幾？"
+              ],
+              "figure": {
+                "kind": "vector",
+                "width": 329,
+                "height": 82,
+                "shapes": [
+                  {
+                    "type": "rect",
+                    "x": 1,
+                    "y": 1,
+                    "width": 327,
+                    "height": 78
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 19,
+                    "text": "一",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 47,
+                    "y1": 1,
+                    "x2": 47,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 52,
+                    "y": 19,
+                    "text": "二",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 94,
+                    "y1": 1,
+                    "x2": 94,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 99,
+                    "y": 19,
+                    "text": "三",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 141,
+                    "y1": 1,
+                    "x2": 141,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 146,
+                    "y": 19,
+                    "text": "四",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 188,
+                    "y1": 1,
+                    "x2": 188,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 193,
+                    "y": 19,
+                    "text": "五",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 235,
+                    "y1": 1,
+                    "x2": 235,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 240,
+                    "y": 19,
+                    "text": "六",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 282,
+                    "y1": 1,
+                    "x2": 282,
+                    "y2": 79
+                  },
+                  {
+                    "type": "text",
+                    "x": 287,
+                    "y": 19,
+                    "text": "日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 26,
+                    "x2": 328,
+                    "y2": 26
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 45,
+                    "text": "4",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 52,
+                    "y": 45,
+                    "text": "5",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 99,
+                    "y": 45,
+                    "text": "6",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 146,
+                    "y": 45,
+                    "text": "7",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 193,
+                    "y": 45,
+                    "text": "8",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 240,
+                    "y": 45,
+                    "text": "9",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 287,
+                    "y": 45,
+                    "text": "10",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 52,
+                    "x2": 328,
+                    "y2": 52
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 71,
+                    "text": "",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 52,
+                    "y": 71,
+                    "text": "閱讀",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 99,
+                    "y": 71,
+                    "text": "",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 146,
+                    "y": 71,
+                    "text": "球賽",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 193,
+                    "y": 71,
+                    "text": "",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 240,
+                    "y": 71,
+                    "text": "營隊",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 287,
+                    "y": 71,
+                    "text": "營隊",
+                    "size": 10.5,
+                    "anchor": "start"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "soc4-12",
+              "legacyIds": [
+                "soc4-planner"
+              ],
+              "label": "跨日活動計數",
+              "exampleLines": [
+                "活動表：12日營隊、13日營隊、14日休息。",
+                "營隊共幾天？「14日也有營隊」是否符合表中資料？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-13",
+              "legacyIds": [
+                "soc4-festival-date"
+              ],
+              "label": "傳統節慶使用哪種曆",
+              "exampleLines": [
+                "圈選：春節、端午、中秋通常按「農曆／陽曆」安排。",
+                "清明通常在「陽曆四月初／農曆八月十五」。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-14",
+              "legacyIds": [
+                "soc4-festival-date"
+              ],
+              "label": "節慶日期配對",
+              "exampleLines": [
+                "配對：甲春節；乙元宵；丙端午；丁中秋。",
+                "農曆正月初一（　）、正月十五（　）、",
+                "五月初五（　）、八月十五（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-15",
+              "legacyIds": [
+                "soc4-festival-date"
+              ],
+              "label": "同一農曆年的先後",
+              "exampleLines": [
+                "從同一農曆年的正月排到年底：",
+                "甲中秋；乙除夕；丙春節；丁端午；戊元宵。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-16",
+              "legacyIds": [
+                "soc4-festival-custom"
+              ],
+              "label": "習俗辨識節慶",
+              "exampleLines": [
+                "寫出節慶：圍爐守歲（　）；初一拜年（　）；猜燈謎（　）。",
+                "選項：除夕、春節、元宵節。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-17",
+              "legacyIds": [
+                "soc4-festival-custom"
+              ],
+              "label": "其他節慶的活動與食物",
+              "exampleLines": [
+                "配對：甲清明；乙端午；丙中元；丁中秋。",
+                "掃墓（　）；划龍舟、吃粽子（　）；普渡（　）；賞月、吃月餅（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-18",
+              "legacyIds": [
+                "soc4-festival-custom"
+              ],
+              "label": "活動背後的意義",
+              "exampleLines": [
+                "清明祭祖掃墓、中元普渡，分別較接近哪種意義？",
+                "甲追念祖先親人；乙關懷、普施亡靈。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-19",
+              "legacyIds": [
+                "soc4-indigenous"
+              ],
+              "label": "祭典名稱與族群",
+              "exampleLines": [
+                "配對：甲邵族；乙阿美族；丙太魯閣族；丁卑南族。",
+                "播種祭（　）；豐年祭（　）；感恩祭（　）；大獵祭（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-20",
+              "legacyIds": [
+                "soc4-indigenous"
+              ],
+              "label": "祭典目的的差別",
+              "exampleLines": [
+                "甲祈求未來豐收；乙感謝已經豐收；丙傳承狩獵技巧。",
+                "邵族播種祭（　）；阿美族豐年祭（　）；卑南族大獵祭（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-21",
+              "legacyIds": [
+                "soc4-indigenous"
+              ],
+              "label": "參加祭典的尊重",
+              "exampleLines": [
+                "遊客想加入部落祭典歌舞，應先做什麼？",
+                "①直接加入　②詢問部落規範與是否受邀　③要求取消規範"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-22",
+              "legacyIds": [
+                "soc4-local-festival"
+              ],
+              "label": "依地方活動表查時序",
+              "exampleLines": [
+                "依這份活動表，放水燈在普渡之前還是之後？",
+                "開龕門和普渡是否同一天？"
+              ],
+              "figure": {
+                "kind": "vector",
+                "width": 330,
+                "height": 108,
+                "shapes": [
+                  {
+                    "type": "rect",
+                    "x": 1,
+                    "y": 1,
+                    "width": 328,
+                    "height": 104
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 19,
+                    "text": "日期（農曆）",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 125,
+                    "y1": 1,
+                    "x2": 125,
+                    "y2": 105
+                  },
+                  {
+                    "type": "text",
+                    "x": 130,
+                    "y": 19,
+                    "text": "活動",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 26,
+                    "x2": 329,
+                    "y2": 26
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 45,
+                    "text": "七月初一",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 130,
+                    "y": 45,
+                    "text": "開龕門",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 52,
+                    "x2": 329,
+                    "y2": 52
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 71,
+                    "text": "七月十四",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 130,
+                    "y": 71,
+                    "text": "遊行、放水燈",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 78,
+                    "x2": 329,
+                    "y2": 78
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 97,
+                    "text": "七月十五",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "text",
+                    "x": 130,
+                    "y": 97,
+                    "text": "普渡",
+                    "size": 10.5,
+                    "anchor": "start"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "soc4-23",
+              "legacyIds": [
+                "soc4-local-festival"
+              ],
+              "label": "從地方故事讀文化意義",
+              "exampleLines": [
+                "資料：兩群居民曾衝突，後來共同祭祀死者，輪流承辦祭典。",
+                "依資料，這個改變最接近①化解衝突、合作　②繼續對立？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-24",
+              "legacyIds": [
+                "soc4-modern-date"
+              ],
+              "label": "固定月日的現代節日",
+              "exampleLines": [
+                "配對（皆為陽曆）：甲兒童節；乙勞動節；丙父親節；丁教師節。",
+                "4月4日（　）；5月1日（　）；8月8日（　）；9月28日（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-25",
+              "legacyIds": [
+                "soc4-modern-date"
+              ],
+              "label": "按星期決定的節日",
+              "exampleLines": [
+                "臺灣母親節在五月第二個星期日。依表，這年的母親節是幾日？"
+              ],
+              "figure": {
+                "kind": "vector",
+                "width": 220,
+                "height": 108,
+                "shapes": [
+                  {
+                    "type": "rect",
+                    "x": 1,
+                    "y": 1,
+                    "width": 218,
+                    "height": 104
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 19,
+                    "text": "五月的星期日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 26,
+                    "x2": 219,
+                    "y2": 26
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 45,
+                    "text": "3日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 52,
+                    "x2": 219,
+                    "y2": 52
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 71,
+                    "text": "10日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  },
+                  {
+                    "type": "line",
+                    "x1": 1,
+                    "y1": 78,
+                    "x2": 219,
+                    "y2": 78
+                  },
+                  {
+                    "type": "text",
+                    "x": 5,
+                    "y": 97,
+                    "text": "17日",
+                    "size": 10.5,
+                    "anchor": "start"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "soc4-26",
+              "legacyIds": [
+                "soc4-modern-meaning"
+              ],
+              "label": "現代節日的類別",
+              "exampleLines": [
+                "配對：甲關懷人生階段；乙感謝職業貢獻；",
+                "丙國家歷史；丁國際議題。",
+                "兒童節（　）；教師節（　）；國慶日（　）；地球日（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-27",
+              "legacyIds": [
+                "soc4-modern-meaning"
+              ],
+              "label": "國家節日的意義",
+              "exampleLines": [
+                "配對：甲紀念國家建立；乙記取衝突歷史、珍惜和平。",
+                "開國紀念日（　）；和平紀念日（　）。"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-28",
+              "legacyIds": [
+                "soc4-modern-meaning"
+              ],
+              "label": "尊重不同身分與職業",
+              "exampleLines": [
+                "教師節、勞動節等節日提醒我們什麼？",
+                "①只有高收入工作值得尊敬　②不同工作與身分的貢獻值得重視"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-29",
+              "legacyIds": [
+                "soc4-exchange"
+              ],
+              "label": "文化交流帶來節日",
+              "exampleLines": [
+                "新住民在社區介紹潑水節，以互相潑水表達祝福。",
+                "這顯示①不同文化交流　②外來文化一定比較好　③所有人都改信同一宗教？"
+              ],
+              "figure": null
+            },
+            {
+              "id": "soc4-30",
+              "legacyIds": [
+                "soc4-exchange"
+              ],
+              "label": "節日議題與實際行動",
+              "exampleLines": [
+                "4月22日地球日、4月23日世界閱讀日，各適合哪項活動？",
+                "甲交換讀完的書並分享心得；乙整理河岸垃圾、減少一次性用品。"
               ],
               "figure": null
             }

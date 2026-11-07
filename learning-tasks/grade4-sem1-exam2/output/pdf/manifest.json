@@ -1,13 +1,13 @@
 {
   "format": "concepts-and-toy-questions",
   "inputs": {
-    "content.json": "c7f116a89eb13b4965d38dfd22bec5849ffca112dae6ca0842c78acf665796c4",
-    "toy-reference.json": "925fd24663fe2b8a594fcc8b1f3b7bf0eb1bfaf93a059d0b48bd62843edc6e77",
-    "build-pdf.py": "585d118d305157a24ff51d1fd49f0a70ad0d8ecbb94467f122ce25665c1a27e2"
+    "content.json": "d1d3cd52b55df04a01dd4a1b39e7b5293938640841a48853da4ae546eaedb8bd",
+    "toy-reference.json": "35b59e80176bab62c400207fef48d52633ff5c282937199b38a6dc24acc487c4",
+    "build-pdf.py": "d52348bab2fd8a68ef25c506783bfbec55970e031b5c658e36e2ce5558923217"
   },
   "reportlab": "5.1.0",
-  "legacyItemCount": 37,
-  "rowCount": 94,
+  "legacyItemCount": 58,
+  "rowCount": 144,
   "fonts": [
     {
       "name": "MicrosoftJhengHeiRegular",
@@ -1559,6 +1559,839 @@
           ],
           "pages": [
             8
+          ]
+        }
+      ]
+    },
+    {
+      "file": "social-quick-reference.pdf",
+      "sha256": "d3c3e1545b1380a99300ba14474afc8f7f172cddcf1521315140fafb47616359",
+      "pages": 7,
+      "rowCount": 50,
+      "coverage": [
+        {
+          "id": "soc3-01",
+          "legacyIds": [
+            "soc3-belief"
+          ],
+          "page": 1,
+          "label": "信仰的來源",
+          "sourceSha256": "880dcead7c2f90fc7f8a56065caab39ee045c078e0c5af2b2fdab2fca29008b5",
+          "top": 751.89,
+          "bottom": 678.99,
+          "figure": false
+        },
+        {
+          "id": "soc3-02",
+          "legacyIds": [
+            "soc3-belief"
+          ],
+          "page": 1,
+          "label": "祭儀與生活事件",
+          "sourceSha256": "7756c2c15c350f7f6d5a24c182e9d1ec6795425e439c4efac8b2ae3dd193d97f",
+          "top": 678.99,
+          "bottom": 624.39,
+          "figure": false
+        },
+        {
+          "id": "soc3-03",
+          "legacyIds": [
+            "soc3-deities"
+          ],
+          "page": 1,
+          "label": "神明與生活需求",
+          "sourceSha256": "be7f82e19896077be52b96da2289864c6ede842d25265437fb58b2049f8a20d0",
+          "top": 624.39,
+          "bottom": 551.49,
+          "figure": false
+        },
+        {
+          "id": "soc3-04",
+          "legacyIds": [
+            "soc3-deities"
+          ],
+          "page": 1,
+          "label": "信仰活動與場所",
+          "sourceSha256": "5a47fce4e329a8ddedb18732c9753153b90265d650251a3c6724bec74136bc6d",
+          "top": 551.49,
+          "bottom": 496.89,
+          "figure": false
+        },
+        {
+          "id": "soc3-05",
+          "legacyIds": [
+            "soc3-functions"
+          ],
+          "page": 1,
+          "label": "信仰的心靈作用",
+          "sourceSha256": "1fd2459b521055f4a19757700b5e41acca757cf75ca2bde441fe9ebd3122c2c0",
+          "top": 496.89,
+          "bottom": 442.29,
+          "figure": false
+        },
+        {
+          "id": "soc3-06",
+          "legacyIds": [
+            "soc3-functions"
+          ],
+          "page": 1,
+          "label": "信仰與行為規範",
+          "sourceSha256": "e0eda1169547a4071550ed1ce0f2388865de7d60579334cb1b1d5e27ae374c94",
+          "top": 442.29,
+          "bottom": 387.69,
+          "figure": false
+        },
+        {
+          "id": "soc3-07",
+          "legacyIds": [
+            "soc3-functions"
+          ],
+          "page": 1,
+          "label": "廟宇的多種功能",
+          "sourceSha256": "d7de1f1774b1c544226c10489d2f89f81e7fad18f58de10e807f681c82369483",
+          "top": 387.69,
+          "bottom": 333.09,
+          "figure": false
+        },
+        {
+          "id": "soc3-08",
+          "legacyIds": [
+            "soc3-respect"
+          ],
+          "page": 1,
+          "label": "尊重不同信仰",
+          "sourceSha256": "7fcbf6123a58845f944b509d7773d0b461adaeaf0eb5437940dfe8a5d8d2a67f",
+          "top": 333.09,
+          "bottom": 278.49,
+          "figure": false
+        },
+        {
+          "id": "soc3-09",
+          "legacyIds": [
+            "soc3-respect"
+          ],
+          "page": 1,
+          "label": "祭拜方式的改變",
+          "sourceSha256": "745ac0d843a9be42748ae4972ddf030913bed822df31b1b9b7c8caa6310b29d8",
+          "top": 278.49,
+          "bottom": 223.89,
+          "figure": false
+        },
+        {
+          "id": "soc3-10",
+          "legacyIds": [
+            "soc3-investigate"
+          ],
+          "page": 1,
+          "label": "找家鄉歷史的資料",
+          "sourceSha256": "db97e47685e1941f874594df7b9fbe688dc18fa6c3c4408ceb966aace1ce55ca",
+          "top": 223.89,
+          "bottom": 169.29,
+          "figure": false
+        },
+        {
+          "id": "soc3-11",
+          "legacyIds": [
+            "soc3-street-origin"
+          ],
+          "page": 2,
+          "label": "老街怎麼形成",
+          "sourceSha256": "1aee006c91d2c39eaab91cee04c99714226bcec3e6b31fa495982d24ff6364bc",
+          "top": 751.89,
+          "bottom": 697.29,
+          "figure": false
+        },
+        {
+          "id": "soc3-12",
+          "legacyIds": [
+            "soc3-street-space"
+          ],
+          "page": 2,
+          "label": "街屋的商住空間",
+          "sourceSha256": "cb0a5ac5d170089c3404d9eceb48d9eb576eba75aaee28fd7dc3d6c9d2d58dee",
+          "top": 697.29,
+          "bottom": 499.69,
+          "figure": true
+        },
+        {
+          "id": "soc3-13",
+          "legacyIds": [
+            "soc3-street-space"
+          ],
+          "page": 2,
+          "label": "騎樓的功能",
+          "sourceSha256": "46841eb85f92df9ece2ecc8d273bb90f54dd5d0f08a207fb48be403da8386af8",
+          "top": 499.69,
+          "bottom": 445.09,
+          "figure": false
+        },
+        {
+          "id": "soc3-14",
+          "legacyIds": [
+            "soc3-street-symbol"
+          ],
+          "page": 2,
+          "label": "裝飾與祝福",
+          "sourceSha256": "565a98cd0ef963b54ddbf89627ed7a04e2b03e4f201f6bad15a794961ed29034",
+          "top": 445.09,
+          "bottom": 390.49,
+          "figure": false
+        },
+        {
+          "id": "soc3-15",
+          "legacyIds": [
+            "soc3-street-symbol"
+          ],
+          "page": 2,
+          "label": "依特色選老街",
+          "sourceSha256": "0506717fd6c228f613a3238622c4abdd2cfba119b9e6111e99b56fa4773352fd",
+          "top": 390.49,
+          "bottom": 335.89,
+          "figure": false
+        },
+        {
+          "id": "soc3-16",
+          "legacyIds": [
+            "soc3-preserve"
+          ],
+          "page": 3,
+          "label": "保存老街的理由",
+          "sourceSha256": "f531f4b7a62546f3160dcda6c80ab7a21a301e99e5fe0b923a8b7aa7e5f7c373",
+          "top": 751.89,
+          "bottom": 697.29,
+          "figure": false
+        },
+        {
+          "id": "soc3-17",
+          "legacyIds": [
+            "soc3-preserve"
+          ],
+          "page": 3,
+          "label": "保存後的再利用",
+          "sourceSha256": "3e0ef4240e478ea2b815bff89b5d2e28086ee594bc079558d6803c31c5f3d089",
+          "top": 697.29,
+          "bottom": 642.69,
+          "figure": false
+        },
+        {
+          "id": "soc3-18",
+          "legacyIds": [
+            "soc3-street-origin"
+          ],
+          "page": 3,
+          "label": "人口移動與街道新貌",
+          "sourceSha256": "760d5049cad46355556894f2dd259da26617cb029a60076e691df8903a8c5672",
+          "top": 642.69,
+          "bottom": 569.79,
+          "figure": false
+        },
+        {
+          "id": "soc3-19",
+          "legacyIds": [
+            "soc3-investigate"
+          ],
+          "page": 3,
+          "label": "從文物資料找用途",
+          "sourceSha256": "9e97fc714dfa90d0a6daa5e8b319223cc6cafdf1aa565dbfdcfdf74ca447ee85",
+          "top": 569.79,
+          "bottom": 515.19,
+          "figure": false
+        },
+        {
+          "id": "soc3-20",
+          "legacyIds": [
+            "soc3-functions"
+          ],
+          "page": 3,
+          "label": "宗教服務與社會",
+          "sourceSha256": "fc8e89d48d48f69a7d1e5db13f51766edc01331692610cf0b15456b11b8b5a41",
+          "top": 515.19,
+          "bottom": 460.59,
+          "figure": false
+        },
+        {
+          "id": "soc4-01",
+          "legacyIds": [
+            "soc4-nature"
+          ],
+          "page": 4,
+          "label": "日照與早期作息",
+          "sourceSha256": "9db2b8b6900efb9bfc1757a084ffedb01de8432c8a26d59a995813a213a43377",
+          "top": 751.89,
+          "bottom": 697.29,
+          "figure": false
+        },
+        {
+          "id": "soc4-02",
+          "legacyIds": [
+            "soc4-nature"
+          ],
+          "page": 4,
+          "label": "季節與生活安排",
+          "sourceSha256": "3b8bc5f5fdd25b5b8f9474d0334bd67a0ec6e88452c77a9fd4310d5b74fa58df",
+          "top": 697.29,
+          "bottom": 642.69,
+          "figure": false
+        },
+        {
+          "id": "soc4-03",
+          "legacyIds": [
+            "soc4-nature"
+          ],
+          "page": 4,
+          "label": "傳統作息與自然共處",
+          "sourceSha256": "cd9dc2a601d419338a4d71fac32307ccc0d2d3986c06d7238720af9a0840da10",
+          "top": 642.69,
+          "bottom": 588.09,
+          "figure": false
+        },
+        {
+          "id": "soc4-04",
+          "legacyIds": [
+            "soc4-inherit"
+          ],
+          "page": 4,
+          "label": "生活知識如何傳承",
+          "sourceSha256": "a2081ced22c15fb23513fd1917f261c7de72554d701549dd9168f990eadd75cf",
+          "top": 588.09,
+          "bottom": 533.49,
+          "figure": false
+        },
+        {
+          "id": "soc4-05",
+          "legacyIds": [
+            "soc4-inherit"
+          ],
+          "page": 4,
+          "label": "木刻畫曆的用途",
+          "sourceSha256": "fefdc16d10e03656489eb8d871b623451ecf46f517f274eeb9fd6c2e7e6c8e3c",
+          "top": 533.49,
+          "bottom": 478.89,
+          "figure": false
+        },
+        {
+          "id": "soc4-06",
+          "legacyIds": [
+            "soc4-almanac"
+          ],
+          "page": 4,
+          "label": "農曆、農民曆的關係",
+          "sourceSha256": "823989fdd85fe19a5d25943d64ae5b74ffa56fe9aaade1532e66403d986174e1",
+          "top": 478.89,
+          "bottom": 405.99,
+          "figure": false
+        },
+        {
+          "id": "soc4-07",
+          "legacyIds": [
+            "soc4-almanac"
+          ],
+          "page": 4,
+          "label": "農民曆能查什麼",
+          "sourceSha256": "b08edcf6e976ea0a16f5d6407f0e01aa894300b8fc09b23124404724c57bb227",
+          "top": 405.99,
+          "bottom": 333.09,
+          "figure": false
+        },
+        {
+          "id": "soc4-08",
+          "legacyIds": [
+            "soc4-almanac"
+          ],
+          "page": 4,
+          "label": "讀取傳統宜忌",
+          "sourceSha256": "62685bc10a317079269e8050513508321fb297cc8224d7fa2a969ad9b76d734e",
+          "top": 333.09,
+          "bottom": 204.79,
+          "figure": true
+        },
+        {
+          "id": "soc4-09",
+          "legacyIds": [
+            "soc4-modern-life"
+          ],
+          "page": 4,
+          "label": "傳統與現代曆法並用",
+          "sourceSha256": "f89c527cad2276a4df194d09ca072006aff691e5eb4bc5ce4958271988caded6",
+          "top": 204.79,
+          "bottom": 150.19,
+          "figure": false
+        },
+        {
+          "id": "soc4-10",
+          "legacyIds": [
+            "soc4-modern-life"
+          ],
+          "page": 5,
+          "label": "科技與作息變化",
+          "sourceSha256": "56ee3bb1cce8062a10ba97130f846840645a2e1ba69eefdf80baafe4f6bc4f29",
+          "top": 751.89,
+          "bottom": 697.29,
+          "figure": false
+        },
+        {
+          "id": "soc4-11",
+          "legacyIds": [
+            "soc4-planner"
+          ],
+          "page": 5,
+          "label": "行事曆找日期與活動",
+          "sourceSha256": "5f5ff04e0e2fd4e106880df6e951e2926d35fa5ff581a8bbd096e39aff0fbfa1",
+          "top": 697.29,
+          "bottom": 568.99,
+          "figure": true
+        },
+        {
+          "id": "soc4-12",
+          "legacyIds": [
+            "soc4-planner"
+          ],
+          "page": 5,
+          "label": "跨日活動計數",
+          "sourceSha256": "718d0e04bf826a34ffb6c6dc021068c809ef4b48ad7706c5204d4027e4905393",
+          "top": 568.99,
+          "bottom": 514.39,
+          "figure": false
+        },
+        {
+          "id": "soc4-13",
+          "legacyIds": [
+            "soc4-festival-date"
+          ],
+          "page": 5,
+          "label": "傳統節慶使用哪種曆",
+          "sourceSha256": "285aede7b1de646133cae7498b0d74429b5b50edfc16a0b047cc4842f5aadd32",
+          "top": 514.39,
+          "bottom": 459.79,
+          "figure": false
+        },
+        {
+          "id": "soc4-14",
+          "legacyIds": [
+            "soc4-festival-date"
+          ],
+          "page": 5,
+          "label": "節慶日期配對",
+          "sourceSha256": "742ca02bcc4873da4db9964ce815a86ab95496952107f25ed8e26a7040d084a8",
+          "top": 459.79,
+          "bottom": 386.89,
+          "figure": false
+        },
+        {
+          "id": "soc4-15",
+          "legacyIds": [
+            "soc4-festival-date"
+          ],
+          "page": 5,
+          "label": "同一農曆年的先後",
+          "sourceSha256": "287041353131c345118a8003cfcf5cf35900a9c42d8fb7cf8b1cb0cd8ec38516",
+          "top": 386.89,
+          "bottom": 332.29,
+          "figure": false
+        },
+        {
+          "id": "soc4-16",
+          "legacyIds": [
+            "soc4-festival-custom"
+          ],
+          "page": 5,
+          "label": "習俗辨識節慶",
+          "sourceSha256": "d904ed785a4e747d9e881e7fd3a77f6f64744acd92e18c82224a18806781dedf",
+          "top": 332.29,
+          "bottom": 277.69,
+          "figure": false
+        },
+        {
+          "id": "soc4-17",
+          "legacyIds": [
+            "soc4-festival-custom"
+          ],
+          "page": 5,
+          "label": "其他節慶的活動與食物",
+          "sourceSha256": "24de67c0450e1e3a22df19e22d5b0ecb191e74f7754d498d4fee2da911093774",
+          "top": 277.69,
+          "bottom": 223.09,
+          "figure": false
+        },
+        {
+          "id": "soc4-18",
+          "legacyIds": [
+            "soc4-festival-custom"
+          ],
+          "page": 5,
+          "label": "活動背後的意義",
+          "sourceSha256": "6d0ce420678bdaa24f45fbde4f3b58cbdc9d300aa9e4edffcccfa448afe3e72e",
+          "top": 223.09,
+          "bottom": 168.49,
+          "figure": false
+        },
+        {
+          "id": "soc4-19",
+          "legacyIds": [
+            "soc4-indigenous"
+          ],
+          "page": 5,
+          "label": "祭典名稱與族群",
+          "sourceSha256": "ffd0653fff14c7b93e3667388c9dee9cbdeb112d5622f2eb5c86bb44de21723b",
+          "top": 168.49,
+          "bottom": 113.89,
+          "figure": false
+        },
+        {
+          "id": "soc4-20",
+          "legacyIds": [
+            "soc4-indigenous"
+          ],
+          "page": 6,
+          "label": "祭典目的的差別",
+          "sourceSha256": "37771dc114c84fef6bd252f0a72d8877efebe76c667b55a5fdc90bfdfb2227ca",
+          "top": 751.89,
+          "bottom": 697.29,
+          "figure": false
+        },
+        {
+          "id": "soc4-21",
+          "legacyIds": [
+            "soc4-indigenous"
+          ],
+          "page": 6,
+          "label": "參加祭典的尊重",
+          "sourceSha256": "14b34ad8f2a7eb04edec124b0ce9a21aefc54fac0da65b2f11a9b2f39d5ce08d",
+          "top": 697.29,
+          "bottom": 642.69,
+          "figure": false
+        },
+        {
+          "id": "soc4-22",
+          "legacyIds": [
+            "soc4-local-festival"
+          ],
+          "page": 6,
+          "label": "依地方活動表查時序",
+          "sourceSha256": "995e84af852b2f82a948dd79be1ece3041e56c2d95fab01c619a0f4801738ec1",
+          "top": 642.69,
+          "bottom": 470.09,
+          "figure": true
+        },
+        {
+          "id": "soc4-23",
+          "legacyIds": [
+            "soc4-local-festival"
+          ],
+          "page": 6,
+          "label": "從地方故事讀文化意義",
+          "sourceSha256": "df1600f8afb0944d8f63346cf8e234c9b83385b0391ae31fc7db59e95307316c",
+          "top": 470.09,
+          "bottom": 415.49,
+          "figure": false
+        },
+        {
+          "id": "soc4-24",
+          "legacyIds": [
+            "soc4-modern-date"
+          ],
+          "page": 6,
+          "label": "固定月日的現代節日",
+          "sourceSha256": "5bfe58ed02468539c8e3ff04b7b4a975f0fd21bab21c34db8b2f9fa33ed34155",
+          "top": 415.49,
+          "bottom": 360.89,
+          "figure": false
+        },
+        {
+          "id": "soc4-25",
+          "legacyIds": [
+            "soc4-modern-date"
+          ],
+          "page": 6,
+          "label": "按星期決定的節日",
+          "sourceSha256": "c619cdee7cf5ee811e9615ab9c4450cb2a5a289317bab6f16452f37bb5d373b9",
+          "top": 360.89,
+          "bottom": 206.59,
+          "figure": true
+        },
+        {
+          "id": "soc4-26",
+          "legacyIds": [
+            "soc4-modern-meaning"
+          ],
+          "page": 7,
+          "label": "現代節日的類別",
+          "sourceSha256": "f6402e050e687ce6a2d8c6c574a12aa4e69c97224290691f0f625c669b8adb49",
+          "top": 751.89,
+          "bottom": 678.99,
+          "figure": false
+        },
+        {
+          "id": "soc4-27",
+          "legacyIds": [
+            "soc4-modern-meaning"
+          ],
+          "page": 7,
+          "label": "國家節日的意義",
+          "sourceSha256": "37294e5c03d62c0d7d7e4ba17b0290355547cf9ead2045e8e92cf73fbbd61b77",
+          "top": 678.99,
+          "bottom": 624.39,
+          "figure": false
+        },
+        {
+          "id": "soc4-28",
+          "legacyIds": [
+            "soc4-modern-meaning"
+          ],
+          "page": 7,
+          "label": "尊重不同身分與職業",
+          "sourceSha256": "b1536ac5dd4e66d3e980071e24212e03510dcf01340772a5227fdd9117bf27ab",
+          "top": 624.39,
+          "bottom": 569.79,
+          "figure": false
+        },
+        {
+          "id": "soc4-29",
+          "legacyIds": [
+            "soc4-exchange"
+          ],
+          "page": 7,
+          "label": "文化交流帶來節日",
+          "sourceSha256": "1425b715b71e8173491753cace87033aa9bd6cfcc5f0c81af448dc218ad438ed",
+          "top": 569.79,
+          "bottom": 496.89,
+          "figure": false
+        },
+        {
+          "id": "soc4-30",
+          "legacyIds": [
+            "soc4-exchange"
+          ],
+          "page": 7,
+          "label": "節日議題與實際行動",
+          "sourceSha256": "26f1de66776e0fc05ed8b32940594af0c5caac1675596e9db713e893e5b5ad76",
+          "top": 496.89,
+          "bottom": 442.29,
+          "figure": false
+        }
+      ],
+      "legacyCoverage": [
+        {
+          "id": "soc3-belief",
+          "rows": [
+            "soc3-01",
+            "soc3-02"
+          ],
+          "pages": [
+            1
+          ]
+        },
+        {
+          "id": "soc3-deities",
+          "rows": [
+            "soc3-03",
+            "soc3-04"
+          ],
+          "pages": [
+            1
+          ]
+        },
+        {
+          "id": "soc3-functions",
+          "rows": [
+            "soc3-05",
+            "soc3-06",
+            "soc3-07",
+            "soc3-20"
+          ],
+          "pages": [
+            1,
+            3
+          ]
+        },
+        {
+          "id": "soc3-respect",
+          "rows": [
+            "soc3-08",
+            "soc3-09"
+          ],
+          "pages": [
+            1
+          ]
+        },
+        {
+          "id": "soc3-investigate",
+          "rows": [
+            "soc3-10",
+            "soc3-19"
+          ],
+          "pages": [
+            1,
+            3
+          ]
+        },
+        {
+          "id": "soc3-street-origin",
+          "rows": [
+            "soc3-11",
+            "soc3-18"
+          ],
+          "pages": [
+            2,
+            3
+          ]
+        },
+        {
+          "id": "soc3-street-space",
+          "rows": [
+            "soc3-12",
+            "soc3-13"
+          ],
+          "pages": [
+            2
+          ]
+        },
+        {
+          "id": "soc3-street-symbol",
+          "rows": [
+            "soc3-14",
+            "soc3-15"
+          ],
+          "pages": [
+            2
+          ]
+        },
+        {
+          "id": "soc3-preserve",
+          "rows": [
+            "soc3-16",
+            "soc3-17"
+          ],
+          "pages": [
+            3
+          ]
+        },
+        {
+          "id": "soc4-nature",
+          "rows": [
+            "soc4-01",
+            "soc4-02",
+            "soc4-03"
+          ],
+          "pages": [
+            4
+          ]
+        },
+        {
+          "id": "soc4-inherit",
+          "rows": [
+            "soc4-04",
+            "soc4-05"
+          ],
+          "pages": [
+            4
+          ]
+        },
+        {
+          "id": "soc4-almanac",
+          "rows": [
+            "soc4-06",
+            "soc4-07",
+            "soc4-08"
+          ],
+          "pages": [
+            4
+          ]
+        },
+        {
+          "id": "soc4-modern-life",
+          "rows": [
+            "soc4-09",
+            "soc4-10"
+          ],
+          "pages": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": "soc4-planner",
+          "rows": [
+            "soc4-11",
+            "soc4-12"
+          ],
+          "pages": [
+            5
+          ]
+        },
+        {
+          "id": "soc4-festival-date",
+          "rows": [
+            "soc4-13",
+            "soc4-14",
+            "soc4-15"
+          ],
+          "pages": [
+            5
+          ]
+        },
+        {
+          "id": "soc4-festival-custom",
+          "rows": [
+            "soc4-16",
+            "soc4-17",
+            "soc4-18"
+          ],
+          "pages": [
+            5
+          ]
+        },
+        {
+          "id": "soc4-indigenous",
+          "rows": [
+            "soc4-19",
+            "soc4-20",
+            "soc4-21"
+          ],
+          "pages": [
+            5,
+            6
+          ]
+        },
+        {
+          "id": "soc4-local-festival",
+          "rows": [
+            "soc4-22",
+            "soc4-23"
+          ],
+          "pages": [
+            6
+          ]
+        },
+        {
+          "id": "soc4-modern-date",
+          "rows": [
+            "soc4-24",
+            "soc4-25"
+          ],
+          "pages": [
+            6
+          ]
+        },
+        {
+          "id": "soc4-modern-meaning",
+          "rows": [
+            "soc4-26",
+            "soc4-27",
+            "soc4-28"
+          ],
+          "pages": [
+            7
+          ]
+        },
+        {
+          "id": "soc4-exchange",
+          "rows": [
+            "soc4-29",
+            "soc4-30"
+          ],
+          "pages": [
+            7
           ]
         }
       ]
