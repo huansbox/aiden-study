@@ -1,0 +1,219 @@
+{
+  "inputs": {
+    "content.json": "c7f116a89eb13b4965d38dfd22bec5849ffca112dae6ca0842c78acf665796c4",
+    "quick-reference.json": "ff80a7ec6edf6826bdb57a3bf031f0767d5df61009a5d5d7c28926ef557c6e48",
+    "build-pdf.py": "e9b960dd40d84fdda548c4fad56229b6dece04e8dd742aef3e5b7e0bd1ed6f0c"
+  },
+  "reportlab": "5.1.0",
+  "fonts": [
+    {
+      "name": "MicrosoftJhengHeiRegular",
+      "sha256": "0b50839f0e13f9e1607b46568aa953fc1491eb3f867f2737e6a4ff9eb3696aa9"
+    },
+    {
+      "name": "MicrosoftJhengHeiBold",
+      "sha256": "73293967f4bb2ceb68a40d642d7dbe410ea55abb1410ba94c02d9d88e4d055bf"
+    }
+  ],
+  "pdfs": [
+    {
+      "file": "math-quick-reference.pdf",
+      "sha256": "7e4f27ab9eb7d3059258b8787a60ac8da92bdba75498a39e6ea843fc813d52c9",
+      "pages": 2,
+      "coverage": [
+        {
+          "id": "m6-classify",
+          "page": 1,
+          "scope": "依邊、依角分類"
+        },
+        {
+          "id": "m6-sides",
+          "page": 1,
+          "scope": "邊長與周長"
+        },
+        {
+          "id": "m6-angles",
+          "page": 1,
+          "scope": "特殊三角形的角"
+        },
+        {
+          "id": "m6-congruent",
+          "page": 1,
+          "scope": "全等與對應"
+        },
+        {
+          "id": "m6-draw",
+          "page": 1,
+          "scope": "量測與作圖"
+        },
+        {
+          "id": "m7-place",
+          "page": 1,
+          "scope": "位值與化聚"
+        },
+        {
+          "id": "m7-compare",
+          "page": 1,
+          "scope": "大小與數字範圍"
+        },
+        {
+          "id": "m7-units",
+          "page": 1,
+          "scope": "長度單位換算"
+        },
+        {
+          "id": "m7-vertical",
+          "page": 1,
+          "scope": "小數加減直式"
+        },
+        {
+          "id": "m7-application",
+          "page": 1,
+          "scope": "合併、差與重疊"
+        },
+        {
+          "id": "m8-order",
+          "page": 2,
+          "scope": "運算順序"
+        },
+        {
+          "id": "m8-combine",
+          "page": 2,
+          "scope": "分步與併式"
+        },
+        {
+          "id": "m8-reason",
+          "page": 2,
+          "scope": "應用與反推"
+        },
+        {
+          "id": "m8-equivalent",
+          "page": 2,
+          "scope": "算式是否等值"
+        },
+        {
+          "id": "m9-types",
+          "page": 2,
+          "scope": "分數種類"
+        },
+        {
+          "id": "m9-convert",
+          "page": 2,
+          "scope": "假、帶分數互換"
+        },
+        {
+          "id": "m9-numberline",
+          "page": 2,
+          "scope": "圖形與數線"
+        },
+        {
+          "id": "m9-addsub",
+          "page": 2,
+          "scope": "同分母加減"
+        },
+        {
+          "id": "m9-times",
+          "page": 2,
+          "scope": "分數乘整數"
+        },
+        {
+          "id": "m10-scale",
+          "page": 2,
+          "scope": "圖軸與刻度"
+        },
+        {
+          "id": "m10-groups",
+          "page": 2,
+          "scope": "分組、合計與差"
+        },
+        {
+          "id": "m10-trend",
+          "page": 2,
+          "scope": "折線變化與比較"
+        },
+        {
+          "id": "m10-draw",
+          "page": 2,
+          "scope": "畫長條圖"
+        }
+      ]
+    },
+    {
+      "file": "science-quick-reference.pdf",
+      "sha256": "28ac9d8eb62a7f3d416684f63d7d2307cf9cbfe713dd67b0e986892f85369464",
+      "pages": 1,
+      "coverage": [
+        {
+          "id": "s3-vibration",
+          "page": 1,
+          "scope": "振動與聲音大小"
+        },
+        {
+          "id": "s3-medium",
+          "page": 1,
+          "scope": "聲音的傳播"
+        },
+        {
+          "id": "s3-animal",
+          "page": 1,
+          "scope": "動物發聲與溝通"
+        },
+        {
+          "id": "s3-source",
+          "page": 1,
+          "scope": "光源與看見物體"
+        },
+        {
+          "id": "s3-shadow",
+          "page": 1,
+          "scope": "光直進與影子"
+        },
+        {
+          "id": "s3-reflection",
+          "page": 1,
+          "scope": "反射與方向"
+        },
+        {
+          "id": "s3-use",
+          "page": 1,
+          "scope": "聲光的生活用途"
+        },
+        {
+          "id": "s4-path",
+          "page": 1,
+          "scope": "通路、斷路與畫圖"
+        },
+        {
+          "id": "s4-conductor",
+          "page": 1,
+          "scope": "導體、絕緣與開關"
+        },
+        {
+          "id": "s4-batteries",
+          "page": 1,
+          "scope": "電池串聯、並聯"
+        },
+        {
+          "id": "s4-bulbs",
+          "page": 1,
+          "scope": "燈泡串聯、並聯"
+        },
+        {
+          "id": "s4-motor",
+          "page": 1,
+          "scope": "馬達轉向與故障"
+        },
+        {
+          "id": "s4-safe",
+          "page": 1,
+          "scope": "安全、回收與節電"
+        },
+        {
+          "id": "s4-reading",
+          "page": 1,
+          "scope": "閱讀短文找證據"
+        }
+      ]
+    }
+  ]
+}
