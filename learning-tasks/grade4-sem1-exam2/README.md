@@ -14,11 +14,11 @@
 
 ## 來源與再製
 
-### 家長重點清單
+### 家長備考速查 PDF
 
-[四上期末家長清單](../../docs/parent/exam2-guide/index.html) 提供數學／自然7單元、37項原創摘要與確認例；按科目瀏覽、逐項勾選及列印。從家長區固定入口或作品白板開啟。勾選只存本瀏覽器，不寫孩子成績、不跨裝置同步；紙本作圖、直式、列式和自行舉例需另外實際確認。
+[四上期末家長備考速查](../../docs/parent/exam2-guide/index.html) 提供數學2頁、自然1頁 PDF，以「範圍／要會什麼／考卷怎麼考」涵蓋7單元、37項原創摘要。從家長區固定入口或作品白板開啟、下載列印；網頁只提供 PDF 入口，不保存勾選。紙本作圖、直式、列式和自行舉例保留在能力欄。原稿在本任務 `output/pdf/`，公開副本由來源產生器同步至家長入口。
 
-來源在 [source/parent-guide/](source/parent-guide/README.md)。重建：`node learning-tasks/grade4-sem1-exam2/source/parent-guide/build.mjs`，加 `--check` 核對產物。逐項私人原卷證據與驗收在 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-parent-guide-2026-11-07/`；本次交付由 [#255](https://github.com/huansbox/aiden-study/issues/255) 追蹤。沿用上次概念與推理方法分類，不以已數位化活動數推算學校常考率。
+來源與完整重建步驟在 [source/parent-guide/](source/parent-guide/README.md)：先執行 `build-pdf.py` 產生 PDF，再執行 `node learning-tasks/grade4-sem1-exam2/source/parent-guide/build.mjs` 同步網頁，後者加 `--check` 核對來源與產物。逐項私人原卷證據與驗收在 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-parent-guide-2026-11-07/`，PDF 改版證據另存 `pdf-revision/`；本次交付由 [#255](https://github.com/huansbox/aiden-study/issues/255) 追蹤。沿用上次概念與推理方法分類，不以已數位化活動數推算學校常考率。
 
 ### 私人題包
 
