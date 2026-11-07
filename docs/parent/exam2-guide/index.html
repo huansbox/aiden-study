@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>四上期末家長重點清單</title>
+  <link rel="stylesheet" href="guide.css?v=20261107-1">
+  <script src="guide.js?v=20261107-1" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../">回家長區</a>
+    <p class="eyebrow">四年級上學期 · 家長陪看</p>
+    <h1>期末重點掌握清單</h1>
+    <p class="intro">先選一個單元，問一個小問題。孩子能說明或做出來，再勾「已確認」。</p>
+    <p class="scope">依115康軒教材暫定：數學U6–U10、自然U3–U4。校方正式考試範圍尚未取得。</p>
+  </header>
+  <section class="instructions" aria-label="使用說明">
+    <p><strong>勾選只是家長備忘。</strong>不等於精熟度或正式成績，不會寫入孩子練習紀錄。</p>
+    <p id="storage-status" role="status">勾選僅保存在這台裝置的這個瀏覽器，不會跨裝置同步；清除瀏覽資料後可能消失。</p>
+    <noscript><p>目前未啟用 JavaScript：仍可閱讀全部內容，但勾選不會保存。列印前，請逐項展開要列印的「看確認重點／答案」。</p></noscript>
+    <details class="scope-details">
+      <summary>這份清單的來源與限制</summary>
+      <p>沿用上次數學的「單元→概念→推理／作答方法」整理方式。逐項考法來自現有歷屆原卷回查；下方標示桃子腳或跨校、學年度與評量別。舊卷單元順序、出版社及考期可能不同，依本次概念對照，不套用舊卷的考試範圍。</p>
+      <p>確認問題與答案都是原創例子；考法是摘要，不公開原卷題文或圖片。列出的易混淆處是教學提醒，並非孩子錯誤統計。</p>
+      <p>這是現有來源支持的重點，不是完整課綱或考試預測；沒有計算出題頻率，也不以數位活動數當作學校常考率。自然的聲音與電路以跨校卷補充，不能據此宣稱桃子腳常考。未列出的能力不代表不會考。</p>
+      <p>紙本作圖、直式、列式與自行舉例需要另外確認；有提示的數位作答不等於能獨立完成。資料缺損、條件有爭議及本輪範圍外題目未拿來作重點依據。</p>
+    </details>
+  </section>
+  <div class="controls" hidden>
+    <nav class="subjects" aria-label="選擇科目">
+      <button type="button" data-subject="math" aria-pressed="true">數學 <span>U6–U10</span></button>
+      <button type="button" data-subject="science" aria-pressed="false">自然 <span>U3–U4</span></button>
+      <button type="button" data-subject="all" aria-pressed="false">全部</button>
+    </nav>
+    <div class="toolbar"><p id="progress" role="status"></p><div><button id="print-current" type="button">列印目前科目</button><button id="print-all" type="button">列印全部</button></div></div>
+  </div>
+  <nav class="unit-nav" aria-label="跳到單元"><a href="#m6" data-subject="math">U6 三角形</a>
+<a href="#m7" data-subject="math">U7 二位小數</a>
+<a href="#m8" data-subject="math">U8 兩步驟與四則運算</a>
+<a href="#m9" data-subject="math">U9 分數</a>
+<a href="#m10" data-subject="math">U10 統計圖</a>
+<a href="#s3" data-subject="science">U3 有趣的聲光現象</a>
+<a href="#s4" data-subject="science">U4 好玩的電路</a></nav>
+  <p class="paper-note">紙筆項目請備妥紙、筆、直尺與三角板。自然短問可先口說或畫圖，電路操作僅使用教學用電池材料，成人陪同。</p>
+  <div id="units"><section id="m6" class="unit" data-subject="math" aria-labelledby="heading-m6">
+    <div class="unit-heading"><p>數學 · 5 個確認重點</p><h2 id="heading-m6">U6 三角形</h2><p>先看邊與角的條件，再用工具確認；圖形轉方向不會改變性質。</p></div>
+    <article class="item" data-item="m6-classify">
+      <div class="item-heading"><h3>依邊、依角分類</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能分辨銳角、直角、鈍角三角形，以及等腰、正三角形；同一圖形可以同時有兩種名稱；等腰是至少兩邊相等，正三角形也屬於等腰三角形。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>一個三角形有一個直角，而且直角兩邊一樣長。可以叫它什麼？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>等腰直角三角形。依角是直角三角形，依邊是等腰三角形。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：用三角板、直尺檢查圖形後分類。</li><li>跨校安和114期末：從多個圖形中找出各種角類。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能只看圖朝向或只看一個銳角；銳角三角形要三個角都是銳角。</p>
+      <label class="check"><input type="checkbox" data-check="m6-classify" aria-label="已確認：依邊、依角分類"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m6-sides">
+      <div class="item-heading"><h3>等腰、正三角形的邊與周長</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能把相等的邊帶入周長；知道等腰三角形的兩腰相等。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>等腰三角形周長22公分，一腰8公分，底邊多長？請寫算式。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>22−8−8＝6，底邊6公分。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112期末：從等腰三角形的周長與腰長反求底邊。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>周長要加三邊，不能只減一條腰；圖上沒標長度的邊可由相等條件找到。</p>
+      <label class="check"><input type="checkbox" data-check="m6-sides" aria-label="已確認：等腰、正三角形的邊與周長"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m6-angles">
+      <div class="item-heading"><h3>等腰與正三角形的角</h3><span class="mode">口說或量測</span></div>
+      <p class="know">等腰三角形的兩個底角相等；等腰直角三角形的兩個底角各45°；正三角形的三個角各60°。可用量角器或三角板確認。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>等腰三角形的一個底角是52°，另一個底角幾度？為什麼？再說出等腰直角三角形的兩個底角、正三角形的三個角各幾度。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>另一個底角52°，因為等腰三角形的兩個底角相等。等腰直角三角形的兩個底角各45°；正三角形的三個角各60°。可以用三角板或量角器確認。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和112第一次評量：由等腰三角形一個底角的度數，找另一個底角；另以三個60°角辨認正三角形並求邊長。</li><li>跨校安和113、114期末：判斷等腰直角三角形的45°底角，或依摺紙圖合成、讀出角度。</li><li>歷屆延伸，依老師進度：桃子腳112期末曾由全等對應及內角和180°求缺角；一般內角和屬後續學習，本輪不作勾選條件。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>相等的是兩個底角，不是三個角都相等；先找出兩腰交會的頂角，再辨認另外兩個底角。本項勾選確認上述角的性質，不要求用內角和求未知角。</p>
+      <label class="check"><input type="checkbox" data-check="m6-angles" aria-label="已確認：等腰與正三角形的角"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m6-congruent">
+      <div class="item-heading"><h3>全等與對應關係</h3><span class="mode">紙筆／操作</span></div>
+      <p class="know">全等圖形能完全疊合；能追蹤旋轉後對應的點、邊、角。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>剪兩個一樣的三角形，在三個角各做不同記號。把其中一個轉向，指出每個對應角與對應邊。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>轉向後仍能疊合；相同記號的點互相對應，連接對應點的邊也互相對應。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112、114期末：旋轉圖形後找對應點、邊、角，再由已知量讀出未知量。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>紙上同樣在左邊的點不一定對應；先找直角、長短邊等線索。</p>
+      <label class="check"><input type="checkbox" data-check="m6-congruent" aria-label="已確認：全等與對應關係"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m6-draw">
+      <div class="item-heading"><h3>真的量、真的畫</h3><span class="mode">紙筆／工具</span></div>
+      <p class="know">會用直尺與三角板，按指定頂點、邊長和直角畫圖，再量回確認。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>在紙上標A。以A為直角頂點，畫出直角兩邊分別4公分和2公分的三角形。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>由A畫互相垂直的兩邊，分別量4公分、2公分，連接另兩端；直角和長度都要符合。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：指定頂點、腰長或直角兩邊長，要求使用三角板與直尺作圖。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>徒手畫得像不等於符合條件；指定頂點不能換位置。</p>
+      <label class="check"><input type="checkbox" data-check="m6-draw" aria-label="已確認：真的量、真的畫"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="m7" class="unit" data-subject="math" aria-labelledby="heading-m7">
+    <div class="unit-heading"><p>數學 · 5 個確認重點</p><h2 id="heading-m7">U7 二位小數</h2><p>小數點對齊位值；讀數、比較、換單位與直式要能互相連起來。</p></div>
+    <article class="item" data-item="m7-place">
+      <div class="item-heading"><h3>百分位與小數化聚</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道0.01是一個百分之一；能讀寫、拆合及進位。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>2個1、13個0.1和6個0.01合起來是多少？怎麼讀？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>3.36，讀作三點三六；13個0.1＝1.3。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：用1、0.1、0.01組數，包含超過10個同位單位的化聚。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>小數點後逐字讀；13個十分之一要進成1個一和3個十分之一。</p>
+      <label class="check"><input type="checkbox" data-check="m7-place" aria-label="已確認：百分位與小數化聚"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m7-compare">
+      <div class="item-heading"><h3>比較大小與找全部可能</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能對齊位值比較，並依上下限找出所有可行數字。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>比較4.08和4.8；再找0.□5大於0.35、又小於0.65時，□所有可能。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>4.08＜4.80；□可以是4、5。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112期末：比較小數與分數、在範圍內找數。</li><li>跨校安和114期末：小數缺一個數字，要求列出全部可能。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能拿小數部分當整數比；「大於／小於」不含等於，要求全部時不能只找一個。</p>
+      <label class="check"><input type="checkbox" data-check="m7-compare" aria-label="已確認：比較大小與找全部可能"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m7-units">
+      <div class="item-heading"><h3>小數與長度單位</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">會在公尺、公分與小數表示之間轉換。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>2公尺7公分是多少公尺？2.7公尺又是多少公分？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>2.07公尺；270公分。因為1公尺＝100公分。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和114期末：判斷小數公尺的意思，並將公尺、公分寫成小數。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>7公分是0.07公尺，不是0.7公尺。</p>
+      <label class="check"><input type="checkbox" data-check="m7-units" aria-label="已確認：小數與長度單位"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m7-vertical">
+      <div class="item-heading"><h3>小數加減與直式</h3><span class="mode">紙筆／直式</span></div>
+      <p class="know">會對齊小數點，處理位數不同、進位與跨0借位。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>用直式算12−3.48，再用加法檢查。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>12.00−3.48＝8.52；8.52＋3.48＝12.00。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和114期末：小數加減明訂要寫直式。</li><li>桃子腳114期末：小數應用題要求先列算式，再寫直式。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>對齊的是小數點，不是最右邊數字；補0不能改變數值。</p>
+      <label class="check"><input type="checkbox" data-check="m7-vertical" aria-label="已確認：小數加減與直式"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m7-application">
+      <div class="item-heading"><h3>看懂合併、相差與重疊</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">先確定要求的是總長、差或扣掉重疊後的長度，再計算。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>兩條彩帶各長2.35公尺和1.80公尺，重疊0.15公尺黏在一起，總長多少？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>2.35＋1.80−0.15＝4.00公尺；相加時重疊部分算了兩次，要扣掉一次。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和112期末：依兩段長度與重疊圖求合併後長度。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不是再加重疊長，也不是扣兩次；先畫兩段並標出重疊。</p>
+      <label class="check"><input type="checkbox" data-check="m7-application" aria-label="已確認：看懂合併、相差與重疊"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="m8" class="unit" data-subject="math" aria-labelledby="heading-m8">
+    <div class="unit-heading"><p>數學 · 4 個確認重點</p><h2 id="heading-m8">U8 兩步驟與四則運算</h2><p>先說每一步在求什麼，再寫成一個算式；保留題目指定的過程。</p></div>
+    <article class="item" data-item="m8-order">
+      <div class="item-heading"><h3>運算順序與括號</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">會先括號，再乘除、後加減；同級運算由左到右。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>算60−6×4，再算(60−6)×4，說明差在哪裡。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>分別是36與216；第一式先算6×4，第二式先算60−6。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和114期末：填出乘法中間結果，再完成減法；另有含括號算式。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能每題都從左算；括號會改變先求的量。</p>
+      <label class="check"><input type="checkbox" data-check="m8-order" aria-label="已確認：運算順序與括號"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m8-combine">
+      <div class="item-heading"><h3>分步算式合併</h3><span class="mode">紙筆／列式</span></div>
+      <p class="know">能寫「先算／再算／併式」，並說清楚中間結果的單位。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>4盒貼紙，每盒18張，平分給6人。請先分步，再合併一式。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>先算4×18＝72張，再算72÷6＝12張；併式(4×18)÷6＝12。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：要求先算、再算，合成有括號的算式。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>先求的72是總張數，不是人數；連等號前後的數值必須相等。</p>
+      <label class="check"><input type="checkbox" data-check="m8-combine" aria-label="已確認：分步算式合併"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m8-reason">
+      <div class="item-heading"><h3>兩步驟應用與反推</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能辨別先求每份量、總量、差額或單價，並檢查答案符合情境。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>5本相同筆記本共便宜40元，每本原價36元。特價每本多少元？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>先求每本便宜40÷5＝8元，再算36−8＝28元。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和112期末：由多盒的總折扣反求每盒售價。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>總共便宜40元，不能直接從一本的價格扣40元。</p>
+      <label class="check"><input type="checkbox" data-check="m8-reason" aria-label="已確認：兩步驟應用與反推"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m8-equivalent">
+      <div class="item-heading"><h3>判斷兩個算式是否等值</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能用計算或分組理由判斷移動括號是否改變結果。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>48÷6÷2和48÷(6×2)相等嗎？48÷(6÷2)呢？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>前兩式都等於4；第三式等於16。連除兩次可看成除以兩個除數的乘積。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：比較連除與括號內先除的結果。</li><li>跨校安和114期末：判斷連除與除以兩數乘積是否相同。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>連除不能隨意換成除以括號內的商。</p>
+      <label class="check"><input type="checkbox" data-check="m8-equivalent" aria-label="已確認：判斷兩個算式是否等值"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="m9" class="unit" data-subject="math" aria-labelledby="heading-m9">
+    <div class="unit-heading"><p>數學 · 5 個確認重點</p><h2 id="heading-m9">U9 分數</h2><p>先抓每一份多大與一個整體是多少；本清單聚焦同分母與分數乘整數。</p></div>
+    <article class="item" data-item="m9-types">
+      <div class="item-heading"><h3>真分數、假分數與帶分數</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能由分子、分母判斷與1的大小關係；假分數也可能剛好是整數。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>3/5、5/5、8/5中，哪些是假分數？哪個等於1？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>5/5與8/5是假分數；5/5＝1。分子大於或等於分母是假分數。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112期末：辨識真分數，並由帶分數的整數部分反推分子範圍。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能把分子等於分母的情況漏掉。</p>
+      <label class="check"><input type="checkbox" data-check="m9-types" aria-label="已確認：真分數、假分數與帶分數"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m9-convert">
+      <div class="item-heading"><h3>假分數與帶分數互換</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能用除法找出幾個整體及剩餘幾份；帶分數可轉回同樣份數。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>17/6是多少帶分數？2又5/6是多少假分數？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>17÷6＝2餘5，所以17/6＝2又5/6；反過來(2×6＋5)/6＝17/6。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112期末：互換假分數、帶分數，並用分割圖表示。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>餘數當分子，原分母不變；不是把整數直接加到分子。</p>
+      <label class="check"><input type="checkbox" data-check="m9-convert" aria-label="已確認：假分數與帶分數互換"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m9-numberline">
+      <div class="item-heading"><h3>在圖與數線上表示分數</h3><span class="mode">紙筆／畫圖</span></div>
+      <p class="know">能先看0到1分成幾等份，再定位分數；用同樣大小的整體比較。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>在紙上把0到1、1到2都分成4等份，標出7/4，再寫成帶分數。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>7/4在1之後第3小格，也就是1又3/4。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112期末：同一數線以真分數、假分數、帶分數或整數表示。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>分母來自一個整體被分成幾份，不是整條數線共有幾格。</p>
+      <label class="check"><input type="checkbox" data-check="m9-numberline" aria-label="已確認：在圖與數線上表示分數"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m9-addsub">
+      <div class="item-heading"><h3>同分母加減與借位</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">同分母表示同樣大小的一份；加減分子，必要時將1換成分母個小份。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>算2又1/7−5/7，再把答案整理成帶分數。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>2又1/7＝1又8/7；減去5/7得到1又3/7。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和114期末：帶分數加減，並要求假分數結果換成帶分數或整數。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>分母不跟著相減；借1是借7/7，不是借10。</p>
+      <label class="check"><input type="checkbox" data-check="m9-addsub" aria-label="已確認：同分母加減與借位"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m9-times">
+      <div class="item-heading"><h3>分數乘整數與間隔</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">理解幾份同樣分數相加；圖上物件數不一定等於間隔數。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>一排6根柱子，從第一根到最後一根，相鄰間隔都是2/3公尺。總長多少？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>有5個間隔；2/3×5＝10/3＝3又1/3公尺。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和112期末：分數乘整數與單側植樹間隔，附圖並要求帶分數。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>分母不乘5；6根柱子只夾出5個間隔，先畫點數間隔。</p>
+      <label class="check"><input type="checkbox" data-check="m9-times" aria-label="已確認：分數乘整數與間隔"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="m10" class="unit" data-subject="math" aria-labelledby="heading-m10">
+    <div class="unit-heading"><p>數學 · 4 個確認重點</p><h2 id="heading-m10">U10 統計圖</h2><p>先讀標題、軸、單位與圖例，再讀數和比較；也要能自己畫。</p></div>
+    <article class="item" data-item="m10-scale">
+      <div class="item-heading"><h3>讀軸、刻度與省略記號</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道每格代表多少、數量的單位，以及省略記號前後的刻度。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>某圖縱軸省略0到40，上面依序標40、45、50且等距。從40往上2格是多少？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>50；每格5。省略的是一段刻度，不是資料不見。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：讀降雨量軸與每格大小。</li><li>跨校安和114期末：判斷省略記號意義，讀帶省略的折線圖。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>長條看起來兩倍高，不一定數量兩倍；要讀刻度。</p>
+      <label class="check"><input type="checkbox" data-check="m10-scale" aria-label="已確認：讀軸、刻度與省略記號"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m10-groups">
+      <div class="item-heading"><h3>分組、總數與相差</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">會先認圖例，分清每組數量、合計與差；遇堆疊長條能用總數減去已知部分。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>一根堆疊長條總高18人，下段代表女生10人。男生有幾人？男女差幾人？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>男生18−10＝8人；相差10−8＝2人。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳114期末：並排男女長條的最多、合計與相差。</li><li>跨校安和114期末：堆疊長條中分辨男女及全班數量。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>上段終點18是總數，不是男生數。並排長條與堆疊長條讀法不同。</p>
+      <label class="check"><input type="checkbox" data-check="m10-groups" aria-label="已確認：分組、總數與相差"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m10-trend">
+      <div class="item-heading"><h3>折線圖的變化與比較</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能說出某點數值、上升下降、持平，以及兩點相差；兩條線要先辨認圖例。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>某三天氣溫依序21、24、24度，連成折線後，哪段上升、哪段持平？最高與最低差多少？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>第1到2天上升，第2到3天持平；相差3度。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校安和114期末：讀體重折線圖的最高低、持平與增加區段。</li><li>桃子腳112期末：兩城市折線圖比較同月份的數值差。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>最高的點不等於增加最多的那一段；沒有資料時不能自行預測下一天。</p>
+      <label class="check"><input type="checkbox" data-check="m10-trend" aria-label="已確認：折線圖的變化與比較"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="m10-draw">
+      <div class="item-heading"><h3>由統計表畫長條圖</h3><span class="mode">紙筆／畫圖</span></div>
+      <p class="know">會補標題、軸名稱、單位與一致刻度，再畫出對應長度的長條。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>圖書借閱：故事8本、科學12本、藝術6本。用每格2本畫長條圖。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>三根長條分別4、6、3格；標上類別、冊數（本）及標題，從共同基線開始。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112、114期末：依統計表畫長條圖；112卷也要求補軸標籤與刻度。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能只把數字寫上去；每格大小一致，長條高度要符合資料。</p>
+      <label class="check"><input type="checkbox" data-check="m10-draw" aria-label="已確認：由統計表畫長條圖"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="s3" class="unit" data-subject="science" aria-labelledby="heading-s3">
+    <div class="unit-heading"><p>自然 · 7 個確認重點</p><h2 id="heading-s3">U3 有趣的聲光現象</h2><p>把現象、原因與圖中的路徑連起來。這次不列音高、聲速計算、月相與折射機制。</p></div>
+    <article class="item" data-item="s3-vibration">
+      <div class="item-heading"><h3>振動與聲音大小</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道物體振動會發聲，振動較明顯時聲音通常較大。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>輕敲和稍用力敲同一面鼓，哪次鼓面紙片跳得較明顯？這能說明什麼？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>稍用力敲時紙片跳動較明顯，聲音也較大，可用來觀察鼓面的振動。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：從鼓面紙片跳動推論鼓聲大小。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>聲音大小和高低不同；本項不拿振動大小判斷音高。</p>
+      <label class="check"><input type="checkbox" data-check="s3-vibration" aria-label="已確認：振動與聲音大小"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-medium">
+      <div class="item-heading"><h3>聲音透過介質傳播</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能分辨氣體、液體、固體傳聲；知道真空不能傳聲。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>隔空聽拍手、耳朵貼桌面聽輕敲、在水中聽到聲音，各主要經過什麼傳來？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>依序是空氣（氣體）、桌面（固體）、水（液體）。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：將生活中的聲音按傳播介質分類，另問真空環境。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不要把「聽不清楚」直接當成「不能傳聲」；不同介質中的聽感可能不同。</p>
+      <label class="check"><input type="checkbox" data-check="s3-medium" aria-label="已確認：聲音透過介質傳播"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-animal">
+      <div class="item-heading"><h3>動物發聲與溝通</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道動物發聲方式與目的不同，要分開判斷。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>雄蟋蟀主要用哪個部位發聲？一定是在求救嗎？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>主要摩擦翅膀發聲；常有求偶等溝通用途，不能一律說成求救。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：同一句同時檢查發聲方式與目的。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能因「動物能發聲溝通」正確，就忽略後半句的方式或目的是否正確。</p>
+      <label class="check"><input type="checkbox" data-check="s3-animal" aria-label="已確認：動物發聲與溝通"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-source">
+      <div class="item-heading"><h3>光源與看見物體</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能區分自己發光和反射別處的光；看到物體需有光進入眼睛。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>發亮的檯燈與被照亮的白紙，哪個是光源？完全沒有光時能看見白紙嗎？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>發亮檯燈是光源；白紙反射光，完全沒有光時看不見。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112第一次評量：辨認光源，判斷無光環境與月光來源。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>亮或閃亮不代表自己發光；月亮與鏡子不是光源。</p>
+      <label class="check"><input type="checkbox" data-check="s3-source" aria-label="已確認：光源與看見物體"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-shadow">
+      <div class="item-heading"><h3>光直進與影子</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能說出光源、物體與影子的相對位置，及固定條件下的大小變化。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>固定手電筒和牆，把不透明小玩偶往手電筒移近。牆上影子通常變大還是變小？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>變大；光源、玩偶、牆面依序排列，玩偶遮住部分光。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112第一次評量：判斷影子的成因、透明物與離光源遠近。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>必須先固定其他位置；不是任何移動都使影子變大。透明物也可能出現較淡影子。</p>
+      <label class="check"><input type="checkbox" data-check="s3-shadow" aria-label="已確認：光直進與影子"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-reflection">
+      <div class="item-heading"><h3>反射、平滑表面與方向</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道光遇鏡面會反射；改變鏡面角度會改變反射方向，反射前後各段仍直進。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>手電筒照向鏡子，鏡子稍轉方向後，牆上的亮點為什麼移動？平靜水面為何較容易看到清楚倒影？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>鏡面方向改變會改變反射方向；平靜水面較平滑，較容易形成清楚影像。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112第一次評量：讀煙霧箱中的鏡面光路圖，分類反射與直進。</li><li>跨校永安114期末：比較平靜／波動水面與平整／皺鋁箔的影像。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>鏡面改變方向叫反射，不是折射；反射後不是沿彎曲路線前進。</p>
+      <label class="check"><input type="checkbox" data-check="s3-reflection" aria-label="已確認：反射、平滑表面與方向"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s3-use">
+      <div class="item-heading"><h3>聲光的生活用途</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能依用途分辨指示、警示、裝飾與娛樂，說出理由。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>路口行人號誌和生日燈飾都會發光，它們主要用途一樣嗎？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>不一樣；行人號誌用來指示通行，生日燈飾主要是裝飾。若談警示用途，要說明提醒什麼危險。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：比較燈塔與其他物品的聲光功能。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能只因都會亮或響就分成同一用途。聲光玩具的製作能力仍需實作確認。</p>
+      <label class="check"><input type="checkbox" data-check="s3-use" aria-label="已確認：聲光的生活用途"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section>
+<section id="s4" class="unit" data-subject="science" aria-labelledby="heading-s4">
+    <div class="unit-heading"><p>自然 · 7 個確認重點</p><h2 id="heading-s4">U4 好玩的電路</h2><p>看清接點與完整路徑；亮度比較先確認電池、燈泡及接法條件。</p></div>
+    <article class="item" data-item="s4-path">
+      <div class="item-heading"><h3>通路、斷路與自由畫電路</h3><span class="mode">紙筆／畫圖</span></div>
+      <p class="know">知道小燈泡底部接點與金屬螺紋殼是不同接點，要分別連到電池兩極，形成完整通路。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>畫一顆電池、一顆傳統小燈泡及兩條電線，讓燈泡可發亮。再指出拔掉哪條線會斷路。</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>一線接電池一極與燈泡底端，另一線接另一極與燈泡金屬殼；任一線拔開都斷路。正負極交換仍可使這種小燈泡發亮。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：在只有燈泡的題圖補畫電池與兩條線，接點另配分。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>兩條線都接同一接點不行；只會選正確圖片，還不能算已會自行畫圖。</p>
+      <label class="check"><input type="checkbox" data-check="s4-path" aria-label="已確認：通路、斷路與自由畫電路"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-conductor">
+      <div class="item-heading"><h3>導體、絕緣與開關</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道金屬常是良導體，塑膠等不良導體可隔開接點；開關控制通斷。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>為什麼電線外包塑膠，裡面是金屬？簡易開關的兩個金屬接點分開時會怎樣？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>金屬用來導電，塑膠外皮有絕緣保護作用；接點分開造成斷路。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校五堵113四下期末：分類導體、解釋電線外皮功能與簡易開關。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>分清負責導電的接點與不導電的底座；不能用家用插座測試材料。</p>
+      <label class="check"><input type="checkbox" data-check="s4-conductor" aria-label="已確認：導體、絕緣與開關"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-batteries">
+      <div class="item-heading"><h3>電池串聯、並聯與亮度</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">相同新電池正確串聯可使同一適用小燈泡較亮；並聯不是只看電池排成幾列。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>看接法時先指出每顆電池的正負極。兩顆相同電池正確串聯，與正確並聯相比，同一小燈泡通常哪個較亮？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>在教材適用且未超過額定範圍的條件下，串聯較亮。串聯是前一顆正極接下一顆負極；並聯是正接正、負接負。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校永安114期末：依完整電路圖比較亮度，並判斷移除一顆電池後能否形成通路。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能只數電池顆數或看圖形排列；反接、混用新舊或規格不同，不能套同一比較。</p>
+      <label class="check"><input type="checkbox" data-check="s4-batteries" aria-label="已確認：電池串聯、並聯與亮度"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-bulbs">
+      <div class="item-heading"><h3>燈泡串聯、並聯與故障</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">相同電池下，兩顆相同燈泡串聯通常較暗；並聯各有通路，教材條件下各燈約和單燈同亮。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>兩顆燈泡並聯，其中一顆斷掉，另一顆的支路仍完整，會怎樣？若兩顆串聯呢？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>並聯另一顆仍可亮；串聯一路斷開，兩顆都不亮。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校永安114期末：辨認兩燈串並聯並比較亮度。</li><li>跨校明義113期末：由一燈壞掉是否影響其他燈反推接法。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>電池串聯與燈泡串聯的亮度效應不能混用；不把並聯燈泡硬排成比單燈更亮。</p>
+      <label class="check"><input type="checkbox" data-check="s4-bulbs" aria-label="已確認：燈泡串聯、並聯與故障"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-motor">
+      <div class="item-heading"><h3>小馬達轉向與排除故障</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">知道改變小馬達的電池兩極接法會改變轉向；不亮或不轉可能有多種原因。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>同一個小馬達把電池正負極反接，轉向如何？燈泡不亮時，除了沒電還可檢查什麼？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>小馬達轉向改變。也要檢查接線／接點是否完整、燈泡是否損壞。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：判斷小馬達反接的轉向。</li><li>跨校五堵113四下期末：從多種原因找出燈泡不亮的可能。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不能看到不亮就斷定電池沒電；傳統小燈泡與馬達對反接的反應不同。</p>
+      <label class="check"><input type="checkbox" data-check="s4-motor" aria-label="已確認：小馬達轉向與排除故障"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-safe">
+      <div class="item-heading"><h3>電池處理、用電與節電</h3><span class="mode">口說／自行舉例</span></div>
+      <p class="know">能說出安全使用與回收方式，並自行舉出具體節電做法。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>說出兩個在家能做的節電動作；發現電線外皮破損或電池沒電時怎麼做？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>例如離開房間關燈、關閉不用的電器。破損電線停止使用並告知成人；廢電池交指定回收點。答案不只這些，須具體且安全。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>跨校明義113期末：判斷電池保存、回收及用電行為。</li><li>跨校五堵113四下期末：要求自由寫出兩項節能方法；此處確認聚焦本輪節電範圍。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>不拉扯電線拔插頭、不濕手碰電器、不碰裸線；不要以「低電壓一定安全」當保證。</p>
+      <label class="check"><input type="checkbox" data-check="s4-safe" aria-label="已確認：電池處理、用電與節電"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+<article class="item" data-item="s4-reading">
+      <div class="item-heading"><h3>讀聲光、電力短文找證據</h3><span class="mode">口說或紙筆</span></div>
+      <p class="know">能依文章條件找答案，分清文中資料、自己的常識與資料適用時間。</p>
+      <div class="confirm"><h4>簡短確認 · 原創例子</h4><p>原創短文：「甲燈每天用電2單位，乙燈1單位，使用時間相同。」哪盞較省電？這段能證明哪盞較亮嗎？</p>
+        <details class="answer"><summary>看確認重點／答案</summary><p>乙燈較省電；文章未給亮度，不能判定誰較亮。</p></details>
+      </div>
+      <div class="observations"><h4>現有原卷怎麼問</h4><ul><li>桃子腳112第一次評量：依附件節電文章回答條件與數字問題。</li><li>跨校明義113期末：依LED短文辨識特點與應用。</li></ul></div>
+      <p class="trap"><strong>易混淆：</strong>歷史文章的統計數字只按該文作答，不當成現在統計；沒寫的資訊不要自行補。</p>
+      <label class="check"><input type="checkbox" data-check="s4-reading" aria-label="已確認：讀聲光、電力短文找證據"><span>已確認能說明或做出來</span><span class="print-check" aria-hidden="true">□</span></label>
+    </article>
+    <a class="to-top" href="#">回到科目與單元選擇</a>
+  </section></div>
+  <footer>家長可依實際課堂進度調整確認順序；正式範圍公布後，請再對照。<a href="../">回家長區</a></footer>
+</main>
+</body>
+</html>
