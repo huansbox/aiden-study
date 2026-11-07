@@ -2,7 +2,7 @@
   "format": "concepts-and-toy-questions",
   "inputs": {
     "content.json": "d1d3cd52b55df04a01dd4a1b39e7b5293938640841a48853da4ae546eaedb8bd",
-    "toy-reference.json": "88b321d08368d09e1d121c15c29ce746092346ae30a8e3c7e9d866128241cc39",
+    "toy-reference.json": "35b59e80176bab62c400207fef48d52633ff5c282937199b38a6dc24acc487c4",
     "build-pdf.py": "d52348bab2fd8a68ef25c506783bfbec55970e031b5c658e36e2ce5558923217"
   },
   "reportlab": "5.1.0",
@@ -1565,7 +1565,7 @@
     },
     {
       "file": "social-quick-reference.pdf",
-      "sha256": "af803ff763e65fc5380e30378f989f622fbb40de09799525592b5e89370dadfc",
+      "sha256": "d3c3e1545b1380a99300ba14474afc8f7f172cddcf1521315140fafb47616359",
       "pages": 7,
       "rowCount": 50,
       "coverage": [
@@ -1600,7 +1600,7 @@
           ],
           "page": 1,
           "label": "神明與生活需求",
-          "sourceSha256": "653a2d902bcfb3b99cac5005da65690de84482ba8a6d5504ab467e5fea60e424",
+          "sourceSha256": "be7f82e19896077be52b96da2289864c6ede842d25265437fb58b2049f8a20d0",
           "top": 624.39,
           "bottom": 551.49,
           "figure": false
@@ -1696,7 +1696,7 @@
           ],
           "page": 2,
           "label": "老街怎麼形成",
-          "sourceSha256": "31270e009d00a0ee6c01d45909f9083c57bd4d616ef704d13dd1382242ca6ab1",
+          "sourceSha256": "1aee006c91d2c39eaab91cee04c99714226bcec3e6b31fa495982d24ff6364bc",
           "top": 751.89,
           "bottom": 697.29,
           "figure": false
@@ -1732,7 +1732,7 @@
           ],
           "page": 2,
           "label": "裝飾與祝福",
-          "sourceSha256": "f2f3457a65f0e221537682545227ecd345c40d982e3845f9d393f2aae2cdb58f",
+          "sourceSha256": "565a98cd0ef963b54ddbf89627ed7a04e2b03e4f201f6bad15a794961ed29034",
           "top": 445.09,
           "bottom": 390.49,
           "figure": false
@@ -1972,7 +1972,7 @@
           ],
           "page": 5,
           "label": "節慶日期配對",
-          "sourceSha256": "76063fb6f377147457848fcca4542ee98894492b66cb10a4f73131a7fdffdb78",
+          "sourceSha256": "742ca02bcc4873da4db9964ce815a86ab95496952107f25ed8e26a7040d084a8",
           "top": 459.79,
           "bottom": 386.89,
           "figure": false
@@ -2116,7 +2116,7 @@
           ],
           "page": 7,
           "label": "現代節日的類別",
-          "sourceSha256": "bd9e3b649838ed5d19e1d03ab45e32e687e85ac155b1674106131fa481f01fc9",
+          "sourceSha256": "f6402e050e687ce6a2d8c6c574a12aa4e69c97224290691f0f625c669b8adb49",
           "top": 751.89,
           "bottom": 678.99,
           "figure": false

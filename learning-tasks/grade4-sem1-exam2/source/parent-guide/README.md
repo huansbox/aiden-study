@@ -52,4 +52,4 @@ node learning-tasks/grade4-sem1-exam2/source/parent-guide/build.mjs --check
 
 保留三角板／直尺量畫、統計圖、數線、直式、列式、電路自由畫圖與自行舉例。等腰底角相等、等腰直角45°、正三角形60°是本次核心；一般三角形內角和180°屬後續延伸，未列入本次核心。亮度比較保留同規格電池／燈泡及適用材料條件，不採有爭議的強迫排序。缺損題、條件衝突及本輪範圍外題不作依據。
 
-逐項原卷證據、原件 SHA 與前次獨立審查在 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-parent-guide-2026-11-07/`；原37項證據在 `v2/evidence-ledger.json`。數學／自然逐列來源、私用答案、涵蓋核對在 `concepts-examples-release/math/`、`science/`；整合視讀頁與驗證在 `concepts-examples-release/integration/`。社會逐列來源與涵蓋核對另存 `social-pdf/content/`，整合視讀與驗證在 `social-pdf/integration/`。U8原試閱在 `u8-toy-preview/`。凍結的 `freeze-v1/`、`v2/` 與舊三欄版 `pdf-revision/` 不覆寫。公開 PDF 與玩具題原稿不含原卷題文、原圖、答案或私人路徑；圖形皆為原創重畫。
+逐項原卷證據、原件 SHA 與前次獨立審查在 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-parent-guide-2026-11-07/`；原37項證據在 `v2/evidence-ledger.json`。數學／自然逐列來源、私用答案、涵蓋核對在 `concepts-examples-release/math/`、`science/`；整合視讀頁與驗證在 `concepts-examples-release/integration/`。社會逐列來源與涵蓋核對另存 `social-pdf/content/`，整合視讀與驗證在 `social-pdf/integration/`。社會修正證據以 `social-pdf/revision-1/` 為準，`content/` 保留作者 v1。U8原試閱在 `u8-toy-preview/`。凍結的 `freeze-v1/`、`v2/` 與舊三欄版 `pdf-revision/` 不覆寫。公開 PDF 與玩具題原稿不含原卷題文、原圖、答案或私人路徑；圖形皆為原創重畫。
