@@ -3,7 +3,7 @@
   "inputs": {
     "content.json": "c7f116a89eb13b4965d38dfd22bec5849ffca112dae6ca0842c78acf665796c4",
     "toy-reference.json": "925fd24663fe2b8a594fcc8b1f3b7bf0eb1bfaf93a059d0b48bd62843edc6e77",
-    "build-pdf.py": "1ac1bfa830c8f8f9a71bd1470ddc411ebd0a298064151f927b71155aa549ee8a"
+    "build-pdf.py": "585d118d305157a24ff51d1fd49f0a70ad0d8ecbb94467f122ce25665c1a27e2"
   },
   "reportlab": "5.1.0",
   "legacyItemCount": 37,
@@ -21,7 +21,7 @@
   "pdfs": [
     {
       "file": "math-quick-reference.pdf",
-      "sha256": "4d1c726300a9fc471e2c303550914647f4e80b461440943a30352141b715f58f",
+      "sha256": "c40369622d8e7311784e585aab8d3d841f05e75fc4c531bb670ff568b8524181",
       "pages": 12,
       "rowCount": 56,
       "coverage": [
@@ -33,8 +33,8 @@
           "page": 1,
           "label": "依角分類",
           "sourceSha256": "559cec86c4936f79167fd68cb221f47d5598a5f1dd380129c863849e01e4a7c4",
-          "top": 663.89,
-          "bottom": 512.59,
+          "top": 751.89,
+          "bottom": 600.59,
           "figure": true
         },
         {
@@ -45,8 +45,8 @@
           "page": 1,
           "label": "依邊分類與包含關係",
           "sourceSha256": "881747b9cb68b3fdd46852b4da040c7fd9252825b5d95eb89eaee7aba21d858a",
-          "top": 512.59,
-          "bottom": 457.99,
+          "top": 600.59,
+          "bottom": 545.99,
           "figure": false
         },
         {
@@ -57,8 +57,8 @@
           "page": 1,
           "label": "等腰的兩個底角相等",
           "sourceSha256": "7c26bc8ff9f49661bd0a7353d59dfbd172f8898cb07e32d58fce46e69197e581",
-          "top": 457.99,
-          "bottom": 403.39,
+          "top": 545.99,
+          "bottom": 491.39,
           "figure": false
         },
         {
@@ -69,8 +69,8 @@
           "page": 1,
           "label": "等腰直角的45°底角",
           "sourceSha256": "d30067058a2202957379a965f95e6917f9b528939266075b3b01f69ed020fd1d",
-          "top": 403.39,
-          "bottom": 348.79,
+          "top": 491.39,
+          "bottom": 436.79,
           "figure": false
         },
         {
@@ -81,8 +81,8 @@
           "page": 1,
           "label": "正三角形的60°角",
           "sourceSha256": "8343984dbeceea9aa42fbebd6e2f1cc0c4a8576594bd4cb7dd2c096b20d5199b",
-          "top": 348.79,
-          "bottom": 312.49,
+          "top": 436.79,
+          "bottom": 400.49,
           "figure": false
         },
         {
@@ -93,8 +93,8 @@
           "page": 1,
           "label": "等腰周長反求底邊",
           "sourceSha256": "bb5b7a134b61fc9b0c3200e9dec88c878ca387fcc11e23320ca57212e8e034b5",
-          "top": 312.49,
-          "bottom": 257.89,
+          "top": 400.49,
+          "bottom": 345.89,
           "figure": false
         },
         {
@@ -105,8 +105,8 @@
           "page": 1,
           "label": "等腰周長反求兩腰",
           "sourceSha256": "54229abc9295cffca94b924fdb56c16eea0a9a45830dcd5fb80ab04ad801b638",
-          "top": 257.89,
-          "bottom": 203.29,
+          "top": 345.89,
+          "bottom": 291.29,
           "figure": false
         },
         {
@@ -117,8 +117,8 @@
           "page": 1,
           "label": "正三角形周長與邊長",
           "sourceSha256": "403808fd97724c709b876be3f037a0879e6e257709957da502acbc958b0b6398",
-          "top": 203.29,
-          "bottom": 148.69,
+          "top": 291.29,
+          "bottom": 236.69,
           "figure": false
         },
         {
@@ -129,8 +129,8 @@
           "page": 2,
           "label": "旋轉後的對應點、邊、角",
           "sourceSha256": "189b6c5e86a52af3eaa4a11038e18fc6ab7de5659bd526b0eb9c3146e86694a1",
-          "top": 696.89,
-          "bottom": 492.29,
+          "top": 751.89,
+          "bottom": 547.29,
           "figure": true
         },
         {
@@ -141,8 +141,8 @@
           "page": 2,
           "label": "用工具畫等腰三角形",
           "sourceSha256": "5c3a8d83d16298034980a880b875dcfa5aceda8a92d72dea9d77089372e8dd49",
-          "top": 492.29,
-          "bottom": 437.69,
+          "top": 547.29,
+          "bottom": 492.69,
           "figure": false
         },
         {
@@ -153,8 +153,8 @@
           "page": 2,
           "label": "用工具畫指定直角邊",
           "sourceSha256": "318e769adf183b291e2f8e23a0f331891ee92e036566c28bcc031784d0a39ff5",
-          "top": 437.69,
-          "bottom": 383.09,
+          "top": 492.69,
+          "bottom": 438.09,
           "figure": false
         },
         {
@@ -165,8 +165,8 @@
           "page": 3,
           "label": "位值與讀數",
           "sourceSha256": "5902ad3cf759e9c0644574a9fe8c9cb31314fa57d17ce2ffb601ffa1d66c9cd5",
-          "top": 696.89,
-          "bottom": 660.59,
+          "top": 751.89,
+          "bottom": 715.59,
           "figure": false
         },
         {
@@ -177,8 +177,8 @@
           "page": 3,
           "label": "1、0.1、0.01組數",
           "sourceSha256": "e772ded501d7a16f08e033168e0833be27c715c33aba13de4860aed91144a94c",
-          "top": 660.59,
-          "bottom": 624.29,
+          "top": 715.59,
+          "bottom": 679.29,
           "figure": false
         },
         {
@@ -189,8 +189,8 @@
           "page": 3,
           "label": "滿10個小單位要進位",
           "sourceSha256": "7ecf0330554a7e4d1a42b2b41557e1c19b1288480db60e947831d3c96597181d",
-          "top": 624.29,
-          "bottom": 587.99,
+          "top": 679.29,
+          "bottom": 642.99,
           "figure": false
         },
         {
@@ -201,8 +201,8 @@
           "page": 3,
           "label": "小數換成幾個0.01",
           "sourceSha256": "7a57e211fff7c00be1f80ea3fb7b6c8c1e819075ee2318e37011f0bf348b80cf",
-          "top": 587.99,
-          "bottom": 551.69,
+          "top": 642.99,
+          "bottom": 606.69,
           "figure": false
         },
         {
@@ -213,8 +213,8 @@
           "page": 3,
           "label": "百分之一寫成小數",
           "sourceSha256": "6b62868fe0db0c5602e1e3076d39b5cd1a1cf9eab769a4fb2313f0b2a46d084e",
-          "top": 551.69,
-          "bottom": 497.09,
+          "top": 606.69,
+          "bottom": 552.09,
           "figure": false
         },
         {
@@ -225,8 +225,8 @@
           "page": 3,
           "label": "對齊位值比較大小",
           "sourceSha256": "72218e6d9d9b5515a77048bef6915cd4dff266c7fee23fe451975d3f68d1fb74",
-          "top": 497.09,
-          "bottom": 442.49,
+          "top": 552.09,
+          "bottom": 497.49,
           "figure": false
         },
         {
@@ -237,8 +237,8 @@
           "page": 3,
           "label": "找出範圍內全部數字",
           "sourceSha256": "f006b7aea47ff5d094cad3ae21544e0724bacc7778a70b628e0a614666444c5e",
-          "top": 442.49,
-          "bottom": 387.89,
+          "top": 497.49,
+          "bottom": 442.89,
           "figure": false
         },
         {
@@ -249,8 +249,8 @@
           "page": 3,
           "label": "公尺、公分與小數互換",
           "sourceSha256": "a4f169d8c746666ef11b33f902e64c4cb11e3f12f9475f1b16649fad607b6696",
-          "top": 387.89,
-          "bottom": 333.29,
+          "top": 442.89,
+          "bottom": 388.29,
           "figure": false
         },
         {
@@ -261,8 +261,8 @@
           "page": 3,
           "label": "小數加法與進位",
           "sourceSha256": "f7694fde83e8f212bd56f8fb97638a642ee1d6c093fafd6136b0c6e897274a2e",
-          "top": 333.29,
-          "bottom": 296.99,
+          "top": 388.29,
+          "bottom": 351.99,
           "figure": false
         },
         {
@@ -273,8 +273,8 @@
           "page": 3,
           "label": "小數減法與跨0借位",
           "sourceSha256": "2d572689bf7eafb941ff50a7c0f53ac725eae273bee766fd7a4e7ffcc7d276d1",
-          "top": 296.99,
-          "bottom": 260.69,
+          "top": 351.99,
+          "bottom": 315.69,
           "figure": false
         },
         {
@@ -285,8 +285,8 @@
           "page": 3,
           "label": "小數合併量",
           "sourceSha256": "ad130097a57d268b5d1df2b5ab1e560ccecced9b0b011f13cb02db8f0b72fa40",
-          "top": 260.69,
-          "bottom": 206.09,
+          "top": 315.69,
+          "bottom": 261.09,
           "figure": false
         },
         {
@@ -297,8 +297,8 @@
           "page": 4,
           "label": "小數相差量",
           "sourceSha256": "c981681d8aadc27f5cbb7c3a6014a9db8e01063e5bb0e6b39939b32d6b436022",
-          "top": 696.89,
-          "bottom": 642.29,
+          "top": 751.89,
+          "bottom": 697.29,
           "figure": false
         },
         {
@@ -309,8 +309,8 @@
           "page": 4,
           "label": "接起來要扣掉一次重疊",
           "sourceSha256": "ca161ff6d8de6dcf5cf962486c15fb1a9372c1099bd66addbdcd9f623b2f9e21",
-          "top": 642.29,
-          "bottom": 425.99,
+          "top": 697.29,
+          "bottom": 480.99,
           "figure": true
         },
         {
@@ -321,8 +321,8 @@
           "page": 5,
           "label": "先算括號內",
           "sourceSha256": "589153eb60031b326f232e707d70b093fc47bc844053739234255507a7e7e731",
-          "top": 696.89,
-          "bottom": 660.59,
+          "top": 751.89,
+          "bottom": 715.59,
           "figure": false
         },
         {
@@ -333,8 +333,8 @@
           "page": 5,
           "label": "先乘除，後加減",
           "sourceSha256": "83cdffd06de45d24e36159f5aa8c5e81b74e140e1988600464fea5db9f861719",
-          "top": 660.59,
-          "bottom": 605.99,
+          "top": 715.59,
+          "bottom": 660.99,
           "figure": false
         },
         {
@@ -345,8 +345,8 @@
           "page": 5,
           "label": "同級運算\n由左到右",
           "sourceSha256": "8503fda862395b8f2e69097b1859aa81b444afc009f9a0148ff9f5669f925345",
-          "top": 605.99,
-          "bottom": 551.39,
+          "top": 660.99,
+          "bottom": 606.39,
           "figure": false
         },
         {
@@ -357,8 +357,8 @@
           "page": 5,
           "label": "把先算、再算\n合成一式",
           "sourceSha256": "dcdbce21357fd254b4998b4ec7869c9d0c599da8f1fc8f354c5c3da9bc84ea9d",
-          "top": 551.39,
-          "bottom": 496.79,
+          "top": 606.39,
+          "bottom": 551.79,
           "figure": false
         },
         {
@@ -369,8 +369,8 @@
           "page": 5,
           "label": "連除改成\n除以兩數的乘積",
           "sourceSha256": "01fef27dfb788ab2f241865f8dfcc611d05c5cad6541e0875664747507042551",
-          "top": 496.79,
-          "bottom": 442.19,
+          "top": 551.79,
+          "bottom": 497.19,
           "figure": false
         },
         {
@@ -381,8 +381,8 @@
           "page": 5,
           "label": "加上括號後\n結果會不會改變",
           "sourceSha256": "40695d2fbdd3868e72af4bac7f40f0ab1e71570fb8be02a74026c205961c8b5f",
-          "top": 442.19,
-          "bottom": 387.59,
+          "top": 497.19,
+          "bottom": 442.59,
           "figure": false
         },
         {
@@ -393,8 +393,8 @@
           "page": 6,
           "label": "先算總價\n再算找零",
           "sourceSha256": "8d766742db85d660b1e347692d5668146fd3ff6e686447e733f41d1f73a9151a",
-          "top": 696.89,
-          "bottom": 605.69,
+          "top": 751.89,
+          "bottom": 660.69,
           "figure": false
         },
         {
@@ -405,8 +405,8 @@
           "page": 6,
           "label": "先算便宜後的單價\n再算總價",
           "sourceSha256": "63618f68aea81e8d2eead7428f4b7f6d79c079f89a553d49bc7d0f9b01dfaec6",
-          "top": 605.69,
-          "bottom": 514.49,
+          "top": 660.69,
+          "bottom": 569.49,
           "figure": false
         },
         {
@@ -417,8 +417,8 @@
           "page": 6,
           "label": "先算總量\n再平分",
           "sourceSha256": "8414adbda072cb525118fadd53405666a358efc80b54cae46e0ba70580a17eb8",
-          "top": 514.49,
-          "bottom": 459.89,
+          "top": 569.49,
+          "bottom": 514.89,
           "figure": false
         },
         {
@@ -429,8 +429,8 @@
           "page": 6,
           "label": "先算有幾份\n再算收入",
           "sourceSha256": "e9f8a3124703259b67d682714e073f83d14143d0528da51f37a43a77bd930956",
-          "top": 459.89,
-          "bottom": 405.29,
+          "top": 514.89,
+          "bottom": 460.29,
           "figure": false
         },
         {
@@ -441,8 +441,8 @@
           "page": 6,
           "label": "先分給各組\n再分給組員",
           "sourceSha256": "9bb6608091f90b8194dc1542c850d925bc243c6d50dd747865dbad90843601de",
-          "top": 405.29,
-          "bottom": 350.69,
+          "top": 460.29,
+          "bottom": 405.69,
           "figure": false
         },
         {
@@ -453,8 +453,8 @@
           "page": 6,
           "label": "先算每盒便宜多少\n再從原價扣掉",
           "sourceSha256": "370c1ae6998a75799c0a54c55c41c058fe4b089303dc070fa91fd28081344e4f",
-          "top": 350.69,
-          "bottom": 296.09,
+          "top": 405.69,
+          "bottom": 351.09,
           "figure": false
         },
         {
@@ -465,8 +465,8 @@
           "page": 6,
           "label": "先合計天數\n再算存款",
           "sourceSha256": "5df69a5ba2f8db1a9f44476656d9707ce296cd5fba892d4eeaad8e9b5cd4e14d",
-          "top": 296.09,
-          "bottom": 241.49,
+          "top": 351.09,
+          "bottom": 296.49,
           "figure": false
         },
         {
@@ -477,8 +477,8 @@
           "page": 6,
           "label": "先算量滿 4 次的長度\n再扣不足的長度",
           "sourceSha256": "cb4fd46e8eed0884b6f6d22aa9c67a37beac73146f7246ed2910a27b7a8266c8",
-          "top": 241.49,
-          "bottom": 168.59,
+          "top": 296.49,
+          "bottom": 223.59,
           "figure": false
         },
         {
@@ -489,8 +489,8 @@
           "page": 7,
           "label": "真分數、假分數、帶分數",
           "sourceSha256": "900ec485915c08f662b64532591ec025e1aceec25c6f72da1aa5dde560ba2633",
-          "top": 696.89,
-          "bottom": 642.29,
+          "top": 751.89,
+          "bottom": 697.29,
           "figure": false
         },
         {
@@ -501,8 +501,8 @@
           "page": 7,
           "label": "由整數部分反推分子",
           "sourceSha256": "99cba25b543254fe467e2e4b73e2c875c4d24b6d9a27cba232e7df0a558ad827",
-          "top": 642.29,
-          "bottom": 587.69,
+          "top": 697.29,
+          "bottom": 642.69,
           "figure": false
         },
         {
@@ -513,8 +513,8 @@
           "page": 7,
           "label": "假分數換成帶分數",
           "sourceSha256": "47043bc14bdc28be30bf77b1b752d11f24800e6dc301c01d28c37c47b09cce84",
-          "top": 587.69,
-          "bottom": 551.39,
+          "top": 642.69,
+          "bottom": 606.39,
           "figure": false
         },
         {
@@ -525,8 +525,8 @@
           "page": 7,
           "label": "帶分數換成假分數",
           "sourceSha256": "d9d9c03c40496f38c56568895352e1c5171b46f883ba7dfab696a0f908f56da9",
-          "top": 551.39,
-          "bottom": 515.09,
+          "top": 606.39,
+          "bottom": 570.09,
           "figure": false
         },
         {
@@ -537,8 +537,8 @@
           "page": 7,
           "label": "用等分圖表示假分數",
           "sourceSha256": "4f0e2d0700ef25ed75030e6e0c7b63909cf6bf464dc927f2028d1dbe6a17b935",
-          "top": 515.09,
-          "bottom": 365.49,
+          "top": 570.09,
+          "bottom": 420.49,
           "figure": true
         },
         {
@@ -549,8 +549,8 @@
           "page": 7,
           "label": "先看0到1分幾等份",
           "sourceSha256": "0a8933d91b1f990b33e0d96c9ebc24ca3394bd13cc0a16dda3a0930cf8dc239c",
-          "top": 365.49,
-          "bottom": 234.19,
+          "top": 420.49,
+          "bottom": 289.19,
           "figure": true
         },
         {
@@ -561,8 +561,8 @@
           "page": 7,
           "label": "同分母相加與進位",
           "sourceSha256": "9f918392bc0721e8aae332ada44ff3889ff5fb5fbd98b0dee3aa3dc33bb2f39f",
-          "top": 234.19,
-          "bottom": 179.59,
+          "top": 289.19,
+          "bottom": 234.59,
           "figure": false
         },
         {
@@ -573,8 +573,8 @@
           "page": 7,
           "label": "同分母相減與借1",
           "sourceSha256": "c9dcbc6a82139c558f2823d8301c686c97f4b464ef2ff3ee451fe6d07c9ab37c",
-          "top": 179.59,
-          "bottom": 124.99,
+          "top": 234.59,
+          "bottom": 179.99,
           "figure": false
         },
         {
@@ -585,8 +585,8 @@
           "page": 8,
           "label": "分數乘整數",
           "sourceSha256": "4aba659ffe24c396631af624232658d03dac19191f9a8fdb38437718c76a296d",
-          "top": 696.89,
-          "bottom": 642.29,
+          "top": 751.89,
+          "bottom": 697.29,
           "figure": false
         },
         {
@@ -597,8 +597,8 @@
           "page": 8,
           "label": "柱子數與間隔數",
           "sourceSha256": "22d09d1c28514879804d7b16f70ac09dc9270f92f27649075bc9801b1bab7908",
-          "top": 642.29,
-          "bottom": 447.69,
+          "top": 697.29,
+          "bottom": 502.69,
           "figure": true
         },
         {
@@ -609,8 +609,8 @@
           "page": 9,
           "label": "讀軸、單位與每格大小",
           "sourceSha256": "d53ed39f24167699dc8a4e7203e74dfb1373a0f8b4a71e0ca7e98f4e74655752",
-          "top": 696.89,
-          "bottom": 465.59,
+          "top": 751.89,
+          "bottom": 520.59,
           "figure": true
         },
         {
@@ -621,8 +621,8 @@
           "page": 9,
           "label": "省略記號與未從0開始的刻度",
           "sourceSha256": "bf128005e82e68de3631307b7739cf2495901fb69043ded4a0083ad3f76e28b7",
-          "top": 465.59,
-          "bottom": 215.99,
+          "top": 520.59,
+          "bottom": 270.99,
           "figure": true
         },
         {
@@ -633,8 +633,8 @@
           "page": 10,
           "label": "並排長條：分組、合計與差",
           "sourceSha256": "8b2ad51180d6ec69d906336c4680fb6f5e059ac50ebc3d699f50e7328e1b9379",
-          "top": 696.89,
-          "bottom": 418.29,
+          "top": 751.89,
+          "bottom": 473.29,
           "figure": true
         },
         {
@@ -645,8 +645,8 @@
           "page": 10,
           "label": "堆疊長條：總高與上段人數",
           "sourceSha256": "f3556ca34e2b896328622f683fa6f8770154096e390559277f40422bf90bce54",
-          "top": 418.29,
-          "bottom": 139.69,
+          "top": 473.29,
+          "bottom": 194.69,
           "figure": true
         },
         {
@@ -657,8 +657,8 @@
           "page": 11,
           "label": "最高、最低與數值差",
           "sourceSha256": "0c7121cdf983a91130e7d889ed089ec670ee217a5e76b47d50f88e8b557ee668",
-          "top": 696.89,
-          "bottom": 465.59,
+          "top": 751.89,
+          "bottom": 520.59,
           "figure": true
         },
         {
@@ -669,8 +669,8 @@
           "page": 11,
           "label": "折線的上升、下降與持平",
           "sourceSha256": "ada4278c504d5ce012d723596dbe8dec4b0228f7948ccd602dc638d9f0c56f7d",
-          "top": 465.59,
-          "bottom": 234.29,
+          "top": 520.59,
+          "bottom": 289.29,
           "figure": true
         },
         {
@@ -681,8 +681,8 @@
           "page": 12,
           "label": "兩條線先認圖例再比較",
           "sourceSha256": "b85d37c0183e3349287ff7ded815549a56925deb31003930b3905ae24c993504",
-          "top": 696.89,
-          "bottom": 418.29,
+          "top": 751.89,
+          "bottom": 473.29,
           "figure": true
         },
         {
@@ -693,8 +693,8 @@
           "page": 12,
           "label": "由統計表畫完整長條圖",
           "sourceSha256": "49e02bfb06fdf32f864ff25c411e9d9c26710f7fd7a99011cbcc9d14c647b160",
-          "top": 418.29,
-          "bottom": 363.69,
+          "top": 473.29,
+          "bottom": 418.69,
           "figure": false
         }
       ],
@@ -945,7 +945,7 @@
     },
     {
       "file": "science-quick-reference.pdf",
-      "sha256": "c83c9d04be01ec367d612205eb02274b8a0e0c415a7743318abde8e7d069e40b",
+      "sha256": "71a52187686561455591f808897b19d225f9b5a4bab17e91187a91490a6b4120",
       "pages": 8,
       "rowCount": 38,
       "coverage": [
@@ -957,8 +957,8 @@
           "page": 1,
           "label": "找出發聲時的振動",
           "sourceSha256": "47ef81923b5b6ed407a228ddd0fb442691e30bceebf666722f23464b1aedaaea",
-          "top": 663.89,
-          "bottom": 609.29,
+          "top": 751.89,
+          "bottom": 697.29,
           "figure": false
         },
         {
@@ -969,8 +969,8 @@
           "page": 1,
           "label": "比較振動與聲音大小",
           "sourceSha256": "6805e295dbc0e25ea6bbddff77956c014983fd33d60e05d601cebf08f5447a3b",
-          "top": 609.29,
-          "bottom": 554.69,
+          "top": 697.29,
+          "bottom": 642.69,
           "figure": false
         },
         {
@@ -981,8 +981,8 @@
           "page": 1,
           "label": "分辨聲音大小與高低",
           "sourceSha256": "5cb7262c915d2c22602248777357ab4b1fa477a8156d6965ccf8d62d98347d1f",
-          "top": 554.69,
-          "bottom": 500.09,
+          "top": 642.69,
+          "bottom": 588.09,
           "figure": false
         },
         {
@@ -993,8 +993,8 @@
           "page": 1,
           "label": "分辨傳聲的介質",
           "sourceSha256": "7c8d8a0fa1b909f2d8d53d20a219d4fe38d42fcad131f3b72ad231d5c2d44d35",
-          "top": 500.09,
-          "bottom": 427.19,
+          "top": 588.09,
+          "bottom": 515.19,
           "figure": false
         },
         {
@@ -1005,8 +1005,8 @@
           "page": 1,
           "label": "判斷真空能否傳聲",
           "sourceSha256": "81f05e5e70445f5bc734b60854734d32a762c77a98112b9a28219cad19829158",
-          "top": 427.19,
-          "bottom": 354.29,
+          "top": 515.19,
+          "bottom": 442.29,
           "figure": false
         },
         {
@@ -1017,8 +1017,8 @@
           "page": 1,
           "label": "辨認動物發聲部位",
           "sourceSha256": "114293b50c7993611334331268cad229afe845f5ac3d139a393c8d66394a9bc4",
-          "top": 354.29,
-          "bottom": 299.69,
+          "top": 442.29,
+          "bottom": 387.69,
           "figure": false
         },
         {
@@ -1029,8 +1029,8 @@
           "page": 1,
           "label": "判斷動物發聲目的",
           "sourceSha256": "20fd0309e38ffdb2a80c63ddd795d75806fab3bf9f8dd0dbbe2669d765888493",
-          "top": 299.69,
-          "bottom": 245.09,
+          "top": 387.69,
+          "bottom": 333.09,
           "figure": false
         },
         {
@@ -1041,8 +1041,8 @@
           "page": 1,
           "label": "區分光源與反光物",
           "sourceSha256": "e36f6cd6c8dda2f45a6bd53700b9f1ddd1424d19a55a6fe345a6d06b097f16a0",
-          "top": 245.09,
-          "bottom": 190.49,
+          "top": 333.09,
+          "bottom": 278.49,
           "figure": false
         },
         {
@@ -1053,8 +1053,8 @@
           "page": 1,
           "label": "判斷看見物體的條件",
           "sourceSha256": "f325e2a42dfc44ba33239c550e5d0027a843030a7929244d6e50fb80cb5cfa8d",
-          "top": 190.49,
-          "bottom": 117.59,
+          "top": 278.49,
+          "bottom": 205.59,
           "figure": false
         },
         {
@@ -1065,8 +1065,8 @@
           "page": 2,
           "label": "用直進解釋影子位置",
           "sourceSha256": "d5b0314f73b2d8eb07816e8c2202b5c16ca8edadc527560bbc7725f578712526",
-          "top": 696.89,
-          "bottom": 623.99,
+          "top": 751.89,
+          "bottom": 678.99,
           "figure": false
         },
         {
@@ -1077,8 +1077,8 @@
           "page": 2,
           "label": "判斷透明物與影子",
           "sourceSha256": "ef0e7c4128fd1711c91fd117e869c39bac06940df0ca198df3b2dcea32c62fd1",
-          "top": 623.99,
-          "bottom": 569.39,
+          "top": 678.99,
+          "bottom": 624.39,
           "figure": false
         },
         {
@@ -1089,8 +1089,8 @@
           "page": 2,
           "label": "固定光源和牆，比影子大小",
           "sourceSha256": "58919bc05625766665b2ac0b0474ceebbd8eba5e761d05a89cd2d9bc6d1f5088",
-          "top": 569.39,
-          "bottom": 358.49,
+          "top": 624.39,
+          "bottom": 413.49,
           "figure": true
         },
         {
@@ -1101,8 +1101,8 @@
           "page": 3,
           "label": "讀鏡面反射的光路",
           "sourceSha256": "4a3d83845a664ef2baa1fe634972330ecf21178a2a27dcd9d7a25dcf2dbafe32",
-          "top": 696.89,
-          "bottom": 483.99,
+          "top": 751.89,
+          "bottom": 538.99,
           "figure": true
         },
         {
@@ -1113,8 +1113,8 @@
           "page": 3,
           "label": "判斷轉鏡後的光向",
           "sourceSha256": "7b4a510b0ab24c7e4c4f06bfc76fcfbeb124eabe3fb9f890b9bfe5ad446539ed",
-          "top": 483.99,
-          "bottom": 429.39,
+          "top": 538.99,
+          "bottom": 484.39,
           "figure": false
         },
         {
@@ -1125,8 +1125,8 @@
           "page": 3,
           "label": "比較表面與清楚倒影",
           "sourceSha256": "9b0767b9ec5621491781a45d3a303df944e672604f15c23aa1fe5d3fc1d053af",
-          "top": 429.39,
-          "bottom": 356.49,
+          "top": 484.39,
+          "bottom": 411.49,
           "figure": false
         },
         {
@@ -1137,8 +1137,8 @@
           "page": 3,
           "label": "依主要用途分類聲光",
           "sourceSha256": "509b64aca0577324cc3eb5b5c2a5ce3c918e58e757998ec4c0560312ca113b95",
-          "top": 356.49,
-          "bottom": 301.89,
+          "top": 411.49,
+          "bottom": 356.89,
           "figure": false
         },
         {
@@ -1149,8 +1149,8 @@
           "page": 4,
           "label": "找出燈泡的兩個接點",
           "sourceSha256": "cadda957672bc4324bb92db8d21e1bd0aa09118475f2f31afee30528dab8b4f4",
-          "top": 696.89,
-          "bottom": 512.29,
+          "top": 751.89,
+          "bottom": 567.29,
           "figure": true
         },
         {
@@ -1161,8 +1161,8 @@
           "page": 4,
           "label": "自己畫出發亮的電路",
           "sourceSha256": "aa5a19dab6e448faed4e88f805faeb83b61e1ce83b7309f35468e09853a36d59",
-          "top": 512.29,
-          "bottom": 291.39,
+          "top": 567.29,
+          "bottom": 346.39,
           "figure": true
         },
         {
@@ -1173,8 +1173,8 @@
           "page": 4,
           "label": "分辨通路與斷路",
           "sourceSha256": "3de318733995021734a60168d5b15c52ba51a3452beb8247f23a49f6acb373db",
-          "top": 291.39,
-          "bottom": 218.49,
+          "top": 346.39,
+          "bottom": 273.49,
           "figure": false
         },
         {
@@ -1185,8 +1185,8 @@
           "page": 4,
           "label": "依材料判斷導電性",
           "sourceSha256": "265f1741c0c79a5a1b1706657aa3b0f2660ec51987a7232c9d035853171f641d",
-          "top": 218.49,
-          "bottom": 145.59,
+          "top": 273.49,
+          "bottom": 200.59,
           "figure": false
         },
         {
@@ -1197,8 +1197,8 @@
           "page": 4,
           "label": "分辨導線內外的作用",
           "sourceSha256": "268bfbbc957bbf47267ca3e3a47603e01e9b34ef47f91dba73c49c9fb125db81",
-          "top": 145.59,
-          "bottom": 72.69,
+          "top": 200.59,
+          "bottom": 127.69,
           "figure": false
         },
         {
@@ -1209,8 +1209,8 @@
           "page": 5,
           "label": "用開關控制通斷",
           "sourceSha256": "de645ab41c5e5e370ce7b50846d03b4671af32cc27a9b4bb12cb68dab075e01d",
-          "top": 696.89,
-          "bottom": 492.99,
+          "top": 751.89,
+          "bottom": 547.99,
           "figure": true
         },
         {
@@ -1221,8 +1221,8 @@
           "page": 5,
           "label": "看正負極辨電池接法",
           "sourceSha256": "c9ce15b0420695794f26b98c367b78bc6071ab613d34f579e09d776f479b848a",
-          "top": 492.99,
-          "bottom": 277.39,
+          "top": 547.99,
+          "bottom": 332.39,
           "figure": true
         },
         {
@@ -1233,8 +1233,8 @@
           "page": 5,
           "label": "比較電池接法與亮度",
           "sourceSha256": "a39309bf654ce705ea034b781b9d0e49c7104d19f6879add026990576fc1ca52",
-          "top": 277.39,
-          "bottom": 204.49,
+          "top": 332.39,
+          "bottom": 259.49,
           "figure": false
         },
         {
@@ -1245,8 +1245,8 @@
           "page": 6,
           "label": "移除電池後追查通路",
           "sourceSha256": "d6d87e8f2f13fd3565737fba80cbbb85ed6080578b8bad366197f2352d107ac9",
-          "top": 696.89,
-          "bottom": 462.99,
+          "top": 751.89,
+          "bottom": 517.99,
           "figure": true
         },
         {
@@ -1257,8 +1257,8 @@
           "page": 6,
           "label": "辨認燈泡串聯與並聯",
           "sourceSha256": "9b3c920e8a9909b565cb56f5a028378945a46cf774c63d6e708183010aab4ba8",
-          "top": 462.99,
-          "bottom": 244.39,
+          "top": 517.99,
+          "bottom": 299.39,
           "figure": true
         },
         {
@@ -1269,8 +1269,8 @@
           "page": 6,
           "label": "比較燈泡接法與亮度",
           "sourceSha256": "4f73a18c18e7fd7e6fbaa11763f1d91430137841bdc6b1f6fdebe16d8df6ccaf",
-          "top": 244.39,
-          "bottom": 153.19,
+          "top": 299.39,
+          "bottom": 208.19,
           "figure": false
         },
         {
@@ -1281,8 +1281,8 @@
           "page": 6,
           "label": "由一燈故障反推接法",
           "sourceSha256": "03dd97b09852fe2aa1723163ec137d6eb1f4219702c469bcda0d99bfbe3b47d1",
-          "top": 153.19,
-          "bottom": 80.29,
+          "top": 208.19,
+          "bottom": 135.29,
           "figure": false
         },
         {
@@ -1293,8 +1293,8 @@
           "page": 7,
           "label": "判斷小馬達反接的轉向",
           "sourceSha256": "3487010d49c038264d717742ce4c9915879a8ce874acc698e8d2dd8536ca2f8b",
-          "top": 696.89,
-          "bottom": 623.99,
+          "top": 751.89,
+          "bottom": 678.99,
           "figure": false
         },
         {
@@ -1305,8 +1305,8 @@
           "page": 7,
           "label": "判斷傳統燈泡反接",
           "sourceSha256": "40f09110d104ea57ac66afda5b1ea05e55c97b09f446ba103f4330e3179b221e",
-          "top": 623.99,
-          "bottom": 551.09,
+          "top": 678.99,
+          "bottom": 606.09,
           "figure": false
         },
         {
@@ -1317,8 +1317,8 @@
           "page": 7,
           "label": "保留多種故障可能",
           "sourceSha256": "bfb64ee1f926ed6b965c59ff33fec2c86b04c5f8fefdcd806f0a8b4638457973",
-          "top": 551.09,
-          "bottom": 496.49,
+          "top": 606.09,
+          "bottom": 551.49,
           "figure": false
         },
         {
@@ -1329,8 +1329,8 @@
           "page": 7,
           "label": "辨認安全用電行為",
           "sourceSha256": "2e46f3878365eca7d3705cfc8f2d75a915e36e1c1824ce46b73a7bba6658d6b2",
-          "top": 496.49,
-          "bottom": 423.59,
+          "top": 551.49,
+          "bottom": 478.59,
           "figure": false
         },
         {
@@ -1341,8 +1341,8 @@
           "page": 7,
           "label": "保存暫時不用的電池",
           "sourceSha256": "45e468f5e8da0febd7959fed88db42b09e949db6315e981a156be4064682337e",
-          "top": 423.59,
-          "bottom": 368.99,
+          "top": 478.59,
+          "bottom": 423.99,
           "figure": false
         },
         {
@@ -1353,8 +1353,8 @@
           "page": 7,
           "label": "判斷新舊電池能否混用",
           "sourceSha256": "e1179ab9359db6015a47fb48ecfd8d22df7947c83a42cba4f022fb709eac20db",
-          "top": 368.99,
-          "bottom": 296.09,
+          "top": 423.99,
+          "bottom": 351.09,
           "figure": false
         },
         {
@@ -1365,8 +1365,8 @@
           "page": 8,
           "label": "處理用完的電池",
           "sourceSha256": "6a5405708fbba46904ef8f0f9a2cd5ec06c28fed1ef057e3d11e502fe3b63d99",
-          "top": 696.89,
-          "bottom": 642.29,
+          "top": 751.89,
+          "bottom": 697.29,
           "figure": false
         },
         {
@@ -1377,8 +1377,8 @@
           "page": 8,
           "label": "自己舉出節電做法",
           "sourceSha256": "7de6351a69ff7daa55a24054d2f7b9ca1a3af764663b96022f5a8b78462a015e",
-          "top": 642.29,
-          "bottom": 587.69,
+          "top": 697.29,
+          "bottom": 642.69,
           "figure": false
         },
         {
@@ -1389,8 +1389,8 @@
           "page": 8,
           "label": "從短文找出比較證據",
           "sourceSha256": "2c6aea650cfc6c163cb8ff274b35fff86037d54712fb30d80892af6a1ad7dd44",
-          "top": 587.69,
-          "bottom": 514.79,
+          "top": 642.69,
+          "bottom": 569.79,
           "figure": false
         },
         {
@@ -1401,8 +1401,8 @@
           "page": 8,
           "label": "分清文中資料與未知事項",
           "sourceSha256": "26c086873da1073386ff6120e842ea0c6b713f6c46fc7adee91bd07ae5ce7ad4",
-          "top": 514.79,
-          "bottom": 441.89,
+          "top": 569.79,
+          "bottom": 496.89,
           "figure": false
         }
       ],
