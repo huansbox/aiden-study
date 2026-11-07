@@ -1,8 +1,10 @@
 # 四上後半冊家庭複習
 
-本任務由 [#249](https://github.com/huansbox/aiden-study/issues/249) 追蹤，適合四年級孩子。依 115 學年度康軒教材暫定數學 U6–U10、自然 U3–U4、社會 U3–U4；這不是校方正式考試範圍，正式範圍仍未取得。
+本任務適合四年級孩子；既有整合見 [#249](https://github.com/huansbox/aiden-study/issues/249)，本次社會 U3 補強及發布由 [#254](https://github.com/huansbox/aiden-study/issues/254) 追蹤。依 115 學年度康軒教材暫定數學 U6–U10、自然 U3–U4、社會 U3–U4；這不是校方正式考試範圍，正式範圍仍未取得。
 
-自然 104 活動／180 原作答格、社會 53 活動／160 原作答格已隨 rev23 正式上線。本次發布批追加數學 301 活動與電路操作 1 活動，全科合計 924 活動；數學 unit 24–28 分別為 76、62、43、62、58 活動，追加後自然 unit 30 為 52 活動。活動數不等於原作答格或操作決策數。校方正式範圍仍待確認，本任務保持 `in-progress`；既有 #178／#191 的來源及品質 backlog 不因此結案。
+自然 104 活動／180 原作答格、社會 53 活動／160 原作答格已隨 rev23 正式上線。rev24 基線另追加數學 301 活動與電路操作 1 活動，全科合計 924 活動（數學 369／自然 322／社會 233）；數學 unit 24–28 分別為 76、62、43、62、58 活動，自然 unit 30 為 52 活動。
+
+本次社會 U3 發布批已核准追加 15 活動／19 原作答格；追加後全科為 939 活動（數學 369／自然 322／社會 248）。社會 U3 由 11 增為 26 活動，其中「信仰與生活」由 5 增為 15、「老街與生活」由 6 增為 11；U4 保持 42 活動。預期發布版本為 rev25，正式發布與讀回核對仍依 #254 最新 checkpoint，不以候選核准代表已上線。活動數不等於原作答格或操作決策數。校方正式範圍仍待確認，本任務保持 `in-progress`；既有 #178／#191 的來源及品質 backlog 不因此結案。
 
 ## 使用及保留
 
@@ -28,6 +30,10 @@
 - 全量 157 活動、雙尺寸 child／preview 與 17 份獨立 oracle 證據：`integration/qa-science-social-v3-2026-11-07/`。
 - 自然／社會 rev23 的凍結內容、rev22 基線、重建工具、逐檔 SHA、驗證與發布／回復計畫：`integration/science-social-release/`。接手先讀該處 `CHECKPOINT.md` 及 `RELEASE.md`。
 
-自然／社會 rev23 由完整 rev22 接續，保留舊 465 活動／26 分包，新增 157 活動／4 分包。本次數學與電路發布須以已上線的完整 rev23 為基線，核對私人 frozen 資料 hash，再使用本 repo 的 `appendCatalog()` 追加，保持全部舊活動與分包。精確凍結來源、重建及發布交接以 #249 最新 checkpoint 指向的私人附件為準；不可用未審候選或只含新題的包取代完整基線。格式契約見 [四上後半冊接入契約](../../docs-dev/study-final-contract.md)。
+自然／社會 rev23 由完整 rev22 接續，保留舊 465 活動／26 分包，新增 157 活動／4 分包。數學與電路的 rev24 以完整 rev23 為基線；精確凍結來源、重建及發布交接見 #249 checkpoint 指向的私人附件。
+
+本次社會 U3 私人資料另存 Dropbox 相對路徑 `mywork/aiden-study/grade4-sem1-exam2-social-u3-2026-11-07/`。新查核 3 份原卷及 1 份答案卷，採用大墩 112 上期末的 14 活動／16 格、明義 110 上期中的 1 活動／3 格；中山 108 卷保留備查，採用題無官方雙解。候選與來源追溯見該處 `candidate-v2/`、`source-provenance.json` 及 `reviews/root-approved-v2.json`，公開摘要見 [社會 U3 新卷補強批次](../../docs-dev/grade4-social-study-unit-three-more-paper-batch.md)。
+
+本批須以完整 rev24 的 924 活動／43 分包為基線，核對私人 frozen 資料 hash，再使用本 repo 的 `appendCatalog()` 追加，保持全部舊活動與分包。rev25 的精確凍結來源、manifest hash、分包數、驗證與發布／回復紀錄依 #254 最新 checkpoint 指向的私人附件；不可用未審候選或只含新題的包取代完整基線。格式契約見 [四上後半冊接入契約](../../docs-dev/study-final-contract.md)。
 
 公開登錄／首頁重建：`node scripts/build-work-catalog.mjs`、`node scripts/build-home-release.mjs`，並各自以 `--check` 驗證。私人題文與核答不得改成公開測試 fixture。
