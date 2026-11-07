@@ -36,4 +36,4 @@ for (const [file, bytes] of files) {
     if (!matches) throw Error(`Outdated output: ${file}`);
   } else writeFileSync(path, bytes);
 }
-console.log(`Parent quick reference: 2 PDFs / ${data.subjects.flatMap(s => s.units.flatMap(u => u.rows)).length} concepts; ${process.argv.includes('--check') ? 'checked' : 'built'}`);
+console.log(`Parent quick reference: ${data.subjects.length} PDFs / ${data.subjects.flatMap(s => s.units.flatMap(u => u.rows)).length} concepts; ${process.argv.includes('--check') ? 'checked' : 'built'}`);

@@ -19,6 +19,12 @@ def main():
     original = json.loads((SOURCE / "content.json").read_text(encoding="utf-8"))
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
     expected = {item["id"] for unit in original["units"] for item in unit["items"]}
+    retained = {item["id"] for unit in original["units"] if unit["subject"] in ("math", "science") for item in unit["items"]}
+    assert len(retained) == 37, "Retain all 37 original math/science core items"
+    assert len(expected) == sum(len(unit["items"]) for unit in original["units"])
+    assert manifest["legacyItemCount"] == len(expected)
+    assert manifest["rowCount"] == sum(len(unit["rows"]) for subject in data["subjects"] for unit in subject["units"])
+    assert len(manifest["pdfs"]) == len(data["subjects"])
     actual = set()
     for subject in data["subjects"]:
         record = next(pdf for pdf in manifest["pdfs"] if pdf["file"] == subject["filename"])
@@ -60,8 +66,8 @@ def main():
             assert legacy["rows"] == [r["id"] for r in record["coverage"] if legacy["id"] in r["legacyIds"]]
             assert legacy["pages"] == sorted({r["page"] for r in record["coverage"] if legacy["id"] in r["legacyIds"]})
         print(f"{subject['id']}: {len(reader.pages)} pages / {len(source_rows)} rows; text, fonts, manifest and public copy verified")
-    assert actual == expected and len(expected) == 37
-    print("All 37 original core items covered.")
+    assert actual == expected and retained.issubset(actual)
+    print(f"All {len(expected)} core items covered, including all 37 original math/science items.")
 
 
 if __name__ == "__main__":
