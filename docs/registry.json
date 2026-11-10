@@ -5,6 +5,7 @@
     { "id": "bingpu", "name": "秉樸", "emoji": "🧒" }
   ],
   "mindMaps": [
+    { "id": "astrea", "title": "正義女神阿絲特蕾亞", "date": "2026-11-10", "path": "astrea-mind-map/" },
     { "id": "thousand-strings", "title": "一千根琴弦", "date": "2026-10-06", "path": "thousand-strings-mind-map/" },
     { "id": "love-sharing", "title": "愛的分享", "date": "2026-09-29", "path": "love-sharing-mind-map/" },
     { "id": "leisure-afternoon", "title": "悠閒午後", "date": "2026-09-15", "path": "leisure-mind-map/" },

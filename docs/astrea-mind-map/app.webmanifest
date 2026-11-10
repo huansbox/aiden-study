@@ -1,0 +1,11 @@
+{
+  "id":"./",
+  "name":"正義女神阿絲特蕾亞 · 閱讀心智圖",
+  "short_name":"正義女神阿絲特蕾亞",
+  "lang":"zh-TW",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f7f5ee",
+  "theme_color":"#f7f5ee"
+}

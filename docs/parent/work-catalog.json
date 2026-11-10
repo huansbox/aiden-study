@@ -1549,6 +1549,46 @@
       }
     },
     {
+      "id": "task:astrea",
+      "type": "task",
+      "name": "正義女神阿絲特蕾亞閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "已完成內容審查與隔離瀏覽器驗證。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/astrea",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/astrea"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/astrea",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../astrea-mind-map/"
+        }
+      ],
+      "description": "依故事順序選詞，從右上方順時針抄寫五條主枝。",
+      "eventDate": "2026-11-10",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:thousand-strings",
       "type": "task",
       "name": "一千根琴弦閱讀心智圖",
