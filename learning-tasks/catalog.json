@@ -566,6 +566,17 @@
       ]
     },
     {
+      "id": "astrea",
+      "name": "正義女神阿絲特蕾亞閱讀心智圖",
+      "status": "complete",
+      "statusNote": "已完成內容審查與隔離瀏覽器驗證。",
+      "eventDate": "2026-11-10",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "依故事順序選詞，從右上方順時針抄寫五條主枝。",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "availability": "available", "links": [{"label": "網頁", "url": "../astrea-mind-map/"}]
+    },
+    {
       "id": "thousand-strings",
       "name": "一千根琴弦閱讀心智圖",
       "status": "complete",
