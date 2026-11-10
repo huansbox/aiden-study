@@ -1580,8 +1580,8 @@
       "eventDate": "2026-11-10",
       "groupId": "reading-mind-maps",
       "groupName": "閱讀心智圖",
-      "created": null,
-      "updated": null,
+      "created": "2026-11-10",
+      "updated": "2026-11-10",
       "freshness": {
         "state": "current",
         "checkedAt": null,
