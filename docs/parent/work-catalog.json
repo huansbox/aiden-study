@@ -370,6 +370,48 @@
       }
     },
     {
+      "id": "task:triangle-videos",
+      "type": "task",
+      "name": "三角形兩個為什麼（動畫短片）",
+      "audience": [],
+      "audienceLabel": "小學四年級；可親子共看",
+      "status": "in-progress",
+      "statusNote": "第二版 MP4 已輸出，逐句稿經另一模型審查、畫面逐段抽格檢查；AI 旁白未經人耳驗聽，孩子尚未實看，旁白用哪種聲音待家長決定。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/triangle-videos",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/triangle-videos"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/triangle-videos",
+      "links": [
+        {
+          "label": "內角和 180 度",
+          "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-angles-180.mp4"
+        },
+        {
+          "label": "三邊長規則",
+          "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-sides-rule.mp4"
+        }
+      ],
+      "description": "兩部臺灣中文旁白動畫，結論先講：長方形切一半加鉛筆轉半圈說明內角和 180 度；棒子當手臂與開關門說明兩邊相加大於、相減小於第三邊。",
+      "eventDate": null,
+      "groupId": null,
+      "groupName": null,
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:grade4-sem1-exam2",
       "type": "task",
       "name": "四上後半冊家庭複習",
