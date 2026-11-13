@@ -403,8 +403,8 @@
       "eventDate": null,
       "groupId": null,
       "groupName": null,
-      "created": null,
-      "updated": null,
+      "created": "2026-11-13",
+      "updated": "2026-11-13",
       "freshness": {
         "state": "current",
         "checkedAt": null,

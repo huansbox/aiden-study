@@ -14,7 +14,7 @@ export const VIDEOS = ['v1-angles', 'v2-sides'];
 export const VARIANT = process.env.VOICE === 'clone' ? 'clone' : 'edge';
 export const PRIVATE = process.env.TRIANGLE_PRIVATE_DIR;
 if (VARIANT === 'clone' && !PRIVATE) throw new Error('VOICE=clone needs TRIANGLE_PRIVATE_DIR (a private folder outside the repo)');
-export const audioDir = (video) => (VARIANT === 'clone' ? join(PRIVATE, 'audio-clone', video.id) : join(ROOT, 'assets/audio', video.id));
+export const audioDir = (video, variant = VARIANT) => (variant === 'clone' ? join(PRIVATE, 'audio-clone', video.id) : join(ROOT, 'assets/audio', video.id));
 export const clipName = (scene, line) => `${scene.id}-${line.id}.mp3`;
 const sha = (data) => createHash('sha256').update(data).digest('hex');
 const cloneKey = () => [sha(readFileSync(process.env.INDEXTTS_REF)), readFileSync(join(ROOT, 'source/pronunciation.json'), 'utf8')];
@@ -23,8 +23,8 @@ const TRIM = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=
 const toClip = (from, to) => execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', from, '-af', `${TRIM},areverse,${TRIM},areverse`, '-ar', '48000', '-ac', '1', '-b:a', '128k', to]);
 const duration = (file) => Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file]).toString());
 
-export function loadManifest(video) {
-  const file = join(audioDir(video), 'manifest.json');
+export function loadManifest(video, variant = VARIANT) {
+  const file = join(audioDir(video, variant), 'manifest.json');
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
 }
 

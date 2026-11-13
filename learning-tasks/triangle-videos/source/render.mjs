@@ -15,8 +15,8 @@ GlobalFonts.registerFromPath(join(fonts, 'YuantiTC-Bold.ttf'), 'KidRound');
 GlobalFonts.registerFromPath(join(fonts, 'PingFangTC-Semibold.ttf'), 'KidFallback');
 
 /** Scene/line start times derived from the measured narration clips. */
-export function timeline(video) {
-  const clips = loadManifest(video);
+export function timeline(video, variant = VARIANT) {
+  const clips = loadManifest(video, variant);
   let at = 0;
   const scenes = video.scenes.map((scene, index) => {
     const L = {}, E = {}, lines = [];
@@ -25,7 +25,7 @@ export function timeline(video) {
       const clip = clips[clipName(scene, line)];
       if (!clip || clip.text !== line.text) throw new Error(`audio for ${scene.id}-${line.id} is missing or stale; run make_audio`);
       L[line.id] = t; E[line.id] = t + clip.duration;
-      lines.push({ ...line, file: join(audioDir(video), clipName(scene, line)), start: at + t, end: at + t + clip.duration });
+      lines.push({ ...line, file: join(audioDir(video, variant), clipName(scene, line)), start: at + t, end: at + t + clip.duration });
       t += clip.duration + (line.gap ?? GAP);
     }
     const dur = t - (scene.lines.at(-1).gap ?? GAP) + Math.max(TAIL, scene.lines.at(-1).gap ?? 0);
@@ -36,12 +36,22 @@ export function timeline(video) {
   return { scenes, total: at };
 }
 
+// Animation cues are written against the default (Edge) narration. Another voice speaks each line at a different
+// pace, so its scene time is mapped onto the default one line by line: the drawing code always sees default timing.
+function warp(x, from, to) {
+  const xs = [0], ys = [0];
+  for (const id of Object.keys(from.L)) { xs.push(from.L[id], from.E[id]); ys.push(to.L[id], to.E[id]); }
+  xs.push(from.dur); ys.push(to.dur);
+  for (let i = 1; i < xs.length; i++) if (x <= xs[i]) return xs[i] === xs[i - 1] ? ys[i] : ys[i - 1] + (ys[i] - ys[i - 1]) * (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
+  return ys.at(-1);
+}
+
 function drawFrame(ctx, tl, T) {
   const sc = tl.scenes.findLast((s) => T >= s.start) ?? tl.scenes[0];
-  const t = T - sc.start;
+  const t = T - sc.start, ref = sc.ref ?? sc;
   background(ctx);
   ctx.save();
-  sc.scene.draw(ctx, { t, L: sc.L, E: sc.E, dur: sc.dur });
+  sc.scene.draw(ctx, { t: sc.ref ? warp(t, sc, ref) : t, L: ref.L, E: ref.E, dur: ref.dur });
   ctx.restore();
   chapter(ctx, sc.index + 1, sc.scene.title);
   const veil = Math.max(1 - t / FADE, 1 - (sc.dur - t) / FADE, 0);
@@ -61,6 +71,7 @@ async function main() {
   const name = args[0];
   const video = (await import(`./${name}.mjs`)).default;
   const tl = timeline(video);
+  if (VARIANT !== 'edge') timeline(video, 'edge').scenes.forEach((ref, i) => { tl.scenes[i].ref = ref; });
   const canvas = createCanvas(W, H), ctx = canvas.getContext('2d');
   const mine = VARIANT === 'clone'; // cloned-voice renders stay in the private folder
   const work = join(ROOT, '.cache/render'), outDir = mine ? join(PRIVATE, 'output') : join(ROOT, 'output');
@@ -99,7 +110,7 @@ async function main() {
 
   const lines = tl.scenes.flatMap((s) => s.lines);
   writeFileSync(srt, lines.map((l, i) => `${i + 1}\n${stamp(l.start)} --> ${stamp(l.end + 0.15)}\n${l.text}\n`).join('\n'));
-  const cues = tl.scenes.flatMap((s) => (s.scene.sfx?.({ L: s.L, E: s.E, dur: s.dur }) ?? []).map((c) => ({ at: s.start + c.t, k: c.k })));
+  const cues = tl.scenes.flatMap((s) => { const ref = s.ref ?? s; return (s.scene.sfx?.({ L: ref.L, E: ref.E, dur: ref.dur }) ?? []).map((c) => ({ at: s.start + (s.ref ? warp(c.t, ref, s) : c.t), k: c.k })); });
   const inputs = [], filters = [], labels = [];
   lines.forEach((l, i) => { inputs.push('-i', l.file); filters.push(`[${i + 1}:a]adelay=${Math.round(l.start * 1000)}:all=1[a${i}]`); labels.push(`[a${i}]`); });
   cues.forEach((c, j) => { const i = lines.length + j; inputs.push('-f', 'lavfi', '-i', CUES[c.k]); filters.push(`[${i + 1}:a]adelay=${Math.round(c.at * 1000)}:all=1[a${i}]`); labels.push(`[a${i}]`); });

@@ -64,6 +64,8 @@ export INDEXTTS_REF=<參考音.wav>
 node source/make_audio.mjs && node source/render.mjs v1-angles && node source/render.mjs v2-sides
 ```
 
+動畫時間是照預設旁白寫的；換聲音後語速不同，`render.mjs` 會逐句把時間對應回去，不用改動畫。
+
 多音字念錯時，把該詞加進 `source/pronunciation.json`（右邊寫大寫拼音加聲調數字），再重跑；只有受影響的句子會重新合成。
 
 ## 限制
