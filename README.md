@@ -32,6 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [三角形兩個為什麼（動畫短片）](learning-tasks/triangle-videos/) | 兩部臺灣中文旁白動畫，結論先講：長方形切一半加鉛筆轉半圈說明內角和 180 度；棒子當手臂與開關門說明兩邊相加大於、相減小於第三邊。 | [內角和 180 度](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-angles-180.mp4)、[三邊長規則](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-sides-rule.mp4) |
 | [四上後半冊家庭複習](learning-tasks/grade4-sem1-exam2/) | 四上後半冊數學U6–10、自然聲光與電路、社會信仰老街與作息節慶家庭複習。 | [家長備考速查 PDF](docs/parent/exam2-guide/) |
 | [數線長短差](learning-tasks/number-line-difference/) | 固定五題，先理解為何求中間段，再點圖上長短段計算；算對自動標回上下弧線，接續過渡與獨立紙本。 | [Pad 教學](docs/number-line-difference/?child=aiden)、[家長試玩](docs/number-line-difference/?preview=1) |
 | [水的循環：一滴水的旅行](learning-tasks/water-cycle/) | 滿版紙張拼貼互動繪本；中文親子共看與英文短句故事，直接碰太陽、雲、水滴、雪花、冰粒與河流。 | [試玩新版③④幕](docs/water-cycle/prototype/)、[既有水的旅行](docs/water-cycle/) |

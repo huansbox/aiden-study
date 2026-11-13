@@ -1,0 +1,157 @@
+{
+  "answer-a.mp3": {
+    "hash": "fa03c3a7d5b8701e",
+    "text": "先告訴你答案：三根棒子要圍成三角形，兩根短的加起來，一定要比最長的那根還長。",
+    "duration": 8.173
+  },
+  "answer-b.mp3": {
+    "hash": "17bc49ea7871ba5e",
+    "text": "為什麼呢？我們拿棒子來試試看。",
+    "duration": 3.746
+  },
+  "short-a.mp3": {
+    "hash": "84f7fffe556d5709",
+    "text": "這三根棒子，長度是八公分、四公分和兩公分。",
+    "duration": 4.782
+  },
+  "short-b.mp3": {
+    "hash": "60ece78f4e77ef10",
+    "text": "把最長的八公分放在地上，兩根短的接在兩邊，像兩隻手臂。",
+    "duration": 5.78
+  },
+  "short-c.mp3": {
+    "hash": "68514e1a967f410f",
+    "text": "兩隻手臂往中間靠，想要牽手……",
+    "duration": 3.169
+  },
+  "short-d.mp3": {
+    "hash": "d2a22e39ca7af446",
+    "text": "牽不到！就算整個躺平，還是差一大截。",
+    "duration": 4.667
+  },
+  "short-e.mp3": {
+    "hash": "50d891f7f71360c2",
+    "text": "因為四加二只有六，比八還要短。所以圍不成三角形。",
+    "duration": 5.937
+  },
+  "equal-a.mp3": {
+    "hash": "d2cff6693ce803f0",
+    "text": "那把兩公分換成四公分呢？四加四，剛好等於八。",
+    "duration": 5.617
+  },
+  "equal-b.mp3": {
+    "hash": "e4e4087f5c39a73e",
+    "text": "手臂往中間靠……牽到了！可是，要整個躺平才牽得到。",
+    "duration": 5.983
+  },
+  "equal-c.mp3": {
+    "hash": "9cb41abd06fb15ba",
+    "text": "三根棒子疊成一條線，扁扁的，裡面沒有空間，這不是三角形。",
+    "duration": 6.268
+  },
+  "works-a.mp3": {
+    "hash": "45c376467bac24b8",
+    "text": "再換一根長一點的：六公分。四加六等於十，比八還長。",
+    "duration": 6.362
+  },
+  "works-b.mp3": {
+    "hash": "ef69a8041e99bdaa",
+    "text": "這次手臂不用躺平，在半空中就牽到手了！",
+    "duration": 4.081
+  },
+  "works-c.mp3": {
+    "hash": "fda706a53ac9bfad",
+    "text": "中間撐出一個空間，三角形完成！",
+    "duration": 3.35
+  },
+  "works-d.mp3": {
+    "hash": "ef31b1ed5d8f7311",
+    "text": "跟一開始說的一樣：兩根短的加起來，要比最長的那根還長。",
+    "duration": 5.593
+  },
+  "why-a.mp3": {
+    "hash": "e775a6bf5ff6756e",
+    "text": "為什麼呢？想想看走路。",
+    "duration": 3.081
+  },
+  "why-b.mp3": {
+    "hash": "81d2c2de891546ea",
+    "text": "從家裡到學校，直直走是最近的路。",
+    "duration": 3.47
+  },
+  "why-c.mp3": {
+    "hash": "20120fa5784d5c1d",
+    "text": "如果先繞去便利商店，再去學校，一定比較遠。",
+    "duration": 4.509
+  },
+  "why-d.mp3": {
+    "hash": "536bc536986c8dc5",
+    "text": "三角形也是一樣：繞路的兩條邊加起來，一定比直直走的那條邊長。",
+    "duration": 6.44
+  },
+  "why-e.mp3": {
+    "hash": "caf95c7adfa66b34",
+    "text": "而且三條邊，不管挑哪一條當直路，都是這樣。",
+    "duration": 4.492
+  },
+  "door-a.mp3": {
+    "hash": "acbe00068b9a942e",
+    "text": "還有一個說法：第三邊的長度，一定比另外兩邊相減大，比兩邊相加小。",
+    "duration": 6.671
+  },
+  "door-b.mp3": {
+    "hash": "9b94d92d55c9a088",
+    "text": "看這兩根棒子，八公分和三公分，一頭釘在一起，像一扇門。",
+    "duration": 5.989
+  },
+  "door-c.mp3": {
+    "hash": "1650fb13ebdde519",
+    "text": "門關起來的時候，兩個尖端最近，距離是八減三，等於五。",
+    "duration": 5.607
+  },
+  "door-d.mp3": {
+    "hash": "8ce26073460c1e0f",
+    "text": "門完全打開的時候，尖端最遠，距離是八加三，等於十一。",
+    "duration": 5.729
+  },
+  "door-e.mp3": {
+    "hash": "7c55805e4aad141f",
+    "text": "可是關到底，或是開到底，都是扁扁的一條線。",
+    "duration": 4.395
+  },
+  "door-f.mp3": {
+    "hash": "2c5c480d3a105a0b",
+    "text": "要變成三角形，門只能開在中間。所以第三邊一定比五大，又比十一小。",
+    "duration": 7.673
+  },
+  "door-g.mp3": {
+    "hash": "3124572dbe8731d5",
+    "text": "也就是：比兩邊相減大，比兩邊相加小。",
+    "duration": 4.021
+  },
+  "quiz-a.mp3": {
+    "hash": "50de9871be1e1e2f",
+    "text": "來挑戰一題！三公分、四公分、八公分，可以圍成三角形嗎？",
+    "duration": 7.094
+  },
+  "quiz-b.mp3": {
+    "hash": "96b79a9edc475cb7",
+    "text": "不行！三加四等於七，比八小，手牽不到。",
+    "duration": 5.111
+  },
+  "quiz-c.mp3": {
+    "hash": "d5b4ec9859a0e1ce",
+    "text": "那五公分、六公分、十公分呢？",
+    "duration": 3.069
+  },
+  "quiz-d.mp3": {
+    "hash": "26b1906070c0f4f4",
+    "text": "可以！五加六等於十一，比十大。",
+    "duration": 3.919
+  },
+  "quiz-e.mp3": {
+    "hash": "09d749b850b56e01",
+    "text": "記住囉：兩根短的加起來，比最長的還長，才能圍成三角形。我們下次見！",
+    "duration": 8.114
+  }
+}
