@@ -37,7 +37,16 @@ function showStorageStatus() {
 function addNotes(list, notes) {
   for (const note of notes) {
     const item = document.createElement('li');
-    item.textContent = note;
+    note.split(/(李斯特|蕭邦|原諒|聽完)/g).forEach((part, index) => {
+      if (index % 2 === 0) {
+        item.append(part);
+      } else {
+        const word = document.createElement('span');
+        word.className = 'keep-together';
+        word.textContent = part;
+        item.append(word);
+      }
+    });
     list.append(item);
   }
 }
@@ -95,19 +104,12 @@ function drawLines() {
     const towardNotes = upper ? heading.top - 4 : heading.bottom + 4;
     let path = `M ${x} ${y} L ${labelX} ${towardTitle}`;
 
-    const notes = [...branch.querySelectorAll('li')];
-    if (notes.length && index === 2) {
-      // 下方一枝保留原本的向下分叉，三句可各自換行。
-      const fork = towardNotes + 6;
-      const leaves = notes.map(bounds);
-      const centers = leaves.map(xCenter);
-      path += ` M ${labelX} ${towardNotes} V ${fork} M ${centers[0]} ${fork} H ${centers.at(-1)}`;
-      leaves.forEach((leaf, i) => { path += ` M ${centers[i]} ${fork} V ${leaf.top - 3}`; });
-    } else if (notes.length) {
+    const list = branch.querySelector('ul');
+    if (list) {
       const left = index > 2;
-      const section = bounds(branch);
-      const stem = left ? section.right - 7 : section.left + 7;
-      const leaves = notes.map(note => {
+      const noteBounds = bounds(list);
+      const stem = left ? noteBounds.right - 7 : noteBounds.left + 7;
+      const leaves = [...list.children].map(note => {
         const rect = bounds(note);
         const lineHeight = parseFloat(getComputedStyle(note).lineHeight);
         return {x: left ? rect.right + 4 : rect.left - 4, y: rect.top + lineHeight / 2};
