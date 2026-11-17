@@ -35,6 +35,7 @@
       background: rgba(255, 255, 255, 0.85); color: #0b3b2e; font-weight: 700;
     }
     .blocked-msg { text-align: center; color: #e8f5e9; padding: 60px 20px; font-size: 1.1rem; }
+    .family-child .blocked-msg { color: inherit; }
     a#child-badge { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
     a#child-badge[hidden] { display: none; }
   </style>
@@ -122,8 +123,8 @@ const WIRING_CONFIG = { appId: "math", schemaVersion: 1, legacyChild: "aiden", l
 // key 空間不互撞由 tests/test_math_child_store.mjs 釘住）。math 也無匯入／重置通道。
 const wiring = KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
-if (!window.KidsFamily?.maintenance) document.body.classList.add("child-ui", "child-page");
 window.MathFamily = window.KidsFamily?.mount("math", currentChild) || null;
+if (window.MathFamily) document.body.classList.add("child-page");
 const storageKey = wiring ? wiring.store.progressKey(currentChild) : null;
 let sync = null;
 let adoptCb = null;
