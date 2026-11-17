@@ -75,20 +75,49 @@ function renderMap() {
 function drawLines() {
   const svg = map.querySelector('svg');
   const area = map.getBoundingClientRect();
-  const midpoint = element => {
+  const bounds = element => {
     const rect = element.getBoundingClientRect();
-    return {x: rect.left + rect.width / 2 - area.left, y: rect.top + rect.height / 2 - area.top};
+    return {
+      left: rect.left - area.left, right: rect.right - area.left,
+      top: rect.top - area.top, bottom: rect.bottom - area.top
+    };
   };
-  const start = midpoint(map.querySelector('.center-node'));
+  const xCenter = rect => (rect.left + rect.right) / 2;
+  const center = bounds(map.querySelector('.center-node'));
+  const x = xCenter(center);
+  const y = (center.top + center.bottom) / 2;
   svg.setAttribute('viewBox', '0 0 ' + area.width + ' ' + area.height);
   svg.replaceChildren(...[...map.querySelectorAll('.branch')].map((branch, index) => {
-    const end = midpoint(branch);
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    // 上排連線沿中央空白先往上，避免穿過左右兩側的故事分枝。
-    const topBranch = index === 0 || index === BRANCHES.length - 1;
-    const channel = start.x + Math.sign(end.x - start.x) * 16;
-    const points = topBranch ? [[channel, start.y], [channel, end.y], [end.x, end.y]] : [[start.x, start.y], [end.x, end.y]];
-    line.setAttribute('points', points.map(point => point.join(',')).join(' '));
+    const heading = bounds(branch.querySelector('h3 button'));
+    const upper = index === 0 || index === BRANCHES.length - 1;
+    const labelX = xCenter(heading);
+    const towardTitle = upper ? heading.bottom + 4 : heading.top - 4;
+    const towardNotes = upper ? heading.top - 4 : heading.bottom + 4;
+    let path = `M ${x} ${y} L ${labelX} ${towardTitle}`;
+
+    const notes = [...branch.querySelectorAll('li')];
+    if (notes.length && index === 2) {
+      // 下方一枝保留原本的向下分叉，三句可各自換行。
+      const fork = towardNotes + 6;
+      const leaves = notes.map(bounds);
+      const centers = leaves.map(xCenter);
+      path += ` M ${labelX} ${towardNotes} V ${fork} M ${centers[0]} ${fork} H ${centers.at(-1)}`;
+      leaves.forEach((leaf, i) => { path += ` M ${centers[i]} ${fork} V ${leaf.top - 3}`; });
+    } else if (notes.length) {
+      const left = index > 2;
+      const section = bounds(branch);
+      const stem = left ? section.right - 7 : section.left + 7;
+      const leaves = notes.map(note => {
+        const rect = bounds(note);
+        const lineHeight = parseFloat(getComputedStyle(note).lineHeight);
+        return {x: left ? rect.right + 4 : rect.left - 4, y: rect.top + lineHeight / 2};
+      });
+      path += ` M ${labelX} ${towardNotes} H ${stem} V ${upper ? leaves[0].y : leaves.at(-1).y}`;
+      leaves.forEach(leaf => { path += ` M ${stem} ${leaf.y} H ${leaf.x}`; });
+    }
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    line.setAttribute('d', path);
     line.setAttribute('stroke', getComputedStyle(branch).getPropertyValue('--branch-color'));
     return line;
   }));
