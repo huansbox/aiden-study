@@ -54,13 +54,13 @@ const BRANCHES = [
     ]
   },
   {
-    id: 'lesson', label: '李斯特收徒', min: 1, max: 1,
+    id: 'lesson', label: '收徒', min: 1, max: 1,
     question: '李斯特聽了姑娘的苦衷，怎麼幫她？',
     prompt: '選一組，記下他給姑娘的幫助。',
     hint: '李斯特請她先彈一遍，指出哪裡可以改進，也親自示範彈法。他和氣地收她為學生，還請她在海報上加印李斯特將親自到場演奏的消息。',
     choices: [
-      {id: 'lesson-teach', words: ['教她彈', '將演奏']},
-      {id: 'lesson-method', words: ['教彈法', '將演奏']}
+      {id: 'lesson-teach', words: ['教她彈', '李斯特將演奏']},
+      {id: 'lesson-method', words: ['教彈法', '李斯特將演奏']}
     ]
   }
 ];

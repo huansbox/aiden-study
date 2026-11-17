@@ -24,7 +24,7 @@ test('付出比收穫更可貴：所有選法保留兩次幫助的情節與結�
     assert.match(chopin, /蕭邦.*流亡巴黎.*窮.*無名/);
     assert.match(stage, /讓舞臺.*熄燈換手.*一[夕夜]成名/);
     assert.match(girl, /姑娘.*為(生計|生活).*[冒假]稱學生/);
-    assert.match(lesson, /李斯特收徒.*教(她彈|彈法).*將演奏/);
+    assert.match(lesson, /收徒.*教(她彈|彈法).*李斯特將演奏/);
   }
 });
 
