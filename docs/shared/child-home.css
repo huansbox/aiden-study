@@ -25,6 +25,7 @@
 .child-ui .daily-goal { flex-wrap: wrap; align-content: center; gap: 6px 14px; }
 .child-ui .daily-goal-title { overflow-wrap: anywhere; }
 .child-ui .daily-goal-count { white-space: nowrap; }
+.child-ui .daily-goal.done .daily-goal-count { white-space: normal; }
 .child-ui .daily-bonus { display: inline-flex; align-items: center; min-height: var(--child-touch); }
 .child-ui .activity-grid { gap: var(--child-gap); }
 .child-ui .family-activity.child-card { background: var(--child-soft); }

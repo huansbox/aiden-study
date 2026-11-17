@@ -115,7 +115,7 @@
       const label = entry?.title || goal.label || names[goal.entryId] || goal.entryId;
       const unit = goal.metric === "answered" ? "題" : "輪";
       const href = entry && esc(F.entryHref(entry, child.id));
-      const content = `<span class="daily-goal-title">${esc(label)}</span><strong>必做 <span class="daily-goal-count">${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${unit}</span>${goal.done ? " · 已完成" : ""}</strong>`;
+      const content = `<span class="daily-goal-title">${esc(label)}</span><strong class="daily-goal-count">必做 ${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${unit}${goal.done ? " · 已完成" : ""}</strong>`;
       if (entry && goal.done && state.daily.repeatable && state.daily.rulesConfirmed) {
         const remaining = goal.nextRewardRemaining ?? goal.quantity - (goal.bonusProgress || 0);
         return `<section class="daily-goal done"><div>${content}<p>今日累積 ${goal.progress} ${unit}</p><a class="daily-bonus" href="${href}">加碼再做 ${remaining} ${unit}，可再得 1 包 →</a><p>${goal.rewardOffset ? `已領額度抵扣 ${goal.rewardOffset} 包；` : `目前加碼進度 ${goal.bonusProgress || 0} / ${goal.quantity} ${unit}；`}若只練這項，距離下一包還差 ${remaining} ${unit}。</p></div></section>`;
