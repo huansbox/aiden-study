@@ -39,6 +39,13 @@ const BOSS_STAGES = [
 ];
 let bossMode = null; // null | { stage, lives, totalErrors, starsEarned }
 
+function scheduleBossTransition(action, delay) {
+  const challenge = bossMode;
+  setTimeout(() => {
+    if (bossMode === challenge) action(challenge);
+  }, delay);
+}
+
 function startNewProblem() {
   beginCollectionRound();
   family?.setActive(true);
@@ -331,7 +338,7 @@ function onBossError() {
   updateBossUI();
 
   if (bossMode.lives <= 0) {
-    setTimeout(() => showBossDefeat(), 500);
+    scheduleBossTransition(showBossDefeat, 500);
   }
 }
 
@@ -347,9 +354,7 @@ function onBossProblemComplete() {
   if (bossMode.stage < BOSS_STAGES.length - 1) {
     hintEl.textContent = `第${bossMode.stage + 1}關完成`;
     bossMode.stage++;
-    setTimeout(() => {
-      startBossStageProblem();
-    }, 2500);
+    scheduleBossTransition(startBossStageProblem, 2500);
   } else {
     const perfectBonus = bossMode.totalErrors === 0 ? 5 : 0;
     if (perfectBonus > 0) {
@@ -358,11 +363,12 @@ function onBossProblemComplete() {
       PLATFORM.saveProgress(progress);
       updateTotalStars();
     }
-    setTimeout(() => showBossVictory(bossMode.starsEarned, perfectBonus), 500);
+    scheduleBossTransition((challenge) => showBossVictory(challenge.starsEarned, perfectBonus), 500);
   }
 }
 
 function showBossVictory(totalStars, perfectBonus) {
+  const challenge = bossMode;
   family?.finishRound(collectionRound);
   const overlay = document.createElement('div');
   overlay.className = 'fireworks-overlay';
@@ -386,11 +392,12 @@ function showBossVictory(totalStars, perfectBonus) {
   setTimeout(() => {
     cleanup();
     overlay.remove();
-    exitBossMode();
+    if (bossMode === challenge) exitBossMode();
   }, 5000);
 }
 
 function showBossDefeat() {
+  const challenge = bossMode;
   family?.finishRound(collectionRound);
   const overlay = document.createElement('div');
   overlay.className = 'celebration';
@@ -421,7 +428,7 @@ function showBossDefeat() {
 
   setTimeout(() => {
     overlay.remove();
-    exitBossMode();
+    if (bossMode === challenge) exitBossMode();
   }, 3000);
 }
 
@@ -512,7 +519,7 @@ function onProblemComplete() {
 }
 
 function handleDigit(digit) {
-  if (!state || state.currentIndex >= state.fillable.length) return;
+  if (!state || state.currentIndex >= state.fillable.length || bossMode?.lives === 0) return;
 
   const cell = state.fillable[state.currentIndex];
   const el = getCellEl(cell.order);

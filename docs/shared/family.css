@@ -617,7 +617,7 @@
 }
 .family-child.spelling-child > header,
 .family-child.spelling-child > footer,
-.family-child.spelling-child > div,
+.family-child.spelling-child > :is(#bootcamp-banner, #main-progress-container, #bootcamp-header, #log-modal, #generic-modal),
 .family-child.spelling-child > main:not(.family-self-spelling) {
   display: none !important;
 }
