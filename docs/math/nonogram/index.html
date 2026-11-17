@@ -23,18 +23,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260604f">
-<link rel="stylesheet" href="../../shared/family.css?v=20260916-articles"></head>
-<body>
+  <link rel="stylesheet" href="css/style.css?v=20261117-child-ui">
+  <link rel="stylesheet" href="../../shared/family.css?v=20261117-child-ui">
+  <link rel="stylesheet" href="../../shared/child-practice.css?v=20261117-child-ui-layout">
+</head>
+<body data-child-theme="puzzle" data-child-home-label="← 回學習首頁">
   <div class="container">
     <header class="header">
       <a id="child-home" href="../../?child=aiden" style="display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none">← 回哥哥首頁</a>
-      <h1 class="title">數織解謎</h1>
+      <h1 class="title child-heading">數織解謎</h1>
       <p class="subtitle">看提示塗格子，猜出隱藏的單字！</p>
     </header>
 
     <!-- 首頁：編號題庫（不顯示單字以免劇透） -->
-    <main id="home" class="card home" hidden>
+    <main id="home" class="card home child-card" hidden>
       <!-- 設定：齒輪鈕收合，點開才浮出設定面板（省主畫面空間）。 -->
       <button id="settings-toggle" class="settings-toggle" aria-label="設定" aria-expanded="false" aria-controls="settings">⚙️</button>
       <section id="settings" class="settings" aria-label="設定" hidden>
@@ -55,6 +57,10 @@
       </section>
 
       <h2 class="home-title">選一題開始玩</h2>
+      <div id="library-progress" class="child-progress library-progress" hidden>
+        <span id="library-progress-label"></span>
+        <progress id="library-progress-meter" class="child-progress-meter" max="1" value="0" aria-label="題庫過關進度"></progress>
+      </div>
       <div id="library" class="library" aria-label="題庫"></div>
 
       <!-- 自訂出題：暫時從首頁隱藏（程式碼與測試保留），待主畫面優化後由 app.js 的 SHOW_CUSTOM 開回。 -->
@@ -69,9 +75,9 @@
     </main>
 
     <!-- 遊戲畫面 -->
-    <main id="game" class="card" hidden>
+    <main id="game" class="card child-card" hidden>
       <div class="game-top">
-        <button id="home-btn" class="btn btn--ghost">← 題庫</button>
+        <button id="home-btn" class="btn btn--ghost child-action back">← 回數織題庫</button>
         <span id="puzzle-label" class="puzzle-label"></span>
       </div>
 
@@ -87,31 +93,30 @@
       <div id="answer" class="answer" role="button" tabindex="0"
            aria-label="答案欄，點一下打字"></div>
 
-      <div id="actions" class="actions">
-        <button id="check-btn" class="btn btn--primary">檢查</button>
-        <button id="reveal-btn" class="btn btn--ghost">看答案</button>
-        <button id="replay-btn" class="btn btn--ghost" hidden>重玩</button>
-        <button id="next-btn" class="btn btn--accent" hidden>下一題 →</button>
+      <p id="hint" class="hint" role="status"></p>
+      <div id="actions" class="actions child-actions">
+        <button id="check-btn" class="btn btn--primary child-action primary">檢查</button>
+        <button id="reveal-btn" class="btn btn--ghost child-action">看答案</button>
+        <button id="replay-btn" class="btn btn--ghost child-action" hidden>重玩</button>
+        <button id="next-btn" class="btn btn--accent child-action primary" hidden>下一題 →</button>
       </div>
-
-      <p id="hint" class="hint"></p>
     </main>
 
     <!-- 螢幕鍵盤抽屜（緊接遊戲卡片下方、in-flow；點答案欄展開、收起時收合）-->
     <div id="kb-drawer" class="kb-drawer">
       <div class="kb-drawer__bar">
         <span class="kb-drawer__tip">用鍵盤打出你猜的單字</span>
-        <button id="kb-close" class="btn btn--ghost">收起</button>
+        <button id="kb-close" class="btn btn--ghost child-action">收起</button>
       </div>
       <div class="keyboard" id="keyboard"></div>
     </div>
 
     <!-- 全部過關畫面 -->
-    <main id="allclear" class="card allclear" hidden>
+    <main id="allclear" class="card allclear child-summary" hidden>
       <div class="allclear-emoji">🏆</div>
       <h2 class="allclear-title">全部過關！</h2>
       <p class="allclear-sub">你把所有題目都破完了，太厲害了！</p>
-      <button id="allclear-home-btn" class="btn btn--primary">回題庫看星星 ★</button>
+      <button id="allclear-home-btn" class="btn btn--primary child-action primary">回數織題庫</button>
     </main>
   </div>
 
@@ -124,6 +129,6 @@
   </script>
   <script src="../../shared/device-auth.js?v=20260916-session"></script><script src="../../shared/sync-v1.js?v=20260918-shared-ack"></script><script src="../../shared/family-core.js?v=20261107-math-circuit-release"></script><script src="../../shared/collection-core.js?v=20261024-five-why-v3"></script>
 <script src="../../shared/collection-client.js?v=20261024-number-line-task"></script>
-<script src="../../shared/family-client.js?v=20260922-collection"></script><script src="../../shared/family-app.js?v=20260922-collection"></script><script type="module" src="js/app.js?v=20260922-collection"></script>
+<script src="../../shared/family-client.js?v=20260922-collection"></script><script src="../../shared/family-app.js?v=20261117-child-ui"></script><script type="module" src="js/app.js?v=20261117-child-ui"></script>
 </body>
 </html>

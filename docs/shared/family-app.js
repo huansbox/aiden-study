@@ -13,7 +13,12 @@
     bar.setAttribute("aria-label", "學習導覽");
     const home = document.createElement("a");
     home.href = F.homeHref(child);
-    home.textContent = "← 首頁";
+    const homeLabel = document.body.dataset.childHomeLabel;
+    home.textContent = homeLabel || "← 首頁";
+    if (homeLabel) {
+      home.className = "child-action back";
+      document.body.classList.add("child-ui");
+    }
     const hint = document.createElement("span");
     hint.className = "family-task-hint";
     bar.append(home, hint);

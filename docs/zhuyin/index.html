@@ -212,9 +212,30 @@
   .child-pick { margin: 8px 0; }
   .child-pick label { margin-right: 12px; white-space: nowrap; }
   a#child-badge { pointer-events: auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
+
+  .child-ui #screen-home { padding-top: 16px; }
+  .child-ui .zhuyin-launch.child-card {
+    display: grid; justify-items: center; gap: var(--child-gap);
+    width: min(100%, 520px); padding: clamp(1.5rem, 6vw, 3rem);
+    background: var(--child-soft); text-align: center;
+  }
+  .child-ui .zhuyin-launch .home-title.child-heading { font-size: var(--child-title-size); }
+  .child-ui .zhuyin-launch .btn-start.child-action { min-height: 56px; padding-inline: 2.25rem; font-size: 1.25rem; }
+  .child-ui #screen-card .child-progress { width: min(100%, 460px); }
+  .child-ui #batch-progress { color: var(--child-muted); }
+  .child-ui #dots { margin-top: .5rem; }
+  .child-ui .dot { background: var(--child-soft); border: 1px solid var(--child-line); }
+  .child-ui .dot.on { background: var(--child-accent); border-color: var(--child-accent); }
+  .child-ui #screen-break { gap: var(--child-gap); }
+  .child-ui .zhuyin-summary { width: min(100%, 540px); }
+  .child-ui .zhuyin-summary .child-actions { margin-top: 1.25rem; }
+  .child-ui #break-detail { color: var(--child-muted); }
+  .child-ui #break-reward:empty { display: none; }
 </style>
-<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
-<body>
+<link rel="stylesheet" href="../shared/family.css?v=20260916-articles">
+<link rel="stylesheet" href="../shared/child-practice.css?v=20261117-child-ui-layout">
+</head>
+<body class="child-page" data-child-theme="zhuyin" data-child-home-label="← 回學習首頁">
 <a id="child-badge" class="hidden" href="../">回學習首頁</a>
 <aside id="preview-bar" class="preview-bar hidden" aria-label="家長試玩">
   <p>家長試玩，不影響孩子進度</p>
@@ -226,14 +247,16 @@
 </aside>
 <div id="app">
   <div id="screen-home" class="screen">
-    <h1 class="home-title">ㄅㄆㄇ 拼字小遊戲</h1>
-    <p class="home-sub">給弟弟的注音練習（家長按開始）</p>
-    <div id="preview-options" class="preview-options hidden">
-      <label>練習範圍<select id="preview-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>
-      <label>試玩起點<select id="preview-start"><option value="learned">已學：直接作答</option><option value="new">全新：從示範開始</option><option value="weak">要加強：錯題優先</option></select></label>
-      <p id="preview-help">進度只放在這個頁面的記憶體。重載或重新開始會清除本次試玩；全新起點須先認符號，才能拼音節。</p>
+    <div class="zhuyin-launch child-card">
+      <h1 class="home-title child-heading">注音練習</h1>
+      <p class="home-sub">聽聲音、認符號、拼音節</p>
+      <div id="preview-options" class="preview-options hidden">
+        <label>練習範圍<select id="preview-mode"><option value="all">混合</option><option value="listen">認符號</option><option value="build">拼音節</option></select></label>
+        <label>試玩起點<select id="preview-start"><option value="learned">已學：直接作答</option><option value="new">全新：從示範開始</option><option value="weak">要加強：錯題優先</option></select></label>
+        <p id="preview-help">進度只放在這個頁面的記憶體。重載或重新開始會清除本次試玩；全新起點須先認符號，才能拼音節。</p>
+      </div>
+      <button class="btn-start child-action primary" id="btn-start">開始練習</button>
     </div>
-    <button class="btn-start" id="btn-start">▶ 開始練習</button>
     <button class="parent-link" id="btn-parent">家長區</button>
   </div>
   <div id="screen-parent" class="screen parent-screen hidden">
@@ -273,21 +296,27 @@
     <button class="btn-quiet" id="btn-parent-home">回首頁</button>
   </div>
   <div id="screen-card" class="screen hidden">
-    <div id="dots"></div>
-    <p id="batch-progress" aria-live="polite"></p>
+    <div class="child-progress">
+      <p id="batch-progress" aria-live="polite"></p>
+      <div id="dots" aria-hidden="true"></div>
+    </div>
     <div id="card-area" class="screen" style="flex:1; width:100%"></div>
   </div>
   <div id="screen-break" class="screen hidden">
-    <div class="break-emoji">🎉</div>
-    <h2 class="break-title">這一批練完了！</h2>
-    <div id="break-reward"></div>
-    <button class="btn-again" id="btn-again">再一批</button>
-    <button class="btn-quiet" id="btn-done">今天到這裡</button>
+    <section class="zhuyin-summary child-summary">
+      <h2 class="break-title child-heading">這一批練完了！</h2>
+      <p id="break-detail"></p>
+      <div id="break-reward"></div>
+      <div class="child-actions">
+        <button class="btn-again child-action primary" id="btn-again">再練一批</button>
+        <button class="btn-quiet child-action back" id="btn-done">← 回注音選單</button>
+      </div>
+    </section>
   </div>
   <div id="screen-msg" class="screen hidden">
     <div class="break-emoji" id="msg-emoji">🎙️</div>
     <p class="msg" id="msg-text"></p>
-    <button class="btn-quiet" id="btn-msg-home">回首頁</button>
+    <button class="btn-quiet child-action back" id="btn-msg-home">← 回注音選單</button>
   </div>
 </div>
 <script>
@@ -303,7 +332,7 @@ if (!ZHUYIN_PREVIEW) {
     "../shared/collection-core.js?v=20261024-five-why-v3",
     "../shared/collection-client.js?v=20261024-number-line-task",
     "../shared/family-client.js?v=20260922-collection",
-    "../shared/family-app.js?v=20260922-collection",
+    "../shared/family-app.js?v=20261117-child-ui",
   ].map((src) => '<script src="' + src + '"><\/script>').join(""));
 }
 </script>
@@ -323,6 +352,7 @@ const WIRING_CONFIG = { appId: "zhuyin", schemaVersion: 1, legacyChild: "bingpu"
 const wiring = !ZHUYIN_PREVIEW && KidsWiring ? KidsWiring.createWiring(WIRING_CONFIG) : null;
 const currentChild = wiring ? wiring.currentChild : null; // wiring 沒載到＝拒開站，此值不會被讀（legacy fallback 的真身在 wiring 內部）
 const family = ZHUYIN_PREVIEW ? null : window.KidsFamily?.mount("zhuyin", currentChild) || null;
+if (ZHUYIN_PREVIEW) document.body.classList.add("child-ui");
 let sync = null; // 當前 child 的 sync client（initSyncClient 經 wiring 建立；沒同步時保持 null）
 // 身分不可解＝wiring 沒載到（一律擋），或網址指名 child 而 sync-v1 沒載到（守衛細節在 wiring）
 function identityUnresolvable() { return !ZHUYIN_PREVIEW && (!wiring || wiring.identityUnresolvable()); }
@@ -855,7 +885,7 @@ function renderTeaching(card, { label, display, replayKeys }) {
   area.innerHTML = `
     <div class="intro-label">${label}</div>
     <div class="intro-card${multi}" id="intro-card">${display}</div>
-    <button class="btn-next" id="btn-intro-next">➜</button>`;
+    <button class="btn-next child-action primary" id="btn-intro-next">下一張 →</button>`;
   const intro = document.getElementById("intro-card");
   const onCue = card.kind === "syl" ? syllableCue(intro, card.syl) : (key) => setVoiceFocus(intro, key ? [intro] : []);
   intro.addEventListener("click", () => playChain(replayKeys, { onCue }));
@@ -893,7 +923,7 @@ function renderQuiz(card, entered) {
   const choices = zyPickChoices(glyph, entered, Math.random); // zyCardKind 已保證池 ≥2 且目標已進場
   const area = document.getElementById("card-area");
   area.innerHTML = `
-    <button class="btn-replay" id="btn-replay">🔊</button>
+    <button class="btn-replay" id="btn-replay" aria-label="再聽一次">🔊</button>
     <div class="choices" id="choices">${
       choices.map((g) => `<div class="zycard" data-g="${g}">${g}</div>`).join("")
     }</div>`;
@@ -976,7 +1006,7 @@ function renderBuild(card) {
   const area = document.getElementById("card-area");
   area.innerHTML = `
     <div class="build-controls">
-      <button class="btn-replay" id="btn-replay">🔊</button>
+      <button class="btn-replay" id="btn-replay" aria-label="再聽一次">🔊</button>
       <button class="btn-slow" id="btn-slow">🐢 慢慢聽</button>
     </div>
     <div class="build-workspace"><div class="build-slots">
@@ -1117,10 +1147,11 @@ function advanceCard(firstTapCorrect) {
   else finishBatch();
 }
 
-// 批間畫面：「再一批／今天到這裡」（複製自哥哥版 docs/index.html renderBatchBreak pattern，commit 7a8d900 時期版本）
+// 批間畫面：「再練一批／回注音選單」。
 function finishBatch() {
   clearTimers();
   const path = drawRewardPath();
+  document.getElementById("break-detail").textContent = `完成 ${app.batchSize} 張卡`;
   document.getElementById("break-reward").replaceChildren();
   if (path) new Image().src = path; // 預載：點獎杯揭曉時圖多半已就緒
   showScreen("screen-break");

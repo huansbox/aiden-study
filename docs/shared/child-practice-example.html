@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>孩子練習樣式範例</title>
+  <link rel="stylesheet" href="child-practice.css?v=20261117-child-ui-layout">
+  <style>
+    body { margin: 0; font: 1rem/1.5 system-ui, sans-serif; }
+    main { max-width: 42rem; margin: auto; padding: 1rem; display: grid; gap: var(--child-gap); }
+    section { padding: 1.5rem; }
+    h1, h2, p { margin: 0 0 .75rem; }
+  </style>
+</head>
+<body class="child-ui child-page" data-child-theme="study">
+  <main>
+    <section class="child-card" id="menu">
+      <h1 class="child-heading">練習選單</h1>
+      <a class="child-action primary" href="#practice">開始練習</a>
+    </section>
+    <section class="child-card" id="practice">
+      <a class="child-action back" href="#menu">← 回練習選單</a>
+      <h2>作答</h2>
+      <div class="child-progress">
+        <label for="progress">已完成 2 / 5 題</label>
+        <progress class="child-progress-meter" id="progress" value="2" max="5"></progress>
+      </div>
+    </section>
+    <section class="child-summary" id="summary">
+      <h2 class="child-heading">這一批練完了！</h2>
+      <p>完成 5 題</p>
+      <div class="child-actions">
+        <a class="child-action primary" href="#practice">再練一批</a>
+        <a class="child-action back" href="#menu">← 回練習選單</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

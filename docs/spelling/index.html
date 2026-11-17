@@ -82,9 +82,22 @@
             border-bottom: 2px solid #e5e7eb;
         }
         a#child-badge { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; text-decoration: none; white-space: nowrap; }
+        .family-self-spelling .spell-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 20px 0; }
+        .family-self-spelling .spell-toolbar label { display: inline; margin: 0; }
+        .family-self-spelling .spell-toolbar select { min-height: 44px; margin-left: 8px; padding: 8px 12px; border: 1px solid var(--child-line); border-radius: 10px; background: var(--child-surface); color: var(--child-ink); }
+        .family-self-spelling .child-action { margin: 0; }
+        .family-self-spelling .spell-word { margin: 20px 0; text-align: center; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; overflow-wrap: anywhere; }
+        .family-self-spelling .spell-controls { display: grid; gap: 16px; align-items: start; margin-top: 20px; }
+        .family-self-spelling .spell-controls form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .family-self-spelling .spell-controls form label { flex-basis: 100%; margin-top: 0; }
+        .family-self-spelling .spell-controls input { flex: 1 1 220px; min-width: 0; color: var(--child-ink); border: 1px solid var(--child-line); border-radius: 10px; }
+        .family-self-spelling #spell-feedback:empty { min-height: 0; }
+        .family-self-spelling .child-summary p { margin: .5rem 0 1rem; }
     </style>
-<link rel="stylesheet" href="../shared/family.css?v=20260916-articles"></head>
-<body class="min-h-screen flex flex-col relative">
+    <link rel="stylesheet" href="../shared/family.css?v=20261117-child-ui">
+    <link rel="stylesheet" href="../shared/child-practice.css?v=20261117-child-ui-layout">
+</head>
+<body class="min-h-screen flex flex-col relative child-page" data-child-theme="english" data-child-home-label="← 回學習首頁">
 
     <!-- 頂部導航 -->
     <header class="bg-white shadow-sm p-4 sticky top-0 z-10">
@@ -437,7 +450,7 @@
     <script src="../shared/device-auth.js?v=20260916-session"></script><script src="../shared/sync-v1.js?v=20260918-shared-ack"></script>
     <script src="../shared/wiring-v1.js?v=20260916-session"></script><script src="../shared/family-core.js?v=20261107-math-circuit-release"></script><script src="../shared/collection-core.js?v=20261024-five-why-v3"></script>
 <script src="../shared/collection-client.js?v=20261024-number-line-task"></script>
-<script src="../shared/family-client.js?v=20260922-collection"></script><script src="../shared/family-app.js?v=20260922-collection"></script><script src="../shared/spelling-child.js?v=20260922-collection"></script>
+<script src="../shared/family-client.js?v=20260922-collection"></script><script src="../shared/family-app.js?v=20261117-child-ui"></script><script src="../shared/spelling-child.js?v=20261117-child-ui"></script>
     <script>
         // ════════════════════════════════════════════════════
         // Child 身分與同步（#33：本機存檔 key 加 child 維度；雲端 key＝aiden:spelling）

@@ -1,0 +1,47 @@
+.child-ui .family-header {
+  flex-wrap: wrap;
+  gap: var(--child-gap);
+  margin-bottom: 22px;
+}
+.child-ui .family-person .family-avatar {
+  width: clamp(62px, 12vw, 88px);
+  height: clamp(62px, 12vw, 88px);
+  border: 1px solid var(--child-line);
+  border-radius: var(--child-radius);
+}
+.child-ui .family-header .family-stats-link {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  border: 1px solid var(--child-line);
+  background: var(--child-surface);
+  font-size: 1.0625rem;
+  text-align: left;
+}
+.child-ui .family-stats-link small { color: var(--child-muted); }
+.child-ui .daily-goals { padding: clamp(1rem, 4vw, 1.5rem); }
+.child-ui .daily-explanation { font-weight: 600; }
+.child-ui .daily-goal-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 225px), 1fr)); }
+.child-ui .daily-goal { flex-wrap: wrap; align-content: center; gap: 6px 14px; }
+.child-ui .daily-goal-title { overflow-wrap: anywhere; }
+.child-ui .daily-goal-count { white-space: nowrap; }
+.child-ui .daily-goal.done .daily-goal-count { white-space: normal; }
+.child-ui .daily-bonus { display: inline-flex; align-items: center; min-height: var(--child-touch); }
+.child-ui .activity-grid { gap: var(--child-gap); }
+.child-ui .family-activity.child-card { background: var(--child-soft); }
+.child-ui .activity-heading {
+  min-height: 130px;
+  padding: clamp(1rem, 3vw, 1.625rem);
+  color: var(--child-accent-strong);
+  border-radius: var(--child-radius);
+}
+.child-ui .activity-heading h2 { line-height: 1.25; }
+.child-ui .activity-task, .child-ui .activity-free { min-height: var(--child-touch); }
+.child-ui .activity-task { border: 1px solid var(--child-line); border-radius: 12px; }
+.child-ui .activity-free { padding-block: .75rem; }
+.child-ui .learning-tasks { margin-top: 24px; }
+@media (hover: hover) {
+  .child-ui :is(.activity-heading h2, .activity-task strong, .daily-goal-title) { text-underline-offset: .18em; }
+  .child-ui :is(.activity-heading:hover h2, a.activity-task:hover strong, a.daily-goal:hover .daily-goal-title) { text-decoration: underline; }
+  .child-ui .family-header .family-stats-link:hover { background: var(--child-soft); }
+}

@@ -22,7 +22,8 @@ try {
  await context.request.get(base+'/test/study-science-pack');
  const auth={Authorization:'Bearer test-token'};
  let settings=await (await context.request.get(base+'/v1/settings',{headers:auth})).json();
- settings.data.children.aiden.archivedStudyUnits=[];
+ // This synthetic pack covers units 20 and 21. Later science units are outside this scenario.
+ settings.data.children.aiden.archivedStudyUnits=[29,30];
  settings.data.children.bingpu.apps=['study'];settings.data.children.bingpu.terms=['g4-s1'];
  const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
  settings.data.children.aiden.overrides[date]=[{id:'old-unit20',app:'study',unit:20,quantity:5}];
@@ -37,7 +38,7 @@ try {
   if(evidence) await parent.screenshot({path:join(evidence,'parent-1024.png')});
   await child.goto(base+'/study/?child=aiden&subject=science&term=g4-s1');
   await child.getByText('目前沒有開放的內容。原有進度仍保留。').waitFor();
-  assert.ok(await child.getByRole('link',{name:'回首頁',exact:true}).isVisible());
+  assert.ok(await child.getByRole('link',{name:'← 回學習首頁',exact:true}).isVisible());
   if(evidence) await child.screenshot({path:join(evidence,'empty-1024.png')});
   await parent.locator('[data-study-unit="20"]').check();await parent.locator('#save').click();await parent.locator('#save-status').filter({hasText:'已儲存'}).waitFor();
   await child.reload();await child.locator('[onclick="window._startFull(20)"]').click();await child.locator('#q-options .opt-btn').first().waitFor();

@@ -7,12 +7,20 @@ import { launchFireworks } from './fireworks.js?v=20260715a';
 
 const grid = document.getElementById('division-grid');
 const hintEl = document.getElementById('hint');
+const numpad = document.querySelector('.numpad');
 const numpadBtns = document.querySelectorAll('.num-btn');
 const streakEl = document.getElementById('streak');
 const streakCountEl = streakEl.querySelector('.streak-count');
-const starsEl = document.getElementById('stars');
 const totalStarsEl = document.getElementById('total-stars');
 const badgeEl = document.getElementById('badge');
+const progressEl = document.getElementById('progress');
+const stepMeter = document.getElementById('step-meter');
+const stepProgress = document.getElementById('step-progress');
+const resultEl = document.getElementById('math-result');
+const resultTitle = document.getElementById('math-result-title');
+const resultDetail = document.getElementById('math-result-detail');
+const resultCanvas = resultEl.querySelector('canvas');
+const resultImage = resultEl.querySelector('img');
 const bossLivesEl = document.getElementById('boss-lives');
 const bossEntryEl = document.getElementById('boss-entry');
 const bossBtnEl = document.getElementById('boss-btn');
@@ -39,6 +47,13 @@ const BOSS_STAGES = [
 ];
 let bossMode = null; // null | { stage, lives, totalErrors, starsEarned }
 
+function scheduleBossTransition(action, delay) {
+  const challenge = bossMode;
+  setTimeout(() => {
+    if (bossMode === challenge) action(challenge);
+  }, delay);
+}
+
 function startNewProblem() {
   beginCollectionRound();
   family?.setActive(true);
@@ -52,8 +67,6 @@ function startNewProblem() {
     .sort((a, b) => a.order - b.order);
 
   state = { dividend, divisor, steps, layout, fillable, currentIndex: 0, errors: 0, cellErrors: 0 };
-
-  starsEl.hidden = true;
 
   // Adjust cell size for larger grids
   const digitCount = String(dividend).length;
@@ -146,6 +159,9 @@ function activateCurrent() {
 }
 
 function updateHint() {
+  stepMeter.max = state.fillable.length;
+  stepMeter.value = state.currentIndex;
+  stepProgress.textContent = `已填 ${state.currentIndex} / ${state.fillable.length} 格`;
   if (state.currentIndex >= state.fillable.length) {
     const { steps } = state;
     hintEl.textContent = steps.remainder > 0
@@ -187,70 +203,31 @@ function updateStreak() {
   streakCountEl.textContent = streak;
 }
 
-function showStars(count) {
-  starsEl.hidden = false;
-  starsEl.textContent = '★'.repeat(count) + '☆'.repeat(3 - count);
-}
+function showRoundResult({ title, detail, delay, next, fireworks = false, image }) {
+  numpad.hidden = true;
+  bossBtnEl.disabled = true;
+  resultTitle.textContent = title;
+  resultDetail.textContent = detail;
+  resultImage.hidden = !image;
+  if (image) resultImage.src = image;
+  resultEl.hidden = false;
+  const animate = fireworks && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resultCanvas.hidden = !animate;
+  const cleanup = animate ? launchFireworks(resultCanvas, 4000) : null;
+  family?.finishRound(collectionRound);
 
-function showCelebration(stars) {
-  const overlay = document.createElement('div');
-  overlay.className = 'celebration';
-
-  const content = document.createElement('div');
-  content.className = 'celebration-content';
-
-  const starsText = document.createElement('div');
-  starsText.className = 'celebration-stars';
-  starsText.textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars);
-
-  const msg = document.createElement('div');
-  msg.className = 'celebration-text';
-  msg.textContent = streak >= 3 ? '太厲害了！' : '做得好！';
-
-  content.appendChild(starsText);
-  content.appendChild(msg);
-  overlay.appendChild(content);
-  document.body.appendChild(overlay);
-
-  setTimeout(() => overlay.remove(), 2500);
-}
-
-function showMilestone(milestone) {
-  const badge = getMilestoneBadge(milestone);
-  if (!badge) return;
-
-  const overlay = document.createElement('div');
-  overlay.className = 'celebration';
-
-  const content = document.createElement('div');
-  content.className = 'milestone-content';
-
-  const emojiEl = document.createElement('div');
-  emojiEl.className = 'milestone-emoji';
-  emojiEl.textContent = badge.emoji;
-
-  const title = document.createElement('div');
-  title.className = 'milestone-title';
-  title.textContent = `累計 ${milestone} 題！`;
-
-  const sub = document.createElement('div');
-  sub.className = 'milestone-sub';
-  sub.textContent = milestone === 100 ? '太強了！' : '繼續加油！';
-
-  content.appendChild(emojiEl);
-  content.appendChild(title);
-  content.appendChild(sub);
-  overlay.appendChild(content);
-  document.body.appendChild(overlay);
-
-  setTimeout(() => overlay.remove(), 3000);
+  setTimeout(() => {
+    cleanup?.();
+    resultEl.hidden = true;
+    numpad.hidden = false;
+    bossBtnEl.disabled = false;
+    next();
+  }, delay);
 }
 
 function updateProgress() {
-  const progressEl = document.getElementById('progress');
-  if (!progressEl) return;
   if (isDaily(progress)) {
-    progressEl.textContent = `第 ${progress.dailyCompleted}/${DAILY_GOAL} 題`;
+    progressEl.textContent = `每日練習已完成 ${progress.dailyCompleted} / ${DAILY_GOAL} 題`;
   } else {
     progressEl.textContent = '自由練習';
   }
@@ -291,8 +268,6 @@ function startBossStageProblem() {
 
   state = { dividend, divisor, steps, layout, fillable, currentIndex: 0, errors: 0, cellErrors: 0 };
 
-  starsEl.hidden = true;
-
   // Adjust cell size for boss grids
   const digitCount = String(dividend).length;
   const bossCellSizes = { 4: '48px', 5: '44px', 6: '40px' };
@@ -303,7 +278,7 @@ function startBossStageProblem() {
 
   renderGrid();
   activateCurrent();
-  hintEl.textContent = '填入正確的數字';
+  updateHint();
   updateBossUI();
 }
 
@@ -315,14 +290,12 @@ function updateBossUI() {
   }
 
   streakEl.hidden = true;
-  starsEl.hidden = true;
   bossLivesEl.hidden = false;
 
   const hearts = '❤️'.repeat(bossMode.lives) + '🖤'.repeat(3 - bossMode.lives);
   bossLivesEl.textContent = hearts;
 
-  const progressEl = document.getElementById('progress');
-  progressEl.textContent = `第${bossMode.stage + 1}關 ${BOSS_STAGES[bossMode.stage].digitCount}位÷1位`;
+  progressEl.textContent = `魔王挑戰 第 ${bossMode.stage + 1} / ${BOSS_STAGES.length} 關`;
 }
 
 function onBossError() {
@@ -331,7 +304,7 @@ function onBossError() {
   updateBossUI();
 
   if (bossMode.lives <= 0) {
-    setTimeout(() => showBossDefeat(), 500);
+    scheduleBossTransition(showBossDefeat, 500);
   }
 }
 
@@ -345,9 +318,9 @@ function onBossProblemComplete() {
   updateTotalStars();
 
   if (bossMode.stage < BOSS_STAGES.length - 1) {
-    hintEl.textContent = `第${bossMode.stage + 1}關完成`;
-    bossMode.stage++;
-    setTimeout(() => {
+    hintEl.textContent += `。第 ${bossMode.stage + 1} 關完成。`;
+    scheduleBossTransition((challenge) => {
+      challenge.stage++;
       startBossStageProblem();
     }, 2500);
   } else {
@@ -358,71 +331,25 @@ function onBossProblemComplete() {
       PLATFORM.saveProgress(progress);
       updateTotalStars();
     }
-    setTimeout(() => showBossVictory(bossMode.starsEarned, perfectBonus), 500);
+    scheduleBossTransition((challenge) => showBossVictory(challenge.starsEarned, perfectBonus), 500);
   }
 }
 
 function showBossVictory(totalStars, perfectBonus) {
-  family?.finishRound(collectionRound);
-  const overlay = document.createElement('div');
-  overlay.className = 'fireworks-overlay';
-
-  const canvas = document.createElement('canvas');
-  canvas.className = 'fireworks-canvas';
-  overlay.appendChild(canvas);
-
-  const content = document.createElement('div');
-  content.className = 'fireworks-content';
-  content.innerHTML = `
-    <div class="fireworks-title">🏆 魔王挑戰通關！</div>
-    <div class="fireworks-stars">⭐ × ${totalStars}</div>
-    ${perfectBonus > 0 ? `<div class="boss-perfect">零失誤 +${perfectBonus}⭐</div>` : ''}
-  `;
-  overlay.appendChild(content);
-  document.body.appendChild(overlay);
-
-  const cleanup = launchFireworks(canvas, 4000);
-
-  setTimeout(() => {
-    cleanup();
-    overlay.remove();
-    exitBossMode();
-  }, 5000);
+  showRoundResult({
+    title: '魔王挑戰通關！',
+    detail: `獲得 ${totalStars} 顆星星${perfectBonus ? `（含零失誤加 ${perfectBonus} 顆）` : ''}`,
+    delay: 5000, next: exitBossMode, fireworks: true,
+  });
 }
 
 function showBossDefeat() {
-  family?.finishRound(collectionRound);
-  const overlay = document.createElement('div');
-  overlay.className = 'celebration';
-
-  const content = document.createElement('div');
-  content.className = 'milestone-content';
-
-  const emoji = document.createElement('div');
-  emoji.className = 'milestone-emoji';
-  emoji.textContent = '💪';
-
-  const title = document.createElement('div');
-  title.className = 'milestone-title';
   const stageReached = bossMode.stage + 1;
-  title.textContent = stageReached >= 2 ? `挑戰到第${stageReached}關！` : '下次再挑戰！';
-
-  const sub = document.createElement('div');
-  sub.className = 'milestone-sub';
-  sub.textContent = bossMode.starsEarned > 0
-    ? `獲得 ${bossMode.starsEarned}⭐`
-    : '再試一次吧！';
-
-  content.appendChild(emoji);
-  content.appendChild(title);
-  content.appendChild(sub);
-  overlay.appendChild(content);
-  document.body.appendChild(overlay);
-
-  setTimeout(() => {
-    overlay.remove();
-    exitBossMode();
-  }, 3000);
+  showRoundResult({
+    title: '魔王挑戰結束',
+    detail: `挑戰到第 ${stageReached} 關，獲得 ${bossMode.starsEarned} 顆星星`,
+    delay: 3000, next: exitBossMode,
+  });
 }
 
 function exitBossMode() {
@@ -446,33 +373,11 @@ function randomCelebrationImage() {
 
 function showDailyComplete() {
   const summary = getDailySummary(progress);
-
-  const overlay = document.createElement('div');
-  overlay.className = 'fireworks-overlay';
-
-  const canvas = document.createElement('canvas');
-  canvas.className = 'fireworks-canvas';
-  overlay.appendChild(canvas);
-
-  const content = document.createElement('div');
-  content.className = 'fireworks-content';
-  content.innerHTML = `
-    <img class="fireworks-img" src="${randomCelebrationImage()}" alt="你好棒" onerror="this.style.display='none'">
-    <div class="fireworks-title">今日練習完成！</div>
-    <div class="fireworks-stars">⭐ × ${summary.totalStars}</div>
-  `;
-  overlay.appendChild(content);
-
-  document.body.appendChild(overlay);
-
-  const cleanup = launchFireworks(canvas, 4000);
-
-  setTimeout(() => {
-    cleanup();
-    overlay.remove();
-    startNewProblem();
-    bossEntryEl.hidden = false;
-  }, 5000);
+  showRoundResult({
+    title: '今日練習完成！',
+    detail: `完成 ${summary.problemCount} 題，獲得 ${summary.totalStars} 顆星星`,
+    delay: 5000, next: startNewProblem, fireworks: true, image: randomCelebrationImage(),
+  });
 }
 
 function onProblemComplete() {
@@ -484,8 +389,6 @@ function onProblemComplete() {
     onBossProblemComplete();
     return;
   }
-
-  family?.finishRound(collectionRound);
 
   const stars = getStars(state.errors);
   streak++;
@@ -502,17 +405,17 @@ function onProblemComplete() {
 
   if (progress.dailyCompleted === DAILY_GOAL) {
     showDailyComplete();
-  } else if (milestone) {
-    showMilestone(milestone);
-    setTimeout(startNewProblem, 3500);
   } else {
-    showCelebration(stars);
-    setTimeout(startNewProblem, 3000);
+    showRoundResult({
+      title: '這一題完成！',
+      detail: `獲得 ${stars} 顆星星${milestone ? `，累計完成 ${milestone} 題！` : ''}`,
+      delay: milestone ? 3500 : 3000, next: startNewProblem,
+    });
   }
 }
 
 function handleDigit(digit) {
-  if (!state || state.currentIndex >= state.fillable.length) return;
+  if (!state || state.currentIndex >= state.fillable.length || bossMode?.lives === 0) return;
 
   const cell = state.fillable[state.currentIndex];
   const el = getCellEl(cell.order);

@@ -124,92 +124,6 @@ body {
   letter-spacing: 2px;
 }
 
-.boss-perfect {
-  font-size: clamp(1rem, 4vw, 1.5rem);
-  color: #ffd34d;
-  font-weight: 700;
-  margin-top: 8px;
-  animation: star-pulse 0.8s ease-in-out;
-}
-
-/* === Daily complete overlay === */
-.daily-complete {
-  text-align: center;
-  animation: celebrate-pop 0.6s ease-out;
-}
-
-.daily-complete__title {
-  font-size: clamp(2rem, 8vw, 3.5rem);
-  font-weight: 900;
-  color: #ffd34d;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  margin-bottom: 16px;
-}
-
-.daily-complete__stars {
-  font-size: clamp(1.5rem, 6vw, 2.5rem);
-  color: #fff;
-  font-weight: 700;
-}
-
-.daily-complete__sub {
-  font-size: clamp(0.9rem, 3vw, 1.2rem);
-  color: #c8e6c9;
-  margin-top: 12px;
-}
-
-/* === Fireworks overlay === */
-.fireworks-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fireworks-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.fireworks-content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  animation: celebrate-pop 0.6s ease-out;
-}
-
-.fireworks-img {
-  width: clamp(120px, 30vw, 200px);
-  height: auto;
-  margin-bottom: 16px;
-  filter: drop-shadow(0 4px 16px rgba(255, 211, 77, 0.5));
-  animation: float-bounce 2s ease-in-out infinite;
-}
-
-.fireworks-title {
-  font-size: clamp(2rem, 8vw, 3.5rem);
-  font-weight: 900;
-  color: #ffd34d;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  margin-bottom: 12px;
-}
-
-.fireworks-stars {
-  font-size: clamp(1.3rem, 5vw, 2rem);
-  color: #fff;
-  font-weight: 700;
-}
-
-@keyframes float-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
 /* === Card === */
 .card {
   background: #f6f2e8;
@@ -517,74 +431,89 @@ body {
   }
 }
 
-/* === Celebration overlay === */
-.celebration {
-  position: fixed;
-  inset: 0;
+
+/* The calculation stays visible when the result replaces the number pad. */
+.math-progress {
+  align-self: stretch;
+  color: #2e4a3e;
+}
+.math-progress-labels {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .25rem 1rem;
+}
+.math-progress .progress {
+  color: inherit;
+}
+.math-result {
+  align-self: center;
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem;
+  background: #f6f2e8;
+  color: #2e4a3e;
+  border-radius: 18px;
+  text-align: center;
+}
+.math-result-content {
+  position: relative;
+}
+.math-result-content p {
+  margin-top: .5rem;
+}
+#math-result-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  text-wrap: balance;
+}
+.fireworks-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
-
-.celebration-content {
-  text-align: center;
-  animation: celebrate-pop 0.6s ease-out;
+.fireworks-img {
+  width: min(8rem, 36vw);
+  height: auto;
+  margin-bottom: .5rem;
 }
-
-.celebration-stars {
-  font-size: clamp(3rem, 12vw, 5rem);
-  color: #ffd34d;
-  text-shadow: 0 4px 20px rgba(255, 211, 77, 0.6);
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-  animation: star-pulse 0.8s ease-in-out;
+.numpad[hidden] {
+  display: none;
 }
-
-@keyframes star-pulse {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.3); }
-  70% { transform: scale(0.95); }
-  100% { transform: scale(1); opacity: 1; }
+.child-ui[data-child-theme="math"] {
+  display: block;
 }
-
-.celebration-text {
-  font-size: clamp(1.5rem, 6vw, 2.5rem);
-  font-weight: 900;
-  color: #ffd34d;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+.child-ui[data-child-theme="math"] .container {
+  margin-inline: auto;
 }
-
-/* === Milestone overlay === */
-.milestone-content {
-  text-align: center;
-  animation: celebrate-pop 0.6s ease-out;
+.child-ui[data-child-theme="math"] .header .title,
+.child-ui[data-child-theme="math"] .stats,
+.child-ui[data-child-theme="math"] .total-stars {
+  color: var(--child-accent-strong);
+  text-shadow: none;
 }
-
-.milestone-emoji {
-  font-size: clamp(4rem, 15vw, 7rem);
-  animation: star-pulse 0.8s ease-in-out;
-  margin-bottom: 12px;
+.child-ui[data-child-theme="math"] .header,
+.child-ui[data-child-theme="math"] .title-group,
+.child-ui[data-child-theme="math"] .stats {
+  flex-wrap: wrap;
+  gap: .5rem;
 }
-
-.milestone-title {
-  font-size: clamp(1.8rem, 7vw, 3rem);
-  font-weight: 900;
-  color: #ffd34d;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  margin-bottom: 8px;
+.child-ui[data-child-theme="math"] .card {
+  border-radius: var(--child-radius);
+  border-color: var(--child-line);
 }
-
-.milestone-sub {
-  font-size: clamp(1.2rem, 5vw, 2rem);
-  font-weight: 700;
-  color: #c8e6c9;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes celebrate-pop {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
+@media (min-width: 768px) and (orientation: landscape) {
+  .child-ui[data-child-theme="math"] .container {
+    max-width: 1040px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 338px);
+  }
+  .child-ui[data-child-theme="math"] .card {
+    padding: 18px 22px;
+    gap: 14px;
+  }
+  .math-result {
+    grid-column: 2;
+    grid-row: 2;
+  }
 }

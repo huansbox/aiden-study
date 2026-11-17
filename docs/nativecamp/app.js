@@ -4,7 +4,13 @@
   const Q = global.NativeCampQuestionView;
   const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   function icon(name, extra = "") { return `<svg class="icon ${extra}" aria-hidden="true"><use href="icons.svg#${name}"></use></svg>`; }
-  function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
+  const childButtonStyles = {
+    primary: "primary child-action",
+    secondary: "secondary child-action",
+    "nav-link": "nav-link child-action back",
+    "listen-button": "listen-button child-action",
+  };
+  function button(action, label, style = "secondary", iconName = null, attrs = "") { return `<button type="button" class="${childButtonStyles[style] || style}" data-action="${action}" ${attrs}>${iconName ? icon(iconName) : ""}${label}</button>`; }
   const dateLabel = (date) => new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
   const modeLabel = (mode) => mode === "try" ? "Try it" : "Say it";
   function mount({ root, lesson, bridge, catalog = [], lessons = {}, child = "aiden", search = global.location?.search || "", date = () => C.today(), makeAudio = () => new Audio(), makeAudioController = (options) => global.NativeCampAudio.create(options), eventTarget = global, documentTarget = global.document }) {
@@ -59,7 +65,10 @@
       if (enteredQuestion) void play("question");
     }
     function header() {
-      return `<header class="topbar"><div class="brand"><span class="brand-icon">${icon("book-open")}</span><span>NATIVE CAMP<br>REVIEW</span></div>${view === "home" ? `<a class="nav-link" href="${escape(bridge.homeHref)}">${icon("house")}My home</a>` : button("home", "My lesson", "nav-link", "arrow-left")}</header>`;
+      const back = view === "home" || view === "round"
+        ? `<a class="nav-link child-action back" href="${escape(bridge.homeHref)}">${icon("house")}Back to home</a>`
+        : button("home", "Back to lesson", "nav-link", "arrow-left");
+      return `<header class="topbar"><div class="brand"><span class="brand-icon">${icon("book-open")}</span><span>NATIVE CAMP<br>REVIEW</span></div>${back}</header>`;
     }
     function footer() { return `<footer class="page-footer"><div class="sync-line"><span class="sync-dot" aria-hidden="true"></span><span id="sync-message" role="status">${escape(bridge.status())}</span>${button("sync", "Sync", "text-button", "rotate-ccw")}</div></footer>`; }
     function reviewLabel(dueOn) { return dueOn === C.nextDay(date()) ? "Review tomorrow" : `Review ${dateLabel(dueOn)}`; }
@@ -76,15 +85,15 @@
       const navigation = global.NativeCampCatalog?.calendar(catalog, lesson.id, { child, progress: bridge.getProgress(), date: date(), month: calendarMonth, childView: true, lessons }) || "";
       const complete = result.try.done && result.say.done;
       const body = !C.isOpen(lesson, date()) ? `<p class="notice">Opens ${escape(dateLabel(lesson.weekly?.opensOn || lesson.date))}.</p>` : complete ? `<section class="finished-card">${icon("check")}<h2>Finished</h2><p>Choose another lesson or Weekly Review.</p></section>` : `<section class="mode-grid" aria-label="Choose a practice mode">${modeCard("try", result.try)}${modeCard("say", result.say)}</section>`;
-      return `${navigation}<div class="lesson-heading">${icon("calendar-days")}<div><p>${lesson.kind === "weekly" ? "Weekly Review · " : ""}${escape(dateLabel(lesson.date))}</p><h1>${escape(lesson.title)}</h1></div></div>${body}${footer()}`;
+      return `<div class="lesson-heading">${icon("calendar-days")}<div><p>${lesson.kind === "weekly" ? "Weekly Review · " : ""}${escape(dateLabel(lesson.date))}</p><h1 class="child-heading">${escape(lesson.title)}</h1></div></div>${body}${navigation}${footer()}`;
     }
     function progressHtml() {
       const result = summary()[mode];
       const available = C.nextQuestion(bridge.getProgress(), lesson, mode, date());
-      return `<h1 class="progress-title">${modeLabel(mode)}</h1>${mode === "say" && available ? '<p class="progress-instruction">Pick one idea.</p>' : ""}<section class="concept-list" aria-label="${modeLabel(mode)} progress">${result.concepts.map((concept) => {
+      return `<h1 class="progress-title child-heading">${modeLabel(mode)}</h1>${mode === "say" && available ? '<p class="progress-instruction">Pick one idea.</p>' : ""}<section class="concept-list" aria-label="${modeLabel(mode)} progress">${result.concepts.map((concept) => {
         const next = C.nextQuestion(bridge.getProgress(), lesson, mode, date(), concept.id);
         const text = concept.due ? "Review ready" : concept.dueOn ? reviewLabel(concept.dueOn) : concept.done ? "" : concept.attempted ? "In progress" : "Not started";
-        return `<article class="concept-card"><div><h3>${escape(concept.title)}</h3>${text ? `<p>${escape(text)}</p>` : ""}</div><div class="concept-actions">${concept.done ? `<span class="pill done">${icon("check")}Done</span>` : ""}${mode === "say" && next ? button("start-say", concept.due ? "Review now" : "Let's go", "primary", "arrow-right", `data-concept="${escape(concept.id)}"`) : ""}</div></article>`;
+        return `<article class="concept-card child-card"><div><h3>${escape(concept.title)}</h3>${text ? `<p>${escape(text)}</p>` : ""}</div><div class="concept-actions">${concept.done ? `<span class="pill done">${icon("check")}Done</span>` : ""}${mode === "say" && next ? button("start-say", concept.due ? "Review now" : "Let's go", "primary", "arrow-right", `data-concept="${escape(concept.id)}"`) : ""}</div></article>`;
       }).join("")}</section>${mode === "try" && available ? `<div class="progress-actions">${button("start-try", result.concepts.some((c) => c.due) ? "Review now" : "Continue", "primary", "arrow-right")}</div>` : ""}${footer()}`;
     }
     function feedbackHtml() {
@@ -100,7 +109,7 @@
       if (!feedback) lastKey = questionKey(next);
       const pending = next.pending;
       const step = next.phase === "initial" ? `Question ${next.number} · up to 3` : "One short review";
-      const progress = Math.round((next.phase === "initial" ? (next.number - 1) / 3 : 0) * 100);
+      const progress = next.number - 1 + Number(Boolean(feedback));
       let body = "";
       if (mode === "try") {
         body = feedback ? feedbackHtml() : `<div class="answer-area">${Q.answerControls(q, selection, words)}</div>${pending?.helped ? `<aside class="help-note"><strong>With help</strong>${escape(q.hint || q.explanation || q.answerText)}</aside>` : ""}<div class="question-actions">${pending?.helped ? '<span class="small-note">Your help is saved.</span>' : button("help", "Show a hint", "text-button", "lightbulb")}${button("check", "Check", "primary", "check", canCheck(q) ? "" : "disabled")}</div>`;
@@ -109,14 +118,14 @@
       } else {
         body = `<section class="answer-reveal"><p>ONE WAY TO SAY IT</p><h3>${escape(q.answerText)}</h3>${button("answer-audio", "Listen to the answer", "listen-button", "volume-2")}${q.accepted?.length ? `<div class="accepted">You can also say: ${q.accepted.map(escape).join(" / ")}</div>` : ""}</section><p class="parent-label">Grown-up check</p><p class="parent-note">Before showing the answer.</p>${pending.helped ? '<p class="help-note">A hint was given. Choose With help or Not yet.</p>' : ""}<div class="ratings">${button("rate", "Got it", "rating", "check", `data-rating="gotIt" ${pending.helped ? "disabled" : ""}`)}${button("rate", "With help", "rating", "hand", 'data-rating="withHelp"')}${button("rate", "Not yet", "rating", "rotate-ccw", 'data-rating="notYet"')}</div>`;
       }
-      return `<div class="session-heading"><div><p class="eyebrow">${modeLabel(mode)}${next.phase !== "initial" ? " · REVIEW" : ""}</p><h1>${escape(next.concept.title)}</h1></div><span class="step-badge">${step}</span></div><div class="progress-track" aria-hidden="true"><span style="width:${progress}%"></span></div><section class="question-card"><div class="question-layout">${Q.sceneHtml(q.scene)}<div class="question-content">${button("question-audio", "Listen", "listen-button", "volume-2")}<h2 id="question-prompt">${escape(q.prompt)}</h2>${mode === "try" ? `<p class="instruction">${escape(q.instruction)}</p>` : ""}</div></div>${mode === "say" ? `<div class="answer-area"><p class="speaking-cue">${escape(q.instruction)}</p>${body}</div>` : body}<p class="audio-status" id="audio-message" role="status">${escape(audioMessage)}</p>${audioMessage.startsWith("Could not") ? button("retry-audio", "Try the sound again", "text-button", "rotate-ccw") : ""}</section>${footer()}`;
+      return `<div class="session-heading"><div><p class="eyebrow">${modeLabel(mode)}${next.phase !== "initial" ? " · REVIEW" : ""}</p><h1>${escape(next.concept.title)}</h1></div></div><div class="child-progress session-progress">${step}<progress class="child-progress-meter" value="${progress}" max="${next.total}" aria-label="This idea's progress"></progress></div><section class="question-card child-card"><div class="question-layout">${Q.sceneHtml(q.scene)}<div class="question-content">${button("question-audio", "Listen", "listen-button", "volume-2")}<h2 id="question-prompt">${escape(q.prompt)}</h2>${mode === "try" ? `<p class="instruction">${escape(q.instruction)}</p>` : ""}</div></div>${mode === "say" ? `<div class="answer-area"><p class="speaking-cue">${escape(q.instruction)}</p>${body}</div>` : body}<p class="audio-status" id="audio-message" role="status">${escape(audioMessage)}</p>${audioMessage.startsWith("Could not") ? button("retry-audio", "Try the sound again", "text-button", "rotate-ccw") : ""}</section>${footer()}`;
     }
     function roundHtml() {
       const result = summary()[mode || "try"];
       const relevant = mode === "say" ? result.concepts.filter((c) => c.id === conceptId) : result.concepts;
       const waiting = relevant.map((c) => c.dueOn).filter(Boolean).sort()[0];
       const available = mode === "say" && C.nextQuestion(bridge.getProgress(), lesson, "say", date());
-      return `<section class="round-card"><span class="round-mark">${icon("circle-check")}</span><p class="eyebrow">${modeLabel(mode)} · ${result.done ? "LESSON DONE" : "ROUND DONE"}</p><h1>Done for now.</h1>${waiting ? `<p>${escape(reviewLabel(waiting))}</p>` : ""}<div class="round-actions">${button("home", "My lesson", "secondary", "arrow-left")}${available ? button("choose-say", "Choose another idea", "primary", "arrow-right") : button("progress", "See my progress", "primary", "arrow-right", `data-mode="${mode}"`)}</div></section>${footer()}`;
+      return `<section class="round-card child-summary"><span class="round-mark">${icon("circle-check")}</span><p class="eyebrow">${modeLabel(mode)} · ${result.done ? "LESSON DONE" : "ROUND DONE"}</p><h1 class="child-heading">Done for now.</h1>${waiting ? `<p>${escape(reviewLabel(waiting))}</p>` : ""}<div class="round-actions child-actions">${button("home", "Back to lesson", "nav-link", "arrow-left")}${available ? button("choose-say", "Choose another idea", "primary", "arrow-right") : button("progress", "See my progress", "primary", "arrow-right", `data-mode="${mode}"`)}</div></section>${footer()}`;
     }
     function render() {
       const page = view === "home" ? homeHtml() : view === "progress" ? progressHtml() : view === "practice" ? practiceHtml() : roundHtml();
@@ -250,7 +259,10 @@
       app = mount({ root, lesson: lessons[entry.id], bridge, catalog, lessons, child: global.NativeCampCatalog.childFrom(location.search) });
       global.addEventListener("pagehide", () => bridge.setActive?.(false));
     } catch (error) {
-      root.innerHTML = `<section class="loading-card"><p class="eyebrow">NATIVE CAMP REVIEW</p><h1>Let's try again.</h1><p class="error" role="alert">${escape(error?.message || "This page could not be opened.")}</p>${button("reload", "Try again", "primary", "rotate-ccw")} <a class="nav-link" href="../">${icon("house")}My home</a></section>`;
+      const child = global.nativecampWiring?.currentChild;
+      const requestedChild = new URLSearchParams(location.search).get("child");
+      const homeHref = child && (requestedChild === null || requestedChild === child) ? global.KidsFamily?.homeHref(child) ?? "../" : "../";
+      root.innerHTML = `<section class="loading-card child-card"><p class="eyebrow">NATIVE CAMP REVIEW</p><h1 class="child-heading">Let's try again.</h1><p class="error" role="alert">${escape(error?.message || "This page could not be opened.")}</p>${button("reload", "Try again", "primary", "rotate-ccw")} <a class="nav-link child-action back" href="${escape(homeHref)}">${icon("house")}Back to home</a></section>`;
       root.querySelector('[data-action="reload"]')?.addEventListener("click", () => location.reload());
     }
     return app;
