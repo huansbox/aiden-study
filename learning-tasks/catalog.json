@@ -569,12 +569,12 @@
       "id": "giving-more-precious",
       "name": "付出比收穫更可貴閱讀心智圖",
       "status": "complete",
-      "statusNote": "Sonnet／medium 內容審查與隔離瀏覽器驗證完成；發布證據見 #267。",
+      "statusNote": "依家長回饋改為白話短句與自寫；Sonnet／medium 審查，驗證見 #267。",
       "eventDate": "2026-11-17",
       "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
       "description": "李斯特讓舞臺給蕭邦，並寬諒、指點為生活冒稱學生的姑娘。",
       "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
-      "reuse": "從右上順時針抄寫五枝，保留兩次幫助的起因、做法與結果。",
+      "reuse": "先口頭回答、再參考例子或改成自己的話；五枝保留兩次幫助的起因、做法與結果。",
       "availability": "available", "links": [{"label": "網頁", "url": "../giving-more-precious-mind-map/"}]
     },
     {
