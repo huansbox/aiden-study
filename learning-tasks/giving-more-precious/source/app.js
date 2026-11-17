@@ -1,83 +1,235 @@
 'use strict';
+
 READING_PHRASES.push(...GIVING_READINGS);
-let state=cleanState(null), storageOK=true;
-try{state=cleanState(JSON.parse(localStorage.getItem(STORAGE_KEY)));}catch{storageOK=false;}
-const guide=document.getElementById('guide');
-const colors=['#648570','#ad874e','#7388aa','#aa7c76','#87789b'];
-// 版型位置依序為左上、右上、左下、右下、下方。
-const slots=[1,3,4,2,0];
-function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));storageOK=true;}catch{storageOK=false;}}
-function renderMap(){
-  document.getElementById('map').innerHTML=`<svg class="map-lines" aria-hidden="true"></svg><div class="center-node"><span>${TITLE.slice(0,5)}</span><span>${TITLE.slice(5)}</span></div>${BRANCHES.map((b,i)=>{
-    const words=branchWords(b,state.picks[i]);
-    return `<section class="branch branch-${slots[i]} ${words.length?'':'empty'}" style="--color:${colors[i]}"><h3><button data-edit="${i}" aria-label="修改第${i+1}枝${b.label}">${i+1} ${b.label}</button></h3><ul>${(words.length?words:['還沒選']).map((w,j)=>`<li class="map-leaf leaf-${j}">${w}</li>`).join('')}</ul></section>`;
-  }).join('')}`;
-  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>edit(Number(b.dataset.edit)));
-  document.getElementById('save-status').textContent=storageOK?'選擇會記在這個瀏覽器。':'無法儲存；離開前請先截圖留存。';
-  annotateReading(document.getElementById('map'));requestAnimationFrame(drawLines);
+const guide = document.getElementById('guide');
+const map = document.getElementById('map');
+const finish = document.getElementById('finish');
+const saveStatus = document.getElementById('save-status');
+let state = cleanState(null);
+let storageOK = true;
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  state = saved === null
+    ? migrateLegacy(JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY)))
+    : cleanState(JSON.parse(saved));
+} catch {
+  storageOK = false;
 }
-function drawLines(){
-  const map=document.getElementById('map'),svg=map.querySelector('svg');if(!svg)return;
-  const area=map.getBoundingClientRect();
-  const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left-area.left,right:r.right-area.left,top:r.top-area.top,bottom:r.bottom-area.top,width:r.width,height:r.height};};
-  const center=rect(map.querySelector('.center-node')),cx=(center.left+center.right)/2,cy=(center.top+center.bottom)/2;
-  svg.setAttribute('viewBox',`0 0 ${area.width} ${area.height}`);
-  svg.innerHTML=[...map.querySelectorAll('.branch')].map((b,i)=>{
-    const slot=slots[i];
-    const label=rect(b.querySelector('h3')),lx=(label.left+label.right)/2,upper=slot<2;
-    const ly=upper?label.bottom+8:label.top-8;
-    const angle=Math.atan2(ly-cy,lx-cx);
-    const sx=cx+Math.cos(angle)*(center.width/2+3),sy=cy+Math.sin(angle)*(center.height/2+3);
-    let d=`M ${sx} ${sy} L ${lx} ${ly}`;
-    const leaves=[...b.querySelectorAll('.map-leaf')].map(rect);
-    const fromY=upper?label.top-8:label.bottom+8;
-    if(slot===4){
-      const forkY=fromY+3;
-      leaves.forEach(r=>{const x=(r.left+r.right)/2;d+=` M ${lx} ${fromY} L ${lx} ${forkY} L ${x} ${forkY} L ${x} ${r.top-7}`;});
-    }else{
-      const left=slot%2===0;
-      const gutter=left?Math.max(...leaves.map(r=>r.right))+9:Math.min(...leaves.map(r=>r.left))-9;
-      leaves.forEach(r=>{const x=left?r.right+8:r.left-8,y=(r.top+r.bottom)/2;
-        d+=` M ${lx} ${fromY} L ${gutter} ${fromY} L ${gutter} ${y} L ${x} ${y}`;
-      });
-    }
-    return `<path d="${d}" fill="none" stroke="${colors[i]}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }).join('');
-}
-function edit(step){state.step=step;state.finished=false;save();render();document.getElementById('question').focus({preventScroll:true});window.scrollTo(0,0);}
-function feedback(){
-  const b=BRANCHES[state.step],p=state.picks[state.step];
-  document.getElementById('next').disabled=!isReady(b,p);
-  document.getElementById('feedback').textContent=isReady(b,p)?'放好了，可以繼續，也可以換。':b.min===2?`已選 ${p.length} 個，還要選 ${b.min-p.length} 個。`:'選一組你想留下的短詞。';
-}
-function render(){
-  document.body.classList.toggle('copy-mode',state.finished);
-  const finish=document.getElementById('finish');finish.hidden=!state.finished;
-  document.getElementById('map-title').textContent=state.finished?'我的閱讀心智圖':'五條主枝，一步一步拼';
-  renderMap();
-  if(state.finished){
-    guide.innerHTML='';finish.innerHTML='<p class="finish-note">先抄中間的題目。從右上方的 1 開始，順時針抄到 5。</p><div class="actions"><button id="revise">回去改一改</button><button id="print">列印這張圖</button></div>';
-    document.getElementById('revise').onclick=()=>edit(0);document.getElementById('print').onclick=()=>window.print();
-  }else{
-    const b=BRANCHES[state.step];
-    guide.innerHTML=`<div class="step">第 ${state.step+1} / ${BRANCHES.length} 步 · ${b.label}</div><progress max="5" value="${state.step+1}" aria-label="目前步驟"></progress><h2 id="question" tabindex="-1">${b.question}</h2><p class="prompt">${b.prompt}</p><details class="hint"><summary>回頭讀一小段</summary><p>${b.hint}</p></details><div class="choices">${b.choices.map(c=>`<button class="choice" data-choice="${c.id}" aria-pressed="${state.picks[state.step].includes(c.id)}"><span class="choice-words">${c.words.map(w=>`<span>${w}</span>`).join('')}</span><span class="mark">${state.picks[state.step].includes(c.id)?'已選':'選這組'}</span></button>`).join('')}</div><p id="feedback" class="feedback" role="status"></p><div class="actions"><button id="back" ${state.step===0?'disabled':''}>上一步</button><button id="next" class="primary">${state.step===BRANCHES.length-1?'完成心智圖':'下一步'}</button></div>`;
-    guide.querySelectorAll('[data-choice]').forEach(btn=>btn.onclick=()=>{
-      const picks=state.picks[state.step],id=btn.dataset.choice,index=picks.indexOf(id);
-      if(index>=0)picks.splice(index,1);else if(b.max===1)picks.splice(0,picks.length,id);else if(picks.length<b.max)picks.push(id);
-      else{document.getElementById('feedback').textContent='留下兩個就好；先取消一個，就能換。';return;}
-      save();renderMap();
-      guide.querySelectorAll('[data-choice]').forEach(button=>{const selected=picks.includes(button.dataset.choice);button.setAttribute('aria-pressed',String(selected));button.querySelector('.mark').textContent=selected?'已選':'選這組';});feedback();
-    });
-    document.getElementById('back').onclick=()=>edit(state.step-1);
-    document.getElementById('next').onclick=()=>{
-      if(!isReady(b,state.picks[state.step]))return;
-      if(state.step===BRANCHES.length-1){const missing=BRANCHES.findIndex((branch,i)=>!isReady(branch,state.picks[i]));if(missing>=0){edit(missing);return;}state.finished=true;save();render();window.scrollTo(0,0);}
-      else edit(state.step+1);
-    };feedback();
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    storageOK = true;
+  } catch {
+    storageOK = false;
   }
-  annotateReading(document.querySelector('main'));
+  showStorageStatus();
 }
-new ResizeObserver(drawLines).observe(document.getElementById('map'));
-document.fonts.load('700 22px ZihiReading').then(fonts=>{if(!fonts.length)throw new Error('Font unavailable');document.getElementById('font-status').hidden=true;drawLines();}).catch(()=>{document.getElementById('font-status').textContent='注音字型未能載入，連線後請重新整理。';drawLines();});
-window.addEventListener('beforeprint',drawLines);window.addEventListener('afterprint',drawLines);
-annotateReading(document.querySelector('header'));render();
+
+function showStorageStatus() {
+  const message = storageOK ? '' : '這次無法儲存，離開前請先截圖。';
+  saveStatus.textContent = message;
+  saveStatus.hidden = !message;
+  annotateReading(saveStatus);
+}
+
+function addNotes(list, notes) {
+  for (const note of notes) {
+    const item = document.createElement('li');
+    item.textContent = note;
+    list.append(item);
+  }
+}
+
+function renderMap() {
+  map.querySelectorAll('.branch').forEach(branch => branch.remove());
+  const firstMissing = state.entries.indexOf(null);
+  BRANCHES.forEach((branch, index) => {
+    const notes = state.entries[index];
+    const section = document.createElement('section');
+    section.className = 'branch branch-' + (index + 1);
+    const h3 = document.createElement('h3');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.branch = index;
+    button.textContent = (index + 1) + ' ' + branch.title;
+    button.disabled = Boolean(state.draft) || (firstMissing >= 0 && index > firstMissing);
+    if (!state.finished && index === state.step) {
+      button.setAttribute('aria-current', 'step');
+    }
+    button.onclick = () => openBranch(index, state.finished);
+    h3.append(button);
+    section.append(h3);
+    if (notes) {
+      const list = document.createElement('ul');
+      addNotes(list, notes);
+      section.append(list);
+    }
+    map.append(section);
+  });
+  annotateReading(map);
+  requestAnimationFrame(drawLines);
+}
+
+function drawLines() {
+  const svg = map.querySelector('svg');
+  const area = map.getBoundingClientRect();
+  const midpoint = element => {
+    const rect = element.getBoundingClientRect();
+    return {x: rect.left + rect.width / 2 - area.left, y: rect.top + rect.height / 2 - area.top};
+  };
+  const start = midpoint(map.querySelector('.center-node'));
+  svg.setAttribute('viewBox', '0 0 ' + area.width + ' ' + area.height);
+  svg.replaceChildren(...[...map.querySelectorAll('.branch')].map((branch, index) => {
+    const end = midpoint(branch);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    // 上排連線沿中央空白先往上，避免穿過左右兩側的故事分枝。
+    const topBranch = index === 0 || index === BRANCHES.length - 1;
+    const channel = start.x + Math.sign(end.x - start.x) * 16;
+    const points = topBranch ? [[channel, start.y], [channel, end.y], [end.x, end.y]] : [[start.x, start.y], [end.x, end.y]];
+    line.setAttribute('points', points.map(point => point.join(',')).join(' '));
+    line.setAttribute('stroke', getComputedStyle(branch).getPropertyValue('--branch-color'));
+    return line;
+  }));
+}
+
+function focusView() {
+  const target = state.finished ? document.getElementById('map-title') : document.getElementById('question');
+  target.focus({preventScroll: true});
+  window.scrollTo(0, 0);
+}
+
+function openBranch(index, returnToMap = false) {
+  if (state.draft) return;
+  state = cleanState({...state, step: index, finished: false, returnToMap});
+  persist();
+  render();
+  focusView();
+}
+
+function useNotes(notes) {
+  const valid = saveNotes(BRANCHES[state.step], notes);
+  if (!valid) return;
+  state.entries[state.step] = valid;
+  const last = state.step === BRANCHES.length - 1;
+  state = cleanState({
+    ...state, draft: null, step: state.step + 1, finished: state.returnToMap || last, returnToMap: false
+  });
+  persist();
+  render();
+  focusView();
+}
+
+function renderEditor(branch, panel) {
+  const form = document.createElement('form');
+  form.id = 'own-words';
+  const fields = branch.prompts.map((prompt, index) => {
+    const label = document.createElement('label');
+    label.textContent = prompt;
+    const field = document.createElement('textarea');
+    field.rows = 2;
+    field.maxLength = MAX_NOTE_LENGTH;
+    field.required = true;
+    field.value = state.draft.notes[index];
+    label.append(field);
+    form.append(label);
+    return field;
+  });
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  actions.innerHTML = '<button type="button" id="cancel-edit">取消修改</button><button class="primary" type="submit">放進圖裡</button>';
+  form.append(actions);
+  const submit = actions.querySelector('[type=submit]');
+  const updateSubmit = () => { submit.disabled = !saveNotes(branch, state.draft.notes); };
+  form.oninput = () => {
+    state.draft.notes = fields.map(field => field.value);
+    persist();
+    updateSubmit();
+  };
+  form.onsubmit = event => {
+    event.preventDefault();
+    useNotes(fields.map(field => field.value));
+  };
+  form.querySelector('#cancel-edit').onclick = () => {
+    state.draft = null;
+    persist();
+    render();
+    document.getElementById('rewrite').focus();
+  };
+  updateSubmit();
+  panel.append(form);
+}
+
+function renderGuide() {
+  const branch = BRANCHES[state.step];
+  const current = state.entries[state.step];
+  guide.innerHTML = '<p class="step">第 ' + (state.step + 1) + ' / ' + BRANCHES.length + ' 枝</p>' +
+    '<h2 id="question" tabindex="-1"></h2>' +
+    '<details class="hint"><summary>想不起來？看提示</summary><p></p></details>' +
+    '<div id="note-panel"></div>';
+  guide.querySelector('#question').textContent = branch.question;
+  guide.querySelector('.hint p').textContent = branch.hint;
+  const panel = guide.querySelector('#note-panel');
+  if (state.draft) {
+    renderEditor(branch, panel);
+    return;
+  }
+
+  panel.innerHTML = '<p class="example-label"></p><ul class="example"></ul>' +
+    '<div class="actions"><button type="button" id="rewrite">改成我的話</button>' +
+    '<button type="button" id="use-notes" class="primary">用這組</button></div>' +
+    '<div class="navigation"><button type="button" id="back"></button></div>';
+  panel.querySelector('.example-label').textContent = current ? '你寫在圖上的話' : '先說說看，再參考例子';
+  addNotes(panel.querySelector('.example'), current || branch.example);
+  panel.querySelector('#use-notes').onclick = () => useNotes(current || branch.example);
+  panel.querySelector('#rewrite').onclick = () => {
+    state.draft = {step: state.step, notes: [...(current || branch.example)]};
+    persist();
+    render();
+    guide.querySelector('textarea').focus();
+  };
+  const back = panel.querySelector('#back');
+  back.hidden = !state.returnToMap && state.step === 0;
+  back.textContent = state.returnToMap ? '回抄寫圖' : '上一枝';
+  back.onclick = () => {
+    if (state.returnToMap) {
+      state = cleanState({...state, finished: true});
+      persist();
+      render();
+      focusView();
+      return;
+    }
+    openBranch(state.step - 1);
+  };
+}
+
+function render() {
+  document.body.classList.toggle('copy-mode', state.finished);
+  finish.hidden = !state.finished;
+  guide.hidden = state.finished;
+  if (!state.finished) renderGuide();
+  else guide.replaceChildren();
+  renderMap();
+  showStorageStatus();
+  annotateReading(guide);
+}
+
+document.getElementById('map-title').tabIndex = -1;
+document.getElementById('revise').onclick = () => openBranch(0, true);
+document.getElementById('print').onclick = () => window.print();
+new ResizeObserver(drawLines).observe(map);
+document.fonts.load('700 22px ZihiReading').then(fonts => {
+  if (!fonts.length) throw new Error('Font unavailable');
+  document.getElementById('font-status').hidden = true;
+  drawLines();
+}).catch(() => {
+  const status = document.getElementById('font-status');
+  status.textContent = '注音字型未能載入，請連線後再重新整理。';
+  annotateReading(status);
+});
+window.addEventListener('beforeprint', drawLines);
+window.addEventListener('afterprint', drawLines);
+annotateReading(document.querySelector('header'));
+annotateReading(document.querySelector('main'));
+render();

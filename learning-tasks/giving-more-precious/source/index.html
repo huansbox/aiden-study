@@ -8,33 +8,39 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="付出比收穫更可貴">
   <link rel="manifest" href="app.webmanifest">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261117-2">
   <link rel="preload" href="../assets/fonts/BpmfZihiSans-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <title>付出比收穫更可貴 · 拼出閱讀心智圖</title>
 </head>
 <body>
-<header><a href="../index.html">回學習首頁</a><span>閱讀小工坊</span></header>
+<header><a href="../index.html">回學習首頁</a></header>
 <main>
-  <h1>付出比收穫更可貴 · 我的心智圖</h1>
+  <h1>付出比收穫更可貴</h1>
   <p id="font-status" class="muted" role="status">注音字型載入中。</p>
   <div class="workspace">
     <section id="guide" class="card" aria-label="選擇重點"></section>
     <section class="card map-card" aria-label="我的心智圖">
-      <h2 id="map-title">五條主枝，一步一步拼</h2>
-      <div id="map" class="mind-map"></div>
+      <h2 id="map-title">我的心智圖</h2>
+      <div id="map" class="mind-map">
+        <svg class="map-lines" aria-hidden="true"></svg>
+        <div class="center-node"><span>付出比收穫</span><span>更可貴</span></div>
+      </div>
       <p id="save-status" class="muted" role="status"></p>
     </section>
   </div>
-  <section id="finish" class="card" hidden></section>
+  <section id="finish" class="card" hidden>
+    <p class="wide-copy">先寫中央的題目，再從右上方的第 1 枝順時針寫下去。想改哪一枝，就點它的標題。</p>
+    <p class="narrow-copy">先寫題目，再依 1 到 5 的順序寫下去。想改哪一枝，就點它的標題。</p>
+    <div class="actions"><button id="revise" type="button">回去改一改</button><button id="print" type="button">列印</button></div>
+  </section>
   <details class="parent-note"><summary>給陪讀的大人</summary>
-    <p>先請孩子說說文章裡發生什麼事，再選自己看得懂的短詞。每一步選一組，各選項都有文章依據，不計分。想不起來時，可以打開「回頭讀一小段」。</p>
-    <p>可以問孩子：蕭邦和姑娘各遇到什麼困難？李斯特給了他們哪些幫助？</p>
-    <p>先寫中間的原題，再從右上方起，依故事順序順時針抄。圖上的每個短詞就是要抄的內容。進度只記在此瀏覽器，與上次作業分開。</p>
+    <p>先請孩子把答案說一次，再決定怎麼寫。如果孩子只說「他幫忙」，可以追問「他是誰？做了什麼？後來怎麼了？」</p>
+    <p>看完第 3 枝和第 5 枝，可以聊聊李斯特給了別人什麼幫助，以及這兩件事和題目有什麼關係。</p>
   </details>
 </main>
 <script src="../mind-map-reading.js"></script>
-<script src="content.js"></script>
-<script src="app.js"></script>
+<script src="content.js?v=20261117-2"></script>
+<script src="app.js?v=20261117-2"></script>
 <script src="../shared/task-home.js?v=20260916-home"></script>
 </body>
 </html>
