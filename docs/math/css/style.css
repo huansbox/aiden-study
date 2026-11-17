@@ -462,8 +462,9 @@ body {
 .math-result-content p {
   margin-top: .5rem;
 }
-.math-result .child-heading {
+#math-result-title {
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  text-wrap: balance;
 }
 .fireworks-canvas {
   position: absolute;

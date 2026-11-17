@@ -117,16 +117,32 @@
 .child-ui .family-appbar .child-action { gap: .625rem; padding: 6px 12px; }
 .child-ui .family-appbar .child-action img { width: 36px; height: 36px; margin: 0; border-radius: 8px; }
 .child-ui .family-reward {
+  position: fixed;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
   box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: max-content;
   min-width: min(280px, calc(100vw - 40px));
+  max-width: calc(100vw - 40px);
   padding: var(--child-gap);
   gap: .75rem;
-  flex-wrap: wrap;
   border: 1px solid var(--child-line);
   border-radius: var(--child-radius);
   background: var(--child-surface);
   color: var(--child-ink);
   box-shadow: 0 8px 28px #20232626;
+  font: 800 clamp(1.125rem, 2vw, 1.25rem)/1.3 system-ui;
+}
+.child-ui .family-reward strong {
+  overflow-wrap: anywhere;
+}
+.child-ui .family-reward :is(a, button) {
+  white-space: nowrap;
 }
 .child-ui .family-reward a {
   color: #fff;
