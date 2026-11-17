@@ -33,6 +33,9 @@ const els = {
   game: document.getElementById('game'),
   allclear: document.getElementById('allclear'),
   library: document.getElementById('library'),
+  libraryProgress: document.getElementById('library-progress'),
+  libraryProgressLabel: document.getElementById('library-progress-label'),
+  libraryProgressMeter: document.getElementById('library-progress-meter'),
   customDisplay: document.getElementById('custom-display'),
   customKeyboard: document.getElementById('custom-keyboard'),
   customHint: document.getElementById('custom-hint'),
@@ -129,6 +132,11 @@ function renderLibrary() {
     showLibraryMessage('題庫載入失敗 😢 請重新整理頁面再試一次');
     return;
   }
+  const solvedCount = words.filter((word) => isSolved(solvedKeys, word)).length;
+  els.libraryProgressLabel.textContent = `已過關 ${solvedCount} / ${words.length} 題`;
+  els.libraryProgressMeter.max = words.length;
+  els.libraryProgressMeter.value = solvedCount;
+  els.libraryProgress.hidden = false;
   els.library.innerHTML = '';
   words.forEach((word, index) => {
     const done = isSolved(solvedKeys, word);
@@ -546,7 +554,7 @@ document.addEventListener('click', (e) => {
 // ---- 檢查 ----
 function clearHint() {
   els.hint.textContent = '';
-  els.hint.classList.remove('ok', 'bad');
+  els.hint.classList.remove('ok', 'bad', 'child-summary');
 }
 
 // ---- 揭曉格盤：按字母上色正解，並（可選）疊加多塗/漏塗記號 ----
@@ -585,7 +593,7 @@ els.checkBtn.addEventListener('click', () => {
     family?.record({answered:true,correct:true});family?.setActive(false);
     els.hint.textContent = '🎉 答對了！過關！';
     els.hint.classList.remove('bad');
-    els.hint.classList.add('ok');
+    els.hint.classList.add('ok', 'child-summary');
     // 自訂題為臨時遊玩：不寫題庫過關紀錄（見 PRD「自訂出題為臨時遊玩」）。
     if (!isCustom) {
       solvedKeys = markSolved(solvedKeys, currentWord);
@@ -611,6 +619,7 @@ els.revealBtn.addEventListener('click', () => {
   revealBoard(false);
   els.hint.textContent = '已看答案（這題不算過關）';
   els.hint.classList.remove('ok', 'bad');
+  els.hint.classList.add('child-summary');
   els.checkBtn.hidden = true;
   els.revealBtn.hidden = true;
   els.replayBtn.hidden = false;  // 可重玩

@@ -489,3 +489,35 @@ html, body {
 }
 .hint.ok { color: #1f9d55; }
 .hint.bad { color: #d14343; }
+
+/* Share navigation and feedback styling while each theme owns the puzzle palette. */
+.child-ui.family-child[data-child-theme="puzzle"] {
+  background: linear-gradient(160deg, var(--bg-top), var(--bg-bottom)) !important;
+}
+.child-ui[data-child-theme="puzzle"] .header .title {
+  color: var(--header-ink);
+}
+.child-ui[data-child-theme="puzzle"] .card {
+  border-radius: var(--child-radius);
+  border-color: var(--child-line);
+}
+.child-ui[data-child-theme="puzzle"] .home-title {
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  padding-inline: 44px;
+}
+.child-ui .library-progress {
+  margin: 0 auto 16px;
+  max-width: 24rem;
+}
+.child-ui .settings-toggle {
+  width: var(--child-touch);
+  height: var(--child-touch);
+}
+.child-ui .seg-btn {
+  min-height: var(--child-touch);
+}
+.child-ui #hint.child-summary {
+  padding: .75rem 1rem;
+  margin-block: .75rem;
+  font-weight: 800;
+}

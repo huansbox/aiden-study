@@ -8,7 +8,7 @@ window.KidsSpellingChild = ({
 }) => {
   document.body.classList.add("spelling-child");
   const el = document.createElement("main");
-  el.className = "family-self-spelling";
+  el.className = "family-self-spelling child-card";
   document.body.appendChild(el);
   let batch = family.task()?.batch ?? initialBatch,
     mode = family.task() ? "test" : "cards",
@@ -34,7 +34,7 @@ window.KidsSpellingChild = ({
   function speak() {
     if (!window.speechSynthesis) {
       document.getElementById("spell-feedback").textContent =
-        "這台装置無法播放語音，請先用看單字練習。";
+        "這台裝置無法播放語音，請先用看單字練習。";
       return;
     }
     speechSynthesis.cancel();
@@ -51,7 +51,42 @@ window.KidsSpellingChild = ({
   function render() {
     family.setActive(!roundDone);
     checked = false;
-    el.innerHTML = `<h2>英文</h2><div class="family-row" style="margin:20px 0"><label for="spell-batch">組別</label><select id="spell-batch" style="font:inherit;padding:10px">${Array.from({ length: Math.ceil(words.length / batchSize) }, (_, i) => `<option value="${i}" ${i === batch ? "selected" : ""}>第 ${i + 1} 組</option>`).join("")}</select></div><div><button id="spell-cards" aria-pressed="${mode === "cards"}">看單字</button><button id="spell-test" aria-pressed="${mode === "test"}">聽音拼字</button></div>${roundDone ? '<h2 style="margin:30px 0">這一輪完成</h2><button id="spell-again">再練一輪</button>' : `<p style="margin-top:22px">${roundCount + 1} / ${task && mode === "test" && batch === task.batch ? Math.max(1, family.remaining() + roundCount) : batchSize}</p>${mode === "cards" ? `<p style="font-size:48px;font-weight:900;margin:24px 0">${esc(word())}</p>` : ""}<button id="spell-listen">聽聲音</button>${mode === "test" ? '<form id="spell-form"><label for="spell-answer">拼出單字</label><input id="spell-answer" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" required><button id="spell-check" type="submit">檢查</button></form>' : ""}<p id="spell-feedback" role="status"></p><button id="spell-next" ${mode === "test" ? "hidden" : ""}>下一個 →</button>`}`;
+    const roundTotal = task && mode === "test" && batch === task.batch
+      ? Math.max(1, family.remaining() + roundCount)
+      : batchSize;
+    const options = Array.from({ length: Math.ceil(words.length / batchSize) }, (_, i) =>
+      `<option value="${i}" ${i === batch ? "selected" : ""}>第 ${i + 1} 組</option>`).join("");
+    el.innerHTML = `
+      <h1 class="child-heading">英文拼字</h1>
+      <div class="spell-toolbar">
+        <div><label for="spell-batch">組別</label><select id="spell-batch">${options}</select></div>
+        <div class="child-actions" role="group" aria-label="練習方式">
+          <button id="spell-cards" class="child-action" aria-pressed="${mode === "cards"}">看單字</button>
+          <button id="spell-test" class="child-action" aria-pressed="${mode === "test"}">聽音拼字</button>
+        </div>
+      </div>
+      ${roundDone ? `
+        <section class="child-summary">
+          <h2 class="child-heading">這一輪完成</h2>
+          <p>第 ${batch + 1} 組，完成 ${roundCount} 次練習。</p>
+          <button id="spell-again" class="child-action primary">再練一輪</button>
+        </section>` : `
+        <div class="child-progress">
+          第 ${roundCount + 1} / ${roundTotal} 個單字
+          <progress class="child-progress-meter" max="${roundTotal}" value="${roundCount}" aria-label="這一輪的練習進度"></progress>
+        </div>
+        ${mode === "cards" ? `<p class="spell-word" lang="en">${esc(word())}</p>` : ""}
+        <div class="spell-controls">
+          <div><button id="spell-listen" class="child-action ${mode === "cards" ? "primary" : ""}">聽聲音</button></div>
+          ${mode === "test" ? `<form id="spell-form">
+            <label for="spell-answer">拼出單字</label>
+            <input id="spell-answer" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" required>
+            <button id="spell-check" class="child-action primary" type="submit">檢查</button>
+          </form>` : ""}
+          <p id="spell-feedback" role="status"></p>
+          <div><button id="spell-next" class="child-action primary" ${mode === "test" ? "hidden" : ""}>下一個 →</button></div>
+        </div>`}
+    `;
     document.getElementById("spell-batch").onchange = (e) => {
       batch = Number(e.target.value);
       restart();
