@@ -38,6 +38,17 @@
     zhuyin: "注音",
     "animal-fight": "動物守護者",
   };
+  const activityThemes = {
+    "study:math": "study",
+    "study:social": "social",
+    "study:science": "science",
+    "study:chinese": "puzzle",
+    math: "math",
+    spelling: "english",
+    nativecamp: "english",
+    nonogram: "puzzle",
+    zhuyin: "zhuyin",
+  };
   let learningTasks = [];
   let reg,
     child,
@@ -51,7 +62,7 @@
   const minutes = (n) => Math.floor(n / 60);
   function header() {
     const s = F.summary(child.id);
-    return `<header class="family-header"><div class="family-person"><img class="family-avatar" src="${F.avatar(child.id, profile().avatar)}" alt=""><h1>${esc(child.name)}</h1></div><button class="family-stats-link" data-view="results">我的成果 →<br><small>今天 ${s.today.answered} 題 · ${minutes(s.today.seconds)} 分鐘</small></button></header>`;
+    return `<header class="family-header"><div class="family-person"><img class="family-avatar" src="${F.avatar(child.id, profile().avatar)}" alt=""><h1 class="child-heading">${esc(child.name)}</h1></div><button class="family-stats-link child-action secondary" data-view="results">我的成果 →<small>今天 ${s.today.answered} 題 · ${minutes(s.today.seconds)} 分鐘</small></button></header>`;
   }
   function stats() {
     const s = F.summary(child.id),
@@ -98,13 +109,13 @@
     const available = packInventory().filter((p) => p.placed < 3).length;
     const models = window.KidsCollectionCore.AVAILABLE_MODELS;
     const allCollected = models.length > 0 && models.every((modelId) => state.builds.some((b) => b.modelId === modelId && b.completedAt)) && (!build || build.completedAt);
-    const packsAction = `<div class="daily-pack-actions">${available ? allCollected ? `<p>零件盒保留 ${available} 包，等新作品再拼。</p>` : `<button type="button" data-view="results">還有 ${available} 包可以拼 →</button>` : '<p>目前沒有待拼的包；已拼好的成果會保留。</p>'}<button type="button" class="secondary" data-pack-history>拼裝包紀錄</button></div>`;
-    return `<section class="family-panel daily-goals"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日已領 ${earned} 包</span></div><p class="daily-explanation">${!state.daily.rulesConfirmed ? "練習紀錄會保存；連線後再確認今天的目標與獎勵。" : goals.length ? state.daily.rewardOffset ? "今天已領的包會抵扣調整後的份量；卡片顯示只練該活動時，下一包實際還差多少。加碼次數不限。" : "每完成一份目標領一包。必做完成後，可以自己選擇加碼；加碼次數不限，內容由你選。" : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
+    const packsAction = `<div class="daily-pack-actions">${available ? allCollected ? `<p>零件盒保留 ${available} 包，等新作品再拼。</p>` : `<button type="button" class="child-action primary" data-view="results">還有 ${available} 包可以拼 →</button>` : '<p>目前沒有待拼的包；已拼好的成果會保留。</p>'}<button type="button" class="child-action secondary" data-pack-history>拼裝包紀錄</button></div>`;
+    return `<section class="family-panel daily-goals child-card"><div class="family-row"><h2>今天的目標</h2><span class="daily-pack-count">今日已領 ${earned} 包</span></div><p class="daily-explanation">${!state.daily.rulesConfirmed ? "練習紀錄會保存；連線後再確認今天的目標與獎勵。" : goals.length ? state.daily.rewardOffset ? "今天已領的包會抵扣調整後的份量；卡片顯示只練該活動時，下一包實際還差多少。加碼次數不限。" : "每完成一份目標領一包。必做完成後，可以自己選擇加碼；加碼次數不限，內容由你選。" : "自由練習完整一輪，就能領一包。"}</p><div class="daily-goal-list">${goals.map(goal => {
       const entry = entries.find(e => e.id === goal.entryId);
       const label = entry?.title || goal.label || names[goal.entryId] || goal.entryId;
       const unit = goal.metric === "answered" ? "題" : "輪";
       const href = entry && esc(F.entryHref(entry, child.id));
-      const content = `<span>${esc(label)}</span><strong>必做 ${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${unit}${goal.done ? " · 已完成" : ""}</strong>`;
+      const content = `<span class="daily-goal-title">${esc(label)}</span><strong>必做 <span class="daily-goal-count">${Math.min(goal.quantity, goal.progress)} / ${goal.quantity} ${unit}</span>${goal.done ? " · 已完成" : ""}</strong>`;
       if (entry && goal.done && state.daily.repeatable && state.daily.rulesConfirmed) {
         const remaining = goal.nextRewardRemaining ?? goal.quantity - (goal.bonusProgress || 0);
         return `<section class="daily-goal done"><div>${content}<p>今日累積 ${goal.progress} ${unit}</p><a class="daily-bonus" href="${href}">加碼再做 ${remaining} ${unit}，可再得 1 包 →</a><p>${goal.rewardOffset ? `已領額度抵扣 ${goal.rewardOffset} 包；` : `目前加碼進度 ${goal.bonusProgress || 0} / ${goal.quantity} ${unit}；`}若只練這項，距離下一包還差 ${remaining} ${unit}。</p></div></section>`;
@@ -128,7 +139,7 @@
         const target = external
           ? ' target="_blank" rel="noopener noreferrer"'
           : "";
-        return `<article class="family-activity" data-entry="${esc(entry.id)}">
+        return `<article class="family-activity child-card" data-entry="${esc(entry.id)}" data-child-theme="${esc(activityThemes[entry.id] || "study")}">
         <a class="activity-heading" href="${esc(href)}"${target}><h2>${esc(entry.title)}</h2>${entry.id === "nativecamp" ? `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="${esc(new URL("nativecamp/icons.svg#book-open", F.base).href)}"></use></svg>` : entry.mark && !["study:social", "study:science"].includes(entry.id) ? `<span class="symbol" aria-hidden="true">${esc(entry.mark)}</span>` : ""}</a>
         ${entry.id === "mind-map" ? '<button class="activity-history" data-view="mind-maps">過去文章</button>' : ""}
         ${
