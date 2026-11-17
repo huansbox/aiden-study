@@ -1,0 +1,11 @@
+{
+  "id":"./",
+  "name":"付出比收穫更可貴 · 閱讀心智圖",
+  "short_name":"付出比收穫更可貴",
+  "lang":"zh-TW",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f7f5ee",
+  "theme_color":"#f7f5ee"
+}

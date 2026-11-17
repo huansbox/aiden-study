@@ -1549,6 +1549,46 @@
       }
     },
     {
+      "id": "task:giving-more-precious",
+      "type": "task",
+      "name": "付出比收穫更可貴閱讀心智圖",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；成人可陪讀",
+      "status": "complete",
+      "statusNote": "Sonnet／medium 內容審查與隔離瀏覽器驗證完成；發布證據見 #267。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/giving-more-precious",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/giving-more-precious"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/giving-more-precious",
+      "links": [
+        {
+          "label": "網頁",
+          "url": "../giving-more-precious-mind-map/"
+        }
+      ],
+      "description": "李斯特讓舞臺給蕭邦，並寬諒、指點為生活冒稱學生的姑娘。",
+      "eventDate": "2026-11-17",
+      "groupId": "reading-mind-maps",
+      "groupName": "閱讀心智圖",
+      "created": "2026-11-17",
+      "updated": "2026-11-17",
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:astrea",
       "type": "task",
       "name": "正義女神阿絲特蕾亞閱讀心智圖",
