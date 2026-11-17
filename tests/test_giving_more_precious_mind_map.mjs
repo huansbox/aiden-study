@@ -24,7 +24,7 @@ test('付出比收穫更可貴：所有選法保留兩次幫助的情節與結�
     assert.match(chopin, /蕭邦.*流亡巴黎.*窮.*無名/);
     assert.match(stage, /讓舞臺.*熄燈換手.*一[夕夜]成名/);
     assert.match(girl, /姑娘.*為(生計|生活).*[冒假]稱學生/);
-    assert.match(lesson, /收徒.*(指點|示範)彈法.*將親自演奏/);
+    assert.match(lesson, /李斯特收徒.*教(她彈|彈法).*將演奏/);
   }
 });
 
@@ -44,8 +44,8 @@ test('付出比收穫更可貴：存檔獨立、只能保留合法選項、缺�
 test('付出比收穫更可貴：字嗨按語境顯示讀音，選項仍為原字', () => {
   reading.READING_PHRASES.push(...GIVING_READINGS);
   const vs = String.fromCodePoint(0xE01E1);
-  assert.equal(reading.withReadingVariants('音樂、彈琴、彈一遍、指點彈法、為生計、為生活、重新點亮'),
-    `音樂${vs}、彈${vs}琴、彈${vs}一遍、指點彈${vs}法、為${vs}生計、為${vs}生活、重${vs}新點亮`);
+  assert.equal(reading.withReadingVariants('音樂、彈琴、彈一遍、教她彈、教彈法、為生計、為生活、重新點亮'),
+    `音樂${vs}、彈${vs}琴、彈${vs}一遍、教${vs}她彈${vs}、教${vs}彈${vs}法、為${vs}生計、為${vs}生活、重${vs}新點亮`);
   assert.doesNotMatch(JSON.stringify(BRANCHES), /[\u{E0100}-\u{E01EF}]/u);
 });
 
