@@ -1,0 +1,97 @@
+{
+  "answer-a.mp3": {
+    "hash": "4ba0aeaf9aaf79cc",
+    "text": "先告訴你答案：不管什麼形狀的三角形，三個角加起來，一定是一百八十度。",
+    "duration": 7.153
+  },
+  "answer-b.mp3": {
+    "hash": "844c421e2153d5c7",
+    "text": "為什麼呢？我們一起來看看。",
+    "duration": 3.257
+  },
+  "rect-a.mp3": {
+    "hash": "95fdecb5dde03622",
+    "text": "先看長方形。長方形有四個角，每個都是直角，九十度。",
+    "duration": 6.346
+  },
+  "rect-b.mp3": {
+    "hash": "1811ac3bd1964b8c",
+    "text": "四個九十度加起來，是三百六十度。",
+    "duration": 3.439
+  },
+  "rect-c.mp3": {
+    "hash": "4d7b87a7e3cbb9f9",
+    "text": "沿著對角線切一刀，變成兩個三角形。",
+    "duration": 3.624
+  },
+  "rect-d.mp3": {
+    "hash": "a0b5820cb0ca5c07",
+    "text": "把其中一個轉半圈疊上去，剛好一模一樣。",
+    "duration": 3.891
+  },
+  "rect-e.mp3": {
+    "hash": "6a4d388871427813",
+    "text": "長方形的四個角，全部分給了這兩個三角形，沒有多，也沒有少。",
+    "duration": 6.066
+  },
+  "rect-f.mp3": {
+    "hash": "cd5ce39d43cecfc6",
+    "text": "兩個一樣的三角形平分三百六十度，所以每一個是一百八十度。",
+    "duration": 5.287
+  },
+  "rect-g.mp3": {
+    "hash": "ba2e724a79748390",
+    "text": "不過，這個三角形裡面有一個直角。那沒有直角、歪歪的三角形，也是一百八十度嗎？",
+    "duration": 8.747
+  },
+  "pencil-a.mp3": {
+    "hash": "a6bd908c427972dc",
+    "text": "拿一枝鉛筆來檢查看看。先記得：轉半圈，就是一百八十度。",
+    "duration": 6.725
+  },
+  "pencil-b.mp3": {
+    "hash": "eac1aa73f030875a",
+    "text": "把鉛筆放在三角形的底邊上，筆尖朝右。",
+    "duration": 3.677
+  },
+  "pencil-c.mp3": {
+    "hash": "eff3246dca9969e1",
+    "text": "在第一個角，照著角的大小轉過去，貼到另一條邊上。",
+    "duration": 4.982
+  },
+  "pencil-d.mp3": {
+    "hash": "ec0cff929bc3b54c",
+    "text": "沿著邊滑到第二個角，一樣往同一邊轉。",
+    "duration": 3.716
+  },
+  "pencil-e.mp3": {
+    "hash": "c9974343fb2665fd",
+    "text": "再倒退著滑到第三個角，再轉一次。",
+    "duration": 3.311
+  },
+  "pencil-f.mp3": {
+    "hash": "ce25e88ae996c78f",
+    "text": "鉛筆回到底邊了，可是你看，筆尖變成朝左！",
+    "duration": 4.347
+  },
+  "pencil-g.mp3": {
+    "hash": "bafadbeb96c324c1",
+    "text": "頭尾顛倒，就是轉了半圈。三個角加起來，剛好是半圈，一百八十度。",
+    "duration": 7.591
+  },
+  "pencil-h.mp3": {
+    "hash": "d4c0a111248c58b3",
+    "text": "換一個扁扁的三角形再試一次。還是頭尾顛倒，還是一百八十度。",
+    "duration": 6.794
+  },
+  "wrap-a.mp3": {
+    "hash": "699dce444de7acb4",
+    "text": "記住囉：三角形三個角加起來，一定是一百八十度。",
+    "duration": 4.879
+  },
+  "wrap-b.mp3": {
+    "hash": "36a0fe4efe4e1d22",
+    "text": "換你試試看：畫一個三角形，拿鉛筆在三個角各轉一次，看看筆尖是不是也掉頭了。",
+    "duration": 7.945
+  }
+}

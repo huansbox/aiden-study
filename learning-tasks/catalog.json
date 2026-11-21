@@ -3,6 +3,22 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "triangle-videos",
+      "name": "三角形兩個為什麼（動畫短片）",
+      "status": "in-progress",
+      "statusNote": "第二版 MP4 已輸出，逐句稿經另一模型審查、畫面逐段抽格檢查；AI 旁白未經人耳驗聽，孩子尚未實看，旁白用哪種聲音待家長決定。",
+      "eventDate": null,
+      "audience": [],
+      "audienceLabel": "小學四年級；可親子共看",
+      "description": "兩部臺灣中文旁白動畫，結論先講：長方形切一半加鉛筆轉半圈說明內角和 180 度；棒子當手臂與開關門說明兩邊相加大於、相減小於第三邊。",
+      "reusable": "[動畫短片製作經驗](triangle-videos/design-lessons.md)：講法先定案、逐句稿審查、旁白長度驅動時間軸、抽格檢查圖、兩種旁白聲音。",
+      "availability": "available",
+      "links": [
+        { "label": "內角和 180 度", "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-angles-180.mp4" },
+        { "label": "三邊長規則", "url": "https://github.com/huansbox/aiden-study/blob/master/learning-tasks/triangle-videos/output/triangle-sides-rule.mp4" }
+      ]
+    },
+    {
       "id": "grade4-sem1-exam2",
       "name": "四上後半冊家庭複習",
       "status": "in-progress",
