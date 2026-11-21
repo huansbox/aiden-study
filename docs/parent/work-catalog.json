@@ -289,7 +289,7 @@
       "updated": "2026-11-10",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-11-20T21:31:12.449Z",
+        "checkedAt": "2026-11-21T21:25:54.913Z",
         "error": null
       }
     },
@@ -327,7 +327,7 @@
       "updated": "2026-05-18",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-11-20T21:31:12.449Z",
+        "checkedAt": "2026-11-21T21:25:54.913Z",
         "error": null
       }
     },
@@ -365,7 +365,7 @@
       "updated": "2026-01-27",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-11-20T21:31:12.449Z",
+        "checkedAt": "2026-11-21T21:25:54.913Z",
         "error": null
       }
     },
@@ -2021,7 +2021,7 @@
       "updated": "2026-08-14",
       "freshness": {
         "state": "current",
-        "checkedAt": "2026-11-20T21:31:12.449Z",
+        "checkedAt": "2026-11-21T21:25:54.913Z",
         "error": null
       }
     }
