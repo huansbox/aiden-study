@@ -48,8 +48,15 @@ def main() -> None:
         for segment in segments
     ]
     comparisons = [{"label": "學校原音", "audio": lines[1]["audio"]}]
-    for label, filename in ((" Gemini 台文版", "gemini-han.wav"), (" Gemini 台羅版", "gemini-tailo.wav")):
+    samples = [
+        (" Gemini 台文原版", "gemini-han.wav"),
+        (" Gemini 台文重試版", "gemini-han-retry.wav"),
+        (" Gemini 台羅版", "gemini-tailo.wav"),
+    ]
+    for label, filename in samples:
         path = private_source / filename
+        if filename == "gemini-han-retry.wav" and not path.is_file():
+            continue
         comparisons.append({
             "label": label,
             "audio": audio_url(path.read_bytes(), "audio/wav") if path.is_file() else None,

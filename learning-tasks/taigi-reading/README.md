@@ -13,5 +13,6 @@
 - `source/01_阮小妹.mp3` 取自學校講稿 QR code。
 - `source/segments.json` 含核對過的學校原音起訖與紙本原句。
 - `source/gemini-han.wav` 和 `source/gemini-tailo.wav` 是可選的家長比較樣本。
+- `source/gemini-han-retry.wav` 存在時，家長版會加上指定讀音後的台文重試樣本。
 
 輸出 `mock/index.html` 為可離線開啟的單檔。講稿、私用起訖資料、音訊與內嵌音訊的 HTML 放在 Dropbox 專案目錄。
