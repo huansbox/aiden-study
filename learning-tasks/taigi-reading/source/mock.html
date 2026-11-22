@@ -25,8 +25,7 @@
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   button { font: inherit; font-weight: 650; min-height: 46px; padding: 9px 15px; border-radius: 10px; cursor: pointer; border: 1px solid #b89e84; background: #fff8eb; color: #302820; }
   button.primary { background: #803d28; border-color: #803d28; color: #fff9f0; }
-  button:disabled { opacity: .55; cursor: default; }
-  button:focus-visible, summary:focus-visible { outline: 3px solid #91704a; outline-offset: 3px; }
+  button:focus-visible { outline: 3px solid #91704a; outline-offset: 3px; }
   .stage { min-height: 150px; background: #ebd8be; }
   #stage:not(.playing) .sister-scene *,
   #stage:not(.playing) .sister-scene *::before,
@@ -34,10 +33,6 @@
   .hint, .status, .instruction { color: #70584a; line-height: 1.55; }
   .hint, .instruction { margin-top: 6px; }
   .status { min-height: 1.55em; margin-top: 6px; }
-  .comparison { display: grid; gap: 8px; margin-top: 12px; }
-  .comparison > div { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  details { margin-top: 20px; }
-  summary { cursor: pointer; font-weight: 700; }
   [hidden] { display: none !important; }
 </style>
 <!-- SCENES -->
@@ -71,18 +66,12 @@
     </div>
     <p class="status" id="read-status" role="status"></p>
   </section>
-  <details class="card panel">
-    <summary>家長試聽 · 同一句</summary>
-    <p class="original" id="compare-text"></p>
-    <div class="comparison" id="comparisons"></div>
-    <p class="status" id="compare-status" role="status"></p>
-  </details>
   <audio id="player" preload="none"></audio>
 </main>
 <script id="mock-data" type="application/json"><!-- DATA --></script>
 <script>
   const byId = (id) => document.getElementById(id);
-  const { lines, comparisons } = JSON.parse(byId("mock-data").textContent);
+  const lines = JSON.parse(byId("mock-data").textContent);
   const player = byId("player");
   const stage = byId("stage");
   const film = byId("film");
@@ -113,16 +102,15 @@
 
   function stop() {
     player.pause();
-    if (playback?.button) playback.button.textContent = playback.button.dataset.playLabel;
     playback = null;
     stage.classList.remove("playing");
     film.textContent = "播放兩幕短片";
     listen.textContent = "聽這一句";
   }
 
-  async function play(kind, clip, nextScene = 0, button = null) {
+  async function play(kind, clip, nextScene = 0) {
     stop();
-    const current = { kind, nextScene, button };
+    const current = { kind, nextScene };
     playback = current;
     const status = byId(`${kind}-status`);
     status.textContent = "";
@@ -132,7 +120,6 @@
       film.textContent = "停止短片";
     }
     if (kind === "read") listen.textContent = "停止示範";
-    if (button) button.textContent = "停止試聽";
     player.src = clip;
     try {
       await player.play();
@@ -176,27 +163,6 @@
     hint.hidden = !hint.hidden;
     hintButton.setAttribute("aria-expanded", String(!hint.hidden));
   });
-
-  byId("compare-text").textContent = lines[1].text;
-  for (const sample of comparisons) {
-    const row = document.createElement("div");
-    const button = document.createElement("button");
-    button.dataset.playLabel = `播放${sample.label}`;
-    button.textContent = button.dataset.playLabel;
-    button.disabled = !sample.audio;
-    button.addEventListener("click", () => {
-      if (playback?.button === button) stop();
-      else play("compare", sample.audio, 0, button);
-    });
-    row.append(button);
-    if (!sample.audio) {
-      const note = document.createElement("span");
-      note.className = "hint";
-      note.textContent = "樣本待補";
-      row.append(note);
-    }
-    byId("comparisons").append(row);
-  }
 
   showScene(0);
   showLine(0);

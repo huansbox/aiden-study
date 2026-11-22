@@ -47,22 +47,7 @@ def main() -> None:
         }
         for segment in segments
     ]
-    comparisons = [{"label": "學校原音", "audio": lines[1]["audio"]}]
-    samples = [
-        (" Gemini 台文原版", "gemini-han.wav"),
-        (" Gemini 台文重試版", "gemini-han-retry.wav"),
-        (" Gemini 台羅版", "gemini-tailo.wav"),
-    ]
-    for label, filename in samples:
-        path = private_source / filename
-        if filename == "gemini-han-retry.wav" and not path.is_file():
-            continue
-        comparisons.append({
-            "label": label,
-            "audio": audio_url(path.read_bytes(), "audio/wav") if path.is_file() else None,
-        })
-
-    data = json.dumps({"lines": lines, "comparisons": comparisons}, ensure_ascii=False)
+    data = json.dumps(lines, ensure_ascii=False)
     template = (repo_source / "mock.html").read_text(encoding="utf-8")
     scenes = (repo_source / "scenes.html").read_text(encoding="utf-8")
     page = template.replace("<!-- SCENES -->", scenes).replace("<!-- DATA -->", data.replace("<", "\\u003c"))
