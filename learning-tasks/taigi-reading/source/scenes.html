@@ -1,0 +1,1347 @@
+<style>
+  .sister-scene {
+    container-type: inline-size;
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: #f2e0c2;
+    border-radius: 10px;
+    isolation: isolate;
+  }
+  .sister-scene *,
+  .sister-scene *::before,
+  .sister-scene *::after {
+    box-sizing: border-box;
+  }
+  .sister-scene .ss-stage {
+    position: absolute;
+    inset: 0;
+    font-size: 1cqw;
+    overflow: hidden;
+  }
+  @supports not (font-size: 1cqw) {
+    .sister-scene .ss-stage {
+      font-size: 1vw;
+    }
+  }
+  .sister-scene .ss-stage div {
+    position: absolute;
+  }
+  .sister-scene .ss-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9;
+    opacity: 0.55;
+    background-image:
+      radial-gradient(rgba(110, 75, 45, 0.08) 0.06em, transparent 0.08em),
+      radial-gradient(rgba(255, 252, 244, 0.14) 0.05em, transparent 0.07em);
+    background-size:
+      0.9em 0.9em,
+      1.3em 1.3em;
+    background-position:
+      0 0,
+      0.4em 0.6em;
+  }
+  .sister-scene .ss-cut {
+    filter: drop-shadow(0 0.32em 0 rgba(96, 60, 32, 0.17));
+  }
+
+  /* 場景一：客廳 */
+  .sister-scene .ss-wall {
+    inset: 0;
+    background: #f2e0c2;
+  }
+  .sister-scene .ss-window {
+    left: 7em;
+    top: 5.5em;
+    width: 21em;
+    height: 17em;
+    background: #c7dcd4;
+    border: 1em solid #fbf2e2;
+    border-radius: 0.5em 0.7em 0.4em 0.6em;
+    overflow: hidden;
+  }
+  .sister-scene .ss-cloud {
+    left: 1.5em;
+    top: 2.4em;
+    width: 6em;
+    height: 2.2em;
+    background: #fbf6ec;
+    border-radius: 2em 2.4em 1.8em 2em;
+    animation: ss-sis-drift 18s ease-in-out infinite alternate;
+  }
+  .sister-scene .ss-hill {
+    left: -2em;
+    bottom: -5em;
+    width: 16em;
+    height: 10em;
+    background: #a6c296;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-hill2 {
+    right: -3em;
+    bottom: -6em;
+    width: 18em;
+    height: 11em;
+    background: #93b385;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-mullion {
+    left: 50%;
+    top: -1em;
+    bottom: -1em;
+    width: 0.9em;
+    margin-left: -0.45em;
+    background: #fbf2e2;
+  }
+  .sister-scene .ss-transom {
+    top: 50%;
+    left: -1em;
+    right: -1em;
+    height: 0.9em;
+    margin-top: -0.45em;
+    background: #fbf2e2;
+  }
+  .sister-scene .ss-sill {
+    left: 6em;
+    top: 22em;
+    width: 23em;
+    height: 1.4em;
+    background: #e8d3b1;
+    border-radius: 0.3em;
+  }
+  .sister-scene .ss-clock {
+    left: 72em;
+    top: 4.5em;
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+    background: #fbf2e2;
+    border: 0.7em solid #b07a4f;
+  }
+  .sister-scene .ss-hand {
+    left: calc(50% - 0.25em);
+    width: 0.5em;
+    background: #5a3e2c;
+    border-radius: 0.3em;
+    transform-origin: 50% 100%;
+  }
+  .sister-scene .ss-hand-h {
+    top: calc(50% - 1.3em);
+    height: 1.3em;
+    transform: rotate(-60deg);
+  }
+  .sister-scene .ss-hand-m {
+    top: calc(50% - 1.9em);
+    height: 1.9em;
+    transform: rotate(30deg);
+    animation: ss-sis-spin 40s linear infinite;
+  }
+  .sister-scene .ss-floor {
+    left: 0;
+    right: 0;
+    top: 38em;
+    bottom: 0;
+    background: #dbab76;
+  }
+  .sister-scene .ss-baseboard {
+    left: 0;
+    right: 0;
+    top: 37em;
+    height: 1.6em;
+    background: #c48a58;
+  }
+  .sister-scene .ss-plank {
+    left: -2em;
+    right: -2em;
+    height: 0.35em;
+    background: #cd9a64;
+    transform: rotate(-0.4deg);
+  }
+  .sister-scene .ss-p1 {
+    top: 45em;
+  }
+  .sister-scene .ss-p2 {
+    top: 52em;
+  }
+  .sister-scene .ss-rug {
+    left: 3em;
+    top: 42.5em;
+    width: 40em;
+    height: 11.5em;
+    background: #e5b49b;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-rug::after {
+    content: "";
+    position: absolute;
+    inset: 1.2em;
+    border: 0.35em dashed #f5d9c6;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-pot {
+    left: 44.5em;
+    top: 32em;
+    width: 4.6em;
+    height: 5.6em;
+    background: #c46a4a;
+    border-radius: 0.4em 0.4em 1.4em 1.4em;
+  }
+  .sister-scene .ss-leaf {
+    top: 26.5em;
+    width: 2.4em;
+    height: 6em;
+    background: #6f9a63;
+    border-radius: 50%;
+    transform-origin: 50% 100%;
+  }
+  .sister-scene .ss-lf1 {
+    left: 44.9em;
+    transform: rotate(-28deg);
+  }
+  .sister-scene .ss-lf2 {
+    left: 45.6em;
+    top: 25.4em;
+    background: #7da86f;
+  }
+  .sister-scene .ss-lf3 {
+    left: 46.3em;
+    transform: rotate(28deg);
+  }
+  .sister-scene .ss-sofa-leg {
+    top: 39em;
+    width: 1.8em;
+    height: 2em;
+    background: #6b4a33;
+    border-radius: 0.3em;
+  }
+  .sister-scene .ss-sl1 {
+    left: 55em;
+  }
+  .sister-scene .ss-sl2 {
+    left: 93em;
+  }
+  .sister-scene .ss-sofa-back {
+    left: 54em;
+    top: 18.5em;
+    width: 42em;
+    height: 16em;
+    background: #8aa893;
+    border-radius: 3.2em 3em 1em 1em;
+  }
+  .sister-scene .ss-sofa-seat {
+    left: 53em;
+    top: 32em;
+    width: 44em;
+    height: 7.5em;
+    background: #7c9a85;
+    border-radius: 1.6em 1.6em 1.2em 1.2em;
+  }
+  .sister-scene .ss-sofa-arm {
+    top: 25.5em;
+    width: 5em;
+    height: 14em;
+    background: #779581;
+    border-radius: 2.5em 2.5em 1em 1em;
+  }
+  .sister-scene .ss-sa1 {
+    left: 51em;
+  }
+  .sister-scene .ss-sa2 {
+    left: 93em;
+  }
+
+  .sister-scene .ss-adult {
+    top: 16em;
+    width: 11em;
+    height: 30em;
+    --skin: #ebc09a;
+    animation: ss-sis-breathe 5.5s ease-in-out infinite;
+  }
+  .sister-scene .ss-a1 {
+    left: 57em;
+    --top: #8e6b94;
+    --pants: #6b5b52;
+    --hair: #c3bbb0;
+    animation-delay: -1s;
+  }
+  .sister-scene .ss-a2 {
+    left: 69em;
+    --top: #4d6888;
+    --pants: #3d3b40;
+    --hair: #2c2421;
+    animation-delay: -2.6s;
+  }
+  .sister-scene .ss-a3 {
+    left: 81em;
+    --top: #b85b4b;
+    --pants: #5c4a5f;
+    --hair: #3b2924;
+    animation-delay: -4s;
+  }
+  .sister-scene .ss-a-long {
+    left: 1.8em;
+    top: -0.3em;
+    width: 7.4em;
+    height: 11em;
+    background: var(--hair);
+    border-radius: 3.7em 3.7em 1.6em 1.6em;
+  }
+  .sister-scene .ss-a-bun {
+    left: 4.1em;
+    top: -2em;
+    width: 2.8em;
+    height: 2.6em;
+    background: var(--hair);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-a-ear {
+    top: 2.8em;
+    width: 1em;
+    height: 1.5em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-a-ear.ss-l {
+    left: 2.3em;
+  }
+  .sister-scene .ss-a-ear.ss-r {
+    left: 7.7em;
+  }
+  .sister-scene .ss-a-neck {
+    left: 4.6em;
+    top: 5.6em;
+    width: 1.8em;
+    height: 1.8em;
+    background: #ddb08a;
+  }
+  .sister-scene .ss-a-torso {
+    left: 1em;
+    top: 7em;
+    width: 9em;
+    height: 11em;
+    background: var(--top);
+    border-radius: 3.6em 3.6em 1.2em 1.2em/3em 3em 1.2em 1.2em;
+  }
+  .sister-scene .ss-a-leg {
+    top: 19.5em;
+    width: 3.4em;
+    height: 9em;
+    background: var(--pants);
+    border-radius: 0.8em;
+  }
+  .sister-scene .ss-a-leg.ss-l {
+    left: 1.8em;
+  }
+  .sister-scene .ss-a-leg.ss-r {
+    left: 5.8em;
+  }
+  .sister-scene .ss-a-shoe {
+    top: 27.6em;
+    width: 4.2em;
+    height: 2em;
+    background: #3a2c26;
+    border-radius: 1.4em 1.4em 0.3em 0.3em;
+  }
+  .sister-scene .ss-a-shoe.ss-l {
+    left: 1.4em;
+  }
+  .sister-scene .ss-a-shoe.ss-r {
+    left: 5.4em;
+  }
+  .sister-scene .ss-a-lap {
+    left: 0.6em;
+    top: 16.5em;
+    width: 9.8em;
+    height: 4.6em;
+    background: var(--pants);
+    border-radius: 1.8em 1.8em 1em 1em;
+  }
+  .sister-scene .ss-a-arm {
+    top: 7.8em;
+    width: 2.6em;
+    height: 9.6em;
+    background: var(--top);
+    border-radius: 1.3em;
+    transform-origin: 50% 0;
+    filter: brightness(0.9);
+  }
+  .sister-scene .ss-a-arm.ss-l {
+    left: 0.1em;
+    transform: rotate(-16deg);
+  }
+  .sister-scene .ss-a-arm.ss-r {
+    left: 8.3em;
+    transform: rotate(16deg);
+  }
+  .sister-scene .ss-a-hand {
+    top: 16.2em;
+    width: 2.6em;
+    height: 2.2em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-a-hand.ss-l {
+    left: 3.2em;
+  }
+  .sister-scene .ss-a-hand.ss-r {
+    left: 5.2em;
+  }
+  .sister-scene .ss-a-head {
+    left: 2.75em;
+    top: 0;
+    width: 5.5em;
+    height: 6.2em;
+    background: var(--skin);
+    border-radius: 50% 50% 46% 46%/52% 52% 48% 48%;
+  }
+  .sister-scene .ss-a-eye {
+    top: 3.1em;
+    width: 0.6em;
+    height: 0.65em;
+    background: #35261f;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-a-eye.ss-l {
+    left: 1.25em;
+  }
+  .sister-scene .ss-a-eye.ss-r {
+    left: 3.15em;
+  }
+  .sister-scene .ss-a-glass {
+    top: 2.65em;
+    width: 1.6em;
+    height: 1.4em;
+    border: 0.22em solid #6b5345;
+    border-radius: 45%;
+  }
+  .sister-scene .ss-a-glass.ss-l {
+    left: 0.75em;
+  }
+  .sister-scene .ss-a-glass.ss-r {
+    left: 2.65em;
+  }
+  .sister-scene .ss-a-mouth {
+    left: 2em;
+    top: 4.2em;
+    width: 1.5em;
+    height: 0.75em;
+    border-bottom: 0.28em solid #8a4a3c;
+    border-radius: 0 0 1em 1em;
+  }
+  .sister-scene .ss-a-hair {
+    left: 2.3em;
+    top: -0.45em;
+    width: 6.4em;
+    height: 2.9em;
+    background: var(--hair);
+    border-radius: 3.2em 3.2em 1.2em 1.2em/2.6em 2.6em 0.8em 0.8em;
+  }
+
+  .sister-scene .ss-kidshadow {
+    left: 17em;
+    top: 50.2em;
+    width: 10em;
+    height: 1.6em;
+    background: rgba(110, 60, 40, 0.18);
+    border-radius: 50%;
+    animation: ss-sis-shadow 0.9s infinite;
+  }
+  .sister-scene .ss-block {
+    width: 4.4em;
+    height: 4.4em;
+    border-radius: 0.5em 0.6em 0.4em 0.5em;
+    transform-origin: 50% 100%;
+  }
+  .sister-scene .ss-block::after {
+    content: "";
+    position: absolute;
+    inset: 0.9em;
+    border-radius: 0.3em;
+    background: rgba(255, 248, 235, 0.45);
+  }
+  .sister-scene .ss-b1 {
+    left: 7em;
+    top: 45em;
+    background: #d65f4a;
+    animation: ss-sis-hop 1.2s infinite;
+  }
+  .sister-scene .ss-b2 {
+    left: 31em;
+    top: 46em;
+    background: #4f86a8;
+    animation: ss-sis-hop 1.2s infinite;
+    animation-delay: -0.45s;
+  }
+  .sister-scene .ss-b3 {
+    left: 28.5em;
+    top: 31em;
+    width: 3.6em;
+    height: 3.6em;
+    background: #e6b947;
+    transform-origin: 50% 50%;
+    transform: rotate(30deg);
+    animation: ss-sis-toss 1.8s ease-in-out infinite;
+  }
+  .sister-scene .ss-b4 {
+    left: 36em;
+    top: 45.5em;
+    background: #77a466;
+  }
+  .sister-scene .ss-b5 {
+    left: 36.4em;
+    top: 41.3em;
+    width: 3.6em;
+    height: 4.2em;
+    background: #d65f4a;
+    transform: rotate(4deg);
+    animation: ss-sis-wobble 0.9s ease-in-out infinite;
+  }
+
+  .sister-scene .ss-kid {
+    left: 16em;
+    top: 32em;
+    width: 12em;
+    height: 19em;
+    transform-origin: 50% 100%;
+    --skin: #f3c9a2;
+    --hair: #2b1f1c;
+    --shirt: #f5a66b;
+    animation: ss-sis-bounce 0.9s infinite;
+  }
+  .sister-scene .ss-k-bun {
+    top: 0.6em;
+    width: 3.6em;
+    height: 3.6em;
+    background: var(--hair);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-k-bun.ss-l {
+    left: 1.1em;
+  }
+  .sister-scene .ss-k-bun.ss-r {
+    left: 7.3em;
+  }
+  .sister-scene .ss-k-arm {
+    top: 9em;
+    width: 1.9em;
+    height: 5em;
+    background: var(--shirt);
+    border-radius: 1em;
+    transform-origin: 50% 0.8em;
+  }
+  .sister-scene .ss-k-arm::after {
+    content: "";
+    position: absolute;
+    left: 0.05em;
+    bottom: -1em;
+    width: 1.8em;
+    height: 1.8em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-k-arm.ss-l {
+    left: 2.2em;
+    transform: rotate(135deg);
+    animation: ss-sis-wave-l 0.45s ease-in-out infinite;
+  }
+  .sister-scene .ss-k-arm.ss-r {
+    left: 7.9em;
+    transform: rotate(-135deg);
+    animation: ss-sis-wave-r 0.45s ease-in-out infinite;
+  }
+  .sister-scene .ss-k-leg {
+    top: 15.8em;
+    width: 2em;
+    height: 2.4em;
+    background: var(--skin);
+    border-radius: 0.5em;
+  }
+  .sister-scene .ss-k-leg.ss-l {
+    left: 3.8em;
+  }
+  .sister-scene .ss-k-leg.ss-r {
+    left: 6.2em;
+  }
+  .sister-scene .ss-k-shoe {
+    top: 17.7em;
+    width: 2.7em;
+    height: 1.4em;
+    background: #c9573f;
+    border-radius: 1em 1em 0.3em 0.3em;
+  }
+  .sister-scene .ss-k-shoe.ss-l {
+    left: 3.4em;
+  }
+  .sister-scene .ss-k-shoe.ss-r {
+    left: 5.9em;
+  }
+  .sister-scene .ss-k-shorts {
+    left: 3.1em;
+    top: 13.6em;
+    width: 5.8em;
+    height: 2.6em;
+    background: #4b6a73;
+    border-radius: 0.6em 0.6em 0.4em 0.4em;
+  }
+  .sister-scene .ss-k-shirt {
+    left: 2.6em;
+    top: 8.4em;
+    width: 6.8em;
+    height: 6.2em;
+    background: var(--shirt);
+    border-radius: 2.6em 2.6em 1em 1em/2em 2em 1em 1em;
+  }
+  .sister-scene .ss-k-head {
+    left: 2.2em;
+    top: 1.6em;
+    width: 7.6em;
+    height: 7.2em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-k-fringe {
+    left: 2.2em;
+    top: 1.4em;
+    width: 7.6em;
+    height: 3.2em;
+    background: var(--hair);
+    border-radius: 50% 50% 35% 35%/75% 75% 25% 25%;
+  }
+  .sister-scene .ss-k-eye {
+    top: 4.6em;
+    width: 0.9em;
+    height: 1.1em;
+    background: #2b1f1c;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-k-eye.ss-l {
+    left: 4.3em;
+  }
+  .sister-scene .ss-k-eye.ss-r {
+    left: 6.8em;
+  }
+  .sister-scene .ss-k-cheek {
+    top: 5.9em;
+    width: 1.4em;
+    height: 0.9em;
+    background: #ee9a8e;
+    border-radius: 50%;
+    opacity: 0.8;
+  }
+  .sister-scene .ss-k-cheek.ss-l {
+    left: 3.3em;
+  }
+  .sister-scene .ss-k-cheek.ss-r {
+    left: 7.3em;
+  }
+  .sister-scene .ss-k-mouth {
+    left: 5.2em;
+    top: 6.2em;
+    width: 1.6em;
+    height: 1.1em;
+    background: #a2443c;
+    border-radius: 0.3em 0.3em 1em 1em;
+  }
+
+  /* 場景二：兩個模樣 */
+  .sister-scene .ss-wall2 {
+    inset: 0;
+    background: #eedcc0;
+  }
+  .sister-scene .ss-panel {
+    top: 4.6em;
+    width: 45.5em;
+    height: 47em;
+    border-radius: 0.8em 0.6em 0.9em 0.7em;
+    overflow: hidden;
+  }
+  .sister-scene .ss-p-sweet {
+    left: 4em;
+    background: #f6dccc;
+    transform: rotate(-1.2deg);
+    --halo: #fbeadf;
+    --ground: #efcdb8;
+  }
+  .sister-scene .ss-p-fierce {
+    left: 50.5em;
+    background: #dde4cf;
+    transform: rotate(1.2deg);
+    --halo: #e9eedd;
+    --ground: #cfd9bf;
+  }
+  .sister-scene .ss-halo {
+    left: 5.25em;
+    top: 3em;
+    width: 35em;
+    height: 35em;
+    border-radius: 50%;
+    background: var(--halo);
+  }
+  .sister-scene .ss-ground {
+    left: 0;
+    right: 0;
+    top: 38em;
+    bottom: 0;
+    background: var(--ground);
+  }
+  .sister-scene .ss-face {
+    left: 7.75em;
+    top: 5em;
+    width: 30em;
+    height: 42em;
+    transform-origin: 50% 80%;
+    --skin: #f3c9a2;
+    --hair: #2b1f1c;
+    --shirt: #f5a66b;
+  }
+  .sister-scene .ss-face.ss-sweet {
+    animation: ss-sis-sway 3.6s ease-in-out infinite;
+  }
+  .sister-scene .ss-face.ss-fierce {
+    animation: ss-sis-huff 2.2s ease-in-out infinite;
+  }
+  .sister-scene .ss-f-neck {
+    left: 12em;
+    top: 24.5em;
+    width: 6em;
+    height: 5.5em;
+    background: #e9b78e;
+    border-radius: 1em;
+  }
+  .sister-scene .ss-f-shirt {
+    left: 2em;
+    top: 29em;
+    width: 26em;
+    height: 16em;
+    background: var(--shirt);
+    border-radius: 11em 11em 2em 2em/8em 8em 2em 2em;
+  }
+  .sister-scene .ss-f-collar {
+    left: 10.5em;
+    top: 28.6em;
+    width: 9em;
+    height: 3em;
+    background: #fbe3cf;
+    border-radius: 0 0 4.5em 4.5em/0 0 3em 3em;
+  }
+  .sister-scene .ss-f-bun {
+    top: 1.5em;
+    width: 10em;
+    height: 10em;
+    background: var(--hair);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-bun.ss-l {
+    left: -0.5em;
+  }
+  .sister-scene .ss-f-bun.ss-r {
+    left: 20.5em;
+  }
+  .sister-scene .ss-f-bun::after {
+    content: "";
+    position: absolute;
+    bottom: 0.8em;
+    width: 3em;
+    height: 1.8em;
+    background: #e2685a;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-bun.ss-l::after {
+    right: 0.4em;
+    transform: rotate(-35deg);
+  }
+  .sister-scene .ss-f-bun.ss-r::after {
+    left: 0.4em;
+    transform: rotate(35deg);
+  }
+  .sister-scene .ss-f-ear {
+    top: 13.5em;
+    width: 2.4em;
+    height: 3.6em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-ear.ss-l {
+    left: 2.6em;
+  }
+  .sister-scene .ss-f-ear.ss-r {
+    left: 25em;
+  }
+  .sister-scene .ss-f-puff {
+    top: 14.5em;
+    width: 5em;
+    height: 6.5em;
+    background: var(--skin);
+    border-radius: 50%;
+    animation: ss-sis-puff 1.6s ease-in-out infinite;
+  }
+  .sister-scene .ss-f-puff.ss-l {
+    left: 2.4em;
+    transform-origin: 100% 50%;
+  }
+  .sister-scene .ss-f-puff.ss-r {
+    left: 22.6em;
+    transform-origin: 0 50%;
+  }
+  .sister-scene .ss-f-head {
+    left: 4em;
+    top: 4em;
+    width: 22em;
+    height: 22.5em;
+    background: var(--skin);
+    border-radius: 50%/52% 52% 48% 48%;
+  }
+  .sister-scene .ss-f-fringe {
+    left: 4em;
+    top: 3.4em;
+    width: 22em;
+    height: 7.4em;
+    background: var(--hair);
+    border-radius: 11em 11em 3em 3em/7em 7em 2em 2em;
+  }
+  .sister-scene .ss-f-brow {
+    top: 11em;
+    width: 3.8em;
+    height: 1.8em;
+    border-top: 0.55em solid var(--hair);
+    border-radius: 50% 50% 0 0/100% 100% 0 0;
+  }
+  .sister-scene .ss-f-brow.ss-l {
+    left: 8.9em;
+  }
+  .sister-scene .ss-f-brow.ss-r {
+    left: 17.3em;
+  }
+  .sister-scene .ss-f-eye {
+    top: 13em;
+    width: 3.2em;
+    height: 3.8em;
+    background: #2b1f1c;
+    border-radius: 50%;
+    animation: ss-sis-blink 4.5s infinite;
+  }
+  .sister-scene .ss-f-eye::after {
+    content: "";
+    position: absolute;
+    left: 0.5em;
+    top: 0.6em;
+    width: 1.2em;
+    height: 1.2em;
+    background: #fffaf2;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-eye::before {
+    content: "";
+    position: absolute;
+    right: 0.55em;
+    bottom: 0.7em;
+    width: 0.5em;
+    height: 0.5em;
+    background: #fffaf2;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-eye.ss-l {
+    left: 9.2em;
+  }
+  .sister-scene .ss-f-eye.ss-r {
+    left: 17.6em;
+  }
+  .sister-scene .ss-f-nose {
+    left: 14.55em;
+    top: 17em;
+    width: 0.9em;
+    height: 0.6em;
+    background: #df9f7a;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-cheek {
+    top: 17.6em;
+    width: 3.2em;
+    height: 2em;
+    background: #f19a8c;
+    border-radius: 50%;
+    opacity: 0.75;
+  }
+  .sister-scene .ss-f-cheek.ss-l {
+    left: 6.4em;
+  }
+  .sister-scene .ss-f-cheek.ss-r {
+    left: 20.4em;
+  }
+  .sister-scene .ss-f-mouth {
+    left: 13em;
+    top: 19em;
+    width: 4em;
+    height: 2.3em;
+    background: #a3453c;
+    border-radius: 0.5em 0.5em 2.3em 2.3em;
+  }
+  .sister-scene .ss-f-mouth::after {
+    content: "";
+    position: absolute;
+    left: 1em;
+    bottom: 0.2em;
+    width: 2em;
+    height: 1em;
+    background: #e8877c;
+    border-radius: 1em 1em 0.5em 0.5em;
+  }
+
+  .sister-scene .ss-fierce .ss-f-brow {
+    top: 11.6em;
+    width: 4.2em;
+    height: 1em;
+    border: 0;
+    background: var(--hair);
+    border-radius: 0.5em;
+  }
+  .sister-scene .ss-fierce .ss-f-brow.ss-l {
+    left: 8.8em;
+    transform: rotate(16deg);
+  }
+  .sister-scene .ss-fierce .ss-f-brow.ss-r {
+    left: 17em;
+    transform: rotate(-16deg);
+  }
+  .sister-scene .ss-f-furrow {
+    top: 12.2em;
+    width: 0.35em;
+    height: 1.6em;
+    background: #d9987a;
+    border-radius: 0.2em;
+  }
+  .sister-scene .ss-f-furrow.ss-l {
+    left: 14.3em;
+    transform: rotate(10deg);
+  }
+  .sister-scene .ss-f-furrow.ss-r {
+    left: 15.35em;
+    transform: rotate(-10deg);
+  }
+  .sister-scene .ss-fierce .ss-f-eye {
+    top: 13.9em;
+    height: 2.6em;
+    border-radius: 35% 35% 50% 50%/25% 25% 65% 65%;
+    animation: none;
+  }
+  .sister-scene .ss-fierce .ss-f-eye::after {
+    left: 0.6em;
+    top: 0.5em;
+    width: 0.8em;
+    height: 0.8em;
+  }
+  .sister-scene .ss-fierce .ss-f-eye::before {
+    display: none;
+  }
+  .sister-scene .ss-fierce .ss-f-cheek {
+    top: 17.2em;
+    width: 4.4em;
+    height: 3em;
+    background: #ef8f80;
+    opacity: 0.9;
+    animation: ss-sis-puff 1.6s ease-in-out infinite;
+  }
+  .sister-scene .ss-fierce .ss-f-cheek.ss-l {
+    left: 5.4em;
+  }
+  .sister-scene .ss-fierce .ss-f-cheek.ss-r {
+    left: 20.2em;
+  }
+  .sister-scene .ss-fierce .ss-f-mouth {
+    left: 14em;
+    top: 20.2em;
+    width: 2em;
+    height: 1.7em;
+    border-radius: 50%;
+  }
+  .sister-scene .ss-fierce .ss-f-mouth::after {
+    display: none;
+  }
+  .sister-scene .ss-f-cross {
+    left: 4em;
+    width: 22em;
+    height: 5.2em;
+    background: #ec9a5e;
+    border-radius: 2.6em;
+  }
+  .sister-scene .ss-f-cross::after {
+    content: "";
+    position: absolute;
+    top: 0.6em;
+    width: 4em;
+    height: 4em;
+    background: var(--skin);
+    border-radius: 50%;
+  }
+  .sister-scene .ss-f-cross.ss-c1 {
+    top: 32em;
+    transform: rotate(7deg);
+  }
+  .sister-scene .ss-f-cross.ss-c1::after {
+    right: -0.4em;
+  }
+  .sister-scene .ss-f-cross.ss-c2 {
+    top: 32.6em;
+    transform: rotate(-7deg);
+    background: #f0a368;
+  }
+  .sister-scene .ss-f-cross.ss-c2::after {
+    left: -0.4em;
+  }
+
+  @keyframes ss-sis-bounce {
+    0%,
+    100% {
+      transform: translateY(0) scale(1.06, 0.93);
+      animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+    }
+    50% {
+      transform: translateY(-3.2em) scale(0.97, 1.03) rotate(-2deg);
+      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+    }
+  }
+  @keyframes ss-sis-shadow {
+    0%,
+    100% {
+      transform: scaleX(1);
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+    }
+    50% {
+      transform: scaleX(0.65);
+      opacity: 0.5;
+      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+    }
+  }
+  @keyframes ss-sis-hop {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0);
+      animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+    }
+    50% {
+      transform: translateY(-4.5em) rotate(16deg);
+      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+    }
+  }
+  @keyframes ss-sis-toss {
+    0% {
+      transform: translate(1em, 4em) rotate(0);
+    }
+    50% {
+      transform: translate(-1em, -1.5em) rotate(180deg);
+    }
+    100% {
+      transform: translate(1em, 4em) rotate(360deg);
+    }
+  }
+  @keyframes ss-sis-wobble {
+    0%,
+    100% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+  }
+  @keyframes ss-sis-wave-l {
+    0%,
+    100% {
+      transform: rotate(118deg);
+    }
+    50% {
+      transform: rotate(155deg);
+    }
+  }
+  @keyframes ss-sis-wave-r {
+    0%,
+    100% {
+      transform: rotate(-118deg);
+    }
+    50% {
+      transform: rotate(-155deg);
+    }
+  }
+  @keyframes ss-sis-breathe {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-0.2em);
+    }
+  }
+  @keyframes ss-sis-drift {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(9em);
+    }
+  }
+  @keyframes ss-sis-spin {
+    from {
+      transform: rotate(30deg);
+    }
+    to {
+      transform: rotate(390deg);
+    }
+  }
+  @keyframes ss-sis-sway {
+    0%,
+    100% {
+      transform: rotate(-2.5deg);
+    }
+    50% {
+      transform: rotate(2.5deg);
+    }
+  }
+  @keyframes ss-sis-blink {
+    0%,
+    92%,
+    100% {
+      transform: scaleY(1);
+    }
+    95% {
+      transform: scaleY(0.1);
+    }
+  }
+  @keyframes ss-sis-huff {
+    0%,
+    100% {
+      transform: rotate(0) translateY(0);
+    }
+    20% {
+      transform: rotate(-1.6deg);
+    }
+    40% {
+      transform: rotate(1.6deg);
+    }
+    60% {
+      transform: rotate(-0.8deg) translateY(0.25em);
+    }
+  }
+  @keyframes ss-sis-puff {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+
+  @container (max-width:480px) {
+    .sister-scene .ss-cut {
+      filter: drop-shadow(0 0.5em 0 rgba(96, 60, 32, 0.2));
+    }
+    .sister-scene .ss-stage::after {
+      opacity: 0.35;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sister-scene *,
+    .sister-scene *::before,
+    .sister-scene *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+<template id="scene-1">
+  <div
+    class="sister-scene"
+    role="img"
+    aria-label="客廳裡，一個穿杏色上衣、綁兩顆黑色包包頭的三歲小女孩，開心地跳來跳去，積木也跟著蹦蹦跳；旁邊沙發上，三位大人安安靜靜地坐著看她。"
+  >
+    <div class="ss-stage" aria-hidden="true">
+      <div class="ss-wall"></div>
+      <div class="ss-window ss-cut">
+        <div class="ss-cloud"></div>
+        <div class="ss-hill"></div>
+        <div class="ss-hill2"></div>
+        <div class="ss-mullion"></div>
+        <div class="ss-transom"></div>
+      </div>
+      <div class="ss-sill ss-cut"></div>
+      <div class="ss-clock ss-cut">
+        <div class="ss-hand ss-hand-h"></div>
+        <div class="ss-hand ss-hand-m"></div>
+      </div>
+      <div class="ss-floor"></div>
+      <div class="ss-baseboard"></div>
+      <div class="ss-plank ss-p1"></div>
+      <div class="ss-plank ss-p2"></div>
+      <div class="ss-rug ss-cut"></div>
+      <div class="ss-leaf ss-lf1 ss-cut"></div>
+      <div class="ss-leaf ss-lf3 ss-cut"></div>
+      <div class="ss-leaf ss-lf2 ss-cut"></div>
+      <div class="ss-pot ss-cut"></div>
+      <div class="ss-sofa-leg ss-sl1"></div>
+      <div class="ss-sofa-leg ss-sl2"></div>
+      <div class="ss-sofa-back ss-cut"></div>
+      <div class="ss-sofa-seat ss-cut"></div>
+      <div class="ss-sofa-arm ss-sa1 ss-cut"></div>
+      <div class="ss-sofa-arm ss-sa2 ss-cut"></div>
+      <div class="ss-adult ss-a1 ss-cut">
+        <div class="ss-a-bun"></div>
+        <div class="ss-a-ear ss-l"></div>
+        <div class="ss-a-ear ss-r"></div>
+        <div class="ss-a-neck"></div>
+        <div class="ss-a-torso"></div>
+        <div class="ss-a-leg ss-l"></div>
+        <div class="ss-a-leg ss-r"></div>
+        <div class="ss-a-shoe ss-l"></div>
+        <div class="ss-a-shoe ss-r"></div>
+        <div class="ss-a-lap"></div>
+        <div class="ss-a-arm ss-l"></div>
+        <div class="ss-a-arm ss-r"></div>
+        <div class="ss-a-hand ss-l"></div>
+        <div class="ss-a-hand ss-r"></div>
+        <div class="ss-a-head">
+          <div class="ss-a-eye ss-l"></div>
+          <div class="ss-a-eye ss-r"></div>
+          <div class="ss-a-glass ss-l"></div>
+          <div class="ss-a-glass ss-r"></div>
+          <div class="ss-a-mouth"></div>
+        </div>
+        <div class="ss-a-hair"></div>
+      </div>
+      <div class="ss-adult ss-a2 ss-cut">
+        <div class="ss-a-ear ss-l"></div>
+        <div class="ss-a-ear ss-r"></div>
+        <div class="ss-a-neck"></div>
+        <div class="ss-a-torso"></div>
+        <div class="ss-a-leg ss-l"></div>
+        <div class="ss-a-leg ss-r"></div>
+        <div class="ss-a-shoe ss-l"></div>
+        <div class="ss-a-shoe ss-r"></div>
+        <div class="ss-a-lap"></div>
+        <div class="ss-a-arm ss-l"></div>
+        <div class="ss-a-arm ss-r"></div>
+        <div class="ss-a-hand ss-l"></div>
+        <div class="ss-a-hand ss-r"></div>
+        <div class="ss-a-head">
+          <div class="ss-a-eye ss-l"></div>
+          <div class="ss-a-eye ss-r"></div>
+          <div class="ss-a-mouth"></div>
+        </div>
+        <div class="ss-a-hair"></div>
+      </div>
+      <div class="ss-adult ss-a3 ss-cut">
+        <div class="ss-a-long"></div>
+        <div class="ss-a-neck"></div>
+        <div class="ss-a-torso"></div>
+        <div class="ss-a-leg ss-l"></div>
+        <div class="ss-a-leg ss-r"></div>
+        <div class="ss-a-shoe ss-l"></div>
+        <div class="ss-a-shoe ss-r"></div>
+        <div class="ss-a-lap"></div>
+        <div class="ss-a-arm ss-l"></div>
+        <div class="ss-a-arm ss-r"></div>
+        <div class="ss-a-hand ss-l"></div>
+        <div class="ss-a-hand ss-r"></div>
+        <div class="ss-a-head">
+          <div class="ss-a-eye ss-l"></div>
+          <div class="ss-a-eye ss-r"></div>
+          <div class="ss-a-mouth"></div>
+        </div>
+        <div class="ss-a-hair"></div>
+      </div>
+      <div class="ss-kidshadow"></div>
+      <div class="ss-block ss-b4 ss-cut"></div>
+      <div class="ss-block ss-b5 ss-cut"></div>
+      <div class="ss-block ss-b1 ss-cut"></div>
+      <div class="ss-block ss-b2 ss-cut"></div>
+      <div class="ss-kid ss-cut">
+        <div class="ss-k-bun ss-l"></div>
+        <div class="ss-k-bun ss-r"></div>
+        <div class="ss-k-arm ss-l"></div>
+        <div class="ss-k-arm ss-r"></div>
+        <div class="ss-k-leg ss-l"></div>
+        <div class="ss-k-leg ss-r"></div>
+        <div class="ss-k-shoe ss-l"></div>
+        <div class="ss-k-shoe ss-r"></div>
+        <div class="ss-k-shorts"></div>
+        <div class="ss-k-shirt"></div>
+        <div class="ss-k-head"></div>
+        <div class="ss-k-fringe"></div>
+        <div class="ss-k-eye ss-l"></div>
+        <div class="ss-k-eye ss-r"></div>
+        <div class="ss-k-cheek ss-l"></div>
+        <div class="ss-k-cheek ss-r"></div>
+        <div class="ss-k-mouth"></div>
+      </div>
+      <div class="ss-block ss-b3 ss-cut"></div>
+    </div>
+  </div>
+</template>
+<template id="scene-2">
+  <div
+    class="sister-scene"
+    role="img"
+    aria-label="同一個綁兩顆黑色包包頭、穿杏色上衣的小女孩，並排的兩個模樣：左邊眼睛圓圓大大、甜甜地笑，好古錐；右邊眉頭皺起來、臉頰鼓鼓的、雙手抱胸，看起來真兇。"
+  >
+    <div class="ss-stage" aria-hidden="true">
+      <div class="ss-wall2"></div>
+      <div class="ss-panel ss-p-sweet ss-cut">
+        <div class="ss-halo"></div>
+        <div class="ss-ground"></div>
+        <div class="ss-face ss-sweet ss-cut">
+          <div class="ss-f-neck"></div>
+          <div class="ss-f-shirt"></div>
+          <div class="ss-f-collar"></div>
+          <div class="ss-f-bun ss-l"></div>
+          <div class="ss-f-bun ss-r"></div>
+          <div class="ss-f-ear ss-l"></div>
+          <div class="ss-f-ear ss-r"></div>
+          <div class="ss-f-head"></div>
+          <div class="ss-f-fringe"></div>
+          <div class="ss-f-brow ss-l"></div>
+          <div class="ss-f-brow ss-r"></div>
+          <div class="ss-f-eye ss-l"></div>
+          <div class="ss-f-eye ss-r"></div>
+          <div class="ss-f-nose"></div>
+          <div class="ss-f-cheek ss-l"></div>
+          <div class="ss-f-cheek ss-r"></div>
+          <div class="ss-f-mouth"></div>
+        </div>
+      </div>
+      <div class="ss-panel ss-p-fierce ss-cut">
+        <div class="ss-halo"></div>
+        <div class="ss-ground"></div>
+        <div class="ss-face ss-fierce ss-cut">
+          <div class="ss-f-neck"></div>
+          <div class="ss-f-shirt"></div>
+          <div class="ss-f-collar"></div>
+          <div class="ss-f-bun ss-l"></div>
+          <div class="ss-f-bun ss-r"></div>
+          <div class="ss-f-ear ss-l"></div>
+          <div class="ss-f-ear ss-r"></div>
+          <div class="ss-f-puff ss-l"></div>
+          <div class="ss-f-puff ss-r"></div>
+          <div class="ss-f-head"></div>
+          <div class="ss-f-fringe"></div>
+          <div class="ss-f-brow ss-l"></div>
+          <div class="ss-f-brow ss-r"></div>
+          <div class="ss-f-furrow ss-l"></div>
+          <div class="ss-f-furrow ss-r"></div>
+          <div class="ss-f-eye ss-l"></div>
+          <div class="ss-f-eye ss-r"></div>
+          <div class="ss-f-nose"></div>
+          <div class="ss-f-cheek ss-l"></div>
+          <div class="ss-f-cheek ss-r"></div>
+          <div class="ss-f-mouth"></div>
+          <div class="ss-f-cross ss-c1"></div>
+          <div class="ss-f-cross ss-c2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
