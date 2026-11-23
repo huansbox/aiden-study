@@ -34,6 +34,10 @@
   .hint, .status, .instruction { color: #70584a; line-height: 1.55; }
   .hint, .instruction { margin-top: 6px; }
   .status { min-height: 1.55em; margin-top: 6px; }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; width: fit-content; padding: 6px 0; font-weight: 650; }
+  summary:focus-visible { outline: 3px solid #91704a; outline-offset: 3px; }
+  .line-nav { border-top: 1px solid #e4d6c6; padding-top: 12px; }
   [hidden] { display: none !important; }
 </style>
 <!-- SCENES -->
@@ -57,17 +61,30 @@
     </div>
   </section>
   <section class="card panel" aria-labelledby="read-title">
-    <h2 id="read-title">聽完，換你念</h2>
+    <h2 id="read-title">先聽，再跟著念</h2>
     <p class="instruction" id="line-count"></p>
     <p class="original" id="original" aria-live="polite"></p>
     <p class="hint" id="hint" hidden></p>
     <div class="actions">
-      <button class="primary" id="listen">聽這一句</button>
+      <button class="primary" id="listen">先聽這一句</button>
+      <button id="shadow">跟著念</button>
       <button id="hint-button" aria-expanded="false" aria-controls="hint">看詞語提示</button>
+    </div>
+    <p class="status" id="read-status" role="status"></p>
+    <details id="record-panel">
+      <summary>錄一句來比較</summary>
+      <p class="instruction">看文字自己念。錄好後，先聽學校，再聽自己，只挑一個地方比。</p>
+      <div class="actions">
+        <button id="record">開始錄音</button>
+        <button id="model" hidden>聽學校</button>
+        <button id="own" hidden>聽我念</button>
+      </div>
+      <p class="status" id="record-status" role="status"></p>
+    </details>
+    <div class="actions line-nav">
       <button id="previous-line">上一句</button>
       <button id="next-line">下一句</button>
     </div>
-    <p class="status" id="read-status" role="status"></p>
   </section>
   <section class="card panel" aria-labelledby="whole-title">
     <h2 id="whole-title">跟著念整段</h2>
@@ -88,14 +105,30 @@
   const stage = byId("stage");
   const film = byId("film");
   const listen = byId("listen");
+  const shadow = byId("shadow");
   const whole = byId("whole");
   const previousLine = byId("previous-line");
   const nextLine = byId("next-line");
   const hintButton = byId("hint-button");
   const hint = byId("hint");
+  const recordPanel = byId("record-panel");
+  const record = byId("record");
+  const recordStatus = byId("record-status");
+  const model = byId("model");
+  const own = byId("own");
+  const playbackControls = {
+    film: { button: film, stopped: "播放兩幕短片", status: byId("film-status") },
+    listen: { button: listen, stopped: "先聽這一句", status: byId("read-status") },
+    shadow: { button: shadow, stopped: "跟著念", status: byId("read-status") },
+    whole: { button: whole, stopped: "播放第一段", status: byId("whole-status") },
+    model: { button: model, stopped: "聽學校", status: recordStatus },
+    own: { button: own, stopped: "聽我念", status: recordStatus },
+  };
   let scene = 0;
   let line = 0;
   let playback = null;
+  let capture = null;
+  let recordedUrl = "";
 
   function showScene(index) {
     scene = index;
@@ -105,6 +138,11 @@
   }
 
   function showLine(index) {
+    cancelCapture();
+    clearTake();
+    recordPanel.open = false;
+    recordStatus.textContent = "";
+    refreshRecordControls();
     line = index;
     byId("line-count").textContent = `第 ${index + 1} 句，共 ${lines.length} 句`;
     byId("original").textContent = lines[index].text;
@@ -114,31 +152,34 @@
     hintButton.setAttribute("aria-expanded", "false");
     previousLine.disabled = index === 0;
     nextLine.textContent = index === lines.length - 1 ? "回第一句" : "下一句";
-    byId("read-status").textContent = "";
+    byId("read-status").textContent = "先聽一次。跟念時，等示範先念一兩個音再開口。";
   }
 
   function stop() {
     player.pause();
+    if (playback) {
+      const { button, stopped } = playbackControls[playback.kind];
+      button.textContent = stopped;
+    }
     playback = null;
     stage.classList.remove("playing");
-    film.textContent = "播放兩幕短片";
-    listen.textContent = "聽這一句";
-    whole.textContent = "播放第一段";
   }
 
   async function play(kind, clip, nextScene = 0) {
+    if (capture) {
+      cancelCapture();
+      recordStatus.textContent = "這次錄音已取消。可以再錄一次。";
+    }
     stop();
     const current = { kind, nextScene };
     playback = current;
-    const status = byId(`${kind}-status`);
-    status.textContent = "";
+    const { button, status } = playbackControls[kind];
+    status.textContent = kind === "shadow" ? "慢一點開口，跟著示範念。" : "";
+    button.textContent = "停止播放";
     if (kind === "film") {
       showScene(nextScene);
       stage.classList.add("playing");
-      film.textContent = "停止短片";
     }
-    if (kind === "read") listen.textContent = "停止示範";
-    if (kind === "whole") whole.textContent = "停止播放";
     player.src = clip;
     try {
       await player.play();
@@ -146,6 +187,96 @@
       if (playback !== current) return;
       stop();
       status.textContent = "音檔播放失敗，請再試一次。";
+    }
+  }
+
+  function togglePlay(kind, clip) {
+    if (playback?.kind === kind) stop();
+    else play(kind, clip);
+  }
+
+  function refreshRecordControls() {
+    record.disabled = capture?.finishing === true;
+    record.textContent = capture?.recorder ? "錄好了" :
+      capture ? "取消錄音" : recordedUrl ? "重錄一次" : "開始錄音";
+    model.hidden = own.hidden = !recordedUrl || Boolean(capture);
+  }
+
+  function clearTake() {
+    if (!recordedUrl) return;
+    if (player.getAttribute("src") === recordedUrl) {
+      player.removeAttribute("src");
+      player.load();
+    }
+    URL.revokeObjectURL(recordedUrl);
+    recordedUrl = "";
+  }
+
+  function releaseStream(stream) {
+    stream?.getTracks().forEach((track) => track.stop());
+  }
+
+  function cancelCapture() {
+    if (!capture) return;
+    const attempt = capture;
+    capture = null;
+    if (attempt.recorder && !attempt.finishing && attempt.recorder.state !== "inactive") {
+      attempt.recorder.stop();
+    }
+    releaseStream(attempt.stream);
+    refreshRecordControls();
+  }
+
+  async function startCapture() {
+    stop();
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      recordStatus.textContent = "這個瀏覽器無法錄音。可以用 Chrome 開啟這個練習檔再試。";
+      return;
+    }
+    const attempt = { stream: null, recorder: null, finishing: false };
+    capture = attempt;
+    recordStatus.textContent = "若瀏覽器詢問，請允許麥克風。";
+    refreshRecordControls();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (capture !== attempt) {
+        releaseStream(stream);
+        return;
+      }
+      attempt.stream = stream;
+      const recorder = new MediaRecorder(stream);
+      attempt.recorder = recorder;
+      const chunks = [];
+      recorder.addEventListener("dataavailable", (event) => {
+        if (event.data.size > 0) chunks.push(event.data);
+      });
+      recorder.addEventListener("stop", () => {
+        releaseStream(stream);
+        if (capture !== attempt) return;
+        capture = null;
+        if (chunks.length) {
+          clearTake();
+          const recorded = new Blob(chunks, { type: recorder.mimeType || chunks[0].type });
+          recordedUrl = URL.createObjectURL(recorded);
+          recordStatus.textContent = "錄好了。先聽學校，再聽我念。";
+        } else {
+          recordStatus.textContent = "這次沒有錄到聲音，可以再試一次。";
+        }
+        refreshRecordControls();
+      });
+      recorder.addEventListener("error", () => {
+        if (capture !== attempt) return;
+        cancelCapture();
+        recordStatus.textContent = "錄音中斷，可以再試一次。";
+      });
+      recorder.start();
+      recordStatus.textContent = "正在錄音。自己念完這一句，再按「錄好了」。";
+      refreshRecordControls();
+    } catch (error) {
+      if (capture !== attempt) return;
+      cancelCapture();
+      recordStatus.textContent = error.name === "NotAllowedError" ?
+        "麥克風未開放。可以從瀏覽器允許麥克風後再試。" : "無法開始錄音，請確認麥克風可用。";
     }
   }
 
@@ -158,21 +289,46 @@
     }
     stop();
     if (kind === "film") byId("film-status").textContent = "妹妹是個怎樣的小孩？";
-    if (kind === "read") byId("read-status").textContent = "換你念一次。";
+    if (kind === "listen") byId("read-status").textContent = "現在可以跟著念，也可以先自己念一遍。";
+    if (kind === "shadow") byId("read-status").textContent = "想再練就再跟一次，念順了就換下一句。";
+    if (kind === "model") recordStatus.textContent = "接著聽我念。留意你想比較的地方。";
+    if (kind === "own") recordStatus.textContent = "想調整就重錄一次，念順了就換下一句。";
     if (kind === "whole") byId("whole-status").textContent = "現在看著紙本，自己讀一次第一段。";
   });
 
-  film.addEventListener("click", () => {
-    if (playback?.kind === "film") stop();
-    else play("film", sceneLines[0].audio);
+  film.addEventListener("click", () => togglePlay("film", sceneLines[0].audio));
+  listen.addEventListener("click", () => togglePlay("listen", lines[line].audio));
+  shadow.addEventListener("click", () => togglePlay("shadow", lines[line].audio));
+  whole.addEventListener("click", () => togglePlay("whole", wholeAudio));
+  model.addEventListener("click", () => togglePlay("model", lines[line].audio));
+  own.addEventListener("click", () => togglePlay("own", recordedUrl));
+  record.addEventListener("click", () => {
+    if (!capture) {
+      startCapture();
+    } else if (!capture.recorder) {
+      cancelCapture();
+      recordStatus.textContent = "已取消錄音。";
+    } else {
+      capture.finishing = true;
+      record.disabled = true;
+      recordStatus.textContent = "錄音處理中。";
+      capture.recorder.stop();
+    }
   });
-  listen.addEventListener("click", () => {
-    if (playback?.kind === "read") stop();
-    else play("read", lines[line].audio);
+  recordPanel.addEventListener("toggle", () => {
+    if (recordPanel.open) return;
+    if (capture) {
+      cancelCapture();
+      recordStatus.textContent = "";
+    }
+    if (playback?.kind === "own" || playback?.kind === "model") stop();
   });
-  whole.addEventListener("click", () => {
-    if (playback?.kind === "whole") stop();
-    else play("whole", wholeAudio);
+  window.addEventListener("pagehide", () => {
+    stop();
+    cancelCapture();
+    clearTake();
+    recordStatus.textContent = "";
+    refreshRecordControls();
   });
   byId("switch-scene").addEventListener("click", () => {
     stop();
