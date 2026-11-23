@@ -227,12 +227,15 @@ async function setupShot(page, shot) {
       const animations = stage.getAnimations({ subtree: true });
       let animationDuration = 0;
       for (const animation of animations) {
-        const end = animation.effect.getComputedTiming().endTime;
-        animationDuration = Math.max(animationDuration, Number.isFinite(end) ? end : 1750);
+        const { endTime, fill } = animation.effect.getComputedTiming();
+        const holdsFinalState = fill === "forwards" || fill === "both";
+        const motionLimit = holdsFinalState ? 3000 : 2300;
+        const duration = Number.isFinite(endTime) ? Math.min(endTime, motionLimit) : 1750;
+        animationDuration = Math.max(animationDuration, duration);
         animation.pause();
         animation.currentTime = 0;
       }
-      return Math.min(animationDuration, 2300);
+      return animationDuration;
     }
   }, shot);
 }
