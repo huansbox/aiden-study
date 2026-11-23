@@ -28,20 +28,14 @@ def school_clip(recording: Path, start: float, end: float) -> str:
     return audio_url(audio, "audio/mpeg")
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("private_root", type=Path)
-    arguments = parser.parse_args()
-    private_source = arguments.private_root / "source"
-    repo_source = Path(__file__).resolve().parent / "source"
-    segments = json.loads((private_source / "segments.json").read_text(encoding="utf-8"))
-    if len(segments) < 2:
-        raise ValueError("At least two excerpts are required for the two scenes.")
+def build_paragraph(recording: Path, manifest: Path, title: str) -> dict:
+    segments = json.loads(manifest.read_text(encoding="utf-8"))
+    if not segments:
+        raise ValueError(f"No school-audio excerpts listed in {manifest.name}.")
     for previous, current in zip(segments, segments[1:]):
         if previous["end"] > current["start"]:
             raise ValueError("School-audio excerpts must be ordered and non-overlapping.")
 
-    recording = private_source / "01_阮小妹.mp3"
     lines = [
         {
             "text": segment["text"],
@@ -52,10 +46,32 @@ def main() -> None:
         for segment in segments
     ]
     whole_audio = school_clip(recording, segments[0]["start"], segments[-1]["end"])
-    data = json.dumps({"lines": lines, "wholeAudio": whole_audio}, ensure_ascii=False)
+    return {"title": title, "lines": lines, "wholeAudio": whole_audio}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("private_root", type=Path)
+    arguments = parser.parse_args()
+    private_source = arguments.private_root / "source"
+    repo_source = Path(__file__).resolve().parent / "source"
+    recording = private_source / "01_阮小妹.mp3"
+
+    paragraphs = [build_paragraph(recording, private_source / "segments.json", "第一段")]
     template = (repo_source / "mock.html").read_text(encoding="utf-8")
     scenes = (repo_source / "scenes.html").read_text(encoding="utf-8")
     scenes += (repo_source / "sentence-props.html").read_text(encoding="utf-8")
+    second_manifest = private_source / "paragraph-2.json"
+    if second_manifest.is_file():
+        second = build_paragraph(recording, second_manifest, "第二段")
+        second_scenes = (repo_source / "paragraph-2-scenes.html").read_text(encoding="utf-8")
+        for line in second["lines"]:
+            if not line["visual"] or f'id="{line["visual"]}"' not in second_scenes:
+                raise ValueError("Every second-paragraph excerpt must have a matching scene.")
+        paragraphs.append(second)
+        scenes += second_scenes
+
+    data = json.dumps(paragraphs, ensure_ascii=False)
     page = template.replace("<!-- SCENES -->", scenes).replace("<!-- DATA -->", data.replace("<", "\\u003c"))
     output = arguments.private_root / "mock" / "index.html"
     output.parent.mkdir(parents=True, exist_ok=True)

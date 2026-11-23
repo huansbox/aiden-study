@@ -18,6 +18,8 @@
   h1 { font-size: clamp(2rem, 7vw, 3.3rem); letter-spacing: .025em; line-height: 1.15; }
   h2 { font-size: 1.28rem; line-height: 1.4; }
   header p { margin-top: 6px; color: #70584a; }
+  .paragraph-picker { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+  .paragraph-picker select { font: inherit; min-height: 44px; padding: 6px 12px; color: inherit; background: #fffcf7; border: 1px solid #b89e84; border-radius: 10px; }
   section { margin-top: 20px; }
   .card { background: #fffcf7; border: 1px solid #e4d6c6; border-radius: 20px; overflow: hidden; }
   .panel { padding: clamp(14px, 4vw, 24px); }
@@ -54,7 +56,11 @@
 <main>
   <header>
     <h1>阮小妹</h1>
-    <p>第一段 · 台語朗讀</p>
+    <p>台語朗讀</p>
+    <div class="paragraph-picker" id="paragraph-picker" hidden>
+      <label for="paragraph">選擇段落</label>
+      <select id="paragraph"></select>
+    </div>
   </header>
   <section class="card" aria-labelledby="read-title">
     <div class="stage" id="stage"></div>
@@ -99,7 +105,7 @@
 <script id="mock-data" type="application/json"><!-- DATA --></script>
 <script>
   const byId = (id) => document.getElementById(id);
-  const { lines, wholeAudio } = JSON.parse(byId("mock-data").textContent);
+  const paragraphs = JSON.parse(byId("mock-data").textContent);
   const visuals = {
     room: { template: "scene-1" },
     agree: { focus: "props", prop: "agree", label: "姊姊想著剛才妹妹玩積木的模樣，覺得也是這樣。" },
@@ -124,21 +130,24 @@
   const recordStatus = byId("record-status");
   const model = byId("model");
   const own = byId("own");
+  const paragraphSelect = byId("paragraph");
   const playbackControls = {
     film: { button: film, stopped: "看這句動畫", status: byId("read-status") },
     listen: { button: listen, stopped: "先聽這一句", status: byId("read-status") },
     shadow: { button: shadow, stopped: "跟著念", status: byId("read-status") },
-    whole: { button: whole, stopped: "播放第一段", status: byId("whole-status") },
+    whole: { button: whole, stopped: "", status: byId("whole-status") },
     model: { button: model, stopped: "聽學校", status: recordStatus },
     own: { button: own, stopped: "聽我念", status: recordStatus },
   };
+  let paragraph = paragraphs[0];
   let line = 0;
   let playback = null;
   let capture = null;
   let recordedUrl = "";
 
   function showScene(index) {
-    const visual = visuals[lines[index].visual] || (index === 0 ? visuals.room : visuals.contrast);
+    const key = paragraph.lines[index].visual;
+    const visual = visuals[key] || (key ? { template: key } : index === 0 ? visuals.room : visuals.contrast);
     const template = byId(visual.template || "scene-2");
     const frame = template.content.firstElementChild.cloneNode(true);
     if (visual.focus) {
@@ -156,6 +165,7 @@
     recordStatus.textContent = "";
     refreshRecordControls();
     line = index;
+    const { lines } = paragraph;
     showScene(index);
     byId("line-count").textContent = `第 ${index + 1} 句，共 ${lines.length} 句`;
     byId("original").textContent = lines[index].text;
@@ -308,14 +318,14 @@
     if (kind === "shadow") byId("read-status").textContent = "想再練就再跟一次，念順了就換下一句。";
     if (kind === "model") recordStatus.textContent = "接著聽我念。留意你想比較的地方。";
     if (kind === "own") recordStatus.textContent = "想調整就重錄一次，念順了就換下一句。";
-    if (kind === "whole") byId("whole-status").textContent = "現在看著紙本，自己讀一次第一段。";
+    if (kind === "whole") byId("whole-status").textContent = `現在看著紙本，自己讀一次${paragraph.title}。`;
   });
 
-  film.addEventListener("click", () => togglePlay("film", lines[line].audio));
-  listen.addEventListener("click", () => togglePlay("listen", lines[line].audio));
-  shadow.addEventListener("click", () => togglePlay("shadow", lines[line].audio));
-  whole.addEventListener("click", () => togglePlay("whole", wholeAudio));
-  model.addEventListener("click", () => togglePlay("model", lines[line].audio));
+  film.addEventListener("click", () => togglePlay("film", paragraph.lines[line].audio));
+  listen.addEventListener("click", () => togglePlay("listen", paragraph.lines[line].audio));
+  shadow.addEventListener("click", () => togglePlay("shadow", paragraph.lines[line].audio));
+  whole.addEventListener("click", () => togglePlay("whole", paragraph.wholeAudio));
+  model.addEventListener("click", () => togglePlay("model", paragraph.lines[line].audio));
   own.addEventListener("click", () => togglePlay("own", recordedUrl));
   record.addEventListener("click", () => {
     if (!capture) {
@@ -346,13 +356,30 @@
     refreshRecordControls();
   });
   previousLine.addEventListener("click", () => moveToLine(line - 1));
-  nextLine.addEventListener("click", () => moveToLine((line + 1) % lines.length));
+  nextLine.addEventListener("click", () => moveToLine((line + 1) % paragraph.lines.length));
   hintButton.addEventListener("click", () => {
     hint.hidden = !hint.hidden;
     hintButton.setAttribute("aria-expanded", String(!hint.hidden));
   });
 
-  showLine(0);
+  function selectParagraph(index) {
+    stop();
+    paragraph = paragraphs[index];
+    playbackControls.whole.stopped = `播放${paragraph.title}`;
+    whole.textContent = playbackControls.whole.stopped;
+    byId("whole-status").textContent = "";
+    showLine(0);
+  }
+
+  for (const [index, item] of paragraphs.entries()) {
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = item.title;
+    paragraphSelect.append(option);
+  }
+  byId("paragraph-picker").hidden = paragraphs.length < 2;
+  paragraphSelect.addEventListener("change", () => selectParagraph(paragraphSelect.selectedIndex));
+  selectParagraph(0);
 </script>
 </body>
 </html>
