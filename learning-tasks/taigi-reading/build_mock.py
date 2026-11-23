@@ -1,4 +1,4 @@
-"""Build an offline parent preview from private school-audio excerpts."""
+"""Build an offline reading practice page from the private school recording."""
 
 import argparse
 import base64
@@ -35,8 +35,11 @@ def main() -> None:
     private_source = arguments.private_root / "source"
     repo_source = Path(__file__).resolve().parent / "source"
     segments = json.loads((private_source / "segments.json").read_text(encoding="utf-8"))
-    if len(segments) != 2:
-        raise ValueError("The parent preview requires exactly two excerpts.")
+    if len(segments) < 2:
+        raise ValueError("At least two excerpts are required for the two scenes.")
+    for previous, current in zip(segments, segments[1:]):
+        if previous["end"] > current["start"]:
+            raise ValueError("School-audio excerpts must be ordered and non-overlapping.")
 
     recording = private_source / "01_阮小妹.mp3"
     lines = [
@@ -47,7 +50,8 @@ def main() -> None:
         }
         for segment in segments
     ]
-    data = json.dumps(lines, ensure_ascii=False)
+    whole_audio = school_clip(recording, segments[0]["start"], segments[-1]["end"])
+    data = json.dumps({"lines": lines, "wholeAudio": whole_audio}, ensure_ascii=False)
     template = (repo_source / "mock.html").read_text(encoding="utf-8")
     scenes = (repo_source / "scenes.html").read_text(encoding="utf-8")
     page = template.replace("<!-- SCENES -->", scenes).replace("<!-- DATA -->", data.replace("<", "\\u003c"))

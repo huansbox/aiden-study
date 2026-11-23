@@ -2,9 +2,11 @@
 
 桃子腳校內朗讀的家庭練習。第一輪使用〈阮小妹〉第一段，讓四年級孩子先看懂句意、逐句聽讀，再回到紙本自己讀。進度與家長試用見 [#274](https://github.com/huansbox/aiden-study/issues/274)。
 
-## 家長版
+## 第一段練習
 
-開啟私用 `mywork/aiden-study/taigi-reading/mock/index.html`，先播放兩幕短片，再試「聽這一句」與「換下一句」。兩幕畫面由 Claude Opus 製作成 CSS 動畫，短片及跟讀都使用學校示範原音。
+開啟私用 `mywork/aiden-study/taigi-reading/mock/index.html`，播放兩幕短片，再逐句聽完自己念。七個片段都可往回重播，難詞提示可按需展開。念順後播放完整第一段，跟著學校示範念，最後看著紙本自己讀一遍。
+
+兩幕畫面由 Claude Opus 製作成 CSS 動畫，短片、逐句與整段播放都使用學校原音。整段從原音擷取連續區間，保留示範原本的停頓。
 
 ## 重建
 

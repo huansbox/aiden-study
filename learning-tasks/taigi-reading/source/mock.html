@@ -25,6 +25,7 @@
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   button { font: inherit; font-weight: 650; min-height: 46px; padding: 9px 15px; border-radius: 10px; cursor: pointer; border: 1px solid #b89e84; background: #fff8eb; color: #302820; }
   button.primary { background: #803d28; border-color: #803d28; color: #fff9f0; }
+  button:disabled { opacity: .5; cursor: default; }
   button:focus-visible { outline: 3px solid #91704a; outline-offset: 3px; }
   .stage { min-height: 150px; background: #ebd8be; }
   #stage:not(.playing) .sister-scene *,
@@ -57,25 +58,39 @@
   </section>
   <section class="card panel" aria-labelledby="read-title">
     <h2 id="read-title">聽完，換你念</h2>
+    <p class="instruction" id="line-count"></p>
     <p class="original" id="original" aria-live="polite"></p>
     <p class="hint" id="hint" hidden></p>
     <div class="actions">
       <button class="primary" id="listen">聽這一句</button>
       <button id="hint-button" aria-expanded="false" aria-controls="hint">看詞語提示</button>
-      <button id="change-line">換下一句</button>
+      <button id="previous-line">上一句</button>
+      <button id="next-line">下一句</button>
     </div>
     <p class="status" id="read-status" role="status"></p>
+  </section>
+  <section class="card panel" aria-labelledby="whole-title">
+    <h2 id="whole-title">跟著念整段</h2>
+    <p class="instruction">看著講稿，讓示範先念一點，你再接著念。</p>
+    <div class="actions">
+      <button class="primary" id="whole">播放第一段</button>
+    </div>
+    <p class="status" id="whole-status" role="status"></p>
   </section>
   <audio id="player" preload="none"></audio>
 </main>
 <script id="mock-data" type="application/json"><!-- DATA --></script>
 <script>
   const byId = (id) => document.getElementById(id);
-  const lines = JSON.parse(byId("mock-data").textContent);
+  const { lines, wholeAudio } = JSON.parse(byId("mock-data").textContent);
+  const sceneLines = [lines[0], lines[lines.length - 1]];
   const player = byId("player");
   const stage = byId("stage");
   const film = byId("film");
   const listen = byId("listen");
+  const whole = byId("whole");
+  const previousLine = byId("previous-line");
+  const nextLine = byId("next-line");
   const hintButton = byId("hint-button");
   const hint = byId("hint");
   let scene = 0;
@@ -85,18 +100,20 @@
   function showScene(index) {
     scene = index;
     stage.replaceChildren(byId(`scene-${index + 1}`).content.cloneNode(true));
-    byId("caption").textContent = lines[index].text;
+    byId("caption").textContent = sceneLines[index].text;
     byId("switch-scene").textContent = index === 0 ? "看第二幕" : "回第一幕";
   }
 
   function showLine(index) {
     line = index;
+    byId("line-count").textContent = `第 ${index + 1} 句，共 ${lines.length} 句`;
     byId("original").textContent = lines[index].text;
     hint.textContent = lines[index].hint || "";
     hint.hidden = true;
     hintButton.hidden = !hint.textContent;
     hintButton.setAttribute("aria-expanded", "false");
-    byId("change-line").textContent = index === 0 ? "換下一句" : "回第一句";
+    previousLine.disabled = index === 0;
+    nextLine.textContent = index === lines.length - 1 ? "回第一句" : "下一句";
     byId("read-status").textContent = "";
   }
 
@@ -106,6 +123,7 @@
     stage.classList.remove("playing");
     film.textContent = "播放兩幕短片";
     listen.textContent = "聽這一句";
+    whole.textContent = "播放第一段";
   }
 
   async function play(kind, clip, nextScene = 0) {
@@ -120,6 +138,7 @@
       film.textContent = "停止短片";
     }
     if (kind === "read") listen.textContent = "停止示範";
+    if (kind === "whole") whole.textContent = "停止播放";
     player.src = clip;
     try {
       await player.play();
@@ -133,31 +152,40 @@
   player.addEventListener("ended", () => {
     if (!playback) return;
     const { kind, nextScene } = playback;
-    if (kind === "film" && nextScene + 1 < lines.length) {
-      play("film", lines[nextScene + 1].audio, nextScene + 1);
+    if (kind === "film" && nextScene + 1 < sceneLines.length) {
+      play("film", sceneLines[nextScene + 1].audio, nextScene + 1);
       return;
     }
     stop();
     if (kind === "film") byId("film-status").textContent = "妹妹是個怎樣的小孩？";
     if (kind === "read") byId("read-status").textContent = "換你念一次。";
+    if (kind === "whole") byId("whole-status").textContent = "現在看著紙本，自己讀一次第一段。";
   });
 
   film.addEventListener("click", () => {
     if (playback?.kind === "film") stop();
-    else play("film", lines[0].audio);
+    else play("film", sceneLines[0].audio);
   });
   listen.addEventListener("click", () => {
     if (playback?.kind === "read") stop();
     else play("read", lines[line].audio);
+  });
+  whole.addEventListener("click", () => {
+    if (playback?.kind === "whole") stop();
+    else play("whole", wholeAudio);
   });
   byId("switch-scene").addEventListener("click", () => {
     stop();
     byId("film-status").textContent = "";
     showScene(1 - scene);
   });
-  byId("change-line").addEventListener("click", () => {
+  previousLine.addEventListener("click", () => {
     stop();
-    showLine(1 - line);
+    showLine(line - 1);
+  });
+  nextLine.addEventListener("click", () => {
+    stop();
+    showLine((line + 1) % lines.length);
   });
   hintButton.addEventListener("click", () => {
     hint.hidden = !hint.hidden;
