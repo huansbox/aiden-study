@@ -1,0 +1,261 @@
+<style>
+  .sister-scene .sentence-prop {
+    position: absolute;
+    left: 52%;
+    top: 12%;
+    width: 44%;
+    height: 76%;
+    pointer-events: none;
+  }
+  .sister-scene .sentence-prop i,
+  .sister-scene .sentence-prop span {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+    border: 0.35cqw solid #302820;
+    box-shadow: 0 0.4cqw 0 rgba(48, 40, 32, 0.22);
+  }
+  .sister-scene .sentence-prop .narrator-face {
+    left: 6%;
+    top: 42%;
+    width: 14cqw;
+    height: 14cqw;
+    border: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 22% 72%, #f29a85 0 8%, transparent 9%),
+      radial-gradient(circle at 78% 72%, #f29a85 0 8%, transparent 9%), #f6d0a8;
+  }
+  .sister-scene .sentence-prop .narrator-hair {
+    left: 5%;
+    top: 41%;
+    width: 14.8cqw;
+    height: 6.2cqw;
+    border: 0;
+    border-radius: 50% 50% 35% 35% / 90% 90% 30% 30%;
+    background: #2b1d16;
+    box-shadow: none;
+  }
+  .sister-scene .sentence-prop .ponytail {
+    left: 34%;
+    top: 60%;
+    width: 3cqw;
+    height: 8cqw;
+    border: 0;
+    border-radius: 50%;
+    background: #2b1d16;
+  }
+  .sister-scene .sentence-prop .eye {
+    top: 58%;
+    width: 1.2cqw;
+    height: 1.6cqw;
+    border: 0;
+    border-radius: 50%;
+    background: #2b1d16;
+    box-shadow: none;
+  }
+  .sister-scene .sentence-prop .mouth {
+    left: 18%;
+    top: 65%;
+    width: 3cqw;
+    height: 1.2cqw;
+    border: 0 solid #7a2a1c;
+    border-bottom-width: 0.35cqw;
+    border-radius: 0 0 50% 50%;
+    box-shadow: none;
+  }
+  .sister-scene .sentence-prop .narrator-shirt {
+    left: 9%;
+    top: 71%;
+    width: 12cqw;
+    height: 13cqw;
+    border: 0;
+    border-radius: 40% 40% 12% 12% / 25% 25% 8% 8%;
+    background: #b5482e;
+  }
+  .sister-scene .sentence-prop .thought-dot {
+    border-radius: 50%;
+    background: #f2e0c2;
+  }
+  .sister-scene .sentence-prop .thought-bubble {
+    left: 45%;
+    top: 4%;
+    width: 22cqw;
+    height: 16cqw;
+    border-radius: 50%;
+    background: #f2e0c2;
+  }
+  .sister-scene .sentence-prop .building-block {
+    width: 6cqw;
+    height: 6cqw;
+    border-radius: 0.6cqw;
+    top: 16%;
+  }
+  .sister-scene .sentence-prop .cake-plate {
+    left: 14%;
+    top: 81%;
+    width: 32cqw;
+    height: 2.4cqw;
+    border-radius: 2cqw;
+    background: #d49a9a;
+  }
+  .sister-scene .sentence-prop .cake {
+    left: 20%;
+    top: 55%;
+    width: 26cqw;
+    height: 12cqw;
+    border-radius: 1cqw 1cqw 2cqw 2cqw;
+    background: #f5a66b;
+  }
+  .sister-scene .sentence-prop .icing {
+    left: 19%;
+    top: 50%;
+    width: 28cqw;
+    height: 4cqw;
+    border-radius: 2cqw 2cqw 3cqw 3cqw;
+    background: #f2e0c2;
+  }
+  .sister-scene .sentence-prop .candle {
+    top: 32%;
+    width: 2.2cqw;
+    height: 8cqw;
+    border-radius: 0.4cqw;
+  }
+  .sister-scene .sentence-prop .flame {
+    top: 24%;
+    width: 2.2cqw;
+    height: 3.2cqw;
+    border-radius: 50% 50% 45% 45%/60% 60% 40% 40%;
+    background: radial-gradient(circle at 50% 70%, #f2e0c2 30%, #f5a66b 62%);
+    box-shadow: none;
+    transform-origin: 50% 100%;
+  }
+  .sister-scene .sentence-prop .speech-bubble {
+    left: 30%;
+    top: 10%;
+    width: 30cqw;
+    height: 16cqw;
+    border-radius: 50%;
+    background: #f2e0c2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 4.2cqw/1 sans-serif;
+    color: #302820;
+    white-space: nowrap;
+  }
+  .sister-scene .sentence-prop .speech-tail {
+    left: 36%;
+    top: 44%;
+    width: 3.4cqw;
+    height: 3.4cqw;
+    background: #f2e0c2;
+    border-width: 0 0.35cqw 0.35cqw 0;
+    transform: rotate(45deg);
+    box-shadow: none;
+  }
+  .sister-scene .sentence-prop .speaker {
+    background: #302820;
+    box-shadow: none;
+  }
+  .sister-scene .sentence-prop .call-mark {
+    left: 23%;
+    top: 56%;
+    width: 4cqw;
+    height: 4cqw;
+    border-radius: 50%;
+    border-color: #d49a9a transparent transparent;
+    box-shadow: none;
+    transform: rotate(45deg);
+  }
+  .sister-scene .sentence-prop .animated {
+    animation: sp-fade 2.4s ease-in-out infinite;
+  }
+  .sister-scene .sentence-prop .flame.animated {
+    animation: sp-flick 1.2s ease-in-out infinite;
+  }
+  @keyframes sp-fade {
+    50% {
+      opacity: 0.3;
+    }
+  }
+  @keyframes sp-flick {
+    50% {
+      transform: scaleY(0.82);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sister-scene .sentence-prop .animated {
+      animation: none;
+    }
+  }
+</style>
+<template id="prop-agree">
+  <div class="sentence-prop" aria-hidden="true">
+    <i class="ponytail"></i>
+    <i class="narrator-shirt"></i>
+    <i class="narrator-face"></i>
+    <i class="narrator-hair"></i>
+    <i class="eye" style="left: 14%"></i>
+    <i class="eye" style="left: 27%"></i>
+    <i class="mouth"></i>
+    <i
+      class="thought-dot"
+      style="left: 38%; top: 44%; width: 1.6cqw; height: 1.6cqw"
+    ></i>
+    <i
+      class="thought-dot animated"
+      style="left: 42%; top: 34%; width: 2.6cqw; height: 2.6cqw"
+    ></i>
+    <i class="thought-bubble"></i>
+    <i class="building-block" style="left: 56%; background: #f5a66b"></i>
+    <i
+      class="building-block"
+      style="left: 72%; background: #9db48a; transform: rotate(8deg)"
+    ></i>
+  </div>
+</template>
+<template id="prop-age">
+  <div class="sentence-prop" aria-hidden="true">
+    <i class="cake-plate"></i>
+    <i class="cake"></i>
+    <i class="icing"></i>
+    <i class="candle" style="left: 35%; background: #9db48a"></i>
+    <i class="candle" style="left: 46%; background: #d49a9a"></i>
+    <i
+      class="candle"
+      style="
+        left: 57%;
+        background: repeating-linear-gradient(
+          45deg,
+          #f2e0c2 0 0.8cqw,
+          #f5a66b 0 1.6cqw
+        );
+      "
+    ></i>
+    <i class="flame" style="left: 35%"></i>
+    <i class="flame animated" style="left: 46%"></i>
+    <i class="flame" style="left: 57%"></i>
+  </div>
+</template>
+<template id="prop-name">
+  <div class="sentence-prop" aria-hidden="true">
+    <i class="speech-tail"></i>
+    <span class="speech-bubble">阿 mē 仔</span>
+    <i
+      class="speaker"
+      style="left: 8%; top: 58%; width: 5cqw; height: 5cqw; border-radius: 50%"
+    ></i>
+    <i
+      class="speaker"
+      style="
+        left: 4%;
+        top: 71%;
+        width: 9cqw;
+        height: 6cqw;
+        border-radius: 5cqw 5cqw 1cqw 1cqw;
+      "
+    ></i>
+    <i class="call-mark animated"></i>
+  </div>
+</template>

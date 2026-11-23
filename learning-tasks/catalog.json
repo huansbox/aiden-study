@@ -3,6 +3,20 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "taigi-reading",
+      "name": "〈阮小妹〉台語朗讀",
+      "status": "complete",
+      "statusNote": "全篇五段、59 個跟讀片段，支援本機錄音回放，另有學校原音卡拉 OK 字幕影片。驗證見 #274。",
+      "eventDate": null,
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "四年級；家長可陪讀",
+      "description": "先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。",
+      "reusable": "配合句意切換動畫畫面、學校朗讀切句。",
+      "availability": "private"
+    },
+    {
       "id": "grade4-sem1-exam2",
       "name": "四上後半冊家庭複習",
       "status": "in-progress",

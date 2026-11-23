@@ -1,0 +1,782 @@
+<style>
+  .paper-night {
+    background: #e5cda7;
+  }
+  .paper-night .paper-camera {
+    position: absolute;
+    inset: 0;
+    transform: scale(var(--zoom, 1));
+    transform-origin: var(--origin, 50% 55%);
+  }
+  .paper-night .paper-camera :is(.p2-older-sister, .p2-little-sister) .p2-legs {
+    display: none;
+  }
+  .paper-night .paper-pat .p2-body::after {
+    height: 78%;
+    z-index: 3;
+  }
+  .paper-night .paper-calendar {
+    perspective: 50cqw;
+  }
+  .paper-night .paper-page {
+    position: absolute;
+    top: 17%;
+    left: 2%;
+    width: 96%;
+    height: 80%;
+    background-color: #f7ebc8;
+    border-radius: 0 0 0.4cqw 0.4cqw;
+    transform-origin: 50% 0;
+    backface-visibility: hidden;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 13%, #d4b58b 13% 14%),
+      repeating-linear-gradient(transparent 0 24%, #d4b58b 24% 26%);
+  }
+  .paper-night .paper-page:nth-child(2) {
+    background-color: #efd7a9;
+  }
+  .paper-night .paper-page:nth-child(3) {
+    background-color: #fff0ce;
+  }
+  .paper-night .paper-grown {
+    filter: brightness(0) saturate(0);
+    opacity: 0.48;
+    transform-origin: 50% 100%;
+  }
+  #stage.playing .paper-night .paper-pat .p2-body::after {
+    animation: paper-pat 1.1s ease-in-out 2;
+  }
+  #stage.playing .paper-night .paper-reply .p2-head::after {
+    animation: paper-reply 0.4s ease-in-out 3 alternate;
+  }
+  #stage.playing .paper-night .paper-tuck {
+    animation: paper-tuck 1.2s ease-in-out both;
+  }
+  #stage.playing .paper-night .paper-grown {
+    animation: paper-grow 3s ease-in-out both;
+  }
+  #stage.playing .paper-night .paper-page {
+    animation: paper-leaf 0.49s var(--delay, 0s) ease-in forwards;
+  }
+  #stage.playing .paper-night .paper-join {
+    animation: paper-join 1.3s ease-in-out both;
+  }
+  #stage.playing .paper-night .paper-glow {
+    animation: paper-lamplight 2.7s ease-out both;
+  }
+  @keyframes paper-pat {
+    50% {
+      transform: rotate(-9deg);
+    }
+  }
+  @keyframes paper-reply {
+    50% {
+      height: 15%;
+    }
+  }
+  @keyframes paper-tuck {
+    from {
+      transform: translate(-1.15cqw, 1.1cqw) rotate(-2deg);
+    }
+  }
+  @keyframes paper-grow {
+    from {
+      transform: scale(0.73);
+    }
+  }
+  @keyframes paper-leaf {
+    to {
+      transform: rotateX(130deg);
+      opacity: 0;
+    }
+  }
+  @keyframes paper-join {
+    from {
+      transform: translateX(var(--from, 1.9cqw));
+    }
+  }
+  @keyframes paper-lamplight {
+    from {
+      opacity: 0.38;
+      scale: 1.1;
+    }
+  }
+</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="0"
+  height="0"
+  aria-hidden="true"
+  style="position: absolute; overflow: hidden"
+>
+  <defs>
+    <symbol id="paper-lamp" viewBox="0 0 95 120">
+      <ellipse cx="48" cy="113" rx="26" ry="5" fill="#ab7a52" />
+      <path fill="#936746" d="M44 60h9v43l13 6v4H29v-4l15-6z" />
+      <path fill="#c77d44" d="M23 9q23-4 48 0l19 55q-42 8-84 0z" />
+      <path fill="#f2bd74" d="M27 10q21-4 40 0l16 48q-35 8-71 0z" />
+      <path fill="#ffdc96" d="M12 58q34 6 72 0l2 6q-35 8-77 0z" />
+      <path stroke="#a2764c" stroke-width="2" d="M67 66v20" />
+      <circle cx="67" cy="87" r="3" fill="#b58658" />
+    </symbol>
+    <symbol id="paper-calendar" viewBox="0 0 100 112">
+      <rect x="2" y="5" width="96" height="106" rx="4" fill="#a87654" />
+      <rect x="6" y="22" width="88" height="82" rx="2" fill="#f4e2b9" />
+      <g stroke="#d0b187" stroke-width="1.5">
+        <path
+          d="M14 42h72M14 58h72M14 74h72M14 89h72M28 31v65m16-65v65m16-65v65m15-65v65"
+        />
+      </g>
+      <path
+        stroke="#6c5744"
+        stroke-width="5"
+        stroke-linecap="round"
+        d="M22 3v10m55-10v10"
+      />
+    </symbol>
+    <symbol id="paper-night" viewBox="0 0 1000 562.5">
+      <defs>
+        <radialGradient id="paper-nightlight" cx=".17" cy=".53" r=".95">
+          <stop offset="0" stop-color="#f9e6b7" />
+          <stop offset=".55" stop-color="#e5cca8" />
+          <stop offset="1" stop-color="#c3b39a" />
+        </radialGradient>
+      </defs>
+      <rect width="1000" height="562.5" fill="url(#paper-nightlight)" />
+      <path fill="#ba9670" d="M0 428h1000v15H0z" />
+      <path fill="#c9a37b" d="M0 442h1000v121H0z" />
+      <g transform="translate(400 37)">
+        <rect width="156" height="111" rx="5" fill="#b7a184" />
+        <rect x="5" y="5" width="146" height="101" rx="3" fill="#788c92" />
+        <path fill="#ecd5a0" d="M41 24a22 22 0 1 0 29 29 24 24 0 0 1-29-29z" />
+        <g fill="#e6d6ac">
+          <circle cx="99" cy="28" r="2" />
+          <circle cx="122" cy="48" r="2.5" />
+          <circle cx="88" cy="68" r="2" />
+        </g>
+        <path fill="#71877f" d="M6 94q34-27 80-3 31-23 63-8v22H6z" />
+      </g>
+      <rect x="51" y="336" width="156" height="27" rx="6" fill="#ac7e56" />
+      <path fill="#92694b" d="M60 357h139v95h-10v-18H73v18H60z" />
+      <path fill="#c59a68" d="M68 363h124v59H68z" />
+      <circle cx="131" cy="388" r="4" fill="#91613e" />
+      <use href="#paper-lamp" x="84" y="195" width="115" height="146" />
+      <path
+        fill="#8d654c"
+        d="M222 408h18v101h-18zm677-207q0-8 9-8h12q9 0 9 8v306h-19V320h-11z"
+      />
+      <path
+        fill="#b58766"
+        d="M228 351q-4-13 12-18l657-57q13-1 14 12v121H228z"
+      />
+      <path fill="#ebd8b5" d="M222 349q4-23 28-23l633-40q30-2 32 21v112H219z" />
+      <path fill="#c59c75" d="M219 418h697v50H217z" />
+      <path fill="#91694c" d="M216 462h703v12H216z" />
+      <g fill="#faf0d6" stroke="#dbc6a0" stroke-width="3">
+        <path d="M359 289q3-20 29-21l146-11q23-1 28 21l3 39-193 17z" />
+        <path d="M618 272q1-14 23-16l127-11q27-3 30 18l7 43-179 12z" />
+      </g>
+    </symbol>
+    <symbol id="paper-quilt" viewBox="0 0 650 150">
+      <path
+        fill="#8c9d87"
+        d="M3 30Q84 12 160 21T317 21q82-13 161-13 69 0 167 15l2 114q-78 11-159 3H5z"
+      />
+      <path
+        fill="#b8c3a0"
+        d="M3 28q83-16 159-8t155-1q130-23 223-10l105 12 1 16q-81-15-160-12-98 0-171 12-77 11-153-1T3 45z"
+      />
+      <g
+        stroke="#c9ccaa"
+        fill="none"
+        stroke-dasharray="8 7"
+        stroke-width="2"
+        opacity=".68"
+      >
+        <path
+          d="M16 116q124-9 244-2t245 0l129-1M121 49l-6 83m131-83-4 83m130-92-2 91m117-95 6 95m101-88 5 91"
+        />
+      </g>
+    </symbol>
+    <symbol id="paper-join-older" viewBox="0 0 100 60">
+      <path fill="#ab513a" d="m1 17 40 1 4 21-40 11z" />
+      <path
+        fill="#f3cba3"
+        d="m38 17 30 3 21 7q5 2 3 6-1 3-6 2l-14-3 16 8q4 2 2 5-2 3-7 1l-27-10-16 2z"
+      />
+      <path fill="#c1795a" d="m34 16 7 0 5 22-8 2z" />
+    </symbol>
+    <symbol id="paper-join-little" viewBox="0 0 100 60">
+      <path fill="#f5a66b" d="m55 18 42-4 3 29-45-5z" />
+      <path
+        fill="#f5cfa9"
+        d="M60 18 42 19l-16 5q-6 2-5 6 1 3 6 2l13-3-17 8q-4 3-2 6t7 1l17-6 12-1z"
+      />
+      <path fill="#dc935f" d="m54 18 8-1-2 22-8-1z" />
+    </symbol>
+  </defs>
+</svg>
+<template id="p5-scene-01">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="床頭燈照著一家人。媽媽坐在床沿，把阿海身上的被角拉平。"
+  >
+    <div class="paper-camera" style="--zoom: 1; --origin: 50% 55%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-gentle p2-left"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" />
+      </svg>
+      <i
+        class="p2-person p2-mother paper-sit p2-right paper-pose paper-lift"
+        style="
+          left: 24cqw;
+          bottom: 2cqw;
+          --s: 1.52;
+          --head: 8deg;
+          --right-arm: -84deg;
+        "
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop paper-tuck"
+        style="
+          left: 33cqw;
+          top: 33cqw;
+          width: 8cqw;
+          height: 4.8cqw;
+          scale: -1 1;
+          filter: sepia(0.3);
+        "
+        aria-hidden="true"
+      >
+        <use href="#paper-join-little" />
+      </svg>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-02">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="媽媽輕輕摸阿海的頭，阿海抬眼看她。"
+  >
+    <div class="paper-camera" style="--zoom: 1.22; --origin: 35% 48%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-left p2-looking-up"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" />
+      </svg>
+      <i
+        class="p2-person p2-mother paper-sit p2-right paper-pose paper-pat"
+        style="
+          left: 33cqw;
+          bottom: 2cqw;
+          --s: 1.52;
+          --head: 8deg;
+          --right-arm: -117deg;
+        "
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-03">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="媽媽望著阿海和她照顧的妹妹，帶著笑意點頭。"
+  >
+    <div class="paper-camera" style="--zoom: 1.13; --origin: 57% 46%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-gentle p2-right"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" />
+      </svg>
+      <i
+        class="p2-person p2-mother paper-sit p2-right paper-pose paper-nod p2-gentle"
+        style="left: 24cqw; bottom: 2cqw; --s: 1.52; --head: 8deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-04">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="阿海從被子裡半坐起來，認真開口回答媽媽。"
+  >
+    <div class="paper-camera" style="--zoom: 1.21; --origin: 38% 43%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister p2-speaking p2-left paper-reply p2-looking-up"
+        style="left: 42cqw; bottom: 5cqw; --s: 1.31"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" />
+      </svg>
+      <i
+        class="p2-person p2-mother paper-sit p2-right paper-pose p2-gentle"
+        style="left: 24cqw; bottom: 2cqw; --s: 1.52; --head: 8deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-05">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="阿海轉頭望著妹妹，嘴角慢慢上揚。"
+  >
+    <div class="paper-camera" style="--zoom: 1.38; --origin: 61% 51%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-right p2-gentle paper-nod"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27; --head: 8deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" />
+      </svg>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-06">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="阿海伸手把妹妹肩膀上的被角拉好，妹妹靜靜躺著。"
+  >
+    <div class="paper-camera" style="--zoom: 1.65; --origin: 65% 59%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-right p2-gentle"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <div class="paper-layer paper-tuck" style="">
+        <svg
+          class="paper-prop"
+          style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+          aria-hidden="true"
+        >
+          <use href="#paper-quilt" />
+        </svg>
+      </div>
+      <svg
+        class="paper-prop paper-tuck"
+        style="left: 53cqw; top: 29.6cqw; width: 17cqw; height: 10.2cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-join-older" />
+      </svg>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-07">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="夜燈仍然亮著，牆上的日曆接連翻過三頁。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-night" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 9cqw; top: 29cqw; width: 17cqw; height: 22cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-lamp" />
+    </svg>
+    <div class="paper-layer" style="scale: 3.5; transform-origin: 97% 8%">
+      <svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <div
+        class="paper-calendar"
+        style="
+          position: absolute;
+          left: 82.3cqw;
+          top: 5.3cqw;
+          width: 8.4cqw;
+          height: 9.5cqw;
+        "
+      >
+        <b class="paper-page" style="--delay: 0.94s"></b>
+        <b class="paper-page" style="--delay: 0.47s"></b>
+        <b class="paper-page"></b>
+      </div>
+    </div>
+  </div>
+</template>
+<template id="p5-scene-08">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="暖色牆面上，留著低馬尾的姊姊與雙丸子頭的妹妹並肩，兩個影子慢慢長高。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-night" />
+    </svg>
+    <b
+      style="
+        left: 19cqw;
+        top: 3cqw;
+        width: 68cqw;
+        height: 46cqw;
+        border-radius: 50%;
+        background: #f5dfaf;
+      "
+    ></b>
+    <i
+      class="p2-person p2-older-sister paper-grown"
+      style="left: 38cqw; bottom: 7cqw; --s: 1.45"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister paper-grown"
+      style="left: 55cqw; bottom: 7cqw; --s: 1.16"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p5-scene-09">
+  <div
+    class="sister-scene p2-scene paper-scene paper-night"
+    role="img"
+    aria-label="回到床上。阿海和妹妹的小手輕輕相握，床頭燈留下溫暖的圓光。"
+  >
+    <div class="paper-camera" style="--zoom: 1.32; --origin: 58% 55%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-night" /></svg
+      ><svg
+        class="paper-prop"
+        style="left: 82cqw; top: 5cqw; width: 9cqw; height: 10.1cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-calendar" />
+      </svg>
+      <i
+        class="p2-person p2-little-sister p2-gentle paper-pose"
+        style="left: 65cqw; bottom: 4cqw; --s: 1.09; --head: 6deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister paper-pose p2-gentle p2-right"
+        style="left: 43cqw; bottom: 2cqw; --s: 1.27"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <svg
+        class="paper-prop"
+        style="left: 33cqw; top: 32cqw; width: 58cqw; height: 15cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-quilt" /></svg
+      ><svg
+        class="paper-prop paper-join"
+        style="
+          left: 45cqw;
+          top: 32.5cqw;
+          width: 15cqw;
+          height: 9cqw;
+          --from: -1.5cqw;
+        "
+        aria-hidden="true"
+      >
+        <use href="#paper-join-older" /></svg
+      ><svg
+        class="paper-prop paper-join"
+        style="left: 54.6cqw; top: 33.2cqw; width: 13cqw; height: 7.8cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-join-little" />
+      </svg>
+    </div>
+    <b
+      class="paper-glow"
+      style="
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 56% 56%,
+          transparent 20%,
+          #b56f3b30 62%,
+          #85623d53
+        );
+      "
+    ></b>
+  </div>
+</template>

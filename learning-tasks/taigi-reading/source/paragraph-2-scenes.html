@@ -1,0 +1,869 @@
+<style>
+  .p2-age-card {
+    left: 38cqw;
+    top: 11cqw;
+    padding: 1.2cqw 2.4cqw;
+    background: #fff7e6;
+    border: 0.5cqw solid #b5482e;
+    border-radius: 1.5cqw;
+    font-size: 4.4cqw;
+    font-weight: 800;
+    color: #7a2e1c;
+    rotate: -4deg;
+    white-space: nowrap;
+  }
+  .p2-zodiac {
+    top: 3cqw;
+    width: 11cqw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    --y: #2b1d16 0 6%, #0000 7%;
+    background:
+      radial-gradient(circle at 33% 44%, var(--y)),
+      radial-gradient(circle at 67% 44%, var(--y)), var(--z);
+  }
+  .p2-zodiac::before,
+  .p2-zodiac::after {
+    content: "";
+    top: -14%;
+    left: 4%;
+    width: 32%;
+    aspect-ratio: 1;
+    background: var(--z);
+    border-radius: 0 80%;
+  }
+  .p2-zodiac::after {
+    left: auto;
+    right: 4%;
+    rotate: 90deg;
+  }
+  .p2-pig {
+    --z: #f4a7a0;
+  }
+  .p2-tiger {
+    --z: #e8913a;
+    background:
+      radial-gradient(circle at 33% 44%, var(--y)),
+      radial-gradient(circle at 67% 44%, var(--y)),
+      linear-gradient(
+          90deg,
+          #0000 40%,
+          #2b1d16 0 46%,
+          #0000 0 54%,
+          #2b1d16 0 60%,
+          #0000 0
+        )
+        0 0/100% 26% no-repeat,
+      var(--z);
+  }
+  .p2-tiger::before,
+  .p2-tiger::after {
+    border-radius: 50%;
+    background: #7a3a1a;
+    border: 0.9cqw solid var(--z);
+  }
+  .p2-zodiac b {
+    left: 30%;
+    top: 56%;
+    width: 40%;
+    height: 28%;
+    border-radius: 50%;
+    --n: #9a4d45 0 13%, #0000 15%;
+    background:
+      radial-gradient(circle at 35%, var(--n)),
+      radial-gradient(circle at 65%, var(--n)), #f8c4bc;
+  }
+  .p2-tiger b {
+    background:
+      radial-gradient(circle at 50% 25%, #6a2e1a 0 18%, #0000 20%), #fff4e2;
+  }
+  .p2-magnifier {
+    left: 12cqw;
+    top: 9cqw;
+    width: 17cqw;
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1.2cqw solid #8a5a3a;
+    background: radial-gradient(#5a3a2c 0 1.3cqw, #0000 1.4cqw), #fffdf5;
+  }
+  .p2-magnifier::after {
+    content: "";
+    left: 85%;
+    top: 85%;
+    width: 2.4cqw;
+    height: 9cqw;
+    background: #8a5a3a;
+    border-radius: 1cqw;
+    rotate: -45deg;
+    transform-origin: 50% 0;
+  }
+  .p2-small-dot {
+    left: 36cqw;
+    bottom: 11cqw;
+    width: 0.7cqw;
+    height: 0.7cqw;
+    border-radius: 50%;
+    background: #5a3a2c;
+  }
+  .p2-storm-cloud {
+    left: 54cqw;
+    top: 3cqw;
+    width: 16cqw;
+    height: 6cqw;
+    background: #8c8a92;
+    border-radius: 3cqw;
+  }
+  .p2-storm-cloud::before,
+  .p2-storm-cloud::after {
+    content: "";
+    background: inherit;
+    border-radius: 50%;
+    bottom: 30%;
+    left: 15%;
+    width: 6cqw;
+    height: 6cqw;
+  }
+  .p2-storm-cloud::after {
+    left: auto;
+    right: 18%;
+    width: 8cqw;
+    height: 8cqw;
+  }
+  .p2-speed-lines {
+    left: 31cqw;
+    bottom: 12cqw;
+    width: 22cqw;
+    height: 13cqw;
+    background: repeating-linear-gradient(#0000 0 1.6cqw, #c4824e 0 2.1cqw);
+    mask: linear-gradient(90deg, #000, #0000);
+  }
+  .p2-argument-burst {
+    --p: polygon(
+      0 20%,
+      18% 25%,
+      15% 0,
+      35% 18%,
+      50% 2%,
+      62% 20%,
+      85% 5%,
+      80% 30%,
+      100% 35%,
+      84% 55%,
+      98% 80%,
+      72% 72%,
+      62% 100%,
+      48% 78%,
+      25% 96%,
+      28% 70%,
+      2% 75%,
+      14% 50%
+    );
+    clip-path: var(--p);
+    background: #b5482e;
+  }
+  .p2-argument-burst::before {
+    content: "";
+    inset: 10%;
+    background: #fff1d6;
+    clip-path: var(--p);
+  }
+  .p2-argument-burst::after {
+    content: "";
+    inset: 30%;
+    border-radius: 50%;
+    background: repeating-radial-gradient(#b5482e 0 0.45cqw, #0000 0 1cqw);
+  }
+  .p2-argument-peak {
+    background: #d9482b;
+    --an: p2-pop 0.4s 0.6s both, p2-shake 0.25s 1s 2;
+  }
+  .p2-speech-bubble {
+    left: 18cqw;
+    top: 9cqw;
+    width: 16cqw;
+    height: 10cqw;
+    border-radius: 50%;
+    --g: #b5482e 0 0.9cqw, #0000 1cqw;
+    background:
+      radial-gradient(circle at 30%, var(--g)),
+      radial-gradient(circle, var(--g)),
+      radial-gradient(circle at 70%, var(--g)), #fffaf0;
+    border: 0.45cqw solid #b5482e;
+  }
+  .p2-speech-bubble::after {
+    content: "";
+    left: 60%;
+    top: 100%;
+    width: 3cqw;
+    height: 3cqw;
+    background: #b5482e;
+    clip-path: polygon(0 0, 100% 0, 60% 100%);
+  }
+  .p2-question-mark {
+    width: 6cqw;
+    height: 9cqw;
+    color: #b5482e;
+    scale: 1.5;
+  }
+  .p2-question-mark::before {
+    content: "";
+    left: 0.7cqw;
+    width: 4.6cqw;
+    height: 4.6cqw;
+    box-sizing: border-box;
+    border: 1cqw solid;
+    border-bottom-color: #0000;
+    border-radius: 50%;
+    rotate: 30deg;
+  }
+  .p2-question-mark::after {
+    content: "";
+    left: 2.4cqw;
+    top: 4.1cqw;
+    width: 1cqw;
+    height: 1.8cqw;
+    background: currentColor;
+    box-shadow: 0 2.6cqw currentColor;
+  }
+  .p2-heart {
+    width: 5cqw;
+    height: 5cqw;
+    background: #e0574a;
+    rotate: 45deg;
+  }
+  .p2-heart::before,
+  .p2-heart::after {
+    content: "";
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit;
+  }
+  .p2-heart::after {
+    left: 0;
+    top: -50%;
+  }
+  .p2-thought-frame {
+    transform-origin: 0 100%;
+  }
+  .p2-thought-cloud {
+    inset: 0;
+    border-radius: 50%;
+    background: #fffaf0;
+    filter: drop-shadow(0 0 0.3cqw #c98a4a) drop-shadow(0 0 0.2cqw #c98a4a);
+  }
+  .p2-thought-cloud::before,
+  .p2-thought-cloud::after {
+    content: "";
+    background: inherit;
+    border-radius: 50%;
+    top: -12%;
+    left: 10%;
+    width: 44%;
+    height: 62%;
+  }
+  .p2-thought-cloud::after {
+    left: auto;
+    right: 8%;
+    top: -6%;
+    width: 40%;
+  }
+  .p2-thought-dot {
+    width: 2cqw;
+    height: 2cqw;
+    border-radius: 50%;
+    background: #fffaf0;
+    box-shadow: 0 0 0 0.4cqw #c98a4a;
+  }
+  .p2-calendar {
+    left: 35cqw;
+    top: 6cqw;
+    width: 30cqw;
+    height: 36cqw;
+    perspective: 80cqw;
+    background: #c0473a;
+    border-radius: 1.2cqw;
+    filter: drop-shadow(0.5cqw 0.5cqw #7a3a1a40);
+  }
+  .p2-calendar::before {
+    content: "";
+    left: 15%;
+    top: -4%;
+    width: 70%;
+    height: 12%;
+    --r: #5a3a2c 0 1cqw, #0000 1.1cqw;
+    background:
+      radial-gradient(circle at 8%, var(--r)),
+      radial-gradient(circle at 92%, var(--r));
+  }
+  .p2-calendar-reveal,
+  .p2-calendar-grid {
+    left: 0;
+    top: 22%;
+    width: 100%;
+    height: 78%;
+    background: #fffaf0;
+    border-radius: 0 0 1.2cqw 1.2cqw;
+  }
+  .p2-calendar-grid {
+    background:
+      repeating-linear-gradient(90deg, #0000 0 3.6cqw, #e6c9a2 0 3.9cqw),
+      repeating-linear-gradient(#0000 0 4.4cqw, #e6c9a2 0 4.7cqw), #fffaf0;
+    transform-origin: 50% 0;
+    transform: rotateX(100deg);
+    opacity: 0;
+  }
+  .p2-calendar-reveal .p2-question-mark {
+    left: 12cqw;
+    top: 9cqw;
+  }
+  .p2-pop {
+    --an: p2-pop 0.5s var(--d, 0s) cubic-bezier(0.3, 1.6, 0.6, 1) both;
+  }
+  .p2-dash {
+    --an: p2-dash 1s var(--d, 0s) ease-out both;
+  }
+  .p2-rise {
+    --an: p2-rise 0.9s var(--d, 0s) ease-out both;
+  }
+  .p2-tilt {
+    --an: p2-tilt 0.7s 0.3s ease-in-out both;
+  }
+  .p2-shrink {
+    --an: p2-shrink 0.8s 0.3s ease-out both;
+  }
+  .p2-drift {
+    --an: p2-drift 1.1s ease-out both;
+  }
+  .p2-flip-page {
+    --an: p2-flip-page 0.9s 0.2s ease-in both;
+  }
+  @keyframes p2-pop {
+    0% {
+      scale: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes p2-dash {
+    0% {
+      translate: var(--tx, 34cqw) 0;
+    }
+  }
+  @keyframes p2-rise {
+    0% {
+      translate: 0 4cqw;
+      opacity: 0;
+    }
+  }
+  @keyframes p2-tilt {
+    0% {
+      rotate: 0deg;
+    }
+  }
+  @keyframes p2-expression {
+    0% {
+      height: 0;
+      top: 72%;
+    }
+  }
+  @keyframes p2-shake {
+    25% {
+      translate: -0.6cqw;
+    }
+    75% {
+      translate: 0.6cqw;
+    }
+  }
+  @keyframes p2-flip-page {
+    0% {
+      transform: none;
+      opacity: 1;
+    }
+    60% {
+      opacity: 1;
+    }
+  }
+  @keyframes p2-shrink {
+    0% {
+      scale: 1;
+    }
+  }
+  @keyframes p2-drift {
+    0% {
+      translate: 14cqw -2cqw;
+      opacity: 0;
+    }
+  }
+  #stage.playing .p2-animated {
+    animation: var(--an);
+  }
+  #stage.playing .p2-expression .p2-brows::before,
+  #stage.playing .p2-expression .p2-brows::after {
+    animation: p2-tilt 0.6s 0.4s both;
+  }
+  #stage.playing .p2-expression .p2-head::after {
+    animation: p2-expression 0.6s 0.4s both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #stage .p2-scene *,
+    #stage .p2-scene *::before,
+    #stage .p2-scene *::after {
+      animation: none !important;
+    }
+  }
+</style>
+<template id="p2-scene-01">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊和妹妹並排站著，兩人中間跳出「差 3½ 歲」的年齡紙牌"
+  >
+    <i class="p2-person p2-older-sister" style="left: 22cqw">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i class="p2-person p2-little-sister" style="left: 65cqw; --s: 0.85">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b class="p2-age-card p2-animated p2-pop" style="--d: 0.3s">差 3½ 歲</b>
+  </div>
+</template>
+<template id="p2-scene-02">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊在左，頭上是剪紙小豬；妹妹在右，頭上是剪紙老虎"
+  >
+    <i class="p2-person p2-older-sister" style="left: 24cqw">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i class="p2-person p2-little-sister" style="left: 62cqw; --s: 0.85">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-zodiac p2-pig p2-animated p2-pop"
+      style="left: 24.5cqw; --d: 0.1s"
+    >
+      <b></b>
+    </i>
+    <i
+      class="p2-zodiac p2-tiger p2-animated p2-pop"
+      style="left: 62.5cqw; top: 6cqw; --d: 0.5s"
+    >
+      <b></b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-03">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊縮著肩膀一臉委屈，妹妹雙手叉腰皺眉逼近，帶來壓迫感"
+  >
+    <i
+      class="p2-person p2-older-sister p2-sad p2-hunched p2-animated p2-shrink"
+      style="left: 22cqw; --s: 1"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister p2-angry p2-hands-on-hips p2-left p2-animated p2-dash"
+      style="left: 54cqw; --s: 0.82; --tx: 8cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-04">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="旁邊一個小點和放大鏡顯示事情很小，妹妹的臉從平靜變成皺眉"
+  >
+    <b class="p2-small-dot"></b>
+    <b class="p2-magnifier p2-animated p2-pop"></b>
+    <i
+      class="p2-person p2-little-sister p2-angry p2-expression"
+      style="left: 60cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-05">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="妹妹臉部特寫，眉頭往內壓、嘴角下垂，頭上一朵小烏雲飄近"
+  >
+    <i
+      class="p2-person p2-little-sister p2-angry p2-expression"
+      style="left: 44cqw; bottom: -8cqw; --s: 2.1"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b class="p2-storm-cloud p2-animated p2-drift"></b>
+  </div>
+</template>
+<template id="p2-scene-06">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊朝左飛快奔跑，身後拉出速度線"
+  >
+    <b class="p2-speed-lines p2-animated p2-dash" style="--tx: 40cqw"></b>
+    <i
+      class="p2-person p2-older-sister p2-running p2-mirrored p2-speaking p2-animated p2-dash"
+      style="left: 16cqw; --tx: 40cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-07">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊回頭冒汗往前跑，妹妹皺眉在後面追，兩人一直保持距離"
+  >
+    <i
+      class="p2-person p2-older-sister p2-running p2-mirrored p2-sad p2-speaking p2-left p2-animated p2-dash"
+      style="left: 12cqw; --tx: 30cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <b class="p2-sweat"></b>
+    </i>
+    <i
+      class="p2-person p2-little-sister p2-running p2-mirrored p2-angry p2-animated p2-dash"
+      style="left: 62cqw; --s: 0.9; --tx: 30cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-08">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊妹面對面怒視，中間的鋸齒話框愈來愈大愈亂，最後化成漩渦，兩人之間沒有碰觸"
+  >
+    <i class="p2-person p2-older-sister p2-angry p2-right" style="left: 15cqw">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister p2-angry p2-left"
+      style="left: 73cqw; --s: 0.9"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b
+      class="p2-argument-burst p2-animated p2-pop"
+      style="left: 29cqw; top: 15cqw; width: 11cqw; height: 9cqw; --d: 0.1s"
+    ></b>
+    <b
+      class="p2-argument-burst p2-animated p2-pop"
+      style="
+        left: 57cqw;
+        top: 10cqw;
+        width: 14cqw;
+        height: 11cqw;
+        rotate: 8deg;
+        --d: 0.35s;
+      "
+    ></b>
+    <b
+      class="p2-argument-burst p2-argument-peak p2-animated"
+      style="
+        left: 39cqw;
+        top: 21cqw;
+        width: 21cqw;
+        height: 18cqw;
+        rotate: -6deg;
+      "
+    ></b>
+  </div>
+</template>
+<template id="p2-scene-09">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="媽媽轉身彎腰傾聽，姊姊抬頭對媽媽說話，旁邊有一個說話氣泡"
+  >
+    <i
+      class="p2-person p2-older-sister p2-talking p2-looking-up p2-speaking p2-right"
+      style="left: 28cqw; --s: 0.85"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-mother p2-left p2-animated p2-tilt"
+      style="left: 56cqw; --s: 1.4; rotate: -16deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b class="p2-speech-bubble p2-animated p2-pop" style="--d: 0.6s"></b>
+  </div>
+</template>
+<template id="p2-scene-10">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊皺著眉，一個問號飄向妹妹的小剪影"
+  >
+    <i class="p2-person p2-older-sister p2-angry p2-right" style="left: 22cqw">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister p2-silhouette"
+      style="left: 66cqw; --s: 0.6"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b
+      class="p2-question-mark p2-animated p2-dash"
+      style="left: 50cqw; top: 18cqw; --tx: -12cqw"
+    ></b>
+  </div>
+</template>
+<template id="p2-scene-11">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊想像的雲形思考框裡，只站著她自己一個人"
+  >
+    <i class="p2-person p2-older-sister p2-right" style="left: 10cqw">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b
+      class="p2-thought-dot p2-animated p2-pop"
+      style="left: 24cqw; top: 20cqw; --d: 0.1s"
+    ></b>
+    <b
+      class="p2-thought-dot p2-animated p2-pop"
+      style="left: 28cqw; top: 15cqw; width: 3cqw; height: 3cqw; --d: 0.25s"
+    ></b>
+    <i
+      class="p2-thought-frame p2-animated p2-pop"
+      style="left: 36cqw; top: 8cqw; width: 52cqw; height: 38cqw; --d: 0.4s"
+    >
+      <b class="p2-thought-cloud"></b>
+      <i
+        class="p2-person p2-older-sister"
+        style="left: 20cqw; bottom: 4cqw; --s: 0.8"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-12">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊想像的思考框裡，爸爸媽媽一起彎腰面向她，中間浮起一顆小愛心"
+  >
+    <i class="p2-person p2-older-sister p2-right" style="left: 6cqw; --s: 0.9">
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b
+      class="p2-thought-dot p2-animated p2-pop"
+      style="left: 19cqw; top: 22cqw; --d: 0.1s"
+    ></b>
+    <b
+      class="p2-thought-dot p2-animated p2-pop"
+      style="left: 23cqw; top: 17cqw; width: 3cqw; height: 3cqw; --d: 0.25s"
+    ></b>
+    <i
+      class="p2-thought-frame p2-animated p2-pop"
+      style="left: 30cqw; top: 7cqw; width: 64cqw; height: 44cqw; --d: 0.4s"
+    >
+      <b class="p2-thought-cloud"></b>
+      <i
+        class="p2-person p2-mother p2-right"
+        style="left: 8cqw; bottom: 4cqw; --s: 1.05; rotate: 14deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-older-sister"
+        style="left: 26cqw; bottom: 4cqw; --s: 0.7"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <i
+        class="p2-person p2-father p2-left"
+        style="left: 42cqw; bottom: 4cqw; --s: 1.1; rotate: -14deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+      </i>
+      <b
+        class="p2-heart p2-animated p2-rise"
+        style="left: 29.5cqw; top: 10cqw; --d: 0.9s"
+      ></b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-13">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="日曆翻過一頁，最後停在一個問號上"
+  >
+    <i class="p2-calendar">
+      <b class="p2-calendar-reveal">
+        <b class="p2-question-mark p2-animated p2-pop" style="--d: 0.9s"></b>
+      </b>
+      <b class="p2-calendar-grid p2-animated p2-flip-page"></b>
+    </i>
+  </div>
+</template>
+<template id="p2-scene-14">
+  <div
+    class="sister-scene p2-scene"
+    role="img"
+    aria-label="姊姊的表情變得溫柔，望向身旁的妹妹，兩人中間出現暖色愛心"
+  >
+    <i
+      class="p2-person p2-older-sister p2-gentle p2-right p2-animated p2-tilt"
+      style="left: 24cqw; rotate: 4deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister p2-left"
+      style="left: 63cqw; --s: 0.85"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <b
+      class="p2-heart p2-animated p2-pop"
+      style="left: 47.5cqw; top: 22cqw; background: #ee7a3c; --d: 0.5s"
+    ></b>
+  </div>
+</template>
