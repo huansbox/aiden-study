@@ -46,6 +46,7 @@ def main() -> None:
         {
             "text": segment["text"],
             "hint": segment.get("hint"),
+            "visual": segment.get("visual"),
             "audio": school_clip(recording, segment["start"], segment["end"]),
         }
         for segment in segments
@@ -54,6 +55,7 @@ def main() -> None:
     data = json.dumps({"lines": lines, "wholeAudio": whole_audio}, ensure_ascii=False)
     template = (repo_source / "mock.html").read_text(encoding="utf-8")
     scenes = (repo_source / "scenes.html").read_text(encoding="utf-8")
+    scenes += (repo_source / "sentence-props.html").read_text(encoding="utf-8")
     page = template.replace("<!-- SCENES -->", scenes).replace("<!-- DATA -->", data.replace("<", "\\u003c"))
     output = arguments.private_root / "mock" / "index.html"
     output.parent.mkdir(parents=True, exist_ok=True)

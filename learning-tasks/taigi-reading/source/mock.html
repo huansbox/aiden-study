@@ -21,16 +21,24 @@
   section { margin-top: 20px; }
   .card { background: #fffcf7; border: 1px solid #e4d6c6; border-radius: 20px; overflow: hidden; }
   .panel { padding: clamp(14px, 4vw, 24px); }
-  .caption, .original { margin-top: 10px; font-size: clamp(1.24rem, 4vw, 1.65rem); line-height: 1.65; font-weight: 650; overflow-wrap: anywhere; }
+  .original { margin-top: 10px; font-size: clamp(1.24rem, 4vw, 1.65rem); line-height: 1.65; font-weight: 650; overflow-wrap: anywhere; }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   button { font: inherit; font-weight: 650; min-height: 46px; padding: 9px 15px; border-radius: 10px; cursor: pointer; border: 1px solid #b89e84; background: #fff8eb; color: #302820; }
   button.primary { background: #803d28; border-color: #803d28; color: #fff9f0; }
   button:disabled { opacity: .5; cursor: default; }
   button:focus-visible { outline: 3px solid #91704a; outline-offset: 3px; }
-  .stage { min-height: 150px; background: #ebd8be; }
+  .stage { min-height: 150px; background: #ebd8be; scroll-margin-top: 12px; }
   #stage:not(.playing) .sister-scene *,
   #stage:not(.playing) .sister-scene *::before,
   #stage:not(.playing) .sister-scene *::after { animation-play-state: paused; }
+  #stage .sister-scene[data-focus] .ss-p-fierce { display: none; }
+  #stage .sister-scene[data-focus="portrait"] .ss-p-sweet,
+  #stage .sister-scene[data-focus="eyes"] .ss-p-sweet { left: 27.25em; }
+  #stage .sister-scene[data-focus="portrait"] .ss-p-sweet { transform: scale(1.1); }
+  #stage .sister-scene[data-focus="eyes"] .ss-p-sweet {
+    transform: scale(1.78);
+    transform-origin: 50% 41%;
+  }
   .hint, .status, .instruction { color: #70584a; line-height: 1.55; }
   .hint, .instruction { margin-top: 6px; }
   .status { min-height: 1.55em; margin-top: 6px; }
@@ -48,42 +56,34 @@
     <h1>阮小妹</h1>
     <p>第一段 · 台語朗讀</p>
   </header>
-  <section class="card" aria-labelledby="watch-title">
+  <section class="card" aria-labelledby="read-title">
     <div class="stage" id="stage"></div>
     <div class="panel">
-      <h2 id="watch-title">先看故事</h2>
-      <p class="caption" id="caption"></p>
+      <h2 id="read-title">看懂，再跟著念</h2>
+      <p class="instruction" id="line-count"></p>
+      <p class="original" id="original" aria-live="polite"></p>
+      <p class="hint" id="hint" hidden></p>
       <div class="actions">
-        <button class="primary" id="film">播放兩幕短片</button>
-        <button id="switch-scene">看第二幕</button>
+        <button id="film">看這句動畫</button>
+        <button class="primary" id="listen">先聽這一句</button>
+        <button id="shadow">跟著念</button>
+        <button id="hint-button" aria-expanded="false" aria-controls="hint">看詞語提示</button>
       </div>
-      <p class="status" id="film-status" role="status"></p>
-    </div>
-  </section>
-  <section class="card panel" aria-labelledby="read-title">
-    <h2 id="read-title">先聽，再跟著念</h2>
-    <p class="instruction" id="line-count"></p>
-    <p class="original" id="original" aria-live="polite"></p>
-    <p class="hint" id="hint" hidden></p>
-    <div class="actions">
-      <button class="primary" id="listen">先聽這一句</button>
-      <button id="shadow">跟著念</button>
-      <button id="hint-button" aria-expanded="false" aria-controls="hint">看詞語提示</button>
-    </div>
-    <p class="status" id="read-status" role="status"></p>
-    <details id="record-panel">
-      <summary>錄一句來比較</summary>
-      <p class="instruction">看文字自己念。錄好後，先聽學校，再聽自己，只挑一個地方比。</p>
-      <div class="actions">
-        <button id="record">開始錄音</button>
-        <button id="model" hidden>聽學校</button>
-        <button id="own" hidden>聽我念</button>
+      <p class="status" id="read-status" role="status"></p>
+      <details id="record-panel">
+        <summary>錄一句來比較</summary>
+        <p class="instruction">看文字自己念。錄好後，先聽學校，再聽自己，只挑一個地方比。</p>
+        <div class="actions">
+          <button id="record">開始錄音</button>
+          <button id="model" hidden>聽學校</button>
+          <button id="own" hidden>聽我念</button>
+        </div>
+        <p class="status" id="record-status" role="status"></p>
+      </details>
+      <div class="actions line-nav">
+        <button id="previous-line">上一句</button>
+        <button id="next-line">下一句</button>
       </div>
-      <p class="status" id="record-status" role="status"></p>
-    </details>
-    <div class="actions line-nav">
-      <button id="previous-line">上一句</button>
-      <button id="next-line">下一句</button>
     </div>
   </section>
   <section class="card panel" aria-labelledby="whole-title">
@@ -100,7 +100,15 @@
 <script>
   const byId = (id) => document.getElementById(id);
   const { lines, wholeAudio } = JSON.parse(byId("mock-data").textContent);
-  const sceneLines = [lines[0], lines[lines.length - 1]];
+  const visuals = {
+    room: { template: "scene-1" },
+    agree: { focus: "props", prop: "agree", label: "姊姊想著剛才妹妹玩積木的模樣，覺得也是這樣。" },
+    age: { focus: "props", prop: "age", label: "小妹旁邊有個插了三根蠟燭的生日蛋糕，她三歲了。" },
+    eyes: { focus: "eyes", label: "小妹眼睛的特寫，兩隻眼睛又大又圓。" },
+    smile: { focus: "portrait", label: "小妹露出甜甜的笑容，看起來很可愛。" },
+    name: { focus: "props", prop: "name", label: "家人叫小妹阿 mē 仔。" },
+    contrast: { template: "scene-2" },
+  };
   const player = byId("player");
   const stage = byId("stage");
   const film = byId("film");
@@ -117,24 +125,28 @@
   const model = byId("model");
   const own = byId("own");
   const playbackControls = {
-    film: { button: film, stopped: "播放兩幕短片", status: byId("film-status") },
+    film: { button: film, stopped: "看這句動畫", status: byId("read-status") },
     listen: { button: listen, stopped: "先聽這一句", status: byId("read-status") },
     shadow: { button: shadow, stopped: "跟著念", status: byId("read-status") },
     whole: { button: whole, stopped: "播放第一段", status: byId("whole-status") },
     model: { button: model, stopped: "聽學校", status: recordStatus },
     own: { button: own, stopped: "聽我念", status: recordStatus },
   };
-  let scene = 0;
   let line = 0;
   let playback = null;
   let capture = null;
   let recordedUrl = "";
 
   function showScene(index) {
-    scene = index;
-    stage.replaceChildren(byId(`scene-${index + 1}`).content.cloneNode(true));
-    byId("caption").textContent = sceneLines[index].text;
-    byId("switch-scene").textContent = index === 0 ? "看第二幕" : "回第一幕";
+    const visual = visuals[lines[index].visual] || (index === 0 ? visuals.room : visuals.contrast);
+    const template = byId(visual.template || "scene-2");
+    const frame = template.content.firstElementChild.cloneNode(true);
+    if (visual.focus) {
+      frame.dataset.focus = visual.focus;
+      frame.setAttribute("aria-label", visual.label);
+    }
+    if (visual.prop) frame.append(byId(`prop-${visual.prop}`).content.cloneNode(true));
+    stage.replaceChildren(frame);
   }
 
   function showLine(index) {
@@ -144,6 +156,7 @@
     recordStatus.textContent = "";
     refreshRecordControls();
     line = index;
+    showScene(index);
     byId("line-count").textContent = `第 ${index + 1} 句，共 ${lines.length} 句`;
     byId("original").textContent = lines[index].text;
     hint.textContent = lines[index].hint || "";
@@ -152,7 +165,7 @@
     hintButton.setAttribute("aria-expanded", "false");
     previousLine.disabled = index === 0;
     nextLine.textContent = index === lines.length - 1 ? "回第一句" : "下一句";
-    byId("read-status").textContent = "先聽一次。跟念時，等示範先念一兩個音再開口。";
+    byId("read-status").textContent = "先看懂，再聽一次。跟念時，等示範先念一兩個音再開口。";
   }
 
   function stop() {
@@ -165,19 +178,19 @@
     stage.classList.remove("playing");
   }
 
-  async function play(kind, clip, nextScene = 0) {
+  async function play(kind, clip) {
     if (capture) {
       cancelCapture();
       recordStatus.textContent = "這次錄音已取消。可以再錄一次。";
     }
     stop();
-    const current = { kind, nextScene };
+    const current = { kind };
     playback = current;
     const { button, status } = playbackControls[kind];
     status.textContent = kind === "shadow" ? "慢一點開口，跟著示範念。" : "";
     button.textContent = "停止播放";
     if (kind === "film") {
-      showScene(nextScene);
+      showScene(line);
       stage.classList.add("playing");
     }
     player.src = clip;
@@ -193,6 +206,12 @@
   function togglePlay(kind, clip) {
     if (playback?.kind === kind) stop();
     else play(kind, clip);
+  }
+
+  function moveToLine(index) {
+    stop();
+    showLine(index);
+    if (stage.getBoundingClientRect().top < 0) stage.scrollIntoView({ block: "start" });
   }
 
   function refreshRecordControls() {
@@ -282,13 +301,9 @@
 
   player.addEventListener("ended", () => {
     if (!playback) return;
-    const { kind, nextScene } = playback;
-    if (kind === "film" && nextScene + 1 < sceneLines.length) {
-      play("film", sceneLines[nextScene + 1].audio, nextScene + 1);
-      return;
-    }
+    const { kind } = playback;
     stop();
-    if (kind === "film") byId("film-status").textContent = "妹妹是個怎樣的小孩？";
+    if (kind === "film") byId("read-status").textContent = "看懂了，就按「先聽這一句」。";
     if (kind === "listen") byId("read-status").textContent = "現在可以跟著念，也可以先自己念一遍。";
     if (kind === "shadow") byId("read-status").textContent = "想再練就再跟一次，念順了就換下一句。";
     if (kind === "model") recordStatus.textContent = "接著聽我念。留意你想比較的地方。";
@@ -296,7 +311,7 @@
     if (kind === "whole") byId("whole-status").textContent = "現在看著紙本，自己讀一次第一段。";
   });
 
-  film.addEventListener("click", () => togglePlay("film", sceneLines[0].audio));
+  film.addEventListener("click", () => togglePlay("film", lines[line].audio));
   listen.addEventListener("click", () => togglePlay("listen", lines[line].audio));
   shadow.addEventListener("click", () => togglePlay("shadow", lines[line].audio));
   whole.addEventListener("click", () => togglePlay("whole", wholeAudio));
@@ -330,25 +345,13 @@
     recordStatus.textContent = "";
     refreshRecordControls();
   });
-  byId("switch-scene").addEventListener("click", () => {
-    stop();
-    byId("film-status").textContent = "";
-    showScene(1 - scene);
-  });
-  previousLine.addEventListener("click", () => {
-    stop();
-    showLine(line - 1);
-  });
-  nextLine.addEventListener("click", () => {
-    stop();
-    showLine((line + 1) % lines.length);
-  });
+  previousLine.addEventListener("click", () => moveToLine(line - 1));
+  nextLine.addEventListener("click", () => moveToLine((line + 1) % lines.length));
   hintButton.addEventListener("click", () => {
     hint.hidden = !hint.hidden;
     hintButton.setAttribute("aria-expanded", String(!hint.hidden));
   });
 
-  showScene(0);
   showLine(0);
 </script>
 </body>
