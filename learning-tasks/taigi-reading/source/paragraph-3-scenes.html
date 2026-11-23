@@ -1,0 +1,1459 @@
+<style>
+  .paper-scene {
+    color: #a55e40;
+    background: #f3e3c7;
+  }
+  .paper-scene::before {
+    display: none;
+  }
+  .paper-scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(#7857341c 0.055cqw, transparent 0.09cqw) 0 0 /
+      0.78cqw 0.72cqw;
+    opacity: 0.55;
+  }
+  .paper-prop,
+  .paper-layer {
+    position: absolute;
+  }
+  .paper-prop {
+    overflow: visible;
+  }
+  .paper-layer {
+    inset: 0;
+  }
+  .paper-muted {
+    opacity: 0.48;
+  }
+  .paper-distant {
+    filter: blur(0.18cqw);
+    opacity: 0.63;
+  }
+  .paper-card {
+    position: absolute;
+    border: 0.6cqw solid #cca77c;
+    border-radius: 4cqw;
+    background: #fff0d4;
+    box-shadow: 0.45cqw 0.65cqw #a0794d35;
+  }
+  .paper-sit .p2-legs {
+    top: 67%;
+  }
+  .paper-sit .p2-legs::before {
+    rotate: 59deg;
+  }
+  .paper-sit .p2-legs::after {
+    rotate: -62deg;
+  }
+  .paper-pose .p2-body::before {
+    rotate: var(--left-arm, 16deg);
+  }
+  .paper-pose .p2-body::after {
+    rotate: var(--right-arm, -16deg);
+  }
+  .paper-pose .p2-head {
+    rotate: var(--head, 0deg);
+  }
+  .paper-back .p2-head {
+    background: var(--h);
+  }
+  .paper-back .p2-head > *,
+  .paper-back .p2-head::after {
+    display: none;
+  }
+  .paper-wide .p2-eyes {
+    height: 17%;
+  }
+  .paper-wide .p2-head::after {
+    top: 72%;
+    border: 0;
+    background: #834433;
+    border-radius: 50%;
+    height: 15%;
+  }
+  .paper-cover .p2-body::before,
+  .paper-cover .p2-body::after {
+    z-index: 3;
+    height: 43%;
+  }
+  .paper-cover .p2-body::before {
+    rotate: -156deg;
+  }
+  .paper-cover .p2-body::after {
+    rotate: 156deg;
+  }
+  .paper-palm {
+    left: 98%;
+    top: 30%;
+    width: 3cqw;
+    height: 3.4cqw;
+    background: var(--sk);
+    border-radius: 45%;
+    rotate: -12deg;
+  }
+  .paper-palm::before {
+    content: "";
+    bottom: 55%;
+    left: 0.35cqw;
+    width: 0.55cqw;
+    height: 1.7cqw;
+    border-radius: 0.35cqw;
+    background: inherit;
+    box-shadow:
+      0.66cqw -0.25cqw var(--sk),
+      1.32cqw -0.12cqw var(--sk),
+      1.98cqw 0.28cqw var(--sk);
+  }
+  .paper-heart {
+    left: 4.5cqw;
+    top: 11cqw;
+    width: 3.3cqw;
+    height: 3.3cqw;
+    z-index: 4;
+  }
+  .paper-tilt {
+    transform-origin: 50% 85%;
+  }
+  #stage.playing .paper-steam {
+    animation: paper-steam 1.7s ease-out infinite;
+  }
+  #stage.playing .paper-stir {
+    animation: paper-stir 0.9s ease-in-out 3 alternate;
+    transform-origin: 80% 25%;
+  }
+  #stage.playing .paper-spin {
+    animation: paper-spin 1.45s linear infinite;
+  }
+  #stage.playing .paper-settle {
+    animation: paper-settle 0.95s ease-out both;
+  }
+  #stage.playing .paper-tilt {
+    animation: paper-tilt 0.9s ease-out both;
+  }
+  #stage.playing .paper-bounce {
+    animation: paper-hop 0.78s ease-in-out 4;
+  }
+  #stage.playing .paper-pulse {
+    animation: paper-beat 0.55s ease-in-out 2;
+  }
+  #stage.playing .paper-call {
+    animation: paper-call 1.1s ease-out 3;
+  }
+  #stage.playing .paper-sigh {
+    animation: paper-sigh 1.1s ease-out 1;
+  }
+  #stage.playing .paper-dash {
+    animation: paper-dash 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  #stage.playing .paper-nod .p2-head {
+    animation: paper-nod 1s ease-in-out 2;
+  }
+  #stage.playing .paper-shake .p2-head {
+    animation: paper-shake 0.8s ease-in-out 2;
+  }
+  #stage.playing .paper-lift .p2-body::after {
+    animation: paper-arm 0.75s ease-out both;
+  }
+  #stage.playing .paper-clap .p2-body::before {
+    animation: paper-clap 0.45s ease-in-out 3 alternate;
+  }
+  #stage.playing .paper-widen .p2-eyes {
+    animation: paper-widen 0.6s ease-out;
+  }
+  @keyframes paper-steam {
+    from {
+      transform: translateY(0.9cqw);
+      opacity: 0.35;
+    }
+    65% {
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-1.6cqw);
+      opacity: 0.2;
+    }
+  }
+  @keyframes paper-stir {
+    from {
+      transform: rotate(-9deg);
+    }
+    to {
+      transform: rotate(12deg);
+    }
+  }
+  @keyframes paper-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes paper-settle {
+    from {
+      translate: var(--dx, 0) var(--dy, -2cqw);
+      opacity: 0.35;
+    }
+  }
+  @keyframes paper-tilt {
+    from {
+      rotate: 0deg;
+    }
+  }
+  @keyframes paper-hop {
+    50% {
+      translate: 0 -2.8cqw;
+    }
+  }
+  @keyframes paper-beat {
+    45% {
+      scale: 1.26;
+    }
+  }
+  @keyframes paper-call {
+    from {
+      transform: scale(0.76);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(1.08);
+      opacity: 0.95;
+    }
+  }
+  @keyframes paper-sigh {
+    50% {
+      translate: 0 0.6cqw;
+    }
+  }
+  @keyframes paper-dash {
+    from {
+      translate: -25cqw 0;
+    }
+  }
+  @keyframes paper-nod {
+    50% {
+      transform: translateY(4%) rotate(6deg);
+    }
+  }
+  @keyframes paper-shake {
+    30% {
+      transform: rotate(-5deg);
+    }
+    70% {
+      transform: rotate(5deg);
+    }
+  }
+  @keyframes paper-arm {
+    from {
+      rotate: -12deg;
+    }
+  }
+  @keyframes paper-clap {
+    to {
+      rotate: -64deg;
+    }
+  }
+  @keyframes paper-widen {
+    from {
+      height: 8%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #stage .paper-scene *,
+    #stage .paper-scene *::before,
+    #stage .paper-scene *::after {
+      animation: none !important;
+    }
+  }
+</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="0"
+  height="0"
+  aria-hidden="true"
+  style="position: absolute; overflow: hidden"
+>
+  <defs>
+    <symbol id="paper-hood" viewBox="0 0 120 84">
+      <path fill="#81938b" d="M45 2h37v36H45z" />
+      <path fill="#afbcb0" d="M29 33h65l23 36H5z" />
+      <path fill="#627970" d="M4 65h112v13H4z" />
+      <path stroke="#cdd3bd" stroke-width="3" d="M18 71h48m6 0h10" />
+      <circle cx="103" cy="71" r="3" fill="#eab471" />
+    </symbol>
+    <symbol id="paper-fan" viewBox="0 0 100 120">
+      <path fill="#809a8f" d="M45 70h10l3 34 17 4 5 8H19l6-8 18-4z" />
+      <circle
+        cx="50"
+        cy="44"
+        r="39"
+        fill="#eff1d9"
+        stroke="#6e8a81"
+        stroke-width="5"
+      />
+      <circle
+        cx="50"
+        cy="44"
+        r="33"
+        fill="none"
+        stroke="#abbca9"
+        stroke-width="2"
+      />
+    </symbol>
+    <symbol id="paper-blades" viewBox="0 0 100 100">
+      <g fill="#86a397">
+        <path id="paper-fin" d="M50 48Q21 44 22 30Q25 11 43 12Q49 13 47 24z" />
+        <use href="#paper-fin" transform="rotate(120 50 50)" />
+        <use href="#paper-fin" transform="rotate(240 50 50)" />
+      </g>
+      <circle cx="50" cy="50" r="6" fill="#5f796f" />
+    </symbol>
+    <symbol id="paper-kitchen" viewBox="0 0 300 190">
+      <rect width="300" height="190" rx="7" fill="#f0dfbb" />
+      <path fill="#e7cd9f" d="M0 104h300v86H0z" />
+      <g stroke="#d7bb91" stroke-width="2">
+        <path
+          d="M0 76h300M0 98h300m-272-43v48m41-39v39m42-45v45m40-44v44m40-44v44m40-44v44m40-44v44"
+        />
+      </g>
+      <use href="#paper-hood" x="18" y="1" width="113" height="74" />
+      <rect x="6" y="128" width="286" height="60" rx="4" fill="#b78055" />
+      <path fill="#856446" d="M4 121h291v13H4z" />
+      <path
+        stroke="#e0ad78"
+        stroke-width="3"
+        fill="none"
+        d="M11 138h88v43H11zm98 0h87v43h-87zm98 0h77v43h-77z"
+      />
+      <path fill="#f4d1a0" d="M42 144h26v4H42zm98 0h25v4h-25zm93 0h25v4h-25z" />
+      <path fill="#667b70" d="M17 118h111l-3 5H18z" />
+      <path stroke="#b18e64" stroke-width="4" d="M177 53h104" />
+      <g fill="#a6ad84">
+        <rect x="183" y="36" width="20" height="16" rx="4" />
+        <rect x="210" y="31" width="15" height="21" rx="4" />
+      </g>
+      <path fill="#d8996e" d="M244 27h20v25h-20z" />
+    </symbol>
+    <symbol id="paper-bedroom" viewBox="0 0 300 190">
+      <rect width="300" height="190" rx="7" fill="#e9dabe" />
+      <path fill="#d4b992" d="M0 148h300v42H0z" />
+      <rect x="19" y="13" width="70" height="59" rx="3" fill="#f8eed6" />
+      <path fill="#b4cab8" d="M23 17h62v51H23z" />
+      <path fill="#8da58f" d="M23 62q18-26 35-8 12-10 27 2v12H23z" />
+      <path stroke="#f8eed6" stroke-width="3" d="M56 16v54" />
+      <path fill="#a27756" d="M14 106h15v34h146v-28h10v62h-10v-16H26v16H15z" />
+      <rect x="25" y="112" width="154" height="34" rx="10" fill="#faf0d8" />
+      <rect x="30" y="103" width="44" height="16" rx="8" fill="#fff7df" />
+      <path fill="#a1ad88" d="M78 114q52-4 101 1v36H76z" />
+      <path stroke="#c6cba6" stroke-width="4" d="M84 116v31m7-31v31" />
+      <use href="#paper-fan" x="205" y="59" width="75" height="90" />
+      <use href="#paper-blades" x="216" y="65" width="53" height="53" />
+    </symbol>
+    <symbol id="paper-home" viewBox="0 0 1000 562.5">
+      <rect width="1000" height="562.5" fill="#f4e3c4" />
+      <path fill="#f8eacf" d="M0 0h1000v23H0z" />
+      <path fill="#d3ac81" d="M0 320h1000v20H0z" />
+      <path fill="#deb788" d="M0 339h1000v224H0z" />
+      <path
+        stroke="#d4aa7b"
+        stroke-width="2"
+        d="M0 397h1000M0 485h1000M180 340 74 563m644-223 73 223"
+      />
+      <g stroke="#c49b70" stroke-width="9" fill="#e4c9a4">
+        <rect x="36" y="52" width="288" height="222" rx="9" />
+        <rect x="690" y="51" width="271" height="221" rx="9" />
+      </g>
+      <use href="#paper-kitchen" x="42" y="57" width="276" height="211" />
+      <use href="#paper-bedroom" x="695" y="60" width="261" height="204" />
+      <g transform="translate(423 49) rotate(-2)">
+        <rect width="107" height="78" rx="3" fill="#b4906b" />
+        <rect x="5" y="5" width="97" height="67" fill="#f9e9c7" />
+        <circle cx="70" cy="28" r="12" fill="#e4af6a" />
+        <path fill="#a8b39a" d="M9 64 40 34l30 30z" />
+        <path fill="#81998a" d="m52 64 24-20 23 20z" />
+      </g>
+      <ellipse cx="505" cy="474" rx="399" ry="72" fill="#bd936c" />
+      <ellipse cx="500" cy="468" rx="402" ry="73" fill="#f5e2b3" />
+      <ellipse
+        cx="500"
+        cy="468"
+        rx="378"
+        ry="60"
+        fill="none"
+        stroke="#ca9b71"
+        stroke-width="3"
+        stroke-dasharray="13 7"
+      />
+      <path fill="#966448" d="M518 355h17v44h-17zm335 0h16v44h-16z" />
+      <rect x="522" y="217" width="346" height="146" rx="26" fill="#6d8776" />
+      <rect x="532" y="209" width="322" height="102" rx="24" fill="#8aa893" />
+      <path d="M690 220v69" stroke="#7c9985" stroke-width="3" />
+      <rect x="514" y="299" width="357" height="76" rx="15" fill="#7c9a85" />
+      <rect x="534" y="289" width="305" height="44" rx="16" fill="#a8bca8" />
+      <path stroke="#8da48e" stroke-width="3" d="M686 293v32" />
+      <g fill="#779581">
+        <rect x="495" y="272" width="47" height="78" rx="19" />
+        <rect x="836" y="272" width="49" height="78" rx="19" />
+      </g>
+      <path fill="#a57954" d="M206 337h13l-6 48h-12zm138 0h13l7 48h-12z" />
+      <rect x="177" y="322" width="208" height="25" rx="11" fill="#ac7c54" />
+      <ellipse cx="280" cy="324" rx="105" ry="12" fill="#ca9b68" />
+    </symbol>
+    <symbol id="paper-pan" viewBox="0 0 100 50">
+      <path
+        fill="#543c32"
+        d="M3 19h62l34-13 1 6-35 17q-7 24-43 12Q9 37 3 19z"
+      />
+      <path fill="#8e9a80" d="M6 19q26-8 54 0-22 7-54 0z" />
+      <path fill="#dc9a50" d="m18 19 6-8 8 8zm18 0q7-13 15-2z" />
+    </symbol>
+    <symbol id="paper-steam" viewBox="0 0 60 65">
+      <g fill="none" stroke="#fff9df" stroke-linecap="round" stroke-width="5">
+        <path d="M11 59q10-12 1-24t2-23m19 41q8-11 0-21t3-23m13 45q8-8 1-17" />
+      </g>
+    </symbol>
+    <symbol id="paper-spatula" viewBox="0 0 65 55">
+      <path fill="#775239" d="M4 43 45 9l4 5L10 48z" />
+      <path fill="#80968b" d="m1 42 9-8 11 10-12 10z" />
+    </symbol>
+    <symbol id="paper-clothes" viewBox="0 0 110 56">
+      <rect x="3" y="33" width="101" height="18" rx="6" fill="#789283" />
+      <rect x="11" y="20" width="92" height="16" rx="6" fill="#e8b786" />
+      <rect x="4" y="5" width="91" height="17" rx="6" fill="#8ca9b3" />
+      <path stroke="#cce0d9" d="M14 14h34" />
+    </symbol>
+    <symbol id="paper-bowl" viewBox="0 0 90 52">
+      <path fill="#7a9990" d="M2 13h84Q76 49 45 49 13 48 2 13z" />
+      <ellipse cx="44" cy="13" rx="42" ry="9" fill="#d7e0c4" />
+      <path
+        stroke="#adc2ae"
+        d="M14 29q26 13 59 0"
+        fill="none"
+        stroke-width="3"
+      />
+    </symbol>
+    <symbol id="paper-bear" viewBox="0 0 100 120">
+      <g fill="#ad7956">
+        <circle cx="25" cy="19" r="16" />
+        <circle cx="75" cy="19" r="16" />
+        <ellipse cx="49" cy="83" rx="29" ry="31" />
+        <ellipse cx="20" cy="104" rx="16" ry="12" />
+        <ellipse cx="77" cy="105" rx="15" ry="12" />
+      </g>
+      <circle cx="50" cy="44" r="34" fill="#c18c64" />
+      <ellipse cx="50" cy="52" rx="17" ry="13" fill="#e7c49a" />
+      <g fill="#47382a">
+        <circle cx="38" cy="39" r="3" />
+        <circle cx="63" cy="39" r="3" />
+        <ellipse cx="50" cy="49" rx="5" ry="4" />
+      </g>
+    </symbol>
+    <symbol id="paper-rabbit" viewBox="0 0 85 125">
+      <g fill="#eee7cd" stroke="#cbbfa3" stroke-width="2">
+        <ellipse
+          cx="31"
+          cy="28"
+          rx="10"
+          ry="26"
+          transform="rotate(-12 31 28)"
+        />
+        <ellipse cx="55" cy="26" rx="9" ry="25" transform="rotate(11 55 26)" />
+        <ellipse cx="43" cy="94" rx="24" ry="25" />
+        <ellipse cx="24" cy="114" rx="16" ry="7" />
+        <ellipse cx="59" cy="115" rx="15" ry="7" />
+        <ellipse cx="42" cy="63" rx="30" ry="24" />
+      </g>
+      <g fill="#594434">
+        <circle cx="30" cy="61" r="3" />
+        <circle cx="53" cy="61" r="3" />
+      </g>
+      <path fill="#c17e73" d="m38 66 9 0-5 5z" />
+    </symbol>
+    <symbol id="paper-scissors" viewBox="0 0 50 90">
+      <g fill="none" stroke="#665d55" stroke-width="5">
+        <ellipse cx="16" cy="16" rx="9" ry="12" transform="rotate(-21 16 16)" />
+        <ellipse cx="34" cy="16" rx="9" ry="12" transform="rotate(21 34 16)" />
+      </g>
+      <path fill="#777971" d="m17 25 6 13 2 45q4-1 5-8l-1-37 6-13-9 7z" />
+      <circle cx="26" cy="37" r="2" fill="#e4d8ad" />
+    </symbol>
+    <symbol id="paper-wave" viewBox="0 0 100 90">
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="5"
+      >
+        <path d="M10 34q9 10 0 23m25-34q17 22 0 45m27-58q25 35 0 70" />
+      </g>
+    </symbol>
+    <symbol id="paper-speed" viewBox="0 0 120 60">
+      <g stroke="#b87a4d" fill="none" stroke-linecap="round" stroke-width="5">
+        <path d="m6 17 102-8M29 32l78-5M50 45l69 1" />
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<template id="p3-scene-01">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="爸爸站在廚房的爐前翻鍋，鍋裡升起蒸氣。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: -1cqw; top: -6cqw; width: 102cqw; height: 64.6cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-kitchen" />
+    </svg>
+    <i
+      class="p2-person p2-father p2-left paper-pose"
+      style="
+        left: 39cqw;
+        bottom: 0.8cqw;
+        --s: 1.4;
+        --left-arm: 65deg;
+        --head: -8deg;
+      "
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 16cqw; top: 26cqw; width: 26cqw; height: 13cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-pan" /></svg
+    ><svg
+      class="paper-prop paper-steam"
+      style="left: 16cqw; top: 13cqw; width: 11cqw; height: 13cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-steam" /></svg
+    ><svg
+      class="paper-prop paper-stir"
+      style="left: 30cqw; top: 22cqw; width: 14cqw; height: 12cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-spatula" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-02">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="媽媽坐在房裡的床沿，把衣服摺好放到衣堆上，身旁的電扇轉著。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: -1cqw; top: -5cqw; width: 102cqw; height: 64.6cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bedroom" />
+    </svg>
+    <i
+      class="p2-person p2-mother paper-sit p2-right paper-pose"
+      style="
+        left: 37cqw;
+        bottom: -1cqw;
+        --s: 1.35;
+        --right-arm: -55deg;
+        --head: 7deg;
+      "
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 48cqw; top: 33.5cqw; width: 15cqw; height: 7.5cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-clothes" />
+    </svg>
+    <b
+      style="
+        left: 48cqw;
+        top: 32cqw;
+        width: 13cqw;
+        height: 3.6cqw;
+        background: #b47669;
+        border-radius: 0.8cqw;
+        rotate: -4deg;
+      "
+      class="paper-settle"
+    ></b>
+    <svg
+      class="paper-prop paper-spin"
+      style="left: 72.44cqw; top: 17.16cqw; width: 18cqw; height: 18cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-blades" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-03">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊妹在客廳地毯上扮家家酒。姊姊遞碗給小熊，妹妹對著玩偶拍手。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister paper-sit p2-right paper-pose paper-lift"
+      style="left: 23cqw; bottom: -1cqw; --s: 1.14; --right-arm: -74deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-little-sister paper-sit p2-left paper-pose paper-clap"
+      style="
+        left: 67cqw;
+        bottom: -1cqw;
+        --s: 0.97;
+        --left-arm: -28deg;
+        --right-arm: 48deg;
+      "
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 36cqw; top: 36cqw; width: 8cqw; height: 11cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bear" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 56cqw; top: 34cqw; width: 7cqw; height: 10cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-rabbit" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 49cqw; top: 44cqw; width: 7cqw; height: 4cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bowl" /></svg
+    ><svg
+      class="paper-prop paper-settle"
+      style="
+        left: 33cqw;
+        top: 35.7cqw;
+        width: 6.6cqw;
+        height: 4cqw;
+        --dx: -3cqw;
+        --dy: 0;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-bowl" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-04">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊低頭排小碗和盤子，妹妹悄悄在她身後站起來。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister p2-left paper-settle"
+      style="left: 66cqw; bottom: 9cqw; --s: 0.91; --dy: 4cqw"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-older-sister paper-sit paper-pose p2-right"
+      style="
+        left: 24cqw;
+        bottom: -2cqw;
+        --s: 1.2;
+        --head: 15deg;
+        --right-arm: -43deg;
+      "
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 36cqw; top: 36cqw; width: 8cqw; height: 11cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bear" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 56cqw; top: 34cqw; width: 7cqw; height: 10cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-rabbit" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 49cqw; top: 44cqw; width: 7cqw; height: 4cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bowl" /></svg
+    ><svg
+      class="paper-prop paper-settle"
+      style="
+        left: 34cqw;
+        top: 43cqw;
+        width: 6cqw;
+        height: 3.5cqw;
+        --dx: -2cqw;
+        --dy: 0;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-bowl" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-05">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="茶几上的剪刀收合著。妹妹轉過頭，注意到剪刀。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <div
+      class="paper-card"
+      style="left: 8cqw; top: 8cqw; width: 43cqw; height: 36cqw"
+    ></div>
+    <svg
+      class="paper-prop paper-settle"
+      style="
+        left: 24cqw;
+        top: 13cqw;
+        width: 13cqw;
+        height: 22.099999999999998cqw;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-scissors" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister p2-left paper-wide paper-widen"
+      style="left: 68cqw; bottom: -15cqw; --s: 2.32"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-06">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="遠看妹妹在沙發坐墊上跳動，手邊有收合剪刀的小剪影。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister paper-sit p2-right"
+      style="left: 25cqw; bottom: 0cqw; --s: 1.05"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <div class="paper-layer paper-bounce" style="">
+      <i
+        class="p2-person p2-little-sister p2-right paper-pose"
+        style="left: 65cqw; bottom: 24.5cqw; --s: 0.72; --right-arm: -20deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+        <svg
+          class="paper-prop"
+          style="left: 8.8cqw; top: 12cqw; width: 2.85cqw; height: 4.845cqw"
+          aria-hidden="true"
+        >
+          <use href="#paper-scissors" />
+        </svg>
+      </i>
+    </div>
+    <svg
+      class="paper-prop"
+      style="left: 36cqw; top: 36cqw; width: 8cqw; height: 11cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bear" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 56cqw; top: 34cqw; width: 7cqw; height: 10cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-rabbit" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 49cqw; top: 44cqw; width: 7cqw; height: 4cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-bowl" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-07">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊睜大眼睛望向沙發。妹妹的身影在遠處。"
+  >
+    <svg
+      class="paper-prop paper-distant"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <div class="paper-layer paper-distant" style="">
+      <i
+        class="p2-person p2-little-sister p2-right paper-pose"
+        style="left: 65cqw; bottom: 24.5cqw; --s: 0.72; --right-arm: -20deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+        <svg
+          class="paper-prop"
+          style="left: 8.8cqw; top: 12cqw; width: 2.85cqw; height: 4.845cqw"
+          aria-hidden="true"
+        >
+          <use href="#paper-scissors" />
+        </svg>
+      </i>
+    </div>
+    <i
+      class="p2-person p2-older-sister p2-right paper-wide paper-widen"
+      style="left: 25cqw; bottom: -22cqw; --s: 2.8"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-08">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊雙手圈在嘴旁，胸前的紅紙心怦怦跳了兩下。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <div class="paper-layer paper-distant" style="">
+      <i
+        class="p2-person p2-little-sister p2-right paper-pose"
+        style="left: 65cqw; bottom: 24.5cqw; --s: 0.72; --right-arm: -20deg"
+      >
+        <b class="p2-legs"></b>
+        <b class="p2-body"></b>
+        <b class="p2-head">
+          <b class="p2-brows"></b>
+          <b class="p2-eyes"></b>
+        </b>
+        <svg
+          class="paper-prop"
+          style="left: 8.8cqw; top: 12cqw; width: 2.85cqw; height: 4.845cqw"
+          aria-hidden="true"
+        >
+          <use href="#paper-scissors" />
+        </svg>
+      </i>
+    </div>
+    <i
+      class="p2-person p2-older-sister paper-wide paper-cover p2-right"
+      style="left: 39cqw; bottom: -19cqw; --s: 2.62"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <b class="p2-heart paper-heart paper-pulse"></b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-09">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊朝後方的廚房和房間大聲呼喊，聲波傳向兩側。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister paper-cover paper-wide"
+      style="left: 44cqw; bottom: -4cqw; --s: 1.55"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop paper-call"
+      style="left: 23cqw; top: 15cqw; width: 17cqw; height: 15cqw; scale: -1 1"
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" /></svg
+    ><svg
+      class="paper-prop paper-call"
+      style="left: 59cqw; top: 14cqw; width: 17cqw; height: 15cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-10">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊眉頭緊皺，伸出手掌，要沙發上的妹妹停下來。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister p2-right paper-pose"
+      style="left: 65cqw; bottom: 24.5cqw; --s: 0.72; --right-arm: -20deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <svg
+        class="paper-prop"
+        style="left: 8.8cqw; top: 12cqw; width: 2.85cqw; height: 4.845cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-scissors" />
+      </svg>
+    </i>
+    <i
+      class="p2-person p2-older-sister p2-angry p2-right paper-pose paper-lift"
+      style="left: 30cqw; bottom: -1cqw; --s: 1.55; --right-arm: -116deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <b class="paper-palm"></b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-11">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="左右各是抽油煙機與電扇。機器的灰色聲紋蓋過傳來的喊聲。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <div
+      class="paper-card"
+      style="left: 3cqw; top: 6cqw; width: 45cqw; height: 41cqw"
+    ></div>
+    <div
+      class="paper-card"
+      style="left: 51cqw; top: 6cqw; width: 45cqw; height: 41cqw"
+    ></div>
+    <svg
+      class="paper-prop"
+      style="left: 8cqw; top: 7cqw; width: 33cqw; height: 26cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-hood" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 62cqw; top: 7.6cqw; width: 25cqw; height: 30cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-fan" /></svg
+    ><svg
+      class="paper-prop paper-spin"
+      style="left: 66cqw; top: 10cqw; width: 17cqw; height: 17cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-blades" /></svg
+    ><svg
+      class="paper-prop paper-call"
+      style="
+        left: 15cqw;
+        top: 29.5cqw;
+        width: 14cqw;
+        height: 13cqw;
+        color: #889085;
+        rotate: 70deg;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" /></svg
+    ><svg
+      class="paper-prop paper-call"
+      style="
+        left: 70cqw;
+        top: 29.5cqw;
+        width: 14cqw;
+        height: 13cqw;
+        color: #889085;
+        rotate: 100deg;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" /></svg
+    ><svg
+      class="paper-prop"
+      style="
+        left: 39cqw;
+        top: 39cqw;
+        width: 8cqw;
+        height: 7cqw;
+        rotate: -110deg;
+        opacity: 0.65;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" /></svg
+    ><svg
+      class="paper-prop"
+      style="
+        left: 53cqw;
+        top: 39cqw;
+        width: 8cqw;
+        height: 7cqw;
+        rotate: -60deg;
+        opacity: 0.65;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-12">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="爸爸背對客廳繼續煮菜，媽媽也背對客廳，低頭摺衣服。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-father paper-back paper-pose"
+      style="left: 15cqw; bottom: 30cqw; --s: 0.62; --left-arm: 44deg"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-mother paper-back paper-sit paper-nod"
+      style="left: 76cqw; bottom: 30cqw; --s: 0.63"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop paper-stir"
+      style="left: 10cqw; top: 18cqw; width: 7cqw; height: 3.5cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-pan" /></svg
+    ><svg
+      class="paper-prop"
+      style="left: 81cqw; top: 20cqw; width: 6cqw; height: 3cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-clothes" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister paper-cover paper-wide"
+      style="left: 43cqw; bottom: -2cqw; --s: 1.25"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-13">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="坐墊歪向一側，妹妹站不穩，張開雙手保持平衡。"
+  >
+    <div class="paper-layer" style="scale: 1.53; transform-origin: 70% 52%">
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-home" />
+      </svg>
+    </div>
+    <b
+      class="paper-tilt"
+      style="
+        left: 48cqw;
+        top: 28.8cqw;
+        width: 33cqw;
+        height: 5.4cqw;
+        background: #afc0a9;
+        border-radius: 2cqw;
+        rotate: 8deg;
+        box-shadow: 0 0.7cqw #7e997f;
+      "
+    ></b>
+    <i
+      class="p2-person p2-little-sister paper-pose paper-tilt paper-wide"
+      style="
+        left: 64cqw;
+        bottom: 24cqw;
+        --s: 1.09;
+        --left-arm: 79deg;
+        --right-arm: -82deg;
+        rotate: 12deg;
+      "
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-14">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="沙發空了。妹妹已坐在地毯上，睜大眼睛發愣。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister paper-sit paper-wide paper-widen"
+      style="left: 63cqw; bottom: -3cqw; --s: 1.37"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 45cqw; top: 40cqw; width: 6cqw; height: 9cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-rabbit" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-15">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="姊姊雙手摀住嘴巴，想起妹妹旁邊那把收合的剪刀。"
+  >
+    <svg
+      class="paper-prop paper-muted"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <div
+      class="paper-card"
+      style="left: 57cqw; top: 8cqw; width: 31cqw; height: 29cqw"
+    ></div>
+    <svg
+      class="paper-prop paper-pulse"
+      style="left: 68cqw; top: 12cqw; width: 10cqw; height: 17cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-scissors" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister paper-cover paper-wide p2-right"
+      style="left: 27cqw; bottom: -16cqw; --s: 2.35"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-16">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="妹妹坐在地毯上。姊姊快步趕到她身旁，身後留下三條速度線。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister paper-sit p2-left"
+      style="left: 64cqw; bottom: -1cqw; --s: 1.1"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <svg
+      class="paper-prop"
+      style="left: 15cqw; top: 29cqw; width: 19cqw; height: 10cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-speed" />
+    </svg>
+    <i
+      class="p2-person p2-older-sister p2-running paper-wide p2-right paper-dash"
+      style="left: 45cqw; bottom: 1cqw; --s: 1.32"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+  </div>
+</template>
+<template id="p3-scene-17">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="妹妹好好地坐在地墊上。姊姊把收合的剪刀留在遠離妹妹的一側，鬆了一口氣。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <i
+      class="p2-person p2-little-sister paper-sit p2-left"
+      style="left: 64cqw; bottom: -1cqw; --s: 1.1"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-older-sister p2-gentle p2-right paper-sigh"
+      style="left: 42cqw; bottom: 0cqw; --s: 1.4"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 13.8cqw; width: 2.8cqw; height: 4.76cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-scissors" />
+      </svg>
+    </i>
+    <svg
+      class="paper-prop paper-call"
+      style="
+        left: 54cqw;
+        top: 24cqw;
+        width: 6cqw;
+        height: 5cqw;
+        color: #aca388;
+        rotate: 10deg;
+      "
+      aria-hidden="true"
+    >
+      <use href="#paper-wave" />
+    </svg>
+  </div>
+</template>
+<template id="p3-scene-18">
+  <div
+    class="sister-scene p2-scene paper-scene"
+    role="img"
+    aria-label="客廳暗下來，姊姊望著安好的妹妹，皺著眉輕輕搖頭。"
+  >
+    <svg
+      class="paper-prop"
+      style="left: 0cqw; top: 0cqw; width: 100cqw; height: 56.25cqw"
+      aria-hidden="true"
+    >
+      <use href="#paper-home" />
+    </svg>
+    <b style="inset: 0; background: #64483826"></b>
+    <i
+      class="p2-person p2-little-sister paper-sit p2-left"
+      style="left: 64cqw; bottom: -1cqw; --s: 1.1"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+    </i>
+    <i
+      class="p2-person p2-older-sister p2-sad p2-right paper-shake"
+      style="left: 41cqw; bottom: 1cqw; --s: 1.47"
+    >
+      <b class="p2-legs"></b>
+      <b class="p2-body"></b>
+      <b class="p2-head">
+        <b class="p2-brows"></b>
+        <b class="p2-eyes"></b>
+      </b>
+      <svg
+        class="paper-prop"
+        style="left: 0cqw; top: 13.8cqw; width: 2.8cqw; height: 4.76cqw"
+        aria-hidden="true"
+      >
+        <use href="#paper-scissors" />
+      </svg>
+    </i>
+  </div>
+</template>
