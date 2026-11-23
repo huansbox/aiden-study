@@ -377,8 +377,8 @@
         "aiden"
       ],
       "audienceLabel": "四年級；家長可陪讀",
-      "status": "in-progress",
-      "statusNote": "第一、二段可選，7 與 14 個片段各有畫面，支援跟讀與可選錄音回放，試用追蹤 #274。",
+      "status": "complete",
+      "statusNote": "全篇五段、59 個跟讀片段，支援本機錄音回放，另有學校原音卡拉 OK 字幕影片。驗證見 #274。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/taigi-reading",
       "source": {
@@ -392,7 +392,7 @@
       },
       "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/taigi-reading",
       "links": [],
-      "description": "練習校內講稿第一、二段，先看懂句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀。",
+      "description": "先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。",
       "eventDate": null,
       "groupId": null,
       "groupName": null,

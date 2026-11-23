@@ -5,14 +5,14 @@
     {
       "id": "taigi-reading",
       "name": "〈阮小妹〉台語朗讀",
-      "status": "in-progress",
-      "statusNote": "第一、二段可選，7 與 14 個片段各有畫面，支援跟讀與可選錄音回放，試用追蹤 #274。",
+      "status": "complete",
+      "statusNote": "全篇五段、59 個跟讀片段，支援本機錄音回放，另有學校原音卡拉 OK 字幕影片。驗證見 #274。",
       "eventDate": null,
       "audience": [
         "aiden"
       ],
       "audienceLabel": "四年級；家長可陪讀",
-      "description": "練習校內講稿第一、二段，先看懂句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀。",
+      "description": "先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。",
       "reusable": "配合句意切換動畫畫面、學校朗讀切句。",
       "availability": "private"
     },
