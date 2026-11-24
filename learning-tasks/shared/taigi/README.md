@@ -10,6 +10,17 @@
 
 - 〈苦瓜哪會苦〉選句時預覽該句的 `sceneKey`。開始播放後從 `data.shots` 的 `at` 與 `key` 選擇當下漫畫，用 `paths["art/" + key]` 載入。
 - 〈阮小妹〉透過 `scene_html`、`scene_css`、`scene_js` 放入原本的動畫。播放器呼叫 `window.taigiSceneAt(second, line, playing)`，選句、播放與製作影片都使用同一條學校錄音時間軸。`await window.taigiScreenAt(second)` 可等待該時點的字幕畫好。
+- 播放器提供「語速：原速／慢速 0.85x」切換（只影響學校原音，不影響自錄回放），並在切句時預載下一句字幕與畫面。
+
+## 驗證成片
+
+輸出全篇 MP4 後，可用共用腳本逐格比對原音同步與逐字換色像素：
+
+```sh
+uv run --script learning-tasks/shared/taigi/verify_video.py <私用任務資料夾> [--video <成片.mp4>]
+```
+
+未指定 `--video` 時，會依序尋找 `final/<篇名>-全篇逐字字幕.mp4` 與 `final/<篇名>-全篇.mp4`。
 
 ## 發布受保護練習頁
 

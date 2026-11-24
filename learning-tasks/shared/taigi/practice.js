@@ -15,11 +15,13 @@ const model = byId("model");
 const own = byId("own");
 const paragraphSelect = byId("paragraph");
 const lineSelect = byId("line");
+const speedButton = byId("speed");
 const statusText = byId("status");
 const labels = {listen:"聽這一句", whole:"播放這一段", all:"播放全篇", model:"聽學校", own:"聽我念"};
+const slowRate = 0.85;
 const imageCache = new Map();
-const cacheSize = 10;
-let chosen = 0, playback = null, capture = null, recordedUrl = "";
+const cacheSize = 60;
+let chosen = 0, playback = null, capture = null, recordedUrl = "", playbackRate = 1;
 let paintKey = "", paintRequest = 0, painting = Promise.resolve();
 
 function imageFor(key) {
@@ -89,6 +91,29 @@ function screenAt(second, fixedLine, preview = false) {
 // The video renderer seeks on the same school recording timeline as the practice page.
 window.taigiScreenAt = second => screenAt(second);
 
+function preloadNext(line) {
+  const next = lines[lines.indexOf(line) + 1];
+  if (!next) return;
+  imageFor("caption/" + next.id).catch(() => {});
+  if (!window.taigiSceneAt) {
+    if (next.sceneKey) imageFor("art/" + next.sceneKey).catch(() => {});
+    const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
+    if (shot && shot.key !== next.sceneKey) imageFor("art/" + shot.key).catch(() => {});
+  }
+}
+
+function applyPlaybackRate() {
+  player.playbackRate = playbackRate;
+  if (speedButton) {
+    const slow = playbackRate < 1;
+    speedButton.setAttribute("aria-pressed", String(slow));
+    speedButton.textContent = slow ? "語速：慢速 0.85x" : "語速：原速";
+  }
+  if (playback && playback.kind !== "own" && !playback.awaitingMetadata && playback.reschedule) {
+    playback.reschedule();
+  }
+}
+
 function stop() {
   if (playback) {
     cancelAnimationFrame(playback.raf);
@@ -98,6 +123,7 @@ function stop() {
   const stopped = playback;
   playback = null;
   player.pause();
+  player.muted = false;
   if (stopped && stopped.kind !== "own" && window.taigiSceneAt) {
     screenAt(Math.min(stopped.end, player.currentTime), stopped.single ? stopped.last : undefined);
   }
@@ -140,14 +166,7 @@ function updatePlayback(active) {
       active.current = line;
       followLine(line);
       statusText.textContent = active.kind === "all" ? "正在播放全篇。" : "正在播放這一段。";
-      const next = lines[lines.indexOf(line) + 1];
-      if (next) {
-        imageFor("caption/" + next.id).catch(() => {});
-        if (!window.taigiSceneAt) {
-          const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
-          imageFor("art/" + shot.key).catch(() => {});
-        }
-      }
+      preloadNext(line);
     }
   }
 }
@@ -175,8 +194,14 @@ async function togglePlay(kind) {
       return;
     }
     // Keep play() in the tap handler even when mobile Safari defers metadata loading.
+    player.playbackRate = playbackRate;
     active.awaitingMetadata = player.readyState < HTMLMediaElement.HAVE_METADATA;
-    if (!active.awaitingMetadata) player.currentTime = active.start;
+    if (active.awaitingMetadata) {
+      player.muted = true;
+    } else {
+      player.muted = false;
+      player.currentTime = active.start;
+    }
     screenAt(active.start, first);
     await player.play();
     if (playback !== active) return;
@@ -188,7 +213,12 @@ async function togglePlay(kind) {
       updatePlayback(active);
       if (playback !== active) return;
       const remaining = active.end - player.currentTime;
-      active.timer = setTimeout(checkEnd, Math.max(10, remaining * 1000));
+      const rate = player.playbackRate || 1;
+      active.timer = setTimeout(checkEnd, Math.max(10, (remaining / rate) * 1000));
+    };
+    active.reschedule = () => {
+      clearTimeout(active.timer);
+      checkEnd();
     };
     tick();
     checkEnd();
@@ -208,6 +238,7 @@ function selectLine(index) {
   recordStatus.textContent = statusText.textContent = "";
   presentLine(index);
   screenAt(lines[index].start, lines[index], true);
+  preloadNext(lines[index]);
 }
 
 function presentLine(index) {
@@ -370,10 +401,16 @@ for (const media of [player, ownPlayer]) {
 player.addEventListener("loadedmetadata", () => {
   if (!playback?.awaitingMetadata) return;
   player.currentTime = playback.start;
+  player.muted = false;
   playback.awaitingMetadata = false;
+  playback.reschedule?.();
 });
 player.addEventListener("timeupdate", () => {
   if (playback && playback.kind !== "own" && !player.paused) updatePlayback(playback);
+});
+speedButton?.addEventListener("click", () => {
+  playbackRate = playbackRate < 1 ? 1 : slowRate;
+  applyPlaybackRate();
 });
 for (const [i, g] of groups.entries()) {
   paragraphSelect.add(new Option(i ? "第 " + i + " 段　" + g.title : g.title));
@@ -384,4 +421,5 @@ byId("previous").addEventListener("click", () => selectLine(chosen - 1));
 byId("next").addEventListener("click", () => selectLine(chosen + 1));
 document.title = reading.title + "｜台語朗讀練習";
 player.src = assets.audio;
+applyPlaybackRate();
 selectLine(reading.intro.length);

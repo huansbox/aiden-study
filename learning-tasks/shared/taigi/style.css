@@ -24,6 +24,7 @@ main {max-width: 900px; margin: auto}
 .controls button {font-weight: 650}
 .controls button, .controls summary {cursor: pointer; touch-action: manipulation}
 .controls button.primary {color: white; background: #733d29; border-color: #733d29}
+.controls button[aria-pressed="true"] {color: #1b4965; background: #e9f2f7; border-color: #347898}
 .controls button:disabled {opacity: .45; cursor: default}
 .controls :focus-visible {outline: 3px solid #347898; outline-offset: 2px}
 .controls p {line-height: 1.55}
@@ -31,6 +32,7 @@ main {max-width: 900px; margin: auto}
 .controls details p {margin: 0 0 8px}
 .controls summary {padding: 12px 2px; min-height: 46px; font-weight: 650}
 .actions {display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0}
+.speed-row {margin: 10px 0 0}
 .longer {border-top: 1px solid #dfd4c5; padding-top: 12px; margin: 0}
 .longer button {flex: 1}
 #status, #record-status {color: #62554a; margin: 8px 0 0}
