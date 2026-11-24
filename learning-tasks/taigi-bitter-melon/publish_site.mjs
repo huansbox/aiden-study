@@ -47,11 +47,27 @@ async function cli(args) {
     throw Error(`Wrangler ${args.slice(0,3).join(' ')} failed (exit ${error.code}); release was not confirmed.`);
   }
 }
-for (const file of manifest) {
+const pause = milliseconds => new Promise(done => setTimeout(done,milliseconds));
+async function transfer(file) {
   const key = `${prefix}${release}:${file.path}`;
-  if (mode === 'publish') await cli(['kv','key','put',key,'--path',join(site,file.path)]);
-  const bytes = await cli(['kv','key','get',key]);
-  if (hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
+  for (let attempt=0; ; attempt++) {
+    try {
+      if (mode === 'publish') await cli(['kv','key','put',key,'--path',join(site,file.path)]);
+      const bytes = await cli(['kv','key','get',key]);
+      if (hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
+      return;
+    } catch (error) {
+      if (attempt === 2) throw error;
+      await pause(2000 * (attempt+1));
+    }
+  }
+}
+const concurrency = 4;
+for (let i=0; i<manifest.length; i+=concurrency) {
+  const results = await Promise.allSettled(manifest.slice(i,i+concurrency).map(transfer));
+  const failure = results.find(result => result.status === 'rejected');
+  if (failure) throw failure.reason;
+  if ((i+concurrency)%16 === 0) console.log(`Verified ${Math.min(i+concurrency,manifest.length)}/${manifest.length} files`);
 }
 if (mode === 'publish') await cli(['kv','key','put',prefix+'active',release]);
 const active = (await cli(['kv','key','get',prefix+'active'])).toString('ascii');
