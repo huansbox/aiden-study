@@ -637,6 +637,18 @@
       ]
     },
     {
+      "id": "grandmas-secret-box",
+      "name": "奶奶的祕密盒子閱讀心智圖",
+      "status": "complete",
+      "statusNote": "Claude Sonnet／medium 原文複核、五種尺寸、草稿與首頁往返 E2E 見 #284。",
+      "eventDate": "2026-11-24",
+      "audience": ["aiden"], "audienceLabel": "9 歲；成人可陪讀",
+      "description": "從奶奶收起小盒子、家人發現相片，到理解她思念爺爺並去醫院陪她。",
+      "groupId": "reading-mind-maps", "groupName": "閱讀心智圖",
+      "reuse": "依情節排序，先說重點，再採用例句或改成自己的話。",
+      "availability": "available", "links": [{ "label": "網頁", "url": "../grandmas-secret-box-mind-map/" }]
+    },
+    {
       "id": "giving-more-precious",
       "name": "付出比收穫更可貴閱讀心智圖",
       "status": "complete",
