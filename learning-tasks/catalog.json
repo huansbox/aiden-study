@@ -3,6 +3,26 @@
   "_comment": "task 名稱、工作狀態、活動日期、對象與來源的唯一登錄；兩份 README 與家長白板由 scripts/build-work-catalog.mjs 產生。操作／分類規則仍在 README.md。eventDate 不是 Git create/update。",
   "tasks": [
     {
+      "id": "triangle-videos",
+      "name": "三角形兩個為什麼（動畫短片）",
+      "groupId": "kids-explainer-videos",
+      "groupName": "為什麼會這樣？",
+      "status": "in-progress",
+      "statusNote": "第二版已輸出，待家長看片、選旁白與確認製作流程。觀看及驗收入口須有子專案的 GitHub 權限。",
+      "eventDate": null,
+      "audience": ["aiden"],
+      "audienceLabel": "小學四年級；可親子共看",
+      "description": "《為什麼會這樣？》系列的兩部三角形動畫，說明內角和 180 度，以及哪些長度能拼成三角形。",
+      "reusable": "[動畫短片製作經驗](https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/design-lessons.md)。",
+      "availability": "private",
+      "source": { "repo": "huansbox/kids-explainer-videos", "ref": "main", "paths": ["episodes/triangle-videos"], "visibility": "private" },
+      "links": [
+        { "label": "內角和 180 度", "url": "https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-angles-180.mp4" },
+        { "label": "三邊長規則", "url": "https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-sides-rule.mp4" },
+        { "label": "影片驗收", "url": "https://github.com/huansbox/kids-explainer-videos/issues/1" }
+      ]
+    },
+    {
       "id": "taigi-bitter-melon",
       "name": "〈苦瓜哪會苦〉台語朗讀",
       "status": "complete",

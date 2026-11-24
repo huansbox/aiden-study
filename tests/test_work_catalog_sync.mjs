@@ -75,10 +75,12 @@ for (const [field, value] of Object.entries({
 test("refreshes both registered external repos and the registered same-repo branch only", async () => {
   const branch = { id: "task:story", source: { ...source, repo: "huansbox/aiden-study" } };
   const local = { id: "app:local", source: { ...source, remote: false } };
+  const privateWork = { id: "task:private", source: { ...source, visibility: "private" } };
   const seen = [];
   const cache = previousCache();
   cache.sources["app:removed"] = { ...known };
-  const result = await syncWorks({ works: [work, local, branch], cache, now, readDates: async value => {
+  cache.sources[privateWork.id] = { ...known };
+  const result = await syncWorks({ works: [work, local, branch, privateWork], cache, now, readDates: async value => {
     seen.push(value);
     return { created: known.created, updated: known.updated };
   } });
@@ -86,6 +88,7 @@ test("refreshes both registered external repos and the registered same-repo bran
   assert.deepEqual(Object.keys(result.cache.sources), [work.id, branch.id]);
   assert.equal(result.cache.sources[branch.id].created, known.created);
   assert.equal(result.cache.sources[branch.id].updated, known.updated);
+  assert.deepEqual(result.failures, []);
 });
 
 test("a source without Git history is a failed read, preserving known dates or staying unknown", async () => {

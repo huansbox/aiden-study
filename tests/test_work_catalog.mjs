@@ -219,6 +219,30 @@ test("遠端首次未知、成功、失敗保留舊值與來源更改不冒充�
   assert.equal(sourceKey({ ...remote.source, excludePaths: undefined }), JSON.stringify({ repo: remote.source.repo, ref: remote.source.ref, paths: remote.source.paths, excludePaths: [] }));
 });
 
+test("私人子專案保留授權入口，公開產物略過同來源的日期快取", (t) => {
+  const root = fixture(t), catalog = json(root, "learning-tasks/catalog.json");
+  const source = { repo: "huansbox/private-fixture", ref: "main", paths: ["episodes/triangle"], visibility: "private" };
+  const sourceUrl = "https://github.com/huansbox/private-fixture/tree/main/episodes/triangle";
+  catalog.tasks.push({
+    id: "private-episode", name: "私人影片", availability: "private", source,
+    links: [{ label: "影片", url: "https://github.com/huansbox/private-fixture/blob/main/episodes/triangle/video.mp4" }],
+  });
+  file(root, "learning-tasks/catalog.json", catalog);
+  const id = "task:private-episode";
+  const cache = { schemaVersion: 1, sources: {
+    [id]: { sourceKey: sourceKey(source), created: "2026-07-01", updated: "2026-08-15", lastSuccessAt: "2026-09-17T00:00:00Z" },
+  } };
+  const outputs = buildOutputs(root, { cache, readDates: () => ({ created: null, updated: null }) });
+  const entry = JSON.parse(outputs["docs/parent/work-catalog.json"]).works.find(work => work.id === id);
+  assert.equal(entry.source.visibility, "private");
+  assert.equal(entry.sourceUrl, sourceUrl);
+  assert.equal(entry.links.length, 1);
+  assert.equal(entry.created, null);
+  assert.equal(entry.updated, null);
+  assert.equal(entry.freshness.checkedAt, null);
+  assert.ok(outputs["README.md"].includes(sourceUrl));
+});
+
 test("已提交的 README／白板 metadata 與共同登錄一致；本地 Git 日期由發布重建", () => {
   const outputs = buildOutputs(repo);
   for (const [path, output] of Object.entries(outputs)) {

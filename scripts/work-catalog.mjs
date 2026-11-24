@@ -24,7 +24,12 @@ function normalizeSource(input = {}, fallbackPaths = []) {
   const paths = input.paths ?? fallbackPaths, excludePaths = input.excludePaths ?? [];
   if (!Array.isArray(paths) || !paths.length || !Array.isArray(excludePaths)) fail("來源範圍不能留空");
   paths.forEach(pathName); excludePaths.forEach(pathName);
-  return { repo, ref, paths, excludePaths, remote: repo !== LOCAL_REPO || ref !== MAIN_REF };
+  const visibility = input.visibility ?? "public";
+  if (!["public", "private"].includes(visibility) || (visibility === "private" && repo === LOCAL_REPO)) fail("來源公開範圍不正確");
+  return {
+    repo, ref, paths, excludePaths, remote: repo !== LOCAL_REPO || ref !== MAIN_REF,
+    ...(visibility === "private" ? { visibility } : {}),
+  };
 }
 export function sourceKey(source) {
   const { repo, ref, paths, excludePaths = [] } = source;
@@ -151,6 +156,7 @@ export function datedWorks(root, works, cache = { schemaVersion: 1, sources: {} 
   if (cache.schemaVersion !== 1 || !cache.sources || typeof cache.sources !== "object" || Array.isArray(cache.sources)) fail("遠端快取格式不正確");
   return works.map((entry) => {
     if (!entry.source.remote) return { ...entry, ...readDates(root, { ...entry.source, ref: "HEAD" }), freshness: { state: "current", checkedAt: null, error: null } };
+    if (entry.source.visibility === "private") return entry;
     const stored = cache.sources[entry.id], remote = stored?.sourceKey === sourceKey(entry.source) ? stored : null;
     if (!remote) return { ...entry, freshness: { state: "unknown", checkedAt: null, error: null } };
     if (!validDate(remote.created) || !validDate(remote.updated) || (remote.lastSuccessAt !== null && (typeof remote.lastSuccessAt !== "string" || !Number.isFinite(Date.parse(remote.lastSuccessAt))))) fail("遠端快取日期不正確：" + entry.id);

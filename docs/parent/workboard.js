@@ -57,6 +57,7 @@
       (state.sort === "name" ? a.name.localeCompare(b.name, "zh-Hant") : String(b.updated || "").localeCompare(a.updated || "")) || a.name.localeCompare(b.name, "zh-Hant"));
   }
   function freshness(work, now = Date.now()) {
+    if (work.source.visibility === "private") return "private";
     if (work.freshness.state === "stale") return "stale";
     if (work.freshness.state === "unknown") return "unknown";
     if (work.source.remote) {
@@ -71,7 +72,9 @@
   const locationLink = (work) => `<a class="wb-location" href="${esc(work.sourceUrl)}" target="_blank" rel="noopener noreferrer" aria-label="來源位置 ${esc(work.location)}">${esc(work.location).replaceAll("/", "/<wbr>")}</a>`;
   function freshnessHTML(members) {
     const states = members.map((work) => freshness(work));
-    return states.includes("stale") ? '<span class="wb-freshness stale">可能過期</span>' : states.includes("unknown") ? '<span class="wb-freshness unknown">來源尚未查核</span>' : "";
+    if (states.includes("stale")) return '<span class="wb-freshness stale">可能過期</span>';
+    if (states.includes("unknown")) return '<span class="wb-freshness unknown">來源尚未查核</span>';
+    return states.includes("private") ? '<span class="wb-freshness">需 GitHub 授權</span>' : "";
   }
   function mount(root, { fetcher = window.fetch.bind(window), base = location.href } = {}) {
     const state = { search: "", audience: "all", type: "all", status: "all", sort: "recent" };
@@ -109,10 +112,11 @@
     }
     function detail(work, trigger) {
       const checked = work.freshness.checkedAt ? new Intl.DateTimeFormat("zh-TW", { timeZone: "Asia/Taipei", dateStyle: "medium", timeStyle: "short" }).format(new Date(work.freshness.checkedAt)) : "—";
+      const sourceState = freshness(work);
       showDialog(`<h2 id="wb-detail-title">${esc(work.name)}</h2><p class="wb-detail-kind">${work.type === "app" ? "App" : "學習任務"} · ${esc(audience(work))}</p><div class="wb-detail-badges">${badge(work)}<span>${AVAILABILITY[work.availability]}</span>${freshnessHTML([work])}</div>
         ${work.statusNote ? `<p class="wb-detail-note">${esc(work.statusNote)}</p>` : ""}${work.description ? `<p class="wb-detail-note">${esc(work.description)}</p>` : ""}
-        <dl><div><dt>create</dt><dd>${displayDate(work.created)}</dd></div><div><dt>update</dt><dd>${displayDate(work.updated)}</dd></div>${work.eventDate ? `<div><dt>活動日期</dt><dd>${esc(work.eventDate)}</dd></div>` : ""}<div><dt>來源位置</dt><dd>${locationLink(work)}</dd></div><div><dt>來源分支</dt><dd>${esc(work.source.ref)}</dd></div>${work.source.remote ? `<div><dt>成功查核</dt><dd>${esc(checked)}（臺灣時間）</dd></div>` : ""}</dl>
-        ${freshness(work) === "stale" ? '<p class="wb-detail-note">遠端查核失敗，或超過 48 小時未成功查核；目前保留上次已知資料，可能過期。</p>' : freshness(work) === "unknown" ? '<p class="wb-detail-note">尚未取得可確認的來源資料；未知不代表沒有作品。</p>' : ""}
+        <dl><div><dt>create</dt><dd>${displayDate(work.created)}</dd></div><div><dt>update</dt><dd>${displayDate(work.updated)}</dd></div>${work.eventDate ? `<div><dt>活動日期</dt><dd>${esc(work.eventDate)}</dd></div>` : ""}<div><dt>來源位置</dt><dd>${locationLink(work)}</dd></div><div><dt>來源分支</dt><dd>${esc(work.source.ref)}</dd></div>${work.source.remote && sourceState !== "private" ? `<div><dt>成功查核</dt><dd>${esc(checked)}（臺灣時間）</dd></div>` : ""}</dl>
+        ${sourceState === "stale" ? '<p class="wb-detail-note">遠端查核失敗，或超過 48 小時未成功查核；目前保留上次已知資料，可能過期。</p>' : sourceState === "unknown" ? '<p class="wb-detail-note">尚未取得可確認的來源資料；未知不代表沒有作品。</p>' : sourceState === "private" ? '<p class="wb-detail-note">公開白板只顯示已登錄的入口。來源與成品須使用有權限的 GitHub 帳號開啟。</p>' : ""}
         <p class="wb-detail-note">工作狀態不等於 App 上下架或孩子完成練習。可用成品不代表來源分支已合併；家中未推送的修改不會出現在白板。</p><div class="wb-detail-links">${work.links.map((link) => `<a href="${esc(productURL(link.url))}" target="_blank" rel="noopener noreferrer">${esc(link.label)}</a>`).join("")}<a href="${esc(work.sourceUrl)}" target="_blank" rel="noopener noreferrer">查看來源</a></div>`, trigger);
     }
     function row(work, { group, member = false } = {}) {
