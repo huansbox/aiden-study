@@ -2,7 +2,8 @@
 // release only changes after every immutable file has been read back byte-for-byte.
 import {execFile} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {readdir, readFile, realpath} from 'node:fs/promises';
+import {mkdtemp, readdir, readFile, realpath, rm, writeFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
 import {join, resolve, sep} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {promisify} from 'node:util';
@@ -44,28 +45,73 @@ export async function publishSite(id, args) {
   if (mode === 'inspect') return;
   if (expected !== release) throw Error('The approved site digest differs from the current files.');
   const wrangler = process.env.WRANGLER_BIN || 'wrangler';
-  async function cli(args) {
+  async function cli(args, {allowMissing=false}={}) {
     try {
       const result = await run(wrangler, [...args,'--binding','KV','--remote','--config',config],
         {encoding:'buffer',maxBuffer:limit+1024*1024, env:{...process.env,WRANGLER_SEND_METRICS:'false'}});
       return result.stdout;
     } catch (error) {
+      // Wrangler's remote single-key GET uses the HTTP status in its error.
+      // No auth, quota, transport, or other failure is evidence of absence.
+      const missing = /Failed to fetch (https:\/\/api\.cloudflare\.com\/client\/v4\/accounts\/[a-f0-9]{32}\/storage\/kv\/namespaces\/[a-f0-9]{32}\/values\/[^\s]+) - 404: Not Found\b/i
+        .exec(String(error.stderr ?? ''));
+      if (allowMissing && args[2] === 'get' &&
+          missing?.[1].endsWith('/values/'+encodeURIComponent(args[3]))) return null;
       throw Error(`Wrangler ${args.slice(0,3).join(' ')} failed (exit ${error.code}); release was not confirmed.`);
     }
   }
   const pause = milliseconds => new Promise(done => setTimeout(done,milliseconds));
+  let remoteKeys;
+  function listRemoteRelease() {
+    // Wrangler's remote GET drops the API response body, so its 404 alone
+    // cannot distinguish missing keys from a wrong/unavailable namespace.
+    // Require one successful lookup of this release prefix as a second signal.
+    remoteKeys ??= cli(['kv','key','list','--prefix',prefix+release+':']).then(raw => {
+      const listed = JSON.parse(raw.toString('utf8'));
+      if (!Array.isArray(listed) || listed.some(item=>typeof item?.name !== 'string')) {
+        throw Error('Invalid remote KV key listing.');
+      }
+      return new Set(listed.map(item=>item.name));
+    });
+    return remoteKeys;
+  }
   async function transfer(file) {
     const key = `${prefix}${release}:${file.path}`;
+    const get = () => cli(['kv','key','get',key], {allowMissing:mode === 'publish'});
+    let writeAttempted = false;
     for (let attempt=0; ; attempt++) {
+      let bytes;
       try {
-        if (mode === 'publish') await cli(['kv','key','put',key,'--path',join(site,file.path)]);
-        const bytes = await cli(['kv','key','get',key]);
-        if (hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
-        return;
+        bytes = await get();
+        if (bytes === null && !writeAttempted && !(await listRemoteRelease()).has(key)) {
+          const approved = await readFile(join(site,file.path));
+          if (hash(approved) !== file.hash) throw Error('Approved file changed: '+file.path);
+          // Upload the verified snapshot, not a source path another process could edit.
+          const temporary = await mkdtemp(join(tmpdir(),'taigi-kv-'));
+          try {
+            const path = join(temporary,'value');
+            await writeFile(path,approved,{mode:0o600});
+            writeAttempted = true;
+            await cli(['kv','key','put',key,'--path',path]);
+          } finally {
+            await rm(temporary,{recursive:true,force:true});
+          }
+          bytes = await get();
+        }
       } catch (error) {
         if (attempt === 2) throw error;
         await pause(2000 * (attempt+1));
+        continue;
       }
+      // Seeing other bytes is terminal; even if the next GET would return
+      // 404, this immutable key cannot later be treated as new.
+      if (bytes !== null) {
+        if (hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
+        return;
+      }
+      if (attempt === 2) throw Error('Remote byte verification failed: '+file.path);
+      // Retry visibility only. An attempted put is never sent again here.
+      await pause(2000 * (attempt+1));
     }
   }
   const concurrency = 4;
@@ -75,9 +121,21 @@ export async function publishSite(id, args) {
     if (failure) throw failure.reason;
     if ((i+concurrency)%16 === 0) console.log(`Verified ${Math.min(i+concurrency,manifest.length)}/${manifest.length} files`);
   }
-  if (mode === 'publish') await cli(['kv','key','put',prefix+'active',release]);
-  const active = (await cli(['kv','key','get',prefix+'active'])).toString('ascii');
-  if (active !== release) throw Error('The active release does not match.');
+  const activeKey = prefix+'active';
+  const expectedActive = Buffer.from(release, 'ascii');
+  let active = await cli(['kv','key','get',activeKey], {allowMissing:mode === 'publish'});
+  if (mode === 'publish' && !active?.equals(expectedActive)) {
+    if (active === null) await listRemoteRelease();
+    let writeError;
+    try {
+      await cli(['kv','key','put',activeKey,release]);
+    } catch (error) {
+      writeError = error;
+    }
+    active = await cli(['kv','key','get',activeKey], {allowMissing:true});
+    if (writeError && !active?.equals(expectedActive)) throw writeError;
+  }
+  if (!active?.equals(expectedActive)) throw Error('The active release does not match.');
   console.log('All private assets and the active release verified.');
 }
 

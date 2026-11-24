@@ -21,4 +21,6 @@ node scripts/publish-taigi-site.mjs <作品-ID> <Dropbox 的 final/site 路徑> 
 node scripts/publish-taigi-site.mjs <作品-ID> <Dropbox 的 final/site 路徑> verify <完整 digest>
 ```
 
+以同一 digest 重跑會逐一比對遠端內容，不重寫已驗證的檔案和相同的 active 指標；只補尚未存在的檔案。如遇限額、連線錯誤或同一不可變 key 的內容不符，請勿刪除現有 key 硬重跑。第一次發布新 digest 仍須寫入新版本的檔案；發現限額警示，應先確認當日剩餘額度。KV 不支援條件式寫入；同一篇教材不要開兩個發布程序，以免重複寫入或互相切換版本。
+
 發布程式上傳後逐檔讀回，比對完成才切換版本。`verify` 可單獨執行。
