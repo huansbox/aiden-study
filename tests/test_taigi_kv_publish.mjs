@@ -23,7 +23,7 @@ const [group, kind, action, key, flag, path] = process.argv.slice(2);
 const dir = process.env.FAKE_KV;
 const file = join(dir,createHash('sha256').update(key).digest('hex'));
 const err = status => {
-  console.error('Failed to fetch https://api.cloudflare.com/client/v4/accounts/acct/storage/kv/namespaces/ns/values/'+encodeURIComponent(key)+' - '+status);
+  console.error('Failed to fetch https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/storage/kv/namespaces/fedcba9876543210fedcba9876543210/values/'+encodeURIComponent(key)+' - '+status);
   process.exit(1);
 };
 if (group !== 'kv' || kind !== 'key' || !process.argv.includes('--remote')) throw Error('Unexpected invocation');
@@ -31,9 +31,18 @@ fs.appendFileSync(join(dir,'log'),JSON.stringify({action,key})+'\\n');
 if (action === 'get') {
   if (key === process.env.FAKE_429_KEY) err('429: Too Many Requests');
   if (!fs.existsSync(file)) err('404: Not Found');
+  if (key === process.env.FAKE_INVISIBLE_KEY) err('404: Not Found');
   process.stdout.write(fs.readFileSync(file));
+  if (key === process.env.FAKE_DROP_AFTER_GET_KEY) fs.unlinkSync(file);
+} else if (action === 'list') {
+  if (process.env.FAKE_LIST_FAIL) err('404: Not Found');
+  if (key !== '--prefix') throw Error('Missing prefix');
+  const names = fs.readdirSync(dir).filter(name=>name.endsWith('.name') && fs.existsSync(join(dir,name.slice(0,-5))))
+    .map(name=>fs.readFileSync(join(dir,name),'utf8')).filter(name=>name.startsWith(flag));
+  process.stdout.write(JSON.stringify(names.map(name=>({name}))));
 } else if (action === 'put') {
   fs.writeFileSync(file,flag === '--path' ? fs.readFileSync(path) : flag);
+  fs.writeFileSync(file+'.name',key);
   if (key === process.env.FAKE_COMMITTED_TIMEOUT_KEY) err('504: Gateway Timeout');
 } else {
   throw Error('Unexpected operation: '+action);
@@ -72,6 +81,7 @@ test('both publishing entrypoints preserve byte checks with zero writes for an i
   const writes = initial.filter(x=>x.action === 'put');
   assert.deepEqual(writes.map(x=>x.key).sort(),[...keys].sort());
   assert.equal(writes.at(-1).key,keys.at(-1));
+  assert.equal(initial.filter(x=>x.action === 'list').length,1);
   for (const key of keys) {
     const steps = initial.filter(x=>x.key === key).map(x=>x.action);
     assert.deepEqual(steps,['get','put','get']);
@@ -95,6 +105,10 @@ test('a timed-out write that committed is only re-read, and partial resumes only
   const resumed = await operations();
   assert.deepEqual(resumed.filter(x=>x.action==='put').map(x=>x.key),[keys[1]]);
   assert.deepEqual(resumed.filter(x=>x.key===keys[1]).map(x=>x.action),['get','put','get']);
+  await rm(storage(kv,keys[2]));
+  await clear();
+  await execute(publisher,'publish',{FAKE_COMMITTED_TIMEOUT_KEY:keys[2]});
+  assert.deepEqual((await operations()).filter(x=>x.key===keys[2]).map(x=>x.action),['get','put','get']);
 });
 
 test('quota errors and mismatched immutable keys never become writes or activate another release',async t => {
@@ -108,7 +122,25 @@ test('quota errors and mismatched immutable keys never become writes or activate
   assert.equal(await readFile(storage(kv,keys[2]),'utf8'),old);
   await writeFile(storage(kv,keys[0]),'wrong bytes');
   await clear();
-  await assert.rejects(execute(),/Remote byte verification failed: index.html/);
-  assert.ok((await operations()).every(x=>x.action==='get'));
+  await assert.rejects(execute(publisher,'publish',{FAKE_DROP_AFTER_GET_KEY:keys[0]}),
+    /Remote byte verification failed: index.html/);
+  const mismatch = await operations();
+  assert.ok(mismatch.every(x=>x.action==='get'));
+  assert.deepEqual(mismatch.filter(x=>x.key===keys[0]).map(x=>x.action),['get']);
+  assert.equal(await readFile(storage(kv,keys[2]),'utf8'),old);
+});
+
+test('a missing-key response cannot write if namespace list fails or still names that key',async t => {
+  const {keys,execute,operations,clear,kv} = await setup(t);
+  await assert.rejects(execute(publisher,'publish',{FAKE_LIST_FAIL:'1'}),/Wrangler kv key list failed/);
+  assert.ok((await operations()).every(x=>x.action!=='put'));
+  await execute();
+  const old = '0'.repeat(64);
+  await writeFile(storage(kv,keys[2]),old);
+  await clear();
+  await assert.rejects(execute(publisher,'publish',{FAKE_INVISIBLE_KEY:keys[0]}),/Remote byte verification failed/);
+  const invisible = await operations();
+  assert.equal(invisible.filter(x=>x.action==='list').length,1);
+  assert.ok(invisible.every(x=>x.action!=='put'));
   assert.equal(await readFile(storage(kv,keys[2]),'utf8'),old);
 });

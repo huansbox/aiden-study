@@ -53,22 +53,37 @@ export async function publishSite(id, args) {
     } catch (error) {
       // Wrangler's remote single-key GET uses the HTTP status in its error.
       // No auth, quota, transport, or other failure is evidence of absence.
+      const missing = /Failed to fetch (https:\/\/api\.cloudflare\.com\/client\/v4\/accounts\/[a-f0-9]{32}\/storage\/kv\/namespaces\/[a-f0-9]{32}\/values\/[^\s]+) - 404: Not Found\b/i
+        .exec(String(error.stderr ?? ''));
       if (allowMissing && args[2] === 'get' &&
-          /Failed to fetch https:\/\/[^\s]+\/storage\/kv\/namespaces\/[^\s]+\/values\/[^\s]+ - 404: Not Found\b/i.test(String(error.stderr ?? ''))) {
-        return null;
-      }
+          missing?.[1].endsWith('/values/'+encodeURIComponent(args[3]))) return null;
       throw Error(`Wrangler ${args.slice(0,3).join(' ')} failed (exit ${error.code}); release was not confirmed.`);
     }
   }
   const pause = milliseconds => new Promise(done => setTimeout(done,milliseconds));
+  let remoteKeys;
+  function listRemoteRelease() {
+    // Wrangler's remote GET drops the API response body, so its 404 alone
+    // cannot distinguish missing keys from a wrong/unavailable namespace.
+    // Require one successful lookup of this release prefix as a second signal.
+    remoteKeys ??= cli(['kv','key','list','--prefix',prefix+release+':']).then(raw => {
+      const listed = JSON.parse(raw.toString('utf8'));
+      if (!Array.isArray(listed) || listed.some(item=>typeof item?.name !== 'string')) {
+        throw Error('Invalid remote KV key listing.');
+      }
+      return new Set(listed.map(item=>item.name));
+    });
+    return remoteKeys;
+  }
   async function transfer(file) {
     const key = `${prefix}${release}:${file.path}`;
+    const get = () => cli(['kv','key','get',key], {allowMissing:mode === 'publish'});
     let writeAttempted = false;
     for (let attempt=0; ; attempt++) {
+      let bytes;
       try {
-        const get = () => cli(['kv','key','get',key], {allowMissing:mode === 'publish'});
-        let bytes = await get();
-        if (bytes === null && !writeAttempted) {
+        bytes = await get();
+        if (bytes === null && !writeAttempted && !(await listRemoteRelease()).has(key)) {
           const approved = await readFile(join(site,file.path));
           if (hash(approved) !== file.hash) throw Error('Approved file changed: '+file.path);
           // Upload the verified snapshot, not a source path another process could edit.
@@ -83,14 +98,20 @@ export async function publishSite(id, args) {
           }
           bytes = await get();
         }
-        // An immutable key with other bytes needs investigation, not overwrite.
-        // Retries only re-read after a put was attempted, even after a timeout.
-        if (bytes === null || hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
-        return;
       } catch (error) {
         if (attempt === 2) throw error;
         await pause(2000 * (attempt+1));
+        continue;
       }
+      // Seeing other bytes is terminal; even if the next GET would return
+      // 404, this immutable key cannot later be treated as new.
+      if (bytes !== null) {
+        if (hash(bytes) !== file.hash) throw Error('Remote byte verification failed: '+file.path);
+        return;
+      }
+      if (attempt === 2) throw Error('Remote byte verification failed: '+file.path);
+      // Retry visibility only. An attempted put is never sent again here.
+      await pause(2000 * (attempt+1));
     }
   }
   const concurrency = 4;
@@ -104,8 +125,15 @@ export async function publishSite(id, args) {
   const expectedActive = Buffer.from(release, 'ascii');
   let active = await cli(['kv','key','get',activeKey], {allowMissing:mode === 'publish'});
   if (mode === 'publish' && !active?.equals(expectedActive)) {
-    await cli(['kv','key','put',activeKey,release]);
-    active = await cli(['kv','key','get',activeKey]);
+    if (active === null) await listRemoteRelease();
+    let writeError;
+    try {
+      await cli(['kv','key','put',activeKey,release]);
+    } catch (error) {
+      writeError = error;
+    }
+    active = await cli(['kv','key','get',activeKey], {allowMissing:true});
+    if (writeError && !active?.equals(expectedActive)) throw writeError;
   }
   if (!active?.equals(expectedActive)) throw Error('The active release does not match.');
   console.log('All private assets and the active release verified.');
