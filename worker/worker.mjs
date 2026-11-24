@@ -16,7 +16,7 @@ import "../docs/study/private-pack.js";
 import "../docs/study/pack-catalog.js";
 import { familyRoute } from "./family.mjs";
 import { collectionRoute } from "./collection.mjs";
-import { route as practiceRoute, servePractice } from "./taigi-bitter-melon.mjs";
+import { practiceFor, servePractice } from "./taigi-practice.mjs";
 import { authorizeSession } from "./session.mjs";
 
 const ALLOWED_ORIGINS = new Set([
@@ -71,7 +71,9 @@ export default {
         url.pathname = url.pathname.slice(4);
         const denied = await authorizeSession(request, env, url);
         if (denied) return denied;
-        if (url.pathname.startsWith(practiceRoute)) return await servePractice(request, env.KV, url.pathname);
+        const practice = practiceFor(url.pathname.split("/")[2]);
+        if (practice && url.pathname.startsWith(practice.route))
+          return await servePractice(request, env.KV, url.pathname, practice);
         return await handle(request, env, url, cors, true);
       }
       return await handle(request, env, url, cors);

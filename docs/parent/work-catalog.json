@@ -421,21 +421,28 @@
       "audienceLabel": "四年級；家長可陪讀",
       "status": "complete",
       "statusNote": "全篇五段、59 個跟讀片段，支援本機錄音回放，另有學校原音卡拉 OK 字幕影片。驗證見 #274。",
-      "availability": "private",
+      "availability": "available",
       "location": "aiden-study/learning-tasks/taigi-reading",
       "source": {
         "repo": "huansbox/aiden-study",
         "ref": "master",
         "paths": [
-          "learning-tasks/taigi-reading"
+          "learning-tasks/taigi-reading",
+          "docs/taigi-reading"
         ],
         "excludePaths": [],
         "remote": false
       },
       "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/taigi-reading",
-      "links": [],
+      "links": [
+        {
+          "label": "朗讀練習",
+          "url": "../taigi-reading/?child=aiden"
+        }
+      ],
       "description": "先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。",
       "eventDate": null,
+      "homePath": "taigi-reading/",
       "groupId": null,
       "groupName": null,
       "created": "2026-11-23",
