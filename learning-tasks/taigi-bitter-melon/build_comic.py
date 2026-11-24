@@ -7,23 +7,21 @@
 import argparse
 import base64
 import bisect
-import io
 import json
 import math
 import mimetypes
 import os
 import subprocess
+import sys
 import tempfile
 from functools import lru_cache
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps
-from render_comic_trial import FPS, OUTLINE, READ_COLOR, SIZE, TIMESCALE
+from PIL import Image, ImageOps
+from render_comic_trial import FPS, TIMESCALE
 
-SOURCE = Path(__file__).parent / "source/comic"
-CAPTION_TOP = 858
-CAPTION_HEIGHT = 180
-SAFE_WIDTH = 1810
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "shared" / "taigi"))
+from player import CAPTION_HEIGHT, CAPTION_TOP, SIZE, Lettering, encoded, make_page
 
 
 def local_file(directory, name):
@@ -82,75 +80,6 @@ def read_timeline(root):
     return data, lines, recording, {s["key"]: local_file(root / "art", scenes["files"][s["key"]]) for s in shots}
 
 
-class Lettering:
-    def __init__(self, lines, root):
-        match = subprocess.check_output(["fc-match", "-f", "%{file}\n%{index}",
-            "PingFang TC,Noto Sans CJK TC:style=Semibold,Bold"], text=True)
-        path, face = match.splitlines()
-        self.primary = (path, int(face))
-        self.fallback = (str(local_file(root / "fonts", "Iansui-Regular.ttf")), 0)
-        chars = "".join(sorted({char for line in lines for char in line["text"]}))
-        glyphs = self.shape(chars, self.primary)
-        self.rare = {char for char, gid in zip(chars, glyphs, strict=True) if gid == 0}
-        if self.rare and not all(self.shape("".join(sorted(self.rare)), self.fallback)):
-            raise ValueError("字幕字型缺字")
-
-    @staticmethod
-    def shape(chars, face):
-        # One input line per character avoids shaping clusters or ligatures across checks.
-        shaped = subprocess.check_output(["hb-shape", face[0], f"--face-index={face[1]}",
-            "--output-format=json", "--no-glyph-names", "--text-file=-"],
-            input="\n".join(chars) + "\n", text=True)
-        return [int(all(g["g"] for g in json.loads(row))) for row in shaped.splitlines()]
-
-    @lru_cache(maxsize=64)
-    def font(self, rare, size):
-        path, face = self.fallback if rare else self.primary
-        return ImageFont.truetype(path, size, index=face)
-
-    def make(self, line):
-        def layout(size):
-            tokens = [(c["text"], self.font(any(ch in self.rare for ch in c["text"]), size))
-                      for c in line["karaoke"]]
-            return tokens, sum(font.getlength(text) for text, font in tokens)
-        size = 94
-        tokens, width = layout(size)
-        if width > SAFE_WIDTH:
-            size = math.floor(size * SAFE_WIDTH / width)
-            tokens, width = layout(size)
-        start = (SIZE[0] - width) / 2
-        sprite = Image.new("RGBA", (SIZE[0], CAPTION_HEIGHT * 2))
-        draw = ImageDraw.Draw(sprite)
-        edges = []
-        for offset, color in [(0, "white"), (CAPTION_HEIGHT, READ_COLOR)]:
-            x = start
-            for text, font in tokens:
-                draw.text((round(x), 991 - CAPTION_TOP + offset), text, font=font,
-                          anchor="ls", fill=color, stroke_width=6, stroke_fill=OUTLINE)
-                x += font.getlength(text)
-                if not offset:
-                    edges.append(round(x))
-        edges[-1] = SIZE[0]
-        line["edges"] = edges
-        return sprite
-
-
-def encoded(image, fmt, **options):
-    buffer = io.BytesIO()
-    image.save(buffer, format=fmt, **options)
-    return buffer.getvalue()
-
-
-def make_page(data, paths):
-    def safe_json(value):
-        return json.dumps(value, ensure_ascii=False, separators=(",", ":")).replace("<", r"\u003c")
-    html = (SOURCE / "index.html").read_text()
-    for marker, value in {"CSS": (SOURCE / "style.css").read_text(), "JS": (SOURCE / "practice.js").read_text(),
-                          "DATA": safe_json(data), "ASSETS": safe_json(paths)}.items():
-        html = html.replace(f"<!-- {marker} -->", value)
-    return html
-
-
 def atomic_write(path, content):
     with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as dest:
         tmp = Path(dest.name)
@@ -164,7 +93,7 @@ def atomic_write(path, content):
 
 def build(root, output, video):
     data, lines, recording, art = read_timeline(root)
-    lettering = Lettering(lines, root)
+    lettering = Lettering(lines, root / "fonts")
     output.mkdir(exist_ok=True, parents=True)
     assets = output / "site/assets"
     assets.mkdir(exist_ok=True, parents=True)

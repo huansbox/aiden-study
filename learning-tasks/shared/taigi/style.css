@@ -1,0 +1,41 @@
+:root {
+  font-family: "PingFang TC", "Noto Sans TC", sans-serif;
+  background: #f3eee6;
+  color: #302a24;
+  color-scheme: light;
+}
+* {box-sizing: border-box}
+body {margin: 0}
+main {max-width: 900px; margin: auto}
+.reader {background: #fffdf7; border-radius: 0 0 14px 14px; overflow: hidden}
+#screen {position: relative; isolation: isolate; aspect-ratio: 16 / 9; background: #ece7de; overflow: hidden}
+#scene, #frame {position: absolute; inset: 0; display: block; width: 100%; height: 100%}
+#frame {pointer-events: none}
+.controls {padding: clamp(12px, 3vw, 22px)}
+.sentence-actions, .selection {display: grid; gap: 8px}
+.sentence-actions {grid-template-columns: 1fr 1.4fr 1fr}
+.selection {grid-template-columns: 2fr 3fr; margin: 16px 0}
+.controls label {display: grid; gap: 4px; min-width: 0; font-size: 15px; color: #62554a}
+.controls button, .controls select {
+  font: inherit; color: #322b24; border: 1px solid #b6a58f; background: #fffdf7;
+  border-radius: 8px; min-height: 46px; padding: 8px 10px;
+}
+.controls select {width: 100%; font-size: 16px; text-overflow: ellipsis}
+.controls button {font-weight: 650}
+.controls button, .controls summary {cursor: pointer; touch-action: manipulation}
+.controls button.primary {color: white; background: #733d29; border-color: #733d29}
+.controls button:disabled {opacity: .45; cursor: default}
+.controls :focus-visible {outline: 3px solid #347898; outline-offset: 2px}
+.controls p {line-height: 1.55}
+.controls details {border-top: 1px solid #dfd4c5}
+.controls details p {margin: 0 0 8px}
+.controls summary {padding: 12px 2px; min-height: 46px; font-weight: 650}
+.actions {display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0}
+.longer {border-top: 1px solid #dfd4c5; padding-top: 12px; margin: 0}
+.longer button {flex: 1}
+#status, #record-status {color: #62554a; margin: 8px 0 0}
+#status:empty, #record-status:empty, #meaning:empty, #hint:empty, [hidden] {display: none !important}
+@media(max-width: 430px) {
+  .selection {grid-template-columns: 1fr}
+  .sentence-actions {gap: 6px}
+}

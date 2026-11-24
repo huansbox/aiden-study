@@ -16,11 +16,11 @@ const own = byId("own");
 const paragraphSelect = byId("paragraph");
 const lineSelect = byId("line");
 const statusText = byId("status");
-const labels = {listen:"聽這一句", shadow:"跟著念這句", whole:"播放這一段", all:"從題名聽全篇", model:"聽學校", own:"聽我念"};
+const labels = {listen:"聽這一句", whole:"播放這一段", all:"播放全篇", model:"聽學校", own:"聽我念"};
 const imageCache = new Map();
 const cacheSize = 10;
 let chosen = 0, playback = null, capture = null, recordedUrl = "";
-let paintKey = "", paintRequest = 0;
+let paintKey = "", paintRequest = 0, painting = Promise.resolve();
 
 function imageFor(key) {
   if (imageCache.has(key)) {
@@ -51,16 +51,24 @@ function lastAt(items, second, field) {
 
 function screenAt(second, fixedLine) {
   const line = fixedLine || lines[Math.max(0, lastAt(lines, second, "captionAt"))];
-  const scene = reading.shots[Math.max(0, lastAt(reading.shots, second, "at"))];
+  const animated = typeof window.taigiSceneAt === "function";
+  let artKey = "";
+  if (animated) {
+    window.taigiSceneAt(second, line, Boolean(playback && playback.kind !== "own" && !player.paused));
+  } else {
+    const shot = reading.shots[Math.max(0, lastAt(reading.shots, second, "at"))];
+    artKey = "art/" + shot.key;
+  }
   const count = lastAt(line.karaoke, second, "start") + 1;
-  const key = JSON.stringify([line.id, scene.key, count]);
-  if (paintKey === key) return;
+  const key = JSON.stringify([line.id, artKey, count]);
+  if (paintKey === key) return painting;
   paintKey = key;
   const request = ++paintRequest;
-  Promise.all([imageFor("art/" + scene.key), imageFor("caption/" + line.id)])
+  painting = Promise.all([artKey ? imageFor(artKey) : null, imageFor("caption/" + line.id)])
     .then(([art, caption]) => {
       if (request !== paintRequest) return;
-      ctx.drawImage(art, 0, 0, 1920, 1080);
+      if (art) ctx.drawImage(art, 0, 0, 1920, 1080);
+      else ctx.clearRect(0, 0, 1920, 1080);
       const edge = count ? line.edges[count - 1] : 0;
       if (edge < 1920) {
         ctx.drawImage(caption, edge, 0, 1920 - edge, 180, edge, 858, 1920 - edge, 180);
@@ -72,10 +80,14 @@ function screenAt(second, fixedLine) {
     }).catch(() => {
       if (request === paintRequest) {
         paintKey = "";
-        statusText.textContent = "漫畫讀取失敗，請重新開啟練習頁。";
+        statusText.textContent = "畫面讀取失敗，請重新開啟練習頁。";
       }
     });
+  return painting;
 }
+
+// The video renderer seeks on the same school recording timeline as the practice page.
+window.taigiScreenAt = second => screenAt(second);
 
 function stop() {
   if (playback) {
@@ -83,8 +95,12 @@ function stop() {
     clearTimeout(playback.timer);
     byId(playback.kind).textContent = labels[playback.kind];
   }
+  const stopped = playback;
   playback = null;
   player.pause();
+  if (stopped && stopped.kind !== "own" && window.taigiSceneAt) {
+    screenAt(Math.min(stopped.end, player.currentTime), stopped.single ? stopped.last : undefined);
+  }
   ownPlayer.pause();
 }
 
@@ -114,17 +130,21 @@ function updatePlayback(active) {
   if (active !== playback) return;
   const t = player.currentTime;
   if (t >= active.end) return finish(active);
-  screenAt(t, active.single ? active.last : undefined);
+  const line = active.single ? active.last :
+    lines[Math.max(active.firstIndex, lastAt(lines, t, "captionAt"))];
+  screenAt(t, line);
   if (!active.single) {
-    const line = lines[Math.max(0, lastAt(lines, t, "captionAt"))];
     if (active.current !== line) {
       active.current = line;
       followLine(line);
       statusText.textContent = active.kind === "all" ? "正在播放全篇。" : "正在播放這一段。";
       const next = lines[lines.indexOf(line) + 1];
       if (next) {
-        const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
-        Promise.all([imageFor("art/" + shot.key), imageFor("caption/" + next.id)]).catch(() => {});
+        imageFor("caption/" + next.id).catch(() => {});
+        if (!window.taigiSceneAt) {
+          const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
+          imageFor("art/" + shot.key).catch(() => {});
+        }
       }
     }
   }
@@ -138,11 +158,11 @@ async function togglePlay(kind) {
   const group = groups[paragraphSelect.selectedIndex];
   const first = kind === "all" ? lines[0] : kind === "whole" ? group.lines[0] : lines[chosen];
   const last = kind === "all" ? lines[lines.length-1] : kind === "whole" ? group.lines[group.lines.length-1] : first;
-  const active = {kind, last, single:first === last,
+  const active = {kind, last, firstIndex:lines.indexOf(first), single:first === last,
     start:kind === "all" ? reading.start : first.start, end:kind === "all" ? reading.end : last.end};
   playback = active;
   byId(kind).textContent = "停止播放";
-  statusText.textContent = kind === "shadow" ? "讓學校先念一兩個音，再跟著念。" : "";
+  statusText.textContent = "";
   try {
     if (kind === "own") {
       ownPlayer.src = recordedUrl;
@@ -195,9 +215,8 @@ function presentLine(index) {
   paragraphSelect.selectedIndex = groupIndex;
   lineSelect.selectedIndex = group.lines.indexOf(line);
   byId("hint").textContent = line.hint || "";
-  byId("hint-panel").hidden = !line.hint;
   byId("meaning").textContent = line.meaning || "";
-  byId("meaning-panel").hidden = !line.meaning;
+  byId("meaning-panel").hidden = !line.meaning && !line.hint;
   byId("previous").disabled = index === 0;
   byId("next").disabled = index === lines.length - 1;
 }
@@ -348,7 +367,5 @@ lineSelect.addEventListener("change", () => selectLine(lines.indexOf(groups[para
 byId("previous").addEventListener("click", () => selectLine(chosen - 1));
 byId("next").addEventListener("click", () => selectLine(chosen + 1));
 document.title = reading.title + "｜台語朗讀練習";
-byId("title").textContent = reading.title;
-byId("author").textContent = "作者　" + reading.author;
 player.src = assets.audio;
 selectLine(reading.intro.length);
