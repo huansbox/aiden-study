@@ -63,6 +63,7 @@ def read_timeline(root):
         line["captionAt"] = max(last, round(starts[0] - 0.4, 6)) if i else data["start"]
         last = line["end"]
     trial_lines = trial["paragraphs"][0]["lines"]
+    assert len({scenes["lines"][line["id"]] for line in trial_lines}) == 3, "試片三格須使用三張獨立的圖"
     shots = []
     trial_changes = {line["id"]: start for line, start in zip(trial_lines, [
         trial["start"], trial["trialBeat"]["swallow"], trial["trialBeat"]["sweet"]], strict=True)}
@@ -186,11 +187,11 @@ def build(root, output, video):
         with Image.open(source) as img:
             if img.size[0] < 640:
                 raise ValueError(f"畫面解析度不足：{source}")
-            scene = ImageOps.fit(img.convert("RGB"), SIZE, method=Image.Resampling.LANCZOS)
             file = f"scene-{i + 1:02}.webp"
-            if source.suffix.lower() == ".webp" and img.size == SIZE:
+            if source.suffix.lower() == ".webp" and img.width * SIZE[1] == img.height * SIZE[0]:
                 payload = source.read_bytes()
             else:
+                scene = ImageOps.fit(img.convert("RGB"), SIZE, method=Image.Resampling.LANCZOS)
                 payload = encoded(scene, "WEBP", quality=94, method=4)
             add("art/" + key, file, payload)
             scenes[key] = assets / file
@@ -211,7 +212,7 @@ def render(data, lines, recording, scenes, sprites, output):
     @lru_cache(maxsize=2)
     def art(i):
         with Image.open(scenes[data["shots"][i]["key"]]) as img:
-            return img.convert("RGB")
+            return ImageOps.fit(img.convert("RGB"), SIZE, method=Image.Resampling.LANCZOS)
     @lru_cache(maxsize=2)
     def caption(i):
         with Image.open(sprites[lines[i]["id"]]) as img:

@@ -32,7 +32,10 @@ function imageFor(key) {
   const image = new Image();
   const loaded = new Promise((resolve, reject) => {
     image.onload = () => resolve(image);
-    image.onerror = () => { imageCache.delete(key); reject(Error("圖片讀取失敗")); };
+    image.onerror = () => {
+      if (imageCache.get(key) === loaded) imageCache.delete(key);
+      reject(Error("圖片讀取失敗"));
+    };
   });
   image.src = assets[key];
   imageCache.set(key, loaded);
@@ -58,11 +61,11 @@ function screenAt(second, fixedLine) {
     .then(([art, caption]) => {
       if (request !== paintRequest) return;
       ctx.drawImage(art, 0, 0, 1920, 1080);
-      ctx.drawImage(caption, 0, 0, 1920, 180, 0, 858, 1920, 180);
-      if (count) {
-        const edge = line.edges[count - 1];
-        // Restore the original art first so anti-aliased outline pixels blend only once.
-        ctx.drawImage(art, 0, 858, edge, 180, 0, 858, edge, 180);
+      const edge = count ? line.edges[count - 1] : 0;
+      if (edge < 1920) {
+        ctx.drawImage(caption, edge, 0, 1920 - edge, 180, edge, 858, 1920 - edge, 180);
+      }
+      if (edge > 0) {
         ctx.drawImage(caption, 0, 180, edge, 180, 0, 858, edge, 180);
       }
       frame.setAttribute("aria-label", (line.visual ? line.visual + " " : "") + line.text);
@@ -331,7 +334,7 @@ for (const media of [player, ownPlayer]) {
     }
   });
   media.addEventListener("ended", () => {
-    if (ownsPlayback()) finish(playback);
+    if (media.ended && ownsPlayback()) finish(playback);
   });
 }
 player.addEventListener("timeupdate", () => {
