@@ -8,7 +8,7 @@
 
 兩篇都用 `Lettering(lines, font_dir).make(line)` 建立相同的白字與藍字圖層，並在該句填入切換顏色的像素位置。播放器於 `#screen` 中疊上字幕。
 
-- 〈苦瓜哪會苦〉從 `data.shots` 的 `at` 與 `key` 選擇當下漫畫，用 `paths["art/" + key]` 載入。
+- 〈苦瓜哪會苦〉選句時預覽該句的 `sceneKey`。開始播放後從 `data.shots` 的 `at` 與 `key` 選擇當下漫畫，用 `paths["art/" + key]` 載入。
 - 〈阮小妹〉透過 `scene_html`、`scene_css`、`scene_js` 放入原本的動畫。播放器呼叫 `window.taigiSceneAt(second, line, playing)`，選句、播放與製作影片都使用同一條學校錄音時間軸。`await window.taigiScreenAt(second)` 可等待該時點的字幕畫好。
 
 ## 發布受保護練習頁

@@ -49,7 +49,7 @@ function lastAt(items, second, field) {
   return index;
 }
 
-function screenAt(second, fixedLine) {
+function screenAt(second, fixedLine, preview = false) {
   const line = fixedLine || lines[Math.max(0, lastAt(lines, second, "captionAt"))];
   const animated = typeof window.taigiSceneAt === "function";
   let artKey = "";
@@ -57,9 +57,9 @@ function screenAt(second, fixedLine) {
     window.taigiSceneAt(second, line, Boolean(playback && playback.kind !== "own" && !player.paused));
   } else {
     const shot = reading.shots[Math.max(0, lastAt(reading.shots, second, "at"))];
-    artKey = "art/" + shot.key;
+    artKey = "art/" + (preview ? line.sceneKey : shot.key);
   }
-  const count = lastAt(line.karaoke, second, "start") + 1;
+  const count = preview ? 0 : lastAt(line.karaoke, second, "start") + 1;
   const key = JSON.stringify([line.id, artKey, count]);
   if (paintKey === key) return painting;
   paintKey = key;
@@ -116,18 +116,20 @@ function followLine(line) {
 function finish(active) {
   if (playback !== active) return;
   stop();
+  if (active.kind !== "own") {
+    if (!active.single) followLine(active.last);
+    screenAt(active.end, active.last);
+  }
   if (active.kind === "own" || active.kind === "model") {
     recordStatus.textContent = active.kind === "own" ? "可以重錄一次，或換下一句。" : "再按「聽我念」比較看看。";
     return;
   }
-  if (!active.single) followLine(active.last);
-  screenAt(active.end, active.last);
   statusText.textContent = active.kind === "all" ? "全篇聽完了，換你看著紙本念一次。" :
     active.kind === "whole" ? "這一段聽完了，換你看著紙本念一次。" : "可以再聽一次，或換下一句。";
 }
 
 function updatePlayback(active) {
-  if (active !== playback) return;
+  if (active !== playback || active.awaitingMetadata) return;
   const t = player.currentTime;
   if (t >= active.end) return finish(active);
   const line = active.single ? active.last :
@@ -152,8 +154,11 @@ function updatePlayback(active) {
 
 async function togglePlay(kind) {
   const same = playback?.kind === kind;
+  const comparing = kind === "own" || kind === "model";
+  const status = comparing ? recordStatus : statusText;
   stop();
-  if (same) { statusText.textContent = "已停止。"; return; }
+  statusText.textContent = recordStatus.textContent = "";
+  if (same) { status.textContent = "已停止。"; return; }
   if (capture) { cancelCapture(); recordStatus.textContent = "已取消錄音。"; }
   const group = groups[paragraphSelect.selectedIndex];
   const first = kind === "all" ? lines[0] : kind === "whole" ? group.lines[0] : lines[chosen];
@@ -162,14 +167,16 @@ async function togglePlay(kind) {
     start:kind === "all" ? reading.start : first.start, end:kind === "all" ? reading.end : last.end};
   playback = active;
   byId(kind).textContent = "停止播放";
-  statusText.textContent = "";
+  if (comparing) status.textContent = kind === "own" ? "正在播放你的錄音。" : "正在播放學校示範。";
   try {
     if (kind === "own") {
       ownPlayer.src = recordedUrl;
       await ownPlayer.play();
       return;
     }
-    player.currentTime = active.start;
+    // Keep play() in the tap handler even when mobile Safari defers metadata loading.
+    active.awaitingMetadata = player.readyState < HTMLMediaElement.HAVE_METADATA;
+    if (!active.awaitingMetadata) player.currentTime = active.start;
     screenAt(active.start, first);
     await player.play();
     if (playback !== active) return;
@@ -188,7 +195,7 @@ async function togglePlay(kind) {
   } catch {
     if (playback !== active) return;
     stop();
-    (kind === "own" || kind === "model" ? recordStatus : statusText).textContent = "音檔播放失敗，請再試一次。";
+    status.textContent = "音檔播放失敗，請再試一次。";
   }
 }
 
@@ -200,7 +207,7 @@ function selectLine(index) {
   recordPanel.open = false;
   recordStatus.textContent = statusText.textContent = "";
   presentLine(index);
-  screenAt(lines[index].start - 0.001, lines[index]);
+  screenAt(lines[index].start, lines[index], true);
 }
 
 function presentLine(index) {
@@ -254,6 +261,7 @@ function cancelCapture() {
 
 async function startCapture() {
   stop();
+  statusText.textContent = "";
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
     recordStatus.textContent = "這個瀏覽器無法錄音。可以用 Chrome 開啟這個練習檔再試。";
     return;
@@ -324,7 +332,10 @@ recordPanel.addEventListener("toggle", () => {
     cancelCapture();
     recordStatus.textContent = "";
   }
-  if (playback?.kind === "own" || playback?.kind === "model") stop();
+  if (playback?.kind === "own" || playback?.kind === "model") {
+    stop();
+    recordStatus.textContent = "已停止。";
+  }
 });
 window.addEventListener("pagehide", () => {
   stop();
@@ -356,6 +367,11 @@ for (const media of [player, ownPlayer]) {
     if (media.ended && ownsPlayback()) finish(playback);
   });
 }
+player.addEventListener("loadedmetadata", () => {
+  if (!playback?.awaitingMetadata) return;
+  player.currentTime = playback.start;
+  playback.awaitingMetadata = false;
+});
 player.addEventListener("timeupdate", () => {
   if (playback && playback.kind !== "own" && !player.paused) updatePlayback(playback);
 });

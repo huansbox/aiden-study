@@ -67,6 +67,7 @@ def read_timeline(root):
         trial["start"], trial["trialBeat"]["swallow"], trial["trialBeat"]["sweet"]], strict=True)}
     for line in lines:
         key = scenes["lines"].get(line["id"], scenes["intro"])
+        line["sceneKey"] = key
         if line["id"] in trial_changes:
             original = next(t for t in trial_lines if t["id"] == line["id"])
             assert all(line[k] == original[k] for k in ("text", "start", "end", "karaoke"))
