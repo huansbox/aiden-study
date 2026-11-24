@@ -60,6 +60,7 @@ test("remote freshness expires after 48 hours without changing Git dates", () =>
   assert.equal(remote.updated, "2026-09-17");
   assert.equal(freshness({ ...remote, freshness: { state: "stale", checkedAt: "2026-09-18T00:00:00Z" } }, now), "stale");
   assert.equal(freshness({ ...remote, freshness: { state: "current", checkedAt: null } }, now), "unknown");
+  assert.equal(freshness({ ...remote, source: { ...remote.source, visibility: "private" } }, now + 2 * 86400000), "private");
 });
 
 test("malformed dates, duplicate IDs and executable links reject the catalog rather than silently dropping records", () => {

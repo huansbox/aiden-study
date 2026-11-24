@@ -370,6 +370,55 @@
       }
     },
     {
+      "id": "task:triangle-videos",
+      "type": "task",
+      "name": "三角形兩個為什麼（動畫短片）",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "小學四年級；可親子共看",
+      "status": "in-progress",
+      "statusNote": "第二版已輸出，待家長看片、選旁白與確認製作流程。觀看及驗收入口須有子專案的 GitHub 權限。",
+      "availability": "private",
+      "location": "kids-explainer-videos/episodes/triangle-videos",
+      "source": {
+        "repo": "huansbox/kids-explainer-videos",
+        "ref": "main",
+        "paths": [
+          "episodes/triangle-videos"
+        ],
+        "excludePaths": [],
+        "remote": true,
+        "visibility": "private"
+      },
+      "sourceUrl": "https://github.com/huansbox/kids-explainer-videos/tree/main/episodes/triangle-videos",
+      "links": [
+        {
+          "label": "內角和 180 度",
+          "url": "https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-angles-180.mp4"
+        },
+        {
+          "label": "三邊長規則",
+          "url": "https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-sides-rule.mp4"
+        },
+        {
+          "label": "影片驗收",
+          "url": "https://github.com/huansbox/kids-explainer-videos/issues/1"
+        }
+      ],
+      "description": "《為什麼會這樣？》系列的兩部三角形動畫，說明內角和 180 度，以及哪些長度能拼成三角形。",
+      "eventDate": null,
+      "groupId": "kids-explainer-videos",
+      "groupName": "為什麼會這樣？",
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "unknown",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:taigi-bitter-melon",
       "type": "task",
       "name": "〈苦瓜哪會苦〉台語朗讀",

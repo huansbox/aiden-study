@@ -83,6 +83,7 @@
 
 | 作品 | 來源 | 已有成果入口 | 工作狀態 |
 | --- | --- | --- | --- |
+| 三角形兩個為什麼（動畫短片） | [kids-explainer-videos/episodes/triangle-videos](https://github.com/huansbox/kids-explainer-videos/tree/main/episodes/triangle-videos)（main） | [內角和 180 度](https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-angles-180.mp4)、[三邊長規則](https://github.com/huansbox/kids-explainer-videos/blob/main/episodes/triangle-videos/output/triangle-sides-rule.mp4)、[影片驗收](https://github.com/huansbox/kids-explainer-videos/issues/1) | 進行中；第二版已輸出，待家長看片、選旁白與確認製作流程。觀看及驗收入口須有子專案的 GitHub 權限。 |
 | 怎麼和 AI 一起做出探險卡 | [aiden-study/learning-tasks/ai-collaboration-showcase](https://github.com/huansbox/aiden-study/tree/codex/ai-collaboration-showcase/learning-tasks/ai-collaboration-showcase)（codex/ai-collaboration-showcase） | [Cloudflare Pages 故事網站](https://ai-zoo-cards-story.pages.dev/) | 未標記；網站已發布；來源仍為主線外工作分支，工作狀態回查該分支。 |
 
 白板的 create／update 取作品來源範圍的 Git commit 日期（臺灣時間），不是活動日、發布日或孩子作答時間；create 指目前來源位置首次收錄。完整歷史不足時建置失敗，未知日期顯示「—」。遠端同步失敗保留上次已知值並明示過期；不以同步嘗試時間更新作品日期。

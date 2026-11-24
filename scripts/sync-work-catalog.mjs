@@ -68,7 +68,7 @@ export async function syncWorks({
   const attemptedAt = new Date(now).toISOString();
   const sources = {};
   const failures = [];
-  for (const work of works.filter((entry) => entry.source.remote)) {
+  for (const work of works.filter((entry) => entry.source.remote && entry.source.visibility !== "private")) {
     const key = sourceKey(work.source);
     const saved = cache.sources[work.id];
     const previous = saved?.sourceKey === key ? saved : null;

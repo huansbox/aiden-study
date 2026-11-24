@@ -33,6 +33,8 @@ node scripts/build-work-catalog.mjs --check
 
 主線提交後重建；每日臺灣時間 05:23 排程同步已登錄外部 repo 與主線外 ref（GitHub 排程可能延遲），也可手動執行 `work-catalog` workflow。`scripts/sync-work-catalog.mjs` 只更新公開來源 metadata 的快取，`scripts/build-work-catalog.mjs` 再產生共同顯示資料；不讀私人家庭資料、不改外部作品。外部來源超過 48 小時未成功查核時，畫面自行標示可能過期，即使排程根本沒執行也不會永遠顯示最新。
 
+標示 `source.visibility: "private"` 的外部來源由公開同步略過。白板顯示 GitHub 授權入口，Git 日期維持空白。
+
 主線 push 使用 `sync-work-catalog.mjs --missing-only`，只查核新登錄、來源變更或尚未成功取得資料的項目；已有同來源快取不因每次 push 改寫查核時間。每日／手動執行則完整同步。沒有產物差異就不產生 bot commit；真正來源更新所需的日期變化仍會提交。
 
 取得日期必須有足夠完整的 Git 歷史；淺層 checkout 應補足歷史或明確失敗，不能把 checkout 當天當成建立日。遠端來源更換時不能沿用舊來源快取。
