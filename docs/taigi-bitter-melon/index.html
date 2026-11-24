@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>苦瓜哪會苦｜台語朗讀</title>
+  <link rel="stylesheet" href="../shared/family.css">
+  <style>
+    body { margin: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; background: #fffbf2; }
+    nav { padding: .4rem 1rem; background: #f6edda; }
+    nav a { display: inline-flex; min-height: 40px; align-items: center; color: #452c1c; }
+    #connection { margin: 1rem auto; max-width: 32rem; padding: 0 1rem; }
+    iframe { width: 100%; flex: 1; border: 0; min-height: 0; }
+  </style>
+</head>
+<body>
+  <nav><a href="../?child=aiden">回學習首頁</a></nav>
+  <main id="connection"><p role="status">正在開啟台語朗讀⋯</p></main>
+  <script src="../shared/device-auth.js"></script>
+  <script>
+    const panel = document.getElementById('connection');
+    async function openPractice() {
+      await KidsAuth.ready;
+      if (KidsAuth.state.status !== 'connected') {
+        KidsAuth.renderConnection(panel, openPractice);
+        return;
+      }
+      const frame = document.createElement('iframe');
+      frame.title = '苦瓜哪會苦台語朗讀練習';
+      frame.allow = 'microphone';
+      frame.src = '../api/v1/taigi-bitter-melon/';
+      panel.replaceWith(frame);
+    }
+    openPractice();
+  </script>
+</body>
+</html>

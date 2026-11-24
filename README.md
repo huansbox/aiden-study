@@ -32,6 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [〈苦瓜哪會苦〉台語朗讀](learning-tasks/taigi-bitter-melon/) | 先看懂家庭故事，再用學校原音跟讀，最後看紙本自己朗讀。 | [朗讀練習](docs/taigi-bitter-melon/?child=aiden) |
 | [〈阮小妹〉台語朗讀](learning-tasks/taigi-reading/) | 先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。 | 私用成品 |
 | [四上後半冊家庭複習](learning-tasks/grade4-sem1-exam2/) | 四上後半冊數學U6–10、自然聲光與電路、社會信仰老街與作息節慶家庭複習。 | [家長備考速查 PDF](docs/parent/exam2-guide/) |
 | [數線長短差](learning-tasks/number-line-difference/) | 固定五題，先理解為何求中間段，再點圖上長短段計算；算對自動標回上下弧線，接續過渡與獨立紙本。 | [Pad 教學](docs/number-line-difference/?child=aiden)、[家長試玩](docs/number-line-difference/?preview=1) |

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台語朗讀練習</title>
+<style><!-- CSS --></style>
+</head>
+<body>
+<main>
+  <header><p>台語朗讀練習</p><h1 id="title"></h1><p id="author"></p></header>
+  <section class="reader" aria-label="朗讀">
+    <div id="screen"><canvas id="frame" width="1920" height="1080" role="img" aria-label="漫畫與逐字字幕"></canvas></div>
+    <div class="controls">
+      <div class="selection">
+        <label>段落<select id="paragraph"></select></label>
+        <label>練習句<select id="line"></select></label>
+      </div>
+      <p id="meaning-panel"><strong>看懂這句</strong>　<span id="meaning"></span></p>
+      <div class="actions">
+        <button id="listen" class="primary">聽這一句</button>
+        <button id="shadow">跟著念這句</button>
+        <button id="previous">上一句</button><button id="next">下一句</button>
+      </div>
+      <p id="status" role="status"></p>
+      <details id="hint-panel"><summary>詞句提示</summary><p id="hint"></p></details>
+      <details id="record-panel"><summary>錄一句，比較看看</summary>
+        <p>自己念一次，錄好後可以比較學校示範和自己的聲音。換句或關閉網頁會清除錄音。</p>
+        <div class="actions"><button id="record">開始錄音</button><button id="model" hidden>聽學校</button><button id="own" hidden>聽我念</button></div>
+        <p id="record-status" role="status"></p>
+      </details>
+      <div class="actions longer"><button id="whole">播放這一段</button><button id="all">從題名聽全篇</button></div>
+    </div>
+  </section>
+  <audio id="player" preload="auto"></audio><audio id="own-player"></audio>
+</main>
+<script id="reading" type="application/json"><!-- DATA --></script>
+<script id="assets" type="application/json"><!-- ASSETS --></script>
+<script><!-- JS --></script>
+</body>
+</html>
