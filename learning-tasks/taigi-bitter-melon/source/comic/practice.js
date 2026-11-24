@@ -85,6 +85,15 @@ function stop() {
   ownPlayer.pause();
 }
 
+function followLine(line) {
+  if (lines[chosen] === line) return;
+  clearTake();
+  refreshRecordControls();
+  recordPanel.open = false;
+  recordStatus.textContent = "";
+  presentLine(lines.indexOf(line));
+}
+
 function finish(active) {
   if (playback !== active) return;
   stop();
@@ -92,6 +101,7 @@ function finish(active) {
     recordStatus.textContent = active.kind === "own" ? "可以重錄一次，或換下一句。" : "再按「聽我念」比較看看。";
     return;
   }
+  if (!active.single) followLine(active.last);
   screenAt(active.end, active.last);
   statusText.textContent = active.kind === "all" ? "全篇聽完了，換你看著紙本念一次。" :
     active.kind === "whole" ? "這一段聽完了，換你看著紙本念一次。" : "可以再聽一次，或換下一句。";
@@ -106,7 +116,8 @@ function updatePlayback(active) {
     const line = lines[Math.max(0, lastAt(lines, t, "captionAt"))];
     if (active.current !== line) {
       active.current = line;
-      statusText.textContent = "正在朗讀　" + line.text;
+      followLine(line);
+      statusText.textContent = active.kind === "all" ? "正在播放全篇。" : "正在播放這一段。";
       const next = lines[lines.indexOf(line) + 1];
       if (next) {
         const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
@@ -165,12 +176,20 @@ function selectLine(index) {
   refreshRecordControls();
   recordPanel.open = false;
   recordStatus.textContent = statusText.textContent = "";
+  presentLine(index);
+  screenAt(lines[index].start - 0.001, lines[index]);
+}
+
+function presentLine(index) {
   chosen = index;
   const line = lines[index];
   const groupIndex = groups.findIndex(g => g.lines.includes(line));
-  paragraphSelect.selectedIndex = groupIndex;
   const group = groups[groupIndex];
-  lineSelect.replaceChildren(...group.lines.map((l, i) => new Option((i + 1) + "　" + l.text, l.id)));
+  if (lineSelect.dataset.group !== String(groupIndex)) {
+    lineSelect.replaceChildren(...group.lines.map((l, i) => new Option((i + 1) + "　" + l.text, l.id)));
+    lineSelect.dataset.group = String(groupIndex);
+  }
+  paragraphSelect.selectedIndex = groupIndex;
   lineSelect.selectedIndex = group.lines.indexOf(line);
   byId("hint").textContent = line.hint || "";
   byId("hint-panel").hidden = !line.hint;
@@ -178,7 +197,6 @@ function selectLine(index) {
   byId("meaning-panel").hidden = !line.meaning;
   byId("previous").disabled = index === 0;
   byId("next").disabled = index === lines.length - 1;
-  screenAt(line.start - 0.001, line);
 }
 function refreshRecordControls() {
   record.disabled = capture?.finishing === true;
@@ -294,7 +312,31 @@ window.addEventListener("pagehide", () => {
   refreshRecordControls();
 });
 for (const kind of Object.keys(labels)) byId(kind).addEventListener("click", () => togglePlay(kind));
-ownPlayer.addEventListener("ended", () => { if (playback?.kind === "own") finish(playback); });
+// Browsers and system media keys can send transport events without a button click.
+for (const media of [player, ownPlayer]) {
+  const ownsPlayback = () => playback && (playback.kind === "own") === (media === ownPlayer);
+  media.addEventListener("play", () => {
+    if (!ownsPlayback()) media.pause();
+    else if (media === player && media.currentTime >= playback.end) finish(playback);
+  });
+  media.addEventListener("pause", () => {
+    // A queued pause may arrive after another selection has started this same element.
+    if (!media.paused || !ownsPlayback()) return;
+    if (media.ended || (media === player && media.currentTime >= playback.end)) {
+      finish(playback);
+    } else {
+      const target = media === ownPlayer || playback.kind === "model" ? recordStatus : statusText;
+      stop();
+      target.textContent = "已暫停。";
+    }
+  });
+  media.addEventListener("ended", () => {
+    if (ownsPlayback()) finish(playback);
+  });
+}
+player.addEventListener("timeupdate", () => {
+  if (playback && playback.kind !== "own" && !player.paused) updatePlayback(playback);
+});
 for (const [i, g] of groups.entries()) {
   paragraphSelect.add(new Option(i ? "第 " + i + " 段　" + g.title : g.title));
 }
