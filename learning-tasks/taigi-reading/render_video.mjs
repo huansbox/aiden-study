@@ -12,19 +12,21 @@ const { values: options, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     paragraph: { type: "string" },
+    "word-captions": { type: "boolean" },
     start: { type: "string" },
     end: { type: "string" },
     jobs: { type: "string", default: "4" },
   },
 });
 if (positionals.length !== 2) {
-  throw new Error("Usage: node render_video.mjs <private-root> <output.mp4> [--paragraph N] [--start seconds] [--end seconds]");
+  throw new Error("Usage: node render_video.mjs <private-root> <output.mp4> [--word-captions] [--paragraph N] [--start seconds] [--end seconds]");
 }
 
 const privateRoot = resolve(positionals[0]);
 const output = resolve(positionals[1]);
 const recording = join(privateRoot, "source", "01_阮小妹.mp3");
-const practicePage = join(privateRoot, "mock", "index.html");
+const wordCaptions = options["word-captions"];
+const practicePage = join(privateRoot, wordCaptions ? "final" : "mock", "index.html");
 const sourceDir = join(privateRoot, "source");
 const playwrightModule = process.env.TAIGI_PLAYWRIGHT_MODULE;
 const { chromium } = await import(playwrightModule ? pathToFileURL(resolve(playwrightModule)).href : "playwright");
@@ -62,18 +64,21 @@ function lineCues(line) {
 }
 
 const renderedHtml = await readFile(practicePage, "utf8");
-const htmlData = renderedHtml.match(/<script id="mock-data" type="application\/json">([\s\S]+?)<\/script>/);
-if (!htmlData) throw new Error("Practice page has no mock-data. Rebuild it first.");
-const paragraphs = JSON.parse(htmlData[1]);
+const dataId = wordCaptions ? "reading" : "mock-data";
+const htmlData = renderedHtml.match(new RegExp(`<script id="${dataId}" type="application/json">([\\s\\S]+?)</script>`));
+if (!htmlData) throw new Error(`Practice page has no ${dataId}. Rebuild it first.`);
+const pageData = JSON.parse(htmlData[1]);
+const paragraphs = wordCaptions ? pageData.paragraphs : pageData;
 if (!options.paragraph && paragraphs.length !== 5) {
   throw new Error("Build all five paragraphs before rendering the full article.");
 }
-const allLines = [];
+const allLines = wordCaptions && !options.paragraph
+  ? pageData.intro.map(line => ({ ...line, cues: lineCues(line) })) : [];
 
 for (const [paragraphIndex, paragraph] of paragraphs.entries()) {
   if (options.paragraph && paragraphIndex + 1 !== Number(options.paragraph)) continue;
   const file = paragraphIndex === 0 ? "segments.json" : `paragraph-${paragraphIndex + 1}.json`;
-  const manifest = JSON.parse(await readFile(join(sourceDir, file), "utf8"));
+  const manifest = wordCaptions ? paragraph.lines : JSON.parse(await readFile(join(sourceDir, file), "utf8"));
   if (manifest.length !== paragraph.lines.length) throw new Error(`Rebuild the page after changing ${file}.`);
   for (const [lineIndex, line] of manifest.entries()) {
     if (line.text !== paragraph.lines[lineIndex].text || !Number.isFinite(line.start) ||
@@ -89,7 +94,7 @@ for (const [paragraphIndex, paragraph] of paragraphs.entries()) {
 if (!allLines.length) throw new Error("There is no matching paragraph to render.");
 
 let intro = [];
-if (!options.paragraph) {
+if (!options.paragraph && !wordCaptions) {
   try {
     intro = JSON.parse(await readFile(join(sourceDir, "video-intro.json"), "utf8"));
   } catch (error) {
@@ -100,25 +105,29 @@ if (!options.paragraph) {
 const firstLine = allLines[0];
 const lastLine = allLines[allLines.length - 1];
 const start = Number(options.start ?? (intro.length ? Math.max(0, intro[0].start - 0.23) : firstLine.start));
-const end = Number(options.end ?? lastLine.end);
+const end = Number(options.end ?? (wordCaptions && !options.paragraph ? pageData.end : lastLine.end));
 const audioDuration = schoolAudioDuration();
 if (!(0 <= start && start < end && end <= audioDuration)) {
   throw new Error(`Invalid film interval: ${start} to ${end} (audio: ${audioDuration})`);
+}
+if (wordCaptions && (start < pageData.start || end > pageData.end)) {
+  throw new Error("Requested interval is outside the word-caption timeline.");
 }
 if (options.paragraph && start < firstLine.start) {
   throw new Error(`The selected paragraph starts at ${firstLine.start}s.`);
 }
 
 const totalFrames = Math.ceil((end - start) * fps);
-const frameAt = (time) => Math.round((time - start) * fps);
+const frameAt = (time) => wordCaptions ? Math.ceil((time - start) * fps - 1e-7) : Math.round((time - start) * fps);
+const sceneStart = line => wordCaptions ? line.captionAt : line.start;
 const jobs = Number(options.jobs);
 if (!Number.isInteger(jobs) || jobs < 1 || jobs > 8) throw new Error("--jobs must be an integer between 1 and 8.");
 
 const shots = allLines
   .map((line, index) => ({
     ...line,
-    firstFrame: Math.max(0, frameAt(line.start)),
-    finalFrame: Math.min(totalFrames, frameAt(allLines[index + 1]?.start ?? end)),
+    firstFrame: Math.max(0, frameAt(sceneStart(line))),
+    finalFrame: Math.min(totalFrames, frameAt(allLines[index + 1] ? sceneStart(allLines[index + 1]) : end)),
   }))
   .filter((shot) => shot.firstFrame < shot.finalFrame);
 if (!shots.length && !intro.length) throw new Error("The selected interval contains no scenes.");
@@ -173,6 +182,10 @@ section:has(#stage) { margin: 0; border: 0; border-radius: 0; background: transp
 async function preparePage(browser) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: "no-preference" });
   await page.goto(pathToFileURL(practicePage).href, { waitUntil: "load" });
+  if (wordCaptions) {
+    await page.addStyleTag({content: "main {max-width:none} .controls {display:none} html, body {overflow:hidden}"});
+    return page;
+  }
   await page.addStyleTag({ content: filmCSS });
   await page.evaluate(async () => {
     const caption = document.createElement("div");
@@ -253,7 +266,36 @@ function shotEvents(shot, animationDuration) {
   return [...events].filter((frame) => frame >= shot.firstFrame && frame < shot.finalFrame).sort((a, b) => a - b);
 }
 
+// Preserve every frame while a paper cutout moves. During a held pose only the subtitle changes.
+async function captureWordShot(page, directory, shot) {
+  const secondAt = frame => start + frame / fps + 1e-8;
+  const duration = await page.evaluate(async ({second, text}) => {
+    await window.taigiScreenAt(second);
+    if (!document.getElementById("frame").getAttribute("aria-label")?.endsWith(text)) {
+      throw Error("Missing subtitle at " + second);
+    }
+    const stage = document.getElementById("stage");
+    if (!stage.firstElementChild) throw Error("Missing paper scene");
+    return Math.max(0, ...stage.getAnimations({subtree: true}).map(animation =>
+      animation.effect.getComputedTiming().endTime));
+  }, {second: secondAt(shot.firstFrame), text: shot.text});
+  const frames = new Set([shot.firstFrame, ...shot.cues.map(cue => frameAt(cue.start))]);
+  const lastMotion = Number.isFinite(duration) ? frameAt(shot.start + duration / 1000) : shot.finalFrame - 1;
+  for (let frame = Math.max(shot.firstFrame, frameAt(shot.start));
+       frame <= Math.min(lastMotion, shot.finalFrame - 1); frame++) frames.add(frame);
+  const captures = [];
+  for (const frame of [...frames].sort((a, b) => a - b)) {
+    if (frame < shot.firstFrame || frame >= shot.finalFrame) continue;
+    await page.evaluate(t => window.taigiScreenAt(t), secondAt(frame));
+    const name = `frame-${String(frame).padStart(6, "0")}.jpg`;
+    await page.screenshot({path: join(directory, name), type: "jpeg", quality: 91});
+    captures.push({frame, name});
+  }
+  return captures;
+}
+
 async function captureShot(page, directory, shot) {
+  if (wordCaptions) return captureWordShot(page, directory, shot);
   const animationDuration = await setupShot(page, shot);
   const frames = shotEvents(shot, animationDuration);
   const captures = [];
@@ -330,7 +372,8 @@ try {
     ].join(",");
     await ffmpeg([
       "-y", "-f", "concat", "-safe", "0", "-i", list,
-      "-ss", String(start), "-i", recording, "-map", "0:v", "-map", "1:a",
+      "-i", recording, "-map", "0:v", "-map", "1:a",
+      "-af", `atrim=start=${start}:end=${end},asetpts=PTS-STARTPTS`,
       "-t", String(end - start), "-vf", videoFilter, "-c:v", "libx264",
       "-preset", "veryfast", "-crf", "17", "-c:a", "aac", "-b:a", "192k",
       "-movflags", "+faststart", temporaryVideo,
