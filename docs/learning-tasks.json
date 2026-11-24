@@ -2,6 +2,14 @@
   "schemaVersion": 1,
   "tasks": [
     {
+      "id": "taigi-bitter-melon",
+      "name": "〈苦瓜哪會苦〉台語朗讀",
+      "audience": [
+        "aiden"
+      ],
+      "path": "taigi-bitter-melon/"
+    },
+    {
       "id": "number-line-difference",
       "name": "數線長短差",
       "audience": [
