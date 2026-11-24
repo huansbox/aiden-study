@@ -1,0 +1,11 @@
+{
+  "id":"./",
+  "name":"奶奶的祕密盒子 · 閱讀心智圖",
+  "short_name":"奶奶的祕密盒子",
+  "lang":"zh-TW",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f7f5ee",
+  "theme_color":"#f7f5ee"
+}

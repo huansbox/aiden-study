@@ -1,0 +1,197 @@
+@font-face {
+  font-family: ZihiReading;
+  src: url('../assets/fonts/BpmfZihiSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  font-family: ZihiReading, 'Microsoft JhengHei', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.55;
+  color: #293f38;
+  background: #f7f5ee;
+}
+
+* { box-sizing: border-box; }
+html { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100dvh; }
+button, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+button:disabled { cursor: default; }
+a { color: #286557; }
+:focus-visible { outline: 3px solid #3269a1; outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+header, main {
+  max-width: 1240px;
+  margin: auto;
+  padding-inline: max(14px, env(safe-area-inset-left)) max(14px, env(safe-area-inset-right));
+}
+
+header { padding-block: 9px 4px; font-size: 16px; }
+main { padding-bottom: 16px; }
+h1 { margin: 0 0 8px; font-size: 26px; }
+h2 { margin: 0; font-size: 24px; }
+p { margin: 6px 0; }
+.muted, .step { font-size: 16px; color: #526e60; }
+.card { min-width: 0; border: 1px solid #dedfd3; border-radius: 16px; padding: 14px; background: #fffefa; }
+.workspace { display: grid; gap: 12px; align-items: start; }
+
+@media (min-width: 960px) {
+  .workspace { grid-template-columns: minmax(0, 54fr) minmax(0, 46fr); }
+}
+
+.hint { margin: 8px 0; border-radius: 8px; padding: 0 10px; background: #f3f1e7; }
+.hint summary { min-height: 44px; padding-block: 8px; cursor: pointer; font-size: 17px; }
+.hint p { margin: 0; padding-bottom: 8px; font-size: 19px; }
+.example-label { color: #526e60; font-size: 16px; margin-top: 10px; }
+.example {
+  margin: 0;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid #dce5d8;
+  border-radius: 12px;
+  background: #f2f7ee;
+  overflow-wrap: anywhere;
+}
+
+.example li + li { margin-top: 4px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.actions button, .navigation button {
+  min-height: 48px;
+  border: 1px solid #a6beb1;
+  border-radius: 10px;
+  padding: 4px 10px;
+  background: white;
+  font-size: 18px;
+}
+
+.actions .primary { flex: 1; color: white; border-color: #286557; background: #286557; }
+.actions button:disabled { opacity: .5; }
+.navigation { margin-top: 8px; }
+.navigation button { border-color: transparent; background: transparent; color: #286557; }
+#own-words { display: grid; gap: 8px; }
+#own-words label { font-size: 17px; }
+#own-words textarea {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  resize: vertical;
+  border: 1px solid #879e8c;
+  border-radius: 8px;
+  background: white;
+  padding: 5px 8px;
+  font-family: 'Microsoft JhengHei', system-ui, sans-serif;
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+#own-words .actions { margin-top: 0; }
+.map-card h2 { margin-bottom: 8px; font-size: 20px; }
+.mind-map {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(26px, 11%, 130px) minmax(0, 1fr);
+  align-items: start;
+  row-gap: clamp(16px, 2.5vw, 30px);
+  padding-block: 6px 10px;
+  font-size: 16px;
+}
+
+.map-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.map-lines path { fill: none; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
+.center-node {
+  grid-area: 2 / 1 / auto / -1;
+  justify-self: center;
+  border: 2px solid #286557;
+  border-radius: 999px;
+  padding: 5px 17px;
+  text-align: center;
+  background: #e4f0df;
+  line-height: 1.4;
+  z-index: 1;
+}
+
+.center-node span { display: block; white-space: nowrap; }
+.branch {
+  --branch-color: #50795e;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-width: 0;
+  z-index: 1;
+}
+
+.branch-1 { grid-area: 1 / 3; align-self: end; }
+.branch-2 { --branch-color: #9b7039; grid-area: 3 / 3; }
+.branch-3 { --branch-color: #5373a0; grid-area: 4 / 1 / auto / -1; align-items: center; }
+.branch-4 { --branch-color: #945f57; grid-area: 3 / 1; align-items: end; }
+.branch-5 { --branch-color: #746388; grid-area: 1 / 1; align-items: end; align-self: end; }
+.branch-1 h3, .branch-5 h3 { order: 1; }
+
+.branch h3 { max-width: 100%; margin: 0; font-size: inherit; }
+.branch h3 button {
+  text-align: start;
+  min-height: 44px;
+  border: 0;
+  border-radius: 5px;
+  padding: 0 3px;
+  background: #fffefa;
+  color: var(--branch-color);
+}
+
+.branch h3 button[aria-current] { background: #e4f0df; }
+.branch h3 button:disabled { color: #52605a; }
+.branch h3 button:not(:disabled):hover { text-decoration: underline; }
+.branch ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: start;
+  width: 100%;
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0 0 0 18px;
+}
+
+.branch-1 ul, .branch-5 ul { margin: 0 0 12px; }
+.branch-4 ul, .branch-5 ul { align-items: end; padding: 0 18px 0 0; }
+.branch-3 ul { width: min(100%, 620px); }
+
+.branch li { width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.keep-together { white-space: nowrap; }
+
+.parent-note { margin-top: 12px; font-size: 17px; color: #526e60; }
+.parent-note summary { cursor: pointer; }
+.copy-mode h1, .copy-mode .parent-note { display: none; }
+.copy-mode .workspace { display: block; }
+.copy-mode .mind-map { font-size: 24px; }
+.copy-mode #finish { margin-top: 8px; padding-block: 6px; font-size: 16px; }
+.copy-mode #finish .actions { margin-top: 4px; justify-content: space-between; }
+
+@media screen and (min-width: 960px) and (max-height: 780px) {
+  .copy-mode .mind-map { font-size: 22px; line-height: 1.4; row-gap: 16px; }
+}
+
+@media (max-width: 440px) {
+  h1, h2 { font-size: 22px; }
+  .card { padding: 10px; }
+  .example { font-size: 19px; }
+  .copy-mode .mind-map { font-size: 16px; }
+}
+
+/* Match the A4 content width before measuring the print connector positions. */
+body.printing main { width: 277mm; max-width: none; }
+body.printing .map-card { border: 0; padding: 0; }
+body.printing .mind-map { font-size: 16px; line-height: 1.55; row-gap: 24px; }
+body.printing .branch h3 button { min-height: 32px; }
+
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  header, h1, #guide, #finish, .parent-note, #save-status, #font-status { display: none !important; }
+  .workspace { display: block; }
+  .branch { break-inside: avoid; }
+  body { background: white; }
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

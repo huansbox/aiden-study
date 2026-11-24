@@ -64,6 +64,7 @@
 | [Native Camp 2026-09-16 Edon](learning-tasks/nativecamp-2026-09-16/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-16) |
 | [Native Camp 2026-09-14 Edon](learning-tasks/nativecamp-2026-09-14/) | 來源核對、自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-14) |
 | [Native Camp 回放複習試作](learning-tasks/nativecamp-review-pilot/) | 紙本口說；另供 App 自主題、口說與跨日複習。 | [不計分預覽](docs/nativecamp/preview.html?lesson=2026-09-15)、[孩子版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-child.pdf)、[家長版 PDF](https://github.com/huansbox/aiden-study/blob/master/learning-tasks/nativecamp-review-pilot/output/pdf/review-parent.pdf) |
+| [奶奶的祕密盒子閱讀心智圖](learning-tasks/grandmas-secret-box/) | 從奶奶收起小盒子、家人發現相片，到理解她思念爺爺並去醫院陪她。 | [網頁](docs/grandmas-secret-box-mind-map/) |
 | [付出比收穫更可貴閱讀心智圖](learning-tasks/giving-more-precious/) | 李斯特讓舞臺給蕭邦，並寬諒、指點為生活冒稱學生的姑娘。 | [網頁](docs/giving-more-precious-mind-map/) |
 | [正義女神阿絲特蕾亞閱讀心智圖](learning-tasks/astrea/) | 依故事順序選詞，從右上方順時針抄寫五條主枝。 | [網頁](docs/astrea-mind-map/) |
 | [一千根琴弦閱讀心智圖](learning-tasks/thousand-strings/) | 小雅的困境、盲師徒練琴、白紙秘方與希望、老師邀請運動。 | [網頁](docs/thousand-strings-mind-map/) |
