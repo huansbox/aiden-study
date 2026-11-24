@@ -14,7 +14,7 @@ const config = fileURLToPath(new URL('../worker/wrangler.jsonc', import.meta.url
 const repo = await realpath(fileURLToPath(new URL('../', import.meta.url)));
 export async function publishSite(id, args) {
   const practice = practiceFor(id);
-  if (!practice) throw Error('Choose taigi-bitter-melon or taigi-reading.');
+  if (!practice) throw Error('Choose taigi-bitter-melon, taigi-reading, or taigi-longan.');
   const {prefix} = practice;
   const [input, mode='inspect', expected] = args;
   if (!input || !['inspect','publish','verify'].includes(mode) || (mode !== 'inspect' && !/^[0-9a-f]{64}$/.test(expected || ''))) {

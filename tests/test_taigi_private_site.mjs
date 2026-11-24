@@ -7,7 +7,7 @@ const origin = 'https://kids.linshuhuan.com';
 const release = 'c'.repeat(64);
 const audio = `${release}/assets/reading.mp3`;
 
-for (const id of ['taigi-bitter-melon', 'taigi-reading']) {
+for (const id of ['taigi-bitter-melon', 'taigi-reading', 'taigi-longan']) {
   test(`${id} 的首頁、原音與字幕需要家庭 Cookie，Safari 可取指定音訊區間`, async () => {
     const base = origin + '/api/v1/' + id + '/';
     const prefix = 'c:' + id + ':';

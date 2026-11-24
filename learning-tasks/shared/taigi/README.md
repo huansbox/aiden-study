@@ -24,7 +24,7 @@ uv run --script learning-tasks/shared/taigi/verify_video.py <私用任務資料�
 
 ## 發布受保護練習頁
 
-先依各篇的重建指令產生私用部署資料夾。在 repo 根目錄執行下列指令，將作品 ID 與資料夾換成實際值。兩個 ID 是 `taigi-bitter-melon` 與 `taigi-reading`。
+先依各篇的重建指令產生私用部署資料夾。在 repo 根目錄執行下列指令，將作品 ID 與資料夾換成實際值。三個 ID 是 `taigi-bitter-melon`、`taigi-reading` 與 `taigi-longan`。
 
 ```sh
 node scripts/publish-taigi-site.mjs <作品-ID> <Dropbox 的 final/site 路徑> inspect

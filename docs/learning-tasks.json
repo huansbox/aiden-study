@@ -2,6 +2,14 @@
   "schemaVersion": 1,
   "tasks": [
     {
+      "id": "taigi-longan",
+      "name": "〈龍眼的滋味〉台語朗讀",
+      "audience": [
+        "aiden"
+      ],
+      "path": "taigi-longan/"
+    },
+    {
       "id": "taigi-bitter-melon",
       "name": "〈苦瓜哪會苦〉台語朗讀",
       "audience": [

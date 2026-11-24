@@ -1,5 +1,5 @@
 // All material must pass the same-origin device session check in worker.mjs.
-const lessons = ['taigi-bitter-melon', 'taigi-reading'];
+const lessons = ['taigi-bitter-melon', 'taigi-reading', 'taigi-longan'];
 
 export function practiceFor(id) {
   if (!lessons.includes(id)) return null;

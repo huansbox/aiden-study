@@ -32,6 +32,7 @@
 
 | 任務 | 找得到什麼 | 可用版本 |
 | --- | --- | --- |
+| [〈龍眼的滋味〉台語朗讀](learning-tasks/taigi-longan/) | 先看懂阿公家龍眼樹的家庭故事，再用學校原音跟讀，最後看紙本自己朗讀。 | [朗讀練習](docs/taigi-longan/?child=aiden) |
 | [〈苦瓜哪會苦〉台語朗讀](learning-tasks/taigi-bitter-melon/) | 先看懂家庭故事，再用學校原音跟讀，最後看紙本自己朗讀。 | [朗讀練習](docs/taigi-bitter-melon/?child=aiden) |
 | [〈阮小妹〉台語朗讀](learning-tasks/taigi-reading/) | 先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。 | [朗讀練習](docs/taigi-reading/?child=aiden) |
 | [四上後半冊家庭複習](learning-tasks/grade4-sem1-exam2/) | 四上後半冊數學U6–10、自然聲光與電路、社會信仰老街與作息節慶家庭複習。 | [家長備考速查 PDF](docs/parent/exam2-guide/) |

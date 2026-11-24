@@ -419,6 +419,48 @@
       }
     },
     {
+      "id": "task:taigi-longan",
+      "type": "task",
+      "name": "〈龍眼的滋味〉台語朗讀",
+      "audience": [
+        "aiden"
+      ],
+      "audienceLabel": "9 歲；四年級",
+      "status": "complete",
+      "statusNote": "六段、66 個跟讀片段、26 張微縮定格偶插圖，提供學校原音、0.85x 慢速跟讀、錄音回放與全篇逐字字幕影片（1288 次換色檢查通過）。交付追蹤 #283。",
+      "availability": "available",
+      "location": "aiden-study/learning-tasks/taigi-longan",
+      "source": {
+        "repo": "huansbox/aiden-study",
+        "ref": "master",
+        "paths": [
+          "learning-tasks/taigi-longan",
+          "docs/taigi-longan"
+        ],
+        "excludePaths": [],
+        "remote": false
+      },
+      "sourceUrl": "https://github.com/huansbox/aiden-study/tree/master/learning-tasks/taigi-longan",
+      "links": [
+        {
+          "label": "朗讀練習",
+          "url": "../taigi-longan/?child=aiden"
+        }
+      ],
+      "description": "先看懂阿公家龍眼樹的家庭故事，再用學校原音跟讀，最後看紙本自己朗讀。",
+      "eventDate": null,
+      "homePath": "taigi-longan/",
+      "groupId": null,
+      "groupName": null,
+      "created": null,
+      "updated": null,
+      "freshness": {
+        "state": "current",
+        "checkedAt": null,
+        "error": null
+      }
+    },
+    {
       "id": "task:taigi-bitter-melon",
       "type": "task",
       "name": "〈苦瓜哪會苦〉台語朗讀",
