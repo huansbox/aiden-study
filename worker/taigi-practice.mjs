@@ -1,6 +1,10 @@
 // All material must pass the same-origin device session check in worker.mjs.
-export const prefix = 'c:taigi-bitter-melon:';
-export const route = '/v1/taigi-bitter-melon/';
+const lessons = ['taigi-bitter-melon', 'taigi-reading'];
+
+export function practiceFor(id) {
+  if (!lessons.includes(id)) return null;
+  return {route: `/v1/${id}/`, prefix: `c:${id}:`};
+}
 export function contentType(file) {
   if (file === 'index.html') return 'text/html; charset=utf-8';
   if (file === 'assets/reading.mp3') return 'audio/mpeg';
@@ -14,7 +18,7 @@ const policy = {
 };
 const message = (status, text) => new Response(text, {status, headers: {...policy, 'Content-Type':'text/plain; charset=utf-8'}});
 
-export async function servePractice(request, kv, path) {
+export async function servePractice(request, kv, path, {route, prefix}) {
   if (!['GET', 'HEAD'].includes(request.method)) return message(405, '此頁僅供讀取。');
   if (path === route) {
     const release = await kv.get(prefix + 'active');

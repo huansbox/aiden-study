@@ -10,6 +10,14 @@
       "path": "taigi-bitter-melon/"
     },
     {
+      "id": "taigi-reading",
+      "name": "〈阮小妹〉台語朗讀",
+      "audience": [
+        "aiden"
+      ],
+      "path": "taigi-reading/"
+    },
+    {
       "id": "number-line-difference",
       "name": "數線長短差",
       "audience": [

@@ -123,6 +123,7 @@ def main() -> None:
             scene_fragments.append(fragment)
         paragraphs.append(paragraph)
 
+    template = template.replace("<!-- SCENE_FACTORY -->", (repo_source / "scene-factory.js").read_text())
     data = json.dumps(paragraphs, ensure_ascii=False)
     page = template.replace("<!-- SCENES -->", "\n".join(scene_fragments))
     page = page.replace("<!-- DATA -->", data.replace("<", "\\u003c"))

@@ -16,11 +16,11 @@ const own = byId("own");
 const paragraphSelect = byId("paragraph");
 const lineSelect = byId("line");
 const statusText = byId("status");
-const labels = {listen:"聽這一句", shadow:"跟著念這句", whole:"播放這一段", all:"從題名聽全篇", model:"聽學校", own:"聽我念"};
+const labels = {listen:"聽這一句", whole:"播放這一段", all:"播放全篇", model:"聽學校", own:"聽我念"};
 const imageCache = new Map();
 const cacheSize = 10;
 let chosen = 0, playback = null, capture = null, recordedUrl = "";
-let paintKey = "", paintRequest = 0;
+let paintKey = "", paintRequest = 0, painting = Promise.resolve();
 
 function imageFor(key) {
   if (imageCache.has(key)) {
@@ -49,18 +49,26 @@ function lastAt(items, second, field) {
   return index;
 }
 
-function screenAt(second, fixedLine) {
+function screenAt(second, fixedLine, preview = false) {
   const line = fixedLine || lines[Math.max(0, lastAt(lines, second, "captionAt"))];
-  const scene = reading.shots[Math.max(0, lastAt(reading.shots, second, "at"))];
-  const count = lastAt(line.karaoke, second, "start") + 1;
-  const key = JSON.stringify([line.id, scene.key, count]);
-  if (paintKey === key) return;
+  const animated = typeof window.taigiSceneAt === "function";
+  let artKey = "";
+  if (animated) {
+    window.taigiSceneAt(second, line, Boolean(playback && playback.kind !== "own" && !player.paused));
+  } else {
+    const shot = reading.shots[Math.max(0, lastAt(reading.shots, second, "at"))];
+    artKey = "art/" + (preview ? line.sceneKey : shot.key);
+  }
+  const count = preview ? 0 : lastAt(line.karaoke, second, "start") + 1;
+  const key = JSON.stringify([line.id, artKey, count]);
+  if (paintKey === key) return painting;
   paintKey = key;
   const request = ++paintRequest;
-  Promise.all([imageFor("art/" + scene.key), imageFor("caption/" + line.id)])
+  painting = Promise.all([artKey ? imageFor(artKey) : null, imageFor("caption/" + line.id)])
     .then(([art, caption]) => {
       if (request !== paintRequest) return;
-      ctx.drawImage(art, 0, 0, 1920, 1080);
+      if (art) ctx.drawImage(art, 0, 0, 1920, 1080);
+      else ctx.clearRect(0, 0, 1920, 1080);
       const edge = count ? line.edges[count - 1] : 0;
       if (edge < 1920) {
         ctx.drawImage(caption, edge, 0, 1920 - edge, 180, edge, 858, 1920 - edge, 180);
@@ -72,10 +80,14 @@ function screenAt(second, fixedLine) {
     }).catch(() => {
       if (request === paintRequest) {
         paintKey = "";
-        statusText.textContent = "漫畫讀取失敗，請重新開啟練習頁。";
+        statusText.textContent = "畫面讀取失敗，請重新開啟練習頁。";
       }
     });
+  return painting;
 }
+
+// The video renderer seeks on the same school recording timeline as the practice page.
+window.taigiScreenAt = second => screenAt(second);
 
 function stop() {
   if (playback) {
@@ -83,8 +95,12 @@ function stop() {
     clearTimeout(playback.timer);
     byId(playback.kind).textContent = labels[playback.kind];
   }
+  const stopped = playback;
   playback = null;
   player.pause();
+  if (stopped && stopped.kind !== "own" && window.taigiSceneAt) {
+    screenAt(Math.min(stopped.end, player.currentTime), stopped.single ? stopped.last : undefined);
+  }
   ownPlayer.pause();
 }
 
@@ -100,31 +116,37 @@ function followLine(line) {
 function finish(active) {
   if (playback !== active) return;
   stop();
+  if (active.kind !== "own") {
+    if (!active.single) followLine(active.last);
+    screenAt(active.end, active.last);
+  }
   if (active.kind === "own" || active.kind === "model") {
     recordStatus.textContent = active.kind === "own" ? "可以重錄一次，或換下一句。" : "再按「聽我念」比較看看。";
     return;
   }
-  if (!active.single) followLine(active.last);
-  screenAt(active.end, active.last);
   statusText.textContent = active.kind === "all" ? "全篇聽完了，換你看著紙本念一次。" :
     active.kind === "whole" ? "這一段聽完了，換你看著紙本念一次。" : "可以再聽一次，或換下一句。";
 }
 
 function updatePlayback(active) {
-  if (active !== playback) return;
+  if (active !== playback || active.awaitingMetadata) return;
   const t = player.currentTime;
   if (t >= active.end) return finish(active);
-  screenAt(t, active.single ? active.last : undefined);
+  const line = active.single ? active.last :
+    lines[Math.max(active.firstIndex, lastAt(lines, t, "captionAt"))];
+  screenAt(t, line);
   if (!active.single) {
-    const line = lines[Math.max(0, lastAt(lines, t, "captionAt"))];
     if (active.current !== line) {
       active.current = line;
       followLine(line);
       statusText.textContent = active.kind === "all" ? "正在播放全篇。" : "正在播放這一段。";
       const next = lines[lines.indexOf(line) + 1];
       if (next) {
-        const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
-        Promise.all([imageFor("art/" + shot.key), imageFor("caption/" + next.id)]).catch(() => {});
+        imageFor("caption/" + next.id).catch(() => {});
+        if (!window.taigiSceneAt) {
+          const shot = reading.shots[Math.max(0, lastAt(reading.shots, next.captionAt, "at"))];
+          imageFor("art/" + shot.key).catch(() => {});
+        }
       }
     }
   }
@@ -132,24 +154,29 @@ function updatePlayback(active) {
 
 async function togglePlay(kind) {
   const same = playback?.kind === kind;
+  const comparing = kind === "own" || kind === "model";
+  const status = comparing ? recordStatus : statusText;
   stop();
-  if (same) { statusText.textContent = "已停止。"; return; }
+  statusText.textContent = recordStatus.textContent = "";
+  if (same) { status.textContent = "已停止。"; return; }
   if (capture) { cancelCapture(); recordStatus.textContent = "已取消錄音。"; }
   const group = groups[paragraphSelect.selectedIndex];
   const first = kind === "all" ? lines[0] : kind === "whole" ? group.lines[0] : lines[chosen];
   const last = kind === "all" ? lines[lines.length-1] : kind === "whole" ? group.lines[group.lines.length-1] : first;
-  const active = {kind, last, single:first === last,
+  const active = {kind, last, firstIndex:lines.indexOf(first), single:first === last,
     start:kind === "all" ? reading.start : first.start, end:kind === "all" ? reading.end : last.end};
   playback = active;
   byId(kind).textContent = "停止播放";
-  statusText.textContent = kind === "shadow" ? "讓學校先念一兩個音，再跟著念。" : "";
+  if (comparing) status.textContent = kind === "own" ? "正在播放你的錄音。" : "正在播放學校示範。";
   try {
     if (kind === "own") {
       ownPlayer.src = recordedUrl;
       await ownPlayer.play();
       return;
     }
-    player.currentTime = active.start;
+    // Keep play() in the tap handler even when mobile Safari defers metadata loading.
+    active.awaitingMetadata = player.readyState < HTMLMediaElement.HAVE_METADATA;
+    if (!active.awaitingMetadata) player.currentTime = active.start;
     screenAt(active.start, first);
     await player.play();
     if (playback !== active) return;
@@ -168,7 +195,7 @@ async function togglePlay(kind) {
   } catch {
     if (playback !== active) return;
     stop();
-    (kind === "own" || kind === "model" ? recordStatus : statusText).textContent = "音檔播放失敗，請再試一次。";
+    status.textContent = "音檔播放失敗，請再試一次。";
   }
 }
 
@@ -180,7 +207,7 @@ function selectLine(index) {
   recordPanel.open = false;
   recordStatus.textContent = statusText.textContent = "";
   presentLine(index);
-  screenAt(lines[index].start - 0.001, lines[index]);
+  screenAt(lines[index].start, lines[index], true);
 }
 
 function presentLine(index) {
@@ -195,9 +222,8 @@ function presentLine(index) {
   paragraphSelect.selectedIndex = groupIndex;
   lineSelect.selectedIndex = group.lines.indexOf(line);
   byId("hint").textContent = line.hint || "";
-  byId("hint-panel").hidden = !line.hint;
   byId("meaning").textContent = line.meaning || "";
-  byId("meaning-panel").hidden = !line.meaning;
+  byId("meaning-panel").hidden = !line.meaning && !line.hint;
   byId("previous").disabled = index === 0;
   byId("next").disabled = index === lines.length - 1;
 }
@@ -235,6 +261,7 @@ function cancelCapture() {
 
 async function startCapture() {
   stop();
+  statusText.textContent = "";
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
     recordStatus.textContent = "這個瀏覽器無法錄音。可以用 Chrome 開啟這個練習檔再試。";
     return;
@@ -305,7 +332,10 @@ recordPanel.addEventListener("toggle", () => {
     cancelCapture();
     recordStatus.textContent = "";
   }
-  if (playback?.kind === "own" || playback?.kind === "model") stop();
+  if (playback?.kind === "own" || playback?.kind === "model") {
+    stop();
+    recordStatus.textContent = "已停止。";
+  }
 });
 window.addEventListener("pagehide", () => {
   stop();
@@ -337,6 +367,11 @@ for (const media of [player, ownPlayer]) {
     if (media.ended && ownsPlayback()) finish(playback);
   });
 }
+player.addEventListener("loadedmetadata", () => {
+  if (!playback?.awaitingMetadata) return;
+  player.currentTime = playback.start;
+  playback.awaitingMetadata = false;
+});
 player.addEventListener("timeupdate", () => {
   if (playback && playback.kind !== "own" && !player.paused) updatePlayback(playback);
 });
@@ -348,7 +383,5 @@ lineSelect.addEventListener("change", () => selectLine(lines.indexOf(groups[para
 byId("previous").addEventListener("click", () => selectLine(chosen - 1));
 byId("next").addEventListener("click", () => selectLine(chosen + 1));
 document.title = reading.title + "｜台語朗讀練習";
-byId("title").textContent = reading.title;
-byId("author").textContent = "作者　" + reading.author;
 player.src = assets.audio;
 selectLine(reading.intro.length);

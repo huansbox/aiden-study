@@ -31,7 +31,10 @@
       "audienceLabel": "四年級；家長可陪讀",
       "description": "先看懂校內講稿的句意，再聽學校示範並逐句跟讀，最後回到紙本朗讀全篇。",
       "reusable": "配合句意切換動畫畫面、學校朗讀切句。",
-      "availability": "private"
+      "availability": "available",
+      "homePath": "taigi-reading/",
+      "source": { "paths": ["learning-tasks/taigi-reading", "docs/taigi-reading"] },
+      "links": [{ "label": "朗讀練習", "url": "../taigi-reading/?child=aiden" }]
     },
     {
       "id": "grade4-sem1-exam2",
