@@ -4,7 +4,7 @@
 
 ## 畫風比較
 
-私用預覽放在 Dropbox `mywork/aiden-study/taigi-bitter-melon/style-mocks/`。用相同的試吃情節比較 10 種畫風，每組先看到孩子嚐到微苦的反應，再看到吞下後發現回甘。家長挑選畫風後，先做短動畫驗證，再從第一段開始製作練習。
+私用預覽放在 Dropbox `mywork/aiden-study/taigi-bitter-melon/style-mocks/index.html`。用相同的試吃情節比較 10 種畫風，每組先看到孩子嚐到微苦的反應，再看到吞下後發現回甘。家長挑選畫風後，先做短動畫驗證，再從第一段開始製作練習。
 
 ## 朗讀時間軸
 

@@ -378,7 +378,7 @@
       ],
       "audienceLabel": "9 歲；四年級",
       "status": "in-progress",
-      "statusNote": "比較 10 組畫風，選定後製作逐字字幕、跟讀練習與全篇影片。追蹤 #276。",
+      "statusNote": "10 組畫風已可比較，待家長選定後製作逐字字幕、跟讀練習與全篇影片。追蹤 #276。",
       "availability": "private",
       "location": "aiden-study/learning-tasks/taigi-bitter-melon",
       "source": {
@@ -396,8 +396,8 @@
       "eventDate": null,
       "groupId": null,
       "groupName": null,
-      "created": null,
-      "updated": null,
+      "created": "2026-11-24",
+      "updated": "2026-11-24",
       "freshness": {
         "state": "current",
         "checkedAt": null,
