@@ -1060,6 +1060,7 @@ const State = {
     const modes = masteredModesFromEntry(state.mastered[u]);
     const targetModes = mode ? [normalizePracticeMode(mode)] : Object.keys(modes);
     if (targetModes.length === 0) return;
+    const choiceBeforeReset = modes[DEFAULT_PRACTICE_MODE] || [];
     if (subtopic || StudyPrivatePack.UNITS.includes(unit)) {
       for (const m of targetModes) {
         modes[m] = (modes[m] || []).filter(id => {
@@ -1069,6 +1070,17 @@ const State = {
       }
     } else {
       for (const m of targetModes) modes[m] = [];
+    }
+    if (targetModes.includes(DEFAULT_PRACTICE_MODE) && StudyScienceTopics.topicsForUnit(unit, packManifest).some(topic => topic.positions)) {
+      // A completed item in an old mixed batch must not become pending again after a reset.
+      const resetIds = new Set(choiceBeforeReset.filter(id => !modes[DEFAULT_PRACTICE_MODE].includes(id)));
+      for (const label of KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).subtopics) {
+        const key = challengeKey(unit, label);
+        const batch = State.getBatch(key);
+        if (batch?.some(id => resetIds.has(id))) {
+          state.challenge[key] = { ...state.challenge[key], batch: batch.filter(id => !resetIds.has(id)) };
+        }
+      }
     }
     state.mastered[u] = { modes };
     Storage.save(state);

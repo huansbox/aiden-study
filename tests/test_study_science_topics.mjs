@@ -151,6 +151,14 @@ test("final science topics partition the original shards and keep whole-unit and
   e.app.State.addMastered(29, soundLight.ids[1]);
   e.app.renderHome();
   assert.doesNotMatch(e.node("page-home").innerHTML, /接續上次/);
+  const [doneSound, doneShadow, pendingSound] = [0, 1, 2].map(index => soundLight.ids[index]);
+  for (const id of [doneSound, doneShadow, pendingSound]) e.app.map.set(id, { id, unit: 29, subtopic: "聲音與光" });
+  e.app.State.saveBatch("29/聲音與光", [doneSound, doneShadow, pendingSound]);
+  e.app.State.resetMastered(29, sound, "choice");
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), [doneShadow, pendingSound]);
+  e.app.State.resetMastered(29);
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), [pendingSound]);
+  assert.equal(e.app.State.doneCount(29, sound), 0);
   assert.equal(topics.topicForQuestion({ unit: 29, id: future.ids[0], subtopic: "聲音與光" }, manifest), null);
   assert.equal(topics.topicsForUnit(29).length, 0, "manual packs keep their original concepts");
 });
