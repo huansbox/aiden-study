@@ -162,3 +162,17 @@ test("final science topics partition the original shards and keep whole-unit and
   assert.equal(topics.topicForQuestion({ unit: 29, id: future.ids[0], subtopic: "聲音與光" }, manifest), null);
   assert.equal(topics.topicsForUnit(29).length, 0, "manual packs keep their original concepts");
 });
+
+test("whole-unit reset also removes already completed items from an imported broad-topic batch", async () => {
+  const pack = scienceSyntheticPack();
+  const question = pack.questions.find(q => q.unit === 20);
+  question.unit = 29;
+  question.subtopic = "聲音與光";
+  const e = await boot();
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.addMastered(29, question.id);
+  e.app.State.saveBatch("29/聲音與光", [question.id]);
+  e.app.State.resetMastered(29);
+  assert.equal(e.app.State.doneCount(29), 0);
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), []);
+});

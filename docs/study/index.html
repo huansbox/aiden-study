@@ -1071,7 +1071,7 @@ const State = {
     } else {
       for (const m of targetModes) modes[m] = [];
     }
-    if (targetModes.includes(DEFAULT_PRACTICE_MODE) && StudyScienceTopics.topicsForUnit(unit, packManifest).some(topic => topic.positions)) {
+    if (targetModes.includes(DEFAULT_PRACTICE_MODE) && StudyScienceTopics.hasCatalogTopics(unit)) {
       // A completed item in an old mixed batch must not become pending again after a reset.
       const resetIds = new Set(choiceBeforeReset.filter(id => !modes[DEFAULT_PRACTICE_MODE].includes(id)));
       for (const label of KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).subtopics) {
@@ -1797,7 +1797,7 @@ function renderSubtopics(u) {
     ? topics.map(topic => ({ key: topic.key, label: topic.label }))
     : (u.subtopics || (packManifest && StudyPrivatePack.UNITS.includes(u.id) ? [...new Set(StudyPackCatalog.metadata(packManifest).filter(q => q.unit === u.id).map(q => q.subtopic))] : StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []))
       .map(st => ({ key: st, label: st }));
-  if (topics.some(topic => topic.positions)) {
+  if (packManifest && StudyScienceTopics.hasCatalogTopics(u.id)) {
     const mastered = State.getMasteredSet(u.id);
     for (const key of u.subtopics || []) {
       const batch = State.getBatch(challengeKey(u.id, key));

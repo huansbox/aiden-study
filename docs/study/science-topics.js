@@ -100,6 +100,7 @@
   const byKey = new Map(definitions.map(topic => [topic.key, topic]));
   const bySubtopic = new Map(definitions.flatMap(topic => (topic.subtopics || []).map(subtopic => [`${topic.unit}/${subtopic}`, topic])));
   const topicsForUnit = (unit, manifest) => definitions.filter(topic => topic.unit === unit && (manifest || !topic.positions));
+  const hasCatalogTopics = unit => definitions.some(topic => topic.unit === unit && topic.positions);
   const catalogTopics = new WeakMap();
   function topicsById(manifest) {
     let byId = catalogTopics.get(manifest);
@@ -130,5 +131,5 @@
     return q.subtopic === selection; // 舊細標籤的進度與批次仍可精確讀取。
   }
   const labelFor = selection => byKey.get(selection)?.label || selection;
-  root.StudyScienceTopics = { topicsForUnit, topicForQuestion, isTopicSelection, matches, labelFor };
+  root.StudyScienceTopics = { topicsForUnit, hasCatalogTopics, topicForQuestion, isTopicSelection, matches, labelFor };
 })(typeof window !== "undefined" ? window : globalThis);
