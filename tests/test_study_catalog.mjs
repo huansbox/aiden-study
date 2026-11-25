@@ -1,5 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { IDBFactory } from "fake-indexeddb";
 import { buildCatalog } from "../scripts/build_private_study_catalog.mjs";
 import { expandedSyntheticPack, scienceSyntheticPack, socialTopicsSyntheticPack, socialUnitTwoSyntheticPack, ids } from "./helpers/synthetic-study-pack.mjs";
@@ -274,4 +277,31 @@ test("legacy subset cache cannot finish backfill before all manifest unit IDs ar
   assert.equal(reloaded.app.State.doneCount(16),3);
   for(const id of selected.slice(0,3)) assert.ok(!reloaded.app.quiz.queue.includes(id));
   assert.equal(reloaded.app.state._needMasteredBackfill,undefined);
+});
+
+test("Pages 發布的 JSON 不含 Study 私用來源、家庭題包、目錄或分包", async () => {
+  const pack = expandedSyntheticPack();
+  const { manifest, shards } = await buildCatalog(pack, pack);
+  function isPrivateStudyFile(value) {
+    if (value?.packId !== pack.packId || !Number.isInteger(value.schemaVersion)) return false;
+    if ([value.questions, value.shards, value.entries].some(Array.isArray)) return true;
+    // 私用 curated 與公開 mapping 都有 items，只有 curated 的列含 question。
+    return Array.isArray(value.items) && value.items.some(row => row?.question);
+  }
+  const version = { packId: pack.packId, schemaVersion: 1, revision: 1 };
+  const curated = { ...version, items: [{ question: pack.questions[0] }] };
+  const explanations = { ...version, entries: [{ id: pack.questions[0].id, text: "Synthetic" }] };
+  for (const file of [curated, explanations, pack, manifest, ...Array.from(shards.values(), raw => JSON.parse(raw))]) {
+    assert.equal(isPrivateStudyFile(file), true);
+  }
+  assert.equal(isPrivateStudyFile({ ...version, items: [{ appId: pack.questions[0].id }] }), false);
+
+  const root = join(import.meta.dirname, "..");
+  const tracked = execFileSync("git", ["ls-files", "-z", "--", "docs/*.json"], { cwd: root, encoding: "utf8" });
+  const paths = tracked.split("\0").filter(Boolean);
+  assert.ok(paths.includes("docs/study/questions.json"));
+  for (const path of paths) {
+    const value = JSON.parse(readFileSync(join(root, path), "utf8"));
+    assert.equal(isPrivateStudyFile(value), false, path);
+  }
 });

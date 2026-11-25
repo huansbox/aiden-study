@@ -38,6 +38,7 @@ export async function boot(st = storage(), child = "test-child", ports = {}) {
     fetch: async (url, init) => { requests.push(url); if (ports.fetch && String(url).startsWith("https://")) return ports.fetch(url, init); return { ok: true, json: async () => structuredClone(url === "./questions.json" ? publicQuestions : url === "../shared/rewards.json" ? rewardManifest : {}) }; },
   });
   ctx.window = ctx;
+  if (ports.auth) ctx.KidsAuth = ports.auth;
   if (ports.family) ctx.KidsFamily = { homeHref: () => "/", mount: () => ({...ports.family, profile: () => ({apps:["study"], archivedStudyUnits:[], ...ports.family.profile()})}) };
   // Test-only publication state; never changes the production metadata file.
   const core = read("docs/shared/family-core.js").replace(/(\{"id":(\d+),[^\n]+"published":)false/g,

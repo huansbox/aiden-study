@@ -4,6 +4,7 @@ import vm from "node:vm";
 import { readFileSync } from "node:fs";
 import worker from "../worker/worker.mjs";
 import { kvStub } from "../worker/kv-stub.mjs";
+import { boot, publicQuestions, storage } from "./helpers/study-harness.mjs";
 import { expandedSyntheticPack } from "./helpers/synthetic-study-pack.mjs";
 const origin = "https://kids.linshuhuan.com";
 const file = (p) =>
@@ -109,7 +110,7 @@ function browser({
     },
   };
 }
-test("每個儲存容器獨立首次登入；重開依 Cookie 記住，localStorage 不保存憑證", async () => {
+test("每個入口以 Cookie 各自維持連線；重開可沿用，登出只影響自己的入口", async () => {
   const safari = browser();
   await safari.A.ready;
   assert.equal(safari.A.state.status, "required");
@@ -125,6 +126,10 @@ test("每個儲存容器獨立首次登入；重開依 Cookie 記住，localStor
   assert.equal(icon.A.state.status, "required");
   await icon.A.connect("test-key");
   assert.notEqual(icon.jar.cookie, safari.jar.cookie);
+  await safari.A.disconnect();
+  assert.equal((await reopened.A.refresh()).status, "required");
+  assert.equal((await icon.A.refresh()).status, "connected");
+  assert.equal((await icon.F.settings()).available, true);
 });
 test("舊帶 key 網址與已存金鑰自動轉移，保留 child/hash，只在 Cookie 確認後清舊 key", async () => {
   for (const search of ["?child=aiden&k=test-key#keep", "?child=bingpu"]) {
@@ -235,4 +240,64 @@ test("練習入口只把取得過的設定視為可用，首次斷線不可使�
   const cached = h.F.attach("study", "aiden");
   await cached.ready;
   assert.equal(cached.hasSettings(), true);
+});
+
+test("Study 切換孩子時，前一頁延遲的同步只更新原孩子，另一個入口重開仍各自保留作答", async () => {
+  const local = storage();
+  const device = browser({ storage: local.map });
+  await device.A.ready;
+  await device.A.connect("test-key");
+  const first = await boot(local, "test-a", { auth: device.A });
+  const [questionA, questionB] = publicQuestions.filter(q => q.unit === 5 && q.type === "multiple_choice");
+  function answer(page, question) {
+    page.app.State.setSubject("math");
+    page.app.State.saveBatch("5", [question.id]);
+    page.app.startQuiz("full", 5);
+    page.app.submitAnswer(question.answer);
+    assert.deepEqual(Array.from(page.app.State.getMasteredSet(5)), [question.id]);
+  }
+  const localProgress = child => JSON.parse(local.getItem(`study:progress:${child}`));
+  const cloudProgress = async child => JSON.parse(await device.env.KV.get(`p:${child}:study`));
+  answer(first, questionA);
+  const expectedA = localProgress("test-a");
+
+  // 將 A 這輪的 GET 回應留到 B 已作答、已同步才交回，讓 A 的後續 PUT 在 B 之後發生。
+  const received = Promise.withResolvers();
+  const resume = Promise.withResolvers();
+  const send = device.A.fetch;
+  device.A.fetch = async (url, init) => {
+    const response = await send(url, init);
+    if (new URL(url).pathname === "/api/v1/progress/test-a/study" && init.method === "GET") {
+      received.resolve();
+      await resume.promise;
+    }
+    return response;
+  };
+  const syncingA = first.window._syncNow();
+  await Promise.race([received.promise, syncingA.then(() => assert.fail("A 未送出同步讀取"))]);
+  const second = await boot(local, "test-b", { auth: device.A });
+  assert.equal(second.app.State.doneCount(5), 0);
+  answer(second, questionB);
+  await second.window._syncNow();
+  const expectedB = localProgress("test-b");
+  const savedB = await cloudProgress("test-b");
+  assert.deepEqual(savedB.data, expectedB);
+  assert.deepEqual(localProgress("test-a"), expectedA);
+
+  resume.resolve();
+  await syncingA;
+  assert.deepEqual((await cloudProgress("test-a")).data, expectedA);
+  assert.deepEqual(await cloudProgress("test-b"), savedB);
+  assert.deepEqual(localProgress("test-b"), expectedB);
+
+  // 第二個入口沒有任何本機進度，兩份作答都必須由 Worker 還原。
+  const fresh = storage();
+  const other = browser({ env: device.env, storage: fresh.map });
+  await other.A.ready;
+  await other.A.connect("test-key");
+  for (const [child, question] of [["test-a", questionA], ["test-b", questionB]]) {
+    const page = await boot(fresh, child, { auth: other.A });
+    assert.deepEqual(Array.from(page.app.State.getMasteredSet(5)), [question.id]);
+    assert.deepEqual(Object.keys(page.app.state.stats), [question.id]);
+  }
 });
