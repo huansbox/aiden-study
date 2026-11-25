@@ -57,7 +57,7 @@
     const state = { pack, subject: "math", unit: StudyPrivatePack.UNITS[0], subtopic: "", questionIndex: 0, partIndex: 0, values: [], result: "", revealed: false, destroyed: false };
     const unitsForSubject = () => SUBJECT_UNITS[state.subject].filter((unit) => StudyPrivatePack.UNITS.includes(unit));
     const questionsForUnit = () => pack.questions.filter((q) => q.unit === state.unit);
-    const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic));
+    const filtered = () => questionsForUnit().filter((q) => StudyScienceTopics.matches(q, state.subtopic, manifest));
     const current = () => filtered()[state.questionIndex] || null;
     function clearAnswer() {
       operationBinding?.destroy(); operationBinding = null;
@@ -75,7 +75,7 @@
     }
     function normalizeSelection() {
       const unitQuestions = questionsForUnit();
-      if (state.subtopic && !unitQuestions.some((q) => StudyScienceTopics.matches(q, state.subtopic))) state.subtopic = "";
+      if (state.subtopic && !unitQuestions.some((q) => StudyScienceTopics.matches(q, state.subtopic, manifest))) state.subtopic = "";
       const list = filtered();
       if (state.questionIndex < 0 || state.questionIndex >= list.length) state.questionIndex = 0;
       const q = current();
@@ -128,9 +128,9 @@
       const circuitScrollLeft = host.querySelector?.(".circuit-scroll")?.scrollLeft || 0;
       normalizeSelection();
       const unitQuestions = questionsForUnit();
-      const scienceTopics = StudyScienceTopics.topicsForUnit(state.unit);
+      const scienceTopics = StudyScienceTopics.topicsForUnit(state.unit, manifest);
       const concepts = scienceTopics.length
-        ? scienceTopics.filter((topic) => unitQuestions.some((q) => StudyScienceTopics.matches(q, topic.key)))
+        ? scienceTopics.filter(topic => unitQuestions.some(q => StudyScienceTopics.matches(q, topic.key, manifest)))
           .map((topic) => [topic.key, topic.label])
         : [...new Set(unitQuestions.map((q) => q.subtopic))].map((concept) => [concept, concept]);
       const list = filtered(), q = current();
@@ -148,7 +148,7 @@
           <label class="preview-question-jump"><span class="preview-visually-hidden">跳到題目</span><select data-action="question" aria-label="跳到題目，目前第 ${state.questionIndex + 1} 題，共 ${list.length} 題">${list.map((_, index) => `<option value="${index}" ${state.questionIndex === index ? "selected" : ""}>第 ${index + 1} 題／共 ${list.length} 題</option>`).join("")}</select></label>
           <button type="button" data-action="next-question" ${state.questionIndex === list.length - 1 ? "disabled" : ""}>下一題</button>
         </nav>` : ""}
-        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${StudyMathOperations.moduleFor(q) ? StudyMathOperations.labelFor(q) : q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "circuit_connect" ? "畫電路" : q.type === "choice_set" ? "選出所有符合項目" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
+        ${q ? `<article class="preview-card${q.type === "grouped_choice" ? " preview-group-card" : ""}"><p class="preview-meta">${esc(UNITS.get(q.unit))}／${esc(StudyScienceTopics.topicForQuestion(q, manifest)?.label || (scienceTopics.length ? "整單元練習" : q.subtopic))}／${StudyMathOperations.moduleFor(q) ? StudyMathOperations.labelFor(q) : q.type === "multiple_choice" ? `${{ 2: "二", 3: "三", 4: "四" }[q.options.length]}選一` : q.type === "true_false" ? "是非題" : q.type === "circuit_connect" ? "畫電路" : q.type === "choice_set" ? "選出所有符合項目" : q.type === "grouped_choice" ? `整組選答（${q.parts.length} 小題）` : `填空（${q.blanks.length} 空）`}</p>
           ${q.type === "grouped_choice" ? '<div class="preview-group-context">' : ""}${q.type === "circuit_connect" ? "" : StudyMaterial.render(q.material)}${StudyMathOperations.moduleFor(q) === globalThis.StudyMathInteractions ? "" : `<div class="preview-question">${esc(q.text)}</div>`}${q.type === "grouped_choice" ? '</div><div class="preview-group-work">' : ""}${answerArea(q)}
           <div class="preview-answer-actions"><button type="button" data-action="check" ${(StudyMathOperations.moduleFor(q) ? StudyMathOperations.moduleFor(q).complete(q, state.operation) : StudyAnswer.isFinalMath(q) && ["fill_in_blank", "choice_set"].includes(q.type) ? StudyMathInput.complete(q, state.math) : q.type === "circuit_connect" ? StudyCircuit.complete(state.circuit) : q.type === "fill_in_blank" ? StudyAnswer.hasCompleteBlanks(q, state.values) : state.values.every((value) => String(value).trim())) ? "" : "disabled"}>確認答案</button><button type="button" class="secondary" data-action="reveal">揭答與解說</button><button type="button" class="secondary" data-action="retry-answer">清除重試</button></div>
           ${state.result ? `<p class="preview-feedback ${state.result}">${state.result === "correct" ? "答對了。這只是家長試玩，不會留下紀錄。" : "還沒答對，可以修改後再試一次，或查看答案與解說。"}</p>` : ""}

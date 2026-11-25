@@ -1,6 +1,11 @@
 /* 四上自然與社會練習主題；保留既有檔名/API。細標籤仍是題包 metadata 與舊進度的原始名稱。 */
 (function(root) {
   "use strict";
+  // Rev25 retained these immutable shards. Positions are zero-based in descriptor.ids,
+  // so the public topic map needs no private IDs, source locators, or question text.
+  const soundLight = "547f3bea37dced529508819d2b9b411d3e9c295d84a20fd7ba80993e127b0bf5";
+  const electricity = "04a9b79f26a46bdbfbe15f1a901c427bc05797794c1e6cf8a48f10935fe82748";
+  const circuitActivity = "fcfbc866e9592fc1f40518b5c9fdbfb8ac9e32c0ff1202494e17dd37e9d4d8de";
   const definitions = [
     { unit: 20, key: "@science-topic:S1a", label: "地表物質", subtopics: [
       "S1a 土壤的組成", "S1a 岩石中的礦物與用途", "S1a 砂質土壤與水稻栽培",
@@ -57,20 +62,74 @@
       "器物用途的今昔對照", "傳統器物的功能", "傳統住屋與生活器物", "傳統生活器物",
       "塑膠廢棄物與環境", "減塑與重複使用", "塑膠材料與減塑理由",
       "生活器物的今昔改變與減塑", "現代生活器物與環境"
-    ] }
+    ] },
+    { unit: 29, key: "@science-topic:S3-sound", label: "聲音的產生與傳播", positions: {
+      [soundLight]: [0, 2, 5, 6, 12]
+    } },
+    { unit: 29, key: "@science-topic:S3-light-sources", label: "光源與看見物體", positions: {
+      [soundLight]: [3, 21, 23, 28, 30, 34, 38, 40]
+    } },
+    { unit: 29, key: "@science-topic:S3-shadows", label: "光直線前進與影子", positions: {
+      [soundLight]: [1, 16, 18, 19, 22, 24, 25, 26, 29, 31, 33, 37, 43, 46, 47, 48, 49, 50, 51, 52]
+    } },
+    { unit: 29, key: "@science-topic:S3-reflection", label: "鏡面與光的反射", positions: {
+      [soundLight]: [4, 8, 10, 17, 27, 32, 36, 42, 44, 45]
+    } },
+    { unit: 29, key: "@science-topic:S3-applications", label: "生活中的反光與聲光訊號", positions: {
+      [soundLight]: [7, 9, 11, 13, 14, 15, 20, 35, 39, 41]
+    } },
+    { unit: 30, key: "@science-topic:S4-circuit", label: "電池、燈泡與通路", positions: {
+      [electricity]: [0, 2, 4, 25, 28, 33, 34, 35, 41, 42], [circuitActivity]: [0]
+    } },
+    { unit: 30, key: "@science-topic:S4-conductors", label: "導體、絕緣與開關", positions: {
+      [electricity]: [8, 20, 30, 31, 44]
+    } },
+    { unit: 30, key: "@science-topic:S4-series-parallel", label: "串聯、並聯與亮度", positions: {
+      [electricity]: [3, 5, 9, 21, 23, 26, 27, 32, 36, 47, 48, 49, 50]
+    } },
+    { unit: 30, key: "@science-topic:S4-devices", label: "小馬達與 LED", positions: {
+      [electricity]: [1, 11, 12, 13, 24, 37, 43]
+    } },
+    { unit: 30, key: "@science-topic:S4-safety", label: "用電安全與電池回收", positions: {
+      [electricity]: [6, 7, 10, 29, 40, 45, 46]
+    } },
+    { unit: 30, key: "@science-topic:S4-energy", label: "生活用電與節電", positions: {
+      [electricity]: [14, 15, 16, 17, 18, 19, 22, 38, 39]
+    } }
   ];
   const byKey = new Map(definitions.map(topic => [topic.key, topic]));
-  const bySubtopic = new Map(definitions.flatMap(topic => topic.subtopics.map(subtopic => [`${topic.unit}/${subtopic}`, topic])));
-  const topicsForUnit = unit => definitions.filter(topic => topic.unit === unit);
-  const topicForQuestion = q => bySubtopic.get(`${q.unit}/${q.subtopic}`) || null;
+  const bySubtopic = new Map(definitions.flatMap(topic => (topic.subtopics || []).map(subtopic => [`${topic.unit}/${subtopic}`, topic])));
+  const topicsForUnit = (unit, manifest) => definitions.filter(topic => topic.unit === unit && (manifest || !topic.positions));
+  const hasCatalogTopics = unit => definitions.some(topic => topic.unit === unit && topic.positions);
+  const catalogTopics = new WeakMap();
+  function topicsById(manifest) {
+    let byId = catalogTopics.get(manifest);
+    if (!byId) {
+      byId = new Map();
+      for (const shard of manifest.shards) {
+        for (const topic of topicsForUnit(shard.unit, manifest)) {
+          for (const position of topic.positions?.[shard.hash] || []) {
+            const id = shard.ids[position];
+            if (id) byId.set(id, topic);
+          }
+        }
+      }
+      catalogTopics.set(manifest, byId);
+    }
+    return byId;
+  }
+  const topicForQuestion = (q, manifest) => {
+    const topic = manifest && topicsById(manifest).get(q.id);
+    return (topic?.unit === q.unit ? topic : bySubtopic.get(`${q.unit}/${q.subtopic}`)) || null;
+  };
   const isTopicSelection = selection => byKey.has(selection);
-  function matches(q, selection) {
+  function matches(q, selection, manifest) {
     if (!selection) return true;
     const topic = byKey.get(selection);
-    if (topic) return q.unit === topic.unit && topic.subtopics.includes(q.subtopic);
+    if (topic) return q.unit === topic.unit && topicForQuestion(q, manifest) === topic;
     if (selection.startsWith("@science-topic:") || selection.startsWith("@social-topic:")) return false;
     return q.subtopic === selection; // 舊細標籤的進度與批次仍可精確讀取。
   }
   const labelFor = selection => byKey.get(selection)?.label || selection;
-  root.StudyScienceTopics = { topicsForUnit, topicForQuestion, isTopicSelection, matches, labelFor };
+  root.StudyScienceTopics = { topicsForUnit, hasCatalogTopics, topicForQuestion, isTopicSelection, matches, labelFor };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -111,3 +111,68 @@ test("sixth-batch fine tags stay under ground change while old fine selectors re
   }
   assert.equal(topics.topicsForUnit(20).length + topics.topicsForUnit(21).length, 7);
 });
+
+test("final science topics partition the original shards and keep whole-unit and old selector access", async () => {
+  const shard = (unit, hash, size, subtopic) => ({
+    unit, hash, subject: "science",
+    ids: Array.from({ length: size }, (_, index) => `science-g4s1-synthetic-topic-${unit}-${size}-${index}-v1`),
+    subtopics: Array(size).fill(subtopic)
+  });
+  const soundLight = shard(29, "547f3bea37dced529508819d2b9b411d3e9c295d84a20fd7ba80993e127b0bf5", 53, "聲音與光");
+  const electricity = shard(30, "04a9b79f26a46bdbfbe15f1a901c427bc05797794c1e6cf8a48f10935fe82748", 51, "電路與用電");
+  const circuit = shard(30, "fcfbc866e9592fc1f40518b5c9fdbfb8ac9e32c0ff1202494e17dd37e9d4d8de", 1, "電路與用電");
+  const future = shard(29, "0".repeat(64), 1, "聲音與光");
+  const manifest = { shards: [electricity, future, circuit, soundLight] };
+  const cache = { manifest: async () => manifest };
+  const e = await boot(undefined, "test-child", { catalogCache: cache });
+  e.app.State.setStudyTerm("g4-s1");
+  e.app.State.setSubject("science");
+  e.app.renderHome();
+  const topics = e.window.StudyScienceTopics;
+  for (const [unit, expectedCounts, count] of [[29, [5, 8, 20, 10, 10], 54], [30, [11, 5, 13, 7, 7, 9], 52]]) {
+    const unitTopics = topics.topicsForUnit(unit, manifest);
+    const idsByTopic = [...unitTopics].map(topic => [...e.app.questionIdsFor(unit, topic.key)]);
+    assert.deepEqual(idsByTopic.map(ids => ids.length), expectedCounts);
+    assert.equal(new Set(idsByTopic.flat()).size, unit === 29 ? count - 1 : count);
+    assert.equal(e.app.questionIdsFor(unit).length, count);
+    for (const topic of unitTopics) assert.ok(e.node("page-home").innerHTML.includes(topic.label));
+  }
+  const sound = "@science-topic:S3-sound";
+  assert.ok(e.app.questionIdsFor(29, sound).includes(soundLight.ids[0]));
+  assert.equal(e.app.questionIdsFor(29, "聲音與光").length, 54);
+  assert.ok(e.app.questionIdsFor(30, "@science-topic:S4-circuit").includes(circuit.ids[0]));
+  e.app.State.addMastered(29, soundLight.ids[0]);
+  assert.equal(e.app.State.doneCount(29, sound), 1);
+  assert.doesNotMatch(e.node("page-home").innerHTML, /接續上次/);
+  e.app.State.saveBatch("29/聲音與光", [soundLight.ids[0], soundLight.ids[1]]);
+  e.app.renderHome();
+  assert.match(e.node("page-home").innerHTML, /聲音與光.*上次還有 1 題/);
+  assert.match(e.node("page-home").innerHTML, /接續上次/);
+  e.app.State.addMastered(29, soundLight.ids[1]);
+  e.app.renderHome();
+  assert.doesNotMatch(e.node("page-home").innerHTML, /接續上次/);
+  const [doneSound, doneShadow, pendingSound] = [0, 1, 2].map(index => soundLight.ids[index]);
+  for (const id of [doneSound, doneShadow, pendingSound]) e.app.map.set(id, { id, unit: 29, subtopic: "聲音與光" });
+  e.app.State.saveBatch("29/聲音與光", [doneSound, doneShadow, pendingSound]);
+  e.app.State.resetMastered(29, sound, "choice");
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), [doneShadow, pendingSound]);
+  e.app.State.resetMastered(29);
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), [pendingSound]);
+  assert.equal(e.app.State.doneCount(29, sound), 0);
+  assert.equal(topics.topicForQuestion({ unit: 29, id: future.ids[0], subtopic: "聲音與光" }, manifest), null);
+  assert.equal(topics.topicsForUnit(29).length, 0, "manual packs keep their original concepts");
+});
+
+test("whole-unit reset also removes already completed items from an imported broad-topic batch", async () => {
+  const pack = scienceSyntheticPack();
+  const question = pack.questions.find(q => q.unit === 20);
+  question.unit = 29;
+  question.subtopic = "聲音與光";
+  const e = await boot();
+  e.app.importPrivatePack(JSON.stringify(pack));
+  e.app.State.addMastered(29, question.id);
+  e.app.State.saveBatch("29/聲音與光", [question.id]);
+  e.app.State.resetMastered(29);
+  assert.equal(e.app.State.doneCount(29), 0);
+  assert.deepEqual(plain(e.app.State.getBatch("29/聲音與光")), []);
+});

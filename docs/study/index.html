@@ -590,7 +590,7 @@ a#child-badge { pointer-events: auto; display: inline-flex; align-items: center;
 <script src="../shared/collection-client.js?v=20261106-study-visibility"></script>
 <script src="../shared/family-client.js?v=20261106-study-visibility"></script><script src="../shared/family-app.js?v=20261117-child-ui"></script>
 <script src="math-interactions.js?v=20261107-math-circuit-release"></script><script src="math-geometry.js?v=20261107-math-circuit-release"></script><script src="math-operations.js?v=20261107-math-circuit-release"></script><script src="./private-pack.js?v=20261107-math-circuit-release"></script><script src="pack-catalog.js?v=20261107-science-social-release"></script><script src="./material.js?v=20260923-group-media"></script><script src="math-input.js?v=20261107-math-circuit-release"></script><script src="circuit.js?v=20261107-math-circuit-release"></script><script src="./answer.js?v=20261107-math-circuit-release"></script>
-<script src="./science-topics.js?v=20261023-social-u2-topics"></script>
+<script src="./science-topics.js?v=20261125-science-final-topics"></script>
 <script>
 (function() {
 "use strict";
@@ -1060,15 +1060,27 @@ const State = {
     const modes = masteredModesFromEntry(state.mastered[u]);
     const targetModes = mode ? [normalizePracticeMode(mode)] : Object.keys(modes);
     if (targetModes.length === 0) return;
+    const choiceBeforeReset = modes[DEFAULT_PRACTICE_MODE] || [];
     if (subtopic || StudyPrivatePack.UNITS.includes(unit)) {
       for (const m of targetModes) {
         modes[m] = (modes[m] || []).filter(id => {
           const q = questionMap.get(id);
-          return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic);
+          return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic, packManifest);
         });
       }
     } else {
       for (const m of targetModes) modes[m] = [];
+    }
+    if (targetModes.includes(DEFAULT_PRACTICE_MODE) && StudyScienceTopics.hasCatalogTopics(unit)) {
+      // A completed item in an old mixed batch must not become pending again after a reset.
+      const resetIds = new Set(choiceBeforeReset.filter(id => !modes[DEFAULT_PRACTICE_MODE].includes(id)));
+      for (const label of KidsFamilyCore.STUDY_UNITS.find(u => u.id === unit).subtopics) {
+        const key = challengeKey(unit, label);
+        const batch = State.getBatch(key);
+        if (batch?.some(id => resetIds.has(id))) {
+          state.challenge[key] = { ...state.challenge[key], batch: batch.filter(id => !resetIds.has(id)) };
+        }
+      }
     }
     state.mastered[u] = { modes };
     Storage.save(state);
@@ -1104,7 +1116,7 @@ const State = {
         if (!complete) { pending.push(key); continue; }
       }
       const remaining = new Set(ch.queue);
-      const knownIds = StudyPrivatePack.UNITS.includes(unit) ? allQuestions.filter(q => q.unit === unit && StudyScienceTopics.matches(q,subtopic) && !State.isFlagged(q.id)).map(q => q.id) : questionIdsFor(unit, subtopic);
+      const knownIds = StudyPrivatePack.UNITS.includes(unit) ? allQuestions.filter(q => q.unit === unit && StudyScienceTopics.matches(q, subtopic, packManifest) && !State.isFlagged(q.id)).map(q => q.id) : questionIdsFor(unit, subtopic);
       for (const id of knownIds) {
         if (!remaining.has(id)) state.mastered = addModeMastered(state.mastered, unit, id, DEFAULT_PRACTICE_MODE);
       }
@@ -1129,7 +1141,7 @@ function updatedChallenge(key, nextBatch = null) {
   const subtopic = slash < 0 ? null : base.slice(slash + 1);
   const keep = id => {
     const q = questionMap.get(id);
-    return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic);
+    return !q || q.unit !== unit || !StudyScienceTopics.matches(q, subtopic, packManifest);
   };
   const previous = state.challenge[key];
   const pending = Array.isArray(previous?.batch) ? previous.batch.filter(keep) : [];
@@ -1145,7 +1157,7 @@ function updatedChallenge(key, nextBatch = null) {
 function questionIdsFor(unit, subtopic) {
   const pool = packManifest && StudyPrivatePack.UNITS.includes(unit) ? StudyPackCatalog.metadata(packManifest) : allQuestions;
   return pool
-    .filter(q => q.unit === unit && StudyScienceTopics.matches(q, subtopic) && !State.isFlagged(q.id))
+    .filter(q => q.unit === unit && StudyScienceTopics.matches(q, subtopic, packManifest) && !State.isFlagged(q.id))
     .map(q => q.id);
 }
 
@@ -1780,19 +1792,31 @@ function renderBackupSection() {
 
 // 期末單元卡片下的練習主題入口（可接續）；其他學期沿用原細概念。
 function renderSubtopics(u) {
-  const topics = StudyScienceTopics.topicsForUnit(u.id);
+  const topics = StudyScienceTopics.topicsForUnit(u.id, packManifest);
   const selections = topics.length
     ? topics.map(topic => ({ key: topic.key, label: topic.label }))
     : (u.subtopics || (packManifest && StudyPrivatePack.UNITS.includes(u.id) ? [...new Set(StudyPackCatalog.metadata(packManifest).filter(q => q.unit === u.id).map(q => q.subtopic))] : StudyPrivatePack.UNITS.includes(u.id) ? [...(subtopicsByUnit.get(u.id) || [])] : []))
       .map(st => ({ key: st, label: st }));
+  if (packManifest && StudyScienceTopics.hasCatalogTopics(u.id)) {
+    const mastered = State.getMasteredSet(u.id);
+    for (const key of u.subtopics || []) {
+      const batch = State.getBatch(challengeKey(u.id, key));
+      if (!batch?.length) continue;
+      const available = new Set(questionIdsFor(u.id, key));
+      const pending = batch.filter(id => available.has(id) && !mastered.has(id)).length;
+      if (pending) selections.push({ key, label: key, pending });
+    }
+  }
   if (!selections.length) return "";
   let rows = "";
-  for (const { key, label } of selections) {
+  for (const { key, label, pending } of selections) {
     const count = questionIdsFor(u.id, key).length;
     if (count === 0) continue;  // 該 subtopic 無題則不顯示
     const done = State.doneCount(u.id, key, DEFAULT_PRACTICE_MODE);
     let statusHtml = `<span class="st-count">${count} 題</span>`;
-    if (done >= count) {
+    if (pending) {
+      statusHtml = `<span class="st-count">上次還有 ${pending} 題</span>`;
+    } else if (done >= count) {
       statusHtml = '<span class="st-count" style="color:#2ecc71;font-weight:600">已通關</span>';
     } else if (done > 0) {
       statusHtml = `<span class="st-count">接續 ${done}/${count}</span>`;
@@ -1802,7 +1826,7 @@ function renderSubtopics(u) {
       <div class="subtopic-row">
         <span class="subtopic-name">${escapeHtml(label)}${statusHtml}</span>
         <span class="st-actions">
-          <button class="st-btn child-action secondary" onclick="window._startFull(${u.id}, decodeURIComponent('${encoded}'))">練習</button>
+          <button class="st-btn child-action secondary" onclick="window._startFull(${u.id}, decodeURIComponent('${encoded}'))">${pending ? "接續上次" : "練習"}</button>
         </span>
       </div>`;
   }
